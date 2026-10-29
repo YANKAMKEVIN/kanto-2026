@@ -237,6 +237,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var foe_ai := trainer.make_ai() if trainer != null else null
 	var foe_side := BattleSide.new(request.foe_party, false, request.foe_name, foe_ai)
 	var player_side := BattleSide.new(party, true)
+	# Lot 32P : le Multi Exp agit tant qu'il est dans le Sac.
+	if request.rules != null and _state.get(&"bag") is Bag:
+		request.rules.exp_all = (_state.get(&"bag") as Bag).has(ExpCalc.EXP_ALL_ITEM)
 	_battle = Battle.new(player_side, foe_side, _data, rng, request.rules)
 	# Le moteur choisit qui entre (premier Pokémon non K.O., pas forcément le premier de
 	# l'équipe) : l'entrée en scène suit ses événements SENT_OUT, jamais une supposition.

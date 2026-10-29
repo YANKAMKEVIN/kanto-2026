@@ -134,7 +134,37 @@ func show_offer(new_move: BattleMoveView, known: Array[BattleMoveView]) -> void:
 		if view == null or not view.is_valid():
 			push_error("MoveForgetPanel : capacité connue invalide")
 			return
+	_set_choice_mode(false, KNOWN_CAPTION, CONFIRM_LABEL, SKIP_LABEL)
 	_new_card.set_view(new_move)
+	_rearm(known)
+
+
+## Lot 32P : même panneau pour **choisir** une capacité (PP Plus, Éther) : ni nouvelle capacité
+## ni légende « Nouvelle capacité » ; [param caption] au-dessus des cartes, [param confirm_label]
+## (émet [signal forget_chosen]) et [param skip_label] (émet [signal skip_chosen]).
+func show_choice(known: Array[BattleMoveView], caption: String, confirm_label: String,
+		skip_label: String) -> void:
+	if known.is_empty() or known.size() > SLOTS:
+		push_error("MoveForgetPanel : choix invalide")
+		return
+	for view: BattleMoveView in known:
+		if view == null or not view.is_valid():
+			push_error("MoveForgetPanel : capacité connue invalide")
+			return
+	_set_choice_mode(true, caption, confirm_label, skip_label)
+	_rearm(known)
+
+
+func _set_choice_mode(choice: bool, caption: String, confirm_label: String,
+		skip_label: String) -> void:
+	_new_caption.visible = not choice
+	_new_card.visible = not choice
+	_known_caption.text = caption
+	_confirm.text = confirm_label
+	_skip.text = skip_label
+
+
+func _rearm(known: Array[BattleMoveView]) -> void:
 	for i: int in SLOTS:
 		_cards[i].set_view(known[i] if i < known.size() else null)
 	_answered = false

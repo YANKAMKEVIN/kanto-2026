@@ -31,6 +31,8 @@ const DATA_DIR := "res://data"
 ## Jalon 32 (32N, N-22) : CT obtenables partout : capacités (Coupe-Vent, Éboulement, E-Coque), messages
 ## de charge, 23 objets (descriptions copiées des capacités), répliques des dons : validés par
 ## Kevin le 2026-10-28, « draft » retiré.
+## Lot 32P : textes du lot (objets, Repousse, Cherch'Objet, assistants) validés par Kevin le
+## 2026-10-29, « draft » retiré.
 const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
 
 

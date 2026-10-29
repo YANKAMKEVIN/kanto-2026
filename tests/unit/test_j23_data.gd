@@ -21,8 +21,8 @@ const RECOMMENDED: Array[String] = ["Passe au comptoir pour entrer.",
 ## Objets du dossier 26 §7 (remplacements N-19), par carte et position.
 const ITEMS: Dictionary = {
 	&"safari_zone_center_pepite": &"nugget", &"safari_zone_east_guerison": &"full_restore",
-	&"safari_zone_east_potion_max": &"hyper_potion", &"safari_zone_east_carbone": &"rare_candy",
-	&"safari_zone_east_ct37": &"tm37", &"safari_zone_north_proteine": &"revive",
+	&"safari_zone_east_potion_max": &"hyper_potion", &"safari_zone_east_carbone": &"carbos",
+	&"safari_zone_east_ct37": &"tm37", &"safari_zone_north_proteine": &"protein",
 	&"safari_zone_north_ct40": &"tm40", &"safari_zone_west_potion_max": &"hyper_potion",
 	&"safari_zone_west_ct32": &"tm32", &"safari_zone_west_rappel_max": &"revive",
 	&"safari_zone_west_dents_or": &"gold_teeth", &"safari_zone_west_rappel_cache": &"revive",

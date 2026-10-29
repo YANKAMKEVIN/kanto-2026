@@ -50,7 +50,7 @@ const CACHES: Array = [
 		&"from_route_7_n", "souterrain_hidden_2", Vector2i(34, 1), &"super_potion",
 		["Super Potion ×1", "Ajoutée au Sac"], ["toast"], [Vector2i.LEFT, Vector2i.DOWN]],
 	[&"celadon_city", "res://tools/debug_start/celadon.json", &"from_route_7_c",
-		"celadon_hidden_1", Vector2i(46, 27), &"revive", ["Rappel ×1", "Ajouté au Sac"],
+		"celadon_hidden_1", Vector2i(46, 27), &"pp_up", ["PP Plus ×1", "Ajouté au Sac"],
 		["toast"], [Vector2i.RIGHT, Vector2i.DOWN]],
 ]
 const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]

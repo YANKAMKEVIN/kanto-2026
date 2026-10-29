@@ -8,7 +8,8 @@
 			{ "item": "burn_heal" },
 			{ "item": "ice_heal" },
 			{ "item": "awakening" },
-			{ "item": "paralyze_heal" }
+			{ "item": "paralyze_heal" },
+			{ "item": "super_repel" }
 		]
 	},
 	"celadon_dept_2f_tm": {
@@ -39,7 +40,12 @@
 			{ "item": "x_speed" },
 			{ "item": "x_special" },
 			{ "item": "x_accuracy" },
-			{ "item": "dire_hit" }
+			{ "item": "dire_hit" },
+			{ "item": "hp_up" },
+			{ "item": "protein" },
+			{ "item": "iron" },
+			{ "item": "carbos" },
+			{ "item": "calcium" }
 		]
 	},
 	"celadon_dept_4f_stones": {

@@ -6,7 +6,8 @@
 			{ "item": "full_restore" },
 			{ "item": "max_potion" },
 			{ "item": "full_heal" },
-			{ "item": "revive" }
+			{ "item": "revive" },
+			{ "item": "max_repel" }
 		]
 	}
 }

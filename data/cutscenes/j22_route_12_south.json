@@ -10,7 +10,7 @@
 						"despawn": "route_12_item_1"
 					},
 					{
-						"give": "nugget",
+						"give": "iron",
 						"count": 1,
 						"found": true
 					},

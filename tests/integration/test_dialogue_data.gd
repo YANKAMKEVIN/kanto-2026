@@ -109,6 +109,8 @@ const IDS_J29: Array[StringName] = [
 	&"indigo_plateau_host", &"route_22_league_sign"
 ]
 const TEXTES_J29 := "res://docs/tech/jalon-29-textes.md"
+## Lot 32P : textes validés par Kevin le 2026-10-29, une citation par ligne.
+const TEXTES_32P := "res://docs/tech/lot-32p-textes.md"
 ## J29 : renvois vers les scènes (objets, cachés, gardes, rival n° 7, Sulfura ; data/dialogues/
 ## j29_monde.json), sans page.
 const IDS_J29_MONDE: Array[StringName] = [
@@ -178,7 +180,9 @@ const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_
 	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
 	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice",
 	# Jalon 32 (T5) : répliques du terminal d'échange local ([LocalTradeDirector]).
-	&"trade_terminal_none", &"trade_terminal_confirm"]
+	&"trade_terminal_none", &"trade_terminal_confirm",
+	# Lot 32P : fin de la Repousse (Boot) et Cherch'Objet ([KeyItemDirector]).
+	&"repel_wore_off", &"itemfinder_north", &"itemfinder_south", &"itemfinder_east", &"itemfinder_west", &"itemfinder_here", &"itemfinder_nothing"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.
@@ -1432,7 +1436,7 @@ func test_library_loads_without_error() -> void:
 	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM \
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
-		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 + IDS_J32 + IDS_J32_CT \
+		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 + IDS_J32 + IDS_J32_CT + IDS_32P \
 		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids()
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
@@ -1466,6 +1470,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		# Jalon 32 (32N, N-22) : répliques des dons de CT.
 		&"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give",
 		&"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got",
+		# Lot 32P : remise du Cherch'Objet.
+		&"route_12_gate_2f_itemfinder_got", &"route_12_gate_2f_itemfinder_use",
 		# Jalon 24 : Artikodin, porte de l'Arène, CT35, fossiles.
 		&"articuno_cry", &"articuno_flew_away", &"cinnabar_gym_locked", &"cinnabar_lab_tm35_offer",
 		&"cinnabar_lab_tm35_use", &"cinnabar_fossil_taken", &"cinnabar_fossil_ready_kabuto", &"cinnabar_fossil_ready_omanyte",
@@ -1715,6 +1721,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			+ SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES
 			# Jalon 17 (T8) : Ronflex vu, assistant rencontré, barrière de FUTUR B ouverte.
 			+ [&"hm05_assistant_met", &"route_2_east_gate_open", &"snorlax_route_12_seen"]
+			# Lot 32P : assistant de la Route 12 rencontré (avant les 30 espèces).
+			+ [&"itemfinder_assistant_met", &"exp_all_assistant_met"]
 			+ SET_J18_DIALOGUES
 			# Jalon 20 (T21) : porte du bureau ouverte par le second garde battu (§2.7.3).
 			+ [&"rocket_hideout_b4f_door_open"]
@@ -1728,6 +1736,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			# Jalon 30 (fusion du J29) : NON à la question du garde de la porte de la Ligue.
 			+ [&"league_door_declined"]))
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
+		# Lot 32P : Cherch'Objet, Max Éther de l'Écume B3F, Max Repousse de la Route 21.
+		&"got_itemfinder", &"got_exp_all", &"got_seafoam_b3f_hidden_1", &"got_route_21_item_2",
 		# Jalon 32 (32N) : CT obtenables partout.
 		&"got_route_4_tm04", &"got_ss_anne_lower_deck_tm08", &"got_mt_moon_b1f_tm12", &"got_route_12_tm16", &"got_route_24_tm45", &"got_route_9_tm30", &"got_silph_co_2f_tm36", &"got_viridian_city_tm42", &"got_ss_anne_cabin_a_tm44", &"got_tm18", &"got_tm29", &"got_tm41", &"rooftop_tm48", &"rooftop_tm49",
 		&"snorlax_route_12_awake", &"snorlax_route_12_caught", &"snorlax_route_12_done",
@@ -2136,6 +2146,13 @@ const J32_TRADE_LINES: Array[StringName] = [
 ]
 ## Jalon 32 (N-21) : derniers brouillons validés par Kevin le 2026-10-28 : liste vide.
 ## Jalon 32 (32N, N-22) : dialogues des CT (ramassages et dons).
+## Lot 32P : Max Éther de l'Écume B3F, Max Repousse de la Route 21, Cherch'Objet du poste de la Route 12.
+const IDS_32P: Array[StringName] = [&"route_12_gate_2f_assistant", &"route_12_gate_2f_itemfinder_got",
+	&"route_12_gate_2f_itemfinder_use", &"route_21_item_2", &"seafoam_b3f_hidden_1",
+	&"repel_wore_off", &"itemfinder_north", &"itemfinder_south", &"itemfinder_east",
+	&"itemfinder_west", &"itemfinder_here", &"itemfinder_nothing"]
+## Lot 32P : textes validés par Kevin le 2026-10-29 (« Oui, tout ») : liste vide.
+const PENDING_DRAFT_32P: Array[StringName] = []
 const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
 ## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
 const PENDING_DRAFT_VARIANTS: Array[String] = []
@@ -2144,6 +2161,8 @@ const PENDING_DRAFT_VARIANTS: Array[String] = []
 func test_no_dialogue_nor_variant_is_draft() -> void:
 	for id: StringName in _real_ids():
 		var dialogue := _library.get_dialogue(id)
+		if PENDING_DRAFT_32P.has(id):
+			continue  # lot 32P : brouillon assumé jusqu'à la validation en lot par Kevin
 		assert_false(dialogue.draft, String(id))
 		for i: int in dialogue.variants.size():
 			var key := "%s:%d" % [id, i]
@@ -2203,6 +2222,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var plan_j30 := FileAccess.get_file_as_string(PLAN_J30)
 	var textes_j29 := FileAccess.get_file_as_string(TEXTES_J29)
+	var textes_32p := FileAccess.get_file_as_string(TEXTES_32P)
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
 	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
@@ -2331,6 +2351,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _in_dossier_18(plan_j30, text.replace("{joueur}", "{player}"))
 			# J29 (T4) : lot de textes du J29 (`jalon-29-textes.md`), une citation par ligne.
 			or _each_line_quoted(textes_j29, text.replace("{joueur}", "{player}"))
+			# Lot 32P : `lot-32p-textes.md`, une citation par ligne.
+			or _each_line_quoted(textes_32p, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1])),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
@@ -2567,7 +2589,7 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13) ; 32A à 32D : Chen, le
 	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2) ; 32J : le camion, le concepteur. 32N (N-22) : neuf CT
 	# ramassées, le don de la CT18, de la CT29 et de la CT41.
-	assert_eq(launched, 242, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	assert_eq(launched, 245, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2620,7 +2642,7 @@ func test_oak_parcel_lines() -> void:
 				or row[0] == &"cinnabar_lab_tm35_use" \
 				or (row[0] in [&"route_12_gate_tm39_got", &"snorlax_flute_played",
 					&"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_got",
-					&"celadon_chief_son_tm41_got"] \
+					&"celadon_chief_son_tm41_got", &"route_12_gate_2f_itemfinder_got"] \
 					and row[1].contains("{player}")) \
 				or (_j26_life_ids().has(row[0]) and row[1].contains("{player}")) \
 				or (row[0] in [&"rival_silph_intro", &"silph_co_lapras_received",

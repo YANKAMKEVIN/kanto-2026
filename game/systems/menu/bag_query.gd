@@ -198,6 +198,9 @@ static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 	if RareCandy.is_candy(item):
 		_candy_targets(picker, members, bag, item, data)
 		return picker
+	if Vitamin.is_vitamin(item) or PpItem.is_pp_item(item):
+		_boost_targets(picker, members, bag, item, data)
+		return picker
 	for i: int in members.size():
 		var check := ItemUse.check(bag, item, members[i], context)
 		var mon_name := members[i].display_name(data)
@@ -248,7 +251,8 @@ static func _entry(bag: Bag, item: ItemData, context: StringName,
 		item.category_id(), item.usable_in(rules))
 	view.favorite = bag.is_favorite(item.id)
 	view.targets_pokemon = item.targets_pokemon()
-	if StoneUse.is_stone(item) or RareCandy.is_candy(item):
+	if StoneUse.is_stone(item) or RareCandy.is_candy(item) or Vitamin.is_vitamin(item) \
+			or PpItem.is_pp_item(item):
 		# Jalon 12 (T23) : UTILISER ouvre le choix du Pokémon (COMPATIBLE / INCOMPATIBLE) ; jalon 14
 		# (T18b) : le Super Bonbon aussi (niveau 100, K.O. refusés).
 		view.targets_pokemon = true
@@ -370,6 +374,23 @@ static func _candy_targets(picker: PartyPickerView, members: Array[Pokemon], bag
 	for i: int in members.size():
 		var check := RareCandy.item_use_check(RareCandy.check(members[i])) if in_bag \
 			else ItemUse.Check.NOT_IN_BAG
+		var mon_name := members[i].display_name(data)
+		picker.targets.append(PartyTargetView.new(DashboardViews.member(members[i], i, data),
+			check == ItemUse.Check.OK, reason_text(check), refusal_text(check, mon_name)))
+
+
+## Lot 32P : vitamine ([Vitamin]) ou PP Plus / Éther / Élixir ([PpItem]) : chaque membre
+## choisissable si l'objet change quelque chose ; sinon « Sans effet » (plafond, PP pleins) ou
+## « Il n'en reste plus », rien n'est consommé.
+static func _boost_targets(picker: PartyPickerView, members: Array[Pokemon], bag: Bag,
+		item: ItemData, data: PokemonData) -> void:
+	var in_bag := bag != null and bag.has(item.id)
+	for i: int in members.size():
+		var check := ItemUse.Check.NOT_IN_BAG
+		if in_bag and Vitamin.is_vitamin(item):
+			check = Vitamin.item_use_check(Vitamin.check(members[i], item))
+		elif in_bag:
+			check = PpItem.item_use_check(PpItem.check(members[i], item, data))
 		var mon_name := members[i].display_name(data)
 		picker.targets.append(PartyTargetView.new(DashboardViews.member(members[i], i, data),
 			check == ItemUse.Check.OK, reason_text(check), refusal_text(check, mon_name)))

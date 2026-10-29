@@ -67,6 +67,6 @@ panneau_conseils       panneau        6,4          bloque
 panneau_zone           panneau        5,23         bloque
 guerison               objet_visible  21,10        bloque  item=full_restore     # RB : Guérison
 potion_max             objet_visible  3,7          bloque  item=hyper_potion     # RB : Potion Max → Hyper Potion (N-19)
-carbone                objet_visible  20,13        bloque  item=rare_candy       # RB : Carbone → Super Bonbon (N-19)
+carbone                objet_visible  20,13        bloque  item=carbos            # RB : Carbone (lot 32P : repli Super Bonbon défait)
 ct37                   objet_visible  15,12        bloque  item=tm37             # RB : CT37 Bomb'Œuf (capacité à créer, N-19)
 FIN

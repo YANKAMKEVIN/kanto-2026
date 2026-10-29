@@ -58,7 +58,7 @@
 						"despawn": "carbone"
 					},
 					{
-						"give": "rare_candy",
+						"give": "carbos",
 						"count": 1,
 						"found": true
 					},

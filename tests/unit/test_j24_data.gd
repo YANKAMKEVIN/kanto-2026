@@ -480,13 +480,10 @@ func test_new_items() -> void:
 
 
 func test_items_without_engine_support_wait_outside_the_libraries() -> void:
-	# Max Repousse : data/j24_pending/, lu par aucune bibliothèque. Le Rappel (clé « revive ») est
-	# lu depuis le T11 du J20 (items_j20.json) ; le Max Élixir depuis le J31 (items_j31.json, sans
-	# effet, fusion de main dans jalon-31 le 2026-10-24).
-	var pending: Dictionary = JSON.parse_string(
-		FileAccess.get_file_as_string(PENDING_DIR + "items.json"))
-	assert_eq((pending["items"] as Dictionary).keys(), ["max_repel"])
-	assert_false(_items.has_item(&"max_repel"))
+	# Lot 32P : la Max Repousse est lue (items_j32p.json, système de Repousse) ; data/j24_pending/
+	# est retiré. Le Rappel est lu depuis le J20, le Max Élixir depuis le J31.
+	assert_false(DirAccess.dir_exists_absolute(PENDING_DIR))
+	assert_eq(_items.get_item(&"max_repel").source, "res://data/items/items_j32p.json")
 	assert_eq(_items.get_item(&"max_elixir").source, "res://data/items/items_j31.json")
 	assert_eq(_items.get_item(&"revive").source, "res://data/items/items_j20.json")
 
@@ -499,17 +496,10 @@ func test_cinnabar_mart_stock() -> void:
 	assert_not_null(shop)
 	if shop == null:
 		return
-	# Ordre de Rouge/Bleu (marts.asm) sans Max Repousse, en attente (§10.3) ; le Rappel est lu
-	# depuis le J20 (fusion de systemes-2, 2026-10-21).
-	assert_eq(shop.item_ids(), [&"ultra_ball", &"great_ball", &"hyper_potion", &"escape_rope",
-		&"full_heal", &"revive"] as Array[StringName])
-	var pending: Dictionary = JSON.parse_string(
-		FileAccess.get_file_as_string(PENDING_DIR + "shops.json"))
-	var full: Array = []
-	for entry: Dictionary in pending["shops"]["cinnabar_mart"]["stock"]:
-		full.append(entry["item"])
-	assert_eq(full, ["ultra_ball", "great_ball", "hyper_potion", "max_repel", "escape_rope",
-		"full_heal", "revive"], "inventaire complet de Rouge/Bleu")
+	# Ordre de Rouge/Bleu (marts.asm) ; lot 32P : Max Repousse à sa place (ancien
+	# data/j24_pending/shops.json, retiré).
+	assert_eq(shop.item_ids(), [&"ultra_ball", &"great_ball", &"hyper_potion", &"max_repel",
+		&"escape_rope", &"full_heal", &"revive"] as Array[StringName])
 
 
 # --- Outils -----------------------------------------------------------------------------

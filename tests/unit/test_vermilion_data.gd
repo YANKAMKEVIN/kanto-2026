@@ -167,7 +167,8 @@ func test_vermilion_mart_stock() -> void:
 	# Stock d'Azuria (plan J13 §2.5) + Super Potion (F-14) ; Corde Sortie en fin (T16, comme
 	# Azuria).
 	assert_eq(shop.item_ids(), [&"poke_ball", &"potion", &"super_potion", &"antidote",
-		&"paralyze_heal", &"awakening", &"ice_heal", &"burn_heal", &"escape_rope"]
+		&"paralyze_heal", &"awakening", &"ice_heal", &"burn_heal", &"escape_rope",
+		&"repel"]  # lot 32P : la Repousse de Rouge/Bleu
 		as Array[StringName])
 	for entry: Dictionary in shop.stock:
 		assert_eq(entry.get("if", []).size() + entry.get("unless", []).size(), 0,

@@ -8,6 +8,12 @@ extends RefCounted
 ## niveau et m le multiplicateur des règles du combat ([member BattleRules.exp_multiplier] :
 ## 1 contre un sauvage, 1,5 contre un dresseur). Partage (Q24) : parts égales entre les
 ## participants encore debout, le reste de la division au premier.
+## Lot 32P (AUD-16) : avec le **Multi Exp** dans le Sac, façon Rouge/Bleu (décision de Kevin du
+## 2026-10-29, Q4) : la moitié de l'XP va aux participants debout, l'autre moitié à toute l'équipe
+## debout (participants compris) ; le total ne change pas ([method distribute]).
+
+## Objet clé du Multi Exp.
+const EXP_ALL_ITEM: StringName = &"exp_all"
 
 @warning_ignore_start("integer_division")
 
@@ -61,3 +67,23 @@ static func progress(pokemon: Pokemon, data: PokemonData) -> float:
 	if high <= low:
 		return 1.0
 	return clampf(float(pokemon.experience - low) / float(high - low), 0.0, 1.0)
+
+
+## Parts d'XP de [param total] : [param participants] (debout) se le partagent ; avec
+## [param exp_all], ils n'en partagent que la moitié (arrondie au-dessus), l'autre moitié allant à
+## [param members] (l'équipe debout, participants compris). Renvoie Pokémon → XP, dans l'ordre des
+## participants puis de l'équipe ; la somme vaut [param total] (vide sans participant).
+static func distribute(total: int, participants: Array[Pokemon], members: Array[Pokemon],
+		exp_all: bool) -> Dictionary[Pokemon, int]:
+	var result: Dictionary[Pokemon, int] = {}
+	if participants.is_empty():
+		return result
+	var team_half := total / 2 if exp_all and not members.is_empty() else 0
+	var shares := split(total - team_half, participants.size())
+	for i: int in participants.size():
+		result[participants[i]] = shares[i]
+	if team_half > 0:
+		var team_shares := split(team_half, members.size())
+		for i: int in members.size():
+			result[members[i]] = int(result.get(members[i], 0)) + team_shares[i]
+	return result

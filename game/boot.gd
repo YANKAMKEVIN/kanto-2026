@@ -50,6 +50,10 @@ const MAX_PLAY_TIME_STEP: float = SessionLifecycle.MAX_PLAY_TIME_STEP
 ## Décor de l'introduction de Chen (OUV.2, dossier 13 §9.0) : le labo, cadré en son centre
 ## (16 × 11 cases ; défaut, règle 4).
 const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
+## Lot 32P : choix de la capacité d'un PP Plus ou d'un Éther (textes validés par Kevin le 2026-10-29).
+const PP_MOVE_CAPTION := "Choisis une capacité"
+const PP_MOVE_CONFIRM := "CHOISIR"
+const PP_MOVE_CANCEL := "RETOUR"
 const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
 ## Le labo (1536 px de large) est plus étroit que l'écran (jusqu'à 2340) : agrandi pour le remplir.
 const INTRO_BACKDROP_ZOOM: float = 1.6
@@ -428,6 +432,7 @@ func _ready() -> void:
 	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
 	_encounters.encounter_finished.connect(_on_encounter_finished)
+	_encounters.repel_wore_off.connect(_on_repel_wore_off)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -1828,6 +1833,28 @@ func _on_tm_learn_requested(index: int, item_id: StringName) -> void:
 	_menu.finish_tm_learn(index, item_id, learned)
 
 
+## Lot 32P : PP Plus ou Éther : la capacité du Pokémon [param index] se choisit dans le panneau
+## d'oubli en mode choix, sur le voile d'apprentissage ; le menu applique l'objet.
+func _on_pp_move_requested(index: int, item_id: StringName) -> void:
+	var pokemon: Pokemon = GameState.party.get_at(index)
+	if pokemon == null:
+		return
+	_learn_overlay().open()
+	var prompt := _battle_director.get_move_learn_prompt()
+	var slot := await prompt.choose_move(pokemon, PP_MOVE_CAPTION, PP_MOVE_CONFIRM,
+		PP_MOVE_CANCEL, _tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
+	prompt.release()
+	_tm_overlay.close()
+	_menu.finish_pp_item(index, item_id, slot)
+
+
+## Lot 32P : fin de la Repousse, dite une fois le joueur libre (après la rencontre de ce pas).
+func _on_repel_wore_off() -> void:
+	if _encounters.is_running():
+		await _encounters.encounter_finished
+	_runner.play(RepelRules.WORE_OFF_DIALOGUE, null, SceneRouter.get_current_map())
+
+
 func get_tm_learn_overlay() -> TmLearnOverlay:
 	return _tm_overlay
 
@@ -2178,6 +2205,7 @@ func get_audio_bridge() -> AudioBridge:
 func _setup_evolution_items() -> void:
 	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
 	_menu.rare_candy_requested.connect(_on_rare_candy_requested)
+	_menu.pp_move_requested.connect(_on_pp_move_requested)
 	_evolutions.evolution_applied.connect(_on_evolution_applied)
 
 

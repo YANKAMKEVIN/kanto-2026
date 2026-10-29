@@ -210,9 +210,9 @@ route_17_biker_4       dresseur       8,122          bloque  role=D7 trainer=rou
 route_17_cueball_4     dresseur       18,134         bloque  role=D8 trainer=route_17_cueball_4 facing=left sight=3 rbsight=2 inevitable=non rb=14,98  # Loubard, Colossinge 29 + Machopeur 29 ; vue (15..17, 134) : x 14 libre, ou la voie ouest
 route_17_hidden_1      cache          9,39           libre   role=O1 item=rare_candy drapeau=got_route_17_hidden_1  # Super Bonbon caché ; ramassé à vélo (Action face à la case)
 route_17_hidden_2      cache          17,76          libre   role=O2 item=full_restore drapeau=got_route_17_hidden_2  # Guérison caché ; ramassé à vélo (Action face à la case)
-route_17_hidden_3      cache          11,88          libre   role=O3 item=nugget drapeau=got_route_17_hidden_3  # Pépite (PP Plus de RB) caché ; ramassé à vélo (Action face à la case)
+route_17_hidden_3      cache          11,88          libre   role=O3 item=pp_up drapeau=got_route_17_hidden_3  # PP Plus de RB (lot 32P : repli Pépite défait) caché ; ramassé à vélo (Action face à la case)
 route_17_hidden_4      cache          10,113         libre   role=O4 item=full_restore drapeau=got_route_17_hidden_4  # Guérison (Rappel Max de RB) caché ; ramassé à vélo (Action face à la case)
-route_17_hidden_5      cache          16,143         libre   role=O5 item=nugget drapeau=got_route_17_hidden_5  # Pépite (Max Élixir de RB) caché ; ramassé à vélo (Action face à la case)
+route_17_hidden_5      cache          16,143         libre   role=O5 item=max_elixir drapeau=got_route_17_hidden_5  # Max Élixir de RB (lot 32P : repli Pépite défait) caché ; ramassé à vélo (Action face à la case)
 panneau_depart         panneau        8,5            bloque  role=T-piste  # « PISTE CYCLABLE » ; lu depuis (9, 5) ←
 panneau_palier_1       panneau        8,41           bloque  role=T-palier1  # panneau du palier 1 (RB : conseils) ; lu depuis (9, 41) ←
 panneau_palier_2       panneau        8,77           bloque  role=T-palier2  # panneau du palier 2 (RB : conseils) ; lu depuis (9, 77) ←

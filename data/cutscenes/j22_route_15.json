@@ -22,5 +22,17 @@
 				]
 			}
 		]
+	},
+	"route_15_gate_2f_give_exp_all": {
+		"variants": [
+			{
+				"steps": [
+					{ "give": "exp_all", "count": 1, "unless": ["got_exp_all"] },
+					{ "dialogue": "route_15_gate_2f_exp_all_got", "unless": ["got_exp_all"] },
+					{ "dialogue": "route_15_gate_2f_exp_all_use", "unless": ["got_exp_all"] },
+					{ "set": ["got_exp_all"] }
+				]
+			}
+		]
 	}
 }

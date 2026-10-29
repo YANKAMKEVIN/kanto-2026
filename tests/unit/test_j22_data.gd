@@ -14,13 +14,16 @@ const MAPS: Array[StringName] = [&"route_12_south", &"route_13", &"route_14", &"
 const TRAINER_FILES: Array[String] = ["route_12_sud", "route_13", "route_14", "route_15",
 	"route_16_ouest", "route_17", "route_18"]
 ## Objets du dossier 25 §11 (CT20 → CT09, T10 [D]).
+## Lot 32P : dialogues du j22 réécrits pour le Multi Exp (50 espèces), absents du dossier 25.
+const LOT_32P_TEXTS: Array[StringName] = [&"route_15_gate_2f_assistant",
+	&"route_15_gate_2f_exp_all_got", &"route_15_gate_2f_exp_all_use"]
 const ITEMS: Dictionary = {
-	&"route_12_item_1": &"nugget", &"route_12_hidden_1": &"hyper_potion",
-	&"route_13_hidden_1": &"rare_candy", &"route_13_hidden_2": &"hyper_potion",
+	&"route_12_item_1": &"iron", &"route_12_hidden_1": &"hyper_potion",
+	&"route_13_hidden_1": &"pp_up", &"route_13_hidden_2": &"calcium",
 	&"route_15_item_1": &"tm20", &"route_16_hidden_1": &"hyper_potion",
 	&"route_17_hidden_1": &"rare_candy", &"route_17_hidden_2": &"full_restore",
-	&"route_17_hidden_3": &"nugget", &"route_17_hidden_4": &"full_restore",
-	&"route_17_hidden_5": &"nugget",
+	&"route_17_hidden_3": &"pp_up", &"route_17_hidden_4": &"full_restore",
+	&"route_17_hidden_5": &"max_elixir",
 }
 ## Drapeaux du J22 que lit un poste de Safrania : aucun (contrat, plan §2.13).
 const J22_FLAGS: Array[String] = ["got_bike_voucher", "got_bicycle", "got_old_rod",
@@ -67,6 +70,8 @@ func test_every_line_is_a_validated_text_of_dossier_25() -> void:
 	var dossier := J22Ids.flat_text(FileAccess.get_file_as_string(J22Ids.DOSSIER_25))
 	var checked := 0
 	for id: StringName in _j22_dialogues():
+		if LOT_32P_TEXTS.has(id):
+			continue  # lot 32P : Multi Exp de l'assistant de la Route 15, textes en brouillon (hors dossier 25)
 		var dialogue := _dialogues.get_dialogue(id)
 		for variant: DialogueVariant in dialogue.variants:
 			var pages: Array[DialoguePage] = variant.pages.duplicate()
@@ -147,7 +152,7 @@ func test_fuchsia_mart_sells_full_heal_like_red_blue() -> void:
 	var shops := ShopLibrary.new()
 	shops.load_dir()
 	assert_eq(shops.get_shop(&"fuchsia_mart").item_ids(), [&"ultra_ball", &"great_ball",
-		&"super_potion", &"revive", &"full_heal"] as Array[StringName])
+		&"super_potion", &"revive", &"full_heal", &"max_repel"] as Array[StringName])  # lot 32P : Max Repousse (RB)
 
 
 func test_forty_trainers_with_known_species_on_the_maps() -> void:
@@ -187,7 +192,8 @@ func test_system_lines_use_the_player_token_only() -> void:
 		var text := _dialogues.get_dialogue(id).variants[0].pages[0].text
 		assert_eq(DialogueTokens.tokens_in(text), [DialogueTokens.PLAYER] as Array[StringName],
 			String(id))
-	var assistant := _dialogues.get_dialogue(&"route_15_gate_2f_assistant").variants[0]
+	# Lot 32P : l'assistant de Chen donne le Multi Exp ; la 1re réplique à {caught} est la variante 1.
+	var assistant := _dialogues.get_dialogue(&"route_15_gate_2f_assistant").variants[1]
 	assert_eq(DialogueTokens.tokens_in(assistant.pages[0].text),
 		[DialogueTokens.CAUGHT] as Array[StringName])
 

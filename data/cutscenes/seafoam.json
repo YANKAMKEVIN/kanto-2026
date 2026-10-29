@@ -10,6 +10,17 @@
 			}
 		]
 	},
+	"seafoam_b3f_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_seafoam_b3f_hidden_1"],
+				"steps": [
+					{ "give": "max_ether", "count": 1, "found": true },
+					{ "set": ["got_seafoam_b3f_hidden_1"] }
+				]
+			}
+		]
+	},
 	"seafoam_b4f_hidden_1": {
 		"variants": [
 			{

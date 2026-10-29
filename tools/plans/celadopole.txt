@@ -152,7 +152,7 @@ warp_ouest           warp           0,21..23      libre   to=route_16 spawn=from
 from_route_16        spawn          1,21..23      libre    # arrivée de la Route 16, tournée → [D : première colonne praticable après le warp]
 arbuste_enclos       coupe          19,37         bloque  condition=cut  # ARBUSTE À COUPER devant l'Arène (RB), lu depuis (20, 37) ← ; case CONDITIONNELLE ; message de Coupe du J16
 facade_lots          decor          48..55,26..32 bloque   # façade décorative de l'ancien Coin à lots : vitrine éteinte, SANS porte, sans un mot sur les jetons (H-6)
-celadon_hidden_1     cache          46,27         bloque  role=O1 item=revive indice=poubelle  # PP Plus en RB → Rappel si PP Plus n'existe pas (§7.1) ; au fond de la ruelle sombre, lu depuis (46, 28) ↑
+celadon_hidden_1     cache          46,27         bloque  role=O1 item=pp_up indice=poubelle  # PP Plus RB (lot 32P : repli Rappel défait ; §7.1) ; au fond de la ruelle sombre, lu depuis (46, 28) ↑
 panneau_ville        panneau        61,24         bloque   # « CÉLADOPOLE » / « Ville des fleurs et du commerce » (texte 14), lu depuis (61, 23) ↓
 panneau_arene        panneau        20,35         bloque   # « ARÈNE DE CÉLADOPOLE » / « Champion : Erika — la beauté des plantes » (texte 31), lu depuis (21, 35) ←
 h1_pecheur           pnj            44,13         bloque  role=H1 facing=up  # pêcheur sans canne sur le quai sud de l'étang, avec son Tartard (PNJ) ; pas de Surf, pas de pêche

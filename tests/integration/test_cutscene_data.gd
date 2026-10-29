@@ -355,6 +355,7 @@ const VARIANT_FLAGS: Dictionary = {
 	&"tower_rival": [PEWTER_FLAGS],
 	# Jalon 21 (T21) : Route 12 (arrivée silencieuse, CT39 du poste, réveil de Ronflex).
 	&"route_12_visited": [PEWTER_FLAGS], &"route_12_gate_tm39": [PEWTER_FLAGS],
+	&"route_12_gate_2f_give_itemfinder": [PEWTER_FLAGS],  # lot 32P
 	&"snorlax_route_12_wake": [PEWTER_FLAGS],
 	# Jalon 21 (T13, T14, T22) : sauvetage de Fuji, remise de la Flûte, Route 16.
 	&"tower_7f_fuji_rescue": [PEWTER_FLAGS],
@@ -431,6 +432,7 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 24 : objets, caches, Artikodin, porte de l'Arène, CT35, fossiles.
 	&"route_20_item_1": [PEWTER_FLAGS], &"route_21_item_1": [PEWTER_FLAGS],
 	&"seafoam_b2f_hidden_1": [PEWTER_FLAGS], &"seafoam_b4f_hidden_1": [PEWTER_FLAGS],
+	&"seafoam_b3f_hidden_1": [PEWTER_FLAGS], &"route_21_item_2": [PEWTER_FLAGS],  # lot 32P
 	&"articuno": [PEWTER_FLAGS],
 	# J25 : déverrouillée (entrée directe), Clé ramassée (textes 76–77), fermée (T-42).
 	&"cinnabar_gym_locked": [PEWTER_FLAGS + [&"cinnabar_gym_unlocked"],
@@ -743,6 +745,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# fossiles (dialogues des scientifiques, « cutscene » ou « confirm_cutscene »).
 	&"route_20_item_1": &"route_20", &"route_21_item_1": &"route_21",
 	&"seafoam_b2f_hidden_1": &"seafoam_b2f", &"seafoam_b4f_hidden_1": &"seafoam_b4f",
+	# Lot 32P : Max Éther de l'Écume B3F, Max Repousse de la Route 21, Cherch'Objet du poste de la Route 12.
+	&"seafoam_b3f_hidden_1": &"seafoam_b3f", &"route_21_item_2": &"route_21",
+	&"route_12_gate_2f_give_itemfinder": &"route_12_gate_2f",
 	&"articuno": &"seafoam_b4f", &"cinnabar_lab_tm35": &"cinnabar_lab_rd",
 	&"cinnabar_fossil_take_kabuto": &"cinnabar_lab_fossil",
 	&"cinnabar_fossil_take_omanyte": &"cinnabar_lab_fossil",
@@ -865,9 +870,9 @@ const J26_T9_ITEMS: Dictionary[StringName, Array] = {
 	&"silph_co_4f_item_6": [&"silph_co_4f", &"max_revive"],
 	&"silph_co_4f_item_7": [&"silph_co_4f", &"escape_rope"],
 	&"silph_co_5f_card_key": [&"silph_co_5f", &"card_key"],
-	&"silph_co_5f_hidden_1": [&"silph_co_5f", &"revive"],
+	&"silph_co_5f_hidden_1": [&"silph_co_5f", &"elixir"],  # lot 32P : Élixir RB
 	&"silph_co_5f_item_6": [&"silph_co_5f", &"tm09"],
-	&"silph_co_5f_item_7": [&"silph_co_5f", &"rare_candy"],
+	&"silph_co_5f_item_7": [&"silph_co_5f", &"protein"],  # lot 32P : Protéine RB
 	&"silph_co_6f_item_9": [&"silph_co_6f", &"hp_up"],  # J32 : PV Plus existe (RB)
 	&"silph_co_6f_item_10": [&"silph_co_6f", &"x_accuracy"],
 	&"silph_co_9f_hidden_1": [&"silph_co_9f", &"max_potion"],
@@ -1039,6 +1044,8 @@ func test_library_loads_without_error() -> void:
 		&"viridian_gym_giovanni", &"viridian_gym_giovanni_tm_late", &"viridian_gym_item_1",
 		# Jalon 24.
 		&"route_20_item_1", &"route_21_item_1", &"seafoam_b2f_hidden_1", &"seafoam_b4f_hidden_1",
+		# Lot 32P.
+		&"seafoam_b3f_hidden_1", &"route_21_item_2", &"route_12_gate_2f_give_itemfinder",
 		&"articuno", &"cinnabar_gym_locked", &"cinnabar_lab_tm35", &"cinnabar_fossil_take_kabuto",
 		&"cinnabar_fossil_take_omanyte", &"cinnabar_fossil_give_kabuto",
 		&"cinnabar_fossil_give_omanyte", &"cinnabar_fossil_take_aerodactyl",
@@ -1193,7 +1200,7 @@ func test_only_world_items_are_found_items() -> void:
 	for item: String in FOUND_J29:
 		assert_true(found.has(item), item)
 	found = found.filter(func(item: String) -> bool: return not FOUND_J29.has(item))
-	var expected: Array[String] = ["celadon_hidden_1:revive",
+	var expected: Array[String] = ["celadon_hidden_1:pp_up",
 		# Jalon 31 (T4) : objets de RB de la Grotte Azurée.
 		"power_plant_hidden_1:max_elixir", "power_plant_hidden_2:pp_up", "power_plant_item_1:hp_up", "power_plant_item_2:rare_candy", "power_plant_item_3:carbos", "power_plant_item_4:tm25", "power_plant_item_5:tm33",
 		"cerulean_cave_1f_hidden_1:rare_candy", "cerulean_cave_1f_item_1:full_restore", "cerulean_cave_1f_item_2:max_elixir", "cerulean_cave_1f_item_3:nugget", "cerulean_cave_2f_item_1:pp_up", "cerulean_cave_2f_item_2:ultra_ball", "cerulean_cave_2f_item_3:full_restore", "cerulean_cave_b1f_hidden_1:ultra_ball", "cerulean_cave_b1f_item_1:ultra_ball", "cerulean_cave_b1f_item_2:max_revive",
@@ -1204,22 +1211,22 @@ func test_only_world_items_are_found_items() -> void:
 		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
 		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
 		"pokemon_mansion_1f_hidden_1:moon_stone", "pokemon_mansion_1f_item_1:escape_rope",
-		"pokemon_mansion_1f_item_2:nugget", "pokemon_mansion_2f_item_1:rare_candy",
+		"pokemon_mansion_1f_item_2:carbos", "pokemon_mansion_2f_item_1:calcium",
 		"pokemon_mansion_3f_hidden_1:max_revive", "pokemon_mansion_3f_item_1:max_potion",
-		"pokemon_mansion_3f_item_2:nugget", "pokemon_mansion_b1f_hidden_1:rare_candy",
+		"pokemon_mansion_3f_item_2:iron", "pokemon_mansion_b1f_hidden_1:rare_candy",
 		"pokemon_mansion_b1f_item_1:rare_candy", "pokemon_mansion_b1f_item_2:full_restore",
 		"pokemon_mansion_b1f_item_3:tm14", "pokemon_mansion_b1f_item_4:tm22",
-		"pokemon_mansion_b1f_item_5:secret_key", "rocket_hideout_b1f_hidden_1:revive",
-		"rocket_hideout_b1f_item_1:escape_rope", "rocket_hideout_b1f_item_2:super_potion",
+		"pokemon_mansion_b1f_item_5:secret_key", "rocket_hideout_b1f_hidden_1:pp_up",
+		"rocket_hideout_b1f_item_1:escape_rope", "rocket_hideout_b1f_item_2:hyper_potion",
 		"rocket_hideout_b2f_item_1:moon_stone", "rocket_hideout_b2f_item_2:nugget",
 		"rocket_hideout_b2f_item_3:tm07", "rocket_hideout_b2f_item_4:super_potion",
 		"rocket_hideout_b3f_hidden_1:nugget", "rocket_hideout_b3f_item_1:tm10",
 		"rocket_hideout_b3f_item_2:rare_candy", "rocket_hideout_b4f_hidden_1:super_potion",
-		"rocket_hideout_b4f_item_1:tm02", "rocket_hideout_b4f_item_2:revive",
-		"rocket_hideout_b4f_item_3:super_potion", "rocket_hideout_b4f_lift_key:lift_key",
+		"rocket_hideout_b4f_item_1:tm02", "rocket_hideout_b4f_item_2:hp_up",
+		"rocket_hideout_b4f_item_3:iron", "rocket_hideout_b4f_lift_key:lift_key",
 		"rocket_hideout_b4f_silph_scope:silph_scope", "route_10_item_1:super_potion",
 		"route_11_hidden_1:poke_ball", "route_11_item_1:super_potion", "route_11_item_2:awakening",
-		"route_1_potion:potion", "route_20_item_1:great_ball", "route_21_item_1:hyper_potion",
+		"route_1_potion:potion", "route_20_item_1:great_ball", "route_21_item_1:hyper_potion", "route_21_item_2:max_repel", "seafoam_b3f_hidden_1:max_ether",  # lot 32P
 		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
 		"route_2_east_item_1:moon_stone", "route_2_east_item_2:rare_candy", "route_2_item_1:poke_ball",
@@ -1234,13 +1241,13 @@ func test_only_world_items_are_found_items() -> void:
 		"ss_anne_hidden_2:antidote", "ss_anne_hidden_3:potion", "ss_anne_item_01:potion",
 		"ss_anne_item_02:potion", "ss_anne_item_03:super_potion", "ss_anne_item_04:super_potion",
 		"ss_anne_item_05:super_potion", "ss_anne_item_06:paralyze_heal",
-		"tower_3f_objet_1:escape_rope", "tower_4f_objet_1:awakening", "tower_4f_objet_2:super_potion",
-		"tower_5f_cache_1:super_potion", "tower_5f_objet_1:nugget", "tower_6f_objet_1:super_potion",
+		"tower_3f_objet_1:escape_rope", "tower_4f_objet_1:awakening", "tower_4f_objet_2:elixir",
+		"tower_5f_cache_1:elixir", "tower_5f_objet_1:nugget", "tower_6f_objet_1:super_potion",
 		"underground_hidden_1:full_restore", "viridian_forest_item_1:antidote",
 		"viridian_forest_item_2:poke_ball", "viridian_forest_item_3:potion",
 		"viridian_forest_item_4:antidote", "viridian_forest_item_5:poke_ball",
 		"viridian_forest_item_6:potion", "viridian_gym_item_1:revive",
-		"silph_co_7f_item_10:rare_candy", "silph_co_7f_item_11:tm03",
+		"silph_co_7f_item_10:calcium", "silph_co_7f_item_11:tm03",
 		# Jalon 32 (32N) : CT du sol.
 		"route_4_tm04:tm04", "ss_anne_lower_deck_tm08:tm08", "mt_moon_b1f_tm12:tm12", "route_12_tm16:tm16", "route_24_tm45:tm45", "route_9_tm30:tm30", "silph_co_2f_tm36:tm36", "viridian_city_tm42:tm42", "ss_anne_cabin_a_tm44:tm44"]
 	# Jalon 26 (T9) : objets au sol et cachés de Safrania et de la Sylphe.

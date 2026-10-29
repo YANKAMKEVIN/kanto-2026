@@ -52,10 +52,12 @@ static func escape_target(map_id: StringName, caves: CaveLibrary,
 	return caves.escape_target(map_id, cell)
 
 
-## Vrai si [param item] s'utilise sans choisir de Pokémon (la Corde Sortie) : UTILISER agit
+## Vrai si [param item] s'utilise sans choisir de Pokémon (la Corde Sortie ; lot 32P : les
+## Repousses, [RepelRules]) : UTILISER agit
 ## directement, sans le choix du Pokémon.
 static func is_targetless(item: ItemData) -> bool:
 	if item != null and item.has_key_use():
 		return true
 	return item != null and item.has_field_use() \
-		and item.field_use == ItemData.FIELD_USE_ESCAPE_ROPE
+		and (item.field_use == ItemData.FIELD_USE_ESCAPE_ROPE
+		or item.field_use == ItemData.FIELD_USE_REPEL)

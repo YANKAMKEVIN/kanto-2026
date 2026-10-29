@@ -38,6 +38,9 @@ var uncatchable: bool = false
 ## J23 : rencontre Safari ([SafariBattle] au lieu de [Battle] ; `jalon-23.md` §2.3) : aucun
 ## Pokémon du joueur en scène, ni Sac, ni changement, ni XP, ni argent.
 var safari: bool = false
+## Lot 32P : le Multi Exp est dans le Sac ([method ExpCalc.distribute]) ; posé par le
+## [BattleDirector] au départ du combat. Faux par défaut.
+var exp_all: bool = false
 
 
 ## Règles d'un combat sauvage : fuite permise, XP ×1, Balls et soins permis (bonus et soins

@@ -263,7 +263,7 @@
 						"despawn": "tower_4f_objet_2"
 					},
 					{
-						"give": "super_potion",
+						"give": "elixir",
 						"count": 1,
 						"found": true
 					},
@@ -332,7 +332,7 @@
 				],
 				"steps": [
 					{
-						"give": "super_potion",
+						"give": "elixir",
 						"count": 1,
 						"found": true
 					},

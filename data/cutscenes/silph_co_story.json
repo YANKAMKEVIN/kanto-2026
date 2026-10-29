@@ -76,7 +76,7 @@
 				"unless": ["got_silph_co_7f_item_10"],
 				"steps": [
 					{ "despawn": "silph_co_7f_item_10" },
-					{ "give": "rare_candy", "count": 1, "found": true },
+					{ "give": "calcium", "count": 1, "found": true },
 					{ "set": ["got_silph_co_7f_item_10"] }
 				]
 			}

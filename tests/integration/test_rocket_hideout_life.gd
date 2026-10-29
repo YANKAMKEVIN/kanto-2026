@@ -31,7 +31,7 @@ const TRAINERS: Dictionary[String, Array] = {
 ## Grille → [PNJ « objet », objet donné] (valeurs de remplacement du dossier §13.2, H-7, [D]).
 const ITEMS: Dictionary[String, Array] = {
 	"corde_sortie": [&"rocket_hideout_b1f_item_1", &"escape_rope"],
-	"hyper_potion": [&"rocket_hideout_b1f_item_2", &"super_potion"],
+	"hyper_potion": [&"rocket_hideout_b1f_item_2", &"hyper_potion"],
 	"pierre_lune": [&"rocket_hideout_b2f_item_1", &"moon_stone"],
 	"pepite": [&"rocket_hideout_b2f_item_2", &"nugget"],
 	"ct07": [&"rocket_hideout_b2f_item_3", &"tm07"],
@@ -39,14 +39,14 @@ const ITEMS: Dictionary[String, Array] = {
 	"ct10": [&"rocket_hideout_b3f_item_1", &"tm10"],
 	"super_bonbon": [&"rocket_hideout_b3f_item_2", &"rare_candy"],
 	"ct02": [&"rocket_hideout_b4f_item_1", &"tm02"],
-	"pv_plus": [&"rocket_hideout_b4f_item_2", &"revive"],
-	"fer": [&"rocket_hideout_b4f_item_3", &"super_potion"],
+	"pv_plus": [&"rocket_hideout_b4f_item_2", &"hp_up"],  # lot 32P : PV Plus RB (replis défaits)
+	"fer": [&"rocket_hideout_b4f_item_3", &"iron"],
 	"cle_ascenseur": [&"rocket_hideout_b4f_lift_key", &"lift_key"],
 	"scope_sylphe": [&"rocket_hideout_b4f_silph_scope", &"silph_scope"],
 }
 ## Grille → [point d'examen, objet donné].
 const HIDDEN: Dictionary[String, Array] = {
-	"pp_plus_cache": [&"rocket_hideout_b1f_hidden_1", &"revive"],
+	"pp_plus_cache": [&"rocket_hideout_b1f_hidden_1", &"pp_up"],
 	"pepite_cachee": [&"rocket_hideout_b3f_hidden_1", &"nugget"],
 	"super_potion_cachee": [&"rocket_hideout_b4f_hidden_1", &"super_potion"],
 }

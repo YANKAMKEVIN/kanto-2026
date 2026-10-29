@@ -36,13 +36,17 @@ extends RefCounted
 ## (pas une CS) peut avoir un prix (achetable une fois, jamais revendue).
 ## Passe systèmes 2 (`systemes-2.md` §2.4) : « key_use » ([member ItemData.key_use]), facultatif
 ## pour un objet clé et refusé ailleurs.
+## Lot 32P : « vitamin_stats » (statistiques, obligatoire pour une vitamine), « pp_amount » (entier
+## ≥ 0, 0 = tous) et « pp_all_moves » (booléen) pour un Éther / Élixir, « repel_steps » (entier
+## > 0, obligatoire) pour une Repousse ; chacune refusée avec un autre usage.
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
 	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
-	"hm", "battle_use", "revive", "key_use",
+	"hm", "battle_use", "revive", "key_use", "vitamin_stats", "pp_amount", "pp_all_moves",
+	"repel_steps",
 ]
 const _BATTLE_USE_KEYS: Array[String] = ["kind", "stat", "stages"]
 ## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
@@ -248,6 +252,7 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 				ok = _fail("%s : « %s » est réservé aux CT" % [where, key])
 	if entry.has("field_use"):
 		ok = _read_field_use(entry["field_use"], item, where) and ok
+	ok = _read_field_params(entry, item, where) and ok
 	if entry.has("key_use"):
 		ok = _read_key_use(entry["key_use"], item, where) and ok
 	if entry.has("obtained"):
@@ -356,6 +361,44 @@ func _read_field_use(value: Variant, item: ItemData, where: String) -> bool:
 		return _fail("%s : « field_use » vaut %s" % [where,
 			", ".join(PackedStringArray(ItemData.FIELD_USES))])
 	item.field_use = StringName(value)
+	return true
+
+
+## Lot 32P : paramètres d'un usage en exploration (vitamine, Éther / Élixir, Repousse), chacun
+## réservé à son usage.
+func _read_field_params(entry: Dictionary, item: ItemData, where: String) -> bool:
+	var ok := true
+	var owners := {"vitamin_stats": ItemData.FIELD_USE_VITAMIN,
+		"pp_amount": ItemData.FIELD_USE_PP_RESTORE, "pp_all_moves": ItemData.FIELD_USE_PP_RESTORE,
+		"repel_steps": ItemData.FIELD_USE_REPEL}
+	for key: String in owners:
+		if entry.has(key) and item.field_use != owners[key]:
+			ok = _fail("%s : « %s » est réservé à « field_use » = %s" % [where, key, owners[key]])
+	if not ok:
+		return false
+	match item.field_use:
+		ItemData.FIELD_USE_VITAMIN:
+			var stats: Variant = entry.get("vitamin_stats")
+			if not stats is Array or (stats as Array).is_empty():
+				return _fail("%s : « vitamin_stats » (statistiques) est obligatoire" % where)
+			for stat: Variant in stats:
+				if not stat is String or not SpeciesData.STATS.has(StringName(stat)):
+					return _fail("%s : statistique inconnue dans « vitamin_stats »" % where)
+				item.vitamin_stats.append(StringName(stat))
+		ItemData.FIELD_USE_PP_RESTORE:
+			var amount: Variant = entry.get("pp_amount", 0)
+			if not JsonFields.is_int(amount) or int(amount) < 0:
+				return _fail("%s : « pp_amount » doit être un entier ≥ 0" % where)
+			var all: Variant = entry.get("pp_all_moves", false)
+			if not all is bool:
+				return _fail("%s : « pp_all_moves » vaut true ou false" % where)
+			item.pp_amount = int(amount)
+			item.pp_all_moves = all
+		ItemData.FIELD_USE_REPEL:
+			var steps: Variant = entry.get("repel_steps")
+			if not JsonFields.is_int(steps) or int(steps) <= 0:
+				return _fail("%s : « repel_steps » doit être un entier > 0" % where)
+			item.repel_steps = int(steps)
 	return true
 
 

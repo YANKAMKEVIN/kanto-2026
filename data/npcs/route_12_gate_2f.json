@@ -16,5 +16,14 @@
 		"facing": "down",
 		"sprite": "camper",
 		"dialogue": "j32_trade_theo"
+	},
+	"assistant": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "researcher",
+		"dialogue": "route_12_gate_2f_assistant"
 	}
 }

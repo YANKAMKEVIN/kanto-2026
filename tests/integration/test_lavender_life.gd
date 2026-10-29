@@ -355,8 +355,8 @@ func test_the_mart_sells_the_validated_stock() -> void:
 	assert_not_null(shop)
 	if shop != null:
 		assert_eq(shop.item_ids(), [&"poke_ball", &"potion", &"super_potion", &"antidote",
-			&"paralyze_heal", &"awakening", &"burn_heal", &"escape_rope"] as Array[StringName])
-		for absent: StringName in [&"great_ball", &"revive", &"super_repel"]:
+			&"paralyze_heal", &"awakening", &"burn_heal", &"escape_rope", &"super_repel"] as Array[StringName])  # lot 32P : Super Repousse (RB)
+		for absent: StringName in [&"great_ball", &"revive"]:
 			assert_false(shop.item_ids().has(absent), "%s : reporté (dossier §6.4)" % absent)
 	await _start(&"lavender_mart", &"entrance", "lavender", Vector2i(7, 8), Vector2i.UP)
 	assert_not_null(_boot.get_map().get_npc(&"clerk"), "le vendeur")

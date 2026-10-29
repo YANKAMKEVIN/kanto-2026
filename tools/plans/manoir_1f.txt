@@ -61,6 +61,6 @@ chute                        spawn          16,14        libre   role=chute  # a
 statue_1                     statue         2,5          bloque  facing=up  # interrupteur secret (textes 9–11), actionné depuis la case du dessous
 mansion_scientist_1          dresseur       17,17        bloque  facing=left sight=3  # Scientifique : Électrode 29, Smogogo 29
 pokemon_mansion_1f_item_1    objet_visible  14,3         bloque  item=escape_rope  # Corde Sortie
-pokemon_mansion_1f_item_2    objet_visible  18,21        bloque  item=nugget  # Pépite (RB : Carbone)
+pokemon_mansion_1f_item_2    objet_visible  18,21        bloque  item=carbos  # Carbone (lot 32P : repli Pépite défait)
 pokemon_mansion_1f_hidden_1  objet_cache    8,16         libre   item=moon_stone  # Pierre Lune
 FIN

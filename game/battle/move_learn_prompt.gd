@@ -115,6 +115,27 @@ func offer_forget(pokemon: Pokemon, event: BattleEvent, banner: BattleMessageBan
 	return learned
 
 
+## Lot 32P : fait choisir une capacité de [param pokemon] (PP Plus, Éther) dans le panneau
+## d'oubli en mode choix ([method MoveForgetPanel.show_choice]) : légende [param caption],
+## boutons [param confirm_label] et [param skip_label]. Renvoie l'emplacement (0 à 3), ou −1 si
+## le joueur renonce.
+func choose_move(pokemon: Pokemon, caption: String, confirm_label: String, skip_label: String,
+		banner: BattleMessageBanner, host: Control) -> int:
+	if pokemon == null or pokemon.moves.is_empty() or not is_instance_valid(host):
+		return -1
+	if is_instance_valid(banner):
+		banner.skip()
+		banner.slide_out()
+		while banner.is_sliding():
+			await get_tree().process_frame
+	var panel := _ensure_panel(host)
+	panel.show_choice(BattleViews.moves(pokemon, _data), caption, confirm_label, skip_label)
+	var answer := await _first_of(panel.forget_chosen, panel.skip_chosen)
+	while panel.is_sliding():
+		await get_tree().process_frame
+	return int(answer[1]) if answer[0] == 0 else -1
+
+
 ## Le panneau d'oubli, tant qu'il existe (ouvert pendant une offre, tests) ; null sinon.
 func get_forget_panel() -> MoveForgetPanel:
 	return _panel if is_instance_valid(_panel) else null

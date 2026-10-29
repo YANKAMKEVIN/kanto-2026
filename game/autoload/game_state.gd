@@ -127,6 +127,9 @@ var safari: SafariVisit = SafariVisit.new()
 ## [method new_game]). Champ facultatif « hall_of_fame » de la v7, écrit seulement s'il n'est
 ## pas vide : une sauvegarde sans le champ se relit avec un Panthéon vide.
 var hall_of_fame: HallOfFame = HallOfFame.new()
+## Pas restants de la Repousse en cours (lot 32P, [RepelRules]) ; 0 = aucune. **Non sauvegardé**
+## [D] : remis à 0 par [method new_game], donc aussi au chargement.
+var repel_steps: int = 0
 
 
 func _init() -> void:
@@ -172,6 +175,7 @@ func new_game(rng_seed: int = -1) -> void:
 	companion_uid = ""
 	daycare = Daycare.new()
 	safari = SafariVisit.new()
+	repel_steps = 0
 
 
 # --- Faits (§16.3), appelés par la scène (tâche S2) ------------------------------------

@@ -1443,7 +1443,8 @@ func _faint(side: BattleSide, events: Array[BattleEvent]) -> void:
 		_award_exp(side.active.pokemon, events)
 
 
-## XP de [param foe] (K.O.) partagée entre les participants encore debout (Q24).
+## XP de [param foe] (K.O.) partagée entre les participants encore debout (Q24) ; avec le
+## Multi Exp (lot 32P, [member BattleRules.exp_all]), la moitié va à toute l'équipe debout.
 func _award_exp(foe: Pokemon, events: Array[BattleEvent]) -> void:
 	var standing: Array[Pokemon] = []
 	for pokemon: Pokemon in _participants:
@@ -1451,10 +1452,15 @@ func _award_exp(foe: Pokemon, events: Array[BattleEvent]) -> void:
 			standing.append(pokemon)
 	if standing.is_empty():
 		return
-	var shares := ExpCalc.split(ExpCalc.amount(foe, _data, _rules.exp_multiplier),
-		standing.size())
-	for i: int in standing.size():
-		_grant_exp(standing[i], shares[i], events)
+	var members: Array[Pokemon] = []
+	if _rules.exp_all and _player.party != null:
+		for pokemon: Pokemon in _player.party.get_all():
+			if not pokemon.is_fainted():
+				members.append(pokemon)
+	var shares := ExpCalc.distribute(ExpCalc.amount(foe, _data, _rules.exp_multiplier),
+		standing, members, _rules.exp_all)
+	for pokemon: Pokemon in shares:
+		_grant_exp(pokemon, shares[pokemon], events)
 
 
 ## Donne [param amount] XP à [param pokemon] et écrit les événements : une tranche

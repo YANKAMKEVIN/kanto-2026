@@ -10,7 +10,7 @@
 						"despawn": "proteine"
 					},
 					{
-						"give": "revive",
+						"give": "protein",
 						"count": 1,
 						"found": true
 					},
