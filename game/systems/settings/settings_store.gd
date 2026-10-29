@@ -30,6 +30,7 @@ var _file: SaveSystem
 func _init(file_system: SaveFileSystem = null, path: String = DEFAULT_PATH) -> void:
 	_file = SaveSystem.new(file_system, path)
 	_file.version = VERSION
+	_file.keep_backup = false  # J33 T4 : la copie de secours est pour la partie seulement
 
 
 func get_path() -> String:

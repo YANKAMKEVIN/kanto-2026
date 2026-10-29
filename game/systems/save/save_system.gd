@@ -15,7 +15,13 @@ extends RefCounted
 ##    migrée ([method upgrade]) et les champs absents prennent leur valeur par défaut (côté
 ##    `GameState.load_dict`) ; une version plus récente est refusée sans être touchée ;
 ##  - **un fichier corrompu** renvoie une erreur claire ([member last_error]) et est mis de côté
-##    (`save.json.corrupt`) plutôt qu'écrasé par l'autosave suivant : il n'est jamais détruit.
+##    (`save.json.corrupt`) plutôt qu'écrasé par l'autosave suivant : il n'est jamais détruit ;
+##  - **copie de secours** (J33 T4, `jalon-33.md` §T4) : avant d'être remplacée, la sauvegarde
+##    valide est renommée en `save.json.bak` (un renommage, aucune place disque en plus) ; à la
+##    lecture, un principal illisible ou absent est repris depuis cette copie
+##    ([member restored_from_backup]). Une copie illisible n'est jamais effacée ni écrasée par un
+##    principal illisible ;
+##  - **stockage plein** : l'écriture échoue sans rien toucher, avec [constant STORAGE_FULL].
 ## Le système de fichiers est injectable ([SaveFileSystem]) pour des tests déterministes.
 
 ## Version du format écrit par cette build ; ajouter un cas à [method upgrade] à chaque
@@ -37,6 +43,13 @@ const VERSION: int = 8
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
+const BACKUP_SUFFIX: String = ".bak"
+## Statut d'une écriture refusée faute de place (aucun fichier touché). Godot n'a pas de code
+## « disque plein » : celui-ci n'est rendu que par [method write].
+const STORAGE_FULL: Error = ERR_OUT_OF_MEMORY
+## Marge exigée au-delà de la taille du fichier pour ne pas classer un échec en « stockage
+## plein » à tort (et inversement) : métadonnées du système de fichiers.
+const STORAGE_MARGIN: int = 64 * 1024
 const VERSION_KEY: String = "version"
 ## Argent donné à une partie v2 migrée (dossier 09 §17 : la même somme qu'une nouvelle partie
 ## au J7, `GameState.STARTING_MONEY`). Figé ici : c'est un fait de la migration, il ne suit pas
@@ -58,6 +71,8 @@ var path: String = DEFAULT_PATH
 var version: int = VERSION
 ## Accès disque (les tests injectent un système de fichiers en mémoire).
 var fs: SaveFileSystem = SaveFileSystem.new()
+## Garde une copie de secours `<path>.bak` (vrai pour la partie ; les réglages s'en passent).
+var keep_backup: bool = true
 ## Résultat de la dernière opération : OK, ERR_FILE_NOT_FOUND (aucune sauvegarde : cas normal
 ## d'une nouvelle partie), ERR_FILE_CORRUPT (illisible, mis de côté), ERR_INVALID_DATA (version
 ## plus récente que cette build), ou l'erreur d'écriture.
@@ -68,6 +83,15 @@ var last_error: String = ""
 ## plus petite que [member version] quand la sauvegarde vient d'être migrée
 ## ([method migration_note]).
 var read_version: int = 0
+## Vrai si la dernière lecture réussie vient de la copie de secours (principal illisible ou
+## absent) : Boot l'annonce au joueur.
+var restored_from_backup: bool = false
+## Fichier lu par la dernière lecture réussie ([member path] ou la copie ; vide sinon).
+var loaded_path: String = ""
+
+## Vrai quand ce système a lui-même lu ou écrit le principal sans erreur : la rotation vers la
+## copie n'a alors pas à le relire. Faux : il est relu avant d'être gardé comme copie.
+var _main_known_valid: bool = false
 
 
 func _init(file_system: SaveFileSystem = null, save_path: String = DEFAULT_PATH) -> void:
@@ -76,12 +100,22 @@ func _init(file_system: SaveFileSystem = null, save_path: String = DEFAULT_PATH)
 	path = save_path
 
 
+## Vrai s'il y a une partie à lire : le principal, ou à défaut la copie de secours.
 func has_save() -> bool:
-	return fs.exists(path)
+	return fs.exists(path) or (keep_backup and fs.exists(backup_path()))
+
+
+## Chemin de la copie de secours (`save.json.bak`).
+func backup_path() -> String:
+	return path + BACKUP_SUFFIX
 
 
 ## Écrit [param state] (racine : dictionnaire, la clé « version » est posée ici) de façon
 ## atomique. En cas d'échec, la sauvegarde précédente est intacte et le temporaire effacé.
+## Protocole (J33 T4) : 1. temporaire écrit puis relu ; 2. principal valide renommé en copie de
+## secours (un principal illisible est mis de côté, jamais gardé comme copie) ; 3. temporaire
+## renommé en principal. Une coupure à n'importe quelle étape laisse au moins une partie valide :
+## avant 2, le principal ; entre 2 et 3, la copie (reprise par [method read]).
 func write(state: Dictionary) -> Error:
 	var content := state.duplicate()
 	content[VERSION_KEY] = version
@@ -90,45 +124,81 @@ func write(state: Dictionary) -> Error:
 	var error := fs.write_text(temp, text)
 	if error != OK:
 		fs.remove(temp)
-		return _fail(error, "écriture du fichier temporaire impossible (%s)" % error_string(error))
+		return _fail_write(error, text,
+			"écriture du fichier temporaire impossible (%s)" % error_string(error))
 	if fs.read_text(temp) != text:
 		fs.remove(temp)
-		return _fail(ERR_FILE_CORRUPT, "relecture du fichier temporaire différente : écriture coupée")
+		return _fail_write(ERR_FILE_CORRUPT, text,
+			"relecture du fichier temporaire différente : écriture coupée")
+	var rotated := false
+	if keep_backup and fs.exists(path):
+		if _main_known_valid or _parse(fs.read_text(path)).is_empty():
+			error = fs.rename(path, backup_path())
+			if error != OK:
+				fs.remove(temp)
+				return _fail(error, "copie de secours impossible (%s) : sauvegarde inchangée"
+					% error_string(error))
+			rotated = true
+		else:
+			_quarantine()
 	error = fs.rename(temp, path)
 	if error != OK:
 		fs.remove(temp)
+		if rotated and not fs.exists(path):
+			fs.rename(backup_path(), path)
 		return _fail(error, "remplacement de la sauvegarde impossible (%s)" % error_string(error))
+	_main_known_valid = true
 	return _ok()
 
 
 ## Lit la sauvegarde, la migre à [constant VERSION] et la renvoie ; dictionnaire vide si elle
-## manque ou est invalide ([member last_status], [member last_error]). Un fichier corrompu est
-## renommé `<path>.corrupt` ; un fichier d'une version plus récente est laissé tel quel.
+## manque ou est invalide ([member last_status], [member last_error]). Un principal corrompu est
+## renommé `<path>.corrupt`, puis la copie de secours est essayée ([member restored_from_backup]) ;
+## une copie corrompue reste en place. Un fichier d'une version plus récente est laissé tel quel
+## (et un principal plus récent n'est pas remplacé par la copie : la build est trop ancienne).
 func read() -> Dictionary:
 	read_version = 0
-	if not fs.exists(path):
+	restored_from_backup = false
+	loaded_path = ""
+	var has_main := fs.exists(path)
+	var has_backup := keep_backup and fs.exists(backup_path())
+	if not has_main and not has_backup:
 		_fail(ERR_FILE_NOT_FOUND, "aucune sauvegarde")
 		return {}
-	var text := fs.read_text(path)
-	# JSON.new().parse plutôt que JSON.parse_string : pas d'erreur moteur imprimée, le message
-	# est rendu proprement dans last_error.
-	var json := JSON.new()
-	var parsed: Variant = json.data if json.parse(text) == OK else null
-	var reason := ""
-	if text.is_empty():
-		reason = "fichier vide"
-	elif parsed == null:
-		reason = json.get_error_message()
-	elif not parsed is Dictionary:
-		reason = "la racine n'est pas un objet"
-	elif not JsonFields.is_int((parsed as Dictionary).get(VERSION_KEY)):
-		reason = "version absente"
-	if not reason.is_empty():
+	var main_reason := ""
+	if has_main:
+		var parsed: Variant = _parse_text(fs.read_text(path))
+		if parsed is Dictionary:
+			var content := _accept(parsed as Dictionary, path)
+			_main_known_valid = last_status == OK
+			return content
+		main_reason = parsed as String
 		_quarantine()
-		_fail(ERR_FILE_CORRUPT, "sauvegarde illisible (%s), mise de côté dans %s"
-			% [reason, _corrupt_path()])
+	if has_backup:
+		var parsed: Variant = _parse_text(fs.read_text(backup_path()))
+		if parsed is Dictionary:
+			var content := _accept(parsed as Dictionary, backup_path())
+			if last_status == OK:
+				restored_from_backup = true
+				push_warning("SaveSystem : %s ; partie reprise depuis la copie de secours %s"
+					% ["principal absent" if main_reason.is_empty()
+						else "principal illisible (%s), mis de côté dans %s"
+						% [main_reason, _corrupt_path()], backup_path()])
+			return content
+		if main_reason.is_empty():
+			_fail(ERR_FILE_CORRUPT, "principal absent et copie de secours illisible (%s), laissée"
+				% parsed)
+		else:
+			_fail(ERR_FILE_CORRUPT, ("sauvegarde illisible (%s), mise de côté dans %s ; copie de "
+				+ "secours illisible aussi (%s), laissée") % [main_reason, _corrupt_path(), parsed])
 		return {}
-	var content := parsed as Dictionary
+	_fail(ERR_FILE_CORRUPT, "sauvegarde illisible (%s), mise de côté dans %s"
+		% [main_reason, _corrupt_path()])
+	return {}
+
+
+## Migre [param content] lu dans [param from_path] ; refuse une version plus récente.
+func _accept(content: Dictionary, from_path: String) -> Dictionary:
 	var found := int(content[VERSION_KEY])
 	var error := upgrade(content, version)
 	if error != OK:
@@ -136,8 +206,32 @@ func read() -> Dictionary:
 			% [int(content[VERSION_KEY]), version])
 		return {}
 	read_version = found
+	loaded_path = from_path
 	_ok()
 	return content
+
+
+## Le dictionnaire lu dans [param text], ou la raison (String) pour laquelle il est illisible.
+static func _parse_text(text: String) -> Variant:
+	# JSON.new().parse plutôt que JSON.parse_string : pas d'erreur moteur imprimée, le message
+	# est rendu proprement dans last_error.
+	var json := JSON.new()
+	var parsed: Variant = json.data if json.parse(text) == OK else null
+	if text.is_empty():
+		return "fichier vide"
+	if parsed == null:
+		return json.get_error_message()
+	if not parsed is Dictionary:
+		return "la racine n'est pas un objet"
+	if not JsonFields.is_int((parsed as Dictionary).get(VERSION_KEY)):
+		return "version absente"
+	return parsed
+
+
+## Raison pour laquelle [param text] est illisible, vide s'il est lisible.
+static func _parse(text: String) -> String:
+	var parsed: Variant = _parse_text(text)
+	return "" if parsed is Dictionary else parsed as String
 
 
 ## Ligne du journal de la migration de [param from] à [param to] (« sauvegarde v3 → v4 »), ou
@@ -146,12 +240,16 @@ static func migration_note(from: int, to: int) -> String:
 	return "sauvegarde v%d → v%d" % [from, to] if from < to else ""
 
 
-## Supprime la sauvegarde (nouvelle partie volontaire ; pas appelé au jalon 5).
+## Supprime la sauvegarde et sa copie de secours (nouvelle partie volontaire ; pas appelé au
+## jalon 5).
 func erase() -> Error:
-	if not fs.exists(path):
-		return _ok()
-	var error := fs.remove(path)
-	return _ok() if error == OK else _fail(error, "suppression impossible (%s)" % error_string(error))
+	_main_known_valid = false
+	for file: String in [path, backup_path()]:
+		if fs.exists(file):
+			var error := fs.remove(file)
+			if error != OK:
+				return _fail(error, "suppression impossible (%s)" % error_string(error))
+	return _ok()
 
 
 ## Migre [param content] (modifié en place) de sa version à [param target] ([constant VERSION]
@@ -328,9 +426,20 @@ func _corrupt_path() -> String:
 
 
 func _quarantine() -> void:
+	_main_known_valid = false
 	if fs.exists(_corrupt_path()):
 		fs.remove(_corrupt_path())
 	fs.rename(path, _corrupt_path())
+
+
+## Échec de l'écriture du temporaire : [constant STORAGE_FULL] si la place libre connue ne suffit
+## pas pour [param text] (plus [constant STORAGE_MARGIN]), sinon [param error].
+func _fail_write(error: Error, text: String, message: String) -> Error:
+	var left := fs.space_left(path)
+	if left >= 0 and left < text.to_utf8_buffer().size() + STORAGE_MARGIN:
+		return _fail(STORAGE_FULL, "stockage plein (%d octets libres) : sauvegarde inchangée"
+			% left)
+	return _fail(error, message)
 
 
 func _ok() -> Error:

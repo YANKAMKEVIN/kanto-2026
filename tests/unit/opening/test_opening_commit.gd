@@ -74,8 +74,10 @@ func test_with_save_copies_old_bytes_then_writes() -> void:
 	assert_false(fs.files.has(PREVIOUS + ".tmp"))
 	assert_eq(fs.journal, [
 		"write %s.tmp" % PREVIOUS, "rename %s.tmp -> %s" % [PREVIOUS, PREVIOUS],
-		"write %s.tmp" % SAVE, "rename %s.tmp -> %s" % [SAVE, SAVE],
-	] as Array[String], "copie d'abord, puis écriture atomique")
+		"write %s.tmp" % SAVE, "rename %s -> %s.bak" % [SAVE, SAVE],
+		"rename %s.tmp -> %s" % [SAVE, SAVE],
+	] as Array[String], "copie d'abord, puis écriture atomique (ancienne gardée en .bak, J33 T4)")
+	assert_eq(fs.files[SAVE + ".bak"], _old, "copie de secours : l'ancienne partie")
 
 
 func test_previous_copy_is_replaced() -> void:
@@ -102,17 +104,21 @@ func test_builder_runs_after_the_copy() -> void:
 func test_crash_after_each_operation_with_old_save() -> void:
 	var start: Dictionary[String, String] = {SAVE: _old}
 	var total := _op_count(start)
-	assert_eq(total, 4)
+	assert_eq(total, 5)
 	for crash_at: int in total + 1:
 		var fs := CrashingFs.new()
 		fs.files = start.duplicate()
 		fs.crash_after = crash_at
 		_commit(fs).run(_builder())
 		var on_disk: String = fs.files.get(SAVE, "")
-		assert_true(on_disk == _old or on_disk == _new_text(),
+		assert_true(on_disk == _old or on_disk == _new_text()
+			or (on_disk.is_empty() and fs.files.get(SAVE + ".bak", "") == _old),
 			"panne après %d opérations : ancienne ou nouvelle partie complète" % crash_at)
-		if crash_at < total:
-			assert_eq(on_disk, _old, "panne avant le dernier renommage : l'ancienne, intacte")
+		if crash_at < total - 1:
+			assert_eq(on_disk, _old, "panne avant la rotation : l'ancienne, intacte")
+		elif crash_at == total - 1:
+			assert_eq(fs.files.get(SAVE + ".bak", ""), _old,
+				"panne entre les deux renommages : l'ancienne, intacte, en copie de secours")
 		else:
 			assert_eq(on_disk, _new_text())
 		if fs.files.has(PREVIOUS):
