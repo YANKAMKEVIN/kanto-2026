@@ -19,6 +19,18 @@ const STABLE_TIMEOUT := 20.0
 const KEPT_FIELDS: Array[String] = ["map", "starter", "party", "storage", "bag", "pokedex",
 	"flags", "money", "discovered_maps", "daycare", "hall_of_fame", "companion"]
 
+## Salles de la Ligue, membres, porte nord et case d'appel la plus proche (déclencheurs
+## `Appel*` des scènes ; le couloir de Peter est long, son appel n'est pas au premier pas).
+const LEAGUE_ROOMS: Array[StringName] = [&"league_lorelei", &"league_bruno", &"league_agatha",
+	&"league_lance", &"league_champion"]
+const LEAGUE_TRAINERS: Array[StringName] = [&"league_lorelei", &"league_bruno",
+	&"league_agatha", &"league_lance", &"rival_champion"]
+const LEAGUE_NORTH_DOORS: Array[Vector2i] = [Vector2i(4, 0), Vector2i(4, 0), Vector2i(4, 0),
+	Vector2i(5, 0), Vector2i(3, 0)]
+const LEAGUE_CALLS: Array[Vector2i] = [Vector2i(4, 9), Vector2i(4, 9), Vector2i(4, 9),
+	Vector2i(5, 12), Vector2i(4, 5)]
+
+
 ## Aléatoire « toujours 1 » (capture sûre, voir [method catch_with]).
 class SureRng extends GameRng:
 	func roll(_n: int) -> int:
@@ -183,6 +195,42 @@ func talk_to(target: Vector2i, answer: bool = true) -> bool:
 	return await interact(facing, answer)
 
 
+## Rejoint [param goal] en Surf : la berge accessible à pied d'où l'eau mène à [param goal]
+## (la plus proche de lui), SURFER par la vraie règle ([method MountDirector.start_surf] : CS03,
+## Badge, Pokémon compatible), puis la nage et la descente sur la rive. Vrai si le joueur
+## arrive sur [param goal].
+func surf_to(goal: Vector2i) -> bool:
+	var grid := boot.get_map().get_grid()
+	var on_foot := grid.find_reachable(player.get_cell(), player, GridWorld.MoveMode.WALK)
+	var bank := Vector2i(-1, -1)
+	var water := Vector2i.ZERO
+	var best := -1
+	for cell: Vector2i in on_foot:
+		for side: Vector2i in DIRECTIONS:
+			var sea := cell + side
+			if not grid.is_surfable(sea) or grid.is_occupied(sea):
+				continue
+			var distance := absi(cell.x - goal.x) + absi(cell.y - goal.y)
+			if best >= 0 and distance >= best:
+				continue
+			if not grid.find_reachable(sea, null, GridWorld.MoveMode.SURF).has(goal):
+				continue
+			bank = cell
+			water = side
+			best = distance
+	if not expect(best >= 0, "une berge mène en Surf à %s" % goal):
+		return false
+	await walk_through(bank)
+	player.face(water)
+	await _test.wait_process_frames(2)
+	var check := boot.get_mount_director().start_surf()
+	await run_scene()
+	if not expect(player.get_mount() == Mount.Kind.SURF,
+			"SURFER depuis %s (contrôle %d)" % [bank, check]):
+		return false
+	return await walk_through(goal)
+
+
 ## Raccourci du parcours : pose [param flags] (ce que le tronçon sauté aurait posé) et le note
 ## dans le journal avec [param reason]. Le tronçon a ses propres tests ; le parcours réel de
 ## Kevin (T6) le rejoue au doigt. [param items] : objets reçus dans ce tronçon ({ id: nombre }).
@@ -293,6 +341,26 @@ func make_ace() -> void:
 		GameState.party.remove_at(GameState.party.size() - 1)
 	GameState.party.add(ace)
 	GameState.party.move(GameState.party.size() - 1, 0)
+
+
+## Ligue depuis la salle d'Olga (tentative commencée) : chaque salle, appel, combat gagné,
+## porte nord ouverte et franchie ; le Champion battu, la cérémonie jouée jusqu'à Bourg Palette.
+## L'équipe est soignée avant chaque combat (Guérisons du Sac).
+func run_league() -> void:
+	for stage: int in LEAGUE_ROOMS.size():
+		begin("Combat de %s" % LEAGUE_TRAINERS[stage])
+		heal()
+		await walk_to(LEAGUE_CALLS[stage])
+		await run_scene()
+		expect(won(LEAGUE_TRAINERS[stage]), "combat gagné")
+		if stage == LEAGUE_ROOMS.size() - 1:
+			return
+		expect(GameState.flags.has_flag(LeagueAttempt.stage_flag(stage)), "étape franchie")
+		var door: Vector2i = LEAGUE_NORTH_DOORS[stage]
+		expect(not boot.get_map().get_grid().is_occupied(door), "porte nord ouverte")
+		await walk_to(door + Vector2i.DOWN)
+		await step(Vector2i.UP)
+		expect(map_id() == LEAGUE_ROOMS[stage + 1], "arrivée dans %s" % LEAGUE_ROOMS[stage + 1])
 
 
 ## Équipe soignée (PV, statut, PP), comme après un passage au Centre ou une Guérison.

@@ -9,17 +9,6 @@ extends GutTest
 
 const ParcoursPlay := preload("res://tests/parcours/parcours_play.gd")
 const START := "res://tools/debug_start/league_lorelei.json"
-const ROOMS: Array[StringName] = [&"league_lorelei", &"league_bruno", &"league_agatha",
-	&"league_lance", &"league_champion"]
-const TRAINERS: Array[StringName] = [&"league_lorelei", &"league_bruno", &"league_agatha",
-	&"league_lance", &"rival_champion"]
-## Porte nord de chaque salle (case de la porte) et case d'appel la plus proche (déclencheurs
-## `Appel*` des scènes) : le couloir de Peter est long, son appel n'est pas au premier pas.
-const NORTH_DOORS: Array[Vector2i] = [Vector2i(4, 0), Vector2i(4, 0), Vector2i(4, 0),
-	Vector2i(5, 0), Vector2i(3, 0)]
-const CALLS: Array[Vector2i] = [Vector2i(4, 9), Vector2i(4, 9), Vector2i(4, 9), Vector2i(5, 12),
-	Vector2i(4, 5)]
-
 var _play: ParcoursPlay
 
 
@@ -37,16 +26,8 @@ func test_parcours_04_conseil_champion_pantheon() -> void:
 	await _play.start(START, _play.make_ace)
 	_play.expect(_play.map_id() == &"league_lorelei", "salle d'Olga")
 	_play.expect(LeagueAttempt.is_active(GameState.flags), "tentative commencée")
-	for stage: int in 4:
-		await _fight_room(stage)
-		_play.begin("Porte nord de %s" % ROOMS[stage])
-		var door: Vector2i = NORTH_DOORS[stage]
-		await _play.walk_to(door + Vector2i.DOWN)
-		await _play.step(Vector2i.UP)
-		_play.expect(_play.map_id() == ROOMS[stage + 1], "arrivée dans %s" % ROOMS[stage + 1])
-	_play.expect(LeagueAttempt.current_stage(GameState.flags) == 4, "étape du Champion")
 	var party_before := _play.party_species()
-	await _fight_room(4, false)
+	await _play.run_league()
 	_play.begin("Cérémonie")
 	var rival := _play.last_battle(&"rival_champion")
 	_play.expect(rival.get("foe", []) == _play.trainer_species(&"rival_champion", &"charmander"),
@@ -69,17 +50,3 @@ func test_parcours_04_conseil_champion_pantheon() -> void:
 	_play.expect(GameState.hall_of_fame.size() == 1, "Panthéon relu")
 	assert_true(_play.report())
 	assert_push_error_count(0)
-
-
-## Premier pas vers le membre de la salle [param stage] : appel, combat, victoire.
-func _fight_room(stage: int, check_door: bool = true) -> void:
-	_play.begin("Combat de %s" % TRAINERS[stage])
-	_play.heal()
-	await _play.walk_to(CALLS[stage])
-	await _play.run_scene()
-	_play.expect(_play.won(TRAINERS[stage]), "combat gagné")
-	if not check_door:
-		return
-	_play.expect(GameState.flags.has_flag(LeagueAttempt.stage_flag(stage)), "étape franchie")
-	_play.expect(not _play.boot.get_map().get_grid().is_occupied(NORTH_DOORS[stage]),
-		"porte nord ouverte")
