@@ -34,7 +34,7 @@
 						"despawn": "pokemon_mansion_1f_item_2"
 					},
 					{
-						"give": "nugget",
+						"give": "carbos",
 						"count": 1,
 						"found": true
 					},
@@ -79,7 +79,7 @@
 						"despawn": "pokemon_mansion_2f_item_1"
 					},
 					{
-						"give": "rare_candy",
+						"give": "calcium",
 						"count": 1,
 						"found": true
 					},
@@ -127,7 +127,7 @@
 						"despawn": "pokemon_mansion_3f_item_2"
 					},
 					{
-						"give": "nugget",
+						"give": "iron",
 						"count": 1,
 						"found": true
 					},

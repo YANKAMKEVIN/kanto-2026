@@ -130,7 +130,7 @@
 				],
 				"steps": [
 					{
-						"give": "revive",
+						"give": "elixir",
 						"count": 1,
 						"found": true
 					},
@@ -178,7 +178,7 @@
 						"despawn": "silph_co_5f_item_7"
 					},
 					{
-						"give": "rare_candy",
+						"give": "protein",
 						"count": 1,
 						"found": true
 					},

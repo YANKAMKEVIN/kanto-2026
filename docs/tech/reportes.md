@@ -289,6 +289,8 @@ Règle validée et fusionnée sans rééquilibrage (Kevin, 2026-10-27 : « merge
 | RP-255 | QA S24 J32 (2026-10-28) | Boutique des CT du 2F de Céladopole : nom de la capacité tronqué sur 8 lignes sur 12 (« CT01 — Ulti… ») | rendu (UI) | P2 | phase DA | ouvert |
 | RP-256 | QA S24 J32 (2026-10-28) | 23 icônes de CT provisoires (CT01 teintée) à repeindre | rendu (art) | P3 | phase DA | ouvert |
 | RP-257 | QA S24 J32 (2026-10-28) | Vendeur du 2F de Céladopole parlable seulement côté sud du comptoir (12, 6) ; côté nord, rien (conforme à la grille, déroutant) | idée (jouabilité) | P3 | Kevin | ouvert |
+| RP-258 | Lot 32P (2026-10-29) | Choix de la capacité (PP Plus, Éther) : panneau d'oubli réutilisé, espace vide sous les boutons, liste des Pokémon visible à travers CHOISIR inactif | rendu (UI) | P3 | phase DA | ouvert |
+| RP-259 | Lot 32P (2026-10-29) | 10 icônes provisoires teintées (Protéine, Fer, Calcium, Éther, Élixir, 3 Repousses, Cherch'Objet, Multi Exp) à repeindre | rendu (art) | P3 | phase DA | ouvert |
 
 ## 3. Propres à une branche non fusionnée
 

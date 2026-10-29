@@ -81,6 +81,7 @@
 #   - Pêcheur 5 (RB (6, 87)), Jeune Dresseur (11, 92) et Rockeur (14, 76) de RB sont au SUD du croisement :
 #     hors jalon (J22). Seuls les 4 Pêcheurs du dossier sont posés (RB (14, 31), (5, 39), (12, 40), (9, 52)).
 #   - Poste : jeune femme du 2F (CT39) dans l'intérieur, pas dans cette grille.
+#     Lot 32P : assistant de Chen au 2F (12, 6) [D], Cherch'Objet à 30 espèces capturées (got_itemfinder).
 #
 # Légende :
 #   T forêt et bordure d'arbres (bloquée)   w eau (JAMAIS praticable)   R rive rocheuse (bloquée)

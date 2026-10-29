@@ -7,7 +7,7 @@
 				],
 				"steps": [
 					{
-						"give": "revive",
+						"give": "pp_up",
 						"count": 1,
 						"found": true
 					},

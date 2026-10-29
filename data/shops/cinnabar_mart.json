@@ -6,7 +6,8 @@
 			{ "item": "hyper_potion" },
 			{ "item": "escape_rope" },
 			{ "item": "full_heal" },
-			{ "item": "revive" }
+			{ "item": "revive" },
+			{ "item": "max_repel" }
 		]
 	}
 }

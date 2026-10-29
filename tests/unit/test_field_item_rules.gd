@@ -51,9 +51,15 @@ func test_escape_rope_data() -> void:
 		&"leaf_stone"]
 	for id: StringName in stones:
 		assert_eq(_items.get_item(id).field_use, ItemData.FIELD_USE_EVOLUTION_STONE, String(id))
+	# Lot 32P : vitamines, PP Plus, Éthers, Élixirs et Repousses (test_lot_32p_items).
+	var lot_32p: Array[StringName] = [&"hp_up", &"protein", &"iron", &"carbos", &"calcium",
+		&"pp_up", &"ether", &"max_ether", &"elixir", &"max_elixir", &"repel", &"super_repel",
+		&"max_repel"]
+	assert_true(FieldItemRules.is_targetless(_items.get_item(&"repel")), "Repousse : sans cible")
 	# Aucun autre objet n'a d'usage d'exploration.
 	for id: StringName in _items.get_ids():
-		if id not in [&"escape_rope", &"moon_stone", &"rare_candy"] and id not in stones:
+		if id not in [&"escape_rope", &"moon_stone", &"rare_candy"] and id not in stones \
+				and id not in lot_32p:
 			assert_eq(_items.get_item(id).field_use, &"", "%s : aucun usage" % id)
 
 

@@ -31,7 +31,43 @@ const DATA_DIR := "res://data"
 ## Jalon 32 (32N, N-22) : CT obtenables partout : capacités (Coupe-Vent, Éboulement, E-Coque), messages
 ## de charge, 23 objets (descriptions copiées des capacités), répliques des dons : validés par
 ## Kevin le 2026-10-28, « draft » retiré.
-const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city"]
+## Lot 32P : textes des assistants de Chen (Cherch'Objet, Multi Exp), à valider en lot par Kevin.
+const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
+	"dialogues/route_12.json/route_12_gate_2f_assistant/variants/0",
+	"dialogues/route_12.json/route_12_gate_2f_assistant/variants/1",
+	"dialogues/route_12.json/route_12_gate_2f_assistant/variants/2",
+	"dialogues/route_12.json/route_12_gate_2f_assistant/variants/3",
+	"dialogues/route_12.json/route_12_gate_2f_itemfinder_got",
+	"dialogues/route_12.json/route_12_gate_2f_itemfinder_use",
+	"dialogues/j22_route_15_gate_2f.json/route_15_gate_2f_assistant/variants/0",
+	"dialogues/j22_route_15_gate_2f.json/route_15_gate_2f_assistant/variants/1",
+	"dialogues/j22_route_15_gate_2f.json/route_15_gate_2f_assistant/variants/2",
+	"dialogues/j22_route_15_gate_2f.json/route_15_gate_2f_assistant/variants/3",
+	"dialogues/j22_route_15_gate_2f.json/route_15_gate_2f_exp_all_got",
+	"dialogues/j22_route_15_gate_2f.json/route_15_gate_2f_exp_all_use",
+	# Lot 32P : objets devenus actifs (descriptions) et phrases de la Repousse et du Cherch'Objet.
+	"dialogues/key_items.json/repel_wore_off",
+	"dialogues/key_items.json/itemfinder_north",
+	"dialogues/key_items.json/itemfinder_south",
+	"dialogues/key_items.json/itemfinder_east",
+	"dialogues/key_items.json/itemfinder_west",
+	"dialogues/key_items.json/itemfinder_here",
+	"dialogues/key_items.json/itemfinder_nothing",
+	"items/items_j29.json/max_ether",
+	"items/items_j31.json/max_elixir",
+	"items/items_j31.json/pp_up",
+	"items/items_j32.json/hp_up",
+	"items/items_j32.json/carbos",
+	"items/items_j32p.json/protein",
+	"items/items_j32p.json/iron",
+	"items/items_j32p.json/calcium",
+	"items/items_j32p.json/ether",
+	"items/items_j32p.json/elixir",
+	"items/items_j32p.json/repel",
+	"items/items_j32p.json/super_repel",
+	"items/items_j32p.json/max_repel",
+	"items/items_j32p.json/itemfinder",
+	"items/items_j32p.json/exp_all"]
 
 
 func test_data_has_json_files() -> void:

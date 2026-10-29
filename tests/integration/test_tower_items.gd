@@ -22,7 +22,7 @@ const ITEMS: Array = [
 	["4f", &"pokemon_tower_4f", &"arrivee_T34", &"tower_4f_objet_1", Vector2i(9, 10),
 		&"awakening", "Réveil ×1"],
 	["4f", &"pokemon_tower_4f", &"arrivee_T34", &"tower_4f_objet_2", Vector2i(12, 10),
-		&"super_potion", "Super Potion ×1"],
+		&"elixir", "Élixir ×1"],  # lot 32P : Élixir RB (repli Super Potion de K-17 défait),
 	["5f", &"pokemon_tower_5f", &"arrivee_T45", &"tower_5f_objet_1", Vector2i(6, 14),
 		&"nugget", "Pépite ×1"],
 	["6f", &"pokemon_tower_6f", &"arrivee_T56", &"tower_6f_objet_1", Vector2i(14, 14),
@@ -199,19 +199,19 @@ func test_the_hidden_5f_super_potion_faces_its_offering_then_disappears() -> voi
 	assert_not_null(target, "face à l'indice : une cible")
 	if target != null:
 		assert_eq(target.kind, Interaction.Kind.EXAMINE, "verbe EXAMINER")
-	var before := GameState.bag.count_of(&"super_potion")
+	var before := GameState.bag.count_of(&"elixir")
 	await _press_interact()
 	await wait_until(func() -> bool: return GameState.flags.has_flag(flag), TIMEOUT)
 	await _finish_scene()
-	assert_eq(GameState.bag.count_of(&"super_potion"), before + 1, "Sac + 1")
-	assert_eq(_found("super_potion", "pokemon_tower_5f"), 1, "journal des objets trouvés")
+	assert_eq(GameState.bag.count_of(&"elixir"), before + 1, "Sac + 1")
+	assert_eq(_found("elixir", "pokemon_tower_5f"), 1, "journal des objets trouvés")
 	assert_eq(_toasts.size(), 1, "un toast")
 	if _toasts.size() == 1:
-		assert_eq(_toasts[0], PackedStringArray(["Super Potion ×1", "Ajoutée au Sac"]))
+		assert_eq(_toasts[0], PackedStringArray(["Élixir ×1", "Ajouté au Sac"]))
 	assert_null(controller.get_target(), "plus de cible une fois trouvé")
 	await _reload(&"pokemon_tower_5f", &"arrivee_T45")
 	await _put(HIDDEN_STAND, Vector2i.DOWN)
 	assert_true(GameState.flags.has_flag(flag), "drapeau relu")
 	assert_null(_boot.get_interaction_controller().get_target(), "rechargé : plus de cible")
-	assert_eq(GameState.bag.count_of(&"super_potion"), before + 1)
+	assert_eq(GameState.bag.count_of(&"elixir"), before + 1)
 	assert_push_error_count(0)

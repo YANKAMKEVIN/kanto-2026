@@ -66,7 +66,7 @@ arrivee_T45          spawn          4,9          libre   paire=T45 facing=right 
 tower_channeler_3    dresseur       15,7         bloque  prenom=Solange facing=down sight=3 inevitable=oui  # E3 : vue (15, 8..10), seul passage de l'arrivée vers le reste
 tower_channeler_4    dresseur       5,10         bloque  prenom=Mireille facing=right sight=3 inevitable=non  # près de l'escalier du 5F, se contourne par le nord
 tower_4f_objet_1     objet_visible  9,10         bloque  role=O1 item=awakening  # Réveil (RB)
-tower_4f_objet_2     objet_visible  12,10        bloque  role=O2 item=super_potion  # Super Potion à la place de l'Élixir RB (K-17)
+tower_4f_objet_2     objet_visible  12,10        bloque  role=O2 item=elixir  # Élixir RB (lot 32P : repli Super Potion de K-17 défait)
 repere_stele_n1      repere         9,1          bloque  role=stele
 repere_stele_n2      repere         12,1         bloque  role=stele
 FIN

@@ -386,7 +386,7 @@ func test_center_and_mart_work_like_the_others() -> void:
 	if shop != null:
 		# RB : Super Ball, Hyper Potion, Max Repousse, Corde Sortie, Total Soin, Rappel ; seuls
 		# ceux qui existent [D].
-		assert_eq(shop.item_ids(), [&"great_ball", &"escape_rope", &"revive"] as Array[StringName])
+		assert_eq(shop.item_ids(), [&"great_ball", &"escape_rope", &"revive", &"max_repel"] as Array[StringName])  # lot 32P
 
 
 func test_interiors_lead_back_to_their_door() -> void:

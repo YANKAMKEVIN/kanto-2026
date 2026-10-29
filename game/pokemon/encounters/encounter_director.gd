@@ -45,6 +45,9 @@ signal cry_requested(species_id: StringName)
 ## Point d'accroche du son « pierres qui roulent » (jalon 12, dossier 15 §6 ; aucun son au J12) :
 ## émis au début de l'éboulis d'une rencontre sur les gravats.
 signal rubble_sound_requested
+## Lot 32P : la Repousse vient de s'épuiser sur ce pas (Boot dit « L'effet de la Repousse s'est
+## dissipé. » une fois le joueur libre).
+signal repel_wore_off
 
 ## Raison de blocage du joueur, de la rencontre jusqu'à la sortie du combat.
 const REASON: StringName = &"encounter"
@@ -188,6 +191,7 @@ func start_encounter(encounter: WildEncounter, terrain: StringName = &"") -> boo
 # --- Déclenchement ------------------------------------------------------------------
 
 func _on_player_moved(cell: Vector2i) -> void:
+	var repel_active := _tick_repel()
 	if not _can_encounter(cell):
 		return
 	var terrain := terrain_at(cell)
@@ -197,11 +201,28 @@ func _on_player_moved(cell: Vector2i) -> void:
 	if encounter == null:
 		_quiet_steps += 1
 		return
+	# Lot 32P : la Repousse écarte un sauvage plus faible que le premier Pokémon debout.
+	if repel_active and RepelRules.blocks(1, encounter.level, _state.party as Party):
+		return
 	# Combat SPECTRE (jalon 19) : relu à chaque rencontre, avec le Sac du moment.
 	encounter.ghost = _is_ghost(table)
 	# Verrou synchrone, dans le `moved` : le pas suivant ne part pas (comme les déclencheurs
 	# du 3B). Le reste de la séquence est une coroutine lancée sans l'attendre.
 	_run(encounter, _origin_cell(cell), terrain)
+
+
+## Lot 32P : un pas libre décompte la Repousse en cours ([member GameState.repel_steps]) ; vrai si
+## elle agissait sur ce pas (le dernier compris, où [signal repel_wore_off] part).
+func _tick_repel() -> bool:
+	var steps: Variant = _state.get(&"repel_steps") if _state != null else null
+	if not steps is int or int(steps) <= 0:
+		return false
+	if is_instance_valid(_player) and not _player.is_input_enabled():
+		return true
+	_state.set(&"repel_steps", RepelRules.tick(int(steps)))
+	if int(steps) == 1:
+		repel_wore_off.emit()
+	return true
 
 
 ## Gardes : rien ne se passe hors herbe ou gravats, sans table du terrain, pendant une scène /

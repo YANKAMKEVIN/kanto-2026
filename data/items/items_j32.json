@@ -4,16 +4,18 @@
 		"plural": "PV Plus",
 		"feminine": false,
 		"category": "field",
-		"price": 0,
-		"description": "Augmente les PV de base d'un Pokémon. Sans effet dans le moteur actuel."
+		"field_use": "vitamin", "vitamin_stats": ["hp"],
+		"price": 9800, "draft": true,
+		"description": "Augmente les PV d'un Pokémon."
 	},
 	"carbos": {
 		"name": "Carbone",
 		"plural": "Carbones",
 		"feminine": false,
 		"category": "field",
-		"price": 0,
-		"description": "Augmente la Vitesse de base d'un Pokémon. Sans effet dans le moteur actuel."
+		"field_use": "vitamin", "vitamin_stats": ["spe"],
+		"price": 9800, "draft": true,
+		"description": "Augmente la Vitesse d'un Pokémon."
 	},
 	"tm25": {
 		"name": "CT25 — Fatal-Foudre",

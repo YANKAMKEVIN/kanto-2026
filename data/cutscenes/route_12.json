@@ -21,5 +21,17 @@
 				]
 			}
 		]
+	},
+	"route_12_gate_2f_give_itemfinder": {
+		"variants": [
+			{
+				"steps": [
+					{ "give": "itemfinder", "count": 1, "unless": ["got_itemfinder"] },
+					{ "dialogue": "route_12_gate_2f_itemfinder_got", "unless": ["got_itemfinder"] },
+					{ "dialogue": "route_12_gate_2f_itemfinder_use", "unless": ["got_itemfinder"] },
+					{ "set": ["got_itemfinder"] }
+				]
+			}
+		]
 	}
 }

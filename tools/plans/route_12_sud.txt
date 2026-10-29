@@ -129,7 +129,7 @@ from_rod_house         spawn          15,22          libre   facing=down  # sort
 route_12_fisher_5      dresseur       19,8           bloque  role=D1 trainer=route_12_fisher_5 facing=right sight=2 rbsight=1 inevitable=non rb=6,87  # Pêcheur, Magicarpe 24 ×2 ; au bout du petit ponton de pêche, vue (20..21, 8) : on passe par la rangée 7
 route_12_youngster     dresseur       27,32          bloque  role=D2 trainer=route_12_youngster facing=left sight=6 rbsight=4 inevitable=non rb=11,92  # Jeune Dresseur, Nidoran♂ 29 + Nidorino 29 ; alcôve est, vue (24..26, 32) : évité par le sentier x 19..21
 route_12_rocker        dresseur       12,60          bloque  role=D3 trainer=route_12_rocker facing=down sight=6 rbsight=4 inevitable=oui rb=14,76  # Rockeur, Voltorbe 29 + Électrode 29 (I) ; alcôve au-dessus du virage, vue (12, 61..63) : tout le virage
-route_12_item_1        objet_visible  14,33          bloque  role=O1 item=nugget drapeau=got_route_12_item_1  # Pépite (Fer de RB, M-16), au bout de l'éperon du sentier ouest
+route_12_item_1        objet_visible  14,33          bloque  role=O1 item=iron drapeau=got_route_12_item_1  # Fer de RB (lot 32P : repli Pépite défait), au bout de l'éperon du sentier ouest
 route_12_hidden_1      cache          6,44           libre   role=O2 item=hyper_potion drapeau=got_route_12_hidden_1  # Hyper Potion cachée, coin de la clairière à l'ouest des herbes
 panneau_route_12_sud   panneau        23,16          bloque  role=T-route  # « ROUTE 12 / Lavanville — Parmanie » ; lu depuis (23, 17) ↑
 herbes_h1              herbes         10..26,43..56  libre   role=H1  # herbes du sud ; 4 rangées obligatoires sur le chemin (52..55)

@@ -41,13 +41,12 @@ const CURRENTS: Dictionary = {"^": Vector2i.UP, "v": Vector2i.DOWN, "<": Vector2
 ## Panneaux : texte du dossier → dialogue.
 const SIGNS: Dictionary = {"T-11": &"seafoam_sign_boulders", "T-12": &"seafoam_sign_currents",
 	"T-13": &"seafoam_sign_danger"}
-## Objets cachés : objet → dialogue (scène du même nom). La Max Élixir (B3F) attend son objet
-## (`data/j24_pending/items.json`) : pas de point tant qu'elle n'existe pas.
+## Objets cachés : objet → dialogue (scène du même nom). Le Max Éther (B3F) est posé depuis le lot 32P.
 ## Lumière par étage (`data/world/lighting.json`) : profils des grottes du J12 [D].
 const LIGHTS: Dictionary = {"seafoam_1f": &"cave_1f", "seafoam_b1f": &"cave_1f",
 	"seafoam_b2f": &"cave_b1f", "seafoam_b3f": &"cave_b1f", "seafoam_b4f": &"cave_b2f"}
 const HIDDEN: Dictionary = {"nugget": &"seafoam_b2f_hidden_1",
-	"ultra_ball": &"seafoam_b4f_hidden_1"}
+	"ultra_ball": &"seafoam_b4f_hidden_1", "max_ether": &"seafoam_b3f_hidden_1"}
 
 var _over: GDScript
 var _rng := RandomNumberGenerator.new()

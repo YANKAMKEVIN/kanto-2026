@@ -105,6 +105,10 @@ signal evolution_item_requested(index: int, item_id: StringName)
 ## (niveau, capacités, évolution) puis rappelle [method finish_rare_candy]. Rien n'est consommé
 ## par le menu.
 signal rare_candy_requested(index: int, item_id: StringName)
+## Lot 32P : PP Plus ou Éther donné au Pokémon [param index] ([method PpItem.check] = OK) : Boot
+## fait choisir la capacité ([method MoveLearnPrompt.choose_move]) puis rappelle
+## [method finish_pp_item]. Rien n'est consommé avant.
+signal pp_move_requested(index: int, item_id: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -531,6 +535,16 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 			return false
 		rare_candy_requested.emit(index, item_id)
 		return true
+	if Vitamin.is_vitamin(item):
+		return _use_vitamin(item, index, pokemon)
+	if PpItem.is_pp_item(item):
+		# Lot 32P : un Pokémon sans effet possible est déjà refusé par le choix.
+		if not _state.bag.has(item_id) or PpItem.check(pokemon, item, _data) != PpItem.Check.OK:
+			return false
+		if PpItem.needs_move(item):
+			pp_move_requested.emit(index, item_id)
+			return true
+		return finish_pp_item(index, item_id, -1)
 	var result := ItemUse.apply(_state.bag, item, pokemon, _bag_context)
 	_repeat_item = item_id
 	_repeat_index = index
@@ -572,6 +586,57 @@ func finish_rare_candy(index: int, item_id: StringName) -> void:
 		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
 			_data, index))
 	_emit_bag()
+
+
+## Lot 32P : PP Plus / Éther sur la capacité [param slot] (−1 : le joueur a renoncé, rien ne
+## change) ou Élixir sur toutes. L'objet est retiré seulement s'il a servi ; le résultat s'affiche,
+## puis le choix du Pokémon et le Sac sont réémis. Vrai si l'objet a servi.
+func finish_pp_item(index: int, item_id: StringName, slot: int) -> bool:
+	if _state == null or _items == null:
+		return false
+	var item := _items.get_item(item_id)
+	var pokemon: Pokemon = _state.party.get_at(index)
+	if item == null or pokemon == null or not _state.bag.has(item_id):
+		return false
+	var used := false
+	if slot >= 0 or not PpItem.needs_move(item):
+		var gained := PpItem.apply(pokemon, slot, item, _data)
+		var mon_name := pokemon.display_name(_data)
+		if gained > 0:
+			used = true
+			_state.bag.remove(item_id)
+			mark_changed()
+			var target := mon_name
+			if PpItem.needs_move(item):
+				var move := _data.get_move(pokemon.moves[slot].move_id)
+				target = move.name if move != null else String(pokemon.moves[slot].move_id)
+			bag_result_shown.emit(PpItem.result_text(item, target), false)
+		else:
+			bag_result_shown.emit(BagQuery.refusal_text(ItemUse.Check.NO_EFFECT, mon_name),
+				false)
+	if is_open():
+		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
+			_data, index))
+	_emit_bag()
+	return used
+
+
+## Lot 32P : vitamine donnée au Pokémon [param index] (EV montés, statistiques recalculées).
+func _use_vitamin(item: ItemData, index: int, pokemon: Pokemon) -> bool:
+	if not _state.bag.has(item.id) or Vitamin.check(pokemon, item) != Vitamin.Check.OK:
+		return false
+	_state.bag.remove(item.id)
+	Vitamin.apply(pokemon, item, _data)
+	_repeat_item = item.id
+	_repeat_index = index
+	mark_changed()
+	bag_result_shown.emit(Vitamin.result_text(item, pokemon.display_name(_data)),
+		_state.bag.has(item.id))
+	if _bag_context != BagQuery.CONTEXT_TEAM:
+		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
+			_data, index))
+	_emit_bag()
+	return true
 
 
 ## UTILISER À NOUVEAU : même objet, même Pokémon.
@@ -823,6 +888,14 @@ func _use_targetless_item(item_id: StringName) -> bool:
 		return true
 	if item.has_key_use():
 		key_item_requested.emit(item_id)
+		return true
+	if RepelRules.is_repel(item):
+		# Lot 32P : la Repousse agit tout de suite, menu ouvert ; elle remplace celle en cours.
+		_state.bag.remove(item_id)
+		_state.set(&"repel_steps", item.repel_steps)
+		mark_changed()
+		bag_result_shown.emit(RepelRules.USED_FORMAT % item.repel_steps, false)
+		_emit_bag()
 		return true
 	var map_id: StringName = _current_map.call() if _current_map.is_valid() else &""
 	var check := FieldItemRules.check(item, map_id, _caves)

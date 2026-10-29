@@ -53,6 +53,6 @@ journal_3                    journal        6,12         bloque  # carnet sur pu
 mansion_burglar_2            dresseur       5,11         bloque  facing=down sight=0  # Pillard : Feunard 38 ; on lui parle
 mansion_scientist_2          dresseur       20,11        bloque  facing=left sight=2  # Scientifique : Magnéti 33, Magnéton 33, Voltorbe 33
 pokemon_mansion_3f_item_1    objet_visible  1,16         bloque  item=max_potion  # Potion Max
-pokemon_mansion_3f_item_2    objet_visible  25,5         bloque  item=nugget  # Pépite (RB : Fer)
+pokemon_mansion_3f_item_2    objet_visible  25,5         bloque  item=iron  # Fer (lot 32P : repli Pépite défait)
 pokemon_mansion_3f_hidden_1  objet_cache    1,9          libre   item=max_revive  # Rappel Max
 FIN

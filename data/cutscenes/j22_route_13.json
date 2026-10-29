@@ -7,7 +7,7 @@
 				],
 				"steps": [
 					{
-						"give": "rare_candy",
+						"give": "pp_up",
 						"count": 1,
 						"found": true
 					},
@@ -28,7 +28,7 @@
 				],
 				"steps": [
 					{
-						"give": "hyper_potion",
+						"give": "calcium",
 						"count": 1,
 						"found": true
 					},

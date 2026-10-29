@@ -22,5 +22,29 @@
 				]
 			}
 		]
+	},
+	"route_21_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_21_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "route_21_item_2"
+					},
+					{
+						"give": "max_repel",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_21_item_2"
+						]
+					}
+				]
+			}
+		]
 	}
 }

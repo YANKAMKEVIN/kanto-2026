@@ -9,7 +9,8 @@
 			{ "item": "awakening" },
 			{ "item": "ice_heal" },
 			{ "item": "burn_heal" },
-			{ "item": "escape_rope" }
+			{ "item": "escape_rope" },
+			{ "item": "repel" }
 		]
 	}
 }

@@ -7,7 +7,7 @@
 #
 # 1F : poste TRAVERSANT, portes LATÉRALES (0, 5..6) à l'ouest et (11, 5..6) à l'est (PUSH ← / →) ; garde
 #      derrière son comptoir (aucune règle : il salue) ; escalier montant (10, 3) ; bibliothèque (1..2, 3).
-# 2F : jumelles devant les fenêtres (2, 3) et (7, 3), assistant du Prof. Chen SANS cadeau (M-17), table,
+# 2F : jumelles devant les fenêtres (2, 3) et (7, 3), assistant du Prof. Chen (Multi Exp à 50 espèces, lot 32P ; ex-M-17 « sans cadeau »), table,
 #      escalier descendant (10, 3) (2F local).
 #
 # Légende : K mur (bloqué)   . sol   X sortie (praticable, terminale)   U escalier (praticable, terminal)
@@ -43,7 +43,7 @@ from_2f                spawn          10,4           libre   facing=down  # reto
 garde                  pnj            6,3            bloque  role=P1 facing=down  # garde derrière son comptoir (5..7, 4) ; ne vérifie rien (texte §16.5)
 escalier_descend       warp           23,3           libre   to=route_15_gate spawn=from_2f  # 2F : STEP_ON ↑ → 1F (10, 4)
 from_1f                spawn          23,4           libre   facing=down  # 2F : arrivée du 1F, tourné ↓
-assistant              pnj            17,5           bloque  role=P2 facing=down  # 2F : assistant du Prof. Chen, SANS cadeau (M-17, T-40)
+assistant              pnj            17,5           bloque  role=P2 facing=down  # 2F : assistant du Prof. Chen, Multi Exp à 50 espèces capturées (lot 32P ; RB), drapeau got_exp_all
 jumelles_ouest         panneau        15,3           bloque  role=T-41  # 2F : jumelles (vers Parmanie) ; examinées depuis (15, 4) ↑
 jumelles_est           panneau        20,3           bloque  role=T-41  # 2F : jumelles (vers la Route 14) ; examinées depuis (20, 4) ↑
 FIN

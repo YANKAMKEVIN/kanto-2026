@@ -67,5 +67,60 @@
 	"route_12_gate_tm39_got": {
 		"narration": true,
 		"pages": ["{player} obtient la CT39 — Météores !", "Météores ne rate jamais sa cible."]
+	},
+	"route_12_gate_2f_assistant": {
+		"speaker": "Assistant",
+		"variants": [
+			{
+				"draft": true,
+				"if": ["got_itemfinder"],
+				"pages": [
+					"Le Cherch'Objet bipe quand un objet est tout près.",
+					"Continue de remplir ton Pokédex !"
+				]
+			},
+			{
+				"draft": true,
+				"if_caught_at_least": 30,
+				"pages": [
+					"Ton Pokédex compte {caught} espèces !",
+					"Le Professeur Chen sera ravi.",
+					"Voici le Cherch'Objet."
+				],
+				"cutscene": "route_12_gate_2f_give_itemfinder"
+			},
+			{
+				"draft": true,
+				"unless": ["itemfinder_assistant_met"],
+				"unless_caught_at_least": 30,
+				"set": ["itemfinder_assistant_met"],
+				"pages": [
+					"Je suis un assistant du Professeur Chen.",
+					"Il m'a confié quelque chose pour toi.",
+					"Mais il faut d'abord avoir capturé 30 espèces.",
+					"Ton Pokédex en compte {caught}. Reviens me voir !"
+				]
+			},
+			{
+				"draft": true,
+				"pages": [
+					"Ton Pokédex compte {caught} espèces capturées.",
+					"Encore {caught_missing}, et c'est à toi."
+				]
+			}
+		]
+	},
+	"route_12_gate_2f_itemfinder_got": {
+		"narration": true,
+		"draft": true,
+		"pages": ["{player} reçoit le Cherch'Objet !"]
+	},
+	"route_12_gate_2f_itemfinder_use": {
+		"speaker": "Assistant",
+		"draft": true,
+		"pages": [
+			"Utilise-le depuis le Sac : il indique de quel côté se cache un objet.",
+			"Les objets cachés sont partout. Ouvre l'œil !"
+		]
 	}
 }

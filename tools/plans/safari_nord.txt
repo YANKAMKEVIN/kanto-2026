@@ -81,6 +81,6 @@ panneau_conseils_1     panneau        4,25         bloque
 panneau_zone           panneau        13,31        bloque
 panneau_conseils_2     panneau        19,33        bloque
 panneau_conseils_3     panneau        26,28        bloque
-proteine               objet_visible  25,1         bloque  item=revive           # RB : Protéine → Rappel (N-19)
+proteine               objet_visible  25,1         bloque  item=protein          # RB : Protéine (lot 32P : repli Rappel défait)
 ct40                   objet_visible  19,7         bloque  item=tm40             # RB : CT40 Coud'Krâne
 FIN

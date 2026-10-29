@@ -24,7 +24,7 @@
 # La CARTE MAGNÉTIQUE (RB CARD_KEY, objet 8) est au sol en (21, 16), dans le couloir sud, sans
 # porte à franchir depuis les escaliers et l'ascenseur (contrôlé). Trois rapports Pokémon
 # (SPRITE_CLIPBOARD) sur les bureaux : positions « examen ». Objet caché RB : Élixir en (12, 3)
-# (→ Rappel [D] tant que l'Élixir n'existe pas), lu depuis (12, 4) tourné vers le nord.
+# (lot 32P : Élixir posé), lu depuis (12, 4) tourné vers le nord.
 #
 # Salles (graphe RB, portes fermées ; tools/art/silph_rb_decode.py --graphe) :
 #   5F-A (44 cases) : protein
@@ -123,10 +123,10 @@ dresseur_2              dresseur       8,3          bloque  trainer=silph_co_5f_
 dresseur_3              dresseur       18,10        bloque  trainer=silph_co_5f_3 facing=up sight=4 classe=jongleur  # RB objet 4 : OPP_JUGGLER, 1
 dresseur_4              dresseur       28,4         bloque  trainer=silph_co_5f_4 facing=up sight=3 classe=rocket  # RB objet 5 : OPP_ROCKET, 29
 silph_co_5f_item_6      objet_visible  2,13         bloque  item=tm09 fallback=nugget  # RB TM_TAKE_DOWN
-silph_co_5f_item_7      objet_visible  4,6          bloque  item=protein fallback=rare_candy  # RB PROTEIN
+silph_co_5f_item_7      objet_visible  4,6          bloque  item=protein  # RB PROTEIN
 silph_co_5f_card_key    objet_visible  21,16        bloque  item=card_key  # RB CARD_KEY
 rapport_9               examen         22,12        bloque  texte=silph_co_5f_report_9  # RB SPRITE_CLIPBOARD : rapport Pokémon posé sur un bureau
 rapport_10              examen         25,10        bloque  texte=silph_co_5f_report_10  # RB SPRITE_CLIPBOARD : rapport Pokémon posé sur un bureau
 rapport_11              examen         24,6         bloque  texte=silph_co_5f_report_11  # RB SPRITE_CLIPBOARD : rapport Pokémon posé sur un bureau
-silph_co_5f_hidden_1    objet_cache    12,3         bloque  item=elixir fallback=revive depuis=12,4 face=N  # RB hidden_event ELIXER
+silph_co_5f_hidden_1    objet_cache    12,3         bloque  item=elixir depuis=12,4 face=N  # RB hidden_event ELIXER
 FIN

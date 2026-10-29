@@ -20,7 +20,7 @@
 #
 # Sélection du dossier §13.2 (H-9) : 3 sbires sur 5. Les sbires RB n° 11 et 12, en (15, 25) et
 # (28, 18), sont RETIRÉS ; les trois restants sont RB 8, 9 et 10. Les sbires vaincus restent en place.
-# Objets : Corde Sortie (RB), Hyper Potion (→ Super Potion si absente), objet caché PP Plus
+# Objets : Corde Sortie (RB), Hyper Potion, objet caché PP Plus (lot 32P : replis défaits)
 # (→ Rappel [D]) sur la conduite (21, 15), à lire depuis (20, 15) tourné vers l'est.
 #
 # Légende (commune aux quatre étages) :
@@ -89,6 +89,6 @@ sbire_b1_1             dresseur       26,8         bloque  role=R1 facing=left s
 sbire_b1_2             dresseur       12,6         bloque  role=R2 facing=right sight=2 trainer=rocket_hideout_b1f_2  # RB n° 9 : Rattatac x2 21 ; salle ouest, couloir nord
 sbire_b1_3             dresseur       18,17        bloque  role=R3 facing=down sight=2 trainer=rocket_hideout_b1f_3  # RB n° 10 : Tadmorv / Smogo x2 20 ; carrefour sud
 corde_sortie           objet_visible  11,14        bloque  item=escape_rope  # salle ouest
-hyper_potion           objet_visible  9,17         bloque  item=hyper_potion fallback=super_potion  # couloir sud-ouest
-pp_plus_cache          objet_cache    21,15        bloque  item=pp_up fallback=revive depuis=20,15 face=E  # RB hidden_item B1F (21,15), sur la conduite de la salle centrale
+hyper_potion           objet_visible  9,17         bloque  item=hyper_potion  # couloir sud-ouest
+pp_plus_cache          objet_cache    21,15        bloque  item=pp_up depuis=20,15 face=E  # RB hidden_item B1F (21,15), sur la conduite de la salle centrale
 FIN

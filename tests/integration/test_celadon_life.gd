@@ -261,8 +261,8 @@ func test_prices_stock_and_the_single_tm() -> void:
 		[&"poke_doll"] as Array[StringName], "Poupée Poké du 4e")
 	var fifth := ShopRules.stock(shops.get_shop(&"celadon_dept_5f"), null)
 	assert_eq(fifth, [&"x_attack", &"x_defend", &"x_speed", &"x_special", &"x_accuracy",
-		&"dire_hit"] as Array[StringName], "objets de combat du 5e, aucune vitamine")
-	for item_id: StringName in fifth:
+		&"dire_hit", &"hp_up", &"protein", &"iron", &"carbos", &"calcium"] as Array[StringName], "objets de combat du 5e, puis les cinq vitamines (lot 32P)")
+	for item_id: StringName in fifth.slice(0, 6):
 		assert_eq(items.get_item(item_id).category, ItemData.Category.BATTLE)
 	for shop_id: StringName in [&"celadon_dept_roof_water", &"celadon_dept_roof_soda",
 			&"celadon_dept_roof_lemonade"]:
@@ -288,7 +288,7 @@ func test_second_floor_clerk_sells_the_status_heals_and_the_super_ball() -> void
 	assert_true(shops.load_dir())
 	assert_eq(ShopRules.stock(shops.get_shop(&"celadon_dept_2f"), null),
 		[&"great_ball", &"super_potion", &"revive", &"antidote", &"burn_heal", &"ice_heal",
-		&"awakening", &"paralyze_heal"] as Array[StringName])
+		&"awakening", &"paralyze_heal", &"super_repel"] as Array[StringName])  # lot 32P : Super Repousse (RB)
 
 
 # --- Boot réel : parler à un vendeur, à la fillette ----------------------------------------

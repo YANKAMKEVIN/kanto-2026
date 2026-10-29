@@ -38,12 +38,19 @@ const KEY_ADDED_SUFFIX := " aux objets clés"
 const TM_ADDED_BASE := "obtenu"
 ## Usages d'un objet AVENTURE (jalon 12, T20 ; [member field_use]) : la Corde Sortie (sans cible,
 ## [FieldItemRules]) et la pierre d'évolution (un Pokémon cible, T23) ; jalon 14 (T18b) : le
-## Super Bonbon (un Pokémon cible, [RareCandy]). Ajouts en fin.
+## Super Bonbon (un Pokémon cible, [RareCandy]). Lot 32P : les vitamines (un Pokémon cible,
+## [Vitamin]), PP Plus et les Éthers / Élixirs (un Pokémon, puis une capacité si l'objet n'agit
+## que sur une seule ; [PpItem]), les Repousses (sans cible, [RepelRules]). Ajouts en fin.
 const FIELD_USE_ESCAPE_ROPE: StringName = &"escape_rope"
 const FIELD_USE_EVOLUTION_STONE: StringName = &"evolution_stone"
 const FIELD_USE_RARE_CANDY: StringName = &"rare_candy"
+const FIELD_USE_VITAMIN: StringName = &"vitamin"
+const FIELD_USE_PP_UP: StringName = &"pp_up"
+const FIELD_USE_PP_RESTORE: StringName = &"pp_restore"
+const FIELD_USE_REPEL: StringName = &"repel"
 const FIELD_USES: Array[StringName] = [FIELD_USE_ESCAPE_ROPE, FIELD_USE_EVOLUTION_STONE,
-	FIELD_USE_RARE_CANDY]
+	FIELD_USE_RARE_CANDY, FIELD_USE_VITAMIN, FIELD_USE_PP_UP, FIELD_USE_PP_RESTORE,
+	FIELD_USE_REPEL]
 ## Usages en combat d'un objet COMBAT (jalon 20, `jalon-20.md` §2.9.3 ; [member battle_use]) :
 ## un étage de statistique (objets X), la Puissance (Muscle +), la fuite garantie (Poupée Poké,
 ## combat sauvage seulement). Ajouts en fin.
@@ -54,11 +61,12 @@ const BATTLE_USES: Array[StringName] = [BATTLE_USE_STAT_STAGE, BATTLE_USE_CRIT_U
 	BATTLE_USE_ESCAPE]
 ## Usages d'un objet clé (passe systèmes 2, `systemes-2.md` §2.4 ; [member key_use]) : la Poké
 ## Flûte (exploration et combat), la Bicyclette (exploration), les trois cannes (exploration,
-## pêche de la passe, S2C-bis). Ajouts en fin.
+## pêche de la passe, S2C-bis) ; lot 32P : le Cherch'Objet ([Itemfinder]). Ajouts en fin.
 const KEY_USE_POKE_FLUTE: StringName = &"poke_flute"
 const KEY_USE_BICYCLE: StringName = &"bicycle"
+const KEY_USE_ITEMFINDER: StringName = &"itemfinder"
 const KEY_USES: Array[StringName] = [KEY_USE_POKE_FLUTE, KEY_USE_BICYCLE, &"old_rod",
-	&"good_rod", &"super_rod"]
+	&"good_rod", &"super_rod", KEY_USE_ITEMFINDER]
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -115,6 +123,16 @@ var revive: float = 0.0
 ## Usage d'un objet clé (passe systèmes 2 ; [constant KEY_USES]) : &"" = aucun (l'objet se
 ## consulte, sans UTILISER). Clé « key_use » des données, réservée à la catégorie OBJETS CLÉS.
 var key_use: StringName = &""
+## Vitamine (lot 32P, [constant FIELD_USE_VITAMIN]) : statistiques dont les EV montent (clé
+## « vitamin_stats » ; le Calcium : Atq. Spé. et Déf. Spé., le Spécial unique de Rouge/Bleu).
+var vitamin_stats: Array[StringName] = []
+## Éther / Élixir (lot 32P, [constant FIELD_USE_PP_RESTORE]) : PP rendus par capacité (clé
+## « pp_amount » ; 0 = tous) et toutes les capacités du Pokémon (clé « pp_all_moves » ; faux = une
+## seule, choisie).
+var pp_amount: int = 0
+var pp_all_moves: bool = false
+## Repousse (lot 32P, [constant FIELD_USE_REPEL]) : nombre de pas (clé « repel_steps »).
+var repel_steps: int = 0
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.

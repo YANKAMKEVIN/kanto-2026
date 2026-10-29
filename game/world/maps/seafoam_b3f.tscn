@@ -349,6 +349,12 @@ position = Vector2(432, 1248)
 script = ExtResource("6_ctopb")
 dialogue_id = &"seafoam_sign_boulders"
 
+[node name="Cache_10_16" type="Marker2D" parent="Interactables" unique_id=581902843]
+position = Vector2(1008, 1632)
+script = ExtResource("6_ctopb")
+dialogue_id = &"seafoam_b3f_hidden_1"
+unless_flags = Array[StringName]([&"got_seafoam_b3f_hidden_1"])
+
 [node name="Spawns" type="Node2D" parent="." unique_id=1988218364]
 
 [node name="arrivee_p8" type="Marker2D" parent="Spawns" unique_id=1624939939]

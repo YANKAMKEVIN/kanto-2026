@@ -314,6 +314,23 @@ func flute_targets() -> Array[FluteTarget]:
 	return targets
 
 
+## Objets cachés encore à prendre (lot 32P, [Itemfinder]) : la case de chaque point d'interaction
+## qui disparaît avec « got_<son dialogue> », tant que [param flags] n'a pas ce drapeau.
+func hidden_item_cells(flags: StoryFlags) -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	var points := get_node_or_null(^"Interactables")
+	if points == null:
+		return cells
+	for child: Node in points.get_children():
+		var point := child as InteractPoint
+		if point == null or point.dialogue_id.is_empty():
+			continue
+		var flag := StringName("got_" + String(point.dialogue_id))
+		if point.unless_flags.has(flag) and (flags == null or not flags.has_flag(flag)):
+			cells.append(point.get_cell())
+	return cells
+
+
 ## Ce que la carte permet à la monture du joueur (passe systèmes 2, §2.2).
 func mount_traits() -> MapTraits:
 	var traits := MapTraits.new(interior, cycling_road)

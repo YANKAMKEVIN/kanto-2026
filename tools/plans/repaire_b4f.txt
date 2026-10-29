@@ -21,7 +21,7 @@
 # de la porte du bureau, portée de vue 0 (on leur parle) ; Giovanni RB n° 1 (25, 3), qu'on aborde
 # depuis (24, 3) ou (26, 3) (le bureau (24..27, 4..5) lui sert d'écran côté sud).
 # Porte « B » (24..25, 11) : fermée tant que les deux gardes ne sont pas battus, puis sol.
-# Objets : PV Plus (→ Rappel), CT02 Coupe-Vent (→ Super Potion), Fer (→ Super Potion) ; Scope Sylphe
+# Objets : PV Plus, CT02 Coupe-Vent, Fer (lot 32P : replis défaits) ; Scope Sylphe
 # en (25, 2) qui apparaît APRÈS Giovanni ; objet caché Super Potion (RB hidden_item B4F (25, 1)).
 #
 # Légende (commune aux quatre étages) :
@@ -85,8 +85,8 @@ giovanni               dresseur       25,3         bloque  role=G facing=down si
 porte_bureau           porte          24..25,11    bloque  cond=rocket_hideout_b4f_guards_beaten  # bloc porte RB $2d ; devient du sol à la défaite des deux gardes
 cle_ascenseur          objet_visible  10,2         bloque  item=lift_key apparait=rocket_dropped_lift_key  # Clé Ascenseur, posée à côté du sbire (RB : Poké Ball masquée)
 ct02                   objet_visible  9,4          bloque  item=tm02  # CT02 Coupe-Vent (RB) : salle nord-ouest
-pv_plus                objet_visible  10,12        bloque  item=hp_up fallback=revive sur=decor  # sur le bureau de la salle ouest ; se lit depuis (9, 12)
-fer                    objet_visible  12,20        bloque  item=iron fallback=super_potion sur=decor  # sur le bureau du couloir SUD (moitié EST)
+pv_plus                objet_visible  10,12        bloque  item=hp_up sur=decor  # sur le bureau de la salle ouest ; se lit depuis (9, 12)
+fer                    objet_visible  12,20        bloque  item=iron sur=decor  # sur le bureau du couloir SUD (moitié EST)
 scope_sylphe           objet_visible  25,2         bloque  item=silph_scope apparait=giovanni_hideout_won  # Scope Sylphe : visible après la disparition de Giovanni
 super_potion_cachee    objet_cache    25,1         bloque  item=super_potion depuis=25,2 face=N apres=silph_scope_pris  # RB hidden_item B4F (25, 1) : lisible seulement depuis la case du Scope
 bureau_giovanni        repere         22..28,1..10 libre   role=bureau  # salle de Giovanni (accès par la porte B)

@@ -5,7 +5,8 @@
 			{ "item": "great_ball" },
 			{ "item": "super_potion" },
 			{ "item": "revive" },
-			{ "item": "full_heal" }
+			{ "item": "full_heal" },
+			{ "item": "max_repel" }
 		]
 	}
 }

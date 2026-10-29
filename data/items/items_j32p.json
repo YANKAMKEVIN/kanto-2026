@@ -1,0 +1,60 @@
+{
+	"protein": {
+		"name": "Protéine", "plural": "Protéines", "feminine": true,
+		"category": "field", "field_use": "vitamin", "vitamin_stats": ["atk"],
+		"price": 9800, "draft": true,
+		"description": "Augmente l'Attaque d'un Pokémon."
+	},
+	"iron": {
+		"name": "Fer", "plural": "Fers", "feminine": false,
+		"category": "field", "field_use": "vitamin", "vitamin_stats": ["def"],
+		"price": 9800, "draft": true,
+		"description": "Augmente la Défense d'un Pokémon."
+	},
+	"calcium": {
+		"name": "Calcium", "plural": "Calciums", "feminine": false,
+		"category": "field", "field_use": "vitamin", "vitamin_stats": ["spa", "spd"],
+		"price": 9800, "draft": true,
+		"description": "Augmente le Spécial d'un Pokémon."
+	},
+	"ether": {
+		"name": "Éther", "plural": "Éthers", "feminine": false,
+		"category": "field", "field_use": "pp_restore", "pp_amount": 10,
+		"price": 0, "draft": true,
+		"description": "Rend 10 PP à une capacité d'un Pokémon."
+	},
+	"elixir": {
+		"name": "Élixir", "plural": "Élixirs", "feminine": false,
+		"category": "field", "field_use": "pp_restore", "pp_amount": 10, "pp_all_moves": true,
+		"price": 0, "draft": true,
+		"description": "Rend 10 PP à chaque capacité d'un Pokémon."
+	},
+	"repel": {
+		"name": "Repousse", "plural": "Repousses", "feminine": true,
+		"category": "field", "field_use": "repel", "repel_steps": 100,
+		"price": 350, "draft": true,
+		"description": "Pendant 100 pas, les Pokémon sauvages plus faibles que le premier de l'équipe ne se montrent pas."
+	},
+	"super_repel": {
+		"name": "Super Repousse", "plural": "Super Repousses", "feminine": true,
+		"category": "field", "field_use": "repel", "repel_steps": 200,
+		"price": 500, "draft": true,
+		"description": "Pendant 200 pas, les Pokémon sauvages plus faibles que le premier de l'équipe ne se montrent pas."
+	},
+	"max_repel": {
+		"name": "Max Repousse", "plural": "Max Repousses", "feminine": true,
+		"category": "field", "field_use": "repel", "repel_steps": 250,
+		"price": 700, "draft": true,
+		"description": "Pendant 250 pas, les Pokémon sauvages plus faibles que le premier de l'équipe ne se montrent pas."
+	},
+	"itemfinder": {
+		"name": "Cherch'Objet", "plural": "Cherch'Objets", "feminine": false,
+		"category": "key", "key_use": "itemfinder", "draft": true,
+		"description": "Réagit aux objets cachés tout proches et indique de quel côté chercher."
+	},
+	"exp_all": {
+		"name": "Multi Exp", "plural": "Multi Exp", "feminine": false,
+		"category": "key", "draft": true,
+		"description": "Tant qu'il est dans le Sac, la moitié de l'expérience gagnée va à toute l'équipe."
+	}
+}

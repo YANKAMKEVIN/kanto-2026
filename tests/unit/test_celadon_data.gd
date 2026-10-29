@@ -387,14 +387,14 @@ func test_department_store_shops() -> void:
 	# Boutiques du T11 : 2e (deux vendeurs), 4e, 5e.
 	var engine := {
 		&"celadon_dept_2f": [&"great_ball", &"super_potion", &"revive", &"antidote",
-			&"burn_heal", &"ice_heal", &"awakening", &"paralyze_heal"],
+			&"burn_heal", &"ice_heal", &"awakening", &"paralyze_heal", &"super_repel"],  # lot 32P
 		# Q-2, option A (Kevin, 2026-10-16) : la CT01 seule ; élargi au lot 32N (N-22, 2026-10-28) :
 		# les CT de Rouge/Bleu dont la capacité existe, plus Ultralaser, Draco-Rage et Clonage [D].
 		&"celadon_dept_2f_tm": [&"tm01", &"tm02", &"tm05", &"tm07", &"tm09", &"tm15", &"tm17",
 			&"tm23", &"tm32", &"tm33", &"tm37", &"tm50"],
 		&"celadon_dept_4f": [&"poke_doll"],
 		&"celadon_dept_5f": [&"x_attack", &"x_defend", &"x_speed", &"x_special", &"x_accuracy",
-			&"dire_hit"],
+			&"dire_hit", &"hp_up", &"protein", &"iron", &"carbos", &"calcium"],  # lot 32P : vitamines (RB)
 	}
 	for id: StringName in engine:
 		var shop := shops.get_shop(id)

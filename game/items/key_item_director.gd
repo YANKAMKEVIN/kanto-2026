@@ -9,7 +9,9 @@ extends Node
 ##   de la Poké Flûte… Quel air entraînant ! » (dossier 24 §15.6.6) et la bulle « ♪ » du
 ##   compagnon s'il est sorti ;
 ## - **Cannes** (S2C-bis) : [method FishingDirector.use_rod] avec la canne choisie (sans eau
-##   pêchable devant : « On ne peut pas pêcher ici. »).
+##   pêchable devant : « On ne peut pas pêcher ici. ») ;
+## - **Cherch'Objet** (lot 32P) : [method Itemfinder.dialogue_for] sur les objets cachés de la carte
+##   ([method GameMap.hidden_item_cells]).
 ## Rien n'est consommé : un objet clé reste dans le Sac.
 
 ## La Flûte a joué hors combat : [param cutscene_id] = scène du dormeur réveillé, &"" si elle a
@@ -65,7 +67,19 @@ func use(item_id: StringName) -> bool:
 		ItemData.KEY_USE_POKE_FLUTE:
 			_play_flute()
 			return true
+		ItemData.KEY_USE_ITEMFINDER:
+			_use_itemfinder()
+			return true
 	return false
+
+
+## Cherch'Objet (lot 32P) : la direction de l'objet caché le plus proche, ou rien.
+func _use_itemfinder() -> void:
+	var map := SceneRouter.get_current_map()
+	if not is_instance_valid(map) or not is_instance_valid(_player) or _runner == null:
+		return
+	var cells := map.hidden_item_cells(_state.get(&"flags") as StoryFlags)
+	_runner.play(Itemfinder.dialogue_for(cells, _player.get_cell()), null, map)
 
 
 func _play_flute() -> void:
