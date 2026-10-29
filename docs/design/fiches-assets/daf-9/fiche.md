@@ -62,4 +62,7 @@ Ordre : `daf9.py --modules`, `build_painted_props.gd -- --nouveaux`, `--import`,
 
 ## Budget de textures (RP-091, repère 64 Mo par carte)
 
-Voir la section « Mesure » ci-dessous (`tools/measure_daf9_textures.gd`).
+Mesure du 2026-10-29 (`tools/measure_daf9_textures.gd`, RVBA 8 bits, objets peints compris,
+personnages exclus) : île 15,7 Mo ; île + Centre + Boutique + Labo 38,9 Mo ; Arène 3,7 Mo ; Manoir
+4,3 à 4,5 Mo par niveau, 6,2 Mo pour les 4 niveaux. Tout sous le repère de 64 Mo. Comme sur les
+autres cartes peintes, le sol est cuit à l'exécution (`PaintedGround`), hors de ce compte.
