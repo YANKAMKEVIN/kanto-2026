@@ -26,7 +26,7 @@
 | Volcan | Auguste (Cramois'Île) | Son Goku | Combattante saiyan |
 | Terre | Giovanni (Jadielle) | Batman | Batgirl |
 
-## 2. Arbitrages à trancher (recommandation en gras)
+## 2. ✅ Arbitrages validés par Kevin le 2026-10-30 (toutes les recommandations, en gras)
 
 | # | Sujet | Options | Recommandation |
 |---|---|---|---|
@@ -50,7 +50,7 @@
 
 ## 4. Calendrier
 
-1. Arbitrages CO-1 à CO-11 (ce document).
+1. ~~Arbitrages CO-1 à CO-11~~ : validés le 2026-10-30.
 2. Planche des 16 costumes (Codex), validée par Kevin.
 3. Sprites, badge par badge.
 4. Code, dans la branche du chantier JR ou juste après : sauvegarde v9 (validée seule, avec `rival_look`), puis l'écran et les apparences, validés sur S24.
@@ -58,7 +58,7 @@
 ## Suivi
 
 - [x] Idée et liste des huit costumes (Kevin, 2026-10-30)
-- [ ] Arbitrages CO-1 à CO-11
+- [x] Arbitrages CO-1 à CO-11 — **validés par Kevin le 2026-10-30** (« Okay », toutes les recommandations)
 - [ ] Planche de chara design
 - [ ] Sprites
 - [ ] Intégration en code (après le J33 et JR)
