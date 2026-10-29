@@ -453,6 +453,16 @@ func test_play_hit_vibrates_more_on_critical() -> void:
 	assert_eq(second, [UiTokens.HAPTIC_CRIT_MS])
 
 
+func test_play_hit_vibrates_a_bit_more_on_a_big_hit() -> void:
+	_hud.set_card(BattleHud.Side.FOE, _foe())
+	_hud.play_hit(BattleHud.Side.FOE, false, true)
+	_hud.play_hit(BattleHud.Side.FOE, true, true)
+	assert_eq(get_signal_parameters(_hud, "haptic_played", 0), [UiTokens.HAPTIC_BIG_HIT_MS])
+	assert_eq(get_signal_parameters(_hud, "haptic_played", 1), [UiTokens.HAPTIC_CRIT_MS],
+		"le critique l'emporte")
+	assert_between(UiTokens.HAPTIC_BIG_HIT_MS, UiTokens.HAPTIC_HIT_MS + 1, UiTokens.HAPTIC_CRIT_MS - 1)
+
+
 func test_hide_all_hides_everything() -> void:
 	_hud.speed_scale = 1.0
 	_hud.set_party(1)

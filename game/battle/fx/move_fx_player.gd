@@ -52,8 +52,10 @@ const BOLT_JITTER: float = 0.035
 const BOLT_REDRAWS: int = 3
 const BOLT_WIDTH: float = 18.0
 const BEAM_WIDTH: float = 34.0
-## Jet d'eau (brique `jet` : Pistolet à O, Bulles d'O, Hydrocanon…) : nettement plus épais qu'un
-## rayon (Kevin, vidéo CV.3 : « trop fin »), cœur clair plus large, halo additif.
+## Rayons et jets dessinés en code (briques `jet`, `beam`, `ice_beam`, quand la famille n'a pas
+## d'art pour son trajet : Laser Glace, Ultralaser…) : épais (Kevin, vidéo CV.3, jet d'eau « trop
+## fin » ; même défaut relevé sur les rayons à la relecture de la vidéo CV.1), cœur clair plus
+## large, halo additif. [constant BEAM_WIDTH] : trait fin, plus employé par défaut.
 const JET_WIDTH: float = 96.0
 const JET_CORE_WIDTH: float = 0.55
 const JET_HALO_WIDTH: float = 2.0
@@ -66,6 +68,9 @@ const CORE_WIDTH: float = 0.4
 const HALO_SIZE: float = 2.4
 const HALO_ALPHA: float = 0.55
 const MARK_LENGTH: float = 0.55
+## Projectile fait d'une seule particule peinte (caillou, orbe) : part de [constant ART_PROJECTILE]
+## (un flipbook a des marges, une particule remplit son image).
+const ART_PARTICLE_PROJECTILE: float = 0.45
 ## Art peint (CV.1, [FxArt]) [D] : cadence des flipbooks, tailles en hauteurs d'écran (projectile,
 ## épaisseur de l'arc, étincelles des joues), en hauteurs de la cible (impact, marque du Contact).
 const FLIP_FPS: float = 24.0
@@ -78,8 +83,33 @@ const ART_PARTICLE: float = 0.05
 ## Art de lumière (mélange additif) : un corps en mélange normal dessous (l'alpha de l'image suit
 ## sa luminance), sans quoi il disparaît sur un décor de plein jour (vu en capture) ; opacité [D].
 const ART_BODY_ALPHA: float = 0.85
-## Rôles des sprites d'art : le trajet (projectile, arc), l'impact, deux étincelles de joues.
-enum Flip { TRAVEL, IMPACT, EXTRA_A, EXTRA_B }
+## Effets sur soi (statut positif, soin) : taille de l'art d'impact en hauteurs du lanceur.
+const ART_SELF: float = 1.15
+## Ondes en série (CV.1, briques `rings` du Psy et `sound_waves` du Son) : trois copies du trajet,
+## décalées de [constant WAVE_LAG] de la phase, en hauteurs d'écran.
+const WAVE_COUNT: int = 3
+const WAVE_LAG: float = 0.22
+const WAVE_SIZE: float = 0.22
+## Psy (`distortion`) : la cible ondule (écrasement en opposition) au lieu de trembler ; Son
+## (`vibrate`) : la cible vibre vite et peu.
+const DISTORT_SQUASH: float = 0.09
+const DISTORT_WAVES: float = 2.5
+const VIBRATE_WAVES: float = 9.0
+const VIBRATE_SHAKE: float = 5.0
+## Modificateurs (CV.1, §3.2) [D] : flux du drain (taille en hauteurs d'écran, courbe), anneau du
+## piège (rayon en largeurs de la cible, tours par seconde, taille), recul du contrecoup (px), chute
+## du Pied Sauté raté (px), K.O. en un coup (arrêt sur image et tremblement multipliés).
+const STREAM_SIZE: float = 0.10
+const STREAM_ARC: float = 0.12
+const TRAP_RADIUS: float = 0.55
+const TRAP_TURNS: float = 1.2
+const TRAP_SIZE: float = 0.15
+const RECOIL_SHAKE: float = 9.0
+const CRASH_DROP: float = 46.0
+const OHKO_FACTOR: float = 2.0
+## Rôles des sprites d'art : le trajet (projectile, arc), l'impact, deux étincelles de joues, trois
+## copies en série (ondes du trajet, flux du drain, anneau du piège : jamais dans la même phase).
+enum Flip { TRAVEL, IMPACT, EXTRA_A, EXTRA_B, WAVE_A, WAVE_B, WAVE_C }
 
 var speed_scale: float = 1.0
 var camera: BattleCamera = BattleCamera.new()
@@ -251,6 +281,17 @@ func _start_phase(phase: MoveFxPlan.Phase) -> void:
 						FxParticlePool.Shape.GATHER, 24.0, 0.12 * height, phase.duration)
 		MoveFxPlan.IMPACT:
 			_impact_burst(phase)
+			if _plan.has_modifier(&"auto_ko"):
+				# Explosion, Destruction : le lanceur éclate aussi (il tombe K.O. ensuite).
+				_art_burst(&"rise", _stage.user_rect.get_center(), _plan.particles,
+					FxParticlePool.Shape.BURST, 34.0, 0.22 * height, 0.7, true)
+		MoveFxPlan.RETURN:
+			if _plan.has_modifier(&"chute") and _missed(phase.hit):
+				# Pied Sauté raté : le lanceur s'écrase, un peu de poussière sous lui.
+				var feet := Vector2(_stage.user_rect.get_center().x, _stage.user_rect.end.y)
+				_pool.burst(feet, roundi(_plan.particles / 2.0),
+					PackedColorArray([Color("#E8DCC4"), Color("#A89478")]),
+					FxParticlePool.Shape.RISE, 30.0, 0.07 * height, 0.6, false)
 		MoveFxPlan.MISS:
 			_pool.burst(_miss_point(), roundi(_plan.particles / 4.0), palette,
 				FxParticlePool.Shape.BURST, 22.0, 0.06 * height, 0.35)
@@ -346,6 +387,11 @@ func _pose_user(phase: MoveFxPlan.Phase, k: float) -> void:
 				var e := _ease_in_out(k)
 				offset = reach.lerp(Vector2.ZERO, e) + Vector2(0.0, -sin(PI * k) * RETURN_ARC)
 				scale_k = Vector2.ONE * (1.0 + depth * DEPTH_SCALE * (1.0 - e))
+				if _plan.has_modifier(&"chute") and _missed(phase.hit):
+					# Chute (§3.2) : il retombe lourdement, écrasé, avant de revenir.
+					var fall := sin(PI * minf(k * 1.6, 1.0))
+					offset += Vector2(0.0, CRASH_DROP * fall)
+					scale_k *= Vector2(1.0 + CROUCH_SQUASH * fall, 1.0 - CROUCH_SQUASH * 1.5 * fall)
 	else:
 		match phase.name:
 			MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
@@ -357,6 +403,19 @@ func _pose_user(phase: MoveFxPlan.Phase, k: float) -> void:
 				if _plan.on_self:
 					glow = sin(PI * k)
 					offset = Vector2(0.0, -10.0 * sin(PI * k))
+	if phase.name == MoveFxPlan.IMPACT and _plan.has_modifier(&"auto_ko"):
+		# Auto-K.O. : le lanceur s'illumine et tremble pendant l'explosion.
+		glow = 0.0 if _plan.reduce_flashes else maxf(glow, 1.0 - k)
+		offset.x += sin(TAU * HIT_SHAKE_WAVES * k) * HIT_SHAKE * (1.0 - k)
+	if phase.name == MoveFxPlan.RETURN and _plan.has_modifier(&"contrecoup") and _plan.lands() \
+			and not _missed(phase.hit):
+		# Contrecoup : le lanceur encaisse à son tour (secousse et teinte sombre brèves).
+		var hurt := 1.0 - k
+		offset.x += sin(TAU * HIT_SHAKE_WAVES * k) * RECOIL_SHAKE * hurt
+		user.position = _stage.user_rest + offset
+		user.scale = _user_scale * scale_k
+		user.modulate = _user_modulate.lerp(_user_modulate * HIT_DIM, hurt * hurt)
+		return
 	user.position = _stage.user_rest + offset
 	user.scale = _user_scale * scale_k
 	user.modulate = _user_modulate.lerp(_user_modulate * CHARGE_GLOW, glow)
@@ -370,15 +429,29 @@ func _pose_target(phase: MoveFxPlan.Phase, elapsed: float) -> void:
 	var scale_k := Vector2.ONE
 	var tint := _target_modulate
 	if phase.name == MoveFxPlan.IMPACT:
-		var k := clampf((elapsed - HIT_STOP) / maxf(phase.duration - HIT_STOP, 0.001), 0.0, 1.0)
+		# K.O. en un coup réussi : arrêt sur image et tremblement plus longs, plus forts.
+		var heavy := OHKO_FACTOR if _plan.outcome != null and _plan.outcome.ohko else 1.0
+		var stop := minf(HIT_STOP * heavy, phase.duration * 0.5)
+		var k := clampf((elapsed - stop) / maxf(phase.duration - stop, 0.001), 0.0, 1.0)
 		var hit_k := 1.0 - k
-		if elapsed < HIT_STOP:
+		var impact_brick: String = _plan.bricks.get("impact", "")
+		if elapsed < stop:
 			hit_k = 1.0
 		elif _plan.target_shake:
-			offset.x = sin(TAU * HIT_SHAKE_WAVES * k) * HIT_SHAKE * hit_k
+			match impact_brick:
+				"distortion":
+					pass
+				"vibrate":
+					offset.x = sin(TAU * VIBRATE_WAVES * k) * VIBRATE_SHAKE * hit_k
+				_:
+					offset.x = sin(TAU * HIT_SHAKE_WAVES * k) * HIT_SHAKE * heavy * hit_k
 		var push := (_stage.target_rest - _stage.user_rest).normalized() * 8.0 * hit_k
-		offset += push if _plan.target_shake else Vector2.ZERO
+		offset += push if _plan.target_shake and impact_brick != "distortion" else Vector2.ZERO
 		scale_k = Vector2(1.0 + HIT_SQUASH * hit_k, 1.0 - HIT_SQUASH * hit_k)
+		if impact_brick == "distortion":
+			# Psy : la cible ondule (largeur et hauteur en opposition), sans quitter sa place.
+			var wave := sin(TAU * DISTORT_WAVES * k) * DISTORT_SQUASH * sin(PI * k)
+			scale_k = Vector2(1.0 + wave, 1.0 - wave)
 		var flash := HIT_DIM if _plan.reduce_flashes else HIT_BRIGHT
 		tint = _target_modulate.lerp(_target_modulate * flash, hit_k * hit_k)
 	target.position = _stage.target_rest + offset
@@ -392,11 +465,16 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 	if _is_contact():
 		if phase.name == MoveFxPlan.IMPACT and not _pose_stamp(k):
 			_pose_marks(k)
-		return
-	if _pose_art(phase, k):
-		return
-	if _plan.on_self:
-		return
+	elif not _pose_art(phase, k) and not _plan.on_self:
+		_pose_shapes(phase, k)
+	_pose_impact_art()
+	_pose_trap(phase, k)
+	_pose_drain(phase, k)
+
+
+## Formes dessinées en code (échafaudage de CV.0) quand le trajet n'a pas d'art : projectile,
+## rayon, arc.
+func _pose_shapes(phase: MoveFxPlan.Phase, k: float) -> void:
 	var travel: String = _plan.bricks.get("travel", "")
 	var from := _stage.origin()
 	var to := _stage.impact_point()
@@ -411,7 +489,7 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 				"bolt":
 					_show_bolt(from, from.lerp(to, _ease_out(k)), floori(k * BOLT_REDRAWS), 1.0)
 				"beam", "ice_beam", "jet":
-					_show_beam(from, from.lerp(to, _ease_out(k)), k, 1.0, travel == "jet")
+					_show_beam(from, from.lerp(to, _ease_out(k)), k, 1.0)
 				_:
 					var depth := lerpf(1.0, PROJECTILE_FAR if _stage.user_is_player
 						else PROJECTILE_NEAR, k)
@@ -422,7 +500,7 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 				"bolt":
 					_show_bolt(from, to, BOLT_REDRAWS + floori(k * 2.0), fade)
 				"beam", "ice_beam", "jet":
-					_show_beam(from, to, 1.0, fade, travel == "jet")
+					_show_beam(from, to, 1.0, fade)
 				_:
 					if phase.name == MoveFxPlan.MISS:
 						var past := to + (to - from) * MISS_OVERSHOOT * k
@@ -439,6 +517,8 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 	var travel := _plan.art.get(&"travel", &"") as StringName
 	if bolt.is_empty() and travel.is_empty():
 		return false
+	if _is_wave_travel():
+		return _pose_waves(phase, k, travel)
 	var height := _stage.view_size.y
 	var from := _stage.origin()
 	var to := _stage.impact_point()
@@ -453,8 +533,8 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 			if _plan.art.has(&"cheeks"):
 				_pose_cheeks(e)
 			elif not travel.is_empty():
-				_show_flip(Flip.TRAVEL, travel, from, Vector2.ONE * ART_PROJECTILE * height * 0.5 * e,
-					angle, 1.0)
+				_show_flip(Flip.TRAVEL, travel, from, Vector2.ONE * ART_PROJECTILE * height * 0.5 * e
+					* _projectile_scale(travel), angle, 1.0)
 		MoveFxPlan.TRAVEL:
 			if not bolt.is_empty():
 				var reach := from.distance_to(to) * _ease_out(k)
@@ -464,7 +544,7 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 					_pose_cheeks(1.0 - k)
 			else:
 				var s := k * k * (3.0 - 2.0 * k)
-				var size := ART_PROJECTILE * height * lerpf(1.0, depth_far, k)
+				var size := ART_PROJECTILE * height * lerpf(1.0, depth_far, k) * _projectile_scale(travel)
 				_show_flip(Flip.TRAVEL, travel, from.lerp(to, s), Vector2.ONE * size, angle, 1.0)
 		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
 			var fade := 1.0 - _ease_in(k)
@@ -475,20 +555,111 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 			elif phase.name == MoveFxPlan.MISS:
 				var past := to + (to - from) * MISS_OVERSHOOT * k
 				_show_flip(Flip.TRAVEL, travel, past, Vector2.ONE * ART_PROJECTILE * height
-					* depth_far, angle, fade)
+					* depth_far * _projectile_scale(travel), angle, fade)
 			elif phase.name == MoveFxPlan.NO_EFFECT:
 				_show_flip(Flip.TRAVEL, travel, to, Vector2.ONE * ART_PROJECTILE * height
-					* lerpf(0.8, 0.2, k), angle, fade)
-	# L'impact peint se joue une fois (il naît, grandit, s'éteint), de l'impact à la fin du coup.
-	var strike := _plan.phase(MoveFxPlan.IMPACT, phase.hit)
-	if strike != null and _t >= strike.start and _plan.art.has(&"impact"):
-		var hit_end := strike.end() + (_plan.phase(MoveFxPlan.RETURN, phase.hit).duration
-			if _plan.phase(MoveFxPlan.RETURN, phase.hit) != null else 0.0)
-		var once := clampf((_t - strike.start) / maxf(hit_end - strike.start, 0.001), 0.0, 1.0)
-		var size := _stage.target_rect.size.y * ART_IMPACT
-		_show_flip(Flip.IMPACT, _plan.art[&"impact"], _stage.impact_point(), Vector2.ONE * size,
-			0.0, 1.0, false, once)
+					* lerpf(0.8, 0.2, k) * _projectile_scale(travel), angle, fade)
 	return true
+
+
+## L'impact peint se joue une fois (il naît, grandit, s'éteint), de l'impact à la fin du coup ;
+## sur le lanceur pour un effet sur soi (aura, soin). Indépendant de l'art du trajet (rayons en
+## code de la Glace et de l'Énergie).
+func _pose_impact_art() -> void:
+	if _is_contact() or not _plan.art.has(&"impact"):
+		return
+	var strike: MoveFxPlan.Phase = null
+	for item: MoveFxPlan.Phase in _plan.phases:
+		if item.name == MoveFxPlan.IMPACT and _t >= item.start:
+			strike = item
+	if strike == null:
+		return
+	var back := _plan.phase(MoveFxPlan.RETURN, strike.hit)
+	var hit_end := strike.end() + (back.duration if back != null else 0.0)
+	if _t > hit_end + MoveFxPlan.EPSILON:
+		return
+	var once := clampf((_t - strike.start) / maxf(hit_end - strike.start, 0.001), 0.0, 1.0)
+	var at := _stage.impact_point()
+	var size := _stage.target_rect.size.y * ART_IMPACT
+	if _plan.on_self:
+		at = _stage.user_rect.get_center()
+		size = _stage.user_rect.size.y * ART_SELF
+	_show_flip(Flip.IMPACT, _plan.art[&"impact"], at, Vector2.ONE * size, 0.0, 1.0, false, once)
+
+
+## Ondes en série (Psy, Son) : [constant WAVE_COUNT] copies de l'art du trajet partent l'une après
+## l'autre, changent de taille avec la profondeur et s'éteignent sur la cible.
+func _pose_waves(phase: MoveFxPlan.Phase, k: float, id: StringName) -> bool:
+	if id.is_empty():
+		return false
+	var from := _stage.origin()
+	var to := _miss_point() if _missed(phase.hit) else _stage.impact_point()
+	var angle := (to - from).angle()
+	var depth_far := PROJECTILE_FAR if _stage.user_is_player else PROJECTILE_NEAR
+	var progress := -1.0
+	match phase.name:
+		MoveFxPlan.TRAVEL:
+			progress = k
+		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
+			progress = 1.0 + k * WAVE_LAG * WAVE_COUNT
+	if progress < 0.0:
+		return true
+	for i: int in WAVE_COUNT:
+		var p := progress * (1.0 + WAVE_LAG * (WAVE_COUNT - 1)) - WAVE_LAG * i
+		if p <= 0.0 or p >= 1.0 + WAVE_LAG:
+			continue
+		var along := clampf(p, 0.0, 1.0)
+		var fade := 1.0 - clampf((p - 1.0) / WAVE_LAG, 0.0, 1.0)
+		var size := WAVE_SIZE * _stage.view_size.y * lerpf(0.7, depth_far * 1.3, along)
+		_show_flip(Flip.WAVE_A + i, id, from.lerp(to, along), Vector2.ONE * size, angle,
+			fade * minf(1.0, p * 4.0))
+	return true
+
+
+## Piège (Ligotage, Étreinte, Danse Flamme, Claquoir…) : trois éléments tournent autour de la cible
+## pendant l'impact et le retour (particule de la famille, sinon une liane).
+func _pose_trap(phase: MoveFxPlan.Phase, k: float) -> void:
+	if not _plan.has_modifier(&"piege") or not _plan.lands() or _missed(phase.hit):
+		return
+	if phase.name != MoveFxPlan.IMPACT and phase.name != MoveFxPlan.RETURN:
+		return
+	var id := _plan.art.get(&"particle", _plan.art.get(&"trap", &"")) as StringName
+	var rect := _stage.target_rect
+	var radius := rect.size.x * TRAP_RADIUS
+	var strike := _plan.phase(MoveFxPlan.IMPACT, phase.hit)
+	var since := _t - (strike.start if strike != null else phase.start)
+	var alpha := _ease_out(k) if phase.name == MoveFxPlan.IMPACT else 1.0 - _ease_in(k)
+	for i: int in WAVE_COUNT:
+		var angle := TAU * (TRAP_TURNS * since + float(i) / WAVE_COUNT)
+		var at := rect.get_center() + Vector2(cos(angle) * radius, sin(angle) * radius * 0.35)
+		_show_flip(Flip.WAVE_A + i, id, at, Vector2.ONE * TRAP_SIZE * _stage.view_size.y,
+			angle + PI * 0.5, alpha)
+
+
+## Drain (Vol-Vie, Méga-Sangsue, Vampirisme, Dévorêve) : un flux de lumière revient de la cible
+## au lanceur, de la moitié de l'impact du dernier coup à la fin de l'attaque.
+func _pose_drain(phase: MoveFxPlan.Phase, _k: float) -> void:
+	if not _plan.has_modifier(&"drain") or not _plan.lands() or _missed(phase.hit) \
+			or phase.hit != _plan.hits - 1:
+		return
+	var strike := _plan.phase(MoveFxPlan.IMPACT, phase.hit)
+	if strike == null:
+		return
+	var from_t := strike.start + strike.duration * 0.5
+	if _t < from_t:
+		return
+	var k := clampf((_t - from_t) / maxf(_plan.duration - from_t, 0.001), 0.0, 1.0)
+	var id := _plan.art.get(&"stream", &"") as StringName
+	var from := _stage.impact_point()
+	var to := _stage.user_rect.get_center()
+	var bend := (to - from).orthogonal().normalized() * from.distance_to(to) * STREAM_ARC
+	for i: int in WAVE_COUNT:
+		var p := clampf(k * 1.6 - 0.3 * i, 0.0, 1.0)
+		if p <= 0.0 or p >= 1.0:
+			continue
+		var at := from.lerp(to, _ease_in_out(p)) + bend * sin(PI * p)
+		_show_flip(Flip.WAVE_A + i, id, at, Vector2.ONE * STREAM_SIZE * _stage.view_size.y
+			* lerpf(0.8, 1.2, sin(PI * p)), 0.0, sin(PI * p))
 
 
 ## Étincelles des joues (Éclair) : un petit arc peint sur chaque point d'origine.
@@ -521,7 +692,7 @@ func _pose_stamp(k: float) -> bool:
 			alpha = 1.0 - k
 		&"percant":
 			angle = (_stage.target_rest - _stage.user_rest).angle()
-	_show_flip(Flip.IMPACT, stamp, rect.get_center(), size, angle, alpha)
+	_show_flip(Flip.IMPACT, stamp, rect.get_center(), size, angle, alpha, false, k)
 	return true
 
 
@@ -573,7 +744,7 @@ func _show_flip(index: int, id: StringName, at: Vector2, size: Vector2, angle: f
 	# le haut de la flamme ou de l'arc en haut.
 	sprite.flip_v = cos(angle) < 0.0
 	sprite.scale = size / frame_size
-	sprite.modulate = Color(1, 1, 1, alpha)
+	sprite.modulate = Color(_plan.art_tint, alpha)
 
 
 func _show_projectile(at: Vector2, size_k: float, alpha: float) -> void:
@@ -598,7 +769,7 @@ func _show_bolt(from: Vector2, to: Vector2, redraw: int, alpha: float) -> void:
 	_color_line(_bolt, BOLT_WIDTH, alpha)
 
 
-func _show_beam(from: Vector2, to: Vector2, k: float, alpha: float, jet: bool = false) -> void:
+func _show_beam(from: Vector2, to: Vector2, k: float, alpha: float, jet: bool = true) -> void:
 	_beam.visible = alpha > 0.0
 	_beam.points = PackedVector2Array([from, to])
 	var width := (JET_WIDTH if jet else BEAM_WIDTH) * lerpf(0.4, 1.0, k)
@@ -728,6 +899,20 @@ func _pose_light(phase: MoveFxPlan.Phase, k: float) -> void:
 
 func _is_contact() -> bool:
 	return _plan.bricks.get("travel", "") == "dash"
+
+
+## Taille d'un projectile peint : un flipbook à [constant ART_PROJECTILE], une particule moins.
+static func _projectile_scale(id: StringName) -> float:
+	return 1.0 if not FxArt.flipbook(id).is_empty() else ART_PARTICLE_PROJECTILE
+
+
+func _is_wave_travel() -> bool:
+	var travel: String = _plan.bricks.get("travel", "")
+	return travel == "rings" or travel == "sound_waves"
+
+
+func _missed(hit: int) -> bool:
+	return _plan.phase(MoveFxPlan.MISS, hit) != null
 
 
 func _has_anticipation() -> bool:

@@ -355,6 +355,9 @@ const HP_LOW_PULSE_SCALE := 1.025
 ## Vibrations sur un coup reçu, plus marquée sur un coup critique (bible §12).
 const HAPTIC_HIT_MS := 30
 const HAPTIC_CRIT_MS := 70
+## Combat vivant (§4.2) [D] : vibration d'un gros coup (plus de HP_BIG_HIT des PV max), entre le
+## coup et le critique.
+const HAPTIC_BIG_HIT_MS := 50
 
 # Pastilles d'équipe (au-dessus de la carte joueur).
 const PARTY_SIZE := 6

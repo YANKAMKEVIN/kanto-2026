@@ -43,6 +43,8 @@ var _back_sprite: Sprite2D
 var _front_sprite: Sprite2D
 var _decor_back: Sprite2D
 var _decor_front: Sprite2D
+## Légende : nom de l'attaque, famille et modificateurs (vidéos de validation, S24).
+var _caption: Label
 var _moves: Array[StringName] = []
 var _mode: MoveFxPlan.Mode = MoveFxPlan.Mode.FULL
 var _foe_attacks: bool = false
@@ -83,6 +85,7 @@ func _ready() -> void:
 	_player = MoveFxPlayer.new()
 	_layer.add_child(_player)
 	_player.setup(_layer)
+	_build_caption()
 	_run.call_deferred()
 
 
@@ -113,6 +116,9 @@ func _run() -> void:
 			plan.target_types = target.types.duplicate()
 		print("galerie : %s (%s) %.2f s, repères %s" % [move_id, plan.family, plan.duration,
 			plan.cue_names()])
+		_caption.text = "%s — %s%s" % [move.name if move != null else String(move_id),
+			_catalog.family(plan.family).get("name", plan.family),
+			"" if plan.modifiers.is_empty() else " + " + ", ".join(plan.modifiers)]
 		if _freeze >= 0.0:
 			_player.play(plan, stage)
 			_player.advance(_freeze)
@@ -143,6 +149,19 @@ static func _report(label: String, frames: int, time: float, worst: float,
 		return
 	print("%s %s fps=%.1f min=%.1f%s" % [PREFIX, label, frames / time,
 		1.0 / worst if worst > 0.0 else 0.0, suffix])
+
+
+## Légende en haut à gauche (calque à part : la caméra du combat ne la bouge pas).
+func _build_caption() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 2
+	add_child(layer)
+	_caption = Label.new()
+	_caption.position = Vector2(48, 32)
+	_caption.add_theme_font_size_override(&"font_size", 44)
+	_caption.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 0.85))
+	_caption.add_theme_constant_override(&"outline_size", 10)
+	layer.add_child(_caption)
 
 
 ## Une attaque par famille (les attaques de CV.0 d'abord), parmi celles qui ont des données.

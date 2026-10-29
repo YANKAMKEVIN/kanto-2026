@@ -18,7 +18,9 @@ extends RefCounted
 ## nouvelle complète. Si la copie de l'étape 1 échoue, rien n'est écrit (l'ancienne partie n'est
 ## jamais remplacée sans sa copie). La copie est faite dès que `save.json` existe, que
 ## [OpeningFlow] ait demandé [constant OpeningFlow.Effect.BACKUP_PREVIOUS] ou non (filet le plus
-## large : un fichier présent n'est jamais écrasé sans copie).
+## large : un fichier présent n'est jamais écrasé sans copie). Sans `save.json` mais avec sa copie
+## de secours `save.json.bak` (J33 T4 : la partie que Continuer aurait reprise), c'est la copie
+## de secours qui est copiée : l'écriture de la nouvelle partie la remplacera plus tard.
 
 enum Result {
 	OK,
@@ -52,7 +54,7 @@ func _init(file_system: SaveFileSystem = null, save_file: String = SaveSystem.DE
 ## [method SaveSystem.write], la clé « version » est posée par lui).
 func run(build_new_game: Callable) -> Result:
 	last_error = ""
-	if fs.exists(save_path) and backup_previous() != OK:
+	if not _source_path().is_empty() and backup_previous() != OK:
 		return Result.BACKUP_FAILED
 	var built: Variant = build_new_game.call()
 	if not built is Dictionary or (built as Dictionary).is_empty():
@@ -66,12 +68,14 @@ func run(build_new_game: Callable) -> Result:
 	return Result.OK
 
 
-## Étape 1 seule : copie atomique de `save.json` vers [member previous_path]. OK s'il n'y a rien
-## à copier. En cas d'échec, le temporaire est effacé et la copie précédente reste en place.
+## Étape 1 seule : copie atomique de `save.json` (ou de sa copie de secours) vers
+## [member previous_path]. OK s'il n'y a rien à copier. En cas d'échec, le temporaire est effacé
+## et la copie précédente reste en place.
 func backup_previous() -> Error:
-	if not fs.exists(save_path):
+	var source := _source_path()
+	if source.is_empty():
 		return OK
-	var text := fs.read_text(save_path)
+	var text := fs.read_text(source)
 	if text.is_empty():
 		return _fail(ERR_FILE_CANT_READ, "sauvegarde illisible, copie impossible")
 	var temp := previous_path + SaveSystem.TEMP_SUFFIX
@@ -87,6 +91,14 @@ func backup_previous() -> Error:
 		fs.remove(temp)
 		return _fail(error, "remplacement de la copie impossible (%s)" % error_string(error))
 	return OK
+
+
+## La partie existante : `save.json`, sinon `save.json.bak`, sinon vide.
+func _source_path() -> String:
+	if fs.exists(save_path):
+		return save_path
+	var backup := save_path + SaveSystem.BACKUP_SUFFIX
+	return backup if fs.exists(backup) else ""
 
 
 func _fail(error: Error, message: String) -> Error:

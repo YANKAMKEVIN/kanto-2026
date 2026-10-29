@@ -601,6 +601,12 @@
 		],
 		"power_plant": [
 			{ "decor": "dark_cave_galerie" }
+		],
+		"cerulean_city": [
+			{ "decor": "route_4_plaine" }
+		],
+		"vermilion_city": [
+			{ "decor": "route_11_coast" }
 		]
 
 	}

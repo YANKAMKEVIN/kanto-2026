@@ -669,6 +669,10 @@ func _play_beat(beat: BattleBeat) -> void:
 		await _stage.finish_move_fx()
 	match beat.kind:
 		BattleBeat.Kind.MESSAGE:
+			if beat.event != null and beat.event.kind == BattleEvent.Kind.RECHARGING \
+					and is_instance_valid(_stage):
+				# Combat vivant (`recharge`) : le lanceur halète pendant « … doit se reposer ! ».
+				_stage.play_panting(beat.side)
 			if is_instance_valid(_hud):
 				await _hud.show_message(beat.text, beat.wait_touch)
 		BattleBeat.Kind.SEND_OUT:
@@ -684,10 +688,12 @@ func _play_beat(beat: BattleBeat) -> void:
 				await _stage.play_move(beat.side, beat.category)
 		BattleBeat.Kind.DAMAGE:
 			var big := beat.is_big_hit(UiTokens.HP_BIG_HIT)
+			if is_instance_valid(_stage) and _stage.is_move_fx_hitting(beat.side):
+				await _stage.wait_move_fx_impact()
 			if is_instance_valid(_stage):
 				_stage.play_hit(beat.side, beat.event.critical)
 			if is_instance_valid(_hud):
-				_hud.play_hit(side, beat.event.critical)
+				_hud.play_hit(side, beat.event.critical, big)
 				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, big)
 		BattleBeat.Kind.STAT:
 			if is_instance_valid(_stage):
