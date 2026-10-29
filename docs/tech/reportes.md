@@ -182,6 +182,7 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 | RP-260 | CV.3 T15 (2026-10-28) | `hit_heavy` provisoire : `hit_super` et `move_ground` (Kenney) mélangés et graves | rendu | P3 | Son | ouvert |
 | RP-261 | CV.1 T11 (2026-10-28) | Flipbooks non compressés (≈ 6,5 Mo de VRAM chacun, 24 préchargés à l'entrée du combat) : à mesurer sur le S24 (entrée en combat) ; compression VRAM possible | perf | P2 | CV.Z, mesure J33 T3 | ouvert |
 | RP-262 | CV.1 T9 (2026-10-28) | Pas encore d'art propre pour Glace (rayon), Énergie (rayon), Dragon (flamme bleue), Statut négatif (regard) : rayons en code épais, flammes et lueurs empruntées | rendu | P2 | CV.2 (vague 3 d'art) | ouvert |
+| RP-263 | QA S24 CV.1 (2026-10-29) | Premier usage d'un effet au 1er combat de la partie : à-coup (1re image de Charge min 8,1 i/s ; Griffe, Morsure 55,4 ; Laser Glace 53,4), plus rien aux tours suivants (60,0). Piste : préparer matériaux, shaders et émetteurs dès l'entrée en combat. Ne pas corriger avant décision. |  |  |  |  |
 
 ### 2.6 À mesurer ou reproduire au J33
 
