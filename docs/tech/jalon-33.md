@@ -112,8 +112,22 @@ sont retentées toutes les 5 s comme avant).
 Limite assumée : la copie a une écriture de retard (quelques secondes de jeu). Tests :
 `tests/unit/test_save_backup.gd` (coupure à chaque opération avec `crashing_file_system.gd`,
 corruptions, versions, disque plein, réglages, `OpeningCommit`) ; journaux d'opérations ajustés
-dans `test_opening_commit.gd` et `test_opening_boot.gd`. **Reste : validation seule par Kevin
-(QA S24 bornée : arrêt forcé pendant une sauvegarde, principal abîmé par adb → reprise).**
+dans `test_opening_commit.gd` et `test_opening_boot.gd`.
+
+**QA S24 faite le 2026-10-29** (APK debug de `31c95070`, vraie partie de Kevin au Plateau Indigo,
+v7 migrée en v8, `files/` sauvegardé puis restauré à l'identique, Ne pas déranger pendant la QA,
+~10 min) :
+- rotation réelle : au premier chargement, `save.json.bak` = l'ancienne sauvegarde octet pour octet ;
+- 9 arrêts forcés (`am force-stop`) à +0,1 à +1,4 s après CONTINUER (écriture du changement de
+  carte) et à +0 à +0,15 s après HOME (écriture d'arrière-plan, dont un arrêt pris entre la perte de
+  focus et la fin de l'écriture) : après chacun, principal et copie valides (v8), copie d'une
+  écriture en retard, aucun `.tmp` laissé, relance « sauvegarde VALID » ;
+- principal tronqué à 3 000 octets par adb : mis de côté en `.corrupt`, partie reprise depuis la
+  copie (même temps de jeu), toast « Sauvegarde restaurée depuis la copie de secours. » lisible
+  en haut de l'écran ;
+- principal supprimé (copie seule) : écran titre « sauvegarde VALID », reprise depuis la copie.
+Non fait : stockage plein (non réalisable proprement sur le téléphone personnel ; couvert par les
+tests). **Reste : validation de T4 par Kevin, puis fusion.**
 
 ### T5 — Parcours scriptés (33E, Opus)
 Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headless, à partir des
