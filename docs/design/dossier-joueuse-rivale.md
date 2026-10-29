@@ -25,7 +25,7 @@
 ## Suivi
 
 - [x] Planche de chara design v1 (`reference/joueuse-planche-v1.webp`, `rivale-planche-v1.webp`, `joueuse-rivale-comparaison-v1.webp`) — **validée par Kevin le 2026-10-30**
-- [x] Sprites peints (2026-10-30, à valider par Kevin sur `reference/joueuse-rivale-jeu-v1.webp`, homologue à gauche de chaque paire) :
+- [x] Sprites peints (2026-10-30, **validés par Kevin le 2026-10-30** (« Oui, je valide ») sur `reference/joueuse-rivale-jeu-v1.webp`, homologue à gauche de chaque paire) :
   - 15 images Codex (`tools/art/joueuse_rivale/generer_jr.sh`, prompts `prompts_jr.py` : gabarit = asset validé de l'homologue, identité = planche validée), toutes acceptées au premier tour ;
   - découpe `tools/art/joueuse_rivale/preparer_jr.py` (mêmes réglages que l'homologue au manifeste) : `joueuse_{sheet,run_sheet,idle_sheet,bike_sheet,bike_idle_sheet,fish_cast_sheet,fish_wait_sheet,surf_sheet}.png`, `joueuse_lancer.png`, `joueuse_portrait.png`, `rivale_{sheet,idle_sheet}.png`, `rivale_portrait.png`, `assets/ui/menu/heroine_bust.webp` ;
   - apparences (`tools/build_character_frames.gd`) : `player_heroine` (28 animations, comme `player`), `player_heroine_surf`, `rival_heroine` ; test `tests/unit/test_joueuse_rivale_assets.gd` ;
