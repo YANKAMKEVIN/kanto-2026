@@ -800,9 +800,12 @@ func test_killed_during_the_ending_leaves_one_whole_game() -> void:
 		assert_eq(saved.get("map"), "player_house_2f", "%s : nouvelle partie" % moment)
 		assert_eq(saved.get("player_name"), "Red")
 		assert_eq(saved.get("rival_name"), "Blue")
+		assert_eq(_fs.files[SAVE_PATH + SaveSystem.BACKUP_SUFFIX], old,
+			"%s : ancienne partie en copie de secours (J33 T4)" % moment)
 		var files: Array = _fs.files.keys()
 		files.sort()
-		assert_eq(files, [SAVE_PATH, PREVIOUS_PATH], "%s : aucun autre fichier" % moment)
+		assert_eq(files, [SAVE_PATH, SAVE_PATH + SaveSystem.BACKUP_SUFFIX, PREVIOUS_PATH],
+			"%s : aucun autre fichier" % moment)
 	await _launch()
 	assert_eq(_title().get_featured(), &"continue", "relancement : Continuer")
 	assert_eq(_opening().get_model().summary.player_name, "Red")

@@ -1,6 +1,6 @@
 class_name SaveFileSystem
 extends RefCounted
-## Accès disque du [SaveSystem] (jalon 5 §16) : les cinq opérations dont il a besoin, rien de
+## Accès disque du [SaveSystem] (jalon 5 §16) : les six opérations dont il a besoin, rien de
 ## plus. Injectable : les tests le remplacent par `tests/helpers/memory_file_system.gd` (fichiers
 ## en mémoire, pannes simulées) ; en jeu, cette classe lit et écrit dans `user://`.
 
@@ -44,3 +44,9 @@ func rename(from: String, to: String) -> Error:
 
 func remove(path: String) -> Error:
 	return DirAccess.remove_absolute(path)
+
+
+## Octets libres sur le volume de [param path] (J33 T4 : stockage plein), −1 si inconnu.
+func space_left(path: String) -> int:
+	var dir := DirAccess.open(path.get_base_dir())
+	return dir.get_space_left() if dir != null else -1
