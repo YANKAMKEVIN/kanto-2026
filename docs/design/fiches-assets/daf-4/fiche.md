@@ -42,6 +42,24 @@ Outils : `tools/art/daf4.py` (prompts, Codex, préparation), `tools/build_daf4_c
 - Échelles : l'échelle montante du Mont Sélénite partout.
 
 ### Reste (non fait)
-- **Sol de la Route 23 et du Plateau Indigo** : encore en tuiles provisoires (falaises, herbe, eau) ;
-  il faut le kit extérieur des falaises (`pewter_map_kit.gd`) : prochain morceau du lot.
 - Cinq salles de la Ligue (J30, hors périmètre).
+
+## Fin du lot : sol de la Route 23 et du Plateau Indigo (2026-10-28, branche `claude/daf-4-route-23-b20c52`) — **validé par Kevin le 2026-10-29, fusionné dans `main`**
+
+Outils : `tools/build_daf4_exterieurs.gd` (seconde passe d'image après `build_daf4_facades.gd`, logique
+inchangée : `tools/dump_map_logic.gd` identique avant / après), `tools/capture_daf4.sh`,
+`tools/art/planches_daf4_exterieurs.py`. Aucune image nouvelle.
+
+| Planche | Contenu |
+|---|---|
+| [synthese-telephone-exterieurs.jpg](synthese-telephone-exterieurs.jpg) | **à lire en premier, sur le téléphone** |
+| [planche-7-route-23-plateau.jpg](planche-7-route-23-plateau.jpg) | Route 23 sud, milieu, nord et Plateau Indigo avant / après |
+
+- **Sol** : herbe commune, chemin de terre au milieu du Plateau [D], eau des canaux à angles droits,
+  berges naturelles de la Route 6 sur toute frontière eau / sol, hautes herbes jaune-vert.
+- **Falaises** : paroi de montagne de la série 12 en modules ; les saillies d'une ou deux cases et
+  les petits blocs (< 8 cases) deviennent des rochers (grande pierre, rochers, rochers de mer dans
+  l'eau) [D] ; aucune paroi sous la façade de la Ligue (gardée).
+- **Hors carte** [D] : une colonne de paroi assombrie à l'ouest et à l'est (cartes de 20 cases, plus
+  étroites que l'écran : plus de bandes noires sur les côtés).
+- Ombre vert sombre (sous-bois) entre les modules au pied des falaises, comme la Route 9.

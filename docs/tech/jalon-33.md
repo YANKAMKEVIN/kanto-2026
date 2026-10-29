@@ -127,7 +127,7 @@ v7 migrée en v8, `files/` sauvegardé puis restauré à l'identique, Ne pas dé
   en haut de l'écran ;
 - principal supprimé (copie seule) : écran titre « sauvegarde VALID », reprise depuis la copie.
 Non fait : stockage plein (non réalisable proprement sur le téléphone personnel ; couvert par les
-tests). **Reste : validation de T4 par Kevin, puis fusion.**
+tests). **T4 validé par Kevin le 2026-10-29, fusionné dans `main`.**
 
 ### T5 — Parcours scriptés (33E, Opus)
 Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headless, à partir des
