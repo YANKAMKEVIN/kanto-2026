@@ -72,7 +72,6 @@
 		"speaker": "Assistant",
 		"variants": [
 			{
-				"draft": true,
 				"if": ["got_itemfinder"],
 				"pages": [
 					"Le Cherch'Objet bipe quand un objet est tout près.",
@@ -80,7 +79,6 @@
 				]
 			},
 			{
-				"draft": true,
 				"if_caught_at_least": 30,
 				"pages": [
 					"Ton Pokédex compte {caught} espèces !",
@@ -90,7 +88,6 @@
 				"cutscene": "route_12_gate_2f_give_itemfinder"
 			},
 			{
-				"draft": true,
 				"unless": ["itemfinder_assistant_met"],
 				"unless_caught_at_least": 30,
 				"set": ["itemfinder_assistant_met"],
@@ -102,7 +99,6 @@
 				]
 			},
 			{
-				"draft": true,
 				"pages": [
 					"Ton Pokédex compte {caught} espèces capturées.",
 					"Encore {caught_missing}, et c'est à toi."
@@ -112,12 +108,10 @@
 	},
 	"route_12_gate_2f_itemfinder_got": {
 		"narration": true,
-		"draft": true,
 		"pages": ["{player} reçoit le Cherch'Objet !"]
 	},
 	"route_12_gate_2f_itemfinder_use": {
 		"speaker": "Assistant",
-		"draft": true,
 		"pages": [
 			"Utilise-le depuis le Sac : il indique de quel côté se cache un objet.",
 			"Les objets cachés sont partout. Ouvre l'œil !"

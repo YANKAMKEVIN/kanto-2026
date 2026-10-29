@@ -49,7 +49,7 @@
 		"feminine": false,
 		"category": "field",
 		"field_use": "pp_restore", "pp_amount": 0,
-		"price": 0, "draft": true,
+		"price": 0,
 		"description": "Rend tous les PP d'une capacité d'un Pokémon."
 	}
 }

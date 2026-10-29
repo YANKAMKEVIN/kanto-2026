@@ -109,6 +109,8 @@ const IDS_J29: Array[StringName] = [
 	&"indigo_plateau_host", &"route_22_league_sign"
 ]
 const TEXTES_J29 := "res://docs/tech/jalon-29-textes.md"
+## Lot 32P : textes validés par Kevin le 2026-10-29, une citation par ligne.
+const TEXTES_32P := "res://docs/tech/lot-32p-textes.md"
 ## J29 : renvois vers les scènes (objets, cachés, gardes, rival n° 7, Sulfura ; data/dialogues/
 ## j29_monde.json), sans page.
 const IDS_J29_MONDE: Array[StringName] = [
@@ -2149,10 +2151,8 @@ const IDS_32P: Array[StringName] = [&"route_12_gate_2f_assistant", &"route_12_ga
 	&"route_12_gate_2f_itemfinder_use", &"route_21_item_2", &"seafoam_b3f_hidden_1",
 	&"repel_wore_off", &"itemfinder_north", &"itemfinder_south", &"itemfinder_east",
 	&"itemfinder_west", &"itemfinder_here", &"itemfinder_nothing"]
-## Lot 32P : textes en brouillon en attendant la validation de Kevin (en lot) ; retirer d'ici à la validation.
-const PENDING_DRAFT_32P: Array[StringName] = [&"route_12_gate_2f_assistant",
-	&"route_12_gate_2f_itemfinder_got", &"route_12_gate_2f_itemfinder_use",
-	&"repel_wore_off", &"itemfinder_north", &"itemfinder_south", &"itemfinder_east", &"itemfinder_west", &"itemfinder_here", &"itemfinder_nothing"]
+## Lot 32P : textes validés par Kevin le 2026-10-29 (« Oui, tout ») : liste vide.
+const PENDING_DRAFT_32P: Array[StringName] = []
 const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
 ## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
 const PENDING_DRAFT_VARIANTS: Array[String] = []
@@ -2222,6 +2222,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_20 := FileAccess.get_file_as_string(DOSSIER_20).replace("**", "")
 	var plan_j30 := FileAccess.get_file_as_string(PLAN_J30)
 	var textes_j29 := FileAccess.get_file_as_string(TEXTES_J29)
+	var textes_32p := FileAccess.get_file_as_string(TEXTES_32P)
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
 	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
@@ -2350,6 +2351,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _in_dossier_18(plan_j30, text.replace("{joueur}", "{player}"))
 			# J29 (T4) : lot de textes du J29 (`jalon-29-textes.md`), une citation par ligne.
 			or _each_line_quoted(textes_j29, text.replace("{joueur}", "{player}"))
+			# Lot 32P : `lot-32p-textes.md`, une citation par ligne.
+			or _each_line_quoted(textes_32p, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1])),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])

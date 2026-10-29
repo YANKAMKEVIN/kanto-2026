@@ -16,7 +16,7 @@ enum Check { OK, NO_EFFECT }
 
 ## Nombre maximal de PP Plus par capacité.
 const MAX_UPS: int = 3
-## Phrases du résultat [D, textes à valider] : capacité (PP Plus, Éther) ou Pokémon (Élixir).
+## Phrases du résultat (textes validés par Kevin le 2026-10-29) : capacité (PP Plus, Éther) ou Pokémon (Élixir).
 const PP_UP_FORMAT := "Les PP de %s augmentent."
 const RESTORE_FORMAT := "Les PP de %s sont restaurés."
 

@@ -4,31 +4,31 @@
 		"pages": ["{player} joue de la Poké Flûte…", "Quel air entraînant !"]
 	},
 	"repel_wore_off": {
-		"narration": true, "draft": true,
+		"narration": true,
 		"pages": ["L'effet de la Repousse s'est dissipé."]
 	},
 	"itemfinder_north": {
-		"narration": true, "draft": true,
+		"narration": true,
 		"pages": ["Le Cherch'Objet réagit !", "Quelque chose est caché vers le nord."]
 	},
 	"itemfinder_south": {
-		"narration": true, "draft": true,
+		"narration": true,
 		"pages": ["Le Cherch'Objet réagit !", "Quelque chose est caché vers le sud."]
 	},
 	"itemfinder_east": {
-		"narration": true, "draft": true,
+		"narration": true,
 		"pages": ["Le Cherch'Objet réagit !", "Quelque chose est caché vers l'est."]
 	},
 	"itemfinder_west": {
-		"narration": true, "draft": true,
+		"narration": true,
 		"pages": ["Le Cherch'Objet réagit !", "Quelque chose est caché vers l'ouest."]
 	},
 	"itemfinder_here": {
-		"narration": true, "draft": true,
+		"narration": true,
 		"pages": ["Le Cherch'Objet réagit !", "Quelque chose est caché tout près !"]
 	},
 	"itemfinder_nothing": {
-		"narration": true, "draft": true,
+		"narration": true,
 		"pages": ["Le Cherch'Objet ne réagit pas."]
 	}
 }

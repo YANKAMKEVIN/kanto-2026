@@ -50,7 +50,7 @@ const MAX_PLAY_TIME_STEP: float = SessionLifecycle.MAX_PLAY_TIME_STEP
 ## Décor de l'introduction de Chen (OUV.2, dossier 13 §9.0) : le labo, cadré en son centre
 ## (16 × 11 cases ; défaut, règle 4).
 const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
-## Lot 32P : choix de la capacité d'un PP Plus ou d'un Éther [D, textes à valider].
+## Lot 32P : choix de la capacité d'un PP Plus ou d'un Éther (textes validés par Kevin le 2026-10-29).
 const PP_MOVE_CAPTION := "Choisis une capacité"
 const PP_MOVE_CONFIRM := "CHOISIR"
 const PP_MOVE_CANCEL := "RETOUR"

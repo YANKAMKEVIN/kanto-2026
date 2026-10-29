@@ -9,7 +9,7 @@ extends RefCounted
 ## (Rouge/Bleu). Le compteur ([member GameState.repel_steps]) **n'est pas sauvegardé** [D] : il
 ## repart de zéro au chargement, sans toucher au format de la sauvegarde.
 
-## Phrase du Sac quand la Repousse est utilisée [D, texte à valider].
+## Phrase du Sac quand la Repousse est utilisée (texte validé par Kevin le 2026-10-29).
 const USED_FORMAT := "Les Pokémon sauvages faibles t'éviteront (%d pas)."
 ## Fin de l'effet : dialogue de `data/dialogues/key_items.json`.
 const WORE_OFF_DIALOGUE: StringName = &"repel_wore_off"

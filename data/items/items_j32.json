@@ -5,7 +5,7 @@
 		"feminine": false,
 		"category": "field",
 		"field_use": "vitamin", "vitamin_stats": ["hp"],
-		"price": 9800, "draft": true,
+		"price": 9800,
 		"description": "Augmente les PV d'un Pokémon."
 	},
 	"carbos": {
@@ -14,7 +14,7 @@
 		"feminine": false,
 		"category": "field",
 		"field_use": "vitamin", "vitamin_stats": ["spe"],
-		"price": 9800, "draft": true,
+		"price": 9800,
 		"description": "Augmente la Vitesse d'un Pokémon."
 	},
 	"tm25": {

@@ -22,7 +22,7 @@ const VITAMIN_CAP: int = 100
 ## Plafond des EV d'un Pokémon, toutes statistiques comprises.
 const EV_TOTAL_MAX: int = 510
 ## Phrase du résultat, par première statistique de l'objet (« Les PV de Pikachu augmentent. »)
-## [D, texte à valider].
+## (texte validé par Kevin le 2026-10-29).
 const RESULT_FORMATS: Dictionary[StringName, String] = {
 	&"hp": "Les PV de %s augmentent.",
 	&"atk": "L'Attaque de %s augmente.",

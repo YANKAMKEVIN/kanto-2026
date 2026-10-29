@@ -5,7 +5,7 @@
 		"feminine": false,
 		"category": "field",
 		"field_use": "pp_restore", "pp_amount": 0, "pp_all_moves": true,
-		"price": 0, "draft": true,
+		"price": 0,
 		"description": "Rend tous les PP de toutes les capacités d'un Pokémon."
 	},
 	"pp_up": {
@@ -14,7 +14,7 @@
 		"feminine": false,
 		"category": "field",
 		"field_use": "pp_up",
-		"price": 0, "draft": true,
+		"price": 0,
 		"description": "Augmente le nombre maximal de PP d'une capacité. Trois fois au plus."
 	}
 }
