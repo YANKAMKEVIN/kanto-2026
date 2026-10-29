@@ -19,6 +19,12 @@ const STABLE_TIMEOUT := 20.0
 const KEPT_FIELDS: Array[String] = ["map", "starter", "party", "storage", "bag", "pokedex",
 	"flags", "money", "discovered_maps", "daycare", "hall_of_fame", "companion"]
 
+## Aléatoire « toujours 1 » (capture sûre, voir [method catch_with]).
+class SureRng extends GameRng:
+	func roll(_n: int) -> int:
+		return 1
+
+
 var journey: String
 ## Combats du parcours, dans l'ordre : { trainer, foe (espèces adverses), outcome }.
 var battles: Array[Dictionary] = []
@@ -146,6 +152,37 @@ func talk(cell: Vector2i, facing: Vector2i, answer: bool = true) -> bool:
 	return await interact(facing, answer)
 
 
+## Marche jusqu'à la case voisine de [param target] (PNJ, objet, machine) la plus proche par
+## la vraie grille et renvoie la direction vers [param target] (ZERO si aucune n'est accessible).
+func approach(target: Vector2i) -> Vector2i:
+	var grid := boot.get_map().get_grid()
+	var best := Vector2i.ZERO
+	var best_length := -1
+	for side: Vector2i in DIRECTIONS:
+		var cell := target + side
+		if cell == player.get_cell():
+			best = side
+			best_length = 0
+			break
+		var path := grid.find_path(player.get_cell(), cell, player)
+		if not path.is_empty() and (best_length < 0 or path.size() < best_length):
+			best = side
+			best_length = path.size()
+	_test.assert_true(best_length >= 0, "une case voisine de %s est accessible" % target)
+	if best_length < 0:
+		return Vector2i.ZERO
+	await walk_through(target + best)
+	return -best
+
+
+## [method approach], puis interaction tournée vers [param target]. Vrai si un combat a eu lieu.
+func talk_to(target: Vector2i, answer: bool = true) -> bool:
+	var facing := await approach(target)
+	if facing == Vector2i.ZERO:
+		return false
+	return await interact(facing, answer)
+
+
 ## Raccourci du parcours : pose [param flags] (ce que le tronçon sauté aurait posé) et le note
 ## dans le journal avec [param reason]. Le tronçon a ses propres tests ; le parcours réel de
 ## Kevin (T6) le rejoue au doigt. [param items] : objets reçus dans ce tronçon ({ id: nombre }).
@@ -158,9 +195,14 @@ func shortcut(flags: Array, reason: String, items: Dictionary = {}) -> void:
 
 
 ## Comme [method HideoutPlay.interact], mais le combat sauvage qui suit est une capture : une
-## [param ball] lancée au premier tour (Master Ball : prise à coup sûr). Renvoie l'issue du
-## combat ([enum Battle.Outcome], NONE sans combat).
-func catch_with(facing: Vector2i, ball: StringName = &"master_ball") -> int:
+## [param ball] lancée au premier tour, puis l'attaque. [param sure] : aléatoire « toujours 1 »
+## pendant le combat (la Ball prend à coup sûr, comme dans `test_snorlax_route_12.gd` ; la
+## probabilité de capture a ses propres tests). Renvoie l'issue du combat
+## ([enum Battle.Outcome], NONE sans combat).
+func catch_with(facing: Vector2i, ball: StringName, sure: bool = false) -> int:
+	var saved_rng := GameState.rng
+	if sure:
+		GameState.rng = SureRng.new(0)
 	player.face(facing)
 	Input.action_press(&"interact")
 	await _test.wait_process_frames(2)
@@ -206,6 +248,7 @@ func catch_with(facing: Vector2i, ball: StringName = &"master_ball") -> int:
 		elif box.is_open():
 			box.advance_requested.emit()
 	battles.battle_finished.disconnect(on_finished)
+	GameState.rng = saved_rng
 	await wait_stable()
 	return outcome[0]
 
