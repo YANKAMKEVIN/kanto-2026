@@ -14,6 +14,8 @@
 
 ## 0. État et dépendances (relu sur le dépôt)
 
+> **Gel fonctionnel en vigueur depuis le 2026-10-29** (`main` @ `ad1914bf`) : J0–J32, DAF.4, T1, T4, Reportés P1, CV.1 + CV.3 et lot 32P fusionnés. Désormais seuls les correctifs (§1).
+
 | Domaine | Réel aujourd'hui | Manque |
 |---|---|---|
 | Tests | ≈ 6 890 tests GUT, 731 scripts (baseline T1 : `jalon-33-baseline.md`) ; `tools/test.sh` (ciblé, `--changed`, verrou de 2 suites) ; `tools/check_test_timing.sh` ; CI 8 lots (`.github/workflows/godot-tests.yml`) | Aucun test de parcours complet |
