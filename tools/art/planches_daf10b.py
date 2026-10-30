@@ -60,11 +60,11 @@ def main() -> None:
 		("route_24_raccord", "Route 24 : coin sud-ouest (RP-282)")],
 		"DAF.10b — raccords"), SORTIE / "planche-5-raccords.jpg")
 	g, b, i = "assets/world/ground/", "assets/world/buildings/", "assets/world/interiors/"
-	p3._ecrire(p3._contact([(f"{b}bldg_poste_traversant_01.png", "poste traversant (neuf)"),
-		(f"{i}int_jumelles_01.png", "jumelles (neuves)"), (f"{g}ground_piste_01.png", "béton de la Piste (neuf)"),
-		(f"{i}int_poste_traversant_coque.png", "poste 1F (neuf)"), (f"{i}int_poste_etage_coque.png", "poste 2F (neuf)"),
-		(f"{i}int_poste_16_coque.png", "poste 16 (neuf)")],
-		"DAF.10b — images neuves à l'échelle du jeu × 0,5 (Codex)", 0.5), SORTIE / "planche-6-images.jpg")
+	p3._ecrire(p3._contact([(f"{b}bldg_poste_traversant_01.png", "façade du poste traversant [D]"),
+		(f"{i}int_poste_traversant_coque.png", "poste 1F (15, 18) [D]"), (f"{i}int_poste_etage_coque.png", "poste 2F (15) [D]"),
+		(f"{i}int_poste_16_coque.png", "poste 16 [D]"), (f"{g}ground_dalles_souterrain_01.png", "Piste : dalles [D]")],
+		"DAF.10b — images dérivées du kit peint (sans Codex) à l'échelle du jeu × 0,5", 0.5),
+		SORTIE / "planche-6-images.jpg")
 	paires = [("route_13_vue", "Route 13"), ("route_15_vue", "Route 15"), ("route_17", "Route 17, Piste"),
 		("route_18_vue", "Route 18"), ("route_19", "Route 19"), ("route_20_vue", "Route 20"),
 		("poste_15", "Poste de la Route 15"), ("poste_16", "Poste de la Route 16")]
