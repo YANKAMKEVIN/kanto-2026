@@ -31,7 +31,8 @@ extends RefCounted
 ## Équipe : 1 à 6 Pokémon créés par [PokemonFactory] (capacités de Rouge/Bleu au niveau) ;
 ## « moves » (1 à 4, distinctes) les remplace ; « exp_to_next » fixe l'XP qui manque pour le
 ## niveau suivant (1 = un seul point) ; « hp » fixe les PV de départ (0 = K.O., borné aux PV
-## max). Le starter est le premier de l'équipe ; chaque espèce
+## max). Le starter est le premier de l'équipe (J33 T5 : sauf s'il n'est pas un starter de base,
+## voir [method starter_of]) ; chaque espèce
 ## de l'équipe est « capturée » au Pokédex. Sans « map », départ par défaut de [Boot].
 ## Jalon 7 (sauvegarde v3) : « money » (0 à GameState.MONEY_MAX ; absent : la somme d'une
 ## nouvelle partie) ; « storage » : Pokémon du Stockage, même format que les membres de l'équipe
@@ -93,6 +94,10 @@ const VEIL_OFF: StringName = &"off"
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
 	"discovered", "safari", "fx_gallery", "caught_except"]
+## Starter du joueur → starter que prend le rival (`starter_choice_controller.gd`, RB).
+const _RIVAL_PICK: Dictionary[StringName, StringName] = {
+	&"bulbasaur": &"charmander", &"charmander": &"squirtle", &"squirtle": &"bulbasaur",
+}
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -360,6 +365,21 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	return true
 
 
+## Starter de la partie (J33 T5) : [param lead] s'il est l'un des trois starters ; sinon celui
+## que désigne la paire `taken_<starter>` des drapeaux (le rival prend toujours le starter qui
+## bat celui du joueur : la paire n'a qu'une lecture) ; sinon [param lead]. Un départ qui met un
+## starter évolué ou un autre Pokémon en tête garde ainsi les équipes du rival (sans starter
+## connu, un combat du rival n'a pas d'équipe et compte comme une défaite).
+static func starter_of(lead: StringName, start_flags: Array[StringName]) -> StringName:
+	if _RIVAL_PICK.has(lead):
+		return lead
+	for starter: StringName in _RIVAL_PICK:
+		if start_flags.has(StringName("taken_%s" % starter)) \
+				and start_flags.has(StringName("taken_%s" % _RIVAL_PICK[starter])):
+			return starter
+	return lead
+
+
 ## Construit la partie dans [param state] (l'autoload GameState, ou une instance neuve de
 ## game_state.gd en test) : nouvelle partie de graine [member rng_seed], équipe, starter,
 ## Pokédex, drapeaux, Sac.
@@ -373,7 +393,8 @@ func apply(state: Object, data: PokemonData) -> void:
 		var stored := _create(member, state, data)
 		state.storage.add(stored)
 		state.pokedex.mark_caught(stored.species_id)
-	state.starter_species = party[0]["species"] if not party.is_empty() else &""
+	state.starter_species = starter_of(party[0]["species"] if not party.is_empty() else &"",
+		flags)
 	for flag: StringName in flags:
 		state.flags.set_flag(flag)
 	for id: StringName in bag:

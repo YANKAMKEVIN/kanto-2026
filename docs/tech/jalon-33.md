@@ -138,6 +138,43 @@ Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headles
 04 Ligue ; 05 post-game ; 06 collection. Variantes : les trois starters (équipes du rival). Les
 états accélérés complètent le parcours réel de Kevin, ils ne le remplacent pas.
 
+**Fait le 2026-10-29** (branche `claude/charming-dubinsky-f24364`, depuis `main` @ `9ce12d8e`) ; **fusionné dans `main` le 2026-10-30** avec l’accord de Kevin.
+- **Harnais** `tests/parcours/parcours_play.gd` (`ParcoursPlay`, hérite de `tests/helpers/hideout_play.gd` ;
+  hors de `tests/helpers/` pour que `--changed` ne relance pas toute la suite) : **une seule partie
+  par parcours** sur la vraie Boot et une sauvegarde en mémoire ; l'état passe d'une étape à l'autre,
+  seul le premier pas part d'un `debug_start` (ou d'une nouvelle partie, `start_new`). Étapes :
+  `jump` (changement de carte réel, comme un Vol), `walk_through` (marche, Dresseurs qui repèrent le
+  joueur combattus), `talk` / `talk_to` / `approach` (case voisine par la vraie grille), `surf_to`
+  (berge, `MountDirector.start_surf`, nage), `catch_with` / `catch_in_grass` (Ball au premier tour,
+  aléatoire « toujours 1 » quand la capture doit être sûre), `run_league` (5 salles, portes, appels),
+  `persist` (sauvegarde écrite, application relancée, partie relue identique : carte, case, équipe,
+  Stockage, Sac, Pokédex, drapeaux, argent, Panthéon…), relevé des combats (`battles` : Dresseur,
+  **équipe adverse réellement affrontée**, issue). Journal par étape (« ✔ / ✘ ») imprimé par GUT ;
+  chaque **raccourci** (tronçon sauté) est noté « ↷ » avec sa raison et ses tests propres.
+- **Victoires** : `make_ace` met en tête un Mewtwo N100 (Psyko) et `heal` soigne avant chaque grand
+  combat : le parcours vérifie les **enchaînements**, pas l'équilibrage (tests IA tiers, RP-249 à
+  RP-254).
+- **Parcours** (`tests/parcours/`, 9 tests, ≈ 6 min sur le Mac) :
+
+| Parcours | Départ | Étapes réelles (combats, scènes, sauvegarde) | Raccourcis |
+|---|---|---|---|
+| 01 début `test_parcours_01_debut.gd` | nouvelle partie au labo | fiche et CHOISIR du starter, rival du labo, colis à la Boutique, Pokédex, rival de la Route 22, Arène d'Argenta (Liam, Pierre), relance | prologue, Route 1, Route 2 et Forêt |
+| 02 progression `test_parcours_02_progression.gd` | `rival_cerulean` | rival d'Azuria, Ondine, rival du S.S. Anne, capitaine (CS01), arbuste coupé, Major Bob, Erika, Giovanni (Scope), rival de la Tour, Ossatueur, Rockets du 7F et Fuji (Poké Flûte), Ronflex de la Route 12, Koga, rival et Giovanni à la Sylphe (porte à carte, Master Ball), Morgane ; Dresseurs d'Arène croisés ; relance | Pont Pépite et Bill, puzzle de Carmin, Routes 9-10 et Grotte Sombre, Casino et B1F-B4F du repaire, Tour 3F-5F, Route 16 et Piste Cyclable, Sylphe 1F-6F |
+| 03 donjons et légendaires `test_parcours_03_donjons.gd` | `j24_articuno` | Surf depuis l'escalier (7, 11) et Artikodin, interrupteur et Clé Secrète du Manoir, Auguste (première victoire de Boot sur lui), Giovanni à Jadielle, Électhor, dernier rival de la Route 22 (première fois en Boot), Sulfura, relance (trois légendaires relus) | Badge Marais, Manoir 1F-3F, portes du quiz, dalles de Jadielle, Route 23, Route Victoire 1F |
+| 04 Ligue `test_parcours_04_ligue.gd` | `league_lorelei` | Olga, Aldo, Agatha, Peter, rival (équipe contre Salamèche), portes nord, Panthéon, générique, Bourg Palette, relance | — |
+| 05 post-game `test_parcours_05_post_game.gd` | `cerulean_cave_locked` | Grotte fermée avant le titre (en Surf), Champion, Grotte ouverte, Mewtwo capturé, **Ligue rejouée en entier** (2e entrée du Panthéon, Mewtwo gardé), dons de Chen, relance | étages 1F à B1F de la Grotte |
+| 06 collection `test_parcours_06_collection.gd` | `evolution_qa` | Chenipan bat Théo et évolue, captures dans les herbes jusqu'à l'équipe pleine puis au Stockage, dépôt et retrait (règles du Stockage), relance, Diplôme, Mew sous le camion (151), relance | Chenipan mis en tête, 150 captures, Ligue |
+| Starters `test_parcours_starters.gd` | `route_22_final_<s>`, `silph_7f_rival_<s>`, `league_champion_<s>` | pour Bulbizarre, Salamèche, Carapuce : les trois derniers combats du rival, équipe affrontée = données, dernier Pokémon (Dracaufeu, Tortank, Florizarre), Panthéon | — |
+
+- **Anomalies** (registre `reportes.md`) : **RP-267** (P3, corrigé) `DebugStart` prenait le premier
+  Pokémon comme starter même évolué : 109 départs sans starter connu, tout combat du rival depuis
+  eux partait sans équipe et comptait comme une défaite ; désormais le premier s'il est un starter
+  de base, sinon la paire `taken_*` (une seule lecture), test `test_debug_start_starter.gd`, rejoué
+  par le parcours 03. **RP-268** (P3, ouvert) : un combat de Dresseur sans équipe adverse est compté
+  comme une défaite au lieu d'être refusé ; aucune vraie sauvegarde n'y mène (champ `starter`
+  présent de v1 à v8). **Aucun P0 ni P1 trouvé.**
+- **Pour T6** : les raccourcis du tableau sont les tronçons que seule la passe humaine rejoue.
+
 ### T6 — Campagne complète et corrections (33E)
 Une passe humaine sur S24 par parcours ; chaque anomalie dans `docs/tech/registre-anomalies.md` [D]
 (ID, priorité, build, étapes, état). Fermeture seulement après **rejeu réussi du scénario**.
