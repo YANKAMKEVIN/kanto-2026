@@ -76,7 +76,7 @@ func _written(state: Node) -> Dictionary:
 # --- Format et version ---------------------------------------------------------------------
 
 func test_the_format_is_v7_and_the_step_6_to_7_changes_nothing_but_the_version() -> void:
-	assert_eq(SaveSystem.VERSION, 8, "v7 : jalon 15 (Pension) ; v8 : jalon 23 (Parc Safari)")
+	assert_eq(SaveSystem.VERSION, 9, "v7 : jalon 15 (Pension) ; v8 : jalon 23 (Parc Safari), v9 JR")
 	var bare := {"version": 6}
 	assert_eq(SaveSystem.upgrade(bare, 7), OK)
 	assert_eq(bare, {"version": 7}, "aucun champ inventé : Pension vide par défaut")

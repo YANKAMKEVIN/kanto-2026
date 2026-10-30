@@ -38,8 +38,11 @@ extends RefCounted
 ## joueur « player_look » ; docs/tech/ouverture.md §2) ; 6 = jalon 11, T1 (identifiant
 ## des Pokémon « uid », compteur « status_turns », compagnon « companion » ; dossier 14 §9,
 ## jalon-11.md §2.1), par-dessus la v5 d'OUV.1 ; 7 = jalon 15, T2 (Pension « daycare » :
-## Pokémon déposé, XP en attente, niveau au dépôt ; dossier 18 §11, jalon-15.md §2.6).
-const VERSION: int = 8
+## Pokémon déposé, XP en attente, niveau au dépôt ; dossier 18 §11, jalon-15.md §2.6) ;
+## 8 = jalon 23 (visite du Parc Safari « safari ») ; 9 = chantier JR (apparence du rival
+## « rival_look », costume du joueur « player_costume » ; dossier-joueuse-rivale.md JR-8,
+## dossier-costumes.md CO-9), une seule migration pour les deux chantiers.
+const VERSION: int = 9
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
@@ -287,6 +290,10 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 				# 7 → 8 (J23, jalon-23.md §2.15) : rien à transformer ; « safari » absent = aucune
 				# visite du Parc Safari en cours (GameState.load_dict). Le numéro protège d'une
 				# build v7 qui perdrait le compteur de pas et de Balls au premier autosave.
+				# 8 → 9 (chantier JR, JR-8 ; costumes, CO-9) : rien à transformer ;
+				# « rival_look » absent = le rival garçon, « player_costume » absent = la tenue
+				# d'origine (GameState.load_dict). Le numéro protège d'une build v8 qui
+				# remettrait le rival en garçon et ôterait le costume au premier autosave.
 				pass
 		from += 1
 	content[VERSION_KEY] = target

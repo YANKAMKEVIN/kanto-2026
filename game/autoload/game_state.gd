@@ -31,11 +31,20 @@ const DEFAULT_PLAYER_NAME: String = "Kevin"
 const DEFAULT_RIVAL_NAME: String = "Régis"
 ## Longueur maximale d'un prénom (dossier 13, A7) ; égale à celle de `names.json` (testé).
 const NAME_MAX_LENGTH: int = 10
-## Apparences du joueur connues de cette build (dossier 13 §3.4, A2 option A : le héros seul ;
-## `&"heroine"` s'ajoutera ici sans migration). Une valeur inconnue chargée retombe sur
-## [constant DEFAULT_PLAYER_LOOK].
-const PLAYER_LOOKS: Array[StringName] = [&"hero"]
+## Apparences du joueur connues de cette build (dossier 13 §3.4 ; la joueuse `&"heroine"`,
+## chantier JR, JR-1). Une valeur inconnue chargée retombe sur [constant DEFAULT_PLAYER_LOOK].
+const PLAYER_LOOKS: Array[StringName] = [&"hero", &"heroine"]
 const DEFAULT_PLAYER_LOOK: StringName = &"hero"
+## Apparences du rival (sauvegarde v9, chantier JR, JR-2 et JR-8) : le rival ou la rivale,
+## choisi librement à l'introduction ; garçon par défaut et après migration. Une valeur
+## inconnue chargée retombe sur [constant DEFAULT_RIVAL_LOOK].
+const RIVAL_LOOKS: Array[StringName] = [&"rival", &"rivale"]
+const DEFAULT_RIVAL_LOOK: StringName = &"rival"
+## Costumes du Dresseur connus de cette build (sauvegarde v9, dossier-costumes.md CO-9) : aucun
+## encore ; vide = la tenue d'origine. Une valeur inconnue chargée retombe sur la tenue
+## d'origine.
+const PLAYER_COSTUMES: Array[StringName] = []
+const NO_COSTUME: StringName = &""
 const DEFAULT_HEAL_MAP: StringName = &"player_house_1f"
 const DEFAULT_HEAL_SPAWN: StringName = &"heal"
 ## Argent (dossier 09 §10) : 3 000 ₽ pour une nouvelle partie (provisoire) ; plafond de
@@ -88,6 +97,11 @@ var player_name: String = DEFAULT_PLAYER_NAME
 var rival_name: String = DEFAULT_RIVAL_NAME
 ## Apparence du joueur (sauvegarde v5, dossier 13 §3.4, §3.6) : une de [constant PLAYER_LOOKS].
 var player_look: StringName = DEFAULT_PLAYER_LOOK
+## Apparence du rival (sauvegarde v9, JR-8) : une de [constant RIVAL_LOOKS].
+var rival_look: StringName = DEFAULT_RIVAL_LOOK
+## Costume porté par le joueur (sauvegarde v9, CO-9) : un de [constant PLAYER_COSTUMES], ou
+## [constant NO_COSTUME] pour la tenue d'origine.
+var player_costume: StringName = NO_COSTUME
 ## Temps de jeu en secondes, compté par la scène seulement au premier plan
 ## ([method add_play_time]).
 var play_time: float = 0.0
@@ -164,6 +178,8 @@ func new_game(rng_seed: int = -1) -> void:
 	player_name = DEFAULT_PLAYER_NAME
 	rival_name = DEFAULT_RIVAL_NAME
 	player_look = DEFAULT_PLAYER_LOOK
+	rival_look = DEFAULT_RIVAL_LOOK
+	player_costume = NO_COSTUME
 	play_time = 0.0
 	started_at = now()
 	discovered_maps.clear()
@@ -340,6 +356,12 @@ func to_dict() -> Dictionary:
 	# écrite seulement pendant une visite (absente = aucune visite, comme « mount »).
 	if safari.active:
 		result["safari"] = safari.to_dict()
+	# Chantier JR et costumes (v9, JR-8, CO-9) : écrits seulement s'ils diffèrent du défaut
+	# (absents = le rival garçon, la tenue d'origine, comme après la migration 8 → 9).
+	if rival_look != DEFAULT_RIVAL_LOOK:
+		result["rival_look"] = String(rival_look)
+	if player_costume != NO_COSTUME:
+		result["player_costume"] = String(player_costume)
 	# Jalon 30 (30A, §2.6) : champ facultatif de la v7, absent tant que le Panthéon est vide.
 	if not hall_of_fame.is_empty():
 		result["hall_of_fame"] = hall_of_fame.to_array()
@@ -359,6 +381,8 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 		player_name = DEFAULT_PLAYER_NAME
 	rival_name = loaded_rival_name(JsonFields.get_string(dict, "rival_name"))
 	player_look = loaded_player_look(JsonFields.get_id(dict, "player_look"))
+	rival_look = loaded_rival_look(JsonFields.get_id(dict, "rival_look"))
+	player_costume = loaded_player_costume(JsonFields.get_id(dict, "player_costume"))
 	started_at = JsonFields.get_string(dict, "started_at", started_at)
 	play_time = maxf(JsonFields.get_float(dict, "play_time"), 0.0)
 	current_map = JsonFields.get_id(dict, "map")
@@ -437,6 +461,19 @@ static func loaded_rival_name(raw: String) -> String:
 ## inconnue de cette build) [constant DEFAULT_PLAYER_LOOK], sans erreur.
 static func loaded_player_look(raw: StringName) -> StringName:
 	return raw if PLAYER_LOOKS.has(raw) else DEFAULT_PLAYER_LOOK
+
+
+## Apparence du rival lue dans une sauvegarde : une de [constant RIVAL_LOOKS], sinon (absente,
+## sauvegarde v8 ou inconnue) [constant DEFAULT_RIVAL_LOOK], sans erreur.
+static func loaded_rival_look(raw: StringName) -> StringName:
+	return raw if RIVAL_LOOKS.has(raw) else DEFAULT_RIVAL_LOOK
+
+
+## Costume lu dans une sauvegarde : un de [constant PLAYER_COSTUMES], sinon (absent, inconnu de
+## cette build) [constant NO_COSTUME], sans erreur. Le badge requis sera vérifié avec les
+## données des costumes (CO-9).
+static func loaded_player_costume(raw: StringName) -> StringName:
+	return raw if PLAYER_COSTUMES.has(raw) else NO_COSTUME
 
 
 # --- Identifiants et compagnon (jalon 11) --------------------------------------------

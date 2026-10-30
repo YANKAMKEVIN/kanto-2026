@@ -857,7 +857,7 @@ func test_upgrade_4_to_5_changes_nothing_but_the_version() -> void:
 	var bare := {"version": 4}
 	assert_eq(SaveSystem.upgrade(bare, 5), OK)
 	assert_eq(bare, {"version": 5}, "aucun champ inventé : les défauts viennent de load_dict")
-	assert_eq(SaveSystem.VERSION, 8, "v7 depuis le J15 (par-dessus la v6 du J11), v8 au J23")
+	assert_eq(SaveSystem.VERSION, 9, "v7 depuis le J15 (par-dessus la v6 du J11), v8 au J23, v9 JR")
 	assert_eq(SaveSystem.migration_note(4, 5), "sauvegarde v4 → v5")
 
 
@@ -952,7 +952,7 @@ func test_an_invalid_rival_name_falls_back_to_the_default() -> void:
 
 
 func test_an_unknown_look_falls_back_to_the_hero_without_error() -> void:
-	for raw: Variant in ["heroine", "", 7, "HERO"]:
+	for raw: Variant in ["villain", "", 7, "HERO"]:
 		var dict: Dictionary = _full_state().to_dict()
 		dict["player_look"] = raw
 		var loaded := _state()

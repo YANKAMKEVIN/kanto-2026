@@ -32,7 +32,7 @@ func _round_trip(state: Node) -> Node:
 
 
 func test_the_format_is_v8_and_the_step_7_to_8_invents_nothing() -> void:
-	assert_eq(SaveSystem.VERSION, 8, "v8 : jalon 23 (visite du Parc Safari)")
+	assert_eq(SaveSystem.VERSION, 9, "v8 : jalon 23 (visite du Parc Safari), v9 JR")
 	var bare := {"version": 7}
 	assert_eq(SaveSystem.upgrade(bare, 8), OK)
 	assert_eq(bare, {"version": 8}, "« safari » absent = aucune visite")

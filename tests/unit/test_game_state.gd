@@ -337,7 +337,7 @@ func test_a_new_game_has_the_default_rival_and_the_hero() -> void:
 	state.new_game()
 	assert_eq(state.rival_name, "Régis", "remis au défaut")
 	assert_eq(state.player_look, &"hero")
-	assert_eq(GameStateScript.PLAYER_LOOKS, [&"hero"] as Array[StringName], "option A : le héros")
+	assert_eq(GameStateScript.PLAYER_LOOKS, [&"hero", &"heroine"] as Array[StringName], "JR-1")
 
 
 func test_starts_with_an_empty_storage_and_new_game_empties_it() -> void:

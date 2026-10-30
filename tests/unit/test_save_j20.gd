@@ -44,7 +44,7 @@ func before_all() -> void:
 
 
 func test_version_stays_seven() -> void:
-	assert_eq(SaveSystem.VERSION, 8, "le J20 n'ajoute aucune version (v8 : J23)")
+	assert_eq(SaveSystem.VERSION, 9, "le J20 n'ajoute aucune version (v8 : J23), v9 JR")
 
 
 func test_gift_origin_round_trip_in_the_party_and_the_storage() -> void:
