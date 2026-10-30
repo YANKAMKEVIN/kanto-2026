@@ -61,6 +61,8 @@ Critère : `docs/tech/jalon-33-baseline.md` avec commit exact. **Fait le 2026-10
 Grille de contrôle : sols, bâtiments, personnages, Pokémon, eau, donjons, combats, menus. Chaque
 écart devient une ligne du registre, avec priorité. Corrections par lots d'art, pas à la main.
 
+**Passe d'audit faite le 2026-10-30** (`main` @ `53c90a1f`, aucune correction, gel J33) : 97 cartes, 20 combats, 10 menus ; **P0 0, P1 9** (RP-269 à RP-277 : Parmanie, Parc Safari, Routes 13-15 et 17-18, mer 19-21, Îles Écume, Centrale, postes-frontière, Ligue à confirmer sur S24), P2 4, P3 1 ; synthèse, tableau par zone et lots proposés (DAF.10a à d, DAF.2 bis) : `jalon-33-t2-audit.md`. **T2 n'est pas clos** : il le sera quand les lots d'art auront fermé les 9 P1 et que la passe aura été refaite sur les zones touchées.
+
 ### T3 — Profilage Android (33C, Sonnet)
 `tools/profile_s24.sh` [D] : session de 30 minutes avec relevé périodique de la mémoire ; protocole
 batterie et température écrit (appareil branché ou non, luminosité fixée). Profils séparés :
