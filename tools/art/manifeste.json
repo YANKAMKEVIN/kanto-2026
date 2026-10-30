@@ -3216,6 +3216,47 @@
    "hauteur": 128,
    "nettoyer": true,
    "note": "DAF.4 reliquat (RP-136) ; Peter (lance), remplace traveler ; cape"
+  },
+  {
+   "id": "joueuse",
+   "source": "JR_JOUEUSE_MARCHE_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_sheet.png",
+   "hauteur": 128,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "joueuse_run",
+   "source": "JR_JOUEUSE_COURSE_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_run_sheet.png",
+   "hauteur": 128,
+   "profil_course": {
+    "source": "JR_JOUEUSE_COURSE_PROFIL_r1.png",
+    "rebond": 3
+   },
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "joueuse_surf",
+   "source": "JR_JOUEUSE_SURF_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_surf_sheet.png",
+   "hauteur": 134,
+   "nettoyer": true,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "joueuse_bike",
+   "source": "JR_JOUEUSE_VELO_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_bike_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "rivale",
+   "source": "JR_RIVALE_MARCHE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rivale_sheet.png",
+   "hauteur": 130,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
   }
  ],
  "pokemon": [
@@ -3442,6 +3483,27 @@
    "sortie": "assets/sprites/characters/painted/rival_portrait.png",
    "hauteur": 768,
    "note": "portrait en pied de l'introduction, bras croises (OUV.2, dossier 13 9.0 bis) ; source = PORTRAIT_RIVAL_NE_r1.png, valide par Kevin le 2026-10-10"
+  },
+  {
+   "id": "joueuse_lancer",
+   "source": "JR_JOUEUSE_LANCER_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_lancer.png",
+   "hauteur": 384,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "joueuse_portrait",
+   "source": "JR_JOUEUSE_PORTRAIT_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_portrait.png",
+   "hauteur": 768,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "rivale_portrait",
+   "source": "JR_RIVALE_PORTRAIT_r1.png",
+   "sortie": "assets/sprites/characters/painted/rivale_portrait.png",
+   "hauteur": 768,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
   }
  ],
  "attentes": [
@@ -3840,6 +3902,28 @@
    "marche": "heros_bike",
    "note": "série 25 (DAF.5)",
    "rapport_hauteur": 0.94
+  },
+  {
+   "id": "joueuse_idle",
+   "source": "JR_JOUEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_idle_sheet.png",
+   "marche": "joueuse",
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "joueuse_bike_idle",
+   "source": "JR_JOUEUSE_VELO_ARRET_r1.png",
+   "sortie": "assets/sprites/characters/painted/joueuse_bike_idle_sheet.png",
+   "marche": "joueuse_bike",
+   "rapport_hauteur": 0.94,
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "rivale_idle",
+   "source": "JR_RIVALE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rivale_idle_sheet.png",
+   "marche": "rivale",
+   "note": "chantier JR (dossier-joueuse-rivale.md)"
   }
  ],
  "images_objets": [
