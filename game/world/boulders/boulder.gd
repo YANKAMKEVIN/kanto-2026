@@ -14,8 +14,8 @@ extends Node2D
 ## - **Chute** ([method fall]) : la case est libérée tout de suite, le rocher s'enfonce et
 ##   disparaît en fondu ; [StrengthDirector] le libère ensuite.
 ##
-## Image provisoire (règle 3, phase DA) : disque gris-brun dessiné, plus clair en haut, une
-## fissure (dossier 27 §6.4 : « arrondis, plus clairs, une fissure »), ombre au sol.
+## Image peinte `prop_rocher_force_01` (série 27, dossier 27 §6.4 : « arrondis, plus clairs, une
+## fissure » ; lot DAF.10c, RP-275), pied au bas de la case, ombre au sol dessinée.
 
 ## Dialogue d'EXAMINER (variantes `field: "strength:<état>"`, `data/dialogues/strength.json`).
 const EXAMINE_DIALOGUE: StringName = &"strength_boulder"
@@ -26,12 +26,9 @@ const FALL_DURATION: float = 0.35
 ## Amplitude du tremblement (px monde) et enfoncement de la chute.
 const SHAKE_AMPLITUDE: float = 6.0
 const FALL_DEPTH: float = 40.0
-## Dessin provisoire (px monde) : rayon du disque, ombre.
-const RADIUS: float = 40.0
+## Image peinte et ombre au sol (px monde).
+const IMAGE: Texture2D = preload("res://assets/world/props/prop_rocher_force_01.png")
 const SHADOW_SIZE := Vector2(46.0, 13.0)
-const COLOR_BODY := Color(0.55, 0.5, 0.45)
-const COLOR_LIGHT := Color(0.7, 0.66, 0.6)
-const COLOR_CRACK := Color(0.3, 0.26, 0.23)
 const COLOR_SHADOW := Color(0.0, 0.0, 0.0, 0.3)
 
 var _grid: GridWorld
@@ -45,17 +42,12 @@ var _tween: Tween
 
 
 func _draw() -> void:
-	var body := Vector2(_shake_offset, -RADIUS - 2.0 + _sink)
 	if _sink == 0.0:
 		draw_set_transform(Vector2(_shake_offset, -4.0), 0.0, SHADOW_SIZE / SHADOW_SIZE.x)
 		draw_circle(Vector2.ZERO, SHADOW_SIZE.x, COLOR_SHADOW)
 		draw_set_transform(Vector2.ZERO)
-	draw_circle(body, RADIUS, COLOR_BODY)
-	draw_circle(body + Vector2(-8.0, -10.0), RADIUS * 0.7, COLOR_LIGHT)
-	draw_circle(body + Vector2(-14.0, -16.0), RADIUS * 0.35, COLOR_LIGHT.lightened(0.12))
-	var crack := PackedVector2Array([body + Vector2(6.0, -30.0), body + Vector2(0.0, -12.0),
-		body + Vector2(10.0, 2.0), body + Vector2(4.0, 20.0)])
-	draw_polyline(crack, COLOR_CRACK, 3.0, true)
+	var size := IMAGE.get_size()
+	draw_texture(IMAGE, Vector2(_shake_offset - size.x / 2.0, -size.y - 2.0 + _sink))
 
 
 ## Pose le rocher sur [param cell] de [param grid] (occupant) ; faux si la case est prise.

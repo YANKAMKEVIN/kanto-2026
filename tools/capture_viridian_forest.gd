@@ -47,6 +47,14 @@ func _setup() -> void:
 		for flag: String in String(_args["gates"]).split(",", false):
 			flags.set_flag(StringName(flag))
 		map.call(&"apply_flag_gates", flags)
+	if _args.has("boulders"):
+		# Lot DAF.10c : rochers de Force à leurs cases d'origine (`Boulders`), image du jeu.
+		var setup: Node = map.get_node_or_null(^"Boulders")
+		for boulder_cell: Vector2i in (setup.get(&"boulder_cells") if setup != null else []):
+			var boulder := Node2D.new()
+			boulder.set_script(load("res://game/world/boulders/boulder.gd"))
+			boulder.position = Vector2(boulder_cell.x * TILE + TILE / 2.0, (boulder_cell.y + 1) * TILE)
+			map.get_node(^"Entities").add_child(boulder)
 	if not _args.has("noplayer"):
 		var player: Node = (load("res://game/player/player.tscn") as PackedScene).instantiate()
 		map.call(&"spawn_player_at", player, cell, facing)

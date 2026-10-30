@@ -783,6 +783,34 @@ const RULES: Dictionary[StringName, Dictionary] = {
 		"align": ALIGN_CENTRE},
 	&"decal_trou_victoire_bouche_01": {"traversable": true, "layer": LAYER_GROUND,
 		"align": ALIGN_CENTRE},
+	# Lot DAF.10c (`tools/build_daf10c_seafoam.gd`) : grotte glacée des Îles Écume. Parois aux rôles
+	# et ancrages de `relief_paroi_grotte_01/02/05/06` ; rebords, escalier et trous comme ceux de la
+	# Grotte Azurée et de la Route Victoire ; petit rocher fixe `o` (1 × 1, case déjà bloquée).
+	&"relief_paroi_glace_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_glace_02": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_glace_05": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_glace_06": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_rebord_ecume_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_rebord_ecume_cote_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_escalier_ecume_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"decal_trou_ecume_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"decal_trou_ecume_bouche_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"prop_rocher_glace_01": {"width": 1, "depth": 1},
+	# Lot DAF.10c (`tools/build_daf10c_centrale.gd`) : murs de la Centrale aux rôles de
+	# `relief_mur_repaire_*` (`tools/module_walls.gd`) ; machines posées sur des cases de machine
+	# déjà bloquées (sur la masse).
+	&"relief_mur_centrale_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_centrale_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_centrale_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_mur_centrale_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_mur_centrale_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"int_transformateur_centrale_01": {"width": 1, "depth": 1},
+	&"int_bobine_centrale_01": {"width": 1, "depth": 1},
+	&"int_pupitre_centrale_01": {"width": 1, "depth": 1},
 	# Façades du J29 (lot DAF.4, `tools/build_daf4_facades.gd`) : poste de la Ligue (Route 22 ouest,
 	# 5 × 4, porte au milieu) et bâtiment de la Ligue (Plateau Indigo, 8 × 6, porte double).
 	&"bldg_poste_route_22_01": {"shadow": true, "width": 5, "depth": 4, "fade": true,

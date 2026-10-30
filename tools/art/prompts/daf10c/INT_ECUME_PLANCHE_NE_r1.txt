@@ -1,0 +1,29 @@
+INT_ECUME_PLANCHE — NOUVELLE image pour un jeu vidéo.
+Images jointes : ground_glace_01, relief_rebord_azuree_01, relief_escalier_azuree_01, decal_trou_victoire_01, prop_rocher_force_01 = assets déjà peints du jeu : ancres de style (rendu peint, contour coloré fin, même angle de vue, même lumière neutre, même échelle de détail) ; WORLD_GROUND_ECUME_BAS_01_NE_r1 = éléments DÉJÀ GÉNÉRÉS de ce lot : MÊME matière, mêmes couleurs, même main (raccord exact).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+VALEURS DES ÎLES ÉCUME (une grotte marine GLACÉE au large de Kanto, froide, calme et belle, jamais effrayante) : roche bleu ardoise et gris-bleu, GIVRE blanc, GLACE bleu pâle translucide, neige tassée dans les creux, eau bleu profond ; Lumière NEUTRE, diffuse et blanche venant légèrement du haut à gauche (le jeu ajoute lui-même la pénombre et ses halos) : AUCUNE teinte dorée, AUCUN halo, AUCUNE lueur, aucune ombre portée au sol.
+
+ASSET : PLANCHE d'ÉLÉMENTS des ÎLES ÉCUME, dans une image 1536 × 1024 : grille invisible de 3 colonnes × 2 lignes (cellules de 512 × 512), un élément par cellule, centré, la base de chacun sur une même ligne horizontale à 40 px du bas de sa cellule, les éléments bien SÉPARÉS les uns des autres par du vide, à une échelle COMMUNE de 1 case = 150 px, vus de dessus en trois quarts (on voit le dessus et la face avant sud). Matière : roche bleu ardoise givrée ; le sol haut est la GLACE bleu pâle de la texture jointe ground_glace_01, le sol bas la roche gelée de WORLD_GROUND_ECUME_BAS_01.
+1 (ligne 1, à gauche) : REBORD, la FACE AVANT d'un plateau de glace surélevé vue de face (le sol bas est au SUD, le sol haut de glace au NORD) : une petite falaise de roche givrée et de glace d'EXACTEMENT 1 case de large (≈ 150 px) et environ 0,6 case de haut, avec en haut un liseré de glace pâle vu de dessus ; bords gauche et droit COUPÉS NET en ligne droite (il se juxtapose bout à bout en longues rangées), bas droit.
+2 (ligne 1, au milieu) : BORD LATÉRAL, le côté d'un plateau dont le sol bas est à DROITE : une bande VERTICALE de roche givrée vue de dessus, environ 0,25 case de large × EXACTEMENT 1 case de haut, coupée net en haut et en bas.
+3 (ligne 1, à droite) : ESCALIER, des MARCHES taillées dans la glace et la roche givrée qui MONTENT vers le nord (le haut de l'image), vues de dessus en trois quarts, EXACTEMENT 1 case de large × 1 case de haut, trois ou quatre marches nettes, base droite.
+4 (ligne 2, à gauche) : TROU OUVERT dans le sol de roche gelée, PLAT, vu strictement de dessus, 1 case × 1 case : un puits rond aux bords de roche brisée et GIVRÉE, l'intérieur bleu nuit SOMBRE (jamais noir pur), un peu de neige au bord.
+5 (ligne 2, au milieu) : TROU BOUCHÉ, PLAT, vu strictement de dessus, le même trou rempli par un gros rocher rond gris clair enfoncé au ras du sol, givre autour, 1 case × 1 case.
+6 (ligne 2, à droite) : PETIT ROCHER FIXE, un bloc de roche gris-bleu coiffé de neige et de glace, vu de face en trois quarts, 1 case de large, environ 0,9 case de haut, base droite (il ne ressemble PAS au rocher rond fissuré joint prop_rocher_force_01, qui se pousse : il est anguleux, plus sombre et enneigé).
+Fond avec une vraie transparence (canal alpha), aucun sol autour, aucune ombre portée, aucun texte.
+
+Interdits du lot : texte, lettres, chiffres, logo, enseigne écrite, inscription, la lettre R ou tout emblème de la Team Rocket, AUCUN emblème rond de type balle (ni cercle partagé en deux, ni médaillon à bande centrale), animaux réels, Pikachu et tout Pokémon, personnage (même s'il figure sur une image jointe), flou de profondeur, vignettage, pixel art, contour noir épais, aplats.
