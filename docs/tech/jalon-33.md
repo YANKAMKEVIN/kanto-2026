@@ -138,7 +138,7 @@ Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headles
 04 Ligue ; 05 post-game ; 06 collection. Variantes : les trois starters (équipes du rival). Les
 états accélérés complètent le parcours réel de Kevin, ils ne le remplacent pas.
 
-**Fait le 2026-10-29** (branche `claude/charming-dubinsky-f24364`, depuis `main` @ `9ce12d8e`).
+**Fait le 2026-10-29** (branche `claude/charming-dubinsky-f24364`, depuis `main` @ `9ce12d8e`) ; **fusionné dans `main` le 2026-10-30** avec l’accord de Kevin.
 - **Harnais** `tests/parcours/parcours_play.gd` (`ParcoursPlay`, hérite de `tests/helpers/hideout_play.gd` ;
   hors de `tests/helpers/` pour que `--changed` ne relance pas toute la suite) : **une seule partie
   par parcours** sur la vraie Boot et une sauvegarde en mémoire ; l'état passe d'une étape à l'autre,
