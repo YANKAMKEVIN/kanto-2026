@@ -255,6 +255,774 @@
     "droite",
     "haut"
    ]
+  },
+  "co_roche_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_sheet.png",
+   "cellule": [
+    70,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_run_sheet.png",
+   "cellule": [
+    99,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_surf_sheet.png",
+   "cellule": [
+    100,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_bike_sheet.png",
+   "cellule": [
+    89,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_idle_sheet.png",
+   "cellule": [
+    70,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_bike_idle_sheet.png",
+   "cellule": [
+    97,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_fish_cast_sheet.png",
+   "cellule": [
+    120,
+    212
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_fish_wait_sheet.png",
+   "cellule": [
+    154,
+    244
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_run_sheet.png",
+   "cellule": [
+    102,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_surf_sheet.png",
+   "cellule": [
+    102,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_bike_sheet.png",
+   "cellule": [
+    104,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_idle_sheet.png",
+   "cellule": [
+    87,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    104,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    128,
+    248
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_roche_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    156,
+    236
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_run_sheet.png",
+   "cellule": [
+    106,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_surf_sheet.png",
+   "cellule": [
+    106,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_bike_sheet.png",
+   "cellule": [
+    91,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_idle_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_bike_idle_sheet.png",
+   "cellule": [
+    95,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_fish_cast_sheet.png",
+   "cellule": [
+    130,
+    224
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_fish_wait_sheet.png",
+   "cellule": [
+    144,
+    238
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_sheet.png",
+   "cellule": [
+    78,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_run_sheet.png",
+   "cellule": [
+    107,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_surf_sheet.png",
+   "cellule": [
+    99,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_bike_sheet.png",
+   "cellule": [
+    98,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_idle_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    98,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    108,
+    200
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_cascade_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    154,
+    240
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_run_sheet.png",
+   "cellule": [
+    92,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_surf_sheet.png",
+   "cellule": [
+    100,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_bike_sheet.png",
+   "cellule": [
+    84,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_idle_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_bike_idle_sheet.png",
+   "cellule": [
+    96,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_fish_cast_sheet.png",
+   "cellule": [
+    124,
+    226
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_fish_wait_sheet.png",
+   "cellule": [
+    152,
+    226
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_run_sheet.png",
+   "cellule": [
+    100,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_surf_sheet.png",
+   "cellule": [
+    101,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_bike_sheet.png",
+   "cellule": [
+    95,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_idle_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    97,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    104,
+    190
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_foudre_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    136,
+    216
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -277,6 +1045,66 @@
   },
   "co_prisme_joueuse_bust": {
    "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_bust.webp"
+  },
+  "co_roche_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_lancer.png",
+   "taille": [
+    248,
+    384
+   ]
+  },
+  "co_roche_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueur_bust.webp"
+  },
+  "co_roche_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_lancer.png",
+   "taille": [
+    286,
+    384
+   ]
+  },
+  "co_roche_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/roche_joueuse_bust.webp"
+  },
+  "co_cascade_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_lancer.png",
+   "taille": [
+    257,
+    384
+   ]
+  },
+  "co_cascade_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueur_bust.webp"
+  },
+  "co_cascade_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_lancer.png",
+   "taille": [
+    265,
+    384
+   ]
+  },
+  "co_cascade_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/cascade_joueuse_bust.webp"
+  },
+  "co_foudre_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_lancer.png",
+   "taille": [
+    247,
+    384
+   ]
+  },
+  "co_foudre_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueur_bust.webp"
+  },
+  "co_foudre_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_lancer.png",
+   "taille": [
+    256,
+    384
+   ]
+  },
+  "co_foudre_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_bust.webp"
   }
  }
 }
