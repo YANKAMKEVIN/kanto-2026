@@ -43,10 +43,12 @@ shader_parameter/foam_color = null
 shader_parameter/water_texture_size = null
 shader_parameter/foam_strength = null
 shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e6670"]
 shader = ExtResource("9_sivs5")
 shader_parameter/region = Vector4(0, 0, 1, 0.68359375)
+shader_parameter/top_fade = 0.22
 
 [node name="Route22" type="Node2D" unique_id=2025898583]
 script = ExtResource("1_bis3o")

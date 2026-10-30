@@ -2,9 +2,95 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_7xo1e"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_8l57k"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_hautes_herbes_jaune_01_bas.png" id="2_ktm1o"]
 [ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_22ybc"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="4_cerco"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_iu68j"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_8it7n"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_herbe_01.png" id="5_cve82"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/route_19_ground.png" id="6_xixsf"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_chemin_01.png" id="7_7vyll"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_paves_01.png" id="8_4ag4m"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_sable_01.png" id="9_weq7n"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_eau_01.png" id="10_laxkd"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="11_t6h0r"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/forest_floor.gdshader" id="12_v2ldl"]
+[ext_resource type="Script" path="res://game/world/ground/forest_floor.gd" id="13_e0w4t"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="14_vnooo"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rivage_06.png" id="15_hlv6d"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rivage_05.png" id="16_70r4j"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rivage_04.png" id="17_gykbl"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rivage_02.png" id="18_61xby"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rivage_01.png" id="19_hhtaq"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rivage_03.png" id="20_xkper"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_rebord_01.tscn" id="21_045n8"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_panneau_01.png" id="23_0tq4w"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_rocher_01.tscn" id="24_eivvt"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="25_2xhdo"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_03.png" id="26_eq71g"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_08.png" id="27_3jxdr"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_01.png" id="28_unsrw"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_02.png" id="29_qthw4"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_04.png" id="30_qhaby"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_07.png" id="31_d3efy"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_05.png" id="32_gyflp"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_06.png" id="33_dtkdi"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_a_01_bourg.png" id="34_bwsm3"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01_bourg.png" id="35_d4ebc"]
+
+[sub_resource type="Image" id="Image_pvhg2"]
+data = {
+"data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8AAAD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAP8A/wD/AP8A/wAA/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAA/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAA/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAA/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAA/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAD/AP8A/wD/AP8A/wD/AAAAAAAAAAAAAAAA/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAAAAAD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AAAAAAAAAP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+"format": "RedGreen",
+"height": 81,
+"mipmaps": false,
+"width": 30
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_uxwj2"]
+image = SubResource("Image_pvhg2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tqn0h"]
+shader = ExtResource("4_cerco")
+shader_parameter/grass_texture = ExtResource("5_cve82")
+shader_parameter/paving_texture = ExtResource("8_4ag4m")
+shader_parameter/path_texture = ExtResource("7_7vyll")
+shader_parameter/ground_mask = ExtResource("6_xixsf")
+shader_parameter/tile_size = 96.0
+shader_parameter/texture_size = null
+shader_parameter/paving_scale = null
+shader_parameter/path_scale = null
+shader_parameter/earth_color = null
+shader_parameter/has_shore = true
+shader_parameter/shore_mask = SubResource("ImageTexture_uxwj2")
+shader_parameter/sand_texture = ExtResource("9_weq7n")
+shader_parameter/water_texture = ExtResource("10_laxkd")
+shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = null
+shader_parameter/square_shore = true
+shader_parameter/pass_mode = null
+
+[sub_resource type="Image" id="Image_4h83v"]
+data = {
+"data": PackedByteArray("////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////////////////AAAAAAAAAAAA/wAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+"format": "Lum8",
+"height": 81,
+"mipmaps": false,
+"width": 30
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_bgtx8"]
+image = SubResource("Image_4h83v")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v1y56"]
+shader = ExtResource("12_v2ldl")
+shader_parameter/forest_mask = SubResource("ImageTexture_bgtx8")
+shader_parameter/tile_size = 96.0
+shader_parameter/dark_color = null
+shader_parameter/light_color = null
+shader_parameter/opacity = null
+shader_parameter/softness = null
 
 [node name="Route19" type="Node2D" unique_id=709687376]
 script = ExtResource("1_7xo1e")
@@ -12,17 +98,878 @@ map_id = &"route_19"
 display_name = "Route 19"
 size = Vector2i(30, 81)
 light_profile = &"golden_hour"
+grass_front = ExtResource("2_ktm1o")
 surf_cells = Array[Vector2i]([Vector2i(2, 15), Vector2i(3, 15), Vector2i(4, 15), Vector2i(5, 15), Vector2i(6, 15), Vector2i(7, 15), Vector2i(8, 15), Vector2i(9, 15), Vector2i(10, 15), Vector2i(11, 15), Vector2i(12, 15), Vector2i(13, 15), Vector2i(14, 15), Vector2i(15, 15), Vector2i(16, 15), Vector2i(17, 15), Vector2i(18, 15), Vector2i(19, 15), Vector2i(20, 15), Vector2i(21, 15), Vector2i(22, 15), Vector2i(23, 15), Vector2i(24, 15), Vector2i(25, 15), Vector2i(26, 15), Vector2i(27, 15), Vector2i(28, 15), Vector2i(2, 16), Vector2i(3, 16), Vector2i(4, 16), Vector2i(5, 16), Vector2i(6, 16), Vector2i(7, 16), Vector2i(8, 16), Vector2i(9, 16), Vector2i(10, 16), Vector2i(11, 16), Vector2i(12, 16), Vector2i(13, 16), Vector2i(14, 16), Vector2i(15, 16), Vector2i(16, 16), Vector2i(17, 16), Vector2i(18, 16), Vector2i(19, 16), Vector2i(20, 16), Vector2i(21, 16), Vector2i(22, 16), Vector2i(23, 16), Vector2i(24, 16), Vector2i(25, 16), Vector2i(26, 16), Vector2i(27, 16), Vector2i(28, 16), Vector2i(2, 17), Vector2i(3, 17), Vector2i(4, 17), Vector2i(5, 17), Vector2i(6, 17), Vector2i(7, 17), Vector2i(8, 17), Vector2i(9, 17), Vector2i(10, 17), Vector2i(11, 17), Vector2i(12, 17), Vector2i(13, 17), Vector2i(14, 17), Vector2i(15, 17), Vector2i(16, 17), Vector2i(17, 17), Vector2i(18, 17), Vector2i(19, 17), Vector2i(20, 17), Vector2i(21, 17), Vector2i(22, 17), Vector2i(23, 17), Vector2i(24, 17), Vector2i(25, 17), Vector2i(26, 17), Vector2i(27, 17), Vector2i(28, 17), Vector2i(2, 18), Vector2i(3, 18), Vector2i(4, 18), Vector2i(5, 18), Vector2i(6, 18), Vector2i(7, 18), Vector2i(8, 18), Vector2i(9, 18), Vector2i(10, 18), Vector2i(11, 18), Vector2i(12, 18), Vector2i(13, 18), Vector2i(14, 18), Vector2i(15, 18), Vector2i(16, 18), Vector2i(17, 18), Vector2i(18, 18), Vector2i(19, 18), Vector2i(20, 18), Vector2i(21, 18), Vector2i(22, 18), Vector2i(23, 18), Vector2i(24, 18), Vector2i(25, 18), Vector2i(26, 18), Vector2i(27, 18), Vector2i(28, 18), Vector2i(2, 19), Vector2i(3, 19), Vector2i(4, 19), Vector2i(5, 19), Vector2i(6, 19), Vector2i(7, 19), Vector2i(8, 19), Vector2i(9, 19), Vector2i(10, 19), Vector2i(11, 19), Vector2i(12, 19), Vector2i(13, 19), Vector2i(14, 19), Vector2i(15, 19), Vector2i(16, 19), Vector2i(17, 19), Vector2i(18, 19), Vector2i(19, 19), Vector2i(20, 19), Vector2i(21, 19), Vector2i(22, 19), Vector2i(23, 19), Vector2i(24, 19), Vector2i(25, 19), Vector2i(26, 19), Vector2i(27, 19), Vector2i(28, 19), Vector2i(2, 20), Vector2i(3, 20), Vector2i(4, 20), Vector2i(5, 20), Vector2i(6, 20), Vector2i(7, 20), Vector2i(8, 20), Vector2i(9, 20), Vector2i(10, 20), Vector2i(11, 20), Vector2i(12, 20), Vector2i(13, 20), Vector2i(14, 20), Vector2i(15, 20), Vector2i(16, 20), Vector2i(17, 20), Vector2i(18, 20), Vector2i(19, 20), Vector2i(20, 20), Vector2i(21, 20), Vector2i(22, 20), Vector2i(23, 20), Vector2i(24, 20), Vector2i(25, 20), Vector2i(26, 20), Vector2i(27, 20), Vector2i(28, 20), Vector2i(2, 21), Vector2i(3, 21), Vector2i(4, 21), Vector2i(5, 21), Vector2i(6, 21), Vector2i(7, 21), Vector2i(8, 21), Vector2i(9, 21), Vector2i(10, 21), Vector2i(11, 21), Vector2i(12, 21), Vector2i(13, 21), Vector2i(14, 21), Vector2i(15, 21), Vector2i(16, 21), Vector2i(17, 21), Vector2i(18, 21), Vector2i(19, 21), Vector2i(20, 21), Vector2i(21, 21), Vector2i(22, 21), Vector2i(23, 21), Vector2i(24, 21), Vector2i(25, 21), Vector2i(26, 21), Vector2i(27, 21), Vector2i(28, 21), Vector2i(2, 22), Vector2i(3, 22), Vector2i(4, 22), Vector2i(5, 22), Vector2i(6, 22), Vector2i(7, 22), Vector2i(8, 22), Vector2i(9, 22), Vector2i(10, 22), Vector2i(11, 22), Vector2i(12, 22), Vector2i(13, 22), Vector2i(14, 22), Vector2i(15, 22), Vector2i(16, 22), Vector2i(17, 22), Vector2i(18, 22), Vector2i(19, 22), Vector2i(20, 22), Vector2i(21, 22), Vector2i(22, 22), Vector2i(23, 22), Vector2i(24, 22), Vector2i(25, 22), Vector2i(26, 22), Vector2i(27, 22), Vector2i(28, 22), Vector2i(2, 23), Vector2i(3, 23), Vector2i(4, 23), Vector2i(5, 23), Vector2i(6, 23), Vector2i(7, 23), Vector2i(8, 23), Vector2i(9, 23), Vector2i(10, 23), Vector2i(11, 23), Vector2i(12, 23), Vector2i(13, 23), Vector2i(14, 23), Vector2i(15, 23), Vector2i(16, 23), Vector2i(17, 23), Vector2i(18, 23), Vector2i(19, 23), Vector2i(20, 23), Vector2i(21, 23), Vector2i(22, 23), Vector2i(23, 23), Vector2i(24, 23), Vector2i(25, 23), Vector2i(26, 23), Vector2i(27, 23), Vector2i(28, 23), Vector2i(2, 24), Vector2i(3, 24), Vector2i(4, 24), Vector2i(5, 24), Vector2i(6, 24), Vector2i(7, 24), Vector2i(8, 24), Vector2i(9, 24), Vector2i(10, 24), Vector2i(11, 24), Vector2i(12, 24), Vector2i(13, 24), Vector2i(14, 24), Vector2i(15, 24), Vector2i(16, 24), Vector2i(17, 24), Vector2i(18, 24), Vector2i(19, 24), Vector2i(20, 24), Vector2i(21, 24), Vector2i(22, 24), Vector2i(23, 24), Vector2i(24, 24), Vector2i(25, 24), Vector2i(26, 24), Vector2i(27, 24), Vector2i(28, 24), Vector2i(2, 25), Vector2i(3, 25), Vector2i(4, 25), Vector2i(5, 25), Vector2i(6, 25), Vector2i(7, 25), Vector2i(8, 25), Vector2i(9, 25), Vector2i(10, 25), Vector2i(11, 25), Vector2i(12, 25), Vector2i(13, 25), Vector2i(14, 25), Vector2i(15, 25), Vector2i(16, 25), Vector2i(17, 25), Vector2i(18, 25), Vector2i(19, 25), Vector2i(20, 25), Vector2i(21, 25), Vector2i(22, 25), Vector2i(23, 25), Vector2i(24, 25), Vector2i(25, 25), Vector2i(26, 25), Vector2i(27, 25), Vector2i(28, 25), Vector2i(2, 26), Vector2i(3, 26), Vector2i(4, 26), Vector2i(5, 26), Vector2i(6, 26), Vector2i(7, 26), Vector2i(8, 26), Vector2i(9, 26), Vector2i(10, 26), Vector2i(11, 26), Vector2i(12, 26), Vector2i(13, 26), Vector2i(14, 26), Vector2i(15, 26), Vector2i(16, 26), Vector2i(17, 26), Vector2i(18, 26), Vector2i(19, 26), Vector2i(20, 26), Vector2i(21, 26), Vector2i(22, 26), Vector2i(23, 26), Vector2i(24, 26), Vector2i(25, 26), Vector2i(26, 26), Vector2i(27, 26), Vector2i(28, 26), Vector2i(2, 27), Vector2i(3, 27), Vector2i(4, 27), Vector2i(5, 27), Vector2i(6, 27), Vector2i(7, 27), Vector2i(8, 27), Vector2i(9, 27), Vector2i(10, 27), Vector2i(11, 27), Vector2i(12, 27), Vector2i(13, 27), Vector2i(14, 27), Vector2i(15, 27), Vector2i(16, 27), Vector2i(17, 27), Vector2i(18, 27), Vector2i(19, 27), Vector2i(20, 27), Vector2i(21, 27), Vector2i(22, 27), Vector2i(23, 27), Vector2i(24, 27), Vector2i(25, 27), Vector2i(26, 27), Vector2i(27, 27), Vector2i(28, 27), Vector2i(2, 28), Vector2i(3, 28), Vector2i(4, 28), Vector2i(5, 28), Vector2i(6, 28), Vector2i(7, 28), Vector2i(8, 28), Vector2i(9, 28), Vector2i(10, 28), Vector2i(11, 28), Vector2i(12, 28), Vector2i(13, 28), Vector2i(14, 28), Vector2i(15, 28), Vector2i(16, 28), Vector2i(17, 28), Vector2i(18, 28), Vector2i(19, 28), Vector2i(20, 28), Vector2i(21, 28), Vector2i(22, 28), Vector2i(23, 28), Vector2i(24, 28), Vector2i(25, 28), Vector2i(26, 28), Vector2i(27, 28), Vector2i(28, 28), Vector2i(2, 29), Vector2i(3, 29), Vector2i(4, 29), Vector2i(5, 29), Vector2i(6, 29), Vector2i(7, 29), Vector2i(8, 29), Vector2i(9, 29), Vector2i(10, 29), Vector2i(11, 29), Vector2i(12, 29), Vector2i(13, 29), Vector2i(14, 29), Vector2i(15, 29), Vector2i(16, 29), Vector2i(17, 29), Vector2i(18, 29), Vector2i(19, 29), Vector2i(20, 29), Vector2i(21, 29), Vector2i(22, 29), Vector2i(23, 29), Vector2i(24, 29), Vector2i(25, 29), Vector2i(26, 29), Vector2i(27, 29), Vector2i(28, 29), Vector2i(2, 30), Vector2i(3, 30), Vector2i(4, 30), Vector2i(5, 30), Vector2i(6, 30), Vector2i(7, 30), Vector2i(8, 30), Vector2i(9, 30), Vector2i(10, 30), Vector2i(11, 30), Vector2i(12, 30), Vector2i(13, 30), Vector2i(14, 30), Vector2i(15, 30), Vector2i(16, 30), Vector2i(17, 30), Vector2i(18, 30), Vector2i(19, 30), Vector2i(20, 30), Vector2i(21, 30), Vector2i(22, 30), Vector2i(23, 30), Vector2i(24, 30), Vector2i(25, 30), Vector2i(26, 30), Vector2i(27, 30), Vector2i(28, 30), Vector2i(2, 31), Vector2i(3, 31), Vector2i(4, 31), Vector2i(5, 31), Vector2i(6, 31), Vector2i(7, 31), Vector2i(8, 31), Vector2i(9, 31), Vector2i(10, 31), Vector2i(11, 31), Vector2i(12, 31), Vector2i(13, 31), Vector2i(14, 31), Vector2i(15, 31), Vector2i(16, 31), Vector2i(17, 31), Vector2i(18, 31), Vector2i(19, 31), Vector2i(20, 31), Vector2i(21, 31), Vector2i(22, 31), Vector2i(23, 31), Vector2i(24, 31), Vector2i(25, 31), Vector2i(26, 31), Vector2i(27, 31), Vector2i(28, 31), Vector2i(2, 32), Vector2i(3, 32), Vector2i(4, 32), Vector2i(5, 32), Vector2i(6, 32), Vector2i(7, 32), Vector2i(8, 32), Vector2i(9, 32), Vector2i(10, 32), Vector2i(11, 32), Vector2i(12, 32), Vector2i(13, 32), Vector2i(14, 32), Vector2i(15, 32), Vector2i(16, 32), Vector2i(17, 32), Vector2i(18, 32), Vector2i(19, 32), Vector2i(20, 32), Vector2i(21, 32), Vector2i(22, 32), Vector2i(23, 32), Vector2i(24, 32), Vector2i(25, 32), Vector2i(26, 32), Vector2i(27, 32), Vector2i(28, 32), Vector2i(2, 33), Vector2i(3, 33), Vector2i(4, 33), Vector2i(5, 33), Vector2i(6, 33), Vector2i(7, 33), Vector2i(8, 33), Vector2i(9, 33), Vector2i(10, 33), Vector2i(11, 33), Vector2i(12, 33), Vector2i(13, 33), Vector2i(14, 33), Vector2i(15, 33), Vector2i(16, 33), Vector2i(17, 33), Vector2i(18, 33), Vector2i(19, 33), Vector2i(20, 33), Vector2i(21, 33), Vector2i(22, 33), Vector2i(23, 33), Vector2i(24, 33), Vector2i(25, 33), Vector2i(26, 33), Vector2i(27, 33), Vector2i(28, 33), Vector2i(2, 34), Vector2i(3, 34), Vector2i(4, 34), Vector2i(5, 34), Vector2i(6, 34), Vector2i(7, 34), Vector2i(8, 34), Vector2i(9, 34), Vector2i(10, 34), Vector2i(11, 34), Vector2i(12, 34), Vector2i(13, 34), Vector2i(14, 34), Vector2i(15, 34), Vector2i(16, 34), Vector2i(17, 34), Vector2i(18, 34), Vector2i(19, 34), Vector2i(20, 34), Vector2i(21, 34), Vector2i(22, 34), Vector2i(23, 34), Vector2i(24, 34), Vector2i(25, 34), Vector2i(26, 34), Vector2i(27, 34), Vector2i(28, 34), Vector2i(2, 35), Vector2i(3, 35), Vector2i(4, 35), Vector2i(5, 35), Vector2i(6, 35), Vector2i(7, 35), Vector2i(8, 35), Vector2i(9, 35), Vector2i(10, 35), Vector2i(11, 35), Vector2i(12, 35), Vector2i(13, 35), Vector2i(14, 35), Vector2i(15, 35), Vector2i(16, 35), Vector2i(17, 35), Vector2i(18, 35), Vector2i(19, 35), Vector2i(20, 35), Vector2i(21, 35), Vector2i(22, 35), Vector2i(23, 35), Vector2i(24, 35), Vector2i(25, 35), Vector2i(26, 35), Vector2i(27, 35), Vector2i(28, 35), Vector2i(2, 36), Vector2i(3, 36), Vector2i(4, 36), Vector2i(5, 36), Vector2i(6, 36), Vector2i(7, 36), Vector2i(8, 36), Vector2i(9, 36), Vector2i(10, 36), Vector2i(11, 36), Vector2i(12, 36), Vector2i(13, 36), Vector2i(14, 36), Vector2i(15, 36), Vector2i(16, 36), Vector2i(17, 36), Vector2i(18, 36), Vector2i(19, 36), Vector2i(20, 36), Vector2i(21, 36), Vector2i(22, 36), Vector2i(23, 36), Vector2i(24, 36), Vector2i(25, 36), Vector2i(26, 36), Vector2i(27, 36), Vector2i(28, 36), Vector2i(2, 37), Vector2i(3, 37), Vector2i(4, 37), Vector2i(5, 37), Vector2i(6, 37), Vector2i(7, 37), Vector2i(8, 37), Vector2i(9, 37), Vector2i(10, 37), Vector2i(11, 37), Vector2i(12, 37), Vector2i(13, 37), Vector2i(14, 37), Vector2i(15, 37), Vector2i(16, 37), Vector2i(17, 37), Vector2i(18, 37), Vector2i(19, 37), Vector2i(20, 37), Vector2i(21, 37), Vector2i(22, 37), Vector2i(23, 37), Vector2i(24, 37), Vector2i(25, 37), Vector2i(26, 37), Vector2i(27, 37), Vector2i(28, 37), Vector2i(2, 38), Vector2i(3, 38), Vector2i(4, 38), Vector2i(5, 38), Vector2i(6, 38), Vector2i(7, 38), Vector2i(8, 38), Vector2i(9, 38), Vector2i(10, 38), Vector2i(11, 38), Vector2i(12, 38), Vector2i(13, 38), Vector2i(14, 38), Vector2i(15, 38), Vector2i(16, 38), Vector2i(17, 38), Vector2i(18, 38), Vector2i(19, 38), Vector2i(20, 38), Vector2i(21, 38), Vector2i(22, 38), Vector2i(23, 38), Vector2i(24, 38), Vector2i(25, 38), Vector2i(26, 38), Vector2i(27, 38), Vector2i(28, 38), Vector2i(2, 39), Vector2i(3, 39), Vector2i(4, 39), Vector2i(5, 39), Vector2i(6, 39), Vector2i(7, 39), Vector2i(8, 39), Vector2i(9, 39), Vector2i(10, 39), Vector2i(11, 39), Vector2i(12, 39), Vector2i(13, 39), Vector2i(14, 39), Vector2i(15, 39), Vector2i(16, 39), Vector2i(17, 39), Vector2i(18, 39), Vector2i(19, 39), Vector2i(20, 39), Vector2i(21, 39), Vector2i(22, 39), Vector2i(23, 39), Vector2i(24, 39), Vector2i(25, 39), Vector2i(26, 39), Vector2i(27, 39), Vector2i(28, 39), Vector2i(2, 40), Vector2i(3, 40), Vector2i(4, 40), Vector2i(5, 40), Vector2i(6, 40), Vector2i(7, 40), Vector2i(8, 40), Vector2i(9, 40), Vector2i(10, 40), Vector2i(11, 40), Vector2i(12, 40), Vector2i(13, 40), Vector2i(14, 40), Vector2i(15, 40), Vector2i(16, 40), Vector2i(17, 40), Vector2i(18, 40), Vector2i(19, 40), Vector2i(20, 40), Vector2i(21, 40), Vector2i(22, 40), Vector2i(23, 40), Vector2i(24, 40), Vector2i(25, 40), Vector2i(26, 40), Vector2i(27, 40), Vector2i(28, 40), Vector2i(2, 41), Vector2i(3, 41), Vector2i(4, 41), Vector2i(5, 41), Vector2i(6, 41), Vector2i(7, 41), Vector2i(8, 41), Vector2i(9, 41), Vector2i(10, 41), Vector2i(11, 41), Vector2i(12, 41), Vector2i(13, 41), Vector2i(14, 41), Vector2i(15, 41), Vector2i(16, 41), Vector2i(17, 41), Vector2i(18, 41), Vector2i(19, 41), Vector2i(20, 41), Vector2i(21, 41), Vector2i(22, 41), Vector2i(23, 41), Vector2i(24, 41), Vector2i(25, 41), Vector2i(26, 41), Vector2i(27, 41), Vector2i(28, 41), Vector2i(2, 42), Vector2i(3, 42), Vector2i(4, 42), Vector2i(5, 42), Vector2i(6, 42), Vector2i(7, 42), Vector2i(8, 42), Vector2i(9, 42), Vector2i(10, 42), Vector2i(11, 42), Vector2i(12, 42), Vector2i(13, 42), Vector2i(14, 42), Vector2i(15, 42), Vector2i(16, 42), Vector2i(17, 42), Vector2i(18, 42), Vector2i(19, 42), Vector2i(20, 42), Vector2i(21, 42), Vector2i(22, 42), Vector2i(23, 42), Vector2i(24, 42), Vector2i(25, 42), Vector2i(26, 42), Vector2i(27, 42), Vector2i(28, 42), Vector2i(2, 43), Vector2i(3, 43), Vector2i(4, 43), Vector2i(5, 43), Vector2i(6, 43), Vector2i(7, 43), Vector2i(8, 43), Vector2i(9, 43), Vector2i(10, 43), Vector2i(11, 43), Vector2i(12, 43), Vector2i(13, 43), Vector2i(14, 43), Vector2i(15, 43), Vector2i(16, 43), Vector2i(17, 43), Vector2i(18, 43), Vector2i(19, 43), Vector2i(20, 43), Vector2i(21, 43), Vector2i(22, 43), Vector2i(23, 43), Vector2i(24, 43), Vector2i(25, 43), Vector2i(26, 43), Vector2i(27, 43), Vector2i(28, 43), Vector2i(2, 44), Vector2i(3, 44), Vector2i(4, 44), Vector2i(5, 44), Vector2i(6, 44), Vector2i(7, 44), Vector2i(8, 44), Vector2i(9, 44), Vector2i(10, 44), Vector2i(11, 44), Vector2i(12, 44), Vector2i(13, 44), Vector2i(14, 44), Vector2i(15, 44), Vector2i(16, 44), Vector2i(17, 44), Vector2i(18, 44), Vector2i(19, 44), Vector2i(20, 44), Vector2i(21, 44), Vector2i(22, 44), Vector2i(23, 44), Vector2i(24, 44), Vector2i(25, 44), Vector2i(26, 44), Vector2i(27, 44), Vector2i(28, 44), Vector2i(2, 45), Vector2i(3, 45), Vector2i(4, 45), Vector2i(5, 45), Vector2i(6, 45), Vector2i(7, 45), Vector2i(8, 45), Vector2i(9, 45), Vector2i(10, 45), Vector2i(11, 45), Vector2i(12, 45), Vector2i(13, 45), Vector2i(14, 45), Vector2i(15, 45), Vector2i(16, 45), Vector2i(17, 45), Vector2i(18, 45), Vector2i(19, 45), Vector2i(20, 45), Vector2i(21, 45), Vector2i(22, 45), Vector2i(23, 45), Vector2i(24, 45), Vector2i(25, 45), Vector2i(26, 45), Vector2i(27, 45), Vector2i(28, 45), Vector2i(2, 46), Vector2i(3, 46), Vector2i(4, 46), Vector2i(5, 46), Vector2i(6, 46), Vector2i(7, 46), Vector2i(8, 46), Vector2i(9, 46), Vector2i(10, 46), Vector2i(11, 46), Vector2i(12, 46), Vector2i(13, 46), Vector2i(14, 46), Vector2i(15, 46), Vector2i(16, 46), Vector2i(17, 46), Vector2i(18, 46), Vector2i(19, 46), Vector2i(20, 46), Vector2i(21, 46), Vector2i(22, 46), Vector2i(23, 46), Vector2i(24, 46), Vector2i(25, 46), Vector2i(26, 46), Vector2i(27, 46), Vector2i(28, 46), Vector2i(2, 47), Vector2i(3, 47), Vector2i(4, 47), Vector2i(5, 47), Vector2i(6, 47), Vector2i(7, 47), Vector2i(8, 47), Vector2i(9, 47), Vector2i(10, 47), Vector2i(11, 47), Vector2i(12, 47), Vector2i(13, 47), Vector2i(14, 47), Vector2i(15, 47), Vector2i(16, 47), Vector2i(17, 47), Vector2i(18, 47), Vector2i(19, 47), Vector2i(20, 47), Vector2i(21, 47), Vector2i(22, 47), Vector2i(23, 47), Vector2i(24, 47), Vector2i(25, 47), Vector2i(26, 47), Vector2i(27, 47), Vector2i(28, 47), Vector2i(2, 48), Vector2i(3, 48), Vector2i(4, 48), Vector2i(5, 48), Vector2i(6, 48), Vector2i(7, 48), Vector2i(8, 48), Vector2i(9, 48), Vector2i(10, 48), Vector2i(11, 48), Vector2i(12, 48), Vector2i(13, 48), Vector2i(14, 48), Vector2i(15, 48), Vector2i(16, 48), Vector2i(17, 48), Vector2i(18, 48), Vector2i(19, 48), Vector2i(20, 48), Vector2i(21, 48), Vector2i(22, 48), Vector2i(23, 48), Vector2i(24, 48), Vector2i(25, 48), Vector2i(26, 48), Vector2i(27, 48), Vector2i(28, 48), Vector2i(2, 49), Vector2i(3, 49), Vector2i(4, 49), Vector2i(5, 49), Vector2i(6, 49), Vector2i(7, 49), Vector2i(8, 49), Vector2i(9, 49), Vector2i(10, 49), Vector2i(11, 49), Vector2i(12, 49), Vector2i(13, 49), Vector2i(14, 49), Vector2i(15, 49), Vector2i(16, 49), Vector2i(17, 49), Vector2i(18, 49), Vector2i(19, 49), Vector2i(20, 49), Vector2i(21, 49), Vector2i(22, 49), Vector2i(23, 49), Vector2i(24, 49), Vector2i(25, 49), Vector2i(26, 49), Vector2i(27, 49), Vector2i(28, 49), Vector2i(2, 50), Vector2i(3, 50), Vector2i(4, 50), Vector2i(5, 50), Vector2i(6, 50), Vector2i(7, 50), Vector2i(8, 50), Vector2i(9, 50), Vector2i(10, 50), Vector2i(11, 50), Vector2i(12, 50), Vector2i(13, 50), Vector2i(14, 50), Vector2i(15, 50), Vector2i(16, 50), Vector2i(17, 50), Vector2i(18, 50), Vector2i(19, 50), Vector2i(20, 50), Vector2i(21, 50), Vector2i(22, 50), Vector2i(23, 50), Vector2i(24, 50), Vector2i(25, 50), Vector2i(26, 50), Vector2i(27, 50), Vector2i(28, 50), Vector2i(2, 51), Vector2i(3, 51), Vector2i(4, 51), Vector2i(5, 51), Vector2i(6, 51), Vector2i(7, 51), Vector2i(8, 51), Vector2i(9, 51), Vector2i(10, 51), Vector2i(11, 51), Vector2i(12, 51), Vector2i(13, 51), Vector2i(14, 51), Vector2i(15, 51), Vector2i(16, 51), Vector2i(17, 51), Vector2i(18, 51), Vector2i(19, 51), Vector2i(20, 51), Vector2i(21, 51), Vector2i(22, 51), Vector2i(23, 51), Vector2i(24, 51), Vector2i(25, 51), Vector2i(26, 51), Vector2i(27, 51), Vector2i(28, 51), Vector2i(2, 52), Vector2i(3, 52), Vector2i(4, 52), Vector2i(5, 52), Vector2i(6, 52), Vector2i(7, 52), Vector2i(8, 52), Vector2i(9, 52), Vector2i(10, 52), Vector2i(11, 52), Vector2i(12, 52), Vector2i(13, 52), Vector2i(14, 52), Vector2i(15, 52), Vector2i(16, 52), Vector2i(17, 52), Vector2i(18, 52), Vector2i(19, 52), Vector2i(20, 52), Vector2i(21, 52), Vector2i(22, 52), Vector2i(23, 52), Vector2i(24, 52), Vector2i(25, 52), Vector2i(26, 52), Vector2i(27, 52), Vector2i(28, 52), Vector2i(2, 53), Vector2i(3, 53), Vector2i(4, 53), Vector2i(5, 53), Vector2i(6, 53), Vector2i(7, 53), Vector2i(8, 53), Vector2i(9, 53), Vector2i(10, 53), Vector2i(11, 53), Vector2i(12, 53), Vector2i(13, 53), Vector2i(14, 53), Vector2i(15, 53), Vector2i(16, 53), Vector2i(17, 53), Vector2i(18, 53), Vector2i(19, 53), Vector2i(20, 53), Vector2i(21, 53), Vector2i(22, 53), Vector2i(23, 53), Vector2i(24, 53), Vector2i(25, 53), Vector2i(26, 53), Vector2i(27, 53), Vector2i(28, 53), Vector2i(2, 54), Vector2i(3, 54), Vector2i(4, 54), Vector2i(5, 54), Vector2i(6, 54), Vector2i(7, 54), Vector2i(8, 54), Vector2i(9, 54), Vector2i(10, 54), Vector2i(11, 54), Vector2i(12, 54), Vector2i(13, 54), Vector2i(14, 54), Vector2i(15, 54), Vector2i(16, 54), Vector2i(17, 54), Vector2i(18, 54), Vector2i(19, 54), Vector2i(20, 54), Vector2i(21, 54), Vector2i(22, 54), Vector2i(23, 54), Vector2i(24, 54), Vector2i(25, 54), Vector2i(26, 54), Vector2i(27, 54), Vector2i(28, 54), Vector2i(2, 55), Vector2i(3, 55), Vector2i(4, 55), Vector2i(5, 55), Vector2i(6, 55), Vector2i(7, 55), Vector2i(8, 55), Vector2i(9, 55), Vector2i(10, 55), Vector2i(11, 55), Vector2i(12, 55), Vector2i(13, 55), Vector2i(14, 55), Vector2i(15, 55), Vector2i(16, 55), Vector2i(17, 55), Vector2i(18, 55), Vector2i(19, 55), Vector2i(20, 55), Vector2i(21, 55), Vector2i(22, 55), Vector2i(23, 55), Vector2i(24, 55), Vector2i(25, 55), Vector2i(26, 55), Vector2i(27, 55), Vector2i(28, 55), Vector2i(2, 56), Vector2i(3, 56), Vector2i(4, 56), Vector2i(5, 56), Vector2i(6, 56), Vector2i(7, 56), Vector2i(8, 56), Vector2i(9, 56), Vector2i(10, 56), Vector2i(11, 56), Vector2i(12, 56), Vector2i(13, 56), Vector2i(14, 56), Vector2i(15, 56), Vector2i(16, 56), Vector2i(17, 56), Vector2i(18, 56), Vector2i(19, 56), Vector2i(20, 56), Vector2i(21, 56), Vector2i(22, 56), Vector2i(23, 56), Vector2i(24, 56), Vector2i(25, 56), Vector2i(26, 56), Vector2i(27, 56), Vector2i(28, 56), Vector2i(2, 57), Vector2i(3, 57), Vector2i(4, 57), Vector2i(5, 57), Vector2i(6, 57), Vector2i(7, 57), Vector2i(8, 57), Vector2i(9, 57), Vector2i(10, 57), Vector2i(11, 57), Vector2i(12, 57), Vector2i(13, 57), Vector2i(14, 57), Vector2i(15, 57), Vector2i(16, 57), Vector2i(17, 57), Vector2i(18, 57), Vector2i(19, 57), Vector2i(20, 57), Vector2i(21, 57), Vector2i(22, 57), Vector2i(23, 57), Vector2i(24, 57), Vector2i(25, 57), Vector2i(26, 57), Vector2i(27, 57), Vector2i(28, 57), Vector2i(2, 58), Vector2i(3, 58), Vector2i(4, 58), Vector2i(5, 58), Vector2i(6, 58), Vector2i(7, 58), Vector2i(8, 58), Vector2i(9, 58), Vector2i(10, 58), Vector2i(11, 58), Vector2i(12, 58), Vector2i(13, 58), Vector2i(14, 58), Vector2i(15, 58), Vector2i(16, 58), Vector2i(17, 58), Vector2i(18, 58), Vector2i(19, 58), Vector2i(20, 58), Vector2i(21, 58), Vector2i(22, 58), Vector2i(23, 58), Vector2i(24, 58), Vector2i(25, 58), Vector2i(26, 58), Vector2i(27, 58), Vector2i(28, 58), Vector2i(2, 59), Vector2i(3, 59), Vector2i(4, 59), Vector2i(5, 59), Vector2i(6, 59), Vector2i(7, 59), Vector2i(8, 59), Vector2i(9, 59), Vector2i(10, 59), Vector2i(11, 59), Vector2i(12, 59), Vector2i(13, 59), Vector2i(14, 59), Vector2i(15, 59), Vector2i(16, 59), Vector2i(17, 59), Vector2i(18, 59), Vector2i(19, 59), Vector2i(20, 59), Vector2i(21, 59), Vector2i(22, 59), Vector2i(23, 59), Vector2i(24, 59), Vector2i(25, 59), Vector2i(26, 59), Vector2i(27, 59), Vector2i(28, 59), Vector2i(0, 60), Vector2i(1, 60), Vector2i(2, 60), Vector2i(3, 60), Vector2i(4, 60), Vector2i(5, 60), Vector2i(6, 60), Vector2i(7, 60), Vector2i(8, 60), Vector2i(9, 60), Vector2i(10, 60), Vector2i(11, 60), Vector2i(12, 60), Vector2i(13, 60), Vector2i(14, 60), Vector2i(15, 60), Vector2i(16, 60), Vector2i(17, 60), Vector2i(18, 60), Vector2i(19, 60), Vector2i(20, 60), Vector2i(21, 60), Vector2i(22, 60), Vector2i(23, 60), Vector2i(24, 60), Vector2i(25, 60), Vector2i(26, 60), Vector2i(27, 60), Vector2i(28, 60), Vector2i(0, 61), Vector2i(1, 61), Vector2i(2, 61), Vector2i(3, 61), Vector2i(4, 61), Vector2i(5, 61), Vector2i(6, 61), Vector2i(7, 61), Vector2i(8, 61), Vector2i(9, 61), Vector2i(10, 61), Vector2i(11, 61), Vector2i(12, 61), Vector2i(13, 61), Vector2i(14, 61), Vector2i(15, 61), Vector2i(16, 61), Vector2i(17, 61), Vector2i(18, 61), Vector2i(19, 61), Vector2i(20, 61), Vector2i(21, 61), Vector2i(22, 61), Vector2i(23, 61), Vector2i(24, 61), Vector2i(25, 61), Vector2i(26, 61), Vector2i(27, 61), Vector2i(28, 61), Vector2i(0, 62), Vector2i(1, 62), Vector2i(2, 62), Vector2i(3, 62), Vector2i(4, 62), Vector2i(5, 62), Vector2i(6, 62), Vector2i(7, 62), Vector2i(8, 62), Vector2i(9, 62), Vector2i(10, 62), Vector2i(11, 62), Vector2i(12, 62), Vector2i(13, 62), Vector2i(14, 62), Vector2i(15, 62), Vector2i(16, 62), Vector2i(17, 62), Vector2i(18, 62), Vector2i(19, 62), Vector2i(20, 62), Vector2i(21, 62), Vector2i(22, 62), Vector2i(23, 62), Vector2i(24, 62), Vector2i(25, 62), Vector2i(26, 62), Vector2i(27, 62), Vector2i(28, 62), Vector2i(0, 63), Vector2i(1, 63), Vector2i(2, 63), Vector2i(3, 63), Vector2i(4, 63), Vector2i(5, 63), Vector2i(6, 63), Vector2i(7, 63), Vector2i(8, 63), Vector2i(9, 63), Vector2i(10, 63), Vector2i(11, 63), Vector2i(12, 63), Vector2i(13, 63), Vector2i(14, 63), Vector2i(15, 63), Vector2i(16, 63), Vector2i(17, 63), Vector2i(18, 63), Vector2i(19, 63), Vector2i(20, 63), Vector2i(21, 63), Vector2i(22, 63), Vector2i(23, 63), Vector2i(24, 63), Vector2i(25, 63), Vector2i(26, 63), Vector2i(27, 63), Vector2i(28, 63), Vector2i(0, 64), Vector2i(1, 64), Vector2i(2, 64), Vector2i(3, 64), Vector2i(4, 64), Vector2i(5, 64), Vector2i(6, 64), Vector2i(7, 64), Vector2i(8, 64), Vector2i(9, 64), Vector2i(10, 64), Vector2i(11, 64), Vector2i(12, 64), Vector2i(13, 64), Vector2i(14, 64), Vector2i(15, 64), Vector2i(16, 64), Vector2i(17, 64), Vector2i(18, 64), Vector2i(19, 64), Vector2i(20, 64), Vector2i(21, 64), Vector2i(22, 64), Vector2i(23, 64), Vector2i(24, 64), Vector2i(25, 64), Vector2i(26, 64), Vector2i(27, 64), Vector2i(28, 64), Vector2i(0, 65), Vector2i(1, 65), Vector2i(2, 65), Vector2i(3, 65), Vector2i(4, 65), Vector2i(5, 65), Vector2i(6, 65), Vector2i(7, 65), Vector2i(8, 65), Vector2i(9, 65), Vector2i(10, 65), Vector2i(11, 65), Vector2i(12, 65), Vector2i(13, 65), Vector2i(14, 65), Vector2i(15, 65), Vector2i(16, 65), Vector2i(17, 65), Vector2i(18, 65), Vector2i(19, 65), Vector2i(20, 65), Vector2i(21, 65), Vector2i(22, 65), Vector2i(23, 65), Vector2i(24, 65), Vector2i(25, 65), Vector2i(26, 65), Vector2i(27, 65), Vector2i(28, 65), Vector2i(0, 66), Vector2i(1, 66), Vector2i(2, 66), Vector2i(3, 66), Vector2i(4, 66), Vector2i(5, 66), Vector2i(6, 66), Vector2i(7, 66), Vector2i(8, 66), Vector2i(9, 66), Vector2i(10, 66), Vector2i(11, 66), Vector2i(12, 66), Vector2i(13, 66), Vector2i(14, 66), Vector2i(15, 66), Vector2i(16, 66), Vector2i(17, 66), Vector2i(18, 66), Vector2i(19, 66), Vector2i(20, 66), Vector2i(21, 66), Vector2i(22, 66), Vector2i(23, 66), Vector2i(24, 66), Vector2i(25, 66), Vector2i(26, 66), Vector2i(27, 66), Vector2i(28, 66), Vector2i(0, 67), Vector2i(1, 67), Vector2i(2, 67), Vector2i(3, 67), Vector2i(4, 67), Vector2i(5, 67), Vector2i(6, 67), Vector2i(7, 67), Vector2i(8, 67), Vector2i(9, 67), Vector2i(10, 67), Vector2i(11, 67), Vector2i(12, 67), Vector2i(13, 67), Vector2i(14, 67), Vector2i(15, 67), Vector2i(16, 67), Vector2i(17, 67), Vector2i(18, 67), Vector2i(19, 67), Vector2i(20, 67), Vector2i(21, 67), Vector2i(22, 67), Vector2i(23, 67), Vector2i(24, 67), Vector2i(25, 67), Vector2i(26, 67), Vector2i(27, 67), Vector2i(28, 67), Vector2i(0, 68), Vector2i(1, 68), Vector2i(2, 68), Vector2i(3, 68), Vector2i(4, 68), Vector2i(5, 68), Vector2i(6, 68), Vector2i(7, 68), Vector2i(8, 68), Vector2i(9, 68), Vector2i(10, 68), Vector2i(11, 68), Vector2i(12, 68), Vector2i(13, 68), Vector2i(14, 68), Vector2i(15, 68), Vector2i(16, 68), Vector2i(17, 68), Vector2i(18, 68), Vector2i(19, 68), Vector2i(20, 68), Vector2i(21, 68), Vector2i(22, 68), Vector2i(23, 68), Vector2i(24, 68), Vector2i(25, 68), Vector2i(26, 68), Vector2i(27, 68), Vector2i(28, 68), Vector2i(0, 69), Vector2i(1, 69), Vector2i(2, 69), Vector2i(3, 69), Vector2i(4, 69), Vector2i(5, 69), Vector2i(6, 69), Vector2i(7, 69), Vector2i(8, 69), Vector2i(9, 69), Vector2i(10, 69), Vector2i(11, 69), Vector2i(12, 69), Vector2i(13, 69), Vector2i(14, 69), Vector2i(15, 69), Vector2i(16, 69), Vector2i(17, 69), Vector2i(18, 69), Vector2i(19, 69), Vector2i(20, 69), Vector2i(21, 69), Vector2i(22, 69), Vector2i(23, 69), Vector2i(24, 69), Vector2i(25, 69), Vector2i(26, 69), Vector2i(27, 69), Vector2i(28, 69), Vector2i(0, 70), Vector2i(1, 70), Vector2i(2, 70), Vector2i(3, 70), Vector2i(4, 70), Vector2i(5, 70), Vector2i(6, 70), Vector2i(7, 70), Vector2i(8, 70), Vector2i(9, 70), Vector2i(10, 70), Vector2i(11, 70), Vector2i(12, 70), Vector2i(13, 70), Vector2i(14, 70), Vector2i(15, 70), Vector2i(16, 70), Vector2i(17, 70), Vector2i(18, 70), Vector2i(19, 70), Vector2i(20, 70), Vector2i(21, 70), Vector2i(22, 70), Vector2i(23, 70), Vector2i(24, 70), Vector2i(25, 70), Vector2i(26, 70), Vector2i(27, 70), Vector2i(28, 70), Vector2i(0, 71), Vector2i(1, 71), Vector2i(2, 71), Vector2i(3, 71), Vector2i(4, 71), Vector2i(5, 71), Vector2i(6, 71), Vector2i(7, 71), Vector2i(8, 71), Vector2i(9, 71), Vector2i(10, 71), Vector2i(11, 71), Vector2i(12, 71), Vector2i(13, 71), Vector2i(14, 71), Vector2i(15, 71), Vector2i(16, 71), Vector2i(17, 71), Vector2i(18, 71), Vector2i(19, 71), Vector2i(20, 71), Vector2i(21, 71), Vector2i(22, 71), Vector2i(23, 71), Vector2i(24, 71), Vector2i(25, 71), Vector2i(26, 71), Vector2i(27, 71), Vector2i(28, 71), Vector2i(0, 72), Vector2i(1, 72), Vector2i(2, 72), Vector2i(3, 72), Vector2i(4, 72), Vector2i(5, 72), Vector2i(6, 72), Vector2i(7, 72), Vector2i(8, 72), Vector2i(9, 72), Vector2i(10, 72), Vector2i(11, 72), Vector2i(12, 72), Vector2i(13, 72), Vector2i(14, 72), Vector2i(15, 72), Vector2i(16, 72), Vector2i(17, 72), Vector2i(18, 72), Vector2i(19, 72), Vector2i(20, 72), Vector2i(21, 72), Vector2i(22, 72), Vector2i(23, 72), Vector2i(24, 72), Vector2i(25, 72), Vector2i(26, 72), Vector2i(27, 72), Vector2i(28, 72), Vector2i(0, 73), Vector2i(1, 73), Vector2i(2, 73), Vector2i(3, 73), Vector2i(4, 73), Vector2i(5, 73), Vector2i(6, 73), Vector2i(7, 73), Vector2i(8, 73), Vector2i(9, 73), Vector2i(10, 73), Vector2i(11, 73), Vector2i(12, 73), Vector2i(13, 73), Vector2i(14, 73), Vector2i(15, 73), Vector2i(16, 73), Vector2i(17, 73), Vector2i(18, 73), Vector2i(19, 73), Vector2i(20, 73), Vector2i(21, 73), Vector2i(22, 73), Vector2i(23, 73), Vector2i(24, 73), Vector2i(25, 73), Vector2i(26, 73), Vector2i(27, 73), Vector2i(28, 73), Vector2i(0, 74), Vector2i(1, 74), Vector2i(2, 74), Vector2i(3, 74), Vector2i(4, 74), Vector2i(5, 74), Vector2i(6, 74), Vector2i(7, 74), Vector2i(8, 74), Vector2i(9, 74), Vector2i(10, 74), Vector2i(11, 74), Vector2i(12, 74), Vector2i(13, 74), Vector2i(14, 74), Vector2i(15, 74), Vector2i(16, 74), Vector2i(17, 74), Vector2i(18, 74), Vector2i(19, 74), Vector2i(20, 74), Vector2i(21, 74), Vector2i(22, 74), Vector2i(23, 74), Vector2i(24, 74), Vector2i(25, 74), Vector2i(26, 74), Vector2i(27, 74), Vector2i(28, 74), Vector2i(0, 75), Vector2i(1, 75), Vector2i(2, 75), Vector2i(3, 75), Vector2i(4, 75), Vector2i(5, 75), Vector2i(6, 75), Vector2i(7, 75), Vector2i(8, 75), Vector2i(9, 75), Vector2i(10, 75), Vector2i(11, 75), Vector2i(12, 75), Vector2i(13, 75), Vector2i(14, 75), Vector2i(15, 75), Vector2i(16, 75), Vector2i(17, 75), Vector2i(18, 75), Vector2i(19, 75), Vector2i(20, 75), Vector2i(21, 75), Vector2i(22, 75), Vector2i(23, 75), Vector2i(24, 75), Vector2i(25, 75), Vector2i(26, 75), Vector2i(27, 75), Vector2i(28, 75), Vector2i(0, 76), Vector2i(1, 76), Vector2i(2, 76), Vector2i(3, 76), Vector2i(4, 76), Vector2i(5, 76), Vector2i(6, 76), Vector2i(7, 76), Vector2i(8, 76), Vector2i(9, 76), Vector2i(10, 76), Vector2i(11, 76), Vector2i(12, 76), Vector2i(13, 76), Vector2i(14, 76), Vector2i(15, 76), Vector2i(16, 76), Vector2i(17, 76), Vector2i(18, 76), Vector2i(19, 76), Vector2i(20, 76), Vector2i(21, 76), Vector2i(22, 76), Vector2i(23, 76), Vector2i(24, 76), Vector2i(25, 76), Vector2i(26, 76), Vector2i(27, 76), Vector2i(28, 76), Vector2i(0, 77), Vector2i(1, 77), Vector2i(2, 77), Vector2i(3, 77), Vector2i(4, 77), Vector2i(5, 77), Vector2i(6, 77), Vector2i(7, 77), Vector2i(8, 77), Vector2i(9, 77), Vector2i(10, 77), Vector2i(11, 77), Vector2i(12, 77), Vector2i(13, 77), Vector2i(14, 77), Vector2i(15, 77), Vector2i(16, 77), Vector2i(17, 77), Vector2i(18, 77), Vector2i(19, 77), Vector2i(20, 77), Vector2i(21, 77), Vector2i(22, 77), Vector2i(23, 77), Vector2i(24, 77), Vector2i(25, 77), Vector2i(26, 77), Vector2i(27, 77), Vector2i(28, 77), Vector2i(0, 78), Vector2i(1, 78), Vector2i(2, 78), Vector2i(3, 78), Vector2i(4, 78), Vector2i(5, 78), Vector2i(6, 78), Vector2i(7, 78), Vector2i(8, 78), Vector2i(9, 78), Vector2i(10, 78), Vector2i(11, 78), Vector2i(12, 78), Vector2i(13, 78), Vector2i(14, 78), Vector2i(15, 78), Vector2i(16, 78), Vector2i(17, 78), Vector2i(18, 78), Vector2i(19, 78), Vector2i(20, 78), Vector2i(21, 78), Vector2i(22, 78), Vector2i(23, 78), Vector2i(24, 78), Vector2i(25, 78), Vector2i(26, 78), Vector2i(0, 79), Vector2i(1, 79), Vector2i(2, 79), Vector2i(3, 79), Vector2i(4, 79), Vector2i(5, 79), Vector2i(6, 79), Vector2i(7, 79), Vector2i(8, 79), Vector2i(9, 79), Vector2i(10, 79), Vector2i(11, 79), Vector2i(12, 79), Vector2i(13, 79), Vector2i(14, 79), Vector2i(15, 79), Vector2i(16, 79), Vector2i(17, 79), Vector2i(18, 79), Vector2i(19, 79), Vector2i(20, 79), Vector2i(21, 79), Vector2i(22, 79), Vector2i(23, 79), Vector2i(24, 79), Vector2i(25, 79), Vector2i(26, 79)])
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1739591504]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAYAAAABAAAAAAAAAAYAAAACAAAAAAAAAAYAAAADAAAAAAAAAAYAAAAEAAAAAAACAAYAAAAFAAAAAAABAAYAAAAGAAAAAAAAAAYAAAAHAAAAAAAAAAYAAAAIAAAAAAACAAYAAAAJAAAAAAAAAAQAAAAKAAAAAAABAAQAAAALAAAAAAACAAQAAAAMAAAAAAACAAQAAAANAAAAAAAAAAQAAAAOAAAAAAAAAAQAAAAPAAAAAAACAAQAAAAQAAAAAAACAAQAAAARAAAAAAAAAAQAAAASAAAAAAAAAAYAAAATAAAAAAACAAQAAAAUAAAAAAACAAQAAAAVAAAAAAABAAYAAAAWAAAAAAABAAYAAAAXAAAAAAAAAAYAAAAYAAAAAAABAAYAAAAZAAAAAAACAAYAAAAaAAAAAAACAAYAAAAbAAAAAAAAAAYAAAAcAAAAAAABAAYAAAAdAAAAAAABAAYAAAAAAAEAAAABAAYAAAABAAEAAAABAAYAAAACAAEAAAACAAYAAAADAAEAAAABAAYAAAAEAAEAAAACAAYAAAAFAAEAAAACAAYAAAAGAAEAAAACAAYAAAAHAAEAAAACAAYAAAAIAAEAAAAAAAYAAAAJAAEAAAABAAQAAAAKAAEAAAABAAQAAAALAAEAAAAAAAQAAAAMAAEAAAABAAQAAAANAAEAAAAAAAQAAAAOAAEAAAACAAQAAAAPAAEAAAAAAAQAAAAQAAEAAAAAAAQAAAARAAEAAAABAAQAAAASAAEAAAACAAYAAAATAAEAAAACAAQAAAAUAAEAAAACAAQAAAAVAAEAAAAAAAYAAAAWAAEAAAAAAAYAAAAXAAEAAAABAAYAAAAYAAEAAAACAAYAAAAZAAEAAAAAAAYAAAAaAAEAAAACAAYAAAAbAAEAAAAAAAYAAAAcAAEAAAAAAAYAAAAdAAEAAAACAAYAAAAAAAIAAAAAAAYAAAABAAIAAAAAAAYAAAACAAIAAAAAAAYAAAADAAIAAAAAAAYAAAAEAAIAAAACAAYAAAAFAAIAAAABAAYAAAAGAAIAAAACAAYAAAAHAAIAAAACAAYAAAAIAAIAAAACAAYAAAAJAAIAAAABAAwAAAAKAAIAAAABAAwAAAALAAIAAAAAAAwAAAAMAAIAAAAAAAwAAAANAAIAAAAAAAwAAAAOAAIAAAABAAwAAAAPAAIAAAAAAAwAAAAQAAIAAAABAAwAAAARAAIAAAAAAAwAAAASAAIAAAAAAAYAAAATAAIAAAABAAQAAAAUAAIAAAACAAQAAAAVAAIAAAABAAYAAAAWAAIAAAACAAYAAAAXAAIAAAAAAAYAAAAYAAIAAAABAAYAAAAZAAIAAAACAAYAAAAaAAIAAAAAAAYAAAAbAAIAAAAAAAYAAAAcAAIAAAAAAAYAAAAdAAIAAAACAAYAAAAAAAMAAAACAAYAAAABAAMAAAABAAYAAAACAAMAAAACAAYAAAADAAMAAAAAAAYAAAAEAAMAAAAAAAYAAAAFAAMAAAAAAAYAAAAGAAMAAAACAAYAAAAHAAMAAAABAAYAAAAIAAMAAAAAAAYAAAAJAAMAAAACAAQAAAAKAAMAAAAAAAQAAAALAAMAAAACAAQAAAAMAAMAAAACAAQAAAANAAMAAAABAAQAAAAOAAMAAAABAAQAAAAPAAMAAAAAAAQAAAAQAAMAAAABAAQAAAARAAMAAAACAAQAAAASAAMAAAAAAAYAAAATAAMAAAAAAAQAAAAUAAMAAAACAAQAAAAVAAMAAAAAAAYAAAAWAAMAAAAAAAYAAAAXAAMAAAACAAYAAAAYAAMAAAAAAAYAAAAZAAMAAAACAAYAAAAaAAMAAAAAAAYAAAAbAAMAAAACAAYAAAAcAAMAAAACAAYAAAAdAAMAAAACAAYAAAAAAAQAAAABAAYAAAABAAQAAAABAAYAAAACAAQAAAAAAAYAAAADAAQAAAABAAYAAAAEAAQAAAACAAYAAAAFAAQAAAACAAYAAAAGAAQAAAABAAYAAAAHAAQAAAABAAYAAAAIAAQAAAAAAAYAAAAJAAQAAAABAAQAAAAKAAQAAAAAAAQAAAALAAQAAAABAAQAAAAMAAQAAAAAAAQAAAANAAQAAAAAAAQAAAAOAAQAAAACAAQAAAAPAAQAAAACAAQAAAAQAAQAAAAAAAQAAAARAAQAAAABAAQAAAASAAQAAAAAAAYAAAATAAQAAAACAAQAAAAUAAQAAAAAAAQAAAAVAAQAAAACAAYAAAAWAAQAAAABAAYAAAAXAAQAAAACAAYAAAAYAAQAAAABAAYAAAAZAAQAAAAAAAYAAAAaAAQAAAAAAAYAAAAbAAQAAAAAAAYAAAAcAAQAAAAAAAYAAAAdAAQAAAABAAYAAAAAAAUAAAACAAYAAAABAAUAAAACAAYAAAACAAUAAAABAAYAAAADAAUAAAAAAAYAAAAEAAUAAAAAAAYAAAAFAAUAAAACAAYAAAAGAAUAAAAAAAYAAAAHAAUAAAAAAAYAAAAIAAUAAAABAAYAAAAJAAUAAAABAAwAAAAKAAUAAAABAAwAAAALAAUAAAAAAAwAAAAMAAUAAAAAAAwAAAANAAUAAAABAAwAAAAOAAUAAAABAAwAAAAPAAUAAAAAAAwAAAAQAAUAAAABAAwAAAARAAUAAAAAAAwAAAASAAUAAAACAAYAAAATAAUAAAACAAQAAAAUAAUAAAABAAQAAAAVAAUAAAABAAYAAAAWAAUAAAAAAAYAAAAXAAUAAAACAAYAAAAYAAUAAAACAAYAAAAZAAUAAAABAAYAAAAaAAUAAAACAAYAAAAbAAUAAAACAAYAAAAcAAUAAAAAAAYAAAAdAAUAAAAAAAYAAAAAAAYAAAACAAYAAAABAAYAAAAAAAYAAAACAAYAAAAAAAYAAAADAAYAAAAAAAYAAAAEAAYAAAACAAYAAAAFAAYAAAACAAYAAAAGAAYAAAABAAYAAAAHAAYAAAABAAYAAAAIAAYAAAAAAAYAAAAJAAYAAAABAAQAAAAKAAYAAAACAAQAAAALAAYAAAABAAQAAAAMAAYAAAABAAQAAAANAAYAAAAAAAQAAAAOAAYAAAACAAQAAAAPAAYAAAACAAQAAAAQAAYAAAABAAQAAAARAAYAAAABAAQAAAASAAYAAAACAAYAAAATAAYAAAAAAAQAAAAUAAYAAAABAAQAAAAVAAYAAAAAAAYAAAAWAAYAAAABAAYAAAAXAAYAAAAAAAYAAAAYAAYAAAACAAYAAAAZAAYAAAACAAYAAAAaAAYAAAAAAAYAAAAbAAYAAAABAAYAAAAcAAYAAAABAAYAAAAdAAYAAAABAAYAAAAAAAcAAAABAAYAAAABAAcAAAABAAYAAAACAAcAAAAAAAYAAAADAAcAAAACAAYAAAAEAAcAAAAAAAYAAAAFAAcAAAABAAYAAAAGAAcAAAAAAAYAAAAHAAcAAAABAAYAAAAIAAcAAAAAAAYAAAAJAAcAAAAAAAQAAAAKAAcAAAACAAQAAAALAAcAAAAAAAQAAAAMAAcAAAAAAAQAAAANAAcAAAAAAAQAAAAOAAcAAAABAAQAAAAPAAcAAAACAAQAAAAQAAcAAAACAAQAAAARAAcAAAAAAAQAAAASAAcAAAACAAYAAAATAAcAAAACAAQAAAAUAAcAAAAAAAQAAAAVAAcAAAAAAAYAAAAWAAcAAAABAAYAAAAXAAcAAAABAAYAAAAYAAcAAAAAAAYAAAAZAAcAAAACAAYAAAAaAAcAAAAAAAYAAAAbAAcAAAABAAYAAAAcAAcAAAAAAAYAAAAdAAcAAAACAAYAAAAAAAgAAAABAAYAAAABAAgAAAABAAYAAAACAAgAAAABAAYAAAADAAgAAAABAAYAAAAEAAgAAAAAAAYAAAAFAAgAAAAAAAYAAAAGAAgAAAACAAYAAAAHAAgAAAABAAYAAAAIAAgAAAACAAYAAAAJAAgAAAABAAwAAAAKAAgAAAABAAwAAAALAAgAAAAAAAwAAAAMAAgAAAABAAwAAAANAAgAAAAAAAwAAAAOAAgAAAABAAwAAAAPAAgAAAABAAwAAAAQAAgAAAAAAAwAAAARAAgAAAABAAwAAAASAAgAAAAAAAYAAAATAAgAAAABAAQAAAAUAAgAAAABAAQAAAAVAAgAAAAAAAYAAAAWAAgAAAACAAYAAAAXAAgAAAABAAYAAAAYAAgAAAABAAYAAAAZAAgAAAACAAYAAAAaAAgAAAACAAYAAAAbAAgAAAABAAYAAAAcAAgAAAAAAAYAAAAdAAgAAAAAAAYAAAAAAAkAAAAAAAkAAAABAAkAAAAAAAkAAAACAAkAAAACAAkAAAADAAkAAAAAAAkAAAAEAAkAAAACAAkAAAAFAAkAAAAAAAcAAAAGAAkAAAABAAQAAAAHAAkAAAAAAAQAAAAIAAkAAAAAAAQAAAAJAAkAAAAAAAQAAAAKAAkAAAACAAQAAAALAAkAAAAAAAQAAAAMAAkAAAAAAAQAAAANAAkAAAACAAQAAAAOAAkAAAABAAQAAAAPAAkAAAAAAAQAAAAQAAkAAAABAAQAAAARAAkAAAACAAQAAAASAAkAAAACAAQAAAATAAkAAAAAAAQAAAAUAAkAAAABAAQAAAAVAAkAAAABAAcAAAAWAAkAAAABAAcAAAAXAAkAAAACAAkAAAAYAAkAAAAAAAkAAAAZAAkAAAACAAkAAAAaAAkAAAACAAkAAAAbAAkAAAAAAAkAAAAcAAkAAAACAAkAAAAdAAkAAAABAAkAAAAAAAoAAAABAAkAAAABAAoAAAABAAkAAAACAAoAAAACAAkAAAADAAoAAAACAAkAAAAEAAoAAAABAAkAAAAFAAoAAAABAAcAAAAGAAoAAAACAAQAAAAHAAoAAAACAAQAAAAIAAoAAAACAAQAAAAJAAoAAAAAAAQAAAAKAAoAAAACAAQAAAALAAoAAAAAAAQAAAAMAAoAAAAAAAQAAAANAAoAAAABAAQAAAAOAAoAAAABAAQAAAAPAAoAAAACAAQAAAAQAAoAAAAAAAQAAAARAAoAAAAAAAQAAAASAAoAAAACAAQAAAATAAoAAAAAAAQAAAAUAAoAAAABAAQAAAAVAAoAAAABAAcAAAAWAAoAAAAAAAcAAAAXAAoAAAACAAkAAAAYAAoAAAAAAAkAAAAZAAoAAAACAAkAAAAaAAoAAAACAAkAAAAbAAoAAAABAAkAAAAcAAoAAAAAAAkAAAAdAAoAAAACAAkAAAAAAAsAAAAAAAkAAAABAAsAAAACAAkAAAACAAsAAAAAAAkAAAADAAsAAAACAAkAAAAEAAsAAAACAAkAAAAFAAsAAAABAAcAAAAGAAsAAAABAAQAAAAHAAsAAAABAAQAAAAIAAsAAAABAAQAAAAJAAsAAAACAAQAAAAKAAsAAAACAAQAAAALAAsAAAACAAQAAAAMAAsAAAAAAAQAAAANAAsAAAACAAQAAAAOAAsAAAABAAQAAAAPAAsAAAAAAAQAAAAQAAsAAAACAAQAAAARAAsAAAAAAAQAAAASAAsAAAAAAAQAAAATAAsAAAABAAQAAAAUAAsAAAAAAAQAAAAVAAsAAAABAAcAAAAWAAsAAAAAAAcAAAAXAAsAAAAAAAkAAAAYAAsAAAACAAkAAAAZAAsAAAAAAAkAAAAaAAsAAAABAAkAAAAbAAsAAAACAAkAAAAcAAsAAAAAAAkAAAAdAAsAAAACAAkAAAAAAAwAAAACAAkAAAABAAwAAAABAAkAAAACAAwAAAABAAkAAAADAAwAAAAAAAkAAAAEAAwAAAAAAAkAAAAFAAwAAAAAAAcAAAAGAAwAAAABAAQAAAAHAAwAAAABAAQAAAAIAAwAAAAAAAQAAAAJAAwAAAACAAQAAAAKAAwAAAABAAQAAAALAAwAAAAAAAQAAAAMAAwAAAACAAQAAAANAAwAAAABAAQAAAAOAAwAAAACAAQAAAAPAAwAAAAAAAQAAAAQAAwAAAAAAAQAAAARAAwAAAAAAAQAAAASAAwAAAAAAAQAAAATAAwAAAABAAQAAAAUAAwAAAABAAQAAAAVAAwAAAABAAcAAAAWAAwAAAABAAcAAAAXAAwAAAACAAkAAAAYAAwAAAAAAAkAAAAZAAwAAAAAAAkAAAAaAAwAAAAAAAkAAAAbAAwAAAAAAAkAAAAcAAwAAAAAAAkAAAAdAAwAAAABAAkAAAAAAA0AAAACAAkAAAABAA0AAAABAAkAAAACAA0AAAABAAkAAAADAA0AAAABAAkAAAAEAA0AAAACAAkAAAAFAA0AAAABAAcAAAAGAA0AAAACAAQAAAAHAA0AAAAAAAQAAAAIAA0AAAABAAQAAAAJAA0AAAAAAAQAAAAKAA0AAAABAAQAAAALAA0AAAABAAQAAAAMAA0AAAACAAQAAAANAA0AAAACAAQAAAAOAA0AAAACAAQAAAAPAA0AAAAAAAQAAAAQAA0AAAACAAQAAAARAA0AAAAAAAQAAAASAA0AAAABAAQAAAATAA0AAAAAAAQAAAAUAA0AAAABAAQAAAAVAA0AAAABAAcAAAAWAA0AAAABAAcAAAAXAA0AAAABAAkAAAAYAA0AAAACAAkAAAAZAA0AAAACAAkAAAAaAA0AAAACAAkAAAAbAA0AAAACAAkAAAAcAA0AAAACAAkAAAAdAA0AAAAAAAkAAAAAAA4AAAAAAAcAAAABAA4AAAABAAcAAAACAA4AAAABAAcAAAADAA4AAAAAAAcAAAAEAA4AAAAAAAcAAAAFAA4AAAAAAAcAAAAGAA4AAAAAAAQAAAAHAA4AAAABAAQAAAAIAA4AAAABAAQAAAAJAA4AAAABAAQAAAAKAA4AAAAAAAQAAAALAA4AAAABAAQAAAAMAA4AAAAAAAQAAAANAA4AAAACAAQAAAAOAA4AAAAAAAQAAAAPAA4AAAACAAQAAAAQAA4AAAAAAAQAAAARAA4AAAABAAQAAAASAA4AAAACAAQAAAATAA4AAAABAAQAAAAUAA4AAAABAAQAAAAVAA4AAAABAAcAAAAWAA4AAAAAAAcAAAAXAA4AAAABAAcAAAAYAA4AAAAAAAcAAAAZAA4AAAABAAcAAAAaAA4AAAAAAAcAAAAbAA4AAAAAAAcAAAAcAA4AAAABAAcAAAAdAA4AAAAAAAcAAAAAAA8AAAABAAcAAAABAA8AAAABAAcAAAACAA8AAAAAAAkAAAADAA8AAAAAAAkAAAAEAA8AAAAAAAkAAAAFAA8AAAACAAkAAAAGAA8AAAABAAkAAAAHAA8AAAABAAkAAAAIAA8AAAACAAkAAAAJAA8AAAACAAkAAAAKAA8AAAABAAkAAAALAA8AAAABAAkAAAAMAA8AAAACAAkAAAANAA8AAAABAAkAAAAOAA8AAAACAAkAAAAPAA8AAAAAAAkAAAAQAA8AAAACAAkAAAARAA8AAAAAAAkAAAASAA8AAAACAAkAAAATAA8AAAAAAAkAAAAUAA8AAAACAAkAAAAVAA8AAAACAAkAAAAWAA8AAAAAAAkAAAAXAA8AAAACAAkAAAAYAA8AAAAAAAkAAAAZAA8AAAACAAkAAAAaAA8AAAACAAkAAAAbAA8AAAACAAkAAAAcAA8AAAAAAAkAAAAdAA8AAAAAAAcAAAAAABAAAAAAAAcAAAABABAAAAAAAAcAAAACABAAAAACAAkAAAADABAAAAACAAkAAAAEABAAAAAAAAkAAAAFABAAAAABAAkAAAAGABAAAAABAAkAAAAHABAAAAABAAkAAAAIABAAAAAAAAkAAAAJABAAAAAAAAkAAAAKABAAAAAAAAkAAAALABAAAAAAAAkAAAAMABAAAAAAAAkAAAANABAAAAAAAAkAAAAOABAAAAABAAkAAAAPABAAAAACAAkAAAAQABAAAAACAAkAAAARABAAAAAAAAkAAAASABAAAAABAAkAAAATABAAAAABAAkAAAAUABAAAAAAAAkAAAAVABAAAAAAAAkAAAAWABAAAAACAAkAAAAXABAAAAACAAkAAAAYABAAAAAAAAkAAAAZABAAAAAAAAkAAAAaABAAAAAAAAkAAAAbABAAAAAAAAkAAAAcABAAAAAAAAkAAAAdABAAAAAAAAcAAAAAABEAAAAAAAcAAAABABEAAAAAAAcAAAACABEAAAAAAAkAAAADABEAAAACAAkAAAAEABEAAAAAAAkAAAAFABEAAAABAAkAAAAGABEAAAABAAkAAAAHABEAAAABAAkAAAAIABEAAAACAAkAAAAJABEAAAAAAAkAAAAKABEAAAACAAkAAAALABEAAAACAAkAAAAMABEAAAAAAAkAAAANABEAAAAAAAkAAAAOABEAAAACAAkAAAAPABEAAAACAAkAAAAQABEAAAAAAAkAAAARABEAAAAAAAkAAAASABEAAAABAAkAAAATABEAAAABAAkAAAAUABEAAAAAAAkAAAAVABEAAAABAAkAAAAWABEAAAACAAkAAAAXABEAAAAAAAkAAAAYABEAAAACAAkAAAAZABEAAAAAAAkAAAAaABEAAAABAAkAAAAbABEAAAABAAkAAAAcABEAAAAAAAkAAAAdABEAAAAAAAcAAAAAABIAAAAAAAcAAAABABIAAAAAAAcAAAACABIAAAABAAkAAAADABIAAAABAAkAAAAEABIAAAABAAkAAAAFABIAAAACAAkAAAAGABIAAAACAAkAAAAHABIAAAACAAkAAAAIABIAAAABAAkAAAAJABIAAAABAAkAAAAKABIAAAAAAAkAAAALABIAAAABAAkAAAAMABIAAAABAAkAAAANABIAAAACAAkAAAAOABIAAAACAAkAAAAPABIAAAACAAkAAAAQABIAAAAAAAkAAAARABIAAAAAAAkAAAASABIAAAACAAkAAAATABIAAAACAAkAAAAUABIAAAABAAkAAAAVABIAAAACAAkAAAAWABIAAAAAAAkAAAAXABIAAAAAAAkAAAAYABIAAAACAAkAAAAZABIAAAAAAAkAAAAaABIAAAABAAkAAAAbABIAAAACAAkAAAAcABIAAAACAAkAAAAdABIAAAABAAcAAAAAABMAAAAAAAcAAAABABMAAAABAAcAAAACABMAAAACAAkAAAADABMAAAAAAAkAAAAEABMAAAAAAAkAAAAFABMAAAAAAAkAAAAGABMAAAABAAkAAAAHABMAAAACAAkAAAAIABMAAAABAAkAAAAJABMAAAACAAkAAAAKABMAAAACAAkAAAALABMAAAAAAAkAAAAMABMAAAAAAAkAAAANABMAAAACAAkAAAAOABMAAAAAAAkAAAAPABMAAAAAAAkAAAAQABMAAAABAAkAAAARABMAAAAAAAkAAAASABMAAAAAAAkAAAATABMAAAAAAAkAAAAUABMAAAABAAkAAAAVABMAAAABAAkAAAAWABMAAAACAAkAAAAXABMAAAABAAkAAAAYABMAAAABAAkAAAAZABMAAAAAAAkAAAAaABMAAAACAAkAAAAbABMAAAAAAAkAAAAcABMAAAACAAkAAAAdABMAAAABAAcAAAAAABQAAAAAAAcAAAABABQAAAABAAcAAAACABQAAAAAAAkAAAADABQAAAAAAAkAAAAEABQAAAABAAkAAAAFABQAAAABAAkAAAAGABQAAAACAAkAAAAHABQAAAAAAAkAAAAIABQAAAABAAkAAAAJABQAAAACAAkAAAAKABQAAAACAAkAAAALABQAAAABAAkAAAAMABQAAAABAAkAAAANABQAAAABAAkAAAAOABQAAAABAAkAAAAPABQAAAABAAkAAAAQABQAAAACAAkAAAARABQAAAACAAkAAAASABQAAAACAAkAAAATABQAAAABAAkAAAAUABQAAAABAAkAAAAVABQAAAABAAkAAAAWABQAAAACAAkAAAAXABQAAAABAAkAAAAYABQAAAABAAkAAAAZABQAAAAAAAkAAAAaABQAAAACAAkAAAAbABQAAAABAAkAAAAcABQAAAABAAkAAAAdABQAAAAAAAcAAAAAABUAAAAAAAcAAAABABUAAAAAAAcAAAACABUAAAAAAAkAAAADABUAAAABAAkAAAAEABUAAAABAAkAAAAFABUAAAACAAkAAAAGABUAAAAAAAkAAAAHABUAAAACAAkAAAAIABUAAAACAAkAAAAJABUAAAAAAAkAAAAKABUAAAABAAkAAAALABUAAAACAAkAAAAMABUAAAAAAAkAAAANABUAAAAAAAkAAAAOABUAAAACAAkAAAAPABUAAAAAAAkAAAAQABUAAAAAAAkAAAARABUAAAAAAAkAAAASABUAAAACAAkAAAATABUAAAACAAkAAAAUABUAAAACAAkAAAAVABUAAAAAAAkAAAAWABUAAAACAAkAAAAXABUAAAACAAkAAAAYABUAAAAAAAkAAAAZABUAAAACAAkAAAAaABUAAAABAAkAAAAbABUAAAABAAkAAAAcABUAAAABAAkAAAAdABUAAAABAAcAAAAAABYAAAAAAAcAAAABABYAAAABAAcAAAACABYAAAAAAAkAAAADABYAAAACAAkAAAAEABYAAAABAAkAAAAFABYAAAACAAkAAAAGABYAAAABAAkAAAAHABYAAAAAAAkAAAAIABYAAAABAAkAAAAJABYAAAABAAkAAAAKABYAAAABAAkAAAALABYAAAAAAAkAAAAMABYAAAABAAkAAAANABYAAAAAAAkAAAAOABYAAAAAAAkAAAAPABYAAAACAAkAAAAQABYAAAABAAkAAAARABYAAAAAAAkAAAASABYAAAAAAAkAAAATABYAAAAAAAkAAAAUABYAAAABAAkAAAAVABYAAAABAAkAAAAWABYAAAACAAkAAAAXABYAAAACAAkAAAAYABYAAAABAAkAAAAZABYAAAABAAkAAAAaABYAAAACAAkAAAAbABYAAAACAAkAAAAcABYAAAABAAkAAAAdABYAAAAAAAcAAAAAABcAAAAAAAcAAAABABcAAAAAAAcAAAACABcAAAABAAkAAAADABcAAAACAAkAAAAEABcAAAAAAAkAAAAFABcAAAABAAkAAAAGABcAAAABAAkAAAAHABcAAAABAAkAAAAIABcAAAABAAkAAAAJABcAAAABAAkAAAAKABcAAAABAAkAAAALABcAAAABAAkAAAAMABcAAAABAAkAAAANABcAAAAAAAkAAAAOABcAAAABAAkAAAAPABcAAAAAAAkAAAAQABcAAAAAAAkAAAARABcAAAACAAkAAAASABcAAAACAAkAAAATABcAAAACAAkAAAAUABcAAAABAAkAAAAVABcAAAABAAkAAAAWABcAAAABAAkAAAAXABcAAAAAAAkAAAAYABcAAAABAAkAAAAZABcAAAAAAAkAAAAaABcAAAABAAkAAAAbABcAAAACAAkAAAAcABcAAAABAAkAAAAdABcAAAAAAAcAAAAAABgAAAAAAAcAAAABABgAAAAAAAcAAAACABgAAAABAAkAAAADABgAAAACAAkAAAAEABgAAAABAAkAAAAFABgAAAAAAAkAAAAGABgAAAABAAkAAAAHABgAAAABAAkAAAAIABgAAAAAAAkAAAAJABgAAAABAAkAAAAKABgAAAAAAAkAAAALABgAAAABAAkAAAAMABgAAAABAAkAAAANABgAAAACAAkAAAAOABgAAAABAAkAAAAPABgAAAABAAkAAAAQABgAAAACAAkAAAARABgAAAACAAkAAAASABgAAAAAAAkAAAATABgAAAABAAkAAAAUABgAAAACAAkAAAAVABgAAAABAAkAAAAWABgAAAAAAAkAAAAXABgAAAABAAkAAAAYABgAAAAAAAkAAAAZABgAAAABAAkAAAAaABgAAAABAAkAAAAbABgAAAABAAkAAAAcABgAAAACAAkAAAAdABgAAAABAAcAAAAAABkAAAAAAAcAAAABABkAAAAAAAcAAAACABkAAAABAAkAAAADABkAAAACAAkAAAAEABkAAAABAAkAAAAFABkAAAABAAkAAAAGABkAAAABAAkAAAAHABkAAAAAAAkAAAAIABkAAAACAAkAAAAJABkAAAABAAkAAAAKABkAAAAAAAkAAAALABkAAAABAAkAAAAMABkAAAABAAkAAAANABkAAAABAAkAAAAOABkAAAAAAAkAAAAPABkAAAAAAAkAAAAQABkAAAACAAkAAAARABkAAAABAAkAAAASABkAAAAAAAkAAAATABkAAAACAAkAAAAUABkAAAAAAAkAAAAVABkAAAACAAkAAAAWABkAAAACAAkAAAAXABkAAAACAAkAAAAYABkAAAACAAkAAAAZABkAAAAAAAkAAAAaABkAAAABAAkAAAAbABkAAAACAAkAAAAcABkAAAAAAAkAAAAdABkAAAABAAcAAAAAABoAAAABAAcAAAABABoAAAAAAAcAAAACABoAAAACAAkAAAADABoAAAACAAkAAAAEABoAAAAAAAkAAAAFABoAAAAAAAkAAAAGABoAAAABAAkAAAAHABoAAAACAAkAAAAIABoAAAABAAkAAAAJABoAAAABAAkAAAAKABoAAAABAAkAAAALABoAAAABAAkAAAAMABoAAAABAAkAAAANABoAAAAAAAkAAAAOABoAAAABAAkAAAAPABoAAAAAAAkAAAAQABoAAAABAAkAAAARABoAAAAAAAkAAAASABoAAAACAAkAAAATABoAAAACAAkAAAAUABoAAAABAAkAAAAVABoAAAABAAkAAAAWABoAAAACAAkAAAAXABoAAAABAAkAAAAYABoAAAAAAAkAAAAZABoAAAABAAkAAAAaABoAAAACAAkAAAAbABoAAAABAAkAAAAcABoAAAABAAkAAAAdABoAAAAAAAcAAAAAABsAAAAAAAcAAAABABsAAAABAAcAAAACABsAAAAAAAkAAAADABsAAAABAAkAAAAEABsAAAACAAkAAAAFABsAAAABAAkAAAAGABsAAAAAAAkAAAAHABsAAAACAAkAAAAIABsAAAAAAAkAAAAJABsAAAACAAkAAAAKABsAAAAAAAkAAAALABsAAAABAAkAAAAMABsAAAAAAAkAAAANABsAAAAAAAkAAAAOABsAAAABAAkAAAAPABsAAAABAAkAAAAQABsAAAACAAkAAAARABsAAAABAAkAAAASABsAAAAAAAkAAAATABsAAAAAAAkAAAAUABsAAAACAAkAAAAVABsAAAAAAAkAAAAWABsAAAACAAkAAAAXABsAAAACAAkAAAAYABsAAAACAAkAAAAZABsAAAAAAAkAAAAaABsAAAAAAAkAAAAbABsAAAAAAAkAAAAcABsAAAABAAkAAAAdABsAAAAAAAcAAAAAABwAAAAAAAcAAAABABwAAAABAAcAAAACABwAAAACAAkAAAADABwAAAABAAkAAAAEABwAAAABAAkAAAAFABwAAAABAAkAAAAGABwAAAAAAAkAAAAHABwAAAAAAAkAAAAIABwAAAABAAkAAAAJABwAAAACAAkAAAAKABwAAAAAAAkAAAALABwAAAAAAAkAAAAMABwAAAABAAkAAAANABwAAAACAAkAAAAOABwAAAABAAkAAAAPABwAAAAAAAkAAAAQABwAAAAAAAkAAAARABwAAAACAAkAAAASABwAAAAAAAkAAAATABwAAAABAAkAAAAUABwAAAACAAkAAAAVABwAAAACAAkAAAAWABwAAAAAAAkAAAAXABwAAAABAAkAAAAYABwAAAACAAkAAAAZABwAAAABAAkAAAAaABwAAAAAAAkAAAAbABwAAAACAAkAAAAcABwAAAACAAkAAAAdABwAAAABAAcAAAAAAB0AAAAAAAcAAAABAB0AAAAAAAcAAAACAB0AAAACAAkAAAADAB0AAAABAAkAAAAEAB0AAAABAAkAAAAFAB0AAAACAAkAAAAGAB0AAAAAAAkAAAAHAB0AAAABAAkAAAAIAB0AAAAAAAkAAAAJAB0AAAACAAkAAAAKAB0AAAABAAkAAAALAB0AAAABAAkAAAAMAB0AAAABAAkAAAANAB0AAAACAAkAAAAOAB0AAAAAAAkAAAAPAB0AAAAAAAkAAAAQAB0AAAABAAkAAAARAB0AAAACAAkAAAASAB0AAAAAAAkAAAATAB0AAAACAAkAAAAUAB0AAAAAAAkAAAAVAB0AAAABAAkAAAAWAB0AAAACAAkAAAAXAB0AAAACAAkAAAAYAB0AAAAAAAkAAAAZAB0AAAAAAAkAAAAaAB0AAAACAAkAAAAbAB0AAAABAAkAAAAcAB0AAAACAAkAAAAdAB0AAAABAAcAAAAAAB4AAAAAAAcAAAABAB4AAAAAAAcAAAACAB4AAAABAAkAAAADAB4AAAAAAAkAAAAEAB4AAAAAAAkAAAAFAB4AAAACAAkAAAAGAB4AAAABAAkAAAAHAB4AAAAAAAkAAAAIAB4AAAAAAAkAAAAJAB4AAAABAAkAAAAKAB4AAAACAAkAAAALAB4AAAABAAkAAAAMAB4AAAABAAkAAAANAB4AAAACAAkAAAAOAB4AAAABAAkAAAAPAB4AAAABAAkAAAAQAB4AAAACAAkAAAARAB4AAAAAAAkAAAASAB4AAAAAAAkAAAATAB4AAAABAAkAAAAUAB4AAAABAAkAAAAVAB4AAAAAAAkAAAAWAB4AAAAAAAkAAAAXAB4AAAABAAkAAAAYAB4AAAACAAkAAAAZAB4AAAACAAkAAAAaAB4AAAACAAkAAAAbAB4AAAACAAkAAAAcAB4AAAACAAkAAAAdAB4AAAABAAcAAAAAAB8AAAABAAcAAAABAB8AAAABAAcAAAACAB8AAAABAAkAAAADAB8AAAACAAkAAAAEAB8AAAAAAAkAAAAFAB8AAAABAAkAAAAGAB8AAAAAAAkAAAAHAB8AAAAAAAkAAAAIAB8AAAAAAAkAAAAJAB8AAAABAAkAAAAKAB8AAAAAAAkAAAALAB8AAAABAAkAAAAMAB8AAAACAAkAAAANAB8AAAAAAAkAAAAOAB8AAAABAAkAAAAPAB8AAAABAAkAAAAQAB8AAAABAAkAAAARAB8AAAACAAkAAAASAB8AAAACAAkAAAATAB8AAAABAAkAAAAUAB8AAAACAAkAAAAVAB8AAAABAAkAAAAWAB8AAAAAAAkAAAAXAB8AAAAAAAkAAAAYAB8AAAABAAkAAAAZAB8AAAABAAkAAAAaAB8AAAABAAkAAAAbAB8AAAAAAAkAAAAcAB8AAAABAAkAAAAdAB8AAAAAAAcAAAAAACAAAAAAAAcAAAABACAAAAAAAAcAAAACACAAAAABAAkAAAADACAAAAACAAkAAAAEACAAAAAAAAkAAAAFACAAAAABAAkAAAAGACAAAAACAAkAAAAHACAAAAACAAkAAAAIACAAAAAAAAkAAAAJACAAAAABAAkAAAAKACAAAAAAAAkAAAALACAAAAABAAkAAAAMACAAAAACAAkAAAANACAAAAAAAAkAAAAOACAAAAABAAkAAAAPACAAAAAAAAkAAAAQACAAAAAAAAkAAAARACAAAAACAAkAAAASACAAAAACAAkAAAATACAAAAABAAkAAAAUACAAAAAAAAkAAAAVACAAAAABAAkAAAAWACAAAAABAAkAAAAXACAAAAAAAAkAAAAYACAAAAAAAAkAAAAZACAAAAACAAkAAAAaACAAAAACAAkAAAAbACAAAAAAAAkAAAAcACAAAAABAAkAAAAdACAAAAABAAcAAAAAACEAAAABAAcAAAABACEAAAABAAcAAAACACEAAAAAAAkAAAADACEAAAACAAkAAAAEACEAAAAAAAkAAAAFACEAAAACAAkAAAAGACEAAAABAAkAAAAHACEAAAACAAkAAAAIACEAAAAAAAkAAAAJACEAAAACAAkAAAAKACEAAAACAAkAAAALACEAAAACAAkAAAAMACEAAAABAAkAAAANACEAAAAAAAkAAAAOACEAAAACAAkAAAAPACEAAAAAAAkAAAAQACEAAAABAAkAAAARACEAAAABAAkAAAASACEAAAACAAkAAAATACEAAAAAAAkAAAAUACEAAAACAAkAAAAVACEAAAABAAkAAAAWACEAAAABAAkAAAAXACEAAAACAAkAAAAYACEAAAACAAkAAAAZACEAAAACAAkAAAAaACEAAAACAAkAAAAbACEAAAAAAAkAAAAcACEAAAAAAAkAAAAdACEAAAABAAcAAAAAACIAAAAAAAcAAAABACIAAAABAAcAAAACACIAAAAAAAkAAAADACIAAAAAAAkAAAAEACIAAAAAAAkAAAAFACIAAAABAAkAAAAGACIAAAACAAkAAAAHACIAAAACAAkAAAAIACIAAAACAAkAAAAJACIAAAACAAkAAAAKACIAAAAAAAkAAAALACIAAAACAAkAAAAMACIAAAABAAkAAAANACIAAAAAAAkAAAAOACIAAAAAAAkAAAAPACIAAAABAAkAAAAQACIAAAACAAkAAAARACIAAAABAAkAAAASACIAAAABAAkAAAATACIAAAABAAkAAAAUACIAAAACAAkAAAAVACIAAAACAAkAAAAWACIAAAABAAkAAAAXACIAAAACAAkAAAAYACIAAAACAAkAAAAZACIAAAACAAkAAAAaACIAAAACAAkAAAAbACIAAAABAAkAAAAcACIAAAABAAkAAAAdACIAAAAAAAcAAAAAACMAAAABAAcAAAABACMAAAABAAcAAAACACMAAAAAAAkAAAADACMAAAAAAAkAAAAEACMAAAABAAkAAAAFACMAAAABAAkAAAAGACMAAAABAAkAAAAHACMAAAAAAAkAAAAIACMAAAACAAkAAAAJACMAAAACAAkAAAAKACMAAAABAAkAAAALACMAAAACAAkAAAAMACMAAAACAAkAAAANACMAAAAAAAkAAAAOACMAAAABAAkAAAAPACMAAAABAAkAAAAQACMAAAABAAkAAAARACMAAAAAAAkAAAASACMAAAACAAkAAAATACMAAAACAAkAAAAUACMAAAABAAkAAAAVACMAAAAAAAkAAAAWACMAAAACAAkAAAAXACMAAAAAAAkAAAAYACMAAAAAAAkAAAAZACMAAAACAAkAAAAaACMAAAACAAkAAAAbACMAAAACAAkAAAAcACMAAAABAAkAAAAdACMAAAABAAcAAAAAACQAAAABAAcAAAABACQAAAAAAAcAAAACACQAAAABAAkAAAADACQAAAABAAkAAAAEACQAAAAAAAkAAAAFACQAAAABAAkAAAAGACQAAAAAAAkAAAAHACQAAAABAAkAAAAIACQAAAAAAAkAAAAJACQAAAAAAAkAAAAKACQAAAAAAAkAAAALACQAAAACAAkAAAAMACQAAAABAAkAAAANACQAAAACAAkAAAAOACQAAAACAAkAAAAPACQAAAACAAkAAAAQACQAAAABAAkAAAARACQAAAACAAkAAAASACQAAAABAAkAAAATACQAAAACAAkAAAAUACQAAAACAAkAAAAVACQAAAACAAkAAAAWACQAAAAAAAkAAAAXACQAAAAAAAkAAAAYACQAAAAAAAkAAAAZACQAAAAAAAkAAAAaACQAAAABAAkAAAAbACQAAAAAAAkAAAAcACQAAAAAAAkAAAAdACQAAAABAAcAAAAAACUAAAABAAcAAAABACUAAAABAAcAAAACACUAAAABAAkAAAADACUAAAACAAkAAAAEACUAAAACAAkAAAAFACUAAAABAAkAAAAGACUAAAACAAkAAAAHACUAAAABAAkAAAAIACUAAAAAAAkAAAAJACUAAAACAAkAAAAKACUAAAACAAkAAAALACUAAAABAAkAAAAMACUAAAABAAkAAAANACUAAAAAAAkAAAAOACUAAAABAAkAAAAPACUAAAABAAkAAAAQACUAAAABAAkAAAARACUAAAACAAkAAAASACUAAAABAAkAAAATACUAAAACAAkAAAAUACUAAAAAAAkAAAAVACUAAAACAAkAAAAWACUAAAACAAkAAAAXACUAAAABAAkAAAAYACUAAAABAAkAAAAZACUAAAAAAAkAAAAaACUAAAAAAAkAAAAbACUAAAAAAAkAAAAcACUAAAABAAkAAAAdACUAAAAAAAcAAAAAACYAAAABAAcAAAABACYAAAAAAAcAAAACACYAAAACAAkAAAADACYAAAACAAkAAAAEACYAAAAAAAkAAAAFACYAAAAAAAkAAAAGACYAAAAAAAkAAAAHACYAAAAAAAkAAAAIACYAAAAAAAkAAAAJACYAAAABAAkAAAAKACYAAAABAAkAAAALACYAAAABAAkAAAAMACYAAAAAAAkAAAANACYAAAABAAkAAAAOACYAAAAAAAkAAAAPACYAAAAAAAkAAAAQACYAAAAAAAkAAAARACYAAAAAAAkAAAASACYAAAAAAAkAAAATACYAAAAAAAkAAAAUACYAAAAAAAkAAAAVACYAAAABAAkAAAAWACYAAAABAAkAAAAXACYAAAABAAkAAAAYACYAAAAAAAkAAAAZACYAAAACAAkAAAAaACYAAAABAAkAAAAbACYAAAABAAkAAAAcACYAAAACAAkAAAAdACYAAAABAAcAAAAAACcAAAAAAAcAAAABACcAAAABAAcAAAACACcAAAACAAkAAAADACcAAAABAAkAAAAEACcAAAACAAkAAAAFACcAAAACAAkAAAAGACcAAAAAAAkAAAAHACcAAAABAAkAAAAIACcAAAABAAkAAAAJACcAAAACAAkAAAAKACcAAAABAAkAAAALACcAAAABAAkAAAAMACcAAAAAAAkAAAANACcAAAAAAAkAAAAOACcAAAAAAAkAAAAPACcAAAACAAkAAAAQACcAAAACAAkAAAARACcAAAAAAAkAAAASACcAAAAAAAkAAAATACcAAAACAAkAAAAUACcAAAABAAkAAAAVACcAAAACAAkAAAAWACcAAAAAAAkAAAAXACcAAAABAAkAAAAYACcAAAACAAkAAAAZACcAAAAAAAkAAAAaACcAAAAAAAkAAAAbACcAAAAAAAkAAAAcACcAAAABAAkAAAAdACcAAAABAAcAAAAAACgAAAAAAAcAAAABACgAAAABAAcAAAACACgAAAABAAkAAAADACgAAAACAAkAAAAEACgAAAACAAkAAAAFACgAAAABAAkAAAAGACgAAAABAAkAAAAHACgAAAACAAkAAAAIACgAAAABAAkAAAAJACgAAAAAAAkAAAAKACgAAAAAAAkAAAALACgAAAACAAkAAAAMACgAAAABAAkAAAANACgAAAABAAkAAAAOACgAAAABAAkAAAAPACgAAAABAAkAAAAQACgAAAACAAkAAAARACgAAAACAAkAAAASACgAAAACAAkAAAATACgAAAAAAAkAAAAUACgAAAABAAkAAAAVACgAAAACAAkAAAAWACgAAAACAAkAAAAXACgAAAAAAAkAAAAYACgAAAAAAAkAAAAZACgAAAABAAkAAAAaACgAAAAAAAkAAAAbACgAAAAAAAkAAAAcACgAAAAAAAkAAAAdACgAAAABAAcAAAAAACkAAAAAAAcAAAABACkAAAABAAcAAAACACkAAAACAAkAAAADACkAAAAAAAkAAAAEACkAAAAAAAkAAAAFACkAAAABAAkAAAAGACkAAAAAAAkAAAAHACkAAAABAAkAAAAIACkAAAAAAAkAAAAJACkAAAACAAkAAAAKACkAAAABAAkAAAALACkAAAACAAkAAAAMACkAAAAAAAkAAAANACkAAAAAAAkAAAAOACkAAAABAAkAAAAPACkAAAABAAkAAAAQACkAAAAAAAkAAAARACkAAAABAAkAAAASACkAAAABAAkAAAATACkAAAAAAAkAAAAUACkAAAABAAkAAAAVACkAAAACAAkAAAAWACkAAAABAAkAAAAXACkAAAABAAkAAAAYACkAAAABAAkAAAAZACkAAAABAAkAAAAaACkAAAACAAkAAAAbACkAAAABAAkAAAAcACkAAAACAAkAAAAdACkAAAAAAAcAAAAAACoAAAAAAAcAAAABACoAAAABAAcAAAACACoAAAAAAAkAAAADACoAAAAAAAkAAAAEACoAAAAAAAkAAAAFACoAAAAAAAkAAAAGACoAAAAAAAkAAAAHACoAAAAAAAkAAAAIACoAAAACAAkAAAAJACoAAAABAAkAAAAKACoAAAAAAAkAAAALACoAAAAAAAkAAAAMACoAAAAAAAkAAAANACoAAAAAAAkAAAAOACoAAAAAAAkAAAAPACoAAAABAAkAAAAQACoAAAACAAkAAAARACoAAAACAAkAAAASACoAAAAAAAkAAAATACoAAAACAAkAAAAUACoAAAABAAkAAAAVACoAAAAAAAkAAAAWACoAAAABAAkAAAAXACoAAAAAAAkAAAAYACoAAAAAAAkAAAAZACoAAAACAAkAAAAaACoAAAABAAkAAAAbACoAAAABAAkAAAAcACoAAAAAAAkAAAAdACoAAAAAAAcAAAAAACsAAAABAAcAAAABACsAAAAAAAcAAAACACsAAAAAAAkAAAADACsAAAACAAkAAAAEACsAAAABAAkAAAAFACsAAAAAAAkAAAAGACsAAAABAAkAAAAHACsAAAABAAkAAAAIACsAAAACAAkAAAAJACsAAAACAAkAAAAKACsAAAACAAkAAAALACsAAAACAAkAAAAMACsAAAABAAkAAAANACsAAAACAAkAAAAOACsAAAABAAkAAAAPACsAAAACAAkAAAAQACsAAAABAAkAAAARACsAAAACAAkAAAASACsAAAAAAAkAAAATACsAAAABAAkAAAAUACsAAAACAAkAAAAVACsAAAABAAkAAAAWACsAAAAAAAkAAAAXACsAAAACAAkAAAAYACsAAAABAAkAAAAZACsAAAACAAkAAAAaACsAAAABAAkAAAAbACsAAAACAAkAAAAcACsAAAABAAkAAAAdACsAAAAAAAcAAAAAACwAAAAAAAcAAAABACwAAAABAAcAAAACACwAAAAAAAkAAAADACwAAAABAAkAAAAEACwAAAAAAAkAAAAFACwAAAACAAkAAAAGACwAAAACAAkAAAAHACwAAAACAAkAAAAIACwAAAABAAkAAAAJACwAAAACAAkAAAAKACwAAAABAAkAAAALACwAAAACAAkAAAAMACwAAAAAAAkAAAANACwAAAAAAAkAAAAOACwAAAAAAAkAAAAPACwAAAACAAkAAAAQACwAAAACAAkAAAARACwAAAABAAkAAAASACwAAAACAAkAAAATACwAAAABAAkAAAAUACwAAAABAAkAAAAVACwAAAACAAkAAAAWACwAAAABAAkAAAAXACwAAAACAAkAAAAYACwAAAACAAkAAAAZACwAAAABAAkAAAAaACwAAAACAAkAAAAbACwAAAACAAkAAAAcACwAAAACAAkAAAAdACwAAAAAAAcAAAAAAC0AAAABAAcAAAABAC0AAAAAAAcAAAACAC0AAAAAAAkAAAADAC0AAAACAAkAAAAEAC0AAAABAAkAAAAFAC0AAAABAAkAAAAGAC0AAAAAAAkAAAAHAC0AAAACAAkAAAAIAC0AAAACAAkAAAAJAC0AAAAAAAkAAAAKAC0AAAAAAAkAAAALAC0AAAAAAAkAAAAMAC0AAAABAAkAAAANAC0AAAACAAkAAAAOAC0AAAAAAAkAAAAPAC0AAAACAAkAAAAQAC0AAAABAAkAAAARAC0AAAACAAkAAAASAC0AAAAAAAkAAAATAC0AAAAAAAkAAAAUAC0AAAACAAkAAAAVAC0AAAAAAAkAAAAWAC0AAAAAAAkAAAAXAC0AAAABAAkAAAAYAC0AAAAAAAkAAAAZAC0AAAAAAAkAAAAaAC0AAAAAAAkAAAAbAC0AAAACAAkAAAAcAC0AAAAAAAkAAAAdAC0AAAAAAAcAAAAAAC4AAAAAAAcAAAABAC4AAAAAAAcAAAACAC4AAAABAAkAAAADAC4AAAACAAkAAAAEAC4AAAABAAkAAAAFAC4AAAACAAkAAAAGAC4AAAABAAkAAAAHAC4AAAACAAkAAAAIAC4AAAACAAkAAAAJAC4AAAABAAkAAAAKAC4AAAACAAkAAAALAC4AAAAAAAkAAAAMAC4AAAABAAkAAAANAC4AAAACAAkAAAAOAC4AAAABAAkAAAAPAC4AAAABAAkAAAAQAC4AAAACAAkAAAARAC4AAAABAAkAAAASAC4AAAABAAkAAAATAC4AAAABAAkAAAAUAC4AAAACAAkAAAAVAC4AAAABAAkAAAAWAC4AAAABAAkAAAAXAC4AAAABAAkAAAAYAC4AAAACAAkAAAAZAC4AAAABAAkAAAAaAC4AAAABAAkAAAAbAC4AAAACAAkAAAAcAC4AAAABAAkAAAAdAC4AAAABAAcAAAAAAC8AAAABAAcAAAABAC8AAAAAAAcAAAACAC8AAAABAAkAAAADAC8AAAAAAAkAAAAEAC8AAAAAAAkAAAAFAC8AAAACAAkAAAAGAC8AAAACAAkAAAAHAC8AAAABAAkAAAAIAC8AAAABAAkAAAAJAC8AAAACAAkAAAAKAC8AAAAAAAkAAAALAC8AAAAAAAkAAAAMAC8AAAABAAkAAAANAC8AAAABAAkAAAAOAC8AAAAAAAkAAAAPAC8AAAAAAAkAAAAQAC8AAAACAAkAAAARAC8AAAACAAkAAAASAC8AAAABAAkAAAATAC8AAAAAAAkAAAAUAC8AAAAAAAkAAAAVAC8AAAABAAkAAAAWAC8AAAACAAkAAAAXAC8AAAAAAAkAAAAYAC8AAAAAAAkAAAAZAC8AAAABAAkAAAAaAC8AAAACAAkAAAAbAC8AAAABAAkAAAAcAC8AAAACAAkAAAAdAC8AAAAAAAcAAAAAADAAAAABAAcAAAABADAAAAABAAcAAAACADAAAAAAAAkAAAADADAAAAACAAkAAAAEADAAAAABAAkAAAAFADAAAAAAAAkAAAAGADAAAAAAAAkAAAAHADAAAAABAAkAAAAIADAAAAAAAAkAAAAJADAAAAACAAkAAAAKADAAAAAAAAkAAAALADAAAAACAAkAAAAMADAAAAABAAkAAAANADAAAAAAAAkAAAAOADAAAAABAAkAAAAPADAAAAAAAAkAAAAQADAAAAABAAkAAAARADAAAAACAAkAAAASADAAAAAAAAkAAAATADAAAAAAAAkAAAAUADAAAAACAAkAAAAVADAAAAAAAAkAAAAWADAAAAABAAkAAAAXADAAAAABAAkAAAAYADAAAAACAAkAAAAZADAAAAAAAAkAAAAaADAAAAABAAkAAAAbADAAAAABAAkAAAAcADAAAAABAAkAAAAdADAAAAABAAcAAAAAADEAAAAAAAcAAAABADEAAAABAAcAAAACADEAAAABAAkAAAADADEAAAACAAkAAAAEADEAAAABAAkAAAAFADEAAAAAAAkAAAAGADEAAAAAAAkAAAAHADEAAAACAAkAAAAIADEAAAACAAkAAAAJADEAAAAAAAkAAAAKADEAAAABAAkAAAALADEAAAABAAkAAAAMADEAAAABAAkAAAANADEAAAABAAkAAAAOADEAAAAAAAkAAAAPADEAAAACAAkAAAAQADEAAAAAAAkAAAARADEAAAAAAAkAAAASADEAAAAAAAkAAAATADEAAAACAAkAAAAUADEAAAAAAAkAAAAVADEAAAAAAAkAAAAWADEAAAAAAAkAAAAXADEAAAABAAkAAAAYADEAAAAAAAkAAAAZADEAAAAAAAkAAAAaADEAAAAAAAkAAAAbADEAAAABAAkAAAAcADEAAAAAAAkAAAAdADEAAAABAAcAAAAAADIAAAAAAAcAAAABADIAAAABAAcAAAACADIAAAABAAkAAAADADIAAAACAAkAAAAEADIAAAACAAkAAAAFADIAAAACAAkAAAAGADIAAAAAAAkAAAAHADIAAAABAAkAAAAIADIAAAABAAkAAAAJADIAAAAAAAkAAAAKADIAAAAAAAkAAAALADIAAAACAAkAAAAMADIAAAACAAkAAAANADIAAAACAAkAAAAOADIAAAABAAkAAAAPADIAAAACAAkAAAAQADIAAAAAAAkAAAARADIAAAAAAAkAAAASADIAAAACAAkAAAATADIAAAABAAkAAAAUADIAAAAAAAkAAAAVADIAAAACAAkAAAAWADIAAAACAAkAAAAXADIAAAABAAkAAAAYADIAAAABAAkAAAAZADIAAAAAAAkAAAAaADIAAAACAAkAAAAbADIAAAACAAkAAAAcADIAAAAAAAkAAAAdADIAAAABAAcAAAAAADMAAAABAAcAAAABADMAAAAAAAcAAAACADMAAAAAAAkAAAADADMAAAABAAkAAAAEADMAAAACAAkAAAAFADMAAAABAAkAAAAGADMAAAABAAkAAAAHADMAAAABAAkAAAAIADMAAAABAAkAAAAJADMAAAACAAkAAAAKADMAAAACAAkAAAALADMAAAABAAkAAAAMADMAAAAAAAkAAAANADMAAAACAAkAAAAOADMAAAABAAkAAAAPADMAAAACAAkAAAAQADMAAAAAAAkAAAARADMAAAACAAkAAAASADMAAAAAAAkAAAATADMAAAAAAAkAAAAUADMAAAAAAAkAAAAVADMAAAABAAkAAAAWADMAAAAAAAkAAAAXADMAAAAAAAkAAAAYADMAAAACAAkAAAAZADMAAAAAAAkAAAAaADMAAAAAAAkAAAAbADMAAAABAAkAAAAcADMAAAAAAAkAAAAdADMAAAAAAAcAAAAAADQAAAABAAcAAAABADQAAAAAAAcAAAACADQAAAAAAAkAAAADADQAAAABAAkAAAAEADQAAAABAAkAAAAFADQAAAABAAkAAAAGADQAAAACAAkAAAAHADQAAAABAAkAAAAIADQAAAAAAAkAAAAJADQAAAABAAkAAAAKADQAAAABAAkAAAALADQAAAACAAkAAAAMADQAAAACAAkAAAANADQAAAABAAkAAAAOADQAAAAAAAkAAAAPADQAAAAAAAkAAAAQADQAAAACAAkAAAARADQAAAABAAkAAAASADQAAAABAAkAAAATADQAAAACAAkAAAAUADQAAAACAAkAAAAVADQAAAABAAkAAAAWADQAAAAAAAkAAAAXADQAAAACAAkAAAAYADQAAAACAAkAAAAZADQAAAABAAkAAAAaADQAAAAAAAkAAAAbADQAAAAAAAkAAAAcADQAAAACAAkAAAAdADQAAAAAAAcAAAAAADUAAAABAAcAAAABADUAAAAAAAcAAAACADUAAAABAAkAAAADADUAAAAAAAkAAAAEADUAAAABAAkAAAAFADUAAAACAAkAAAAGADUAAAAAAAkAAAAHADUAAAABAAkAAAAIADUAAAACAAkAAAAJADUAAAACAAkAAAAKADUAAAABAAkAAAALADUAAAAAAAkAAAAMADUAAAACAAkAAAANADUAAAABAAkAAAAOADUAAAABAAkAAAAPADUAAAAAAAkAAAAQADUAAAABAAkAAAARADUAAAAAAAkAAAASADUAAAACAAkAAAATADUAAAABAAkAAAAUADUAAAAAAAkAAAAVADUAAAACAAkAAAAWADUAAAAAAAkAAAAXADUAAAABAAkAAAAYADUAAAACAAkAAAAZADUAAAAAAAkAAAAaADUAAAABAAkAAAAbADUAAAABAAkAAAAcADUAAAACAAkAAAAdADUAAAAAAAcAAAAAADYAAAAAAAcAAAABADYAAAABAAcAAAACADYAAAABAAkAAAADADYAAAACAAkAAAAEADYAAAACAAkAAAAFADYAAAAAAAkAAAAGADYAAAAAAAkAAAAHADYAAAABAAkAAAAIADYAAAABAAkAAAAJADYAAAACAAkAAAAKADYAAAABAAkAAAALADYAAAAAAAkAAAAMADYAAAACAAkAAAANADYAAAABAAkAAAAOADYAAAABAAkAAAAPADYAAAABAAkAAAAQADYAAAAAAAkAAAARADYAAAABAAkAAAASADYAAAAAAAkAAAATADYAAAABAAkAAAAUADYAAAABAAkAAAAVADYAAAACAAkAAAAWADYAAAABAAkAAAAXADYAAAACAAkAAAAYADYAAAABAAkAAAAZADYAAAAAAAkAAAAaADYAAAACAAkAAAAbADYAAAABAAkAAAAcADYAAAABAAkAAAAdADYAAAAAAAcAAAAAADcAAAAAAAcAAAABADcAAAAAAAcAAAACADcAAAABAAkAAAADADcAAAACAAkAAAAEADcAAAABAAkAAAAFADcAAAABAAkAAAAGADcAAAACAAkAAAAHADcAAAACAAkAAAAIADcAAAACAAkAAAAJADcAAAAAAAkAAAAKADcAAAABAAkAAAALADcAAAAAAAkAAAAMADcAAAABAAkAAAANADcAAAAAAAkAAAAOADcAAAACAAkAAAAPADcAAAACAAkAAAAQADcAAAACAAkAAAARADcAAAACAAkAAAASADcAAAACAAkAAAATADcAAAAAAAkAAAAUADcAAAABAAkAAAAVADcAAAACAAkAAAAWADcAAAABAAkAAAAXADcAAAACAAkAAAAYADcAAAACAAkAAAAZADcAAAACAAkAAAAaADcAAAABAAkAAAAbADcAAAAAAAkAAAAcADcAAAABAAkAAAAdADcAAAAAAAcAAAAAADgAAAAAAAcAAAABADgAAAABAAcAAAACADgAAAAAAAkAAAADADgAAAABAAkAAAAEADgAAAAAAAkAAAAFADgAAAABAAkAAAAGADgAAAABAAkAAAAHADgAAAACAAkAAAAIADgAAAAAAAkAAAAJADgAAAAAAAkAAAAKADgAAAAAAAkAAAALADgAAAAAAAkAAAAMADgAAAACAAkAAAANADgAAAAAAAkAAAAOADgAAAACAAkAAAAPADgAAAABAAkAAAAQADgAAAABAAkAAAARADgAAAACAAkAAAASADgAAAABAAkAAAATADgAAAAAAAkAAAAUADgAAAACAAkAAAAVADgAAAAAAAkAAAAWADgAAAABAAkAAAAXADgAAAACAAkAAAAYADgAAAABAAkAAAAZADgAAAAAAAkAAAAaADgAAAACAAkAAAAbADgAAAABAAkAAAAcADgAAAACAAkAAAAdADgAAAAAAAcAAAAAADkAAAAAAAcAAAABADkAAAAAAAcAAAACADkAAAAAAAkAAAADADkAAAAAAAkAAAAEADkAAAABAAkAAAAFADkAAAACAAkAAAAGADkAAAACAAkAAAAHADkAAAAAAAkAAAAIADkAAAACAAkAAAAJADkAAAAAAAkAAAAKADkAAAACAAkAAAALADkAAAAAAAkAAAAMADkAAAACAAkAAAANADkAAAABAAkAAAAOADkAAAACAAkAAAAPADkAAAAAAAkAAAAQADkAAAAAAAkAAAARADkAAAACAAkAAAASADkAAAAAAAkAAAATADkAAAACAAkAAAAUADkAAAABAAkAAAAVADkAAAAAAAkAAAAWADkAAAABAAkAAAAXADkAAAACAAkAAAAYADkAAAABAAkAAAAZADkAAAAAAAkAAAAaADkAAAABAAkAAAAbADkAAAAAAAkAAAAcADkAAAAAAAkAAAAdADkAAAAAAAcAAAAAADoAAAAAAAcAAAABADoAAAAAAAcAAAACADoAAAABAAkAAAADADoAAAAAAAkAAAAEADoAAAACAAkAAAAFADoAAAAAAAkAAAAGADoAAAAAAAkAAAAHADoAAAACAAkAAAAIADoAAAAAAAkAAAAJADoAAAABAAkAAAAKADoAAAABAAkAAAALADoAAAACAAkAAAAMADoAAAAAAAkAAAANADoAAAABAAkAAAAOADoAAAAAAAkAAAAPADoAAAACAAkAAAAQADoAAAACAAkAAAARADoAAAACAAkAAAASADoAAAABAAkAAAATADoAAAAAAAkAAAAUADoAAAABAAkAAAAVADoAAAACAAkAAAAWADoAAAABAAkAAAAXADoAAAABAAkAAAAYADoAAAAAAAkAAAAZADoAAAACAAkAAAAaADoAAAACAAkAAAAbADoAAAAAAAkAAAAcADoAAAABAAkAAAAdADoAAAAAAAcAAAAAADsAAAABAAcAAAABADsAAAABAAcAAAACADsAAAABAAkAAAADADsAAAAAAAkAAAAEADsAAAABAAkAAAAFADsAAAAAAAkAAAAGADsAAAAAAAkAAAAHADsAAAABAAkAAAAIADsAAAABAAkAAAAJADsAAAACAAkAAAAKADsAAAAAAAkAAAALADsAAAABAAkAAAAMADsAAAAAAAkAAAANADsAAAACAAkAAAAOADsAAAAAAAkAAAAPADsAAAABAAkAAAAQADsAAAABAAkAAAARADsAAAACAAkAAAASADsAAAAAAAkAAAATADsAAAACAAkAAAAUADsAAAACAAkAAAAVADsAAAABAAkAAAAWADsAAAAAAAkAAAAXADsAAAABAAkAAAAYADsAAAACAAkAAAAZADsAAAACAAkAAAAaADsAAAABAAkAAAAbADsAAAACAAkAAAAcADsAAAACAAkAAAAdADsAAAAAAAcAAAAAADwAAAACAAkAAAABADwAAAACAAkAAAACADwAAAAAAAkAAAADADwAAAABAAkAAAAEADwAAAACAAkAAAAFADwAAAACAAkAAAAGADwAAAABAAkAAAAHADwAAAABAAkAAAAIADwAAAACAAkAAAAJADwAAAAAAAkAAAAKADwAAAABAAkAAAALADwAAAACAAkAAAAMADwAAAACAAkAAAANADwAAAACAAkAAAAOADwAAAACAAkAAAAPADwAAAAAAAkAAAAQADwAAAABAAkAAAARADwAAAACAAkAAAASADwAAAACAAkAAAATADwAAAACAAkAAAAUADwAAAACAAkAAAAVADwAAAABAAkAAAAWADwAAAABAAkAAAAXADwAAAAAAAkAAAAYADwAAAACAAkAAAAZADwAAAAAAAkAAAAaADwAAAACAAkAAAAbADwAAAAAAAkAAAAcADwAAAAAAAkAAAAdADwAAAABAAcAAAAAAD0AAAAAAAkAAAABAD0AAAAAAAkAAAACAD0AAAACAAkAAAADAD0AAAABAAkAAAAEAD0AAAABAAkAAAAFAD0AAAAAAAkAAAAGAD0AAAACAAkAAAAHAD0AAAACAAkAAAAIAD0AAAAAAAkAAAAJAD0AAAABAAkAAAAKAD0AAAABAAkAAAALAD0AAAACAAkAAAAMAD0AAAACAAkAAAANAD0AAAABAAkAAAAOAD0AAAAAAAkAAAAPAD0AAAAAAAkAAAAQAD0AAAAAAAkAAAARAD0AAAABAAkAAAASAD0AAAAAAAkAAAATAD0AAAABAAkAAAAUAD0AAAABAAkAAAAVAD0AAAACAAkAAAAWAD0AAAAAAAkAAAAXAD0AAAAAAAkAAAAYAD0AAAABAAkAAAAZAD0AAAACAAkAAAAaAD0AAAACAAkAAAAbAD0AAAAAAAkAAAAcAD0AAAAAAAkAAAAdAD0AAAABAAcAAAAAAD4AAAABAAkAAAABAD4AAAACAAkAAAACAD4AAAAAAAkAAAADAD4AAAAAAAkAAAAEAD4AAAAAAAkAAAAFAD4AAAAAAAkAAAAGAD4AAAABAAkAAAAHAD4AAAACAAkAAAAIAD4AAAAAAAkAAAAJAD4AAAACAAkAAAAKAD4AAAABAAkAAAALAD4AAAABAAkAAAAMAD4AAAABAAkAAAANAD4AAAAAAAkAAAAOAD4AAAABAAkAAAAPAD4AAAABAAkAAAAQAD4AAAAAAAkAAAARAD4AAAACAAkAAAASAD4AAAABAAkAAAATAD4AAAACAAkAAAAUAD4AAAABAAkAAAAVAD4AAAACAAkAAAAWAD4AAAAAAAkAAAAXAD4AAAAAAAkAAAAYAD4AAAABAAkAAAAZAD4AAAACAAkAAAAaAD4AAAAAAAkAAAAbAD4AAAAAAAkAAAAcAD4AAAABAAkAAAAdAD4AAAAAAAcAAAAAAD8AAAABAAkAAAABAD8AAAABAAkAAAACAD8AAAAAAAkAAAADAD8AAAAAAAkAAAAEAD8AAAACAAkAAAAFAD8AAAAAAAkAAAAGAD8AAAABAAkAAAAHAD8AAAACAAkAAAAIAD8AAAAAAAkAAAAJAD8AAAACAAkAAAAKAD8AAAACAAkAAAALAD8AAAAAAAkAAAAMAD8AAAAAAAkAAAANAD8AAAACAAkAAAAOAD8AAAAAAAkAAAAPAD8AAAACAAkAAAAQAD8AAAAAAAkAAAARAD8AAAABAAkAAAASAD8AAAAAAAkAAAATAD8AAAACAAkAAAAUAD8AAAAAAAkAAAAVAD8AAAAAAAkAAAAWAD8AAAACAAkAAAAXAD8AAAACAAkAAAAYAD8AAAACAAkAAAAZAD8AAAABAAkAAAAaAD8AAAACAAkAAAAbAD8AAAAAAAkAAAAcAD8AAAACAAkAAAAdAD8AAAABAAcAAAAAAEAAAAAAAAkAAAABAEAAAAAAAAkAAAACAEAAAAABAAkAAAADAEAAAAABAAkAAAAEAEAAAAACAAkAAAAFAEAAAAAAAAkAAAAGAEAAAAAAAAkAAAAHAEAAAAAAAAkAAAAIAEAAAAABAAkAAAAJAEAAAAAAAAkAAAAKAEAAAAAAAAkAAAALAEAAAAABAAkAAAAMAEAAAAACAAkAAAANAEAAAAAAAAkAAAAOAEAAAAAAAAkAAAAPAEAAAAAAAAkAAAAQAEAAAAAAAAkAAAARAEAAAAABAAkAAAASAEAAAAABAAkAAAATAEAAAAAAAAkAAAAUAEAAAAAAAAkAAAAVAEAAAAACAAkAAAAWAEAAAAACAAkAAAAXAEAAAAACAAkAAAAYAEAAAAABAAkAAAAZAEAAAAACAAkAAAAaAEAAAAABAAkAAAAbAEAAAAABAAkAAAAcAEAAAAAAAAkAAAAdAEAAAAABAAcAAAAAAEEAAAABAAkAAAABAEEAAAACAAkAAAACAEEAAAABAAkAAAADAEEAAAACAAkAAAAEAEEAAAAAAAkAAAAFAEEAAAACAAkAAAAGAEEAAAABAAkAAAAHAEEAAAAAAAkAAAAIAEEAAAACAAkAAAAJAEEAAAABAAkAAAAKAEEAAAAAAAkAAAALAEEAAAAAAAkAAAAMAEEAAAAAAAkAAAANAEEAAAABAAkAAAAOAEEAAAABAAkAAAAPAEEAAAABAAkAAAAQAEEAAAAAAAkAAAARAEEAAAACAAkAAAASAEEAAAACAAkAAAATAEEAAAAAAAkAAAAUAEEAAAACAAkAAAAVAEEAAAACAAkAAAAWAEEAAAABAAkAAAAXAEEAAAAAAAkAAAAYAEEAAAAAAAkAAAAZAEEAAAAAAAkAAAAaAEEAAAACAAkAAAAbAEEAAAABAAkAAAAcAEEAAAABAAkAAAAdAEEAAAABAAcAAAAAAEIAAAACAAkAAAABAEIAAAAAAAkAAAACAEIAAAAAAAkAAAADAEIAAAAAAAkAAAAEAEIAAAABAAkAAAAFAEIAAAABAAkAAAAGAEIAAAABAAkAAAAHAEIAAAAAAAkAAAAIAEIAAAAAAAkAAAAJAEIAAAABAAkAAAAKAEIAAAACAAkAAAALAEIAAAAAAAkAAAAMAEIAAAAAAAkAAAANAEIAAAAAAAkAAAAOAEIAAAAAAAkAAAAPAEIAAAABAAkAAAAQAEIAAAACAAkAAAARAEIAAAAAAAkAAAASAEIAAAABAAkAAAATAEIAAAABAAkAAAAUAEIAAAACAAkAAAAVAEIAAAABAAkAAAAWAEIAAAABAAkAAAAXAEIAAAACAAkAAAAYAEIAAAABAAkAAAAZAEIAAAABAAkAAAAaAEIAAAABAAkAAAAbAEIAAAAAAAkAAAAcAEIAAAAAAAkAAAAdAEIAAAABAAcAAAAAAEMAAAAAAAkAAAABAEMAAAAAAAkAAAACAEMAAAAAAAkAAAADAEMAAAAAAAkAAAAEAEMAAAAAAAkAAAAFAEMAAAABAAkAAAAGAEMAAAACAAkAAAAHAEMAAAAAAAkAAAAIAEMAAAAAAAkAAAAJAEMAAAABAAkAAAAKAEMAAAAAAAkAAAALAEMAAAACAAkAAAAMAEMAAAAAAAkAAAANAEMAAAAAAAkAAAAOAEMAAAAAAAkAAAAPAEMAAAABAAkAAAAQAEMAAAAAAAkAAAARAEMAAAAAAAkAAAASAEMAAAACAAkAAAATAEMAAAACAAkAAAAUAEMAAAACAAkAAAAVAEMAAAAAAAkAAAAWAEMAAAABAAkAAAAXAEMAAAABAAkAAAAYAEMAAAAAAAkAAAAZAEMAAAAAAAkAAAAaAEMAAAACAAkAAAAbAEMAAAAAAAkAAAAcAEMAAAABAAkAAAAdAEMAAAAAAAcAAAAAAEQAAAACAAkAAAABAEQAAAAAAAkAAAACAEQAAAABAAkAAAADAEQAAAABAAkAAAAEAEQAAAABAAkAAAAFAEQAAAAAAAkAAAAGAEQAAAABAAkAAAAHAEQAAAACAAkAAAAIAEQAAAAAAAkAAAAJAEQAAAABAAkAAAAKAEQAAAABAAkAAAALAEQAAAAAAAkAAAAMAEQAAAACAAkAAAANAEQAAAABAAkAAAAOAEQAAAAAAAkAAAAPAEQAAAABAAkAAAAQAEQAAAABAAkAAAARAEQAAAABAAkAAAASAEQAAAAAAAkAAAATAEQAAAACAAkAAAAUAEQAAAABAAkAAAAVAEQAAAACAAkAAAAWAEQAAAABAAkAAAAXAEQAAAAAAAkAAAAYAEQAAAACAAkAAAAZAEQAAAAAAAkAAAAaAEQAAAAAAAkAAAAbAEQAAAACAAkAAAAcAEQAAAACAAkAAAAdAEQAAAAAAAcAAAAAAEUAAAABAAkAAAABAEUAAAABAAkAAAACAEUAAAACAAkAAAADAEUAAAAAAAkAAAAEAEUAAAABAAkAAAAFAEUAAAABAAkAAAAGAEUAAAABAAkAAAAHAEUAAAAAAAkAAAAIAEUAAAAAAAkAAAAJAEUAAAACAAkAAAAKAEUAAAAAAAkAAAALAEUAAAAAAAkAAAAMAEUAAAAAAAkAAAANAEUAAAAAAAkAAAAOAEUAAAABAAkAAAAPAEUAAAABAAkAAAAQAEUAAAABAAkAAAARAEUAAAABAAkAAAASAEUAAAACAAkAAAATAEUAAAABAAkAAAAUAEUAAAABAAkAAAAVAEUAAAAAAAkAAAAWAEUAAAAAAAkAAAAXAEUAAAACAAkAAAAYAEUAAAACAAkAAAAZAEUAAAAAAAkAAAAaAEUAAAAAAAkAAAAbAEUAAAAAAAkAAAAcAEUAAAACAAkAAAAdAEUAAAABAAcAAAAAAEYAAAACAAkAAAABAEYAAAACAAkAAAACAEYAAAACAAkAAAADAEYAAAACAAkAAAAEAEYAAAAAAAkAAAAFAEYAAAABAAkAAAAGAEYAAAAAAAkAAAAHAEYAAAAAAAkAAAAIAEYAAAAAAAkAAAAJAEYAAAABAAkAAAAKAEYAAAAAAAkAAAALAEYAAAABAAkAAAAMAEYAAAABAAkAAAANAEYAAAACAAkAAAAOAEYAAAABAAkAAAAPAEYAAAACAAkAAAAQAEYAAAACAAkAAAARAEYAAAAAAAkAAAASAEYAAAAAAAkAAAATAEYAAAABAAkAAAAUAEYAAAAAAAkAAAAVAEYAAAAAAAkAAAAWAEYAAAAAAAkAAAAXAEYAAAAAAAkAAAAYAEYAAAABAAkAAAAZAEYAAAACAAkAAAAaAEYAAAABAAkAAAAbAEYAAAAAAAkAAAAcAEYAAAABAAkAAAAdAEYAAAAAAAcAAAAAAEcAAAACAAkAAAABAEcAAAACAAkAAAACAEcAAAACAAkAAAADAEcAAAACAAkAAAAEAEcAAAAAAAkAAAAFAEcAAAABAAkAAAAGAEcAAAABAAkAAAAHAEcAAAAAAAkAAAAIAEcAAAABAAkAAAAJAEcAAAACAAkAAAAKAEcAAAACAAkAAAALAEcAAAACAAkAAAAMAEcAAAACAAkAAAANAEcAAAACAAkAAAAOAEcAAAACAAkAAAAPAEcAAAABAAkAAAAQAEcAAAABAAkAAAARAEcAAAAAAAkAAAASAEcAAAABAAkAAAATAEcAAAABAAkAAAAUAEcAAAAAAAkAAAAVAEcAAAACAAkAAAAWAEcAAAACAAkAAAAXAEcAAAAAAAkAAAAYAEcAAAACAAkAAAAZAEcAAAAAAAkAAAAaAEcAAAABAAkAAAAbAEcAAAACAAkAAAAcAEcAAAABAAkAAAAdAEcAAAABAAcAAAAAAEgAAAAAAAkAAAABAEgAAAACAAkAAAACAEgAAAAAAAkAAAADAEgAAAACAAkAAAAEAEgAAAABAAkAAAAFAEgAAAAAAAkAAAAGAEgAAAACAAkAAAAHAEgAAAACAAkAAAAIAEgAAAACAAkAAAAJAEgAAAACAAkAAAAKAEgAAAACAAkAAAALAEgAAAACAAkAAAAMAEgAAAACAAkAAAANAEgAAAABAAkAAAAOAEgAAAAAAAkAAAAPAEgAAAABAAkAAAAQAEgAAAAAAAkAAAARAEgAAAABAAkAAAASAEgAAAACAAkAAAATAEgAAAACAAkAAAAUAEgAAAAAAAkAAAAVAEgAAAAAAAkAAAAWAEgAAAACAAkAAAAXAEgAAAAAAAkAAAAYAEgAAAABAAkAAAAZAEgAAAACAAkAAAAaAEgAAAAAAAkAAAAbAEgAAAACAAkAAAAcAEgAAAAAAAkAAAAdAEgAAAABAAcAAAAAAEkAAAABAAkAAAABAEkAAAACAAkAAAACAEkAAAACAAkAAAADAEkAAAABAAkAAAAEAEkAAAABAAkAAAAFAEkAAAACAAkAAAAGAEkAAAABAAkAAAAHAEkAAAAAAAkAAAAIAEkAAAACAAkAAAAJAEkAAAACAAkAAAAKAEkAAAACAAkAAAALAEkAAAAAAAkAAAAMAEkAAAABAAkAAAANAEkAAAACAAkAAAAOAEkAAAAAAAkAAAAPAEkAAAACAAkAAAAQAEkAAAAAAAkAAAARAEkAAAACAAkAAAASAEkAAAABAAkAAAATAEkAAAACAAkAAAAUAEkAAAACAAkAAAAVAEkAAAACAAkAAAAWAEkAAAAAAAkAAAAXAEkAAAABAAkAAAAYAEkAAAABAAkAAAAZAEkAAAABAAkAAAAaAEkAAAABAAkAAAAbAEkAAAACAAkAAAAcAEkAAAABAAkAAAAdAEkAAAAAAAcAAAAAAEoAAAABAAkAAAABAEoAAAABAAkAAAACAEoAAAACAAkAAAADAEoAAAABAAkAAAAEAEoAAAABAAkAAAAFAEoAAAACAAkAAAAGAEoAAAAAAAkAAAAHAEoAAAACAAkAAAAIAEoAAAACAAkAAAAJAEoAAAAAAAkAAAAKAEoAAAAAAAkAAAALAEoAAAACAAkAAAAMAEoAAAABAAkAAAANAEoAAAAAAAkAAAAOAEoAAAACAAkAAAAPAEoAAAACAAkAAAAQAEoAAAABAAkAAAARAEoAAAABAAkAAAASAEoAAAABAAkAAAATAEoAAAAAAAkAAAAUAEoAAAACAAkAAAAVAEoAAAACAAkAAAAWAEoAAAABAAkAAAAXAEoAAAACAAkAAAAYAEoAAAACAAkAAAAZAEoAAAACAAkAAAAaAEoAAAACAAkAAAAbAEoAAAACAAkAAAAcAEoAAAABAAkAAAAdAEoAAAAAAAcAAAAAAEsAAAACAAkAAAABAEsAAAACAAkAAAACAEsAAAACAAkAAAADAEsAAAABAAkAAAAEAEsAAAAAAAkAAAAFAEsAAAAAAAkAAAAGAEsAAAABAAkAAAAHAEsAAAAAAAkAAAAIAEsAAAABAAkAAAAJAEsAAAACAAkAAAAKAEsAAAABAAkAAAALAEsAAAAAAAkAAAAMAEsAAAACAAkAAAANAEsAAAAAAAkAAAAOAEsAAAAAAAkAAAAPAEsAAAACAAkAAAAQAEsAAAAAAAkAAAARAEsAAAAAAAkAAAASAEsAAAABAAkAAAATAEsAAAACAAkAAAAUAEsAAAABAAkAAAAVAEsAAAACAAkAAAAWAEsAAAACAAkAAAAXAEsAAAAAAAkAAAAYAEsAAAAAAAkAAAAZAEsAAAACAAkAAAAaAEsAAAACAAkAAAAbAEsAAAAAAAkAAAAcAEsAAAABAAkAAAAdAEsAAAAAAAcAAAAAAEwAAAACAAkAAAABAEwAAAABAAkAAAACAEwAAAABAAkAAAADAEwAAAACAAkAAAAEAEwAAAAAAAkAAAAFAEwAAAAAAAkAAAAGAEwAAAACAAkAAAAHAEwAAAACAAkAAAAIAEwAAAACAAkAAAAJAEwAAAAAAAkAAAAKAEwAAAAAAAkAAAALAEwAAAAAAAkAAAAMAEwAAAACAAkAAAANAEwAAAAAAAkAAAAOAEwAAAABAAkAAAAPAEwAAAACAAkAAAAQAEwAAAABAAkAAAARAEwAAAAAAAkAAAASAEwAAAACAAkAAAATAEwAAAAAAAkAAAAUAEwAAAACAAkAAAAVAEwAAAAAAAkAAAAWAEwAAAACAAkAAAAXAEwAAAACAAkAAAAYAEwAAAACAAkAAAAZAEwAAAABAAkAAAAaAEwAAAAAAAkAAAAbAEwAAAAAAAkAAAAcAEwAAAABAAkAAAAdAEwAAAAAAAcAAAAAAE0AAAAAAAkAAAABAE0AAAACAAkAAAACAE0AAAACAAkAAAADAE0AAAAAAAkAAAAEAE0AAAACAAkAAAAFAE0AAAAAAAkAAAAGAE0AAAABAAkAAAAHAE0AAAAAAAkAAAAIAE0AAAABAAkAAAAJAE0AAAACAAkAAAAKAE0AAAABAAkAAAALAE0AAAABAAkAAAAMAE0AAAAAAAkAAAANAE0AAAACAAkAAAAOAE0AAAAAAAkAAAAPAE0AAAACAAkAAAAQAE0AAAAAAAkAAAARAE0AAAAAAAkAAAASAE0AAAABAAkAAAATAE0AAAACAAkAAAAUAE0AAAACAAkAAAAVAE0AAAACAAkAAAAWAE0AAAAAAAkAAAAXAE0AAAAAAAkAAAAYAE0AAAAAAAkAAAAZAE0AAAABAAkAAAAaAE0AAAAAAAkAAAAbAE0AAAABAAkAAAAcAE0AAAACAAkAAAAdAE0AAAAAAAcAAAAAAE4AAAABAAkAAAABAE4AAAABAAkAAAACAE4AAAAAAAkAAAADAE4AAAABAAkAAAAEAE4AAAABAAkAAAAFAE4AAAACAAkAAAAGAE4AAAACAAkAAAAHAE4AAAAAAAkAAAAIAE4AAAACAAkAAAAJAE4AAAAAAAkAAAAKAE4AAAACAAkAAAALAE4AAAABAAkAAAAMAE4AAAACAAkAAAANAE4AAAAAAAkAAAAOAE4AAAAAAAkAAAAPAE4AAAACAAkAAAAQAE4AAAACAAkAAAARAE4AAAAAAAkAAAASAE4AAAAAAAkAAAATAE4AAAACAAkAAAAUAE4AAAAAAAkAAAAVAE4AAAACAAkAAAAWAE4AAAAAAAkAAAAXAE4AAAACAAkAAAAYAE4AAAACAAkAAAAZAE4AAAAAAAkAAAAaAE4AAAAAAAkAAAAbAE4AAAABAAcAAAAcAE4AAAAAAAcAAAAdAE4AAAABAAcAAAAAAE8AAAACAAkAAAABAE8AAAACAAkAAAACAE8AAAABAAkAAAADAE8AAAAAAAkAAAAEAE8AAAABAAkAAAAFAE8AAAACAAkAAAAGAE8AAAABAAkAAAAHAE8AAAACAAkAAAAIAE8AAAACAAkAAAAJAE8AAAAAAAkAAAAKAE8AAAAAAAkAAAALAE8AAAABAAkAAAAMAE8AAAABAAkAAAANAE8AAAAAAAkAAAAOAE8AAAABAAkAAAAPAE8AAAAAAAkAAAAQAE8AAAABAAkAAAARAE8AAAACAAkAAAASAE8AAAACAAkAAAATAE8AAAABAAkAAAAUAE8AAAAAAAkAAAAVAE8AAAACAAkAAAAWAE8AAAABAAkAAAAXAE8AAAABAAkAAAAYAE8AAAACAAkAAAAZAE8AAAACAAkAAAAaAE8AAAABAAkAAAAbAE8AAAABAAcAAAAcAE8AAAABAAcAAAAdAE8AAAAAAAcAAAAAAFAAAAABAAcAAAABAFAAAAABAAcAAAACAFAAAAABAAcAAAADAFAAAAABAAcAAAAEAFAAAAABAAcAAAAFAFAAAAAAAAcAAAAGAFAAAAAAAAcAAAAHAFAAAAABAAcAAAAIAFAAAAAAAAcAAAAJAFAAAAABAAcAAAAKAFAAAAAAAAcAAAALAFAAAAABAAcAAAAMAFAAAAABAAcAAAANAFAAAAABAAcAAAAOAFAAAAAAAAcAAAAPAFAAAAAAAAcAAAAQAFAAAAABAAcAAAARAFAAAAAAAAcAAAASAFAAAAABAAcAAAATAFAAAAABAAcAAAAUAFAAAAAAAAcAAAAVAFAAAAAAAAcAAAAWAFAAAAABAAcAAAAXAFAAAAABAAcAAAAYAFAAAAAAAAcAAAAZAFAAAAABAAcAAAAaAFAAAAABAAcAAAAbAFAAAAABAAcAAAAcAFAAAAAAAAcAAAAdAFAAAAAAAAcAAAA=")
 tile_set = ExtResource("2_8l57k")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=1031715817]
+visible = false
 tile_set = ExtResource("2_8l57k")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=131803771]
+visible = false
 tile_set = ExtResource("2_8l57k")
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=1801542731]
+z_index = -3
+material = SubResource("ShaderMaterial_tqn0h")
+script = ExtResource("11_t6h0r")
+size = Vector2i(30, 81)
+mask = ExtResource("6_xixsf")
+shore_mask = SubResource("ImageTexture_uxwj2")
+square_shore = true
+
+[node name="Daf10bForestFloor" type="Node2D" parent="." unique_id=215854393]
+z_index = -3
+material = SubResource("ShaderMaterial_v1y56")
+script = ExtResource("13_e0w4t")
+size = Vector2i(30, 81)
+mask = SubResource("ImageTexture_bgtx8")
+
+[node name="Daf10bDecals" type="Node2D" parent="." unique_id=526261362]
+z_index = -1
+
+[node name="Rivage000" type="Sprite2D" parent="Daf10bDecals" unique_id=911991486]
+material = ExtResource("14_vnooo")
+position = Vector2(0, 1346.7874)
+scale = Vector2(1, 1.0356958)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage001" type="Sprite2D" parent="Daf10bDecals" unique_id=515119086]
+material = ExtResource("14_vnooo")
+position = Vector2(2688, 7487.2744)
+scale = Vector2(1, 1.074731)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage002" type="Sprite2D" parent="Daf10bDecals" unique_id=31758775]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 7495.189)
+scale = Vector2(1, 0.98678815)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage003" type="Sprite2D" parent="Daf10bDecals" unique_id=1936694931]
+material = ExtResource("14_vnooo")
+position = Vector2(0, 7683.198)
+scale = Vector2(1, 1.031131)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage004" type="Sprite2D" parent="Daf10bDecals" unique_id=102845446]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 7681.6563)
+scale = Vector2(1, 1.0482631)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage005" type="Sprite2D" parent="Daf10bDecals" unique_id=262153270]
+material = ExtResource("14_vnooo")
+position = Vector2(192, 7687.766)
+scale = Vector2(1, 0.98037404)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage006" type="Sprite2D" parent="Daf10bDecals" unique_id=1717100163]
+material = ExtResource("14_vnooo")
+position = Vector2(288, 7685.1543)
+scale = Vector2(1, 1.0093977)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage007" type="Sprite2D" parent="Daf10bDecals" unique_id=1973979114]
+material = ExtResource("14_vnooo")
+position = Vector2(384, 7679.605)
+scale = Vector2(1, 1.0710549)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage008" type="Sprite2D" parent="Daf10bDecals" unique_id=427823493]
+material = ExtResource("14_vnooo")
+position = Vector2(480, 7681.5127)
+scale = Vector2(1, 1.0498577)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage009" type="Sprite2D" parent="Daf10bDecals" unique_id=124669636]
+material = ExtResource("14_vnooo")
+position = Vector2(576, 7681.3813)
+scale = Vector2(1, 1.0513182)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage010" type="Sprite2D" parent="Daf10bDecals" unique_id=119600896]
+material = ExtResource("14_vnooo")
+position = Vector2(672, 7685.4946)
+scale = Vector2(1, 1.005617)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage011" type="Sprite2D" parent="Daf10bDecals" unique_id=1694435400]
+material = ExtResource("14_vnooo")
+position = Vector2(768, 7684.933)
+scale = Vector2(1, 1.0118524)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage012" type="Sprite2D" parent="Daf10bDecals" unique_id=830964597]
+material = ExtResource("14_vnooo")
+position = Vector2(864, 7682.319)
+scale = Vector2(1, 1.040903)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage013" type="Sprite2D" parent="Daf10bDecals" unique_id=2101380289]
+material = ExtResource("14_vnooo")
+position = Vector2(960, 7682.396)
+scale = Vector2(1, 1.0400453)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage014" type="Sprite2D" parent="Daf10bDecals" unique_id=464980467]
+material = ExtResource("14_vnooo")
+position = Vector2(1056, 7680.283)
+scale = Vector2(1, 1.0635211)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage015" type="Sprite2D" parent="Daf10bDecals" unique_id=1515104771]
+material = ExtResource("14_vnooo")
+position = Vector2(1152, 7687.5166)
+scale = Vector2(1, 0.98314905)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage016" type="Sprite2D" parent="Daf10bDecals" unique_id=362593691]
+material = ExtResource("14_vnooo")
+position = Vector2(1248, 7688.5317)
+scale = Vector2(1, 0.9718672)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage017" type="Sprite2D" parent="Daf10bDecals" unique_id=1813282282]
+material = ExtResource("14_vnooo")
+position = Vector2(1344, 7687.1953)
+scale = Vector2(1, 0.98671997)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage018" type="Sprite2D" parent="Daf10bDecals" unique_id=1703176479]
+material = ExtResource("14_vnooo")
+position = Vector2(1440, 7683.7607)
+scale = Vector2(1, 1.0248784)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage019" type="Sprite2D" parent="Daf10bDecals" unique_id=839914274]
+material = ExtResource("14_vnooo")
+position = Vector2(1536, 7688.3354)
+scale = Vector2(1, 0.97404957)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage020" type="Sprite2D" parent="Daf10bDecals" unique_id=1149477153]
+material = ExtResource("14_vnooo")
+position = Vector2(1632, 7678.9966)
+scale = Vector2(1, 1.0778155)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage021" type="Sprite2D" parent="Daf10bDecals" unique_id=2045520639]
+material = ExtResource("14_vnooo")
+position = Vector2(1728, 7683.008)
+scale = Vector2(1, 1.0332483)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage022" type="Sprite2D" parent="Daf10bDecals" unique_id=1509810234]
+material = ExtResource("14_vnooo")
+position = Vector2(1824, 7688.539)
+scale = Vector2(1, 0.97178686)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage023" type="Sprite2D" parent="Daf10bDecals" unique_id=989721314]
+material = ExtResource("14_vnooo")
+position = Vector2(1920, 7687.0146)
+scale = Vector2(1, 0.98872596)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage024" type="Sprite2D" parent="Daf10bDecals" unique_id=809116968]
+material = ExtResource("14_vnooo")
+position = Vector2(2016, 7684.376)
+scale = Vector2(1, 1.0180466)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage025" type="Sprite2D" parent="Daf10bDecals" unique_id=203691085]
+material = ExtResource("14_vnooo")
+position = Vector2(2112, 7683.885)
+scale = Vector2(1, 1.0235035)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage026" type="Sprite2D" parent="Daf10bDecals" unique_id=1623037323]
+material = ExtResource("14_vnooo")
+position = Vector2(2208, 7686.2217)
+scale = Vector2(1, 0.99753857)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage027" type="Sprite2D" parent="Daf10bDecals" unique_id=1656864556]
+material = ExtResource("14_vnooo")
+position = Vector2(2304, 7685.4336)
+scale = Vector2(1, 1.0062912)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage028" type="Sprite2D" parent="Daf10bDecals" unique_id=1669709633]
+material = ExtResource("14_vnooo")
+position = Vector2(2400, 7684.1807)
+scale = Vector2(1, 1.020215)
+texture = ExtResource("15_hlv6d")
+centered = false
+flip_h = true
+
+[node name="Rivage029" type="Sprite2D" parent="Daf10bDecals" unique_id=2105937035]
+material = ExtResource("14_vnooo")
+position = Vector2(2496, 7680.0713)
+scale = Vector2(1, 1.0658729)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage030" type="Sprite2D" parent="Daf10bDecals" unique_id=1169337512]
+material = ExtResource("14_vnooo")
+position = Vector2(2592, 7679.7734)
+scale = Vector2(1, 1.0691813)
+texture = ExtResource("15_hlv6d")
+centered = false
+
+[node name="Rivage031" type="Sprite2D" parent="Daf10bDecals" unique_id=1882337965]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 1332)
+texture = ExtResource("16_70r4j")
+centered = false
+
+[node name="Rivage032" type="Sprite2D" parent="Daf10bDecals" unique_id=872387891]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 1332)
+texture = ExtResource("16_70r4j")
+centered = false
+flip_h = true
+
+[node name="Rivage033" type="Sprite2D" parent="Daf10bDecals" unique_id=1055545741]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 5653)
+texture = ExtResource("17_gykbl")
+centered = false
+
+[node name="Rivage034" type="Sprite2D" parent="Daf10bDecals" unique_id=121665554]
+material = ExtResource("14_vnooo")
+position = Vector2(192, 1337)
+texture = ExtResource("18_61xby")
+centered = false
+
+[node name="Rivage035" type="Sprite2D" parent="Daf10bDecals" unique_id=670616202]
+material = ExtResource("14_vnooo")
+position = Vector2(384, 1342)
+texture = ExtResource("19_hhtaq")
+centered = false
+
+[node name="Rivage036" type="Sprite2D" parent="Daf10bDecals" unique_id=804056168]
+material = ExtResource("14_vnooo")
+position = Vector2(2016, 1342)
+texture = ExtResource("19_hhtaq")
+centered = false
+
+[node name="Rivage037" type="Sprite2D" parent="Daf10bDecals" unique_id=404920051]
+material = ExtResource("14_vnooo")
+position = Vector2(2208, 1342)
+texture = ExtResource("19_hhtaq")
+centered = false
+
+[node name="Rivage038" type="Sprite2D" parent="Daf10bDecals" unique_id=516736069]
+material = ExtResource("14_vnooo")
+position = Vector2(2400, 1337)
+texture = ExtResource("18_61xby")
+centered = false
+
+[node name="Rivage039" type="Sprite2D" parent="Daf10bDecals" unique_id=2071361371]
+material = ExtResource("14_vnooo")
+position = Vector2(2592, 1337)
+texture = ExtResource("18_61xby")
+centered = false
+
+[node name="Rivage040" type="Sprite2D" parent="Daf10bDecals" unique_id=1512767448]
+material = ExtResource("14_vnooo")
+position = Vector2(0, 5657)
+scale = Vector2(0.5, 1)
+texture = ExtResource("18_61xby")
+centered = false
+
+[node name="Rivage041" type="Sprite2D" parent="Daf10bDecals" unique_id=1826031481]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 1440)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage042" type="Sprite2D" parent="Daf10bDecals" unique_id=1311264584]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 1632)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage043" type="Sprite2D" parent="Daf10bDecals" unique_id=1483745956]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 1824)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage044" type="Sprite2D" parent="Daf10bDecals" unique_id=1473654066]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 2016)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage045" type="Sprite2D" parent="Daf10bDecals" unique_id=162893607]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 2208)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage046" type="Sprite2D" parent="Daf10bDecals" unique_id=1254831308]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 2400)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage047" type="Sprite2D" parent="Daf10bDecals" unique_id=838737561]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 2592)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage048" type="Sprite2D" parent="Daf10bDecals" unique_id=1183543424]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 2784)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage049" type="Sprite2D" parent="Daf10bDecals" unique_id=914205901]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 2976)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage050" type="Sprite2D" parent="Daf10bDecals" unique_id=121985241]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 3168)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage051" type="Sprite2D" parent="Daf10bDecals" unique_id=889436185]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 3360)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage052" type="Sprite2D" parent="Daf10bDecals" unique_id=935817235]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 3552)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage053" type="Sprite2D" parent="Daf10bDecals" unique_id=1071925642]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 3744)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage054" type="Sprite2D" parent="Daf10bDecals" unique_id=858020556]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 3936)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage055" type="Sprite2D" parent="Daf10bDecals" unique_id=943185536]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 4128)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage056" type="Sprite2D" parent="Daf10bDecals" unique_id=2070453455]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 4320)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage057" type="Sprite2D" parent="Daf10bDecals" unique_id=2069474632]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 4512)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage058" type="Sprite2D" parent="Daf10bDecals" unique_id=2050148436]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 4704)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage059" type="Sprite2D" parent="Daf10bDecals" unique_id=1950271248]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 4896)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage060" type="Sprite2D" parent="Daf10bDecals" unique_id=2015438646]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 5088)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage061" type="Sprite2D" parent="Daf10bDecals" unique_id=100913635]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 5280)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage062" type="Sprite2D" parent="Daf10bDecals" unique_id=902249966]
+material = ExtResource("14_vnooo")
+position = Vector2(96, 5472)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage063" type="Sprite2D" parent="Daf10bDecals" unique_id=160002465]
+material = ExtResource("14_vnooo")
+position = Vector2(2112, 864)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage064" type="Sprite2D" parent="Daf10bDecals" unique_id=1850861484]
+material = ExtResource("14_vnooo")
+position = Vector2(2112, 1056)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage065" type="Sprite2D" parent="Daf10bDecals" unique_id=1227082887]
+material = ExtResource("14_vnooo")
+position = Vector2(2112, 1152)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+
+[node name="Rivage066" type="Sprite2D" parent="Daf10bDecals" unique_id=1002134611]
+material = ExtResource("14_vnooo")
+position = Vector2(480, 864)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage067" type="Sprite2D" parent="Daf10bDecals" unique_id=1572641527]
+material = ExtResource("14_vnooo")
+position = Vector2(480, 1056)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage068" type="Sprite2D" parent="Daf10bDecals" unique_id=719605841]
+material = ExtResource("14_vnooo")
+position = Vector2(480, 1152)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage069" type="Sprite2D" parent="Daf10bDecals" unique_id=202353694]
+material = ExtResource("14_vnooo")
+position = Vector2(2592, 7488)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage070" type="Sprite2D" parent="Daf10bDecals" unique_id=666895998]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 1440)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage071" type="Sprite2D" parent="Daf10bDecals" unique_id=37715738]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 1632)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage072" type="Sprite2D" parent="Daf10bDecals" unique_id=1411827838]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 1824)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage073" type="Sprite2D" parent="Daf10bDecals" unique_id=1894636120]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 2016)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage074" type="Sprite2D" parent="Daf10bDecals" unique_id=843219656]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 2208)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage075" type="Sprite2D" parent="Daf10bDecals" unique_id=1272583045]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 2400)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage076" type="Sprite2D" parent="Daf10bDecals" unique_id=1582703426]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 2592)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage077" type="Sprite2D" parent="Daf10bDecals" unique_id=1710267932]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 2784)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage078" type="Sprite2D" parent="Daf10bDecals" unique_id=1830938122]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 2976)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage079" type="Sprite2D" parent="Daf10bDecals" unique_id=1097309679]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 3168)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage080" type="Sprite2D" parent="Daf10bDecals" unique_id=1210297307]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 3360)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage081" type="Sprite2D" parent="Daf10bDecals" unique_id=176086392]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 3552)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage082" type="Sprite2D" parent="Daf10bDecals" unique_id=835072566]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 3744)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage083" type="Sprite2D" parent="Daf10bDecals" unique_id=1302292788]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 3936)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage084" type="Sprite2D" parent="Daf10bDecals" unique_id=549212341]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 4128)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage085" type="Sprite2D" parent="Daf10bDecals" unique_id=501034185]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 4320)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage086" type="Sprite2D" parent="Daf10bDecals" unique_id=712019087]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 4512)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage087" type="Sprite2D" parent="Daf10bDecals" unique_id=1629872031]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 4704)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage088" type="Sprite2D" parent="Daf10bDecals" unique_id=663805617]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 4896)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage089" type="Sprite2D" parent="Daf10bDecals" unique_id=1607815306]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 5088)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage090" type="Sprite2D" parent="Daf10bDecals" unique_id=883724776]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 5280)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage091" type="Sprite2D" parent="Daf10bDecals" unique_id=201312184]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 5472)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage092" type="Sprite2D" parent="Daf10bDecals" unique_id=870505635]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 5664)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage093" type="Sprite2D" parent="Daf10bDecals" unique_id=40833575]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 5856)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage094" type="Sprite2D" parent="Daf10bDecals" unique_id=1445288886]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 6048)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage095" type="Sprite2D" parent="Daf10bDecals" unique_id=2092495387]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 6240)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage096" type="Sprite2D" parent="Daf10bDecals" unique_id=2026419034]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 6432)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage097" type="Sprite2D" parent="Daf10bDecals" unique_id=1226548703]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 6624)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage098" type="Sprite2D" parent="Daf10bDecals" unique_id=1365330139]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 6816)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage099" type="Sprite2D" parent="Daf10bDecals" unique_id=1473608886]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 7008)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage100" type="Sprite2D" parent="Daf10bDecals" unique_id=631840336]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 7200)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Rivage101" type="Sprite2D" parent="Daf10bDecals" unique_id=930695783]
+material = ExtResource("14_vnooo")
+position = Vector2(2784, 7296)
+scale = Vector2(1, 0.9099526)
+texture = ExtResource("20_xkper")
+centered = false
+flip_h = true
+
+[node name="Ledge00" parent="Daf10bDecals" unique_id=1048720578 instance=ExtResource("21_045n8")]
+position = Vector2(912, 288)
+
+[node name="Ledge01" parent="Daf10bDecals" unique_id=2140074845 instance=ExtResource("21_045n8")]
+position = Vector2(1008, 288)
+
+[node name="Ledge02" parent="Daf10bDecals" unique_id=770694961 instance=ExtResource("21_045n8")]
+position = Vector2(1104, 288)
+
+[node name="Ledge03" parent="Daf10bDecals" unique_id=533619499 instance=ExtResource("21_045n8")]
+position = Vector2(1200, 288)
+
+[node name="Ledge04" parent="Daf10bDecals" unique_id=632599322 instance=ExtResource("21_045n8")]
+position = Vector2(1296, 288)
+
+[node name="Ledge05" parent="Daf10bDecals" unique_id=1388274420 instance=ExtResource("21_045n8")]
+position = Vector2(1392, 288)
+
+[node name="Ledge06" parent="Daf10bDecals" unique_id=1827407935 instance=ExtResource("21_045n8")]
+position = Vector2(1488, 288)
+
+[node name="Ledge07" parent="Daf10bDecals" unique_id=477589176 instance=ExtResource("21_045n8")]
+position = Vector2(1584, 288)
+
+[node name="Ledge08" parent="Daf10bDecals" unique_id=754310907 instance=ExtResource("21_045n8")]
+position = Vector2(1680, 288)
+
+[node name="Ledge09" parent="Daf10bDecals" unique_id=1748019250 instance=ExtResource("21_045n8")]
+position = Vector2(912, 576)
+
+[node name="Ledge10" parent="Daf10bDecals" unique_id=192328731 instance=ExtResource("21_045n8")]
+position = Vector2(1008, 576)
+
+[node name="Ledge11" parent="Daf10bDecals" unique_id=617625471 instance=ExtResource("21_045n8")]
+position = Vector2(1104, 576)
+
+[node name="Ledge12" parent="Daf10bDecals" unique_id=1675722337 instance=ExtResource("21_045n8")]
+position = Vector2(1200, 576)
+
+[node name="Ledge13" parent="Daf10bDecals" unique_id=1875860075 instance=ExtResource("21_045n8")]
+position = Vector2(1296, 576)
+
+[node name="Ledge14" parent="Daf10bDecals" unique_id=566873184 instance=ExtResource("21_045n8")]
+position = Vector2(1392, 576)
+
+[node name="Ledge15" parent="Daf10bDecals" unique_id=964510596 instance=ExtResource("21_045n8")]
+position = Vector2(1488, 576)
+
+[node name="Ledge16" parent="Daf10bDecals" unique_id=1909718908 instance=ExtResource("21_045n8")]
+position = Vector2(1584, 576)
+
+[node name="Ledge17" parent="Daf10bDecals" unique_id=2123610167 instance=ExtResource("21_045n8")]
+position = Vector2(1680, 576)
+
+[node name="Ledge18" parent="Daf10bDecals" unique_id=393836072 instance=ExtResource("21_045n8")]
+position = Vector2(912, 864)
+
+[node name="Ledge19" parent="Daf10bDecals" unique_id=201894488 instance=ExtResource("21_045n8")]
+position = Vector2(1008, 864)
+
+[node name="Ledge20" parent="Daf10bDecals" unique_id=2137623300 instance=ExtResource("21_045n8")]
+position = Vector2(1104, 864)
+
+[node name="Ledge21" parent="Daf10bDecals" unique_id=1396797059 instance=ExtResource("21_045n8")]
+position = Vector2(1200, 864)
+
+[node name="Ledge22" parent="Daf10bDecals" unique_id=667488830 instance=ExtResource("21_045n8")]
+position = Vector2(1296, 864)
+
+[node name="Ledge23" parent="Daf10bDecals" unique_id=38687628 instance=ExtResource("21_045n8")]
+position = Vector2(1392, 864)
+
+[node name="Ledge24" parent="Daf10bDecals" unique_id=1493562632 instance=ExtResource("21_045n8")]
+position = Vector2(1488, 864)
+
+[node name="Ledge25" parent="Daf10bDecals" unique_id=1899934581 instance=ExtResource("21_045n8")]
+position = Vector2(1584, 864)
+
+[node name="Ledge26" parent="Daf10bDecals" unique_id=1704754954 instance=ExtResource("21_045n8")]
+position = Vector2(1680, 864)
 
 [node name="Entities" type="Node2D" parent="." unique_id=174487640]
 unique_name_in_owner = true
@@ -33,15 +980,1106 @@ position = Vector2(1680, 1440)
 script = ExtResource("3_22ybc")
 blocking_cells = Array[Vector2i]([Vector2i(17, 14)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Panneau_17_14" unique_id=407665087]
-color = Color(0.4, 0.28, 0.14, 1)
-polygon = PackedVector2Array(-6, -60, 6, -60, 6, -4, -6, -4)
+[node name="Daf10bPanneau" type="Sprite2D" parent="Entities/Panneau_17_14" unique_id=1865888981]
+texture = ExtResource("23_0tq4w")
+centered = false
+offset = Vector2(-85.5, -192)
 
-[node name="@Polygon2D@2" type="Polygon2D" parent="Entities/Panneau_17_14" unique_id=1633425246]
-color = Color(0.72, 0.56, 0.32, 1)
-polygon = PackedVector2Array(-34, -90, 34, -90, 34, -50, -34, -50)
+[node name="Daf10bRock00" parent="Entities" unique_id=218169151 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9502123, 0.9502123, 0.9502123, 1)
+position = Vector2(49, 5653)
+scale = Vector2(0.68352425, 0.68352425)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock01" parent="Entities" unique_id=1676363823 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9298179, 0.9298179, 0.9298179, 1)
+position = Vector2(52, 5563)
+scale = Vector2(0.7302134, 0.7302134)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock02" parent="Entities" unique_id=19764772 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9351868, 0.9351868, 0.9351868, 1)
+position = Vector2(52, 5468)
+scale = Vector2(0.69886285, 0.69886285)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock03" parent="Entities" unique_id=1068582196 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9996673, 0.9996673, 0.9996673, 1)
+position = Vector2(50, 5366)
+scale = Vector2(0.6496482, 0.6496482)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock04" parent="Entities" unique_id=326193507 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9909355, 0.9909355, 0.9909355, 1)
+position = Vector2(48, 5273)
+scale = Vector2(0.65415215, 0.65415215)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock05" parent="Entities" unique_id=1828155455 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9777314, 0.9777314, 0.9777314, 1)
+position = Vector2(39, 5178)
+scale = Vector2(0.66582835, 0.66582835)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock06" parent="Entities" unique_id=1062796354 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9652312, 0.9652312, 0.9652312, 1)
+position = Vector2(48, 5079)
+scale = Vector2(0.7187768, 0.7187768)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock07" parent="Entities" unique_id=1031066611 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9869578, 0.9869578, 0.9869578, 1)
+position = Vector2(53, 4985)
+scale = Vector2(0.7028828, 0.7028828)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock08" parent="Entities" unique_id=694503479 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9003589, 0.9003589, 0.9003589, 1)
+position = Vector2(41, 4890)
+scale = Vector2(0.7162627, 0.7162627)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock09" parent="Entities" unique_id=2125643414 instance=ExtResource("24_eivvt")]
+modulate = Color(0.90815026, 0.90815026, 0.90815026, 1)
+position = Vector2(56, 4798)
+scale = Vector2(0.6450234, 0.6450234)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock10" parent="Entities" unique_id=432149809 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9903487, 0.9903487, 0.9903487, 1)
+position = Vector2(49, 4700)
+scale = Vector2(0.7139727, 0.7139727)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock11" parent="Entities" unique_id=146364009 instance=ExtResource("24_eivvt")]
+modulate = Color(0.96578836, 0.96578836, 0.96578836, 1)
+position = Vector2(42, 4598)
+scale = Vector2(0.75595516, 0.75595516)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock12" parent="Entities" unique_id=1913495746 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9608819, 0.9608819, 0.9608819, 1)
+position = Vector2(44, 4502)
+scale = Vector2(0.6959179, 0.6959179)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock13" parent="Entities" unique_id=1394696490 instance=ExtResource("24_eivvt")]
+modulate = Color(0.90453225, 0.90453225, 0.90453225, 1)
+position = Vector2(56, 4409)
+scale = Vector2(0.6830804, 0.6830804)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock14" parent="Entities" unique_id=818306564 instance=ExtResource("24_eivvt")]
+modulate = Color(0.95860684, 0.95860684, 0.95860684, 1)
+position = Vector2(47, 4316)
+scale = Vector2(0.68264824, 0.68264824)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock15" parent="Entities" unique_id=1167458942 instance=ExtResource("24_eivvt")]
+modulate = Color(0.90863496, 0.90863496, 0.90863496, 1)
+position = Vector2(47, 4222)
+scale = Vector2(0.72615194, 0.72615194)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock16" parent="Entities" unique_id=1961405014 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9980565, 0.9980565, 0.9980565, 1)
+position = Vector2(45, 4120)
+scale = Vector2(0.7088763, 0.7088763)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock17" parent="Entities" unique_id=1833668623 instance=ExtResource("24_eivvt")]
+modulate = Color(0.94336617, 0.94336617, 0.94336617, 1)
+position = Vector2(50, 4021)
+scale = Vector2(0.6778779, 0.6778779)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock18" parent="Entities" unique_id=1156737420 instance=ExtResource("24_eivvt")]
+modulate = Color(0.94007015, 0.94007015, 0.94007015, 1)
+position = Vector2(51, 3931)
+scale = Vector2(0.70625496, 0.70625496)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock19" parent="Entities" unique_id=258733116 instance=ExtResource("24_eivvt")]
+modulate = Color(0.93026716, 0.93026716, 0.93026716, 1)
+position = Vector2(42, 3833)
+scale = Vector2(0.6440966, 0.6440966)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock20" parent="Entities" unique_id=2089748907 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9055987, 0.9055987, 0.9055987, 1)
+position = Vector2(43, 3738)
+scale = Vector2(0.74538136, 0.74538136)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock21" parent="Entities" unique_id=568417027 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9490779, 0.9490779, 0.9490779, 1)
+position = Vector2(54, 3637)
+scale = Vector2(0.7504175, 0.7504175)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock22" parent="Entities" unique_id=379317133 instance=ExtResource("24_eivvt")]
+modulate = Color(0.95337254, 0.95337254, 0.95337254, 1)
+position = Vector2(47, 3546)
+scale = Vector2(0.6521335, 0.6521335)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock23" parent="Entities" unique_id=1199083663 instance=ExtResource("24_eivvt")]
+modulate = Color(0.92346, 0.92346, 0.92346, 1)
+position = Vector2(56, 3449)
+scale = Vector2(0.7411351, 0.7411351)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock24" parent="Entities" unique_id=551222390 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9231281, 0.9231281, 0.9231281, 1)
+position = Vector2(50, 3351)
+scale = Vector2(0.6869103, 0.6869103)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock25" parent="Entities" unique_id=1879130002 instance=ExtResource("24_eivvt")]
+modulate = Color(0.99845, 0.99845, 0.99845, 1)
+position = Vector2(40, 3254)
+scale = Vector2(0.7215169, 0.7215169)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock26" parent="Entities" unique_id=291690780 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9191134, 0.9191134, 0.9191134, 1)
+position = Vector2(43, 3165)
+scale = Vector2(0.66797656, 0.66797656)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock27" parent="Entities" unique_id=1191298411 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9798971, 0.9798971, 0.9798971, 1)
+position = Vector2(40, 3065)
+scale = Vector2(0.7192016, 0.7192016)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock28" parent="Entities" unique_id=1756788988 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9874401, 0.9874401, 0.9874401, 1)
+position = Vector2(51, 2966)
+scale = Vector2(0.7160739, 0.7160739)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock29" parent="Entities" unique_id=1751085728 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9433352, 0.9433352, 0.9433352, 1)
+position = Vector2(48, 2871)
+scale = Vector2(0.6781189, 0.6781189)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock30" parent="Entities" unique_id=219852447 instance=ExtResource("24_eivvt")]
+modulate = Color(0.97741336, 0.97741336, 0.97741336, 1)
+position = Vector2(57, 2774)
+scale = Vector2(0.65498614, 0.65498614)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock31" parent="Entities" unique_id=166563277 instance=ExtResource("24_eivvt")]
+modulate = Color(0.96649617, 0.96649617, 0.96649617, 1)
+position = Vector2(57, 2684)
+scale = Vector2(0.68102616, 0.68102616)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock32" parent="Entities" unique_id=1888022002 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9889598, 0.9889598, 0.9889598, 1)
+position = Vector2(53, 2585)
+scale = Vector2(0.6676404, 0.6676404)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock33" parent="Entities" unique_id=1025559050 instance=ExtResource("24_eivvt")]
+modulate = Color(0.92292297, 0.92292297, 0.92292297, 1)
+position = Vector2(54, 2492)
+scale = Vector2(0.7264485, 0.7264485)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock34" parent="Entities" unique_id=649473883 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9533946, 0.9533946, 0.9533946, 1)
+position = Vector2(49, 2390)
+scale = Vector2(0.6769941, 0.6769941)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock35" parent="Entities" unique_id=2129415539 instance=ExtResource("24_eivvt")]
+modulate = Color(0.90268505, 0.90268505, 0.90268505, 1)
+position = Vector2(52, 2294)
+scale = Vector2(0.673581, 0.673581)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock36" parent="Entities" unique_id=1596546900 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9759024, 0.9759024, 0.9759024, 1)
+position = Vector2(45, 2200)
+scale = Vector2(0.67873687, 0.67873687)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock37" parent="Entities" unique_id=18312922 instance=ExtResource("24_eivvt")]
+modulate = Color(0.95990086, 0.95990086, 0.95990086, 1)
+position = Vector2(46, 2101)
+scale = Vector2(0.66096246, 0.66096246)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock38" parent="Entities" unique_id=715383604 instance=ExtResource("24_eivvt")]
+modulate = Color(0.99113536, 0.99113536, 0.99113536, 1)
+position = Vector2(57, 2005)
+scale = Vector2(0.64965504, 0.64965504)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock39" parent="Entities" unique_id=187482199 instance=ExtResource("24_eivvt")]
+modulate = Color(0.91752, 0.91752, 0.91752, 1)
+position = Vector2(44, 1915)
+scale = Vector2(0.67900914, 0.67900914)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock40" parent="Entities" unique_id=717155484 instance=ExtResource("24_eivvt")]
+modulate = Color(0.986508, 0.986508, 0.986508, 1)
+position = Vector2(52, 1822)
+scale = Vector2(0.7329692, 0.7329692)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock41" parent="Entities" unique_id=1706664677 instance=ExtResource("24_eivvt")]
+modulate = Color(0.99397665, 0.99397665, 0.99397665, 1)
+position = Vector2(42, 1719)
+scale = Vector2(0.6807758, 0.6807758)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock42" parent="Entities" unique_id=1032736688 instance=ExtResource("24_eivvt")]
+modulate = Color(0.94919854, 0.94919854, 0.94919854, 1)
+position = Vector2(49, 1622)
+scale = Vector2(0.71717936, 0.71717936)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock43" parent="Entities" unique_id=323187463 instance=ExtResource("24_eivvt")]
+modulate = Color(0.94766176, 0.94766176, 0.94766176, 1)
+position = Vector2(43, 1531)
+scale = Vector2(0.72359943, 0.72359943)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock44" parent="Entities" unique_id=1881859740 instance=ExtResource("24_eivvt")]
+modulate = Color(0.92823464, 0.92823464, 0.92823464, 1)
+position = Vector2(2061, 1339)
+scale = Vector2(0.644584, 0.644584)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock45" parent="Entities" unique_id=1339679896 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9060091, 0.9060091, 0.9060091, 1)
+position = Vector2(2055, 1243)
+scale = Vector2(0.71473914, 0.71473914)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock46" parent="Entities" unique_id=1621966412 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9556553, 0.9556553, 0.9556553, 1)
+position = Vector2(2066, 1142)
+scale = Vector2(0.6575266, 0.6575266)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock47" parent="Entities" unique_id=1606329629 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9491931, 0.9491931, 0.9491931, 1)
+position = Vector2(2059, 1052)
+scale = Vector2(0.7396354, 0.7396354)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock48" parent="Entities" unique_id=693178139 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9240813, 0.9240813, 0.9240813, 1)
+position = Vector2(2063, 953)
+scale = Vector2(0.7093966, 0.7093966)
+footprint = Array[Vector2i]([])
+
+[node name="Daf10bRock49" parent="Entities" unique_id=104541834 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9574016, 0.9574016, 0.9574016, 1)
+position = Vector2(2784, 7776)
+scale = Vector2(1.0550983, 1.0550983)
+
+[node name="Daf10bRock50" parent="Entities" unique_id=255568822 instance=ExtResource("24_eivvt")]
+modulate = Color(0.9654007, 0.9654007, 0.9654007, 1)
+position = Vector2(2784, 7680)
+scale = Vector2(1.0649316, 1.0649316)
+
+[node name="Daf10bForest000" type="Sprite2D" parent="Entities" unique_id=1001759442]
+modulate = Color(0.9897973, 1.0077059, 1.0425136, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2475.9133, 749.34534)
+scale = Vector2(1.1334627, 1.1334627)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="Daf10bForest001" type="Sprite2D" parent="Entities" unique_id=55376142]
+modulate = Color(0.90678734, 0.9122264, 0.9065862, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(402.81158, 545.88885)
+scale = Vector2(1.0448403, 1.0448403)
+texture = ExtResource("27_3jxdr")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="Daf10bForest002" type="Sprite2D" parent="Entities" unique_id=653886441]
+modulate = Color(0.86989796, 0.8317537, 0.79764515, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(275.8924, 376.0202)
+scale = Vector2(1.0030291, 1.0030291)
+texture = ExtResource("28_unsrw")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="Daf10bForest003" type="Sprite2D" parent="Entities" unique_id=907595394]
+modulate = Color(1.0169369, 0.97031844, 0.98042464, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(504.11682, 789.30286)
+scale = Vector2(1.0784913, 1.0784913)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="Daf10bForest004" type="Sprite2D" parent="Entities" unique_id=393634748]
+modulate = Color(0.84902513, 0.87493265, 0.9156761, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2799.569, 463.87592)
+scale = Vector2(0.99321634, 0.99321634)
+texture = ExtResource("27_3jxdr")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="Daf10bForest005" type="Sprite2D" parent="Entities" unique_id=1576022554]
+modulate = Color(0.89251316, 0.9097357, 0.9502123, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2790.6997, 754.58325)
+scale = Vector2(1.0441008, 1.0441008)
+texture = ExtResource("27_3jxdr")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="Daf10bForest006" type="Sprite2D" parent="Entities" unique_id=1638977703]
+modulate = Color(0.9786863, 0.946695, 0.93891686, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2698.6467, 249.45882)
+scale = Vector2(1.1335553, 1.1335553)
+texture = ExtResource("27_3jxdr")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="Daf10bForest007" type="Sprite2D" parent="Entities" unique_id=1664939632]
+modulate = Color(0.9378398, 0.9359872, 0.9077782, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(316.26413, 699.0878)
+scale = Vector2(1.035148, 1.035148)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="Daf10bForest008" type="Sprite2D" parent="Entities" unique_id=268755231]
+modulate = Color(0.9117446, 0.8851341, 0.8491868, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(65.56071, 587.9742)
+scale = Vector2(0.9646014, 0.9646014)
+texture = ExtResource("27_3jxdr")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="Daf10bForest009" type="Sprite2D" parent="Entities" unique_id=364154204]
+modulate = Color(1.0011259, 0.9720897, 0.97806644, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2394.5286, 100.1087)
+scale = Vector2(0.95228106, 0.95228106)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="Daf10bForest010" type="Sprite2D" parent="Entities" unique_id=1487895450]
+modulate = Color(0.8427567, 0.86428326, 0.8896512, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2580.5645, 402.49448)
+scale = Vector2(0.90551186, 0.90551186)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="Daf10bForest011" type="Sprite2D" parent="Entities" unique_id=1410371693]
+modulate = Color(0.90563196, 0.8664881, 0.87089646, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(631.704, 813.25024)
+scale = Vector2(1.0364373, 1.0364373)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="Daf10bForest012" type="Sprite2D" parent="Entities" unique_id=330999696]
+modulate = Color(0.98933697, 0.97196174, 0.91457385, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2413.255, 605.91376)
+scale = Vector2(0.93071926, 0.93071926)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="Daf10bForest013" type="Sprite2D" parent="Entities" unique_id=1750919335]
+modulate = Color(0.9422622, 0.93835425, 0.8881393, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2159.989, 713.8818)
+scale = Vector2(1.0901322, 1.0901322)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="Daf10bForest014" type="Sprite2D" parent="Entities" unique_id=585663677]
+modulate = Color(0.8721451, 0.87854266, 0.8653536, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2374.5571, 483.16315)
+scale = Vector2(1.1272793, 1.1272793)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="Daf10bForest015" type="Sprite2D" parent="Entities" unique_id=890851589]
+modulate = Color(0.9150322, 0.8991771, 0.9234753, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2733.4172, 576.37683)
+scale = Vector2(1.1454071, 1.1454071)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="Daf10bForest016" type="Sprite2D" parent="Entities" unique_id=838271009]
+modulate = Color(0.93238914, 0.8897871, 0.9259136, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2134.0964, 586.49835)
+scale = Vector2(0.87186074, 0.87186074)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="Daf10bForest017" type="Sprite2D" parent="Entities" unique_id=1845675795]
+modulate = Color(1.0548798, 1.0245788, 1.0061657, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(553.5283, 450.72885)
+scale = Vector2(1.0625783, 1.0625783)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="Daf10bForest018" type="Sprite2D" parent="Entities" unique_id=791192911]
+modulate = Color(0.8553333, 0.87029624, 0.867727, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2353.3481, 721.9503)
+scale = Vector2(0.98784685, 0.98784685)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="Daf10bForest019" type="Sprite2D" parent="Entities" unique_id=811286063]
+modulate = Color(0.88031554, 0.9060626, 0.9343312, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(344.97583, 241.31859)
+scale = Vector2(0.8889576, 0.8889576)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="Daf10bForest020" type="Sprite2D" parent="Entities" unique_id=970656466]
+modulate = Color(0.95480996, 0.96924007, 1.0121679, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2404.2004, 843.14124)
+scale = Vector2(0.8821986, 0.8821986)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="Daf10bForest021" type="Sprite2D" parent="Entities" unique_id=604739506]
+modulate = Color(0.8969207, 0.9008219, 0.89630705, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2159.6055, 417.30524)
+scale = Vector2(0.89013773, 0.89013773)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="Daf10bForest022" type="Sprite2D" parent="Entities" unique_id=1142509700]
+modulate = Color(0.8912205, 0.88290066, 0.82197714, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2258.8752, 519.9464)
+scale = Vector2(0.8797563, 0.8797563)
+texture = ExtResource("28_unsrw")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="Daf10bForest023" type="Sprite2D" parent="Entities" unique_id=1720357833]
+modulate = Color(0.9707715, 0.97592014, 0.9867992, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(129.55145, 837.32465)
+scale = Vector2(0.8600027, 0.8600027)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="Daf10bForest024" type="Sprite2D" parent="Entities" unique_id=1739898148]
+modulate = Color(0.97663224, 0.93836856, 0.8940048, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2698.395, 859.4211)
+scale = Vector2(1.1102896, 1.1102896)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="Daf10bForest025" type="Sprite2D" parent="Entities" unique_id=258178911]
+modulate = Color(0.90446734, 0.9291893, 0.895836, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2539.514, 87.648026)
+scale = Vector2(1.0058973, 1.0058973)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="Daf10bForest026" type="Sprite2D" parent="Entities" unique_id=703867589]
+modulate = Color(0.96332264, 0.9328815, 0.8707855, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2740.1704, 86.7731)
+scale = Vector2(0.85711217, 0.85711217)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="Daf10bForest027" type="Sprite2D" parent="Entities" unique_id=2144992690]
+modulate = Color(0.9785991, 0.9549619, 0.935384, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2844.1067, 858.6349)
+scale = Vector2(1.1254188, 1.1254188)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="Daf10bForest028" type="Sprite2D" parent="Entities" unique_id=254200230]
+modulate = Color(1.0236883, 1.0257733, 1.0384845, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(572.207, 231.77797)
+scale = Vector2(1.1098984, 1.1098984)
+texture = ExtResource("28_unsrw")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="Daf10bForest029" type="Sprite2D" parent="Entities" unique_id=1959265006]
+modulate = Color(0.87076366, 0.8344704, 0.8438644, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2294.062, 381.35455)
+scale = Vector2(1.0507672, 1.0507672)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="Daf10bForest030" type="Sprite2D" parent="Entities" unique_id=1763696676]
+modulate = Color(0.96421987, 0.9694865, 0.96174276, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2110.6633, 121.44019)
+scale = Vector2(1.016371, 1.016371)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="Daf10bForest031" type="Sprite2D" parent="Entities" unique_id=2135045929]
+modulate = Color(1.0007113, 1.0007052, 0.9771539, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(183.55478, 468.14246)
+scale = Vector2(1.1282943, 1.1282943)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="Daf10bForest032" type="Sprite2D" parent="Entities" unique_id=1753866165]
+modulate = Color(0.8822785, 0.86121863, 0.81801146, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2596.2644, 508.1079)
+scale = Vector2(0.87236583, 0.87236583)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="Daf10bForest033" type="Sprite2D" parent="Entities" unique_id=1889715977]
+modulate = Color(0.9130741, 0.8790731, 0.88834304, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2478.2305, 370.39005)
+scale = Vector2(1.0478616, 1.0478616)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="Daf10bForest034" type="Sprite2D" parent="Entities" unique_id=297123437]
+modulate = Color(1.0133306, 0.98953944, 0.92922246, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(93.940735, 94.249756)
+scale = Vector2(0.87401325, 0.87401325)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="Daf10bForest035" type="Sprite2D" parent="Entities" unique_id=2061997185]
+modulate = Color(0.9136443, 0.90258086, 0.88750374, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(669.4773, 334.04163)
+scale = Vector2(1.1387273, 1.1387273)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="Daf10bForest036" type="Sprite2D" parent="Entities" unique_id=693657775]
+modulate = Color(1.0162891, 0.9936443, 0.9606695, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2129.2268, 854.59033)
+scale = Vector2(0.8906261, 0.8906261)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="Daf10bForest037" type="Sprite2D" parent="Entities" unique_id=83631810]
+modulate = Color(1.0514878, 1.0182045, 1.0662657, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(572.2243, 642.148)
+scale = Vector2(0.91943985, 0.91943985)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="Daf10bForest038" type="Sprite2D" parent="Entities" unique_id=577514462]
+modulate = Color(1.007492, 0.96768546, 0.9114091, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2597.4092, 684.08984)
+scale = Vector2(1.1037791, 1.1037791)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="Daf10bForest039" type="Sprite2D" parent="Entities" unique_id=217353489]
+modulate = Color(0.8040793, 0.817945, 0.81774944, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(698.197, 493.00177)
+scale = Vector2(1.0547972, 1.0547972)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="Daf10bForest040" type="Sprite2D" parent="Entities" unique_id=650952560]
+modulate = Color(1.013147, 1.0009167, 1.0032779, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(200.51218, 685.4446)
+scale = Vector2(1.0942812, 1.0942812)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="Daf10bForest041" type="Sprite2D" parent="Entities" unique_id=581701043]
+modulate = Color(0.9209567, 0.9232625, 0.905027, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(55.433613, 742.4672)
+scale = Vector2(1.0858402, 1.0858402)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="Daf10bForest042" type="Sprite2D" parent="Entities" unique_id=1589540478]
+modulate = Color(0.9445061, 0.96653396, 0.9234586, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(482.1012, 97.56809)
+scale = Vector2(1.0021073, 1.0021073)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="Daf10bForest043" type="Sprite2D" parent="Entities" unique_id=303032298]
+modulate = Color(0.9392694, 0.9163034, 0.8827586, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(536.4168, 346.42993)
+scale = Vector2(0.9220671, 0.9220671)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="Daf10bForest044" type="Sprite2D" parent="Entities" unique_id=1589175757]
+modulate = Color(0.89025474, 0.8844393, 0.9150497, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(38.470505, 242.67892)
+scale = Vector2(0.9244907, 0.9244907)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="Daf10bForest045" type="Sprite2D" parent="Entities" unique_id=2142720227]
+modulate = Color(0.8212475, 0.8306892, 0.8072356, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(665.2556, 693.9392)
+scale = Vector2(1.0798703, 1.0798703)
+texture = ExtResource("28_unsrw")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="Daf10bForest046" type="Sprite2D" parent="Entities" unique_id=1439680069]
+modulate = Color(0.97596145, 0.9438013, 0.8933231, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(726.6089, 165.52647)
+scale = Vector2(1.0563763, 1.0563763)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="Daf10bForest047" type="Sprite2D" parent="Entities" unique_id=524211228]
+modulate = Color(0.9053937, 0.9158823, 0.87732184, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2266.2368, 814.5486)
+scale = Vector2(0.95790946, 0.95790946)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="Daf10bForest048" type="Sprite2D" parent="Entities" unique_id=1110793027]
+modulate = Color(0.9122899, 0.9403434, 0.9139452, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2485.1533, 211.92078)
+scale = Vector2(0.9884008, 0.9884008)
+texture = ExtResource("28_unsrw")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="Daf10bForest049" type="Sprite2D" parent="Entities" unique_id=1498646652]
+modulate = Color(0.9960035, 0.99296683, 0.94737214, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(275.29776, 569.0077)
+scale = Vector2(0.88295835, 0.88295835)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="Daf10bForest050" type="Sprite2D" parent="Entities" unique_id=42706680]
+modulate = Color(0.92605215, 0.8899634, 0.86550564, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(294.26282, 115.33033)
+scale = Vector2(0.96972305, 0.96972305)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="Daf10bForest051" type="Sprite2D" parent="Entities" unique_id=729075435]
+modulate = Color(0.9368847, 0.9445122, 0.93832386, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(458.85187, 248.4847)
+scale = Vector2(0.859292, 0.859292)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="Daf10bForest052" type="Sprite2D" parent="Entities" unique_id=1226413502]
+modulate = Color(0.93144286, 0.9508044, 0.99028236, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(185.71239, 179.37546)
+scale = Vector2(0.92255753, 0.92255753)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="Daf10bForest053" type="Sprite2D" parent="Entities" unique_id=743163252]
+modulate = Color(0.99789405, 0.996697, 0.96035796, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2329.3203, 253.09744)
+scale = Vector2(0.947037, 0.947037)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="Daf10bForest054" type="Sprite2D" parent="Entities" unique_id=2123680790]
+modulate = Color(0.8790053, 0.8595625, 0.8553771, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(446.1342, 404.63745)
+scale = Vector2(0.8909278, 0.8909278)
+texture = ExtResource("32_gyflp")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="Daf10bForest055" type="Sprite2D" parent="Entities" unique_id=631323899]
+modulate = Color(0.9722127, 0.9669531, 0.9437351, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2256.3384, 632.2133)
+scale = Vector2(0.9532269, 0.9532269)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="Daf10bForest056" type="Sprite2D" parent="Entities" unique_id=1684511120]
+modulate = Color(0.9001955, 0.91696024, 0.9058344, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2834.4001, 154.3424)
+scale = Vector2(1.0613543, 1.0613543)
+texture = ExtResource("33_dtkdi")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="Daf10bForest057" type="Sprite2D" parent="Entities" unique_id=337040376]
+modulate = Color(1.0020419, 1.0171636, 1.0668457, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(320.40964, 805.5907)
+scale = Vector2(1.0913363, 1.0913363)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="Daf10bForest058" type="Sprite2D" parent="Entities" unique_id=223649438]
+modulate = Color(0.96289915, 0.92240626, 0.9125934, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2204.5947, 268.937)
+scale = Vector2(0.89988434, 0.89988434)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="Daf10bForest059" type="Sprite2D" parent="Entities" unique_id=1404742009]
+modulate = Color(0.9267909, 0.88804895, 0.9044227, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2674.1694, 353.51355)
+scale = Vector2(0.8945654, 0.8945654)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="Daf10bForest060" type="Sprite2D" parent="Entities" unique_id=1542059672]
+modulate = Color(0.83320105, 0.8354328, 0.7853565, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(111.03633, 328.0039)
+scale = Vector2(1.0985079, 1.0985079)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="Daf10bForest061" type="Sprite2D" parent="Entities" unique_id=487272503]
+modulate = Color(0.923944, 0.9036508, 0.9136255, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2817.3865, 291.7506)
+scale = Vector2(1.140464, 1.140464)
+texture = ExtResource("29_qthw4")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="Daf10bForest062" type="Sprite2D" parent="Entities" unique_id=1919335326]
+modulate = Color(0.9602059, 0.98528266, 0.99358845, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(602.568, 80.452484)
+scale = Vector2(1.1092672, 1.1092672)
+texture = ExtResource("28_unsrw")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="Daf10bForest063" type="Sprite2D" parent="Entities" unique_id=1204604327]
+modulate = Color(1.0022796, 0.9863658, 1.0235428, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2575.2537, 844.0228)
+scale = Vector2(0.991812, 0.991812)
+texture = ExtResource("31_d3efy")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="Daf10bForest064" type="Sprite2D" parent="Entities" unique_id=2032215094]
+modulate = Color(0.8816686, 0.88227814, 0.863697, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(453.40765, 678.95886)
+scale = Vector2(0.93529, 0.93529)
+texture = ExtResource("30_qhaby")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="Daf10bForest065" type="Sprite2D" parent="Entities" unique_id=2015361476]
+modulate = Color(0.9192376, 0.89848083, 0.87214947, 1)
+material = ExtResource("25_2xhdo")
+position = Vector2(2272.3167, 146.26552)
+scale = Vector2(1.0142658, 1.0142658)
+texture = ExtResource("26_eq71g")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="Daf10bForestBush000" type="Sprite2D" parent="Entities" unique_id=1223979387]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(816.5443, 91.2)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="Daf10bForestBush001" type="Sprite2D" parent="Entities" unique_id=519998613]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1774.3833, 91.2)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="Daf10bForestBush002" type="Sprite2D" parent="Entities" unique_id=1674566653]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1763.7495, 187.20001)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="Daf10bForestBush003" type="Sprite2D" parent="Entities" unique_id=2128684361]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(805.8833, 283.2)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="Daf10bForestBush004" type="Sprite2D" parent="Entities" unique_id=1168620195]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1783.9028, 283.2)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="Daf10bForestBush005" type="Sprite2D" parent="Entities" unique_id=633505201]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(2076.7493, 283.2)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="Daf10bForestBush006" type="Sprite2D" parent="Entities" unique_id=598848555]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(829.73926, 379.2)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="Daf10bForestBush007" type="Sprite2D" parent="Entities" unique_id=773261013]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1768.214, 379.2)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="Daf10bForestBush008" type="Sprite2D" parent="Entities" unique_id=681251018]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(2071.2124, 379.2)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="Daf10bForestBush009" type="Sprite2D" parent="Entities" unique_id=965879320]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(807.9332, 475.19998)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="Daf10bForestBush010" type="Sprite2D" parent="Entities" unique_id=1043386330]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1784.106, 475.19998)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="Daf10bForestBush011" type="Sprite2D" parent="Entities" unique_id=860501986]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(820.95026, 571.19995)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="Daf10bForestBush012" type="Sprite2D" parent="Entities" unique_id=532274105]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1762.6035, 571.19995)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="Daf10bForestBush013" type="Sprite2D" parent="Entities" unique_id=711558054]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(819.3833, 667.19995)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="Daf10bForestBush014" type="Sprite2D" parent="Entities" unique_id=1287925978]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1768.0205, 667.19995)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="Daf10bForestBush015" type="Sprite2D" parent="Entities" unique_id=560022261]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(816.64624, 763.19995)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="Daf10bForestBush016" type="Sprite2D" parent="Entities" unique_id=2058950169]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1779.1326, 763.19995)
+texture = ExtResource("34_bwsm3")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="Daf10bForestBush017" type="Sprite2D" parent="Entities" unique_id=16088823]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(805.7939, 859.19995)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="Daf10bForestBush018" type="Sprite2D" parent="Entities" unique_id=208897491]
+modulate = Color(0.969, 0.95, 0.95, 1)
+material = ExtResource("14_vnooo")
+position = Vector2(1784.101, 859.19995)
+texture = ExtResource("35_d4ebc")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=1949570118]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_8l57k")
 
