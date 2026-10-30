@@ -326,7 +326,7 @@ func _make_continue_card(summary: SaveSummary) -> Button:
 	_fill(card, row)
 	var bust := TextureRect.new()
 	bust.name = "Bust"
-	bust.texture = BUST
+	bust.texture = BUST if summary == null else MenuArt.bust_for(summary.player_look)
 	bust.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	bust.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	bust.custom_minimum_size = UiTokens.TITLE_CONTINUE_BUST

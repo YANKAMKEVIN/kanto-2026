@@ -1643,9 +1643,10 @@ func _build_capture_props() -> void:
 	_ball_shadow = _make_prop(SHADOW_TEXTURE)
 	_ball = _make_prop(BALL_TEXTURE)
 	_ball.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_thrower = _make_prop(THROWER_TEXTURE)
+	var thrower_texture := thrower_texture()
+	_thrower = _make_prop(thrower_texture)
 	_thrower.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_thrower.offset = Vector2(0.0, -THROWER_TEXTURE.get_height() / 2.0)
+	_thrower.offset = Vector2(0.0, -thrower_texture.get_height() / 2.0)
 	var gradient := Gradient.new()
 	gradient.set_color(0, Color(1, 1, 1, 1))
 	gradient.set_color(1, Color(1, 1, 1, 0))
@@ -1825,6 +1826,13 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 
 # --- J23 : rencontre Safari, dos du joueur ---------------------------------------------------
 
+## Lancer de dos de `GameState.player_look` (héros : [constant THROWER_TEXTURE] ; joueuse,
+## chantier JR : [TrainerLooks]).
+static func thrower_texture() -> Texture2D:
+	var path := TrainerLooks.thrower_path(GameState.player_look)
+	return THROWER_TEXTURE if path == THROWER_TEXTURE.resource_path else load(path) as Texture2D
+
+
 ## Coroutine (~0,3 s) : le dresseur de dos (image provisoire du lancer, `heros_lancer.png`) entre
 ## en glissant depuis la gauche et reste à sa place (rencontre Safari : aucun Pokémon allié,
 ## dossier 26 §5.1 ; art final « dos du joueur » au lot 23.0, `jalon-23.md` §2.17). Sans effet
@@ -1834,7 +1842,7 @@ func play_trainer_enter() -> void:
 		return
 	_build_capture_props()
 	var feet := thrower_feet(_view_size())
-	_thrower.texture = THROWER_TEXTURE
+	_thrower.texture = thrower_texture()
 	_thrower.scale = Vector2.ONE * THROWER_SCALE
 	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
 	_thrower.modulate = Color(1, 1, 1, 0)

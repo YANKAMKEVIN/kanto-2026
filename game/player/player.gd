@@ -33,8 +33,8 @@ signal reacted
 
 ## Groupe qui permet au décor de retrouver le joueur (transparence des feuillages).
 const GROUP: StringName = &"player"
-## Apparence du joueur ([CharacterLook]) : le héros peint (marche et course, Q-1 du jalon 7),
-## sinon le provisoire pixel art ×2.
+## Apparence du héros ([CharacterLook]) : peinte (marche et course, Q-1 du jalon 7), sinon le
+## provisoire pixel art ×2. La joueuse (chantier JR) : [method look_sprite].
 const LOOK_SPRITE: StringName = &"player"
 ## Taille affichée du personnage avant [method _apply_look] (provisoire 32×64 ×2), bas-centre
 ## sur l'origine.
@@ -413,9 +413,14 @@ func _apply_grass_front() -> void:
 		_grass_front.position = Vector2(0.0, GRASS_FRONT_BOTTOM - texture.get_height() / 2.0)
 
 
+## Apparence du monde de `GameState.player_look` (`player` ou `player_heroine`, [TrainerLooks]).
+static func look_sprite() -> StringName:
+	return TrainerLooks.player_sprite(GameState.player_look)
+
+
 ## SpriteFrames, échelle et filtre de l'apparence ([CharacterLook]) ; pieds sur l'origine.
 func _apply_look() -> void:
-	_look = CharacterLook.resolve(LOOK_SPRITE)
+	_look = CharacterLook.resolve(look_sprite())
 	var frames := load(_look.frames_path) as SpriteFrames
 	if frames == null:
 		return

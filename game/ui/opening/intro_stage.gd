@@ -55,6 +55,8 @@ var _breath: Tween
 var _effects_layer: Control
 var _name_entry: NameEntry
 var _blur_enabled: bool = true
+## Portraits remplacés (chantier JR : joueuse, rivale) ; sinon [constant TEXTURES].
+var _overrides: Dictionary[StringName, Texture2D] = {}
 
 
 func _ready() -> void:
@@ -173,6 +175,28 @@ func get_on_stage() -> Dictionary[StringName, StringName]:
 
 ## Support d'un portrait (null s'il n'est pas sur la scène) : son TextureRect est l'enfant
 ## « Picture ».
+## Remplace l'image de [param portrait] (`player`, `rival`) pour ses prochaines entrées et, s'il
+## est en scène, tout de suite (fondu enchaîné du choix d'apparence, dossier 13 §4 plan 4).
+func set_portrait_texture(portrait: StringName, texture: Texture2D) -> void:
+	if not TEXTURES.has(portrait) or texture == null:
+		return
+	_overrides[portrait] = texture
+	var holder: Control = _holders.get(portrait)
+	if holder == null:
+		return
+	var picture := holder.get_node_or_null(^"Picture") as TextureRect
+	if picture == null or picture.texture == texture:
+		return
+	picture.texture = texture
+	if not reduce_motion and speed_scale > 0.0:
+		picture.modulate.a = 0.0
+		create_tween().tween_property(picture, ^"modulate:a", 1.0, _time(UiTokens.INTRO_PORTRAIT_IN))
+
+
+func get_portrait_texture(portrait: StringName) -> Texture2D:
+	return _overrides.get(portrait, TEXTURES.get(portrait))
+
+
 func get_holder(portrait: StringName) -> Control:
 	return _holders.get(portrait)
 
@@ -258,7 +282,7 @@ func _full_rect(node_name: String) -> Control:
 ## Support ancré au bas-centre du portrait (x : part de la largeur, y : ligne des pieds) ; le
 ## TextureRect « Picture » est posé au-dessus, centré.
 func _make_holder(portrait: StringName) -> Control:
-	var texture := TEXTURES[portrait]
+	var texture := get_portrait_texture(portrait)
 	var height: float = HEIGHTS[portrait]
 	var width := height * texture.get_width() / float(texture.get_height())
 	var holder := Control.new()

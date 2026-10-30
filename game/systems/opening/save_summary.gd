@@ -14,6 +14,8 @@ extends RefCounted
 ##    si le Pokédex est activé (drapeau [constant StoryFlags.POKEDEX_ACTIVATED]).
 
 var player_name: String = ""
+## Apparence du joueur (buste de la carte Continuer ; chantier JR) ; le héros si absente.
+var player_look: StringName = &"hero"
 ## Carte courante (identifiant) et nom de sa zone ("" si inconnu).
 var map_id: StringName = &""
 var zone_name: String = ""
@@ -34,6 +36,7 @@ static func from_save(save: Dictionary, zone_name_of: Callable = Callable(),
 	summary.player_name = JsonFields.get_string(save, "player_name").strip_edges()
 	if summary.player_name.is_empty():
 		summary.player_name = fallback_name
+	summary.player_look = JsonFields.get_id(save, "player_look", &"hero")
 	summary.map_id = JsonFields.get_id(save, "map")
 	if zone_name_of.is_valid() and not summary.map_id.is_empty():
 		var zone: Variant = zone_name_of.call(summary.map_id)

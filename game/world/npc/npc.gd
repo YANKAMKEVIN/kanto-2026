@@ -791,7 +791,8 @@ func _set_lean(offset: Vector2) -> void:
 
 func _apply_spec() -> void:
 	# Apparence peinte (1:1, LINEAR) ou provisoire (×2, NEAREST) : [CharacterLook].
-	var look := CharacterLook.resolve(_spec.sprite)
+	# Le rival s'affiche avec l'apparence choisie (chantier JR) ; les données gardent « rival ».
+	var look := CharacterLook.resolve(TrainerLooks.world_sprite(_spec.sprite, GameState.rival_look))
 	var frames := load(look.frames_path) as SpriteFrames
 	if frames != null:
 		_sprite.sprite_frames = frames

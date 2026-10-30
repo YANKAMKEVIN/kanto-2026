@@ -36,8 +36,13 @@ static func card_illustration(screen: StringName) -> Texture2D:
 	return _load(card_path(screen))
 
 
+## Buste du joueur selon `GameState.player_look` (héros ou joueuse, [TrainerLooks]).
 static func hero_bust() -> Texture2D:
-	return _load(HERO_BUST_PATH)
+	return bust_for(GameState.player_look)
+
+
+static func bust_for(look: StringName) -> Texture2D:
+	return _load(TrainerLooks.bust_path(look))
 
 
 static func item_icon_path(item_id: StringName) -> String:
