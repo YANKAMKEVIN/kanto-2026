@@ -13,8 +13,12 @@ TRAVAIL="$(mktemp -d)"
 ENTETE="Utilise ton outil de génération d'images pour produire UNE image. N'écris pas de code et
 ne lance aucune commande. Quand l'image est produite, réponds seulement : FAIT."
 { echo "$ENTETE"; echo; cat "$PROMPT"; } > "$TRAVAIL/prompt.txt"
-( cd "$TRAVAIL" && "$CODEX" exec --skip-git-repo-check -s read-only --json \
-	${JOINTES[@]+"${JOINTES[@]}"} - < prompt.txt > sortie.jsonl )
+if ! ( cd "$TRAVAIL" && "$CODEX" exec --skip-git-repo-check -s read-only --json \
+	${JOINTES[@]+"${JOINTES[@]}"} - < prompt.txt > sortie.jsonl ); then
+	# Échec de Codex lui-même (quota de l'abonnement épuisé, réseau) : message d'erreur affiché.
+	echo "Codex en échec : $(grep -o '"message":"[^"]*"' "$TRAVAIL/sortie.jsonl" | tail -1)" >&2
+	exit 1
+fi
 SESSION="$(grep -o '"thread_id":"[^"]*"' "$TRAVAIL/sortie.jsonl" | head -1 | cut -d'"' -f4)"
 IMAGE="$(ls -t "$HOME/.codex/generated_images/$SESSION"/*.png 2>/dev/null | head -1 || true)"
 if [[ -z "$IMAGE" ]]; then
