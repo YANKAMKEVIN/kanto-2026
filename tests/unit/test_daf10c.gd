@@ -5,6 +5,9 @@ extends GutTest
 
 const MAPS: Array[StringName] = [&"seafoam_1f", &"seafoam_b1f", &"seafoam_b2f", &"seafoam_b3f",
 	&"seafoam_b4f", &"power_plant"]
+## Reste de RP-280 : étages de Sylphe habillés par `build_daf10d.gd` (mode « auto »).
+const SILPH: Array[StringName] = [&"silph_co_2f", &"silph_co_3f", &"silph_co_4f", &"silph_co_6f",
+	&"silph_co_7f", &"silph_co_8f", &"silph_co_9f", &"silph_co_10f", &"silph_co_11f"]
 
 
 func _map(id: StringName) -> Node:
@@ -42,3 +45,11 @@ func test_boulder_and_current_use_painted_images() -> void:
 	assert_true(ResourceLoader.exists(Boulder.IMAGE.resource_path))
 	assert_eq(Boulder.IMAGE.get_size(), Vector2(96, 90))
 	assert_eq(SeafoamFloorGate.CURRENT_IMAGE.get_size(), Vector2(384, 384))
+
+
+func test_silph_floors_are_dressed_without_footprint() -> void:
+	for id: StringName in SILPH:
+		var map := _map(id)
+		assert_true(map.has_node(^"Daf10dDecor"), String(id))
+		for body: Node in map.find_children("*", "CollisionObject2D", true, false):
+			assert_false(String(map.get_path_to(body)).contains("Daf10d"), String(id))

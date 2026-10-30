@@ -1,11 +1,11 @@
 # DAF.10c « Îles Écume et Centrale » (2026-10-30, branche `claude/hungry-perlman-8e653b`)
 
 **En attente de validation de Kevin (DA-6), non fusionné.** Lot du J33 (gel fonctionnel). Ferme sur la branche
-**RP-275** (P1, Îles Écume 1F à B4F) et **RP-276** (P1, Centrale).
+**RP-275** (P1, Îles Écume 1F à B4F) et **RP-276** (P1, Centrale), et la fin de **RP-280** (P2, étages de Sylphe).
 
 Gel du J33 respecté : **aucune collision, aucun déclencheur, aucune coordonnée ne bouge**. `tools/dump_map_logic.gd`
-et `tools/dump_map_nodes.gd` donnent des sorties **identiques** avant / après sur les **6 cartes** (12 relevés,
-`tools/dump_daf10c.sh avant|apres`). Tout ce qui est ajouté porte le préfixe `Daf10c` (ou `PaintedGround`, `Eau`) ;
+et `tools/dump_map_nodes.gd` donnent des sorties **identiques** avant / après sur les **15 cartes** (6 cartes du lot et
+9 étages de Sylphe, 30 relevés, `tools/dump_daf10c.sh avant|apres`). Tout ce qui est ajouté porte le préfixe `Daf10c` (ou `PaintedGround`, `Eau`) ;
 les objets debout ne sont posés que sur des cases déjà bloquées.
 
 **Codex** : il répond, mais son **outil d'image** est à sa limite quotidienne (fenêtre de 24 h, remise à zéro le
@@ -21,6 +21,7 @@ Codex le remplaceront à l'identique (`daf10c.py --modules`, puis les deux passe
 | [planche-2-ecume.jpg](planche-2-ecume.jpg) | Îles Écume B3F, B4F : avant / après |
 | [planche-3-centrale.jpg](planche-3-centrale.jpg) | Centrale : avant / après |
 | [planche-4-echelle-jeu.jpg](planche-4-echelle-jeu.jpg) | à l'échelle du jeu (zoom 1, joueur posé) : rochers, courants, sol haut, salles de la Centrale |
+| [planche-5-sylphe.jpg](planche-5-sylphe.jpg), [planche-6-sylphe.jpg](planche-6-sylphe.jpg) | Sylphe SARL 2F à 4F et 6F à 11F : avant / après (reste de RP-280) |
 
 Captures en nouvelle partie (aucun trou bouché, rochers de Force à leur case d'origine). Les « avant » n'ont pas
 les rochers de Force (l'outil de capture ne les posait pas encore) : c'étaient des disques gris dessinés par le code.
@@ -57,6 +58,14 @@ Seconde passe d'image après `build_j24_seafoam.gd`, sur le modèle de `build_da
   voisines, une case admissible sur deux [D]) : 33 machines (transformateurs, bobines, pupitres).
 - Éléments interactifs inchangés et lisibles : Électhor, les huit fausses Poké Balls, les objets, les deux indices
   d'objet caché, les portes.
+
+## Sylphe SARL 2F à 4F, 6F à 11F (reste de RP-280) — `tools/build_daf10d.gd`, mode « auto »
+
+Comme le 5F de DAF.10d (validé), mais tiré de la grille de chaque étage (`tools/plans/sylphe_*.txt`) au lieu de
+rectangles posés à la main : moquette bleutée sur la **zone de bureaux** de chaque salle qui a au moins 4 cases
+de mobilier `M` (rectangle des meubles agrandi d'une case, limité à la salle), une plante contre la cloison nord
+une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées), lueurs chaudes sur une trame de
+5 cases (au plus 10) [D]. Aucune image neuve. Relevés identiques sur les 9 étages (18 relevés).
 
 ## Kit : dérivé aujourd'hui, Codex ensuite
 

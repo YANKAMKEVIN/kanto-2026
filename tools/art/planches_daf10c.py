@@ -87,6 +87,12 @@ def main():
              ("centrale_electhor", "Centrale : salle d'Électhor"),
              ("centrale_salle", "Centrale : salle du sud, objets et fausses Poké Balls")],
             "DAF.10c — à l'échelle du jeu (zoom 1)", "planche-4-echelle-jeu.jpg")
+    avant_apres([("silph_co_2f", "Sylphe 2F"), ("silph_co_3f", "Sylphe 3F"), ("silph_co_4f", "Sylphe 4F"),
+                 ("silph_co_6f", "Sylphe 6F")], "DAF.10c — Sylphe SARL (1/2), reste de RP-280",
+                "planche-5-sylphe.jpg", 640)
+    avant_apres([("silph_co_7f", "Sylphe 7F"), ("silph_co_8f", "Sylphe 8F"), ("silph_co_9f", "Sylphe 9F"),
+                 ("silph_co_10f", "Sylphe 10F"), ("silph_co_11f", "Sylphe 11F")],
+                "DAF.10c — Sylphe SARL (2/2), reste de RP-280", "planche-6-sylphe.jpg", 640)
     synthese()
 
 

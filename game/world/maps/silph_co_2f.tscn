@@ -21,6 +21,7 @@
 [ext_resource type="Script" path="res://game/world/key_door/key_door.gd" id="19_pxfha"]
 [ext_resource type="Texture2D" path="res://assets/world/interiors/int_porte_sylphe_h_01.png" id="20_3ofo6"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="21_axn1o"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_plante_sylphe_01.png" id="21_mwnsv"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="22_o62oo"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="23_bwa57"]
 
@@ -41,6 +42,48 @@ shader_parameter/water_texture_size = null
 shader_parameter/foam_strength = null
 shader_parameter/square_shore = null
 shader_parameter/pass_mode = null
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mwnsv"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_k0mq3"]
+offsets = PackedFloat32Array(0, 1, 0.45)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0.45)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dcck5"]
+gradient = SubResource("Gradient_k0mq3")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tv0iv"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ggpdo"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8wb3i"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d1rat"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_o3brj"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mjptt"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ee7io"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jp3h5"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_o0mi5"]
+blend_mode = 1
 
 [node name="SilphCo2F" type="Node2D" unique_id=1928380460]
 script = ExtResource("1_bsx47")
@@ -1793,6 +1836,24 @@ z_index = -2
 texture = ExtResource("20_3ofo6")
 centered = false
 
+[node name="Daf10dObjet_0" type="Sprite2D" parent="Entities" unique_id=679569940]
+position = Vector2(2544, 960)
+texture = ExtResource("21_mwnsv")
+centered = false
+offset = Vector2(-48, -160)
+
+[node name="Daf10dObjet_1" type="Sprite2D" parent="Entities" unique_id=1852519862]
+position = Vector2(240, 1056)
+texture = ExtResource("21_mwnsv")
+centered = false
+offset = Vector2(-48, -160)
+
+[node name="Daf10dObjet_2" type="Sprite2D" parent="Entities" unique_id=626152672]
+position = Vector2(816, 1056)
+texture = ExtResource("21_mwnsv")
+centered = false
+offset = Vector2(-48, -160)
+
 [node name="Glows" type="Node2D" parent="." unique_id=1199985578]
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=2050375535]
@@ -1905,3 +1966,265 @@ position = Vector2(2640, 1536)
 position = Vector2(912, 1536)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=1619466048]
+
+[node name="Daf10dDecor" type="Node2D" parent="." unique_id=465279892]
+z_index = -2
+
+[node name="Moquette_13_7" type="Sprite2D" parent="Daf10dDecor" unique_id=534918714]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 672)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 1536, 96)
+
+[node name="Moquette_13_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1668130553]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 768)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 0, 864, 96)
+
+[node name="Moquette_13_9" type="Sprite2D" parent="Daf10dDecor" unique_id=806816804]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 864)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 96, 864, 96)
+
+[node name="Moquette_23_9" type="Sprite2D" parent="Daf10dDecor" unique_id=766227342]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(2208, 864)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 96, 96, 96)
+
+[node name="Moquette_13_10" type="Sprite2D" parent="Daf10dDecor" unique_id=1288947583]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 960)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 192, 864, 96)
+
+[node name="Moquette_23_10" type="Sprite2D" parent="Daf10dDecor" unique_id=1641379290]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(2208, 960)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 192, 576, 96)
+
+[node name="Moquette_1_11" type="Sprite2D" parent="Daf10dDecor" unique_id=528752101]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(96, 1056)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 960, 96)
+
+[node name="Moquette_13_11" type="Sprite2D" parent="Daf10dDecor" unique_id=899439065]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 1056)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 864, 96)
+
+[node name="Moquette_23_11" type="Sprite2D" parent="Daf10dDecor" unique_id=1270925296]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(2208, 1056)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 288, 480, 96)
+
+[node name="Moquette_1_12" type="Sprite2D" parent="Daf10dDecor" unique_id=1591469936]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(96, 1152)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 0, 960, 96)
+
+[node name="Moquette_13_12" type="Sprite2D" parent="Daf10dDecor" unique_id=1264001023]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 1152)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 0, 1536, 96)
+
+[node name="Moquette_1_13" type="Sprite2D" parent="Daf10dDecor" unique_id=1250526868]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(96, 1248)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 96, 960, 96)
+
+[node name="Moquette_13_13" type="Sprite2D" parent="Daf10dDecor" unique_id=504165966]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 1248)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 96, 1536, 96)
+
+[node name="Moquette_1_14" type="Sprite2D" parent="Daf10dDecor" unique_id=614710972]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(96, 1344)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 192, 960, 96)
+
+[node name="Moquette_13_14" type="Sprite2D" parent="Daf10dDecor" unique_id=648837535]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 1344)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 192, 864, 96)
+
+[node name="Moquette_23_14" type="Sprite2D" parent="Daf10dDecor" unique_id=1062981624]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(2208, 1344)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 192, 576, 96)
+
+[node name="Moquette_1_15" type="Sprite2D" parent="Daf10dDecor" unique_id=1949860508]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(96, 1440)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 960, 96)
+
+[node name="Moquette_13_15" type="Sprite2D" parent="Daf10dDecor" unique_id=995927282]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 1440)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 864, 96)
+
+[node name="Moquette_23_15" type="Sprite2D" parent="Daf10dDecor" unique_id=1653679861]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(2208, 1440)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 288, 576, 96)
+
+[node name="Moquette_13_16" type="Sprite2D" parent="Daf10dDecor" unique_id=1497583320]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(1248, 1536)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 0, 864, 96)
+
+[node name="Moquette_23_16" type="Sprite2D" parent="Daf10dDecor" unique_id=1811794452]
+modulate = Color(0.74, 0.82, 1, 1)
+texture_repeat = 2
+position = Vector2(2208, 1536)
+texture = ExtResource("3_k0mq3")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 0, 576, 96)
+
+[node name="Lueur_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1919175410]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_mwnsv")
+position = Vector2(2160, 240)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_1" type="Sprite2D" parent="Daf10dDecor" unique_id=267346989]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_tv0iv")
+position = Vector2(1680, 240)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_2" type="Sprite2D" parent="Daf10dDecor" unique_id=902501438]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_ggpdo")
+position = Vector2(2640, 240)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_3" type="Sprite2D" parent="Daf10dDecor" unique_id=558091890]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_8wb3i")
+position = Vector2(1200, 240)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_4" type="Sprite2D" parent="Daf10dDecor" unique_id=808423578]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_d1rat")
+position = Vector2(2160, 720)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1333437793]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_o3brj")
+position = Vector2(2640, 720)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_6" type="Sprite2D" parent="Daf10dDecor" unique_id=994962333]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_mjptt")
+position = Vector2(1680, 720)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_7" type="Sprite2D" parent="Daf10dDecor" unique_id=570635255]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_ee7io")
+position = Vector2(2160, 1200)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1711868398]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_jp3h5")
+position = Vector2(1200, 720)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")
+
+[node name="Lueur_9" type="Sprite2D" parent="Daf10dDecor" unique_id=1234790428]
+modulate = Color(1, 0.86, 0.62, 0.16)
+material = SubResource("CanvasItemMaterial_o0mi5")
+position = Vector2(1680, 1200)
+scale = Vector2(2.25, 2.25)
+texture = SubResource("GradientTexture2D_dcck5")

@@ -22,6 +22,7 @@ const PROPS: String = "res://assets/world/props/%s.png"
 const INT: String = "res://assets/world/interiors/%s.png"
 const TILE: int = 96
 const PREFIX: String = "Daf10d"
+const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const DECOR_Z: int = -2
 
 const BLANC := Color(1, 1, 1)
@@ -138,7 +139,29 @@ var THEMES: Dictionary = {
 		"lueurs": [[21, 7.5, 3.4], [21, 12.5, 3.4], [4, 5, 3.0], [13, 4, 2.6], [13, 12, 2.6],
 			[4, 13.5, 2.6], [17, 16.5, 3.0], [26, 16.5, 3.0]],
 	},
+	# Lot DAF.10c (reste de RP-280) : autres étages de Sylphe, habillés comme le 5F d'après leur grille
+	# ([method _auto_theme]).
+	&"silph_co_2f": {"auto": "sylphe_2f"},
+	&"silph_co_3f": {"auto": "sylphe_3f"},
+	&"silph_co_4f": {"auto": "sylphe_4f"},
+	&"silph_co_6f": {"auto": "sylphe_6f"},
+	&"silph_co_7f": {"auto": "sylphe_7f"},
+	&"silph_co_8f": {"auto": "sylphe_8f"},
+	&"silph_co_9f": {"auto": "sylphe_9f"},
+	&"silph_co_10f": {"auto": "sylphe_10f"},
+	&"silph_co_11f": {"auto": "sylphe_11f"},
 }
+## Mode « auto » (Sylphe) : moquette bleutée sous les zones de bureaux (rectangle des meubles `M`
+## agrandi d'une case) des salles qui en ont au moins [constant AUTO_DESKS], plantes contre la
+## cloison nord de ces zones (une case sur
+## [constant AUTO_PLANT_STEP], au plus [constant AUTO_PLANTS] par salle), lueurs chaudes sur une
+## trame de [constant AUTO_GLOW_STEP] cases (au plus [constant AUTO_GLOWS]) [D].
+const AUTO_DESKS: int = 4
+const AUTO_PLANT_STEP: int = 4
+const AUTO_PLANTS: int = 3
+const AUTO_GLOW_STEP: int = 5
+const AUTO_GLOWS: int = 10
+const AUTO_TINT := Color(0.74, 0.82, 1.0)
 
 var _errors: int = 0
 
@@ -147,7 +170,11 @@ func _init() -> void:
 	var only := OS.get_cmdline_user_args()
 	for map_id: StringName in THEMES:
 		if only.is_empty() or String(map_id) in only:
-			_build(map_id, THEMES[map_id])
+			var theme: Dictionary = THEMES[map_id]
+			if theme.has("auto"):
+				theme = _auto_theme(theme["auto"])
+			if not theme.is_empty():
+				_build(map_id, theme)
 	quit(1 if _errors > 0 else 0)
 
 
@@ -443,3 +470,97 @@ func _clean(root: Node) -> void:
 			if String(child.name).begins_with(PREFIX):
 				parent.remove_child(child)
 				child.free()
+
+
+## Thème « coque » d'un étage de Sylphe tiré de sa grille `tools/plans/<plan>.txt` (salles = taches
+## 4-connexes de cases praticables hors portes `K`). Les plantes sont posées sur des cases `#` déjà
+## bloquées ; la moquette et les lueurs sont plates.
+func _auto_theme(plan_name: String) -> Dictionary:
+	var plan := PlanGrid.new()
+	if not plan.load_file("res://tools/plans/%s.txt" % plan_name):
+		push_error("%s : %s" % [plan_name, plan.error])
+		_errors += 1
+		return {}
+	var room_of: Dictionary = {}
+	var rooms: Array = []
+	for y: int in plan.height:
+		for x: int in plan.width:
+			var start := Vector2i(x, y)
+			if room_of.has(start) or not _room_cell(plan, start):
+				continue
+			var cells: Array[Vector2i] = [start]
+			room_of[start] = rooms.size()
+			var k := 0
+			while k < cells.size():
+				for d: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+					var n := cells[k] + d
+					if not room_of.has(n) and _room_cell(plan, n):
+						room_of[n] = rooms.size()
+						cells.append(n)
+				k += 1
+			rooms.append(cells)
+	var carpet: Dictionary = {}
+	var plants: Array = []
+	var glows: Array = []
+	for index: int in rooms.size():
+		var cells: Array = rooms[index]
+		var desks: Dictionary = {}
+		for cell: Vector2i in cells:
+			for d: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+				if _mark(plan, cell + d) == "M":
+					desks[cell + d] = true
+		if desks.size() >= AUTO_DESKS:
+			# Zone de bureaux : rectangle des meubles agrandi d'une case, sur la salle et ses meubles.
+			var zone := Rect2i(desks.keys()[0], Vector2i.ONE)
+			for cell: Vector2i in desks:
+				zone = zone.expand(cell).expand(cell + Vector2i.ONE)
+			zone = zone.grow(1)
+			for cell: Vector2i in cells:
+				if zone.has_point(cell):
+					carpet[cell] = true
+			for cell: Vector2i in desks:
+				carpet[cell] = true
+			var count := 0
+			var run := 0
+			var ordered: Array = cells.duplicate()
+			ordered.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
+			var previous := Vector2i(-9, -9)
+			for cell: Vector2i in ordered:
+				if cell != previous + Vector2i.RIGHT:
+					run = 0
+				previous = cell
+				var wall := cell + Vector2i.UP
+				var ok := carpet.has(cell) and wall.y >= 1 and _mark(plan, cell) == "." and _mark(plan, wall) == "#" \
+					and _mark(plan, wall + Vector2i.LEFT) == "#" and _mark(plan, wall + Vector2i.RIGHT) == "#"
+				run = run + 1 if ok else 0
+				if ok and run % AUTO_PLANT_STEP == 2 and count < AUTO_PLANTS:
+					plants.append([INT % "int_plante_sylphe_01", wall.x + 0.5, wall.y + 1.0, BLANC, 1.0])
+					count += 1
+		for cell: Vector2i in cells:
+			if glows.size() < AUTO_GLOWS and cells.size() >= 6 and cell.x % AUTO_GLOW_STEP == 2 \
+					and cell.y % AUTO_GLOW_STEP == 2:
+				glows.append([cell.x + 0.5, cell.y + 0.5, 3.0])
+	var sols: Array = []
+	for y: int in plan.height:
+		var x := 0
+		while x < plan.width:
+			if not carpet.has(Vector2i(x, y)):
+				x += 1
+				continue
+			var x0 := x
+			while carpet.has(Vector2i(x, y)):
+				x += 1
+			sols.append([GROUND % "ground_moquette_sylphe_01", Rect2(x0, y, x - x0, 1), AUTO_TINT])
+	return {"mode": "coque", "sols": sols, "objets": plants, "tapis": [],
+		"lueur": Color(1.0, 0.86, 0.62, 0.16), "lueurs": glows}
+
+
+func _mark(plan: PlanGrid, cell: Vector2i) -> String:
+	if cell.x < 0 or cell.y < 0 or cell.x >= plan.width or cell.y >= plan.height:
+		return "#"
+	return plan.at(cell)
+
+
+func _room_cell(plan: PlanGrid, cell: Vector2i) -> bool:
+	var mark := _mark(plan, cell)
+	return plan.walkable.contains(mark) and mark != "K"
