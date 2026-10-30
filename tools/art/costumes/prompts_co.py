@@ -7,8 +7,8 @@ from pathlib import Path
 
 # badge : (joueur, description joueur, joueuse, description joueuse)
 COSTUMES = {
-    "ROCHE": ("Mario", "casquette rouge avec un M blanc dans un rond, moustache noire, chemise rouge, salopette bleue à gros boutons jaunes, gants blancs, chaussures marron",
-              "la princesse Peach", "longs cheveux blonds, couronne dorée sertie, robe rose bouffante à manches ballon, gants blancs, broche bleue au col, boucles d'oreilles rondes"),
+    "ROCHE": ("Tanjiro (Demon Slayer)", "cheveux bordeaux, cicatrice rouge sur le front côté gauche, boucles d'oreilles en plaquettes rectangulaires à soleil levant, veste à damier vert et noir sur un uniforme noir à ceinture blanche, sabre au fourreau à la taille, guêtres blanches, sandales",
+              "Nezuko (Demon Slayer)", "longs cheveux noirs aux pointes orangées, ruban rose dans les cheveux, petit bambou vert tenu en travers de la bouche, kimono rose à motif de feuilles de chanvre, veste courte marron à carreaux, obi noir, sandales"),
     "CASCADE": ("Luffy (One Piece)", "chapeau de paille à ruban rouge, cheveux noirs en bataille, petite cicatrice sous l'œil gauche, chemise rouge sans manches ouverte, short bleu retroussé à revers blancs, sandales, grand sourire",
                 "Nami (One Piece)", "cheveux orange longs, haut bikini à rayures bleu et blanc sous un petit gilet, jupe ou pantacourt, bâton bleu repliable à la ceinture, tatouage bleu discret à l'épaule"),
     "FOUDRE": ("Iron Man", "armure rouge et or brillante, réacteur circulaire lumineux bleu-blanc au centre du torse, casque avec visière or ; visage du personnage visible, visière relevée",
@@ -17,8 +17,8 @@ COSTUMES = {
                "la princesse Zelda en tenue d'aventure", "cheveux blonds tressés, oreilles pointues, tunique bleue de voyageuse, pantalon sombre, bottes, serre-tête doré, petite tablette à la ceinture"),
     "AME": ("Naruto", "cheveux blonds hérissés, bandeau frontal métallique gravé d'une feuille, trois traits sur chaque joue, survêtement orange et bleu, sandales ninja",
             "Sakura (Naruto)", "cheveux roses courts, bandeau frontal métallique gravé d'une feuille porté en serre-tête, haut rouge sans manches à col, short noir, gants, sandales ninja"),
-    "MARAIS": ("Harry Potter", "lunettes rondes, cheveux noirs en bataille, cicatrice en éclair sur le front, robe de sorcier noire doublée de rouge, écharpe rayée rouge et or, baguette en bois à la main",
-               "Hermione Granger", "cheveux châtains très bouclés et volumineux, robe de sorcière noire doublée de rouge, écharpe rayée rouge et or, gros livre sous le bras, baguette à la main"),
+    "MARAIS": ("Deku (My Hero Academia)", "cheveux verts bouclés en bataille, taches de rousseur, combinaison de héros vert foncé à bandes noires, masque respiratoire relevé sur la nuque, gants blancs et rouges, grosses bottes rouges",
+               "Ochaco (My Hero Academia)", "cheveux châtains au carré court, joues roses, combinaison de héroïne noire et rose pâle, casque-visière rose relevé, gros bracelets aux poignets, bottes"),
     "VOLCAN": ("Son Goku (Dragon Ball)", "cheveux noirs en pointes caractéristiques, kimono de combat orange avec ceinture et poignets bleus, sous-maillot bleu, bottes bleues, pose de combat confiante",
                "une combattante saiyan (Dragon Ball)", "cheveux noirs en pointes ou en grande queue hérissée, tenue de combat orange et bleue de même école que Goku, poignets bleus, bottes, pose de combat confiante"),
     "TERRE": ("Batman", "masque noir à oreilles pointues laissant voir le bas du visage, cape noire, combinaison gris foncé, chauve-souris noire sur le torse, ceinture utilitaire jaune, gants noirs",
@@ -36,26 +36,20 @@ PLANCHE : image paysage 1536 × 1024, fond uni gris clair neutre, aucun texte, a
 Même personnage, mêmes couleurs dans ses trois figures.
 """
 
-# Repli quand le filtre de Codex bloque un personnage de licence (2026-10-30 : Mario, Iron Man,
-# Link, Harry Potter, Batman refusés à la sortie) : on décrit la tenue sans nommer personne.
+# Repli quand le filtre de Codex bloque un personnage de licence (2026-10-30 : Iron Man, Link, Batman ;
+# Mario et Harry Potter, refusés quatre fois, remplacés par Tanjiro et Deku) : on décrit la tenue sans nommer personne.
 SANS_NOM = {
-    "ROCHE": ("un petit plombier aventurier", "une jeune princesse de conte en robe rose"),
     "FOUDRE": ("un garçon en armure de super-héros high-tech", "une fille en armure de super-héroïne high-tech"),
     "PRISME": ("un jeune héros d'épopée fantastique elfique", "une jeune princesse elfique aventurière"),
-    "MARAIS": ("un jeune apprenti sorcier d'école de magie", "une jeune apprentie sorcière d'école de magie"),
     "TERRE": ("un jeune justicier masqué de la nuit", "une jeune justicière masquée de la nuit"),
 }
 
 
-# Second repli (2026-10-30 : ROCHE, FOUDRE, MARAIS, TERRE encore bloqués, même sans images
+# Second repli (2026-10-30 : FOUDRE et TERRE encore bloqués, même sans images
 # jointes) : tenue adoucie, sans logo ni signe distinctif déposé, en gardant l'esprit du personnage.
 ADOUCI = {
-    "ROCHE": ("casquette rouge unie sans aucun logo, petite moustache noire, chemise rouge, salopette bleue à boutons dorés, gants blancs, chaussures marron",
-              "longs cheveux blonds, petit diadème doré, robe rose longue de princesse, gants blancs, petit bijou bleu au col"),
     "FOUDRE": ("armure robotique rouge aux plaques dorées, petite lumière ronde bleutée sur la poitrine, casque ouvert qui laisse voir le visage",
                "armure robotique rouge aux plaques dorées plus fines, petite lumière ronde bleutée sur la poitrine, casque ouvert, cheveux qui dépassent"),
-    "MARAIS": ("lunettes rondes, cheveux noirs en bataille, grande robe noire d'écolier sorcier doublée de rouge, écharpe rayée rouge et jaune, baguette en bois",
-               "cheveux châtains très bouclés et volumineux, grande robe noire d'écolière sorcière doublée de rouge, écharpe rayée rouge et jaune, gros livre sous le bras, baguette"),
     "TERRE": ("loup de tissu noir sur les yeux, capuche noire, longue cape noire, combinaison gris anthracite, ceinture à poches jaune, gants noirs",
               "loup de tissu noir sur les yeux, longs cheveux roux, longue cape noire, combinaison violet très sombre, ceinture à poches jaune, gants noirs"),
 }

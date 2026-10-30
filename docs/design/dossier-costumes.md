@@ -7,7 +7,7 @@
 ## Décidé par Kevin (2026-10-30)
 
 - **Un costume par badge**, avec une version pour le joueur et une version pour la joueuse (la version portée suit `player_look`).
-- **Liste des huit** (§1).
+- **Liste des huit** (§1) ; Mario et Harry Potter remplacés le 2026-10-30 (filtre de Codex).
 - **Silhouettes visibles dès le début** du jeu, non sélectionnables tant que le badge manque.
 - **Les PNJ ne réagissent pas** aux costumes.
 - **Codex** produit l'art (abonnement déjà payé, à utiliser).
@@ -17,14 +17,14 @@
 
 | Badge | Arène | Joueur | Joueuse |
 |---|---|---|---|
-| Roche | Pierre (Argenta) | Mario | Peach |
+| Roche | Pierre (Argenta) | Tanjiro (Demon Slayer) | Nezuko |
 | Cascade | Ondine (Azuria) | Luffy (chapeau de paille) | Nami |
-| Foudre | Major Bob (Carmin-sur-Mer) | Iron Man | Iron Woman |
+| Foudre | Major Bob (Carmin-sur-Mer) | Iron Man (version adoucie : armure rouge et or) | Iron Woman (idem) |
 | Prisme | Erika (Céladopole) | Link (Zelda) | Zelda en tenue d'aventure |
 | Âme | Koga (Parmanie) | Naruto | Sakura |
-| Marais | Morgane (Safrania) | Harry Potter | Hermione |
+| Marais | Morgane (Safrania) | Deku (My Hero Academia) | Ochaco |
 | Volcan | Auguste (Cramois'Île) | Son Goku | Combattante saiyan |
-| Terre | Giovanni (Jadielle) | Batman | Batgirl |
+| Terre | Giovanni (Jadielle) | Batman (version adoucie : justicier masqué à cape) | Batgirl (idem) |
 
 ## 2. ✅ Arbitrages validés par Kevin le 2026-10-30 (toutes les recommandations, en gras)
 
@@ -59,6 +59,6 @@
 
 - [x] Idée et liste des huit costumes (Kevin, 2026-10-30)
 - [x] Arbitrages CO-1 à CO-11 — **validés par Kevin le 2026-10-30** (« Okay », toutes les recommandations)
-- [ ] Planche de chara design — premier tour Codex (2026-10-30, `tools/art/costumes/`, une planche par badge, garçon à gauche, fille à droite) : **passés au premier essai** Luffy/Nami, Naruto/Sakura, Goku/combattante saiyan ; **Link/Zelda** passé sans les noms ; **Iron Man/Iron Woman** et **Batman/Batgirl** passés seulement en version adoucie (sans nom ni logo), moins reconnaissables ; **Mario/Peach** et **Harry Potter/Hermione** bloqués 4 fois par le filtre de Codex (à la sortie : ressemblance avec une licence), avec et sans images jointes, avec et sans noms. Le filtre laisse passer les mangas et Zelda, bloque Nintendo/Mario, Marvel, DC et Warner. Choix demandé à Kevin
+- [ ] Planche de chara design — premier tour Codex (2026-10-30, `tools/art/costumes/`, une planche par badge, garçon à gauche, fille à droite) : **passés au premier essai** Luffy/Nami, Naruto/Sakura, Goku/combattante saiyan ; **Link/Zelda** passé sans les noms ; **Iron Man/Iron Woman** et **Batman/Batgirl** passés seulement en version adoucie (sans nom ni logo), moins reconnaissables ; **Mario/Peach** et **Harry Potter/Hermione** bloqués 4 fois par le filtre de Codex (à la sortie : ressemblance avec une licence), avec et sans images jointes, avec et sans noms. Le filtre laisse passer les mangas et Zelda, bloque Nintendo/Mario, Marvel, DC et Warner. **Décision de Kevin (2026-10-30)** : Mario/Peach → **Tanjiro/Nezuko**, Harry Potter/Hermione → **Deku/Ochaco** ; Iron Man et Batman gardés en versions adoucies. Planche complète des 8 : `reference/costumes-planches-v1.webp` (ordre des badges, garçon à gauche), **à valider par Kevin**
 - [ ] Sprites
 - [ ] Intégration en code (après le J33 et JR)
