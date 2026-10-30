@@ -797,6 +797,14 @@ const RULES: Dictionary[StringName, Dictionary] = {
 		"open": [Vector2i(0, 0), Vector2i(1, 0)]},
 	&"bldg_labo_cramois_01": {"shadow": true, "width": 9, "depth": 6, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Façades de Parmanie (lot DAF.10a, `tools/build_daf10a_parmanie.gd`) : emprise = cases du
+	# bâtiment de la grille (`parmanie.txt`), portes libres.
+	&"bldg_arene_parmanie_01": {"shadow": true, "width": 12, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_pavillon_safari_01": {"shadow": true, "width": 10, "depth": 6, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_cabane_safari_01": {"shadow": true, "width": 4, "depth": 2, "fade": true,
+		"open": [Vector2i(-1, 0)]},
 }
 
 

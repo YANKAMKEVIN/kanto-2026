@@ -10,7 +10,7 @@ extends SceneTree
 const VISUAL: Array[String] = ["Polygon2D", "Sprite2D", "AnimatedSprite2D", "ColorRect", "Line2D",
 	"PointLight2D", "DirectionalLight2D", "LightOccluder2D", "TileMapLayer", "CanvasModulate",
 	"TextureRect", "GPUParticles2D", "CPUParticles2D"]
-const ART_ROOTS: Array[String] = ["PaintedGround", "Eau", "Painted"]
+const ART_ROOTS: Array[String] = ["PaintedGround", "Eau", "Painted", "ForestFloor"]
 
 
 func _initialize() -> void:

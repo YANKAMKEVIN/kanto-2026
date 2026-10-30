@@ -3,8 +3,36 @@
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_jer7s"]
 [ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_dap3q"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_0gkxk"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_sd6ul"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_parquet_dojo_01.png" id="4_11rij"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_mtbbd"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/fuchsia_gym_ground.png" id="5_o1i5h"]
 [ext_resource type="Script" path="res://game/world/invisible_walls/invisible_wall_hint.gd" id="5_tuqre"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_parquet_manoir_01.png" id="7_50qye"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_parquet_dojo_indice_01.png" id="7_apxfh"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_52g6g"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/fuchsia_gym_voile.png" id="9_bvry2"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_dojo_01.png" id="11_xustt"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_dojo_02.png" id="12_uyalj"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_statue_arene_01.png" id="13_fi1lw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_apxfh"]
+shader = ExtResource("3_sd6ul")
+shader_parameter/grass_texture = ExtResource("4_11rij")
+shader_parameter/paving_texture = ExtResource("7_apxfh")
+shader_parameter/path_texture = ExtResource("7_50qye")
+shader_parameter/ground_mask = ExtResource("5_o1i5h")
+shader_parameter/tile_size = 96.0
+shader_parameter/texture_size = 384.0
+shader_parameter/paving_scale = 1.0
+shader_parameter/path_scale = 1.0
+shader_parameter/earth_color = Color(0.2, 0.14, 0.11, 1)
+shader_parameter/has_shore = false
+shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = null
+shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
 
 [node name="FuchsiaGym" type="Node2D" unique_id=1800902625]
 script = ExtResource("1_jer7s")
@@ -17,20 +45,554 @@ interior = true
 light_profile = &"interior_warm"
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1169808508]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAIAAAABAAAAAAAAAAIAAAACAAAAAAAAAAIAAAADAAAAAAAAAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAAAAAIAAAAIAAAAAAAAAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAAAAAIAAAALAAAAAAAAAAIAAAAMAAAAAAAAAAIAAAANAAAAAAAAAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAABAAIAAAADAAEAAAABAAIAAAAEAAEAAAABAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAABAAIAAAAIAAEAAAABAAIAAAAJAAEAAAABAAIAAAAKAAEAAAABAAIAAAALAAEAAAABAAIAAAAMAAEAAAABAAIAAAANAAEAAAABAAIAAAAAAAIAAAAAAAIAAAABAAIAAAAAAAIAAAACAAIAAAAAAAAAAAADAAIAAAAAAAAAAAAEAAIAAAAAAAAAAAAFAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAHAAIAAAAAAAAAAAAIAAIAAAAAAAAAAAAJAAIAAAAAAAAAAAAKAAIAAAAAAAAAAAALAAIAAAAAAAAAAAAMAAIAAAAAAAIAAAANAAIAAAAAAAIAAAAAAAMAAAAAAAIAAAABAAMAAAAAAAIAAAACAAMAAAAAAAAAAAADAAMAAAAAAAAAAAAEAAMAAAABAAAAAAAFAAMAAAABAAAAAAAGAAMAAAAAAAAAAAAHAAMAAAAAAAAAAAAIAAMAAAAAAAAAAAAJAAMAAAABAAAAAAAKAAMAAAAAAAAAAAALAAMAAAAAAAAAAAAMAAMAAAAAAAIAAAANAAMAAAAAAAIAAAAAAAQAAAAAAAIAAAABAAQAAAAAAAIAAAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAABAAAAAAAHAAQAAAABAAAAAAAIAAQAAAAAAAAAAAAJAAQAAAABAAAAAAAKAAQAAAAAAAAAAAALAAQAAAAAAAAAAAAMAAQAAAAAAAIAAAANAAQAAAAAAAIAAAAAAAUAAAAAAAIAAAABAAUAAAAAAAIAAAACAAUAAAABAAAAAAADAAUAAAABAAAAAAAEAAUAAAAAAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAABAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAABAAAAAAAKAAUAAAAAAAAAAAALAAUAAAAAAAAAAAAMAAUAAAAAAAIAAAANAAUAAAAAAAIAAAAAAAYAAAAAAAIAAAABAAYAAAAAAAIAAAACAAYAAAAAAAAAAAADAAYAAAAAAAAAAAAEAAYAAAAAAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAABAAAAAAAHAAYAAAAAAAAAAAAIAAYAAAAAAAAAAAAJAAYAAAABAAAAAAAKAAYAAAAAAAAAAAALAAYAAAAAAAAAAAAMAAYAAAAAAAIAAAANAAYAAAAAAAIAAAAAAAcAAAAAAAIAAAABAAcAAAAAAAIAAAACAAcAAAABAAAAAAADAAcAAAAAAAAAAAAEAAcAAAABAAAAAAAFAAcAAAABAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAABAAAAAAAJAAcAAAAAAAAAAAAKAAcAAAAAAAAAAAALAAcAAAAAAAAAAAAMAAcAAAAAAAIAAAANAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAABAAgAAAAAAAIAAAACAAgAAAABAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAgAAAABAAAAAAAJAAgAAAAAAAAAAAAKAAgAAAAAAAAAAAALAAgAAAAAAAAAAAAMAAgAAAAAAAIAAAANAAgAAAAAAAIAAAAAAAkAAAAAAAIAAAABAAkAAAAAAAIAAAACAAkAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAkAAAABAAAAAAAFAAkAAAABAAAAAAAGAAkAAAABAAAAAAAHAAkAAAABAAAAAAAIAAkAAAABAAAAAAAJAAkAAAAAAAAAAAAKAAkAAAAAAAAAAAALAAkAAAAAAAAAAAAMAAkAAAAAAAIAAAANAAkAAAAAAAIAAAAAAAoAAAAAAAIAAAABAAoAAAAAAAIAAAACAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAEAAoAAAAAAAAAAAAFAAoAAAAAAAAAAAAGAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAoAAAABAAAAAAAJAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAALAAoAAAAAAAAAAAAMAAoAAAAAAAIAAAANAAoAAAAAAAIAAAAAAAsAAAAAAAIAAAABAAsAAAAAAAIAAAACAAsAAAAAAAAAAAADAAsAAAAAAAAAAAAEAAsAAAABAAAAAAAFAAsAAAAAAAAAAAAGAAsAAAAAAAAAAAAHAAsAAAAAAAAAAAAIAAsAAAAAAAAAAAAJAAsAAAABAAAAAAAKAAsAAAAAAAAAAAALAAsAAAAAAAAAAAAMAAsAAAAAAAIAAAANAAsAAAAAAAIAAAAAAAwAAAAAAAIAAAABAAwAAAAAAAIAAAACAAwAAAABAAAAAAADAAwAAAABAAAAAAAEAAwAAAABAAAAAAAFAAwAAAAAAAAAAAAGAAwAAAAAAAAAAAAHAAwAAAAAAAAAAAAIAAwAAAAAAAAAAAAJAAwAAAABAAAAAAAKAAwAAAAAAAAAAAALAAwAAAAAAAAAAAAMAAwAAAAAAAIAAAANAAwAAAAAAAIAAAAAAA0AAAAAAAIAAAABAA0AAAAAAAIAAAACAA0AAAAAAAAAAAADAA0AAAAAAAAAAAAEAA0AAAABAAAAAAAFAA0AAAABAAAAAAAGAA0AAAABAAAAAAAHAA0AAAABAAAAAAAIAA0AAAABAAAAAAAJAA0AAAABAAAAAAAKAA0AAAAAAAAAAAALAA0AAAAAAAAAAAAMAA0AAAAAAAIAAAANAA0AAAAAAAIAAAAAAA4AAAAAAAIAAAABAA4AAAAAAAIAAAACAA4AAAAAAAAAAAADAA4AAAAAAAAAAAAEAA4AAAAAAAAAAAAFAA4AAAAAAAAAAAAGAA4AAAAAAAAAAAAHAA4AAAAAAAAAAAAIAA4AAAAAAAAAAAAJAA4AAAAAAAAAAAAKAA4AAAAAAAAAAAALAA4AAAAAAAAAAAAMAA4AAAAAAAIAAAANAA4AAAAAAAIAAAAAAA8AAAAAAAIAAAABAA8AAAAAAAIAAAACAA8AAAAAAAAAAAADAA8AAAAAAAAAAAAEAA8AAAAAAAAAAAAFAA8AAAAAAAcAAAAGAA8AAAAAAAAAAAAHAA8AAAAAAAAAAAAIAA8AAAAAAAcAAAAJAA8AAAAAAAAAAAAKAA8AAAAAAAAAAAALAA8AAAAAAAAAAAAMAA8AAAAAAAIAAAANAA8AAAAAAAIAAAAAABAAAAAAAAIAAAABABAAAAAAAAIAAAACABAAAAAAAAAAAAADABAAAAAAAAAAAAAEABAAAAAAAAAAAAAFABAAAAAAAAcAAAAGABAAAAAAAAAAAAAHABAAAAAAAAAAAAAIABAAAAAAAAcAAAAJABAAAAAAAAAAAAAKABAAAAAAAAAAAAALABAAAAAAAAAAAAAMABAAAAAAAAIAAAANABAAAAAAAAIAAAAAABEAAAAAAAIAAAABABEAAAAAAAIAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAAAEABEAAAAAAAAAAAAFABEAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAALABEAAAAAAAAAAAAMABEAAAAAAAIAAAANABEAAAAAAAIAAAAAABIAAAABAAIAAAABABIAAAABAAIAAAACABIAAAABAAIAAAADABIAAAABAAIAAAAEABIAAAABAAIAAAAFABIAAAABAAIAAAAGABIAAAAAAAYAAAAHABIAAAAAAAYAAAAIABIAAAABAAIAAAAJABIAAAABAAIAAAAKABIAAAABAAIAAAALABIAAAABAAIAAAAMABIAAAABAAIAAAANABIAAAABAAIAAAAAABMAAAAAAAIAAAABABMAAAAAAAIAAAACABMAAAAAAAIAAAADABMAAAAAAAIAAAAEABMAAAAAAAIAAAAFABMAAAAAAAIAAAAGABMAAAAAAAIAAAAHABMAAAAAAAIAAAAIABMAAAAAAAIAAAAJABMAAAAAAAIAAAAKABMAAAAAAAIAAAALABMAAAAAAAIAAAAMABMAAAAAAAIAAAANABMAAAAAAAIAAAA=")
 tile_set = ExtResource("2_dap3q")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=1453547643]
+visible = false
 tile_set = ExtResource("2_dap3q")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=499958845]
+visible = false
 tile_set = ExtResource("2_dap3q")
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=710054016]
+z_index = -3
+material = SubResource("ShaderMaterial_apxfh")
+script = ExtResource("8_52g6g")
+size = Vector2i(14, 20)
+mask = ExtResource("5_o1i5h")
+base_texture = ExtResource("4_11rij")
+r_texture = ExtResource("7_apxfh")
+g_texture = ExtResource("7_50qye")
+
+[node name="Daf10aDecor" type="Node2D" parent="." unique_id=208322504]
+z_index = -1
+
+[node name="Voile" type="Sprite2D" parent="Daf10aDecor" unique_id=2035033034]
+texture_filter = 2
+scale = Vector2(96, 96)
+texture = ExtResource("9_bvry2")
+centered = false
+
+[node name="Mur_0_0" type="Sprite2D" parent="Daf10aDecor" unique_id=577586068]
+texture_repeat = 2
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1344, 96)
+
+[node name="Mur_0_1" type="Sprite2D" parent="Daf10aDecor" unique_id=47800789]
+texture_repeat = 2
+position = Vector2(0, 96)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 1344, 96)
+
+[node name="Mur_0_2" type="Sprite2D" parent="Daf10aDecor" unique_id=167928434]
+texture_repeat = 2
+position = Vector2(0, 192)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_12_2" type="Sprite2D" parent="Daf10aDecor" unique_id=469893203]
+texture_repeat = 2
+position = Vector2(1152, 192)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_0_3" type="Sprite2D" parent="Daf10aDecor" unique_id=227897986]
+texture_repeat = 2
+position = Vector2(0, 288)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_12_3" type="Sprite2D" parent="Daf10aDecor" unique_id=2143584182]
+texture_repeat = 2
+position = Vector2(1152, 288)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_0_4" type="Sprite2D" parent="Daf10aDecor" unique_id=1949106735]
+texture_repeat = 2
+position = Vector2(0, 384)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_12_4" type="Sprite2D" parent="Daf10aDecor" unique_id=424749117]
+texture_repeat = 2
+position = Vector2(1152, 384)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_0_5" type="Sprite2D" parent="Daf10aDecor" unique_id=447235549]
+texture_repeat = 2
+position = Vector2(0, 480)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_12_5" type="Sprite2D" parent="Daf10aDecor" unique_id=1603926447]
+texture_repeat = 2
+position = Vector2(1152, 480)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_0_6" type="Sprite2D" parent="Daf10aDecor" unique_id=1822235399]
+texture_repeat = 2
+position = Vector2(0, 576)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_12_6" type="Sprite2D" parent="Daf10aDecor" unique_id=1708005392]
+texture_repeat = 2
+position = Vector2(1152, 576)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_0_7" type="Sprite2D" parent="Daf10aDecor" unique_id=647555119]
+texture_repeat = 2
+position = Vector2(0, 672)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_12_7" type="Sprite2D" parent="Daf10aDecor" unique_id=62621749]
+texture_repeat = 2
+position = Vector2(1152, 672)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_0_8" type="Sprite2D" parent="Daf10aDecor" unique_id=1783853936]
+texture_repeat = 2
+position = Vector2(0, 768)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_12_8" type="Sprite2D" parent="Daf10aDecor" unique_id=344550080]
+texture_repeat = 2
+position = Vector2(1152, 768)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_0_9" type="Sprite2D" parent="Daf10aDecor" unique_id=2080564243]
+texture_repeat = 2
+position = Vector2(0, 864)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_12_9" type="Sprite2D" parent="Daf10aDecor" unique_id=663202818]
+texture_repeat = 2
+position = Vector2(1152, 864)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_0_10" type="Sprite2D" parent="Daf10aDecor" unique_id=1108797659]
+texture_repeat = 2
+position = Vector2(0, 960)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_12_10" type="Sprite2D" parent="Daf10aDecor" unique_id=1620883930]
+texture_repeat = 2
+position = Vector2(1152, 960)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_0_11" type="Sprite2D" parent="Daf10aDecor" unique_id=1683103646]
+texture_repeat = 2
+position = Vector2(0, 1056)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_12_11" type="Sprite2D" parent="Daf10aDecor" unique_id=664455309]
+texture_repeat = 2
+position = Vector2(1152, 1056)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_0_12" type="Sprite2D" parent="Daf10aDecor" unique_id=393914176]
+texture_repeat = 2
+position = Vector2(0, 1152)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_12_12" type="Sprite2D" parent="Daf10aDecor" unique_id=1916517548]
+texture_repeat = 2
+position = Vector2(1152, 1152)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_0_13" type="Sprite2D" parent="Daf10aDecor" unique_id=2009563053]
+texture_repeat = 2
+position = Vector2(0, 1248)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_12_13" type="Sprite2D" parent="Daf10aDecor" unique_id=798223872]
+texture_repeat = 2
+position = Vector2(1152, 1248)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_0_14" type="Sprite2D" parent="Daf10aDecor" unique_id=1642481758]
+texture_repeat = 2
+position = Vector2(0, 1344)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_12_14" type="Sprite2D" parent="Daf10aDecor" unique_id=794977695]
+texture_repeat = 2
+position = Vector2(1152, 1344)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 192, 96)
+
+[node name="Mur_0_15" type="Sprite2D" parent="Daf10aDecor" unique_id=498730482]
+texture_repeat = 2
+position = Vector2(0, 1440)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_12_15" type="Sprite2D" parent="Daf10aDecor" unique_id=480439872]
+texture_repeat = 2
+position = Vector2(1152, 1440)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Mur_0_16" type="Sprite2D" parent="Daf10aDecor" unique_id=1582677788]
+texture_repeat = 2
+position = Vector2(0, 1536)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_12_16" type="Sprite2D" parent="Daf10aDecor" unique_id=888947461]
+texture_repeat = 2
+position = Vector2(1152, 1536)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 96)
+
+[node name="Mur_0_17" type="Sprite2D" parent="Daf10aDecor" unique_id=397948555]
+texture_repeat = 2
+position = Vector2(0, 1632)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_12_17" type="Sprite2D" parent="Daf10aDecor" unique_id=1597504577]
+texture_repeat = 2
+position = Vector2(1152, 1632)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Mur_0_18" type="Sprite2D" parent="Daf10aDecor" unique_id=1502061557]
+texture_repeat = 2
+position = Vector2(0, 1728)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 576, 96)
+
+[node name="Mur_8_18" type="Sprite2D" parent="Daf10aDecor" unique_id=97958202]
+texture_repeat = 2
+position = Vector2(768, 1728)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 576, 96)
+
+[node name="Mur_0_19" type="Sprite2D" parent="Daf10aDecor" unique_id=2053778675]
+texture_repeat = 2
+position = Vector2(0, 1824)
+texture = ExtResource("7_50qye")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 1344, 96)
+
+[node name="Indice_4_3" type="Sprite2D" parent="Daf10aDecor" unique_id=1302914589]
+texture_repeat = 2
+position = Vector2(384, 288)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Indice_9_3" type="Sprite2D" parent="Daf10aDecor" unique_id=554457447]
+texture_repeat = 2
+position = Vector2(864, 288)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 96, 96)
+
+[node name="Indice_6_4" type="Sprite2D" parent="Daf10aDecor" unique_id=84391774]
+texture_repeat = 2
+position = Vector2(576, 384)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 0, 192, 96)
+
+[node name="Indice_9_4" type="Sprite2D" parent="Daf10aDecor" unique_id=1962025312]
+texture_repeat = 2
+position = Vector2(864, 384)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 96)
+
+[node name="Indice_2_5" type="Sprite2D" parent="Daf10aDecor" unique_id=84374436]
+texture_repeat = 2
+position = Vector2(192, 480)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 96, 192, 96)
+
+[node name="Indice_6_5" type="Sprite2D" parent="Daf10aDecor" unique_id=789213353]
+texture_repeat = 2
+position = Vector2(576, 480)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 96, 96, 96)
+
+[node name="Indice_9_5" type="Sprite2D" parent="Daf10aDecor" unique_id=479796105]
+texture_repeat = 2
+position = Vector2(864, 480)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 96, 96, 96)
+
+[node name="Indice_6_6" type="Sprite2D" parent="Daf10aDecor" unique_id=604933695]
+texture_repeat = 2
+position = Vector2(576, 576)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 192, 96, 96)
+
+[node name="Indice_9_6" type="Sprite2D" parent="Daf10aDecor" unique_id=1391845163]
+texture_repeat = 2
+position = Vector2(864, 576)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 192, 96, 96)
+
+[node name="Indice_2_7" type="Sprite2D" parent="Daf10aDecor" unique_id=55094617]
+texture_repeat = 2
+position = Vector2(192, 672)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 288, 96, 96)
+
+[node name="Indice_4_7" type="Sprite2D" parent="Daf10aDecor" unique_id=227285395]
+texture_repeat = 2
+position = Vector2(384, 672)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 192, 96)
+
+[node name="Indice_8_7" type="Sprite2D" parent="Daf10aDecor" unique_id=579316325]
+texture_repeat = 2
+position = Vector2(768, 672)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 96, 96)
+
+[node name="Indice_2_8" type="Sprite2D" parent="Daf10aDecor" unique_id=314766080]
+texture_repeat = 2
+position = Vector2(192, 768)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 0, 96, 96)
+
+[node name="Indice_8_8" type="Sprite2D" parent="Daf10aDecor" unique_id=1973246196]
+texture_repeat = 2
+position = Vector2(768, 768)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Indice_4_9" type="Sprite2D" parent="Daf10aDecor" unique_id=977565128]
+texture_repeat = 2
+position = Vector2(384, 864)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 480, 96)
+
+[node name="Indice_8_10" type="Sprite2D" parent="Daf10aDecor" unique_id=1378995571]
+texture_repeat = 2
+position = Vector2(768, 960)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 96, 96)
+
+[node name="Indice_4_11" type="Sprite2D" parent="Daf10aDecor" unique_id=1598573452]
+texture_repeat = 2
+position = Vector2(384, 1056)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 96, 96)
+
+[node name="Indice_9_11" type="Sprite2D" parent="Daf10aDecor" unique_id=55511933]
+texture_repeat = 2
+position = Vector2(864, 1056)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 96, 96)
+
+[node name="Indice_2_12" type="Sprite2D" parent="Daf10aDecor" unique_id=1197560466]
+texture_repeat = 2
+position = Vector2(192, 1152)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 0, 288, 96)
+
+[node name="Indice_9_12" type="Sprite2D" parent="Daf10aDecor" unique_id=297471732]
+texture_repeat = 2
+position = Vector2(864, 1152)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 96)
+
+[node name="Indice_4_13" type="Sprite2D" parent="Daf10aDecor" unique_id=1589063485]
+texture_repeat = 2
+position = Vector2(384, 1248)
+texture = ExtResource("7_apxfh")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 576, 96)
+
+[node name="Face_2_1" type="Sprite2D" parent="Daf10aDecor" unique_id=895170312]
+position = Vector2(192, 13)
+texture = ExtResource("11_xustt")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 179)
+
+[node name="Face_4_1" type="Sprite2D" parent="Daf10aDecor" unique_id=1173199738]
+position = Vector2(384, 10)
+texture = ExtResource("12_uyalj")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 182)
+
+[node name="Face_6_1" type="Sprite2D" parent="Daf10aDecor" unique_id=1809552005]
+position = Vector2(576, 13)
+texture = ExtResource("11_xustt")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 179)
+
+[node name="Face_8_1" type="Sprite2D" parent="Daf10aDecor" unique_id=88355043]
+position = Vector2(768, 13)
+texture = ExtResource("11_xustt")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 179)
+
+[node name="Face_10_1" type="Sprite2D" parent="Daf10aDecor" unique_id=1502005796]
+position = Vector2(960, 13)
+texture = ExtResource("11_xustt")
+centered = false
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 179)
 
 [node name="Entities" type="Node2D" parent="." unique_id=1515989313]
 unique_name_in_owner = true
 y_sort_enabled = true
 
+[node name="Daf10aStatue_5_16" type="Sprite2D" parent="Entities" unique_id=332837089]
+position = Vector2(528, 1632)
+texture = ExtResource("13_fi1lw")
+centered = false
+offset = Vector2(-51.5, -173)
+
+[node name="Daf10aStatue_8_16" type="Sprite2D" parent="Entities" unique_id=1794051324]
+position = Vector2(816, 1632)
+texture = ExtResource("13_fi1lw")
+centered = false
+offset = Vector2(-51.5, -173)
+
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=1529620673]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_dap3q")
 
