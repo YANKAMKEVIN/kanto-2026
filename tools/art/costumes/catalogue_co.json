@@ -1,0 +1,282 @@
+{
+ "personnages": {
+  "co_prisme_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_run_sheet.png",
+   "cellule": [
+    95,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_surf_sheet.png",
+   "cellule": [
+    103,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_bike_sheet.png",
+   "cellule": [
+    98,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_bike_idle_sheet.png",
+   "cellule": [
+    98,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_idle_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_fish_cast_sheet.png",
+   "cellule": [
+    146,
+    280
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_fish_wait_sheet.png",
+   "cellule": [
+    134,
+    218
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_sheet.png",
+   "cellule": [
+    84,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_run_sheet.png",
+   "cellule": [
+    114,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_surf_sheet.png",
+   "cellule": [
+    100,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_bike_sheet.png",
+   "cellule": [
+    98,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_idle_sheet.png",
+   "cellule": [
+    84,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    98,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    130,
+    212
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_prisme_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    170,
+    252
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  }
+ },
+ "images": {
+  "co_prisme_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_lancer.png",
+   "taille": [
+    273,
+    384
+   ]
+  },
+  "co_prisme_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueur_bust.webp"
+  },
+  "co_prisme_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_lancer.png",
+   "taille": [
+    240,
+    384
+   ]
+  },
+  "co_prisme_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/prisme_joueuse_bust.webp"
+  }
+ }
+}
