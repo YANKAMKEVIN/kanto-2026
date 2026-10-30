@@ -2,6 +2,37 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_yviky"]
 [ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_llc7s"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_machines_labo_01.png" id="3_anfq4"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_vitrine_rubans_01.png" id="4_o8j7j"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_dalles_morgane_01.png" id="5_a68yf"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_manoir_b1_01.png" id="6_6io56"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_01.png" id="7_jgtq7"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_02.png" id="8_o4dek"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_tapis_rouge_01.png" id="9_08gxj"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_anfq4"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_o8j7j"]
+offsets = PackedFloat32Array(0, 1, 0.45)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0.45)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a68yf"]
+gradient = SubResource("Gradient_o8j7j")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6io56"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jgtq7"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_o4dek"]
+blend_mode = 1
 
 [node name="HallOfFame" type="Node2D" unique_id=1790517337]
 script = ExtResource("1_yviky")
@@ -14,13 +45,16 @@ no_teleport = true
 light_profile = &"interior_warm"
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=584255528]
+visible = false
 tile_map_data = PackedByteArray("AAABAAEAAAABAAEAAAACAAEAAAABAAEAAAADAAEAAAAAAAEAAAAGAAEAAAAAAAEAAAAHAAEAAAAAAAEAAAAIAAEAAAABAAEAAAABAAIAAAAAAAEAAAACAAIAAAAAAAEAAAADAAIAAAAAAAEAAAAEAAIAAAAAAAEAAAAFAAIAAAAAAAEAAAAGAAIAAAABAAEAAAAHAAIAAAABAAEAAAAIAAIAAAABAAEAAAABAAMAAAABAAEAAAACAAMAAAABAAEAAAADAAMAAAAAAAEAAAAEAAMAAAAAAAEAAAAFAAMAAAABAAEAAAAGAAMAAAAAAAEAAAAHAAMAAAABAAEAAAAIAAMAAAAAAAEAAAABAAQAAAAAAAEAAAACAAQAAAABAAEAAAADAAQAAAABAAEAAAAEAAQAAAAAAAEAAAAFAAQAAAABAAEAAAAGAAQAAAABAAEAAAAHAAQAAAABAAEAAAAIAAQAAAAAAAEAAAABAAUAAAABAAEAAAACAAUAAAAAAAEAAAADAAUAAAABAAEAAAAEAAUAAAAAAAEAAAAFAAUAAAABAAEAAAAGAAUAAAABAAEAAAAHAAUAAAABAAEAAAAIAAUAAAAAAAEAAAABAAYAAAAAAAEAAAACAAYAAAABAAEAAAADAAYAAAAAAAEAAAAEAAYAAAAAAAEAAAAFAAYAAAAAAAEAAAAGAAYAAAAAAAEAAAAHAAYAAAAAAAEAAAAIAAYAAAAAAAEAAAA=")
 tile_set = ExtResource("2_llc7s")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=361949724]
+visible = false
 tile_set = ExtResource("2_llc7s")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=1059329276]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAMAAAABAAAAAAABAAMAAAACAAAAAAABAAMAAAADAAAAAAABAAMAAAAEAAAAAAAAAAMAAAAFAAAAAAAAAAMAAAAGAAAAAAABAAMAAAAHAAAAAAABAAMAAAAIAAAAAAABAAMAAAAJAAAAAAAAAAMAAAAAAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAFAAEAAAABAAMAAAAJAAEAAAAAAAMAAAAAAAIAAAAAAAMAAAAJAAIAAAAAAAMAAAAAAAMAAAAAAAMAAAAJAAMAAAAAAAMAAAAAAAQAAAAAAAMAAAAJAAQAAAAAAAMAAAAAAAUAAAAAAAMAAAAJAAUAAAAAAAMAAAAAAAYAAAAAAAMAAAAJAAYAAAAAAAMAAAAAAAcAAAAAAAMAAAABAAcAAAAAAAMAAAACAAcAAAAAAAMAAAADAAcAAAAAAAMAAAAEAAcAAAAAAAMAAAAFAAcAAAAAAAMAAAAGAAcAAAAAAAMAAAAHAAcAAAAAAAMAAAAIAAcAAAAAAAMAAAAJAAcAAAAAAAMAAAA=")
 tile_set = ExtResource("2_llc7s")
 
@@ -31,7 +65,26 @@ z_index = -1
 unique_name_in_owner = true
 y_sort_enabled = true
 
+[node name="Daf10dObjet_0" type="Sprite2D" parent="Entities" unique_id=109664049]
+position = Vector2(480, 192)
+texture = ExtResource("3_anfq4")
+centered = false
+offset = Vector2(-96, -131)
+
+[node name="Daf10dObjet_1" type="Sprite2D" parent="Entities" unique_id=925927499]
+position = Vector2(192, 96)
+texture = ExtResource("4_o8j7j")
+centered = false
+offset = Vector2(-96, -180)
+
+[node name="Daf10dObjet_2" type="Sprite2D" parent="Entities" unique_id=842458324]
+position = Vector2(768, 96)
+texture = ExtResource("4_o8j7j")
+centered = false
+offset = Vector2(-96, -180)
+
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=2047940021]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_llc7s")
 
@@ -45,3 +98,264 @@ tile_set = ExtResource("2_llc7s")
 position = Vector2(432, 672)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=412403851]
+
+[node name="Daf10dDecor" type="Node2D" parent="." unique_id=521336913]
+z_index = -2
+
+[node name="Sol" type="Sprite2D" parent="Daf10dDecor" unique_id=1170018237]
+texture_repeat = 2
+texture = ExtResource("5_a68yf")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 960, 768)
+
+[node name="Masse_0_0" type="Sprite2D" parent="Daf10dDecor" unique_id=294170334]
+texture_repeat = 2
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 960, 96)
+
+[node name="Masse_0_1" type="Sprite2D" parent="Daf10dDecor" unique_id=735835844]
+texture_repeat = 2
+position = Vector2(0, 96)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 96, 96)
+
+[node name="Masse_4_1" type="Sprite2D" parent="Daf10dDecor" unique_id=241482631]
+texture_repeat = 2
+position = Vector2(384, 96)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 192, 96)
+
+[node name="Masse_9_1" type="Sprite2D" parent="Daf10dDecor" unique_id=355855005]
+texture_repeat = 2
+position = Vector2(864, 96)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 96, 96, 96)
+
+[node name="Masse_0_2" type="Sprite2D" parent="Daf10dDecor" unique_id=680611099]
+texture_repeat = 2
+position = Vector2(0, 192)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 96, 96)
+
+[node name="Masse_9_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1467433678]
+texture_repeat = 2
+position = Vector2(864, 192)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 192, 96, 96)
+
+[node name="Masse_0_3" type="Sprite2D" parent="Daf10dDecor" unique_id=1538647543]
+texture_repeat = 2
+position = Vector2(0, 288)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 96, 96)
+
+[node name="Masse_9_3" type="Sprite2D" parent="Daf10dDecor" unique_id=1598194793]
+texture_repeat = 2
+position = Vector2(864, 288)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 288, 96, 96)
+
+[node name="Masse_0_4" type="Sprite2D" parent="Daf10dDecor" unique_id=1819575863]
+texture_repeat = 2
+position = Vector2(0, 384)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="Masse_9_4" type="Sprite2D" parent="Daf10dDecor" unique_id=170683931]
+texture_repeat = 2
+position = Vector2(864, 384)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 96)
+
+[node name="Masse_0_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1388472848]
+texture_repeat = 2
+position = Vector2(0, 480)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 96, 96, 96)
+
+[node name="Masse_9_5" type="Sprite2D" parent="Daf10dDecor" unique_id=837320092]
+texture_repeat = 2
+position = Vector2(864, 480)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 96, 96, 96)
+
+[node name="Masse_0_6" type="Sprite2D" parent="Daf10dDecor" unique_id=960318537]
+texture_repeat = 2
+position = Vector2(0, 576)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 192, 96, 96)
+
+[node name="Masse_9_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1651799927]
+texture_repeat = 2
+position = Vector2(864, 576)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 192, 96, 96)
+
+[node name="Masse_0_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1170194693]
+texture_repeat = 2
+position = Vector2(0, 672)
+texture = ExtResource("6_6io56")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 288, 960, 96)
+
+[node name="Ombre_0_1_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1302411926]
+polygon = PackedVector2Array(96, 96, 122, 96, 122, 192, 96, 192)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_4_1_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1145577111]
+polygon = PackedVector2Array(384, 96, 358, 96, 358, 192, 384, 192)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_5_1_1" type="Polygon2D" parent="Daf10dDecor" unique_id=412178536]
+polygon = PackedVector2Array(576, 96, 602, 96, 602, 192, 576, 192)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_9_1_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=731821174]
+polygon = PackedVector2Array(864, 96, 838, 96, 838, 192, 864, 192)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_0_2_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1296856102]
+polygon = PackedVector2Array(96, 192, 122, 192, 122, 288, 96, 288)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_9_2_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=324766173]
+polygon = PackedVector2Array(864, 192, 838, 192, 838, 288, 864, 288)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_0_3_1" type="Polygon2D" parent="Daf10dDecor" unique_id=616841989]
+polygon = PackedVector2Array(96, 288, 122, 288, 122, 384, 96, 384)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_9_3_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=636075754]
+polygon = PackedVector2Array(864, 288, 838, 288, 838, 384, 864, 384)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_0_4_1" type="Polygon2D" parent="Daf10dDecor" unique_id=862463075]
+polygon = PackedVector2Array(96, 384, 122, 384, 122, 480, 96, 480)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_9_4_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1508427946]
+polygon = PackedVector2Array(864, 384, 838, 384, 838, 480, 864, 480)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_0_5_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1950168215]
+polygon = PackedVector2Array(96, 480, 122, 480, 122, 576, 96, 576)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_9_5_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1649176701]
+polygon = PackedVector2Array(864, 480, 838, 480, 838, 576, 864, 576)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_0_6_1" type="Polygon2D" parent="Daf10dDecor" unique_id=696147634]
+polygon = PackedVector2Array(96, 576, 122, 576, 122, 672, 96, 672)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Ombre_9_6_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1671786565]
+polygon = PackedVector2Array(864, 576, 838, 576, 838, 672, 864, 672)
+vertex_colors = PackedColorArray(0, 0, 0, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.3)
+
+[node name="Face_1_0" type="Sprite2D" parent="Daf10dDecor" unique_id=920200680]
+position = Vector2(96, -35)
+texture = ExtResource("7_jgtq7")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 131)
+
+[node name="Face_3_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1292259514]
+position = Vector2(288, -35)
+texture = ExtResource("7_jgtq7")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 131)
+
+[node name="Face_6_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1696249443]
+position = Vector2(576, -35)
+texture = ExtResource("7_jgtq7")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 131)
+
+[node name="Face_8_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1084196123]
+position = Vector2(768, -35)
+texture = ExtResource("7_jgtq7")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 131)
+
+[node name="Face_4_1" type="Sprite2D" parent="Daf10dDecor" unique_id=1150892439]
+position = Vector2(384, 61)
+texture = ExtResource("8_o4dek")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 131)
+
+[node name="Tapis_40_20" type="NinePatchRect" parent="Daf10dDecor" unique_id=1833810192]
+offset_left = 390.0
+offset_top = 198.0
+offset_right = 570.0
+offset_bottom = 666.0
+texture = ExtResource("9_08gxj")
+patch_margin_left = 44
+patch_margin_top = 44
+patch_margin_right = 44
+patch_margin_bottom = 44
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="Lueur_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1822640476]
+modulate = Color(1, 0.85, 0.55, 0.24)
+material = SubResource("CanvasItemMaterial_anfq4")
+position = Vector2(480, 240)
+scale = Vector2(1.65, 1.65)
+texture = SubResource("GradientTexture2D_a68yf")
+
+[node name="Lueur_1" type="Sprite2D" parent="Daf10dDecor" unique_id=1003259233]
+modulate = Color(1, 0.85, 0.55, 0.24)
+material = SubResource("CanvasItemMaterial_6io56")
+position = Vector2(192, 288)
+scale = Vector2(1.2, 1.2)
+texture = SubResource("GradientTexture2D_a68yf")
+
+[node name="Lueur_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1508328975]
+modulate = Color(1, 0.85, 0.55, 0.24)
+material = SubResource("CanvasItemMaterial_jgtq7")
+position = Vector2(768, 288)
+scale = Vector2(1.2, 1.2)
+texture = SubResource("GradientTexture2D_a68yf")
+
+[node name="Lueur_3" type="Sprite2D" parent="Daf10dDecor" unique_id=289392486]
+modulate = Color(1, 0.85, 0.55, 0.24)
+material = SubResource("CanvasItemMaterial_o4dek")
+position = Vector2(480, 528)
+scale = Vector2(1.8, 1.8)
+texture = SubResource("GradientTexture2D_a68yf")

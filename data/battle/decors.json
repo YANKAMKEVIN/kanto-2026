@@ -263,14 +263,50 @@
 			"player_feet": [716, 972],
 			"horizon": 335
 		},
-		"arene_cramois": {
-			"zone": "cinnabar_gym",
-			"variant": "arene",
-			"back": "res://assets/battle/decors/vermilion_gym_salle_back.webp",
+		"fuchsia_gym_ninja": {
+			"zone": "fuchsia_gym",
+			"variant": "ninja",
+			"back": "res://assets/battle/decors/fuchsia_gym_ninja_back.webp",
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
-			"horizon": 380
+			"horizon": 340
+		},
+		"silph_co_hall": {
+			"zone": "silph_co",
+			"variant": "hall",
+			"back": "res://assets/battle/decors/silph_co_hall_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 330
+		},
+		"power_plant_centrale": {
+			"zone": "power_plant",
+			"variant": "centrale",
+			"back": "res://assets/battle/decors/power_plant_centrale_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 433
+		},
+		"safari_zone_savane": {
+			"zone": "safari_zone",
+			"variant": "savane",
+			"back": "res://assets/battle/decors/safari_zone_savane_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 440
+		},
+		"arene_cramois": {
+			"zone": "cinnabar_gym",
+			"variant": "arene",
+			"back": "res://assets/battle/decors/cinnabar_gym_volcan_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 460
 		},
 		"viridian_forest_clairiere": {
 			"zone": "viridian_forest",
@@ -506,6 +542,9 @@
 		"pewter_gym": [
 			{ "decor": "pewter_gym_roche" }
 		],
+		"silph_co_1f": [
+			{ "decor": "silph_co_hall" }
+		],
 		"silph_co_2f": [
 			{ "decor": "silph_co_bureaux" }
 		],
@@ -546,19 +585,19 @@
 			{ "decor": "viridian_gym_sol" }
 		],
 		"safari_zone_center": [
-			{ "decor": "route_5_6_prairie" }
+			{ "decor": "safari_zone_savane" }
 		],
 		"safari_zone_east": [
-			{ "decor": "route_5_6_prairie" }
+			{ "decor": "safari_zone_savane" }
 		],
 		"safari_zone_north": [
-			{ "decor": "route_5_6_prairie" }
+			{ "decor": "safari_zone_savane" }
 		],
 		"safari_zone_west": [
-			{ "decor": "route_5_6_prairie" }
+			{ "decor": "safari_zone_savane" }
 		],
 		"fuchsia_gym": [
-			{ "decor": "vermilion_gym_salle" }
+			{ "decor": "fuchsia_gym_ninja" }
 		],
 		"league_lorelei": [
 			{ "decor": "seafoam_ice" }
@@ -600,7 +639,7 @@
 			{ "decor": "cerulean_cave_azuree" }
 		],
 		"power_plant": [
-			{ "decor": "dark_cave_galerie" }
+			{ "decor": "power_plant_centrale" }
 		],
 		"cerulean_city": [
 			{ "decor": "route_4_plaine" }
