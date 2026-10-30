@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_6f665"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_3qi7r"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_poste_traversant_01.png" id="3_155px"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_6w8mo"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_poste_traversant_01_shadow.png" id="5_16sgt"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_u5gve"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_poste_traversant_01_contact.png" id="7_2gmt6"]
+
+[node name="BldgPosteTraversant01" type="Node2D" unique_id=1497243767]
+script = ExtResource("1_6f665")
+footprint = Array[Vector2i]([Vector2i(-4, -6), Vector2i(-3, -6), Vector2i(-2, -6), Vector2i(-1, -6), Vector2i(0, -6), Vector2i(1, -6), Vector2i(2, -6), Vector2i(3, -6), Vector2i(-4, -5), Vector2i(-3, -5), Vector2i(-2, -5), Vector2i(-1, -5), Vector2i(0, -5), Vector2i(1, -5), Vector2i(2, -5), Vector2i(3, -5), Vector2i(-4, -4), Vector2i(-3, -4), Vector2i(-2, -4), Vector2i(-1, -4), Vector2i(0, -4), Vector2i(1, -4), Vector2i(2, -4), Vector2i(3, -4), Vector2i(-4, -3), Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -3), Vector2i(-4, -2), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(3, -2), Vector2i(-4, -1), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(3, -1), Vector2i(-4, 0), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=961144161]
+unique_name_in_owner = true
+material = ExtResource("2_3qi7r")
+texture = ExtResource("3_155px")
+centered = false
+offset = Vector2(-384, -705)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=907223048 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_6w8mo")
+scale = Vector2(2, 2)
+texture = ExtResource("5_16sgt")
+centered = false
+offset = Vector2(-204.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=170051831 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_u5gve")
+scale = Vector2(2, 2)
+texture = ExtResource("7_2gmt6")
+centered = false
+offset = Vector2(-196, -33.5)

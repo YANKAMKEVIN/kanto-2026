@@ -7,7 +7,7 @@ extends SceneTree
 ## masquées, `blocked_cells`, passages, déclencheurs et PNJ gardés. L'image : enveloppe peinte
 ## (`Daf10bShell`, un `Sprite2D` de la taille de la pièce, neuve, Codex) et meubles du kit posés
 ## **sans emprise** sur les cases bloquées de la grille (comptoirs `N`, bibliothèques `B`,
-## plantes `x`, jumelles `J`), escaliers sur les cases `U`. Lumière `interior_warm` [D], comme
+## plantes `x`, jumelles `J` [D : petits meubles]), escaliers sur les cases `U`. Lumière `interior_warm` [D], comme
 ## le poste de la Route 12.
 ## Contrôle : `tools/dump_map_logic.gd` et `tools/dump_map_nodes.gd` identiques avant / après.
 ##
@@ -28,8 +28,9 @@ const ROOMS: Dictionary = {
 		[&"int_plante", Vector2i(10, 7), Vector2i(10, 7), 1.0, "PlantEast"],
 	]],
 	&"route_15_gate_2f": ["int_poste_etage_coque", [
-		[&"int_jumelles_01", Vector2i(2, 3), Vector2i(2, 3), 1.0, "BinocularsWest"],
-		[&"int_jumelles_01", Vector2i(7, 3), Vector2i(7, 3), 1.0, "BinocularsEast"],
+		# [D] Jumelles : petits meubles en attendant l'image des jumelles (Codex, fiche).
+		[&"int_petite_etagere_01", Vector2i(2, 3), Vector2i(2, 3), 1.0, "BinocularsWest"],
+		[&"int_petite_etagere_01", Vector2i(7, 3), Vector2i(7, 3), 1.0, "BinocularsEast"],
 		[&"int_escalier_descendant_01", Vector2i(10, 3), Vector2i(10, 3), 0.5, "StairsDown"],
 		[&"int_banc_piscine_01", Vector2i(2, 6), Vector2i(3, 6), 1.0, "Bench"],
 		[&"int_plante", Vector2i(1, 7), Vector2i(1, 7), 1.0, "PlantWest"],

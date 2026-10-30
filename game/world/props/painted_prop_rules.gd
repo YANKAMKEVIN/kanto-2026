@@ -797,6 +797,10 @@ const RULES: Dictionary[StringName, Dictionary] = {
 		"open": [Vector2i(0, 0), Vector2i(1, 0)]},
 	&"bldg_labo_cramois_01": {"shadow": true, "width": 9, "depth": 6, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Lot DAF.10b (`tools/build_daf10b_routes.gd`, `tools/art/daf10b_derives.py`) : poste
+	# traversant est-ouest des Routes 15 et 18 (8 cases de large, posé sans emprise : les cases
+	# sont celles de la grille).
+	&"bldg_poste_traversant_01": {"shadow": true, "width": 8, "depth": 7, "fade": true},
 }
 
 

@@ -70,13 +70,17 @@ const PISTE_FALLBACK: String = "res://assets/world/ground/ground_dalles_souterra
 const PLANKS_EW: String = "res://assets/world/ground/ground_planches_quai_01.png"
 const PLANKS_NS: String = "res://assets/world/ground/ground_planches_quai_ns_01.png"
 const SIGN_TEXTURE: String = "res://assets/world/props/prop_panneau_01.png"
-## Façades : carte → [[caractère, objet peint, échelle sur la largeur du bâtiment]].
+## Façades : carte → [[caractère, objet peint, pied relevé (cases au-dessus du bas du bloc)]] ;
+## l'objet est mis à la largeur du bâtiment.
 const FACADES: Dictionary = {
-	&"route_12_south": [["m", "bldg_maison_pecheur_01"]],
-	&"route_15": [["P", "bldg_poste_traversant_01"]],
-	&"route_16_west": [["P", "bldg_poste_foret_nord_01"], ["m", "bldg_maison_lavanville_01"]],
-	&"route_18": [["P", "bldg_poste_traversant_01"]],
+	&"route_12_south": [["m", "bldg_maison_pecheur_01", 0.0]],
+	&"route_15": [["P", "bldg_poste_traversant_01", 0.8]],
+	&"route_16_west": [["P", "bldg_poste_foret_nord_01", 0.0], ["m", "bldg_maison_lavanville_01", 0.0]],
+	&"route_18": [["P", "bldg_poste_traversant_01", 0.8]],
 }
+## Postes traversants (`tools/art/daf10b_derives.py`) : pied relevé pour que leurs passages
+## latéraux tombent sur les portes ; la dernière rangée du bloc (sous la façade) est de la forêt.
+const FOREST_UNDER_POST: Array[StringName] = [&"route_15", &"route_18"]
 ## Bouches des Îles Écume (Route 20 : portes `D` au pied de la roche `K`).
 const MOUTH_IDS: Array[String] = ["relief_bouche_paroi_01", "relief_entree_grotte_01"]
 ## Clôtures : caractère → {« h » : [modules horizontaux, du plus long au plus court], « v » : idem}.
@@ -235,6 +239,10 @@ func _translate(source: Object, legend: Dictionary, map_id: StringName) -> Strin
 						var other: String = source.at(Vector2i(x + dx, y + dy))
 						wet = wet or (not other.is_empty() and water.contains(other))
 				out = "R" if wet else "#"
+			if mark == "P" and FOREST_UNDER_POST.has(map_id):
+				var below: String = source.at(Vector2i(x, y + 1))
+				if below != "P" and below != "D":
+					out = "T"
 			row += out
 		lines.append("%02d %s" % [y, row])
 	lines.append("FIN")
@@ -422,7 +430,7 @@ func _place_facades(kit: Object, entities: Node2D, source: Object, map_id: Strin
 				if rect.grow(1).has_point(cell):
 					rect = rect.merge(Rect2i(cell, Vector2i.ONE))
 			var foot := Vector2((rect.position.x + rect.size.x / 2.0) * Kit.TILE,
-				float(rect.end.y) * Kit.TILE)
+				(float(rect.end.y) - float(entry[2])) * Kit.TILE)
 			var prop: Node2D = kit.call(&"add_prop", entities, id, foot, "Facade%02d" % count)
 			kit.call(&"clear_footprint", prop)
 			var sprite := prop.get_node(^"Sprite") as Sprite2D

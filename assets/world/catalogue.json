@@ -9689,6 +9689,37 @@
      46
     ]
    }
+  },
+  "bldg_poste_traversant_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_traversant_01.png",
+   "taille": [
+    768,
+    705
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_traversant_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     474,
+     69
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_traversant_01_contact.png",
+    "decalage": [
+     -392,
+     -67
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     53
+    ]
+   }
   }
  },
  "personnages": {
@@ -13548,6 +13579,27 @@
    "taille": [
     384,
     384
+   ]
+  },
+  "int_poste_traversant_coque": {
+   "fichier": "res://assets/world/interiors/int_poste_traversant_coque.png",
+   "taille": [
+    1152,
+    960
+   ]
+  },
+  "int_poste_etage_coque": {
+   "fichier": "res://assets/world/interiors/int_poste_etage_coque.png",
+   "taille": [
+    1152,
+    960
+   ]
+  },
+  "int_poste_16_coque": {
+   "fichier": "res://assets/world/interiors/int_poste_16_coque.png",
+   "taille": [
+    1344,
+    960
    ]
   }
  }
