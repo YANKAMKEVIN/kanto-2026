@@ -59,6 +59,6 @@
 
 - [x] Idée et liste des huit costumes (Kevin, 2026-10-30)
 - [x] Arbitrages CO-1 à CO-11 — **validés par Kevin le 2026-10-30** (« Okay », toutes les recommandations)
-- [ ] Planche de chara design
+- [ ] Planche de chara design — premier tour Codex (2026-10-30, `tools/art/costumes/`, une planche par badge, garçon à gauche, fille à droite) : **passés au premier essai** Luffy/Nami, Naruto/Sakura, Goku/combattante saiyan ; **Link/Zelda** passé sans les noms ; **Iron Man/Iron Woman** et **Batman/Batgirl** passés seulement en version adoucie (sans nom ni logo), moins reconnaissables ; **Mario/Peach** et **Harry Potter/Hermione** bloqués 4 fois par le filtre de Codex (à la sortie : ressemblance avec une licence), avec et sans images jointes, avec et sans noms. Le filtre laisse passer les mangas et Zelda, bloque Nintendo/Mario, Marvel, DC et Warner. Choix demandé à Kevin
 - [ ] Sprites
 - [ ] Intégration en code (après le J33 et JR)
