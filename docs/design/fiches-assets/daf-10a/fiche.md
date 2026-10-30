@@ -1,6 +1,6 @@
 # DAF.10a « Parmanie et Parc Safari » (2026-10-30, branche `claude/daf-10a-parmanie-0288a2`, depuis `claude/angry-curran-af1d7f`)
 
-**En attente de validation de Kevin sur les planches.** Ferme RP-269 (P1, Parmanie), RP-270 (P1, Parc Safari) et
+**Validé par Kevin le 2026-10-30 (« Oui je valide », planches 1 à 6), fusionné dans `main`.** Ferme RP-269 (P1, Parmanie), RP-270 (P1, Parc Safari) et
 RP-271 (P1, Arène de Parmanie) ; traite la part « Parc Safari » de RP-272 (pavillon d'accueil, Porte, maisons de
 repos, Maison Secrète) ; RP-157 et RP-279 (fonds de combat) **non traités** (voir « Reste »).
 
