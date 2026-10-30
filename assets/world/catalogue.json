@@ -9690,6 +9690,99 @@
     ]
    }
   },
+  "bldg_arene_parmanie_01": {
+   "fichier": "res://assets/world/buildings/bldg_arene_parmanie_01.png",
+   "taille": [
+    1152,
+    696
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_arene_parmanie_01_shadow.png",
+    "decalage": [
+     -601,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     665,
+     68
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_arene_parmanie_01_contact.png",
+    "decalage": [
+     -584,
+     -66
+    ],
+    "echelle": 2,
+    "taille": [
+     584,
+     52
+    ]
+   }
+  },
+  "bldg_pavillon_safari_01": {
+   "fichier": "res://assets/world/buildings/bldg_pavillon_safari_01.png",
+   "taille": [
+    960,
+    600
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_pavillon_safari_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     561,
+     60
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_pavillon_safari_01_contact.png",
+    "decalage": [
+     -488,
+     -54
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     46
+    ]
+   }
+  },
+  "bldg_cabane_safari_01": {
+   "fichier": "res://assets/world/buildings/bldg_cabane_safari_01.png",
+   "taille": [
+    384,
+    326
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_cabane_safari_01_shadow.png",
+    "decalage": [
+     -217,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     247,
+     34
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_cabane_safari_01_contact.png",
+    "decalage": [
+     -200,
+     -21
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     30
+    ]
+   }
+  },
   "bldg_poste_traversant_01": {
    "fichier": "res://assets/world/buildings/bldg_poste_traversant_01.png",
    "taille": [

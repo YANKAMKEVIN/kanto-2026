@@ -1,0 +1,17 @@
+fuchsia_city
+fuchsia_gym
+fuchsia_mart
+fuchsia_center
+fuchsia_good_rod_house
+fuchsia_grandpa_house
+fuchsia_meeting_room
+safari_zone_center
+safari_zone_east
+safari_zone_north
+safari_zone_west
+safari_zone_gate
+safari_zone_rest_house_center
+safari_zone_rest_house_east
+safari_zone_rest_house_north
+safari_zone_rest_house_west
+safari_zone_secret_house
