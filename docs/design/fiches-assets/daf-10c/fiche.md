@@ -19,6 +19,8 @@ les objets debout ne sont posés que sur des cases déjà bloquées.
 | [planche-4-echelle-jeu.jpg](planche-4-echelle-jeu.jpg) | à l'échelle du jeu (zoom 1, joueur posé) : rochers, courants, sol haut, salles de la Centrale |
 | [planche-7-combat.jpg](planche-7-combat.jpg) | fond de combat de la Centrale (vrai combat) |
 | [planche-5-sylphe.jpg](planche-5-sylphe.jpg), [planche-6-sylphe.jpg](planche-6-sylphe.jpg) | Sylphe SARL 2F à 4F et 6F à 11F : avant / après (reste de RP-280) |
+| [planche-8-sylphe-mobilier.jpg](planche-8-sylphe-mobilier.jpg) | Sylphe : les 12 meubles Codex par service (échelle × 2) |
+| [planche-9-sylphe-etages.jpg](planche-9-sylphe-etages.jpg), [planche-10-sylphe-etages.jpg](planche-10-sylphe-etages.jpg) | Sylphe 1F, 2F, 4F, 6F, 7F, 9F, 10F, 11F : mobilier par étage, avant / après |
 
 Captures en nouvelle partie (aucun trou bouché, rochers de Force à leur case d'origine). Les « avant » n'ont pas
 les rochers de Force (l'outil de capture ne les posait pas encore) : c'étaient des disques gris dessinés par le code.
@@ -63,6 +65,27 @@ rectangles posés à la main : moquette bleutée sur la **zone de bureaux** de c
 de mobilier `M` (rectangle des meubles agrandi d'une case, limité à la salle), une plante contre la cloison nord
 une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées), lueurs chaudes sur une trame de
 5 cases (au plus 10) [D]. Aucune image neuve. Relevés identiques sur les 9 étages (18 relevés).
+
+## Sylphe SARL : mobilier par étage (Codex, 2026-10-31) — `tools/art/daf10c_sylphe.py`
+
+Kevin a demandé de continuer avec Codex sur le mobilier de chaque étage (via la coordination, 2026-10-31). Deux planches Codex
+(`INT_SYLPHE_BUREAUX_PLANCHE`, `INT_SYLPHE_ARMOIRES_PLANCHE`) : un bureau et une armoire par **service** [D], au
+gabarit du kit DAF.3 (1 case de large, origine au pied, emprise 1 × 1) :
+
+| Service [D] | Étages | Bureau | Armoire |
+|---|---|---|---|
+| accueil | 1F | comptoir blanc à bandeau bleu, tabouret | vitrine de Poké Balls, Super Balls, Hyper Balls |
+| administration | 2F, 3F | bureau gris, dossiers, téléphone | armoire à archives à rideau |
+| recherche | 4F, 6F | paillasse, Poké Ball ouverte, loupe | armoire vitrée de coques de Poké Balls |
+| informatique | 7F, 8F | deux écrans éteints, fauteuil noir | baie réseau |
+| ingénierie | 9F | table à dessin, plan technique | armoire d'outillage bleue |
+| direction | 10F, 11F | bureau de bois verni, fauteuil bordeaux | coffre-fort (10F ; le 11F n'a pas d'armoire) |
+
+Le **5F** (« étage type » validé de DAF.10d) garde le kit DAF.3. Intégration : `--cartes` ne change que le chemin de
+la scène des nœuds `Furniture*` existants (mêmes noms, positions, script et emprise) ; **relevés identiques** sur les
+10 étages (20 relevés). Si `tools/build_silph_co.gd` est relancé un jour, relancer `daf10c_sylphe.py --cartes` après.
+Ordre : `daf10c_sylphe.py` (Codex), `--modules`, `godot --import`, `build_painted_props.gd -- --nouveaux`, `--cartes`,
+`tools/art/planches_daf10c_sylphe.py`.
 
 ## Kit : dérivé (fusionné le 30), Codex (correctif du 31)
 

@@ -10561,6 +10561,234 @@
      17
     ]
    }
+  },
+  "int_bureau_sylphe_accueil_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_sylphe_accueil_01.png",
+   "taille": [
+    96,
+    93
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_sylphe_accueil_01_contact.png",
+    "decalage": [
+     -56,
+     7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "int_bureau_sylphe_administration_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_sylphe_administration_01.png",
+   "taille": [
+    96,
+    91
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_sylphe_administration_01_contact.png",
+    "decalage": [
+     -56,
+     7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "int_bureau_sylphe_recherche_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_sylphe_recherche_01.png",
+   "taille": [
+    96,
+    81
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_sylphe_recherche_01_contact.png",
+    "decalage": [
+     -56,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "int_bureau_sylphe_informatique_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_sylphe_informatique_01.png",
+   "taille": [
+    96,
+    85
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_sylphe_informatique_01_contact.png",
+    "decalage": [
+     -56,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "int_bureau_sylphe_ingenierie_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_sylphe_ingenierie_01.png",
+   "taille": [
+    96,
+    95
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_sylphe_ingenierie_01_contact.png",
+    "decalage": [
+     -56,
+     7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "int_bureau_sylphe_direction_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_sylphe_direction_01.png",
+   "taille": [
+    96,
+    83
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_sylphe_direction_01_contact.png",
+    "decalage": [
+     -56,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "int_armoire_sylphe_accueil_01": {
+   "fichier": "res://assets/world/interiors/int_armoire_sylphe_accueil_01.png",
+   "taille": [
+    96,
+    146
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_armoire_sylphe_accueil_01_contact.png",
+    "decalage": [
+     -56,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_armoire_sylphe_administration_01": {
+   "fichier": "res://assets/world/interiors/int_armoire_sylphe_administration_01.png",
+   "taille": [
+    96,
+    155
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_armoire_sylphe_administration_01_contact.png",
+    "decalage": [
+     -56,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     20
+    ]
+   }
+  },
+  "int_armoire_sylphe_recherche_01": {
+   "fichier": "res://assets/world/interiors/int_armoire_sylphe_recherche_01.png",
+   "taille": [
+    96,
+    149
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_armoire_sylphe_recherche_01_contact.png",
+    "decalage": [
+     -56,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_armoire_sylphe_informatique_01": {
+   "fichier": "res://assets/world/interiors/int_armoire_sylphe_informatique_01.png",
+   "taille": [
+    96,
+    151
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_armoire_sylphe_informatique_01_contact.png",
+    "decalage": [
+     -56,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_armoire_sylphe_ingenierie_01": {
+   "fichier": "res://assets/world/interiors/int_armoire_sylphe_ingenierie_01.png",
+   "taille": [
+    96,
+    147
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_armoire_sylphe_ingenierie_01_contact.png",
+    "decalage": [
+     -56,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_armoire_sylphe_direction_01": {
+   "fichier": "res://assets/world/interiors/int_armoire_sylphe_direction_01.png",
+   "taille": [
+    96,
+    127
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_armoire_sylphe_direction_01_contact.png",
+    "decalage": [
+     -56,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     18
+    ]
+   }
   }
  },
  "personnages": {

@@ -78,7 +78,7 @@ renvoyé à l'accueil (`safari_zone_gate`, sans fond) avant le combat. En jeu, l
    du Champion), aujourd'hui empruntées aux grottes, à la Tour, à l'Arène de Carmin et au Casino.
 3. ~~**Objets de thème**~~ **faits le 2026-10-31** (colonne de glace, brasero, candélabre, statue de dragon, colonne d'honneur, machine du Panthéon ; portes de la Ligue non touchées, ce sont des éléments interactifs) : statue de dragon (aujourd'hui gargouille d'Arène), colonnes de glace, braseros, portes peintes
    de la Ligue, machine du Panthéon (aujourd'hui poste de laboratoire).
-4. **Sylphe** : mobilier d'accueil et de bureau propre à chaque étage.
+4. ~~**Sylphe**~~ **fait le 2026-10-31** (Codex, `tools/art/daf10c_sylphe.py`, un bureau et une armoire par service, 5F inchangé ; fiche DAF.10c, `planche-8` à `planche-10`) : mobilier d'accueil et de bureau propre à chaque étage.
 
 ## Outils
 
