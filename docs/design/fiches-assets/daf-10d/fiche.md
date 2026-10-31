@@ -71,7 +71,7 @@ renvoyé à l'accueil (`safari_zone_gate`, sans fond) avant le combat. En jeu, l
 
 ## À refaire en vraie image Codex plus tard
 
-1. **Fonds de combat** : les cinq sont des étalonnages ; vrais fonds peints pour l'Arène de Parmanie (dojo ninja
+1. ~~**Fonds de combat**~~ **faits le 2026-10-31** (Codex, `tools/art/daf10c.py` `COMBATS`, cousus par `combat_decors/preparer_decor.py`, ancres inchangées, horizons recalés [D] : Parmanie 418, Cramois'Île 418, Safari 455, Sylphe 310 ; Centrale avec DAF.10c ; `planche-codex-2026-10-31.jpg`) : les cinq sont des étalonnages ; vrais fonds peints pour l'Arène de Parmanie (dojo ninja
    violet, pièges), l'Arène de Cramois'Île (salle volcanique, lave), la Centrale (machines électriques, DAF.10c),
    le Parc Safari (savane, enclos) et le hall de Sylphe 1F (accueil, ascenseurs).
 2. **Murs de la Ligue** : faces dédiées par salle (glace sculptée, temple de pierre, crypte, temple du dragon, salle

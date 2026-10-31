@@ -23,7 +23,7 @@ l'outil : `ForestFloor` ajouté aux racines graphiques ignorées).
 - **Neuf** (Codex CLI, sans dépense d'API ; prompts `tools/art/prompts/daf10a/`, retenus r1, aucun refus) : façade de
   l'**Arène de Parmanie** (12 × 7, toit violet, jardins zen de part et d'autre de la porte, porte recalée sur les
   cases 7 et 8) et **pavillon d'accueil du Parc Safari** (10 × 6, toit vert olive, charpente de bois).
-- **Dérivé d'un existant** [D] : **cabane de repos** du Parc (`bldg_cabane_safari_01`, 4 × 3, porte à la 2e colonne) =
+- **Cabane de repos : image Codex le 2026-10-31** (`WORLD_BLDG_CABANE_SAFARI_01`, toit de chaume, rondins, porte en 2e colonne sans recalage, 384 × 312 ; relevés identiques sur les 4 cartes du Parc ; `../daf-10d/planche-codex-2026-10-31.jpg`). Avant : **dérivé d'un existant** [D] : **cabane de repos** du Parc (`bldg_cabane_safari_01`, 4 × 3, porte à la 2e colonne) =
   `bldg_maison_toit_01` réduite ×0,8 et recalée sur la porte. Codex a atteint sa limite d'usage (retour à 13 h 18) :
   une image dédiée reste possible, à l'identique (`tools/art/daf10a.py WORLD_BLDG_CABANE_SAFARI_01`, texte à rétablir
   dans `FACADES`).

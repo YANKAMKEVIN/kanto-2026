@@ -270,7 +270,7 @@
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
-			"horizon": 340
+			"horizon": 418
 		},
 		"silph_co_hall": {
 			"zone": "silph_co",
@@ -279,7 +279,7 @@
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
-			"horizon": 330
+			"horizon": 310
 		},
 		"power_plant_centrale": {
 			"zone": "power_plant",
@@ -297,7 +297,7 @@
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
-			"horizon": 440
+			"horizon": 455
 		},
 		"arene_cramois": {
 			"zone": "cinnabar_gym",
@@ -306,7 +306,7 @@
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
-			"horizon": 460
+			"horizon": 418
 		},
 		"viridian_forest_clairiere": {
 			"zone": "viridian_forest",
