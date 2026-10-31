@@ -1023,6 +1023,1030 @@
     "droite",
     "haut"
    ]
+  },
+  "co_marais_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_run_sheet.png",
+   "cellule": [
+    94,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_surf_sheet.png",
+   "cellule": [
+    93,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_bike_sheet.png",
+   "cellule": [
+    87,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_idle_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_bike_idle_sheet.png",
+   "cellule": [
+    89,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_fish_cast_sheet.png",
+   "cellule": [
+    120,
+    230
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_fish_wait_sheet.png",
+   "cellule": [
+    148,
+    236
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_run_sheet.png",
+   "cellule": [
+    102,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_surf_sheet.png",
+   "cellule": [
+    105,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_bike_sheet.png",
+   "cellule": [
+    96,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_idle_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    104,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    124,
+    204
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_marais_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    146,
+    226
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_sheet.png",
+   "cellule": [
+    95,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_run_sheet.png",
+   "cellule": [
+    124,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_surf_sheet.png",
+   "cellule": [
+    104,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_bike_sheet.png",
+   "cellule": [
+    108,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_idle_sheet.png",
+   "cellule": [
+    97,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_bike_idle_sheet.png",
+   "cellule": [
+    108,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_fish_cast_sheet.png",
+   "cellule": [
+    122,
+    206
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_fish_wait_sheet.png",
+   "cellule": [
+    166,
+    244
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_sheet.png",
+   "cellule": [
+    93,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_run_sheet.png",
+   "cellule": [
+    106,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_surf_sheet.png",
+   "cellule": [
+    99,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_bike_sheet.png",
+   "cellule": [
+    95,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_idle_sheet.png",
+   "cellule": [
+    95,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    97,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    118,
+    214
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_terre_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    152,
+    252
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_sheet.png",
+   "cellule": [
+    70,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_run_sheet.png",
+   "cellule": [
+    90,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_surf_sheet.png",
+   "cellule": [
+    100,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_bike_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_idle_sheet.png",
+   "cellule": [
+    70,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_bike_idle_sheet.png",
+   "cellule": [
+    97,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_fish_cast_sheet.png",
+   "cellule": [
+    124,
+    218
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_fish_wait_sheet.png",
+   "cellule": [
+    156,
+    232
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_run_sheet.png",
+   "cellule": [
+    88,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_surf_sheet.png",
+   "cellule": [
+    102,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_bike_sheet.png",
+   "cellule": [
+    93,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_idle_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    99,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    114,
+    206
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_ame_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    164,
+    246
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_sheet.png",
+   "cellule": [
+    86,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_run_sheet.png",
+   "cellule": [
+    92,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_surf_sheet.png",
+   "cellule": [
+    102,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_bike_sheet.png",
+   "cellule": [
+    83,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_idle_sheet.png",
+   "cellule": [
+    86,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_bike_idle_sheet.png",
+   "cellule": [
+    89,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_fish_cast_sheet.png",
+   "cellule": [
+    120,
+    206
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueur_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_fish_wait_sheet.png",
+   "cellule": [
+    126,
+    232
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse_run": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_run_sheet.png",
+   "cellule": [
+    94,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse_surf": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_surf_sheet.png",
+   "cellule": [
+    100,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse_bike": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_bike_sheet.png",
+   "cellule": [
+    99,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_idle_sheet.png",
+   "cellule": [
+    83,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse_bike_idle": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_bike_idle_sheet.png",
+   "cellule": [
+    101,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse_fish_cast": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_fish_cast_sheet.png",
+   "cellule": [
+    134,
+    230
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "co_volcan_joueuse_fish_wait": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_fish_wait_sheet.png",
+   "cellule": [
+    146,
+    220
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -1105,6 +2129,86 @@
   },
   "co_foudre_joueuse_bust": {
    "fichier": "res://assets/sprites/characters/painted/costumes/foudre_joueuse_bust.webp"
+  },
+  "co_marais_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_lancer.png",
+   "taille": [
+    242,
+    384
+   ]
+  },
+  "co_marais_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueur_bust.webp"
+  },
+  "co_marais_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_lancer.png",
+   "taille": [
+    245,
+    384
+   ]
+  },
+  "co_marais_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/marais_joueuse_bust.webp"
+  },
+  "co_terre_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_lancer.png",
+   "taille": [
+    308,
+    384
+   ]
+  },
+  "co_terre_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueur_bust.webp"
+  },
+  "co_terre_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_lancer.png",
+   "taille": [
+    308,
+    384
+   ]
+  },
+  "co_terre_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/terre_joueuse_bust.webp"
+  },
+  "co_ame_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_lancer.png",
+   "taille": [
+    232,
+    384
+   ]
+  },
+  "co_ame_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueur_bust.webp"
+  },
+  "co_ame_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_lancer.png",
+   "taille": [
+    247,
+    384
+   ]
+  },
+  "co_ame_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/ame_joueuse_bust.webp"
+  },
+  "co_volcan_joueur_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_lancer.png",
+   "taille": [
+    238,
+    384
+   ]
+  },
+  "co_volcan_joueur_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueur_bust.webp"
+  },
+  "co_volcan_joueuse_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_lancer.png",
+   "taille": [
+    248,
+    384
+   ]
+  },
+  "co_volcan_joueuse_bust": {
+   "fichier": "res://assets/sprites/characters/painted/costumes/volcan_joueuse_bust.webp"
   }
  }
 }
