@@ -8,11 +8,7 @@ et `tools/dump_map_nodes.gd` donnent des sorties **identiques** avant / après s
 9 étages de Sylphe, 30 relevés, `tools/dump_daf10c.sh avant|apres`). Tout ce qui est ajouté porte le préfixe `Daf10c` (ou `PaintedGround`, `Eau`) ;
 les objets debout ne sont posés que sur des cases déjà bloquées.
 
-**Codex** : il répond, mais son **outil d'image** est à sa limite quotidienne (fenêtre de 24 h, remise à zéro le
-2026-10-30 à 23 h 50). Les 8 images du lot sont prêtes (`tools/art/daf10c.py`, prompts dans
-`tools/art/prompts/daf10c/`) et leur génération est **programmée à 23 h 52**. En attendant, le kit est **dérivé**
-de l'art peint existant, **sous les identifiants des images Codex** (`tools/art/daf10c_derives.py`) : les images
-Codex le remplaceront à l'identique (`daf10c.py --modules`, puis les deux passes de carte), sans toucher au code.
+**Codex** (correctif du 2026-10-31) : les 8 images du lot (`tools/art/daf10c.py`, prompts dans `tools/art/prompts/daf10c/`), générées dans la nuit du 30 au 31, **remplacent à l'identique** le kit dérivé provisoire (`daf10c.py --modules`, puis les deux passes de carte) ; relevés toujours identiques sur les 15 cartes. Le **fond de combat de la Centrale** est peint aussi (`COMBAT_DECOR_CENTRALE`, tuiles TL / TR, cousu par `combat_decors/preparer_decor.py`, horizon 415 [D], ancres inchangées) ; capture `planche-7-combat.jpg`.
 
 | Planche | Contenu |
 |---|---|
@@ -21,6 +17,7 @@ Codex le remplaceront à l'identique (`daf10c.py --modules`, puis les deux passe
 | [planche-2-ecume.jpg](planche-2-ecume.jpg) | Îles Écume B3F, B4F : avant / après |
 | [planche-3-centrale.jpg](planche-3-centrale.jpg) | Centrale : avant / après |
 | [planche-4-echelle-jeu.jpg](planche-4-echelle-jeu.jpg) | à l'échelle du jeu (zoom 1, joueur posé) : rochers, courants, sol haut, salles de la Centrale |
+| [planche-7-combat.jpg](planche-7-combat.jpg) | fond de combat de la Centrale (vrai combat) |
 | [planche-5-sylphe.jpg](planche-5-sylphe.jpg), [planche-6-sylphe.jpg](planche-6-sylphe.jpg) | Sylphe SARL 2F à 4F et 6F à 11F : avant / après (reste de RP-280) |
 
 Captures en nouvelle partie (aucun trou bouché, rochers de Force à leur case d'origine). Les « avant » n'ont pas
@@ -55,7 +52,7 @@ Seconde passe d'image après `build_j24_seafoam.gd`, sur le modèle de `build_da
 - Machines et cloisons `#` en **modules** `relief_mur_centrale_01` à `_05` aux rôles du repaire Rocket
   (`tools/module_walls.gd` : faces, couronnements, bords latéraux).
 - **Machines** posées sur le dessus des grands blocs (case `#` entourée de `#`, loin des faces, jamais deux
-  voisines, une case admissible sur deux [D]) : 33 machines (transformateurs, bobines, pupitres).
+  voisines, une case admissible sur deux [D]) : 28 machines avec le kit Codex (générateurs et condensateurs sur deux cases, transformateurs, bobines, pupitres, tourets de câble).
 - Éléments interactifs inchangés et lisibles : Électhor, les huit fausses Poké Balls, les objets, les deux indices
   d'objet caché, les portes.
 
@@ -67,9 +64,9 @@ de mobilier `M` (rectangle des meubles agrandi d'une case, limité à la salle),
 une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées), lueurs chaudes sur une trame de
 5 cases (au plus 10) [D]. Aucune image neuve. Relevés identiques sur les 9 étages (18 relevés).
 
-## Kit : dérivé aujourd'hui, Codex ensuite
+## Kit : dérivé (fusionné le 30), Codex (correctif du 31)
 
-| Asset | Aujourd'hui (dérivé, [D]) | Image Codex prévue (`daf10c.py`) |
+| Asset | Provisoire (dérivé, fusionné le 30) | Image Codex intégrée le 31 (`daf10c.py`) |
 |---|---|---|
 | `ground_ecume_bas_01` | sol bas de la Grotte Azurée bleui, givré | `WORLD_GROUND_ECUME_BAS_01` |
 | `ground_masse_glace_01` | masse rocheuse bleuie | `WORLD_GROUND_MASSE_GLACE_01` |
@@ -87,6 +84,7 @@ une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées
 - Panneaux : le panneau de bois des routes, réduit à 0,58.
 - Défilement des courants : 120 px/s, opacité 0,8.
 - Machines de la Centrale : une case admissible sur deux, au hasard (graine fixe).
+- Parois glacées : la face 02 de Codex porte une cascade gelée ; elle alterne avec la face 01 (décor sur case bloquée).
 
 ## Outils
 

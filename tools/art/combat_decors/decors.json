@@ -271,5 +271,14 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"power_plant_centrale": {
+		"composition": "COMBAT_DECOR_CENTRALE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_CENTRALE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_CENTRALE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

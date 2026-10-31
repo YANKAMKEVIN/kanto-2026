@@ -4,11 +4,11 @@
 [ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_rrk53"]
 [ext_resource type="Texture2D" path="res://assets/world/interiors/decal_trou_ecume_01.png" id="3_eoe20"]
 
-[node name="DecalTrouEcume01" type="Node2D" unique_id=428985819]
+[node name="DecalTrouEcume01" type="Node2D" unique_id=510592514]
 script = ExtResource("1_jk8p8")
 footprint = Array[Vector2i]([])
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=429680995]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=248851203]
 unique_name_in_owner = true
 material = ExtResource("2_rrk53")
 texture = ExtResource("3_eoe20")

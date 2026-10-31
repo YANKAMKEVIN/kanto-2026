@@ -62,8 +62,8 @@ def synthese():
     out = Image.new("RGB", (1080, h), FOND)
     d = ImageDraw.Draw(out)
     d.text((20, 24), "DAF.10c — Îles Écume et Centrale", font=ft, fill=(255, 255, 255))
-    d.text((20, 84), "RP-275, RP-276 · art seul, logique identique (12 relevés)", font=fp, fill=(200, 200, 210))
-    d.text((20, 120), "Kit provisoire dérivé ; images Codex à l'identique ensuite", font=fp, fill=(200, 200, 210))
+    d.text((20, 84), "RP-275, RP-276 · art seul, logique identique (30 relevés)", font=fp, fill=(200, 200, 210))
+    d.text((20, 120), "Kit peint par Codex (8 images), intégré à l'identique", font=fp, fill=(200, 200, 210))
     d.text((20, 156), "À valider : lisibilité des rochers, courants, salles", font=fp, fill=JAUNE)
     y = 220
     for e, im in blocs:
