@@ -4,28 +4,28 @@
 [ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_j8bwo"]
 [ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_sqxtp"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_78gp2"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_rocher_grotte_01.png" id="4_rwnu2"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_brasero_ligue_01.png" id="4_rwnu2"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="5_rwnu2"]
 [ext_resource type="Texture2D" path="res://assets/world/ground/ground_victoire_haut_01.png" id="7_6dbfn"]
 [ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_grotte_sombre_01.png" id="8_xuwqc"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_sombre_02.png" id="9_v0p45"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_ligue_roche_02.png" id="9_6dbfn"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_rwnu2"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_xuwqc"]
 blend_mode = 1
 
-[sub_resource type="Gradient" id="Gradient_6dbfn"]
+[sub_resource type="Gradient" id="Gradient_v0p45"]
 offsets = PackedFloat32Array(0, 1, 0.45)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0.45)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_xuwqc"]
-gradient = SubResource("Gradient_6dbfn")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vu62i"]
+gradient = SubResource("Gradient_v0p45")
 width = 256
 height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_v0p45"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8emnu"]
 blend_mode = 1
 
 [node name="LeagueBruno" type="Node2D" unique_id=612654025]
@@ -103,40 +103,35 @@ polygon = PackedVector2Array(48, -96, 144, -96, 144, -4, 48, -4)
 color = Color(0.78, 0.66, 0.3, 1)
 polygon = PackedVector2Array(56, -60, 136, -60, 136, -52, 56, -52)
 
-[node name="Daf10dPilier_1_2" type="Sprite2D" parent="Entities" unique_id=767546913]
-modulate = Color(0.95, 0.85, 0.75, 1)
+[node name="Daf10dPilier_1_2" type="Sprite2D" parent="Entities" unique_id=409174739]
 position = Vector2(144, 288)
 texture = ExtResource("4_rwnu2")
 centered = false
-offset = Vector2(-48, -76)
+offset = Vector2(-48, -106)
 
-[node name="Daf10dPilier_8_2" type="Sprite2D" parent="Entities" unique_id=1988743901]
-modulate = Color(0.95, 0.85, 0.75, 1)
+[node name="Daf10dPilier_8_2" type="Sprite2D" parent="Entities" unique_id=1316656084]
 position = Vector2(816, 288)
 texture = ExtResource("4_rwnu2")
 centered = false
-offset = Vector2(-48, -76)
+offset = Vector2(-48, -106)
 
-[node name="Daf10dPilier_7_5" type="Sprite2D" parent="Entities" unique_id=625940900]
-modulate = Color(0.95, 0.85, 0.75, 1)
+[node name="Daf10dPilier_7_5" type="Sprite2D" parent="Entities" unique_id=1010884958]
 position = Vector2(720, 576)
 texture = ExtResource("4_rwnu2")
 centered = false
-offset = Vector2(-48, -76)
+offset = Vector2(-48, -106)
 
-[node name="Daf10dPilier_3_6" type="Sprite2D" parent="Entities" unique_id=111049707]
-modulate = Color(0.95, 0.85, 0.75, 1)
+[node name="Daf10dPilier_3_6" type="Sprite2D" parent="Entities" unique_id=1474639356]
 position = Vector2(336, 672)
 texture = ExtResource("4_rwnu2")
 centered = false
-offset = Vector2(-48, -76)
+offset = Vector2(-48, -106)
 
-[node name="Daf10dMur_7_0" type="Sprite2D" parent="Entities" unique_id=2049686263]
-modulate = Color(0.95, 0.85, 0.75, 1)
+[node name="Daf10dMur_7_0" type="Sprite2D" parent="Entities" unique_id=1186439831]
 position = Vector2(720, 96)
 texture = ExtResource("4_rwnu2")
 centered = false
-offset = Vector2(-48, -76)
+offset = Vector2(-48, -106)
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=1571171617]
 visible = false
@@ -201,24 +196,24 @@ position = Vector2(528, 960)
 script = ExtResource("5_rwnu2")
 cutscene_id = &"league_bruno_call"
 
-[node name="Daf10dDecor" type="Node2D" parent="." unique_id=1304994562]
+[node name="Daf10dDecor" type="Node2D" parent="." unique_id=2130053258]
 z_index = -2
 
-[node name="Sol" type="Sprite2D" parent="Daf10dDecor" unique_id=1363303049]
+[node name="Sol" type="Sprite2D" parent="Daf10dDecor" unique_id=244688465]
 texture_repeat = 2
 texture = ExtResource("7_6dbfn")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 960, 1152)
 
-[node name="Masse_0_0" type="Sprite2D" parent="Daf10dDecor" unique_id=951286785]
+[node name="Masse_0_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1733486495]
 texture_repeat = 2
 texture = ExtResource("8_xuwqc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 384, 96)
 
-[node name="Masse_6_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1702480174]
+[node name="Masse_6_0" type="Sprite2D" parent="Daf10dDecor" unique_id=702541038]
 texture_repeat = 2
 position = Vector2(576, 0)
 texture = ExtResource("8_xuwqc")
@@ -226,7 +221,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(192, 0, 384, 96)
 
-[node name="Masse_0_1" type="Sprite2D" parent="Daf10dDecor" unique_id=1027940424]
+[node name="Masse_0_1" type="Sprite2D" parent="Daf10dDecor" unique_id=2111582295]
 texture_repeat = 2
 position = Vector2(0, 96)
 texture = ExtResource("8_xuwqc")
@@ -234,7 +229,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 96, 96)
 
-[node name="Masse_9_1" type="Sprite2D" parent="Daf10dDecor" unique_id=543454681]
+[node name="Masse_9_1" type="Sprite2D" parent="Daf10dDecor" unique_id=535641337]
 texture_repeat = 2
 position = Vector2(864, 96)
 texture = ExtResource("8_xuwqc")
@@ -242,7 +237,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 96, 96, 96)
 
-[node name="Masse_0_2" type="Sprite2D" parent="Daf10dDecor" unique_id=2115960646]
+[node name="Masse_0_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1854701076]
 texture_repeat = 2
 position = Vector2(0, 192)
 texture = ExtResource("8_xuwqc")
@@ -250,7 +245,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 96, 96)
 
-[node name="Masse_9_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1863911359]
+[node name="Masse_9_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1624026745]
 texture_repeat = 2
 position = Vector2(864, 192)
 texture = ExtResource("8_xuwqc")
@@ -258,7 +253,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 192, 96, 96)
 
-[node name="Masse_0_3" type="Sprite2D" parent="Daf10dDecor" unique_id=625864993]
+[node name="Masse_0_3" type="Sprite2D" parent="Daf10dDecor" unique_id=304515363]
 texture_repeat = 2
 position = Vector2(0, 288)
 texture = ExtResource("8_xuwqc")
@@ -266,7 +261,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 96, 96)
 
-[node name="Masse_9_3" type="Sprite2D" parent="Daf10dDecor" unique_id=601497910]
+[node name="Masse_9_3" type="Sprite2D" parent="Daf10dDecor" unique_id=244886720]
 texture_repeat = 2
 position = Vector2(864, 288)
 texture = ExtResource("8_xuwqc")
@@ -274,7 +269,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 96, 96)
 
-[node name="Masse_0_4" type="Sprite2D" parent="Daf10dDecor" unique_id=2106376401]
+[node name="Masse_0_4" type="Sprite2D" parent="Daf10dDecor" unique_id=189138478]
 texture_repeat = 2
 position = Vector2(0, 384)
 texture = ExtResource("8_xuwqc")
@@ -282,7 +277,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Masse_9_4" type="Sprite2D" parent="Daf10dDecor" unique_id=361120112]
+[node name="Masse_9_4" type="Sprite2D" parent="Daf10dDecor" unique_id=1203252321]
 texture_repeat = 2
 position = Vector2(864, 384)
 texture = ExtResource("8_xuwqc")
@@ -290,7 +285,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 96)
 
-[node name="Masse_0_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1440432559]
+[node name="Masse_0_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1606549034]
 texture_repeat = 2
 position = Vector2(0, 480)
 texture = ExtResource("8_xuwqc")
@@ -298,7 +293,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 288, 96)
 
-[node name="Masse_8_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1634090632]
+[node name="Masse_8_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1156866129]
 texture_repeat = 2
 position = Vector2(768, 480)
 texture = ExtResource("8_xuwqc")
@@ -306,7 +301,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 192, 96)
 
-[node name="Masse_0_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1713864862]
+[node name="Masse_0_6" type="Sprite2D" parent="Daf10dDecor" unique_id=2049501243]
 texture_repeat = 2
 position = Vector2(0, 576)
 texture = ExtResource("8_xuwqc")
@@ -314,7 +309,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 288, 96)
 
-[node name="Masse_8_6" type="Sprite2D" parent="Daf10dDecor" unique_id=36901396]
+[node name="Masse_8_6" type="Sprite2D" parent="Daf10dDecor" unique_id=100592823]
 texture_repeat = 2
 position = Vector2(768, 576)
 texture = ExtResource("8_xuwqc")
@@ -322,7 +317,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 192, 96)
 
-[node name="Masse_0_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1044914064]
+[node name="Masse_0_7" type="Sprite2D" parent="Daf10dDecor" unique_id=643428425]
 texture_repeat = 2
 position = Vector2(0, 672)
 texture = ExtResource("8_xuwqc")
@@ -330,7 +325,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 192, 96)
 
-[node name="Masse_6_7" type="Sprite2D" parent="Daf10dDecor" unique_id=728632116]
+[node name="Masse_6_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1026538830]
 texture_repeat = 2
 position = Vector2(576, 672)
 texture = ExtResource("8_xuwqc")
@@ -338,7 +333,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(192, 288, 384, 96)
 
-[node name="Masse_0_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1646130605]
+[node name="Masse_0_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1568239731]
 texture_repeat = 2
 position = Vector2(0, 768)
 texture = ExtResource("8_xuwqc")
@@ -346,7 +341,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 96)
 
-[node name="Masse_6_8" type="Sprite2D" parent="Daf10dDecor" unique_id=93690161]
+[node name="Masse_6_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1096736455]
 texture_repeat = 2
 position = Vector2(576, 768)
 texture = ExtResource("8_xuwqc")
@@ -354,7 +349,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(192, 0, 384, 96)
 
-[node name="Masse_0_9" type="Sprite2D" parent="Daf10dDecor" unique_id=1883345126]
+[node name="Masse_0_9" type="Sprite2D" parent="Daf10dDecor" unique_id=297018190]
 texture_repeat = 2
 position = Vector2(0, 864)
 texture = ExtResource("8_xuwqc")
@@ -362,7 +357,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 384, 96)
 
-[node name="Masse_6_9" type="Sprite2D" parent="Daf10dDecor" unique_id=124538484]
+[node name="Masse_6_9" type="Sprite2D" parent="Daf10dDecor" unique_id=1978449203]
 texture_repeat = 2
 position = Vector2(576, 864)
 texture = ExtResource("8_xuwqc")
@@ -370,7 +365,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(192, 96, 384, 96)
 
-[node name="Masse_0_10" type="Sprite2D" parent="Daf10dDecor" unique_id=521017184]
+[node name="Masse_0_10" type="Sprite2D" parent="Daf10dDecor" unique_id=1115678641]
 texture_repeat = 2
 position = Vector2(0, 960)
 texture = ExtResource("8_xuwqc")
@@ -378,7 +373,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 384, 96)
 
-[node name="Masse_6_10" type="Sprite2D" parent="Daf10dDecor" unique_id=905447570]
+[node name="Masse_6_10" type="Sprite2D" parent="Daf10dDecor" unique_id=1169575190]
 texture_repeat = 2
 position = Vector2(576, 960)
 texture = ExtResource("8_xuwqc")
@@ -386,7 +381,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(192, 192, 384, 96)
 
-[node name="Masse_0_11" type="Sprite2D" parent="Daf10dDecor" unique_id=427300302]
+[node name="Masse_0_11" type="Sprite2D" parent="Daf10dDecor" unique_id=660943334]
 texture_repeat = 2
 position = Vector2(0, 1056)
 texture = ExtResource("8_xuwqc")
@@ -394,7 +389,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 384, 96)
 
-[node name="Masse_6_11" type="Sprite2D" parent="Daf10dDecor" unique_id=1880896202]
+[node name="Masse_6_11" type="Sprite2D" parent="Daf10dDecor" unique_id=103037335]
 texture_repeat = 2
 position = Vector2(576, 1056)
 texture = ExtResource("8_xuwqc")
@@ -402,218 +397,218 @@ centered = false
 region_enabled = true
 region_rect = Rect2(192, 288, 384, 96)
 
-[node name="Ombre_3_0_1" type="Polygon2D" parent="Daf10dDecor" unique_id=542091730]
+[node name="Ombre_3_0_1" type="Polygon2D" parent="Daf10dDecor" unique_id=2086808033]
 polygon = PackedVector2Array(384, 0, 410, 0, 410, 96, 384, 96)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_6_0_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1461392159]
+[node name="Ombre_6_0_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1982258077]
 polygon = PackedVector2Array(576, 0, 550, 0, 550, 96, 576, 96)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_0_1_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1544560017]
+[node name="Ombre_0_1_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1492668728]
 polygon = PackedVector2Array(96, 96, 122, 96, 122, 192, 96, 192)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_9_1_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1838871048]
+[node name="Ombre_9_1_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=776451579]
 polygon = PackedVector2Array(864, 96, 838, 96, 838, 192, 864, 192)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_0_3_1" type="Polygon2D" parent="Daf10dDecor" unique_id=2035356379]
+[node name="Ombre_0_3_1" type="Polygon2D" parent="Daf10dDecor" unique_id=255832986]
 polygon = PackedVector2Array(96, 288, 122, 288, 122, 384, 96, 384)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_9_3_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=883463140]
+[node name="Ombre_9_3_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=853665867]
 polygon = PackedVector2Array(864, 288, 838, 288, 838, 384, 864, 384)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_0_4_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1361242436]
+[node name="Ombre_0_4_1" type="Polygon2D" parent="Daf10dDecor" unique_id=2032820513]
 polygon = PackedVector2Array(96, 384, 122, 384, 122, 480, 96, 480)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_9_4_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1852874740]
+[node name="Ombre_9_4_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=270518954]
 polygon = PackedVector2Array(864, 384, 838, 384, 838, 480, 864, 480)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_2_5_1" type="Polygon2D" parent="Daf10dDecor" unique_id=941129475]
+[node name="Ombre_2_5_1" type="Polygon2D" parent="Daf10dDecor" unique_id=911425573]
 polygon = PackedVector2Array(288, 480, 314, 480, 314, 576, 288, 576)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_8_6_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1684520173]
+[node name="Ombre_8_6_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=685422958]
 polygon = PackedVector2Array(768, 576, 742, 576, 742, 672, 768, 672)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_1_7_1" type="Polygon2D" parent="Daf10dDecor" unique_id=929802257]
+[node name="Ombre_1_7_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1244146092]
 polygon = PackedVector2Array(192, 672, 218, 672, 218, 768, 192, 768)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_6_7_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=417391797]
+[node name="Ombre_6_7_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=986279510]
 polygon = PackedVector2Array(576, 672, 550, 672, 550, 768, 576, 768)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_1_8_1" type="Polygon2D" parent="Daf10dDecor" unique_id=930591465]
+[node name="Ombre_1_8_1" type="Polygon2D" parent="Daf10dDecor" unique_id=2013686924]
 polygon = PackedVector2Array(192, 768, 218, 768, 218, 864, 192, 864)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_6_8_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=487407114]
+[node name="Ombre_6_8_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1882160735]
 polygon = PackedVector2Array(576, 768, 550, 768, 550, 864, 576, 864)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_3_9_1" type="Polygon2D" parent="Daf10dDecor" unique_id=525358187]
+[node name="Ombre_3_9_1" type="Polygon2D" parent="Daf10dDecor" unique_id=961304941]
 polygon = PackedVector2Array(384, 864, 410, 864, 410, 960, 384, 960)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_6_9_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=1762575077]
+[node name="Ombre_6_9_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=510544342]
 polygon = PackedVector2Array(576, 864, 550, 864, 550, 960, 576, 960)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_3_10_1" type="Polygon2D" parent="Daf10dDecor" unique_id=410276104]
+[node name="Ombre_3_10_1" type="Polygon2D" parent="Daf10dDecor" unique_id=589502331]
 polygon = PackedVector2Array(384, 960, 410, 960, 410, 1056, 384, 1056)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_6_10_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=734916115]
+[node name="Ombre_6_10_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=162377515]
 polygon = PackedVector2Array(576, 960, 550, 960, 550, 1056, 576, 1056)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_3_11_1" type="Polygon2D" parent="Daf10dDecor" unique_id=1753710406]
+[node name="Ombre_3_11_1" type="Polygon2D" parent="Daf10dDecor" unique_id=504434176]
 polygon = PackedVector2Array(384, 1056, 410, 1056, 410, 1152, 384, 1152)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Ombre_6_11_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=398453050]
+[node name="Ombre_6_11_-1" type="Polygon2D" parent="Daf10dDecor" unique_id=351336394]
 polygon = PackedVector2Array(576, 1056, 550, 1056, 550, 1152, 576, 1152)
 vertex_colors = PackedColorArray(0, 0, 0, 0.35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35)
 
-[node name="Voile_0_6" type="Polygon2D" parent="Daf10dDecor" unique_id=23914752]
+[node name="Voile_0_6" type="Polygon2D" parent="Daf10dDecor" unique_id=1747810217]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(0, 576, 96, 576, 96, 672, 0, 672)
 
-[node name="Voile_9_6" type="Polygon2D" parent="Daf10dDecor" unique_id=737400553]
+[node name="Voile_9_6" type="Polygon2D" parent="Daf10dDecor" unique_id=633736144]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(864, 576, 960, 576, 960, 672, 864, 672)
 
-[node name="Voile_0_7" type="Polygon2D" parent="Daf10dDecor" unique_id=1701894554]
+[node name="Voile_0_7" type="Polygon2D" parent="Daf10dDecor" unique_id=1556038024]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(0, 672, 96, 672, 96, 768, 0, 768)
 
-[node name="Voile_9_7" type="Polygon2D" parent="Daf10dDecor" unique_id=1117773111]
+[node name="Voile_9_7" type="Polygon2D" parent="Daf10dDecor" unique_id=539694460]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(864, 672, 960, 672, 960, 768, 864, 768)
 
-[node name="Voile_0_8" type="Polygon2D" parent="Daf10dDecor" unique_id=2096163739]
+[node name="Voile_0_8" type="Polygon2D" parent="Daf10dDecor" unique_id=1531875041]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(0, 768, 96, 768, 96, 864, 0, 864)
 
-[node name="Voile_7_8" type="Polygon2D" parent="Daf10dDecor" unique_id=620606838]
+[node name="Voile_7_8" type="Polygon2D" parent="Daf10dDecor" unique_id=1554733140]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(672, 768, 768, 768, 768, 864, 672, 864)
 
-[node name="Voile_8_8" type="Polygon2D" parent="Daf10dDecor" unique_id=2141470958]
+[node name="Voile_8_8" type="Polygon2D" parent="Daf10dDecor" unique_id=867208879]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(768, 768, 864, 768, 864, 864, 768, 864)
 
-[node name="Voile_9_8" type="Polygon2D" parent="Daf10dDecor" unique_id=127250494]
+[node name="Voile_9_8" type="Polygon2D" parent="Daf10dDecor" unique_id=1584246688]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(864, 768, 960, 768, 960, 864, 864, 864)
 
-[node name="Voile_0_9" type="Polygon2D" parent="Daf10dDecor" unique_id=1672197918]
+[node name="Voile_0_9" type="Polygon2D" parent="Daf10dDecor" unique_id=1007721580]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(0, 864, 96, 864, 96, 960, 0, 960)
 
-[node name="Voile_7_9" type="Polygon2D" parent="Daf10dDecor" unique_id=1478967131]
+[node name="Voile_7_9" type="Polygon2D" parent="Daf10dDecor" unique_id=811031601]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(672, 864, 768, 864, 768, 960, 672, 960)
 
-[node name="Voile_8_9" type="Polygon2D" parent="Daf10dDecor" unique_id=361753469]
+[node name="Voile_8_9" type="Polygon2D" parent="Daf10dDecor" unique_id=101347844]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(768, 864, 864, 864, 864, 960, 768, 960)
 
-[node name="Voile_9_9" type="Polygon2D" parent="Daf10dDecor" unique_id=809244557]
+[node name="Voile_9_9" type="Polygon2D" parent="Daf10dDecor" unique_id=534671255]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(864, 864, 960, 864, 960, 960, 864, 960)
 
-[node name="Voile_0_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1476091060]
+[node name="Voile_0_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1166641901]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(0, 960, 96, 960, 96, 1056, 0, 1056)
 
-[node name="Voile_1_10" type="Polygon2D" parent="Daf10dDecor" unique_id=41196639]
+[node name="Voile_1_10" type="Polygon2D" parent="Daf10dDecor" unique_id=860242837]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(96, 960, 192, 960, 192, 1056, 96, 1056)
 
-[node name="Voile_2_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1501999794]
+[node name="Voile_2_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1905119664]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(192, 960, 288, 960, 288, 1056, 192, 1056)
 
-[node name="Voile_7_10" type="Polygon2D" parent="Daf10dDecor" unique_id=475034888]
+[node name="Voile_7_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1301024097]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(672, 960, 768, 960, 768, 1056, 672, 1056)
 
-[node name="Voile_8_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1711655652]
+[node name="Voile_8_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1177116947]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(768, 960, 864, 960, 864, 1056, 768, 1056)
 
-[node name="Voile_9_10" type="Polygon2D" parent="Daf10dDecor" unique_id=1739286454]
+[node name="Voile_9_10" type="Polygon2D" parent="Daf10dDecor" unique_id=213233960]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(864, 960, 960, 960, 960, 1056, 864, 1056)
 
-[node name="Voile_0_11" type="Polygon2D" parent="Daf10dDecor" unique_id=525022724]
+[node name="Voile_0_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1800496263]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(0, 1056, 96, 1056, 96, 1152, 0, 1152)
 
-[node name="Voile_1_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1103346835]
+[node name="Voile_1_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1043886467]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(96, 1056, 192, 1056, 192, 1152, 96, 1152)
 
-[node name="Voile_2_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1420172203]
+[node name="Voile_2_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1200979011]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(192, 1056, 288, 1056, 288, 1152, 192, 1152)
 
-[node name="Voile_7_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1118681027]
+[node name="Voile_7_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1336774536]
 color = Color(0.06, 0.04, 0.03, 0.5)
 polygon = PackedVector2Array(672, 1056, 768, 1056, 768, 1152, 672, 1152)
 
-[node name="Voile_8_11" type="Polygon2D" parent="Daf10dDecor" unique_id=37531977]
+[node name="Voile_8_11" type="Polygon2D" parent="Daf10dDecor" unique_id=527165888]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(768, 1056, 864, 1056, 864, 1152, 768, 1152)
 
-[node name="Voile_9_11" type="Polygon2D" parent="Daf10dDecor" unique_id=1834389284]
+[node name="Voile_9_11" type="Polygon2D" parent="Daf10dDecor" unique_id=829524309]
 color = Color(0.06, 0.04, 0.03, 0.85)
 polygon = PackedVector2Array(864, 1056, 960, 1056, 960, 1152, 864, 1152)
 
-[node name="Face_1_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1530163269]
-position = Vector2(96, -103)
-texture = ExtResource("9_v0p45")
+[node name="Face_1_0" type="Sprite2D" parent="Daf10dDecor" unique_id=509195533]
+position = Vector2(96, -90)
+texture = ExtResource("9_6dbfn")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 192, 199)
+region_rect = Rect2(0, 0, 192, 186)
 
-[node name="Face_3_0" type="Sprite2D" parent="Daf10dDecor" unique_id=643521440]
-position = Vector2(288, -103)
-texture = ExtResource("9_v0p45")
+[node name="Face_3_0" type="Sprite2D" parent="Daf10dDecor" unique_id=468671778]
+position = Vector2(288, -90)
+texture = ExtResource("9_6dbfn")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 96, 199)
+region_rect = Rect2(0, 0, 96, 186)
 
-[node name="Face_6_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1046743486]
-position = Vector2(576, -103)
-texture = ExtResource("9_v0p45")
+[node name="Face_6_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1570215412]
+position = Vector2(576, -90)
+texture = ExtResource("9_6dbfn")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 192, 199)
+region_rect = Rect2(0, 0, 192, 186)
 
-[node name="Face_8_0" type="Sprite2D" parent="Daf10dDecor" unique_id=2083651303]
-position = Vector2(768, -103)
-texture = ExtResource("9_v0p45")
+[node name="Face_8_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1986275135]
+position = Vector2(768, -90)
+texture = ExtResource("9_6dbfn")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 96, 199)
+region_rect = Rect2(0, 0, 96, 186)
 
-[node name="Face_2_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1598859310]
-position = Vector2(192, 473)
-texture = ExtResource("9_v0p45")
+[node name="Face_2_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1091244318]
+position = Vector2(192, 486)
+texture = ExtResource("9_6dbfn")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 96, 199)
+region_rect = Rect2(0, 0, 96, 186)
 
-[node name="SolPilier_1_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1981673884]
+[node name="SolPilier_1_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1690301071]
 texture_repeat = 2
 position = Vector2(96, 192)
 texture = ExtResource("7_6dbfn")
@@ -621,7 +616,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 192, 96, 96)
 
-[node name="SolPilier_8_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1958465678]
+[node name="SolPilier_8_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1013911488]
 texture_repeat = 2
 position = Vector2(768, 192)
 texture = ExtResource("7_6dbfn")
@@ -629,7 +624,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 96, 96)
 
-[node name="SolPilier_7_5" type="Sprite2D" parent="Daf10dDecor" unique_id=592166302]
+[node name="SolPilier_7_5" type="Sprite2D" parent="Daf10dDecor" unique_id=991132179]
 texture_repeat = 2
 position = Vector2(672, 480)
 texture = ExtResource("7_6dbfn")
@@ -637,7 +632,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 96, 96, 96)
 
-[node name="SolPilier_3_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1631287496]
+[node name="SolPilier_3_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1600723589]
 texture_repeat = 2
 position = Vector2(288, 576)
 texture = ExtResource("7_6dbfn")
@@ -645,16 +640,16 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 192, 96, 96)
 
-[node name="Lueur_0" type="Sprite2D" parent="Daf10dDecor" unique_id=60794179]
+[node name="Lueur_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1897437797]
 modulate = Color(1, 0.62, 0.3, 0.2)
-material = SubResource("CanvasItemMaterial_rwnu2")
+material = SubResource("CanvasItemMaterial_xuwqc")
 position = Vector2(480, 288)
 scale = Vector2(2.25, 2.25)
-texture = SubResource("GradientTexture2D_xuwqc")
+texture = SubResource("GradientTexture2D_vu62i")
 
-[node name="Lueur_1" type="Sprite2D" parent="Daf10dDecor" unique_id=292312172]
+[node name="Lueur_1" type="Sprite2D" parent="Daf10dDecor" unique_id=565638178]
 modulate = Color(1, 0.62, 0.3, 0.2)
-material = SubResource("CanvasItemMaterial_v0p45")
+material = SubResource("CanvasItemMaterial_8emnu")
 position = Vector2(480, 672)
 scale = Vector2(1.8, 1.8)
-texture = SubResource("GradientTexture2D_xuwqc")
+texture = SubResource("GradientTexture2D_vu62i")

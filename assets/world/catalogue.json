@@ -10219,6 +10219,348 @@
     84,
     168
    ]
+  },
+  "relief_mur_ligue_glace_01": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_glace_01.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_glace_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_glace_02": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_glace_02.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_glace_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_roche_01": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_roche_01.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_roche_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_roche_02": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_roche_02.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_roche_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_spectre_01": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_spectre_01.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_spectre_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_spectre_02": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_spectre_02.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_spectre_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_dragon_01": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_dragon_01.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_dragon_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_dragon_02": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_dragon_02.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_dragon_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_champion_01": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_champion_01.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_champion_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_champion_02": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_champion_02.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_champion_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_pantheon_01": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_pantheon_01.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_pantheon_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_ligue_pantheon_02": {
+   "fichier": "res://assets/world/relief/relief_mur_ligue_pantheon_02.png",
+   "taille": [
+    192,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_ligue_pantheon_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "int_colonne_glace_01": {
+   "fichier": "res://assets/world/interiors/int_colonne_glace_01.png",
+   "taille": [
+    96,
+    194
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_colonne_glace_01_contact.png",
+    "decalage": [
+     -56,
+     -5
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     22
+    ]
+   }
+  },
+  "int_brasero_ligue_01": {
+   "fichier": "res://assets/world/interiors/int_brasero_ligue_01.png",
+   "taille": [
+    96,
+    106
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_brasero_ligue_01_contact.png",
+    "decalage": [
+     -56,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
+  },
+  "int_candelabre_ligue_01": {
+   "fichier": "res://assets/world/interiors/int_candelabre_ligue_01.png",
+   "taille": [
+    96,
+    142
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_candelabre_ligue_01_contact.png",
+    "decalage": [
+     -56,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_statue_dragon_01": {
+   "fichier": "res://assets/world/interiors/int_statue_dragon_01.png",
+   "taille": [
+    96,
+    170
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_statue_dragon_01_contact.png",
+    "decalage": [
+     -56,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     20
+    ]
+   }
+  },
+  "int_colonne_champion_01": {
+   "fichier": "res://assets/world/interiors/int_colonne_champion_01.png",
+   "taille": [
+    96,
+    203
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_colonne_champion_01_contact.png",
+    "decalage": [
+     -56,
+     -6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     22
+    ]
+   }
+  },
+  "int_machine_pantheon_01": {
+   "fichier": "res://assets/world/interiors/int_machine_pantheon_01.png",
+   "taille": [
+    192,
+    108
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_machine_pantheon_01_contact.png",
+    "decalage": [
+     -104,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     17
+    ]
+   }
   }
  },
  "personnages": {

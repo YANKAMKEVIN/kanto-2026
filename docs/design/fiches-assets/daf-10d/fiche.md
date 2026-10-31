@@ -74,9 +74,9 @@ renvoyé à l'accueil (`safari_zone_gate`, sans fond) avant le combat. En jeu, l
 1. ~~**Fonds de combat**~~ **faits le 2026-10-31** (Codex, `tools/art/daf10c.py` `COMBATS`, cousus par `combat_decors/preparer_decor.py`, ancres inchangées, horizons recalés [D] : Parmanie 418, Cramois'Île 418, Safari 455, Sylphe 310 ; Centrale avec DAF.10c ; `planche-codex-2026-10-31.jpg`) : les cinq sont des étalonnages ; vrais fonds peints pour l'Arène de Parmanie (dojo ninja
    violet, pièges), l'Arène de Cramois'Île (salle volcanique, lave), la Centrale (machines électriques, DAF.10c),
    le Parc Safari (savane, enclos) et le hall de Sylphe 1F (accueil, ascenseurs).
-2. **Murs de la Ligue** : faces dédiées par salle (glace sculptée, temple de pierre, crypte, temple du dragon, salle
+2. ~~**Murs de la Ligue**~~ **faits le 2026-10-31** (Codex, `tools/art/daf10d_codex.py`, faces `relief_mur_ligue_*` au gabarit 192 × 186, Panthéon compris ; `planche-codex-ligue-1.jpg`, `-2.jpg`) : faces dédiées par salle (glace sculptée, temple de pierre, crypte, temple du dragon, salle
    du Champion), aujourd'hui empruntées aux grottes, à la Tour, à l'Arène de Carmin et au Casino.
-3. **Objets de thème** : statue de dragon (aujourd'hui gargouille d'Arène), colonnes de glace, braseros, portes peintes
+3. ~~**Objets de thème**~~ **faits le 2026-10-31** (colonne de glace, brasero, candélabre, statue de dragon, colonne d'honneur, machine du Panthéon ; portes de la Ligue non touchées, ce sont des éléments interactifs) : statue de dragon (aujourd'hui gargouille d'Arène), colonnes de glace, braseros, portes peintes
    de la Ligue, machine du Panthéon (aujourd'hui poste de laboratoire).
 4. **Sylphe** : mobilier d'accueil et de bureau propre à chaque étage.
 

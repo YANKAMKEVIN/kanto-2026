@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_nye8e"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_68n7f"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_machine_pantheon_01.png" id="3_gd1r2"]
+
+[node name="IntMachinePantheon01" type="Node2D" unique_id=570702768]
+script = ExtResource("1_nye8e")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=21851126]
+unique_name_in_owner = true
+material = ExtResource("2_68n7f")
+texture = ExtResource("3_gd1r2")
+centered = false
+offset = Vector2(-96, -108)
