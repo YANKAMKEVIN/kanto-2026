@@ -59,7 +59,9 @@ func _finish(player: String = "Kevin", rival: String = "Régis") -> void:
 	while not _director.is_finished() and Time.get_ticks_msec() < deadline:
 		var intro := _director.get_intro()
 		if intro != null and intro.is_running():
-			if intro.is_waiting_for_name():
+			if intro.is_waiting_for_look():
+				intro.choose_look(IntroScript.LOOK_OPTIONS[intro.get_reader().current().name][0])
+			elif intro.is_waiting_for_name():
 				var prompt := intro.get_reader().current().name
 				intro.submit_name(player if prompt == IntroScript.PROMPT_PLAYER_NAME else rival)
 			elif intro.is_waiting_for_choice():

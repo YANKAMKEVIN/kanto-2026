@@ -36,9 +36,14 @@ static func card_illustration(screen: StringName) -> Texture2D:
 	return _load(card_path(screen))
 
 
-## Buste du joueur selon `GameState.player_look` (héros ou joueuse, [TrainerLooks]).
+## Apparence du joueur pour le buste (chantier JR) : posée par [MenuDirector] à l'ouverture du
+## menu (l'UI ne lit pas l'état de la partie).
+static var player_look: StringName = &"hero"
+
+
+## Buste du joueur selon [member player_look] (héros ou joueuse, [TrainerLooks]).
 static func hero_bust() -> Texture2D:
-	return bust_for(GameState.player_look)
+	return bust_for(player_look)
 
 
 static func bust_for(look: StringName) -> Texture2D:

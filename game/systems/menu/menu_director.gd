@@ -197,6 +197,9 @@ func open(route: MenuRoute = null, standalone: bool = false) -> bool:
 		return false
 	if _can_open.is_valid() and not bool(_can_open.call()):
 		return false
+	# Chantier JR : le buste du menu suit l'apparence du joueur.
+	var look: Variant = _state.get(&"player_look") if _state != null else null
+	MenuArt.player_look = look if look is StringName else &"hero"
 	if not _navigator.open(route, standalone):
 		return false
 	_changed = false

@@ -53,7 +53,9 @@ func test_only_the_rival_data_sprite_is_replaced() -> void:
 func test_game_code_reads_the_looks_from_game_state() -> void:
 	GameState.player_look = &"heroine"
 	assert_eq(Player.look_sprite(), &"player_heroine")
+	MenuArt.player_look = &"heroine"
 	assert_eq(MenuArt.hero_bust().resource_path, TrainerLooks.bust_path(&"heroine"))
+	MenuArt.player_look = &"hero"
 	assert_eq(BattleStage.thrower_texture().resource_path,
 		TrainerLooks.thrower_path(&"heroine"))
 	GameState.player_look = &"hero"
