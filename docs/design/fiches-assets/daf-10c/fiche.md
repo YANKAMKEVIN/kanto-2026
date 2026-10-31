@@ -8,11 +8,7 @@ et `tools/dump_map_nodes.gd` donnent des sorties **identiques** avant / après s
 9 étages de Sylphe, 30 relevés, `tools/dump_daf10c.sh avant|apres`). Tout ce qui est ajouté porte le préfixe `Daf10c` (ou `PaintedGround`, `Eau`) ;
 les objets debout ne sont posés que sur des cases déjà bloquées.
 
-**Codex** : il répond, mais son **outil d'image** est à sa limite quotidienne (fenêtre de 24 h, remise à zéro le
-2026-10-30 à 23 h 50). Les 8 images du lot sont prêtes (`tools/art/daf10c.py`, prompts dans
-`tools/art/prompts/daf10c/`) et leur génération est **programmée à 23 h 52**. En attendant, le kit est **dérivé**
-de l'art peint existant, **sous les identifiants des images Codex** (`tools/art/daf10c_derives.py`) : les images
-Codex le remplaceront à l'identique (`daf10c.py --modules`, puis les deux passes de carte), sans toucher au code.
+**Codex** (correctif du 2026-10-31) : les 8 images du lot (`tools/art/daf10c.py`, prompts dans `tools/art/prompts/daf10c/`), générées dans la nuit du 30 au 31, **remplacent à l'identique** le kit dérivé provisoire (`daf10c.py --modules`, puis les deux passes de carte) ; relevés toujours identiques sur les 15 cartes. Le fond de combat de la Centrale reste dérivé (DAF.2 bis).
 
 | Planche | Contenu |
 |---|---|
@@ -55,7 +51,7 @@ Seconde passe d'image après `build_j24_seafoam.gd`, sur le modèle de `build_da
 - Machines et cloisons `#` en **modules** `relief_mur_centrale_01` à `_05` aux rôles du repaire Rocket
   (`tools/module_walls.gd` : faces, couronnements, bords latéraux).
 - **Machines** posées sur le dessus des grands blocs (case `#` entourée de `#`, loin des faces, jamais deux
-  voisines, une case admissible sur deux [D]) : 33 machines (transformateurs, bobines, pupitres).
+  voisines, une case admissible sur deux [D]) : 28 machines avec le kit Codex (générateurs et condensateurs sur deux cases, transformateurs, bobines, pupitres, tourets de câble).
 - Éléments interactifs inchangés et lisibles : Électhor, les huit fausses Poké Balls, les objets, les deux indices
   d'objet caché, les portes.
 
@@ -67,9 +63,9 @@ de mobilier `M` (rectangle des meubles agrandi d'une case, limité à la salle),
 une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées), lueurs chaudes sur une trame de
 5 cases (au plus 10) [D]. Aucune image neuve. Relevés identiques sur les 9 étages (18 relevés).
 
-## Kit : dérivé aujourd'hui, Codex ensuite
+## Kit : dérivé (fusionné le 30), Codex (correctif du 31)
 
-| Asset | Aujourd'hui (dérivé, [D]) | Image Codex prévue (`daf10c.py`) |
+| Asset | Provisoire (dérivé, fusionné le 30) | Image Codex intégrée le 31 (`daf10c.py`) |
 |---|---|---|
 | `ground_ecume_bas_01` | sol bas de la Grotte Azurée bleui, givré | `WORLD_GROUND_ECUME_BAS_01` |
 | `ground_masse_glace_01` | masse rocheuse bleuie | `WORLD_GROUND_MASSE_GLACE_01` |
@@ -78,7 +74,7 @@ une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées
 | `ground_centrale_01`, `ground_masse_centrale_01` | béton du repaire réchauffé, masse des bâtiments | `WORLD_GROUND_CENTRALE_01`, `WORLD_GROUND_MASSE_CENTRALE_01` |
 | `relief_mur_centrale_01..05` | murs du repaire teintés vert d'eau | `WORLD_RELIEF_MUR_CENTRALE_PLANCHE` (machines, transformateur) |
 | machines | armoires électriques et console du repaire teintées | `INT_CENTRALE_PLANCHE` (+ générateur, condensateurs, touret de câble) |
-| fond de combat `power_plant_centrale` | dérivé de DAF.2 bis | `COMBAT_DECOR_CENTRALE` (+ tuiles TL / TR) |
+| fond de combat `power_plant_centrale` | dérivé de DAF.2 bis | non généré : `COMBAT_DECOR_CENTRALE` (+ tuiles TL / TR) reste à faire |
 
 ## Valeurs par défaut [D]
 
@@ -87,6 +83,7 @@ une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées
 - Panneaux : le panneau de bois des routes, réduit à 0,58.
 - Défilement des courants : 120 px/s, opacité 0,8.
 - Machines de la Centrale : une case admissible sur deux, au hasard (graine fixe).
+- Parois glacées : la face 02 de Codex porte une cascade gelée ; elle alterne avec la face 01 (décor sur case bloquée).
 
 ## Outils
 

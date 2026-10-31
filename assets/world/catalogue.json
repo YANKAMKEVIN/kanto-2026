@@ -9894,7 +9894,7 @@
    "fichier": "res://assets/world/relief/relief_rebord_ecume_01.png",
    "taille": [
     96,
-    55
+    57
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_rebord_ecume_01_contact.png",
@@ -9913,7 +9913,7 @@
    "fichier": "res://assets/world/relief/relief_rebord_ecume_cote_01.png",
    "taille": [
     24,
-    82
+    80
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_rebord_ecume_cote_01_contact.png",
@@ -9932,7 +9932,7 @@
    "fichier": "res://assets/world/relief/relief_escalier_ecume_01.png",
    "taille": [
     96,
-    100
+    95
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_escalier_ecume_01_contact.png",
@@ -9989,13 +9989,13 @@
    "fichier": "res://assets/world/props/prop_rocher_glace_01.png",
    "taille": [
     96,
-    76
+    87
    ],
    "contact": {
     "fichier": "res://assets/world/props/prop_rocher_glace_01_contact.png",
     "decalage": [
      -56,
-     9
+     8
     ],
     "echelle": 2,
     "taille": [
@@ -10008,7 +10008,7 @@
    "fichier": "res://assets/world/relief/relief_mur_centrale_01.png",
    "taille": [
     192,
-    187
+    205
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_mur_centrale_01_contact.png",
@@ -10027,7 +10027,7 @@
    "fichier": "res://assets/world/relief/relief_mur_centrale_02.png",
    "taille": [
     192,
-    187
+    203
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_mur_centrale_02_contact.png",
@@ -10046,7 +10046,7 @@
    "fichier": "res://assets/world/relief/relief_mur_centrale_03.png",
    "taille": [
     192,
-    38
+    43
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_mur_centrale_03_contact.png",
@@ -10065,7 +10065,7 @@
    "fichier": "res://assets/world/relief/relief_mur_centrale_04.png",
    "taille": [
     34,
-    134
+    165
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_mur_centrale_04_contact.png",
@@ -10084,7 +10084,7 @@
    "fichier": "res://assets/world/relief/relief_mur_centrale_05.png",
    "taille": [
     34,
-    46
+    37
    ],
    "contact": {
     "fichier": "res://assets/world/relief/relief_mur_centrale_05_contact.png",
@@ -10103,18 +10103,18 @@
    "fichier": "res://assets/world/interiors/int_transformateur_centrale_01.png",
    "taille": [
     96,
-    105
+    95
    ],
    "contact": {
     "fichier": "res://assets/world/interiors/int_transformateur_centrale_01_contact.png",
     "decalage": [
      -56,
-     5
+     7
     ],
     "echelle": 2,
     "taille": [
      56,
-     17
+     16
     ]
    }
   },
@@ -10122,13 +10122,13 @@
    "fichier": "res://assets/world/interiors/int_bobine_centrale_01.png",
    "taille": [
     96,
-    127
+    131
    ],
    "contact": {
     "fichier": "res://assets/world/interiors/int_bobine_centrale_01_contact.png",
     "decalage": [
      -56,
-     3
+     2
     ],
     "echelle": 2,
     "taille": [
@@ -10141,18 +10141,75 @@
    "fichier": "res://assets/world/interiors/int_pupitre_centrale_01.png",
    "taille": [
     96,
-    123
+    110
    ],
    "contact": {
     "fichier": "res://assets/world/interiors/int_pupitre_centrale_01_contact.png",
     "decalage": [
      -56,
-     3
+     5
     ],
     "echelle": 2,
     "taille": [
      56,
-     18
+     17
+    ]
+   }
+  },
+  "int_generateur_centrale_01": {
+   "fichier": "res://assets/world/interiors/int_generateur_centrale_01.png",
+   "taille": [
+    192,
+    102
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_generateur_centrale_01_contact.png",
+    "decalage": [
+     -104,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     16
+    ]
+   }
+  },
+  "int_condensateurs_centrale_01": {
+   "fichier": "res://assets/world/interiors/int_condensateurs_centrale_01.png",
+   "taille": [
+    192,
+    101
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_condensateurs_centrale_01_contact.png",
+    "decalage": [
+     -104,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     16
+    ]
+   }
+  },
+  "int_touret_centrale_01": {
+   "fichier": "res://assets/world/interiors/int_touret_centrale_01.png",
+   "taille": [
+    96,
+    115
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_touret_centrale_01_contact.png",
+    "decalage": [
+     -56,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
     ]
    }
   }
@@ -14035,6 +14092,34 @@
    "taille": [
     1344,
     960
+   ]
+  },
+  "ground_ecume_bas_01": {
+   "fichier": "res://assets/world/ground/ground_ecume_bas_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_masse_glace_01": {
+   "fichier": "res://assets/world/ground/ground_masse_glace_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_centrale_01": {
+   "fichier": "res://assets/world/ground/ground_centrale_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_masse_centrale_01": {
+   "fichier": "res://assets/world/ground/ground_masse_centrale_01.png",
+   "taille": [
+    384,
+    384
    ]
   }
  }

@@ -93,7 +93,7 @@ tile_set = ExtResource("2_7k8gv")
 visible = false
 tile_set = ExtResource("2_7k8gv")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=1469850699]
+[node name="PaintedGround" type="Node2D" parent="." unique_id=2017103513]
 z_index = -3
 material = SubResource("ShaderMaterial_qo42y")
 script = ExtResource("8_nbk1q")
@@ -103,10 +103,10 @@ base_texture = ExtResource("4_d8wmf")
 r_texture = ExtResource("7_8axrn")
 g_texture = ExtResource("6_y2t6v")
 
-[node name="Eau" type="Node2D" parent="." unique_id=1034307993]
+[node name="Eau" type="Node2D" parent="." unique_id=1294842402]
 z_index = -2
 
-[node name="Bande000" type="Sprite2D" parent="Eau" unique_id=1055663654]
+[node name="Bande000" type="Sprite2D" parent="Eau" unique_id=474960023]
 texture_repeat = 2
 position = Vector2(1344, 0)
 texture = ExtResource("9_el607")
@@ -114,7 +114,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 0, 192, 96)
 
-[node name="Bande001" type="Sprite2D" parent="Eau" unique_id=160296333]
+[node name="Bande001" type="Sprite2D" parent="Eau" unique_id=61926739]
 texture_repeat = 2
 position = Vector2(1344, 96)
 texture = ExtResource("9_el607")
@@ -122,7 +122,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 96, 192, 96)
 
-[node name="Bande002" type="Sprite2D" parent="Eau" unique_id=683061253]
+[node name="Bande002" type="Sprite2D" parent="Eau" unique_id=2139829586]
 texture_repeat = 2
 position = Vector2(960, 192)
 texture = ExtResource("9_el607")
@@ -130,7 +130,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(960, 192, 960, 96)
 
-[node name="Bande003" type="Sprite2D" parent="Eau" unique_id=349551180]
+[node name="Bande003" type="Sprite2D" parent="Eau" unique_id=1947529761]
 texture_repeat = 2
 position = Vector2(960, 288)
 texture = ExtResource("9_el607")
@@ -138,7 +138,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(960, 288, 960, 96)
 
-[node name="Bande004" type="Sprite2D" parent="Eau" unique_id=971155403]
+[node name="Bande004" type="Sprite2D" parent="Eau" unique_id=297059094]
 texture_repeat = 2
 position = Vector2(1728, 384)
 texture = ExtResource("9_el607")
@@ -146,7 +146,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1728, 384, 192, 96)
 
-[node name="Bande005" type="Sprite2D" parent="Eau" unique_id=969541073]
+[node name="Bande005" type="Sprite2D" parent="Eau" unique_id=1308982295]
 texture_repeat = 2
 position = Vector2(1728, 480)
 texture = ExtResource("9_el607")
@@ -154,7 +154,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1728, 480, 192, 96)
 
-[node name="Bande006" type="Sprite2D" parent="Eau" unique_id=486350939]
+[node name="Bande006" type="Sprite2D" parent="Eau" unique_id=364681270]
 texture_repeat = 2
 position = Vector2(1728, 576)
 texture = ExtResource("9_el607")
@@ -162,7 +162,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1728, 576, 192, 96)
 
-[node name="Bande007" type="Sprite2D" parent="Eau" unique_id=942739152]
+[node name="Bande007" type="Sprite2D" parent="Eau" unique_id=1438921712]
 texture_repeat = 2
 position = Vector2(1728, 672)
 texture = ExtResource("9_el607")
@@ -170,7 +170,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1728, 672, 192, 96)
 
-[node name="Bande008" type="Sprite2D" parent="Eau" unique_id=123551469]
+[node name="Bande008" type="Sprite2D" parent="Eau" unique_id=1366571777]
 texture_repeat = 2
 position = Vector2(1344, 768)
 texture = ExtResource("9_el607")
@@ -178,7 +178,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 768, 576, 96)
 
-[node name="Bande009" type="Sprite2D" parent="Eau" unique_id=1504539367]
+[node name="Bande009" type="Sprite2D" parent="Eau" unique_id=990658119]
 texture_repeat = 2
 position = Vector2(1344, 864)
 texture = ExtResource("9_el607")
@@ -186,7 +186,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 864, 576, 96)
 
-[node name="Bande010" type="Sprite2D" parent="Eau" unique_id=896602176]
+[node name="Bande010" type="Sprite2D" parent="Eau" unique_id=2115222629]
 texture_repeat = 2
 position = Vector2(1344, 960)
 texture = ExtResource("9_el607")
@@ -194,7 +194,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 960, 960, 96)
 
-[node name="Bande011" type="Sprite2D" parent="Eau" unique_id=1867833240]
+[node name="Bande011" type="Sprite2D" parent="Eau" unique_id=1937532674]
 texture_repeat = 2
 position = Vector2(1344, 1056)
 texture = ExtResource("9_el607")
@@ -202,7 +202,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 1056, 960, 96)
 
-[node name="Bande012" type="Sprite2D" parent="Eau" unique_id=926817523]
+[node name="Bande012" type="Sprite2D" parent="Eau" unique_id=1335720329]
 texture_repeat = 2
 position = Vector2(1920, 1152)
 texture = ExtResource("9_el607")
@@ -210,7 +210,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1920, 1152, 192, 96)
 
-[node name="Bande013" type="Sprite2D" parent="Eau" unique_id=373839493]
+[node name="Bande013" type="Sprite2D" parent="Eau" unique_id=1281403059]
 texture_repeat = 2
 position = Vector2(1920, 1248)
 texture = ExtResource("9_el607")
@@ -218,7 +218,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1920, 1248, 192, 96)
 
-[node name="Bande014" type="Sprite2D" parent="Eau" unique_id=945115365]
+[node name="Bande014" type="Sprite2D" parent="Eau" unique_id=543444685]
 texture_repeat = 2
 position = Vector2(1920, 1344)
 texture = ExtResource("9_el607")
@@ -226,7 +226,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1920, 1344, 192, 96)
 
-[node name="Bande015" type="Sprite2D" parent="Eau" unique_id=2126397210]
+[node name="Bande015" type="Sprite2D" parent="Eau" unique_id=1899897166]
 texture_repeat = 2
 position = Vector2(1920, 1440)
 texture = ExtResource("9_el607")
@@ -234,7 +234,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1920, 1440, 192, 96)
 
-[node name="Bande016" type="Sprite2D" parent="Eau" unique_id=243057493]
+[node name="Bande016" type="Sprite2D" parent="Eau" unique_id=402213589]
 texture_repeat = 2
 position = Vector2(1920, 1536)
 texture = ExtResource("9_el607")
@@ -242,7 +242,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1920, 1536, 192, 96)
 
-[node name="Bande017" type="Sprite2D" parent="Eau" unique_id=1939771978]
+[node name="Bande017" type="Sprite2D" parent="Eau" unique_id=28277134]
 texture_repeat = 2
 position = Vector2(1920, 1632)
 texture = ExtResource("9_el607")
@@ -250,10 +250,10 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1920, 1632, 192, 96)
 
-[node name="Daf10cSol" type="Node2D" parent="." unique_id=1354715730]
+[node name="Daf10cSol" type="Node2D" parent="." unique_id=881080071]
 z_index = -1
 
-[node name="Daf10cLip000" type="Sprite2D" parent="Daf10cSol" unique_id=1993961922]
+[node name="Daf10cLip000" type="Sprite2D" parent="Daf10cSol" unique_id=1073854554]
 modulate = Color(0.9741766, 0.9741766, 0.9741766, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 465)
@@ -263,7 +263,7 @@ offset = Vector2(-48, -81)
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip001" type="Sprite2D" parent="Daf10cSol" unique_id=949022321]
+[node name="Daf10cLip001" type="Sprite2D" parent="Daf10cSol" unique_id=2062890699]
 modulate = Color(1.0367452, 1.0367452, 1.0367452, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1680, 465)
@@ -274,7 +274,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip002" type="Sprite2D" parent="Daf10cSol" unique_id=1207559314]
+[node name="Daf10cLip002" type="Sprite2D" parent="Daf10cSol" unique_id=160008041]
 modulate = Color(0.9894756, 0.9894756, 0.9894756, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(528, 561)
@@ -285,7 +285,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip003" type="Sprite2D" parent="Daf10cSol" unique_id=2009708194]
+[node name="Daf10cLip003" type="Sprite2D" parent="Daf10cSol" unique_id=505487872]
 modulate = Color(1.0372764, 1.0372764, 1.0372764, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1296, 753)
@@ -296,7 +296,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip004" type="Sprite2D" parent="Daf10cSol" unique_id=1102547791]
+[node name="Daf10cLip004" type="Sprite2D" parent="Daf10cSol" unique_id=1017575194]
 modulate = Color(1.038797, 1.038797, 1.038797, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2352, 945)
@@ -306,7 +306,7 @@ offset = Vector2(-48, -81)
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip005" type="Sprite2D" parent="Daf10cSol" unique_id=1296261366]
+[node name="Daf10cLip005" type="Sprite2D" parent="Daf10cSol" unique_id=985135526]
 modulate = Color(0.98788065, 0.98788065, 0.98788065, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(720, 1137)
@@ -317,7 +317,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip006" type="Sprite2D" parent="Daf10cSol" unique_id=46341108]
+[node name="Daf10cLip006" type="Sprite2D" parent="Daf10cSol" unique_id=1790596552]
 modulate = Color(1.0208707, 1.0208707, 1.0208707, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 1137)
@@ -328,7 +328,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip007" type="Sprite2D" parent="Daf10cSol" unique_id=972983233]
+[node name="Daf10cLip007" type="Sprite2D" parent="Daf10cSol" unique_id=1480523547]
 modulate = Color(0.99447, 0.99447, 0.99447, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1872, 1233)
@@ -339,7 +339,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip008" type="Sprite2D" parent="Daf10cSol" unique_id=1620547896]
+[node name="Daf10cLip008" type="Sprite2D" parent="Daf10cSol" unique_id=1873547027]
 modulate = Color(1.0073017, 1.0073017, 1.0073017, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2160, 1233)
@@ -350,7 +350,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip009" type="Sprite2D" parent="Daf10cSol" unique_id=1730943577]
+[node name="Daf10cLip009" type="Sprite2D" parent="Daf10cSol" unique_id=1156675985]
 modulate = Color(0.97962445, 0.97962445, 0.97962445, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(144, 1329)
@@ -360,7 +360,7 @@ offset = Vector2(-48, -81)
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip010" type="Sprite2D" parent="Daf10cSol" unique_id=1509034658]
+[node name="Daf10cLip010" type="Sprite2D" parent="Daf10cSol" unique_id=287001793]
 modulate = Color(0.9692725, 0.9692725, 0.9692725, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1776, 1521)
@@ -371,7 +371,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 81)
 
-[node name="Daf10cLip011" type="Sprite2D" parent="Daf10cSol" unique_id=920899503]
+[node name="Daf10cLip011" type="Sprite2D" parent="Daf10cSol" unique_id=1784291914]
 modulate = Color(0.9769293, 0.9769293, 0.9769293, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2352, 1521)
@@ -380,7 +380,7 @@ centered = false
 offset = Vector2(-144, -81)
 flip_h = true
 
-[node name="Daf10cLip012" type="Sprite2D" parent="Daf10cSol" unique_id=797810262]
+[node name="Daf10cLip012" type="Sprite2D" parent="Daf10cSol" unique_id=2144477026]
 modulate = Color(0.9862611, 0.9862611, 0.9862611, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2640, 1521)
@@ -389,31 +389,31 @@ centered = false
 offset = Vector2(-144, -81)
 flip_h = true
 
-[node name="Daf10cStairs000" parent="Daf10cSol" unique_id=869084721 instance=ExtResource("14_qpb7v")]
+[node name="Daf10cStairs000" parent="Daf10cSol" unique_id=1888680124 instance=ExtResource("14_qpb7v")]
 position = Vector2(624, 576)
 
-[node name="Daf10cStairs001" parent="Daf10cSol" unique_id=1280947620 instance=ExtResource("14_qpb7v")]
+[node name="Daf10cStairs001" parent="Daf10cSol" unique_id=708640411 instance=ExtResource("14_qpb7v")]
 position = Vector2(720, 576)
 
-[node name="Daf10cStairs002" parent="Daf10cSol" unique_id=224231977 instance=ExtResource("14_qpb7v")]
+[node name="Daf10cStairs002" parent="Daf10cSol" unique_id=457825650 instance=ExtResource("14_qpb7v")]
 position = Vector2(1488, 768)
 
-[node name="Daf10cStairs003" parent="Daf10cSol" unique_id=1323967734 instance=ExtResource("14_qpb7v")]
+[node name="Daf10cStairs003" parent="Daf10cSol" unique_id=1259784329 instance=ExtResource("14_qpb7v")]
 position = Vector2(2256, 960)
 
-[node name="Daf10cStairs004" parent="Daf10cSol" unique_id=208693824 instance=ExtResource("14_qpb7v")]
+[node name="Daf10cStairs004" parent="Daf10cSol" unique_id=787708936 instance=ExtResource("14_qpb7v")]
 position = Vector2(1584, 1536)
 
-[node name="Daf10cStairs005" parent="Daf10cSol" unique_id=937897674 instance=ExtResource("14_qpb7v")]
+[node name="Daf10cStairs005" parent="Daf10cSol" unique_id=199251859 instance=ExtResource("14_qpb7v")]
 position = Vector2(1680, 1536)
 
-[node name="Daf10cLedge006" parent="Daf10cSol" unique_id=779800762 instance=ExtResource("12_l458p")]
+[node name="Daf10cLedge006" parent="Daf10cSol" unique_id=663135588 instance=ExtResource("12_l458p")]
 position = Vector2(1776, 1632)
 
-[node name="Daf10cSide007" parent="Daf10cSol" unique_id=2036749870 instance=ExtResource("13_wr8kw")]
+[node name="Daf10cSide007" parent="Daf10cSol" unique_id=1171302024 instance=ExtResource("13_wr8kw")]
 position = Vector2(1740, 1632)
 
-[node name="Daf10cSide008" parent="Daf10cSol" unique_id=1721620250 instance=ExtResource("13_wr8kw")]
+[node name="Daf10cSide008" parent="Daf10cSol" unique_id=605250861 instance=ExtResource("13_wr8kw")]
 position = Vector2(1836, 1728)
 
 [node name="Entities" type="Node2D" parent="." unique_id=1650071462]
@@ -431,7 +431,7 @@ stairs_cells = Array[Vector2i]([Vector2i(6, 5), Vector2i(7, 5), Vector2i(15, 7),
 position = Vector2(528, 1248)
 script = ExtResource("4_m8st0")
 
-[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_5_12" unique_id=916366234]
+[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_5_12" unique_id=654155860]
 position = Vector2(-48, -191)
 texture = ExtResource("17_p0tuh")
 centered = false
@@ -440,7 +440,7 @@ centered = false
 position = Vector2(2448, 384)
 script = ExtResource("4_m8st0")
 
-[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_25_3" unique_id=1034805918]
+[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_25_3" unique_id=1184726619]
 position = Vector2(-48, -191)
 texture = ExtResource("17_p0tuh")
 centered = false
@@ -449,7 +449,7 @@ centered = false
 position = Vector2(2448, 1440)
 script = ExtResource("4_m8st0")
 
-[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_25_14" unique_id=89464134]
+[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_25_14" unique_id=911652912]
 position = Vector2(-48, -191)
 texture = ExtResource("17_p0tuh")
 centered = false
@@ -458,7 +458,7 @@ centered = false
 position = Vector2(816, 672)
 script = ExtResource("4_m8st0")
 
-[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_8_6" unique_id=1853783399]
+[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_8_6" unique_id=1557581102]
 position = Vector2(-48, -105)
 texture = ExtResource("18_gprm5")
 centered = false
@@ -467,7 +467,7 @@ centered = false
 position = Vector2(2448, 480)
 script = ExtResource("4_m8st0")
 
-[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_25_4" unique_id=880465334]
+[node name="Peint0" type="Sprite2D" parent="Entities/EchelleDessin_25_4" unique_id=249610087]
 position = Vector2(-48, -105)
 texture = ExtResource("18_gprm5")
 centered = false
@@ -477,7 +477,7 @@ position = Vector2(336, 1632)
 script = ExtResource("4_m8st0")
 unless_flags = Array[StringName]([&"seafoam_b3f_hole_1_filled"])
 
-[node name="Peint0" type="Sprite2D" parent="Entities/TrouOuvert1" unique_id=1350647961]
+[node name="Peint0" type="Sprite2D" parent="Entities/TrouOuvert1" unique_id=1656537395]
 z_index = -1
 position = Vector2(-48, -96)
 texture = ExtResource("19_tcjd3")
@@ -488,7 +488,7 @@ position = Vector2(336, 1632)
 script = ExtResource("4_m8st0")
 if_flags = Array[StringName]([&"seafoam_b3f_hole_1_filled"])
 
-[node name="Peint0" type="Sprite2D" parent="Entities/TrouBouche1" unique_id=1334251782]
+[node name="Peint0" type="Sprite2D" parent="Entities/TrouBouche1" unique_id=1784163383]
 z_index = -1
 position = Vector2(-48, -96)
 texture = ExtResource("20_yrddr")
@@ -499,7 +499,7 @@ position = Vector2(624, 1632)
 script = ExtResource("4_m8st0")
 unless_flags = Array[StringName]([&"seafoam_b3f_hole_2_filled"])
 
-[node name="Peint0" type="Sprite2D" parent="Entities/TrouOuvert2" unique_id=1216187834]
+[node name="Peint0" type="Sprite2D" parent="Entities/TrouOuvert2" unique_id=1670954758]
 z_index = -1
 position = Vector2(-48, -96)
 texture = ExtResource("19_tcjd3")
@@ -510,7 +510,7 @@ position = Vector2(624, 1632)
 script = ExtResource("4_m8st0")
 if_flags = Array[StringName]([&"seafoam_b3f_hole_2_filled"])
 
-[node name="Peint0" type="Sprite2D" parent="Entities/TrouBouche2" unique_id=384900537]
+[node name="Peint0" type="Sprite2D" parent="Entities/TrouBouche2" unique_id=2076604478]
 z_index = -1
 position = Vector2(-48, -96)
 texture = ExtResource("20_yrddr")
@@ -522,7 +522,7 @@ script = ExtResource("4_m8st0")
 if_flags = Array[StringName]([&"seafoam_b2f_hole_1_filled"])
 blocking_cells = Array[Vector2i]([Vector2i(18, 6)])
 
-[node name="Peint0" type="Sprite2D" parent="Entities/RocherTombe_18_6" unique_id=1509439247]
+[node name="Peint0" type="Sprite2D" parent="Entities/RocherTombe_18_6" unique_id=586136720]
 position = Vector2(-52, -72)
 texture = ExtResource("21_v1cxn")
 centered = false
@@ -533,7 +533,7 @@ script = ExtResource("4_m8st0")
 if_flags = Array[StringName]([&"seafoam_b2f_hole_2_filled"])
 blocking_cells = Array[Vector2i]([Vector2i(19, 6)])
 
-[node name="Peint0" type="Sprite2D" parent="Entities/RocherTombe_19_6" unique_id=220998735]
+[node name="Peint0" type="Sprite2D" parent="Entities/RocherTombe_19_6" unique_id=979011310]
 position = Vector2(-52, -72)
 texture = ExtResource("21_v1cxn")
 centered = false
@@ -543,13 +543,13 @@ position = Vector2(432, 1248)
 script = ExtResource("4_m8st0")
 blocking_cells = Array[Vector2i]([Vector2i(4, 12)])
 
-[node name="Peint0" type="Sprite2D" parent="Entities/Panneau_4_12" unique_id=739899924]
+[node name="Peint0" type="Sprite2D" parent="Entities/Panneau_4_12" unique_id=517698463]
 position = Vector2(-49.59, -111.36)
 scale = Vector2(0.58, 0.58)
 texture = ExtResource("22_fdcfr")
 centered = false
 
-[node name="Daf10cFace000" type="Sprite2D" parent="Entities" unique_id=1840543366]
+[node name="Daf10cFace000" type="Sprite2D" parent="Entities" unique_id=1786936901]
 modulate = Color(0.97069365, 0.97069365, 0.97069365, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1104, 192)
@@ -557,7 +557,7 @@ texture = ExtResource("23_yf3uk")
 centered = false
 offset = Vector2(-144, -195)
 
-[node name="Daf10cFace001" type="Sprite2D" parent="Entities" unique_id=361798311]
+[node name="Daf10cFace001" type="Sprite2D" parent="Entities" unique_id=844844145]
 modulate = Color(1.0263699, 1.0263699, 1.0263699, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1200, 192)
@@ -565,7 +565,7 @@ texture = ExtResource("23_yf3uk")
 centered = false
 offset = Vector2(-144, -195)
 
-[node name="Daf10cFace002" type="Sprite2D" parent="Entities" unique_id=884216142]
+[node name="Daf10cFace002" type="Sprite2D" parent="Entities" unique_id=208174180]
 modulate = Color(0.98884386, 0.98884386, 0.98884386, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1680, 192)
@@ -574,7 +574,7 @@ centered = false
 offset = Vector2(-144, -186)
 flip_h = true
 
-[node name="Daf10cFace003" type="Sprite2D" parent="Entities" unique_id=352685955]
+[node name="Daf10cFace003" type="Sprite2D" parent="Entities" unique_id=638586623]
 modulate = Color(1.0229478, 1.0229478, 1.0229478, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1776, 192)
@@ -582,7 +582,7 @@ texture = ExtResource("23_yf3uk")
 centered = false
 offset = Vector2(-144, -195)
 
-[node name="Daf10cFace004" type="Sprite2D" parent="Entities" unique_id=1980460703]
+[node name="Daf10cFace004" type="Sprite2D" parent="Entities" unique_id=1923678926]
 modulate = Color(0.96242905, 0.96242905, 0.96242905, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(864, 576)
@@ -592,7 +592,7 @@ offset = Vector2(-96, -104)
 region_enabled = true
 region_rect = Rect2(48, 82, 192, 104)
 
-[node name="Daf10cFace005" type="Sprite2D" parent="Entities" unique_id=786208852]
+[node name="Daf10cFace005" type="Sprite2D" parent="Entities" unique_id=1002907290]
 modulate = Color(0.9951054, 0.9951054, 0.9951054, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2160, 576)
@@ -602,7 +602,7 @@ offset = Vector2(-144, -104)
 region_enabled = true
 region_rect = Rect2(0, 82, 288, 104)
 
-[node name="Daf10cFace006" type="Sprite2D" parent="Entities" unique_id=2099246630]
+[node name="Daf10cFace006" type="Sprite2D" parent="Entities" unique_id=536417620]
 modulate = Color(0.9884034, 0.9884034, 0.9884034, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2448, 576)
@@ -613,7 +613,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 91, 288, 104)
 
-[node name="Daf10cFace007" type="Sprite2D" parent="Entities" unique_id=1864299018]
+[node name="Daf10cFace007" type="Sprite2D" parent="Entities" unique_id=1850704113]
 modulate = Color(1.0144556, 1.0144556, 1.0144556, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2640, 576)
@@ -623,7 +623,7 @@ offset = Vector2(-144, -104)
 region_enabled = true
 region_rect = Rect2(0, 82, 288, 104)
 
-[node name="Daf10cFace008" type="Sprite2D" parent="Entities" unique_id=730236725]
+[node name="Daf10cFace008" type="Sprite2D" parent="Entities" unique_id=1518816226]
 modulate = Color(1.0283158, 1.0283158, 1.0283158, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(528, 768)
@@ -633,7 +633,7 @@ offset = Vector2(-48, -195)
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 195)
 
-[node name="Daf10cFace009" type="Sprite2D" parent="Entities" unique_id=815176308]
+[node name="Daf10cFace009" type="Sprite2D" parent="Entities" unique_id=1397808942]
 modulate = Color(1.035548, 1.035548, 1.035548, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 768)
@@ -644,7 +644,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 195)
 
-[node name="Daf10cFace010" type="Sprite2D" parent="Entities" unique_id=960369845]
+[node name="Daf10cFace010" type="Sprite2D" parent="Entities" unique_id=1789411510]
 modulate = Color(1.0070853, 1.0070853, 1.0070853, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1392, 768)
@@ -655,7 +655,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(96, 82, 96, 104)
 
-[node name="Daf10cFace011" type="Sprite2D" parent="Entities" unique_id=403253904]
+[node name="Daf10cFace011" type="Sprite2D" parent="Entities" unique_id=907150773]
 modulate = Color(1.0110267, 1.0110267, 1.0110267, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1632, 768)
@@ -665,7 +665,7 @@ offset = Vector2(-96, -104)
 region_enabled = true
 region_rect = Rect2(48, 82, 192, 104)
 
-[node name="Daf10cFace012" type="Sprite2D" parent="Entities" unique_id=390575981]
+[node name="Daf10cFace012" type="Sprite2D" parent="Entities" unique_id=1929159992]
 modulate = Color(0.98181725, 0.98181725, 0.98181725, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2064, 960)
@@ -676,7 +676,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 82, 288, 104)
 
-[node name="Daf10cFace013" type="Sprite2D" parent="Entities" unique_id=1241359676]
+[node name="Daf10cFace013" type="Sprite2D" parent="Entities" unique_id=868521053]
 modulate = Color(1.0046006, 1.0046006, 1.0046006, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(864, 1152)
@@ -686,7 +686,7 @@ offset = Vector2(-96, -104)
 region_enabled = true
 region_rect = Rect2(48, 82, 192, 104)
 
-[node name="Daf10cFace014" type="Sprite2D" parent="Entities" unique_id=1990637957]
+[node name="Daf10cFace014" type="Sprite2D" parent="Entities" unique_id=1180803802]
 modulate = Color(0.97099364, 0.97099364, 0.97099364, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1296, 1152)
@@ -696,7 +696,7 @@ offset = Vector2(-48, -195)
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 195)
 
-[node name="Daf10cFace015" type="Sprite2D" parent="Entities" unique_id=654365136]
+[node name="Daf10cFace015" type="Sprite2D" parent="Entities" unique_id=1633256034]
 modulate = Color(0.9736622, 0.9736622, 0.9736622, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2352, 1152)
@@ -706,7 +706,7 @@ offset = Vector2(-48, -195)
 region_enabled = true
 region_rect = Rect2(96, 0, 96, 195)
 
-[node name="Daf10cFace016" type="Sprite2D" parent="Entities" unique_id=2008137653]
+[node name="Daf10cFace016" type="Sprite2D" parent="Entities" unique_id=779988093]
 modulate = Color(0.9855891, 0.9855891, 0.9855891, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(336, 1344)
@@ -716,7 +716,7 @@ offset = Vector2(-144, -104)
 region_enabled = true
 region_rect = Rect2(0, 82, 288, 104)
 
-[node name="Daf10cFace017" type="Sprite2D" parent="Entities" unique_id=1972700916]
+[node name="Daf10cFace017" type="Sprite2D" parent="Entities" unique_id=1781089151]
 modulate = Color(1.0210495, 1.0210495, 1.0210495, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(624, 1344)
@@ -726,7 +726,7 @@ offset = Vector2(-144, -104)
 region_enabled = true
 region_rect = Rect2(0, 82, 288, 104)
 
-[node name="Daf10cFace018" type="Sprite2D" parent="Entities" unique_id=1348926485]
+[node name="Daf10cFace018" type="Sprite2D" parent="Entities" unique_id=171995796]
 modulate = Color(1.0351654, 1.0351654, 1.0351654, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(96, 1440)
@@ -736,7 +736,7 @@ offset = Vector2(-96, -195)
 region_enabled = true
 region_rect = Rect2(48, 0, 192, 195)
 
-[node name="Daf10cFace019" type="Sprite2D" parent="Entities" unique_id=623568252]
+[node name="Daf10cFace019" type="Sprite2D" parent="Entities" unique_id=1536769787]
 modulate = Color(1.0362344, 1.0362344, 1.0362344, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1104, 1536)
@@ -746,7 +746,7 @@ offset = Vector2(-144, -104)
 region_enabled = true
 region_rect = Rect2(0, 91, 288, 104)
 
-[node name="Daf10cFace020" type="Sprite2D" parent="Entities" unique_id=931528283]
+[node name="Daf10cFace020" type="Sprite2D" parent="Entities" unique_id=1488787120]
 modulate = Color(1.0080384, 1.0080384, 1.0080384, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1392, 1536)
@@ -756,7 +756,7 @@ offset = Vector2(-144, -104)
 region_enabled = true
 region_rect = Rect2(0, 82, 288, 104)
 
-[node name="Daf10cSide000" type="Sprite2D" parent="Entities" unique_id=1081566908]
+[node name="Daf10cSide000" type="Sprite2D" parent="Entities" unique_id=1312620936]
 modulate = Color(1.0133041, 1.0133041, 1.0133041, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 96)
@@ -766,7 +766,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide001" type="Sprite2D" parent="Entities" unique_id=594152044]
+[node name="Daf10cSide001" type="Sprite2D" parent="Entities" unique_id=105174079]
 modulate = Color(0.9885679, 0.9885679, 0.9885679, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 192)
@@ -776,7 +776,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide002" type="Sprite2D" parent="Entities" unique_id=1666684473]
+[node name="Daf10cSide002" type="Sprite2D" parent="Entities" unique_id=1874409833]
 modulate = Color(0.99760073, 0.99760073, 0.99760073, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 288)
@@ -786,7 +786,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide003" type="Sprite2D" parent="Entities" unique_id=202642823]
+[node name="Daf10cSide003" type="Sprite2D" parent="Entities" unique_id=1922925681]
 modulate = Color(1.0209638, 1.0209638, 1.0209638, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 384)
@@ -796,7 +796,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide004" type="Sprite2D" parent="Entities" unique_id=1799066453]
+[node name="Daf10cSide004" type="Sprite2D" parent="Entities" unique_id=1312495709]
 modulate = Color(1.0102586, 1.0102586, 1.0102586, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 480)
@@ -806,7 +806,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide005" type="Sprite2D" parent="Entities" unique_id=8022686]
+[node name="Daf10cSide005" type="Sprite2D" parent="Entities" unique_id=2089351548]
 modulate = Color(1.0334324, 1.0334324, 1.0334324, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 576)
@@ -816,7 +816,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide006" type="Sprite2D" parent="Entities" unique_id=2021285967]
+[node name="Daf10cSide006" type="Sprite2D" parent="Entities" unique_id=903170390]
 modulate = Color(0.9813157, 0.9813157, 0.9813157, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 672)
@@ -826,7 +826,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide007" type="Sprite2D" parent="Entities" unique_id=773123127]
+[node name="Daf10cSide007" type="Sprite2D" parent="Entities" unique_id=1696967580]
 modulate = Color(0.97028685, 0.97028685, 0.97028685, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 768)
@@ -836,7 +836,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide008" type="Sprite2D" parent="Entities" unique_id=681522184]
+[node name="Daf10cSide008" type="Sprite2D" parent="Entities" unique_id=361977198]
 modulate = Color(0.9731417, 0.9731417, 0.9731417, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 864)
@@ -846,7 +846,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide009" type="Sprite2D" parent="Entities" unique_id=5530263]
+[node name="Daf10cSide009" type="Sprite2D" parent="Entities" unique_id=128345972]
 modulate = Color(0.9704912, 0.9704912, 0.9704912, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 960)
@@ -856,7 +856,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide010" type="Sprite2D" parent="Entities" unique_id=937986236]
+[node name="Daf10cSide010" type="Sprite2D" parent="Entities" unique_id=38678322]
 modulate = Color(0.99286103, 0.99286103, 0.99286103, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 1056)
@@ -866,7 +866,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide011" type="Sprite2D" parent="Entities" unique_id=2110835671]
+[node name="Daf10cSide011" type="Sprite2D" parent="Entities" unique_id=284785806]
 modulate = Color(0.96778464, 0.96778464, 0.96778464, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 1152)
@@ -876,7 +876,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide012" type="Sprite2D" parent="Entities" unique_id=347102564]
+[node name="Daf10cSide012" type="Sprite2D" parent="Entities" unique_id=1426313217]
 modulate = Color(1.0394831, 1.0394831, 1.0394831, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(48, 1248)
@@ -886,7 +886,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide013" type="Sprite2D" parent="Entities" unique_id=1086608700]
+[node name="Daf10cSide013" type="Sprite2D" parent="Entities" unique_id=882247556]
 modulate = Color(0.99779844, 0.99779844, 0.99779844, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(528, 576)
@@ -896,7 +896,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide014" type="Sprite2D" parent="Entities" unique_id=1667921561]
+[node name="Daf10cSide014" type="Sprite2D" parent="Entities" unique_id=1101824030]
 modulate = Color(1.0053705, 1.0053705, 1.0053705, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(528, 672)
@@ -906,7 +906,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide015" type="Sprite2D" parent="Entities" unique_id=508372291]
+[node name="Daf10cSide015" type="Sprite2D" parent="Entities" unique_id=1163651222]
 modulate = Color(1.0259514, 1.0259514, 1.0259514, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(720, 1152)
@@ -917,7 +917,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide016" type="Sprite2D" parent="Entities" unique_id=303735729]
+[node name="Daf10cSide016" type="Sprite2D" parent="Entities" unique_id=1731280070]
 modulate = Color(0.9791685, 0.9791685, 0.9791685, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(720, 1248)
@@ -927,7 +927,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide017" type="Sprite2D" parent="Entities" unique_id=1675002911]
+[node name="Daf10cSide017" type="Sprite2D" parent="Entities" unique_id=1450667667]
 modulate = Color(0.9815181, 0.9815181, 0.9815181, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(912, 96)
@@ -938,7 +938,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide018" type="Sprite2D" parent="Entities" unique_id=1434935485]
+[node name="Daf10cSide018" type="Sprite2D" parent="Entities" unique_id=1367338824]
 modulate = Color(0.9766227, 0.9766227, 0.9766227, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(912, 192)
@@ -949,7 +949,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide019" type="Sprite2D" parent="Entities" unique_id=1851665213]
+[node name="Daf10cSide019" type="Sprite2D" parent="Entities" unique_id=19099339]
 modulate = Color(1.0252938, 1.0252938, 1.0252938, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(912, 288)
@@ -959,7 +959,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide020" type="Sprite2D" parent="Entities" unique_id=1868328698]
+[node name="Daf10cSide020" type="Sprite2D" parent="Entities" unique_id=631289712]
 modulate = Color(1.0149552, 1.0149552, 1.0149552, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(912, 384)
@@ -969,7 +969,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide021" type="Sprite2D" parent="Entities" unique_id=1819211047]
+[node name="Daf10cSide021" type="Sprite2D" parent="Entities" unique_id=488582667]
 modulate = Color(1.0287827, 1.0287827, 1.0287827, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(912, 480)
@@ -980,7 +980,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide022" type="Sprite2D" parent="Entities" unique_id=1788967432]
+[node name="Daf10cSide022" type="Sprite2D" parent="Entities" unique_id=631045917]
 modulate = Color(0.98631656, 0.98631656, 0.98631656, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 480)
@@ -990,7 +990,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide023" type="Sprite2D" parent="Entities" unique_id=1871000134]
+[node name="Daf10cSide023" type="Sprite2D" parent="Entities" unique_id=1682679831]
 modulate = Color(0.9812685, 0.9812685, 0.9812685, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 576)
@@ -1000,7 +1000,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide024" type="Sprite2D" parent="Entities" unique_id=1013554515]
+[node name="Daf10cSide024" type="Sprite2D" parent="Entities" unique_id=644347435]
 modulate = Color(1.0195651, 1.0195651, 1.0195651, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 672)
@@ -1010,7 +1010,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide025" type="Sprite2D" parent="Entities" unique_id=453901570]
+[node name="Daf10cSide025" type="Sprite2D" parent="Entities" unique_id=274557218]
 modulate = Color(0.96773034, 0.96773034, 0.96773034, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 1152)
@@ -1020,7 +1020,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide026" type="Sprite2D" parent="Entities" unique_id=1013853798]
+[node name="Daf10cSide026" type="Sprite2D" parent="Entities" unique_id=289615836]
 modulate = Color(1.0166689, 1.0166689, 1.0166689, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 1248)
@@ -1030,7 +1030,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide027" type="Sprite2D" parent="Entities" unique_id=967179846]
+[node name="Daf10cSide027" type="Sprite2D" parent="Entities" unique_id=848255559]
 modulate = Color(0.9907891, 0.9907891, 0.9907891, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 1344)
@@ -1040,7 +1040,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide028" type="Sprite2D" parent="Entities" unique_id=1185829259]
+[node name="Daf10cSide028" type="Sprite2D" parent="Entities" unique_id=1793399988]
 modulate = Color(0.9624789, 0.9624789, 0.9624789, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1008, 1440)
@@ -1050,7 +1050,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide029" type="Sprite2D" parent="Entities" unique_id=2002802109]
+[node name="Daf10cSide029" type="Sprite2D" parent="Entities" unique_id=1748161495]
 modulate = Color(1.0056658, 1.0056658, 1.0056658, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1296, 96)
@@ -1060,7 +1060,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide030" type="Sprite2D" parent="Entities" unique_id=1034634381]
+[node name="Daf10cSide030" type="Sprite2D" parent="Entities" unique_id=1867866789]
 modulate = Color(0.9808283, 0.9808283, 0.9808283, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1296, 768)
@@ -1071,7 +1071,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide031" type="Sprite2D" parent="Entities" unique_id=616661292]
+[node name="Daf10cSide031" type="Sprite2D" parent="Entities" unique_id=777141582]
 modulate = Color(0.9944369, 0.9944369, 0.9944369, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1296, 864)
@@ -1081,7 +1081,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide032" type="Sprite2D" parent="Entities" unique_id=1067961202]
+[node name="Daf10cSide032" type="Sprite2D" parent="Entities" unique_id=1811235293]
 modulate = Color(1.0020329, 1.0020329, 1.0020329, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1296, 960)
@@ -1091,7 +1091,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide033" type="Sprite2D" parent="Entities" unique_id=1910845254]
+[node name="Daf10cSide033" type="Sprite2D" parent="Entities" unique_id=466071425]
 modulate = Color(0.9717324, 0.9717324, 0.9717324, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1296, 1056)
@@ -1101,7 +1101,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide034" type="Sprite2D" parent="Entities" unique_id=1147762976]
+[node name="Daf10cSide034" type="Sprite2D" parent="Entities" unique_id=1151266993]
 modulate = Color(1.0150789, 1.0150789, 1.0150789, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1584, 96)
@@ -1112,7 +1112,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide035" type="Sprite2D" parent="Entities" unique_id=299138697]
+[node name="Daf10cSide035" type="Sprite2D" parent="Entities" unique_id=1671532227]
 modulate = Color(1.0036945, 1.0036945, 1.0036945, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1680, 480)
@@ -1122,7 +1122,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide036" type="Sprite2D" parent="Entities" unique_id=1437914363]
+[node name="Daf10cSide036" type="Sprite2D" parent="Entities" unique_id=1213029307]
 modulate = Color(0.98913735, 0.98913735, 0.98913735, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1680, 576)
@@ -1132,7 +1132,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide037" type="Sprite2D" parent="Entities" unique_id=1050730736]
+[node name="Daf10cSide037" type="Sprite2D" parent="Entities" unique_id=119460012]
 modulate = Color(1.037682, 1.037682, 1.037682, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1680, 672)
@@ -1142,7 +1142,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide038" type="Sprite2D" parent="Entities" unique_id=86625395]
+[node name="Daf10cSide038" type="Sprite2D" parent="Entities" unique_id=836838538]
 modulate = Color(1.0291332, 1.0291332, 1.0291332, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1776, 1536)
@@ -1153,7 +1153,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide039" type="Sprite2D" parent="Entities" unique_id=498872811]
+[node name="Daf10cSide039" type="Sprite2D" parent="Entities" unique_id=305605486]
 modulate = Color(0.99411184, 0.99411184, 0.99411184, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1872, 1248)
@@ -1163,7 +1163,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide040" type="Sprite2D" parent="Entities" unique_id=1939758996]
+[node name="Daf10cSide040" type="Sprite2D" parent="Entities" unique_id=831830396]
 modulate = Color(1.0298576, 1.0298576, 1.0298576, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1872, 1344)
@@ -1173,7 +1173,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide041" type="Sprite2D" parent="Entities" unique_id=2044945545]
+[node name="Daf10cSide041" type="Sprite2D" parent="Entities" unique_id=1511885744]
 modulate = Color(0.9684753, 0.9684753, 0.9684753, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1872, 1440)
@@ -1183,7 +1183,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide042" type="Sprite2D" parent="Entities" unique_id=1013981221]
+[node name="Daf10cSide042" type="Sprite2D" parent="Entities" unique_id=1508395647]
 modulate = Color(0.9964886, 0.9964886, 0.9964886, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1872, 1536)
@@ -1193,7 +1193,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide043" type="Sprite2D" parent="Entities" unique_id=996047937]
+[node name="Daf10cSide043" type="Sprite2D" parent="Entities" unique_id=444719912]
 modulate = Color(1.0134068, 1.0134068, 1.0134068, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 96)
@@ -1203,7 +1203,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide044" type="Sprite2D" parent="Entities" unique_id=1724150200]
+[node name="Daf10cSide044" type="Sprite2D" parent="Entities" unique_id=1777257205]
 modulate = Color(1.026778, 1.026778, 1.026778, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 192)
@@ -1213,7 +1213,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide045" type="Sprite2D" parent="Entities" unique_id=1679051057]
+[node name="Daf10cSide045" type="Sprite2D" parent="Entities" unique_id=171457578]
 modulate = Color(0.9697991, 0.9697991, 0.9697991, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 288)
@@ -1223,7 +1223,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide046" type="Sprite2D" parent="Entities" unique_id=89623774]
+[node name="Daf10cSide046" type="Sprite2D" parent="Entities" unique_id=2137912633]
 modulate = Color(0.97231066, 0.97231066, 0.97231066, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 384)
@@ -1233,7 +1233,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide047" type="Sprite2D" parent="Entities" unique_id=1032749214]
+[node name="Daf10cSide047" type="Sprite2D" parent="Entities" unique_id=978484535]
 modulate = Color(0.97101384, 0.97101384, 0.97101384, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 480)
@@ -1243,7 +1243,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide048" type="Sprite2D" parent="Entities" unique_id=1089048796]
+[node name="Daf10cSide048" type="Sprite2D" parent="Entities" unique_id=1932744580]
 modulate = Color(0.98455966, 0.98455966, 0.98455966, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 576)
@@ -1254,7 +1254,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide049" type="Sprite2D" parent="Entities" unique_id=268433501]
+[node name="Daf10cSide049" type="Sprite2D" parent="Entities" unique_id=1264573925]
 modulate = Color(1.0120596, 1.0120596, 1.0120596, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 672)
@@ -1264,7 +1264,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide050" type="Sprite2D" parent="Entities" unique_id=310022256]
+[node name="Daf10cSide050" type="Sprite2D" parent="Entities" unique_id=1209838220]
 modulate = Color(1.0380309, 1.0380309, 1.0380309, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 768)
@@ -1274,7 +1274,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide051" type="Sprite2D" parent="Entities" unique_id=1522958338]
+[node name="Daf10cSide051" type="Sprite2D" parent="Entities" unique_id=694375889]
 modulate = Color(1.0032696, 1.0032696, 1.0032696, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(1968, 864)
@@ -1284,7 +1284,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide052" type="Sprite2D" parent="Entities" unique_id=321630563]
+[node name="Daf10cSide052" type="Sprite2D" parent="Entities" unique_id=2075258069]
 modulate = Color(1.000774, 1.000774, 1.000774, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2160, 1248)
@@ -1294,7 +1294,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide053" type="Sprite2D" parent="Entities" unique_id=479607397]
+[node name="Daf10cSide053" type="Sprite2D" parent="Entities" unique_id=1228564212]
 modulate = Color(0.9612768, 0.9612768, 0.9612768, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2160, 1344)
@@ -1304,7 +1304,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide054" type="Sprite2D" parent="Entities" unique_id=268932739]
+[node name="Daf10cSide054" type="Sprite2D" parent="Entities" unique_id=197215857]
 modulate = Color(1.0038714, 1.0038714, 1.0038714, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2160, 1440)
@@ -1314,7 +1314,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide055" type="Sprite2D" parent="Entities" unique_id=1306193162]
+[node name="Daf10cSide055" type="Sprite2D" parent="Entities" unique_id=411567066]
 modulate = Color(0.98322296, 0.98322296, 0.98322296, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2160, 1536)
@@ -1325,7 +1325,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide056" type="Sprite2D" parent="Entities" unique_id=681677186]
+[node name="Daf10cSide056" type="Sprite2D" parent="Entities" unique_id=1937000535]
 modulate = Color(1.0091105, 1.0091105, 1.0091105, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2352, 960)
@@ -1335,7 +1335,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide057" type="Sprite2D" parent="Entities" unique_id=1865351902]
+[node name="Daf10cSide057" type="Sprite2D" parent="Entities" unique_id=738769992]
 modulate = Color(1.0079244, 1.0079244, 1.0079244, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2352, 1056)
@@ -1345,7 +1345,7 @@ offset = Vector2(-48, -96)
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide058" type="Sprite2D" parent="Entities" unique_id=1934094903]
+[node name="Daf10cSide058" type="Sprite2D" parent="Entities" unique_id=37783923]
 modulate = Color(0.9957671, 0.9957671, 0.9957671, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 96)
@@ -1356,7 +1356,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide059" type="Sprite2D" parent="Entities" unique_id=1925617466]
+[node name="Daf10cSide059" type="Sprite2D" parent="Entities" unique_id=363106267]
 modulate = Color(0.97567534, 0.97567534, 0.97567534, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 192)
@@ -1367,7 +1367,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide060" type="Sprite2D" parent="Entities" unique_id=478490789]
+[node name="Daf10cSide060" type="Sprite2D" parent="Entities" unique_id=1764082530]
 modulate = Color(1.0040723, 1.0040723, 1.0040723, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 288)
@@ -1378,7 +1378,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide061" type="Sprite2D" parent="Entities" unique_id=642054090]
+[node name="Daf10cSide061" type="Sprite2D" parent="Entities" unique_id=567221088]
 modulate = Color(1.0080552, 1.0080552, 1.0080552, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 384)
@@ -1389,7 +1389,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide062" type="Sprite2D" parent="Entities" unique_id=981794797]
+[node name="Daf10cSide062" type="Sprite2D" parent="Entities" unique_id=1325486296]
 modulate = Color(1.0076716, 1.0076716, 1.0076716, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 480)
@@ -1400,7 +1400,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cSide063" type="Sprite2D" parent="Entities" unique_id=1226126941]
+[node name="Daf10cSide063" type="Sprite2D" parent="Entities" unique_id=669205455]
 modulate = Color(0.9672049, 0.9672049, 0.9672049, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 672)
@@ -1411,7 +1411,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Daf10cSide064" type="Sprite2D" parent="Entities" unique_id=575362421]
+[node name="Daf10cSide064" type="Sprite2D" parent="Entities" unique_id=43323651]
 modulate = Color(1.0354288, 1.0354288, 1.0354288, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 768)
@@ -1422,7 +1422,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide065" type="Sprite2D" parent="Entities" unique_id=1128430422]
+[node name="Daf10cSide065" type="Sprite2D" parent="Entities" unique_id=663365447]
 modulate = Color(1.0242023, 1.0242023, 1.0242023, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 864)
@@ -1433,7 +1433,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide066" type="Sprite2D" parent="Entities" unique_id=446940616]
+[node name="Daf10cSide066" type="Sprite2D" parent="Entities" unique_id=1182358607]
 modulate = Color(1.0226653, 1.0226653, 1.0226653, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 960)
@@ -1444,7 +1444,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide067" type="Sprite2D" parent="Entities" unique_id=635579074]
+[node name="Daf10cSide067" type="Sprite2D" parent="Entities" unique_id=1477424526]
 modulate = Color(1.0205116, 1.0205116, 1.0205116, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 1056)
@@ -1455,7 +1455,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide068" type="Sprite2D" parent="Entities" unique_id=5709497]
+[node name="Daf10cSide068" type="Sprite2D" parent="Entities" unique_id=1140614688]
 modulate = Color(0.9903245, 0.9903245, 0.9903245, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 1152)
@@ -1466,7 +1466,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide069" type="Sprite2D" parent="Entities" unique_id=1475635103]
+[node name="Daf10cSide069" type="Sprite2D" parent="Entities" unique_id=169989546]
 modulate = Color(0.9701436, 0.9701436, 0.9701436, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 1248)
@@ -1477,7 +1477,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide070" type="Sprite2D" parent="Entities" unique_id=1506581754]
+[node name="Daf10cSide070" type="Sprite2D" parent="Entities" unique_id=1162156346]
 modulate = Color(1.0360769, 1.0360769, 1.0360769, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 1344)
@@ -1488,7 +1488,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 103, 96, 96)
 
-[node name="Daf10cSide071" type="Sprite2D" parent="Entities" unique_id=747041146]
+[node name="Daf10cSide071" type="Sprite2D" parent="Entities" unique_id=2013782928]
 modulate = Color(0.98560476, 0.98560476, 0.98560476, 1)
 material = ExtResource("10_el4h5")
 position = Vector2(2832, 1440)
@@ -1499,22 +1499,22 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 207, 96, 96)
 
-[node name="Daf10cRocher000" parent="Entities" unique_id=1478380644 instance=ExtResource("26_vtr5f")]
+[node name="Daf10cRocher000" parent="Entities" unique_id=85653478 instance=ExtResource("26_vtr5f")]
 position = Vector2(720, 1440)
 
-[node name="Daf10cRocher001" parent="Entities" unique_id=1605459071 instance=ExtResource("26_vtr5f")]
+[node name="Daf10cRocher001" parent="Entities" unique_id=202110098 instance=ExtResource("26_vtr5f")]
 position = Vector2(432, 1536)
 
-[node name="Daf10cRocher002" parent="Entities" unique_id=45255044 instance=ExtResource("26_vtr5f")]
+[node name="Daf10cRocher002" parent="Entities" unique_id=1389452674 instance=ExtResource("26_vtr5f")]
 position = Vector2(240, 1632)
 
-[node name="Daf10cRocher003" parent="Entities" unique_id=1346978021 instance=ExtResource("26_vtr5f")]
+[node name="Daf10cRocher003" parent="Entities" unique_id=2105486778 instance=ExtResource("26_vtr5f")]
 position = Vector2(432, 1632)
 
-[node name="Daf10cRocher004" parent="Entities" unique_id=1365016249 instance=ExtResource("26_vtr5f")]
+[node name="Daf10cRocher004" parent="Entities" unique_id=23737799 instance=ExtResource("26_vtr5f")]
 position = Vector2(336, 1728)
 
-[node name="Daf10cRocher005" parent="Entities" unique_id=1846992609 instance=ExtResource("26_vtr5f")]
+[node name="Daf10cRocher005" parent="Entities" unique_id=437418115 instance=ExtResource("26_vtr5f")]
 position = Vector2(432, 1728)
 
 [node name="Daf10cRocher006" parent="Entities" unique_id=931308113 instance=ExtResource("27_m7wuh")]

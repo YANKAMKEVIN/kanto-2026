@@ -811,6 +811,9 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_transformateur_centrale_01": {"width": 1, "depth": 1},
 	&"int_bobine_centrale_01": {"width": 1, "depth": 1},
 	&"int_pupitre_centrale_01": {"width": 1, "depth": 1},
+	&"int_generateur_centrale_01": {"width": 2, "depth": 1},
+	&"int_condensateurs_centrale_01": {"width": 2, "depth": 1},
+	&"int_touret_centrale_01": {"width": 1, "depth": 1},
 	# Façades du J29 (lot DAF.4, `tools/build_daf4_facades.gd`) : poste de la Ligue (Route 22 ouest,
 	# 5 × 4, porte au milieu) et bâtiment de la Ligue (Plateau Indigo, 8 × 6, porte double).
 	&"bldg_poste_route_22_01": {"shadow": true, "width": 5, "depth": 4, "fade": true,
