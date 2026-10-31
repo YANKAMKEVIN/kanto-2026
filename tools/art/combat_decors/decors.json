@@ -280,5 +280,41 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"fuchsia_gym_ninja": {
+		"composition": "COMBAT_DECOR_PARMANIE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_PARMANIE_r1_TL.png", "portion": [0, 0, 1027, 830] },
+			{ "image": "COMBAT_DECOR_PARMANIE_r1_TR.png", "portion": [869, 0, 1896, 830] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"cinnabar_gym_volcan": {
+		"composition": "COMBAT_DECOR_CRAMOIS_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_CRAMOIS_r1_TL.png", "portion": [0, 0, 1002, 850] },
+			{ "image": "COMBAT_DECOR_CRAMOIS_r1_TR.png", "portion": [848, 0, 1850, 850] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"safari_zone_savane": {
+		"composition": "COMBAT_DECOR_SAFARI_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_SAFARI_r1_TL.png", "portion": [0, 0, 999, 853] },
+			{ "image": "COMBAT_DECOR_SAFARI_r1_TR.png", "portion": [845, 0, 1844, 853] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"silph_co_hall": {
+		"composition": "COMBAT_DECOR_SYLPHE_HALL_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_SYLPHE_HALL_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_SYLPHE_HALL_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

@@ -189,7 +189,57 @@ COMBATS = [
 		"bleu-vert, jamais noires.",
 		daf3._INTERDITS_COMBAT + " Éclair, arc électrique, étincelle, feu, fumée, personnage en combinaison."),
 ]
-COMBAT_IDS = {"COMBAT_DECOR_CENTRALE": "power_plant_centrale"}
+## Reliquats DAF.10d (2026-10-31) : les quatre autres fonds dérivés de DAF.2 bis, peints par Codex.
+_LIBRE = "- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT"
+COMBATS += [
+	("COMBAT_DECOR_PARMANIE", "ARÈNE DE PARMANIE (DOJO NINJA)", f"{_G}ground_parquet_dojo_01.png",
+		"la salle de l'ARÈNE de PARMANIE, un dojo de ninja (Champion de type Poison) : grand parquet de bois "
+		"clair ciré, au fond des cloisons coulissantes de papier shoji à cadre de bois sombre, des poutres, deux "
+		"grandes tentures VIOLETTES unies, quelques lanternes de papier éteintes, un petit râtelier de bois vide ; "
+		"des panneaux de bois discrets qui laissent deviner des murs cachés. Mystérieux, élégant, jamais sinistre.",
+		"- Fond (de 0 à 36 % de la hauteur) : les cloisons shoji, base du mur vers 34 % de la hauteur ; une "
+		"tenture violette à gauche (x 10 à 22 %), une autre à droite (x 78 à 90 %).\n" + _LIBRE +
+		" de parquet clair.\n" + daf3._SOL_AB,
+		"lumière douce et tamisée de fin de journée, filtrée par le papier shoji (violet-rose pâle) ; le centre "
+		"du parquet bien éclairé ; ombres violet-bleu, jamais noires.",
+		daf3._INTERDITS_COMBAT + " Arme, shuriken, sabre, fumée, poison visible, crâne."),
+	("COMBAT_DECOR_CRAMOIS", "ARÈNE DE CRAMOIS'ÎLE (VOLCAN)", f"{_G}ground_roche_volcanique_01.png",
+		"la salle de l'ARÈNE de CRAMOIS'ÎLE (Champion de type Feu) bâtie dans le flanc d'un volcan : sol de "
+		"dalles de pierre volcanique sombre bien jointes, au fond une paroi de roche basaltique avec de fines "
+		"veines de LAVE orange qui luisent, deux grands BRASEROS de fer forgé allumés de part et d'autre, une "
+		"estrade de pierre au centre du fond ; chaleur, mais lieu sûr et entretenu.",
+		"- Fond (de 0 à 38 % de la hauteur) : la paroi de basalte et ses veines de lave, base vers 36 % ; un "
+		"brasero à gauche (x 12 à 20 %), un autre à droite (x 80 à 88 %), l'estrade au centre (x 40 à 60 %).\n"
+		+ _LIBRE + " de dalles de pierre volcanique, sans fissure de lave au sol.\n" + daf3._SOL_AB,
+		"lumière chaude orange et rouge venant des braseros et des veines de lave, plus un peu de jour froid "
+		"tombant d'une ouverture hors cadre en haut à gauche ; le centre du sol lisible ; ombres brun-violet, "
+		"jamais noires.",
+		daf3._INTERDITS_COMBAT + " Lave au premier plan, rivière de lave, fumée épaisse, explosion."),
+	("COMBAT_DECOR_SAFARI", "PARC SAFARI (SAVANE)", f"{_G}ground_hautes_herbes_jaune_01.png",
+		"une clairière du PARC SAFARI de Parmanie, une réserve naturelle aux allures de savane : grand sol de "
+		"terre battue claire et d'herbe rase dorée, au fond des HAUTES HERBES jaunes, quelques acacias à la cime "
+		"plate, un enclos de rondins bas, des collines douces au loin ; ciel clair d'après-midi.",
+		"- Horizon vers 40 % de la hauteur : collines lointaines, deux acacias (x 10 à 24 % et x 76 à 90 %), une "
+		"bande de hautes herbes jaunes au pied, une clôture de rondins basse à droite.\n" + _LIBRE +
+		" de terre claire et d'herbe rase dorée, sans hautes herbes au centre.\n" + daf3._SOL_AB,
+		"golden hour douce, soleil bas du haut à gauche (hors cadre), ombres chaudes et longues, ciel bleu pâle "
+		"aux nuages légers, pas de soleil visible.",
+		daf3._INTERDITS_COMBAT + " Animal, girafe, éléphant, véhicule, jeep, bâtiment."),
+	("COMBAT_DECOR_SYLPHE_HALL", "HALL D'ACCUEIL DE LA SYLPHE SARL", f"{_G}ground_moquette_sylphe_01.png",
+		"le grand HALL D'ACCUEIL du siège de la Sylphe SARL (entreprise technologique, Safrania) : sol de grandes "
+		"dalles claires crème et ivoire polies, au fond un long COMPTOIR d'accueil incurvé en bois clair et blanc, "
+		"derrière une paroi de verre et de panneaux bleu pâle, deux portes d'ASCENSEUR métalliques fermées, "
+		"des plantes vertes en pot, une banquette ; moderne, propre, lumineux.",
+		"- Fond (de 0 à 36 % de la hauteur) : la paroi du fond, base vers 34 % ; le comptoir au centre gauche "
+		"(x 22 à 50 %), les deux ascenseurs à droite (x 62 à 86 %), une plante à chaque bout.\n" + _LIBRE +
+		" de dalles claires polies (reflets doux, pas un miroir).\n" + daf3._SOL_AB,
+		"lumière de jour blanche et douce venant de grandes baies hors cadre à gauche, plafonniers discrets ; "
+		"ombres gris-bleu légères, jamais noires.",
+		daf3._INTERDITS_COMBAT + " Écran allumé, logo, enseigne, garde, Team Rocket."),
+]
+COMBAT_IDS = {"COMBAT_DECOR_CENTRALE": "power_plant_centrale", "COMBAT_DECOR_PARMANIE": "fuchsia_gym_ninja",
+	"COMBAT_DECOR_CRAMOIS": "cinnabar_gym_volcan", "COMBAT_DECOR_SAFARI": "safari_zone_savane",
+	"COMBAT_DECOR_SYLPHE_HALL": "silph_co_hall"}
 
 
 def _images() -> list[dict]:

@@ -9756,7 +9756,7 @@
    "fichier": "res://assets/world/buildings/bldg_cabane_safari_01.png",
    "taille": [
     384,
-    326
+    312
    ],
    "ombre": {
     "fichier": "res://assets/world/buildings/bldg_cabane_safari_01_shadow.png",
@@ -9766,20 +9766,20 @@
     ],
     "echelle": 2,
     "taille": [
-     247,
-     34
+     246,
+     33
     ]
    },
    "contact": {
     "fichier": "res://assets/world/buildings/bldg_cabane_safari_01_contact.png",
     "decalage": [
      -200,
-     -21
+     -19
     ],
     "echelle": 2,
     "taille": [
      200,
-     30
+     29
     ]
    }
   },

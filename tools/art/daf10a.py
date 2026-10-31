@@ -63,6 +63,14 @@ FACADES = [
 		"fenêtres, deux grandes lanternes de bois de part et d'autre de l'entrée. Chaleureux, d'esprit « réserve "
 		"naturelle », de la même main que les bâtiments joints.",
 		[MAISON, CENTRE, BOUTIQUE]),
+	# Rétablie le 2026-10-31 (le dérivé `preparer_cabane_secours` attendait la fin de la limite d'usage).
+	("WORLD_BLDG_CABANE_SAFARI_01", "bldg_cabane_safari_01", 4, 3, (2, 1),
+		"une petite CABANE DE REPOS du Parc Safari, façade de face : une maisonnette basse de rondins et de "
+		"planches de bois brun chaud, 4 cases de large et environ 3,25 de haut, un TOIT de chaume doré à deux pans "
+		"avec un petit avant-toit ; au bas, sur la 2e colonne depuis la gauche, une PORTE de bois simple, une "
+		"marche de pierre ; à droite de la porte, une petite fenêtre à volets verts et une jardinière ; un banc de "
+		"bois contre le mur. Rustique et accueillante, de la même main que les bâtiments joints.",
+		[MAISON, CENTRE, BOUTIQUE]),
 ]
 
 ## Recalage des portes : Codex centre la porte ; milieu de la porte mesuré sur l'image ramenée à 864 px
@@ -120,7 +128,7 @@ def generer(choix: set[str]) -> None:
 			print(ligne, flush=True)
 
 
-def preparer_modules() -> None:
+def preparer_modules(choix: set[str] = set()) -> None:
 	import preparer
 	manifeste = json.loads((ICI / "manifeste.json").read_text())
 	catalogue_path = RACINE / "assets" / "world" / "catalogue.json"
@@ -134,7 +142,7 @@ def preparer_modules() -> None:
 	p.sols()
 	for ident, asset, largeur, profondeur, porte, *_r in FACADES:
 		source = ART / daf3._source(ident)
-		if source.exists():
+		if source.exists() and (not choix or ident in choix):
 			image = preparer._silhouette(Image.open(source).convert("RGBA")).resize(
 				(largeur * CASE, profondeur * CASE + 24), Image.LANCZOS)
 			image = _recaler_porte(image, asset, *porte)
@@ -204,6 +212,6 @@ if __name__ == "__main__":
 	elif args[:1] == ["--cabane"]:
 		preparer_cabane_secours()
 	elif args[:1] == ["--modules"]:
-		preparer_modules()
+		preparer_modules(set(args[1:]))
 	else:
 		generer(set(args))
