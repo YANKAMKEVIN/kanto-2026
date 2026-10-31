@@ -33,7 +33,7 @@ const DATE := "2026-10-10T09:00:00"
 const TIMEOUT := 10.0
 const BEDROOM_CELL := Vector2i(3, 4)
 ## Index de « Allez… en route ! » dans oak_intro.json.
-const LAST_LINE := 31
+const LAST_LINE := 32
 const LEGEND := "Le commencement de toute aventure"
 
 var _fs: MemoryFs
@@ -132,12 +132,15 @@ func _wait_finished(player: String = "Kevin", rival: String = "Régis") -> void:
 	await wait_process_frames(2)
 
 
-## Une action de l'introduction (s'il y en a une en cours) : prénom, Oui, ou toucher.
+## Une action de l'introduction (s'il y en a une en cours) : apparence (première carte),
+## prénom, Oui, ou toucher.
 func _drive_intro(player: String, rival: String) -> void:
 	var intro := _opening().get_intro()
 	if intro == null or not intro.is_running():
 		return
-	if intro.is_waiting_for_name():
+	if intro.is_waiting_for_look():
+		intro.choose_look(IntroScript.LOOK_OPTIONS[intro.get_reader().current().name][0])
+	elif intro.is_waiting_for_name():
 		var prompt := intro.get_reader().current().name
 		intro.submit_name(player if prompt == IntroScript.PROMPT_PLAYER_NAME else rival)
 	elif intro.is_waiting_for_choice():
@@ -531,6 +534,33 @@ func test_the_whole_introduction_brings_the_chosen_names_into_the_bedroom() -> v
 	assert_true(_boot._can_write(), "autosave normal ensuite")
 
 
+## Chantier JR (JR-1, JR-2, JR-8) : la joueuse et la rivale choisies dans l'introduction sont
+## écrites dans la nouvelle partie et habillent le joueur de la chambre.
+func test_the_heroine_and_the_girl_rival_reach_the_saved_game() -> void:
+	await _launch()
+	await _start_intro()
+	var intro := _opening().get_intro()
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000.0)
+	while not _opening().is_finished() and Time.get_ticks_msec() < deadline:
+		if intro != null and intro.is_running() and intro.is_waiting_for_look():
+			var look_prompt := intro.get_reader().current().name
+			intro.choose_look(IntroScript.LOOK_OPTIONS[look_prompt][1])
+		else:
+			_drive_intro("Leaf", "Régine")
+		await wait_process_frames(1)
+	await wait_process_frames(2)
+	assert_eq(_opening().get_last_commit(), OpeningCommit.Result.OK)
+	assert_eq(GameState.player_look, &"heroine")
+	assert_eq(GameState.rival_look, &"rivale")
+	var saved := _saved()
+	assert_eq(saved.get("player_look"), "heroine")
+	assert_eq(saved.get("rival_look"), "rivale")
+	assert_eq(saved.get("player_name"), "Leaf")
+	assert_eq(Player.look_sprite(), &"player_heroine")
+	GameState.player_look = GameState.DEFAULT_PLAYER_LOOK
+	GameState.rival_look = GameState.DEFAULT_RIVAL_LOOK
+
+
 func test_the_chosen_names_label_the_prologue_and_the_rival_battle() -> void:
 	await _launch()
 	await _start_intro()
@@ -585,8 +615,9 @@ func test_android_back_during_the_introduction_does_nothing() -> void:
 func test_killed_at_any_shot_of_the_introduction_writes_nothing() -> void:
 	var old := _fixture_text()
 	# Index d'étape de oak_intro.json où l'on tue l'application : Chen seul, Nidorino, le
-	# joueur, son prénom, la confirmation, le rival, le prénom du rival, la dernière réplique.
-	var shots: Array[int] = [1, 5, 11, 13, 14, 18, 23, 31]
+	# joueur (choix de l'apparence, chantier JR), son prénom, la confirmation, le rival (choix
+	# de l'apparence), le prénom du rival, la dernière réplique.
+	var shots: Array[int] = [1, 5, 12, 13, 14, 18, 24, LAST_LINE]
 	for shot: int in shots:
 		_fs = MemoryFs.new()
 		_put_save(old)

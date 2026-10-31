@@ -12,6 +12,9 @@ enum Type {
 	PROMPT,
 	## « X ! C'est bien ça ? » Oui / Non ; Non ramène au prompt [member name].
 	CONFIRM,
+	## Choix de l'apparence (chantier JR) : deux cartes illustrées ; [member text] est la question
+	## de Chen, affichée dans la boîte.
+	LOOK,
 }
 
 var type: Type = Type.PAGE
@@ -28,5 +31,6 @@ var slot: StringName = &""
 ## STAGE (montrer) : effet d'entrée facultatif ([constant IntroScript.EFFECTS]).
 var effect: StringName = &""
 ## PROMPT, CONFIRM : quel prénom ([constant IntroScript.PROMPT_PLAYER_NAME] ou
-## [constant IntroScript.PROMPT_RIVAL_NAME]).
+## [constant IntroScript.PROMPT_RIVAL_NAME]) ; LOOK : quelle apparence
+## ([constant IntroScript.PROMPT_PLAYER_LOOK] ou [constant IntroScript.PROMPT_RIVAL_LOOK]).
 var name: StringName = &""

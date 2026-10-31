@@ -1,5 +1,5 @@
 {
-	"_note": "Prénoms de l'ouverture (dossier 13, arbitrages A5 et A7, validés par Kevin le 2026-10-10). max_length : nombre de caractères au plus. Pour chaque rôle : default = prénom quand aucune saisie n'a eu lieu (départ de débogage, sauvegarde migrée ; le joueur garde « Kevin », GameState.DEFAULT_PLAYER_NAME) ; suggestions = les pastilles de l'écran de prénom, dans l'ordre (1 à 3). Chaque prénom doit être valide et déjà normalisé (NameRules).",
+	"_note": "Prénoms de l'ouverture (dossier 13, arbitrages A5 et A7, validés par Kevin le 2026-10-10). max_length : nombre de caractères au plus. Pour chaque rôle : default = prénom quand aucune saisie n'a eu lieu (départ de débogage, sauvegarde migrée ; le joueur garde « Kevin », GameState.DEFAULT_PLAYER_NAME) ; suggestions = les pastilles de l'écran de prénom, dans l'ordre (1 à 3). Chaque prénom doit être valide et déjà normalisé (NameRules). Chantier JR (JR-4, validé par Kevin le 2026-10-30) : « heroine » et « rivale », prénoms de la joueuse et de la rivale quand cette apparence est choisie ; défaut = premier proposé [D].",
 	"max_length": 10,
 	"player": {
 		"default": "Kevin",
@@ -8,5 +8,13 @@
 	"rival": {
 		"default": "Régis",
 		"suggestions": ["Régis", "Blue", "Gary"]
+	},
+	"heroine": {
+		"default": "Leaf",
+		"suggestions": ["Leaf", "Céleste", "Kelly"]
+	},
+	"rivale": {
+		"default": "Régine",
+		"suggestions": ["Régine", "Green", "Iris"]
 	}
 }

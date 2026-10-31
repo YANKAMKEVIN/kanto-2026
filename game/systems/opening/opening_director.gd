@@ -55,8 +55,9 @@ var _texts := TitleTexts.new()
 var _names := OpeningNames.new()
 var _save: SaveSystem
 var _save_content: Dictionary = {}
-## `func(player_name: String, rival_name: String) -> Dictionary` : prépare la nouvelle partie
-## dans l'état du jeu et rend son dictionnaire de sauvegarde (Boot).
+## `func(player_name: String, rival_name: String, player_look: StringName,
+## rival_look: StringName) -> Dictionary` : prépare la nouvelle partie dans l'état du jeu et rend
+## son dictionnaire de sauvegarde (Boot ; apparences : chantier JR).
 var _build_new_game: Callable
 var _built: bool = false
 var _fade: ScreenFade
@@ -80,6 +81,9 @@ var _backdrop_blur: bool = true
 ## Prénoms choisis dans l'introduction (vides : défauts de [OpeningNames]).
 var _player_name: String = ""
 var _rival_name: String = ""
+## Apparences choisies dans l'introduction (chantier JR) ; celles par défaut sans introduction.
+var _player_look: StringName = GameState.DEFAULT_PLAYER_LOOK
+var _rival_look: StringName = GameState.DEFAULT_RIVAL_LOOK
 ## Vrai une fois la fin de l'introduction jouée (rideau blanc chaud) : la chambre apparaît depuis
 ## le blanc ([method entry_fade_time]).
 var _sent_off: bool = false
@@ -315,6 +319,9 @@ func _play_intro() -> void:
 func _on_intro_finished(player_name: String, rival_name: String) -> void:
 	_player_name = player_name
 	_rival_name = rival_name
+	if _intro != null:
+		_player_look = _intro.player_look()
+		_rival_look = _intro.rival_look()
 	_leaving = true
 	_flow.handle(OpeningFlow.Action.INTRO_FINISHED)
 	var effects := _flow.take_effects()
@@ -435,8 +442,8 @@ func _build_once() -> Dictionary:
 	if not _build_new_game.is_valid():
 		return {}
 	var player_name := _player_name if not _player_name.is_empty() \
-		else _names.default_name(OpeningNames.ROLE_PLAYER)
+		else _names.default_name(OpeningNames.ROLE_PLAYER, _player_look)
 	var rival_name := _rival_name if not _rival_name.is_empty() \
-		else _names.default_name(OpeningNames.ROLE_RIVAL)
-	var built: Variant = _build_new_game.call(player_name, rival_name)
+		else _names.default_name(OpeningNames.ROLE_RIVAL, _rival_look)
+	var built: Variant = _build_new_game.call(player_name, rival_name, _player_look, _rival_look)
 	return built if built is Dictionary else {}

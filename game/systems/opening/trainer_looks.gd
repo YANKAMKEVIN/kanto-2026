@@ -45,6 +45,17 @@ const RIVAL_PORTRAITS: Dictionary[StringName, String] = {
 const RIVAL_DATA_SPRITE: StringName = &"rival"
 
 
+## Apparences au féminin (accords {g:…|…} et {gr:…|…}, JR-7).
+const HEROINE: StringName = &"heroine"
+const RIVALE: StringName = &"rivale"
+
+
+## Valeurs des accords des dialogues pour ces apparences ([DialogueTokens]).
+static func agreement_values(player_look: StringName,
+		rival_look: StringName) -> Dictionary[StringName, String]:
+	return DialogueTokens.agreement_values(player_look == HEROINE, rival_look == RIVALE)
+
+
 static func player_sprite(look: StringName) -> StringName:
 	return PLAYER_SPRITES.get(look, PLAYER_SPRITES[&"hero"])
 

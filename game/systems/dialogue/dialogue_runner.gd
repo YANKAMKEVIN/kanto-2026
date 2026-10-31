@@ -264,7 +264,7 @@ func _resolve_pages(pages: Array[DialoguePage]) -> Array[DialoguePage]:
 ## Locuteur du dialogue, jetons résolus (`"speaker": "{rival}"`, dossier 13 §3.5).
 func _default_speaker() -> String:
 	var speaker := _dialogue.speaker
-	if DialogueTokens.tokens_in(speaker).is_empty():
+	if not DialogueTokens.needs_values(speaker):
 		return speaker
 	return DialogueTokens.resolve_speaker(speaker, _token_values())
 

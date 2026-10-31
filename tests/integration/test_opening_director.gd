@@ -22,7 +22,8 @@ func before_each() -> void:
 	_builds = 0
 
 
-func _build(player_name: String, rival_name: String) -> Dictionary:
+func _build(player_name: String, rival_name: String, _player_look: StringName = &"hero",
+		_rival_look: StringName = &"rival") -> Dictionary:
 	_builds += 1
 	_events.append("build %s %s (écritures : %d)" % [player_name, rival_name,
 		_writes()])
@@ -127,7 +128,8 @@ func test_a_build_failure_is_a_failed_commit() -> void:
 	_director = OpeningDirector.new()
 	_director.speed_scale = 0.0
 	add_child_autofree(_director)
-	_director.setup(SaveSystem.new(_fs, SAVE_PATH), func(_p: String, _r: String) -> Variant:
+	_director.setup(SaveSystem.new(_fs, SAVE_PATH),
+			func(_p: String, _r: String, _pl: StringName, _rl: StringName) -> Variant:
 		return null, null, GameSettings.new(), GameSettings.Graphics.HIGH, Callable(),
 		[] as Array[StringName])
 	var warnings: Array[String] = []

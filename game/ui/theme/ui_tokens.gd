@@ -1825,6 +1825,11 @@ const NAME_CHIP_RADIUS := 64
 const NAME_VALIDATE_WIDTH := 312
 ## VALIDER inactif : ACCENT éteint (texte et icône portent aussi l'état : jamais la couleur seule).
 const NAME_VALIDATE_DISABLED_ALPHA := 0.35
+## Choix de l'apparence (chantier JR, dossier 13 §5.6) : deux cartes carrées illustrées des
+## portraits en pied, dans le panneau de l'écran de prénom (même largeur, même place) [D].
+const LOOK_CARD_SIZE := Vector2(480, 480)
+## Carte non choisie : légèrement éteinte (le liseré de la carte choisie porte aussi l'état).
+const LOOK_CARD_DIM := 0.55
 
 # --- Combat du jalon 12 (T14) : Entrave ------------------------------------------------------
 

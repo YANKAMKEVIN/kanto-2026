@@ -12,7 +12,8 @@ extends RefCounted
 ##     { "type": "stage", "hide": "nidorino" },
 ##     { "type": "page", "text": "Bonjour !", "speaker": "…" },          (speaker facultatif)
 ##     { "type": "prompt", "name": "player_name", "text": "Comment t'appelles-tu ?" },
-##     { "type": "confirm", "name": "player_name", "text": "{player} ! C'est bien ça ?" } ] }
+##     { "type": "confirm", "name": "player_name", "text": "{player} ! C'est bien ça ?" },
+##     { "type": "look", "name": "rival_look", "text": "…" } ] }
 ## [/codeblock]
 ## **Validation stricte** au chargement (comme [DialogueLibrary]) ; la moindre erreur rejette
 ## tout le fichier ([method is_loaded] faux) :
@@ -20,9 +21,10 @@ extends RefCounted
 ##  - « stage » : exactement un de « show » (avec « at ») ou « hide » (sans « at ») ; cacher un
 ##    portrait absent, ou deux portraits au même emplacement ;
 ##  - jeton inconnu (seuls `{player}` et `{rival}`), accolade mal formée, ou jeton employé
-##    **avant** le prompt qui lui donne sa valeur ;
-##  - chaque prompt ([constant PROMPTS]) exactement une fois ; « look » (choix de l'apparence,
-##    option B) est prévu mais refusé tant que l'option A est retenue (A2) ;
+##    **avant** le prompt qui lui donne sa valeur ; accord `{g:…|…}` avant le choix de
+##    l'apparence du joueur, `{gr:…|…}` avant celui du rival (chantier JR, JR-7) ;
+##  - chaque prompt ([constant PROMPTS]) exactement une fois ; chaque choix d'apparence
+##    (« look », [constant LOOK_PROMPTS], chantier JR, JR-1 et JR-2) au plus une fois ;
 ##  - un « confirm » suit le prompt qu'il confirme (sans autre prompt entre eux) et contient
 ##    son jeton.
 ## Les jetons sont résolus par [method resolve] (mêmes noms que [constant DialogueTokens.PLAYER]
@@ -33,14 +35,32 @@ const TYPE_STAGE: String = "stage"
 const TYPE_PAGE: String = "page"
 const TYPE_PROMPT: String = "prompt"
 const TYPE_CONFIRM: String = "confirm"
+const TYPE_LOOK: String = "look"
 const PORTRAITS: Array[StringName] = [&"chen", &"player", &"rival", &"nidorino"]
 const SLOTS: Array[StringName] = [&"left", &"center", &"right"]
 ## Effets d'entrée : sortie de Poké Ball (éclair procédural, §9.2).
 const EFFECTS: Array[StringName] = [&"pokeball"]
 const PROMPT_PLAYER_NAME: StringName = &"player_name"
 const PROMPT_RIVAL_NAME: StringName = &"rival_name"
-## Choix de l'apparence (option B, A2) : prévu dans le format, refusé en option A.
-const PROMPT_LOOK: StringName = &"look"
+## Choix de l'apparence (chantier JR) : joueur, puis rival.
+const PROMPT_PLAYER_LOOK: StringName = &"player_look"
+const PROMPT_RIVAL_LOOK: StringName = &"rival_look"
+const LOOK_PROMPTS: Array[StringName] = [PROMPT_PLAYER_LOOK, PROMPT_RIVAL_LOOK]
+## Apparences proposées par chaque choix, dans l'ordre des cartes (la première par défaut).
+const LOOK_OPTIONS: Dictionary[StringName, Array] = {
+	PROMPT_PLAYER_LOOK: [&"hero", &"heroine"],
+	PROMPT_RIVAL_LOOK: [&"rival", &"rivale"],
+}
+## Portrait de la scène que chaque choix habille.
+const LOOK_PORTRAIT: Dictionary[StringName, StringName] = {
+	PROMPT_PLAYER_LOOK: &"player",
+	PROMPT_RIVAL_LOOK: &"rival",
+}
+## Accord ([DialogueTokens]) que chaque choix rend utilisable.
+const AGREEMENT_OF: Dictionary[StringName, StringName] = {
+	PROMPT_PLAYER_LOOK: DialogueTokens.AGREE_PLAYER,
+	PROMPT_RIVAL_LOOK: DialogueTokens.AGREE_RIVAL,
+}
 ## Prompts permis, chacun obligatoire une fois.
 const PROMPTS: Array[StringName] = [PROMPT_PLAYER_NAME, PROMPT_RIVAL_NAME]
 const TOKEN_PLAYER: StringName = &"player"
@@ -57,6 +77,7 @@ const _STEP_KEYS: Dictionary[String, Array] = {
 	TYPE_PAGE: ["type", "text", "speaker"],
 	TYPE_PROMPT: ["type", "name", "text"],
 	TYPE_CONFIRM: ["type", "name", "text"],
+	TYPE_LOOK: ["type", "name", "text"],
 }
 
 var speaker: String = ""
@@ -157,10 +178,19 @@ func get_errors() -> PackedStringArray:
 	return _errors
 
 
-## [param text] avec `{player}` / `{rival}` remplacés par [param values] (jeton → valeur) ; un
-## jeton sans valeur reste tel quel (le chargement garantit qu'il en a une quand on y arrive).
+## Index du choix d'apparence [param look_prompt] (-1 s'il n'existe pas).
+func look_index(look_prompt: StringName) -> int:
+	for i: int in _steps.size():
+		if _steps[i].type == IntroStep.Type.LOOK and _steps[i].name == look_prompt:
+			return i
+	return -1
+
+
+## [param text] avec `{player}` / `{rival}` remplacés par [param values] (jeton → valeur) et les
+## accords appliqués ([method DialogueTokens.apply_agreements]) ; un jeton sans valeur reste tel
+## quel (le chargement garantit qu'il en a une quand on y arrive).
 static func resolve(text: String, values: Dictionary[StringName, String]) -> String:
-	var result := text
+	var result := DialogueTokens.apply_agreements(text, values)
 	for token: StringName in DialogueTokens.tokens_in(text):
 		if values.has(token):
 			result = result.replace("{%s}" % token, values[token])
@@ -225,6 +255,18 @@ func _parse_steps(list: Array, default_speaker: String, source: String,
 						errors.append("%s : « confirm » sans le jeton {%s}"
 							% [where, TOKEN_OF[entry.name]])
 				last_prompt = &""
+			TYPE_LOOK:
+				entry.type = IntroStep.Type.LOOK
+				entry.speaker = default_speaker
+				var look: Variant = dict.get("name")
+				if not look is String or not LOOK_PROMPTS.has(StringName(look)):
+					errors.append("%s : choix d'apparence inconnu « %s »" % [where, look])
+				else:
+					entry.name = StringName(look)
+					if answered.has(entry.name):
+						errors.append("%s : choix « %s » en double" % [where, look])
+					answered.append(entry.name)
+				_parse_text(dict, entry, answered, where, errors)
 		steps.append(entry)
 	for prompt: StringName in PROMPTS:
 		if not answered.has(prompt):
@@ -278,6 +320,11 @@ func _parse_text(dict: Dictionary, entry: IntroStep, answered: Array[StringName]
 	entry.text = text
 	if not DialogueTokens.is_well_formed(entry.text):
 		errors.append("%s : accolade mal formée dans « %s »" % [where, text])
+	for agreement: StringName in DialogueTokens.agreements_in(entry.text):
+		var look: StringName = AGREEMENT_OF.find_key(agreement)
+		if not answered.has(look):
+			errors.append("%s : accord {%s:…} employé avant le choix « %s »"
+				% [where, agreement, look])
 	for token: StringName in DialogueTokens.tokens_in(entry.text):
 		var prompt: StringName = TOKEN_OF.find_key(token) if TOKEN_OF.values().has(token) else &""
 		if prompt.is_empty():
@@ -289,9 +336,6 @@ func _parse_text(dict: Dictionary, entry: IntroStep, answered: Array[StringName]
 
 func _parse_prompt_name(dict: Dictionary, where: String, errors: PackedStringArray) -> StringName:
 	var name: Variant = dict.get("name")
-	if name is String and StringName(name) == PROMPT_LOOK:
-		errors.append("%s : choix de l'apparence absent en option A (dossier 13, A2)" % where)
-		return &""
 	if not name is String or not PROMPTS.has(StringName(name)):
 		errors.append("%s : prompt inconnu « %s »" % [where, name])
 		return &""

@@ -12,7 +12,11 @@ extends Node
 ##  - **prompt** : la question de Chen s'écrit dans la boîte (qui reste visible) et l'écran de
 ##    prénom s'ouvre aussitôt (pastilles de [OpeningNames], champ prérempli après un « Non ») ;
 ##  - **confirm** : « X ! C'est bien ça ? », puis le choix à deux cartes de la boîte (Non à gauche,
-##    Oui à droite) ; Non rouvre l'écran de prénom, champ prérempli.
+##    Oui à droite) ; Non rouvre l'écran de prénom, champ prérempli ;
+##  - **look** (chantier JR) : la réplique de Chen s'écrit dans la boîte, puis les deux cartes
+##    illustrées s'ouvrent ([method IntroStage.open_look_choice]) ; toucher une carte habille le
+##    portrait de la scène, VALIDER retient l'apparence ([method choose_look]). Les pastilles de
+##    prénom suivent ensuite l'apparence choisie ([method OpeningNames.suggestions]).
 ## À la fin, la boîte se ferme et [signal finished] donne les deux prénoms (normalisés). Rien
 ## n'est écrit ici : l'introduction n'existe qu'en mémoire (§3.7). Retour Android :
 ## [method handle_back] ferme le clavier, puis rien (§5.5).
@@ -40,6 +44,8 @@ var _running: bool = false
 var _staging: bool = false
 ## Le choix Oui / Non est affiché (étape confirm).
 var _choice_shown: bool = false
+## Les cartes du choix de l'apparence sont affichées (étape look).
+var _look_shown: bool = false
 var _start_frame: int = -1
 
 
@@ -73,6 +79,7 @@ func start() -> void:
 	_box.advance_requested.connect(advance)
 	_box.choice_made.connect(_on_choice_made)
 	_entry.submitted.connect(submit_name)
+	_stage.look_chosen.connect(_on_look_chosen)
 	_running = true
 	_start_frame = Engine.get_process_frames()
 	set_process(true)
@@ -119,6 +126,25 @@ func answer(yes: bool) -> bool:
 	return true
 
 
+## Apparence choisie à l'étape look (une de [constant IntroScript.LOOK_OPTIONS]) : faux si aucun
+## choix n'est attendu ou si elle n'est pas proposée.
+func choose_look(look: StringName) -> bool:
+	if not _running or not is_waiting_for_look():
+		return false
+	var entry := _reader.current()
+	var options: Array = IntroScript.LOOK_OPTIONS[entry.name]
+	if not options.has(look):
+		return false
+	_stage.set_portrait_texture(IntroScript.LOOK_PORTRAIT[entry.name], _look_texture(entry.name,
+		look))
+	if _stage.is_look_choice_open():
+		_stage.close_look_choice()
+	_look_shown = false
+	_reader.answer_look(look)
+	_play_current()
+	return true
+
+
 ## Retour Android pendant l'introduction : ferme le clavier s'il est ouvert, sinon rien ; vrai
 ## tant que l'introduction tourne (le retour lui appartient : jamais de retour en arrière, §5.5).
 func handle_back() -> bool:
@@ -143,6 +169,23 @@ func is_waiting_for_name() -> bool:
 func is_waiting_for_choice() -> bool:
 	var entry := _reader.current() if _reader != null else null
 	return entry != null and entry.type == IntroStep.Type.CONFIRM and _choice_shown
+
+
+## Vrai quand les cartes du choix de l'apparence sont affichées.
+func is_waiting_for_look() -> bool:
+	var entry := _reader.current() if _reader != null else null
+	return entry != null and entry.type == IntroStep.Type.LOOK and _look_shown
+
+
+## Apparences retenues (la première proposée tant qu'aucun choix) : Boot les applique au commit.
+func player_look() -> StringName:
+	return _reader.player_look() if _reader != null else IntroScript.LOOK_OPTIONS[
+		IntroScript.PROMPT_PLAYER_LOOK][0]
+
+
+func rival_look() -> StringName:
+	return _reader.rival_look() if _reader != null else IntroScript.LOOK_OPTIONS[
+		IntroScript.PROMPT_RIVAL_LOOK][0]
 
 
 ## Vrai pendant un groupe de mouvements de scène.
@@ -171,9 +214,13 @@ func _play_current() -> void:
 			await _play_stage_group()
 			continue
 		_choice_shown = false
+		_look_shown = false
 		_show_text(entry)
 		if entry.type == IntroStep.Type.PROMPT:
-			_entry.open(_reader.text(), _names.suggestions(_role_of(entry.name)),
+			var role := _role_of(entry.name)
+			var look := _reader.player_look() if role == OpeningNames.ROLE_PLAYER \
+				else _reader.rival_look()
+			_entry.open(_reader.text(), _names.suggestions(role, look),
 				_names.max_length(),
 				_reader.prefill(), _script.validate_label)
 		step_started.emit(_reader.index())
@@ -219,10 +266,35 @@ func _refresh_box() -> void:
 	_box.set_visible_characters(-1 if complete else _session.get_visible_characters())
 	var is_page := entry != null and entry.type == IntroStep.Type.PAGE
 	_box.set_continue_visible(complete and is_page and not _staging)
+	if complete and entry != null and entry.type == IntroStep.Type.LOOK and not _look_shown \
+			and not _staging:
+		_look_shown = true
+		var textures: Array[Texture2D] = []
+		for look: StringName in IntroScript.LOOK_OPTIONS[entry.name]:
+			textures.append(_look_texture(entry.name, look))
+		_stage.open_look_choice(IntroScript.LOOK_PORTRAIT[entry.name], textures,
+			IntroScript.LOOK_OPTIONS[entry.name].find(_reader.look(entry.name)),
+			_script.validate_label)
 	if complete and entry != null and entry.type == IntroStep.Type.CONFIRM and not _choice_shown \
 			and not _staging:
 		_choice_shown = true
 		_box.show_choice(ChoiceView.new(_reader.text(), _script.yes_label, _script.no_label))
+
+
+func _on_look_chosen(index: int) -> void:
+	var entry := _reader.current() if _reader != null else null
+	if entry == null or entry.type != IntroStep.Type.LOOK:
+		return
+	var options: Array = IntroScript.LOOK_OPTIONS[entry.name]
+	if index >= 0 and index < options.size():
+		choose_look(options[index])
+
+
+## Portrait en pied de l'apparence [param look] pour le choix [param look_prompt].
+static func _look_texture(look_prompt: StringName, look: StringName) -> Texture2D:
+	var path := TrainerLooks.player_portrait_path(look) \
+		if look_prompt == IntroScript.PROMPT_PLAYER_LOOK else TrainerLooks.rival_portrait_path(look)
+	return load(path) as Texture2D
 
 
 func _on_choice_made(confirmed: bool) -> void:
@@ -238,6 +310,8 @@ func _end() -> void:
 		_box.advance_requested.disconnect(advance)
 	if _box.choice_made.is_connected(_on_choice_made):
 		_box.choice_made.disconnect(_on_choice_made)
+	if _stage.look_chosen.is_connected(_on_look_chosen):
+		_stage.look_chosen.disconnect(_on_look_chosen)
 	await _box.close()
 	finished.emit(_reader.player_name(), _reader.rival_name())
 

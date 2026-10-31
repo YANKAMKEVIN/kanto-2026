@@ -6,8 +6,11 @@ extends RefCounted
 ## [codeblock]
 ## { "max_length": 10,
 ##   "player": { "default": "Kevin", "suggestions": ["Red", "Sacha", "Kevin"] },
-##   "rival":  { "default": "Régis", "suggestions": ["Régis", "Blue", "Gary"] } }
+##   "rival":  { "default": "Régis", "suggestions": ["Régis", "Blue", "Gary"] },
+##   "heroine": { … }, "rivale": { … } }
 ## [/codeblock]
+## « heroine » et « rivale » (chantier JR, JR-4, facultatifs) : prénoms de la joueuse et de la
+## rivale, pris à la place de ceux du rôle quand l'apparence choisie est celle-là.
 ## Validation stricte au chargement : clé inconnue (hors « _note »), rôle manquant, longueur
 ## qui n'est pas un entier ≥ 1, prénom invalide ou non normalisé ([NameRules]), doublon,
 ## 0 ou plus de [constant MAX_SUGGESTIONS] propositions = erreur. Un fichier en erreur n'est
@@ -19,8 +22,14 @@ const ROLE_RIVAL: StringName = &"rival"
 const ROLES: Array[StringName] = [ROLE_PLAYER, ROLE_RIVAL]
 ## Trois pastilles au plus sous le champ (dossier 13 §5.5).
 const MAX_SUGGESTIONS: int = 3
+## Prénoms propres à une apparence (facultatifs) : apparence → rôle qu'elle remplace.
+const LOOK_ROLES: Dictionary[StringName, StringName] = {
+	&"heroine": ROLE_PLAYER,
+	&"rivale": ROLE_RIVAL,
+}
 
-const _ROOT_KEYS: Array[String] = ["_note", "max_length", "player", "rival"]
+const _ROOT_KEYS: Array[String] = ["_note", "max_length", "player", "rival", "heroine",
+	"rivale"]
 const _ROLE_KEYS: Array[String] = ["default", "suggestions"]
 
 var _max_length: int = 0
@@ -53,6 +62,13 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 			"%s %s" % [source, role], errors)
 		if not parsed.is_empty():
 			roles[role] = parsed
+	for look: StringName in LOOK_ROLES:
+		if not data.has(String(look)):
+			continue
+		var parsed := _parse_role(data[String(look)], int(max_length),
+			"%s %s" % [source, look], errors)
+		if not parsed.is_empty():
+			roles[look] = parsed
 	if not errors.is_empty():
 		_errors.append_array(errors)
 		_report()
@@ -71,14 +87,19 @@ func max_length() -> int:
 	return _max_length
 
 
-## Prénom par défaut de [param role] ([constant ROLE_PLAYER] ou [constant ROLE_RIVAL]).
-func default_name(role: StringName) -> String:
-	return _roles.get(role, {}).get("default", "")
+## Prénom par défaut de [param role] ([constant ROLE_PLAYER] ou [constant ROLE_RIVAL]), ou de
+## l'apparence [param look] si elle a les siens ([constant LOOK_ROLES]).
+func default_name(role: StringName, look: StringName = &"") -> String:
+	return _roles.get(_key(role, look), {}).get("default", "")
 
 
-## Pastilles de [param role], dans l'ordre des données.
-func suggestions(role: StringName) -> PackedStringArray:
-	return _roles.get(role, {}).get("suggestions", PackedStringArray())
+## Pastilles de [param role] (ou de l'apparence [param look]), dans l'ordre des données.
+func suggestions(role: StringName, look: StringName = &"") -> PackedStringArray:
+	return _roles.get(_key(role, look), {}).get("suggestions", PackedStringArray())
+
+
+func _key(role: StringName, look: StringName) -> StringName:
+	return look if LOOK_ROLES.get(look, &"") == role and _roles.has(look) else role
 
 
 func get_errors() -> PackedStringArray:

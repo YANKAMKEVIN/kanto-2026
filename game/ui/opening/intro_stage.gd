@@ -36,6 +36,11 @@ const HEIGHTS: Dictionary[StringName, float] = {
 	&"nidorino": UiTokens.INTRO_HEIGHT_POKEMON,
 }
 const EFFECT_POKEBALL: StringName = &"pokeball"
+
+## Choix de l'apparence (chantier JR) : carte [param index] touchée (aperçu sur la scène).
+signal look_previewed(index: int)
+## Choix de l'apparence validé : carte [param index].
+signal look_chosen(index: int)
 const BACKDROP_SHADER: Shader = preload("res://game/ui/menu/menu_backdrop.gdshader")
 const NAME_ENTRY_SCENE: PackedScene = preload("res://game/ui/opening/name_entry.tscn")
 
@@ -57,6 +62,13 @@ var _name_entry: NameEntry
 var _blur_enabled: bool = true
 ## Portraits remplacés (chantier JR : joueuse, rivale) ; sinon [constant TEXTURES].
 var _overrides: Dictionary[StringName, Texture2D] = {}
+var _entry_layer: CanvasLayer
+## Choix de l'apparence ouvert (panneau), portrait habillé, images et carte choisie.
+var _look_panel: PanelContainer
+var _look_cards: Array[Button] = []
+var _look_portrait: StringName = &""
+var _look_textures: Array[Texture2D] = []
+var _look_selected: int = 0
 
 
 func _ready() -> void:
@@ -71,12 +83,12 @@ func _ready() -> void:
 	_effects_layer = _full_rect("Effects")
 	# L'écran de prénom a son propre calque, **au-dessus** de la boîte de dialogue (ouverte
 	# derrière, son fond plein écran prendrait tous les touchers : QA S21).
-	var entry_layer := CanvasLayer.new()
-	entry_layer.name = "EntryLayer"
-	entry_layer.layer = UiTokens.LAYER_NAME_ENTRY
-	add_child(entry_layer)
+	_entry_layer = CanvasLayer.new()
+	_entry_layer.name = "EntryLayer"
+	_entry_layer.layer = UiTokens.LAYER_NAME_ENTRY
+	add_child(_entry_layer)
 	_name_entry = NAME_ENTRY_SCENE.instantiate() as NameEntry
-	entry_layer.add_child(_name_entry)
+	_entry_layer.add_child(_name_entry)
 
 
 ## Montre [param portrait] à l'emplacement [param slot] (`left`, `center`, `right`) : entrée en
@@ -191,6 +203,110 @@ func set_portrait_texture(portrait: StringName, texture: Texture2D) -> void:
 	if not reduce_motion and speed_scale > 0.0:
 		picture.modulate.a = 0.0
 		create_tween().tween_property(picture, ^"modulate:a", 1.0, _time(UiTokens.INTRO_PORTRAIT_IN))
+
+
+## Ouvre le choix de l'apparence de [param portrait] (dossier 13 §5.6, chantier JR) : une carte
+## par image de [param textures] (portraits en pied, sans mot « garçon » ni « fille »), la carte
+## [param selected] choisie et montrée sur la scène ; toucher une carte la choisit
+## ([signal look_previewed]), [param validate_label] valide ([signal look_chosen]).
+func open_look_choice(portrait: StringName, textures: Array[Texture2D], selected: int,
+		validate_label: String) -> void:
+	close_look_choice()
+	_look_portrait = portrait
+	_look_textures = textures
+	_look_panel = PanelContainer.new()
+	_look_panel.name = "LookChoice"
+	_look_panel.theme_type_variation = &"NamePanel"
+	_look_panel.anchor_left = 1.0
+	_look_panel.anchor_right = 1.0
+	_look_panel.offset_left = -UiTokens.SAFE_MARGIN - UiTokens.NAME_PANEL_WIDTH
+	_look_panel.offset_right = -UiTokens.SAFE_MARGIN
+	_look_panel.offset_top = UiTokens.SAFE_MARGIN
+	_look_panel.offset_bottom = UiTokens.SAFE_MARGIN
+	_look_panel.grow_vertical = Control.GROW_DIRECTION_END
+	_look_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_entry_layer.add_child(_look_panel)
+	var column := VBoxContainer.new()
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override(&"separation", UiTokens.NAME_PANEL_GAP)
+	_look_panel.add_child(column)
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override(&"separation", UiTokens.NAME_PANEL_GAP)
+	column.add_child(row)
+	_look_cards.clear()
+	for i: int in textures.size():
+		var card := Button.new()
+		card.name = "Card%d" % i
+		card.theme_type_variation = &"TitleCard"
+		card.custom_minimum_size = UiTokens.LOOK_CARD_SIZE
+		card.pressed.connect(select_look.bind(i))
+		var picture := TextureRect.new()
+		picture.name = "Picture"
+		picture.texture = textures[i]
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		picture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT,
+			Control.PRESET_MODE_KEEP_SIZE, UiTokens.NAME_PANEL_PAD)
+		card.add_child(picture)
+		row.add_child(card)
+		_look_cards.append(card)
+	var validate := Button.new()
+	validate.name = "Validate"
+	validate.text = validate_label
+	validate.theme_type_variation = &"NameValidate"
+	validate.custom_minimum_size = Vector2(UiTokens.NAME_VALIDATE_WIDTH, UiTokens.TOUCH_MIN)
+	validate.size_flags_horizontal = Control.SIZE_SHRINK_END
+	validate.pressed.connect(validate_look)
+	column.add_child(validate)
+	UiPrefsApplier.apply(_look_panel)
+	_look_selected = -1
+	select_look(clampi(selected, 0, textures.size() - 1), false)
+
+
+## Choisit la carte [param index] : liseré, autre carte éteinte, portrait de la scène remplacé.
+func select_look(index: int, notify: bool = true) -> void:
+	if _look_panel == null or index < 0 or index >= _look_cards.size() \
+			or index == _look_selected:
+		return
+	_look_selected = index
+	for i: int in _look_cards.size():
+		var chosen := i == index
+		_look_cards[i].theme_type_variation = &"TitleCardFeatured" if chosen else &"TitleCard"
+		_look_cards[i].modulate.a = 1.0 if chosen else UiTokens.LOOK_CARD_DIM
+	set_portrait_texture(_look_portrait, _look_textures[index])
+	if notify:
+		look_previewed.emit(index)
+
+
+## Valide la carte choisie et ferme le choix.
+func validate_look() -> void:
+	if _look_panel == null:
+		return
+	var index := _look_selected
+	close_look_choice()
+	look_chosen.emit(index)
+
+
+func close_look_choice() -> void:
+	if _look_panel != null:
+		_look_panel.queue_free()
+	_look_panel = null
+	_look_cards.clear()
+
+
+func is_look_choice_open() -> bool:
+	return _look_panel != null
+
+
+func get_look_choice() -> PanelContainer:
+	return _look_panel
+
+
+func get_look_selected() -> int:
+	return _look_selected
 
 
 func get_portrait_texture(portrait: StringName) -> Texture2D:

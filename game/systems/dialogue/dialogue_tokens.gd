@@ -13,6 +13,12 @@ extends RefCounted
 ## « speaker » (`"speaker": "{rival}"` : le prénom choisi, jamais stocké dans les données) ; un
 ## locuteur dont un jeton n'a pas de valeur est **caché** (la page, elle, reste) :
 ## [method resolve_speaker].
+## **Accords** (chantier JR, dossier 13 §3.5, JR-7) : `{g:réveillé|réveillée}` s'accorde avec le
+## joueur (`GameState.player_look`), `{gr:il|elle}` avec le rival (`GameState.rival_look`).
+## Exactement deux formes (masculine puis féminine, l'une peut être vide : `venu{g:|e}`), sans
+## accolade ni barre dedans. La valeur de [constant AGREE_PLAYER] / [constant AGREE_RIVAL] dans
+## les valeurs des jetons vaut [constant FEMININE] pour la forme féminine ; absente ou autre :
+## la forme masculine. Un accord n'omet jamais la page.
 
 ## Première espèce sauvage rencontrée **en combat** (GameState.first_wild_species, jalon 7 T0) :
 ## son nom affiché (« Roucool »). Jamais un Pokémon d'habitant ni seulement observé.
@@ -49,7 +55,14 @@ const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON, LE
 ## figurent (la Pension). Ce sont les seuls permis dans la question d'un choix (T-7, T-8 : « Ce
 ## sera {price} ₽. »), qui ne doit jamais être omise ([DialogueLibrary]).
 const CONTEXT: Array[StringName] = [POKEMON, LEVELS, PRICE]
+## Accords (JR-7) : préfixe dans le texte et clé dans les valeurs des jetons.
+const AGREE_PLAYER: StringName = &"g"
+const AGREE_RIVAL: StringName = &"gr"
+const AGREEMENTS: Array[StringName] = [AGREE_PLAYER, AGREE_RIVAL]
+const FEMININE: String = "f"
 const _NAME_CHARS: String = "abcdefghijklmnopqrstuvwxyz_"
+
+static var _agreement_regex: RegEx
 
 
 ## Jetons de [param text], dans l'ordre (doublons compris). Une accolade qui ne forme pas un
@@ -73,7 +86,7 @@ static func tokens_in(text: String) -> Array[StringName]:
 ## Vrai si chaque accolade de [param text] appartient à un jeton `{nom}` bien formé (pas
 ## d'accolade seule, pas de jeton vide ni de majuscule) : une faute de frappe est refusée.
 static func is_well_formed(text: String) -> bool:
-	var stripped := text
+	var stripped := _regex().sub(text, "", true)
 	for token: StringName in tokens_in(text):
 		stripped = stripped.replace("{%s}" % token, "")
 	return not stripped.contains("{") and not stripped.contains("}")
@@ -82,7 +95,7 @@ static func is_well_formed(text: String) -> bool:
 ## Texte de [param text] avec ses jetons remplacés par [param values] ; "" si un jeton n'a pas
 ## de valeur (absente ou vide) : la page est alors omise. Sans jeton : le texte tel quel.
 static func resolve(text: String, values: Dictionary[StringName, String]) -> String:
-	var result := text
+	var result := apply_agreements(text, values)
 	for token: StringName in tokens_in(text):
 		var value: String = values.get(token, "")
 		if value.is_empty():
@@ -106,7 +119,7 @@ static func resolve_pages(pages: Array[DialoguePage],
 		return pages
 	var resolved: Array[DialoguePage] = []
 	for page: DialoguePage in pages:
-		if tokens_in(page.text).is_empty() and tokens_in(page.speaker).is_empty():
+		if not needs_values(page.text) and not needs_values(page.speaker):
 			resolved.append(page)
 			continue
 		var text := resolve(page.text, values)
@@ -118,12 +131,56 @@ static func resolve_pages(pages: Array[DialoguePage],
 	return resolved
 
 
-## Vrai si une page de [param pages] contient un jeton (texte ou locuteur).
+## Vrai si une page de [param pages] contient un jeton ou un accord (texte ou locuteur).
 static func has_tokens(pages: Array[DialoguePage]) -> bool:
 	for page: DialoguePage in pages:
-		if not tokens_in(page.text).is_empty() or not tokens_in(page.speaker).is_empty():
+		if needs_values(page.text) or needs_values(page.speaker):
 			return true
 	return false
+
+
+## Vrai si [param text] contient un jeton ou un accord à résoudre.
+static func needs_values(text: String) -> bool:
+	return not tokens_in(text).is_empty() or has_agreements(text)
+
+
+## Préfixes d'accord de [param text] ([constant AGREE_PLAYER], [constant AGREE_RIVAL]), dans
+## l'ordre (doublons compris).
+static func agreements_in(text: String) -> Array[StringName]:
+	var found: Array[StringName] = []
+	for match_: RegExMatch in _regex().search_all(text):
+		found.append(StringName(match_.get_string(1)))
+	return found
+
+
+static func has_agreements(text: String) -> bool:
+	return _regex().search(text) != null
+
+
+## [param text] avec chaque accord remplacé par sa forme masculine ou féminine selon
+## [param values] ([constant FEMININE] sous [constant AGREE_PLAYER] / [constant AGREE_RIVAL]).
+static func apply_agreements(text: String, values: Dictionary[StringName, String]) -> String:
+	if not has_agreements(text):
+		return text
+	var result := ""
+	var last := 0
+	for match_: RegExMatch in _regex().search_all(text):
+		var feminine: bool = values.get(StringName(match_.get_string(1)), "") == FEMININE
+		result += text.substr(last, match_.get_start() - last)
+		result += match_.get_string(3) if feminine else match_.get_string(2)
+		last = match_.get_end()
+	return result + text.substr(last)
+
+
+## Valeurs des accords pour l'apparence du joueur et du rival (Boot, introduction).
+static func agreement_values(player_feminine: bool,
+		rival_feminine: bool) -> Dictionary[StringName, String]:
+	var values: Dictionary[StringName, String] = {}
+	if player_feminine:
+		values[AGREE_PLAYER] = FEMININE
+	if rival_feminine:
+		values[AGREE_RIVAL] = FEMININE
+	return values
 
 
 ## Valeurs des jetons pour une partie (Boot : `values_for(GameState.first_wild_species(),
@@ -155,6 +212,12 @@ static func caught_values(caught: int) -> Dictionary[StringName, String]:
 	if caught < CAUGHT_GOAL:
 		values[CAUGHT_MISSING] = str(CAUGHT_GOAL - maxi(caught, 0))
 	return values
+
+
+static func _regex() -> RegEx:
+	if _agreement_regex == null:
+		_agreement_regex = RegEx.create_from_string("\\{(g|gr):([^{}|]*)\\|([^{}|]*)\\}")
+	return _agreement_regex
 
 
 static func _is_name(name: String) -> bool:

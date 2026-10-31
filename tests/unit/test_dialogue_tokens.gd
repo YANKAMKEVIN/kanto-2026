@@ -171,3 +171,43 @@ func test_resolve_pages_resolves_the_speaker_and_keeps_the_page() -> void:
 	var unnamed := DialogueTokens.resolve_pages(pages, _values())
 	assert_eq(unnamed.size(), 1, "un locuteur sans valeur n'omet pas la page")
 	assert_eq(unnamed[0].speaker, "")
+
+
+# --- Chantier JR : accords {g:…|…} et {gr:…|…} (JR-7) -----------------------------------------
+
+func test_agreements_pick_the_form_of_the_look() -> void:
+	var text := "Tu es enfin réveill{g:é|ée} ? {gr:Il|Elle} t'attend."
+	assert_true(DialogueTokens.is_well_formed(text))
+	assert_eq(DialogueTokens.agreements_in(text), [&"g", &"gr"] as Array[StringName])
+	assert_eq(DialogueTokens.resolve(text, {}), "Tu es enfin réveillé ? Il t'attend.",
+		"sans valeur : la forme masculine, la page n'est jamais omise")
+	assert_eq(DialogueTokens.resolve(text, DialogueTokens.agreement_values(true, false)),
+		"Tu es enfin réveillée ? Il t'attend.")
+	assert_eq(DialogueTokens.resolve(text, DialogueTokens.agreement_values(false, true)),
+		"Tu es enfin réveillé ? Elle t'attend.")
+
+
+func test_an_agreement_form_can_be_empty() -> void:
+	assert_eq(DialogueTokens.apply_agreements("venu{g:|e}",
+		DialogueTokens.agreement_values(true, false)), "venue")
+	assert_eq(DialogueTokens.apply_agreements("venu{g:|e}", {}), "venu")
+
+
+func test_malformed_agreements_are_refused() -> void:
+	for text: String in ["{g:a}", "{g:a|b|c}", "{x:a|b}", "{G:a|b}", "{g:a|{b}}"]:
+		assert_false(DialogueTokens.is_well_formed(text), text)
+
+
+func test_agreements_mix_with_tokens() -> void:
+	var values := DialogueTokens.agreement_values(false, true)
+	values[DialogueTokens.RIVAL] = "Régine"
+	assert_eq(DialogueTokens.resolve("{rival} est {gr:prêt|prête}.", values), "Régine est prête.")
+	var pages: Array[DialoguePage] = [DialoguePage.new("{gr:Il|Elle} est là.")]
+	assert_true(DialogueTokens.has_tokens(pages), "un accord compte comme à résoudre")
+	assert_eq(DialogueTokens.resolve_pages(pages, values)[0].text, "Elle est là.")
+
+
+func test_trainer_looks_give_the_agreement_values() -> void:
+	assert_eq(TrainerLooks.agreement_values(&"heroine", &"rival"), {&"g": "f"})
+	assert_eq(TrainerLooks.agreement_values(&"hero", &"rivale"), {&"gr": "f"})
+	assert_eq(TrainerLooks.agreement_values(&"hero", &"rival"), {})

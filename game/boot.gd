@@ -1101,15 +1101,18 @@ func _release_title_backdrop() -> void:
 
 
 ## Nouvelle partie de l'ouverture (constructeur du commit, dossier 13 §3.7 étape 2) : partie
-## neuve en mémoire, prénoms (vides : défauts), héros, joueur dans la chambre face au sud ; rend
-## le dictionnaire à écrire.
-func _build_new_game(player_name: String, rival_name: String) -> Dictionary:
+## neuve en mémoire, prénoms (vides : défauts), apparences du joueur et du rival (chantier JR ;
+## inconnues : défauts), joueur dans la chambre face au sud ; rend le dictionnaire à écrire.
+func _build_new_game(player_name: String, rival_name: String,
+		player_look: StringName = GameState.DEFAULT_PLAYER_LOOK,
+		rival_look: StringName = GameState.DEFAULT_RIVAL_LOOK) -> Dictionary:
 	GameState.new_game()
 	if not player_name.is_empty():
 		GameState.player_name = player_name
 	if not rival_name.is_empty():
 		GameState.rival_name = rival_name
-	GameState.player_look = GameState.DEFAULT_PLAYER_LOOK
+	GameState.player_look = GameState.loaded_player_look(player_look)
+	GameState.rival_look = GameState.loaded_rival_look(rival_look)
 	GameState.set_player_location(start_map, _spawn_cell(start_map, start_spawn), start_facing)
 	return GameState.to_dict()
 
@@ -1635,6 +1638,8 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	var values := DialogueTokens.values_for(GameState.first_wild_species(), _pokemon,
 		GameState.player_name, GameState.rival_name,
 		companion.display_name(_pokemon) if companion != null else "")
+	# Chantier JR (JR-7) : accords {g:…|…} (joueuse) et {gr:…|…} (rivale).
+	values.merge(TrainerLooks.agreement_values(GameState.player_look, GameState.rival_look))
 	# Pension (J15) : {pokemon}, {levels}, {price}, seulement pendant sa conversation ; son
 	# {pokemon} (le Pokémon gardé ou rendu) passe alors avant celui du compagnon (J11).
 	if _daycare != null:

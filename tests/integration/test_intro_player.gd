@@ -8,7 +8,8 @@ extends GutTest
 const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const BOX_SCENE := preload("res://game/ui/dialogue/dialogue_box.tscn")
 const STAGE_SCENE := preload("res://game/ui/opening/intro_stage.tscn")
-## Les 16 textes du §6 (version « petit-fils », option A), prénoms « Sacha » et « Régis ».
+## Les textes du §6 (version « petit-fils »), prénoms « Sacha » et « Régis », héros et rival
+## garçon (premières cartes du choix de l'apparence, chantier JR).
 const TEXTS: Array[String] = [
 	"Bonjour ! Bienvenue dans le monde des Pokémon !",
 	"Je m'appelle Chen. Ici, on m'appelle le Professeur Pokémon.",
@@ -19,6 +20,7 @@ const TEXTS: Array[String] = [
 	"Mais parlons un peu de toi.",
 	"Comment t'appelles-tu ?",
 	"Sacha ! C'est bien ça ?",
+	"Et puis, il y a quelqu'un d'autre…",
 	"Et lui, tu le connais depuis toujours. C'est mon petit-fils.",
 	"Vous vous lancez des défis depuis que vous savez marcher.",
 	"Il s'appelle… euh…",
@@ -85,12 +87,15 @@ func _on_step_started(index: int) -> void:
 
 
 ## Joue l'introduction en entier, images réelles (scène instantanée, texte d'un coup) :
-## prénoms donnés, réponses Oui.
-func _play_through(player: String, rival: String) -> void:
+## prénoms donnés, réponses Oui, apparences de [param looks] (sinon les premières cartes).
+func _play_through(player: String, rival: String, looks: Dictionary = {}) -> void:
 	var guard := 0
 	while _finished.is_empty() and guard < 400:
 		guard += 1
-		if _intro.is_waiting_for_name():
+		if _intro.is_waiting_for_look():
+			var look_prompt := _intro.get_reader().current().name
+			_intro.choose_look(looks.get(look_prompt, IntroScript.LOOK_OPTIONS[look_prompt][0]))
+		elif _intro.is_waiting_for_name():
 			var reader := _intro.get_reader()
 			var prompt := reader.current().name
 			_intro.submit_name(player if prompt == IntroScript.PROMPT_PLAYER_NAME else rival)
@@ -129,9 +134,9 @@ func test_the_stage_of_each_shot() -> void:
 		{&"chen": &"center"}, {&"chen": &"center"},
 		{&"chen": &"left", &"nidorino": &"right"}, {&"chen": &"left", &"nidorino": &"right"},
 		{&"chen": &"left", &"nidorino": &"right"},
-		{&"player": &"center"}, {&"player": &"left"}, {&"player": &"left"},
+		{&"player": &"left"}, {&"player": &"left"}, {&"player": &"left"},
 		{&"rival": &"center", &"chen": &"left"}, {&"rival": &"center", &"chen": &"left"},
-		{&"rival": &"center", &"chen": &"left"},
+		{&"rival": &"center", &"chen": &"left"}, {&"rival": &"center", &"chen": &"left"},
 		{&"rival": &"left"}, {&"rival": &"left"},
 		{&"chen": &"center"}, {&"chen": &"center"}, {&"player": &"center"},
 	]
@@ -250,6 +255,11 @@ func _simulated_duration() -> float:
 			_intro.submit_name("Sacha" if prompt == IntroScript.PROMPT_PLAYER_NAME else "Régis")
 			continue
 		read_left -= FrameSim.STEP
+		if _intro.is_waiting_for_look() and read_left <= 0.0:
+			read_left = READ_SECONDS
+			var look_prompt := _intro.get_reader().current().name
+			_intro.choose_look(IntroScript.LOOK_OPTIONS[look_prompt][0])
+			continue
 		if read_left > 0.0:
 			continue
 		read_left = READ_SECONDS
@@ -331,9 +341,55 @@ func _real_taps() -> void:
 	assert_gt(_intro.get_reader().index(), 14, "on continue après la confirmation")
 
 
+## Avance jusqu'à [param done] ; un choix d'apparence prend la première carte.
 func _advance_until(done: Callable) -> void:
 	var guard := 0
 	while not done.call() and guard < 200:
 		guard += 1
+		if _intro.is_waiting_for_look():
+			_intro.choose_look(IntroScript.LOOK_OPTIONS[_intro.get_reader().current().name][0])
+		else:
+			_intro.advance()
+		await wait_process_frames(1)
+
+
+# --- Chantier JR : choix de la joueuse et de la rivale ---------------------------------------
+
+func test_the_look_choice_shows_two_cards_and_dresses_the_portrait() -> void:
+	_start()
+	var guard := 0
+	while not _intro.is_waiting_for_look() and guard < 200:
+		guard += 1
 		_intro.advance()
 		await wait_process_frames(1)
+	assert_true(_stage.is_look_choice_open(), "deux cartes ouvertes")
+	assert_eq(_box.get_text(), "Mais parlons un peu de toi.")
+	var holder := _stage.get_holder(&"player")
+	var picture := holder.get_node("Picture") as TextureRect
+	assert_eq(picture.texture.resource_path, TrainerLooks.player_portrait_path(&"hero"),
+		"première carte choisie")
+	_stage.select_look(1)
+	assert_eq(picture.texture.resource_path, TrainerLooks.player_portrait_path(&"heroine"),
+		"toucher la seconde carte habille le portrait")
+	_stage.validate_look()
+	await wait_process_frames(1)
+	assert_false(_stage.is_look_choice_open())
+	assert_eq(_intro.player_look(), &"heroine")
+	await _advance_until(func() -> bool: return _intro.is_waiting_for_name())
+	var chips: Array[String] = []
+	for chip: Button in _stage.get_name_entry().get_chips():
+		chips.append(chip.text)
+	assert_eq(chips, ["Leaf", "Céleste", "Kelly"] as Array[String], "prénoms de la joueuse (JR-4)")
+
+
+func test_the_girl_rival_changes_the_agreements_and_the_names() -> void:
+	_start()
+	await _play_through("Leaf", "Régine", {IntroScript.PROMPT_PLAYER_LOOK: &"heroine",
+		IntroScript.PROMPT_RIVAL_LOOK: &"rivale"})
+	assert_eq(_finished, [["Leaf", "Régine"]])
+	assert_true(_seen.has("Et elle, tu la connais depuis toujours. C'est ma petite-fille."))
+	assert_true(_seen.has("Elle s'appelle… euh…"))
+	assert_true(_seen.has("Comment s'appelle-t-elle, déjà ?"))
+	assert_eq(_intro.rival_look(), &"rivale")
+	assert_eq(_stage.get_portrait_texture(&"rival").resource_path,
+		TrainerLooks.rival_portrait_path(&"rivale"))

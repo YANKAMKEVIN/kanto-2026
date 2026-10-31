@@ -7,7 +7,9 @@ extends RefCounted
 ##  - STAGE et PAGE : [method advance] (toucher, ou fin d'un mouvement de scène) ;
 ##  - PROMPT : [method answer_prompt] avec la saisie ([NameRules] : normalisée, validée) ;
 ##  - CONFIRM : [method answer_confirm] ; Non ramène au prompt, champ prérempli
-##    ([method prefill]) ; Oui continue.
+##    ([method prefill]) ; Oui continue ;
+##  - LOOK : [method answer_look] avec une apparence de [constant IntroScript.LOOK_OPTIONS]
+##    (chantier JR).
 ## Une action qui ne correspond pas à l'étape courante est refusée (faux). Aucun état
 ## persistant : l'introduction n'existe qu'en mémoire (§3.7) ; un abandon = jeter le lecteur.
 
@@ -16,6 +18,8 @@ var _max_length: int
 var _index: int = 0
 ## Prompt → prénom retenu (normalisé).
 var _answers: Dictionary[StringName, String] = {}
+## Choix d'apparence → apparence retenue.
+var _looks: Dictionary[StringName, StringName] = {}
 
 
 ## [param max_length] : [method OpeningNames.max_length].
@@ -49,7 +53,7 @@ func text() -> String:
 func advance() -> bool:
 	var entry := current()
 	if entry == null or entry.type == IntroStep.Type.PROMPT \
-			or entry.type == IntroStep.Type.CONFIRM:
+			or entry.type == IntroStep.Type.CONFIRM or entry.type == IntroStep.Type.LOOK:
 		return false
 	_index += 1
 	return true
@@ -74,6 +78,30 @@ func answer_confirm(yes: bool) -> bool:
 		return false
 	_index = _index + 1 if yes else _script.prompt_index(entry.name)
 	return true
+
+
+## Répond au LOOK courant : faux (rien ne change) si [param look] n'est pas proposé.
+func answer_look(look: StringName) -> bool:
+	var entry := current()
+	if entry == null or entry.type != IntroStep.Type.LOOK \
+			or not IntroScript.LOOK_OPTIONS[entry.name].has(look):
+		return false
+	_looks[entry.name] = look
+	_index += 1
+	return true
+
+
+## Apparence retenue pour [param look_prompt] ; la première proposée tant qu'aucun choix.
+func look(look_prompt: StringName) -> StringName:
+	return _looks.get(look_prompt, IntroScript.LOOK_OPTIONS[look_prompt][0])
+
+
+func player_look() -> StringName:
+	return look(IntroScript.PROMPT_PLAYER_LOOK)
+
+
+func rival_look() -> StringName:
+	return look(IntroScript.PROMPT_RIVAL_LOOK)
 
 
 ## Valeur à placer dans le champ au PROMPT courant : le prénom déjà saisi (retour par Non),
@@ -103,6 +131,7 @@ func token_values() -> Dictionary[StringName, String]:
 	var values: Dictionary[StringName, String] = {}
 	for prompt: StringName in _answers:
 		values[IntroScript.TOKEN_OF[prompt]] = _answers[prompt]
+	values.merge(TrainerLooks.agreement_values(player_look(), rival_look()))
 	return values
 
 

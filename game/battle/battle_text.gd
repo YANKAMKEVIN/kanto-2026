@@ -551,7 +551,7 @@ func summary_stats(gains: Dictionary[StringName, int]) -> String:
 ## Nom affiché du dresseur : jetons (`{rival}`) résolus par [member token_values] ; un jeton
 ## sans valeur laisse le nom tel quel.
 func trainer_display_name(raw: String) -> String:
-	if DialogueTokens.tokens_in(raw).is_empty() or not token_values.is_valid():
+	if not DialogueTokens.needs_values(raw) or not token_values.is_valid():
 		return raw
 	var values: Dictionary[StringName, String] = {}
 	var given: Variant = token_values.call()

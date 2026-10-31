@@ -3,8 +3,9 @@ extends GutTest
 ## validation stricte et le curseur (avancer, prénoms, Oui / Non).
 
 const T := IntroStep.Type
-## Textes du §6, version « petit-fils », dans l'ordre d'affichage (prompts et confirmations
-## compris, jetons non résolus).
+## Textes du §6, version « petit-fils », dans l'ordre d'affichage (prompts, confirmations et
+## choix d'apparence compris, jetons et accords non résolus) ; chantier JR : choix de la joueuse
+## et de la rivale, accords {gr:…|…}, « Et puis, il y a quelqu'un d'autre… » (à valider).
 const EXPECTED_TEXTS: Array[String] = [
 	"Bonjour ! Bienvenue dans le monde des Pokémon !",
 	"Je m'appelle Chen. Ici, on m'appelle le Professeur Pokémon.",
@@ -15,10 +16,12 @@ const EXPECTED_TEXTS: Array[String] = [
 	"Mais parlons un peu de toi.",
 	"Comment t'appelles-tu ?",
 	"{player} ! C'est bien ça ?",
-	"Et lui, tu le connais depuis toujours. C'est mon petit-fils.",
+	"Et puis, il y a quelqu'un d'autre…",
+	"Et {gr:lui|elle}, tu {gr:le|la} connais depuis toujours. C'est {gr:mon petit-fils|ma "
+		+ "petite-fille}.",
 	"Vous vous lancez des défis depuis que vous savez marcher.",
-	"Il s'appelle… euh…",
-	"Comment s'appelle-t-il, déjà ?",
+	"{gr:Il|Elle} s'appelle… euh…",
+	"Comment s'appelle-t-{gr:il|elle}, déjà ?",
 	"{rival} ! C'est ça, bien sûr.",
 	"{player} ! Ta propre aventure est sur le point de commencer.",
 	"Un monde de rêves et de rencontres t'attend.",
@@ -74,10 +77,15 @@ func _stage(expected: Dictionary) -> Dictionary[StringName, StringName]:
 	return typed
 
 
-## Avance le lecteur jusqu'au prochain PROMPT / CONFIRM (ou la fin).
-func _skip(reader: IntroReader) -> void:
-	while not reader.is_finished() and reader.current().type in [T.STAGE, T.PAGE]:
-		reader.advance()
+## Avance le lecteur jusqu'au prochain PROMPT / CONFIRM (ou la fin) ; un choix d'apparence prend
+## [param looks] (choix → apparence), sinon la première proposée.
+func _skip(reader: IntroReader, looks: Dictionary = {}) -> void:
+	while not reader.is_finished() and reader.current().type in [T.STAGE, T.PAGE, T.LOOK]:
+		if reader.current().type == T.LOOK:
+			var look_prompt := reader.current().name
+			reader.answer_look(looks.get(look_prompt, IntroScript.LOOK_OPTIONS[look_prompt][0]))
+		else:
+			reader.advance()
 
 
 # --- Le vrai script -----------------------------------------------------------------------
@@ -146,7 +154,11 @@ func test_real_script_ends_with_player_alone_at_center() -> void:
 func test_prompt_names() -> void:
 	assert_eq(_intro.step(_intro.prompt_index(IntroScript.PROMPT_PLAYER_NAME)).text,
 		"Comment t'appelles-tu ?")
-	assert_eq(_intro.prompt_index(&"look"), -1, "option A : pas de choix d'apparence")
+	assert_eq(_intro.prompt_index(&"look"), -1, "« look » n'est pas un prompt de prénom")
+	assert_lt(_intro.look_index(IntroScript.PROMPT_PLAYER_LOOK),
+		_intro.prompt_index(IntroScript.PROMPT_PLAYER_NAME), "apparence, puis prénom (JR-1)")
+	assert_lt(_intro.look_index(IntroScript.PROMPT_RIVAL_LOOK),
+		_intro.prompt_index(IntroScript.PROMPT_RIVAL_NAME), "apparence du rival d'abord (JR-2)")
 
 
 # --- Validation stricte -------------------------------------------------------------------
@@ -234,7 +246,38 @@ func test_prompts_required_once() -> void:
 func test_unknown_or_look_prompt() -> void:
 	_rejects(_with_step(1, {"type": "prompt", "name": "nickname", "text": "?"}), "inconnu")
 	_rejects(_with_step(1, {"type": "prompt", "name": "look", "text": "Garçon ?"}),
-		"option A : look refusé")
+		"« look » n'est pas un prompt")
+	_rejects(_with_step(1, {"type": "look", "name": "costume", "text": "?"}),
+		"choix d'apparence inconnu")
+	var twice := _with_step(1, {"type": "look", "name": "player_look", "text": "?"})
+	(twice["steps"] as Array).insert(2, {"type": "look", "name": "player_look", "text": "?"})
+	_rejects(twice, "choix d'apparence en double")
+
+
+func test_agreements_need_their_look_first() -> void:
+	_rejects(_with_step(1, {"type": "page", "text": "Tu es {g:prêt|prête} ?"}),
+		"{g:} avant le choix du joueur")
+	_rejects(_with_step(1, {"type": "page", "text": "{x:a|b}"}), "accord inconnu")
+	var data := _with_step(1, {"type": "look", "name": "rival_look", "text": "Et lui ?"})
+	(data["steps"] as Array).insert(2, {"type": "page", "text": "{gr:Il|Elle} arrive."})
+	var intro := IntroScript.new()
+	assert_true(intro.add_from_dict(data), str(intro.get_errors()))
+
+
+func test_the_reader_resolves_the_rival_agreements() -> void:
+	var reader := _reader()
+	_skip(reader, {IntroScript.PROMPT_RIVAL_LOOK: &"rivale"})
+	reader.answer_prompt("Leaf")
+	reader.answer_confirm(true)
+	while reader.current().type != T.PAGE or not reader.current().text.contains("{gr:lui"):
+		if reader.current().type == T.LOOK:
+			assert_false(reader.answer_look(&"hero"), "pas une option du rival")
+			assert_true(reader.answer_look(&"rivale"))
+		else:
+			reader.advance()
+	assert_eq(reader.text(), "Et elle, tu la connais depuis toujours. C'est ma petite-fille.")
+	assert_eq(reader.rival_look(), &"rivale")
+	assert_eq(reader.player_look(), &"hero", "première carte par défaut")
 
 
 func test_confirm_must_follow_its_prompt() -> void:
@@ -346,6 +389,8 @@ func test_reader_full_run_resolves_both_names() -> void:
 				reader.answer_prompt(answers[entry.name])
 			T.CONFIRM:
 				reader.answer_confirm(true)
+			T.LOOK:
+				reader.answer_look(IntroScript.LOOK_OPTIONS[entry.name][0])
 	assert_true(reader.is_finished())
 	assert_eq(reader.player_name(), "Kevin")
 	assert_eq(reader.rival_name(), "Gary")
