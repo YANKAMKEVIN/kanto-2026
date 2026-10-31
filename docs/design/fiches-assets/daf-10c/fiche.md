@@ -8,7 +8,7 @@ et `tools/dump_map_nodes.gd` donnent des sorties **identiques** avant / après s
 9 étages de Sylphe, 30 relevés, `tools/dump_daf10c.sh avant|apres`). Tout ce qui est ajouté porte le préfixe `Daf10c` (ou `PaintedGround`, `Eau`) ;
 les objets debout ne sont posés que sur des cases déjà bloquées.
 
-**Codex** (correctif du 2026-10-31) : les 8 images du lot (`tools/art/daf10c.py`, prompts dans `tools/art/prompts/daf10c/`), générées dans la nuit du 30 au 31, **remplacent à l'identique** le kit dérivé provisoire (`daf10c.py --modules`, puis les deux passes de carte) ; relevés toujours identiques sur les 15 cartes. Le fond de combat de la Centrale reste dérivé (DAF.2 bis).
+**Codex** (correctif du 2026-10-31) : les 8 images du lot (`tools/art/daf10c.py`, prompts dans `tools/art/prompts/daf10c/`), générées dans la nuit du 30 au 31, **remplacent à l'identique** le kit dérivé provisoire (`daf10c.py --modules`, puis les deux passes de carte) ; relevés toujours identiques sur les 15 cartes. Le **fond de combat de la Centrale** est peint aussi (`COMBAT_DECOR_CENTRALE`, tuiles TL / TR, cousu par `combat_decors/preparer_decor.py`, horizon 415 [D], ancres inchangées) ; capture `planche-7-combat.jpg`.
 
 | Planche | Contenu |
 |---|---|
@@ -17,6 +17,7 @@ les objets debout ne sont posés que sur des cases déjà bloquées.
 | [planche-2-ecume.jpg](planche-2-ecume.jpg) | Îles Écume B3F, B4F : avant / après |
 | [planche-3-centrale.jpg](planche-3-centrale.jpg) | Centrale : avant / après |
 | [planche-4-echelle-jeu.jpg](planche-4-echelle-jeu.jpg) | à l'échelle du jeu (zoom 1, joueur posé) : rochers, courants, sol haut, salles de la Centrale |
+| [planche-7-combat.jpg](planche-7-combat.jpg) | fond de combat de la Centrale (vrai combat) |
 | [planche-5-sylphe.jpg](planche-5-sylphe.jpg), [planche-6-sylphe.jpg](planche-6-sylphe.jpg) | Sylphe SARL 2F à 4F et 6F à 11F : avant / après (reste de RP-280) |
 
 Captures en nouvelle partie (aucun trou bouché, rochers de Force à leur case d'origine). Les « avant » n'ont pas
@@ -74,7 +75,7 @@ une case sur quatre (au plus trois par salle, sur des cases `#` déjà bloquées
 | `ground_centrale_01`, `ground_masse_centrale_01` | béton du repaire réchauffé, masse des bâtiments | `WORLD_GROUND_CENTRALE_01`, `WORLD_GROUND_MASSE_CENTRALE_01` |
 | `relief_mur_centrale_01..05` | murs du repaire teintés vert d'eau | `WORLD_RELIEF_MUR_CENTRALE_PLANCHE` (machines, transformateur) |
 | machines | armoires électriques et console du repaire teintées | `INT_CENTRALE_PLANCHE` (+ générateur, condensateurs, touret de câble) |
-| fond de combat `power_plant_centrale` | dérivé de DAF.2 bis | non généré : `COMBAT_DECOR_CENTRALE` (+ tuiles TL / TR) reste à faire |
+| fond de combat `power_plant_centrale` | dérivé de DAF.2 bis | `COMBAT_DECOR_CENTRALE` (+ tuiles TL / TR) |
 
 ## Valeurs par défaut [D]
 

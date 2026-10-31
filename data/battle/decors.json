@@ -288,7 +288,7 @@
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
-			"horizon": 433
+			"horizon": 415
 		},
 		"safari_zone_savane": {
 			"zone": "safari_zone",

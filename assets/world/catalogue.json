@@ -10212,6 +10212,13 @@
      17
     ]
    }
+  },
+  "int_jumelles_01": {
+   "fichier": "res://assets/world/interiors/int_jumelles_01.png",
+   "taille": [
+    84,
+    168
+   ]
   }
  },
  "personnages": {
@@ -14117,6 +14124,13 @@
   },
   "ground_masse_centrale_01": {
    "fichier": "res://assets/world/ground/ground_masse_centrale_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_piste_01": {
+   "fichier": "res://assets/world/ground/ground_piste_01.png",
    "taille": [
     384,
     384
