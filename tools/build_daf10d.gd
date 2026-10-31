@@ -1,8 +1,8 @@
 extends SceneTree
 ## Lot DAF.10d (fiche `docs/design/fiches-assets/daf-10d/fiche.md`, RP-277, RP-280) : habille les salles
 ## de la Ligue (Olga, Aldo, Agatha, Peter, Champion), le Panthéon, le hall du Labo de Cramois'Île et
-## l'étage type de Sylphe SARL (5F) avec les kits peints déjà dans le dépôt, **sans image neuve** (Codex
-## à sa limite d'usage). Seconde passe d'image sur le modèle de `build_daf10a_arene.gd` : **la logique
+## l'étage type de Sylphe SARL (5F) ; les salles de la Ligue et le Panthéon ont leurs faces de mur et leurs
+## objets de thème peints par Codex depuis le 2026-10-31 (`tools/art/daf10d_codex.py`). Seconde passe d'image sur le modèle de `build_daf10a_arene.gd` : **la logique
 ## ne change pas** (gel du J33). Tout ce qui est ajouté porte le préfixe `Daf10d` (ignoré par
 ## `dump_map_nodes.gd`) et n'a aucune emprise : les objets debout ne sont posés que sur des cases déjà
 ## bloquées, le sol praticable ne reçoit que du plat (tapis, lueurs).
@@ -35,33 +35,31 @@ var THEMES: Dictionary = {
 	&"league_lorelei": {
 		"mode": "salle", "sol": GROUND % "ground_glace_01", "sol_teinte": Color(0.92, 0.97, 1.05),
 		"masse": GROUND % "ground_azuree_bas_01", "masse_teinte": Color(0.70, 0.80, 0.95),
-		"faces": [RELIEF % "relief_paroi_grotte_01", RELIEF % "relief_paroi_grotte_02"],
-		"face_teinte": Color(0.82, 0.92, 1.05),
-		"murs": [PROPS % "prop_eclats_lune_01", PROPS % "prop_eclats_lune_02"], "pas": 1,
-		"mur_teinte": Color(0.85, 0.97, 1.1),
-		"piliers": [PROPS % "prop_eclats_lune_01"], "pilier_teinte": Color(0.85, 0.97, 1.1),
-		"objets": [[PROPS % "prop_eclats_lune_02", 2.5, 6.8, Color(0.85, 0.97, 1.1), 1.0],
-			[PROPS % "prop_eclats_lune_01", 7.5, 6.8, Color(0.85, 0.97, 1.1), 1.0]],
+		"faces": [RELIEF % "relief_mur_ligue_glace_01", RELIEF % "relief_mur_ligue_glace_02"],
+		"face_teinte": BLANC,
+		"murs": [INT % "int_colonne_glace_01"], "pas": 2, "mur_teinte": BLANC,
+		"piliers": [INT % "int_colonne_glace_01"], "pilier_teinte": BLANC,
+		"objets": [[INT % "int_colonne_glace_01", 2.5, 6.8, BLANC, 1.0],
+			[INT % "int_colonne_glace_01", 7.5, 6.8, BLANC, 1.0]],
 		"voile": Color(0.03, 0.06, 0.12), "lueur": Color(0.55, 0.80, 1.0, 0.22),
 		"lueurs": [[5, 3.5, 3.2], [5, 8.5, 2.2]], "ombre": 0.30,
 	},
 	&"league_bruno": {
 		"mode": "salle", "sol": GROUND % "ground_victoire_haut_01", "sol_teinte": BLANC,
 		"masse": GROUND % "ground_masse_grotte_sombre_01", "masse_teinte": BLANC,
-		"faces": [RELIEF % "relief_paroi_grotte_sombre_01", RELIEF % "relief_paroi_grotte_sombre_02"],
+		"faces": [RELIEF % "relief_mur_ligue_roche_01", RELIEF % "relief_mur_ligue_roche_02"],
 		"face_teinte": BLANC,
-		"murs": [PROPS % "prop_rocher_grotte_01", PROPS % "prop_rocher_grotte_02"], "pas": 3,
-		"mur_teinte": Color(0.95, 0.85, 0.75),
-		"piliers": [PROPS % "prop_rocher_grotte_01"], "pilier_teinte": Color(0.95, 0.85, 0.75),
+		"murs": [INT % "int_brasero_ligue_01"], "pas": 3, "mur_teinte": BLANC,
+		"piliers": [INT % "int_brasero_ligue_01"], "pilier_teinte": BLANC,
 		"voile": Color(0.06, 0.04, 0.03), "lueur": Color(1.0, 0.62, 0.30, 0.20),
 		"lueurs": [[5, 3, 3.0], [5, 7, 2.4]], "ombre": 0.35,
 	},
 	&"league_agatha": {
 		"mode": "salle", "sol": GROUND % "ground_dalles_tour_01", "sol_teinte": Color(0.78, 0.72, 0.92),
 		"masse": GROUND % "ground_masse_manoir_b1_01", "masse_teinte": Color(0.55, 0.48, 0.70),
-		"faces": [RELIEF % "relief_mur_tour_01", RELIEF % "relief_mur_tour_02"],
-		"face_teinte": Color(0.68, 0.60, 0.85),
-		"murs": [INT % "int_bougeoir_tour_01", INT % "int_tombe_tour_01", INT % "int_tombe_tour_03"],
+		"faces": [RELIEF % "relief_mur_ligue_spectre_01", RELIEF % "relief_mur_ligue_spectre_02"],
+		"face_teinte": BLANC,
+		"murs": [INT % "int_candelabre_ligue_01", INT % "int_tombe_tour_01", INT % "int_tombe_tour_03"],
 		"pas": 2, "mur_teinte": Color(0.85, 0.80, 1.0),
 		"piliers": [INT % "int_tombe_tour_02"], "pilier_teinte": Color(0.82, 0.76, 0.98),
 		"voile": Color(0.06, 0.03, 0.10), "lueur": Color(0.62, 0.42, 1.0, 0.24),
@@ -70,12 +68,10 @@ var THEMES: Dictionary = {
 	&"league_lance": {
 		"mode": "salle", "sol": GROUND % "ground_victoire_bas_01", "sol_teinte": Color(0.92, 0.82, 0.78),
 		"masse": GROUND % "ground_masse_arene_01", "masse_teinte": BLANC,
-		"faces": [RELIEF % "relief_mur_arene_01", RELIEF % "relief_mur_arene_02",
-			RELIEF % "relief_mur_arene_03"],
+		"faces": [RELIEF % "relief_mur_ligue_dragon_01", RELIEF % "relief_mur_ligue_dragon_02"],
 		"face_teinte": BLANC,
-		"murs": [PROPS % "int_statue_arene_01", INT % "int_bougeoir_tour_01"], "pas": 2,
-		"mur_teinte": Color(1.0, 0.86, 0.80),
-		"piliers": [PROPS % "int_statue_arene_01"], "pilier_teinte": Color(1.0, 0.86, 0.80),
+		"murs": [INT % "int_statue_dragon_01", INT % "int_brasero_ligue_01"], "pas": 2, "mur_teinte": BLANC,
+		"piliers": [INT % "int_statue_dragon_01"], "pilier_teinte": BLANC,
 		"tapis": [[INT % "int_tapis_rouge_01", Rect2(5, 1, 2, 12), 44],
 			[INT % "int_tapis_rouge_01", Rect2(3, 14, 6, 10), 44],
 			[INT % "int_tapis_rouge_01", Rect2(9, 23, 8, 2), 44],
@@ -88,9 +84,9 @@ var THEMES: Dictionary = {
 	&"league_champion": {
 		"mode": "salle", "sol": GROUND % "ground_dalles_morgane_01", "sol_teinte": Color(1.0, 0.97, 0.95),
 		"masse": GROUND % "ground_masse_manoir_01", "masse_teinte": BLANC,
-		"faces": [RELIEF % "relief_mur_casino_01", RELIEF % "relief_mur_casino_02"],
+		"faces": [RELIEF % "relief_mur_ligue_champion_01", RELIEF % "relief_mur_ligue_champion_02"],
 		"face_teinte": BLANC, "murs": [], "pas": 99, "mur_teinte": BLANC,
-		"piliers": [PROPS % "int_statue_arene_01"], "pilier_teinte": Color(1.0, 0.96, 0.88),
+		"piliers": [INT % "int_colonne_champion_01"], "pilier_teinte": BLANC,
 		"tapis": [[INT % "int_tapis_rouge_01", Rect2(3, 0.6, 2, 7.4), 44]],
 		"voile": Color(0.07, 0.03, 0.04), "lueur": Color(1.0, 0.80, 0.45, 0.22),
 		"lueurs": [[4, 2.5, 2.2], [4, 5.5, 2.2]], "ombre": 0.32,
@@ -98,10 +94,10 @@ var THEMES: Dictionary = {
 	&"hall_of_fame": {
 		"mode": "salle", "sol": GROUND % "ground_dalles_morgane_01", "sol_teinte": BLANC,
 		"masse": GROUND % "ground_masse_manoir_b1_01", "masse_teinte": BLANC,
-		"faces": [RELIEF % "relief_mur_manoir_b1_01", RELIEF % "relief_mur_manoir_b1_02"],
+		"faces": [RELIEF % "relief_mur_ligue_pantheon_01", RELIEF % "relief_mur_ligue_pantheon_02"],
 		"face_teinte": BLANC, "murs": [], "pas": 99, "mur_teinte": BLANC,
 		"piliers": [], "pilier_teinte": BLANC, "sans_face": [Vector2i(4, 1), Vector2i(5, 1)],
-		"objets": [[INT % "int_machines_labo_01", 5.0, 2.0, BLANC, 1.0],
+		"objets": [[INT % "int_machine_pantheon_01", 5.0, 2.0, BLANC, 1.0],
 			[INT % "int_vitrine_rubans_01", 2.0, 1.0, BLANC, 1.0],
 			[INT % "int_vitrine_rubans_01", 8.0, 1.0, BLANC, 1.0]],
 		"tapis": [[INT % "int_tapis_rouge_01", Rect2(4, 2, 2, 5), 44]],
