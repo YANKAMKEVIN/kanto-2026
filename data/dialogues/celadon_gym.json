@@ -8,7 +8,7 @@
 	"celadon_gym_lass_lila_defeated": {
 		"speaker": "Fillette Lila",
 		"pages": [
-			"Au moins, tu as été silencieux."
+			"Au moins, tu as été {g:silencieux|silencieuse}."
 		]
 	},
 	"celadon_gym_lass_lila_after": {
@@ -89,7 +89,7 @@
 	"celadon_gym_cooltrainer_camelia_after": {
 		"speaker": "Topdresseuse Camélia",
 		"pages": [
-			"Erika t'attend. Elle ne t'a\nsans doute pas entendu arriver."
+			"Erika t'attend. Elle ne t'a\nsans doute pas {g:entendu|entendue} arriver."
 		]
 	},
 	"celadon_gym_erika": {
@@ -136,7 +136,7 @@
 		"speaker": "Erika",
 		"pages": [
 			"Les plantes repoussent toujours.",
-			"Reviens quand tu seras prêt."
+			"Reviens quand tu seras {g:prêt|prête}."
 		]
 	},
 	"celadon_gym_erika_won": {

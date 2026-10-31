@@ -484,3 +484,15 @@ func test_badge_moment_survives_a_save_round_trip() -> void:
 	assert_eq(_titles(view), ["Badge Roche"] as Array[String])
 	assert_eq(view.moments[0].detail, "Obtenu à Argenta contre Pierre.")
 	loaded.free()
+
+
+## Chantier JR (JR-7) : les titres des grands moments s'accordent au joueur et au rival.
+func test_moment_titles_follow_the_looks() -> void:
+	var moments := MomentLibrary.new()
+	assert_true(moments.load_file())
+	var text := moments.get_text(&"rival_battle")
+	assert_eq(DialogueTokens.apply_agreements(text.title, TrainerLooks.agreement_values(&"hero",
+		&"rivale")), "Combat contre la rivale")
+	var champion := moments.get_text(&"champion")
+	assert_eq(DialogueTokens.apply_agreements(champion.title, TrainerLooks.agreement_values(
+		&"heroine", &"rival")), "Championne de la Ligue Pokémon")

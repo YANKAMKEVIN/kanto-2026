@@ -1405,17 +1405,18 @@ func _use(dialogue: StringName, map_id: StringName) -> void:
 	(_used_on[dialogue] as Array).append(map_id)
 
 
-## Toutes les pages de toutes les variantes : [id, texte, page].
+## Toutes les pages de toutes les variantes : [id, texte, page]. Le texte est la forme masculine
+## des accords {g:…|…} / {gr:…|…} (chantier JR) : celle des dossiers de conception.
 func _pages() -> Array[Array]:
 	var pages: Array[Array] = []
 	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			for page: DialoguePage in variant.pages:
-				pages.append([id, page.text, page, variant])
+				pages.append([id, DialogueTokens.apply_agreements(page.text, {}), page, variant])
 			# Jalon 7 (T8) : pages des réponses d'un choix (SOIGNER / PAS MAINTENANT).
 			if variant.choice != null:
 				for page: DialoguePage in variant.choice.confirm_pages + variant.choice.cancel_pages:
-					pages.append([id, page.text, page, variant])
+					pages.append([id, DialogueTokens.apply_agreements(page.text, {}), page, variant])
 	return pages
 
 
@@ -2005,7 +2006,7 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 func _texts(variant: DialogueVariant) -> Array[String]:
 	var texts: Array[String] = []
 	for page: DialoguePage in variant.pages:
-		texts.append(page.text)
+		texts.append(DialogueTokens.apply_agreements(page.text, {}))
 	return texts
 
 
@@ -2023,7 +2024,7 @@ func test_oak_starter_offer_four_lines_and_looks() -> void:
 		texts.append(page.text)
 	assert_eq(texts, [
 		"Vous voulez tous les deux découvrir Kanto.",
-		"Mais découvrir ce monde seul serait une mauvaise idée.",
+		"Mais découvrir ce monde sans aide serait une mauvaise idée.",
 		"Eux aussi ont encore beaucoup à découvrir.",
 		"Alors... pourquoi ne pas commencer ensemble ?",
 	] as Array[String])
@@ -2240,6 +2241,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	# J26 (T9) : vie de Safrania et de la Sylphe, [D] validés d'avance (2026-10-21), textes vérifiés
 	# par test_saffron_life et test_silph_co_life.
 	var life_texts := _j26_life_ids()
+	var jr_releve := FileAccess.get_file_as_string("res://docs/design/jr-accords-releve.md")
 	for row: Array in _pages():
 		# Une variante en brouillon (PENDING_DRAFT_VARIANTS) attend la relecture de Kevin : son
 		# texte n'est encore dans aucun dossier.
@@ -2354,7 +2356,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# Lot 32P : `lot-32p-textes.md`, une citation par ligne.
 			or _each_line_quoted(textes_32p, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
-			or dossier_25.contains(J22Ids.flat_text(row[1])),
+			or dossier_25.contains(J22Ids.flat_text(row[1]))
+			# Chantier JR : reformulations du relevé des accords (T1, T2), validé le 2026-10-31.
+			or jr_releve.contains("« %s »" % text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 

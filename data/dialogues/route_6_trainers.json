@@ -17,7 +17,7 @@
 	},
 	"route_6_camper_gabin_defeated": {
 		"speaker": "Campeur Gabin",
-		"pages": ["D'accord, d'accord. Tu es fort."]
+		"pages": ["D'accord, d'accord. Tu es {g:fort|forte}."]
 	},
 	"route_6_camper_gabin_after": {
 		"speaker": "Campeur Gabin",

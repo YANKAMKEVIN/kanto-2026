@@ -18,7 +18,7 @@
 		"speaker": "{rival}",
 		"pages": [
 			"Tu vois ?",
-			"Tu n'es pas prêt pour la Ligue."
+			"Tu n'es pas {g:prêt|prête} pour la Ligue."
 		]
 	},
 	"guard_boulder_refuse": {

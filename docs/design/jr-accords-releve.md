@@ -1,5 +1,7 @@
 # Chantier JR : relevé des accords joueur / rival (féminin)
 
+> ✅ **Validé par Kevin le 2026-10-31 (« Tout valider ») et appliqué aux données** sur la branche `claude/jr-integration` : §0, J1 à J67, R1 à R11, et les recommandations du §3 (T1, T2, T6 reformulés ; T4 et T5 traités comme le rival ; T3, T7 à T10 inchangés ; T11 gardé). Les titres des grands moments (`moments.json`) résolvent aussi les accords.
+
 Relevé exhaustif, pour validation par Kevin en un seul lot, des textes de `data/` qui doivent recevoir un accord.
 Rédigé le 2026-10-31, lecture seule (aucun fichier de `data/` ni de `game/` modifié).
 

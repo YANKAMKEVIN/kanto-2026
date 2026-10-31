@@ -171,12 +171,12 @@
 					"silph_giovanni_defeated"
 				],
 				"pages": [
-					"Un autre Dresseur est passé. Moins aimable que toi."
+					"{gr:Un autre Dresseur|Une autre Dresseuse} est {gr:passé|passée}. Moins aimable que toi."
 				]
 			},
 			{
 				"pages": [
-					"Un autre Dresseur est passé par ici,\navant toi. Il avait l'air pressé."
+					"{gr:Un autre Dresseur|Une autre Dresseuse} est {gr:passé|passée} par ici,\navant toi. {gr:Il|Elle} avait l'air {gr:pressé|pressée}."
 				]
 			}
 		]
@@ -223,7 +223,7 @@
 			{
 				"heal": true,
 				"pages": [
-					"Tu as l'air fatigué !\nRepose-toi un instant.",
+					"Tu as l'air {g:fatigué|fatiguée} !\nRepose-toi un instant.",
 					"Voilà, tes Pokémon sont en pleine forme."
 				]
 			}

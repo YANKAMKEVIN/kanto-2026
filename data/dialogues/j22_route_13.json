@@ -98,7 +98,7 @@
 	"route_13_biker_defeated": {
 		"speaker": "Motard Steve",
 		"pages": [
-			"Ouais, bon… T'es pas mauvais."
+			"Ouais, bon… T'es pas {g:mauvais|mauvaise}."
 		]
 	},
 	"route_13_biker_after": {

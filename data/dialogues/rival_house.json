@@ -6,9 +6,9 @@
 				"unless": ["rival_met"],
 				"set": ["rival_met"],
 				"pages": [
-					"Ah. Enfin réveillé.",
+					"Ah. Enfin {g:réveillé|réveillée}.",
 					{ "text": "T'as choisi ton jour pour faire la grasse matinée.", "face_player": true },
-					{ "text": "Moi, je suis prêt.", "pause": 0.8 }
+					{ "text": "Moi, je suis {gr:prêt|prête}.", "pause": 0.8 }
 				]
 			},
 			{

@@ -41,7 +41,7 @@
 	"oak_route1_warning": {
 		"speaker": "Prof. Chen",
 		"pages": [
-			{ "text": "Tu allais vraiment entrer là-dedans tout seul ?", "turn": { "oak": "player" } },
+			{ "text": "Tu allais vraiment entrer là-dedans tout {g:seul|seule} ?", "turn": { "oak": "player" } },
 			{
 				"text": "Les Pokémon qui vivent ici ne sont pas tous aussi tranquilles que ceux du village.",
 				"turn": { "oak": "up" }

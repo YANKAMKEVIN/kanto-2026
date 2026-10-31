@@ -19,7 +19,7 @@
 			},
 			{
 				"pages": [
-					"Salut, futur Champion ! Auguste est\nun expert du Feu. Mise sur l'Eau !",
+					"Salut, {g:futur Champion|future Championne} ! Auguste est\nun expert du Feu. Mise sur l'Eau !",
 					"Et prends quelques Antibrûle !"
 				]
 			}

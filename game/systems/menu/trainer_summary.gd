@@ -228,6 +228,13 @@ static func _record_view(record: Dictionary, state: Object, data: PokemonData,
 	var view := _view(type, text, marks)
 	if view == null:
 		return null
+	# Chantier JR (JR-7) : accords {g:…|…} / {gr:…|…} des titres (« Championne de la Ligue »).
+	var look: Variant = state.get(&"player_look")
+	var rival_look: Variant = state.get(&"rival_look")
+	var agree := TrainerLooks.agreement_values(look if look is StringName else &"",
+		rival_look if rival_look is StringName else &"")
+	view.title = DialogueTokens.apply_agreements(view.title, agree)
+	view.detail = DialogueTokens.apply_agreements(view.detail, agree)
 	if type == MomentLibrary.FOSSIL:
 		view.item_id = StringName(str(details.get(MomentLibrary.DETAIL_ITEM, "")))
 	view.place = place

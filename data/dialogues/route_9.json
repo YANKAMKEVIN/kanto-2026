@@ -8,7 +8,7 @@
 	},
 	"route_9_lass_lou_defeated": {
 		"speaker": "Jeune Dresseuse Lou",
-		"pages": ["Bon. Tu es échauffé."]
+		"pages": ["Bon. Tu es {g:échauffé|échauffée}."]
 	},
 	"route_9_lass_lou_after": {
 		"speaker": "Jeune Dresseuse Lou",

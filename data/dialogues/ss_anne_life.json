@@ -8,13 +8,13 @@
 	"ss_anne_armand_defeated": {
 		"speaker": "Gentleman Armand",
 		"pages": [
-			"Tu as du talent, jeune ami."
+			"Tu as du talent, {g:jeune ami|jeune amie}."
 		]
 	},
 	"ss_anne_armand_after": {
 		"speaker": "Gentleman Armand",
 		"pages": [
-			"Reviens après t'être entraîné."
+			"Reviens après t'être {g:entraîné|entraînée}."
 		]
 	},
 	"ss_anne_paul_before": {

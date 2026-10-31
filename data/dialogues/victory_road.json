@@ -134,7 +134,7 @@
 	"victory_road_3f_cooltrainer_m_1_defeated": {
 		"speaker": "Topdresseur Ambroise",
 		"pages": [
-			"Incroyable… Tu es vraiment fort."
+			"Incroyable… Tu es vraiment {g:fort|forte}."
 		]
 	},
 	"victory_road_3f_cooltrainer_m_1_after": {

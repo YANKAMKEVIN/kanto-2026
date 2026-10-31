@@ -79,7 +79,7 @@
 	"saffron_gym_guide": {
 		"speaker": "Guide",
 		"pages": [
-			"Salut, futur Champion !",
+			"Salut, {g:futur Champion|future Championne} !",
 			"Morgane lit dans les pensées.",
 			"Ici, les tapis t'emmènent ailleurs :\nsouviens-toi d'où tu viens."
 		]
@@ -123,7 +123,7 @@
 	"saffron_gym_channeler_ophelie_before": {
 		"speaker": "Exorciste Ophélie",
 		"pages": [
-			"Tu t'es perdu ?\nLes esprits, eux, savent où tu es."
+			"Tu t'es {g:perdu|perdue} ?\nLes esprits, eux, savent où tu es."
 		]
 	},
 	"saffron_gym_channeler_ophelie_defeated": {

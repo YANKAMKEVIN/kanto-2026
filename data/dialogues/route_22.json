@@ -22,7 +22,7 @@
 		"speaker": "{rival}",
 		"pages": [
 			"Tiens.",
-			"Toi aussi, tu es venu voir jusqu'où cette route mène ?",
+			"Toi aussi, tu es {g:venu|venue} voir jusqu'où cette route mène ?",
 			"Ça tombe bien.",
 			"Voyons ce que tu as appris depuis notre premier combat."
 		]
@@ -39,7 +39,7 @@
 	"route22_rival_lost": {
 		"speaker": "{rival}",
 		"pages": [
-			"Tu t'es amélioré.",
+			"Tu t'es {g:amélioré|améliorée}.",
 			"Mais pas assez.",
 			{
 				"text": "La prochaine fois, ne me laisse pas autant d'avance.",

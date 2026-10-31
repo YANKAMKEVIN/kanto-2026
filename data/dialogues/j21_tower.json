@@ -37,7 +37,7 @@
 	},
 	"tower_rocket_3_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Le boss est parti, mais nous, on reste.\nTu ne sauveras personne, gamin !"]
+		"pages": ["Le boss est parti, mais nous, on reste.\nTu ne sauveras personne, {g:gamin|gamine} !"]
 	},
 	"tower_rocket_3_defeated": {
 		"speaker": "Sbire Rocket",
@@ -62,7 +62,7 @@
 	"tower_7f_fuji_thanks": {
 		"speaker": "M. Fuji",
 		"pages": [
-			"Oh… Tu es venu me chercher ?\nMerci, mon enfant.",
+			"Oh… Tu es {g:venu|venue} me chercher ?\nMerci, mon enfant.",
 			"Mais je suis monté ici de mon plein gré.\nJe voulais apaiser l'âme de la mère d'Osselait.",
 			"Ces hommes m'ont empêché de redescendre.\nIls disaient que je les gênais.",
 			"Je crois qu'elle a enfin trouvé la paix.\nC'est grâce à toi, n'est-ce pas ?",

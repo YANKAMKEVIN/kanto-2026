@@ -161,7 +161,7 @@
 	"fuchsia_gym_koga_intro": {
 		"speaker": "Koga",
 		"pages": [
-			"Fwahahaha ! Un enfant ose me défier ?",
+			"Fwahahaha ! {g:Un|Une} enfant ose me défier ?",
 			"Je suis Koga, maître ninja des poisons.",
 			"Le poison et le sommeil",
 			"feront sombrer tes Pokémon."
@@ -179,7 +179,7 @@
 		"speaker": "Koga",
 		"pages": [
 			"Le poison a fait son œuvre.",
-			"Reviens quand tu seras prêt."
+			"Reviens quand tu seras {g:prêt|prête}."
 		]
 	},
 	"fuchsia_gym_koga_won": {

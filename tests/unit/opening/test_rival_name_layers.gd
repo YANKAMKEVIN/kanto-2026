@@ -85,7 +85,8 @@ func test_technical_identifiers_are_unchanged() -> void:
 	var moments := _read("res://data/trainer/moments.json")["moments"] as Dictionary
 	assert_true(moments.has("rival_battle"), "Grand moment « rival_battle »")
 	# Couche 3 : le rôle reste un mot commun.
-	assert_eq((moments["rival_battle"] as Dictionary)["title"], "Combat contre le rival")
+	assert_eq(DialogueTokens.apply_agreements((moments["rival_battle"] as Dictionary)["title"], {}),
+		"Combat contre le rival", "le rôle reste (couche 3), accordé à la rivale (chantier JR)")
 	var dialogues := FileAccess.get_file_as_string(DIALOGUES_DIR + "oak_lab.json")
 	assert_true(dialogues.contains("\"rival_battle_done\""), "drapeau inchangé")
 

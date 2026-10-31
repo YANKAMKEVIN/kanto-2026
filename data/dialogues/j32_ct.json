@@ -4,8 +4,8 @@
 		"variants": [
 			{
 				"pages": [
-					"J'avais un cadeau pour un Dresseur doué.",
-					"Toi, tu as l'air de ceux qui encaissent les coups.\nTiens, prends ça !"
+					"J'avais un cadeau pour {g:un Dresseur doué|une Dresseuse douée}.",
+					"Toi, tu as l'air de {g:ceux|celles} qui encaissent les coups.\nTiens, prends ça !"
 				]
 			}
 		]
@@ -26,7 +26,7 @@
 		"variants": [
 			{
 				"pages": [
-					"Je sentais ta venue, jeune Dresseur.",
+					"Je sentais ta venue, {g:jeune Dresseur|jeune Dresseuse}.",
 					"Je te confie une technique de ma jeunesse."
 				]
 			}

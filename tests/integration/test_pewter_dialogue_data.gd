@@ -49,7 +49,7 @@ func before_all() -> void:
 func _texts(variant: DialogueVariant) -> Array[String]:
 	var texts: Array[String] = []
 	for page: DialoguePage in variant.pages:
-		texts.append(page.text)
+		texts.append(DialogueTokens.apply_agreements(page.text, {}))
 	return texts
 
 

@@ -20,7 +20,7 @@
 	"fighting_dojo_blackbelt_tancrede_before": {
 		"speaker": "Karatéka Tancrède",
 		"pages": [
-			"Un disciple de plus ?\nPrépare-toi !"
+			"{g:Un|Une} disciple de plus ?\nPrépare-toi !"
 		]
 	},
 	"fighting_dojo_blackbelt_tancrede_defeated": {
@@ -83,7 +83,7 @@
 					"dojo_got_hitmonchan"
 				],
 				"pages": [
-					"Champion de la Ligue… Mes poings\nt'attendaient.",
+					"{g:Champion|Championne} de la Ligue… Mes poings\nt'attendaient.",
 					"Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles."
 				],
 				"cutscene": "j32_dojo_gift_hitmonchan"
@@ -97,7 +97,7 @@
 					"dojo_got_hitmonlee"
 				],
 				"pages": [
-					"Champion de la Ligue… Mes poings\nt'attendaient.",
+					"{g:Champion|Championne} de la Ligue… Mes poings\nt'attendaient.",
 					"Prends l'autre Poké Ball. Un Dojo\nn'est rien sans ses deux styles."
 				],
 				"cutscene": "j32_dojo_gift_hitmonlee"
@@ -134,7 +134,7 @@
 	"fighting_dojo_master_intro": {
 		"speaker": "Maître du Dojo",
 		"pages": [
-			"Ha ! Un challenger !",
+			"Ha ! {g:Un challenger|Une challengeuse} !",
 			"Le Dojo de Combat ne recule\ndevant personne !"
 		]
 	},
@@ -148,7 +148,7 @@
 	"fighting_dojo_master_lost": {
 		"speaker": "Maître du Dojo",
 		"pages": [
-			"Hu ! Reviens quand tu seras\nplus fort !"
+			"Hu ! Reviens quand tu seras\nplus {g:fort|forte} !"
 		]
 	},
 	"fighting_dojo_master_after": {

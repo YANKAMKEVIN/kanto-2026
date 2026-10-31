@@ -198,7 +198,7 @@
 				"if": ["badge_cascade", "beaten_nugget_rocket"],
 				"pages": ["Tu as fait le pont ? Alors tu sais ce qu'il vaut."]
 			},
-			{ "if": ["badge_cascade"], "pages": ["Le pont t'a déjà vu passer ?"] },
+			{ "if": ["badge_cascade"], "pages": ["Le pont t'a déjà {g:vu|vue} passer ?"] },
 			{ "cutscene": "cerulean_gym_misty" }
 		]
 	},
@@ -212,9 +212,9 @@
 	},
 	"cerulean_gym_misty_lost": {
 		"speaker": "Ondine",
-		"pages": ["L'eau t'a emporté, cette fois.", "Reviens quand tu seras prêt."]
+		"pages": ["L'eau t'a {g:emporté|emportée}, cette fois.", "Reviens quand tu seras {g:prêt|prête}."]
 	},
-	"cerulean_gym_misty_resume": { "speaker": "Ondine", "pages": ["Prêt à replonger ?"] },
+	"cerulean_gym_misty_resume": { "speaker": "Ondine", "pages": ["{g:Prêt|Prête} à replonger ?"] },
 	"cerulean_gym_misty_won": { "speaker": "Ondine", "pages": ["…Bien joué.", "Tu as gardé la tête hors de l'eau."] },
 	"cerulean_gym_misty_badge": {
 		"speaker": "Ondine",

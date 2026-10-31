@@ -32,7 +32,7 @@ const REUNION: Array = [
 ]
 const OFFER: Array = [
 	["Prof. Chen", "Vous voulez tous les deux découvrir Kanto."],
-	["Prof. Chen", "Mais découvrir ce monde seul serait une mauvaise idée."],
+	["Prof. Chen", "Mais découvrir ce monde sans aide serait une mauvaise idée."],
 	["Prof. Chen", "Eux aussi ont encore beaucoup à découvrir."],
 	["Prof. Chen", "Alors... pourquoi ne pas commencer ensemble ?"],
 ]
@@ -169,7 +169,7 @@ func _play_event(column: int) -> void:
 		# Proposition : Chen regarde les trois Pokémon (table à sa droite) à la 3e, puis
 		# revient vers le joueur (7, 7), sous lui.
 		["Vous voulez tous les deux découvrir Kanto.", Vector2i.UP, Vector2i.DOWN],
-		["Mais découvrir ce monde seul serait une mauvaise idée.", Vector2i.UP,
+		["Mais découvrir ce monde sans aide serait une mauvaise idée.", Vector2i.UP,
 			Vector2i.DOWN],
 		["Eux aussi ont encore beaucoup à découvrir.", Vector2i.UP, Vector2i.RIGHT],
 		["Alors... pourquoi ne pas commencer ensemble ?", Vector2i.UP, Vector2i.DOWN],

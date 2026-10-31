@@ -17,7 +17,7 @@
 	},
 	"pewter_gym_liam_defeated": {
 		"speaker": "Campeur Liam",
-		"pages": ["D'accord… Tu es prêt."]
+		"pages": ["D'accord… Tu es {g:prêt|prête}."]
 	},
 	"pewter_gym_liam_after": {
 		"speaker": "Campeur Liam",
@@ -34,7 +34,7 @@
 			{
 				"if": ["badge_boulder"],
 				"pages": [
-					"Un autre Dresseur de Bourg Palette\nest passé récemment.",
+					"{gr:Un autre Dresseur|Une autre Dresseuse} de Bourg Palette\nest {gr:passé|passée} récemment.",
 					"Vous avez des façons de combattre\ntrès différentes."
 				]
 			},
@@ -52,7 +52,7 @@
 	},
 	"pewter_gym_brock_resume": {
 		"speaker": "Pierre",
-		"pages": ["Prêt à essayer autrement ?"]
+		"pages": ["{g:Prêt|Prête} à essayer autrement ?"]
 	},
 	"pewter_gym_brock_won": {
 		"speaker": "Pierre",

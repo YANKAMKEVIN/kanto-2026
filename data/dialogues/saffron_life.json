@@ -2,7 +2,7 @@
 	"saffron_rocket": {
 		"speaker": "Sbire Rocket",
 		"pages": [
-			"Safrania est à nous. Circule, gamin."
+			"Safrania est à nous. Circule, {g:gamin|gamine}."
 		]
 	},
 	"saffron_rocket_gym": {

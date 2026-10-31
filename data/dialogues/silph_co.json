@@ -13,7 +13,7 @@
 	},
 	"silph_co_2f_2_before": {
 		"speaker": "Scientifique Cyprien",
-		"pages": ["Un visiteur non autorisé ?", "Tu vas servir de cobaye."]
+		"pages": ["{g:Un visiteur non autorisé|Une visiteuse non autorisée} ?", "Tu vas servir de cobaye."]
 	},
 	"silph_co_2f_2_defeated": {
 		"speaker": "Scientifique Cyprien",
@@ -37,7 +37,7 @@
 	},
 	"silph_co_2f_4_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Encore un curieux.", "Fais demi-tour, gamin."]
+		"pages": ["Encore {g:un curieux|une curieuse}.", "Fais demi-tour, {g:gamin|gamine}."]
 	},
 	"silph_co_2f_4_defeated": {
 		"speaker": "Sbire Rocket",
@@ -169,7 +169,7 @@
 	},
 	"silph_co_6f_2_before": {
 		"speaker": "Scientifique Gontran",
-		"pages": ["Tu es tombé au mauvais\nétage, petit visiteur."]
+		"pages": ["Tu es {g:tombé|tombée} au mauvais\nétage, {g:petit visiteur|petite visiteuse}."]
 	},
 	"silph_co_6f_2_defeated": {
 		"speaker": "Scientifique Gontran",
@@ -201,7 +201,7 @@
 	},
 	"silph_co_7f_1_after": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Le rival est derrière.\nIl te cherche."]
+		"pages": ["{gr:Le rival|La rivale} est derrière.\n{gr:Il|Elle} te cherche."]
 	},
 	"silph_co_7f_2_before": {
 		"speaker": "Scientifique Ludovic",
@@ -301,7 +301,7 @@
 	},
 	"silph_co_9f_3_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Mon Hypno t'a vu\ngrimper les étages."]
+		"pages": ["Mon Hypno t'a {g:vu|vue}\ngrimper les étages."]
 	},
 	"silph_co_9f_3_defeated": {
 		"speaker": "Sbire Rocket",
@@ -325,7 +325,7 @@
 	},
 	"silph_co_10f_2_before": {
 		"speaker": "Scientifique Valentin",
-		"pages": ["Presque arrivé ? Pas pour\nlongtemps, gamin."]
+		"pages": ["Presque {g:arrivé|arrivée} ? Pas pour\nlongtemps, {g:gamin|gamine}."]
 	},
 	"silph_co_10f_2_defeated": {
 		"speaker": "Scientifique Valentin",

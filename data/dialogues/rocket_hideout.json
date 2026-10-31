@@ -1,7 +1,7 @@
 {
 	"rocket_hideout_b1f_1_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Un intrus ? Personne n'entre ici\nsans badge d'accès."]
+		"pages": ["{g:Un intrus|Une intruse} ? Personne n'entre ici\nsans badge d'accès."]
 	},
 	"rocket_hideout_b1f_1_defeated": {
 		"speaker": "Sbire Rocket",
@@ -21,7 +21,7 @@
 	},
 	"rocket_hideout_b1f_2_after": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Je ne t'ai pas vu.", "Toi non plus, d'ailleurs."]
+		"pages": ["Je ne t'ai pas {g:vu|vue}.", "Toi non plus, d'ailleurs."]
 	},
 	"rocket_hideout_b1f_3_before": {
 		"speaker": "Sbire Rocket",
@@ -37,7 +37,7 @@
 	},
 	"rocket_hideout_b2f_1_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Tu t'es perdu ?", "Moi aussi, ma première semaine."]
+		"pages": ["Tu t'es {g:perdu|perdue} ?", "Moi aussi, ma première semaine."]
 	},
 	"rocket_hideout_b2f_1_defeated": {
 		"speaker": "Sbire Rocket",
@@ -49,7 +49,7 @@
 	},
 	"rocket_hideout_b3f_1_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Encore un étage, encore un intrus.", "Les journées sont longues."]
+		"pages": ["Encore un étage, encore {g:un intrus|une intruse}.", "Les journées sont longues."]
 	},
 	"rocket_hideout_b3f_1_defeated": {
 		"speaker": "Sbire Rocket",

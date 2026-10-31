@@ -84,21 +84,21 @@
 	"vermilion_gym_surge_intro": {
 		"speaker": "Major Bob",
 		"pages": [
-			"Hé, petit ! Tu as réussi à ouvrir ma barrière ?",
+			"Hé, {g:petit|petite} ! Tu as réussi à ouvrir ma barrière ?",
 			"Pas mal. Mais ici, c'est l'électricité qui commande.",
 			"Voyons si tu tiens le choc !"
 		]
 	},
 	"vermilion_gym_surge_lost": {
 		"speaker": "Major Bob",
-		"pages": ["Trop lent, petit !", "Reviens quand tu tiendras la charge."]
+		"pages": ["Trop {g:lent|lente}, {g:petit|petite} !", "Reviens quand tu tiendras la charge."]
 	},
 	"vermilion_gym_surge_resume": {
 		"speaker": "Major Bob", "pages": ["Encore toi ? J'aime ça. En position !"]
 	},
 	"vermilion_gym_surge_won": {
 		"speaker": "Major Bob",
-		"pages": ["Ouch ! Tu m'as bien secoué.", "Du cran, petit. Tu as gagné."]
+		"pages": ["Ouch ! Tu m'as bien secoué.", "Du cran, {g:petit|petite}. Tu as gagné."]
 	},
 	"vermilion_gym_surge_badge": {
 		"speaker": "Major Bob",

@@ -73,7 +73,7 @@
 	},
 	"route_21_swimmer_noe_before": {
 		"speaker": "Nageur Noé",
-		"pages": ["Encore un dresseur à la nage ?"]
+		"pages": ["Encore {g:un dresseur|une dresseuse} à la nage ?"]
 	},
 	"route_21_swimmer_noe_defeated": {
 		"speaker": "Nageur Noé",

@@ -33,7 +33,7 @@ const LOSE_LINES: Array[String] = [
 	"Rattrape-moi quand tu le seras aussi.",
 ]
 const OAK_LINES: Array[String] = [
-	"Pour un premier combat, vous vous êtes bien débrouillés.",
+	"Pour un premier combat, c'était honorable.",
 	"Mais gagner n'est qu'une partie de ce qu'un Dresseur doit apprendre.",
 	"Apprends à connaître ton Pokémon. Il fera de même avec toi.",
 	"Une dernière chose.",

@@ -297,7 +297,7 @@ func test_erika_data_and_texts_match_the_validated_lot() -> void:
 			continue
 		var texts: Array = []
 		for page: DialoguePage in dialogue.variants[0].pages:
-			texts.append(page.text.replace("\n", " "))
+			texts.append(DialogueTokens.apply_agreements(page.text, {}).replace("\n", " "))
 		assert_eq(texts, expected[id], "texte validé : %s" % id)
 		assert_eq(dialogue.speaker, "Erika")
 

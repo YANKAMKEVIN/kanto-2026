@@ -31,7 +31,7 @@
 	},
 	"route_12_fisher_3_before": {
 		"speaker": "Pêcheur Bastien",
-		"pages": ["Le roi du ponton contre le petit dresseur !"]
+		"pages": ["Le roi du ponton contre {g:le petit dresseur|la petite dresseuse} !"]
 	},
 	"route_12_fisher_3_defeated": {
 		"speaker": "Pêcheur Bastien",
@@ -62,7 +62,7 @@
 	},
 	"route_12_gate_tm39_give": {
 		"speaker": "Jeune femme",
-		"pages": ["Tu as l'air pressé. Tiens, ça devrait te plaire."]
+		"pages": ["Tu as l'air {g:pressé|pressée}. Tiens, ça devrait te plaire."]
 	},
 	"route_12_gate_tm39_got": {
 		"narration": true,

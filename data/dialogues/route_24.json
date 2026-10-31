@@ -31,7 +31,7 @@
 		"speaker": "Ondine",
 		"pages": [
 			"Joli combat.",
-			"Tu ne l'as pas lâché, même quand il a pris l'avantage.",
+			"Tu ne l'as pas {gr:lâché|lâchée}, même quand {gr:il|elle} a pris l'avantage.",
 			"Je suis Ondine, la Championne d'Azuria.",
 			"Viens me voir à l'Arène. Je veux voir ça de plus près."
 		]
@@ -117,7 +117,7 @@
 	},
 	"nugget_rocket_beaten": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Hm. Tu ferais un excellent…", "Non. Un ennemi. Tu ferais un excellent ennemi."]
+		"pages": ["Hm. Tu ferais {g:un excellent|une excellente}…", "Non. {g:Un ennemi|Une ennemie}. Tu ferais {g:un excellent ennemi|une excellente ennemie}."]
 	},
 	"nugget_rocket_lost": {
 		"speaker": "Sbire Rocket",

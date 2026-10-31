@@ -11,11 +11,11 @@
 	},
 	"cerulean_rocket_spotted": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Hein ?! Un gamin ? Pas question que tu me suives !"]
+		"pages": ["Hein ?! {g:Un gamin|Une gamine} ? Pas question que tu me suives !"]
 	},
 	"cerulean_rocket_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Bon. Tu l'auras voulu. Je ne vais pas me laisser coincer par un môme !"]
+		"pages": ["Bon. Tu l'auras voulu. Je ne vais pas me laisser coincer par {g:un môme|une môme} !"]
 	},
 	"cerulean_rocket_resume": {
 		"speaker": "Sbire Rocket",

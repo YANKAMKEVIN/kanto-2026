@@ -46,7 +46,7 @@
 	},
 	"mt_moon_rocket_2_before": {
 		"speaker": "Sbire Rocket",
-		"pages": ["Encore un curieux ? J'ai du travail."]
+		"pages": ["Encore {g:un curieux|une curieuse} ? J'ai du travail."]
 	},
 	"mt_moon_rocket_2_defeated": {
 		"speaker": "Sbire Rocket",
@@ -61,7 +61,7 @@
 		"pages": [
 			"Les fossiles sont à nous.",
 			"La Team Rocket ne laisse rien\nderrière elle.",
-			"Et surtout pas un gamin curieux."
+			"Et surtout pas {g:un gamin curieux|une gamine curieuse}."
 		]
 	},
 	"mt_moon_rocket_3_defeated": {
@@ -86,7 +86,7 @@
 	},
 	"mt_moon_researcher_rematch": {
 		"speaker": "Chercheur Gaspard",
-		"pages": ["Tu es revenu ?\nTu ne les auras pas !"]
+		"pages": ["Tu es {g:revenu|revenue} ?\nTu ne les auras pas !"]
 	},
 	"mt_moon_researcher_guard": {
 		"speaker": "Chercheur Gaspard",

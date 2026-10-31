@@ -47,7 +47,7 @@
 		"speaker": "Prof. Chen",
 		"pages": [
 			"Vous voulez tous les deux découvrir Kanto.",
-			"Mais découvrir ce monde seul serait une mauvaise idée.",
+			"Mais découvrir ce monde sans aide serait une mauvaise idée.",
 			{ "text": "Eux aussi ont encore beaucoup à découvrir.", "turn": { "oak": "right" } },
 			{ "text": "Alors... pourquoi ne pas commencer ensemble ?", "turn": { "oak": "player" } }
 		]
@@ -88,14 +88,14 @@
 		"speaker": "{rival}",
 		"pages": [
 			"Pas mal pour un premier combat.",
-			{ "text": "Mais je t'avais prévenu : j'étais prêt.", "pause": 0.8 },
+			{ "text": "Mais je t'avais {g:prévenu|prévenue} : j'étais {gr:prêt|prête}.", "pause": 0.8 },
 			"Rattrape-moi quand tu le seras aussi."
 		]
 	},
 	"oak_after_battle": {
 		"speaker": "Prof. Chen",
 		"pages": [
-			"Pour un premier combat, vous vous êtes bien débrouillés.",
+			"Pour un premier combat, c'était honorable.",
 			"Mais gagner n'est qu'une partie de ce qu'un Dresseur doit apprendre.",
 			"Apprends à connaître ton Pokémon. Il fera de même avec toi."
 		]
@@ -124,7 +124,7 @@
 				"unless": ["oak_post_league_gifts_done"],
 				"pages": [
 					"{player} ! Tu te souviens du Pokémon\nresté sur cette table ?",
-					"C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin."
+					"C'était mon dernier Pokémon.\nIl t'a {g:attendu|attendue}. Prends-en soin."
 				],
 				"cutscene": "j32_oak_gifts"
 			},
@@ -169,11 +169,11 @@
 	},
 	"rival_parcel_return": {
 		"speaker": "{rival}",
-		"pages": ["Professeur ! Je suis revenu."]
+		"pages": ["Professeur ! Je suis {gr:revenu|revenue}."]
 	},
 	"rival_parcel_greet": {
 		"speaker": "{rival}",
-		"pages": ["Tiens. T'es déjà revenu, toi aussi ?"]
+		"pages": ["Tiens. T'es déjà {g:revenu|revenue}, toi aussi ?"]
 	},
 	"oak_parcel_rival_dex": {
 		"speaker": "Prof. Chen",
@@ -202,7 +202,7 @@
 				"pages": ["Tu comptes les regarder encore longtemps ?", "Dépêche-toi de choisir."]
 			},
 			{
-				"pages": ["Tu vois ? Je t'avais dit que j'étais prêt."]
+				"pages": ["Tu vois ? Je t'avais dit que j'étais {gr:prêt|prête}."]
 			}
 		]
 	},

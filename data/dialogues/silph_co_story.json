@@ -17,7 +17,7 @@
 	},
 	"rival_silph_lost": {
 		"speaker": "{rival}",
-		"pages": ["Trop facile.", "Reviens quand tu seras prêt."]
+		"pages": ["Trop facile.", "Reviens quand tu seras {g:prêt|prête}."]
 	},
 	"silph_co_7f_lapras_giver": {
 		"speaker": "Employé",
@@ -26,7 +26,7 @@
 				"if": ["rival_silph_won"],
 				"unless": ["silph_lapras_received"],
 				"pages": [
-					"Tu as battu ce garçon ?",
+					"Tu as battu {gr:ce garçon|cette fille} ?",
 					"Alors tu peux protéger celui-ci.",
 					"Les Rocket voulaient l'emporter."
 				],
@@ -38,8 +38,8 @@
 			},
 			{
 				"pages": [
-					"Ce garçon bloque le passage depuis tout à l'heure.",
-					"On dirait qu'il attend quelqu'un."
+					"{gr:Ce garçon|Cette fille} bloque le passage depuis tout à l'heure.",
+					"On dirait qu'{gr:il|elle} attend quelqu'un."
 				]
 			}
 		]

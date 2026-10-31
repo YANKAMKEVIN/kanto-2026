@@ -237,7 +237,7 @@
 		"speaker": "{rival}",
 		"pages": [
 			"…",
-			"{player}. …Tu es venu pour quoi ?",
+			"{player}. …Tu es {g:venu|venue} pour quoi ?",
 			"Peu importe."
 		]
 	},

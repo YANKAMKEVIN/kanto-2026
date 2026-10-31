@@ -2,7 +2,7 @@
 	"league_guard_door": {
 		"speaker": "Garde",
 		"pages": [
-			"Au-delà de cette porte, pas de retour avant la fin. Tu es prêt ?"
+			"Au-delà de cette porte, pas de retour avant la fin. Tu es {g:prêt|prête} ?"
 		],
 		"choice": {
 			"confirm": "OUI",
@@ -49,7 +49,7 @@
 	"league_agatha_defeated": {
 		"speaker": "Agatha",
 		"pages": [
-			"Hé hé… Tu iras loin, petit. Va voir Peter."
+			"Hé hé… Tu iras loin, {g:petit|petite}. Va voir Peter."
 		]
 	},
 	"league_lance_before": {
@@ -68,8 +68,8 @@
 	"rival_champion_before": {
 		"speaker": "{rival}",
 		"pages": [
-			"{player} ! Je suis arrivé ici avant toi. Je suis le Champion maintenant.",
-			"Tu sais ce que ça veut dire ? Que je suis le meilleur Dresseur du monde !"
+			"{player} ! Je suis {gr:arrivé|arrivée} ici avant toi. Je suis {gr:le Champion|la Championne} maintenant.",
+			"Tu sais ce que ça veut dire ? Que je suis {gr:le meilleur Dresseur|la meilleure Dresseuse} du monde !"
 		]
 	},
 	"rival_champion_defeated": {
@@ -87,7 +87,7 @@
 	"league_oak_congrats": {
 		"speaker": "Prof. Chen",
 		"pages": [
-			"{player} ! Félicitations. Tu es le nouveau Champion de la Ligue Pokémon."
+			"{player} ! Félicitations. Tu es {g:le nouveau Champion|la nouvelle Championne} de la Ligue Pokémon."
 		]
 	},
 	"league_oak_to_rival": {

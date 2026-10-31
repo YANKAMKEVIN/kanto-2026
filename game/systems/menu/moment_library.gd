@@ -263,7 +263,8 @@ func _parse_text(value: Variant, marks: Array, where: String) -> MomentTextData:
 	text.detail = str(entry.get("detail", "")).strip_edges()
 	text.draft = entry.get("draft", false)
 	for field: String in [text.title, text.detail]:
-		var bad := _unknown_mark(field, marks)
+		# Les accords {g:…|…} / {gr:…|…} (chantier JR) ne sont pas des marques.
+		var bad := _unknown_mark(DialogueTokens.apply_agreements(field, {}), marks)
 		if not bad.is_empty():
 			ok = _fail("%s : marque « %s » non permise ici (%s)" % [where, bad,
 				", ".join(marks)])

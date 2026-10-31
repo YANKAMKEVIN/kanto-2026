@@ -7,7 +7,7 @@
 				"set": ["mom_greeted"],
 				"auto": true,
 				"pages": [
-					"Bonjour ! Tu es enfin réveillé ?",
+					"Bonjour ! Tu es enfin {g:réveillé|réveillée} ?",
 					"J'ai laissé quelque chose à manger sur la table."
 				]
 			},
