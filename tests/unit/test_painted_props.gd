@@ -108,8 +108,8 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"relief_mur_centrale_01", &"relief_mur_centrale_02", &"relief_mur_centrale_03",
 	&"relief_mur_centrale_04", &"relief_mur_centrale_05",
 	# Reliquats DAF.10d : faces de mur de la Ligue.
-	&"relief_mur_ligue_glace_01", &"relief_mur_ligue_glace_02", &"relief_mur_ligue_roche_01", &"relief_mur_ligue_roche_02"
-	&"relief_mur_ligue_spectre_01", &"relief_mur_ligue_spectre_02", &"relief_mur_ligue_dragon_01", &"relief_mur_ligue_dragon_02"
+	&"relief_mur_ligue_glace_01", &"relief_mur_ligue_glace_02", &"relief_mur_ligue_roche_01", &"relief_mur_ligue_roche_02",
+	&"relief_mur_ligue_spectre_01", &"relief_mur_ligue_spectre_02", &"relief_mur_ligue_dragon_01", &"relief_mur_ligue_dragon_02",
 	&"relief_mur_ligue_champion_01", &"relief_mur_ligue_champion_02", &"relief_mur_ligue_pantheon_01", &"relief_mur_ligue_pantheon_02"]
 const GROUND_LAYER: Array[StringName] = [
 	# Lot DAF.10c : rebords, escalier et trous des Îles Écume, murs de la Centrale.
@@ -118,8 +118,8 @@ const GROUND_LAYER: Array[StringName] = [
 	&"relief_mur_centrale_02", &"relief_mur_centrale_03", &"relief_mur_centrale_04",
 	&"relief_mur_centrale_05",
 	# Reliquats DAF.10d : faces de mur de la Ligue.
-	&"relief_mur_ligue_glace_01", &"relief_mur_ligue_glace_02", &"relief_mur_ligue_roche_01", &"relief_mur_ligue_roche_02"
-	&"relief_mur_ligue_spectre_01", &"relief_mur_ligue_spectre_02", &"relief_mur_ligue_dragon_01", &"relief_mur_ligue_dragon_02"
+	&"relief_mur_ligue_glace_01", &"relief_mur_ligue_glace_02", &"relief_mur_ligue_roche_01", &"relief_mur_ligue_roche_02",
+	&"relief_mur_ligue_spectre_01", &"relief_mur_ligue_spectre_02", &"relief_mur_ligue_dragon_01", &"relief_mur_ligue_dragon_02",
 	&"relief_mur_ligue_champion_01", &"relief_mur_ligue_champion_02", &"relief_mur_ligue_pantheon_01", &"relief_mur_ligue_pantheon_02",
 	# Lot DAF.4 : rebords, escaliers et interrupteurs (Route Victoire, Grotte Azurée).
 	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01",
