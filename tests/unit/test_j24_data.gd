@@ -384,9 +384,13 @@ func test_trainer_lines_are_the_validated_lot() -> void:
 			var texts: Array[String] = []
 			for page: DialoguePage in dialogue.variants[0].pages:
 				assert_lte(page.text.split("\n").size(), 2, "bulle de deux lignes au plus")
-				for line: String in page.text.split("\n"):
-					assert_lte(line.length(), 34, "%s : « %s »" % [dialogue_id, line])
-				texts.append(page.text.replace("\n", " "))
+				# Chantier JR : les deux formes des accords tiennent dans la bulle.
+				for form: String in [DialogueTokens.apply_agreements(page.text, {}),
+						DialogueTokens.apply_agreements(page.text,
+							DialogueTokens.agreement_values(true, true))]:
+					for line: String in form.split("\n"):
+						assert_lte(line.length(), 34, "%s : « %s »" % [dialogue_id, line])
+				texts.append(DialogueTokens.apply_agreements(page.text, {}).replace("\n", " "))
 			assert_eq(" ".join(texts), quotes[i], String(dialogue_id))
 
 

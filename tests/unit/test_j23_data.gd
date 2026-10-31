@@ -63,10 +63,10 @@ func test_every_line_is_a_validated_text() -> void:
 		for variant: DialogueVariant in dialogue.variants:
 			var texts: Array[String] = []
 			for page: DialoguePage in variant.pages:
-				texts.append(page.text)
+				texts.append(DialogueTokens.apply_agreements(page.text, {}))
 			if variant.choice != null:
 				for page: DialoguePage in variant.choice.confirm_pages + variant.choice.cancel_pages:
-					texts.append(page.text)
+					texts.append(DialogueTokens.apply_agreements(page.text, {}))
 			for text: String in texts:
 				if RECOMMENDED.has(text):
 					continue

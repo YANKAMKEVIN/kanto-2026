@@ -352,7 +352,7 @@ func test_surge_data_and_texts_match_the_validated_lot() -> void:
 			continue
 		var texts: Array = []
 		for page: DialoguePage in dialogue.variants[0].pages:
-			texts.append(page.text)
+			texts.append(DialogueTokens.apply_agreements(page.text, {}))
 		assert_eq(texts, expected[id], "texte validé : %s" % id)
 
 

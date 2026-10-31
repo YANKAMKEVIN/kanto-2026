@@ -89,7 +89,7 @@ func _flag_list(word: String) -> Array[StringName]:
 func _text(id: StringName) -> Array:
 	var texts: Array = []
 	for page: DialoguePage in _dialogues.get_dialogue(id).variants[0].pages:
-		texts.append(page.text)
+		texts.append(DialogueTokens.apply_agreements(page.text, {}))
 	return texts
 
 

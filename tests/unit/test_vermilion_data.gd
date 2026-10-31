@@ -243,7 +243,7 @@ func test_trainer_lines_are_the_validated_lot() -> void:
 			var texts: Array[String] = []
 			for page: DialoguePage in dialogue.variants[0].pages:
 				assert_lte(page.text.split("\n").size(), 2, "bulle de deux lignes au plus")
-				texts.append(page.text.replace("\n", " "))
+				texts.append(DialogueTokens.apply_agreements(page.text, {}).replace("\n", " "))
 			assert_eq(" ".join(texts), quotes[i], String(dialogue_id))
 
 

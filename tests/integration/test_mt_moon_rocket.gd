@@ -225,7 +225,7 @@ func _pokemon_data() -> PokemonData:
 func _texts(library: DialogueLibrary, id: StringName) -> Array:
 	var texts: Array = []
 	for page: DialoguePage in library.get_dialogue(id).variants[0].pages:
-		texts.append(page.text)
+		texts.append(DialogueTokens.apply_agreements(page.text, {}))
 	return texts
 
 

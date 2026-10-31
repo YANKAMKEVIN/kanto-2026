@@ -159,7 +159,7 @@ func _talk_to(npc_id: StringName) -> void:
 func _line(id: StringName) -> Array[String]:
 	var lines: Array[String] = []
 	for page: DialoguePage in _dialogues.get_dialogue(id).variants[0].pages:
-		lines.append(page.text)
+		lines.append(DialogueTokens.apply_agreements(page.text, {}))
 	return lines
 
 

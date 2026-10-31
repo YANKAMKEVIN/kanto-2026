@@ -79,7 +79,7 @@ func test_every_line_is_a_validated_text_of_dossier_25() -> void:
 				pages.append_array(variant.choice.confirm_pages + variant.choice.cancel_pages)
 			for page: DialoguePage in pages:
 				checked += 1
-				assert_true(dossier.contains(J22Ids.flat_text(page.text)),
+				assert_true(dossier.contains(J22Ids.flat_text(DialogueTokens.apply_agreements(page.text, {}))),
 					"%s : « %s » (dossier 25 §16)" % [id, page.text])
 	assert_gt(checked, 150)
 

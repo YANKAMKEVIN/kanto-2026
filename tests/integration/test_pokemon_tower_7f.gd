@@ -110,7 +110,7 @@ func _lines(page_text: String) -> String:
 func _page_lines(id: StringName, variant: int = 0) -> Array[String]:
 	var lines: Array[String] = []
 	for page: DialoguePage in _dialogues.get_dialogue(id).variants[variant].pages:
-		lines.append(_lines(page.text))
+		lines.append(_lines(DialogueTokens.apply_agreements(page.text, {})))
 	return lines
 
 
