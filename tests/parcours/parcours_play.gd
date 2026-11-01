@@ -15,6 +15,8 @@ extends "res://tests/helpers/hideout_play.gd"
 ## contrôles en échec font aussi échouer le test.
 
 const STABLE_TIMEOUT := 20.0
+## Pas de case imposée ([method travel]).
+const NOWHERE := Vector2i(-1, -1)
 ## Champs de [method GameState.to_dict] comparés avant et après une relance.
 const KEPT_FIELDS: Array[String] = ["map", "starter", "party", "storage", "bag", "pokedex",
 	"flags", "money", "discovered_maps", "daycare", "hall_of_fame", "companion"]
@@ -147,11 +149,17 @@ func jump(map_id: StringName, spawn: StringName, facing: Vector2i = Vector2i.DOW
 ## Marche jusqu'à [param goal] ; un Dresseur qui repère le joueur (ou toute scène qui prend la
 ## main en chemin) est joué jusqu'au bout ([method HideoutPlay.run_scene]), puis la marche
 ## reprend. Vrai si le joueur arrive sur [param goal].
+## T6 : une scène qui part sur la case d'arrivée (déclencheur) est attendue quelques images et
+## jouée ; la marche s'arrête si une scène a changé de carte.
 func walk_through(goal: Vector2i, attempts: int = 8) -> bool:
+	var origin := map_id()
 	for attempt: int in attempts:
 		await walk_to(goal)
+		await _test.wait_process_frames(3)
 		if not boot.is_stable():
 			await run_scene()
+		if map_id() != origin:
+			return false
 		if player.get_cell() == goal:
 			return true
 	return player.get_cell() == goal
@@ -229,6 +237,154 @@ func surf_to(goal: Vector2i) -> bool:
 			"SURFER depuis %s (contrôle %d)" % [bank, check]):
 		return false
 	return await walk_through(goal)
+
+
+## T6 (préparation) : passe sur la carte [param target] par un passage de la carte courante,
+## comme le joueur : marche jusqu'au passage le plus proche par la vraie grille (Dresseurs qui
+## repèrent le joueur et rencontres sauvages joués en chemin), puis le pas ou la poussée qui le
+## déclenche (escalier, porte, bord de carte, trou). Une scène qui part à l'arrivée est jouée.
+## Passages inactifs (drapeaux) et destinations « à venir » ignorés. Vrai si la carte courante
+## est [param target]. [param required] faux : pas de contrôle (une scène peut emmener ailleurs,
+## comme Chen dans les herbes de la Route 1) ; la marche s'arrête si la carte change.
+## [param via] : seulement le passage de cette case (deux échelles vers la même carte).
+## L'équipe est soignée avant chaque passage (longues marches : rencontres sauvages).
+func travel(target: StringName, attempts: int = 4, required: bool = true,
+		via: Vector2i = NOWHERE) -> bool:
+	var origin := map_id()
+	for attempt: int in attempts:
+		if map_id() == target:
+			return true
+		if map_id() != origin:
+			break
+		heal()
+		var plan := _warp_plan(target, via)
+		if plan.is_empty():
+			break
+		var stand: Vector2i = plan["stand"]
+		await walk_through(stand)
+		if player.get_cell() != stand or map_id() == target:
+			continue
+		await step(plan["press"])
+		await _test.wait_process_frames(3)
+		if not boot.is_stable():
+			await run_scene()
+		await wait_stable()
+	if not required:
+		return map_id() == target
+	return expect(map_id() == target, "passage vers %s (sur %s, case %s)" % [target, map_id(),
+		player.get_cell()])
+
+
+## Enchaîne [method travel] sur [param maps], dans l'ordre. Vrai si la dernière est atteinte.
+func travel_all(maps: Array) -> bool:
+	for map: Variant in maps:
+		if not await travel(StringName(str(map))):
+			return false
+	return true
+
+
+## Case où se tenir et direction à pousser pour le passage vers [param target] le plus proche
+## (vide si aucun n'est accessible).
+func _warp_plan(target: StringName, via: Vector2i = NOWHERE) -> Dictionary:
+	var grid := boot.get_map().get_grid()
+	var here := player.get_cell()
+	var best := {}
+	var best_length := -1
+	for warp: Warp in boot.get_map().get_warps().get_all():
+		if warp.target_map != target or warp.is_coming_soon():
+			continue
+		if via != NOWHERE and warp.cell != via:
+			continue
+		if not _warp_active(warp):
+			continue
+		var options: Array[Dictionary] = []
+		if warp.trigger == Warp.Trigger.PUSH:
+			options.append({"stand": warp.cell, "press": warp.direction})
+		elif warp.direction != Vector2i.ZERO:
+			options.append({"stand": warp.cell - warp.direction, "press": warp.direction})
+		else:
+			for side: Vector2i in DIRECTIONS:
+				options.append({"stand": warp.cell + side, "press": -side})
+		for option: Dictionary in options:
+			var stand: Vector2i = option["stand"]
+			var length := 0
+			if stand != here:
+				if warp.trigger != Warp.Trigger.PUSH and _is_warp_cell(stand):
+					continue
+				length = grid.find_path(here, stand, player).size()
+				if length == 0:
+					continue
+			if best_length < 0 or length < best_length:
+				best = option
+				best_length = length
+	return best
+
+
+func _warp_active(warp: Warp) -> bool:
+	for flag: StringName in warp.unless_flags:
+		if GameState.flags.has_flag(flag):
+			return false
+	for flag: StringName in warp.if_flags:
+		if not GameState.flags.has_flag(flag):
+			return false
+	return true
+
+
+func _is_warp_cell(cell: Vector2i) -> bool:
+	for warp: Warp in boot.get_map().get_warps().get_all():
+		if warp.cell == cell:
+			return true
+	return false
+
+
+## T6 : pousse le rocher voisin de [param stand] vers [param direction] (Force : CS04, Badge,
+## Pokémon qui la connaît). Force est activée au besoin comme le joueur (examiner, UTILISER),
+## puis la direction est tenue jusqu'à la poussée ([constant StrengthDirector.HOLD_TIME]).
+## Vrai si le rocher a bougé.
+func push_boulder(stand: Vector2i, direction: Vector2i) -> bool:
+	var strength := boot.get_strength_director()
+	await walk_through(stand)
+	if player.get_cell() != stand or strength.boulder_at(stand + direction) == null:
+		return expect(false, "rocher en %s poussé vers %s depuis %s (case %s)"
+			% [stand + direction, direction, stand, player.get_cell()])
+	player.face(direction)
+	await _test.wait_process_frames(2)
+	if not strength.is_active():
+		await _use_strength()
+	var started: Array[bool] = [false]
+	var on_started := func() -> void: started[0] = true
+	strength.push_started.connect(on_started)
+	var action: StringName = DIRECTIONS[direction]
+	var deadline := Time.get_ticks_msec() + 3000
+	Input.action_press(action)
+	while not started[0] and Time.get_ticks_msec() < deadline:
+		await _test.wait_process_frames(1)
+	Input.action_release(action)
+	strength.push_started.disconnect(on_started)
+	await _test.wait_until(func() -> bool: return not strength.is_running(), 10.0)
+	await _test.wait_process_frames(3)
+	if not boot.is_stable():
+		await run_scene()
+	return started[0]
+
+
+func _use_strength() -> void:
+	var strength := boot.get_strength_director()
+	var runner := boot.get_dialogue_runner()
+	var box := boot.get_dialogue_box()
+	Input.action_press(&"interact")
+	await _test.wait_process_frames(2)
+	Input.action_release(&"interact")
+	var deadline := Time.get_ticks_msec() + 20000
+	while (runner.is_running() or box.is_open() or strength.is_running()
+			or not strength.is_active()) and Time.get_ticks_msec() < deadline:
+		await _test.wait_process_frames(1)
+		if box.is_choice_showing():
+			box.get_choice_cards().get_confirm_button().pressed.emit()
+		elif box.is_open() and not runner.is_awaiting_choice():
+			box.advance_requested.emit()
+	expect(strength.is_active(), "Force activée")
+	await wait_stable()
 
 
 ## Raccourci du parcours : pose [param flags] (ce que le tronçon sauté aurait posé) et le note
@@ -359,7 +515,8 @@ func persist(label: String = "sauvegarde relue à l'identique") -> bool:
 	var diff: Array[String] = []
 	for field: String in KEPT_FIELDS:
 		if str(before.get(field)) != str(after.get(field)):
-			diff.append(field)
+			diff.append(field if field != "bag" else "bag %s → %s" % [before.get(field),
+				after.get(field)])
 	var same_cell := player.get_cell() == cell
 	if not same_cell:
 		diff.append("case %s → %s" % [cell, player.get_cell()])
