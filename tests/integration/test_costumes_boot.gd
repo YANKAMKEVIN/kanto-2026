@@ -77,3 +77,20 @@ func test_the_badge_scene_announces_its_costume_at_its_end() -> void:
 	assert_not_null(toast.get_icon(), "vignette du costume")
 	_boot._announce_costume()
 	assert_signal_emit_count(toast, "toast_shown", 1, "une seule fois")
+
+
+func test_the_costume_waits_for_the_tm_toast() -> void:
+	await _start()
+	var step := CutsceneStep.new()
+	step.kind = CutsceneStep.Kind.BADGE
+	step.badge_id = &"cascade"
+	GameState.flags.set_flag(&"badge_cascade")
+	var toast := _boot.get_hud().get_toast()
+	toast.show_toast("CT11", "Ajoutée au Sac")
+	watch_signals(toast)
+	_boot._on_costume_badge_step(step)
+	_boot._announce_costume()
+	assert_eq(toast.get_title_text(), "CT11", "le toast de la CT reste")
+	toast.hide_now()
+	await wait_process_frames(2)
+	assert_eq(toast.get_title_text(), "Nouveau costume : Luffy", "puis le costume")

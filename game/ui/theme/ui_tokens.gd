@@ -1625,6 +1625,8 @@ const TRAINER_HERO_OFFSET_X := -4
 const TRAINER_BADGE_SLOT_HEIGHT := 112
 const TRAINER_BADGE_ICON := 56
 const TRAINER_BADGE_UNKNOWN := Color(1, 1, 1, 0.22)
+## Costumes (dossier-costumes.md, CO-2) : silhouette noire d'un costume verrouillé.
+const TRAINER_COSTUME_SILHOUETTE := Color(0.0, 0.0, 0.0, 0.85)
 const TRAINER_BADGE_UNKNOWN_FONT := FONT_CAPTION
 const TRAINER_TEAM_COLUMNS := 3
 const TRAINER_TEAM_ART := 104

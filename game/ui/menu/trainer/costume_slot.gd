@@ -8,9 +8,6 @@ extends PanelContainer
 
 signal touched(slot: CostumeSlot)
 
-## Couleur de la silhouette d'un costume verrouillé (CO-2).
-const SILHOUETTE := Color(0.0, 0.0, 0.0, 0.85)
-
 var _view: CostumeSlotView
 var _hit: Button
 var _art: TextureRect
@@ -36,7 +33,7 @@ func _init(view: CostumeSlotView = null) -> void:
 	_art.texture = idle_texture(_view.sprite)
 	add_child(_art)
 	theme_type_variation = &"TrainerBadgeOn" if _view.worn else &"TrainerBadge"
-	_art.modulate = Color.WHITE if _view.unlocked else SILHOUETTE
+	_art.modulate = Color.WHITE if _view.unlocked else UiTokens.TRAINER_COSTUME_SILHOUETTE
 
 
 ## Image d'attente de face (`idle_down`) de l'apparence [param sprite] ; null si absente.

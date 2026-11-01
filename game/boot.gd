@@ -1893,12 +1893,18 @@ func _on_costume_badge_step(step: CutsceneStep) -> void:
 		_costume_to_announce = CostumeCatalog.shared().costume_for_badge(step.badge_id)
 
 
-## CO-4 : une ligne discrète « Nouveau costume : … », sans ouvrir de menu.
+## CO-4 : une ligne discrète « Nouveau costume : … », sans ouvrir de menu, **après** le toast en
+## cours (celui de la CT, dernière étape de la scène du badge).
 func _announce_costume() -> void:
 	var costume := _costume_to_announce
 	_costume_to_announce = &""
 	var catalog := CostumeCatalog.shared()
 	if costume.is_empty() or not catalog.is_unlocked(costume, GameState.flags.has_flag):
+		return
+	var toast := _hud.get_toast()
+	if toast.is_showing():
+		await toast.toast_hidden
+	if not is_inside_tree():
 		return
 	var sprite := catalog.world_sprite(costume, GameState.player_look)
 	_hud.show_toast(catalog.unlock_text(costume, GameState.player_look), "",
