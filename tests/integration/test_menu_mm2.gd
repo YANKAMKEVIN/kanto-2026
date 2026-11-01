@@ -179,12 +179,13 @@ func test_panel_hero_uses_the_preview_or_a_crop_of_the_illustration() -> void:
 	assert_eq(hero.texture, MenuArt.zone_preview(&"route_1"))
 	# Une zone sans aperçu peint : recadrage de l'illustration de Kanto autour d'elle.
 	var panel := ZonePanelView.new()
-	panel.zone_id = &"mt_moon"
+	# Toutes les zones ont maintenant leur aperçu : une zone fictive, sur l'aire du Mont Sélénite.
+	panel.zone_id = &"zone_sans_apercu"
 	panel.name = "Mont Sélénite"
 	var kanto := MenuArt.texture(_art.get_image_path())
 	screen.get_panel().show_zone(panel, kanto, Rect2(_art.area_of(&"mt_moon")))
 	hero = screen.get_panel().get_hero_art()
-	assert_null(MenuArt.zone_preview(&"mt_moon"))
+	assert_null(MenuArt.zone_preview(&"zone_sans_apercu"))
 	assert_eq(hero.texture, kanto)
 
 
@@ -254,7 +255,9 @@ func test_badges_come_from_the_badge_library_in_silhouette() -> void:
 	assert_eq(slots[0].get_text(), "Roche", "badge obtenu = drapeau levé")
 	assert_eq(slots[0].get_view().name, "Badge Roche")
 	assert_false(slots[0].is_muted())
-	assert_eq(slots[0].get_emblem().modulate, UiTokens.ACCENT)
+	# Menu Dresseur peint : le badge peint, sans teinte.
+	assert_eq(slots[0].get_emblem().texture, MenuArt.badge_icon(&"boulder"))
+	assert_eq(slots[0].get_emblem().modulate, Color.WHITE)
 	for i: int in range(1, 8):
 		assert_eq(slots[i].get_text(), "???")
 	for text: String in screen.get_texts():

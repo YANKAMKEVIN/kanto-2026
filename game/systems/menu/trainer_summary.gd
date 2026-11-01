@@ -265,6 +265,8 @@ static func _record_view(record: Dictionary, state: Object, data: PokemonData,
 	view.detail = DialogueTokens.apply_agreements(view.detail, agree)
 	if type == MomentLibrary.FOSSIL:
 		view.item_id = StringName(str(details.get(MomentLibrary.DETAIL_ITEM, "")))
+	if type == MomentLibrary.BADGE:
+		view.badge_id = BadgeMoment.badge_of(details)
 	view.place = place
 	view.zone_id = zone
 	view.date = str(record.get("date", ""))

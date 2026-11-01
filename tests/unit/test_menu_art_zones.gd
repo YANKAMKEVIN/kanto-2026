@@ -6,12 +6,18 @@ const SIZE := Vector2(1586, 992)
 
 
 func test_painted_previews_exist_for_the_zones_with_maps() -> void:
-	for zone: StringName in [&"pallet_town", &"route_1", &"viridian_city", &"route_22"]:
+	# Menu Dresseur peint (2026-11-01) : toutes les zones de zones.json ont leur carte peinte, donc
+	# leur aperçu (tools/build_zone_previews.gd --all).
+	var zones := ZoneLibrary.new()
+	assert_true(zones.load_file())
+	var ids: Array[StringName] = zones.get_ids()
+	assert_gte(ids.size(), 48)
+	for zone: StringName in ids:
 		var preview := MenuArt.zone_preview(zone)
 		assert_not_null(preview, String(zone))
 		assert_almost_eq(preview.get_width() / float(preview.get_height()), 16.0 / 9.0, 0.01)
 		assert_eq(MenuArt.zone_preview(zone), preview, "même objet partagé")
-	assert_null(MenuArt.zone_preview(&"mt_moon"), "pas encore de carte peinte")
+	assert_null(MenuArt.zone_preview(&"zone_sans_apercu"), "pas d'aperçu : null")
 
 
 func test_crop_surrounds_the_zone_inside_the_image_at_16_9() -> void:

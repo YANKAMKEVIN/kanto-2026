@@ -77,7 +77,9 @@ func test_always_eight_silhouette_untouchable_badges() -> void:
 		assert_eq(slot.mouse_filter, Control.MOUSE_FILTER_IGNORE)
 		# MM.2 (décision de Kevin) : silhouette commune et « ??? », ni nom ni apparence du badge.
 		assert_eq(slot.get_text(), "???")
-		assert_eq(slot.get_emblem().modulate, UiTokens.TRAINER_BADGE_UNKNOWN)
+		# Menu Dresseur peint : le gabarit peint neutre, estompé (repli SVG gris sans image).
+		assert_eq(slot.get_emblem().texture, MenuArt.badge_unknown())
+		assert_eq(slot.get_emblem().modulate, UiTokens.TRAINER_BADGE_UNKNOWN_PAINTED)
 		if emblem == null:
 			emblem = slot.get_emblem().texture
 		assert_eq(slot.get_emblem().texture, emblem, "la même silhouette pour les huit")
