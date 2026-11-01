@@ -61,7 +61,7 @@ def _poses(planche: Image.Image) -> list[Image.Image]:
     donnees = alpha.load()
     lignes = [sum(1 for x in range(largeur) if donnees[x, y]) for y in range(hauteur)]
     poses = []
-    for haut, bas in _bandes(lignes, LIGNES):
+    for haut, bas in _separer(_bandes(lignes, LIGNES), lignes, LIGNES):  # cheveux d'une ligne à l'autre
         colonnes = [sum(1 for y in range(haut, bas) if donnees[x, y]) for x in range(largeur)]
         for gauche, droite in _separer(_bandes(colonnes, COLONNES), colonnes, COLONNES):
             cellule = planche.crop((gauche, haut, droite, bas))
