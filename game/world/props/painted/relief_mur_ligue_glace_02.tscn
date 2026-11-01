@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_h50uf"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_lgv0p"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_ligue_glace_02.png" id="3_706cn"]
+
+[node name="ReliefMurLigueGlace02" type="Node2D" unique_id=235783624]
+script = ExtResource("1_h50uf")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=741286643]
+unique_name_in_owner = true
+material = ExtResource("2_lgv0p")
+texture = ExtResource("3_706cn")
+centered = false
+offset = Vector2(-96, -186)

@@ -178,10 +178,27 @@ Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headles
 - **Pour T6** : les raccourcis du tableau sont les tronçons que seule la passe humaine rejoue.
 
 ### T6 — Campagne complète et corrections (33E)
+**Clos par décision de Kevin le 2026-11-01** (« je valide tout ça, pas besoin de les rejouer par moi ») : la passe humaine est remplacée par les parcours scriptés (T5, parcours 07 à 09 de la préparation) et les QA d'agent sur l'A17 (points d'entrée, sauvegarde, arrière-plan, trajets du repaire et de Sylphe) et sur le S24 (tronçon 0.1 joué en entier, 0.2 en partie, S24 perdu ensuite). Aucun P0 à P2 trouvé ; P3 ouverts : RP-284, RP-285, RP-286. Tronçons 0.2 à 0.9 non rejoués au doigt, acceptés tels quels par Kevin.
+
 Une passe humaine sur S24 par parcours ; chaque anomalie dans `docs/tech/registre-anomalies.md` [D]
 (ID, priorité, build, étapes, état). Fermeture seulement après **rejeu réussi du scénario**.
 
+**Préparation (2026-11-01, branche `claude/j33-t6-prep`, non fusionnée)** : les raccourcis « ↷ » du
+tableau T5 sont rejoués en headless par trois parcours de plus, à pied (marche réelle entre les
+cartes, Dresseurs et rencontres joués) : **07** prologue, Route 1, Route 2, Forêt de Jade ;
+**08** Pont Pépite et Léo, poubelles de Carmin, Routes 9-10 et Grotte Sombre, Casino et repaire
+B1F-B4F (dalles du B3F, Clé, ascenseur, gardes), Tour 3F-5F (zone purifiée), Route 16 et Piste
+Cyclable jusqu'à Parmanie, Safrania et Sylphe 1F-5F (Carte par le 9F) ; **09** téléporteurs de
+l'Arène de Safrania, Manoir 1F-B1F (statues, trou), six questions de Cramois'Île, Arène de
+Jadielle à pied (dalles), Route 23 (sept contrôles, Surf) et Route Victoire 1F (Force),
+Grotte Azurée 1F-B1F jusqu'à Mewtwo. Harnais : `travel` (passage le plus proche, bord, porte,
+escalier, trou), `walk_sliding` (dalles tournantes), `push_boulder` (Force), rattrapage des
+objets clés au départ. Anomalies : RP-284 et RP-285 (P3). Ce que Kevin joue au doigt :
+`docs/tech/jalon-33-t6-checklist.md` (tronçons jamais joués par une machine en premier).
+
 ### T7 — APK versionné, rapport, décision (33F)
+**Fait et validé le 2026-11-01** (branche `claude/j33-t7`, fusionnée dans `main` ; **J33 clos par Kevin** : P2/P3 acceptés, RP-263 en P2 après le J33) : version 0.33.0 / code 33 [D] dans le preset, `tools/build_android.sh [preset] [sortie]`, APK `build/kanto2026-0.33.0-debug.apk` (SHA-256 et preuves : `jalon-33-dossier.md`), CI verte (run 41340970199). Décision de Kevin : §7 du dossier.
+
 `version/code` et `version/name` dans le preset (nommage fixé en J34 T1), `tools/build_android.sh`
 accepte un preset de test. Dossier : APK, commit exact, version de Godot, paramètres d'export,
 résultats de tests, métriques, registre. **Une APK compilée ne prouve pas à elle seule que le

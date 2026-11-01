@@ -954,7 +954,7 @@ Règle du directeur : OK → `mark_changed()` (autosave à la fermeture), `shop_
 | Mesure | Cible | Comment |
 |---|---|---|
 | Images par seconde, exploration (Jadielle, Route 22, intérieurs) | moyenne ≥ 58, aucun creux < 30 hors chargement | `[perf]` de `PerfCounter` |
-| Mémoire des textures par carte | ≤ **64 Mo** (bien sous le seuil de départ de 300 Mo du cahier §2) | `[perf]` étendu au T3 : `Performance.RENDER_TEXTURE_MEM_USED` |
+| Mémoire des textures (processus) | ~~≤ 64 Mo~~ → repère indicatif ≤ **384 Mo** pour toutes les textures résidentes du processus (corrigé le 2026-10-31, décision de Kevin : 64 Mo était mal estimé ; A17 225–339 Mo sans effet sur la cadence, RP-091) | `[perf]` étendu au T3 : `Performance.RENDER_TEXTURE_MEM_USED` |
 | Changement de carte | ≤ ce qu'on mesure aujourd'hui Route 1 ↔ Bourg Palette (journal `SceneRouter : … en N ms`) | préchargement des voisines (existant) |
 | Menu ouvert sur Jadielle | même tenue qu'au J6 | le flou lit l'écran déjà étalonné : rien de plus |
 

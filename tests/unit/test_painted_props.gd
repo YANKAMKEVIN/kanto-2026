@@ -100,8 +100,27 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"decal_interrupteur_victoire_01", &"decal_interrupteur_victoire_enfonce_01",
 	&"relief_rebord_azuree_01", &"relief_rebord_azuree_cote_01", &"relief_escalier_azuree_01",
 	&"prop_barriere_victoire_01",
-	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01"]
+	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01",
+	# Lot DAF.10c : grotte glacée des Îles Écume, murs de la Centrale.
+	&"relief_paroi_glace_01", &"relief_paroi_glace_02", &"relief_paroi_glace_05",
+	&"relief_paroi_glace_06", &"relief_rebord_ecume_01", &"relief_rebord_ecume_cote_01",
+	&"relief_escalier_ecume_01", &"decal_trou_ecume_01", &"decal_trou_ecume_bouche_01",
+	&"relief_mur_centrale_01", &"relief_mur_centrale_02", &"relief_mur_centrale_03",
+	&"relief_mur_centrale_04", &"relief_mur_centrale_05",
+	# Reliquats DAF.10d : faces de mur de la Ligue.
+	&"relief_mur_ligue_glace_01", &"relief_mur_ligue_glace_02", &"relief_mur_ligue_roche_01", &"relief_mur_ligue_roche_02",
+	&"relief_mur_ligue_spectre_01", &"relief_mur_ligue_spectre_02", &"relief_mur_ligue_dragon_01", &"relief_mur_ligue_dragon_02",
+	&"relief_mur_ligue_champion_01", &"relief_mur_ligue_champion_02", &"relief_mur_ligue_pantheon_01", &"relief_mur_ligue_pantheon_02"]
 const GROUND_LAYER: Array[StringName] = [
+	# Lot DAF.10c : rebords, escalier et trous des Îles Écume, murs de la Centrale.
+	&"relief_rebord_ecume_01", &"relief_rebord_ecume_cote_01", &"relief_escalier_ecume_01",
+	&"decal_trou_ecume_01", &"decal_trou_ecume_bouche_01", &"relief_mur_centrale_01",
+	&"relief_mur_centrale_02", &"relief_mur_centrale_03", &"relief_mur_centrale_04",
+	&"relief_mur_centrale_05",
+	# Reliquats DAF.10d : faces de mur de la Ligue.
+	&"relief_mur_ligue_glace_01", &"relief_mur_ligue_glace_02", &"relief_mur_ligue_roche_01", &"relief_mur_ligue_roche_02",
+	&"relief_mur_ligue_spectre_01", &"relief_mur_ligue_spectre_02", &"relief_mur_ligue_dragon_01", &"relief_mur_ligue_dragon_02",
+	&"relief_mur_ligue_champion_01", &"relief_mur_ligue_champion_02", &"relief_mur_ligue_pantheon_01", &"relief_mur_ligue_pantheon_02",
 	# Lot DAF.4 : rebords, escaliers et interrupteurs (Route Victoire, Grotte Azurée).
 	&"decal_trou_victoire_01", &"decal_trou_victoire_bouche_01",
 	&"relief_rebord_victoire_01", &"relief_rebord_victoire_cote_01", &"relief_escalier_victoire_01",

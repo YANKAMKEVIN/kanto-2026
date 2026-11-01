@@ -8,8 +8,9 @@ extends FlagGate
 ##   [member high_cells], [member stairs_cells] ([method GridWorld.set_level]) ;
 ## - **courants** : actifs ou calmes selon les 8 drapeaux ([method SeafoamState.Floor.apply_to]).
 ## Sans drapeaux connus (grille construite avant l'arrivée), ceux de [code]GameState[/code].
-## Les courants actifs sont dessinés (écume orientée provisoire : chevrons clairs, dossier 27 §7.4
-## « les cases de courant sont visibles ») ; un courant calme ne l'est plus.
+## Les courants actifs sont dessinés (dossier 27 §7.4 « les cases de courant sont visibles » ; lot
+## DAF.10c, RP-275) : l'eau vive peinte `ground_courant_01` tournée dans le sens du flux et qui défile,
+## et des chevrons clairs par-dessus ; un courant calme ne l'est plus (l'eau peinte de la carte).
 
 ## Étage (identifiant de la carte) dans `data/world/seafoam.json`.
 @export var floor_id: StringName = &""
@@ -17,11 +18,30 @@ extends FlagGate
 @export var high_cells: Array[Vector2i] = []
 @export var stairs_cells: Array[Vector2i] = []
 
+## Eau vive (texture « vers le bas », raccordable), vitesse de défilement (px/s), opacité, chevrons.
+const CURRENT_IMAGE: Texture2D = preload("res://assets/world/ground/ground_courant_01.png")
+const CURRENT_SPEED: float = 120.0
+const CURRENT_ALPHA: float = 0.8
+const CHEVRON_COLOR := Color(0.92, 0.98, 1.0, 0.75)
+
 static var _state: SeafoamState = null
 
 var _flags: StoryFlags = null
 ## Cases des courants actifs dessinés : case → direction.
 var _drawn: Dictionary[Vector2i, Vector2i] = {}
+## Temps écoulé (défilement de l'eau vive).
+var _time: float = 0.0
+
+
+func _ready() -> void:
+	texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+
+
+func _process(delta: float) -> void:
+	if _drawn.is_empty():
+		return
+	_time = fmod(_time + delta, 3600.0)
+	queue_redraw()
 
 
 ## Données des étages (chargées une fois).
@@ -56,15 +76,24 @@ func apply_to_grid(grid: GridWorld) -> void:
 
 func _draw() -> void:
 	var tile := float(Grid.TILE_SIZE)
-	var color := Color(0.88, 0.96, 1.0, 0.55)
+	var half := tile / 2.0
 	for cell: Vector2i in _drawn:
 		var center := (Vector2(cell) + Vector2(0.5, 0.5)) * tile
 		var dir := Vector2(_drawn[cell])
+		# Repère local : +y = sens du flux (la texture coule vers le bas), coordonnées du monde
+		# projetées pour raccorder les cases voisines.
+		var across := Vector2(-dir.y, dir.x) * -1.0
+		var source := Rect2(center.dot(across) - half, center.dot(dir) - half - _time * CURRENT_SPEED,
+			tile, tile)
+		draw_set_transform(center, dir.angle() - PI / 2.0)
+		draw_texture_rect_region(CURRENT_IMAGE, Rect2(-half, -half, tile, tile), source,
+			Color(1.0, 1.0, 1.0, CURRENT_ALPHA))
+		draw_set_transform(Vector2.ZERO)
 		var side := Vector2(-dir.y, dir.x)
 		for offset: float in [-18.0, 14.0]:
 			var tip := center + dir * (offset + 14.0)
 			draw_polyline(PackedVector2Array([tip - dir * 16.0 + side * 16.0, tip,
-				tip - dir * 16.0 - side * 16.0]), color, 5.0)
+				tip - dir * 16.0 - side * 16.0]), CHEVRON_COLOR, 6.0)
 
 
 ## État de l'étage avec les drapeaux connus (null : étage inconnu).

@@ -14,8 +14,8 @@
 [ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_sylphe_01.png" id="12_tbekn"]
 [ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_sylphe_02.png" id="13_mf678"]
 [ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_sylphe_04.png" id="14_54wqy"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_serveur_sylphe_01.tscn" id="15_jhxiw"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_bureau_sylphe_01.tscn" id="16_1fkc0"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_armoire_sylphe_accueil_01.tscn" id="15_jhxiw"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_bureau_sylphe_accueil_01.tscn" id="16_1fkc0"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="17_swqjl"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="18_pc2x5"]
 

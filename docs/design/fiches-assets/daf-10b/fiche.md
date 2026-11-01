@@ -57,9 +57,9 @@ touchées (34 relevés : Routes 4, 12 sud, 13 à 22, 24, postes 15 (1F, 2F), 16,
 
 Prompts prêts (`tools/art/daf10b.py --prompts`, `tools/art/prompts/daf10b/`), non lancés :
 
-1. **Béton de la Piste Cyclable** (`ground_piste_01`) : la Piste (Routes 16 ouest, 17, 18) est en
+1. ~~**Béton de la Piste Cyclable**~~ **fait le 2026-10-31** (image Codex, `ground_piste_01`, branché sur les Routes 16 ouest, 17, 18 ; relevés identiques ; `planche-codex-2026-10-31.jpg`) : la Piste (Routes 16 ouest, 17, 18) est en
    dalles du souterrain [D] ; la vue générale de la Route 17 montre du béton gris clair.
-2. **Jumelles** du 2F du poste 15 (`int_jumelles_01`) : remplacées par deux petits meubles [D].
+2. ~~**Jumelles**~~ **faites le 2026-10-31** (image Codex, `int_jumelles_01`, `build_daf10b_postes.gd`) : remplacées par deux petits meubles [D].
 3. Enveloppes propres des postes (`INT_POSTE_*_COQUE`) et façade propre du poste traversant
    (`WORLD_BLDG_POSTE_TRAVERSANT_01`), d'après `reference/poste-15|16|18-v1.png`, si les
    recompositions [D] ne suffisent pas.

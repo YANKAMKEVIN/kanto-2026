@@ -1,0 +1,26 @@
+DÉCOR DE COMBAT — PARC SAFARI (SAVANE) (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+IMAGE 3 : une texture du lieu : guide de PALETTE et de matières seulement.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : une clairière du PARC SAFARI de Parmanie, une réserve naturelle aux allures de savane : grand sol de terre battue claire et d'herbe rase dorée, au fond des HAUTES HERBES jaunes, quelques acacias à la cime plate, un enclos de rondins bas, des collines douces au loin ; ciel clair d'après-midi.
+
+COMPOSITION (fractions depuis le coin haut gauche) :
+- Horizon vers 40 % de la hauteur : collines lointaines, deux acacias (x 10 à 24 % et x 76 à 90 %), une bande de hautes herbes jaunes au pied, une clôture de rondins basse à droite.
+- De 40 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT de terre claire et d'herbe rase dorée, sans hautes herbes au centre.
+- Point A (x 67 %, y 50 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : surface simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent dégagés : pas de rocher en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : golden hour douce, soleil bas du haut à gauche (hors cadre), ombres chaudes et longues, ciel bleu pâle aux nuages légers, pas de soleil visible.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, la surface recule nettement vers l'horizon.
+
+INTERDITS : Pokémon, animal, personnage, silhouette, texte, lettres (aucun R, aucun logo), chiffres, panneau, écran allumé, signature, filigrane, cadre, interface, pixel art, flou, vignettage, noir pur. Animal, girafe, éléphant, véhicule, jeep, bâtiment.
