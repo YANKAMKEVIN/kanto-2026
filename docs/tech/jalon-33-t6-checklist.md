@@ -40,7 +40,7 @@ Rattata), colis, Pokédex, Route 2, Forêt de Jade, Argenta, Pierre.
 | Casino, repaire B1F à B4F, Clé, ascenseur | `game_corner` | dalles du B3F lisibles ; panneau d'étages |
 | Tour 3F à 5F, zone purifiée | `tower_scope` | soin de la zone ; Exorciste inévitable du 4F |
 | Route 16 (Ronflex), Piste Cyclable, Route 17 | `snorlax_16_qa` | descente seule sur la pente |
-| Boisson au garde, Sylphe 1F à 5F, Carte | `saffron_gate` | **question Q1** ci-dessous |
+| Boisson au garde, Sylphe 1F à 5F, Carte | `saffron_gate` | Q1 tranchée : chemin par le 9F gardé |
 
 ## 3. Parcours 03 — Donjons (couvert : 03 et 09)
 
@@ -69,4 +69,4 @@ sauvegarde ; FPS par zone (A17 : 50 à 54 i/s, son plafond).
   couloir est (28, 4), font une case de large et un Dresseur s'y tient (il ne s'écarte pas
   après sa défaite). Le seul chemin est : ascenseur → 9F → téléporteur (17, 15) → 5F (9, 15).
   Le parcours 08 le joue et il marche. Est-ce voulu (fidèle à RB) ou faut-il qu'un des deux
-  s'écarte comme Marcel dans la Grotte Sombre ? [D : laisser tel quel, à juger au doigt]
+  s'écarte comme Marcel dans la Grotte Sombre ? **Décision de Kevin (2026-11-01) : « garde »** : tel quel, aucun Dresseur ne s'écarte.
