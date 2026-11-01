@@ -59,7 +59,7 @@ migrée en v8, fermeture forcée après sauvegarde, fichier tronqué → reprise
 
 ## 7. Décision demandée à Kevin
 
-1. **Accepter les P2 et P3 ouverts** pour cette version de référence (`jalon-33.md` §1 : « explicitement acceptés »).
+1. **Accepter les P2 et P3 ouverts** pour cette version de référence (`jalon-33.md` §1 : « explicitement acceptés »). **Accepté par Kevin le 2026-11-01** (« oui j'accepte les P2 et P3 »).
 2. **Classer RP-263** ([D] : P2).
 3. **Clore le J33** : fusionner `claude/j33-t7` dans `main`, APK 0.33.0 comme version de référence.
 
