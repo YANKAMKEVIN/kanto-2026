@@ -33,6 +33,14 @@ extends SceneTree
 ## encore préparée (absente du catalogue) est signalée et sautée, sans erreur.
 
 const CATALOGUE := "res://assets/world/catalogue.json"
+## Costumes du Dresseur (dossier-costumes.md) : planches de `tools/art/costumes/` (catalogue à
+## part, `preparer_co.py`) et liste des costumes du jeu. Pour chaque costume et chaque version
+## (`joueur`, `joueuse`) : `painted/costumes/<art>_<version>_frames.tres` (mêmes animations que
+## le héros : marche, course, attente, vélo, pêche) et `<…>_surf_frames.tres` (comme
+## `player_surf`). `-- --costumes` : seulement eux.
+const COSTUMES_CATALOGUE := "res://tools/art/costumes/catalogue_co.json"
+const COSTUMES_DATA := "res://data/costumes.json"
+const COSTUME_VERSIONS: Array[String] = ["joueur", "joueuse"]
 const CHARACTERS_DIR := "res://assets/sprites/characters/painted/"
 const POKEMON_DIR := "res://assets/sprites/pokemon/painted/"
 const OBJECTS_DIR := "res://assets/sprites/objects/painted/"
@@ -299,6 +307,12 @@ var _errors: int = 0
 
 
 func _init() -> void:
+	var costumes := _build_costumes()
+	if OS.get_cmdline_user_args().has("--costumes"):
+		print("build_character_frames : %d apparences de costumes, %d erreur(s)"
+			% [costumes, _errors])
+		quit(1 if _errors > 0 else 0)
+		return
 	var catalogue: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(CATALOGUE))
 	var sheets: Dictionary = catalogue["personnages"]
 	for sheet_id: String in sheets:
@@ -353,6 +367,38 @@ func _init() -> void:
 	print("build_character_frames : %d apparences, %d Pokémon fixe(s), %d animé(s), "
 		% [LOOKS.size(), fixed, looping] + "%d objet(s) fixe(s), %d erreur(s)" % [objects, _errors])
 	quit(1 if _errors > 0 else 0)
+
+
+## Apparences des costumes ([constant COSTUMES_CATALOGUE]) ; rend leur nombre. Une planche
+## absente est une erreur.
+func _build_costumes() -> int:
+	var sheets: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string(COSTUMES_CATALOGUE))["personnages"]
+	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(COSTUMES_DATA))
+	var built := 0
+	for costume: Dictionary in data["costumes"]:
+		for version: String in COSTUME_VERSIONS:
+			var base := "%s_%s" % [costume["art"], version]
+			var sheet := "co_" + base
+			var wanted := [sheet, sheet + "_run", sheet + IDLE_SUFFIX, sheet + "_bike",
+				sheet + "_bike_idle", sheet + "_fish_cast", sheet + "_fish_wait", sheet + "_surf"]
+			var missing := wanted.filter(func(id: String) -> bool: return not sheets.has(id))
+			if not missing.is_empty():
+				push_error("build_character_frames : costume %s : planches absentes %s"
+					% [base, missing])
+				_errors += 1
+				continue
+			var added := {
+				"bike": [sheets[sheet + "_bike"], sheets[sheet + "_bike_idle"]],
+				"poses": {"fish_cast": sheets[sheet + "_fish_cast"],
+					"fish_wait": sheets[sheet + "_fish_wait"]},
+			}
+			var dir := CHARACTERS_DIR + "costumes/"
+			_build(sheets[sheet], sheets[sheet + "_run"], sheets[sheet + IDLE_SUFFIX],
+				dir + base + "_frames.tres", {}, {}, {}, added)
+			_build(sheets[sheet + "_surf"], {}, {}, dir + base + "_surf_frames.tres")
+			built += 2
+	return built
 
 
 func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionary,

@@ -7,6 +7,9 @@ extends RefCounted
 ##
 ## Classe pure : l'appelant passe l'apparence (lue dans [GameState] ou dans une sauvegarde).
 ## Une apparence inconnue rend les assets du héros ou du rival garçon.
+## **Costumes** (dossier-costumes.md, CO-5) : [param costume] (déjà validé par l'appelant, voir
+## [method GameState.worn_costume]) remplace l'apparence du monde, le lancer de dos et le buste ;
+## vide ou inconnu → la tenue d'origine. Pas de portrait d'introduction (CO-5).
 ## Les identifiants de la couche 2 du dossier 13 §3.5 ne changent pas : les données gardent
 ## `"sprite": "rival"`, remplacé à l'affichage par [method world_sprite].
 
@@ -56,20 +59,23 @@ static func agreement_values(player_look: StringName,
 	return DialogueTokens.agreement_values(player_look == HEROINE, rival_look == RIVALE)
 
 
-static func player_sprite(look: StringName) -> StringName:
-	return PLAYER_SPRITES.get(look, PLAYER_SPRITES[&"hero"])
+static func player_sprite(look: StringName, costume: StringName = &"") -> StringName:
+	var worn := CostumeCatalog.shared().world_sprite(costume, look)
+	return worn if not worn.is_empty() else PLAYER_SPRITES.get(look, PLAYER_SPRITES[&"hero"])
 
 
 static func rival_sprite(look: StringName) -> StringName:
 	return RIVAL_SPRITES.get(look, RIVAL_SPRITES[&"rival"])
 
 
-static func thrower_path(look: StringName) -> String:
-	return THROWERS.get(look, THROWERS[&"hero"])
+static func thrower_path(look: StringName, costume: StringName = &"") -> String:
+	var worn := CostumeCatalog.shared().thrower_path(costume, look)
+	return worn if not worn.is_empty() else THROWERS.get(look, THROWERS[&"hero"])
 
 
-static func bust_path(look: StringName) -> String:
-	return BUSTS.get(look, BUSTS[&"hero"])
+static func bust_path(look: StringName, costume: StringName = &"") -> String:
+	var worn := CostumeCatalog.shared().bust_path(costume, look)
+	return worn if not worn.is_empty() else BUSTS.get(look, BUSTS[&"hero"])
 
 
 static func player_portrait_path(look: StringName) -> String:

@@ -79,7 +79,35 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments:
 	if moments != null:
 		view.moments = moment_views(state, data, zones, moments, unlocks, badges, items)
 	view.stats = stat_views(state, zones)
+	if state.has_method(&"worn_costume"):
+		view.costumes = costume_views(state, CostumeCatalog.shared())
 	return view
+
+
+## Costumes (dossier-costumes.md, CO-1, CO-2, CO-6) : la tenue d'origine (toujours débloquée),
+## puis chaque costume du catalogue ; débloqué = badge obtenu ([method CostumeCatalog.is_unlocked]),
+## sinon ni nom (CO-2). Vignette = apparence du monde pour l'apparence du joueur.
+static func costume_views(state: Object, catalog: CostumeCatalog) -> Array[CostumeSlotView]:
+	var look: Variant = state.get(&"player_look")
+	var player_look: StringName = look if look is StringName else &"hero"
+	var flags: StoryFlags = state.flags
+	var worn: StringName = catalog.worn(state.get(&"player_costume"), flags.has_flag)
+	var views: Array[CostumeSlotView] = []
+	var original := CostumeSlotView.new()
+	original.unlocked = true
+	original.worn = worn.is_empty()
+	original.name = TrainerView.ORIGINAL_COSTUME_NAME
+	original.sprite = TrainerLooks.player_sprite(player_look)
+	views.append(original)
+	for id: StringName in catalog.ids():
+		var slot := CostumeSlotView.new()
+		slot.costume_id = id
+		slot.unlocked = catalog.is_unlocked(id, flags.has_flag)
+		slot.worn = slot.unlocked and id == worn
+		slot.name = catalog.display_name(id, player_look) if slot.unlocked else ""
+		slot.sprite = catalog.world_sprite(id, player_look)
+		views.append(slot)
+	return views
 
 
 ## Grands moments, du plus ancien au plus récent (à date égale : arrivées d'abord, puis dans

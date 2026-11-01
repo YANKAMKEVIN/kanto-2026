@@ -39,15 +39,18 @@ static func card_illustration(screen: StringName) -> Texture2D:
 ## Apparence du joueur pour le buste (chantier JR) : posée par [MenuDirector] à l'ouverture du
 ## menu (l'UI ne lit pas l'état de la partie).
 static var player_look: StringName = &"hero"
+## Costume porté (dossier-costumes.md, CO-5) : posé avec [member player_look] ; &"" = tenue
+## d'origine.
+static var player_costume: StringName = &""
 
 
 ## Buste du joueur selon [member player_look] (héros ou joueuse, [TrainerLooks]).
 static func hero_bust() -> Texture2D:
-	return bust_for(player_look)
+	return bust_for(player_look, player_costume)
 
 
-static func bust_for(look: StringName) -> Texture2D:
-	return _load(TrainerLooks.bust_path(look))
+static func bust_for(look: StringName, costume: StringName = &"") -> Texture2D:
+	return _load(TrainerLooks.bust_path(look, costume))
 
 
 static func item_icon_path(item_id: StringName) -> String:

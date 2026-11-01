@@ -23,6 +23,11 @@ const MOMENTS_EMPTY_TEXT: String = "Ton aventure ne fait que commencer."
 const TEAM_TITLE: String = "Équipe actuelle"
 ## Lien vers le Panthéon (J30, Q30-4 : consultation en lecture seule depuis l'écran Dresseur).
 const HALL_OF_FAME_LABEL: String = "Panthéon"
+## Costumes (dossier-costumes.md) : titre de la section [D], nom de la tenue d'origine [D] et
+## phrase d'un costume verrouillé touché (CO-2).
+const COSTUMES_TITLE: String = "Costumes"
+const ORIGINAL_COSTUME_NAME: String = "Tenue d'origine"
+const COSTUME_LOCKED_TEXT: String = "Se débloque avec un nouveau badge."
 
 ## Identité.
 var player_name: String = ""
@@ -47,6 +52,9 @@ var hall_of_fame_text: String = ""
 ## BadgeLibrary.slots] depuis le MM.2 : un badge non obtenu ne porte ni nom ni image, l'écran
 ## montre une silhouette commune et « ??? »).
 var badges: Array[BadgeSlotView] = []
+## Costumes (CO-1, CO-2, CO-6) : la tenue d'origine puis un costume par badge, dans l'ordre des
+## arènes ; vide = section absente (pas de catalogue).
+var costumes: Array[CostumeSlotView] = []
 ## Zone où se tient le joueur (décor de son portrait, MM.2) ; &"" si inconnue.
 var zone_id: StringName = &""
 ## Équipe actuelle, dans l'ordre de l'équipe (MM.2) ; vide = section absente.

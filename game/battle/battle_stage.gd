@@ -1829,7 +1829,7 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 ## Lancer de dos de `GameState.player_look` (héros : [constant THROWER_TEXTURE] ; joueuse,
 ## chantier JR : [TrainerLooks]).
 static func thrower_texture() -> Texture2D:
-	var path := TrainerLooks.thrower_path(GameState.player_look)
+	var path := TrainerLooks.thrower_path(GameState.player_look, GameState.worn_costume())
 	return THROWER_TEXTURE if path == THROWER_TEXTURE.resource_path else load(path) as Texture2D
 
 

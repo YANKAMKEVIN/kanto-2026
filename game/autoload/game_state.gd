@@ -40,10 +40,9 @@ const DEFAULT_PLAYER_LOOK: StringName = &"hero"
 ## inconnue chargée retombe sur [constant DEFAULT_RIVAL_LOOK].
 const RIVAL_LOOKS: Array[StringName] = [&"rival", &"rivale"]
 const DEFAULT_RIVAL_LOOK: StringName = &"rival"
-## Costumes du Dresseur connus de cette build (sauvegarde v9, dossier-costumes.md CO-9) : aucun
-## encore ; vide = la tenue d'origine. Une valeur inconnue chargée retombe sur la tenue
-## d'origine.
-const PLAYER_COSTUMES: Array[StringName] = []
+## Tenue d'origine (sauvegarde v9, dossier-costumes.md CO-9) : `player_costume` vide. Les
+## costumes connus sont ceux de `data/costumes.json` ([CostumeCatalog]) ; une valeur inconnue ou
+## dont le badge manque retombe sur la tenue d'origine.
 const NO_COSTUME: StringName = &""
 const DEFAULT_HEAL_MAP: StringName = &"player_house_1f"
 const DEFAULT_HEAL_SPAWN: StringName = &"heal"
@@ -99,8 +98,8 @@ var rival_name: String = DEFAULT_RIVAL_NAME
 var player_look: StringName = DEFAULT_PLAYER_LOOK
 ## Apparence du rival (sauvegarde v9, JR-8) : une de [constant RIVAL_LOOKS].
 var rival_look: StringName = DEFAULT_RIVAL_LOOK
-## Costume porté par le joueur (sauvegarde v9, CO-9) : un de [constant PLAYER_COSTUMES], ou
-## [constant NO_COSTUME] pour la tenue d'origine.
+## Costume choisi par le joueur (sauvegarde v9, CO-9) : un identifiant de [CostumeCatalog], ou
+## [constant NO_COSTUME] pour la tenue d'origine. Affiché : [method worn_costume].
 var player_costume: StringName = NO_COSTUME
 ## Temps de jeu en secondes, compté par la scène seulement au premier plan
 ## ([method add_play_time]).
@@ -409,6 +408,8 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	ok = bag.load_dict(JsonFields.get_dict(dict, "bag")) and ok
 	ok = pokedex.from_dict(JsonFields.get_dict(dict, "pokedex")) and ok
 	flags.load_array(JsonFields.get_array(dict, "flags"))
+	# CO-9 : un costume dont le badge manque redevient la tenue d'origine.
+	player_costume = worn_costume()
 	var rng_dict := JsonFields.get_dict(dict, "rng")
 	var loaded_rng: GameRng = GameRng.from_dict(rng_dict) if not rng_dict.is_empty() else null
 	if loaded_rng != null:
@@ -469,11 +470,26 @@ static func loaded_rival_look(raw: StringName) -> StringName:
 	return raw if RIVAL_LOOKS.has(raw) else DEFAULT_RIVAL_LOOK
 
 
-## Costume lu dans une sauvegarde : un de [constant PLAYER_COSTUMES], sinon (absent, inconnu de
-## cette build) [constant NO_COSTUME], sans erreur. Le badge requis sera vérifié avec les
-## données des costumes (CO-9).
+## Costume lu dans une sauvegarde : un costume de [CostumeCatalog], sinon (absent, inconnu de
+## cette build) [constant NO_COSTUME], sans erreur. Le badge requis est vérifié par
+## [method load_dict] une fois les drapeaux lus (CO-9).
 static func loaded_player_costume(raw: StringName) -> StringName:
-	return raw if PLAYER_COSTUMES.has(raw) else NO_COSTUME
+	return raw if CostumeCatalog.shared().has(raw) else NO_COSTUME
+
+
+## Costume réellement porté (CO-9) : [member player_costume] si son badge est obtenu, sinon la
+## tenue d'origine. C'est lui que suivent les apparences ([TrainerLooks]).
+func worn_costume() -> StringName:
+	return CostumeCatalog.shared().worn(player_costume, flags.has_flag)
+
+
+## Porte [param costume] (CO-7 : instantané, gratuit) : [constant NO_COSTUME] (tenue d'origine,
+## toujours permise, CO-6) ou un costume débloqué. Faux (rien ne change) sinon.
+func wear_costume(costume: StringName) -> bool:
+	if costume != NO_COSTUME and not CostumeCatalog.shared().is_unlocked(costume, flags.has_flag):
+		return false
+	player_costume = costume
+	return true
 
 
 # --- Identifiants et compagnon (jalon 11) --------------------------------------------

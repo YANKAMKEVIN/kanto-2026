@@ -109,6 +109,8 @@ signal rare_candy_requested(index: int, item_id: StringName)
 ## fait choisir la capacité ([method MoveLearnPrompt.choose_move]) puis rappelle
 ## [method finish_pp_item]. Rien n'est consommé avant.
 signal pp_move_requested(index: int, item_id: StringName)
+## Costumes (CO-7) : le joueur porte désormais [param costume] (&"" : tenue d'origine).
+signal costume_changed(costume: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -200,6 +202,8 @@ func open(route: MenuRoute = null, standalone: bool = false) -> bool:
 	# Chantier JR : le buste du menu suit l'apparence du joueur.
 	var look: Variant = _state.get(&"player_look") if _state != null else null
 	MenuArt.player_look = look if look is StringName else &"hero"
+	# Costumes (CO-5) : le buste porte le costume.
+	MenuArt.player_costume = _worn_costume()
 	if not _navigator.open(route, standalone):
 		return false
 	_changed = false
@@ -835,8 +839,7 @@ func _on_route_shown(route: MenuRoute) -> void:
 		if not map_view.selected.is_empty():
 			open_zone(map_view.selected)
 	elif route.screen == MenuRoute.TRAINER:
-		trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks,
-			_badge_library(), _items))
+		_emit_trainer()
 	elif route.screen == MenuRoute.SETTINGS and _settings != null:
 		_emit_settings()
 	elif route.screen == MenuRoute.SHOP and _shops != null and _items != null \
@@ -852,6 +855,11 @@ func _on_route_shown(route: MenuRoute) -> void:
 		_emit_storage()
 	else:
 		placeholder_shown.emit(route.screen)
+
+
+func _emit_trainer() -> void:
+	trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks,
+		_badge_library(), _items))
 
 
 ## Badges de Kanto, chargés à la première demande (tableau de bord ou Dresseur), puis gardés.
@@ -906,4 +914,31 @@ func _use_targetless_item(item_id: StringName) -> bool:
 		bag_result_shown.emit(BagQuery.field_refusal_text(check), false)
 		return true
 	field_item_requested.emit(item_id)
+	return true
+
+
+# --- Costumes (dossier-costumes.md, CO-1, CO-6, CO-7) -------------------------------------------
+
+## Costume porté par la partie ([method GameState.worn_costume]) ; &"" sans partie.
+func _worn_costume() -> StringName:
+	if _state == null or not _state.has_method(&"worn_costume"):
+		return &""
+	return _state.worn_costume()
+
+
+## Le joueur touche un costume de l'écran Dresseur (CO-7 : instantané, gratuit, depuis le menu ;
+## CO-6 : la tenue d'origine, &"", toujours permise). Débloqué : il le porte, le buste suit,
+## l'écran est rafraîchi et [signal costume_changed] est émis (Boot rhabille le joueur du monde) ;
+## autosave à la fermeture. Verrouillé, inconnu ou déjà porté : faux, rien ne change.
+func choose_costume(costume: StringName) -> bool:
+	if _state == null or not is_open() or costume == _worn_costume():
+		return false
+	if not _state.wear_costume(costume):
+		return false
+	MenuArt.player_costume = _worn_costume()
+	mark_changed()
+	costume_changed.emit(_worn_costume())
+	var shown := _navigator.current()
+	if shown != null and shown.screen == MenuRoute.TRAINER:
+		_emit_trainer()
 	return true

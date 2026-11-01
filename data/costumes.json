@@ -1,0 +1,13 @@
+{
+	"_note": "Costumes du Dresseur (docs/design/dossier-costumes.md, arbitrages CO-1 à CO-11 validés par Kevin le 2026-10-30). Un costume par badge (CO-3), débloqué quand le badge est obtenu (son drapeau levé, data/badges.json) : rien d'autre n'est enregistré (CO-9). id : valeur de « player_costume » dans la sauvegarde (identifiant du badge [D]). badge : identifiant de data/badges.json. art : préfixe des planches de assets/sprites/characters/painted/costumes/ (<art>_joueur_*, <art>_joueuse_*). names : nom affiché selon l'apparence du joueur (CO-10 : nom du personnage).",
+	"costumes": [
+		{ "id": "boulder", "badge": "boulder", "art": "roche", "names": { "hero": "Tanjiro", "heroine": "Nezuko" } },
+		{ "id": "cascade", "badge": "cascade", "art": "cascade", "names": { "hero": "Luffy", "heroine": "Nami" } },
+		{ "id": "thunder", "badge": "thunder", "art": "foudre", "names": { "hero": "Iron Man", "heroine": "Iron Woman" } },
+		{ "id": "rainbow", "badge": "rainbow", "art": "prisme", "names": { "hero": "Link", "heroine": "Zelda" } },
+		{ "id": "soul", "badge": "soul", "art": "ame", "names": { "hero": "Naruto", "heroine": "Sakura" } },
+		{ "id": "marsh", "badge": "marsh", "art": "marais", "names": { "hero": "Deku", "heroine": "Ochaco" } },
+		{ "id": "volcano", "badge": "volcano", "art": "volcan", "names": { "hero": "Son Goku", "heroine": "Combattante saiyan" } },
+		{ "id": "earth", "badge": "earth", "art": "terre", "names": { "hero": "Batman", "heroine": "Batgirl" } }
+	]
+}

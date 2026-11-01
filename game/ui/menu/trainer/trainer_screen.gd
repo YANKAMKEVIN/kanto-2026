@@ -25,6 +25,11 @@ extends MenuScreen
 
 ## J30 (Q30-4) : le lien « Panthéon » a été touché (consultation, lecture seule).
 signal hall_of_fame_requested
+## Costumes (dossier-costumes.md, CO-1, CO-7) : un costume **débloqué** a été touché
+## ([param costume] : &"" = tenue d'origine). L'écran ne change rien lui-même : il attend la vue
+## neuve ([method show_trainer]). Un costume verrouillé touché affiche seulement
+## [constant TrainerView.COSTUME_LOCKED_TEXT] (CO-2).
+signal costume_chosen(costume: StringName)
 
 const TITLE := "Dresseur"
 const BACK_TEXT := "RETOUR"
@@ -73,6 +78,12 @@ var _empty: Label
 var _catcher: Control
 var _bubble: BadgeBubble
 var _bubble_slot: BadgeSlot
+## Costumes (CO-1) : section, bande défilante, vignettes et légende (nom du costume porté, ou
+## phrase d'un costume verrouillé touché).
+var _costume_panel: PanelContainer
+var _costume_row: HBoxContainer
+var _costume_slots: Array[CostumeSlot] = []
+var _costume_caption: Label
 
 
 func _init() -> void:
@@ -105,6 +116,7 @@ func _ready() -> void:
 	center.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
 	body.add_child(center)
 	center.add_child(_build_badges())
+	center.add_child(_build_costumes())
 	center.add_child(_build_team())
 	var side := VBoxContainer.new()
 	side.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -372,6 +384,76 @@ func _build_badges() -> PanelContainer:
 	return panel
 
 
+## Section « Costumes » (CO-1) : titre, bande défilante horizontale de vignettes, légende.
+func _build_costumes() -> PanelContainer:
+	_costume_panel = PanelContainer.new()
+	_costume_panel.theme_type_variation = &"MenuGlass"
+	_costume_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_costume_panel.visible = false
+	var column := VBoxContainer.new()
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
+	_costume_panel.add_child(column)
+	var head := HBoxContainer.new()
+	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	head.add_theme_constant_override(&"separation", UiTokens.GAP)
+	column.add_child(head)
+	_section_title(head, TrainerView.COSTUMES_TITLE)
+	_costume_caption = Label.new()
+	_costume_caption.theme_type_variation = &"TrainerBadgeName"
+	_costume_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_costume_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_costume_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_costume_caption.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	head.add_child(_costume_caption)
+	var scroll := ScrollContainer.new()
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
+	scroll.custom_minimum_size.y = UiTokens.TOUCH_MIN
+	column.add_child(scroll)
+	_costume_row = HBoxContainer.new()
+	_costume_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_costume_row.add_theme_constant_override(&"separation", UiTokens.TRAINER_BADGE_GAP)
+	scroll.add_child(_costume_row)
+	return _costume_panel
+
+
+func _rebuild_costumes(view: TrainerView) -> void:
+	for slot: CostumeSlot in _costume_slots:
+		_costume_row.remove_child(slot)
+		slot.queue_free()
+	_costume_slots.clear()
+	_costume_panel.visible = not view.costumes.is_empty()
+	_costume_caption.text = ""
+	for costume: CostumeSlotView in view.costumes:
+		var slot := CostumeSlot.new(costume)
+		slot.touched.connect(_on_costume_touched)
+		_costume_row.add_child(slot)
+		_costume_slots.append(slot)
+		if costume.worn:
+			_costume_caption.text = costume.name
+
+
+## Vignettes des costumes, dans l'ordre (tenue d'origine d'abord) ; vide : section absente.
+func get_costume_slots() -> Array[CostumeSlot]:
+	return _costume_slots
+
+
+## Légende de la section (nom du costume porté, ou phrase d'un costume verrouillé).
+func get_costume_caption() -> Label:
+	return _costume_caption
+
+
+func _on_costume_touched(slot: CostumeSlot) -> void:
+	var costume := slot.get_view()
+	if not costume.unlocked:
+		_costume_caption.text = TrainerView.COSTUME_LOCKED_TEXT
+		return
+	if not costume.worn:
+		costume_chosen.emit(costume.costume_id)
+
+
 ## Couche de la bulle : un receveur plein écran (un toucher le ferme) et la bulle par-dessus.
 func _build_bubble_layer() -> void:
 	_catcher = Control.new()
@@ -460,6 +542,8 @@ func _apply(view: TrainerView) -> void:
 	_links.visible = _seen.visible or _caught.visible
 	for i: int in _slots.size():
 		_slots[i].setup(view.badges[i] if i < view.badges.size() else BadgeSlotView.new(i))
+	_rebuild_costumes(view)
+	_portrait.texture = MenuArt.hero_bust()
 	_rebuild_team(view)
 	_rebuild_stats(view)
 	_rebuild_moments(view)

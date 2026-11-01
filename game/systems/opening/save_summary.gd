@@ -16,6 +16,9 @@ extends RefCounted
 var player_name: String = ""
 ## Apparence du joueur (buste de la carte Continuer ; chantier JR) ; le héros si absente.
 var player_look: StringName = &"hero"
+## Costume porté (buste de la carte Continuer ; dossier-costumes.md CO-9) : &"" (tenue d'origine)
+## s'il est absent, inconnu ou si son badge manque.
+var player_costume: StringName = &""
 ## Carte courante (identifiant) et nom de sa zone ("" si inconnu).
 var map_id: StringName = &""
 var zone_name: String = ""
@@ -47,6 +50,8 @@ static func from_save(save: Dictionary, zone_name_of: Callable = Callable(),
 		if flags.has(flag):
 			summary.badge_count += 1
 	summary.pokedex_active = flags.has(StoryFlags.POKEDEX_ACTIVATED)
+	summary.player_costume = CostumeCatalog.shared().worn(
+		JsonFields.get_id(save, "player_costume"), flags.has)
 	var entries := JsonFields.get_dict(JsonFields.get_dict(save, "pokedex"), "entries")
 	for species: Variant in entries:
 		var entry: Variant = entries[species]

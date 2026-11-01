@@ -413,9 +413,22 @@ func _apply_grass_front() -> void:
 		_grass_front.position = Vector2(0.0, GRASS_FRONT_BOTTOM - texture.get_height() / 2.0)
 
 
-## Apparence du monde de `GameState.player_look` (`player` ou `player_heroine`, [TrainerLooks]).
+## Apparence du monde de `GameState.player_look` (`player` ou `player_heroine`, [TrainerLooks]),
+## ou du costume porté (dossier-costumes.md, CO-5 ; [method GameState.worn_costume]).
 static func look_sprite() -> StringName:
-	return TrainerLooks.player_sprite(GameState.player_look)
+	return TrainerLooks.player_sprite(GameState.player_look, GameState.worn_costume())
+
+
+## Recharge l'apparence (costume changé dans le menu, CO-7) en gardant l'animation en cours.
+func refresh_look() -> void:
+	if _sprite == null:
+		return
+	var anim := _sprite.animation
+	var frame := _sprite.frame
+	_apply_look()
+	if _sprite.sprite_frames != null and _sprite.sprite_frames.has_animation(anim):
+		_sprite.play(anim)
+		_sprite.frame = frame
 
 
 ## SpriteFrames, échelle et filtre de l'apparence ([CharacterLook]) ; pieds sur l'origine.

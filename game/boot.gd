@@ -441,6 +441,7 @@ func _ready() -> void:
 	_runner.heal_requested.connect(_on_heal_requested)
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
+	_cutscenes_node.step_played.connect(_on_costume_badge_step)
 	# Menu Dresseur (jalon 6, T4) : le directeur pilote la pile et la pause ; l'écran
 	# (TrainerMenu) est relié après la fusion du T3 (jalon-06.md §6.6).
 	_zones.load_file()
@@ -490,6 +491,11 @@ func _ready() -> void:
 	_menu_screen.route_requested.connect(_menu.go)
 	_menu_screen.back_requested.connect(_menu.handle_back)
 	_menu_screen.close_requested.connect(_menu.close)
+	# Costumes (dossier-costumes.md, CO-1, CO-7) : choisis sur l'écran Dresseur, le joueur du
+	# monde se rhabille aussitôt.
+	if _menu_screen.has_signal(&"costume_chosen"):
+		_menu_screen.costume_chosen.connect(_menu.choose_costume)
+	_menu.costume_changed.connect(_on_costume_changed.unbind(1))
 	# Équipe (T8) : reliée dès que l'écran porte l'interface du §6.7 (TeamScreen du T7).
 	if _menu_screen.has_signal(&"team_member_moved"):
 		_menu.team_shown.connect(_menu_screen.show_team)
@@ -1667,6 +1673,7 @@ func _on_cutscene_requested(cutscene_id: StringName) -> void:
 ## défaite, transition) : pas d'enchaînement, l'autosave ordinaire s'en charge.
 func _on_cutscene_finished(cutscene_id: StringName) -> void:
 	_companion.on_cutscene_finished()
+	_announce_costume()
 	_refresh_controls()
 	var next := _cutscenes.get_next(cutscene_id)
 	if next.is_empty() or not is_stable():
@@ -1872,6 +1879,35 @@ func _learn_overlay() -> TmLearnOverlay:
 		_tm_overlay.name = "TmLearnOverlay"
 		add_child(_tm_overlay)
 	return _tm_overlay
+
+
+# --- Costumes (dossier-costumes.md, CO-4, CO-7) -------------------------------------------------
+
+## Costume débloqué par le badge remis pendant la scène en cours, annoncé à sa fin (CO-4).
+var _costume_to_announce: StringName = &""
+
+
+## Étape « badge » jouée : son costume sera annoncé à la fin de la scène, après la CT (CO-4).
+func _on_costume_badge_step(step: CutsceneStep) -> void:
+	if step.kind == CutsceneStep.Kind.BADGE:
+		_costume_to_announce = CostumeCatalog.shared().costume_for_badge(step.badge_id)
+
+
+## CO-4 : une ligne discrète « Nouveau costume : … », sans ouvrir de menu.
+func _announce_costume() -> void:
+	var costume := _costume_to_announce
+	_costume_to_announce = &""
+	var catalog := CostumeCatalog.shared()
+	if costume.is_empty() or not catalog.is_unlocked(costume, GameState.flags.has_flag):
+		return
+	var sprite := catalog.world_sprite(costume, GameState.player_look)
+	_hud.show_toast(catalog.unlock_text(costume, GameState.player_look), "",
+		CostumeSlot.idle_texture(sprite))
+
+
+func _on_costume_changed() -> void:
+	if is_instance_valid(_player):
+		_player.refresh_look()
 
 
 func _on_item_given(item_id: StringName, count: int) -> void:
