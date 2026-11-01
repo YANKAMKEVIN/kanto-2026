@@ -23,6 +23,31 @@
 | 0.8 | Sylphe 6F, 8F à 10F (portes à carte, téléporteurs) | `silph_1f` | aucun téléporteur sans issue |
 | 0.9 | Route Victoire 2F et 3F (deux interrupteurs, rocher dans le trou du 3F) | `victory_road_2f` | rocher qui tombe au 2F, sortie est vers le Plateau |
 
+### Passe d'agent sur le S24 (2026-11-01, APK `485eb3f7`, sans aucune anomalie)
+
+Pilotée par adb (joystick, boutons, captures, logcat), trajets joués à pied, combats compris.
+Arrêtée au milieu de 0.2 : **S24 injoignable** (débogage sans fil perdu, mDNS vide, deux essais
+sur plus de 3 minutes ; le serveur adb du Mac avait aussi redémarré pendant la passe).
+
+| # | Statut | Ce qui a été joué | i/s |
+|---|---|---|---|
+| 0.1 | **fait** | Route 3 en entier depuis Argenta (Hugo, Enzo, Léa battus, herbes, plateau du Centre) → Mont Sélénite 1F (hall, galerie ouest, échelle A) → B1F (Rocket guetteur battu, il quitte la grotte, échelle B) → 1F nord (mare, échelle D) → B2F (fuite d'un sauvage, Rocket gardien battu, chercheur Gaspard battu, Fossile Dôme pris : OUI/NON, Nautile gardé par Gaspard, dalle vide) → échelle de sortie → Route 4. Potions en combat, Flammèche à 0 PP puis Griffe. | 60 (plafond), creux 53 à 59 aux changements de carte |
+| 0.2 | partiel | Route 5 de l'entrée nord jusqu'au virage (≈ (17, 39)), à pied ; souterrain, Route 6, Carmin et passerelle non atteints | 60 |
+| 0.3 à 0.9 | non fait | S24 perdu | — |
+
+Rien d'anormal vu sur 0.1 : textes entiers, échelles en fondu (46 à 76 ms), aucune erreur `godot`.
+Le départ du Rocket après sa défaite est voulu (dossier 15, B-7).
+
+### Pour Kevin au doigt
+
+1. **0.2 à 0.9** (S24 perdu avant) : `route_5` (le faire jusqu'au quai ; passerelle avec
+   `vermilion_dock_ticket`), `route_7`, puis 0.4 à 0.6 en vraie partie ou depuis `route_11`,
+   `poke_flute_qa`, `route_15_qa`, `fuchsia_qa`, `j24_seafoam`, puis `rocket_hideout_key`,
+   `silph_1f`, `victory_road_2f`.
+2. **0.1 au ressenti seulement** : joystick dans la grotte, lisibilité du voile, compagnon dans
+   les goulets (la machine l'a joué en entier sans souci).
+3. §1 à §5 : tout reste à faire (aucun point de passe humaine joué par l'agent).
+
 ## 1. Parcours 01 — Début (couvert : 01 et 07)
 
 Nouvelle partie, sans `--debug-start`. Ouverture, chambre, Maman, maison du rival, scène de
