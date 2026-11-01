@@ -770,6 +770,8 @@ func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> voi
 		seen["points"] = row.get_points_text()
 		seen["lit"] = row.is_lit()
 		seen["stats"] = row.get_stats_text()
+		seen["portrait"] = row.get_portrait().texture
+		seen["filter"] = row.get_portrait().texture_filter
 		seen["hud_hidden"] = not _hud.is_shown())
 	var played := await _play_with_offers(request, [0] as Array[int])
 	assert_eq(played[0], Battle.Outcome.WIN)
@@ -798,6 +800,9 @@ func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> voi
 	assert_eq(seen.get("points"), "%d / %d" % [span.x, span.y], "nombres du nouveau niveau")
 	assert_true(seen.get("lit", false), "sa ligne est mise en valeur")
 	assert_true(String(seen.get("stats", "")).begins_with("PV +"), "gains de statistiques")
+	assert_eq(seen.get("portrait"), PokedexArt.thumbnail(_data.get_species(lead.species_id).dex),
+		"vignette peinte du Pokédex, jamais le sprite provisoire")
+	assert_eq(seen.get("filter"), CanvasItem.TEXTURE_FILTER_LINEAR, "vignette en filtre linéaire")
 	assert_null(_director.get_summary_card(), "bilan libéré à la fin")
 	# Ordre du journal : K.O. adverse, puis XP, puis niveau, puis la fin du combat.
 	assert_lt(kinds.rfind(BattleEvent.Kind.FAINTED), kinds.find(BattleEvent.Kind.EXP_GAINED),

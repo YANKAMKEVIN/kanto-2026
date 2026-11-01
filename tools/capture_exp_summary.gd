@@ -80,10 +80,13 @@ func _scene(name: String, team: Array, mid: int) -> void:
 	var rows: Array = (load("res://game/battle/battle_views.gd") as GDScript) \
 		.call(&"exp_summary", summary, _texts)
 	var entries: Array = summary.call(&"get_entries")
+	# Vignette peinte du Pokédex, comme BattleDirector._show_summary.
+	var data := PokemonData.new()
+	data.load_dir()
 	for i: int in rows.size():
-		var path := SPRITES_DIR + "%s_front.png" % entries[i].get(&"species_id")
-		if ResourceLoader.exists(path):
-			rows[i].set(&"portrait", load(path) as Texture2D)
+		var species: StringName = entries[i].get(&"species_id")
+		if data.has_species(species):
+			rows[i].set(&"portrait", PokedexArt.thumbnail(data.get_species(species).dex))
 	var card := (load(CARD_SCENE) as PackedScene).instantiate() as Control
 	_hud.call(&"get_screen").add_child(card)
 	var layout := load("res://game/ui/battle/battle_hud_layout.gd") as GDScript

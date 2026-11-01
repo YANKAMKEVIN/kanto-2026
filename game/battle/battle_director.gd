@@ -803,10 +803,11 @@ func _play_evolutions(outcome: Battle.Outcome, party: Party) -> void:
 func _show_summary() -> void:
 	var rows := BattleViews.exp_summary(_summary, _texts)
 	var entries := _summary.get_entries()
+	# Vignette peinte du Pokédex, comme la carte de capture : jamais le sprite provisoire.
 	for i: int in rows.size():
-		var path := BattleStage.sprite_path(entries[i].species_id, false)
-		if ResourceLoader.exists(path):
-			rows[i].portrait = load(path) as Texture2D
+		var species := entries[i].species_id
+		if _data != null and _data.has_species(species):
+			rows[i].portrait = PokedexArt.thumbnail(_data.get_species(species).dex)
 	var card := _ensure_summary_card()
 	await card.show_summary(rows, _texts.get_template(&"summary_continue"))
 	_log_summary()

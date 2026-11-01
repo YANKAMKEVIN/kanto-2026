@@ -119,6 +119,11 @@ func is_done() -> bool:
 	return _done
 
 
+
+## Vignette du Pokémon (tests).
+func get_portrait() -> TextureRect:
+	return _portrait
+
 func get_view() -> ExpSummaryRowView:
 	return _view
 
@@ -261,7 +266,7 @@ func _build() -> void:
 	_portrait.custom_minimum_size = Vector2.ONE * UiTokens.SUMMARY_THUMB
 	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_thumb.add_child(_portrait)
 
 	var column := VBoxContainer.new()
