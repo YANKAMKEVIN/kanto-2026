@@ -197,6 +197,8 @@ objets clés au départ. Anomalies : RP-284 et RP-285 (P3). Ce que Kevin joue au
 `docs/tech/jalon-33-t6-checklist.md` (tronçons jamais joués par une machine en premier).
 
 ### T7 — APK versionné, rapport, décision (33F)
+**Fait le 2026-11-01** (branche `claude/j33-t7`, à fusionner après la décision de Kevin) : version 0.33.0 / code 33 [D] dans le preset, `tools/build_android.sh [preset] [sortie]`, APK `build/kanto2026-0.33.0-debug.apk` (SHA-256 et preuves : `jalon-33-dossier.md`), CI verte (run 41340970199). Décision de Kevin : §7 du dossier.
+
 `version/code` et `version/name` dans le preset (nommage fixé en J34 T1), `tools/build_android.sh`
 accepte un preset de test. Dossier : APK, commit exact, version de Godot, paramètres d'export,
 résultats de tests, métriques, registre. **Une APK compilée ne prouve pas à elle seule que le
