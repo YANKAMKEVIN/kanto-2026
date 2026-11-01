@@ -181,6 +181,19 @@ Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headles
 Une passe humaine sur S24 par parcours ; chaque anomalie dans `docs/tech/registre-anomalies.md` [D]
 (ID, priorité, build, étapes, état). Fermeture seulement après **rejeu réussi du scénario**.
 
+**Préparation (2026-11-01, branche `claude/j33-t6-prep`, non fusionnée)** : les raccourcis « ↷ » du
+tableau T5 sont rejoués en headless par trois parcours de plus, à pied (marche réelle entre les
+cartes, Dresseurs et rencontres joués) : **07** prologue, Route 1, Route 2, Forêt de Jade ;
+**08** Pont Pépite et Léo, poubelles de Carmin, Routes 9-10 et Grotte Sombre, Casino et repaire
+B1F-B4F (dalles du B3F, Clé, ascenseur, gardes), Tour 3F-5F (zone purifiée), Route 16 et Piste
+Cyclable jusqu'à Parmanie, Safrania et Sylphe 1F-5F (Carte par le 9F) ; **09** téléporteurs de
+l'Arène de Safrania, Manoir 1F-B1F (statues, trou), six questions de Cramois'Île, Arène de
+Jadielle à pied (dalles), Route 23 (sept contrôles, Surf) et Route Victoire 1F (Force),
+Grotte Azurée 1F-B1F jusqu'à Mewtwo. Harnais : `travel` (passage le plus proche, bord, porte,
+escalier, trou), `walk_sliding` (dalles tournantes), `push_boulder` (Force), rattrapage des
+objets clés au départ. Anomalies : RP-284 et RP-285 (P3). Ce que Kevin joue au doigt :
+`docs/tech/jalon-33-t6-checklist.md` (tronçons jamais joués par une machine en premier).
+
 ### T7 — APK versionné, rapport, décision (33F)
 `version/code` et `version/name` dans le preset (nommage fixé en J34 T1), `tools/build_android.sh`
 accepte un preset de test. Dossier : APK, commit exact, version de Godot, paramètres d'export,

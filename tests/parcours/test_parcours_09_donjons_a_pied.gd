@@ -51,8 +51,16 @@ func test_09a_arene_de_safrania_teleporteurs() -> void:
 	_play.begin("Arène de Safrania : téléporteurs jusqu'à Morgane")
 	await _play.start(DEBUG % "saffron_gym", _play.make_ace)
 	for hop: Array in SAFFRON_HOPS:
-		await _play.walk_through(hop[0])
-		await _play.wait_stable()
+		# Téléporteur de la même carte : pas de changement de carte, on s'arrête à l'arrivée
+		# (une nouvelle marche vers le téléporteur partirait de l'autre salle).
+		for attempt: int in 4:
+			await _play.walk_to(hop[0])
+			await wait_process_frames(3)
+			if not _play.boot.is_stable():
+				await _play.run_scene()
+			await _play.wait_stable()
+			if _play.player.get_cell() == hop[1]:
+				break
 		await wait_process_frames(20)
 		_play.expect(_play.player.get_cell() == hop[1], "téléporteur %s → %s (case %s)"
 			% [hop[0], hop[1], _play.player.get_cell()])
@@ -71,7 +79,6 @@ func test_09b_manoir_1f_a_b1f() -> void:
 	_play.expect(not GameState.flags.has_flag(&"mansion_switch_on"), "interrupteur sur ARRÊT à l'entrée")
 	await _play.travel(&"pokemon_mansion_2f", 4, true, Vector2i(5, 10))
 	await _play.travel(&"pokemon_mansion_3f", 4, true, Vector2i(6, 1))
-	await _play.talk_to(Vector2i(6, 12))
 	await _play.talk(Vector2i(10, 6), Vector2i.UP)
 	_play.expect(GameState.flags.has_flag(&"mansion_switch_on"), "statue du 3F : MARCHE")
 	await _play.travel(&"pokemon_mansion_1f", 4, true, Vector2i(16, 14))
@@ -93,6 +100,11 @@ func test_09b_manoir_1f_a_b1f() -> void:
 func test_09c_quiz_de_cramois_ile() -> void:
 	_play.begin("Arène de Cramois'Île : porte, six machines, Auguste")
 	await _play.start(DEBUG % "j25_arene", _play.make_ace)
+	# Porte fermée : la Clé Secrète l'ouvre quand le joueur la pousse (25, 5).
+	await _play.walk_through(Vector2i(25, 6))
+	await _play.step(Vector2i.UP)
+	if not _play.boot.is_stable():
+		await _play.run_scene()
 	await _play.travel(&"cinnabar_gym")
 	_play.expect(GameState.flags.has_flag(&"cinnabar_gym_unlocked"), "Clé Secrète : porte ouverte")
 	for index: int in QUIZ.size():
@@ -110,7 +122,7 @@ func test_09c_quiz_de_cramois_ile() -> void:
 func test_09d_arene_de_jadielle_a_pied() -> void:
 	_play.begin("Arène de Jadielle : de l'entrée à Giovanni")
 	await _play.start(DEBUG % "viridian_gym", _play.make_ace)
-	await _play.walk_through(Vector2i(4, 4))
+	await _play.walk_sliding(Vector2i(4, 4))
 	_play.heal()
 	await _play.interact(Vector2i.UP)
 	_play.expect(_play.won(&"viridian_gym_giovanni"), "Giovanni battu")
@@ -127,6 +139,8 @@ func test_09e_route_23_jusqu_a_la_route_victoire() -> void:
 		_teach(&"gyarados", &"surf", 15)
 		_teach(&"kangaskhan", &"strength", 15))
 	await _play.travel(&"route_23")
+	# Deux étendues d'eau séparées par l'îlot (8..9, 90..91) : deux départs en Surf.
+	await _play.surf_to(Vector2i(9, 90))
 	await _play.surf_to(Vector2i(10, 71))
 	await _play.walk_through(Vector2i(4, 32))
 	_play.expect_flags(["route_23_check_7_passed", "route_23_check_6_passed",

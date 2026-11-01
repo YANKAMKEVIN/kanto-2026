@@ -53,8 +53,15 @@ func _init(test: GutTest, name: String) -> void:
 
 
 ## Comme [method HideoutPlay.start], combats relevés dans [member battles].
+## T6 : le rattrapage des objets clés du chargement ([KeyItemRepair], ex. `got_hm01` sans
+## CS01) est appliqué au départ, noté au journal : sinon la première relance le ferait et la
+## partie relue différerait (départs de débogage incohérents, pas une vraie sauvegarde).
 func start(start_path: String, tweak: Callable = Callable(), do_settle: bool = true) -> void:
 	await super(start_path, tweak, do_settle)
+	var repair := KeyItemRepair.new()
+	if repair.load_file():
+		for note: String in repair.apply(GameState.flags, GameState.bag):
+			_lines.append("  ↷ départ rattrapé comme au chargement : %s" % note)
 	_watch_battles()
 
 
@@ -210,6 +217,7 @@ func talk_to(target: Vector2i, answer: bool = true) -> bool:
 func surf_to(goal: Vector2i) -> bool:
 	var grid := boot.get_map().get_grid()
 	var on_foot := grid.find_reachable(player.get_cell(), player, GridWorld.MoveMode.WALK)
+	var surf_state := boot.get_mount_director().get_surf_state()
 	var bank := Vector2i(-1, -1)
 	var water := Vector2i.ZERO
 	var best := -1
@@ -217,6 +225,10 @@ func surf_to(goal: Vector2i) -> bool:
 		for side: Vector2i in DIRECTIONS:
 			var sea := cell + side
 			if not grid.is_surfable(sea) or grid.is_occupied(sea):
+				continue
+			# T6 : la vraie règle de départ (pas depuis le sol haut, ni un courant actif).
+			if SurfRules.can_mount(grid, cell, side, surf_state, false, player) \
+					!= SurfRules.MountCheck.READY:
 				continue
 			var distance := absi(cell.x - goal.x) + absi(cell.y - goal.y)
 			if best >= 0 and distance >= best:
@@ -335,6 +347,69 @@ func _is_warp_cell(cell: Vector2i) -> bool:
 		if warp.cell == cell:
 			return true
 	return false
+
+
+## T6 : comme [method walk_through], mais le chemin peut passer par les dalles tournantes
+## (Arène de Jadielle, repaire) : un pas sur une dalle mène à la fin de sa glisse
+## ([method ForcedSlideDirector.stable_cell]). Plus court chemin en nombre de pas joués ;
+## replanifié si un Dresseur interrompt la marche. Vrai si le joueur arrive sur [param goal].
+func walk_sliding(goal: Vector2i, attempts: int = 8) -> bool:
+	for attempt: int in attempts:
+		if player.get_cell() == goal:
+			return true
+		var moves := _sliding_path(goal)
+		if moves.is_empty():
+			break
+		for direction: Vector2i in moves:
+			var before := player.get_cell()
+			await step(direction)
+			await _test.wait_process_frames(3)
+			if not boot.is_stable():
+				await run_scene()
+			if player.get_cell() == before:
+				break
+	return expect(player.get_cell() == goal, "chemin par les dalles jusqu'à %s (case %s)"
+		% [goal, player.get_cell()])
+
+
+func _sliding_path(goal: Vector2i) -> Array[Vector2i]:
+	var map := boot.get_map()
+	var grid := map.get_grid()
+	var slides := boot.get_forced_slide_director()
+	var field := slides.get_field()
+	var warps: Dictionary[Vector2i, bool] = {}
+	for warp: Warp in map.get_warps().get_all():
+		warps[warp.cell] = true
+	var mode := GridWorld.move_mode_of(player)
+	var start := player.get_cell()
+	var previous: Dictionary[Vector2i, Vector2i] = {start: start}
+	var step_of: Dictionary[Vector2i, Vector2i] = {}
+	var queue: Array[Vector2i] = [start]
+	var head := 0
+	while head < queue.size():
+		var cell: Vector2i = queue[head]
+		head += 1
+		if cell == goal:
+			break
+		for direction: Vector2i in DIRECTIONS:
+			var target := grid.get_step_target_as(cell, direction, mode, player)
+			if target == cell or (warps.has(target) and target != goal):
+				continue
+			if field != null and field.is_arrow(target):
+				target = slides.stable_cell(target)
+			if previous.has(target):
+				continue
+			previous[target] = cell
+			step_of[target] = direction
+			queue.append(target)
+	var moves: Array[Vector2i] = []
+	if not previous.has(goal):
+		return moves
+	var at := goal
+	while at != start:
+		moves.push_front(step_of[at])
+		at = previous[at]
+	return moves
 
 
 ## T6 : pousse le rocher voisin de [param stand] vers [param direction] (Force : CS04, Badge,

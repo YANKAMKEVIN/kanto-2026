@@ -93,10 +93,13 @@ func test_08c_routes_9_10_grotte_sombre() -> void:
 	_play.expect(GameState.flags.has_flag(&"beaten_dark_cave_marcel"), "Marcel battu")
 	await _play.travel(&"dark_cave_1f", 4, true, Vector2i(44, 34))
 	await _play.travel(&"route_10", 4, true, Vector2i(8, 48))
-	_play.expect(GameState.flags.has_flag(&"dark_cave_crossed"), "grotte traversée")
 
 	_play.begin("Route 10 sud jusqu'à Lavanville")
+	# Le déclencheur « grotte traversée » couvre la rangée 49, juste sous l'arrivée (8, 48).
 	await _play.travel(&"lavender_town")
+	_play.expect(GameState.flags.has_flag(&"dark_cave_crossed"), "grotte traversée")
+	# Arrivée en (21, 0) ; le déclencheur couvre (21..23, 1), pas vers le sud.
+	await _play.walk_through(Vector2i(21, 2))
 	_play.expect(GameState.flags.has_flag(&"lavender_reached"), "arrivée à Lavanville")
 	await _play.persist()
 	assert_true(_play.report())
@@ -215,13 +218,24 @@ func test_08g_safrania_et_sylphe_1f_5f() -> void:
 
 	_play.begin("Sylphe SARL 1F à 5F, Carte Magnétique")
 	await _play.travel_all([&"silph_co_1f", &"silph_co_2f", &"silph_co_3f", &"silph_co_5f"])
-	# Couloir est (28, 1..15), une case de large : le Rocket 5F-4 (28, 4) regarde vers le nord.
-	await _play.walk_through(Vector2i(28, 1))
-	_play.expect(GameState.flags.has_flag(&"beaten_silph_co_5f_4"), "Rocket du couloir est battu")
-	var grid := _play.boot.get_map().get_grid()
-	_play.expect(not grid.find_path(_play.player.get_cell(), Vector2i(20, 16),
-		_play.player).is_empty(), "un chemin à pied mène à la Carte (20, 16) depuis %s"
-		% _play.player.get_cell())
+	# Le couloir sud de la Carte (5F, rangée 16) ne s'atteint pas à pied depuis le nord : deux
+	# Dresseurs gardent ses deux accès d'une case de large (8, 16) et (28, 4). Chemin : ascenseur
+	# jusqu'au 9F, téléporteur (17, 15) du 9F → 5F (9, 15), au bout du couloir sud.
+	await _play.travel(&"silph_co_elevator")
+	await _play.walk_through(Vector2i(3, 1))
+	await _play.interact(Vector2i.UP)
+	var elevator := _play.boot.get_elevator_director()
+	await wait_until(func() -> bool: return elevator.is_panel_open(), 5.0)
+	_play.expect(elevator.is_panel_open(), "panneau de l'ascenseur ouvert (sans clé)")
+	if elevator.is_panel_open():
+		elevator.get_panel().floor_chosen.emit(&"9f")
+		await _play.wait_stable()
+	await _play.travel(&"silph_co_9f")
+	await _play.travel(&"silph_co_5f", 4, true, Vector2i(17, 15))
+	_play.expect(_play.player.get_cell() == Vector2i(9, 15), "téléporteur du 9F → 5F (9, 15)")
+	await _play.step(Vector2i.DOWN)
+	if not _play.boot.is_stable():
+		await _play.run_scene()
 	await _play.talk(Vector2i(20, 16), Vector2i.RIGHT)
 	_play.expect(GameState.flags.has_flag(&"got_silph_co_5f_card_key"), "Carte Magnétique ramassée")
 	_play.expect(GameState.bag.has(&"card_key"), "Carte dans le Sac")
