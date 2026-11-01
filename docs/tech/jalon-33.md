@@ -178,6 +178,8 @@ Harnais d'intégration qui enchaîne les étapes sur le vrai jeu en mode headles
 - **Pour T6** : les raccourcis du tableau sont les tronçons que seule la passe humaine rejoue.
 
 ### T6 — Campagne complète et corrections (33E)
+**Clos par décision de Kevin le 2026-11-01** (« je valide tout ça, pas besoin de les rejouer par moi ») : la passe humaine est remplacée par les parcours scriptés (T5, parcours 07 à 09 de la préparation) et les QA d'agent sur l'A17 (points d'entrée, sauvegarde, arrière-plan, trajets du repaire et de Sylphe) et sur le S24 (tronçon 0.1 joué en entier, 0.2 en partie, S24 perdu ensuite). Aucun P0 à P2 trouvé ; P3 ouverts : RP-284, RP-285, RP-286. Tronçons 0.2 à 0.9 non rejoués au doigt, acceptés tels quels par Kevin.
+
 Une passe humaine sur S24 par parcours ; chaque anomalie dans `docs/tech/registre-anomalies.md` [D]
 (ID, priorité, build, étapes, état). Fermeture seulement après **rejeu réussi du scénario**.
 
