@@ -80,7 +80,7 @@ var _bubble: BadgeBubble
 var _bubble_slot: BadgeSlot
 ## Costumes (CO-1) : section, bande défilante, vignettes et légende (nom du costume porté, ou
 ## phrase d'un costume verrouillé touché).
-var _costume_panel: PanelContainer
+var _costume_panel: VBoxContainer
 var _costume_row: HBoxContainer
 var _costume_slots: Array[CostumeSlot] = []
 var _costume_caption: Label
@@ -116,7 +116,6 @@ func _ready() -> void:
 	center.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
 	body.add_child(center)
 	center.add_child(_build_badges())
-	center.add_child(_build_costumes())
 	center.add_child(_build_team())
 	var side := VBoxContainer.new()
 	side.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -381,19 +380,19 @@ func _build_badges() -> PanelContainer:
 		slot.touched.connect(open_badge_detail)
 		grid.add_child(slot)
 		_slots.append(slot)
+	# Costumes (CO-1) : dans le même panneau, sous les badges (place gardée pour l'équipe).
+	column.add_child(_build_costumes())
 	return panel
 
 
-## Section « Costumes » (CO-1) : titre, bande défilante horizontale de vignettes, légende.
-func _build_costumes() -> PanelContainer:
-	_costume_panel = PanelContainer.new()
-	_costume_panel.theme_type_variation = &"MenuGlass"
+## Section « Costumes » (CO-1), dans le panneau des badges : titre et légende (nom du costume
+## porté) sur une ligne, puis la bande défilante horizontale des vignettes.
+func _build_costumes() -> VBoxContainer:
+	_costume_panel = VBoxContainer.new()
 	_costume_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_costume_panel.visible = false
-	var column := VBoxContainer.new()
-	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
-	_costume_panel.add_child(column)
+	_costume_panel.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
+	var column := _costume_panel
 	var head := HBoxContainer.new()
 	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	head.add_theme_constant_override(&"separation", UiTokens.GAP)

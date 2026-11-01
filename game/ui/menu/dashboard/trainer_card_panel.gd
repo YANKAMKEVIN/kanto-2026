@@ -34,6 +34,11 @@ func _init() -> void:
 
 ## Remplit la carte avec [param view]. À appeler une fois dans l'arbre.
 func show_view(view: DashboardView) -> void:
+	# Costumes (CO-5, CO-7) : le buste peut avoir changé depuis la construction.
+	_portrait.texture = MenuArt.hero_bust()
+	_portrait.visible = _portrait.texture != null
+	if _portrait.get_parent() is Control:
+		_place_portrait(_portrait.get_parent() as Control)
 	_name.text = view.player_name
 	_subtitle.text = view.player_title
 	_subtitle.visible = not view.player_title.is_empty()

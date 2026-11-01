@@ -37,6 +37,9 @@ var _portrait: Panel
 var _highlight: StyleBoxFlat
 
 
+## Tête du buste dans le rond du portrait.
+var _head: ZoneArt
+
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -49,6 +52,7 @@ func _init() -> void:
 	_portrait.visible = false
 	add_child(_portrait)
 	var head := ZoneArt.new()
+	_head = head
 	head.set_style(UiTokens.MAP_PORTRAIT_HEIGHT * 0.5 - UiTokens.MAP_PORTRAIT_BORDER, 1.0,
 		UiTokens.MAP_PORTRAIT_BG)
 	head.show_texture(MenuArt.hero_bust(), UiTokens.MAP_PORTRAIT_REGION)
@@ -71,6 +75,8 @@ func _init() -> void:
 ## Pose la vue : image, zones découvertes (étiquettes), portrait. Les étiquettes sont refaites.
 func setup(view: MapView) -> void:
 	_view = view
+	# Costumes (CO-5, CO-7) : le buste peut avoir changé depuis la construction.
+	_head.show_texture(MenuArt.hero_bust(), UiTokens.MAP_PORTRAIT_REGION)
 	_texture = null
 	if not view.image_path.is_empty() and ResourceLoader.exists(view.image_path):
 		_texture = load(view.image_path) as Texture2D
