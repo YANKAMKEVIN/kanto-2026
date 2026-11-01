@@ -19,8 +19,9 @@ var _art: TextureRect
 func _init(view: CostumeSlotView = null) -> void:
 	_view = view if view != null else CostumeSlotView.new()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
 	_hit = Button.new()
+	# Zone tactile d'au moins TOUCH_MIN (le cadre du panneau s'ajoute autour).
+	_hit.custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
 	_hit.flat = true
 	_hit.focus_mode = Control.FOCUS_NONE
 	_hit.mouse_filter = Control.MOUSE_FILTER_PASS

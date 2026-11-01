@@ -80,7 +80,7 @@ var _bubble: BadgeBubble
 var _bubble_slot: BadgeSlot
 ## Costumes (CO-1) : section, bande défilante, vignettes et légende (nom du costume porté, ou
 ## phrase d'un costume verrouillé touché).
-var _costume_panel: VBoxContainer
+var _costume_panel: PanelContainer
 var _costume_row: HBoxContainer
 var _costume_slots: Array[CostumeSlot] = []
 var _costume_caption: Label
@@ -126,6 +126,9 @@ func _ready() -> void:
 	_stats_panel.theme_type_variation = &"MenuGlass"
 	_stats_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	side.add_child(_stats_panel)
+	# Costumes (CO-1) : colonne de droite, entre les statistiques et la frise (qui défile et
+	# cède la place) ; le centre n'a plus de hauteur libre sous les badges et l'équipe.
+	side.add_child(_build_costumes())
 	side.add_child(_build_moments())
 	_build_bubble_layer()
 	_built = true
@@ -380,41 +383,35 @@ func _build_badges() -> PanelContainer:
 		slot.touched.connect(open_badge_detail)
 		grid.add_child(slot)
 		_slots.append(slot)
-	# Costumes (CO-1) : dans le même panneau, sous les badges (place gardée pour l'équipe).
-	column.add_child(_build_costumes())
 	return panel
 
 
-## Section « Costumes » (CO-1), dans le panneau des badges : titre et légende (nom du costume
-## porté) sur une ligne, puis la bande défilante horizontale des vignettes.
-func _build_costumes() -> VBoxContainer:
-	_costume_panel = VBoxContainer.new()
+## Section « Costumes » (CO-1) : titre, bande défilante horizontale des vignettes, légende.
+func _build_costumes() -> PanelContainer:
+	_costume_panel = PanelContainer.new()
+	_costume_panel.theme_type_variation = &"MenuGlass"
 	_costume_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_costume_panel.visible = false
-	_costume_panel.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
-	var column := _costume_panel
-	var head := HBoxContainer.new()
-	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	head.add_theme_constant_override(&"separation", UiTokens.GAP)
-	column.add_child(head)
-	_section_title(head, TrainerView.COSTUMES_TITLE)
-	_costume_caption = Label.new()
-	_costume_caption.theme_type_variation = &"TrainerBadgeName"
-	_costume_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_costume_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_costume_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_costume_caption.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	head.add_child(_costume_caption)
+	var column := VBoxContainer.new()
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
+	_costume_panel.add_child(column)
+	_section_title(column, TrainerView.COSTUMES_TITLE)
 	var scroll := ScrollContainer.new()
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
-	scroll.custom_minimum_size.y = UiTokens.TOUCH_MIN
 	column.add_child(scroll)
 	_costume_row = HBoxContainer.new()
 	_costume_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_costume_row.add_theme_constant_override(&"separation", UiTokens.TRAINER_BADGE_GAP)
 	scroll.add_child(_costume_row)
+	# Légende sous la bande : nom du costume porté, ou phrase d'un costume verrouillé (CO-2).
+	_costume_caption = Label.new()
+	_costume_caption.theme_type_variation = &"TrainerBadgeName"
+	_costume_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_costume_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(_costume_caption)
 	return _costume_panel
 
 
@@ -772,6 +769,19 @@ func _collect_touch(node: Node, into: Array[Control]) -> void:
 		if child.is_queued_for_deletion():
 			continue
 		var button := child as BaseButton
-		if button != null and button.is_visible_in_tree() and not button.disabled:
+		if button != null and button.is_visible_in_tree() and not button.disabled \
+				and _shown_in_scroll(button):
 			into.append(button)
 		_collect_touch(child, into)
+
+
+## Faux pour un bouton qu'un défilement (bande des costumes) ne montre pas en entier : il n'est
+## pas une cible de toucher à cet instant.
+func _shown_in_scroll(button: Control) -> bool:
+	var parent := button.get_parent()
+	while parent != null and parent != self:
+		if parent is ScrollContainer:
+			return (parent as Control).get_global_rect().grow(0.5).encloses(
+				button.get_global_rect())
+		parent = parent.get_parent()
+	return true
