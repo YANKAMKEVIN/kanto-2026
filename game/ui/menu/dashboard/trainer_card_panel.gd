@@ -11,9 +11,9 @@ signal lead_chosen
 
 const ICON_CLOCK: Texture2D = preload("res://assets/ui/icons/menu/clock.svg")
 const ICON_DEX: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
-## Pas d'icône de badge avant le premier badge (J10) : la ligne utilise la Poké Ball du Pokédex
-## teintée de l'accent.
-const ICON_BADGE: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
+## Ligne des badges : le dernier badge obtenu, peint ([method MenuArt.badge_icon]) ; repli sur
+## l'emblème SVG des badges teinté de l'accent.
+const ICON_BADGE: Texture2D = preload("res://assets/ui/icons/trainer/badge_slot.svg")
 
 var _name: Label
 var _subtitle: Label
@@ -22,6 +22,7 @@ var _dex: Label
 var _badges: Label
 var _rows: Dictionary[Label, Control] = {}
 var _lead: LeadPokemonCard
+var _badge_icon: TextureRect
 var _portrait: TextureRect
 
 
@@ -45,9 +46,21 @@ func show_view(view: DashboardView) -> void:
 	_set_row(_play_time, view.play_time_text)
 	_set_row(_dex, view.dex_text)
 	_set_row(_badges, view.badges_text)
+	_set_badge_icon(view.badge_id)
 	_lead.visible = view.lead != null
 	if view.lead != null:
 		_lead.setup(view.lead)
+
+
+## Icône de la ligne des badges (peinte si le badge a son image).
+func get_badge_icon() -> TextureRect:
+	return _badge_icon
+
+
+func _set_badge_icon(badge_id: StringName) -> void:
+	var painted := MenuArt.badge_icon(badge_id)
+	_badge_icon.texture = painted if painted != null else ICON_BADGE
+	_badge_icon.modulate = Color.WHITE if painted != null else UiTokens.ACCENT
 
 
 func get_lead_card() -> LeadPokemonCard:
@@ -117,6 +130,7 @@ func _build() -> void:
 	_play_time = _add_row(texts, ICON_CLOCK, UiTokens.TEXT)
 	_dex = _add_row(texts, ICON_DEX, UiTokens.TEXT)
 	_badges = _add_row(texts, ICON_BADGE, UiTokens.ACCENT)
+	_badge_icon = _rows[_badges].get_child(0) as TextureRect
 	for label: Label in [_name, _subtitle, _play_time, _dex, _badges]:
 		_shadow(label)
 

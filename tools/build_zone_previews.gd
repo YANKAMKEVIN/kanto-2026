@@ -8,7 +8,10 @@ extends SceneTree
 ##
 ##   godot --path . --resolution 1600x900 -s res://tools/build_zone_previews.gd
 ##   (--raw : garde aussi la capture nette dans build/zones_raw/ pour choisir le cadrage ;
-##    --only=<zone>)
+##    --only=<zone> ; --all : en plus des vues réglées à la main de [constant SHOTS], toutes les
+##    zones de data/world/zones.json qui ont une carte peinte, cadrées automatiquement sur le
+##    centre de la couche Ground de leur carte, ou [constant AUTO_MAPS] / [constant AUTO_AT] ;
+##    --keep : ne refait pas un aperçu déjà présent)
 ## puis `godot --headless --path . --import`.
 
 const OUT_DIR := "res://assets/ui/map/zones/"
@@ -33,8 +36,34 @@ const SHOTS: Array[Dictionary] = [
 		"at": Vector2(2300, 1300), "zoom": 0.62},
 ]
 
+## Chantier « Menu Dresseur peint » (2026-11-01) : carte de la zone quand elle n'a pas de carte du
+## même nom (ou quand la première est un Centre). [D] Cap d'Azuria = bout est de la Route 25.
+const AUTO_MAPS: Dictionary[String, String] = {
+	"mt_moon": "mt_moon_1f", "safari_zone": "safari_zone_center", "cerulean_cape": "route_25",
+	"ss_anne": "ss_anne_outer_deck", "seafoam_islands": "seafoam_1f",
+	"cerulean_cave": "cerulean_cave_1f", "dark_cave": "dark_cave_1f",
+}
+## Point visé, en fraction du rectangle de la couche Ground (0,5 ; 0,5 = centre), quand le centre
+## tombe sur un lieu peu parlant [D].
+const AUTO_AT: Dictionary[String, Vector2] = {
+	"cerulean_cape": Vector2(0.8, 0.5),
+}
+## Point visé en pixels monde, pour une carte sans couche Ground ni image d'un seul tenant
+## (pont extérieur du S.S. Anne, fait de modules) [D].
+const AUTO_POS: Dictionary[String, Vector2] = {
+	"ss_anne": Vector2(1000, 540),
+}
+## Zoom propre à une petite carte (le pont tient alors tout le cadre) [D].
+const AUTO_ZOOMS: Dictionary[String, float] = {"ss_anne": 1.0}
+const AUTO_ZOOM := 0.62
+const ZONES_PATH := "res://data/world/zones.json"
+const MAP_DIR := "res://game/world/maps/"
+const CELL := 96.0
+
 var _raw: bool = false
 var _only: String = ""
+var _all: bool = false
+var _keep: bool = false
 
 
 func _init() -> void:
@@ -43,19 +72,31 @@ func _init() -> void:
 			_raw = true
 		elif arg.begins_with("--only="):
 			_only = arg.trim_prefix("--only=")
+		elif arg == "--all":
+			_all = true
+		elif arg == "--keep":
+			_keep = true
 	process_frame.connect(_run, CONNECT_ONE_SHOT)
 
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT_DIR))
 	DirAccess.make_dir_recursive_absolute(RAW_DIR)
-	for shot: Dictionary in SHOTS:
+	var shots: Array[Dictionary] = SHOTS.duplicate()
+	if _all:
+		shots.append_array(_auto_shots())
+	for shot: Dictionary in shots:
 		if not _only.is_empty() and shot["zone"] != _only:
+			continue
+		if _keep and FileAccess.file_exists(OUT_DIR + String(shot["zone"]) + ".webp"):
 			continue
 		var map := (load(shot["map"]) as PackedScene).instantiate()
 		root.add_child(map)
+		var at: Vector2 = shot.get("at", Vector2.ZERO)
+		if shot.has("frac"):
+			at = _point_of(map, shot["frac"])
 		var camera := Camera2D.new()
-		camera.position = shot["at"]
+		camera.position = at
 		camera.zoom = Vector2.ONE * float(shot["zoom"])
 		root.add_child(camera)
 		camera.make_current()
@@ -68,6 +109,55 @@ func _run() -> void:
 		map.queue_free()
 		await process_frame
 	quit()
+
+
+## Vues automatiques : chaque zone de zones.json absente de [constant SHOTS] dont la carte existe.
+func _auto_shots() -> Array[Dictionary]:
+	var done: Array[String] = []
+	for shot: Dictionary in SHOTS:
+		done.append(String(shot["zone"]))
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(ZONES_PATH))
+	var zones: Dictionary = parsed["zones"] if parsed is Dictionary else {}
+	var shots: Array[Dictionary] = []
+	for zone: String in zones:
+		if done.has(zone):
+			continue
+		var map_id: String = AUTO_MAPS.get(zone, zone)
+		var path := MAP_DIR + map_id + ".tscn"
+		if not ResourceLoader.exists(path):
+			print("pas de carte peinte pour ", zone, " (", path, ")")
+			continue
+		if AUTO_POS.has(zone):
+			shots.append({"zone": zone, "map": path, "at": AUTO_POS[zone],
+				"zoom": AUTO_ZOOMS.get(zone, AUTO_ZOOM)})
+		else:
+			shots.append({"zone": zone, "map": path,
+				"frac": AUTO_AT.get(zone, Vector2(0.5, 0.5)), "zoom": AUTO_ZOOM})
+	return shots
+
+
+## Point (pixels monde) à la fraction [param frac] du rectangle utilisé de la couche Ground.
+func _point_of(map: Node, frac: Vector2) -> Vector2:
+	var ground := map.get_node_or_null(^"Ground") as TileMapLayer
+	if ground == null:
+		for child: Node in map.get_children():
+			if child is TileMapLayer:
+				ground = child
+				break
+	if ground != null and ground.get_used_rect().has_area():
+		var used := Rect2(ground.get_used_rect())
+		return (used.position + used.size * frac) * CELL
+	# Carte peinte d'un seul tenant (S.S. Anne : « Shell ») : le rectangle de la plus grande image.
+	var best := Rect2()
+	for child: Node in map.get_children():
+		var sprite := child as Sprite2D
+		if sprite != null and sprite.texture != null:
+			var rect := sprite.get_rect()
+			rect = Rect2(sprite.global_position + rect.position * sprite.scale,
+				rect.size * sprite.scale)
+			if rect.get_area() > best.get_area():
+				best = rect
+	return best.position + best.size * frac
 
 
 func _save(image: Image, zone: String) -> void:

@@ -156,9 +156,11 @@ func _build_thumb() -> Control:
 	return thumb
 
 
-## Icône peinte de l'objet du moment (le fossile obtenu) ; null s'il n'y en a pas (repli sur
-## l'icône du type).
+## Image peinte du moment (le fossile obtenu, le badge obtenu) ; null s'il n'y en a pas (repli
+## sur l'icône du type).
 func _item_icon() -> Texture2D:
+	if not _view.badge_id.is_empty():
+		return MenuArt.badge_icon(_view.badge_id)
 	if _view.item_id.is_empty():
 		return null
 	return MenuArt.item_icon(_view.item_id)

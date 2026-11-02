@@ -36,7 +36,9 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary,
 	if unlocks.pokedex_visible():
 		view.dex_text = dex_text(pokedex.seen_count(), pokedex.caught_count())
 	if badges != null:
-		view.badges_text = badges_text(badges.obtained_count(flags))
+		var obtained := badges.obtained_ids(flags)
+		view.badges_text = badges_text(obtained.size())
+		view.badge_id = obtained.back() if not obtained.is_empty() else &""
 	var lead := party.get_lead()
 	if lead != null and unlocks.team_visible():
 		view.lead = member(lead, 0, data)

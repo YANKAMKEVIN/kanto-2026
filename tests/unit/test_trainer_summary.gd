@@ -448,6 +448,7 @@ func test_badge_moment_title_detail_place_in_chronological_order() -> void:
 	assert_eq(badge.detail, "Obtenu à Argenta contre Pierre.")
 	assert_eq(badge.place, "Argenta", "nom de la zone, jamais « pewter_gym »")
 	assert_eq(badge.zone_id, &"pewter_city")
+	assert_eq(badge.badge_id, &"boulder", "image peinte du badge (Menu Dresseur peint)")
 	assert_eq(badge.date_text, "8 octobre 2026")
 	assert_eq(badge.species_id, &"", "le souvenir de l'équipe n'est pas montré au J10")
 	assert_null(badge.route)
