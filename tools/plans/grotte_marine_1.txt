@@ -1,0 +1,81 @@
+# Grotte marine, salle 1 (sea_cave_1) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH1 ;
+# dossier docs/design/dossier-joh-02-oliville.md §3.2). Préparée le 2026-11-02 pour la vue générale
+# peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un changement de composition se fait ICI d'abord.
+# Contrôle : tools/art/plan_check_joh1.py.
+#
+# 30 × 40 cases (dossier : ≈ 30 × 40) ; nord en haut ; x = colonne 0..29, y = rangée 0..39.
+# Toute la salle se joue en Surf ; une seule voie : chenal d'entrée → bassin nord (îlot de la Perle,
+# courant vers l'est rangées 14..15) → chenal sud (îlot de repos) → bassin sud → salle 2.
+#
+# RACCORD NORD ↔ Bourg Palette : 4 cases d'eau (12..15, 0). ATTENDU côté Bourg Palette (48 × 34,
+#   tools/build_pallet_town.gd ; dossier §3.1 « rive sud, à l'est du ponton ») : la bouche de grotte
+#   sur la dernière rangée, colonnes (22..25, 33), eau déjà présente (rangées 32..33), décor fermé
+#   tant que `johto_letter_read` n'est pas posé [D]. Colonne Palette = colonne salle 1 + 10. Aucune
+#   modification de Bourg Palette n'est faite ici (à caler au code, en évitant le canal de la Route 21,
+#   colonnes 10..14).
+# RACCORD SUD ↔ salle 2 : (20..21, 39) ↔ salle 2 (20..21, 0), mêmes colonnes, eau jointe.
+#
+# Légende (grotte marine, commune aux deux salles) :
+#   # paroi rocheuse (bloquée)        o rocher isolé (bloqué)
+#   . îlot ou corniche de roche (praticable à pied)   g plage de galets (praticable)
+#   w eau SURFABLE                    d eau profonde surfable (centre de la salle 2 ; même règle que w)
+#   > v courant sur l'eau (sens du flux) : la case pousse le joueur dans ce sens jusqu'à la
+#     première case sans courant (système de glissade forcée existant, réglé sur l'eau)
+#   E sortie à pied (bord de carte)
+# Objets, déclencheurs, raccords : section POSITIONS, pas la grille.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 30 caractères), puis POSITIONS.
+
+PRATICABLES .gwd>vE
+
+GRILLE 30 40
+00 ############wwww##############
+01 ############wwww##############
+02 ############wwww##############
+03 ############wwww##############
+04 ############wwww##############
+05 ############wwww##############
+06 ############wwww##############
+07 ############wwww##############
+08 ####wwwwwwwwwwwwwwwwwwwww#####
+09 ####ww...wwwwwwwwwwooowww#####
+10 ####ww...wwwwwwwwwwooowww#####
+11 ####ww....wwwwwwwwwwwwwww#####
+12 #####wwwwwwwwwwwwwwwwwwww#####
+13 #####wwwwwwwwwwwwwwwwwwww#####
+14 #####>>>>>>>>>>>>>>wwwwww#####
+15 #####>>>>>>>>>>>>>>wwwwww#####
+16 ###################wwww#######
+17 ###################wwww#######
+18 ###################wwww#######
+19 ###################wwww#######
+20 ###################wwww#######
+21 ###################wwww...####
+22 ###################wwww...####
+23 ###################wwww...####
+24 ###################wwww...####
+25 ###################wwww#######
+26 ###################wwww#######
+27 ###################wwww#######
+28 ###################wwww#######
+29 ###################wwww#######
+30 ########wwwwwwwwwwwwwwwww#####
+31 ########wwooowwwwwwwwwwww#####
+32 ########wwooowwwwwwwwwwww#####
+33 ########wwooowwwwwwwwwwww#####
+34 ########wwwwwwwwwwwwwwwww#####
+35 ########wwwwwwwwwwwwwwwww#####
+36 ####################ww########
+37 ####################ww########
+38 ####################ww########
+39 ####################ww########
+FIN
+
+POSITIONS
+warp_nord            warp           12..15,0     libre   surf=1  # PUSH ↑ → pallet_town, bouche de grotte (22..25, 33) [D]
+from_pallet_town     spawn          12..15,0     libre   surf=1  # arrivée de Bourg Palette en Surf, tournée ↓
+warp_sud             warp           20..21,39    libre   surf=1  # PUSH ↓ → sea_cave_2 (20..21, 0)
+from_sea_cave_2      spawn          20..21,39    libre   surf=1  # retour de la salle 2 (acte 2 seulement), tourné ↑
+objet_perle          objet          7,10         libre   objet=pearl  # îlot nord-ouest (dossier §6)
+legende_grotte       declencheur    12..15,1     libre   # description de zone O-24, une fois
+FIN

@@ -1,0 +1,82 @@
+# Grotte marine, salle 2 (sea_cave_2) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH1 ;
+# dossier docs/design/dossier-joh-02-oliville.md §3.2, JH-18, T-38). Préparée le 2026-11-02 ; **validée par Kevin le 2026-11-02**.
+# Contrôle : tools/art/plan_check_joh1.py.
+#
+# 30 × 40 cases ; nord en haut. Grande salle à plafond haut, eau profonde au centre (d) où passe
+# l'ombre de Lugia (déclencheur « ombre_lugia », une fois, O-6) ; îlot du Rappel Max au sud-est.
+# CHENAL DU COURANT (6..8, 30..34, « v ») : seul passage entre la salle et la plage de galets.
+#   Acte 1 (`johto_act2` absent) : courant actif vers le SUD, sens unique ; remonter est impossible
+#   (message O-7 au pied du chenal, déclencheur « courant_retour »). Acte 2 : courant CALME
+#   (T-38), le chenal se traverse dans les deux sens [D] (le dossier dit « s'inverse » ; calme est
+#   plus simple et donne le même résultat : la grotte se traverse dans les deux sens).
+#
+# RACCORD NORD ↔ salle 1 : (20..21, 0) ↔ salle 1 (20..21, 39).
+# RACCORD SUD ↔ Oliville : sortie à pied (3..4, 39) ↔ bouche de grotte d'Oliville (10, 31..32) ;
+#   arrivée sur la plage d'Oliville (11, 31..32), tournée →.
+#
+# Légende (grotte marine, commune aux deux salles) :
+#   # paroi rocheuse (bloquée)        o rocher isolé (bloqué)
+#   . îlot ou corniche de roche (praticable à pied)   g plage de galets (praticable)
+#   w eau SURFABLE                    d eau profonde surfable (centre de la salle 2 ; même règle que w)
+#   > v courant sur l'eau (sens du flux) : la case pousse le joueur dans ce sens jusqu'à la
+#     première case sans courant (système de glissade forcée existant, réglé sur l'eau)
+#   E sortie à pied (bord de carte)
+# Objets, déclencheurs, raccords : section POSITIONS, pas la grille.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 30 caractères), puis POSITIONS.
+
+PRATICABLES .gwd>vE
+
+GRILLE 30 40
+00 ####################ww########
+01 ####################ww########
+02 ####################ww########
+03 ####################ww########
+04 ####################ww########
+05 ####################ww########
+06 #####ooowwwwwwwwwwwwwwwwwww###
+07 #####ooowwwwwwwwwwwwwwwwooo###
+08 #####ooowwwwwwwwwwwwwwwwooo###
+09 #####wwwwwwwwwwwwwwwwwwwooo###
+10 #####wwwwwwwwwwwwwwwwwwwwww###
+11 #####wwwwwwwwwwwwwwwwwwwwww###
+12 #####wwwwwwwwwwwwwwwwwwwwww###
+13 #####wwwwddddddddddddwwwwww###
+14 #####wwwwddddddddddddwwwwww###
+15 #####wwwwddddddddddddwwwwww###
+16 #####wwwwddddddddddddwwwwww###
+17 #####wwwwddddddddddddwwwwww###
+18 #####wwwwddddddddddddwwwwww###
+19 #####wwwwddddddddddddwwwwww###
+20 #####wwwwddddddddddddwwwwww###
+21 #####wwwwddddddddddddwwwwww###
+22 #####wwwwddddddddddddwwwwww###
+23 #####wwwwwwwwwwwwwwwww....w###
+24 #####wwwwwwwwwwwwwwwww....w###
+25 #####wwwwwwwwwwwwwwwww....w###
+26 #####wwwwwwwwwwwwwwwww....w###
+27 #####wwwwwwwwwwwwwwwwwwwwww###
+28 ######www#####################
+29 ######www#####################
+30 ######vvv#####################
+31 ######vvv#####################
+32 ######vvv#####################
+33 ######vvv#####################
+34 ######vvv#####################
+35 ##gggggggggg##################
+36 ##gggggggggg##################
+37 ##gggggggggg##################
+38 ##gggggggggg##################
+39 ###EE#########################
+FIN
+
+POSITIONS
+warp_nord            warp           20..21,0     libre   surf=1  # PUSH ↑ → sea_cave_1 (20..21, 39) ; atteint seulement à l'acte 2
+from_sea_cave_1      spawn          20..21,0     libre   surf=1  # arrivée de la salle 1, tournée ↓
+warp_sud             warp           3..4,39      libre   # STEP_ON ↓ → olivine_city, from_sea_cave (11, 31..32)
+from_olivine_city    spawn          3..4,38      libre   # arrivée d'Oliville, tournée ↑
+ombre_lugia          declencheur    9..20,17     libre   drapeau=johto_lugia_shadow  # O-6, une fois, toute case de la rangée 17 dans l'eau profonde
+courant_retour       declencheur    6..8,35      libre   # O-7 si le joueur tente de remonter le chenal à l'acte 1
+courant_chenal       courant        6..8,30..34  libre   sens=bas actif_sans=johto_act2
+objet_rappel_max     objet          23,24        libre   objet=max_repel  # îlot sud-est (dossier §6, JH-25)
+FIN
