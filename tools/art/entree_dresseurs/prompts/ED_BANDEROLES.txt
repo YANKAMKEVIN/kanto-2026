@@ -1,0 +1,8 @@
+ED_BANDEROLES — textures de banderole « VS » de Kanto 2026. Images jointes : IMAGE 1 = maquette VALIDÉE de la séquence « VS » (banderole rouge en haut à droite, banderole bleue en bas à gauche) ; IMAGE 2 et IMAGE 3 = agrandissements de ces deux banderoles. C'est la CIBLE EXACTE de la matière : large coup de pinceau peint, couleur pleine et profonde avec variations de valeur, traînées sèches du pinceau dans la longueur, griffures et éclaboussures, bords irréguliers et DÉCHIRÉS, liseré lumineux fin le long du bord inférieur (rouge clair pour la rouge, bleu ciel pour la bleue).
+
+À FAIRE : UNE image paysage 1536 × 1024 contenant DEUX bandes HORIZONTALES (PAS en biais : bien à plat, le jeu les incline lui-même), l'une au-dessus de l'autre, séparées par un large vide transparent :
+- EN HAUT : la bande ROUGE carmin (comme l'IMAGE 2), toute la largeur de l'image, environ 300 px d'épaisseur ; bout DROIT net et franc, coupé par le bord ; bout GAUCHE qui se termine en coup de pinceau DÉCHIRÉ, effiloché, avec traînées et éclaboussures.
+- EN BAS : la bande BLEU roi (comme l'IMAGE 3), même forme exactement (bout gauche déchiré, bout droit net), même épaisseur.
+Aucun texte, aucun nom, aucun filet, aucun losange, aucun portrait, aucun rocher : seulement la matière peinte vide.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun cadre.

@@ -1,0 +1,5 @@
+ED_JOUEUR_RETOUCHE — retouche d'un asset de Kanto 2026. IMAGE 1 jointe : une planche de deux poses du même garçon vu de dos (fond transparent). Produis EXACTEMENT LA MÊME IMAGE (même format 1536 × 1024, mêmes deux poses au pixel près, même place, même taille, même rendu, même fond transparent avec vrai canal alpha), avec UNE SEULE correction sur la pose de GAUCHE :
+- son sac à dos devient IDENTIQUE à celui de la pose de DROITE : corps jaune moutarde, grande poche avant BLEU MARINE avec un petit bouton rond argenté, poches latérales jaunes, bretelles bleu marine ;
+- le haut du dos sous les bretelles et autour du sac est le gilet ROUGE sans manches de la pose de droite (aucune zone bleue sur le haut du corps, seulement le t-shirt blanc aux manches et le gilet rouge).
+Ne change RIEN d'autre : ni la pose, ni les bras, ni les jambes, ni la casquette, ni les cheveux, ni la pose de droite.
+Interdits : texte, décor, sol, ombre, damier dessiné, halo, cadre.

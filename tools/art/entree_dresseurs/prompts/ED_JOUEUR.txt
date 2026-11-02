@@ -1,0 +1,13 @@
+ED_JOUEUR — sprites de combat de Kanto 2026 (jeu 2D HD) : le JOUEUR vu de DOS au premier plan. Images jointes : IMAGE 1 = maquette validée « entrée ordinaire » (le joueur est le garçon de dos en bas à gauche) ; IMAGE 2 = maquette validée « lancer » ; IMAGE 3 et IMAGE 4 = agrandissements du joueur dans ces deux maquettes. C'est la CIBLE EXACTE : même personnage, même tenue, mêmes couleurs, même rendu.
+
+PERSONNAGE : garçon d'environ 11 ans, cheveux bruns foncés en mèches qui dépassent sous la casquette, casquette rouge à visière blanche (vue de dos, patte de réglage visible), t-shirt blanc à manches courtes avec un gilet rouge sans manches dessus, sac à dos jaune moutarde à rabat bleu marine et bretelles bleu marine, jean bleu marine un peu large retroussé en bas, baskets rouges à semelle blanche.
+
+À FAIRE : UNE image paysage 1536 × 1024 avec DEUX poses du même personnage côte à côte, chacune en pied, grande (environ 940 px de haut, de la casquette aux semelles), bien séparées (au moins 100 px de vide entre elles), rien de coupé par le bord, pieds tous à la même hauteur près du bas de l'image. Les deux poses sont vues de DOS, en TROIS-QUARTS DOS, le personnage regarde vers la DROITE de l'image (vers l'adversaire, au loin) :
+- À GAUCHE : pose DEBOUT EN GARDE exactement comme sur l'IMAGE 4 : jambes bien écartées, campé, genoux un peu fléchis, deux poings serrés, bras un peu écartés du corps, épaules de face au sac.
+- À DROITE : pose de LANCER exactement comme sur l'IMAGE 3 : bras droit levé et tendu vers l'avant et vers la droite, main ouverte doigts écartés (la Ball vient de partir, main vide), l'autre bras en arrière poing serré, jambes en fente, pied arrière sur la pointe.
+TENUE IDENTIQUE dans les deux poses, celle de l'IMAGE 3 : t-shirt blanc + gilet ROUGE sans manches visible sur les côtés du sac (jamais de gilet bleu), sac à dos de l'IMAGE 3 (corps jaune moutarde, grande poche avant bleu marine avec un bouton rond, poches latérales), bretelles bleu marine. Proportions de l'IMAGE 3.
+Mains à cinq doigts correctes, pieds entiers, visage non visible (on est derrière lui, on voit au plus une oreille et la joue).
+
+STYLE (impératif) : exactement la main des maquettes jointes : illustration 2D HD « anime peint », contours fins et doux brun foncé (jamais de trait noir épais), aplats peints avec ombres douces et deux ou trois valeurs par matériau, légère granularité de pinceau, proportions de jeune dresseur des maquettes (tête assez grande mais PAS chibi), lumière de jour chaude et douce venant de la gauche comme sur les maquettes.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte, aucune lettre, aucun cadre, aucun Poké Ball.

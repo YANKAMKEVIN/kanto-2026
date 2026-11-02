@@ -1,0 +1,12 @@
+ED_HUGO — sprites de combat de Kanto 2026 (jeu 2D HD). Images jointes : IMAGE 1 = maquette validée « entrée ordinaire » (le Gamin Hugo est le garçon à droite, debout) ; IMAGE 2 = maquette validée « lancer » (Hugo lance sa Ball) ; IMAGE 3 et IMAGE 4 = agrandissements de Hugo dans ces deux maquettes. C'est la CIBLE EXACTE : même personnage, même tenue, mêmes couleurs, même rendu.
+
+PERSONNAGE : le Gamin Hugo, garçon d'environ 10 ans, cheveux châtains en mèches, casquette blanche à visière bleu marine portée à l'endroit, t-shirt bleu ciel à manches courtes, sacoche jaune moutarde en bandoulière (sangle jaune en diagonale sur la poitrine), short bleu gris foncé, chaussettes blanches, baskets bleues et blanches. Expression enjouée et déterminée.
+
+À FAIRE : UNE image paysage 1536 × 1024 avec DEUX poses du même personnage côte à côte, chacune en pied, grande (environ 900 px de haut, de la casquette aux semelles), bien séparées (au moins 120 px de vide entre elles), aucune partie coupée par le bord, pieds tous à la même hauteur près du bas de l'image :
+- À GAUCHE : pose DEBOUT PRÊT exactement comme sur l'IMAGE 3 : de trois-quarts face, tourné vers la gauche de l'image, jambes écartées campées, poings légèrement serrés à hauteur de hanche, regard vers la gauche.
+- À DROITE : pose de LANCER exactement comme sur l'IMAGE 4 : de trois-quarts face tourné vers la gauche, fente avant (jambe gauche de l'image avancée et fléchie, autre jambe tendue en arrière), bras tendu loin vers la gauche à hauteur de poitrine, main ouverte, doigts écartés, la Ball VIENT DE PARTIR (main vide, pas de Ball dessinée), l'autre bras replié en arrière, bouche ouverte qui crie.
+Mains à cinq doigts correctes, pieds entiers.
+
+STYLE (impératif) : exactement la main des maquettes jointes : illustration 2D HD « anime peint », contours fins et doux brun foncé (jamais de trait noir épais), aplats peints avec ombres douces et deux ou trois valeurs par matériau, légère granularité de pinceau, proportions de jeune dresseur des maquettes (tête assez grande mais PAS chibi), lumière de jour chaude et douce venant de la gauche comme sur les maquettes.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte, aucune lettre, aucun cadre, aucun Poké Ball.
