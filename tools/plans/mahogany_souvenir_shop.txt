@@ -1,0 +1,47 @@
+# Boutique de souvenirs d'Acajou (mahogany_souvenir_shop) — grille fonctionnelle v1 (Chapitre Johto,
+# jalon JOH6 ; dossier docs/design/dossier-joh-07-acajou.md §3, §4 (étapes 6 et 9), textes C-19, C-28, C-29).
+# COQUE CONNUE DU PROJET : celle des Boutiques (tools/plans/safrania_boutique.txt, `_poke_mart`,
+# 15 × 10), avec une différence : le rayon mural de droite est l'ÉTAGÈRE qui cache l'ESCALIER du
+# repaire (S, (12, 3)).
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# Composition : caisse et vendeur de souvenirs (7, 3) ; présentoirs ; ESCALIER CACHÉ (S, (12, 3)) :
+# mur tant que johto_hideout_found n'est pas posé ; la scène C-28 (déclencheur (12, 4), devant
+# l'étagère) ne se joue qu'avec johto_red_gyarados_done (le lac est un passage obligé, dossier §4)
+# et pose johto_hideout_found ; ensuite l'escalier descend au B1F du repaire. La Corde Sortie du
+# repaire ramène devant la boutique (Acajou, retour_boutique).
+#
+# Légende : K mur (bloqué) · . sol · X sortie (praticable, PUSH ↓) · r rayon mural · b arrière-caisse ·
+# c caisse · q présentoir · x plante (bloqués) · S escalier caché (praticable ; mur jusqu'à
+# johto_hideout_found, comme le S du Casino de Céladopole).
+# Défauts [D] : le vendeur tient aussi l'inventaire d'une Boutique (shop=mahogany_mart), Acajou
+# n'ayant pas d'autre magasin ; coque Kanto réutilisée.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 15 caractères), puis POSITIONS.
+
+PRATICABLES .XS
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 K.r..bb.bb..S.K
+04 K.....ccc.....K
+05 K.............K
+06 K.............K
+07 K..q.......q..K
+08 K.....XXX....xK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           6..8,8       libre   to=mahogany_town spawn=retour_boutique  # PUSH ↓ → mahogany_town, retour_boutique
+entrance             spawn          7,8          libre   facing=up  # arrivée depuis Acajou
+counter              spawn          7,5          libre   facing=up  # devant la caisse
+vendeur              pnj            7,3          bloque  role=clerk facing=down shop=mahogany_mart  # C-19 avant, C-29 après l'escalier ; on lui parle depuis (6..8, 5)
+scene_escalier       declencheur    12,4         libre   actif_avec=johto_red_gyarados_done actif_sans=johto_hideout_found drapeau=johto_hideout_found  # C-28 : le courant d'air, l'escalier apparaît
+etagere              examen         12,3         libre   actif_sans=johto_hideout_found  # étagère de souvenirs, examinée depuis (12, 4) ↑ ; sans le lac : rien à voir
+vers_b1f             escalier       12,3         libre   sens=descend cond=johto_hideout_found vers=mahogany_hideout_b1f:from_shop  # escalier du repaire, apparu après C-28
+from_hideout         spawn          12,4         libre   facing=down  # retour du repaire par l'escalier
+FIN

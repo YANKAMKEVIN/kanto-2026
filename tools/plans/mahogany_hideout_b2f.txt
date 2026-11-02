@@ -1,0 +1,126 @@
+# Repaire Rocket d'Acajou, B2F (mahogany_hideout_b2f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ;
+# dossier docs/design/dossier-joh-07-acajou.md §3, §4, §6, §7, §8, textes C-31 à C-38). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 30 × 22 cases (dossier : ≈ 30 × 22) ; x = colonne 0..29, y = rangée 0..21 ; nord en haut.
+#
+# Composition (le niveau des dalles et des cellules, dossier §4 étape 11) :
+#   - SALLE D'ARRIVÉE (x 20..28, y 10..16) avec l'ESCALIER qui monte (U, (28, 12)) et le SBIRE R
+#     (23, 14), évitable ; COULOIR (y 7, x 18..21) vers la salle des dalles.
+#   - SALLE DES DALLES (x 5..17, y 4..11) : rien que des flèches et des cases d'arrêt (o), on ne la
+#     traverse qu'en glissant. Entrée o (17, 7). Trajet : (16, 7) ← … → coude (11, 7) ↓ → o (11, 9)
+#     [Ultra Ball ×3 à côté, (12, 9)] ; (10, 9) ← → o (5, 9) ; de là, ^ (5, 8) → o (5, 4) et la
+#     SORTIE OUEST (4, 4), ou v (5, 10) → o (5, 11) et la SORTIE SUD (5, 12). Les rangées y 4 et y 11
+#     et la colonne x 17 ramènent à l'entrée (boucles de retour). Trajets vérifiés par le contrôle.
+#   - OUEST : le SCIENTIFIQUE ROCKET (2, 4) regarde (3, 4), seule case devant la PORTE À MOT DE PASSE
+#     (K, (3, 3), C-38, s'ouvre avec johto_dante_flashback_seen) : INÉVITABLE ; derrière, l'ESCALIER
+#     qui descend (D, (3, 1)) vers le B3F.
+#   - SUD : COULOIR DES CELLULES (x 2..14, y 13..15) avec le SBIRE S (9, 13), évitable par y 15 ; trois
+#     cellules (K) : la cellule du milieu (x 6..8, y 17..19, grille (7, 16)) tient le DÉSERTEUR (7, 18) ;
+#     le LEVIER (13, 16), actionné depuis (13, 15), ouvre sa grille (C-32 à C-37, souvenir de Dante
+#     §8) ; les deux autres cellules sont fermées (décor). PP Plus (2, 13).
+#
+# Légende (commune aux trois niveaux ; même esprit que le repaire de Céladopole, tools/plans/repaire_b1f.txt) :
+#   # mur ou vide (bloqué)   . sol de béton (praticable, aucune rencontre)   M console, bureau ou machine (bloqué)
+#   X caisse (bloquée)   S statue de Persian (bloquée ; caméra dans les yeux : position « statue »,
+#     facing + sight = cases surveillées, déclencheur « alarme_N » dessus)   < > ^ v dalle tournante
+#     (posé dessus, on glisse dans sa direction jusqu'à une case d'arrêt o ; chaque flèche croisée change
+#     la direction : règle du repaire de Céladopole)   o case d'arrêt (praticable)
+#   K grille ou porte fermée (praticable ; la position « porte_cle », libre dans la grille, la bloque
+#     tant que la clé ou le mot de passe manque)   c barreaux de la cage à ondes (bloqués)
+#   p pupitre de commande (bloqué)   U escalier qui monte   D escalier qui descend (praticables ; même
+#     case aux deux niveaux, arrivée posée sur la case voisine libre)
+# Personnages, objets, scènes et raccords sont dans POSITIONS.
+#
+# Format : ligne PRATICABLES, section GRILLE, puis POSITIONS.
+
+PRATICABLES .<>^voUDK
+
+GRILLE 30 22
+00 ##############################
+01 ###D##########################
+02 ###.##########################
+03 ###K##########################
+04 ##...o>>>>>>>>>>>o############
+05 #####^###########v############
+06 #####^###########v############
+07 #####^#####v<<<<<o....########
+08 #####^#####v#####^##..########
+09 #####o<<<<<o.####^##..########
+10 #####v###########^##.......MM#
+11 #####o>>>>>>>>>>>o##.........#
+12 #####.##############........U#
+13 ##............X#####.........#
+14 ##............X#####.........#
+15 ##.............#####.........#
+16 ##KKK##K##KKK#######MM.......#
+17 ##KKK#...#KKK#################
+18 ##KKK#...#KKK#################
+19 ##KKK#...#KKK#################
+20 ##############################
+21 ##############################
+FIN
+
+POSITIONS
+vers_b1f             escalier       28,12        libre   paire=rep_1_2 sens=monte vers=mahogany_hideout_b1f:from_b2f  # escalier vers le B1F
+from_b1f             spawn          28,13        libre   paire=rep_1_2 facing=down  # arrivée depuis le B1F
+vers_b3f             escalier       3,1          libre   paire=rep_2_3 sens=descend vers=mahogany_hideout_b3f:from_b2f  # escalier vers le B3F, derrière la porte à mot de passe
+from_b3f             spawn          3,2          libre   paire=rep_2_3 facing=down  # arrivée depuis le B3F
+entree_dalles        repere         17,7         libre   role=entree  # case d'arrêt d'entrée de la salle des dalles
+sbire_r              dresseur       23,14        bloque  role=sbire facing=up sight=3  # C-31 R : Smogogo 57, Magnéton 56 ; évitable par le sud de la salle
+sbire_s              dresseur       9,13         bloque  role=sbire facing=down sight=1  # C-31 S : Démolosse 57, Cornèbre 56 ; évitable par (9, 15)
+scientifique         dresseur       2,4          bloque  role=scientifique facing=right sight=1  # C-31 : Électrode 57, Magnéton 57, Porygon 56 ; devant la porte, INÉVITABLE
+porte_mdp            porte_cle      3,3          libre   cle=johto_dante_flashback_seen  # C-38 « Gloire à Dante » ; refuse tant que le déserteur n'a pas parlé (§13)
+porte_cellule        porte_cle      7,16         libre   cle=johto_cell_opened  # grille de la cellule du déserteur, ouverte par le levier
+levier               interrupteur   13,16        bloque  depuis=13,15 face=S flag=johto_cell_opened  # levier des cellules
+deserteur            pnj            7,18         bloque  role=deserteur facing=up actif_sans=johto_raikou_done  # C-32 à C-37 et souvenir de Dante (§8) ; pose johto_dante_flashback_seen ; au Centre d'Acajou ensuite (C-45)
+cellules_fermees     repere         2..4,16..19  bloque  role=decor  # cellule vide (fermée)
+cellule_vide_2       repere         10..12,16..19 bloque  role=decor  # cellule vide (fermée)
+ultra_balls          objet_visible  12,9         bloque  item=ultra_ball quantite=3  # à côté de la case d'arrêt (11, 9)
+pp_plus              objet_visible  2,13         bloque  item=pp_up  # bout ouest du couloir des cellules
+dalle_6_4            dalle          6,4          libre   dir=E trajet=E11 arret=17,4
+dalle_7_4            dalle          7,4          libre   dir=E trajet=E10 arret=17,4
+dalle_8_4            dalle          8,4          libre   dir=E trajet=E9 arret=17,4
+dalle_9_4            dalle          9,4          libre   dir=E trajet=E8 arret=17,4
+dalle_10_4           dalle          10,4         libre   dir=E trajet=E7 arret=17,4
+dalle_11_4           dalle          11,4         libre   dir=E trajet=E6 arret=17,4
+dalle_12_4           dalle          12,4         libre   dir=E trajet=E5 arret=17,4
+dalle_13_4           dalle          13,4         libre   dir=E trajet=E4 arret=17,4
+dalle_14_4           dalle          14,4         libre   dir=E trajet=E3 arret=17,4
+dalle_15_4           dalle          15,4         libre   dir=E trajet=E2 arret=17,4
+dalle_16_4           dalle          16,4         libre   dir=E trajet=E1 arret=17,4
+dalle_5_5            dalle          5,5          libre   dir=N trajet=N1 arret=5,4
+dalle_17_5           dalle          17,5         libre   dir=S trajet=S2 arret=17,7
+dalle_5_6            dalle          5,6          libre   dir=N trajet=N2 arret=5,4
+dalle_17_6           dalle          17,6         libre   dir=S trajet=S1 arret=17,7
+dalle_5_7            dalle          5,7          libre   dir=N trajet=N3 arret=5,4
+dalle_11_7           dalle          11,7         libre   dir=S trajet=S2 arret=11,9
+dalle_12_7           dalle          12,7         libre   dir=O trajet=O1,S2 arret=11,9
+dalle_13_7           dalle          13,7         libre   dir=O trajet=O2,S2 arret=11,9
+dalle_14_7           dalle          14,7         libre   dir=O trajet=O3,S2 arret=11,9
+dalle_15_7           dalle          15,7         libre   dir=O trajet=O4,S2 arret=11,9
+dalle_16_7           dalle          16,7         libre   dir=O trajet=O5,S2 arret=11,9
+dalle_5_8            dalle          5,8          libre   dir=N trajet=N4 arret=5,4
+dalle_11_8           dalle          11,8         libre   dir=S trajet=S1 arret=11,9
+dalle_17_8           dalle          17,8         libre   dir=N trajet=N1 arret=17,7
+dalle_6_9            dalle          6,9          libre   dir=O trajet=O1 arret=5,9
+dalle_7_9            dalle          7,9          libre   dir=O trajet=O2 arret=5,9
+dalle_8_9            dalle          8,9          libre   dir=O trajet=O3 arret=5,9
+dalle_9_9            dalle          9,9          libre   dir=O trajet=O4 arret=5,9
+dalle_10_9           dalle          10,9         libre   dir=O trajet=O5 arret=5,9
+dalle_17_9           dalle          17,9         libre   dir=N trajet=N2 arret=17,7
+dalle_5_10           dalle          5,10         libre   dir=S trajet=S1 arret=5,11
+dalle_17_10          dalle          17,10        libre   dir=N trajet=N3 arret=17,7
+dalle_6_11           dalle          6,11         libre   dir=E trajet=E11 arret=17,11
+dalle_7_11           dalle          7,11         libre   dir=E trajet=E10 arret=17,11
+dalle_8_11           dalle          8,11         libre   dir=E trajet=E9 arret=17,11
+dalle_9_11           dalle          9,11         libre   dir=E trajet=E8 arret=17,11
+dalle_10_11          dalle          10,11        libre   dir=E trajet=E7 arret=17,11
+dalle_11_11          dalle          11,11        libre   dir=E trajet=E6 arret=17,11
+dalle_12_11          dalle          12,11        libre   dir=E trajet=E5 arret=17,11
+dalle_13_11          dalle          13,11        libre   dir=E trajet=E4 arret=17,11
+dalle_14_11          dalle          14,11        libre   dir=E trajet=E3 arret=17,11
+dalle_15_11          dalle          15,11        libre   dir=E trajet=E2 arret=17,11
+dalle_16_11          dalle          16,11        libre   dir=E trajet=E1 arret=17,11
+FIN
