@@ -1,0 +1,68 @@
+# Tour Carillon, sommet (bell_tower_roof) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH8 ;
+# dossier docs/design/dossier-joh-09-tour-carillon.md §3, §4 (étapes 5 à 10), §6 à §10, textes H-13 à H-33). Carte extérieure (toit).
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh8.py.
+#
+# 20 × 20 cases (dossier : ≈ 20 × 20) ; nord en haut ; x = colonne 0..19, y = rangée 0..19.
+#
+# Composition (toit-terrasse sous la grande cloche, ciel ouvert, aube forcée JH-55) :
+#   - TRAPPE de l'escalier (D, (3, 0)) dans un PALIER clos (x 1..4, y 1..2) dont la seule sortie
+#     (3, 3) porte la SCÈNE D'ARRIVÉE (« scene_sommet », H-13 à H-16 : Dante, la cage, le combat) ;
+#     H-17 si le joueur revient après une défaite.
+#   - La GRANDE CLOCHE (B, x 8..11, y 1..3) au nord ; DANTE (9, 5) devant elle, tourné vers le sud ;
+#     à ses pieds, la CAGE DE FEU (c, x 11..13, y 6..8) qui tient ENTEI (12, 7), ouverte au sud : abordé depuis (12, 8)
+#     une fois libre (H-26 : combat et capture).
+#   - Après la fuite de Dante (H-24, par les toits : décor), HO-OH se pose à sa place (9, 5) sous la
+#     cloche (H-29, H-30 : combat et capture) ; la PLUME ARC-EN-CIEL tombe en (9, 9) (H-32, H-33).
+#   - RAMBARDE (r) tout autour, examen (le vide, la ville) ; brûle-parfums (M) aux angles.
+#
+# Raccords :
+#   D (3, 0) ↔ 2F, escalier U (3, 0), arrivée (3, 1) de chaque côté (paire ct_2).
+#   Corde Sortie interdite ici tant qu'Entei et Ho-Oh n'ont pas été affrontés (dossier §12).
+#
+# Légende :
+#   r rambarde (bloquée, examen)   # cloison du palier (bloquée)   . dalles du toit (praticables)
+#   B la grande cloche (bloquée)   c cage de feu (bloquée ; disparaît avec H-21)   M brûle-parfum (bloqué)
+#   D trappe de l'escalier (praticable, warp)
+# Défauts [D] : Ho-Oh se pose à la place de Dante ; la plume apparaît en objet visible après Ho-Oh ;
+# aucune rencontre.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+
+PRATICABLES .D
+
+GRILLE 20 20
+00 rrrDrrrrrrrrrrrrrrrr
+01 r....#..BBBB.......r
+02 r....#..BBBB.....M.r
+03 r##.##..BBBB.......r
+04 r..................r
+05 r..................r
+06 r..........ccc.....r
+07 r..........c.c.....r
+08 r..........c.c.....r
+09 r..................r
+10 r..................r
+11 r..................r
+12 r..................r
+13 r..................r
+14 r..................r
+15 r..................r
+16 r..................r
+17 r.M..............M.r
+18 r..................r
+19 rrrrrrrrrrrrrrrrrrrr
+FIN
+
+POSITIONS
+vers_2f              escalier       3,0          libre   paire=ct_2 sens=descend vers=bell_tower_2f:from_sommet  # trappe vers le 2F
+from_2f              spawn          3,1          libre   paire=ct_2 facing=down  # arrivée du long escalier, à l'aube forcée
+scene_sommet         declencheur    3,3          libre   actif_sans=johto_dante_defeated_1  # H-13 à H-16 (H-17 au retour) : combat obligatoire contre Dante ; seule sortie du palier
+dante                dresseur       9,5          bloque  role=dante facing=down sight=0 actif_sans=johto_dante_fled_1  # Démolosse 64, Magmar 65, Cizayox 66, Farfuret 66, Arcanin 68 ; H-18 à H-25 ensuite
+cloche               examen         8..11,3      bloque   # la grande cloche, examinée depuis (8..11, 4) ↑ [D]
+cage_feu             repere         11..13,6..8  libre   role=decor actif_sans=johto_ho_oh_seen  # cage de feu (barreaux c) ; vole en éclats avec H-21
+entei                pokemon        12,7         bloque  espece=entei niveau=60 combat=fixe actif_sans=johto_entei_done  # H-26 : combat et capture après la fuite de Dante, depuis (12, 8) ; H-27 / H-28
+ho_oh                pokemon        9,5          bloque  espece=ho_oh niveau=65 combat=fixe actif_avec=johto_entei_done actif_sans=johto_ho_oh_done  # H-29, H-30 : se pose sous la cloche ; H-31
+plume                objet_visible  9,9          bloque  item=rainbow_wing actif_avec=johto_ho_oh_done  # H-32, H-33 : Plume Arc-en-ciel (objet clé)
+rambarde             examen         19,10        bloque   # la rambarde et le vide, examinée depuis (18, 10) → [D]
+FIN
