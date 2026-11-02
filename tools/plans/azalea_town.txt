@@ -1,0 +1,106 @@
+# Écorcia (azalea_town) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ; dossier
+# docs/design/dossier-joh-05-ecorcia.md §3, §4, §9, §10, textes E-9 à E-14, E-25 à E-29, E-31, E-34,
+# E-36 ; Fargas JH-37, Vincent le vendredi).
+# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
+#
+# 44 × 36 cases (dossier : ≈ 44 × 36) ; nord en haut ; x = colonne 0..43, y = rangée 0..35.
+# Cul-de-sac de l'acte 1 : une seule sortie, au NORD vers le Bois aux Chênes (l'Arène, la Route 33
+# et la fabrique de Noigrumes sont hors périmètre, dossier §1).
+#
+# Composition (petite ville sous les arbres, tout à angles droits) :
+#   - RUE PRINCIPALE (p, x 20..22) du bord NORD à la rue du sud ; RUE DU NORD (y 11..13) et RUE DU
+#     SUD (y 22..24) d'ouest en est.
+#   - Nord-ouest : la CHARBONNERIE en façade (H, 8 × 6, x 5..12, y 5..10, sans porte : énigme du
+#     Canarticho hors périmètre) ; Vincent devant, le vendredi (E-28).
+#   - Nord-est : la cour du PUITS RAMOLOSS : margelle (Q, x 36..38, y 5..6), descente (E, (37, 7))
+#     abordable par le SUD seulement (x en (36, 7) et (38, 7)) ; le Sbire de E-14 (38, 8) la garde par
+#     une barrière sur (37, 8) jusqu'au récit de Fargas ; panneau E-36 ; après le puits, un Ramoloss somnole sur la margelle (E-31).
+#   - Centre (C, 8 × 7, portes (10..11, 20)) à l'ouest et BOUTIQUE (O, 8 × 7, portes (30..31, 20))
+#     à l'est de la rue principale, entre les deux rues.
+#   - Sud : la MAISON DE FARGAS (K, 7 × 6, porte (10, 30)) au sud-ouest ; la maison de l'habitante
+#     (m, 7 × 6, porte (30, 30)) au sud-est.
+#   - Trois Ramoloss somnolent dans les rues après le puits (positions `ramoloss_*`, décor bloquant,
+#     actifs avec johto_slowpoke_well_cleared ; absents avant : E-10, E-26).
+#
+# Raccords :
+#   NORD (20..22, 0) ↔ Bois aux Chênes, bord sud (36..38, 47) (colonnes différentes, warps case à case).
+#   PUITS (37, 7) ↔ Puits Ramoloss B1F, échelle (3, 2), arrivée (3, 3).
+#
+# Légende :
+#   T forêt et bordure (bloquée)   . pelouse   p pavé (praticable)   x margelle basse (bloquée)
+#   G arbre repère (bloqué)   Q puits (margelle, bloquée)   E descente du puits (praticable, warp)
+#   H charbonnerie  C Centre Pokémon  O Boutique  K maison de Fargas  m maison (emprises bloquées)
+#   D porte d'un bâtiment (praticable, STEP_ON ↑)
+# Emprises comme à Kanto : Centre et Boutique 8 × 7, maisons 7 × 6 ; charbonnerie 8 × 6 neuve [D].
+# Défauts [D] : charbonnerie sans intérieur ; puits en cour ouverte (pas de bâtiment) ; Fargas n'a
+# pas de position en ville (il est chez lui, puis au B1F et au B2F, puis chez lui) ; PNJ placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 44 caractères), puis POSITIONS.
+
+PRATICABLES .pDE
+
+GRILLE 44 36
+00 TTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTT
+03 TTTT.G..............ppp........G.........TTT
+04 TTTT................ppp..................TTT
+05 TTT..HHHHHHHH.......ppp.............QQQ..TTT
+06 TTT..HHHHHHHH...G...ppp...G.........QQQ..TTT
+07 TTT..HHHHHHHH.......ppp.............xEx..TTT
+08 TTT..HHHHHHHH.......ppp..................TTT
+09 TTT..HHHHHHHH.......ppp..................TTT
+10 TTT..HHHHHHHH.......ppp..................TTT
+11 TTT.pppppppppppppppppppppppppppppppppppp.TTT
+12 TTT.pppppppppppppppppppppppppppppppppppp.TTT
+13 TTT.pppppppppppppppppppppppppppppppppppp.TTT
+14 TTT....CCCCCCCC.....ppp....OOOOOOOO......TTT
+15 TTT....CCCCCCCC.....ppp....OOOOOOOO......TTT
+16 TTT....CCCCCCCC.....ppp....OOOOOOOO....G.TTT
+17 TTT.G..CCCCCCCC.....ppp....OOOOOOOO......TTT
+18 TTT....CCCCCCCC.....ppp....OOOOOOOO......TTT
+19 TTT....CCCCCCCC.....ppp....OOOOOOOO......TTT
+20 TTT....CCCDDCCC.....ppp....OOODDOOO......TTT
+21 TTT.............G...ppp..................TTT
+22 TTT.pppppppppppppppppppppppppppppppppppp.TTT
+23 TTT.pppppppppppppppppppppppppppppppppppp.TTT
+24 TTT.pppppppppppppppppppppppppppppppppppp.TTT
+25 TTT....KKKKKKK.............mmmmmmm.......TTT
+26 TTT....KKKKKKK.............mmmmmmm.......TTT
+27 TTT....KKKKKKK.............mmmmmmm.......TTT
+28 TTT....KKKKKKK.............mmmmmmm.......TTT
+29 TTT....KKKKKKK..........G..mmmmmmm.......TTT
+30 TTT....KKKDKKK.............mmmDmmm.......TTT
+31 TTTT.................................G...TTT
+32 TTTT.G............G......................TTT
+33 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+34 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+35 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           20..22,0     libre    # PUSH ↑ → ilex_forest, from_azalea (36..38, 47)
+from_ilex            spawn          20..22,0     libre    # arrivée du Bois aux Chênes, tournée ↓
+arrivee_titre        declencheur    20..22,3     libre   drapeau=johto_azalea_arrived  # titre de zone « Écorcia » (E-34), une fois
+puits                warp           37,7         libre    # STEP_ON ↓ → slowpoke_well_b1f, from_azalea (3, 3) ; Corde Sortie → from_well
+from_well            spawn          37,8         libre    # sortie du puits (échelle ou Corde Sortie), tournée ↓
+sbire_puits          pnj            38,8         bloque  role=sbire facing=left actif_sans=johto_kurt_told  # E-14 ; à côté de la descente ; fuit dans le puits à l'arrivée de Fargas
+barriere_puits       declencheur    37,8         libre   actif_sans=johto_kurt_told  # E-14 et pas en arrière (seul accès à la descente) ; levée avec johto_kurt_told
+panneau_puits        panneau        34,6         bloque   # E-36, lu depuis (34, 7) ↑
+ramoloss_margelle    examen         36,7         bloque  actif_avec=johto_slowpoke_well_cleared  # E-31, examiné depuis (36, 8) ↑ ; avant : margelle vide (E-10)
+porte_centre         warp           10..11,20    libre    # STEP_ON ↑ → azalea_center (garçon E-29)
+porte_boutique       warp           30..31,20    libre    # STEP_ON ↑ → azalea_mart
+porte_fargas         warp           10,30        libre    # STEP_ON ↑ → azalea_kurt_house (E-11 à E-13, E-25)
+porte_maison         warp           30,30        libre    # STEP_ON ↑ → azalea_house_1
+retour_centre        spawn          10..11,21    libre    # tournée ↓ ; point de Vol (utilisable à l'acte 2)
+retour_boutique      spawn          30..31,21    libre  
+retour_fargas        spawn          10,31        libre  
+retour_maison        spawn          30,31        libre  
+habitante            pnj            24,16        bloque  role=habitante facing=left  # E-10 avant le puits, E-26 après
+vincent              pnj            8,11         bloque  role=charbonnier jour=vendredi facing=down  # E-28, devant la charbonnerie ; absent hors du vendredi
+ramoloss_1           pokemon        17,9         bloque  espece=slowpoke shy=none actif_avec=johto_slowpoke_well_cleared  # E-27, au pied d'un arbre
+ramoloss_2           pokemon        25,27        bloque  espece=slowpoke shy=none actif_avec=johto_slowpoke_well_cleared  # E-27, devant la maison
+ramoloss_3           pokemon        36,19        bloque  espece=slowpoke shy=none actif_avec=johto_slowpoke_well_cleared  # E-27, près de la Boutique
+panneau_ville        panneau        19,4         bloque   # E-9, lu depuis (19, 5) ↑
+FIN

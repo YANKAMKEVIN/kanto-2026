@@ -24,7 +24,7 @@
 #
 # Raccords :
 #   NORD (34..36, 0) ↔ Route 35, bord sud (10..12, 43) (colonnes différentes, warps case à case).
-#   SUD (34..36, 59) ↔ Route 34 (JOH4, grille à venir).
+#   SUD (34..36, 59) ↔ Route 34, bord nord (10..12, 0) (colonnes différentes, warps case à case).
 #   ESCALIERS (31, 25) ↔ Souterrain ouest (1, 5..6) ; (39, 33) ↔ Souterrain est (38, 7..8).
 #
 # Légende :
@@ -107,7 +107,7 @@ POSITIONS
 warp_nord            warp           34..36,0     libre   # PUSH ↑ → route_35, from_goldenrod (10..12, 43)
 from_route_35        spawn          34..36,0     libre   # arrivée de la Route 35, tournée ↓
 arrivee_titre        declencheur    34..36,3     libre   drapeau=johto_goldenrod_arrived  # titre de zone « Doublonville » + haut-parleur (D-10), une fois
-warp_sud             warp           34..36,59    libre   # PUSH ↓ → route_34 (JOH4) ; raccord à caler sur sa grille
+warp_sud             warp           34..36,59    libre   # PUSH ↓ → route_34, from_goldenrod (10..12, 0)
 from_route_34        spawn          34..36,59    libre   # arrivée de la Route 34, tournée ↑
 agent_sud            pnj            33,56        bloque  role=agent facing=right  # D-33, D-34 ; avec johto_azalea_clue, il se range en (33, 55) [D]
 barriere_sud         declencheur    34..36,56    libre   actif_sans=johto_azalea_clue  # D-33 et pas en arrière

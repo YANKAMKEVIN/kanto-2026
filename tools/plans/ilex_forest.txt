@@ -1,0 +1,111 @@
+# Bois aux Chênes (ilex_forest) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ; dossier
+# docs/design/dossier-joh-05-ecorcia.md §3, §4, §5 à §7, textes E-4 à E-8, E-33 ; autel JH-39, Celebi
+# JH-16 au post-game). Mêmes règles que la Forêt de Jade (« nature dense », tools/plans/viridian_forest.txt).
+# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
+#
+# 48 × 48 cases (dossier : ≈ 48 × 48) ; nord en haut ; x = colonne 0..47, y = rangée 0..47.
+#
+# Composition : un SENTIER (=) en lacets, 3 cases de large, à TROIS traversées :
+#   - entrée NORD (8..10, 0) depuis la Route 34 → descente (x 8..10) → traversée 1 vers l'est
+#     (y 7..9, H1 obligatoire au milieu) → descente est (x 36..38) → traversée 2 vers l'ouest
+#     (y 17..19) → descente ouest (x 8..10) → traversée 3 vers l'est (y 29..31, H3 obligatoire)
+#     → descente est (x 36..38) → sortie SUD (36..38, 47) vers Écorcia.
+#   - CLAIRIÈRE DE L'AUTEL (C, x 18..28, y 11..15), au cœur du bois, par une sente (22..24, 15..16)
+#     depuis la traversée 2 : l'AUTEL (A, (23, 11)) entre deux massifs de fleurs fraîches (y),
+#     examinable dès le JOH4 (E-5, JH-39) ; la vieille femme aux fleurs (E-6).
+#   - Poches de sous-bois (.) : le panneau (x 11..13, y 2..5), le Scout Tom (x 30..35, y 14..16),
+#     H2 (x 13..21, y 20..24), l'IMPASSE des Repousses (x 2..7, y 24..25), la Dresseuse Céline
+#     (x 14..20, y 32..34), H4 (x 39..45, y 37..44), la LISIÈRE DU CHARBONNIER (x 32..35, y 42..45,
+#     tas de bûches k, Canarticho en décor) avant la sortie.
+#   - 4 poches d'herbes hautes : H1 et H3 OBLIGATOIRES (elles couvrent le sentier), H2 et H4
+#     évitables (poches latérales) [D]. Souche (s) du Super Bonbon caché en (11, 32).
+#
+# Raccords :
+#   NORD (8..10, 0) ↔ Route 34, bord sud (10..12, 47) (colonnes différentes, warps case à case).
+#   SUD (36..38, 47) ↔ Écorcia, bord nord (20..22, 0) (idem).
+#
+# Légende :
+#   T forêt serrée (bloquée)   = sentier de terre (praticable)   . sous-bois praticable (poches)
+#   C clairière de l'autel (herbe rase éclairée, praticable)   h hautes herbes
+#   A autel de bois moussu (bloqué, examen)   y fleurs fraîches (bloquées)   s souche (bloquée)
+#   k tas de bûches du charbonnier (bloqué)
+# Défauts [D] : 3 traversées (≈ 150 pas, Forêt de Jade : 7) ; 2 poches obligatoires sur 4 ; la
+# charbonnerie elle-même (façade) est dans la grille d'Écorcia, le charbonnier de E-8 à la lisière ;
+# Dresseurs et objets placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 48 caractères), puis POSITIONS.
+
+PRATICABLES =.Ch
+
+GRILLE 48 48
+00 TTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTT===...TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTT===...TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTTTTT===...TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+05 TTTTTTTT===...TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+06 TTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+07 TTTTTTTT==========hhhhhhhhh============TTTTTTTTT
+08 TTTTTTTT==========hhhhhhhhh============TTTTTTTTT
+09 TTTTTTTT==========hhhhhhhhh============TTTTTTTTT
+10 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTT
+11 TTTTTTTTTTTTTTTTTTCCCCyAyCCCCTTTTTTT===TTTTTTTTT
+12 TTTTTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTT===TTTTTTTTT
+13 TTTTTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTT===TTTTTTTTT
+14 TTTTTTTTTTTTTTTTTTCCCCCCCCCCCT......===TTTTTTTTT
+15 TTTTTTTTTTTTTTTTTTCCCC===CCCCT......===TTTTTTTTT
+16 TTTTTTTTTTTTTTTTTTTTTT===TTTTT......===TTTTTTTTT
+17 TTTTTTTT===============================TTTTTTTTT
+18 TTTTTTTT===============================TTTTTTTTT
+19 TTTTTTTT===============================TTTTTTTTT
+20 TTTTTTTT===TT.........TTTTTTTTTTTTTTTTTTTTTTTTTT
+21 TTTTTTTT===TT.hhhhhhh.TTTTTTTTTTTTTTTTTTTTTTTTTT
+22 TTTTTTTT===TT.hhhhhhh.TTTTTTTTTTTTTTTTTTTTTTTTTT
+23 TTTTTTTT===TT.hhhhhhh.TTTTTTTTTTTTTTTTTTTTTTTTTT
+24 TT......===TT.hhhhhhh.TTTTTTTTTTTTTTTTTTTTTTTTTT
+25 TT......===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+26 TTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+27 TTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+28 TTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+29 TTTTTTTT==========hhhhhhhhh============TTTTTTTTT
+30 TTTTTTTT==========hhhhhhhhh============TTTTTTTTT
+31 TTTTTTTT==========hhhhhhhhh============TTTTTTTTT
+32 TTTTTTTTTTTsTT.......TTTTTTTTTTTTTTT===TTTTTTTTT
+33 TTTTTTTTTTTTTT.......TTTTTTTTTTTTTTT===TTTTTTTTT
+34 TTTTTTTTTTTTTT.......TTTTTTTTTTTTTTT===TTTTTTTTT
+35 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTT
+36 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTT
+37 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===.......TT
+38 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===.hhhhhhTT
+39 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===.hhhhhhTT
+40 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===.hhhhhhTT
+41 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===.hhhhhhTT
+42 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....===.hhhhhhTT
+43 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....===.hhhhhhTT
+44 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....===.......TT
+45 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTkk..===TTTTTTTTT
+46 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTT
+47 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           8..10,0      libre    # PUSH ↑ → route_34, from_ilex (10..12, 47)
+from_route_34        spawn          8..10,0      libre    # arrivée de la Route 34, tournée ↓
+warp_sud             warp           36..38,47    libre    # PUSH ↓ → azalea_town, from_ilex (20..22, 0)
+from_azalea          spawn          36..38,47    libre    # arrivée d'Écorcia, tournée ↑
+autel                examen         23,11        bloque  drapeau=johto_shrine_seen  # E-5, examiné depuis (23, 12) ↑ ; Celebi au post-game (JH-16)
+vieille_femme        pnj            20,13        bloque  role=vieille_femme facing=right  # E-6, dans la clairière, près de l'autel
+tom                  dresseur       33,16        bloque  facing=down sight=2 trainer=ilex_forest_scout_tom  # Scout Tom (E-7), Paras 19 + Chenipan 18 + Chrysacier 19 ; voit (33, 17..18), évitable par y 19
+celine               dresseur       16,32        bloque  facing=up sight=2 trainer=ilex_forest_lass_celine  # Dresseuse Céline (E-7), Hoothoot 20 + Teddiursa 20 ; voit (16, 30..31), évitable par y 29
+charbonnier          pnj            34,43        bloque  role=charbonnier facing=right  # E-8, lisière sud, devant ses bûches
+canarticho           pokemon        33,43        bloque  espece=farfetchd shy=none  # le Canarticho du charbonnier, en décor (dossier §1) [D]
+ilex_item_1          objet_visible  2,24         bloque  item=repel count=2  # fond de l'impasse (dossier §7), pris depuis (3, 24) ←
+ilex_hidden_1        cache          11,32        bloque  item=rare_candy indice=souche  # Super Bonbon dans la souche, examinée depuis (11, 31) ↓
+panneau_bois         panneau        12,2         bloque   # E-4, lu depuis (12, 3) ↑
+herbes_h1            herbes         22,8         libre   role=H1  # traversée 1 (OBLIGATOIRE)
+herbes_h2            herbes         17,22        libre   role=H2  # poche sud de la traversée 2 (évitable)
+herbes_h3            herbes         22,30        libre   role=H3  # traversée 3 (OBLIGATOIRE)
+herbes_h4            herbes         42,40        libre   role=H4  # poche est de la dernière descente (évitable)
+clairiere_autel      clairiere      18..28,11..15 libre   role=C1  # clairière de l'autel
+FIN

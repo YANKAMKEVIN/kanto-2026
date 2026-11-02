@@ -26,6 +26,19 @@
 
 Points de Vol : Écorcia (utilisable à l'acte 2). Retour à Doublonville à pied par le Bois (JOH5).
 
+**Grilles préparées le 2026-11-02 (à valider par Kevin)** : `tools/plans/route_34.txt` (24 × 48),
+`ilex_forest.txt` (48 × 48), `azalea_town.txt` (44 × 36), `slowpoke_well_b1f.txt` et
+`slowpoke_well_b2f.txt` (30 × 24) ; contrôle `tools/art/plan_check_joh4.py`, aperçu
+`reference/joh4-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. Raccords :
+Doublonville (34..36, 59) ↔ Route 34 (10..12, 0) ; Route 34 (10..12, 47) ↔ Bois (8..10, 0) ;
+Bois (36..38, 47) ↔ Écorcia (20..22, 0) ; descente du puits (37, 7) ↔ B1F (3, 2) ; B1F (3, 20) ↔
+B2F (3, 3). Défauts [D] notés dans les en-têtes : mer à l'ouest de la Route 34 et clôture du
+jongleur (un seul passage) ; Bois à 3 traversées avec H1 et H3 obligatoires sur 4 poches, la
+charbonnerie en façade dans Écorcia et le charbonnier de E-8 à la lisière du Bois ; puits en cour
+ouverte, Sbire à côté de la descente et barrière sur la case d'accès (comme l'agent de
+Doublonville) ; Brace lancé par un déclencheur de scène, 4 Ramoloss sans queue, chute de Fargas
+jouée en dialogue.
+
 ## 4. Ordre de jeu
 
 | Étape | Lieu | Ce qui se passe | Drapeau |
