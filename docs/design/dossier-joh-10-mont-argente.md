@@ -3,8 +3,8 @@
 > Jalon unique de l'acte 3 et fin du Chapitre Johto (cadre [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md)
 > §4.4, §4.5). Suite du JOH8 ([`dossier-joh-09-tour-carillon.md`](dossier-joh-09-tour-carillon.md) :
 > Dante fuit vers « le sommet du monde », le doyen et Orme désignent le Mont Argenté, H-34 à H-36).
-> Écrit par Claude le 2026-11-02 ; **textes A-1 à A-54 et arbitrages JH-56 à JH-60 en attente de
-> Kevin**. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
+> Écrit par Claude le 2026-11-02 ; **textes A-1 à A-54 et arbitrages JH-56 à JH-60 validés par
+> Kevin le jour même** (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
 
 ## 1. Hors périmètre
 
@@ -187,7 +187,7 @@ Montagnards, Topdresseurs, Karatéka (modèles de Kanto). Pokémon : Celebi (dos
 Ymphect, Tyranocif, Steelix. Générique de chapitre. Musique : Mont Argenté, Dante (combat final),
 rival (HeartGold / SoulSilver, JH-12).
 
-## 16. Textes (lot à valider par Kevin)
+## 16. Textes (lot validé par Kevin le 2026-11-02)
 
 Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = noms ; *italique* = système.
 
@@ -252,8 +252,8 @@ Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = nom
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-56 | Que deviennent Brace et Cenere après le relais ? | **Brace livré à l'Agente** par le rival ; **Cenere s'échappe** et rejoint Dante au sommet, fidèle (§7) |
-| JH-57 | Que dit et fait Giovanni ? | Il **s'entraîne au Mont Argenté** depuis Jadielle ; la Team Rocket est **finie**, il ne reprend rien et part seul (§8) |
-| JH-58 | Que devient Dante ? | Il **reste au sommet**, brisé, avec Cenere ; après le chapitre, le sommet est vide (§8) |
-| JH-59 | Pokémon de Johto du rival au dernier combat | **Steelix** à la place de Rhinoféros (§9) |
-| JH-60 | Déclenchement de l'épilogue | **En entrant au labo de Chen**, après une descente libre par la Route 28 (§10) |
+| JH-56 | ✅ **Brace livré à l'Agente** par le rival ; **Cenere s'échappe** et rejoint Dante au sommet, fidèle (Kevin, 2026-11-02) | — |
+| JH-57 | ✅ Giovanni **s'entraîne au Mont Argenté** depuis Jadielle ; la Team Rocket est **finie**, il ne reprend rien et part seul (Kevin) | — |
+| JH-58 | ✅ Dante **reste au sommet**, brisé, avec Cenere ; après le chapitre, le sommet est vide (Kevin) | — |
+| JH-59 | ✅ Le rival ajoute **Steelix** à la place de Rhinoféros (Kevin) | — |
+| JH-60 | ✅ Épilogue **en entrant au labo de Chen**, après une descente libre par la Route 28 (Kevin) | — |

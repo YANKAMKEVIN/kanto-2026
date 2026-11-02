@@ -109,7 +109,7 @@ Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
 Conseil 4, Rival Maître, générique, retour à Bourg Palette, monde post-Ligue (Champions améliorés),
 Grotte Azurée / Mewtwo, puis le mystère Mew.
 
-### Phase 10 — Chapitre Johto (idée de Kevin, 2026-10-30, **à concevoir**, rien n'est verrouillé)
+### Phase 10 — Chapitre Johto (idée de Kevin, 2026-10-30 ; **dossiers JOH-00 à JOH-10 écrits et textes validés le 2026-11-02**, code après la fin de Kanto)
 Une suite après la Ligue, pour continuer l'histoire du joueur. Ce qui est décidé :
 - **Johto** comme destination (plutôt que Kalos ou une autre région).
 - **Même partie** : le joueur garde son équipe, ses Pokémon et sa sauvegarde.
@@ -132,7 +132,8 @@ Cadre général (géographie, scénario, systèmes, jalons JOH0 à JOH9, arbitra
 [`dossier-joh-06-tour-radio.md`](dossier-joh-06-tour-radio.md), textes T-1 à T-38 et JH-40 à JH-43 validés (fin de l'acte 1). JOH6 :
 [`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md), textes C-1 à C-46 et JH-44 à JH-47 validés (souvenir de Dante). JOH7 :
 [`dossier-joh-08-iles-tourbillon.md`](dossier-joh-08-iles-tourbillon.md), textes M-1 à M-34 et JH-48 à JH-51 validés (Suicune, Lugia). JOH8 :
-[`dossier-joh-09-tour-carillon.md`](dossier-joh-09-tour-carillon.md), textes H-1 à H-38 et JH-52 à JH-55 validés (Dante 1, Entei, Ho-Oh).
+[`dossier-joh-09-tour-carillon.md`](dossier-joh-09-tour-carillon.md), textes H-1 à H-38 et JH-52 à JH-55 validés (Dante 1, Entei, Ho-Oh). JOH9 :
+[`dossier-joh-10-mont-argente.md`](dossier-joh-10-mont-argente.md), textes A-1 à A-54 et JH-56 à JH-60 validés (Dante 2, Giovanni, rival final, épilogue, Celebi) : **conception du chapitre complète** (JOH0 à JOH9).
 Pas de code avant la fin de Kanto et la validation d'un dossier. Jalons numérotés **JOH1, JOH2…**.
 
 ## Jalons narratifs à ne pas oublier
