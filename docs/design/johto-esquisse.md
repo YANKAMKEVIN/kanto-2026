@@ -6,7 +6,7 @@
 > la fin de Kanto et la validation d'un dossier.
 >
 > Les arbitrages sont numérotés **JH-1, JH-2…** (JH = Johto), pour ne pas les confondre avec les
-> jalons de Kanto (J1 à J33…). La numérotation des futurs jalons de Johto reste à décider.
+> jalons de Kanto (J1 à J33…). Les **jalons de Johto** seront numérotés **JOH1, JOH2…** (Kevin, 2026-11-02).
 
 ## 1. Décisions de Kevin
 
