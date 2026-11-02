@@ -115,18 +115,14 @@ Une suite après la Ligue, pour continuer l'histoire du joueur. Ce qui est déci
 - **Même partie** : le joueur garde son équipe, ses Pokémon et sa sauvegarde.
 - **Nouvelles espèces** ajoutées selon les besoins de l'histoire, pas la liste complète d'Or/Argent.
 - **Histoire plus courte** que Kanto : **pas 8 badges**, un autre objectif à trouver.
+- **Trois actes** (Kevin, 2026-11-02) : une menace Rocket sur quelques villes, une quête de
+  légendaires, une épreuve finale au Mont Argenté.
+- **Départ de Bourg Palette** par un passage secret, par l'eau.
+- **Équipe perdue au début** (volée par la Team Rocket), nouveau départ avec de nouveaux Pokémon,
+  équipe retrouvée plus tard ; ensuite, adversaires au niveau du joueur.
 
-À concevoir avec Kevin (dossier dédié, après la fin de Kanto) :
-- le fil rouge et l'objectif final, et ce qui remplace les 8 badges ;
-- comment le joueur arrive à Johto, et ce qui change à Kanto ;
-- la liste des espèces ajoutées (art, Pokédex, dos de combat) ;
-- les types Ténèbres et Acier : ajoutés ou non, et leur effet sur l'équilibrage de Kanto ;
-- le niveau des adversaires face à une équipe de fin de Ligue ;
-- le rôle du jour et de la nuit.
-
-Pistes de structure proposées par Claude (non validées) : une menace unique (la Team Rocket
-reformée à Johto, comme dans Or/Argent) menée sur quelques villes et une tour ; une quête de
-légendaires (Tour Cendrée, Tour Carillon, Ho-Oh, Lugia) ; une épreuve finale au Mont Argenté.
+Esquisse, propositions et arbitrages J-1 à J-8 : [`johto-esquisse.md`](johto-esquisse.md).
+Pas de code avant la fin de Kanto et la validation d'un dossier.
 
 ## Jalons narratifs à ne pas oublier
 
