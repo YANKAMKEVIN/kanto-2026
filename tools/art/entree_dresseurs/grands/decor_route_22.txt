@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — ROUTE 22 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte son rival sur la Route 22, à l'ouest de Jadielle (deux combats : le deuxième de l'aventure, puis le dernier avant la Route Victoire). AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : CIBLE du niveau de rendu, de la richesse, de la profondeur et du cadrage (sol vaste dans la moitié basse) ; ce n'est PAS le lieu à peindre. IMAGE 2 = la planche VALIDÉE de la Route 22 (vue générale et storyboard du combat du rival) : le LIEU, la végétation, les matériaux, les couleurs et la lumière à GARDER ; à repeindre comme si l'on se tenait sur le chemin, à hauteur d'homme, en vue de trois-quarts.
+
+LIEU : la Route 22, route de montagne verdoyante : un large chemin de terre battue ocre clair, bordé d'herbe rase et de petites fleurs, qui serpente entre des FALAISES de roche ocre et brune en terrasses (strates nettes, rebords herbus, quelques blocs éboulés), une forêt dense de SAPINS vert sombre sur les hauteurs et le long des falaises, quelques arbres feuillus, une BARRIÈRE DE BOIS rustique le long d'un bord du chemin, des marches de pierre taillées qui montent dans la falaise au fond, une touffe d'herbes hautes sur un côté. Au loin, au-dessus des sapins, la silhouette du PLATEAU INDIGO (grand plateau rocheux à pic, bleuté par la distance) sous un ciel bleu à gros nuages blancs. Lumière chaude de milieu d'après-midi venant de la gauche, ombres douces des sapins, ciel lumineux ; ambiance d'aventure, de défi en chemin.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra à hauteur d'homme sur la GAUCHE du chemin, regard légèrement vers la DROITE, en trois-quarts : point de fuite vers x 62 %. Falaise et sapins de GAUCHE proches, grands, coupés par le bord gauche et par le haut ; ceux de droite plus petits et plus lointains ; le Plateau Indigo vers x 70 à 85 %, très loin.
+
+CADRAGE (impératif) : la LIGNE où le chemin plat rejoint le pied des falaises et des sapins du fond est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (le chemin et ses bords herbus, vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : terre battue plate et nue, sur le chemin (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : terre battue plate et nue au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage), PAS de pixel art (la planche IMAGE 2 est un aperçu : on veut le rendu peint de l'IMAGE 1).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, panneau avec numéro, texte, lettres, chiffres, logo, signature, cadre, interface, pixel art.

@@ -233,7 +233,10 @@ DECOR_DIR = RACINE / "assets" / "battle" / "decors"
 DECOR_ANCIENS: dict[str, str] = {"sylphe": "silph_co_bureaux", "repaire": "rocket_hideout_repaire",
 	"tour": "tour_pokemon", "ss_anne": "ss_anne_salon",
 	# Le labo n'avait aucun fond (repli : carte floutée) : référence validée du lieu.
-	"labo": "docs/design/reference/labo-chen-v1.png"}
+	"labo": "docs/design/reference/labo-chen-v1.png",
+	# Route 22 (demande de Kevin, 2026-11-02) : fond propre, d'après la planche validée ; prompt
+	# écrit à la main (extérieur), entree_dresseurs/grands/decor_route_22.txt.
+	"route_22": "docs/design/reference/route-22-rival-02-v1.webp"}
 
 
 if __name__ == "__main__":

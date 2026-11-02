@@ -291,12 +291,15 @@ le Conseil des 4. Planches en captures réelles 2340 × 1080 (entrée, lancer, �
   - **repeints en v2, même identifiant** (vue frontale vide, sous Argenta v3) : `silph_co_bureaux`
     (tous les étages de bureaux de Sylphe), `tour_pokemon` (tous les étages de la Tour),
     `rocket_hideout_repaire` (tous les sous-sols du repaire).
-  - **gardés** : Route 22 (`route_5_6_prairie`, deux combats) et Route 24 (`route_24_pont`) :
-    riches, au niveau, sol qui porte les personnages.
+  - **Route 22, fond propre** (demande de Kevin, « oui fond propre à la route 22 ») :
+    `route_22_chemin` (chemin de terre entre falaises ocre en terrasses, sapins, barrière de bois,
+    marches de pierre, Plateau Indigo au loin, d'après `reference/route-22-rival-02-v1.webp`),
+    branché sur `route_22` et `route_22_west` (les deux combats du rival et toute la route) ;
+    remplace la prairie des Routes 5-6 empruntée.
+  - **gardé** : Route 24 (`route_24_pont`) : riche, au niveau, sol qui porte les personnages.
 - **Tests** : `test_battle_decor` (le labo a son fond), `test_serie18_assets` (couloir du capitaine).
 
-Écarts restants : la Route 22 garde le fond de prairie des Routes 5-6 (pas les falaises ni les sapins
-de sa vue générale) ; le bureau du président (Giovanni, 11e étage) réutilise le plateau de bureaux ;
+Écarts restants : le bureau du président (Giovanni, 11e étage) réutilise le plateau de bureaux ;
 bustes non réglés un par un ; fichiers devenus inutiles, à supprimer si Kevin valide :
 `viridian_gym_sol_back.webp` (plus aucun combat), `silph_co_bureaux_back.webp`,
 `rocket_hideout_repaire_back.webp` (anciennes versions) ; `tour_pokemon_back.webp` reste (fond

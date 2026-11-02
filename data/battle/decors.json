@@ -136,6 +136,15 @@
 			"player_feet": [716, 972],
 			"horizon": 475
 		},
+		"route_22_chemin": {
+			"zone": "route_22",
+			"variant": "chemin",
+			"back": "res://assets/battle/decors/route_22_chemin_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 450
+		},
 		"viridian_gym_sol_v2": {
 			"zone": "viridian_gym",
 			"variant": "sol_v2",
@@ -597,7 +606,7 @@
 			{ "decor": "route_1_chemin" }
 		],
 		"route_22": [
-			{ "decor": "route_5_6_prairie" }
+			{ "decor": "route_22_chemin" }
 		],
 		"route_25": [
 			{ "decor": "route_11_coast" }
@@ -708,7 +717,7 @@
 			{ "decor": "league_champion_salle" }
 		],
 		"route_22_west": [
-			{ "decor": "route_5_6_prairie" }
+			{ "decor": "route_22_chemin" }
 		],
 		"route_23": [
 			{ "decor": "route_23_roche" }

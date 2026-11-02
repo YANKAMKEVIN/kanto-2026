@@ -460,5 +460,14 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_22_chemin": {
+		"composition": "EG_DECOR_ROUTE_22_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_ROUTE_22_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_ROUTE_22_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
