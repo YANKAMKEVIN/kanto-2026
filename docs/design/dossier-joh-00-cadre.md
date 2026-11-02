@@ -204,9 +204,10 @@ mais pas complète). Ho-Oh descend, refuse Dante et s'envole ; Dante relâche En
 
 ## 5. Systèmes neufs
 
-### 5.1 Heure de jeu : `GameClock` (JH-6)
+### 5.1 Heure de jeu (JH-6)
 
-- Lit l'**heure et le jour réels du téléphone** (comme `DeviceClock`, injectable pour les tests).
+- Lit l'**heure et le jour réels du téléphone**, par `WorldClock` (déjà présent, inactif ; détail
+  au dossier [JOH-01](dossier-joh-01-systemes-joh0.md)).
 - **Trois moments**, comme Or/Argent : **matin** 4 h–10 h, **jour** 10 h–18 h, **nuit** 18 h–4 h.
 - **Sept jours** de la semaine, pour les PNJ et événements datés (§5.2).
 - **Johto seulement** (JH-8 : Kanto garde son éclairage golden hour). Les intérieurs gardent
@@ -264,7 +265,7 @@ adaptées sans les créer :
 
 | Évolution | Or/Argent | Kanto 2026 (proposition) |
 |---|---|---|
-| Steelix, Cizayox | Échange en tenant Peau Métal | **Peau Métal** utilisée comme une pierre, avec le Cordon d'échange déjà connu (règle du J14) **[D]** |
+| Steelix, Cizayox | Échange en tenant Peau Métal | **Peau Métal** proposée au **terminal d'échange local** des Centres (J32), qui remplace le Cordon d'échange **[D]** |
 | Roigada, Tarpaud | Échange en tenant Roche Royale | **Roche Royale**, même règle |
 | Hyporoi | Échange en tenant Écaille Draco | **Écaille Draco**, même règle |
 | Porygon2 | Échange en tenant Améliorator | **Améliorator**, même règle |
@@ -385,7 +386,7 @@ Arcanin (Kanto). Thème feu et ténèbres, cohérent avec « feu et cendres ».
 
 | Jalon | Contenu | Validation |
 |---|---|---|
-| **JOH0** | Systèmes : `GameClock` et lumières de Johto, équipe confisquée, œuf, évolutions par objet, JH-11, Pokédex 201, sauvegarde v10, données des 50 espèces et de leurs attaques, Carte de Johto | Sauvegarde validée seule ; le reste en un lot |
+| **JOH0** | Systèmes : heure (`WorldClock`) et lumières de Johto, équipe confisquée, œuf, évolutions par objet, JH-11, Pokédex 201, sauvegarde v10, données des 50 espèces et de leurs attaques, Carte de Johto | Sauvegarde validée seule ; le reste en un lot |
 | **JOH1** | Grotte marine, Oliville, vol, Orme, Pokémon de départ | Sous-jalon |
 | **JOH2** | Routes 39 et 38, Rosalia (premier passage) | Sous-jalon |
 | **JOH3** | Routes 37 à 35, Doublonville, œuf | Sous-jalon |
