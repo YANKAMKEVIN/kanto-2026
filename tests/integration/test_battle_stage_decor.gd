@@ -1,8 +1,8 @@
 extends GutTest
 ## BattleStage avec décor peint (CB.3) : le lieu choisit le décor (Route 1) ou le repli (chambre du
 ## joueur, sans fond depuis que le labo a le sien : carte recadrée au zoom de combat). Avec décor :
-## le monde se floute puis se fond dans le décor (transition en temps simulé), décor opaque posé par sa ligne de sol (pieds et ombres sur le
-## sol peint), premier plan devant ton Pokémon, caméra qui avance à peine, flou du monde coupé
+## le monde se floute puis se fond dans le décor (transition en temps simulé), décor opaque posé
+## par sa ligne de sol (pieds et ombres sur le sol peint), premier plan devant ton Pokémon, caméra qui avance à peine, flou du monde coupé
 ## une fois le décor opaque ; coups, critique, capture ; sortie : décor rendu, caméra intacte.
 
 const TweenClock := preload("res://tests/helpers/tween_clock.gd")
