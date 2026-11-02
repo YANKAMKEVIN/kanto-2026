@@ -1,8 +1,8 @@
 # Dossier JOH-05 — Le détour du sud : Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss (jalon JOH4, v0.1)
 
 > Quatrième jalon de contenu du Chapitre Johto (cadre [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md)
-> §4.2). Écrit par Claude le 2026-11-02 ; **textes E-1 à E-36 et arbitrages JH-37 à JH-39 en attente
-> de Kevin**. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
+> §4.2). Écrit par Claude le 2026-11-02 ; **textes E-1 à E-36 et arbitrages JH-37 à JH-39 validés par
+> Kevin le jour même** (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
 
 ## 1. Hors périmètre
 
@@ -122,7 +122,7 @@ avec et sans Ramoloss), Puits Ramoloss (2 vues), intérieurs : maison de Fargas,
 (modèles du JOH1), maison de la Route 34. Personnages neufs : **Fargas**, **Brace** (impétueux,
 tenue d'admin), **Vincent**. Ramoloss sans queue (variante de décor du sprite peint).
 
-## 14. Textes (lot à valider par Kevin)
+## 14. Textes (lot validé par Kevin le 2026-11-02)
 
 Format : bulles séparées par « / ». `{joueur}` = nom.
 
@@ -169,6 +169,6 @@ Format : bulles séparées par « / ». `{joueur}` = nom.
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-37 | Le gardien du puits : **Fargas** (personnage d'Or/Argent, sans sa fabrique de Noigrumes) ou un personnage neuf ? | **Fargas** |
-| JH-38 | Ramoloss capturable au puits, et Roigada / Tarpaud possibles **dès l'acte 1** avec la Roche Royale au terminal d'échange | **Oui** : récompense du jalon, sans casser la courbe (Roigada niv. ≈ 20) |
-| JH-39 | L'autel du Bois aux Chênes : visible et examinable dès maintenant, ou caché jusqu'au post-game ? | **Visible dès le JOH4**, avec un texte qui annonce le gardien (E-5, E-6) |
+| JH-37 | ✅ Le gardien du puits est **Fargas**, sans sa fabrique de Noigrumes (Kevin, 2026-11-02) | — |
+| JH-38 | ✅ Ramoloss capturable au puits ; **Roigada / Tarpaud possibles dès l'acte 1** avec la Roche Royale au terminal d'échange (Kevin) | — |
+| JH-39 | ✅ L'autel du Bois aux Chênes est **visible et examinable dès le JOH4** (Kevin) | — |
