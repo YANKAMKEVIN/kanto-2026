@@ -63,13 +63,15 @@ extends Node
 ## (SENT_OUT [member BattleEvent.revealed]) ; rien n'est masqué. Sauvage « uncatchable » : une Ball
 ## est refusée de la même façon, par « ball_uncatchable ».
 ##
-## Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02 ;
-## [TrainerIntro]) : un grand adversaire (bloc « card » de ses données) ouvre sur la séquence
-## « VS » ([VsBanner], posée sur la HUD) ; puis la vue de combat entre sans Pokémon, les deux
-## dresseurs glissent dans le décor ([method BattleStage.play_trainers_in]) et chacun lance son
-## Pokémon au SENT_OUT qui le concerne ([method BattleStage.play_trainer_send]). Jamais sautée :
-## aucune de ces étapes n'écoute le toucher. Combat du labo (PNJ Pokémon du monde) : la séquence
-## « VS », puis l'entrée habituelle (les Pokémon viennent du monde, aucun lancer).
+## Entrée des combats de Dresseur (dossier 05 §3, décisions de Kevin du 2026-11-02 ;
+## [TrainerIntro], maquettes `reference/entree-dresseur-*-v1.png`) : la vue de combat entre sans
+## Pokémon et, pendant que la caméra finit, les deux dresseurs glissent dans le décor
+## ([method BattleStage.play_trainers_in]) ; un grand adversaire (bloc « card ») ajoute alors la
+## séquence « VS » ([VsBanner], sur la HUD), les dresseurs visibles derrière. Chacun lance son
+## Pokémon sous son message « … envoie … ! » ([method BattleStage.play_trainer_send] : gestes et
+## messages se chevauchent, messages de l'ouverture tenus moins longtemps). Jamais sautée :
+## aucune de ces étapes n'écoute le toucher. Combat du labo (PNJ Pokémon du monde) : même
+## séquence ; les PNJ Pokémon s'effacent du monde et leurs Pokémon sortent des Balls.
 
 ## Le combat commence (verrou posé, monde figé).
 signal battle_started(trainer_id: StringName)
@@ -260,6 +262,7 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var foe_species := _sent_out_species(opening, BattleEvent.SideId.FOE)
 	# Jalon 21 (§2.5) : révélation du Scope Sylphe (sauvage seulement, jamais en SPECTRE).
 	var reveal := wild and request.reveal
+	var intro: TrainerIntro = null
 	if reveal:
 		for event: BattleEvent in opening:
 			if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE:
@@ -283,21 +286,30 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		else:
 			var player_npc := _npc(map, request.world_actors.get(&"player", &""))
 			var foe_npc := _npc(map, request.world_actors.get(&"foe", &""))
-			var intro := trainer_intro(request)
+			intro = trainer_intro(request)
+			_watch_intro()
+			# La caméra rejoint le décor ; les dresseurs entrent avant qu'elle ait fini, puis le
+			# « VS » d'un grand combat se pose sur eux. Les Pokémon (PNJ du monde compris)
+			# sortiront des Balls.
+			_stage.enter(camera, player_npc, foe_npc, player_species, foe_species, [], true)
+			await _wait(intro.get_catalog().duration("trainers_delay"))
+			await _stage.play_trainers_in(intro)
+			if _stage.is_entering():
+				await _stage.entered
 			if intro.grand:
 				await _play_vs(intro)
-			# Sans PNJ Pokémon du monde : les dresseurs entrent et lanceront leurs Pokémon.
-			var held := player_npc == null and foe_npc == null
-			await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species, [], held)
-			if held:
-				_watch_intro()
-				await _stage.play_trainers_in(intro)
 	elif reveal:
 		await _play_reveal(foe_species)
 	if is_instance_valid(_hud):
 		_hud.set_party(party.size())
-	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
+	# Déroulé du moteur : présentation des camps, puis la boucle de tours. Entrée de Dresseur :
+	# messages de l'ouverture tenus moins longtemps, sous les gestes des dresseurs.
+	var hold_scale := _hud.message_hold_scale if is_instance_valid(_hud) else 1.0
+	if intro != null and is_instance_valid(_hud):
+		_hud.message_hold_scale = hold_scale * intro.get_catalog().message_hold_scale
 	await _play_events(opening, trainer)
+	if intro != null and is_instance_valid(_hud):
+		_hud.message_hold_scale = hold_scale
 	var actions := BattleViews.with_team(BattleViews.WILD_BATTLE_ACTIONS if wild
 		else BattleViews.trainer_actions(trainer), party.size())
 	var can_flee := request.rules != null and request.rules.can_flee
@@ -693,6 +705,10 @@ func _play_beat(beat: BattleBeat) -> void:
 					and is_instance_valid(_stage):
 				# Combat vivant (`recharge`) : le lanceur halète pendant « … doit se reposer ! ».
 				_stage.play_panting(beat.side)
+			if beat.event != null and beat.event.kind == BattleEvent.Kind.SENT_OUT \
+					and is_instance_valid(_stage) and _stage.has_trainer_send(beat.side):
+				# Entrée de Dresseur : le lancer part sous « … envoie … ! » (pas attendu ici).
+				_stage.play_trainer_send(beat.side, beat.event.species_id)
 			if is_instance_valid(_hud):
 				await _hud.show_message(beat.text, beat.wait_touch)
 		BattleBeat.Kind.SEND_OUT:
@@ -701,6 +717,8 @@ func _play_beat(beat: BattleBeat) -> void:
 					# Entrée du combat de Dresseur : son dresseur le lance, puis s'efface.
 					await _stage.play_trainer_send(beat.side, beat.event.species_id)
 				else:
+					# Lancer parti sous le message : il finit, puis la carte arrive.
+					await _stage.wait_trainer_send(beat.side)
 					_stage.show_pokemon(beat.side, beat.event.species_id)
 				_stage.set_status(beat.side, beat.event.status)
 			if is_instance_valid(_hud):
@@ -1165,6 +1183,16 @@ func vs_player_portrait() -> Texture2D:
 		and _state.has_method(&"worn_costume") else &""
 	var path := TrainerLooks.bust_path(StringName(look) if look != null else &"hero", costume)
 	return load(path) as Texture2D if ResourceLoader.exists(path) else null
+
+
+## Coroutine : attend [param seconds] (tween, temps simulable en test ; rien à speed_scale = 0).
+func _wait(seconds: float) -> void:
+	if speed_scale <= 0.0 or seconds <= 0.0:
+		return
+	var tween := create_tween()
+	tween.set_speed_scale(speed_scale)
+	tween.tween_interval(seconds)
+	await tween.finished
 
 
 ## Relaie les étapes des dresseurs de la scène ([signal trainer_intro_step]).

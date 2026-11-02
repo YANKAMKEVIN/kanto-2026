@@ -281,7 +281,7 @@
 	},
 	"rival_champion": {
 		"name": "{rival}",
-		"card": { "name": "{rival}", "title": "Maître de la Ligue", "portrait": "rival" },
+		"card": { "name": "{rival}", "title": "Champion de la Ligue", "portrait": "rival" },
 		"ai": "smart",
 		"can_lose": false,
 		"heal_after": false,

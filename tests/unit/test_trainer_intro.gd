@@ -56,8 +56,9 @@ func test_grand_battle_opens_on_the_vs_sequence() -> void:
 	var trainer := _trainer("Pierre", ["PIERRE", "Champion d'Arène d'Argenta", &"pierre"])
 	var intro := TrainerIntro.build(trainer, _party(2), _catalog)
 	assert_true(intro.grand)
-	assert_eq(intro.steps, [Step.VS_IN, Step.VS_HOLD, Step.VS_OUT, Step.TRAINERS_IN,
-		Step.FOE_SEND, Step.PLAYER_SEND] as Array[Step], "VS d'abord, puis l'entrée du niveau 1")
+	assert_eq(intro.steps, [Step.TRAINERS_IN, Step.VS_IN, Step.VS_HOLD, Step.VS_OUT,
+		Step.FOE_SEND, Step.PLAYER_SEND] as Array[Step],
+		"les dresseurs entrent, puis le « VS » se pose sur eux, puis les lancers")
 	assert_eq([intro.foe_name, intro.foe_title], ["PIERRE", "Champion d'Arène d'Argenta"])
 	assert_eq([intro.sprite_id, intro.portrait_id], [&"pierre", &"pierre"])
 	assert_eq(intro.world_sprite, &"brock")
@@ -65,13 +66,13 @@ func test_grand_battle_opens_on_the_vs_sequence() -> void:
 
 func test_level_one_entry_lasts_about_two_seconds() -> void:
 	var intro := TrainerIntro.build(_trainer("Gamin Hugo"), _party(1), _catalog)
-	assert_almost_eq(intro.total(), 2.0, 0.25, "[D] ≈ 2 s (dossier 05 §3)")
+	assert_almost_eq(intro.total(), 2.5, 0.3, "[D] gestes ≈ 2,5 s, sous les messages")
 	assert_eq(intro.total(), intro.entry_total())
 	var grand := TrainerIntro.build(_trainer("Pierre", ["PIERRE", "T", &"pierre"]), _party(1),
 		_catalog)
 	var vs := grand.duration(Step.VS_IN) + grand.duration(Step.VS_HOLD) \
 		+ grand.duration(Step.VS_OUT)
-	assert_gt(vs, 1.0, "la séquence « VS » se voit")
+	assert_between(vs, 1.2, 1.6, "séquence « VS » de 1,2 à 1,6 s (maquette validée)")
 	assert_almost_eq(grand.total(), vs + grand.entry_total(), 0.0001)
 
 
@@ -91,6 +92,11 @@ func test_class_is_the_longest_name_prefix() -> void:
 	assert_eq(_catalog.class_for("Maître du Dojo"), &"maitre_dojo")
 	assert_eq(_catalog.class_for("Gaminette Zoé"), &"", "préfixe suivi d'une espace seulement")
 	assert_eq(_catalog.class_for("Inconnu"), &"")
+	var grunt := _trainer("Sbire Rocket")
+	assert_eq(_catalog.class_of(grunt), &"sbire_rocket")
+	grunt.battle_class = &"sbire_rocket_f"
+	assert_eq(_catalog.class_of(grunt), &"sbire_rocket_f", "classe imposée par les données")
+	assert_true(_catalog.has_class(&"sbire_rocket_f"))
 
 
 func test_images_follow_the_path_convention_with_fallback() -> void:
@@ -105,6 +111,11 @@ func test_images_follow_the_path_convention_with_fallback() -> void:
 	var ordinary := TrainerIntro.build(_trainer("Scout Sacha"), _party(1), _catalog)
 	assert_eq(ordinary.front_path(all), "res://assets/sprites/trainers/battle/scout.webp")
 	assert_eq(ordinary.portrait_path(all), "", "aucun portrait pour un Dresseur ordinaire")
+	assert_eq(ordinary.front_path(all, true),
+		"res://assets/sprites/trainers/battle/scout_lancer.webp", "pose de lancer")
+	assert_eq(ordinary.player_path(&"heroine", all, true),
+		"res://assets/sprites/trainers/battle/dos_heroine_lancer.webp", "dos peint du joueur")
+	assert_eq(ordinary.player_path(&"hero", none), "", "repli : lancer de dos existant")
 	var unknown := TrainerIntro.build(_trainer("Inconnu"), _party(1), _catalog)
 	assert_eq(unknown.front_path(all), "", "aucune classe : repli générique")
 

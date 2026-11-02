@@ -48,6 +48,20 @@ func test_every_rival_battle_is_grand() -> void:
 			assert_eq(trainer.card_portrait, TrainerIntro.RIVAL_ID, String(id))
 
 
+func test_rival_titles() -> void:
+	assert_eq(_trainers.get_trainer(&"rival_champion").card_title, "Champion de la Ligue")
+	for id: StringName in [&"rival_lab", &"rival_route22", &"rival_tower", &"rival_silph"]:
+		assert_eq(_trainers.get_trainer(id).card_title, "Rival", String(id))
+
+
+func test_female_grunts_have_their_own_class() -> void:
+	var female := 0
+	for id: StringName in _trainers.get_ids():
+		if _trainers.get_trainer(id).battle_class == &"sbire_rocket_f":
+			female += 1
+	assert_eq(female, 11, "11 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+
+
 func test_every_grand_portrait_is_in_the_catalog() -> void:
 	for id: StringName in _grand_ids():
 		var portrait := _trainers.get_trainer(id).card_portrait
@@ -60,7 +74,7 @@ func test_every_ordinary_trainer_has_a_class() -> void:
 		var trainer := _trainers.get_trainer(id)
 		if trainer.has_card():
 			continue
-		var class_id := _catalog.class_for(trainer.name)
+		var class_id := _catalog.class_of(trainer)
 		assert_ne(class_id, &"", "%s (« %s ») : classe connue" % [id, trainer.name])
 		used[class_id] = true
 	for class_id: StringName in _catalog.class_ids():

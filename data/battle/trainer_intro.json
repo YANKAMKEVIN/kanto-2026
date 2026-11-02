@@ -1,26 +1,47 @@
 {
-	"version": 1,
-	"_doc": "Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02). Durées en secondes, tailles en hauteurs d'écran : valeurs par défaut [D], réglables sur téléphone. « classes » : préfixe du nom du Dresseur (data/trainers/) → sprite de combat de face <front_dir><classe><extension>, repli sur l'apparence du monde (world_sprite). « grand » : grands adversaires, désignés par le bloc « card » du Dresseur (son « portrait ») → portrait de banderole <portrait_dir><id><extension> et sprite de face <front_dir><id><extension> ; l'identifiant « rival » suit l'apparence du rival (rival / rivale). Fiche d'art : docs/design/fiches-assets/entree-dresseurs.md.",
+	"version": 2,
+	"_doc": "Entrée des combats de Dresseur (dossier 05 §3, décisions de Kevin du 2026-11-02 ; cible : maquettes docs/design/reference/entree-dresseur-*-v1.png). Durées en secondes ; tailles et points en hauteurs d'écran (x depuis le centre, y depuis le haut) : valeurs par défaut [D], réglables sur téléphone. « classes » : préfixe du nom du Dresseur (data/trainers/) → sprite de combat de face <front_dir><classe><extension> (pose de lancer : <classe><throw_suffix><extension>), repli sur l'apparence du monde (world_sprite). « grand » : grands adversaires (bloc « card » du Dresseur, son « portrait ») → portrait de banderole <portrait_dir><id><extension> et sprite de face <front_dir><id><extension> ; l'identifiant « rival » suit l'apparence du rival (rival / rivale). Dos du joueur : <front_dir>dos_<apparence><extension> (et sa pose de lancer), repli sur le lancer de dos existant. Fiche d'art : docs/design/fiches-assets/entree-dresseurs.md.",
 	"durations": {
-		"vs_in": 0.35,
-		"vs_hold": 0.9,
-		"vs_out": 0.4,
+		"trainers_delay": 0.55,
 		"trainers_in": 0.45,
 		"balls_in": 0.25,
-		"send_throw": 0.35,
+		"vs_in": 0.3,
+		"vs_hold": 0.75,
+		"vs_out": 0.35,
+		"send_throw": 0.4,
+		"send_linger": 0.2,
 		"send_exit": 0.3
 	},
+	"message_hold_scale": 1.0,
 	"layout": {
-		"foe_trainer_height": 0.42,
-		"trainer_slide": 0.32,
-		"ball_size": 0.065,
+		"player_trainer_height": 0.55,
+		"foe_trainer_height": 0.27,
+		"trainer_slide": 0.22,
+		"shadow_width": 0.55,
+		"shadow_flatten": 0.22,
+		"ball_size": 0.05,
+		"throw_ball_size": 0.075,
 		"ball_gap": 0.012,
-		"throw_arc": 0.14
+		"cartouche_pad": 0.016,
+		"cartouche_raise": 0.05,
+		"throw_arc": 0.08,
+		"trail_width": 0.012
+	},
+	"points": {
+		"player_feet": [-0.50, 0.93],
+		"foe_feet": [0.43, 0.55],
+		"cartouche_offset": [0.16, 0.0],
+		"player_hand": [0.22, -0.62],
+		"foe_hand": [-0.32, -0.5],
+		"player_ball_target": [-0.12, 0.64],
+		"foe_ball_target": [0.20, 0.50]
 	},
 	"paths": {
 		"front_dir": "res://assets/sprites/trainers/battle/",
 		"portrait_dir": "res://assets/ui/battle/vs/",
-		"extension": ".webp"
+		"extension": ".webp",
+		"throw_suffix": "_lancer",
+		"player_prefix": "dos_"
 	},
 	"classes": {
 		"beaute": { "prefix": "Beauté", "world_sprite": "beauty" },
@@ -52,6 +73,7 @@
 		"pokemaniac": { "prefix": "Pokémaniac", "world_sprite": "pokemaniac" },
 		"rockeur": { "prefix": "Rockeur", "world_sprite": "rocker" },
 		"sbire_rocket": { "prefix": "Sbire Rocket", "world_sprite": "rocket_grunt_m" },
+		"sbire_rocket_f": { "prefix": "", "world_sprite": "rocket_grunt_f" },
 		"scientifique": { "prefix": "Scientifique", "world_sprite": "researcher" },
 		"scout": { "prefix": "Scout", "world_sprite": "scout" },
 		"topdresseur": { "prefix": "Topdresseur", "world_sprite": "cooltrainer_m" },

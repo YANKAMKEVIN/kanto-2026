@@ -1,32 +1,51 @@
 class_name TrainerIntroCatalog
 extends RefCounted
-## Réglages et classes de l'entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du
-## 2026-11-02), lus dans `data/battle/trainer_intro.json`. Classe pure, validation stricte.
+## Réglages et classes de l'entrée des combats de Dresseur (dossier 05 §3, décisions de Kevin du
+## 2026-11-02 ; cible : maquettes `reference/entree-dresseur-*-v1.png`), lus dans
+## `data/battle/trainer_intro.json`. Classe pure, validation stricte.
 ##
 ## - « durations » : durées (s) des étapes ([enum TrainerIntro.Step]) ;
-## - « layout » : tailles en hauteurs d'écran (présentation) ;
-## - « paths » : conventions des images (sprite de face, portrait de banderole) ;
+## - « message_hold_scale » : tenue des messages de l'ouverture (gestes et messages se chevauchent) ;
+## - « layout » : tailles en hauteurs d'écran ; « points » : positions (x depuis le centre, y depuis
+##   le haut, en hauteurs d'écran) ou décalages, présentation ;
+## - « paths » : conventions des images (sprite de face, pose de lancer, dos du joueur, portrait) ;
 ## - « classes » : classe de Dresseur ordinaire → préfixe de son nom (« Gamin » pour « Gamin
-##   Hugo ») et apparence du monde (repli du sprite de face) ;
+##   Hugo » ; vide : seulement imposée par les données, « class » du Dresseur) et apparence du
+##   monde (repli du sprite de face) ;
 ## - « grand » : identifiant de portrait d'un grand adversaire (bloc « card » du Dresseur) →
 ##   apparence du monde (repli).
 
 const PATH: String = "res://data/battle/trainer_intro.json"
 const DURATION_KEYS: Array[String] = [
-	"vs_in", "vs_hold", "vs_out", "trainers_in", "balls_in", "send_throw", "send_exit",
+	"trainers_delay", "trainers_in", "balls_in", "vs_in", "vs_hold", "vs_out", "send_throw",
+	"send_linger", "send_exit",
 ]
 const LAYOUT_KEYS: Array[String] = [
-	"foe_trainer_height", "trainer_slide", "ball_size", "ball_gap", "throw_arc",
+	"player_trainer_height", "foe_trainer_height", "trainer_slide", "shadow_width",
+	"shadow_flatten", "ball_size", "throw_ball_size", "ball_gap", "cartouche_pad", "cartouche_raise", "throw_arc",
+	"trail_width",
 ]
-const PATH_KEYS: Array[String] = ["front_dir", "portrait_dir", "extension"]
+const POINT_KEYS: Array[String] = [
+	"player_feet", "foe_feet", "cartouche_offset", "player_hand", "foe_hand",
+	"player_ball_target", "foe_ball_target",
+]
+const PATH_KEYS: Array[String] = [
+	"front_dir", "portrait_dir", "extension", "throw_suffix", "player_prefix",
+]
 
 ## Durées (s) par clé de [constant DURATION_KEYS].
 var durations: Dictionary[String, float] = {}
 ## Tailles (hauteurs d'écran) par clé de [constant LAYOUT_KEYS].
 var layout: Dictionary[String, float] = {}
+## Points (hauteurs d'écran) par clé de [constant POINT_KEYS].
+var points: Dictionary[String, Vector2] = {}
+## Facteur de tenue des messages de l'ouverture (1 : tenue normale).
+var message_hold_scale: float = 1.0
 var front_dir: String = ""
 var portrait_dir: String = ""
 var extension: String = ""
+var throw_suffix: String = ""
+var player_prefix: String = ""
 
 ## Classe → préfixe du nom, et classe → apparence du monde.
 var _prefixes: Dictionary[StringName, String] = {}
@@ -62,17 +81,27 @@ func add_from_dict(root: Dictionary) -> bool:
 	var ok := true
 	ok = _read_numbers(root.get("durations"), DURATION_KEYS, durations, "durations") and ok
 	ok = _read_numbers(root.get("layout"), LAYOUT_KEYS, layout, "layout") and ok
+	ok = _read_points(root.get("points")) and ok
+	var hold: Variant = root.get("message_hold_scale", 1.0)
+	if not (hold is float or hold is int) or float(hold) <= 0.0:
+		ok = _fail("TrainerIntroCatalog : message_hold_scale doit être un nombre > 0")
+	else:
+		message_hold_scale = float(hold)
 	var paths: Variant = root.get("paths")
 	if not paths is Dictionary:
 		ok = _fail("TrainerIntroCatalog : « paths » manquant")
 	else:
+		var paths_ok := true
 		for key: String in PATH_KEYS:
 			if not (paths as Dictionary).get(key) is String:
-				ok = _fail("TrainerIntroCatalog : paths.%s doit être un texte" % key)
-		if ok:
+				paths_ok = _fail("TrainerIntroCatalog : paths.%s doit être un texte" % key)
+		if paths_ok:
 			front_dir = paths["front_dir"]
 			portrait_dir = paths["portrait_dir"]
 			extension = paths["extension"]
+			throw_suffix = paths["throw_suffix"]
+			player_prefix = paths["player_prefix"]
+		ok = paths_ok and ok
 	var classes: Variant = root.get("classes")
 	if not classes is Dictionary:
 		ok = _fail("TrainerIntroCatalog : « classes » manquant")
@@ -99,17 +128,33 @@ func add_from_dict(root: Dictionary) -> bool:
 
 
 ## Classe du Dresseur ordinaire nommé [param trainer_name] : le plus long préfixe de classe
-## suivi d'une espace (ou le nom entier) ; &"" si aucune classe ne correspond.
+## suivi d'une espace (ou le nom entier) ; &"" si aucune classe ne correspond. Une classe sans
+## préfixe n'est jamais déduite du nom.
 func class_for(trainer_name: String) -> StringName:
 	var best := &""
 	var best_length := -1
 	for id: StringName in _prefixes:
 		var prefix := _prefixes[id]
+		if prefix.is_empty():
+			continue
 		if (trainer_name == prefix or trainer_name.begins_with(prefix + " ")) \
 				and prefix.length() > best_length:
 			best = id
 			best_length = prefix.length()
 	return best
+
+
+## Classe de [param trainer] : celle imposée par ses données, sinon celle de son nom.
+func class_of(trainer: TrainerData) -> StringName:
+	if trainer == null:
+		return &""
+	if not trainer.battle_class.is_empty():
+		return trainer.battle_class
+	return class_for(trainer.name)
+
+
+func has_class(id: StringName) -> bool:
+	return _prefixes.has(id)
 
 
 ## Classes connues (ordre du fichier).
@@ -138,6 +183,10 @@ func duration(key: String) -> float:
 	return durations.get(key, 0.0)
 
 
+func point(key: String) -> Vector2:
+	return points.get(key, Vector2.ZERO)
+
+
 func get_errors() -> PackedStringArray:
 	return _errors
 
@@ -153,6 +202,21 @@ func _read_numbers(value: Variant, keys: Array[String], into: Dictionary[String,
 			ok = _fail("TrainerIntroCatalog : %s.%s doit être un nombre ≥ 0" % [label, key])
 			continue
 		into[key] = float(number)
+	return ok
+
+
+func _read_points(value: Variant) -> bool:
+	if not value is Dictionary:
+		return _fail("TrainerIntroCatalog : « points » manquant")
+	var ok := true
+	for key: String in POINT_KEYS:
+		var pair: Variant = (value as Dictionary).get(key)
+		if not pair is Array or (pair as Array).size() != 2 \
+				or not ((pair as Array)[0] is float or (pair as Array)[0] is int) \
+				or not ((pair as Array)[1] is float or (pair as Array)[1] is int):
+			ok = _fail("TrainerIntroCatalog : points.%s doit être [x, y]" % key)
+			continue
+		points[key] = Vector2(float(pair[0]), float(pair[1]))
 	return ok
 
 

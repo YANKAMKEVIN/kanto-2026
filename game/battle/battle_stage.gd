@@ -33,6 +33,8 @@ signal entered
 ## plan ; [AudioBridge] y joue le bruitage de l'attaque et celui du coup (§2.5).
 signal move_fx_cue(cue: StringName, plan: MoveFxPlan)
 signal exited
+## Entrée des combats de Dresseur : le dresseur de [param side] a fini son lancer.
+signal trainer_send_finished(side: BattleEvent.SideId)
 
 ## Zoom de la caméra en combat : lieu réel resserré (cadrage « combat » du pilote, CB.1).
 const ZOOM: float = 1.9
@@ -302,6 +304,9 @@ var _fx_pokemon: PokemonData
 ## dresseur n'a pas encore lancé son Pokémon ([method play_trainer_send]).
 var _intro_stage: TrainerIntroStage
 var _intro_pending: Dictionary[BattleEvent.SideId, bool] = {}
+var _intro_sending: Dictionary[BattleEvent.SideId, bool] = {}
+## [method enter] en cours (sa transition n'est pas finie).
+var _entering: bool = false
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -471,9 +476,11 @@ func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 			_fainted[side] = true
 	# Limites levées : la caméra part de son centre réel (bornes comprises), sans saut.
 	_free_camera()
+	_entering = true
 	var tween := _new_tween()
 	tween.tween_method(_set_enter_progress, 0.0, 1.0, ENTER_DURATION)
 	await _play(tween)
+	_entering = false
 	if _active:
 		entered.emit()
 
@@ -1226,6 +1233,11 @@ func is_active() -> bool:
 	return _active
 
 
+## La transition d'entrée ([method enter]) est en cours.
+func is_entering() -> bool:
+	return _active and _entering
+
+
 ## Sprite de combat de [param side] (tests, captures).
 func get_sprite(side: BattleEvent.SideId) -> Sprite2D:
 	return _sprites[side]
@@ -1422,6 +1434,10 @@ func _apply_reset() -> void:
 	if _intro_stage != null:
 		_intro_stage.clear()
 	_intro_pending.clear()
+	var sending := _intro_sending.keys()
+	_intro_sending.clear()
+	for side: BattleEvent.SideId in sending:
+		trainer_send_finished.emit(side)
 	if _active:
 		_restore_camera()
 	for side: BattleEvent.SideId in _world:
@@ -1847,8 +1863,13 @@ func play_trainers_in(intro: TrainerIntro) -> void:
 	if not _active or intro == null:
 		return
 	_intro_stage.speed_scale = speed_scale
+	# Dos peint du joueur (`dos_<apparence>`) sauf costume porté : le lancer de dos du costume.
+	var look := GameState.player_look if GameState.worn_costume().is_empty() else &""
+	var back := thrower_texture()
 	_intro_stage.begin(intro, _view_size(), TrainerIntroStage.foe_texture(intro),
-		thrower_texture())
+		TrainerIntroStage.player_texture(intro, look, back),
+		TrainerIntroStage.foe_texture(intro, Callable(), true),
+		TrainerIntroStage.player_texture(intro, look, back, Callable(), true))
 	_intro_pending = {BattleEvent.SideId.FOE: true, BattleEvent.SideId.PLAYER: true}
 	await _intro_stage.play_enter()
 
@@ -1860,20 +1881,29 @@ func has_trainer_send(side: BattleEvent.SideId) -> bool:
 
 ## Coroutine (étapes FOE_SEND / PLAYER_SEND) : le dresseur de [param side] lance
 ## [param species] ; à l'arrivée de la Ball le Pokémon apparaît ([method show_pokemon]) et le
-## dresseur s'efface. Sans dresseur en attente : le Pokémon apparaît seulement.
+## dresseur s'efface. Sans dresseur en attente : le Pokémon apparaît seulement. Le directeur la
+## lance sous le message « … envoie … ! » (gestes et messages se chevauchent) puis l'attend
+## ([method wait_trainer_send]).
 func play_trainer_send(side: BattleEvent.SideId, species: StringName) -> void:
 	if not has_trainer_send(side):
-		show_pokemon(side, species)
+		if not _intro_sending.get(side, false):
+			show_pokemon(side, species)
 		return
 	_intro_pending.erase(side)
-	var view := _view_size()
-	var target := _anchor(side) + (Vector2(0.0, -0.08 * view.y)
-		if side == BattleEvent.SideId.FOE else Vector2(0.12 * view.y, -0.3 * view.y))
+	_intro_sending[side] = true
 	_intro_stage.speed_scale = speed_scale
-	await _intro_stage.play_send(side, target, show_pokemon.bind(side, species))
+	await _intro_stage.play_send(side, show_pokemon.bind(side, species))
 	# La Ball n'est pas arrivée (combat quitté, tweens arrêtés) : le Pokémon apparaît quand même.
 	if _active and not _sprites[side].visible:
 		show_pokemon(side, species)
+	_intro_sending.erase(side)
+	trainer_send_finished.emit(side)
+
+
+## Coroutine : attend la fin du lancer du dresseur de [param side] s'il est en cours.
+func wait_trainer_send(side: BattleEvent.SideId) -> void:
+	while _intro_sending.get(side, false):
+		await trainer_send_finished
 
 
 ## Les deux dresseurs de l'entrée (tests, captures).

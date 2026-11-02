@@ -1643,33 +1643,60 @@ const TRAINER_MOMENT_ART := 64
 ## Liseré ACCENT sur le bord gauche des bandeaux de message (ancienne carte de Champion).
 const BANNER_ACCENT_WIDTH := 10
 
-## Séquence « VS » des grands combats (dossier 05 §3, décision de Kevin du 2026-11-02 ;
-## remplace la carte de Champion) : banderole rouge en haut (l'adversaire : portrait, nom,
-## titre), banderole bleue en bas (le joueur : portrait, prénom), emblème « VS » au centre.
+## Séquence « VS » des grands combats (dossier 05 §3, décisions de Kevin du 2026-11-02 ; cible :
+## maquette `reference/entree-dresseur-vs-v1.png`) : posée sur l'arène, les deux dresseurs visibles
+## derrière ; banderole **rouge en haut à droite** (arrive de la droite : buste peint de
+## l'adversaire, nom en capitales à empattements dorées, filet et losange, titre dessous),
+## banderole **bleue en bas à gauche** (arrive de la gauche : buste et prénom du joueur), fines,
+## en biais, à effet pinceau ; « VS » doré au centre, éclair diagonal et deux traits.
 ## Durées : `data/battle/trainer_intro.json`. Valeurs par défaut [D].
-const VS_FOE_BG := Color("#C8323C")
-const VS_PLAYER_BG := Color("#2F64C8")
-## Liseré intérieur des banderoles (côté emblème) et emblème.
-const VS_EDGE := ACCENT
-const VS_EDGE_WIDTH := 10
-## Voile sombre du monde derrière les banderoles (opacité au plus fort).
-const VS_VEIL := Color(0.0, 0.0, 0.0, 0.5)
-## Hauteur d'une banderole et son bord extérieur (fractions de la hauteur d'écran).
-const VS_BANNER_HEIGHT := 0.3
-const VS_BANNER_MARGIN := 0.08
-## Portrait : hauteur (fraction de l'écran, rogné par la banderole) et débord au-dessus.
+const VS_FOE_BG := Color("#B3222C")
+const VS_PLAYER_BG := Color("#1F4FB0")
+## Or des noms, du filet, du « VS » et de l'éclair ; contour sombre des lettres.
+const VS_GOLD := Color("#F4D68C")
+const VS_GOLD_DEEP := Color("#C8932F")
+const VS_GOLD_OUTLINE := Color("#3A2208")
+## Police à empattements des noms et du « VS » (Cinzel, SIL OFL 1.1, `assets/fonts/cinzel/`).
+const VS_SERIF_FONT := "res://assets/fonts/cinzel/Cinzel.ttf"
+const VS_SERIF_WEIGHT := 700
+## Textures pinceau remplaçables des banderoles (absentes : pinceau dessiné en code).
+const VS_FOE_BANNER_TEXTURE := "res://assets/ui/battle/vs/banderole_rouge.webp"
+const VS_PLAYER_BANNER_TEXTURE := "res://assets/ui/battle/vs/banderole_bleue.webp"
+## Voile léger de l'arène derrière les banderoles (opacité au plus fort).
+const VS_VEIL := Color(0.0, 0.0, 0.0, 0.18)
+## Banderoles (fractions de l'écran) : épaisseur (hauteur), largeur (part de la largeur), centre
+## vertical, inclinaison (degrés : la rouge monte vers la droite, la bleue descend vers la droite).
+const VS_BANNER_HEIGHT := 0.22
+const VS_FOE_BANNER_WIDTH := 0.5
+const VS_PLAYER_BANNER_WIDTH := 0.6
+const VS_FOE_BANNER_Y := 0.17
+const VS_PLAYER_BANNER_Y := 0.82
+const VS_BANNER_TILT := 4.0
+## Bords déchirés du pinceau : dents (nombre, profondeur en part de l'épaisseur) et traînées.
+const VS_BRUSH_TEETH := 18
+const VS_BRUSH_DEPTH := 0.12
+const VS_BRUSH_STREAKS := 7
+## Bustes : hauteur (part de l'écran) et haut de l'image (adversaire : près du haut de l'écran,
+## rogné par le bas de sa banderole ; joueur : rogné par le bas de l'écran), débordant la
+## banderole : seuls la tête et les épaules (adversaire) ou le haut du buste (joueur) restent.
 const VS_PORTRAIT_HEIGHT := 0.5
-const VS_PORTRAIT_RAISE := 0.03
-## Retrait du texte depuis le bord (en plus de SAFE_MARGIN) et écart portrait / texte.
-const VS_TEXT_INSET := 40
-const VS_NAME_FONT := 72
-const VS_TITLE_FONT := FONT_BODY
-const VS_TITLE_COLOR := Color(1.0, 1.0, 1.0, 0.85)
-## Emblème « VS » : taille de police, contour, éclair (largeur, hauteur en px de référence).
-const VS_EMBLEM_FONT := 132
-const VS_EMBLEM_OUTLINE := 14
-const VS_EMBLEM_OUTLINE_COLOR := Color("#1C1C1C")
-const VS_BOLT_SIZE := Vector2(300, 260)
+const VS_FOE_PORTRAIT_TOP := 0.0
+const VS_PLAYER_PORTRAIT_TOP := 0.6
+## Retrait du texte depuis le bord intérieur de la banderole (px de référence).
+const VS_TEXT_INSET := 48
+const VS_NAME_FONT := 96
+const VS_NAME_OUTLINE := 8
+const VS_TITLE_FONT := 28
+const VS_TITLE_COLOR := Color(1.0, 0.97, 0.9, 0.95)
+## Filet sous le nom : longueur (px de référence), épaisseur, demi-diagonale du losange.
+const VS_RULE_LENGTH := 360
+const VS_RULE_WIDTH := 2
+const VS_RULE_DIAMOND := 7
+## Emblème « VS » : police, contour, boîte, traits horizontaux (longueur en px de référence).
+const VS_EMBLEM_FONT := 160
+const VS_EMBLEM_OUTLINE := 10
+const VS_BOLT_SIZE := Vector2(380, 320)
+const VS_EMBLEM_LINE := 220
 ## Pic de l'emblème à son apparition (échelle) et part de VS_HOLD qu'il met à se poser.
 const VS_EMBLEM_POP := 1.2
 const VS_EMBLEM_POP_SHARE := 0.25

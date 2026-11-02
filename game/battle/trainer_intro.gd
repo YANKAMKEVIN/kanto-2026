@@ -8,10 +8,11 @@ extends RefCounted
 ## 1. **Dresseur ordinaire** : les deux dresseurs entrent en glissant dans le décor peint (le
 ##    joueur de dos à gauche, l'adversaire de face à droite) avec la rangée de Poké Balls de
 ##    l'équipe adverse ([member balls]) ; l'adversaire lance son premier Pokémon et s'efface,
-##    puis le joueur (≈ 2 s d'animation, messages du moteur entre les étapes).
+##    puis le joueur, chaque lancer sous son message (≈ 4 s jusqu'aux commandes).
 ## 2. **Grand combat** (Dresseur dont les données ont un bloc « card » : Champions, rival,
-##    Conseil 4, Giovanni) : la séquence « VS » d'abord (banderoles qui entrent, tiennent puis
-##    s'écartent), puis l'entrée du niveau 1.
+##    Conseil 4, Giovanni) : les deux dresseurs entrent d'abord dans l'arène, **puis** la séquence
+##    « VS » se superpose, eux visibles derrière (maquette `entree-dresseur-vs-v1.png`) ; puis les
+##    lancers.
 ## **Jamais sautée** (décision de Kevin) : aucune étape n'écoute le toucher. « Réduire les
 ## animations » ([member slide] faux) change les glissés en fondus, aux mêmes durées.
 ##
@@ -60,8 +61,9 @@ static func build(trainer: TrainerData, foe_party: Party, catalog: TrainerIntroC
 	intro._catalog = catalog
 	intro.slide = not reduce_motion
 	intro.grand = trainer != null and trainer.has_card()
+	intro.steps.assign([Step.TRAINERS_IN])
 	if intro.grand:
-		intro.steps.assign([Step.VS_IN, Step.VS_HOLD, Step.VS_OUT])
+		intro.steps.append_array([Step.VS_IN, Step.VS_HOLD, Step.VS_OUT])
 		intro.foe_name = trainer.card_name
 		intro.foe_title = trainer.card_title
 		intro.world_sprite = TrainerLooks.world_sprite(
@@ -72,9 +74,9 @@ static func build(trainer: TrainerData, foe_party: Party, catalog: TrainerIntroC
 		intro.sprite_id = id
 		intro.portrait_id = id
 	elif trainer != null:
-		intro.sprite_id = catalog.class_for(trainer.name)
+		intro.sprite_id = catalog.class_of(trainer)
 		intro.world_sprite = catalog.world_sprite(intro.sprite_id)
-	intro.steps.append_array([Step.TRAINERS_IN, Step.FOE_SEND, Step.PLAYER_SEND])
+	intro.steps.append_array([Step.FOE_SEND, Step.PLAYER_SEND])
 	intro.balls = ball_row(foe_party)
 	return intro
 
@@ -106,7 +108,8 @@ func duration(step: Step) -> float:
 		Step.TRAINERS_IN:
 			return _catalog.duration("trainers_in") + _catalog.duration("balls_in")
 		Step.FOE_SEND, Step.PLAYER_SEND:
-			return _catalog.duration("send_throw") + _catalog.duration("send_exit")
+			return _catalog.duration("send_throw") + _catalog.duration("send_linger") \
+				+ _catalog.duration("send_exit")
 	return 0.0
 
 
@@ -125,11 +128,20 @@ func entry_total() -> float:
 
 
 ## Chemin du sprite de face s'il existe ([param exists] : `func(path: String) -> bool`), sinon
-## "" (repli sur [member world_sprite]).
-func front_path(exists: Callable) -> String:
+## "" (repli sur [member world_sprite]). [param throw] : pose de lancer (`<id>_lancer`).
+func front_path(exists: Callable, throw: bool = false) -> String:
 	if sprite_id.is_empty():
 		return ""
-	var path := _catalog.front_dir + String(sprite_id) + _catalog.extension
+	var path := _catalog.front_dir + String(sprite_id) \
+		+ (_catalog.throw_suffix if throw else "") + _catalog.extension
+	return path if exists.call(path) else ""
+
+
+## Chemin du dos peint du joueur d'apparence [param look] (`dos_<apparence>`, pose de lancer si
+## [param throw]) s'il existe, sinon "" (repli : le lancer de dos existant).
+func player_path(look: StringName, exists: Callable, throw: bool = false) -> String:
+	var path := _catalog.front_dir + _catalog.player_prefix + String(look) \
+		+ (_catalog.throw_suffix if throw else "") + _catalog.extension
 	return path if exists.call(path) else ""
 
 

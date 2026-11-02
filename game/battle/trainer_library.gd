@@ -32,6 +32,9 @@ extends RefCounted
 ## sprite de combat ([member TrainerData.card_portrait], `data/battle/trainer_intro.json`).
 ## « switch » (facultatif, jalon 13, dossier 16 §14) : true = l'IA peut changer de Pokémon une
 ## fois par combat ([member TrainerData.can_switch], [AiSwitchRule]) ; false par défaut.
+## « class » (facultatif, entrée des Dresseurs 2026-11-02) : classe de combat imposée
+## ([member TrainerData.battle_class], `data/battle/trainer_intro.json`), quand le préfixe du nom ne
+## suffit pas (Sbire Rocket femme : « sbire_rocket_f »).
 ## « moment » (facultatif, jalon 13 §2.8) : seule valeur admise "win" = Grand moment du rival
 ## écrit à la victoire seulement ([member TrainerData.moment_on_win], [RivalMoment]).
 
@@ -40,7 +43,7 @@ const DATA_DIR: String = "res://data/trainers/"
 const _KEYS: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
 	"start_message", "team", "team_by_starter", "bag", "prize_per_level", "card", "switch",
-	"moment",
+	"moment", "class",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
@@ -196,6 +199,11 @@ func _parse(value: Variant, where: String) -> TrainerData:
 			trainer.can_switch = entry["switch"]
 		else:
 			ok = _fail("%s : « switch » vaut true ou false" % where)
+	if entry.has("class"):
+		if entry["class"] is String and not (entry["class"] as String).is_empty():
+			trainer.battle_class = StringName(entry["class"])
+		else:
+			ok = _fail("%s : « class » doit être un texte non vide" % where)
 	if entry.has("moment"):
 		if entry["moment"] is String and entry["moment"] == "win":
 			trainer.moment_on_win = true

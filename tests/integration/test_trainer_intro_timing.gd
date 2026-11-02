@@ -80,7 +80,7 @@ func test_touch_does_not_skip_the_vs_sequence() -> void:
 	assert_gte(steps * STEP, _vs_total(intro) - STEP, "le toucher n'abrège rien")
 
 
-func test_vs_banners_slide_then_part() -> void:
+func test_vs_banners_slide_in_from_their_side_and_go_back() -> void:
 	var intro := _intro(true)
 	var width := get_viewport().get_visible_rect().size.x
 	var seen := {"top_right": false, "top_left": false, "bottom_left": false,
@@ -96,8 +96,8 @@ func test_vs_banners_slide_then_part() -> void:
 			seen["bottom_left"] = true
 		if bottom > width * 0.2:
 			seen["bottom_right"] = true)
-	assert_eq(seen, {"top_right": true, "top_left": true, "bottom_left": true,
-		"bottom_right": true}, "rouge : arrive de droite, part à gauche ; bleue : l'inverse")
+	assert_eq(seen, {"top_right": true, "top_left": false, "bottom_left": true,
+		"bottom_right": false}, "rouge : de la droite (et y repart) ; bleue : de la gauche")
 
 
 func test_reduce_motion_fades_in_place() -> void:
@@ -135,10 +135,8 @@ func test_level_one_entry_lasts_its_duration_and_ignores_touch() -> void:
 	var clock := TweenClock.new(get_tree())
 	var runner := func() -> void:
 		await view.play_enter()
-		await view.play_send(BattleEvent.SideId.FOE, Vector2(1400, 500),
-			func() -> void: landed.append(0))
-		await view.play_send(BattleEvent.SideId.PLAYER, Vector2(500, 800),
-			func() -> void: landed.append(1))
+		await view.play_send(BattleEvent.SideId.FOE, func() -> void: landed.append(0))
+		await view.play_send(BattleEvent.SideId.PLAYER, func() -> void: landed.append(1))
 		done[0] = true
 	runner.call()
 	var steps := 0
@@ -159,6 +157,35 @@ func test_level_one_entry_lasts_its_duration_and_ignores_touch() -> void:
 	assert_lte(steps * STEP, intro.entry_total() + 8 * STEP)
 	assert_false(view.is_trainer_visible(BattleEvent.SideId.FOE), "l'adversaire s'est effacé")
 	assert_false(view.is_trainer_visible(BattleEvent.SideId.PLAYER), "le joueur s'est effacé")
+
+
+## Maquettes validées : dresseurs ancrés au sol (ombre sous les pieds), joueur grand au premier
+## plan en bas à gauche, adversaire plus loin à droite, cartouche des Balls au-dessus de lui.
+func test_layout_follows_the_mockups() -> void:
+	var intro := _intro(false)
+	var view := TrainerIntroStage.new()
+	add_child_autofree(view)
+	var size := Vector2(2340, 1080)
+	view.begin(intro, size, TrainerIntroStage.silhouette(), TrainerIntroStage.silhouette())
+	view.speed_scale = 0.0
+	await view.play_enter()
+	var foe := BattleEvent.SideId.FOE
+	var mine := BattleEvent.SideId.PLAYER
+	var player_feet := view.get_feet(mine)
+	var foe_feet := view.get_feet(foe)
+	assert_lt(player_feet.x, size.x * 0.5, "joueur à gauche")
+	assert_gt(foe_feet.x, size.x * 0.5, "adversaire à droite")
+	assert_gt(player_feet.y, foe_feet.y, "joueur au premier plan (plus bas)")
+	var player_h := view.get_trainer(mine).texture.get_height() * view.get_trainer(mine).scale.y
+	var foe_h := view.get_trainer(foe).texture.get_height() * view.get_trainer(foe).scale.y
+	assert_gt(player_h, foe_h * 1.5, "joueur nettement plus grand")
+	for side: BattleEvent.SideId in [foe, mine]:
+		assert_true(view.get_shadow(side).visible, "ombre au sol")
+		assert_eq(view.get_shadow(side).position, view.get_feet(side), "sous les pieds")
+	var cartouche := view.get_cartouche()
+	assert_true(cartouche.visible, "cartouche des Balls")
+	assert_lt(cartouche.position.y, foe_feet.y - foe_h, "au-dessus de la tête de l'adversaire")
+	assert_gt(cartouche.position.x, size.x * 0.5, "rattaché à l'adversaire, pas en haut à gauche")
 
 
 func test_front_texture_fallback_chain() -> void:

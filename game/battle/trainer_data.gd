@@ -51,6 +51,9 @@ var team_by_starter: Dictionary[StringName, Array] = {}
 var card_name: String = ""
 var card_title: String = ""
 var card_portrait: StringName = &""
+## Classe de combat imposée par les données (« class ») ; vide : déduite du nom
+## ([method TrainerIntroCatalog.class_for]).
+var battle_class: StringName = &""
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
 

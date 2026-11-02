@@ -140,8 +140,8 @@ func test_ordinary_trainer_entry_order() -> void:
 
 func test_grand_battle_plays_vs_first() -> void:
 	await _play(GRAND)
-	assert_eq(_opening(), ["vs:PIERRE/Champion d'Arène d'Argenta", "step:VS_IN",
-		"step:VS_HOLD", "step:VS_OUT", "step:TRAINERS_IN", "event:started", "step:FOE_SEND",
+	assert_eq(_opening(), ["step:TRAINERS_IN", "vs:PIERRE/Champion d'Arène d'Argenta",
+		"step:VS_IN", "step:VS_HOLD", "step:VS_OUT", "event:started", "step:FOE_SEND",
 		"event:sent_foe", "step:PLAYER_SEND", "event:sent_player"] as Array[String])
 	assert_false(_foe_shown_at_entry)
 	for child: Node in _hud.get_children():

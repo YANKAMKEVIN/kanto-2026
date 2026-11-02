@@ -1,33 +1,37 @@
-# Fiche d'art — Entrée des combats de Dresseur (v1, 2026-11-02)
+# Fiche d'art : Entrée des combats de Dresseur (v2, 2026-11-02)
 
-Spécification : `docs/design/dossier-05-combat.md` §3 (décision de Kevin du 2026-11-02).
-Code et déroulé livrés avec des images **provisoires** (vidéo : `entree-dresseurs-v1.mp4`) ; cette
-fiche liste l'art définitif à produire par lots (Codex), qui **se branche sans code** : il suffit de
-déposer le fichier au bon chemin (sinon le jeu retombe sur l'image provisoire).
+Spécification : `docs/design/dossier-05-combat.md` §3 (décisions de Kevin du 2026-11-02).
+**Cible de rendu validée par Kevin (« exactement ça »)** : les trois maquettes
+`docs/design/reference/entree-dresseur-ordinaire-v1.png`, `entree-dresseur-lancer-v1.png`,
+`entree-dresseur-vs-v1.png`. Tout l'art de ce chantier doit **atteindre ce rendu** : personnages
+peints dans la même main que les maquettes (2D HD, anime peint, contours fins, ombres douces),
+bustes peints au cadrage des maquettes, banderoles à l'effet pinceau. Exception : la rangée de
+Poké Balls de la maquette 2 (en haut à gauche) **n'est pas retenue** : le cartouche est au-dessus
+de l'adversaire (maquette 1).
 
-Données : `data/battle/trainer_intro.json` (classes, grands adversaires, chemins, durées [D]) ;
-grands combats = Dresseurs dont le bloc `card` de `data/trainers/*.json` a un `portrait`.
-Listes vérifiées par `tests/integration/test_trainer_intro_data.gd`.
+Code et déroulé : livrés avec des images **provisoires** (vidéo `entree-dresseurs-v2.mp4`,
+comparatif maquette / jeu `entree-dresseurs-comparatif.jpg`). L'art définitif **se branche sans
+code** : il suffit de déposer le fichier au bon chemin (sinon le jeu retombe sur l'image
+provisoire). Données : `data/battle/trainer_intro.json` (classes, grands adversaires, chemins,
+positions et durées [D]). Listes vérifiées par `tests/integration/test_trainer_intro_data.gd`.
 
-## 1. Sprites de combat de face (un par classe et par grand adversaire)
+## 1. Sprites de combat des adversaires (deux poses par classe et par grand adversaire)
 
-- **Chemin** : `assets/sprites/trainers/battle/<id>.webp` (id = classe ci-dessous, ou identifiant
-  de portrait d'un grand adversaire, §2).
-- **Format** : WebP RGBA, **fond transparent**, toile **512 × 768 px** (portrait 2:3), personnage
-  **en pied, de face** (léger trois-quarts permis), **pieds posés sur le bord bas, centrés**
-  (origine aux pieds, bas-centre de l'image), tête à ~40 px du haut ; aucune ombre portée au sol
-  (le jeu n'en dessine pas pour l'instant).
-- **Affichage** : hauteur de l'image ramenée à 0,42 × la hauteur d'écran (≈ 454 px sur 1080),
-  filtre linéaire ; posé à l'ancre de l'adversaire (en haut à droite du décor).
-- **Rendu** : même main que les personnages peints du jeu (« peints simplifiés », 2D HD),
-  **lumière neutre** (le décor de combat donne l'ambiance), pas de contour noir épais, palette et
-  tenue fidèles au sprite d'exploration de la classe (colonne « apparence du monde »).
-- **Pose** : debout, prêt à lancer (Poké Ball en main conseillée, main droite à l'écran ≈ 22 %
-  de la largeur à gauche du centre, à mi-hauteur : la Ball lancée part de là).
-- **Repli actuel** : première image de l'apparence du monde, agrandie (flou assumé), sinon une
-  silhouette.
+- **Chemins** : `assets/sprites/trainers/battle/<id>.webp` (debout, prêt) et
+  `<id>_lancer.webp` (pose de lancer, bras tendu, Ball qui part de la main **côté terrain**, à
+  hauteur de poitrine, jamais devant le visage). Sans pose de lancer, le jeu fait un élan de la
+  pose debout.
+- **Format** : WebP RGBA, **fond transparent**, toile **512 × 768 px** (2:3), personnage en pied,
+  **de trois-quarts, tourné vers la gauche** (vers le joueur), **pieds posés sur le bord bas,
+  centrés** (origine aux pieds) ; pas d'ombre au sol peinte (le jeu pose l'ombre).
+- **Affichage** : 0,27 × la hauteur d'écran (≈ 290 px sur 1080), pieds à (0,43 ; 0,55) en hauteurs
+  d'écran depuis le centre ; ombre au sol elliptique sous les pieds ; cartouche des Balls
+  au-dessus de la tête.
+- **Rendu** : celui de Gamin Hugo et de Pierre sur les maquettes ; lumière neutre (le décor donne
+  l'ambiance), tenue fidèle à l'apparence du monde de la classe.
+- **Repli actuel** : première image de l'apparence du monde agrandie (floue), sinon une silhouette.
 
-### Classes de Dresseurs ordinaires (33 classes, 260 combats)
+### Classes de Dresseurs ordinaires (34 classes, 260 combats)
 
 | id | Préfixe du nom | Combats | Apparence du monde (repli) |
 |---|---|---|---|
@@ -59,22 +63,32 @@ Listes vérifiées par `tests/integration/test_trainer_intro_data.gd`.
 | `pillard` | Pillard | 6 | `gambler` |
 | `pokemaniac` | Pokémaniac | 4 | `pokemaniac` |
 | `rockeur` | Rockeur | 2 | `rocker` |
-| `sbire_rocket` | Sbire Rocket | 37 | `rocket_grunt_m` |
+| `sbire_rocket` | Sbire Rocket (homme) | 26 | `rocket_grunt_m` |
+| `sbire_rocket_f` | Sbire Rocket (femme, `"class"` dans les données) | 11 | `rocket_grunt_f` |
 | `scientifique` | Scientifique | 13 | `researcher` |
 | `scout` | Scout | 11 | `scout` |
 | `topdresseur` | Topdresseur | 8 | `cooltrainer_m` |
 | `topdresseuse` | Topdresseuse | 4 | `cooltrainer_f` |
 
-Ordre de production conseillé (combats les plus vus d'abord) : `sbire_rocket`, `jeune_dresseuse`,
-`nageur`, `scientifique`, `exorciste`, `motard`, `ornithologue`, `scout`, `gamin`, puis le reste.
+Ordre conseillé (combats les plus vus d'abord) : `sbire_rocket`, `jeune_dresseuse`, `nageur`,
+`scientifique`, `exorciste`, `sbire_rocket_f`, `motard`, `ornithologue`, `scout`, `gamin`, puis
+le reste. Les Sbires femmes ont un sprite à part (décision de Kevin du 2026-11-02).
 
-À noter : 11 des 37 Sbires Rocket sont des femmes dans le monde (`rocket_grunt_f`) ; une seule
-classe pour l'instant (question pour Kevin, §5).
+## 2. Dos du joueur (premier plan)
 
-## 2. Grands adversaires (13 portraits, 22 combats)
+- **Chemins** : `assets/sprites/trainers/battle/dos_hero.webp` et `dos_heroine.webp` (debout,
+  prêt, maquette 1), plus `dos_hero_lancer.webp` / `dos_heroine_lancer.webp` (pose de lancer).
+- **Format** : WebP RGBA, fond transparent, toile **640 × 960 px**, **de dos, trois-quarts vers la
+  droite**, pieds sur le bord bas centrés ; affiché à 0,55 × la hauteur d'écran, pieds à
+  (−0,50 ; 0,93) : grand, au premier plan en bas à gauche.
+- **Costume porté** : le jeu garde le lancer de dos du costume (pas de pose dédiée).
+- **Repli actuel** : le lancer de dos existant (`heros_lancer.png` / `joueuse_lancer.png`),
+  agrandi.
 
-Chaque grand adversaire demande **deux** images : le sprite de face du §1 (même id) et un
-**portrait de banderole** pour la séquence « VS ».
+## 3. Grands adversaires (13 portraits, 22 combats)
+
+Chaque grand adversaire demande le sprite de face du §1 (mêmes deux poses, même id) **et** un
+**buste de banderole** pour la séquence « VS ».
 
 | id (portrait) | Combats | Titre affiché | Apparence du monde (repli) |
 |---|---|---|---|
@@ -90,51 +104,62 @@ Chaque grand adversaire demande **deux** images : le sprite de face du §1 (mêm
 | `aldo` | `league_bruno` | Conseil des Quatre | `aldo` |
 | `agatha` | `league_agatha` | Conseil des Quatre | `agatha` |
 | `peter` | `league_lance` | Conseil des Quatre | `peter` |
-| `rival` (+ `rivale`) | 8 combats : `rival_lab`, `rival_route22`, `rival_cerulean`, `rival_ss_anne`, `rival_tower`, `rival_silph`, `rival_route22_final`, `rival_champion` | Rival / Maître de la Ligue | `rival` / `rival_heroine` |
+| `rival` (+ `rivale`) | 8 combats : `rival_lab`, `rival_route22`, `rival_cerulean`, `rival_ss_anne`, `rival_tower`, `rival_silph`, `rival_route22_final`, `rival_champion` | Rival / Champion de la Ligue (dernier combat) | `rival` / `rival_heroine` |
 
-Le rival suit l'apparence choisie à l'ouverture : prévoir `rival.webp` **et** `rivale.webp`
-(soit 14 portraits et 14 sprites de face pour couvrir les deux apparences).
+Le rival suit l'apparence choisie à l'ouverture : prévoir `rival` **et** `rivale` (14 bustes,
+14 × 2 sprites de face).
 
-### Format du portrait de banderole
+### Buste de banderole
 
 - **Chemin** : `assets/ui/battle/vs/<id>.webp`.
-- **Format** : WebP RGBA, fond transparent, **≈ 540 × 720 px** (3:4), **buste** (tête et épaules,
-  haut du torse), regard tourné vers le centre de l'écran (l'adversaire est à droite de sa
-  banderole rouge : il regarde vers la **gauche**). Haut de la tête à ~40 px du bord haut.
-- **Affichage** : hauteur ramenée à 0,5 × l'écran, débordant de 0,03 au-dessus de la banderole
-  (hauteur 0,30) et rogné par elle : seuls le visage et les épaules restent visibles ; garder
-  l'essentiel dans les **60 % supérieurs** de l'image.
-- **Rendu** : peint, même main que les bustes du menu (`assets/ui/menu/hero_bust.webp`), lumière
-  neutre, expression de défi.
-- **Repli actuel** : portrait d'introduction du rival (`rival_portrait.png` / `rivale_portrait.png`)
-  pour le rival ; sinon le sprite de face (ou son repli).
+- **Format** : WebP RGBA, fond transparent, **≈ 540 × 720 px** (3:4), cadrage **tête et épaules**
+  comme Pierre et Kevin sur la maquette 3, **regard vers la gauche** (vers le centre : le buste est
+  au bout droit de la banderole rouge), expression de défi ; le haut de la tête près du bord haut.
+- **Affichage** : hauteur 0,5 × l'écran, haut de l'image en haut de l'écran, **rogné par le bas de
+  la banderole** (seuls tête et épaules restent visibles, ≈ 55 % supérieurs de l'image).
+- **Repli actuel** : portrait d'introduction du rival, sinon le sprite de face (ou son repli).
+- **Joueur** : buste du menu selon l'apparence et le costume (`TrainerLooks.bust_path`), affiché en
+  bas à gauche, rogné par le bas de l'écran, regard vers la droite ; un buste dédié au cadrage de
+  la maquette (Kevin : tête, épaules, haut du torse) pourra le remplacer.
 
-### Joueur
+## 4. Banderoles « VS » (pinceau, remplaçables)
 
-Le portrait bleu du joueur reprend le **buste du menu** selon l'apparence et le costume porté
-(`TrainerLooks.bust_path`) : rien à produire pour ce chantier ; un buste dédié pourra le remplacer
-plus tard. Le dos du joueur (entrée) est le lancer de dos existant (`TrainerLooks.thrower_path`).
+- **Chemins** : `assets/ui/battle/vs/banderole_rouge.webp` et `banderole_bleue.webp`.
+- **Format** : WebP RGBA, fond transparent, **≈ 2048 × 300 px**, coup de pinceau peint (couleur
+  pleine, traînées et éclaboussures), **bout intérieur déchiré à gauche** pour la rouge ; la bleue
+  est dessinée de la même façon (le jeu la retourne : son bout déchiré est à droite).
+- **Affichage** : épaisseur 0,22 × l'écran, inclinée de 4° (rouge en haut à droite, bleue en bas à
+  gauche) ; nom en capitales Cinzel gras, or clair cerné de brun, filet et losange, titre dessous.
+- **Repli actuel** : pinceau dessiné en code (bandes à bord déchiré, traînées, liseré clair).
+- **Police** : Cinzel (SIL OFL 1.1) ajoutée dans `assets/fonts/cinzel/` (licence `OFL.txt` à côté).
 
-## 3. Emblème « VS »
+## 5. Emblème « VS »
 
-Provisoire dessiné en code (éclair `ACCENT` et lettres « VS » cernées). Facultatif :
-`assets/ui/battle/vs/emblem.webp` (non branché à ce jour, à brancher si un emblème peint est
-produit).
+Dessiné en code : lettres Cinzel or cernées de brun, éclair doré en diagonale, deux traits
+horizontaux qui s'effacent. Un emblème peint (`assets/ui/battle/vs/emblem.webp`, doré, éclat) peut
+être produit ; il n'est pas encore branché.
 
-## 4. Valeurs par défaut [D] (réglables dans `data/battle/trainer_intro.json` et `UiTokens.VS_*`)
+## 6. Valeurs par défaut [D] (`data/battle/trainer_intro.json`, `UiTokens.VS_*`)
 
-- Séquence « VS » : entrée 0,35 s, tenue 0,9 s, sortie 0,4 s (≈ 1,65 s) ; banderole rouge
-  `#C8323C` en haut, bleue `#2F64C8` en bas, liseré `ACCENT`, voile du monde à 50 %.
-- Entrée du niveau 1 : dresseurs 0,45 s + rangée de Balls 0,25 s, lancer 0,35 s + effacement
-  0,3 s par camp (≈ 2,0 s sans les messages).
-- Rangée de Poké Balls : 6 emplacements dans la zone de la carte adverse (pleine / éteinte /
-  vide), taille 0,065 × l'écran.
+- Ordinaire : les dresseurs entrent 0,55 s après le début de la caméra (0,45 s), puis le cartouche
+  et ses Balls (0,25 s) ; chaque lancer 0,4 s + accompagnement 0,2 s + recul en fondu 0,3 s, sous
+  son message. **≈ 4,1 s** du début du combat aux commandes (mesuré sur la vidéo).
+- Grand combat : la même entrée, puis le « VS » (0,3 + 0,75 + 0,35 = **1,4 s**), puis les lancers.
+- Cartouche : verre sombre de l'interface, 6 emplacements (plein / éteint / vide), au-dessus de la
+  tête de l'adversaire, décalé de 0,16 vers l'extérieur ; il part au lancer de l'adversaire, avant
+  les jauges.
 
-## 5. Questions ouvertes (pour Kevin)
+## 7. Écarts restants avec les maquettes (sans l'art définitif)
 
-1. Sbires Rocket femmes : un sprite de face distinct (`sbire_rocket_f`) ?
-2. Combat du labo (`rival_lab`) : la séquence « VS » est jouée (le rival est un grand adversaire),
-   mais les dresseurs n'entrent pas (les Pokémon viennent du monde) : à confirmer.
-3. Revanches (après une défaite contre un Champion) : la séquence « VS » est rejouée (« jamais
-   sautée ») ; l'ancienne carte n'apparaissait qu'à la première rencontre.
-4. Titres [D] du rival : « Rival », et « Maître de la Ligue » pour le dernier combat.
+1. **Personnages** : repli sur l'apparence du monde agrandie (adversaires) et sur le lancer de dos
+   (joueur, toujours dans la pose bras tendu de la maquette 1) : flous, de face et non de
+   trois-quarts, pas de vraie pose de lancer (élan seulement) tant que les images du §1 et du §2
+   manquent.
+2. **Bustes** : Pierre utilise son apparence du monde, en pied et petite, au lieu du buste peint.
+3. **Banderoles** : pinceau dessiné en code, plus net et plus plat que le pinceau peint.
+4. **Emblème** : lettres et éclair plus fins et sans éclat lumineux.
+5. **Cadrage du « VS »** : mêmes positions que l'entrée ordinaire ; sur la maquette 3 les deux
+   dresseurs sont un peu plus hauts et plus proches du centre (cadrage d'Arène). Réglable dans
+   `points` si Kevin le souhaite.
+6. **Traînée de la Ball** : plus fine et plus courte que sur la maquette 2 (réglable :
+   `trail_width`).

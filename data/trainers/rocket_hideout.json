@@ -16,7 +16,7 @@
 		]
 	},
 	"rocket_hideout_b1f_2": {
-		"name": "Sbire Rocket", "ai": "random",
+		"name": "Sbire Rocket", "class": "sbire_rocket_f", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 630,
 		"team": [
 			{ "species": "raticate", "level": 21 },
@@ -44,7 +44,7 @@
 		]
 	},
 	"rocket_hideout_b3f_1": {
-		"name": "Sbire Rocket", "ai": "random",
+		"name": "Sbire Rocket", "class": "sbire_rocket_f", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 600,
 		"team": [
 			{ "species": "rattata", "level": 20 },
@@ -78,7 +78,7 @@
 		]
 	},
 	"rocket_hideout_b4f_guard_2": {
-		"name": "Sbire Rocket", "ai": "random",
+		"name": "Sbire Rocket", "class": "sbire_rocket_f", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 690,
 		"team": [
 			{ "species": "ekans", "level": 23 },
