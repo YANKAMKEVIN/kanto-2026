@@ -16,6 +16,11 @@ Décision préférée de Kevin. Pas de « transition → décor générique d'he
 - **Sauvage** : pas de spirale Game Boy de 3 s. L'herbe bouge → cri → le personnage s'arrête → la caméra se rapproche légèrement → le Pokémon apparaît → le partenaire entre dans le cadre → combat.
 - **Dresseur** : il te voit → s'approche → quelques mots → sort sa Poké Ball → lancer. Rapide.
 
+> **Entrée des combats de Dresseur (décision de Kevin, 2026-11-02)** : on doit **voir les deux dresseurs** à chaque combat de Dresseur, comme dans Rouge/Bleu, en mieux. **Deux niveaux** :
+> 1. **Dresseur ordinaire** : les deux dresseurs entrent dans le décor peint, le joueur de dos à gauche, l'adversaire de face à droite ; Poké Balls de l'équipe adverse ; l'adversaire lance et s'efface, puis le joueur ([D] ≈ 2 s).
+> 2. **Grands combats** (Champions, rival, Conseil 4, Giovanni) : séquence **« VS »** d'abord : banderole **rouge en haut** avec le portrait peint de l'adversaire (nom, titre), banderole **bleue en bas** avec le portrait du joueur ; les banderoles s'écartent (l'une à gauche, l'autre à droite) autour d'un éclair « VS », puis l'entrée du niveau 1. Remplace la carte de Champion sans portrait (`champion_card.gd`).
+> **On ne saute pas la séquence**, même avec un toucher (décision de Kevin). Le joueur suit son apparence (garçon/fille, costume porté). Art : un sprite de combat de face peint par classe de Dresseur adverse, un portrait de banderole par grand adversaire.
+
 ## 4. La caméra
 Vue générale : ton Pokémon en bas/gauche, l'adversaire en haut/droite. Pendant les attaques : léger zoom, déplacement du cadrage, tremblement extrêmement subtil, flash, particules, puis **retour immédiat** au cadrage normal. Cinématique sans transformer chaque attaque en Final Fantasy.
 
