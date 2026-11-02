@@ -1,7 +1,7 @@
 extends GutTest
-## BattleStage avec décor peint (CB.3) : le lieu choisit le décor (Route 1) ou le repli (labo :
-## carte recadrée au zoom de combat). Avec décor : le monde se floute puis se fond dans le décor
-## (transition en temps simulé), décor opaque posé par sa ligne de sol (pieds et ombres sur le
+## BattleStage avec décor peint (CB.3) : le lieu choisit le décor (Route 1) ou le repli (chambre du
+## joueur, sans fond depuis que le labo a le sien : carte recadrée au zoom de combat). Avec décor :
+## le monde se floute puis se fond dans le décor (transition en temps simulé), décor opaque posé par sa ligne de sol (pieds et ombres sur le
 ## sol peint), premier plan devant ton Pokémon, caméra qui avance à peine, flou du monde coupé
 ## une fois le décor opaque ; coups, critique, capture ; sortie : décor rendu, caméra intacte.
 
@@ -46,7 +46,7 @@ func _wild(species: StringName = &"pidgey") -> void:
 func test_place_picks_the_route_1_decor_or_falls_back() -> void:
 	assert_not_null(_stage.set_place(&"route_1", Vector2i(10, 30)))
 	assert_eq(_stage.get_decor().id, &"route_1_chemin")
-	assert_null(_stage.set_place(&"oak_lab", Vector2i(5, 5)), "labo : repli")
+	assert_null(_stage.set_place(&"player_house_2f", Vector2i(5, 5)), "chambre : repli")
 	assert_null(_stage.get_decor())
 
 
@@ -107,7 +107,7 @@ func test_moves_critical_capture_and_exit_on_the_decor() -> void:
 
 
 func test_fallback_keeps_the_old_backdrop() -> void:
-	_stage.set_place(&"oak_lab", Vector2i(5, 5))
+	_stage.set_place(&"player_house_2f", Vector2i(5, 5))
 	await _wild()
 	assert_false(_stage.get_decor_back().visible)
 	assert_false(_stage.get_decor_front().visible)
@@ -156,8 +156,8 @@ func test_transition_blurs_the_world_into_the_decor() -> void:
 ## quel au combat ; une carte sans décor rend celui de la précédente (un seul décor gardé).
 func test_decor_is_preloaded_on_map_entry_and_reused() -> void:
 	var cache := _stage.get_decor_cache()
-	_stage.prepare_place(&"oak_lab")
-	assert_eq(cache.get_paths().size(), 0, "labo : rien à précharger")
+	_stage.prepare_place(&"player_house_2f")
+	assert_eq(cache.get_paths().size(), 0, "chambre : rien à précharger")
 	_stage.prepare_place(&"route_1")
 	var decor := BattleDecorCatalog.load_file().default_for(&"route_1")
 	assert_eq(cache.get_paths().size(), 2, "fond et premier plan demandés")
@@ -171,7 +171,7 @@ func test_decor_is_preloaded_on_map_entry_and_reused() -> void:
 	assert_same(_stage.get_decor_back().texture, back, "image préchargée reprise")
 	await _stage.exit()
 	assert_eq(cache.get_paths().size(), 2, "gardé hors combat sur cette carte")
-	_stage.prepare_place(&"oak_lab")
+	_stage.prepare_place(&"player_house_2f")
 	assert_eq(cache.get_paths().size(), 0, "rendu en quittant la carte")
 
 
