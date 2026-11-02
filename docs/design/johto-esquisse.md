@@ -17,12 +17,13 @@
 | 2026-10-30 | ✅ Histoire **plus courte**, **pas 8 badges** |
 | 2026-11-02 | ✅ Structure en **trois actes** : une menace sur quelques villes, puis une quête de légendaires, puis une épreuve finale au **Mont Argenté** |
 | 2026-11-02 | ✅ Départ de **Bourg Palette**, par un **passage secret, par l'eau** (détail à trouver) |
-| 2026-11-02 | ✅ Types **Ténèbres** et **Acier** ajoutés (JH-4) |
-| 2026-11-02 | ✅ **50 espèces**, choisies par Claude parmi les plus importantes (JH-5, liste au §8 à valider) |
+| 2026-11-02 | ✅ Types **Ténèbres** et **Acier** voulus (JH-4) : ils existent déjà dans le jeu (18 types modernes, Fée compris) ; la table actuelle est gardée |
+| 2026-11-02 | ✅ **50 espèces**, choisies par Claude parmi les plus importantes ; liste du §8 validée (JH-5) |
 | 2026-11-02 | ✅ Au Mont Argenté, **option A, le relais** (JH-9) ; les **combats en duo** viendront plus tard, après le chapitre |
 | 2026-11-02 | ✅ L'adversaire final est l'**ancien chef de la Team Rocket, mentor de Giovanni**, trahi par lui (§9) ; il s'appelle **Dante** |
 | 2026-11-02 | ✅ JH-1, JH-2, JH-3, JH-8, JH-10 : propositions de Claude retenues (vol au Centre, équipe et sac rendus ensemble à la Tour Radio, Kanto change peu, révélation de Dante) |
 | 2026-11-02 | ✅ Jour et nuit **comme Or/Argent**, à l'heure du téléphone (JH-6, §7) |
+| 2026-11-02 | ✅ **Giovanni réapparaît** à la fin, sans combat (JH-7) |
 | 2026-11-02 | ✅ Le joueur **perd son équipe** au début (la Team Rocket la prend), **repart avec de nouveaux Pokémon**, et **retrouve son équipe plus tard** ; ensuite, les adversaires sont **à son niveau** |
 
 ## 2. Fil rouge proposé
@@ -82,10 +83,10 @@ Pokémon de l'acte 1 restent utiles ensuite s'ils montent avec l'équipe.
 | JH-1 | ✅ Vol au Centre Pokémon d'Oliville pendant la nuit (Kevin, 2026-11-02) | — |
 | JH-2 | ✅ Équipe rendue tout d'un coup, à la fin de l'acte 1 (Tour Radio) (Kevin) | — |
 | JH-3 | ✅ Sac volé avec l'équipe, sauf les objets clés, et rendu avec elle (Kevin) | — |
-| JH-4 | ✅ Types **Ténèbres** et **Acier** ajoutés (Kevin, 2026-11-02). Reste : comment ? | Dans tout le jeu, avec la table des types d'Or/Argent ; les espèces de Kanto gardent leurs types de Rouge/Bleu (pas de Magnéti Électrik/Acier) |
-| JH-5 | ✅ 50 espèces (Kevin). Reste : valider la liste du §8 | Liste du §8 |
+| JH-4 | ✅ **Table des types actuelle gardée** (Kevin) : le jeu a déjà les 18 types modernes, Ténèbres, Acier et Fée compris (`data/pokemon/types.json`) ; les espèces de Johto prennent leurs types modernes (Marill Eau/Fée, Togepi Fée…) | — |
+| JH-5 | ✅ Les 50 espèces du §8, validées telles quelles (Kevin) | — |
 | JH-6 | ✅ Jour et nuit **comme Or/Argent** (option C), à l'**heure du téléphone** (Kevin) | — |
-| JH-7 | ✅ L'ancien chef, mentor trahi de Giovanni, s'appelle **Dante** (Kevin). Reste : Giovanni réapparaît-il ? | Oui, à la fin, sans combat : il voit tomber son ancien mentor |
+| JH-7 | ✅ L'ancien chef s'appelle **Dante** ; **Giovanni réapparaît à la fin, sans combat**, pour voir tomber son ancien mentor (Kevin) | — |
 | JH-8 | ✅ Kanto change le moins possible : la grotte de Bourg Palette, des messages de Chen, un PNJ ou deux (Kevin) | — |
 | JH-9 | ✅ Relais (Kevin, 2026-11-02) | — |
 | JH-10 | ✅ Révélation à la Tour Radio : les Sbires croient travailler au retour de Giovanni ; Dante les a repris en main et a fait voler l'équipe du Maître pour l'écarter (Kevin) | — |
@@ -108,9 +109,10 @@ Pokémon de l'acte 1 restent utiles ensuite s'ils montent avec l'équipe.
 - Kanto garde son éclairage actuel (JH-8) : les règles de l'heure ne valent qu'à Johto, sauf
   décision contraire.
 
-## 8. Les 50 espèces (proposition, à valider)
+## 8. Les 50 espèces (validées, JH-5)
 
-Or/Argent ajoutent **100 espèces** (n° 152 à 251) et **2 types** (17 en tout). En prendre 50,
+Or/Argent ajoutent **100 espèces** (n° 152 à 251). Les types ne bougent pas : le jeu a déjà les 18
+types modernes (JH-4). En prendre 50,
 c'est en garder une sur deux. Chaque espèce coûte un artwork, un dos de combat peint, des données,
 des attaques et une fiche de Pokédex.
 
@@ -118,7 +120,7 @@ des attaques et une fiche de Pokédex.
 1. **L'histoire en a besoin** : départ (et ses évolutions), légendaires, Pokémon des adversaires
    importants.
 2. **Elle prolonge une famille de Kanto** que le joueur a peut-être déjà (évolution nouvelle).
-3. **Elle montre un nouveau système** : Ténèbres, Acier, jour et nuit.
+3. **Elle met en valeur un type peu présent à Kanto** (Ténèbres, Acier) **ou le jour et la nuit**.
 4. **Elle peuple les routes** de Johto, pour que la région ne ressemble pas à Kanto.
 
 **Écartées d'office** : Zarbi (28 formes pour un rôle d'énigme), les bébés (Pichu, Mélo,
@@ -148,6 +150,8 @@ feu et en cendres ». Il s'appelle **Dante** (Kevin, 2026-11-02).
 Le lien avec les actes : à l'acte 1, il a repris en main les Sbires de Johto et fait voler l'équipe
 du joueur, ce qu'on découvre à la Tour Radio (JH-10, validé) ; idée de Claude pour la suite : à l'acte 2, il veut réveiller ou soumettre **Ho-Oh** et la flamme de la Tour Cendrée,
 et le joueur l'en empêche à Rosalia ; à l'acte 3, il se replie au sommet du Mont Argenté.
+Après sa défaite, **Giovanni apparaît, sans combat**, voit tomber son ancien mentor et repart
+(JH-7, Kevin, 2026-11-02).
 
 **Le rival : option A, le relais** (Kevin, 2026-11-02). Le rival retient les Sbires et les admins
 pendant que le joueur monte ; le joueur affronte seul l'ancien chef ; après la victoire, le rival
