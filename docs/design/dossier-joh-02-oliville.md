@@ -2,7 +2,8 @@
 
 > Premier jalon de contenu du Chapitre Johto (cadre [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md)
 > §4.1–4.2 ; systèmes [`dossier-joh-01-systemes-joh0.md`](dossier-joh-01-systemes-joh0.md) §6).
-> Écrit par Claude le 2026-11-02 ; **à valider par Kevin**, textes compris (§14, lot unique).
+> Écrit par Claude le 2026-11-02 ; **textes (§14) et JH-25 à JH-27 validés par Kevin le jour même** ;
+> le reste du dossier est à valider.
 > Valeurs **[D]** = défauts. Grilles et vues générales peintes après validation du dossier, comme
 > à Kanto. **Pas de code avant la fin de Kanto et du JOH0.**
 
@@ -67,10 +68,10 @@ Point de Vol : Oliville (cadre §3.2), ajouté à l'arrivée mais utilisable seu
 | 4 | Grotte marine | Courant, ombre de Lugia | `johto_lugia_shadow` |
 | 5 | Plage d'Oliville | Arrivée **de nuit** (moment imposé) ; titre de zone « Oliville » | `johto_arrived` |
 | 6 | Centre | L'infirmière soigne l'équipe et propose de dormir ; le joueur accepte (scène forcée) | — |
-| 7 | Centre, nuit | Vol (scène, écran noir et sons) ; équipe et sac confisqués (JOH0 §6.2) | `johto_team_stolen`, `johto_act1`, `storage_offline` |
+| 7 | Centre, nuit | Vol (scène : silhouettes de Sbires dans la pénombre, sons) ; équipe et sac confisqués (JOH0 §6.2) | `johto_team_stolen`, `johto_act1`, `storage_offline` |
 | 8 | Centre, matin | Réveil, l'infirmière découvre le vol, le PC ne répond pas | — |
 | 9 | Centre | Orme arrive, se présente, propose les trois Pokémon | — |
-| 10 | Centre | Choix du Pokémon de départ, 5 Poké Balls, 1 Potion (Carte Dresseur de Johto : JH-26) | `johto_starter_chosen` |
+| 10 | Centre | Choix du Pokémon de départ, 5 Poké Balls, 1 Potion | `johto_starter_chosen` |
 | 11 | Oliville | Retour à l'heure réelle ; la sortie est s'ouvre | — |
 
 **Scènes forcées et heure** : de l'étape 5 à l'étape 8, l'heure est imposée (nuit, puis matin) ; à
@@ -103,7 +104,7 @@ rencontre à Oliville. **[D]**
 | Prof. Chen | Labo | Lit la lettre |
 | Prof. Orme | Centre d'Oliville | Donne le Pokémon de départ ; repart à Doublonville (on le revoit au JOH3) |
 | Infirmière d'Oliville | Centre | Soigne, propose le lit, découvre le vol |
-| Sbires | Centre, nuit | Hors champ ou silhouettes (JH-27), sans combat |
+| Sbires | Centre, nuit | Silhouettes dans la pénombre (JH-27), sans combat |
 | 1 marin, 1 vieille dame, 1 enfant | Port, maisons | Ambiance, rumeurs sur la Team Rocket |
 | Garde de la sortie est | Oliville | Bloque la Route 39 jusqu'au choix du Pokémon de départ |
 
@@ -147,10 +148,10 @@ avant le choix du Pokémon de départ (aucun combat). Après le choix : retour a
   salle de repos) et de la Boutique de Johto, 2 maisons.
 - Bouche de grotte de Bourg Palette (retouche d'un décor existant).
 - Personnages : **Prof. Orme** (neuf), infirmière (existante), silhouettes de Sbires (existantes,
-  assombries), marin, vieille dame, enfant (existants si possible).
+  assombries, en mouvement dans la pénombre : JH-27), marin, vieille dame, enfant (existants si possible).
 - Ombre de Lugia : silhouette sombre sous l'eau (pas besoin du sprite de combat).
 
-## 14. Textes (lot à valider)
+## 14. Textes (lot validé par Kevin le 2026-11-02)
 
 Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = noms.
 
@@ -164,7 +165,7 @@ Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = nom
 | O-6 | Grotte, ombre de Lugia (système) | … ! / Une ombre immense passe sous l'eau. / Elle disparaît dans les profondeurs. |
 | O-7 | Courant, retour pendant l'acte 1 | Le courant est trop fort. / Impossible de repartir par là. |
 | O-8 | Infirmière d'Oliville, arrivée | Bonsoir, et bienvenue à Oliville. / Vous venez de Kanto par la mer ? Quelle aventure ! / Je soigne vos Pokémon. / Vous avez l'air épuisé… / Nous avons une chambre à l'étage. Reposez-vous, je veille sur eux. |
-| O-9 | Nuit (système, écran noir) | … / *Un bruit de verre.* / *Des pas pressés.* / *Une porte qui claque.* |
+| O-9 | Nuit (système, pendant que les silhouettes passent) | … / *Un bruit de verre.* / *Des pas pressés.* / *Une porte qui claque.* |
 | O-10 | Infirmière, matin | {joueur} ! Réveillez-vous ! / Des voleurs sont entrés cette nuit… / Vos Pokémon… et vos affaires… / Ils ont tout pris. Je suis désolée… |
 | O-11 | PC du Centre, après le vol | Connexion au réseau de Kanto… / … / Le réseau ne répond pas. |
 | O-12 | Orme, arrivée | Bonjour ! C'est toi, {joueur} ? / Je suis le Professeur Orme. Chen m'a prévenu de ta venue. / J'arrive trop tard… L'infirmière m'a tout raconté. / Des hommes en noir, un « R » sur la poitrine. / C'est bien la Team Rocket. |
@@ -186,6 +187,6 @@ Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = nom
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-25 | Le Rappel Max de la grotte, volé la nuit même : clin d'œil ou frustration ? | Le garder ; il revient avec le sac à la Tour Radio |
-| JH-26 | Orme donne aussi une **Carte Dresseur de Johto** (objet clé décoratif) ? | Non : rien de neuf à faire avec, on la retire |
-| JH-27 | Le joueur voit-il **les Sbires** pendant le vol (silhouettes), ou seulement l'écran noir ? | Écran noir et sons seulement (moins d'art, plus inquiétant) |
+| JH-25 | ✅ Le Rappel Max de la grotte est gardé ; il revient avec le sac (Kevin, 2026-11-02) | — |
+| JH-26 | ✅ Pas de Carte Dresseur de Johto (Kevin) | — |
+| JH-27 | ✅ Le joueur voit les **silhouettes des Sbires** filer dans la pénombre du Centre (Kevin) | — |
