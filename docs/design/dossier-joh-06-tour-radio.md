@@ -3,8 +3,8 @@
 > Cinquième et dernier jalon de l'acte 1 du Chapitre Johto (cadre
 > [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md) §4.2 ; systèmes
 > [`dossier-joh-01-systemes-joh0.md`](dossier-joh-01-systemes-joh0.md) §6 et §10). Écrit par Claude
-> le 2026-11-02 ; **textes T-1 à T-38 et arbitrages JH-40 à JH-43 en attente de Kevin**. Valeurs
-> **[D]** = défauts. Grilles et vues peintes après validation.
+> le 2026-11-02 ; **textes T-1 à T-38 et arbitrages JH-40 à JH-43 validés par Kevin le jour même**
+> (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
 
 ## 1. Hors périmètre
 
@@ -148,7 +148,7 @@ Personnages neufs : **Cenere** (froide, méthodique, tenue d'admin assortie à B
 existent. **Dante n'apparaît pas** (voix seule, cadre §4.2) : rien à peindre ; à l'écran, le
 haut-parleur et un grésillement **[D]**.
 
-## 14. Textes (à valider par Kevin)
+## 14. Textes (lot validé par Kevin le 2026-11-02)
 
 Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms ; *italique* = voix dans les
 haut-parleurs.
@@ -198,7 +198,7 @@ haut-parleurs.
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-40 | Comment le faux employé est-il démasqué ? | Montrer la Carte d'accès : il reconnaît la carte de Brace, se trahit, **combat obligatoire**, puis il s'enfuit |
-| JH-41 | Quels admins à la Tour ? | **Cenere seule**, au sommet (Brace reste pour Acajou, JH-15) |
-| JH-42 | Pourquoi l'équipe est-elle laissée au joueur ? | **Dante ordonne la retraite** (« Laisse tout ») : l'antenne a fait son travail, Cenere abandonne l'équipe et le sac dans le bureau |
-| JH-43 | Les Sbires après la révélation de Dante | **Ils se divisent** : certains partent (ils venaient pour Giovanni), d'autres suivent Dante (la Team Rocket de l'acte 2) |
+| JH-40 | ✅ Le faux employé est démasqué par la **Carte d'accès** (il reconnaît la carte de Brace), **combat obligatoire**, puis il s'enfuit (Kevin, 2026-11-02) | — |
+| JH-41 | ✅ **Cenere seule** à la Tour ; Brace gardé pour Acajou (Kevin) | — |
+| JH-42 | ✅ **Dante ordonne la retraite** (« Laisse tout ») : Cenere abandonne l'équipe et le sac dans le bureau (Kevin) | — |
+| JH-43 | ✅ Les Sbires **se divisent** après la révélation : certains partent, d'autres suivent Dante (Kevin) | — |
