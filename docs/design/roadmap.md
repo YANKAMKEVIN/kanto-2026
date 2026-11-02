@@ -122,6 +122,8 @@ Une suite après la Ligue, pour continuer l'histoire du joueur. Ce qui est déci
   équipe retrouvée plus tard ; ensuite, adversaires au niveau du joueur.
 
 Esquisse, propositions et arbitrages JH-1 à JH-10 : [`johto-esquisse.md`](johto-esquisse.md).
+Cadre général (géographie, scénario, systèmes, jalons JOH0 à JOH9, arbitrages JH-11 à JH-20) :
+[`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md), à valider.
 Pas de code avant la fin de Kanto et la validation d'un dossier. Jalons numérotés **JOH1, JOH2…**.
 
 ## Jalons narratifs à ne pas oublier

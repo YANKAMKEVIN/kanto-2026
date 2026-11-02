@@ -1,5 +1,7 @@
 # Chapitre Johto — esquisse v0.1
 
+> **Suite** : le cadre général est dans [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md).
+
 > Suite de Kanto 2026 après la Ligue (roadmap, phase 10). Conçue avec Kevin dans Claude Code, sans
 > passer par ChatGPT (décision de Kevin, 2026-11-02). **Rien n'est verrouillé** : les points ✅
 > sont décidés par Kevin, le reste est une proposition de Claude à arbitrer (§6). Pas de code avant
