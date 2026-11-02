@@ -1883,8 +1883,7 @@ func play_trainers_in(intro: TrainerIntro) -> void:
 	_intro_stage.begin(intro, _view_size(), TrainerIntroStage.foe_texture(intro),
 		TrainerIntroStage.player_texture(intro, look, back),
 		TrainerIntroStage.foe_texture(intro, Callable(), true),
-		TrainerIntroStage.player_texture(intro, look, back, Callable(), true),
-		TrainerIntroStage.player_vs_texture(intro, look))
+		TrainerIntroStage.player_texture(intro, look, back, Callable(), true))
 	_intro_pending = {BattleEvent.SideId.FOE: true, BattleEvent.SideId.PLAYER: true}
 	await _intro_stage.play_enter()
 

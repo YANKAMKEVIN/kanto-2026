@@ -284,7 +284,7 @@ func test_player_image_follows_the_phase() -> void:
 	assert_eq(mine.texture, throw, "il lance avec la pose de lancer")
 
 
-## Rangée : Balls actives pleines, emplacements vides sombres à liseré clair (texture à part).
+## Rangée : Balls actives pleines, emplacements vides en gris clair (texture à part).
 func test_empty_slots_are_light_grey_balls() -> void:
 	var intro := _intro(false)
 	var view := TrainerIntroStage.new()
@@ -294,24 +294,6 @@ func test_empty_slots_are_light_grey_balls() -> void:
 	var row := view.get_ball_row()
 	assert_eq(row[0].texture, BattleStage.BALL_TEXTURE)
 	assert_eq(row[0].modulate.a, 1.0, "active : opacité pleine")
-	assert_eq(row[5].texture, TrainerIntroStage.empty_slot(), "vide : disque sombre à liseré")
-	assert_ne(row[5].texture, row[0].texture, "nettement distinct d'une Ball active")
+	assert_eq(row[5].texture, TrainerIntroStage.grey_ball(), "vide : Ball grise")
+	assert_gt(row[5].modulate.v, 0.9, "gris clair, lisible sur le verre sombre")
 
-
-## Itération 5 : pendant le « VS », le joueur prend sa pose dédiée (repli : l'image de l'entrée).
-func test_player_vs_pose_with_fallback() -> void:
-	var intro := _intro(true)
-	var stand := TrainerIntroStage.silhouette()
-	var throw := ImageTexture.create_from_image(Image.create(32, 96, false, Image.FORMAT_RGBA8))
-	var pose := ImageTexture.create_from_image(Image.create(40, 96, false, Image.FORMAT_RGBA8))
-	for vs: Texture2D in [pose, null]:
-		var view := TrainerIntroStage.new()
-		add_child_autofree(view)
-		view.begin(intro, Vector2(2340, 1080), TrainerIntroStage.silhouette(), stand, null, throw,
-			vs)
-		view.speed_scale = 0.0
-		await view.play_enter()
-		await view.move_to_pose(&"vs", 0.3)
-		var mine := view.get_trainer(BattleEvent.SideId.PLAYER)
-		assert_eq(mine.texture, pose if vs != null else throw,
-			"pose du « VS », sinon celle de l'entrée")
