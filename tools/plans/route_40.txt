@@ -1,0 +1,85 @@
+# Route 40 (route_40) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ; dossier
+# docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étape 2), §5 à §7, textes M-2, M-5, M-7).
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+#
+# 24 × 40 cases (dossier : ≈ 24 × 40) ; nord en haut ; x = colonne 0..23, y = rangée 0..39.
+#
+# Composition (route marine, tout en Surf) :
+#   - MER (w) d'un récif à l'autre ; entrée au NORD (7..16, 0) depuis la plage d'Oliville (10 cases,
+#     comme le bord sud d'Oliville) ; sortie au SUD par un CHENAL de 3 cases (10..12, 39) entre deux
+#     récifs (R, y 37..38), vers la Route 41.
+#   - Trois BARRES DE ROCHERS (o, y 12, y 20, y 28) qui font louvoyer ; rochers isolés.
+#   - Deux BANCS DE SABLE (s, praticables à pied) : au nord-est (x 16..19, y 8..10) avec l'Ultra Ball ×2,
+#     au sud-ouest (x 4..7, y 33..35).
+#   - NAGEURS Yanis (12, 6), Élodie (5, 17), Marius (18, 31), tous évitables (dossier §6).
+#   - Le marin de M-1 est sur la plage d'Oliville (« marin_plage », tools/plans/oliville.txt).
+#
+# Raccords :
+#   NORD (7..16, 0) ↔ Oliville, bord sud (20..29, 39), en Surf (colonnes différentes, warps case à case).
+#   SUD (10..12, 39) ↔ Route 41, bord nord (28..30, 0), en Surf (colonnes différentes, warps case à case).
+#
+# Légende :
+#   R récif et falaise (bloqués)   w mer (SURFABLE ; rencontres de l'eau et pêche)   o rocher émergé (bloqué)
+#   s banc de sable (praticable à pied)
+# Défauts [D] : pas de plage ni de terre ferme sur la route (tout en Surf) ; Dresseurs placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES ws
+
+GRILLE 24 40
+00 RRRRRRRwwwwwwwwwwRRRRRRR
+01 RwwwwwwwwwwwwwwwwwwwwwwR
+02 RwwwwwwwwwwwwwwwwwwwwwwR
+03 RwwwwwwwwwwwwwwwwwwwwwwR
+04 RwwwwwwwwwwwwwwwwwwwowwR
+05 RwwwwwwwwwwwwwwwwwwwwwwR
+06 RwwwwwwwwwwwwwwwwwwwwwwR
+07 RwwwwwwwwwwwwwwwwwwwwwwR
+08 RwwwwwwwwwwwwwwwsssswwwR
+09 RwwwwwwwwwwwwwwwsssswwwR
+10 RwwwwwwwwwwwwwwwsssswwwR
+11 RwwwwwwwwwwwwwwwwwwwwwwR
+12 RwwooooooowwwwwwwwwwwwwR
+13 RwwwwwwwwwwwwwwwwwwwwwwR
+14 RwwwwwwwwwwwwwwwwwwwwwwR
+15 RwwwwwwwwwwwowwwwwwwwwwR
+16 RwwwwwwwwwwwwwwwwwwwwwwR
+17 RwwwwwwwwwwwwwwwwwwwwwwR
+18 RwwwwwwwwwwwwwwwwwwwwwwR
+19 RwwwwwwwwwwwwwwwwwwwwwwR
+20 RwwwwwwwwwwwwwoooooooowR
+21 RwwwwwwwwwwwwwwwwwwwwwwR
+22 RwowwwwwwwwwwwwwwwwwwwwR
+23 RwwwwwwwwwwwwwwwwwwwwwwR
+24 RwwwwwwwwwwowwwwwwwwwwwR
+25 RwwwwwwwwwwwwwwwwwwwwwwR
+26 RwwwwwwwwwwwwwwwwwwwwwwR
+27 RwwwwwwwwwwwwwwwwwwwwwwR
+28 RwwoooooooowwwwwwwwwwwwR
+29 RwwwwwwwwwwwwwwwwwwwwwwR
+30 RwwwwwwwwwwwwwwwwwwwwwwR
+31 RwwwwwwwwwwwwwwwwwwwwowR
+32 RwwwwwwwwwwwwwwwwwwwwwwR
+33 RwwwsssswwwwwwwwwwwwwwwR
+34 RwwwsssswwwwwwwwwwwwwwwR
+35 RwwwsssswwwwwwwwwwwwwwwR
+36 RwwwwwwwwwwwwwwwwwwwwwwR
+37 RRRRRRRRRwwwwwRRRRRRRRRR
+38 RRRRRRRRRwwwwwRRRRRRRRRR
+39 RRRRRRRRRRwwwRRRRRRRRRRR
+FIN
+
+POSITIONS
+warp_nord            warp           7..16,0      libre   surf=1  # PUSH ↑ → olivine_city, from_route_40 (20..29, 39)
+from_olivine         spawn          7..16,0      libre   surf=1 facing=down  # arrivée d'Oliville en Surf ; titre de zone « Route 40 »
+warp_sud             warp           10..12,39    libre   surf=1  # PUSH ↓ → route_41, from_route_40 (28..30, 0)
+from_route_41        spawn          10..12,39    libre   surf=1 facing=up  # arrivée de la Route 41
+panneau              panneau        17,2         bloque   # M-2, piquet dans l'eau, lu depuis (17, 3) ↑
+mer                  repere         1..22,1..38  libre   role=surf_peche  # rencontres de l'eau et pêche (§5)
+yanis                dresseur       12,6         bloque  role=nageur facing=down sight=3  # M-5 : Tentacruel 50, Stari 49 ; évitable
+elodie               dresseur       5,17         bloque  role=nageuse facing=right sight=3  # M-5 : Azumarill 51 ; évitable
+marius               dresseur       18,31        bloque  role=nageur facing=left sight=3  # M-5 : Krabboss 50, Hypocéan 50 ; évitable
+ultra_balls          objet_visible  17,9         bloque  item=ultra_ball quantite=2  # sur le banc de sable nord-est
+FIN

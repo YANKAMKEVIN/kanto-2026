@@ -28,6 +28,12 @@
 | **Îles Tourbillon B1F** | ≈ 36 × 28 | Lac souterrain en Surf avec **courants** (puzzle, JH-48) ; un rocher plat où se tient **Suicune** ; une crique où vient **Lokhlass le vendredi** |
 | **Îles Tourbillon B2F** | ≈ 24 × 24 | Salle de **Lugia** : grande cascade, bassin profond, lumière bleue venue d'en haut |
 
+**Grilles préparées le 2026-11-03 (à valider par Kevin)** : `tools/plans/route_40.txt`, `route_41.txt`,
+`whirl_islands_1f.txt`, `whirl_islands_b1f.txt`, `whirl_islands_b2f.txt` (la grille fait foi pour la
+géométrie ; défauts [D] dans leurs en-têtes) ; retouche d'`oliville.txt` (marin de la plage, raccord
+sud) ; contrôle `tools/art/plan_check_joh7.py` (courants simulés) ; aperçu
+`reference/joh7-grilles-apercu-v1.png`.
+
 ## 4. Ordre de jeu
 
 | Étape | Lieu | Ce qui se passe | Drapeau |

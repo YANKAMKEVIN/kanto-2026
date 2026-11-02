@@ -1,0 +1,78 @@
+# Tour Carillon 2F (bell_tower_2f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH8 ; dossier
+# docs/design/dossier-joh-09-tour-carillon.md §3, §4 (étape 4), §6, §7, textes H-8 à H-10, H-12). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh8.py.
+#
+# 24 × 24 cases (dossier : ≈ 24 × 24) ; nord en haut ; x = colonne 0..23, y = rangée 0..23.
+#
+# Composition (plancher ancien, trois nappes de planches qui cèdent) :
+#   - ESCALIER qui descend (D, (20, 0)) au nord-est, arrivée du 1F ; ESCALIER DU SOMMET (U, (3, 0))
+#     au nord-ouest, dans une niche (x 3, y 1..2) : la montée est jouée en fondu (H-12).
+#   - PLANCHES QUI CÈDENT (O, examen H-9) : trois nappes de deux rangées (y 5..6, y 11..12, y 17..18)
+#     percées chacune d'un passage d'une case ((8, 5..6), (15, 11..12), (10, 17..18)), plus quatre
+#     planches isolées ; tomber ramène au 1F (« chute » (12, 12)). Un chemin sans chute existe.
+#   - SAGE HIROSHI (3, 8), à l'ouest de la nappe nord, soigne l'équipe (H-10).
+#   - SBIRE W (16, 9) entre les deux premières nappes, évitable (H-8) ; PP Plus (12, 9) au bord d'un
+#     trou ; colonnes (M).
+#
+# Raccords :
+#   D (20, 0) ↔ 1F, escalier U (20, 0), arrivée (20, 1) de chaque côté (paire ct_1).
+#   U (3, 0) ↔ Sommet, trappe D (3, 0), arrivée (3, 1) de chaque côté (paire ct_2).
+#   Trous O → 1F, arrivée « chute » (12, 12) ; jamais vers le sommet.
+#
+# Légende :
+#   # mur (bloqué)   . plancher (praticable, aucune rencontre)   O planche qui cède (praticable, chute au 1F)
+#   M colonne (bloquée)   U escalier qui monte   D escalier qui descend (praticables, warps)
+# Défauts [D] : nappes et passages tracés par Claude ; Sbire placé par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .OUD
+
+GRILLE 24 24
+00 ###U################D###
+01 #.#.#..................#
+02 #.#.#..................#
+03 #....M............M....#
+04 #......................#
+05 #.....OO.OOOOOOOOO.....#
+06 #.....OO.OOOOOOOOO.....#
+07 #......................#
+08 #...........O..........#
+09 #....M............M....#
+10 #......................#
+11 #..OOOOOOOOOOOO.OOOOO..#
+12 #..OOOOOOOOOOOO.OOOOO..#
+13 #......................#
+14 #......................#
+15 #....M............MO...#
+16 #......................#
+17 #.....OOOO.OOOOOOO.....#
+18 #.....OOOO.OOOOOOO.....#
+19 #......................#
+20 #..O................O..#
+21 #......................#
+22 #......................#
+23 ########################
+FIN
+
+POSITIONS
+vers_1f              escalier       20,0         libre   paire=ct_1 sens=descend vers=bell_tower_1f:from_2f  # escalier vers le 1F
+from_1f              spawn          20,1         libre   paire=ct_1 facing=down  # arrivée depuis le 1F
+vers_sommet          escalier       3,0          libre   paire=ct_2 sens=monte vers=bell_tower_roof:from_2f fondu=H-12  # long escalier vers le sommet (fondu « La montée est longue… »)
+from_sommet          spawn          3,1          libre   paire=ct_2 facing=down  # arrivée depuis le sommet
+planches_nord_o      trou           6..7,5..6    libre   vers=bell_tower_1f arrivee=chute  # nappe nord, ouest du passage
+planches_nord_e      trou           9..17,5..6   libre   vers=bell_tower_1f arrivee=chute  # nappe nord, est du passage
+planches_centre_o    trou           3..14,11..12 libre   vers=bell_tower_1f arrivee=chute  # nappe centrale, ouest du passage
+planches_centre_e    trou           16..20,11..12 libre   vers=bell_tower_1f arrivee=chute  # nappe centrale, est du passage
+planches_sud_o       trou           6..9,17..18  libre   vers=bell_tower_1f arrivee=chute  # nappe sud, ouest du passage
+planches_sud_e       trou           11..17,17..18 libre   vers=bell_tower_1f arrivee=chute  # nappe sud, est du passage
+planche_1            trou           12,8         libre   vers=bell_tower_1f arrivee=chute  # planche isolée (PP Plus à côté)
+planche_2            trou           19,15        libre   vers=bell_tower_1f arrivee=chute  # planche isolée
+planche_3            trou           3,20         libre   vers=bell_tower_1f arrivee=chute  # planche isolée
+planche_4            trou           20,20        libre   vers=bell_tower_1f arrivee=chute  # planche isolée
+examen_planche       examen         9,5          libre    # H-9, exemple : toute planche (O) craque sous les pieds avant de céder [D]
+hiroshi              pnj            3,8          bloque  role=sage facing=right soin=1  # H-10 : soigne l'équipe une fois par passage
+sbire_w              dresseur       16,9         bloque  role=sbire facing=left sight=3  # H-8 : Grotadmorv 61, Noarfang 61, Malosse 60 ; évitable
+pp_plus              objet_visible  12,9         bloque  item=pp_up  # au bord de la planche (12, 8)
+FIN

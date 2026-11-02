@@ -33,7 +33,8 @@
 #     Fermée pendant l'acte 1 (Kevin, 2026-11-02) : un
 #     garde (« garde_route_42 ») et le déclencheur « barriere_route_42 » sans `johto_act2`, comme le
 #     garde d'Oliville ; son texte s'écrit avec le JOH6.
-#   NORD (42..43, 0) ↔ Bois de la Tour (JOH8, ≈ 24 × 20, grille à venir).
+#   NORD (42..43, 0) ↔ Bois de la Tour, bord sud (10..11, 19) (2 cases ; colonnes différentes, warps
+#     case à case). JOH8 : le sage blessé (H-1, « sage_blesse ») attend au pied du chemin gardé.
 #
 # Légende :
 #   T forêt, bordure d'arbres et bois de la Tour Carillon (bloqués)   . pelouse
@@ -109,10 +110,11 @@ warp_est             warp           55,30..32    libre   # PUSH → → route_42
 from_route_42        spawn          55,30..32    libre   # arrivée de la Route 42, tournée ←
 garde_route_42       pnj            54,29        bloque  role=garde facing=down  # acte 1 (Kevin) ; texte à écrire avec le JOH6 ; à l'acte 2, il s'efface [D]
 barriere_route_42    declencheur    54,30..32    libre   actif_sans=johto_act2  # acte 1 : texte du garde et pas en arrière
-warp_bois            warp           42..43,0     libre   # PUSH ↑ → bell_tower_woods (JOH8)
+warp_bois            warp           42..43,0     libre   # PUSH ↑ → bell_tower_woods, from_ecruteak (10..11, 19)
 from_bois            spawn          42..43,0     libre   # arrivée du Bois de la Tour, tournée ↓
 garde_carillon       pnj            41,13        bloque  role=garde facing=right  # R-20 ; avec johto_bell_tower_open, il s'efface (JOH8) [D]
 barriere_carillon    declencheur    42..43,13    libre   actif_sans=johto_bell_tower_open  # R-20 et pas en arrière
+sage_blesse          pnj            44,13        bloque  role=sage facing=left actif_avec=johto_bell_tower_clue actif_sans=johto_bell_tower_open  # JOH8, H-1 : au pied du chemin gardé, avant le doyen [D]
 porte_centre         warp           8..9,29      libre   # STEP_ON ↑ → ecruteak_center
 porte_boutique       warp           18..19,29    libre   # STEP_ON ↑ → ecruteak_mart
 porte_sages          warp           21,12        libre   # STEP_ON ↑ → ecruteak_elders_house (doyen, R-16 à R-18)
