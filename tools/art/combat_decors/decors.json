@@ -370,5 +370,95 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"league_olga_glace": {
+		"composition": "EG_DECOR_LIGUE_OLGA_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_OLGA_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_OLGA_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_aldo_roche": {
+		"composition": "EG_DECOR_LIGUE_ALDO_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_ALDO_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_ALDO_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_agatha_spectre": {
+		"composition": "EG_DECOR_LIGUE_AGATHA_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_AGATHA_r1_TL.png", "portion": [0, 0, 1000, 851] },
+			{ "image": "EG_DECOR_LIGUE_AGATHA_r1_TR.png", "portion": [849, 0, 1849, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_peter_dragon": {
+		"composition": "EG_DECOR_LIGUE_PETER_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_PETER_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_PETER_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_champion_salle": {
+		"composition": "EG_DECOR_LIGUE_MAITRE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_MAITRE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_MAITRE_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"oak_lab_labo": {
+		"composition": "EG_DECOR_LABO_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LABO_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LABO_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"silph_co_bureaux_v2": {
+		"composition": "EG_DECOR_SYLPHE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_SYLPHE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_SYLPHE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"rocket_hideout_repaire_v2": {
+		"composition": "EG_DECOR_REPAIRE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_REPAIRE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_REPAIRE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"tour_pokemon_v2": {
+		"composition": "EG_DECOR_TOUR_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_TOUR_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_TOUR_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"ss_anne_couloir": {
+		"composition": "EG_DECOR_SS_ANNE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_SS_ANNE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_SS_ANNE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
