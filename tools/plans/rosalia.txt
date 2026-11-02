@@ -10,7 +10,8 @@
 #   - AVENUE y 14..16, du bord OUEST (Route 38) à x 54 ; RUE DU SUD x 26..28, de l'avenue au bord
 #     SUD (Route 37) ; RUE DE L'EST y 30..32, de x 1 au bord EST (Route 42).
 #   - Nord-ouest : la TOUR CENDRÉE (B, 10 × 11, x 4..13, y 2..12 ; ruine noircie, façade seule au
-#     JOH2, porte fermée (8..9, 12), R-19) et son HERBE (h, x 1..3 et 14..16, y 3..12 ; rencontres
+#     JOH2, porte (D, (8..9, 12)) fermée jusqu'au JOH6 (R-19, puis C-2 : johto_burned_tower_open,
+#     entrée vers tools/plans/burned_tower_1f.txt) ; panneau C-3 en (7, 13)) et son HERBE (h, x 1..3 et 14..16, y 3..12 ; rencontres
 #     de nuit seulement, rares, dossier §5). Parvis y 13 : la scène des Sbires (R-12 à R-15).
 #   - Nord, au centre : MAISON DES SAGES (S, 7 × 6, x 18..24, y 7..12, toit rouge, porte (21, 12)),
 #     derrière une haie (x, y 4..5).
@@ -28,7 +29,8 @@
 #   OUEST (0, 14..16) ↔ Route 38, bord est (59, 14..16) (mêmes rangées).
 #   SUD (26..28, 47) ↔ Route 37, bord nord (8..10, 0) (dossier joh-04 : on sort de Rosalia par
 #     le sud ; colonnes différentes, warps case à case).
-#   EST (55, 30..32) ↔ Route 42 (JOH6, grille à venir). Fermée pendant l'acte 1 (Kevin, 2026-11-02) : un
+#   EST (55, 30..32) ↔ Route 42, bord ouest (0, 9..11) (rangées différentes, warps case à case).
+#     Fermée pendant l'acte 1 (Kevin, 2026-11-02) : un
 #     garde (« garde_route_42 ») et le déclencheur « barriere_route_42 » sans `johto_act2`, comme le
 #     garde d'Oliville ; son texte s'écrit avec le JOH6.
 #   NORD (42..43, 0) ↔ Bois de la Tour (JOH8, ≈ 24 × 20, grille à venir).
@@ -60,7 +62,7 @@ GRILLE 56 48
 09 ThhhBBBBBBBBBBhhh.SSSSSSS........TTThhhhhTppTTKKKKKKKKTT
 10 ThhhBBBBBBBBBBhhh.SSSSSSS........TTThhhhhTppTTTTTTTTTTTT
 11 ThhhBBBBBBBBBBhhh.SSSSSSS........TTThhhhhTppTTTTTTTTTTTT
-12 T...BBBBBBBBBB....SSSDSSS........TTThhhhhTppTTTTTTTTTTTT
+12 T...BBBBDDBBBB....SSSDSSS........TTThhhhhTppTTTTTTTTTTTT
 13 T.........................................pp...........T
 14 pppppppppppppppppppppppppppppppppppppppppppppppppppppppT
 15 pppppppppppppppppppppppppppppppppppppppppppppppppppppppT
@@ -103,7 +105,7 @@ warp_ouest           warp           0,14..16     libre   # PUSH ← → route_38
 from_route_38        spawn          0,14..16     libre   # arrivée de la Route 38, tournée → ; titre de zone « Rosalia » (R-25)
 warp_sud             warp           26..28,47    libre   # PUSH ↓ → route_37, from_ecruteak (8..10, 0)
 from_route_37        spawn          26..28,47    libre   # arrivée de la Route 37, tournée ↑
-warp_est             warp           55,30..32    libre   # PUSH → → route_42 (JOH6) ; raccord à caler sur sa grille
+warp_est             warp           55,30..32    libre   # PUSH → → route_42, from_ecruteak (0, 9..11)
 from_route_42        spawn          55,30..32    libre   # arrivée de la Route 42, tournée ←
 garde_route_42       pnj            54,29        bloque  role=garde facing=down  # acte 1 (Kevin) ; texte à écrire avec le JOH6 ; à l'acte 2, il s'efface [D]
 barriere_route_42    declencheur    54,30..32    libre   actif_sans=johto_act2  # acte 1 : texte du garde et pas en arrière
@@ -121,9 +123,12 @@ retour_boutique      spawn          18..19,30    libre
 retour_sages         spawn          21,13        libre
 retour_maison_1      spawn          35,30        libre
 retour_maison_2      spawn          47,30        libre
-porte_tour_cendree   examen         8..9,12      bloque  # R-19, lue depuis (8..9, 13) ↑ ; s'ouvre au JOH6 (C-2)
+porte_tour_cendree   examen         8..9,12      libre   actif_sans=johto_burned_tower_open  # R-19, lue depuis (8..9, 13) ↑ ; porte fermée jusqu'à C-2 (JOH6)
+entree_tour_cendree  warp           8..9,12      libre   actif_avec=johto_burned_tower_open  # JOH6 : STEP_ON ↑ → burned_tower_1f, from_city (13..14, 22)
+retour_tour_cendree  spawn          8..9,13      libre   # sortie de la Tour Cendrée, tournée ↓
+panneau_tour_cendree panneau        7,13         bloque  # C-3 (JOH6), lu depuis (7, 14) ↑
 scene_sbires         declencheur    1..2,14..16  libre   actif_sans=johto_rosalia_rockets_seen  # R-12 à R-15, à l'entrée (seul passage depuis la Route 38) ; les Sbires fuient vers l'est par l'avenue
-sage_tour            pnj            9,13         bloque  role=sage facing=right  # R-13, R-15 ; devant la porte de la Tour Cendrée
+sage_tour            pnj            10,13        bloque  role=sage facing=left  # R-13, R-15, puis C-1 (JOH6) ; à côté de la porte de la Tour Cendrée (déplacé de (9, 13) pour libérer la sortie) [D]
 sbire_1              pnj            11,13        bloque  role=sbire facing=left  actif_sans=johto_rosalia_rockets_seen  # R-12
 sbire_2              pnj            12,14        bloque  role=sbire facing=left  actif_sans=johto_rosalia_rockets_seen  # R-14
 margot               pnj            13,29        bloque  role=conteuse jour=mardi facing=down  # R-22, entre le Centre et la Boutique ; absente hors du mardi

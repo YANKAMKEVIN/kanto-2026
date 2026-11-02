@@ -1,0 +1,71 @@
+# Repaire Rocket d'Acajou, B1F (mahogany_hideout_b1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ;
+# dossier docs/design/dossier-joh-07-acajou.md §3, §4, §6, §7, textes C-30, C-31). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 30 × 18 cases (dossier : ≈ 30 × 18) ; x = colonne 0..29, y = rangée 0..17 ; nord en haut.
+#
+# Composition (le niveau des alarmes, dossier §4 étape 10) :
+#   - ESCALIER qui monte (U, (2, 1)) vers l'étagère de la boutique ; HALL NORD (y 2..4), COULOIR SUD
+#     (y 10..12), reliés par TROIS PASSAGES (x 2..3, x 14..15, x 23..24).
+#   - TROIS STATUES DE PERSIAN (S) : (8, 1) surveille le hall en x 8, (17, 13) le couloir sud en x 17,
+#     (26, 1) le hall en x 26 (portée 3 = toute la largeur). Passer dans leur regard déclenche
+#     l'alarme (C-30) et fait sortir un SBIRE D'ALARME d'une porte dérobée (combat obligatoire, une
+#     seule fois par statue, dossier §13). Un chemin les évite toutes : hall ouest → passage ouest →
+#     couloir sud ouest → passage central → hall centre → passage est → couloir sud est → ESCALIER
+#     qui descend (D, (28, 12)).
+#   - L'Hyper Potion (28, 2) est au bout du hall, derrière la statue (26, 1) : la prendre sonne l'alarme.
+#
+# Légende (commune aux trois niveaux ; même esprit que le repaire de Céladopole, tools/plans/repaire_b1f.txt) :
+#   # mur ou vide (bloqué)   . sol de béton (praticable, aucune rencontre)   M console, bureau ou machine (bloqué)
+#   X caisse (bloquée)   S statue de Persian (bloquée ; caméra dans les yeux : position « statue »,
+#     facing + sight = cases surveillées, déclencheur « alarme_N » dessus)   < > ^ v dalle tournante
+#     (posé dessus, on glisse dans sa direction jusqu'à une case d'arrêt o ; chaque flèche croisée change
+#     la direction : règle du repaire de Céladopole)   o case d'arrêt (praticable)
+#   K grille ou porte fermée (praticable ; la position « porte_cle », libre dans la grille, la bloque
+#     tant que la clé ou le mot de passe manque)   c barreaux de la cage à ondes (bloqués)
+#   p pupitre de commande (bloqué)   U escalier qui monte   D escalier qui descend (praticables ; même
+#     case aux deux niveaux, arrivée posée sur la case voisine libre)
+# Personnages, objets, scènes et raccords sont dans POSITIONS.
+#
+# Format : ligne PRATICABLES, section GRILLE, puis POSITIONS.
+
+PRATICABLES .UD
+
+GRILLE 30 18
+00 ##############################
+01 ##U#####S#################S###
+02 #...........MM...............#
+03 #............................#
+04 #.................MM.........#
+05 ##..##########..#######..#####
+06 ##..##########..#######..#####
+07 ##..##########..#######..#####
+08 ##..##########..#######..#####
+09 ##..##########..#######..#####
+10 #....XX......................#
+11 #............................#
+12 #...................XX......D#
+13 #################S############
+14 ##############################
+15 ##############################
+16 ##############################
+17 ##############################
+FIN
+
+POSITIONS
+vers_boutique        escalier       2,1          libre   sens=monte vers=mahogany_souvenir_shop:from_hideout  # escalier vers l'étagère de la boutique (12, 3)
+from_shop            spawn          2,2          libre   facing=down  # arrivée depuis la boutique
+vers_b2f             escalier       28,12        libre   paire=rep_1_2 sens=descend vers=mahogany_hideout_b2f:from_b1f  # escalier vers le B2F
+from_b2f             spawn          28,11        libre   paire=rep_1_2 facing=up  # arrivée depuis le B2F
+statue_1             statue         8,1          bloque  facing=down sight=3  # caméra : (8, 2..4)
+alarme_1             declencheur    8,2..4       libre   drapeau=johto_alarm_1  # C-30, une fois ; appelle sbire_alarme_1
+sbire_alarme_1       dresseur       10,1         bloque  role=sbire facing=down sight=0 apparait=alarme_1 actif_avec=johto_alarm_1  # C-31 « alarme » : Rattatac 55, Arbok 55 ; sort de la porte dérobée et vient au joueur
+statue_2             statue         17,13        bloque  facing=up sight=3  # caméra : (17, 10..12)
+alarme_2             declencheur    17,10..12    libre   drapeau=johto_alarm_2  # C-30, une fois ; appelle sbire_alarme_2
+sbire_alarme_2       dresseur       19,13        bloque  role=sbire facing=up sight=0 apparait=alarme_2 actif_avec=johto_alarm_2  # C-31 « alarme » : Grotadmorv 56
+statue_3             statue         26,1         bloque  facing=down sight=3  # caméra : (26, 2..4)
+alarme_3             declencheur    26,2..4      libre   drapeau=johto_alarm_3  # C-30, une fois ; appelle sbire_alarme_3
+sbire_alarme_3       dresseur       24,1         bloque  role=sbire facing=down sight=0 apparait=alarme_3 actif_avec=johto_alarm_3  # C-31 « alarme » : Malosse 55, Nosferalto 56
+hyper_potion         objet_visible  28,2         bloque  item=hyper_potion  # au bout du hall, derrière la statue 3
+FIN
