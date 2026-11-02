@@ -3,8 +3,9 @@ extends PanelContainer
 ## Un des 8 emplacements de badges de l'écran Dresseur (dossier 08 §6 ; MM.2, décision de Kevin
 ## du 2026-10-07 : emplacements en silhouette « ??? »). Un badge **non obtenu** montre la même
 ## silhouette pour les huit emplacements et « ??? » : ni son nom ni son apparence (dossier 08 §6).
-## Un badge obtenu (drapeau levé, [BadgeLibrary]) : l'emblème en ACCENT et son nom ; son image
-## viendra avec la DA. **Touchable seulement s'il est obtenu** (J10, T6) : un toucher émet
+## Un badge obtenu (drapeau levé, [BadgeLibrary]) : son image peinte ([method MenuArt.badge_icon]) et
+## son nom ; le muet montre le gabarit peint neutre ([method MenuArt.badge_unknown]). Image absente :
+## repli sur l'emblème SVG (ACCENT si obtenu, gris sinon). **Touchable seulement s'il est obtenu** (J10, T6) : un toucher émet
 ## [signal touched] (la bulle de détail est posée par [TrainerScreen]) ; un badge muet est inerte.
 
 ## Le badge obtenu est touché.
@@ -55,7 +56,12 @@ func setup(view: BadgeSlotView) -> void:
 	_view = view
 	var obtained := view.obtained and not view.name.is_empty()
 	theme_type_variation = &"TrainerBadgeOn" if obtained else &"TrainerBadge"
-	_emblem.modulate = UiTokens.ACCENT if obtained else UiTokens.TRAINER_BADGE_UNKNOWN
+	var painted := MenuArt.badge_icon(view.badge_id) if obtained else MenuArt.badge_unknown()
+	_emblem.texture = painted if painted != null else EMBLEM
+	if painted != null:
+		_emblem.modulate = Color.WHITE if obtained else UiTokens.TRAINER_BADGE_UNKNOWN_PAINTED
+	else:
+		_emblem.modulate = UiTokens.ACCENT if obtained else UiTokens.TRAINER_BADGE_UNKNOWN
 	_label.theme_type_variation = &"TrainerBadgeName" if obtained else &"TrainerBadgeUnknown"
 	_label.text = view.name.trim_prefix(NAME_PREFIX) if obtained else UNKNOWN_TEXT
 	# Seul un badge obtenu reçoit le toucher (tout l'emplacement) ; un badge muet est inerte.
@@ -74,6 +80,11 @@ func get_text() -> String:
 
 func get_emblem() -> TextureRect:
 	return _emblem
+
+
+## Vrai si l'emblème est une image peinte (badge ou gabarit neutre), faux pour le repli SVG.
+func is_painted() -> bool:
+	return _emblem.texture != EMBLEM
 
 
 func get_view() -> BadgeSlotView:

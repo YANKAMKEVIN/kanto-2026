@@ -21,6 +21,8 @@ var dex_text: String = ""
 ## Ligne des badges (« 2 badges ») ; "" avant le premier badge (Q-13 : pas de « 0 badge »).
 ## Lue depuis [BadgeLibrary] (MM.1) : toujours "" tant qu'aucun badge n'est obtenu (J10).
 var badges_text: String = ""
+## Dernier badge obtenu (ordre des arènes), icône de la ligne des badges ; &"" sans badge.
+var badge_id: StringName = &""
 ## Pokémon de tête (null si l'équipe est vide, Q-2).
 var lead: TeamMemberView = null
 ## Cartes, dans l'ordre d'affichage : 4 à 6 (ÉQUIPE et POKÉDEX peuvent manquer), jamais

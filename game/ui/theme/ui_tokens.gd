@@ -1623,8 +1623,12 @@ const TRAINER_SIDE_WIDTH := 640
 const TRAINER_HERO_MAX := 560
 const TRAINER_HERO_OFFSET_X := -4
 const TRAINER_BADGE_SLOT_HEIGHT := 112
-const TRAINER_BADGE_ICON := 56
+## 72 [D] depuis les badges peints (56 avec l'emblème SVG) : la forme se lit dans l'emplacement.
+const TRAINER_BADGE_ICON := 72
 const TRAINER_BADGE_UNKNOWN := Color(1, 1, 1, 0.22)
+## Gabarit peint du badge non obtenu (chantier « Menu Dresseur peint ») : estompé [D], pour que les
+## badges obtenus ressortent.
+const TRAINER_BADGE_UNKNOWN_PAINTED := Color(1, 1, 1, 0.5)
 ## Costumes (dossier-costumes.md, CO-2) : silhouette noire d'un costume verrouillé.
 const TRAINER_COSTUME_SILHOUETTE := Color(0.0, 0.0, 0.0, 0.85)
 const TRAINER_BADGE_UNKNOWN_FONT := FONT_CAPTION
