@@ -4,6 +4,9 @@
 > passer par ChatGPT (décision de Kevin, 2026-11-02). **Rien n'est verrouillé** : les points ✅
 > sont décidés par Kevin, le reste est une proposition de Claude à arbitrer (§6). Pas de code avant
 > la fin de Kanto et la validation d'un dossier.
+>
+> Les arbitrages sont numérotés **JH-1, JH-2…** (JH = Johto), pour ne pas les confondre avec les
+> jalons de Kanto (J1 à J33…). La numérotation des futurs jalons de Johto reste à décider.
 
 ## 1. Décisions de Kevin
 
@@ -14,9 +17,9 @@
 | 2026-10-30 | ✅ Histoire **plus courte**, **pas 8 badges** |
 | 2026-11-02 | ✅ Structure en **trois actes** : une menace sur quelques villes, puis une quête de légendaires, puis une épreuve finale au **Mont Argenté** |
 | 2026-11-02 | ✅ Départ de **Bourg Palette**, par un **passage secret, par l'eau** (détail à trouver) |
-| 2026-11-02 | ✅ Types **Ténèbres** et **Acier** ajoutés (J-4) |
-| 2026-11-02 | ✅ **50 espèces**, choisies par Claude parmi les plus importantes (J-5, liste au §8 à valider) |
-| 2026-11-02 | ✅ Au Mont Argenté, **option A, le relais** (J-9) ; les **combats en duo** viendront plus tard, après le chapitre |
+| 2026-11-02 | ✅ Types **Ténèbres** et **Acier** ajoutés (JH-4) |
+| 2026-11-02 | ✅ **50 espèces**, choisies par Claude parmi les plus importantes (JH-5, liste au §8 à valider) |
+| 2026-11-02 | ✅ Au Mont Argenté, **option A, le relais** (JH-9) ; les **combats en duo** viendront plus tard, après le chapitre |
 | 2026-11-02 | ✅ L'adversaire final est l'**ancien chef de la Team Rocket, mentor de Giovanni**, trahi par lui (§9) |
 | 2026-11-02 | ✅ Le joueur **perd son équipe** au début (la Team Rocket la prend), **repart avec de nouveaux Pokémon**, et **retrouve son équipe plus tard** ; ensuite, les adversaires sont **à son niveau** |
 
@@ -32,7 +35,7 @@ rappeler Giovanni. Le joueur, seul et sans ses Pokémon, doit les reprendre.
 - **Acte 2 — Les légendaires** : Rosalia (Tour Cendrée, les trois chiens légendaires réveillés,
   Tour Carillon et Ho-Oh), les Îles Tourbillon (Lugia). Adversaires au niveau de l'équipe de fin
   de Ligue.
-- **Acte 3 — Le Mont Argenté** : une ascension difficile et un dernier adversaire (§6, J-7).
+- **Acte 3 — Le Mont Argenté** : une ascension difficile et un dernier adversaire (§6, JH-7).
 
 Taille estimée : **8 à 10 jalons**, contre une trentaine pour Kanto.
 
@@ -55,7 +58,7 @@ puis débarque à **Oliville**.
 - **La récupération** : **toute l'équipe d'un coup**, à la fin de l'acte 1 (Tour Radio). Rendre les
   Pokémon un par un casserait la difficulté à chaque retour (un niveau 60 dans une équipe de
   niveau 20).
-- **Ce que le joueur garde** : badges, Pokédex, argent. Le sac est à arbitrer (§6, J-3).
+- **Ce que le joueur garde** : badges, Pokédex, argent. Le sac est à arbitrer (§6, JH-3).
 
 ## 5. Courbe de niveau (proposition)
 
@@ -73,16 +76,16 @@ Pokémon de l'acte 1 restent utiles ensuite s'ils montent avec l'équipe.
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| J-1 | La perte de l'équipe : vol au Centre d'Oliville (§4) ? | Oui : scène simple, menace visible tout de suite |
-| J-2 | Récupération : tout d'un coup à la fin de l'acte 1, ou par étapes ? | Tout d'un coup (§4) |
-| J-3 | Le sac : gardé, ou en partie volé aussi ? | Volé avec l'équipe, sauf les objets clés, et rendu avec elle ; sinon les Super Bonbons et l'Hyper Ball rendent l'acte 1 trop facile |
-| J-4 | ✅ Types **Ténèbres** et **Acier** ajoutés (Kevin, 2026-11-02). Reste : comment ? | Dans tout le jeu, avec la table des types d'Or/Argent ; les espèces de Kanto gardent leurs types de Rouge/Bleu (pas de Magnéti Électrik/Acier) |
-| J-5 | ✅ 50 espèces (Kevin). Reste : valider la liste du §8 | Liste du §8 |
-| J-6 | Jour et nuit (§7) | Option B |
-| J-7 | ✅ Le dernier adversaire : l'ancien chef, mentor trahi de Giovanni (Kevin). Reste : son nom, et si Giovanni réapparaît | Giovanni réapparaît à la fin, sans combat : il voit tomber son ancien mentor |
-| J-8 | Ce qui change à Kanto pendant le chapitre | Le moins possible : la grotte de Bourg Palette, des messages de Chen, un PNJ ou deux |
-| J-9 | ✅ Relais (Kevin, 2026-11-02) | — |
-| J-10 | Qui mène la Team Rocket de l'acte 1, et qui a ordonné le vol de l'équipe ? | Les Sbires croient travailler au retour de Giovanni ; à la Tour Radio, on découvre que l'ancien chef les a repris en main et a fait voler l'équipe du Maître pour l'écarter |
+| JH-1 | La perte de l'équipe : vol au Centre d'Oliville (§4) ? | Oui : scène simple, menace visible tout de suite |
+| JH-2 | Récupération : tout d'un coup à la fin de l'acte 1, ou par étapes ? | Tout d'un coup (§4) |
+| JH-3 | Le sac : gardé, ou en partie volé aussi ? | Volé avec l'équipe, sauf les objets clés, et rendu avec elle ; sinon les Super Bonbons et l'Hyper Ball rendent l'acte 1 trop facile |
+| JH-4 | ✅ Types **Ténèbres** et **Acier** ajoutés (Kevin, 2026-11-02). Reste : comment ? | Dans tout le jeu, avec la table des types d'Or/Argent ; les espèces de Kanto gardent leurs types de Rouge/Bleu (pas de Magnéti Électrik/Acier) |
+| JH-5 | ✅ 50 espèces (Kevin). Reste : valider la liste du §8 | Liste du §8 |
+| JH-6 | Jour et nuit (§7) | Option B |
+| JH-7 | ✅ Le dernier adversaire : l'ancien chef, mentor trahi de Giovanni (Kevin). Reste : son nom, et si Giovanni réapparaît | Giovanni réapparaît à la fin, sans combat : il voit tomber son ancien mentor |
+| JH-8 | Ce qui change à Kanto pendant le chapitre | Le moins possible : la grotte de Bourg Palette, des messages de Chen, un PNJ ou deux |
+| JH-9 | ✅ Relais (Kevin, 2026-11-02) | — |
+| JH-10 | Qui mène la Team Rocket de l'acte 1, et qui a ordonné le vol de l'équipe ? | Les Sbires croient travailler au retour de Giovanni ; à la Tour Radio, on découvre que l'ancien chef les a repris en main et a fait voler l'équipe du Maître pour l'écarter |
 
 ## 7. Jour et nuit : options
 
@@ -131,10 +134,10 @@ Ligue ; Togepi est l'exception, comme œuf offert), et les espèces sans rôle n
 **L'ancien chef** (Kevin, 2026-11-02) : il dirigeait la Team Rocket avant Giovanni et l'a formé.
 Giovanni l'a **trahi** pour prendre sa place. Il s'est fait oublier, a perfectionné ses
 compétences, et revient pour **reprendre la Team Rocket, puis le monde** ; il veut le mettre « en
-feu et en cendres ». Son nom reste à trouver (J-7).
+feu et en cendres ». Son nom reste à trouver (JH-7).
 
 Idée de Claude pour le relier aux actes : à l'acte 1, il reprend en main les Sbires de Johto
-(J-10) ; à l'acte 2, il veut réveiller ou soumettre **Ho-Oh** et la flamme de la Tour Cendrée,
+(JH-10) ; à l'acte 2, il veut réveiller ou soumettre **Ho-Oh** et la flamme de la Tour Cendrée,
 et le joueur l'en empêche à Rosalia ; à l'acte 3, il se replie au sommet du Mont Argenté.
 
 **Le rival : option A, le relais** (Kevin, 2026-11-02). Le rival retient les Sbires et les admins
