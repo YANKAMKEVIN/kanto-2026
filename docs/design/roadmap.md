@@ -121,7 +121,7 @@ Une suite après la Ligue, pour continuer l'histoire du joueur. Ce qui est déci
 - **Équipe perdue au début** (volée par la Team Rocket), nouveau départ avec de nouveaux Pokémon,
   équipe retrouvée plus tard ; ensuite, adversaires au niveau du joueur.
 
-Esquisse, propositions et arbitrages J-1 à J-9 : [`johto-esquisse.md`](johto-esquisse.md).
+Esquisse, propositions et arbitrages J-1 à J-10 : [`johto-esquisse.md`](johto-esquisse.md).
 Pas de code avant la fin de Kanto et la validation d'un dossier.
 
 ## Jalons narratifs à ne pas oublier
