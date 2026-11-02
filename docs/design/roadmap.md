@@ -126,7 +126,8 @@ Cadre général (géographie, scénario, systèmes, jalons JOH0 à JOH9, arbitra
 [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md) (JH-11 à JH-20 tranchés). Systèmes du JOH0 :
 [`dossier-joh-01-systemes-joh0.md`](dossier-joh-01-systemes-joh0.md) (JH-21 à JH-24 tranchés). JOH1 :
 [`dossier-joh-02-oliville.md`](dossier-joh-02-oliville.md), textes O-1 à O-25 validés. JOH2 :
-[`dossier-joh-03-rosalia.md`](dossier-joh-03-rosalia.md), textes R-1 à R-25 validés ; Écrémeuh ajoutée (51 espèces).
+[`dossier-joh-03-rosalia.md`](dossier-joh-03-rosalia.md), textes R-1 à R-25 validés ; Écrémeuh ajoutée (51 espèces). JOH3 :
+[`dossier-joh-04-doublonville.md`](dossier-joh-04-doublonville.md), textes D-1 à D-38 et JH-31 à JH-36 validés.
 Pas de code avant la fin de Kanto et la validation d'un dossier. Jalons numérotés **JOH1, JOH2…**.
 
 ## Jalons narratifs à ne pas oublier

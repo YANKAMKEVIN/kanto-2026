@@ -2,8 +2,8 @@
 
 > Troisième jalon de contenu du Chapitre Johto (cadre [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md)
 > §4.2 ; systèmes [`dossier-joh-01-systemes-joh0.md`](dossier-joh-01-systemes-joh0.md) §7–8).
-> Écrit par Claude le 2026-11-02 ; **textes D-1 à D-38 et arbitrages JH-31 à JH-36 en attente de
-> Kevin**. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
+> Écrit par Claude le 2026-11-02 ; **textes D-1 à D-38 et arbitrages JH-31 à JH-36 validés par
+> Kevin le jour même** (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
 
 ## 1. Hors périmètre
 
@@ -179,7 +179,7 @@ Centre (modèle du JOH1), Grand Magasin (RDC, 2 étages, toit), hall de la Tour 
 maison du lien, 2 maisons. Personnages neufs : Mme Clémence, Mercédès, Jérôme, l'« employé » de la
 Tour Radio (tenue qu'on reverra au JOH5). Œuf de Togepi (icône d'équipe, déjà prévue au JOH0).
 
-## 16. Textes (lot à valider par Kevin)
+## 16. Textes (lot validé par Kevin le 2026-11-02)
 
 Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms.
 
@@ -228,9 +228,9 @@ Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms.
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-31 | Premier combat contre la Team Rocket : garanti au Souterrain, quelle que soit l'heure, ou seulement la nuit sur la Route 37 ? | **Garanti au Souterrain** (chef obligatoire) ; les Sbires de nuit de la Route 37 restent un bonus |
-| JH-32 | Qui remet l'œuf de Togepi ? | **Orme en personne**, au Centre (cohérent avec O-18) |
-| JH-33 | Forme des promotions du Grand Magasin | **Un article à moitié prix par jour** (§8.2) |
-| JH-34 | Qui garde la Tour Radio ? | **Un faux employé** (Sbire déguisé, démasqué au JOH5) |
-| JH-35 | Ce qui ferme l'est de la Route 36 (Mauville, hors périmètre) | **Un pont en travaux** |
-| JH-36 | Surf pendant l'acte 1 avec un Pokémon de Johto (CS et badges gardés) | **Autorisé** (étang de la Route 35) ; le courant de la grotte marine bloque toujours Kanto |
+| JH-31 | ✅ Premier combat contre la Team Rocket **garanti au Souterrain** (chef obligatoire, à toute heure) ; les Sbires de nuit de la Route 37 restent un bonus (Kevin, 2026-11-02) | — |
+| JH-32 | ✅ **Orme remet l'œuf en personne**, au Centre de Doublonville (Kevin) | — |
+| JH-33 | ✅ Promotions : **un article à moitié prix par jour** (§8.2) (Kevin) | — |
+| JH-34 | ✅ La Tour Radio est gardée par un **faux employé**, Sbire déguisé démasqué au JOH5 (Kevin) | — |
+| JH-35 | ✅ L'est de la Route 36 est fermé par un **pont en travaux** (Kevin) | — |
+| JH-36 | ✅ **Surf autorisé** pendant l'acte 1 avec un Pokémon de Johto ; le courant de la grotte marine bloque toujours Kanto (Kevin) | — |
