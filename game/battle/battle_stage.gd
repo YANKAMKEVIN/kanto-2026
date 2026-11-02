@@ -298,6 +298,10 @@ var _capture_hush: float = 0.0
 static var _fx_anchors: FxAnchors
 ## Espèces (types de la cible pour les chorégraphies) ; null : pas de types.
 var _fx_pokemon: PokemonData
+## Entrée des combats de Dresseur (2026-11-02) : les deux dresseurs, et les camps dont le
+## dresseur n'a pas encore lancé son Pokémon ([method play_trainer_send]).
+var _intro_stage: TrainerIntroStage
+var _intro_pending: Dictionary[BattleEvent.SideId, bool] = {}
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -321,6 +325,7 @@ func _ready() -> void:
 	_build_decor()
 	_build_auras()
 	_build_fx()
+	_build_trainer_intro()
 	_artwork_material = ShaderMaterial.new()
 	_artwork_material.shader = ARTWORK_SHADER
 	# Voile du poison au repos (play_poison en voile une copie).
@@ -419,10 +424,12 @@ func get_decor_front() -> Sprite2D:
 ## caméra du joueur ; [param player_pokemon] / [param foe_pokemon] : PNJ Pokémon du monde qui
 ## combattent (null : le sprite apparaît à son ancre) ; [param trainer_cells] : cases des
 ## dresseurs, pour le cadrage (la case du parent de la caméra — le joueur — est ajoutée si
-## elle est lisible). Refusé (erreur) si un combat est déjà affiché.
+## elle est lisible). [param hold_pokemon] (entrée des combats de Dresseur) : aucun Pokémon
+## n'apparaît, les dresseurs les lanceront ([method play_trainers_in]). Refusé (erreur) si un
+## combat est déjà affiché.
 func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 		player_species: StringName, foe_species: StringName,
-		trainer_cells: Array[Vector2i] = []) -> void:
+		trainer_cells: Array[Vector2i] = [], hold_pokemon: bool = false) -> void:
 	if _active:
 		push_error("BattleStage : un combat est déjà affiché")
 		return
@@ -459,6 +466,9 @@ func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 		_focus = _cam_start_center
 	for side: BattleEvent.SideId in _sprites:
 		_prepare_sprite(side)
+		if hold_pokemon:
+			# Caché jusqu'à son lancer : show_pokemon le fera apparaître.
+			_fainted[side] = true
 	# Limites levées : la caméra part de son centre réel (bornes comprises), sans saut.
 	_free_camera()
 	var tween := _new_tween()
@@ -1409,6 +1419,9 @@ func _apply_reset() -> void:
 	_clear_reveal_overlay() # Jalon 21
 	if _fx != null:
 		_fx.stop()
+	if _intro_stage != null:
+		_intro_stage.clear()
+	_intro_pending.clear()
 	if _active:
 		_restore_camera()
 	for side: BattleEvent.SideId in _world:
@@ -1822,6 +1835,58 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 		spark.position = origin + Vector2.from_angle(angle) * SPARK_DISTANCE * out
 		spark.scale = Vector2.ONE * lerpf(0.18, 0.05, t)
 		spark.modulate = Color(color, 1.0 - t)
+
+
+# --- Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02) -----------
+
+## Coroutine (étape TRAINERS_IN, après [method enter] avec `hold_pokemon`) : les deux dresseurs
+## de [param intro] entrent dans le décor (le joueur de dos à gauche, l'adversaire de face à
+## droite) avec la rangée de Poké Balls adverse ; ils restent jusqu'à leur lancer
+## ([method play_trainer_send]). Sans effet hors combat.
+func play_trainers_in(intro: TrainerIntro) -> void:
+	if not _active or intro == null:
+		return
+	_intro_stage.speed_scale = speed_scale
+	_intro_stage.begin(intro, _view_size(), TrainerIntroStage.foe_texture(intro),
+		thrower_texture())
+	_intro_pending = {BattleEvent.SideId.FOE: true, BattleEvent.SideId.PLAYER: true}
+	await _intro_stage.play_enter()
+
+
+## Le dresseur de [param side] n'a pas encore lancé son Pokémon.
+func has_trainer_send(side: BattleEvent.SideId) -> bool:
+	return _active and _intro_pending.get(side, false)
+
+
+## Coroutine (étapes FOE_SEND / PLAYER_SEND) : le dresseur de [param side] lance
+## [param species] ; à l'arrivée de la Ball le Pokémon apparaît ([method show_pokemon]) et le
+## dresseur s'efface. Sans dresseur en attente : le Pokémon apparaît seulement.
+func play_trainer_send(side: BattleEvent.SideId, species: StringName) -> void:
+	if not has_trainer_send(side):
+		show_pokemon(side, species)
+		return
+	_intro_pending.erase(side)
+	var view := _view_size()
+	var target := _anchor(side) + (Vector2(0.0, -0.08 * view.y)
+		if side == BattleEvent.SideId.FOE else Vector2(0.12 * view.y, -0.3 * view.y))
+	_intro_stage.speed_scale = speed_scale
+	await _intro_stage.play_send(side, target, show_pokemon.bind(side, species))
+	# La Ball n'est pas arrivée (combat quitté, tweens arrêtés) : le Pokémon apparaît quand même.
+	if _active and not _sprites[side].visible:
+		show_pokemon(side, species)
+
+
+## Les deux dresseurs de l'entrée (tests, captures).
+func get_trainer_intro_stage() -> TrainerIntroStage:
+	return _intro_stage
+
+
+func _build_trainer_intro() -> void:
+	_intro_stage = TrainerIntroStage.new()
+	_intro_stage.name = &"TrainerIntro"
+	add_child(_intro_stage)
+	# Devant le feuillage du premier plan, derrière ton Pokémon.
+	move_child(_intro_stage, _sprites[BattleEvent.SideId.PLAYER].get_index())
 
 
 # --- J23 : rencontre Safari, dos du joueur ---------------------------------------------------

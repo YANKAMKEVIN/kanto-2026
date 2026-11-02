@@ -192,7 +192,7 @@ func _init() -> void:
 	_add_storage_screen(theme, bold, t)
 	_add_menu_glass(theme, bold, t)
 	_add_menu_mm2(theme, bold, t)
-	_add_champion_card(theme, bold, t)
+	_add_vs_banner(theme, bold, t)
 	_add_title_screen(theme, bold, t)
 	_add_name_entry(theme, bold, t)
 
@@ -1727,19 +1727,11 @@ func _add_menu_mm2(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_font_size(&"font_size", &"TrainerLink", t.TRAINER_LINK_FONT)
 
 
-## Carte de présentation du Champion (jalon 10, T5) : verre sombre, liseré ACCENT à gauche.
-func _add_champion_card(theme: Theme, bold: Font, t: GDScript) -> void:
-	var card := _panel_style(t.CHAMPION_CARD_BG, t.CHAMPION_CARD_RADIUS, t)
-	card.border_width_left = t.CHAMPION_CARD_ACCENT_WIDTH
-	card.border_color = t.ACCENT
-	card.set_content_margin(SIDE_LEFT, t.CHAMPION_CARD_PAD_H)
-	card.set_content_margin(SIDE_RIGHT, t.CHAMPION_CARD_PAD_H)
-	card.set_content_margin(SIDE_TOP, t.CHAMPION_CARD_PAD_V)
-	card.set_content_margin(SIDE_BOTTOM, t.CHAMPION_CARD_PAD_V)
-	theme.set_type_variation(&"ChampionCard", &"PanelContainer")
-	theme.set_stylebox(&"panel", &"ChampionCard", card)
-	_add_plain_label(theme, &"ChampionCardName", t.CHAMPION_CARD_NAME_FONT, t.TEXT, bold)
-	_add_plain_label(theme, &"ChampionCardTitle", t.CHAMPION_CARD_TITLE_FONT, t.TEXT_MUTED, null)
+## Séquence « VS » des grands combats (2026-11-02, remplace la carte de Champion) : nom et titre
+## de la banderole.
+func _add_vs_banner(theme: Theme, bold: Font, t: GDScript) -> void:
+	_add_plain_label(theme, &"VsBannerName", t.VS_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"VsBannerTitle", t.VS_TITLE_FONT, t.VS_TITLE_COLOR, null)
 
 
 # --- Écran titre (OUV.1, dossier 13 §5.2) --------------------------------------------------------
@@ -1777,7 +1769,7 @@ func _add_title_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_type_variation(&"TitleDivider", &"Panel")
 	theme.set_stylebox(&"panel", &"TitleDivider", divider)
 	var message := _panel_style(t.TITLE_MESSAGE_BG, t.RADIUS_SMALL, t)
-	message.border_width_left = t.CHAMPION_CARD_ACCENT_WIDTH
+	message.border_width_left = t.BANNER_ACCENT_WIDTH
 	message.border_color = t.ACCENT
 	message.set_content_margin(SIDE_LEFT, t.PAD)
 	message.set_content_margin(SIDE_RIGHT, t.PAD)

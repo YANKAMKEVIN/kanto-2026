@@ -23,12 +23,6 @@
 						]
 					},
 					{
-						"champion_card": "celadon_gym_erika",
-						"unless": [
-							"erika_met"
-						]
-					},
-					{
 						"set": [
 							"erika_met"
 						]

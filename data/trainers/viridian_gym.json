@@ -148,7 +148,8 @@
 		"switch": true,
 		"card": {
 			"name": "GIOVANNI",
-			"title": "Champion d'Arène de Jadielle"
+			"title": "Champion d'Arène de Jadielle",
+			"portrait": "giovanni"
 		},
 		"team": [
 			{

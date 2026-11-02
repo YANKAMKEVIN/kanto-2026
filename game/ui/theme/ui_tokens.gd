@@ -1640,25 +1640,39 @@ const TRAINER_MOMENT_THUMB := Vector2(150, 92)
 const TRAINER_MOMENT_THUMB_RADIUS := 12
 const TRAINER_MOMENT_ART := 64
 
-## Carte de présentation du Champion (jalon 10, T5) : « PIERRE » / « Champion d'Arène
-## d'Argenta », posée sur le monde avant le combat. Verre sombre du combat (CB.2), liseré
-## ACCENT à gauche, aucun portrait. Réutilisée pour les 8 Champions.
-const CHAMPION_CARD_BG := DIALOG_PANEL_BG
-const CHAMPION_CARD_RADIUS := RADIUS
-## Liseré ACCENT sur le bord gauche de la carte.
-const CHAMPION_CARD_ACCENT_WIDTH := 10
-const CHAMPION_CARD_PAD_H := 56
-const CHAMPION_CARD_PAD_V := 32
-const CHAMPION_CARD_MIN_WIDTH := 640
-const CHAMPION_CARD_LINE_GAP := 8
-const CHAMPION_CARD_NAME_FONT := FONT_TITLE
-const CHAMPION_CARD_TITLE_FONT := FONT_BODY
-## Centre de la carte : fraction de la hauteur d'écran ; bord gauche à SAFE_MARGIN.
-const CHAMPION_CARD_CENTER_Y := 0.42
-## Entrée glissée depuis la gauche, tenue (un toucher l'abrège), sortie.
-const CHAMPION_CARD_SLIDE_IN := 0.4
-const CHAMPION_CARD_HOLD := 3.0
-const CHAMPION_CARD_SLIDE_OUT := 0.25
+## Liseré ACCENT sur le bord gauche des bandeaux de message (ancienne carte de Champion).
+const BANNER_ACCENT_WIDTH := 10
+
+## Séquence « VS » des grands combats (dossier 05 §3, décision de Kevin du 2026-11-02 ;
+## remplace la carte de Champion) : banderole rouge en haut (l'adversaire : portrait, nom,
+## titre), banderole bleue en bas (le joueur : portrait, prénom), emblème « VS » au centre.
+## Durées : `data/battle/trainer_intro.json`. Valeurs par défaut [D].
+const VS_FOE_BG := Color("#C8323C")
+const VS_PLAYER_BG := Color("#2F64C8")
+## Liseré intérieur des banderoles (côté emblème) et emblème.
+const VS_EDGE := ACCENT
+const VS_EDGE_WIDTH := 10
+## Voile sombre du monde derrière les banderoles (opacité au plus fort).
+const VS_VEIL := Color(0.0, 0.0, 0.0, 0.5)
+## Hauteur d'une banderole et son bord extérieur (fractions de la hauteur d'écran).
+const VS_BANNER_HEIGHT := 0.3
+const VS_BANNER_MARGIN := 0.08
+## Portrait : hauteur (fraction de l'écran, rogné par la banderole) et débord au-dessus.
+const VS_PORTRAIT_HEIGHT := 0.5
+const VS_PORTRAIT_RAISE := 0.03
+## Retrait du texte depuis le bord (en plus de SAFE_MARGIN) et écart portrait / texte.
+const VS_TEXT_INSET := 40
+const VS_NAME_FONT := 72
+const VS_TITLE_FONT := FONT_BODY
+const VS_TITLE_COLOR := Color(1.0, 1.0, 1.0, 0.85)
+## Emblème « VS » : taille de police, contour, éclair (largeur, hauteur en px de référence).
+const VS_EMBLEM_FONT := 132
+const VS_EMBLEM_OUTLINE := 14
+const VS_EMBLEM_OUTLINE_COLOR := Color("#1C1C1C")
+const VS_BOLT_SIZE := Vector2(300, 260)
+## Pic de l'emblème à son apparition (échelle) et part de VS_HOLD qu'il met à se poser.
+const VS_EMBLEM_POP := 1.2
+const VS_EMBLEM_POP_SHARE := 0.25
 
 ## Écran Dresseur, badge obtenu (jalon 10, T6) : bulle de détail ancrée sous l'emplacement
 ## (« Badge Roche » / « Argenta — Pierre »), verre sombre du combat, liseré ACCENT en haut.

@@ -64,9 +64,8 @@ extends RefCounted
 ## Jalon 9 (jalon-09.md §2.4.4), Dresseurs :
 ## - [constant Kind.EMOTE] : bulle [member emote] (« ! », [constant EMOTE_KINDS]) au-dessus du
 ##   PNJ [member actor] ([method Npc.show_emote]) ; la scène attend sa fin.
-## Jalon 10 (jalon-10.md §2.7, §2.8), Champions et badges :
-## - [constant Kind.CHAMPION_CARD] : carte de présentation du Dresseur [member trainer_id]
-##   (son bloc « card » de `data/trainers/`) ; la scène attend qu'elle disparaisse ;
+## Jalon 10 (jalon-10.md §2.8), badges (la carte de présentation du Champion, étape
+## « champion_card », est remplacée le 2026-11-02 par la séquence « VS » du combat) :
 ## - [constant Kind.BADGE] : remise du badge [member badge_id] (`data/badges.json`) : drapeau du
 ##   badge, légende « BADGE ROCHE » (tenue courte) avec une vibration légère, Grand moment
 ##   « badge » (une seule fois par badge) ; la scène attend la fin de la légende.
@@ -143,7 +142,7 @@ extends RefCounted
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
-	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE, MOMENT,
+	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, BADGE, MOMENT,
 	FLASH,
 	FIELD_MOVE, SAVE, ANIMATE,
 	WILD_BATTLE,
@@ -159,7 +158,7 @@ enum Kind {
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
 	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react", "emote",
-	"champion_card", "badge", "moment",
+	"badge", "moment",
 	"flash",
 	"field_move", "save", "animate",
 	"wild_battle",
@@ -204,7 +203,7 @@ var background: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
-## Étape « battle » (et « champion_card » : le Dresseur présenté) : dresseur, PNJ Pokémon qui
+## Étape « battle » : dresseur, PNJ Pokémon qui
 ## combattent, drapeaux selon l'issue.
 var trainer_id: StringName = &""
 var player_pokemon: StringName = &""

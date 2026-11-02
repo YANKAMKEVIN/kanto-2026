@@ -62,11 +62,23 @@ extends Node
 ## à l'entrée, « ghost_revealed », [method BattleStage.dissolve_foe], puis « C'est un {pokemon} ! »
 ## (SENT_OUT [member BattleEvent.revealed]) ; rien n'est masqué. Sauvage « uncatchable » : une Ball
 ## est refusée de la même façon, par « ball_uncatchable ».
+##
+## Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02 ;
+## [TrainerIntro]) : un grand adversaire (bloc « card » de ses données) ouvre sur la séquence
+## « VS » ([VsBanner], posée sur la HUD) ; puis la vue de combat entre sans Pokémon, les deux
+## dresseurs glissent dans le décor ([method BattleStage.play_trainers_in]) et chacun lance son
+## Pokémon au SENT_OUT qui le concerne ([method BattleStage.play_trainer_send]). Jamais sautée :
+## aucune de ces étapes n'écoute le toucher. Combat du labo (PNJ Pokémon du monde) : la séquence
+## « VS », puis l'entrée habituelle (les Pokémon viennent du monde, aucun lancer).
 
 ## Le combat commence (verrou posé, monde figé).
 signal battle_started(trainer_id: StringName)
 ## Un événement du journal vient d'être entièrement joué (tests, sons futurs).
 signal event_played(event: BattleEvent)
+## Entrée d'un combat de Dresseur : une étape commence ([enum TrainerIntro.Step]).
+signal trainer_intro_step(step: TrainerIntro.Step)
+## Séquence « VS » d'un grand combat : nom affiché (MAJUSCULES) et titre de l'adversaire.
+signal vs_started(foe_name: String, foe_title: String)
 ## Le combat est terminé (verrou rendu). [param outcome] : [enum Battle.Outcome].
 signal battle_finished(trainer_id: StringName, outcome: int)
 ## Un Pokémon sauvage vient d'être capturé et rangé (équipe, ou stockage si [param stored]) ;
@@ -271,7 +283,15 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		else:
 			var player_npc := _npc(map, request.world_actors.get(&"player", &""))
 			var foe_npc := _npc(map, request.world_actors.get(&"foe", &""))
-			await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species)
+			var intro := trainer_intro(request)
+			if intro.grand:
+				await _play_vs(intro)
+			# Sans PNJ Pokémon du monde : les dresseurs entrent et lanceront leurs Pokémon.
+			var held := player_npc == null and foe_npc == null
+			await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species, [], held)
+			if held:
+				_watch_intro()
+				await _stage.play_trainers_in(intro)
 	elif reveal:
 		await _play_reveal(foe_species)
 	if is_instance_valid(_hud):
@@ -677,7 +697,11 @@ func _play_beat(beat: BattleBeat) -> void:
 				await _hud.show_message(beat.text, beat.wait_touch)
 		BattleBeat.Kind.SEND_OUT:
 			if is_instance_valid(_stage):
-				_stage.show_pokemon(beat.side, beat.event.species_id)
+				if _stage.has_trainer_send(beat.side):
+					# Entrée du combat de Dresseur : son dresseur le lance, puis s'efface.
+					await _stage.play_trainer_send(beat.side, beat.event.species_id)
+				else:
+					_stage.show_pokemon(beat.side, beat.event.species_id)
 				_stage.set_status(beat.side, beat.event.status)
 			if is_instance_valid(_hud):
 				_hud.set_card(side, BattleViews.card(beat.event))
@@ -1093,6 +1117,61 @@ func _relay_speed() -> void:
 		_stage.speed_scale = speed_scale
 	if is_instance_valid(_hud):
 		_hud.speed_scale = speed_scale
+
+
+# --- Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02) -----------
+
+## Plan de l'entrée du combat de Dresseur de [param request] ([TrainerIntro]) : grand combat ou
+## non, rangée de Poké Balls, images selon l'apparence du rival et « Réduire les animations ».
+func trainer_intro(request: BattleRequest) -> TrainerIntro:
+	var rival_look: Variant = _state.get(&"rival_look") if _state != null else null
+	var reduce := is_instance_valid(_stage) and _stage.reduce_motion
+	return TrainerIntro.build(request.trainer, request.foe_party, TrainerIntroCatalog.shared(),
+		StringName(rival_look) if rival_look != null else TrainerIntro.RIVAL_ID, reduce)
+
+
+## Coroutine : la séquence « VS » de [param intro] sur la HUD (rien sans HUD). Jamais sautée.
+func _play_vs(intro: TrainerIntro) -> void:
+	if not is_instance_valid(_hud):
+		return
+	var foe_name := _texts.trainer_display_name(intro.foe_name) if _texts != null \
+		else intro.foe_name
+	var player_name := _texts.player_name() if _texts != null else ""
+	var banner := VsBanner.new()
+	banner.speed_scale = speed_scale
+	banner.step_started.connect(trainer_intro_step.emit)
+	_hud.add_child(banner)
+	vs_started.emit(foe_name.to_upper(), intro.foe_title)
+	await banner.play(intro, foe_name, intro.foe_title, vs_foe_portrait(intro), player_name,
+		vs_player_portrait())
+	banner.queue_free()
+
+
+## Portrait de banderole de l'adversaire : l'image de la convention, sinon le portrait en pied du
+## rival (rival / rivale), sinon son sprite de face (ou ses replis).
+func vs_foe_portrait(intro: TrainerIntro) -> Texture2D:
+	var path := intro.portrait_path(TrainerIntroStage.resource_exists)
+	if not path.is_empty():
+		return load(path) as Texture2D
+	if intro.portrait_id == TrainerIntro.RIVAL_ID or intro.portrait_id == TrainerLooks.RIVALE:
+		return load(TrainerLooks.rival_portrait_path(intro.portrait_id)) as Texture2D
+	return TrainerIntroStage.foe_texture(intro)
+
+
+## Portrait de banderole du joueur : son buste (apparence et costume portés).
+func vs_player_portrait() -> Texture2D:
+	var look: Variant = _state.get(&"player_look") if _state != null else null
+	var costume := StringName(_state.call(&"worn_costume")) if _state != null \
+		and _state.has_method(&"worn_costume") else &""
+	var path := TrainerLooks.bust_path(StringName(look) if look != null else &"hero", costume)
+	return load(path) as Texture2D if ResourceLoader.exists(path) else null
+
+
+## Relaie les étapes des dresseurs de la scène ([signal trainer_intro_step]).
+func _watch_intro() -> void:
+	var view := _stage.get_trainer_intro_stage()
+	if view != null and not view.step_started.is_connected(trainer_intro_step.emit):
+		view.step_started.connect(trainer_intro_step.emit)
 
 
 # --- J23 : rencontre Safari (`jalon-23.md` §2.3, dossier 26 §5) --------------------------------

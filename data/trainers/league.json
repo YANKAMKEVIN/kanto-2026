@@ -13,7 +13,8 @@
 		"switch": false,
 		"card": {
 			"name": "OLGA",
-			"title": "Conseil des Quatre"
+			"title": "Conseil des Quatre",
+			"portrait": "olga"
 		},
 		"team": [
 			{
@@ -82,7 +83,8 @@
 		"switch": false,
 		"card": {
 			"name": "ALDO",
-			"title": "Conseil des Quatre"
+			"title": "Conseil des Quatre",
+			"portrait": "aldo"
 		},
 		"team": [
 			{
@@ -151,7 +153,8 @@
 		"switch": true,
 		"card": {
 			"name": "AGATHA",
-			"title": "Conseil des Quatre"
+			"title": "Conseil des Quatre",
+			"portrait": "agatha"
 		},
 		"team": [
 			{
@@ -220,7 +223,8 @@
 		"switch": false,
 		"card": {
 			"name": "PETER",
-			"title": "Conseil des Quatre"
+			"title": "Conseil des Quatre",
+			"portrait": "peter"
 		},
 		"team": [
 			{
@@ -277,6 +281,7 @@
 	},
 	"rival_champion": {
 		"name": "{rival}",
+		"card": { "name": "{rival}", "title": "Maître de la Ligue", "portrait": "rival" },
 		"ai": "smart",
 		"can_lose": false,
 		"heal_after": false,

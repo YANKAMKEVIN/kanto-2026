@@ -31,9 +31,7 @@ extends Node
 ## Jalon 9 (jalon-09.md §2.4.3, §2.4.4) : [method play_variant] joue une variante construite en
 ## code (séquence d'un Dresseur, [TrainerEncounter]) avec le même verrou et les mêmes signaux ;
 ## étape « emote » (bulle au-dessus d'un PNJ, [method Npc.show_emote], la scène attend sa fin).
-## Jalon 10 (jalon-10.md §2.7, §2.8) : étape « champion_card » (carte de présentation du Dresseur,
-## [method ExplorationHud.show_champion_card], attendue jusqu'à sa disparition ; Dresseurs branchés
-## par [method set_trainers]) et étape « badge » (drapeau du badge, légende « BADGE ROCHE » tenue
+## Jalon 10 (jalon-10.md §2.8) : étape « badge » (drapeau du badge, légende « BADGE ROCHE » tenue
 ## [constant UiTokens.BADGE_CAPTION_HOLD] avec une vibration légère, Grand moment « badge » une
 ## seule fois par badge ; badges et état de la partie branchés par [method set_badges]).
 ## Jalon 12 (`jalon-12.md` §2.13, T23) : étape « moment » (Grand moment enregistré une seule fois
@@ -164,8 +162,6 @@ var _items: ItemLibrary
 var _hud: ExplorationHud
 ## Réveil après une défaite (jalon 7, étape « wake_up ») : branché par Boot après setup.
 var _recovery: DefeatRecovery
-## Dresseurs (jalon 10, étape « champion_card ») : branchés par Boot après setup.
-var _trainers: TrainerLibrary
 ## Badges et état de la partie (jalon 10, étape « badge ») : branchés par Boot après setup.
 ## [member _state] : l'autoload GameState en jeu, une instance de game_state.gd en test.
 var _badges: BadgeLibrary
@@ -274,13 +270,6 @@ func set_hud(hud: ExplorationHud) -> void:
 ## la scène s'arrête quand même.
 func set_recovery(recovery: DefeatRecovery) -> void:
 	_recovery = recovery
-
-
-## Branche les Dresseurs (jalon-10.md §2.7) : l'étape « champion_card » y lit la carte du
-## Dresseur ([member TrainerData.card_name], [member TrainerData.card_title]) et la pose sur la HUD
-## de [method set_hud]. Sans eux, ou Dresseur sans carte : push_error, étape sautée.
-func set_trainers(trainers: TrainerLibrary) -> void:
-	_trainers = trainers
 
 
 ## Branche les badges et l'état de la partie (jalon-10.md §2.8) : l'étape « badge » lève le
@@ -439,8 +428,6 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			_react(step)
 		CutsceneStep.Kind.EMOTE:
 			await _emote(step)
-		CutsceneStep.Kind.CHAMPION_CARD:
-			await _champion_card(step)
 		CutsceneStep.Kind.BADGE:
 			await _badge(step)
 		CutsceneStep.Kind.MOMENT:
@@ -819,22 +806,6 @@ func _caption(step: CutsceneStep) -> void:
 		return
 	_hud.show_caption(step.text)
 	await _hud.caption_hidden
-
-
-## Étape « champion_card » (jalon-10.md §2.7) : la carte du Dresseur (« PIERRE » / « Champion
-## d'Arène d'Argenta ») glisse sur le monde ; la scène reprend quand elle a disparu (fin de sa
-## tenue ou toucher). Sans HUD ni Dresseurs branchés, Dresseur inconnu ou sans carte :
-## push_error, étape sautée.
-func _champion_card(step: CutsceneStep) -> void:
-	if not is_instance_valid(_hud):
-		_step_error("pas de HUD pour la carte de « %s »" % step.trainer_id)
-		return
-	var trainer := _trainers.get_trainer(step.trainer_id) if _trainers != null else null
-	if trainer == null or not trainer.has_card():
-		_step_error("aucune carte de présentation pour « %s »" % step.trainer_id)
-		return
-	_hud.show_champion_card(trainer.card_name, trainer.card_title)
-	await _hud.champion_card_hidden
 
 
 ## Étape « badge » (jalon-10.md §2.8 ; dossier 12 §13) : remise du badge [member

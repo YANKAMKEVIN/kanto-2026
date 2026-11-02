@@ -47,7 +47,7 @@ var _fs: MemoryFs
 var _boot: Boot
 var _player: Player
 var _saved_router: Array = []
-## Ce qui s'est passé, dans l'ordre : « page:<texte> », « card:<nom>/<titre> », « battle »,
+## Ce qui s'est passé, dans l'ordre : « page:<texte> », « vs:<nom>/<titre> », « battle »,
 ## « caption:<texte> ».
 var _events: Array[String] = []
 var _vibrations: Array[int] = []
@@ -101,6 +101,9 @@ func _start(start_path: String) -> void:
 	_boot.get_battle_director().speed_scale = 0.0
 	_boot.get_battle_director().battle_started.connect(func(_id: StringName) -> void:
 		_events.append("battle"))
+	# Séquence « VS » des grands combats (2026-11-02, remplace la carte de Champion).
+	_boot.get_battle_director().vs_started.connect(func(foe: String, title: String) -> void:
+		_events.append("vs:%s/%s" % [foe, title]))
 	_boot.get_trainer_watcher().trainer_spotted.connect(
 		func(npc_id: StringName, _trainer: StringName) -> void: _spotted.append(npc_id))
 	_player.moved.connect(_on_player_moved)
@@ -178,7 +181,6 @@ func _talk_to_brock() -> bool:
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
 	assert_eq(director.get_cutscene_id(), &"pewter_gym_brock", "la parole lance la scène")
-	var card_seen := false
 	var caption_seen := false
 	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
 	while (director.is_running() or runner.is_running() or SceneRouter.is_transitioning()) \
@@ -191,12 +193,6 @@ func _talk_to_brock() -> bool:
 						battle_hud.action_selected.emit(ActionGrid.ATTACK)
 					BattleHud.Zone.MOVES:
 						battle_hud.move_selected.emit(_move_index)
-		var card := hud.get_champion_card()
-		if card.is_showing() and not card_seen:
-			card_seen = true
-			_events.append("card:%s/%s" % [card.get_name_text(), card.get_title_text()])
-			card.skip_hold()
-		card_seen = card.is_showing()
 		var caption := hud.get_caption()
 		if caption.is_showing() and not caption_seen:
 			_events.append("caption:" + caption.text)
@@ -235,14 +231,12 @@ func _objective() -> String:
 	return objectives.current(GameState.flags)
 
 
-## Ordre de la victoire : … carte → combat → « Bien joué. » → « BADGE ROCHE » → réplique du badge.
-func _assert_victory_order(first_fight: bool = true) -> void:
-	var card := _index("card:PIERRE/Champion d'Arène d'Argenta")
-	if first_fight:
-		assert_gt(card, -1, "carte de présentation de Pierre")
-		assert_gt(_index("battle"), card, "la carte avant le combat")
-	else:
-		assert_eq(card, -1, "pas de carte aux revanches")
+## Ordre de la victoire : combat (séquence « VS ») → « Bien joué. » → « BADGE ROCHE » → réplique du
+## badge. La séquence « VS » ouvre chaque combat, revanches comprises (jamais sautée, 2026-11-02).
+func _assert_victory_order(_first_fight: bool = true) -> void:
+	var card := _index("vs:PIERRE/Champion d'Arène d'Argenta")
+	assert_gt(card, -1, "séquence « VS » de Pierre")
+	assert_gt(card, _index("battle"), "la séquence « VS » ouvre le combat")
 	assert_gt(_index("page:" + WON), _index("battle"))
 	assert_gt(_index("caption:BADGE ROCHE"), _index("page:" + WON), "« BADGE ROCHE » ensuite")
 	assert_gt(_index("page:" + BADGE_LINE), _index("caption:BADGE ROCHE"), "puis la réplique")
@@ -322,7 +316,7 @@ func test_defeat_wakes_at_the_pewter_center_then_resume_without_the_introduction
 	assert_eq(_spotted, [] as Array[StringName], "Liam battu : pas de défi")
 	assert_true(await _talk_to_brock(), "le combat a eu lieu")
 	assert_eq(_index("page:" + INTRO), 0)
-	assert_gt(_index("card:PIERRE/Champion d'Arène d'Argenta"), 0)
+	assert_gt(_index("vs:PIERRE/Champion d'Arène d'Argenta"), 0)
 	assert_gt(_index("page:" + LOST), _index("battle"), "réplique de défaite")
 	assert_eq(_index("page:" + WON), -1)
 	assert_eq(_index("caption:BADGE ROCHE"), -1, "pas de badge")

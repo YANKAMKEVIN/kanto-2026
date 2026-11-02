@@ -128,7 +128,8 @@
 		"switch": true,
 		"card": {
 			"name": "KOGA",
-			"title": "Champion d'Arène de Parmanie"
+			"title": "Champion d'Arène de Parmanie",
+			"portrait": "koga"
 		},
 		"team": [
 			{

@@ -234,11 +234,6 @@ func _drive(prefix: String, page_shots: Dictionary) -> void:
 				await _frames(20)
 				await _shot("%s_06_bilan" % prefix)
 			summary.tap()
-		var card: Node = hud.call(&"get_champion_card")
-		if card.call(&"is_showing"):
-			await _frames(25)
-			await _shot("%s_03_carte" % prefix)
-			card.call(&"skip_hold")
 		var caption: Node = hud.call(&"get_caption")
 		if caption.call(&"is_showing"):
 			await _frames(25)

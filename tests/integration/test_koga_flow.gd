@@ -38,7 +38,7 @@ const WON: Array[String] = ["Hmm ! Tu as prouvé ta valeur.", "Voici le Badge Â
 const TM: Array[String] = ["Prends aussi la CT06, Toxik.", "Son poison empire à chaque tour."]
 const TM_LATE := "J'allais oublier."
 const AFTER := "Le ninja se fond dans l'ombre."
-const CARD := "card:KOGA/Champion d'Arène de Parmanie"
+const CARD := "vs:KOGA/Champion d'Arène de Parmanie"
 const CAPTION := "caption:BADGE ÂME"
 const TOAST := "toast:CT06 — Toxik / obtenue"
 const TRAINER_FLAGS: Array[StringName] = [
@@ -51,7 +51,7 @@ var _fs: MemoryFs
 var _boot: Boot
 var _player: Player
 var _saved_router: Array = []
-## Ce qui s'est passé, dans l'ordre : « page:<texte> », « card:<nom>/<titre> », « battle »,
+## Ce qui s'est passé, dans l'ordre : « page:<texte> », « vs:<nom>/<titre> », « battle »,
 ## « caption:<texte> », « toast:<titre> / <détail> ».
 var _events: Array[String] = []
 var _vibrations: Array[int] = []
@@ -97,6 +97,9 @@ func _start(start_path: String, strong: bool = false) -> void:
 	_boot.get_battle_director().speed_scale = 0.0
 	_boot.get_battle_director().battle_started.connect(func(_id: StringName) -> void:
 		_events.append("battle"))
+	# Séquence « VS » des grands combats (2026-11-02, remplace la carte de Champion).
+	_boot.get_battle_director().vs_started.connect(func(foe: String, title: String) -> void:
+		_events.append("vs:%s/%s" % [foe, title]))
 	if strong:
 		_make_strong()
 	await wait_process_frames(2)
@@ -179,7 +182,6 @@ func _talk_to_koga() -> bool:
 	Input.action_press(&"interact")
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
-	var card_seen := false
 	var caption_seen := false
 	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
 	while (director.is_running() or runner.is_running() or SceneRouter.is_transitioning()) \
@@ -192,11 +194,6 @@ func _talk_to_koga() -> bool:
 						battle_hud.action_selected.emit(ActionGrid.ATTACK)
 					BattleHud.Zone.MOVES:
 						battle_hud.move_selected.emit(0)
-		var card := hud.get_champion_card()
-		if card.is_showing() and not card_seen:
-			_events.append("card:%s/%s" % [card.get_name_text(), card.get_title_text()])
-			card.skip_hold()
-		card_seen = card.is_showing()
 		var caption := hud.get_caption()
 		if caption.is_showing() and not caption_seen:
 			_events.append("caption:" + caption.text)
@@ -274,8 +271,8 @@ func test_victory_badge_tm_moment_and_save() -> void:
 		assert_false(pages.has(line), "« %s » PAS jouée" % line)
 	assert_eq(_index("page:" + INTRO[0]), 0, "l'introduction d'abord")
 	var card := _index(CARD)
-	assert_gt(card, _index("page:" + INTRO[3]), "la carte après l'introduction")
-	assert_gt(_index("battle"), card, "la carte avant le combat")
+	assert_gt(card, _index("page:" + INTRO[3]), "la séquence « VS » après l'introduction")
+	assert_gt(card, _index("battle"), "la séquence « VS » ouvre le combat")
 	assert_gt(_index("page:" + WON[1]), _index("battle"))
 	assert_gt(_index(CAPTION), _index("page:" + WON[1]), "légende ensuite")
 	assert_gt(_index("page:" + TM[0]), _index(CAPTION))
@@ -342,7 +339,7 @@ func test_defeat_wakes_at_the_center_and_koga_can_be_fought_again() -> void:
 	pages = _pages()
 	assert_eq(_index("page:" + RESUME), 0, "reprise courte")
 	assert_false(pages.has(INTRO[0]), "pas d'introduction")
-	assert_eq(_index(CARD), -1, "pas de carte aux reprises")
+	assert_gt(_index(CARD), -1, "séquence « VS » à chaque combat, jamais sautée")
 	assert_gt(_index(CAPTION), _index("battle"))
 	assert_true(GameState.flags.has_flag(&"badge_soul"))
 	assert_eq(GameState.bag.count_of(&"tm06"), 1)

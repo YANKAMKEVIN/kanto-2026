@@ -25,8 +25,11 @@ extends RefCounted
 ## de team_by_starter) sont vérifiées contre [PokemonData]. « moves » (facultatif, jalon 10
 ## §2.4) : 1 à 4 capacités distinctes connues de [PokemonData], dans l'ordre, sans contrôle
 ## « apprenable » ; absent = capacités de Rouge/Bleu au niveau.
-## « card » (facultatif, jalon 10 §2.7) : { "name", "title" }, deux textes non vides, la carte
-## de présentation d'un Champion ([member TrainerData.card_name], [member TrainerData.card_title]).
+## « card » (facultatif, jalon 10 §2.7 ; entrée des Dresseurs, 2026-11-02) : { "name", "title",
+## "portrait" }, trois textes non vides : le Dresseur est un **grand adversaire** (Champion, rival,
+## Conseil 4, Giovanni) et son combat s'ouvre sur la séquence « VS » ([TrainerIntro]) ; nom
+## (jetons admis : « {rival} ») et titre de sa banderole, identifiant de son portrait et de son
+## sprite de combat ([member TrainerData.card_portrait], `data/battle/trainer_intro.json`).
 ## « switch » (facultatif, jalon 13, dossier 16 §14) : true = l'IA peut changer de Pokémon une
 ## fois par combat ([member TrainerData.can_switch], [AiSwitchRule]) ; false par défaut.
 ## « moment » (facultatif, jalon 13 §2.8) : seule valeur admise "win" = Grand moment du rival
@@ -43,7 +46,7 @@ const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
 ]
 const _SLOT_KEYS: Array[String] = ["species", "level", "moves"]
-const _CARD_KEYS: Array[String] = ["name", "title"]
+const _CARD_KEYS: Array[String] = ["name", "title", "portrait"]
 
 var _pokemon: PokemonData
 var _trainers: Dictionary[StringName, TrainerData] = {}
@@ -220,7 +223,7 @@ func _parse(value: Variant, where: String) -> TrainerData:
 ## Lit « card » : { "name", "title" }, deux textes non vides, aucune autre clé.
 func _read_card(value: Variant, trainer: TrainerData, where: String) -> bool:
 	if not value is Dictionary:
-		return _fail("%s : « card » doit être { name, title }" % where)
+		return _fail("%s : « card » doit être { name, title, portrait }" % where)
 	var card: Dictionary = value
 	var ok := true
 	for key: Variant in card:
@@ -233,6 +236,7 @@ func _read_card(value: Variant, trainer: TrainerData, where: String) -> bool:
 	if ok:
 		trainer.card_name = card["name"]
 		trainer.card_title = card["title"]
+		trainer.card_portrait = StringName(card["portrait"])
 	return ok
 
 

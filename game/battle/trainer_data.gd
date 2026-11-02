@@ -44,10 +44,13 @@ var moment_on_win: bool = false
 var team: Array[TrainerSlot] = []
 ## Équipe selon le starter du joueur (combats du rival, comme Rouge/Bleu).
 var team_by_starter: Dictionary[StringName, Array] = {}
-## Carte de présentation d'un Champion (jalon 10, jalon-10.md §2.7 : bloc « card ») : nom
-## (« PIERRE ») et titre (« Champion d'Arène d'Argenta ») ; vides = pas de carte.
+## Grand adversaire (bloc « card », jalon 10 §2.7 ; entrée des Dresseurs, dossier 05 §3, décision
+## de Kevin du 2026-11-02) : nom (« PIERRE », « {rival} ») et titre (« Champion d'Arène
+## d'Argenta ») de sa banderole « VS », identifiant de son portrait et de son sprite de combat
+## (« pierre », « rival ») ; vides = Dresseur ordinaire.
 var card_name: String = ""
 var card_title: String = ""
+var card_portrait: StringName = &""
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
 
@@ -71,7 +74,7 @@ func prize_for(last_level: int) -> int:
 	return prize_per_level * maxi(last_level, 0)
 
 
-## Vrai si le Dresseur a une carte de présentation (étape de scène « champion_card »).
+## Vrai pour un grand adversaire : son combat s'ouvre sur la séquence « VS » ([TrainerIntro]).
 func has_card() -> bool:
 	return not card_name.is_empty() and not card_title.is_empty()
 

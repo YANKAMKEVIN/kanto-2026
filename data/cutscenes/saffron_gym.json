@@ -23,12 +23,6 @@
 						]
 					},
 					{
-						"champion_card": "saffron_gym_sabrina",
-						"unless": [
-							"sabrina_met"
-						]
-					},
-					{
 						"set": [
 							"sabrina_met"
 						]

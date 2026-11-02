@@ -68,9 +68,6 @@ func test_quitting_during_the_battle_resumes_before_it() -> void:
 	var box := _play.boot.get_dialogue_box()
 	var deadline := Time.get_ticks_msec() + 20000
 	while not _play.boot.get_battle_director().is_running() and Time.get_ticks_msec() < deadline:
-		var card := _play.boot.get_hud().get_champion_card()
-		if card.is_showing():
-			card.skip_hold()
 		if box.is_open():
 			box.advance_requested.emit()
 		await wait_process_frames(1)

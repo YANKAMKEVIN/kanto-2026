@@ -1155,19 +1155,10 @@ func test_every_trainer_and_item_step_exists() -> void:
 		assert_true(_items.has_item(id), "objet « %s » chargé" % id)
 
 
-## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
-## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
-func test_every_champion_card_and_badge_step_exists() -> void:
-	# Jalon 23 (T19) : Koga ; jalon 30 (T9) : les cartes « Conseil des Quatre » des quatre membres
-	# (pas le rival).
-	assert_eq(_cutscenes.get_card_trainer_ids(), [&"celadon_gym_erika", &"cerulean_gym_misty",
-		&"cinnabar_gym_blaine", &"fuchsia_gym_koga", &"giovanni_hideout", &"league_agatha",
-		&"league_bruno", &"league_lance", &"league_lorelei", &"pewter_gym_brock",
-		&"saffron_gym_sabrina", &"silph_co_giovanni", &"vermilion_gym_surge",
-		&"viridian_gym_giovanni"] as Array[StringName])
-	for id: StringName in _cutscenes.get_card_trainer_ids():
-		var trainer := _trainers.get_trainer(id)
-		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
+## Jalon 10 (T9) : chaque badge remis existe, et l'étape « badge » d'une scène suit le combat qui
+## lève déjà son drapeau (« win »). La carte de présentation des Champions est remplacée par la
+## séquence « VS » du combat (2026-11-02, test_trainer_intro_data.gd).
+func test_every_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade", &"earth", &"marsh", &"rainbow",
 		&"soul", &"thunder", &"volcano"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
@@ -1635,10 +1626,6 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 						assert_true(_dialogues.has_dialogue(said), "%s : dialogue « %s »" % [
 							where, said])
 				flags.set_flag(step.gift_flag)
-			CutsceneStep.Kind.CHAMPION_CARD:
-				var trainer := _trainers.get_trainer(step.trainer_id)
-				assert_true(trainer != null and trainer.has_card(), "%s : carte de « %s »" % [
-					where, step.trainer_id])
 			CutsceneStep.Kind.BADGE:
 				assert_true(_badges.has_badge(step.badge_id), "%s : badge « %s »" % [where,
 					step.badge_id])

@@ -90,7 +90,7 @@
 		"name": "Giovanni", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2475,
 		"start_message": false, "end_message": true, "bag": true, "switch": true,
-		"card": { "name": "GIOVANNI", "title": "Chef de la Team Rocket" },
+		"card": { "name": "GIOVANNI", "title": "Chef de la Team Rocket", "portrait": "giovanni" },
 		"team": [
 			{
 				"species": "onix", "level": 23,

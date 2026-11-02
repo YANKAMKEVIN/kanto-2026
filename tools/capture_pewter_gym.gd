@@ -101,7 +101,6 @@ func _brock(shot: String) -> void:
 	Input.action_release(&"interact")
 	var box: Node = _boot.call(&"get_dialogue_box")
 	var hud: Node = _boot.call(&"get_hud")
-	var card: Node = hud.call(&"get_champion_card")
 	var caption: Node = hud.call(&"get_caption")
 	var battles: Node = _boot.call(&"get_battle_director")
 	var battle_hud: Node = _boot.call(&"get_battle_hud")
@@ -111,12 +110,6 @@ func _brock(shot: String) -> void:
 	var onix_frames := -1
 	while Time.get_ticks_msec() < deadline:
 		await process_frame
-		if bool(card.call(&"is_showing")):
-			if shot == "carte":
-				await _frames(40)
-				await _shot("carte")
-				return
-			card.call(&"skip_hold")
 		if bool(caption.call(&"is_showing")) and shot == "badge":
 			await _frames(45)
 			await _shot("badge")
