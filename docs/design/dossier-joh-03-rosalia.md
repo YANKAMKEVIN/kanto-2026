@@ -1,8 +1,8 @@
 # Dossier JOH-03 — Premiers pas à Johto : Routes 39 et 38, Rosalia (jalon JOH2, v0.1)
 
 > Deuxième jalon de contenu du Chapitre Johto (cadre [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md)
-> §4.2). Écrit par Claude le 2026-11-02 ; **à valider par Kevin**, textes compris (§13, lot
-> unique). Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
+> §4.2). Écrit par Claude le 2026-11-02 ; **textes (§13) et JH-28 à JH-30 validés par Kevin le jour
+> même** ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
 
 ## 1. Hors périmètre
 
@@ -19,7 +19,7 @@
 
 | Carte | Taille indicative | Contenu |
 |---|---|---|
-| **Route 39** | ≈ 24 × 50 | Du nord d'Oliville vers le nord ; la **Ferme Meumeu** en façade (enclos, Tauros et Ponyta de Kanto, pas d'Écrémeuh) ; herbes hautes en deux poches |
+| **Route 39** | ≈ 24 × 50 | Du nord d'Oliville vers le nord ; la **Ferme Meumeu** en façade (enclos, Écrémeuh, Tauros et Ponyta) ; herbes hautes en deux poches |
 | **Route 38** | ≈ 60 × 20 | Vers l'est ; un sentier entre des prés et une petite falaise ; 3 poches d'herbes hautes ; une barrière d'arbres (pas de Coupe nécessaire) |
 | **Rosalia** | ≈ 56 × 48 | Ville ancienne, toits de tuiles, érables ; **Tour Cendrée** (ruine noircie, nord-ouest) et **Tour Carillon** (au nord-est, derrière un bois) en façade ; Centre, Boutique, 2 maisons, maison des sages |
 
@@ -42,9 +42,9 @@ Pas de combat obligatoire au JOH2 hors Dresseurs inévitables (un sur la Route 3
 
 | Carte | Moment | Espèces (poids) | Niveaux |
 |---|---|---|---|
-| Route 39 | matin, jour | Fouinette 30, Wattouat 30, Rattata 20, Roucool 20 | 4–7 |
+| Route 39 | matin, jour | Fouinette 30, Wattouat 30, Rattata 18, Roucool 18, Écrémeuh 4 | 4–7 |
 | Route 39 | nuit | Hoothoot 40, Rattata 30, Mystherbe 30 | 4–7 |
-| Route 38 | matin, jour | Fouinette 30, Wattouat 25, Roucool 20, Rattata 15, Miaouss 10 | 7–11 |
+| Route 38 | matin, jour | Fouinette 30, Wattouat 25, Roucool 20, Rattata 12, Miaouss 9, Écrémeuh 4 | 7–11 |
 | Route 38 | nuit | Hoothoot 40, Rattata 30, Miaouss 20, Mystherbe 10 | 7–11 |
 | Rosalia, herbe des tours | nuit | Cornèbre 50, Hoothoot 50 | 10–12 (rare, 10 % du taux habituel) |
 
@@ -101,12 +101,12 @@ Les autres jours viendront avec leurs villes (JOH3 à JOH6). Hors de son jour, l
 
 ## 12. Art
 
-Route 39 (avec la Ferme Meumeu), Route 38, Rosalia (vue générale + plan, deux tours en façade,
+Route 39 (avec la Ferme Meumeu et ses Écrémeuh), Route 38, Rosalia (vue générale + plan, deux tours en façade,
 Tour Cendrée noircie), intérieurs : Centre et Boutique (modèles de Johto du JOH1), maison des
 sages, 2 maisons. Personnages : doyen et sages (neufs), Lucien, Margot (neufs), 5 Dresseurs
 (modèles existants).
 
-## 13. Textes (lot à valider)
+## 13. Textes (lot validé par Kevin le 2026-11-02)
 
 | N° | Où | Texte |
 |---|---|---|
@@ -140,6 +140,6 @@ sages, 2 maisons. Personnages : doyen et sages (neufs), Lucien, Margot (neufs), 
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-28 | La **Ferme Meumeu** sans Écrémeuh (Tauros et Ponyta de Kanto) ? | Oui : Écrémeuh n'est pas dans les 50 |
-| JH-29 | Les PNJ de la semaine donnent des **consommables** (pas d'objets tenus, qui n'existent pas) ? | Oui |
-| JH-30 | Le doyen nomme **Ho-Oh** dès le JOH2 (R-18), ou on garde le nom secret jusqu'à l'acte 2 ? | Le nommer : le joueur sait quoi protéger quand Dante se révèle |
+| JH-28 | ✅ **Écrémeuh ajoutée** (51e espèce) : à la Ferme Meumeu et, rare, sur les Routes 38 et 39 (Kevin, 2026-11-02) | — |
+| JH-29 | ✅ Les PNJ de la semaine donnent des consommables (Kevin) | — |
+| JH-30 | ✅ Le doyen nomme Ho-Oh dès le JOH2 (Kevin) | — |

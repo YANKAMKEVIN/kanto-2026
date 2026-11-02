@@ -3,7 +3,7 @@
 > Dossier-cadre du Chapitre Johto (roadmap, phase 10), écrit par Claude le 2026-11-02 à partir de
 > l'esquisse [`johto-esquisse.md`](johto-esquisse.md), dont les arbitrages JH-1 à JH-10 sont
 > **tous tranchés par Kevin**. Ce dossier fixe la géographie, le scénario acte par acte, les
-> systèmes neufs, la place des 50 espèces et le découpage en jalons **JOH0 à JOH9**.
+> systèmes neufs, la place des 51 espèces (50 + Écrémeuh, JH-28) et le découpage en jalons **JOH0 à JOH9**.
 >
 > **Statut : arbitrages JH-11 à JH-20 tranchés par Kevin le 2026-11-02 ; le reste du cadre est à valider.** Les points marqués **[D]** sont des valeurs par défaut de
 > Claude (règle 4 de `CLAUDE.md`) ; les vraies questions de game design sont numérotées **JH-11
@@ -38,7 +38,7 @@
 - La reproduction et la Pension à œufs (seul l'œuf de Togepi existe, §5.4).
 - Les objets tenus en combat, les Baies, les Noigrumes.
 - Les combats en duo (après le chapitre, décision de Kevin).
-- Les 50 autres espèces d'Or/Argent.
+- Les 49 autres espèces d'Or/Argent.
 
 ## 2. Hypothèses d'entrée
 
@@ -273,17 +273,17 @@ adaptées sans les créer :
 
 ### 5.6 Pokédex
 
-- Le Pokédex passe de 151 à **201 espèces** (151 + 50). Numérotation nationale (n° 152 à 251, avec
+- Le Pokédex passe de 151 à **202 espèces** (151 + 51). Numérotation nationale (n° 152 à 251, avec
   des trous) **[D]**, pour que chaque espèce garde son numéro officiel.
-- Affichage « vus · capturés · 201 espèces ». Le Diplôme de Kanto reste lié aux 151 ; un second
-  **Diplôme de Johto** pour les 50 **[D]**.
+- Affichage « vus · capturés · 202 espèces ». Le Diplôme de Kanto reste lié aux 151 ; un second
+  **Diplôme de Johto** pour les 51 **[D]**.
 
 ### 5.7 Pokémon de départ et rival
 
 - Le rival **n'a pas** de Pokémon de départ de Johto (il n'est pas là au début). Son équipe de
   Kanto monte simplement en niveau, avec un ou deux ajouts de Johto **[D]**.
 
-## 6. Les 50 espèces : où et quand
+## 6. Les 51 espèces : où et quand
 
 | Espèce(s) | Où | Quand / comment |
 |---|---|---|
@@ -312,6 +312,7 @@ adaptées sans les créer :
 | Tyranocif | Évolution (niv. 55) | — |
 | Airmure | Route 28, Mont Argenté (extérieur) | Jour |
 | Togepi | Œuf, Doublonville | JOH3 |
+| Écrémeuh | Ferme Meumeu (décor) ; Routes 38 et 39 | Jour, rare (JH-28) |
 | Togetic | Évolution (JH-11) | — |
 | Mentali, Noctali | Évoli + JH-11 | — |
 | Steelix, Cizayox | Onix / Insécateur + Peau Métal (Oliville, Phare, JOH1 ou JOH6) | — |
@@ -329,7 +330,7 @@ adaptées sans les créer :
 
 Les routes de Johto mêlent aussi des espèces de Kanto (Rattata, Roucool, Abo, Nidoran, Chétiflor,
 Paras, Mystherbe, Ramoloss, Tentacool…), comme dans Or/Argent, pour remplir les tables sans
-dépasser 50 espèces neuves.
+dépasser 51 espèces neuves.
 
 ## 7. Courbe de niveau
 

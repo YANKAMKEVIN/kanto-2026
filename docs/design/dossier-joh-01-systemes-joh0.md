@@ -20,9 +20,9 @@
 | Lien (§8) | Compagnon (`companion_uid`) | Valeur `bond` par Pokémon, méthode d'évolution `bond` |
 | Évolutions par objet et échange (§9) | Terminal d'échange local du J32 (`LocalTrade`) | Règle `trade` + `item` |
 | Expérience de l'acte 1 (§10) | `BattleRules.exp_multiplier`, Multi Exp (`exp_all`, lot 32P) | Bonus ×1,5 pendant l'acte 1 |
-| Pokédex 201 (§11) | `PokedexLibrary` (taille lue dans les données) | Pokédex national partiel, Diplôme de Johto |
+| Pokédex 202 (§11) | `PokedexLibrary` (taille lue dans les données) | Pokédex national partiel, Diplôme de Johto |
 | Sauvegarde v10 (§12) | `SaveSystem.upgrade()` | Migration 9 → 10 |
-| Données (§13) | Format des espèces et attaques | 50 espèces, attaques d'Or/Argent |
+| Données (§13) | Format des espèces et attaques | 51 espèces, attaques d'Or/Argent |
 
 ## 2. Heure de jeu
 
@@ -193,15 +193,15 @@ Un PNJ de Doublonville dit ce que le Pokémon de tête pense du joueur, en 4 pal
 - **Multi Exp** : c'est déjà un **objet clé** (lot 32P), donc **gardé** au vol. Si le joueur ne l'a
   pas, la Tour Radio lui en donne une ; s'il l'a, il reçoit à la place un Super Bonbon ×3 **[D]**.
 
-## 11. Pokédex à 201 espèces
+## 11. Pokédex à 202 espèces
 
 - Numéros **nationaux** (Germignon n° 152 … Celebi n° 251). Le Pokédex liste **seulement les espèces
   du jeu** dans l'ordre des numéros : 1 à 151, puis 152, 153, 154, 155… sans cases vides pour les
-  50 espèces absentes **[D]** (JH-22).
-- `size` passe à 201 ; affichage « vus · capturés · 201 espèces ».
+  49 espèces absentes **[D]** (JH-22).
+- `size` passe à 202 ; affichage « vus · capturés · 202 espèces » (51 espèces de Johto avec Écrémeuh, JH-28).
 - Un filtre « Kanto / Johto / Tout » dans le Pokédex **[D]**.
 - **Diplôme de Johto** : même mécanisme que celui de Kanto (variante de dialogue
-  `if_caught_at_least`), seuil **49** espèces de Johto capturées (Celebi exclu), remis par Orme ou
+  `if_caught_at_least`), seuil **50** espèces de Johto capturées (Celebi exclu), remis par Orme ou
   son assistant à Oliville **[D]**. Le Diplôme de Kanto ne change pas (150).
 
 ## 12. Sauvegarde v10
@@ -216,12 +216,12 @@ Un PNJ de Doublonville dit ce que le Pokémon de tête pense du joueur, en 4 pal
 
 ## 13. Données
 
-- **50 espèces** dans de nouveaux fichiers `data/pokemon/species/johto_*.json`, même format que
+- **51 espèces** dans de nouveaux fichiers `data/pokemon/species/johto_*.json`, même format que
   Kanto (`dex`, `name`, `types` modernes, `base_stats` modernes, `learnset`, `evolutions`…).
-- **Attaques** : celles des apprentissages d'Or/Argent des 50 espèces et des attaques de Dante et
+- **Attaques** : celles des apprentissages d'Or/Argent des 51 espèces et des attaques de Dante et
   des admins, environ **40 attaques neuves** **[D]**, chacune rattachée à une famille d'effets
   existante (`data/battle/move_fx/families.json`).
-- **Art** : artwork officiel n° 152–251 pour les 50 (`assets/sprites/pokemon/official/`), dos de
+- **Art** : artwork officiel n° 152–251 pour les 51 (`assets/sprites/pokemon/official/`), dos de
   combat repeints (même chaîne que Kanto), sprites de compagnon pour les espèces éligibles.
 - **Sources** : PokeAPI pour les statistiques et apprentissages, comme Kanto.
 
@@ -232,7 +232,7 @@ Un PNJ de Doublonville dit ce que le Pokémon de tête pense du joueur, en 4 pal
 | **JOH0A** | Sauvegarde v10, équipe confisquée (vol et retour, en scène de test), Stockage hors ligne | **Seul** (système risqué) |
 | **JOH0B** | Heure (`WorldClock`), 3 profils de lumière, `johto_auto`, lumières de nuit, rencontres par moment | Captures matin / jour / nuit sur une carte de test |
 | **JOH0C** | Lien, évolutions `bond` et `trade` + objet, œuf et éclosion, Exp ×1,5 | Lot |
-| **JOH0D** | Données des 50 espèces et des attaques, Pokédex 201 et filtre, régions, Carte à 2 pages, Vol entre régions | Lot |
+| **JOH0D** | Données des 51 espèces et des attaques, Pokédex 202 et filtre, régions, Carte à 2 pages, Vol entre régions | Lot |
 
 Chaque sous-jalon : tests ciblés, puis CI complète avant fusion (règle 2 de `CLAUDE.md`).
 

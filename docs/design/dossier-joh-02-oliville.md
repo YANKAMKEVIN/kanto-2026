@@ -17,7 +17,7 @@
 ## 2. Hypothèses d'entrée
 
 - JOH0 fait : heure, lumières de Johto, équipe confisquée, Stockage hors ligne, régions, Pokédex 201,
-  données des 50 espèces.
+  données des 51 espèces.
 - Sauvegarde d'après la Ligue (`league_champion_defeated`), Surf obtenu.
 
 ## 3. Géographie
