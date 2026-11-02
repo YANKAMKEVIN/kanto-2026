@@ -43,6 +43,16 @@
 
 Points de Vol : Doublonville (utilisable à l'acte 2).
 
+**Grilles validées par Kevin le 2026-11-02** : `tools/plans/route_37.txt` (20 × 40),
+`route_36.txt` (56 × 20), `route_35.txt` (24 × 44), `doublonville.txt` (72 × 60) et
+`souterrain.txt` (40 × 14) ; contrôle `tools/art/plan_check_joh3.py`, aperçu
+`reference/joh3-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. Raccords :
+Rosalia (26..28, 47) ↔ Route 37 (8..10, 0) ; Route 37 (8..10, 39) ↔ Route 36 (8..10, 0) ;
+Route 36 (26..28, 19) ↔ Route 35 (10..12, 0) ; Route 35 (10..12, 43) ↔ Doublonville (34..36, 0) ;
+escaliers de la place (31, 25) et (39, 33) ↔ Souterrain (1, 5..6) et (38, 7..8). Défauts [D] notés
+dans les en-têtes (grille du Parc « fermé pour entretien » en examen, emprises du Grand Magasin
+12 × 9 et de la Tour Radio 10 × 12, agent rangé en (33, 55) après l'indice).
+
 ## 4. Ordre de jeu
 
 | Étape | Lieu | Ce qui se passe | Drapeau |

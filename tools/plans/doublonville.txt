@@ -1,0 +1,133 @@
+# Doublonville (goldenrod_city) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH3 ; dossier
+# docs/design/dossier-joh-04-doublonville.md §3.2, §4, §10, textes D-10 à D-37 ; Tour Radio au
+# JOH5, dossier joh-06).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un
+# changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh3.py.
+#
+# 72 × 60 cases (dossier : ≈ 72 × 60, la plus grande ville de Johto) ; nord en haut ;
+# x = colonne 0..71, y = rangée 0..59.
+#
+# Composition (tout à angles droits) :
+#   - GRANDE AVENUE x 34..36, du bord NORD (Route 35) au bord SUD (Route 34) ; RUE DU NORD y 16..18
+#     et BOULEVARD y 28..30, d'ouest en est ; PLACE CENTRALE (x 28..42, y 24..34) avec ses massifs
+#     de fleurs et les deux ESCALIERS du Souterrain (E, (31, 25) et (39, 33)).
+#   - Nord-ouest : la TOUR RADIO (U, 10 × 12, x 6..15, y 4..15, portes (10..11, 15)), point haut de
+#     la ville ; la MAISON DU LIEN de Mme Clémence (L, 7 × 6, porte (23, 15)).
+#   - Ouest du boulevard : CENTRE (C, 8 × 7, portes (9..10, 27)) et Maison 1 (m, 7 × 6, porte
+#     (23, 27) ; la femme de D-37).
+#   - Nord-est : Maison 2 (N, 7 × 6, porte (47, 15)) ; GRAND MAGASIN (A, 12 × 9, x 44..55,
+#     y 19..27, portes (49..50, 27)).
+#   - Sud-est : la GARE en façade, fermée (F, 14 × 8, x 52..65, y 38..45), et son parvis (y 46..47).
+#   - Sud-ouest : jardin fleuri (y, x 10..18, y 39..41) dans un écrin d'arbres, prés et érables (G).
+#   - Sortie SUD gardée par un agent jusqu'à l'indice du Souterrain (`johto_azalea_clue`, D-33).
+#   Arène, Parc National, Casino, gare en service : hors périmètre (dossier §1).
+#
+# Raccords :
+#   NORD (34..36, 0) ↔ Route 35, bord sud (10..12, 43) (colonnes différentes, warps case à case).
+#   SUD (34..36, 59) ↔ Route 34 (JOH4, grille à venir).
+#   ESCALIERS (31, 25) ↔ Souterrain ouest (1, 5..6) ; (39, 33) ↔ Souterrain est (38, 7..8).
+#
+# Légende :
+#   T forêt et bordure (bloquée)   . pelouse   p pavé (praticable)   x haie (bloquée)
+#   y massif de fleurs (bloqué)   n banc (bloqué)   G arbre repère (bloqué)
+#   U Tour Radio  A Grand Magasin  L maison du lien  C Centre Pokémon  m Maison 1  N Maison 2
+#   F gare (façade)  (emprises bloquées)
+#   D porte d'un bâtiment (praticable, STEP_ON ↑)   E escalier du Souterrain (praticable, warp)
+# Emprises : Centre 8 × 7 et maisons 7 × 6 comme à Kanto ; Grand Magasin 12 × 9 et Tour Radio
+# 10 × 12 neufs, portes de 2 cases au milieu du bas [D].
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 72 caractères), puis POSITIONS.
+
+PRATICABLES .pDE
+
+GRILLE 72 60
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTT..............................ppp...............................TTTT
+04 TTTT..UUUUUUUUUU..................ppp...............................TTTT
+05 TTTT..UUUUUUUUUU..................ppp...............................TTTT
+06 TTTT..UUUUUUUUUU..G...............ppp...G.................TTTTTTTTTTTTTT
+07 TTTT..UUUUUUUUUU..................ppp.....................TTTTTTTTTTTTTT
+08 TTTT..UUUUUUUUUU.............G....ppp.....................TTTTTTTTTTTTTT
+09 TTTT..UUUUUUUUUU..................ppp.....................TTTTTTTTTTTTTT
+10 TTTT..UUUUUUUUUU....LLLLLLL.......ppp.......NNNNNNN.......TTTTTTTTTTTTTT
+11 TTTT..UUUUUUUUUU....LLLLLLL.......ppp.......NNNNNNN.......TTTTTTTTTTTTTT
+12 TTTT..UUUUUUUUUU....LLLLLLL.......ppp.......NNNNNNN.......TTTTTTTTTTTTTT
+13 TTTT..UUUUUUUUUU....LLLLLLL.......ppp.......NNNNNNN.................TTTT
+14 TTTT..UUUUUUUUUU....LLLLLLL.......ppp.......NNNNNNN.................TTTT
+15 TTTT..UUUUDDUUUU....LLLDLLL.......ppp.......NNNDNNN.................TTTT
+16 TTTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTT
+17 TTTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTT
+18 TTTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTT
+19 TTTT..............................ppp.......AAAAAAAAAAAA............TTTT
+20 TTTT............xxxxxxxxxxxxxxx...ppp.......AAAAAAAAAAAAxxxxxxxxxxx.TTTT
+21 TTTT..CCCCCCCC....................ppp.......AAAAAAAAAAAA............TTTT
+22 TTTT..CCCCCCCC......mmmmmmm.......ppp.......AAAAAAAAAAAA....G.......TTTT
+23 TTTT..CCCCCCCC......mmmmmmm.......ppp.......AAAAAAAAAAAA............TTTT
+24 TTTT..CCCCCCCC......mmmmmmm.yypppppppppppyy.AAAAAAAAAAAA............TTTT
+25 TTTT..CCCCCCCC......mmmmmmm.yypEpppppppppyy.AAAAAAAAAAAA............TTTT
+26 TTTT..CCCCCCCC......mmmmmmm.ppppppppppppppp.AAAAAAAAAAAA............TTTT
+27 TTTT..CCCDDCCC......mmmDmmm.ppppppppppppppp.AAAAADDAAAAA............TTTT
+28 TTTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTT
+29 TTTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTT
+30 TTTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTT
+31 TTTT........................ppppppppppppppp.........................TTTT
+32 TTTT........................ppppppppppppppp.....................G...TTTT
+33 TTTT........................yypppppppppEpyy.........................TTTT
+34 TTTT........................yypppppppppppyy.........................TTTT
+35 TTTT..............................ppp...............................TTTT
+36 TTTTTTTTTTTTTTTTTTTTTTTTT.....n...ppp...............................TTTT
+37 TTTTTTTTTTTTTTTTTTTTTTTTT.........ppp...............................TTTT
+38 TTTTTTTT.............TTTT.........ppp...............FFFFFFFFFFFFFF..TTTT
+39 TTTTTTTT..yyyyyyyyy...............ppp...............FFFFFFFFFFFFFF..TTTT
+40 TTTTTTTT..yyyyyyyyy...............ppp...n...........FFFFFFFFFFFFFF..TTTT
+41 TTTTTTTT..yyyyyyyyy...............ppp...............FFFFFFFFFFFFFF..TTTT
+42 TTTTTTTT.............TTTT.........ppp...............FFFFFFFFFFFFFF..TTTT
+43 TTTTTTTTTTTTTTTTTTTTTTTTT.........ppp...............FFFFFFFFFFFFFF..TTTT
+44 TTTTTTTTTTTTTTTTTTTTTTTTT.........ppp...............FFFFFFFFFFFFFF..TTTT
+45 TTTT..............................ppp...............FFFFFFFFFFFFFF..TTTT
+46 TTTT..............................pppppppppppppppppppppppppppppppp..TTTT
+47 TTTT..............................pppppppppppppppppppppppppppppppp..TTTT
+48 TTTT........................G.....ppp...............................TTTT
+49 TTTT..............................ppp...............................TTTT
+50 TTTT....G.........................ppp...............................TTTT
+51 TTTT..............................ppp...............................TTTT
+52 TTTT................G.............ppp.......G.......................TTTT
+53 TTTT..............................ppp.....................G.........TTTT
+54 TTTT..............................ppp...............................TTTT
+55 TTTT..............................ppp...............................TTTT
+56 TTTT..............................ppp...............................TTTT
+57 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+58 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+59 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           34..36,0     libre   # PUSH ↑ → route_35, from_goldenrod (10..12, 43)
+from_route_35        spawn          34..36,0     libre   # arrivée de la Route 35, tournée ↓
+arrivee_titre        declencheur    34..36,3     libre   drapeau=johto_goldenrod_arrived  # titre de zone « Doublonville » + haut-parleur (D-10), une fois
+warp_sud             warp           34..36,59    libre   # PUSH ↓ → route_34 (JOH4) ; raccord à caler sur sa grille
+from_route_34        spawn          34..36,59    libre   # arrivée de la Route 34, tournée ↑
+agent_sud            pnj            33,56        bloque  role=agent facing=right  # D-33, D-34 ; avec johto_azalea_clue, il se range en (33, 55) [D]
+barriere_sud         declencheur    34..36,56    libre   actif_sans=johto_azalea_clue  # D-33 et pas en arrière
+porte_tour_radio     warp           10..11,15    libre   # STEP_ON ↑ → goldenrod_radio_tower_1f (hall, « employé » D-18, ascenseur D-19)
+porte_lien           warp           23,15        libre   # STEP_ON ↑ → goldenrod_bond_house (Mme Clémence, D-24 à D-27)
+porte_centre         warp           9..10,27     libre   # STEP_ON ↑ → goldenrod_center (Orme et l'œuf, D-12 à D-15)
+porte_maison_1       warp           23,27        libre   # STEP_ON ↑ → goldenrod_house_1 (D-37)
+porte_maison_2       warp           47,15        libre   # STEP_ON ↑ → goldenrod_house_2
+porte_magasin        warp           49..50,27    libre   # STEP_ON ↑ → goldenrod_dept_store_1f (D-20, D-21)
+escalier_ouest       warp           31,25        libre   # STEP_ON → goldenrod_underground, from_goldenrod_west (2, 5..6)
+escalier_est         warp           39,33        libre   # STEP_ON → goldenrod_underground, from_goldenrod_east (37, 7..8)
+retour_tour_radio    spawn          10..11,16    libre
+retour_lien          spawn          23,16        libre
+retour_centre        spawn          9..10,28     libre   # tournée ↓ ; point de Vol (utilisable à l'acte 2)
+retour_maison_1      spawn          23,28        libre
+retour_maison_2      spawn          47,16        libre
+retour_magasin       spawn          49..50,28    libre
+from_underground_w   spawn          31,26        libre   # sortie de l'escalier ouest, tournée ↓
+from_underground_e   spawn          39,32        libre   # sortie de l'escalier est, tournée ↑
+haut_parleur         decor          43,24        bloque  # poteau du haut-parleur de la place (D-10 ; T-1 au JOH5)
+jerome               pnj            56,27        bloque  role=livreur jour=jeudi facing=left  # D-36, devant le Grand Magasin ; absent hors du jeudi
+panneau_ville        panneau        33,4         bloque  # D-11, lu depuis (33, 5) ↑
+FIN

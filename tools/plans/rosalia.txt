@@ -26,8 +26,8 @@
 #
 # Raccords :
 #   OUEST (0, 14..16) ↔ Route 38, bord est (59, 14..16) (mêmes rangées).
-#   SUD (26..28, 47) ↔ Route 37 (JOH3, grille à venir ; dossier joh-04 : on sort de Rosalia par
-#     le sud).
+#   SUD (26..28, 47) ↔ Route 37, bord nord (8..10, 0) (dossier joh-04 : on sort de Rosalia par
+#     le sud ; colonnes différentes, warps case à case).
 #   EST (55, 30..32) ↔ Route 42 (JOH6, grille à venir). Fermée pendant l'acte 1 (Kevin, 2026-11-02) : un
 #     garde (« garde_route_42 ») et le déclencheur « barriere_route_42 » sans `johto_act2`, comme le
 #     garde d'Oliville ; son texte s'écrit avec le JOH6.
@@ -101,7 +101,7 @@ FIN
 POSITIONS
 warp_ouest           warp           0,14..16     libre   # PUSH ← → route_38, from_ecruteak (59, 14..16)
 from_route_38        spawn          0,14..16     libre   # arrivée de la Route 38, tournée → ; titre de zone « Rosalia » (R-25)
-warp_sud             warp           26..28,47    libre   # PUSH ↓ → route_37 (JOH3) ; raccord à caler sur sa grille
+warp_sud             warp           26..28,47    libre   # PUSH ↓ → route_37, from_ecruteak (8..10, 0)
 from_route_37        spawn          26..28,47    libre   # arrivée de la Route 37, tournée ↑
 warp_est             warp           55,30..32    libre   # PUSH → → route_42 (JOH6) ; raccord à caler sur sa grille
 from_route_42        spawn          55,30..32    libre   # arrivée de la Route 42, tournée ←
