@@ -221,3 +221,38 @@ effacée progressivement. Tout le reste de la v4 est inchangé (cadrage, cartouc
 « VS » à 50 % x). Aucun nouvel art fusionné (`dos_hero_vs.webp` de la branche d'art non branché).
 Comparatif et vidéo `entree-dresseurs-v5.mp4` refaits (v4 retirée). Suite : contrôle dans toutes
 les Arènes et lieux de combat.
+
+## 10. Étape 2 : les 8 Champions dans leur Arène (2026-11-02)
+
+Pilote validé par Kevin (Pierre, « c'est bon pour moi ») étendu aux 7 autres Champions. Planches en
+captures réelles 2340 × 1080 (entrée, lancer, « VS ») : `entree-champions/<arene>.jpg`
+(`argenta`, `azuria`, `carmin`, `celadopole`, `parmanie`, `safrania`, `cramois`, `jadielle`) et
+`entree-champions-ensemble.jpg` (le « VS » des 8). Refaire : `tools/capture_champions.sh` puis
+`tools/art/planches_champions.py`.
+
+- **Art** (`tools/art/entree_champions.py`, prompts `tools/art/entree_dresseurs/champions/`) : par
+  Champion une génération « sprites » (debout prêt + lancer, références : Pierre debout et lancer,
+  buste de Pierre, apparence du monde quand elle est peinte) et une génération « buste » (références :
+  buste de Pierre, sprite debout du Champion). Apparence Rouge/Bleu modernisée : Koga en ninja,
+  Morgane cheveux longs noirs, haut noir et pantalon blanc, Auguste chauve, moustache blanche,
+  lunettes noires et blouse blanche (leurs apparences du monde sont encore provisoires :
+  `gentleman`, `beauty`). Exports aux chemins du §1 et du §3 (toiles 512 × 768, lancer élargi,
+  buste 540 × 720).
+- **Données** (`trainer_intro.json`, `grand`) : `scale` [D] Ondine 1,10, Erika 1,12, Auguste 1,08,
+  Morgane 1,16, Koga 1,26, Giovanni 1,28, Major Bob 1,30 (Pierre : 1,18 par défaut) ; `hand` mesurée
+  sur chaque pose de lancer (bout des doigts, ramené vers la paume comme Pierre) ; `busts.<id>` au
+  réglage de Pierre.
+- **Code** : le cartouche des Balls remonte pour rester au-dessus de la tête de l'adversaire à
+  l'entrée et au lancer (pose agrandie) ; nom et titre de la banderole rouge réduits s'ils dépassent
+  20 % de la largeur (`UiTokens.VS_FOE_TEXT_MAX_WIDTH`).
+- **Décors** : repeints en v2 (trois-quarts, sol vers 41–43 % de la hauteur, `foe_feet`
+  [1559, 560]) car nettement en dessous d'Argenta v3 (vue frontale vide) : Jadielle
+  (`viridian_gym_sol_v2`, dalles à flèches, statues de Rhinocorne ; l'ancien `viridian_gym_sol`
+  reste au combat du Maître de la Ligue), Safrania (`saffron_gym_psy_v2`, téléporteurs), Carmin
+  (`vermilion_gym_salle_v2`, barrière électrique, poubelles). Gardés : Azuria (bassin), Céladopole
+  (serre), Parmanie (dojo), Cramois'Île (volcan) : lisibles, sol qui porte les personnages.
+
+Écarts restants : apparences du monde de Koga, Morgane et Auguste toujours provisoires (le combat
+est peint, le monde non) ; Cramois'Île : les pieds d'Auguste sont près du muret du fond (sol à
+≈ 52 %) ; bustes non réglés un par un (cadrage de Pierre, à affiner sur téléphone) ; anciens décors
+de Safrania et Carmin gardés dans le dépôt, à supprimer si Kevin valide les v2.

@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — ARÈNE DE SAFRANIA, version 2 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte Morgane, Championne d'Arène de Safrania (type Psy). AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Image jointe : IMAGE 1 = l'ancien décor de l'Arène de Safrania (lieu, matériaux, couleurs à GARDER : salle de marbre mauve et lilas, colonnes, losanges violets, grand disque gravé au mur, deux TÉLÉPORTEURS ronds au sol) mais trop vide, trop plat et trop frontal : à rendre bien plus riche, profond, mystérieux et vivant, en vue de trois-quarts.
+
+LIEU : la salle de la Championne au cœur de l'Arène de Safrania, Arène des téléporteurs : marbre lilas veiné de blanc, hautes colonnes de marbre mauve à chapiteaux sobres, murs à frise de losanges violets, un grand disque concentrique de pierre gravé (cercles et spirale, rien d'écrit) au mur du fond, qui luit faiblement d'un halo violet ; plusieurs TÉLÉPORTEURS circulaires encastrés dans le sol (anneaux de métal argenté autour d'un disque violet lumineux, légère lueur qui monte), deux ou trois répartis sur les côtés et au fond ; des cloisons basses de marbre qui évoquent les petites salles reliées par les téléporteurs, au fond ; quelques lévitations discrètes de petites pierres ou de poussière lumineuse près du disque. Lumière froide et douce, lilas et bleutée, venant de hauts vitraux géométriques violets en haut à gauche, rayons doux en diagonale ; reflets du sol de marbre poli.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra sur la GAUCHE de la salle, regard légèrement vers la DROITE, en trois-quarts : point de fuite vers x 62 %. Colonnes de GAUCHE proches, énormes, coupées par le bord gauche et par le haut ; celles de droite plus petites et plus lointaines ; le disque gravé vers x 55 à 75 %, en retrait.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL de marbre (vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : marbre plat et nu, déjà sur le sol (l'adversaire y posera les pieds), AUCUN téléporteur dessous ni autour. Rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : marbre plat et nu au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

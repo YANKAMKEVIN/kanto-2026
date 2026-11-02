@@ -89,3 +89,31 @@ func test_every_fallback_look_exists() -> void:
 		var look := CharacterLook.resolve(sprite)
 		assert_true(look.painted, "%s : apparence peinte « %s »" % [id, sprite])
 		assert_not_null(TrainerIntroStage.world_texture(sprite), "%s : image de repli" % id)
+
+
+## Les 8 Champions d'Arène (étape 2 de l'entrée, 2026-11-02) : art complet (debout, lancer,
+## buste), main du lancer et réglage du buste dans les données, taille réelle relative cohérente.
+const CHAMPIONS: Array[StringName] = [&"pierre", &"ondine", &"major_bob", &"erika", &"koga",
+	&"morgane", &"auguste", &"giovanni"]
+
+
+func test_every_champion_has_complete_art() -> void:
+	for id: StringName in CHAMPIONS:
+		var front := _catalog.front_dir + String(id) + _catalog.extension
+		var throw := _catalog.front_dir + String(id) + _catalog.throw_suffix + _catalog.extension
+		var bust := _catalog.portrait_dir + String(id) + _catalog.extension
+		for path: String in [front, throw, bust]:
+			assert_true(ResourceLoader.exists(path), "%s : %s" % [id, path])
+		assert_ne(_catalog.hand_of(id), _catalog.point("foe_hand"), "%s : main du lancer" % id)
+		assert_ne(_catalog.bust_adjust(id), Vector3(0.0, 0.0, 1.0), "%s : réglage du buste" % id)
+
+
+func test_champion_scales() -> void:
+	for id: StringName in CHAMPIONS:
+		var scale := _catalog.scale_of(id)
+		assert_between(scale, 1.0, 1.4, "%s : taille réelle relative" % id)
+	# Grands adultes plus grands que Pierre ; Ondine, Erika et Auguste un peu moins.
+	for tall: StringName in [&"major_bob", &"koga", &"giovanni"]:
+		assert_gt(_catalog.scale_of(tall), _catalog.scale_of(&"pierre"), String(tall))
+	for small: StringName in [&"ondine", &"erika", &"auguste"]:
+		assert_lt(_catalog.scale_of(small), _catalog.scale_of(&"pierre"), String(small))

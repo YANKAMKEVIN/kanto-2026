@@ -46,6 +46,15 @@
 			"player_feet": [716, 972],
 			"horizon": 290
 		},
+		"saffron_gym_psy_v2": {
+			"zone": "saffron_gym",
+			"variant": "psy_v2",
+			"back": "res://assets/battle/decors/saffron_gym_psy_v2_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 445
+		},
 		"fighting_dojo_salle": {
 			"zone": "fighting_dojo",
 			"variant": "salle",
@@ -63,6 +72,15 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 300
+		},
+		"viridian_gym_sol_v2": {
+			"zone": "viridian_gym",
+			"variant": "sol_v2",
+			"back": "res://assets/battle/decors/viridian_gym_sol_v2_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 465
 		},
 		"route_1_chemin": {
 			"zone": "route_1",
@@ -181,6 +199,15 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 380
+		},
+		"vermilion_gym_salle_v2": {
+			"zone": "vermilion_gym",
+			"variant": "salle_v2",
+			"back": "res://assets/battle/decors/vermilion_gym_salle_v2_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 445
 		},
 		"route_9_roche": {
 			"zone": "route_9",
@@ -393,7 +420,7 @@
 			{ "decor": "ss_anne_pont" }
 		],
 		"vermilion_gym": [
-			{ "decor": "vermilion_gym_salle" }
+			{ "decor": "vermilion_gym_salle_v2" }
 		],
 		"route_9": [
 			{ "decor": "route_9_roche" }
@@ -576,13 +603,13 @@
 			{ "decor": "silph_co_bureaux" }
 		],
 		"saffron_gym": [
-			{ "decor": "saffron_gym_psy" }
+			{ "decor": "saffron_gym_psy_v2" }
 		],
 		"fighting_dojo": [
 			{ "decor": "fighting_dojo_salle" }
 		],
 		"viridian_gym": [
-			{ "decor": "viridian_gym_sol" }
+			{ "decor": "viridian_gym_sol_v2" }
 		],
 		"safari_zone_center": [
 			{ "decor": "safari_zone_savane" }

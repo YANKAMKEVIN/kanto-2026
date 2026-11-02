@@ -1701,6 +1701,9 @@ const VS_TEXT_UNTILT := 0.7
 const VS_FOE_TEXT_X := 0.695
 const VS_PLAYER_TEXT_X := 0.305
 const VS_FOE_TEXT_SHIFT := 0.0
+## Largeur maximale du nom et du titre de l'adversaire (part de la largeur de l'écran) : un titre
+## long (« Championne d'Arène de Céladopole ») est réduit pour ne pas passer sous le buste [D].
+const VS_FOE_TEXT_MAX_WIDTH := 0.2
 const VS_PLAYER_TEXT_SHIFT := 0.012
 ## Bords déchirés du pinceau : dents (nombre, profondeur en part de l'épaisseur) et traînées.
 const VS_BRUSH_TEETH := 18

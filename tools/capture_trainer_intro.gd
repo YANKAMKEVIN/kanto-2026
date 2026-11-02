@@ -8,7 +8,9 @@ extends SceneTree
 ## `--battle=` :
 ## - `ordinary` : Route 3, Gamin Hugo (Dresseur ordinaire : les deux dresseurs, la rangée de
 ##   Poké Balls, l'adversaire lance, puis le joueur) ;
-## - `grand` : Arène d'Argenta, Pierre (séquence « VS », puis la même entrée).
+## - `grand` : Arène d'Argenta, Pierre (séquence « VS », puis la même entrée) ;
+## - `argenta`, `azuria`, `carmin`, `celadopole`, `parmanie`, `safrania`, `cramois`, `jadielle` :
+##   chaque Champion dans son Arène (planches docs/design/fiches-assets/entree-champions/).
 ## Le combat commence ≈ 0,7 s après l'arrivée sur la carte ; l'outil quitte ≈ 1,5 s après
 ## l'apparition de la grille d'actions. Imprime l'image du début du combat (« [intro] start »)
 ## pour rogner la vidéo. Aucune entrée n'est simulée pendant l'entrée (jamais sautée).
@@ -23,6 +25,23 @@ const SETUPS := {
 		"trainer": "route_3_hugo"},
 	"grand": {"map": "pewter_gym", "spawn": "entrance", "cell": [7, 4], "facing": "up",
 		"trainer": "pewter_gym_brock"},
+	# Étape 2 (les 8 Champions dans leur Arène) : le joueur reste au point d'entrée de l'Arène.
+	"argenta": {"map": "pewter_gym", "spawn": "entrance", "cell": [7, 4], "facing": "up",
+		"trainer": "pewter_gym_brock"},
+	"azuria": {"map": "cerulean_gym", "spawn": "entrance", "facing": "up",
+		"trainer": "cerulean_gym_misty"},
+	"carmin": {"map": "vermilion_gym", "spawn": "entrance", "facing": "up",
+		"trainer": "vermilion_gym_surge"},
+	"celadopole": {"map": "celadon_gym", "spawn": "entrance", "facing": "up",
+		"trainer": "celadon_gym_erika"},
+	"parmanie": {"map": "fuchsia_gym", "spawn": "entree", "facing": "up",
+		"trainer": "fuchsia_gym_koga"},
+	"safrania": {"map": "saffron_gym", "spawn": "entrance", "facing": "up",
+		"trainer": "saffron_gym_sabrina"},
+	"cramois": {"map": "cinnabar_gym", "spawn": "depuis_ile", "facing": "up",
+		"trainer": "cinnabar_gym_blaine"},
+	"jadielle": {"map": "viridian_gym", "spawn": "entrance", "facing": "up",
+		"trainer": "viridian_gym_giovanni"},
 }
 const PARTY: Array = [{"species": "squirtle", "level": 14}]
 const LEAD_FRAMES: int = 20
@@ -59,9 +78,10 @@ func _run() -> void:
 	game_state.set(&"rival_name", "Régis")
 	var player: Node = boot.call(&"get_player")
 	var map: Node = boot.call(&"get_map")
-	var cell: Array = setup["cell"]
-	player.call(&"enter_map", map.call(&"get_grid"), Vector2i(cell[0], cell[1]), Vector2i.UP,
-		map.call(&"get_pixel_rect"))
+	if setup.has("cell"):
+		var cell: Array = setup["cell"]
+		player.call(&"enter_map", map.call(&"get_grid"), Vector2i(cell[0], cell[1]),
+			Vector2i.UP, map.call(&"get_pixel_rect"))
 	await _frames(LEAD_FRAMES)
 	var battles: Node = boot.call(&"get_battle_director")
 	var hud: Node = boot.call(&"get_battle_hud")
@@ -103,6 +123,10 @@ func _plan_shot(step: int) -> void:
 			var windup: float = catalog.call(&"duration", "send_windup")
 			var throw: float = catalog.call(&"duration", "send_throw")
 			_shots[now + int(round((windup + throw * 0.5) * fps))] = "lancer"
+		2:  # VS_OUT : Champions sans message d'ouverture, dresseurs revenus à l'entrée.
+			if not _shots.values().has("entree"):
+				var out: float = catalog.call(&"duration", "vs_out")
+				_shots[now + int(round(out * fps)) + 1] = "entree"
 		1:  # VS_HOLD : emblème posé.
 			var hold: float = catalog.call(&"duration", "vs_hold")
 			_shots[now + int(round(hold * 0.5 * fps))] = "vs"

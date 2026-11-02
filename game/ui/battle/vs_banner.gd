@@ -257,7 +257,11 @@ func _layout() -> void:
 	_own_clip.size = Vector2(view.x * 0.45, view.y * 0.5)
 	_place_bust(_player_portrait, _own_clip, catalog.player_bust,
 		catalog.bust_adjust(_player_bust_id), view, true)
-	# Textes : nom, filet, titre, centrés sur leur x de la maquette, presque horizontaux.
+	# Textes : nom, filet, titre, centrés sur leur x de la maquette, presque horizontaux ; un nom
+	# ou un titre trop long est réduit (il ne passe jamais sous le buste).
+	var max_width := UiTokens.VS_FOE_TEXT_MAX_WIDTH * view.x
+	_fit_width(_foe_name, UiTokens.VS_NAME_FONT, max_width)
+	_fit_width(_foe_title, UiTokens.VS_TITLE_FONT, max_width)
 	_center_text(_foe_stripe, [_foe_name, _foe_rule, _foe_title],
 		_along(_foe_stripe, UiTokens.VS_FOE_TEXT_X * view.x), UiTokens.VS_FOE_TEXT_SHIFT * view.y)
 	_center_text(_own_stripe, [_player_name, _own_rule],
@@ -268,6 +272,18 @@ func _layout() -> void:
 	_emblem.pivot_offset = _emblem.size / 2.0
 	_emblem.position = UiTokens.VS_EMBLEM_CENTER * view - _emblem.size / 2.0
 	_emblem.queue_redraw()
+
+
+## Taille de police de [param label] : [param base] px, réduite si son texte dépasse
+## [param max_width] px.
+static func _fit_width(label: Label, base: int, max_width: float) -> void:
+	label.add_theme_font_size_override(&"font_size", base)
+	var font := label.get_theme_font(&"font")
+	if font == null or label.text.is_empty():
+		return
+	var width := font.get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, base).x
+	if width > max_width:
+		label.add_theme_font_size_override(&"font_size", maxi(int(base * max_width / width), 1))
 
 
 ## Empile [param parts] (labels et filet) centrés verticalement dans [param stripe] (décalés de

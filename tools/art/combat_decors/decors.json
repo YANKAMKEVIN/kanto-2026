@@ -343,5 +343,32 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"viridian_gym_sol_v2": {
+		"composition": "EC_DECOR_JADIELLE_r2.png",
+		"tuiles": [
+			{ "image": "EC_DECOR_JADIELLE_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EC_DECOR_JADIELLE_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"saffron_gym_psy_v2": {
+		"composition": "EC_DECOR_SAFRANIA_r1.png",
+		"tuiles": [
+			{ "image": "EC_DECOR_SAFRANIA_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EC_DECOR_SAFRANIA_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"vermilion_gym_salle_v2": {
+		"composition": "EC_DECOR_CARMIN_r1.png",
+		"tuiles": [
+			{ "image": "EC_DECOR_CARMIN_r1_TL.png", "portion": [0, 0, 1000, 850] },
+			{ "image": "EC_DECOR_CARMIN_r1_TR.png", "portion": [850, 0, 1850, 850] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

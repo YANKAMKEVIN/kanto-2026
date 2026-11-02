@@ -212,6 +212,13 @@ func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D
 	var pad := _layout("cartouche_pad") * view.y
 	var gap := _layout("ball_gap") * view.y
 	_cartouche.box = high - low
+	# Grand adversaire (Major Bob, Giovanni…) : le cartouche remonte pour ne jamais mordre sa tête,
+	# ni à l'entrée ni pendant son lancer (poses agrandies).
+	var head := _foe_head_top()
+	if high.y > head - pad:
+		var lift := minf(high.y - (head - pad), maxf(low.y - pad, 0.0))
+		low.y -= lift
+		high.y -= lift
 	_cartouche.position = ((low + high) / 2.0).round()
 	var slots := float(TrainerIntro.SLOTS)
 	var size := minf(_cartouche.box.y - 2.0 * pad,
@@ -516,6 +523,21 @@ func _image(side: BattleEvent.SideId, phase: String) -> Texture2D:
 	if catalog != null and throw != null and catalog.uses_throw_image(_side_key(side), phase):
 		return throw
 	return _stand.get(side)
+
+
+## y du haut de la tête de l'adversaire (px de l'écran) le plus haut, à l'entrée (pose « entry »)
+## et au lâcher de sa Ball (pose « throw », image de lancer à l'échelle de la pose de garde).
+func _foe_head_top() -> float:
+	var side := BattleEvent.SideId.FOE
+	var entry := _pose_rect(side, &"entry")
+	var top := entry.position.y - entry.size.y
+	var guard := _image(side, "guard")
+	var release := _image(side, "release")
+	if guard != null and release != null:
+		var thrown := _pose_rect(side, &"throw")
+		top = minf(top, thrown.position.y - thrown.size.y
+			* visible_height(release) / maxf(visible_height(guard), 1.0))
+	return top
 
 
 static func _side_key(side: BattleEvent.SideId) -> String:

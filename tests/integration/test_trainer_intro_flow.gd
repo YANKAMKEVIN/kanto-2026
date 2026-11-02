@@ -31,6 +31,8 @@ var _log: Array[String] = []
 ## Pokémon adverse visible au début de l'étape TRAINERS_IN (doit être faux).
 var _foe_shown_at_entry: bool = true
 var _foe_trainer_texture: Texture2D
+## Au lancer de l'adversaire : [bas du cartouche, haut de la tête la plus haute] (px).
+var _cartouche_and_head: Vector2 = Vector2.ZERO
 
 
 func before_each() -> void:
@@ -89,8 +91,11 @@ func _on_step(step: TrainerIntro.Step) -> void:
 	if step == TrainerIntro.Step.TRAINERS_IN:
 		_foe_shown_at_entry = _stage.get_sprite(BattleEvent.SideId.FOE).visible
 	elif step == TrainerIntro.Step.FOE_SEND:
-		_foe_trainer_texture = _stage.get_trainer_intro_stage().get_trainer(
-			BattleEvent.SideId.FOE).texture
+		var view := _stage.get_trainer_intro_stage()
+		_foe_trainer_texture = view.get_trainer(BattleEvent.SideId.FOE).texture
+		var cartouche: Node2D = view.get_cartouche()
+		_cartouche_and_head = Vector2(cartouche.position.y + cartouche.get(&"box").y / 2.0,
+			view.call(&"_foe_head_top"))
 
 
 func _on_event(event: BattleEvent) -> void:
@@ -160,3 +165,26 @@ func test_rival_vs_uses_the_rival_name() -> void:
 	_texts.token_values = func() -> Dictionary: return {&"rival": "Régis", &"player": "Kevin"}
 	await _play(&"rival_route22")
 	assert_has(_log, "vs:RÉGIS/Rival")
+
+
+func test_cartouche_never_covers_a_tall_champion() -> void:
+	await _play(&"vermilion_gym_surge")
+	assert_eq(_foe_trainer_texture.resource_path,
+		"res://assets/sprites/trainers/battle/major_bob.webp", "Major Bob peint")
+	assert_lt(_cartouche_and_head.x, _cartouche_and_head.y,
+		"cartouche au-dessus de la tête de Major Bob (entrée et lancer)")
+
+
+func test_long_titles_shrink_to_fit() -> void:
+	var label := Label.new()
+	label.add_theme_font_override(&"font", VsBanner.title_font())
+	label.text = "Championne d'Arène de Céladopole"
+	add_child_autofree(label)
+	VsBanner._fit_width(label, UiTokens.VS_TITLE_FONT, 300.0)
+	var size := label.get_theme_font_size(&"font_size")
+	assert_lt(size, UiTokens.VS_TITLE_FONT, "titre long réduit")
+	assert_lte(label.get_theme_font(&"font").get_string_size(label.text,
+		HORIZONTAL_ALIGNMENT_LEFT, -1, size).x, 300.0)
+	label.text = "Rival"
+	VsBanner._fit_width(label, UiTokens.VS_TITLE_FONT, 300.0)
+	assert_eq(label.get_theme_font_size(&"font_size"), UiTokens.VS_TITLE_FONT, "titre court intact")

@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — ARÈNE DE CARMIN-SUR-MER, version 2 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte Major Bob, Champion d'Arène de Carmin-sur-Mer (type Électrik, ancien militaire). AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Image jointe : IMAGE 1 = l'ancien décor de l'Arène de Carmin (lieu, matériaux, couleurs à GARDER : hangar électrique de métal brossé, tubes de néon bleus, armoires électriques, cadrans, bandes de sécurité jaunes et noires, sol de plaques d'acier rivetées) mais trop plat et trop frontal : à rendre bien plus riche, profond et vivant, en vue de trois-quarts.
+
+LIEU : l'Arène électrique de Carmin, un ancien hangar militaire : murs de tôles d'acier et de grosses armoires électriques à voyants, cadrans à aiguilles, câbles épais et conduites le long des murs ; au fond, la BARRIÈRE ÉLECTRIQUE de l'Arène : deux bornes métalliques reliées par des arcs électriques bleu-blanc qui crépitent ; le long des murs, des rangées de POUBELLES MÉTALLIQUES cylindriques (le puzzle des interrupteurs cachés de l'Arène) ; quelques caisses militaires vert olive empilées ; passerelle métallique en hauteur avec garde-corps. Au sol, de grandes plaques d'acier brossé rivetées, bandes de sécurité jaunes et noires, reflets bleus des néons. Lumière froide des néons bleus et blancs en haut, petits éclairs et étincelles discrets près de la barrière, reflets nets sur le sol.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra sur la GAUCHE du hangar, regard légèrement vers la DROITE, en trois-quarts : point de fuite vers x 62 %. Armoires et piliers de GAUCHE proches, énormes, coupés par le bord gauche et par le haut ; ceux de droite plus petits et plus lointains ; la barrière électrique vers x 60 à 85 %, au fond.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL de plaques d'acier (vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : plaques d'acier plates et nues, déjà sur le sol (l'adversaire y posera les pieds). Rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : plaques plates et nues au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.
