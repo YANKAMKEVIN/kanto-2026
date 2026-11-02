@@ -448,16 +448,23 @@ const MOVE_DETAIL_CLOSE := 0.12
 const MOVE_DETAIL_SLIDE := 24.0
 
 # Bandeau des messages (à la place de la grille).
-const BATTLE_MESSAGE_WIDTH := 1164
-const BATTLE_MESSAGE_HEIGHT := 176
-## Entrée des Dresseurs, itération 3 (2026-11-02, maquettes validées) : bandeau à 77–93 % de la
-## hauteur (bas à 76 px du bord), texte un peu plus grand, contour un peu plus clair.
-const BATTLE_MESSAGE_BOTTOM := 76
-const BATTLE_MESSAGE_FONT := 36
+## Entrée des Dresseurs, itération 4 (2026-11-02, maquettes validées, mesures de Codex) : sur
+## l'écran du S24 (2340 × 1080), bandeau à 49–98 % de la largeur et 77–94 % de la hauteur (bas à
+## 66 px du bord ; compromis entre les maquettes 1 et 2), texte un peu plus grand (40), contour
+## un peu plus clair.
+const BATTLE_MESSAGE_WIDTH := 1140
+const BATTLE_MESSAGE_HEIGHT := 178
+const BATTLE_MESSAGE_BOTTOM := 66
+const BATTLE_MESSAGE_FONT := 40
 const BATTLE_MESSAGE_BORDER := Color(1, 1, 1, 0.28)
 const BATTLE_MESSAGE_BG := DIALOG_PANEL_BG
-const BATTLE_MESSAGE_PAD_H := 44
+const BATTLE_MESSAGE_PAD_H := 50
 const BATTLE_MESSAGE_PAD_V := 26
+## Indicateur de suite (petit triangle, maquette 2) quand un message attend : taille, centre à
+## cette distance du coin bas droit du bandeau, couleur.
+const BATTLE_MESSAGE_MORE_SIZE := Vector2(28, 18)
+const BATTLE_MESSAGE_MORE_INSET := Vector2(46, 34)
+const BATTLE_MESSAGE_MORE_COLOR := Color(1, 1, 1, 0.92)
 const BATTLE_MESSAGE_MAX_LINES := 2
 ## Tenue d'un message avant que le combat avance seul (ou au toucher).
 const BATTLE_MESSAGE_HOLD := 0.9
@@ -1664,49 +1671,60 @@ const VS_GOLD_OUTLINE := Color("#3A2208")
 ## Police à empattements des noms et du « VS » (Cinzel, SIL OFL 1.1, `assets/fonts/cinzel/`).
 const VS_SERIF_FONT := "res://assets/fonts/cinzel/Cinzel.ttf"
 const VS_SERIF_WEIGHT := 700
+## Police du titre (bas-de-casse à empattements, maquette 3 : « Champion d'Arène d'Argenta ») :
+## Cormorant Garamond (SIL OFL 1.1, `assets/fonts/cormorant_garamond/`), demi-gras.
+const VS_TITLE_SERIF_FONT := "res://assets/fonts/cormorant_garamond/CormorantGaramond.ttf"
+const VS_TITLE_SERIF_WEIGHT := 600
 ## Textures pinceau remplaçables des banderoles (absentes : pinceau dessiné en code).
 const VS_FOE_BANNER_TEXTURE := "res://assets/ui/battle/vs/banderole_rouge.webp"
 const VS_PLAYER_BANNER_TEXTURE := "res://assets/ui/battle/vs/banderole_bleue.webp"
 ## Voile léger de l'arène derrière les banderoles (opacité au plus fort).
 const VS_VEIL := Color(0.0, 0.0, 0.0, 0.18)
-## Banderoles en vraie diagonale (itération 3, fractions de l'écran) : la rouge occupe ≈ 52–100 % x
-## et 0–30 % y en montant vers la droite, la bleue ≈ 0–62 % x et 68–100 % y. Épaisseur (part de la
-## hauteur), largeur visible (part de la largeur), centre vertical, inclinaison (degrés).
-const VS_FOE_BANNER_THICK := 0.15
+## Banderoles en diagonale (itération 4, fractions de l'écran, mesures de Codex) : la rouge occupe
+## 50–100 % x et 5–30 % y en montant légèrement vers la droite (plus longue, moins haute ; son
+## bord bas presque horizontal porte les épaules du buste), la bleue 0–60 % x
+## et ≈ 69–96 % y. Épaisseur (part de la hauteur), largeur visible (part de la largeur), centre
+## vertical de son bout intérieur (rouge) ou extérieur droit (bleue), inclinaison (degrés).
+const VS_FOE_BANNER_THICK := 0.22
 const VS_PLAYER_BANNER_THICK := 0.18
-const VS_FOE_BANNER_WIDTH := 0.48
-const VS_PLAYER_BANNER_WIDTH := 0.62
-const VS_FOE_BANNER_Y := 0.15
+const VS_FOE_BANNER_WIDTH := 0.5
+const VS_PLAYER_BANNER_WIDTH := 0.6
+const VS_FOE_BANNER_Y := 0.19
 const VS_PLAYER_BANNER_Y := 0.87
-const VS_FOE_BANNER_TILT := 7.0
+const VS_FOE_BANNER_TILT := 1.5
 const VS_PLAYER_BANNER_TILT := 4.0
+## Part de l'inclinaison de la banderole que les textes NE suivent PAS (titres presque
+## horizontaux, maquette 3).
+const VS_TEXT_UNTILT := 0.7
+## Centre des textes (fractions de l'écran) : nom, filet et titre de l'adversaire (69,5 % x) ;
+## prénom du joueur (30,5 % x, 22–39 %) ; décalage vertical du bloc (part de la hauteur).
+const VS_FOE_TEXT_X := 0.695
+const VS_PLAYER_TEXT_X := 0.305
+const VS_FOE_TEXT_SHIFT := 0.0
+const VS_PLAYER_TEXT_SHIFT := 0.012
 ## Bords déchirés du pinceau : dents (nombre, profondeur en part de l'épaisseur) et traînées.
 const VS_BRUSH_TEETH := 18
 const VS_BRUSH_DEPTH := 0.12
 const VS_BRUSH_STREAKS := 7
-## Bustes : hauteur (part de l'écran) et haut de l'image (adversaire : près du haut de l'écran,
-## rogné par le bas de sa banderole ; joueur : rogné par le bas de l'écran), débordant la
-## banderole : seuls la tête et les épaules (adversaire) ou le haut du buste (joueur) restent.
-const VS_PORTRAIT_HEIGHT := 0.42
-const VS_FOE_PORTRAIT_TOP := 0.0
-## Bas visible du buste de l'adversaire (cale le visage entier au-dessus de sa banderole).
-const VS_FOE_PORTRAIT_BOTTOM := 0.31
-const VS_PLAYER_PORTRAIT_TOP := 0.6
-## Retrait du texte depuis le bord intérieur de la banderole (px de référence).
-const VS_TEXT_INSET := 48
-const VS_NAME_FONT := 96
+## Bustes : cadrage par les données (`data/battle/trainer_intro.json`, bloc « vs » : place,
+## hauteur, rognage, réglage par buste).
+const VS_NAME_FONT := 106
 const VS_NAME_OUTLINE := 8
-const VS_TITLE_FONT := 28
-const VS_TITLE_COLOR := Color(1.0, 0.97, 0.9, 0.95)
+## Interligne retiré sous le nom (px de référence) : filet et titre serrés sous lui.
+const VS_NAME_TIGHTEN := 18
+const VS_TITLE_FONT := 40
+const VS_TITLE_COLOR := Color(1.0, 0.97, 0.9, 0.97)
+const VS_TITLE_OUTLINE := 4
+const VS_TITLE_OUTLINE_COLOR := Color(0.2, 0.04, 0.04, 0.6)
 ## Filet sous le nom : longueur (px de référence), épaisseur, demi-diagonale du losange.
-const VS_RULE_LENGTH := 360
+const VS_RULE_LENGTH := 470
 const VS_RULE_WIDTH := 2
 const VS_RULE_DIAMOND := 7
-## Emblème « VS » (itération 3) : largeur ≈ 12 % de l'écran, centre (50 %, 51 %) ; lettres dorées
+## Emblème « VS » (itération 4) : largeur ≈ 12 % de l'écran, centre (50 %, 49 %) ; lettres dorées
 ## en dégradé (or profond → or clair), éclat additif, entaille diagonale, éclair et deux traits.
 ## Remplacement peint : [constant VS_EMBLEM_TEXTURE] s'il existe.
 const VS_EMBLEM_WIDTH := 0.12
-const VS_EMBLEM_CENTER := Vector2(0.5, 0.51)
+const VS_EMBLEM_CENTER := Vector2(0.5, 0.49)
 const VS_EMBLEM_OUTLINE := 10
 const VS_EMBLEM_GLOW := Color(1.0, 0.85, 0.45, 0.35)
 const VS_EMBLEM_GLOW_SIZE := 28

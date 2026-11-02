@@ -6,7 +6,8 @@ extends BattleWidget
 ##
 ## show_message est une coroutine : elle se termine après BATTLE_MESSAGE_HOLD, ou plus tôt
 ## au premier toucher sur l'écran (appui d'un InputEventScreenTouch : sur Mac, le toucher est
-## émulé depuis la souris). Pas d'indicateur « › » : le combat avance seul (dossier 05 §21).
+## émulé depuis la souris). Le combat avance seul (dossier 05 §21) ; un petit triangle en bas à
+## droite (maquettes de l'entrée des Dresseurs, itération 4) signale qu'un message attend.
 ## Un nouveau message remplace le précédent (qui se termine aussitôt).
 
 ## Un message est posé ; [param wait_touch] : il attend un toucher.
@@ -20,6 +21,7 @@ const WAIT_LIMIT := 3000.0
 var hold_scale: float = 1.0
 var _hold: Tween
 var _unlock_at_ms: int = 0
+var _more: MoreIndicator
 
 @onready var _text: Label = %Text
 
@@ -29,6 +31,23 @@ func _ready() -> void:
 	_body.custom_minimum_size = Vector2(
 		UiTokens.BATTLE_MESSAGE_WIDTH, UiTokens.BATTLE_MESSAGE_HEIGHT)
 	_text.max_lines_visible = UiTokens.BATTLE_MESSAGE_MAX_LINES
+	# Triangle ancré au coin bas droit du texte, placé par rapport au coin du bandeau (marges du
+	# thème).
+	_more = MoreIndicator.new()
+	_more.name = &"More"
+	_more.visible = false
+	_text.add_child(_more)
+	var corner := Vector2(UiTokens.BATTLE_MESSAGE_PAD_H, UiTokens.BATTLE_MESSAGE_PAD_V) \
+		- UiTokens.BATTLE_MESSAGE_MORE_INSET
+	var half := UiTokens.BATTLE_MESSAGE_MORE_SIZE / 2.0
+	_more.anchor_left = 1.0
+	_more.anchor_right = 1.0
+	_more.anchor_top = 1.0
+	_more.anchor_bottom = 1.0
+	_more.offset_left = corner.x - half.x
+	_more.offset_right = corner.x + half.x
+	_more.offset_top = corner.y - half.y
+	_more.offset_bottom = corner.y + half.y
 
 
 func _input(event: InputEvent) -> void:
@@ -60,7 +79,9 @@ func show_message(text: String, wait_touch: bool = false) -> void:
 		_unlock_at_ms = Time.get_ticks_msec() + int(UiTokens.BATTLE_MESSAGE_TOUCH_LOCK * 1000.0)
 		_hold = create_tween()
 		_hold.tween_interval(WAIT_LIMIT)
+		_more.visible = true
 		await _hold.finished
+		_more.visible = is_waiting()
 		return
 	_unlock_at_ms = 0
 	# La réduction des animations n'abrège pas la lecture : seul 0 (tests) rend instantané.
@@ -69,7 +90,9 @@ func show_message(text: String, wait_touch: bool = false) -> void:
 		return
 	_hold = create_tween()
 	_hold.tween_interval(time)
+	_more.visible = true
 	await _hold.finished
+	_more.visible = is_waiting()
 
 
 ## Vide le bandeau sans le cacher (il reste en place) et termine le message en attente : un
@@ -83,6 +106,8 @@ func clear() -> void:
 func skip() -> void:
 	var hold := _hold
 	_hold = null
+	if _more != null:
+		_more.visible = false
 	BattleWidget.complete_tween(hold)
 
 
@@ -97,3 +122,20 @@ func get_text() -> String:
 
 func get_label() -> Label:
 	return _text
+
+
+## Indicateur de suite affiché (tests).
+func is_more_shown() -> bool:
+	return _more != null and _more.visible
+
+
+## Petit triangle pointe en bas (un message attend).
+class MoreIndicator:
+	extends Control
+
+	func _init() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	func _draw() -> void:
+		draw_colored_polygon(PackedVector2Array([Vector2.ZERO, Vector2(size.x, 0.0),
+			Vector2(size.x / 2.0, size.y)]), UiTokens.BATTLE_MESSAGE_MORE_COLOR)

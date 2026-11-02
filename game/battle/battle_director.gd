@@ -1166,8 +1166,9 @@ func _play_vs(intro: TrainerIntro) -> void:
 				_stage.move_trainers_to(&"entry", intro.duration(TrainerIntro.Step.VS_OUT)))
 	_hud.add_child(banner)
 	vs_started.emit(foe_name.to_upper(), intro.foe_title)
+	var look: Variant = _state.get(&"player_look") if _state != null else null
 	await banner.play(intro, foe_name, intro.foe_title, vs_foe_portrait(intro), player_name,
-		vs_player_portrait())
+		vs_player_portrait(), StringName(look) if look != null else &"hero")
 	banner.queue_free()
 
 

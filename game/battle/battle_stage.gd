@@ -1634,7 +1634,20 @@ func _show_decor() -> void:
 		sprite.position = rect.position.round()
 		sprite.scale = rect.size / sprite.texture.get_size()
 		sprite.set_meta(&"rest", sprite.position)
+		sprite.set_meta(&"base", Rect2(sprite.position, sprite.scale))
 	_set_backdrop(0.0)
+
+
+## Recadrage du décor peint (entrée des Dresseurs, lancer de l'adversaire) : zoom [param zoom]
+## autour du point écran [param from], qui vient en [param to] ; zoom 1 : cadrage du combat.
+func _frame_decor(zoom: float, from: Vector2, to: Vector2) -> void:
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		if not sprite.has_meta(&"base"):
+			continue
+		var base: Rect2 = sprite.get_meta(&"base")
+		sprite.position = to + (base.position - from) * zoom if zoom != 1.0 else base.position
+		sprite.scale = base.size * zoom
+		sprite.set_meta(&"rest", sprite.position)
 
 
 ## Rend les images du décor (seul le décor préchargé de la carte courante reste en mémoire).
@@ -1644,6 +1657,7 @@ func _release_decor() -> void:
 		sprite.visible = false
 		sprite.modulate = Color.WHITE
 		sprite.remove_meta(&"rest")
+		sprite.remove_meta(&"base")
 
 
 ## Léger tremblement de la scène (coup critique) : la caméra du monde, et le décor peint s'il
@@ -1924,6 +1938,7 @@ func _build_trainer_intro() -> void:
 	_intro_stage = TrainerIntroStage.new()
 	_intro_stage.name = &"TrainerIntro"
 	add_child(_intro_stage)
+	_intro_stage.framing_changed.connect(_frame_decor)
 	# Devant le feuillage du premier plan, derrière ton Pokémon.
 	move_child(_intro_stage, _sprites[BattleEvent.SideId.PLAYER].get_index())
 

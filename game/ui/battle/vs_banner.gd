@@ -44,8 +44,13 @@ var _foe_portrait: TextureRect
 var _player_portrait: TextureRect
 var _tweens: Array[Tween] = []
 var _playing: bool = false
+## Cadrage des bustes (données) et identifiants des bustes affichés (réglage par buste).
+var _catalog: TrainerIntroCatalog
+var _foe_bust_id: StringName = &""
+var _player_bust_id: StringName = &""
 
 static var _serif: Font
+static var _title_serif: Font
 
 
 func _init() -> void:
@@ -95,16 +100,46 @@ static func serif_font() -> Font:
 	return _serif
 
 
+## Police du titre (bas-de-casse à empattements, Cormorant Garamond demi-gras), lue une fois ;
+## null si absente.
+static func title_font() -> Font:
+	if _title_serif == null and ResourceLoader.exists(UiTokens.VS_TITLE_SERIF_FONT):
+		var base := load(UiTokens.VS_TITLE_SERIF_FONT) as Font
+		var weight := FontVariation.new()
+		weight.base_font = base
+		var tag := TextServerManager.get_primary_interface().name_to_tag("wght")
+		weight.variation_opentype = {tag: UiTokens.VS_TITLE_SERIF_WEIGHT}
+		_title_serif = weight
+	return _title_serif
+
+
+## Nom affiché sur une banderole (maquette 3 : « Pierre », « Kevin ») : initiale de chaque mot
+## en capitale, le reste en minuscules, que Cinzel dessine en petites capitales.
+static func display_name(text: String) -> String:
+	var words := text.split(" ")
+	for i: int in words.size():
+		var word := words[i]
+		if not word.is_empty():
+			words[i] = word.left(1).to_upper() + word.substr(1).to_lower()
+	return " ".join(words)
+
+
 ## Coroutine : joue la séquence de [param intro] (étapes VS_IN, VS_HOLD, VS_OUT) avec
-## l'adversaire [param foe_name] (mis en MAJUSCULES) / [param foe_title] / [param foe_portrait]
-## et le joueur [param player_name] / [param player_portrait] (portraits null : aucun).
+## l'adversaire [param foe_name] (initiales en capitales, [method display_name]) /
+## [param foe_title] / [param foe_portrait]
+## et le joueur [param player_name] / [param player_portrait] (portraits null : aucun ;
+## [param player_bust_id] : apparence du joueur, réglage de son buste dans les données).
 func play(intro: TrainerIntro, foe_name: String, foe_title: String, foe_portrait: Texture2D,
-		player_name: String, player_portrait: Texture2D) -> void:
+		player_name: String, player_portrait: Texture2D,
+		player_bust_id: StringName = &"") -> void:
 	_kill()
 	_playing = true
-	_foe_name.text = foe_name.to_upper()
+	_catalog = intro.get_catalog()
+	_foe_bust_id = intro.portrait_id
+	_player_bust_id = player_bust_id
+	_foe_name.text = display_name(foe_name)
 	_foe_title.text = foe_title
-	_player_name.text = player_name.to_upper()
+	_player_name.text = display_name(player_name)
 	_foe_portrait.texture = foe_portrait
 	_player_portrait.texture = player_portrait
 	visible = true
@@ -211,22 +246,23 @@ func _layout() -> void:
 	_own_stripe.rotation = deg_to_rad(UiTokens.VS_PLAYER_BANNER_TILT)
 	_foe_stripe.queue_redraw()
 	_own_stripe.queue_redraw()
-	# Bustes débordant la banderole : l'adversaire rogné par le bas de sa banderole, le joueur
-	# par le bas de l'écran.
-	var portrait_height := UiTokens.VS_PORTRAIT_HEIGHT * view.y
-	var foe_top := UiTokens.VS_FOE_PORTRAIT_TOP * view.y
-	_foe_clip.position = Vector2(view.x * 0.62, foe_top)
-	_foe_clip.size = Vector2(view.x * 0.38, UiTokens.VS_FOE_PORTRAIT_BOTTOM * view.y - foe_top)
-	_place_portrait(_foe_portrait, portrait_height, _foe_clip.size, false)
-	_own_clip.position = Vector2(0.0, UiTokens.VS_PLAYER_PORTRAIT_TOP * view.y)
-	_own_clip.size = Vector2(view.x * 0.38, view.y - _own_clip.position.y)
-	_place_portrait(_player_portrait, portrait_height, _own_clip.size, true)
-	# Textes : nom, filet, titre, centrés dans la partie libre de la banderole.
-	var inset := float(UiTokens.VS_TEXT_INSET)
+	# Bustes (cadrage des données) débordant la banderole : l'adversaire rogné par le bas de sa
+	# banderole (épaules et poitrine dedans), le joueur par le bas de l'écran.
+	var catalog := _catalog if _catalog != null else TrainerIntroCatalog.shared()
+	_foe_clip.position = Vector2(view.x * 0.5, 0.0)
+	_foe_clip.size = Vector2(view.x * 0.5, catalog.foe_bust_bottom * view.y)
+	_place_bust(_foe_portrait, _foe_clip, catalog.foe_bust,
+		catalog.bust_adjust(_foe_bust_id), view, false)
+	_own_clip.position = Vector2(0.0, view.y * 0.5)
+	_own_clip.size = Vector2(view.x * 0.45, view.y * 0.5)
+	_place_bust(_player_portrait, _own_clip, catalog.player_bust,
+		catalog.bust_adjust(_player_bust_id), view, true)
+	# Textes : nom, filet, titre, centrés sur leur x de la maquette, presque horizontaux.
 	_center_text(_foe_stripe, [_foe_name, _foe_rule, _foe_title],
-		inset + UiTokens.VS_FOE_BANNER_WIDTH * view.x * 0.36)
+		_along(_foe_stripe, UiTokens.VS_FOE_TEXT_X * view.x), UiTokens.VS_FOE_TEXT_SHIFT * view.y)
 	_center_text(_own_stripe, [_player_name, _own_rule],
-		_own_stripe.size.x - inset - UiTokens.VS_PLAYER_BANNER_WIDTH * view.x * 0.35)
+		_along(_own_stripe, UiTokens.VS_PLAYER_TEXT_X * view.x),
+		UiTokens.VS_PLAYER_TEXT_SHIFT * view.y)
 	_emblem.width = UiTokens.VS_EMBLEM_WIDTH * view.x
 	_emblem.size = Vector2(_emblem.width * 1.3, _emblem.width * 1.1)
 	_emblem.pivot_offset = _emblem.size / 2.0
@@ -234,25 +270,47 @@ func _layout() -> void:
 	_emblem.queue_redraw()
 
 
-## Empile [param parts] (labels et filet) centrés verticalement dans [param stripe], centrés
-## horizontalement sur [param center_x].
-func _center_text(stripe: Control, parts: Array, center_x: float) -> void:
-	var total := 0.0
+## Empile [param parts] (labels et filet) centrés verticalement dans [param stripe] (décalés de
+## [param shift] px), centrés horizontalement sur [param center_x] (x local) ; chacun tourne
+## autour du centre du bloc pour annuler [constant UiTokens.VS_TEXT_UNTILT] de l'inclinaison.
+func _center_text(stripe: Control, parts: Array, center_x: float, shift: float) -> void:
+	var total := -float(UiTokens.VS_NAME_TIGHTEN)
 	for part: Control in parts:
 		total += part.get_combined_minimum_size().y if part is Label else part.size.y
-	var y := (stripe.size.y - total) / 2.0
+	var y := (stripe.size.y - total) / 2.0 + shift
+	var pivot := Vector2(center_x, stripe.size.y / 2.0 + shift)
 	for part: Control in parts:
 		var size := part.get_combined_minimum_size() if part is Label else part.size
+		part.size = size
 		part.position = Vector2(center_x - size.x / 2.0, y)
+		part.pivot_offset = pivot - part.position
+		part.rotation = -stripe.rotation * UiTokens.VS_TEXT_UNTILT
 		y += size.y
+		if part == parts[0]:
+			# Le nom (capitales) n'a pas de jambages : filet et titre remontent sous lui.
+			y -= UiTokens.VS_NAME_TIGHTEN
 
 
-func _place_portrait(rect: TextureRect, height: float, area: Vector2, left: bool) -> void:
+## Abscisse locale de [param stripe] (inclinée, pivot au milieu de son bord gauche ou droit) qui
+## tombe sur l'abscisse écran [param screen_x].
+func _along(stripe: Control, screen_x: float) -> float:
+	var origin := stripe.position + stripe.pivot_offset
+	return stripe.pivot_offset.x + (screen_x - origin.x) / cos(stripe.rotation)
+
+
+## Place le buste [param rect] dans [param clip] : [param frame] = [x du bord (gauche si
+## [param left], sinon droit), y du haut, hauteur] en fractions de l'écran, [param adjust] =
+## [dx, dy, échelle] du buste.
+func _place_bust(rect: TextureRect, clip: Control, frame: Vector3, adjust: Vector3,
+		view: Vector2, left: bool) -> void:
+	var height := frame.z * adjust.z * view.y
 	var width := height * 0.65
 	if rect.texture != null:
 		width = height * rect.texture.get_width() / maxf(rect.texture.get_height(), 1.0)
 	rect.size = Vector2(width, height)
-	rect.position = Vector2(0.0 if left else area.x - width, 0.0)
+	var edge := (frame.x + adjust.x) * view.x
+	var top := (frame.y + adjust.y) * view.y
+	rect.position = Vector2(edge if left else edge - width, top) - clip.position
 
 
 func _view() -> Vector2:
@@ -293,13 +351,17 @@ func _make_label(parent: Control, variation: StringName, serif: bool) -> Label:
 	var label := Label.new()
 	label.theme_type_variation = variation
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var font := serif_font()
+	# Nom : capitales Cinzel dorées ; titre : bas-de-casse Cormorant Garamond.
+	var font := serif_font() if serif else title_font()
 	if font != null:
 		label.add_theme_font_override(&"font", font)
 	if serif:
 		label.add_theme_color_override(&"font_color", UiTokens.VS_GOLD)
 		label.add_theme_color_override(&"font_outline_color", UiTokens.VS_GOLD_OUTLINE)
 		label.add_theme_constant_override(&"outline_size", UiTokens.VS_NAME_OUTLINE)
+	else:
+		label.add_theme_color_override(&"font_outline_color", UiTokens.VS_TITLE_OUTLINE_COLOR)
+		label.add_theme_constant_override(&"outline_size", UiTokens.VS_TITLE_OUTLINE)
 	parent.add_child(label)
 	return label
 

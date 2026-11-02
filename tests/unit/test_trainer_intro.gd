@@ -149,11 +149,11 @@ func test_invalid_catalog_is_reported() -> void:
 func test_poses_follow_the_mockups() -> void:
 	assert_eq(_catalog.pose("entry", "player"), Vector3(0.285, 0.95, 0.55))
 	assert_eq(_catalog.pose("entry", "foe"), Vector3(0.70, 0.56, 0.26))
-	assert_eq(_catalog.pose("throw", "player"), Vector3(0.21, 0.97, 0.57))
-	assert_eq(_catalog.pose("throw", "foe"), Vector3(0.71, 0.56, 0.33))
+	assert_eq(_catalog.pose("throw", "player"), Vector3(0.215, 0.97, 0.57))
+	assert_eq(_catalog.pose("throw", "foe"), Vector3(0.72, 0.56, 0.32))
 	assert_eq(_catalog.pose("vs", "player"), Vector3(0.29, 0.74, 0.38))
 	assert_eq(_catalog.pose("vs", "foe"), Vector3(0.71, 0.67, 0.28))
-	assert_eq(_catalog.point("cartouche_min"), Vector2(0.69, 0.18))
+	assert_eq(_catalog.point("cartouche_min"), Vector2(0.69, 0.19))
 	assert_eq(_catalog.point("cartouche_max"), Vector2(0.86, 0.26))
 	assert_eq(_catalog.point("foe_via"), Vector2(0.56, 0.28), "arc de la Ball")
 	assert_almost_eq(_catalog.layout["ball_diameter"], 0.024, 0.0001)
@@ -164,3 +164,29 @@ func test_adults_are_taller_than_children() -> void:
 	assert_gt(_catalog.scale_of(&"pierre"), _catalog.scale_of(&"gamin"))
 	assert_eq(_catalog.scale_of(&"rivale"), _catalog.scale_of(&"rival"), "rivale = rival")
 	assert_eq(_catalog.scale_of(&"inconnu"), _catalog.default_scale)
+
+
+## Itération 4 : image par moment, recadrage du lancer, bustes du « VS » par les données.
+func test_phase_images_framing_and_busts_come_from_data() -> void:
+	assert_true(_catalog.uses_throw_image("player", "entry"), "entrée : bras tendu")
+	assert_false(_catalog.uses_throw_image("player", "guard"), "garde : poings serrés")
+	assert_true(_catalog.uses_throw_image("player", "release"))
+	assert_false(_catalog.uses_throw_image("foe", "entry"))
+	assert_true(_catalog.uses_throw_image("foe", "release"))
+	assert_gt(_catalog.framing_zoom, 1.0, "le décor se recadre vraiment")
+	assert_eq(_catalog.framing_to, Vector2(0.72, 0.56), "Hugo pieds (72 %, 56 %)")
+	assert_eq(_catalog.foe_bust.x, 1.0, "buste au bout droit de la banderole")
+	assert_eq(_catalog.bust_adjust(&"inconnu"), Vector3(0, 0, 1), "sans réglage")
+	assert_ne(_catalog.hand_of(&"gamin"), _catalog.point("foe_hand"), "main de sa pose")
+	assert_eq(_catalog.hand_of(&"scout"), _catalog.point("foe_hand"), "repli")
+
+
+func test_bad_images_or_framing_are_reported() -> void:
+	var catalog := TrainerIntroCatalog.new()
+	var root: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
+		TrainerIntroCatalog.PATH))
+	root["images"]["player"]["entry"] = "assis"
+	root["framing"]["zoom"] = 0.5
+	assert_false(catalog.add_from_dict(root))
+	assert_eq(catalog.get_errors().size(), 2)
+	assert_push_error_count(2)

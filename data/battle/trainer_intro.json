@@ -1,6 +1,6 @@
 {
-	"version": 3,
-	"_doc": "Entrée des combats de Dresseur (dossier 05 §3, décisions de Kevin du 2026-11-02 ; cible : maquettes docs/design/reference/entree-dresseur-*-v1.png, itération 3). Durées en secondes. Positions en FRACTIONS DE L'ÉCRAN (x depuis la gauche, y depuis le haut) : « poses » = [x du centre, y des pieds, hauteur] de chaque dresseur à l'entrée, au lancer (rapprochement interpolé) et pendant le « VS » ; « points » = cartouche des Poké Balls (coins), arcs des Balls (point de passage, arrivée) ; mains : [x, y] en part de la hauteur affichée du dresseur depuis ses pieds. Tailles : « layout » (ball_diameter et trail_width en part de la largeur ; le reste en part de la hauteur). Valeurs par défaut [D], réglables sur téléphone. « classes » : préfixe du nom du Dresseur (data/trainers/) → sprite de combat de face <front_dir><classe><extension> (pose de lancer : <classe><throw_suffix><extension>), repli sur l'apparence du monde (world_sprite). « grand » : grands adversaires (bloc « card » du Dresseur, son « portrait ») → portrait de banderole <portrait_dir><id><extension> et sprite de face <front_dir><id><extension> ; l'identifiant « rival » suit l'apparence du rival (rival / rivale). Dos du joueur : <front_dir>dos_<apparence><extension> (et sa pose de lancer), repli sur le lancer de dos existant. Fiche d'art : docs/design/fiches-assets/entree-dresseurs.md.",
+	"version": 4,
+	"_doc": "Entrée des combats de Dresseur (dossier 05 §3, décisions de Kevin du 2026-11-02 ; cible : maquettes docs/design/reference/entree-dresseur-*-v1.png, itération 4). Durées en secondes. Positions en FRACTIONS DE L'ÉCRAN (x depuis la gauche, y depuis le haut) : « poses » = [x du centre, y des pieds, hauteur] de chaque dresseur à l'entrée, au lancer (rapprochement interpolé) et pendant le « VS » ; « points » = cartouche des Poké Balls (coins), arcs des Balls (point de passage, arrivée) ; mains : [x, y] en part de la hauteur affichée du dresseur depuis ses pieds (« hand » d'une classe ou d'un grand adversaire : la main de sa pose de lancer, sinon « foe_hand »). Tailles : « layout » (ball_diameter et trail_width en part de la largeur ; le reste en part de la hauteur). Valeurs par défaut [D], réglables sur téléphone. « classes » : préfixe du nom du Dresseur (data/trainers/) → sprite de combat de face <front_dir><classe><extension> (pose de lancer : <classe><throw_suffix><extension>), repli sur l'apparence du monde (world_sprite). « grand » : grands adversaires (bloc « card » du Dresseur, son « portrait ») → portrait de banderole <portrait_dir><id><extension> et sprite de face <front_dir><id><extension> ; l'identifiant « rival » suit l'apparence du rival (rival / rivale). Dos du joueur : <front_dir>dos_<apparence><extension> (et sa pose de lancer), repli sur le lancer de dos existant. « images » : pose (stand = debout, throw = lancer) de chaque dresseur à chaque moment (entry, guard = garde pendant le lancer de l'adversaire, release = lâcher de sa Ball, vs). « framing » : au lancer de l'adversaire, le décor est zoomé de « zoom » autour de « from », qui vient en « to » (fractions de l'écran), puis revient avant l'arrivée de la Ball. « vs » : bustes du « VS » (adversaire [x du bord droit, y du haut, hauteur], rogné à « foe_bust_bottom » ; joueur [x du bord gauche, y du haut, hauteur]) ; « busts » : réglage par buste [dx, dy, échelle]. fx_ball / fx_trail : Ball et traînée peintes facultatives (repli : dessin du code). Fiche d'art : docs/design/fiches-assets/entree-dresseurs.md.",
 	"durations": {
 		"trainers_delay": 0.55,
 		"trainers_in": 0.45,
@@ -8,7 +8,7 @@
 		"vs_in": 0.3,
 		"vs_hold": 0.75,
 		"vs_out": 0.35,
-		"send_windup": 0.15,
+		"send_windup": 0.25,
 		"send_throw": 0.4,
 		"send_linger": 0.2,
 		"send_exit": 0.3
@@ -23,19 +23,21 @@
 		"cartouche_pad": 0.012,
 		"ball_gap": 0.01,
 		"ball_diameter": 0.024,
-		"trail_width": 0.006,
+		"trail_width": 0.0045,
+		"trail_window": 0.6,
+		"trail_glow": 2.6,
 		"windup_tilt": 0.06
 	},
 	"poses": {
 		"entry": { "player": [0.285, 0.95, 0.55], "foe": [0.70, 0.56, 0.26] },
-		"throw": { "player": [0.21, 0.97, 0.57], "foe": [0.71, 0.56, 0.33] },
+		"throw": { "player": [0.215, 0.97, 0.57], "foe": [0.72, 0.56, 0.32] },
 		"vs": { "player": [0.29, 0.74, 0.38], "foe": [0.71, 0.67, 0.28] }
 	},
 	"points": {
-		"cartouche_min": [0.69, 0.18],
+		"cartouche_min": [0.69, 0.19],
 		"cartouche_max": [0.86, 0.26],
-		"player_hand": [0.22, -0.62],
-		"foe_hand": [-0.32, -0.5],
+		"player_hand": [0.24, -0.85],
+		"foe_hand": [-0.4, -0.6],
 		"foe_via": [0.56, 0.28],
 		"foe_target": [0.48, 0.44],
 		"player_via": [0.36, 0.44],
@@ -46,7 +48,20 @@
 		"portrait_dir": "res://assets/ui/battle/vs/",
 		"extension": ".webp",
 		"throw_suffix": "_lancer",
-		"player_prefix": "dos_"
+		"player_prefix": "dos_",
+		"fx_ball": "res://assets/sprites/trainers/battle/fx/ball.webp",
+		"fx_trail": "res://assets/sprites/trainers/battle/fx/ball_trail.webp"
+	},
+	"images": {
+		"player": { "entry": "throw", "guard": "stand", "release": "throw", "vs": "stand" },
+		"foe": { "entry": "stand", "guard": "stand", "release": "throw", "vs": "stand" }
+	},
+	"framing": { "zoom": 1.22, "from": [0.70, 0.56], "to": [0.72, 0.56] },
+	"vs": {
+		"foe_bust": [1.0, -0.12, 0.53],
+		"foe_bust_bottom": 0.285,
+		"player_bust": [-0.02, 0.589, 0.667],
+		"busts": { "pierre": [-0.005, 0.023, 1.2] }
 	},
 	"classes": {
 		"beaute": { "prefix": "Beauté", "world_sprite": "beauty" },
@@ -55,7 +70,7 @@
 		"dompteur": { "prefix": "Dompteur", "world_sprite": "docker" },
 		"exorciste": { "prefix": "Exorciste", "world_sprite": "channeler" },
 		"fillette": { "prefix": "Fillette", "world_sprite": "lass" , "scale": 1.0 },
-		"gamin": { "prefix": "Gamin", "world_sprite": "youngster" , "scale": 1.0 },
+		"gamin": { "prefix": "Gamin", "world_sprite": "youngster", "scale": 1.0, "hand": [-0.468, -0.609] },
 		"gentleman": { "prefix": "Gentleman", "world_sprite": "gentleman" },
 		"ingenieur": { "prefix": "Ingénieur", "world_sprite": "engineer" },
 		"intello": { "prefix": "Intello", "world_sprite": "nerd" },
@@ -85,7 +100,7 @@
 		"topdresseuse": { "prefix": "Topdresseuse", "world_sprite": "cooltrainer_f" }
 	},
 	"grand": {
-		"pierre": { "world_sprite": "brock" },
+		"pierre": { "world_sprite": "brock", "hand": [-0.09, -0.565] },
 		"ondine": { "world_sprite": "misty" },
 		"major_bob": { "world_sprite": "surge" },
 		"erika": { "world_sprite": "erika" },

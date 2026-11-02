@@ -12,6 +12,10 @@ extends SceneTree
 ## Le combat commence ≈ 0,7 s après l'arrivée sur la carte ; l'outil quitte ≈ 1,5 s après
 ## l'apparition de la grille d'actions. Imprime l'image du début du combat (« [intro] start »)
 ## pour rogner la vidéo. Aucune entrée n'est simulée pendant l'entrée (jamais sautée).
+##
+## `--shots=<dossier>` (avec `--fixed-fps 60`) : enregistre aussi les images des moments des
+## maquettes (`entree.png` : message « … veut se battre ! » ; `lancer.png` : Ball au
+## milieu de son vol ; `vs.png` : emblème posé), pour le comparatif.
 
 const START_PATH: String = "user://trainer_intro_capture_start.json"
 const SETUPS := {
@@ -26,6 +30,8 @@ const TAIL_FRAMES: int = 45
 const TIMEOUT_FRAMES: int = 1800
 
 var _args: Dictionary = {}
+## Image (Engine.get_process_frames) → nom du cliché à enregistrer.
+var _shots: Dictionary = {}
 
 
 func _init() -> void:
@@ -60,6 +66,12 @@ func _run() -> void:
 	var battles: Node = boot.call(&"get_battle_director")
 	var hud: Node = boot.call(&"get_battle_hud")
 	print("[intro] start frame %d (%s)" % [Engine.get_frames_drawn(), setup["trainer"]])
+	if _args.has("shots"):
+		battles.connect(&"trainer_intro_step", _plan_shot)
+		var banner: Object = hud.call(&"get_message_banner")
+		banner.connect(&"message_shown", func(text: String, _wait: bool) -> void:
+			if text.contains("veut se battre") or text.contains("défi"):
+				_shots[Engine.get_process_frames() + 20] = "entree")
 	var done := [false]
 	var runner := func() -> void:
 		await battles.call(&"run", StringName(setup["trainer"]), map,
@@ -70,6 +82,7 @@ func _run() -> void:
 	while guard < TIMEOUT_FRAMES:
 		guard += 1
 		await process_frame
+		_take_shot()
 		var battle: Object = battles.call(&"get_battle")
 		if battle != null and int(battle.call(&"get_state")) == 1 \
 				and int(hud.call(&"get_zone")) == 1:
@@ -78,6 +91,32 @@ func _run() -> void:
 	await _frames(TAIL_FRAMES)
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(START_PATH))
 	quit()
+
+
+## Cliché aux moments des maquettes, en images après le début de l'étape [param step].
+func _plan_shot(step: int) -> void:
+	var catalog: RefCounted = load("res://game/battle/trainer_intro_catalog.gd").call(&"shared")
+	var fps := float(Engine.physics_ticks_per_second)
+	var now := Engine.get_process_frames()
+	match step:
+		4:  # FOE_SEND : Ball au milieu du vol.
+			var windup: float = catalog.call(&"duration", "send_windup")
+			var throw: float = catalog.call(&"duration", "send_throw")
+			_shots[now + int(round((windup + throw * 0.5) * fps))] = "lancer"
+		1:  # VS_HOLD : emblème posé.
+			var hold: float = catalog.call(&"duration", "vs_hold")
+			_shots[now + int(round(hold * 0.5 * fps))] = "vs"
+
+
+func _take_shot() -> void:
+	var frame := Engine.get_process_frames()
+	if not _shots.has(frame):
+		return
+	var dir := String(_args["shots"])
+	DirAccess.make_dir_recursive_absolute(dir)
+	var image := root.get_texture().get_image()
+	image.save_png(dir.path_join("%s.png" % _shots[frame]))
+	print("[intro] shot %s frame %d" % [_shots[frame], frame])
 
 
 func _frames(count: int) -> void:

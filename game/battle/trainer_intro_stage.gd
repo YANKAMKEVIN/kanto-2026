@@ -20,22 +20,37 @@ extends Node2D
 
 ## Une étape du plan commence (tests, son).
 signal step_started(step: TrainerIntro.Step)
+## Recadrage du décor (lancer de l'adversaire, maquette 2) : zoom [param zoom] autour du point
+## écran [param from], qui vient en [param to] ; zoom 1 : cadrage normal. Le [BattleStage]
+## l'applique au décor peint.
+signal framing_changed(zoom: float, from: Vector2, to: Vector2)
 
 ## Échelle de la texture `poke_ball.webp` (256 px) pour une taille voulue en px ; diamètre de la
 ## sphère visible dans la texture (≈ 240 px) : la Ball lancée garde ce diamètre, ronde.
 const BALL_ART: float = 1.0 / 256.0
 const BALL_VISIBLE: float = 240.0
-## Rangée : emplacement éteint (Pokémon K.O.) et vide (aucun Pokémon) [D].
-const BALL_FAINTED := Color(0.35, 0.35, 0.38, 1.0)
-const BALL_EMPTY := Color(0.55, 0.6, 0.68, 0.35)
+## Rangée (maquette 1) : Balls actives à opacité pleine ; emplacements vides et éteints (K.O.)
+## = Ball en niveaux de gris, claire pour un vide (nettement distincte d'une active, lisible sur
+## le verre sombre), plus sombre pour un K.O. [D].
+const BALL_FAINTED := Color(0.62, 0.62, 0.66, 0.75)
+const BALL_EMPTY := Color(1.0, 1.0, 1.0, 0.95)
 ## Ombre au sol des dresseurs [D].
 const SHADOW_COLOR := Color(0.05, 0.04, 0.02, 0.45)
 ## Éclat à l'arrivée de la Ball (Pokémon qui sort) [D].
 const POP_COLOR := Color(1.0, 1.0, 1.0, 0.9)
 const POP_SCALE: float = 3.0
-## Traînée de la Ball : nombre de points gardés, opacité de tête [D].
-const TRAIL_POINTS: int = 14
-const TRAIL_ALPHA: float = 0.85
+## Traînée de la Ball : nombre de points, opacité de tête du trait et de son halo [D].
+const TRAIL_POINTS: int = 18
+const TRAIL_ALPHA: float = 0.95
+const TRAIL_GLOW_ALPHA: float = 0.3
+## Traînée peinte (`fx_trail`, bout épais à gauche côté Ball, pointe à droite) : point d'attache
+## de la Ball et pointe, en part de la toile [D].
+const TRAIL_ART_HEAD := Vector2(30.0 / 1340.0, 103.0 / 141.0)
+const TRAIL_ART_TIP := Vector2(1320.0 / 1340.0, 132.0 / 141.0)
+## Épaisseur du bout épais de la traînée peinte (part de la hauteur de la toile).
+const TRAIL_ART_THICK: float = 60.0 / 141.0
+## Part du vol où le décor reste recadré avant de revenir (la Ball passe son point d'arc) [D].
+const FRAMING_HOLD: float = 0.5
 ## Élan de la pose debout quand aucune image de lancer n'existe : inclinaison (rad) et
 ## avancée (part de la hauteur affichée) [D].
 const LUNGE_TILT: float = 0.07
@@ -60,6 +75,13 @@ var _stand: Dictionary[BattleEvent.SideId, Texture2D] = {}
 var _throw: Dictionary[BattleEvent.SideId, Texture2D] = {}
 var _ball: Sprite2D
 var _trail: Line2D
+var _trail_glow: Line2D
+## Traînée peinte (null : traînée dessinée).
+var _trail_art: Sprite2D
+## Diamètre visible de la texture de la Ball lancée (px de la texture).
+var _ball_visible: float = BALL_VISIBLE
+## Recadrage courant du décor (0 : normal, 1 : celui du lancer).
+var _framing: float = 0.0
 var _pop: Sprite2D
 var _cartouche: BallCartouche
 var _row: Array[Sprite2D] = []
@@ -70,6 +92,8 @@ var _tweens: Array[Tween] = []
 
 ## Hauteur visible (boîte alpha, px de la texture) par texture, mesurée une fois.
 static var _visible_heights: Dictionary[Texture2D, float] = {}
+## Ball en niveaux de gris des emplacements vides ou éteints, construite une fois.
+static var _grey_ball: Texture2D
 
 
 func _ready() -> void:
@@ -90,16 +114,11 @@ func _ready() -> void:
 		ball.reparent(_cartouche)
 		ball.visible = true
 		_row.append(ball)
-	_trail = Line2D.new()
-	_trail.name = &"Trail"
-	_trail.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	_trail.end_cap_mode = Line2D.LINE_CAP_ROUND
-	var fade := Gradient.new()
-	fade.set_color(0, Color(1, 1, 1, 0))
-	fade.set_color(1, Color(1, 1, 1, TRAIL_ALPHA))
-	_trail.gradient = fade
-	_trail.visible = false
-	add_child(_trail)
+	# Traînée blanche fine et effilée (fine à la main, pleine à la Ball), sur un halo doux.
+	_trail_glow = _make_trail(&"TrailGlow", TRAIL_GLOW_ALPHA)
+	_trail = _make_trail(&"Trail", TRAIL_ALPHA)
+	_trail_art = _make_sprite(&"TrailArt")
+	_trail_art.centered = false
 	_ball = _make_sprite(&"ThrownBall", BattleStage.BALL_TEXTURE)
 	_pop = _make_sprite(&"Pop", halo)
 	var additive := CanvasItemMaterial.new()
@@ -179,8 +198,10 @@ func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D
 	_throw = {foe_side: foe_throw, player_side: player_throw}
 	var catalog := intro.get_catalog()
 	_sizes = {foe_side: catalog.scale_of(intro.sprite_id), player_side: catalog.player_scale}
+	_set_framing(0.0)
+	_setup_fx(catalog)
 	for side: BattleEvent.SideId in [foe_side, player_side]:
-		_setup_trainer(side)
+		_setup_trainer(side, _image(side, "entry"))
 		_apply_pose(side, &"entry")
 		_sprite(side).visible = false
 		_shadows[side].visible = false
@@ -200,8 +221,10 @@ func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D
 		var sprite := _row[i]
 		sprite.position = Vector2(-inner / 2.0 + size * 0.5 + i * (size + gap), 0.0)
 		sprite.scale = Vector2.ONE * size * BALL_ART
-		sprite.modulate = _ball_color(intro.balls[i] if i < intro.balls.size()
-			else TrainerIntro.Ball.EMPTY)
+		var state := intro.balls[i] if i < intro.balls.size() else TrainerIntro.Ball.EMPTY
+		sprite.texture = BattleStage.BALL_TEXTURE if state == TrainerIntro.Ball.FULL \
+			else grey_ball()
+		sprite.modulate = _ball_color(state)
 		sprite.visible = false
 	_cartouche.modulate.a = 0.0
 	_cartouche.visible = false
@@ -219,6 +242,7 @@ func move_to_pose(pose_name: StringName, duration: float) -> void:
 	for side: BattleEvent.SideId in [BattleEvent.SideId.FOE, BattleEvent.SideId.PLAYER]:
 		var target := _pose_rect(side, pose_name)
 		var sprite := _sprite(side)
+		_swap_texture(sprite, _image(side, String(pose_name)))
 		var scale := Vector2.ONE * _scale_for(sprite.texture, target.size.y)
 		tween.tween_property(sprite, ^"position", target.position, duration) \
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
@@ -284,11 +308,14 @@ func play_enter() -> void:
 	await _play(row)
 
 
-## Coroutine (étapes FOE_SEND / PLAYER_SEND) : le dresseur de [param side] prend la pose de
-## lancer, la Ball part de sa main en arc (traînée blanche) vers le terrain ; à son arrivée
-## l'éclat de la sortie et [param on_landed] (le Pokémon apparaît) ; le dresseur accompagne un
-## court instant ([code]send_linger[/code]) puis recule latéralement en fondu. Le cartouche part
-## dès le lancer de l'adversaire (avant l'arrivée des jauges).
+## Coroutine (étapes FOE_SEND / PLAYER_SEND) : le dresseur de [param side] se met en garde et
+## se rapproche (pose « throw ») ; au lancer de l'adversaire, le cadrage change vraiment
+## (maquette 2) : le décor est recadré (« framing »), le joueur passe en garde au premier plan.
+## Puis la pose de lancer (image « release »), la Ball part de la main en arc (traînée blanche
+## effilée) vers le terrain ; le décor revient à son cadrage pendant la seconde moitié du vol ; à
+## l'arrivée l'éclat de la sortie et [param on_landed] (le Pokémon apparaît) ; le dresseur
+## accompagne un court instant ([code]send_linger[/code]) puis recule latéralement en fondu. Le
+## cartouche reste au-dessus de l'adversaire jusqu'à son lancer, puis s'efface.
 func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 	if _intro == null:
 		return
@@ -301,33 +328,49 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 	var exit := catalog.duration("send_exit")
 	var sprite := _sprite(side)
 	var toward := -1.0 if foe else 1.0
-	# Garde : léger rapprochement vers la pose de lancer (interpolé), corps qui recule.
-	var pose := _pose_rect(side, &"throw")
-	var height := pose.size.y
+	var framed := foe and _intro.slide and catalog.framing_zoom > 1.0
+	# Garde : rapprochement vers la pose de lancer (interpolé), corps qui recule ; au lancer de
+	# l'adversaire, le joueur passe aussi en garde au premier plan et le décor se recadre.
 	var guard := _new_tween()
 	guard.set_parallel(true)
-	guard.tween_property(sprite, ^"position", pose.position, windup) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	guard.tween_property(sprite, ^"scale", Vector2.ONE * _scale_for(sprite.texture, height),
-		windup)
+	var movers: Array[BattleEvent.SideId] = [side]
+	var mine := BattleEvent.SideId.PLAYER
+	if foe and _player.visible:
+		movers.append(mine)
+	for mover: BattleEvent.SideId in movers:
+		var mover_sprite := _sprite(mover)
+		var pose := _pose_rect(mover, &"throw")
+		_swap_texture(mover_sprite, _image(mover, "guard"))
+		var scale := _scale_for(mover_sprite.texture, pose.size.y)
+		guard.tween_property(mover_sprite, ^"position", pose.position, windup) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		guard.tween_property(mover_sprite, ^"scale", Vector2.ONE * scale, windup) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		guard.tween_property(_shadows[mover], ^"position", pose.position, windup) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		guard.tween_property(_shadows[mover], ^"scale", _shadow_scale(mover_sprite, scale),
+			windup)
+		_feet[mover] = pose.position
 	guard.tween_property(sprite, ^"rotation", -_layout("windup_tilt") * toward, windup)
-	guard.tween_property(_shadows[side], ^"position", pose.position, windup)
-	guard.tween_property(_shadows[side], ^"scale", _shadow_scale(sprite,
-		_scale_for(sprite.texture, height)), windup)
+	if framed:
+		guard.tween_method(_set_framing, _framing, 1.0, windup) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	await _play(guard)
 	if _intro == null:
 		return
-	_feet[side] = pose.position
+	var height := _pose_rect(side, &"throw").size.y
 	# Libération : pose de lancer (image dédiée, sinon extension du corps vers le terrain).
-	var throw_texture: Texture2D = _throw.get(side)
-	if throw_texture != null:
-		# Même échelle que la pose debout (les deux poses d'un personnage sont peintes à la même
+	var throw_texture: Texture2D = _image(side, "release") if catalog.uses_throw_image(
+		_side_key(side), "release") else null
+	if throw_texture != null and throw_texture != sprite.texture:
+		# Même échelle que la pose de garde (les poses d'un personnage sont peintes à la même
 		# échelle, pieds sur le bord bas).
-		sprite.texture = throw_texture
-		sprite.offset = Vector2(0.0, -throw_texture.get_height() / 2.0)
-		sprite.scale = Vector2.ONE * _scale_for(_stand[side], height)
-		sprite.rotation = 0.0
-	var hand := pose.position + _point("foe_hand" if foe else "player_hand") * height
+		var keep := sprite.scale
+		_swap_texture(sprite, throw_texture)
+		sprite.scale = keep
+	sprite.rotation = 0.0 if throw_texture != null else sprite.rotation
+	var hand := _feet[side] + (catalog.hand_of(_intro.sprite_id) if foe
+		else _point("player_hand")) * height
 	var via := _frac(_point("foe_via" if foe else "player_via"))
 	var target := _frac(_point("foe_target" if foe else "player_target"))
 	# Contrôle de la courbe de Bézier qui passe par « via » à mi-parcours.
@@ -335,13 +378,17 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 	var diameter := _layout("ball_diameter") * _view.x
 	_ball.position = hand
 	_ball.rotation = 0.0
-	_ball.scale = Vector2.ONE * diameter / BALL_VISIBLE
+	_ball.scale = Vector2.ONE * diameter / _ball_visible
 	_ball.modulate = Color.WHITE
 	_ball.visible = true
 	_trail.clear_points()
+	_trail_glow.clear_points()
 	_trail.width = _layout("trail_width") * _view.x
-	_trail.modulate.a = 1.0
-	_trail.visible = true
+	_trail_glow.width = _trail.width * _layout("trail_glow")
+	var painted := _trail_art.texture != null
+	for line: CanvasItem in [_trail, _trail_glow, _trail_art]:
+		line.modulate.a = 1.0
+		line.visible = line != _trail or not painted
 	var tween := _new_tween()
 	tween.set_parallel(true)
 	if throw_texture == null:
@@ -349,6 +396,24 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 	tween.tween_method(_set_flight.bind(hand, control, target), 0.0, 1.0, throw)
 	if foe:
 		tween.tween_property(_cartouche, ^"modulate:a", 0.0, throw)
+	# Le décor revient à son cadrage pendant la seconde moitié du vol (le Pokémon sort sur le
+	# cadrage du combat) ; l'adversaire revient avec lui à sa place de l'entrée.
+	if framed:
+		var back := throw * (1.0 - FRAMING_HOLD)
+		var hold := throw * FRAMING_HOLD
+		tween.tween_method(_set_framing, 1.0, 0.0, back).set_delay(hold) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		var entry := _pose_rect(side, &"entry")
+		var scale := sprite.scale / catalog.framing_zoom
+		tween.tween_property(sprite, ^"position", entry.position, back).set_delay(hold) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(sprite, ^"scale", scale, back).set_delay(hold) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(_shadows[side], ^"position", entry.position, back) \
+			.set_delay(hold).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(_shadows[side], ^"scale", _shadow_scale(sprite, scale.y), back) \
+			.set_delay(hold)
+		_feet[side] = entry.position
 	# La Ball arrive : le Pokémon sort (éclat), la traînée s'efface.
 	tween.tween_callback(func() -> void:
 		_ball.visible = false
@@ -357,10 +422,12 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 		if on_landed.is_valid():
 			on_landed.call()).set_delay(throw)
 	tween.tween_method(_set_pop, 0.0, 1.0, linger + exit).set_delay(throw)
-	tween.tween_property(_trail, ^"modulate:a", 0.0, linger).set_delay(throw)
+	for line: CanvasItem in [_trail, _trail_glow, _trail_art]:
+		tween.tween_property(line, ^"modulate:a", 0.0, linger).set_delay(throw)
 	# Il accompagne un instant, puis recule latéralement avec un fondu court.
 	var slide := _layout("trainer_slide") * _view.y if _intro.slide else 0.0
-	var away := pose.position + Vector2(slide if foe else -slide, 0.0)
+	var rest: Vector2 = _feet[side]
+	var away := rest + Vector2(slide if foe else -slide, 0.0)
 	tween.tween_property(sprite, ^"rotation", 0.0, linger).set_delay(throw)
 	tween.tween_property(sprite, ^"position", away, exit).set_delay(throw + linger) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
@@ -373,8 +440,12 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 	_shadows[side].visible = false
 	_pop.visible = false
 	_trail.visible = false
+	_trail_glow.visible = false
+	_trail_art.visible = false
 	if foe:
 		_cartouche.visible = false
+	if framed:
+		_set_framing(0.0)
 
 
 ## Dresseur de [param side] affiché (tests).
@@ -415,24 +486,109 @@ func clear() -> void:
 			tween.kill()
 	_tweens.clear()
 	_intro = null
-	for sprite: Node2D in [_foe, _player, _ball, _pop, _trail, _cartouche]:
+	for sprite: Node2D in [_foe, _player, _ball, _pop, _trail, _trail_glow, _trail_art,
+			_cartouche]:
 		if sprite != null:
 			sprite.visible = false
 			sprite.modulate = Color.WHITE
 			sprite.rotation = 0.0
 	for shadow: Sprite2D in _shadows.values():
 		shadow.visible = false
-	if _trail != null:
-		_trail.clear_points()
+	for line: Line2D in [_trail, _trail_glow]:
+		if line != null:
+			line.clear_points()
+	if _framing != 0.0:
+		_set_framing(0.0)
 
 
-func _setup_trainer(side: BattleEvent.SideId) -> void:
+func _setup_trainer(side: BattleEvent.SideId, texture: Texture2D) -> void:
 	var sprite := _sprite(side)
-	sprite.texture = _stand[side]
-	sprite.centered = true
-	sprite.offset = Vector2(0.0, -sprite.texture.get_height() / 2.0)
+	_swap_texture(sprite, texture)
 	sprite.modulate = Color.WHITE
 	sprite.rotation = 0.0
+
+
+## Image du dresseur de [param side] au moment [param phase] (données « images ») : sa pose de
+## lancer si elle est demandée et existe, sinon sa pose debout.
+func _image(side: BattleEvent.SideId, phase: String) -> Texture2D:
+	var catalog := _intro.get_catalog() if _intro != null else null
+	var throw: Texture2D = _throw.get(side)
+	if catalog != null and throw != null and catalog.uses_throw_image(_side_key(side), phase):
+		return throw
+	return _stand.get(side)
+
+
+static func _side_key(side: BattleEvent.SideId) -> String:
+	return "foe" if side == BattleEvent.SideId.FOE else "player"
+
+
+## Change l'image de [param sprite] (pieds au bas de l'image, à l'origine), sans toucher à son
+## échelle.
+static func _swap_texture(sprite: Sprite2D, texture: Texture2D) -> void:
+	if texture == null:
+		return
+	sprite.texture = texture
+	sprite.centered = true
+	sprite.offset = Vector2(0.0, -texture.get_height() / 2.0)
+
+
+## Ball et traînée peintes ([member TrainerIntroCatalog.fx_ball] / [code]fx_trail[/code]) si
+## elles existent, sinon la Poké Ball du jeu et une traînée dessinée.
+func _setup_fx(catalog: TrainerIntroCatalog) -> void:
+	var ball := _load_optional(catalog.fx_ball)
+	_ball.texture = ball if ball != null else BattleStage.BALL_TEXTURE
+	_ball_visible = visible_width(ball) if ball != null else BALL_VISIBLE
+	_trail_art.texture = _load_optional(catalog.fx_trail)
+
+
+static func _load_optional(path: String) -> Texture2D:
+	if path.is_empty() or not ResourceLoader.exists(path):
+		return null
+	return load(path) as Texture2D
+
+
+## Recadrage du décor à [param k] (0 : normal, 1 : celui du lancer de l'adversaire).
+func _set_framing(k: float) -> void:
+	_framing = k
+	var catalog := _intro.get_catalog() if _intro != null else null
+	if catalog == null or _view == Vector2.ZERO:
+		framing_changed.emit(1.0, Vector2.ZERO, Vector2.ZERO)
+		return
+	var from := catalog.framing_from * _view
+	framing_changed.emit(lerpf(1.0, catalog.framing_zoom, k), from,
+		from.lerp(catalog.framing_to * _view, k))
+
+
+## Recadrage courant du décor (0 : normal, 1 : lancer), tests.
+func get_framing() -> float:
+	return _framing
+
+
+## Ball en niveaux de gris (emplacements vides ou éteints de la rangée), éclaircie.
+static func grey_ball() -> Texture2D:
+	if _grey_ball == null:
+		var image := BattleStage.BALL_TEXTURE.get_image()
+		if image.is_compressed():
+			image.decompress()
+		image.convert(Image.FORMAT_RGBA8)
+		for y: int in image.get_height():
+			for x: int in image.get_width():
+				var c := image.get_pixel(x, y)
+				var v := 0.42 + 0.4 * (c.r * 0.3 + c.g * 0.59 + c.b * 0.11)
+				image.set_pixel(x, y, Color(v, v, v * 1.03, c.a))
+		_grey_ball = ImageTexture.create_from_image(image)
+	return _grey_ball
+
+
+## Largeur visible de [param texture] (boîte alpha).
+static func visible_width(texture: Texture2D) -> float:
+	var image := texture.get_image()
+	if image == null:
+		return float(texture.get_width())
+	if image.is_compressed():
+		image.decompress()
+	var used := image.get_used_rect()
+	return float(used.size.x) if used.size.x > 0 else float(texture.get_width())
 
 
 ## Place le dresseur de [param side] (et son ombre) dans sa pose [param pose_name].
@@ -508,13 +664,42 @@ func _ball_color(state: TrainerIntro.Ball) -> Color:
 
 
 ## Vol de la Ball à [param t] sur la courbe de Bézier ([param from], [param control],
-## [param to]) ; la traînée suit la courbe depuis la main jusqu'à la Ball.
+## [param to]) ; la traînée suit la courbe derrière la Ball (au plus « trail_window » du vol,
+## depuis la main au début), effilée vers l'arrière.
 func _set_flight(t: float, from: Vector2, control: Vector2, to: Vector2) -> void:
 	_ball.position = _bezier(from, control, to, t)
 	_ball.rotation = t * TAU * 1.5
-	_trail.clear_points()
-	for i: int in TRAIL_POINTS + 1:
-		_trail.add_point(_bezier(from, control, to, t * float(i) / float(TRAIL_POINTS)))
+	var start := maxf(t - _layout("trail_window"), 0.0)
+	if _trail_art.texture != null:
+		_place_trail_art(_ball.position, _bezier(from, control, to, start))
+	for line: Line2D in [_trail, _trail_glow]:
+		line.clear_points()
+		for i: int in TRAIL_POINTS + 1:
+			line.add_point(_bezier(from, control, to,
+				lerpf(start, t, float(i) / float(TRAIL_POINTS))))
+
+
+## Traînée peinte tendue de la Ball [param head] à l'arrière [param tail] : bout épais sur la
+## Ball, bosse de l'arc vers le haut (retournée quand la Ball va vers la droite).
+func _place_trail_art(head: Vector2, tail: Vector2) -> void:
+	var size := _trail_art.texture.get_size()
+	var flip := tail.x < head.x
+	_trail_art.flip_v = flip
+	var anchor := TRAIL_ART_HEAD * size
+	var tip := TRAIL_ART_TIP * size
+	if flip:
+		anchor.y = size.y - anchor.y
+		tip.y = size.y - tip.y
+	var span := tip - anchor
+	var reach := tail - head
+	_trail_art.offset = -anchor
+	_trail_art.position = head
+	_trail_art.rotation = reach.angle() - span.angle()
+	# Longueur : du bout épais à la pointe ; épaisseur : au moins celle du trait (bout épais
+	# ≈ TRAIL_ART_THICK de la toile = 2 × trail_width), pour rester bien visible.
+	var along := reach.length() / maxf(span.length(), 1.0)
+	var thick := 2.0 * _layout("trail_width") * _view.x / (TRAIL_ART_THICK * size.y)
+	_trail_art.scale = Vector2(along, maxf(along, thick))
 
 
 static func _bezier(a: Vector2, c: Vector2, b: Vector2, t: float) -> Vector2:
@@ -551,6 +736,29 @@ func _radial_texture() -> GradientTexture2D:
 	halo.width = 128
 	halo.height = 128
 	return halo
+
+
+## Trait de la traînée : effilé (largeur nulle à l'arrière), dégradé transparent → blanc.
+func _make_trail(line_name: StringName, alpha: float) -> Line2D:
+	var line := Line2D.new()
+	line.name = line_name
+	line.begin_cap_mode = Line2D.LINE_CAP_NONE
+	line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	line.joint_mode = Line2D.LINE_JOINT_ROUND
+	line.antialiased = true
+	line.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var taper := Curve.new()
+	taper.add_point(Vector2(0.0, 0.0))
+	taper.add_point(Vector2(1.0, 1.0))
+	line.width_curve = taper
+	var fade := Gradient.new()
+	fade.set_color(0, Color(1, 1, 1, 0))
+	fade.set_color(1, Color(1, 1, 1, alpha))
+	line.gradient = fade
+	line.set_meta(&"fade", fade)
+	line.visible = false
+	add_child(line)
+	return line
 
 
 func _make_sprite(sprite_name: StringName, texture: Texture2D = null) -> Sprite2D:

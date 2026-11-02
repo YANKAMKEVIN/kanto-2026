@@ -116,10 +116,11 @@ func test_vs_shows_names_and_portraits() -> void:
 	add_child_autofree(banner)
 	banner.speed_scale = 0.0
 	var portrait := TrainerIntroStage.silhouette()
-	await banner.play(_intro(true), "Pierre", "Champion d'Arène d'Argenta", portrait, "Kevin",
+	await banner.play(_intro(true), "PIERRE", "Champion d'Arène d'Argenta", portrait, "KEVIN",
 		null)
 	assert_eq([banner.get_foe_name_text(), banner.get_foe_title_text(),
-		banner.get_player_name_text()], ["PIERRE", "Champion d'Arène d'Argenta", "KEVIN"])
+		banner.get_player_name_text()], ["Pierre", "Champion d'Arène d'Argenta", "Kevin"],
+		"initiales en capitales, le reste en petites capitales de Cinzel (maquette 3)")
 	assert_eq(banner.get_foe_portrait(), portrait)
 	assert_false(banner.visible, "cachée à la fin")
 
@@ -241,8 +242,8 @@ func test_ball_flies_round_through_the_arc() -> void:
 	assert_true(done[0])
 	assert_lt(closest[0], 0.03 * size.x, "l'arc passe près de (56 %, 28 %)")
 	assert_true(round_ball[0], "Ball ronde")
-	assert_almost_eq(ball.scale.x * TrainerIntroStage.BALL_VISIBLE, 0.024 * size.x, 0.5,
-		"diamètre 2,4 % de la largeur")
+	var width := TrainerIntroStage.visible_width(ball.texture)
+	assert_almost_eq(ball.scale.x * width, 0.024 * size.x, 0.5, "diamètre 2,4 % de la largeur")
 
 
 ## Hauteur visible mesurée sur la boîte alpha (art peint posé sur une toile) : la hauteur
@@ -250,5 +251,48 @@ func test_ball_flies_round_through_the_arc() -> void:
 func test_visible_height_ignores_the_empty_canvas() -> void:
 	var gamin := load("res://assets/sprites/trainers/battle/gamin.webp") as Texture2D
 	var pierre := load("res://assets/sprites/trainers/battle/pierre.webp") as Texture2D
-	assert_almost_eq(TrainerIntroStage.visible_height(gamin), 768.0 - 88.0, 2.0)
-	assert_almost_eq(TrainerIntroStage.visible_height(pierre), 768.0 - 158.0, 2.0)
+	assert_almost_eq(TrainerIntroStage.visible_height(gamin), 768.0 - 16.0, 2.0)
+	assert_almost_eq(TrainerIntroStage.visible_height(pierre), 768.0 - 16.0, 2.0)
+
+
+## Itération 4 : le joueur entre bras tendu (pose de lancer), passe en garde (pose debout) au
+## lancer de l'adversaire, lance avec la pose de lancer ; images choisies par les données.
+func test_player_image_follows_the_phase() -> void:
+	var intro := _intro(false)
+	var view := TrainerIntroStage.new()
+	add_child_autofree(view)
+	var stand := TrainerIntroStage.silhouette()
+	var throw := ImageTexture.create_from_image(Image.create(32, 96, false, Image.FORMAT_RGBA8))
+	view.begin(intro, Vector2(2340, 1080), TrainerIntroStage.silhouette(), stand, null, throw)
+	view.speed_scale = 0.0
+	var mine := view.get_trainer(BattleEvent.SideId.PLAYER)
+	assert_eq(mine.texture, throw, "entrée : bras tendu (maquette 1)")
+	await view.play_enter()
+	var seen: Array[Texture2D] = []
+	var frames := [1.0]
+	view.framing_changed.connect(func(zoom: float, _from: Vector2, _to: Vector2) -> void:
+		frames[0] = maxf(frames[0], zoom))
+	view.step_started.connect(func(_step: TrainerIntro.Step) -> void: seen.append(mine.texture))
+	await view.play_send(BattleEvent.SideId.FOE, Callable())
+	assert_eq(mine.texture, stand, "garde pendant le lancer de l'adversaire (maquette 2)")
+	assert_almost_eq(frames[0], _catalog.framing_zoom, 0.001, "le décor est recadré au lancer")
+	assert_eq(view.get_framing(), 0.0, "puis revient au cadrage du combat")
+	assert_eq(view.get_feet(BattleEvent.SideId.PLAYER),
+		(Vector2(_catalog.pose("throw", "player").x, _catalog.pose("throw", "player").y)
+			* Vector2(2340, 1080)).round(), "joueur au premier plan du lancer")
+	await view.play_send(BattleEvent.SideId.PLAYER, Callable())
+	assert_eq(mine.texture, throw, "il lance avec la pose de lancer")
+
+
+## Rangée : Balls actives pleines, emplacements vides en gris clair (texture à part).
+func test_empty_slots_are_light_grey_balls() -> void:
+	var intro := _intro(false)
+	var view := TrainerIntroStage.new()
+	add_child_autofree(view)
+	view.begin(intro, Vector2(2340, 1080), TrainerIntroStage.silhouette(),
+		TrainerIntroStage.silhouette())
+	var row := view.get_ball_row()
+	assert_eq(row[0].texture, BattleStage.BALL_TEXTURE)
+	assert_eq(row[0].modulate.a, 1.0, "active : opacité pleine")
+	assert_eq(row[5].texture, TrainerIntroStage.grey_ball(), "vide : Ball grise")
+	assert_gt(row[5].modulate.v, 0.9, "gris clair, lisible sur le verre sombre")
