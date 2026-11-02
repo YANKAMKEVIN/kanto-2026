@@ -58,6 +58,7 @@ static func party(battle: Battle, data: PokemonData,
 		view.max_hp = pokemon.max_hp()
 		var species := data.get_species(pokemon.species_id)
 		if species != null:
+			view.dex_number = species.dex
 			view.type_ids = species.types.duplicate()
 			for type: StringName in species.types:
 				view.type_names.append(chart.get_type_name(type))
