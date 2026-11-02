@@ -22,7 +22,8 @@
 # Raccords :
 #   EST (49, 20..22) ↔ Route 39, bord ouest (0, 20..22) ; fermé par le garde jusqu'au choix du
 #     Pokémon de départ (O-19, PNJ « garde_est » et déclencheur « garde_barriere »).
-#   SUD (20..29, 39), en Surf ↔ Route 40 (JOH7, grille à venir) ; inaccessible pendant l'acte 1
+#   SUD (20..29, 39), en Surf ↔ Route 40, bord nord (7..16, 0) (colonnes différentes, warps case à
+#     case) ; inaccessible pendant l'acte 1
 #     (pas de Pokémon surfeur ; aucun blocage à poser).
 #   OUEST (10, 31..32) ↔ grotte marine salle 2 (3..4, 39).
 #
@@ -86,7 +87,7 @@ FIN
 POSITIONS
 warp_est             warp           49,20..22    libre   # PUSH → → route_39, from_olivine (0, 20..22)
 from_route_39        spawn          49,20..22    libre   # arrivée de la Route 39, tournée ←
-warp_sud_mer         warp           20..29,39    libre   surf=1  # PUSH ↓ → route_40 (JOH7)
+warp_sud_mer         warp           20..29,39    libre   surf=1  # PUSH ↓ → route_40, from_olivine (7..16, 0)
 from_route_40        spawn          20..29,39    libre   surf=1  # arrivée de la Route 40 en Surf, tournée ↑
 warp_grotte          warp           10,31..32    libre   # STEP_ON ← → sea_cave_2, from_olivine_city (3..4, 38)
 from_sea_cave        spawn          11,31..32    libre   # arrivée de la grotte marine, tournée → ; nuit imposée (dossier §4, étape 5)
@@ -102,6 +103,7 @@ retour_maison_2      spawn          37,31        libre
 garde_est            pnj            47,21        bloque  role=garde facing=left  # O-19 ; avec johto_starter_chosen, il se range en (47, 19), hors de l'avenue [D]
 garde_barriere       declencheur    48,20..22    libre   actif_sans=johto_starter_chosen  # O-19 et pas en arrière
 marin_port           pnj            33,33        bloque  role=marin facing=down  # O-20, sur le quai, regarde la mer
+marin_plage          pnj            18,32        bloque  role=marin facing=down  # JOH7 : M-1 (les tourbillons, le bateau noir), M-29 après Lugia ; sur la plage de galets
 panneau_ville        panneau        23,19        bloque  # O-25, lu depuis (23, 20) ↑ (case de pelouse, bloquée par le panneau)
 panneau_phare        panneau        6,19         bloque  # « PHARE D'OLIVILLE / Fermé pour travaux. » [D], lu depuis (6, 20) ↑
 FIN

@@ -34,6 +34,13 @@
 
 Points de Vol : Acajou (et Rosalia, Doublonville, Écorcia déjà connus).
 
+**Grilles préparées le 2026-11-03 (à valider par Kevin)** : `tools/plans/burned_tower_1f.txt`,
+`burned_tower_b1f.txt`, `route_42.txt`, `mahogany_town.txt`, `mahogany_souvenir_shop.txt`,
+`route_43.txt`, `lake_of_rage.txt`, `mahogany_hideout_b1f.txt` à `b3f.txt` (la grille fait foi pour
+la géométrie ; défauts [D] dans leurs en-têtes) ; retouche de `rosalia.txt` (porte de la Tour Cendrée
+praticable, panneau C-3, raccord est) ; contrôle `tools/art/plan_check_joh6.py` ; aperçu
+`reference/joh6-grilles-apercu-v1.png`.
+
 ## 4. Ordre de jeu
 
 | Étape | Lieu | Ce qui se passe | Drapeau |

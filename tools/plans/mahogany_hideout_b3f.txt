@@ -1,0 +1,66 @@
+# Repaire Rocket d'Acajou, B3F (mahogany_hideout_b3f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ;
+# dossier docs/design/dossier-joh-07-acajou.md §3, §4, §6, §7, §9, §13, textes C-39 à C-44). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 24 × 18 cases (dossier : ≈ 24 × 18) ; x = colonne 0..23, y = rangée 0..17 ; nord en haut.
+#
+# Composition (le niveau du générateur d'ondes, dossier §4 étape 12) :
+#   - SAS D'ARRIVÉE à l'ouest (x 1..8) avec l'ESCALIER qui monte (U, (3, 1)) et le Max Repousse ×2 (1, 16) ;
+#     CLOISON (x 9) percée d'un seul passage (9, 8..9) : la SCÈNE DE BRACE (déclencheur dessus, C-40) le
+#     couvre, combat obligatoire ; Brace (12, 8) devant le générateur.
+#   - SALLE DU GÉNÉRATEUR (x 10..22) : la MACHINE (M, x 15..20, y 3..6, examen C-39 depuis (17, 7)),
+#     son PUPITRE d'arrêt (p, (13, 5), actionné depuis (13, 6) après Brace : C-43) et la CAGE À ONDES
+#     (c) qui tient RAIKOU (17, 9), abordé depuis (17, 10) une fois la cage ouverte (C-44, combat et
+#     capture, niv. 60). Après C-42, Brace file par le PASSAGE SECRET du mur est (décor, (23, 12)).
+#   - Pas de Sbire au B3F (dossier §6).
+#
+# Légende (commune aux trois niveaux ; même esprit que le repaire de Céladopole, tools/plans/repaire_b1f.txt) :
+#   # mur ou vide (bloqué)   . sol de béton (praticable, aucune rencontre)   M console, bureau ou machine (bloqué)
+#   X caisse (bloquée)   S statue de Persian (bloquée ; caméra dans les yeux : position « statue »,
+#     facing + sight = cases surveillées, déclencheur « alarme_N » dessus)   < > ^ v dalle tournante
+#     (posé dessus, on glisse dans sa direction jusqu'à une case d'arrêt o ; chaque flèche croisée change
+#     la direction : règle du repaire de Céladopole)   o case d'arrêt (praticable)
+#   K grille ou porte fermée (praticable ; la position « porte_cle », libre dans la grille, la bloque
+#     tant que la clé ou le mot de passe manque)   c barreaux de la cage à ondes (bloqués)
+#   p pupitre de commande (bloqué)   U escalier qui monte   D escalier qui descend (praticables ; même
+#     case aux deux niveaux, arrivée posée sur la case voisine libre)
+# Personnages, objets, scènes et raccords sont dans POSITIONS.
+#
+# Format : ligne PRATICABLES, section GRILLE, puis POSITIONS.
+
+PRATICABLES .U
+
+GRILLE 24 18
+00 ########################
+01 #..U.....#.............#
+02 #........#.MM..........#
+03 #........#.....MMMMMM..#
+04 #........#.....MMMMMM..#
+05 #........#...p.MMMMMM..#
+06 #MM......#.....MMMMMM..#
+07 #........#.............#
+08 #...............ccc....#
+09 #...............c.c....#
+10 #........#......c.c....#
+11 #........#.............#
+12 #........#.............#
+13 #........#.............#
+14 #.....XX.#...........MM#
+15 #........#.............#
+16 #........#.............#
+17 ########################
+FIN
+
+POSITIONS
+vers_b2f             escalier       3,1          libre   paire=rep_2_3 sens=monte vers=mahogany_hideout_b2f:from_b3f  # escalier vers le B2F
+from_b2f             spawn          3,2          libre   paire=rep_2_3 facing=down  # arrivée depuis le B2F
+scene_brace          declencheur    9,8..9       libre   actif_sans=johto_brace_defeated_2  # C-40 à C-42 : Brace vient au joueur, combat obligatoire ; pose johto_brace_defeated_2
+brace                dresseur       12,8         bloque  role=admin facing=left sight=0 actif_sans=johto_brace_defeated_2  # Rapasdepic 60, Arbok 60, Smogogo 61, Démolosse 62 ; s'enfuit par le passage secret
+generateur           examen         17,6         bloque   # C-39, examiné depuis (17, 7) ↑
+arret_generateur     interrupteur   13,5         bloque  depuis=13,6 face=N flag=johto_generator_off actif_avec=johto_brace_defeated_2  # C-43 : coupe le générateur, ouvre la cage
+cage                 repere         16..18,8..10 libre   role=decor  # cage à ondes (les barreaux c bloquent, (17, 10) reste libre) ; s'ouvre avec johto_generator_off
+raikou               pokemon        17,9         bloque  espece=raikou niveau=60 combat=fixe actif_sans=johto_raikou_done  # C-44 ; abordé depuis (17, 10) ; K.O. ou fuite : revient à la Tour Cendrée après le chapitre (§6)
+passage_secret       decor          23,12        bloque   # C-42 : porte dérobée de Brace (décor)
+max_repousse         objet_visible  1,16         bloque  item=max_repel quantite=2  # dossier §7
+FIN

@@ -1,0 +1,76 @@
+# Route 42 (route_42) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ; dossier
+# docs/design/dossier-joh-07-acajou.md §3, §4 (étape 5), §5 à §7, textes C-13 à C-15).
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 72 × 20 cases (dossier : ≈ 72 × 20) ; nord en haut ; x = colonne 0..71, y = rangée 0..19.
+#
+# Composition (« entre lac et montagne », tout à angles droits) :
+#   - MONTAGNE au nord (R, y 0..1), FORÊT au sud (T, y 18..19). CHEMIN (=) de l'ouest (0, 9..11),
+#     depuis Rosalia, jusqu'au LAC (x 30..43, y 2..17, SURFABLE, d'une paroi à l'autre : on ne
+#     traverse qu'en Surf, dossier §3), puis de la rive est (44) au bord EST (71, 9..11), Acajou.
+#   - ÎLOT (., (36..37, 6..7)) au milieu du lac avec le Super Bonbon.
+#   - Ouest : H1 (x 4..10, y 3..7) et H2 (x 4..10, y 13..16) ; CONTREFORT du Mont Creuset (R, x 14..22,
+#     y 2..5) avec la PORTE fermée (Q, (18, 5), examen C-14, « éboulement ») ; MONTAGNARD HECTOR (20, 7)
+#     et PÊCHEUR MARCEL (29, 13) au bord de l'eau, évitables.
+#   - Lac : NAGEUSE CORALIE (40, 5) sur l'eau, évitable par les rangées 9..11.
+#   - Est : ÉPERON ROCHEUX (R, x 52, y 2..17) percé d'un seul passage (52, 10) sous la vue du SUPER
+#     NERD LOUIS (53, 9) : INÉVITABLE (dossier §6) ; H3 (x 58..64, y 3..7) ; Ultra Ball ×2 au sud-est.
+#
+# Raccords :
+#   OUEST (0, 9..11) ↔ Rosalia, bord est (55, 30..32) (rangées différentes, warps case à case).
+#   EST (71, 9..11) ↔ Acajou, bord ouest (0, 14..16) (rangées différentes, warps case à case).
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   R montagne, falaise et éperon (bloqués)
+#   . pré (praticable)   = chemin de terre (praticable)   h herbes hautes (praticables, rencontres)
+#   w eau du lac (SURFABLE ; rencontres de l'eau)   Q porte du Mont Creuset (bloquée, examen)
+#   G arbre repère (bloqué)
+# Défauts [D] : lac d'une paroi à l'autre ; Dresseurs placés par Claude ; pas de pêche notée ici
+# (table du lac en Surf seulement, dossier §5).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 72 caractères), puis POSITIONS.
+
+PRATICABLES .=hw
+
+GRILLE 72 20
+00 TRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRT
+01 TRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRT
+02 T.............RRRRRRRRR.......wwwwwwwwwwwwww........R..................T
+03 T...hhhhhhh...RRRRRRRRR.......wwwwwwwwwwwwww........R.....hhhhhhh......T
+04 T...hhhhhhh...RRRRRRRRR...G...wwwwwwwwwwwwww........R.....hhhhhhh...G..T
+05 T...hhhhhhh...RRRRQRRRR.......wwwwwwwwwwwwww........R.....hhhhhhh......T
+06 T...hhhhhhh...................wwwwww..wwwwww........R.....hhhhhhh......T
+07 T...hhhhhhh...................wwwwww..wwwwww........R.....hhhhhhh......T
+08 T.............................wwwwwwwwwwwwww........R..................T
+09 ==============================wwwwwwwwwwwwww========R===================
+10 ==============================wwwwwwwwwwwwww============================
+11 ==============================wwwwwwwwwwwwww========R===================
+12 T.............................wwwwwwwwwwwwww........R..................T
+13 T...hhhhhhh...................wwwwwwwwwwwwww........R..................T
+14 T...hhhhhhh...................wwwwwwwwwwwwww........R...G..............T
+15 T...hhhhhhh...................wwwwwwwwwwwwww...G....R..................T
+16 T.G.hhhhhhh................G..wwwwwwwwwwwwww........R..................T
+17 T.............................wwwwwwwwwwwwww........R..................T
+18 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+19 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_ouest           warp           0,9..11      libre    # PUSH ← → ecruteak_city, from_route_42 (55, 30..32)
+from_ecruteak        spawn          0,9..11      libre   facing=right  # arrivée de Rosalia ; titre de zone « Route 42 »
+warp_est             warp           71,9..11     libre    # PUSH → → mahogany_town, from_route_42 (0, 14..16)
+from_mahogany        spawn          71,9..11     libre   facing=left  # arrivée d'Acajou
+panneau              panneau        3,8          bloque   # C-13, lu depuis (3, 9) ↑
+porte_mont_creuset   examen         18,5         bloque   # C-14, examinée depuis (18, 6) ↑ ; hors périmètre (cadre §1)
+lac                  repere         30..43,2..17 libre   role=surf  # lac de la Route 42 : Surf obligatoire, rencontres de l'eau (§5)
+herbes_h1            herbes         7,5          libre   role=H1  # poche nord-ouest
+herbes_h2            herbes         7,14         libre   role=H2  # poche sud-ouest
+herbes_h3            herbes         61,5         libre   role=H3  # poche nord-est
+hector               dresseur       20,7         bloque  role=montagnard facing=left sight=2  # C-15 : Grolem 48, Onix 47 ; évitable
+marcel               dresseur       29,13        bloque  role=pecheur facing=right sight=1  # C-15 : Léviator 47, Tentacruel 46 ; regarde le lac, évitable
+coralie              dresseur       40,5         bloque  role=nageuse facing=down sight=3  # C-15 : Azumarill 48, Stari 46 ; sur l'eau, évitable
+louis                dresseur       53,9         bloque  role=super_nerd facing=down sight=1  # C-15 : Magnéton 47, Électrode 47 ; sa vue (53, 10) est le seul passage de l'éperon : INÉVITABLE
+super_bonbon         objet_visible  36,6         bloque  item=rare_candy  # sur l'îlot (Surf)
+ultra_balls          objet_visible  66,16        bloque  item=ultra_ball quantite=2  # poche sud-est
+FIN

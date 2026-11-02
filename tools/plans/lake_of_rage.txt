@@ -1,0 +1,110 @@
+# Lac Colère (lake_of_rage) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ; dossier
+# docs/design/dossier-joh-07-acajou.md §3, §4 (étape 8), §5 à §7, §10, textes C-24 à C-27 ; retouche du JOH9 : dossier joh-10 §3,
+# textes A-1, A-2).
+# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 56 × 52 cases (dossier : ≈ 56 × 52) ; nord en haut ; x = colonne 0..55, y = rangée 0..51.
+#
+# Composition (grand lac de montagne, rives boisées) :
+#   - LAC (w, x 10..45, y 8..38, SURFABLE, pêche) : le LÉVIATOR ROUGE (27, 22) au centre, combat fixe
+#     niv. 50 (C-25, JH-46) ; deux rochers émergés (o). Les FORÊTS (T, x 1..9 et x 46..54, y 8..38)
+#     ferment les deux flancs : la RIVE NORD ne s'atteint qu'en Surf.
+#   - RIVE SUD (y 39..50) : CHEMIN (=, x 26..28) depuis la Route 43 ; le PÊCHEUR (30, 39) au bord de
+#     l'eau (C-26) et le PÊCHEUR LUDOVIC (20, 39), évitable ; panneau (25, 42) ; H1 (x 2..8, y 41..47)
+#     et H4 (x 47..53, y 41..47).
+#   - RIVE NORD (y 1..7) : Rappel Max (12, 3) ; H3 (x 2..8, y 1..4), H2 (x 38..45, y 1..3) ; au
+#     nord-est le SENTIER du Mont Argenté (=, x 50..55, y 3..5) qui sort par le bord EST (55, 3..5),
+#     fermé par le GARDE FORESTIER (53, 6) et la barrière « barriere_sentier » jusqu'à johto_act3
+#     (JOH9, A-1, A-2).
+#
+# Raccords :
+#   SUD (26..28, 51) ↔ Route 43, bord nord (10..12, 0) (colonnes différentes, warps case à case).
+#   EST (55, 3..5) ↔ Sentier du Mont Argenté (JOH9, grille à venir) ; fermé pendant l'acte 2.
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   . pré des rives (praticable)   = chemin et sentier
+#   h herbes hautes des rives (praticables, rencontres « rives »)   w eau du lac (SURFABLE ; rencontres
+#   de l'eau et pêche)   o rocher émergé (bloqué)   G arbre repère (bloqué)
+# Défauts [D] : rive nord en Surf seulement ; le Léviator rouge se combat en lui parlant (ou en
+# l'abordant) depuis l'eau ; 4 poches d'herbes ; le Léviator sauvage du lac est normal (§5).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 56 caractères), puis POSITIONS.
+
+PRATICABLES .=hw
+
+GRILLE 56 52
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 T.hhhhhhh.............................hhhhhhhh.........T
+02 T.hhhhhhh.............................hhhhhhhh..G......T
+03 T.hhhhhhh.............................hhhhhhhh....======
+04 T.hhhhhhh.........................................======
+05 T.................................................======
+06 T...........G.................G........................T
+07 T......................................................T
+08 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+09 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+10 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+11 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+12 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+13 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+14 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+15 TTTTTTTTTTwwwwwwwwwwowwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+16 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+17 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+18 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+19 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+20 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+21 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+22 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+23 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+24 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+25 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+26 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+27 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+28 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+29 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+30 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwowwwwwwwwwwTTTTTTTTTT
+31 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+32 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+33 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+34 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+35 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+36 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+37 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+38 TTTTTTTTTTwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwTTTTTTTTTT
+39 T.........................===..........................T
+40 T.........................===..........................T
+41 T.hhhhhhh.................===..................hhhhhhh.T
+42 T.hhhhhhh...G.............===...............G..hhhhhhh.T
+43 T.hhhhhhh.................===..................hhhhhhh.T
+44 T.hhhhhhh.................===..................hhhhhhh.T
+45 T.hhhhhhh.................===..................hhhhhhh.T
+46 T.hhhhhhh.................===..................hhhhhhh.T
+47 T.hhhhhhh.................===..................hhhhhhh.T
+48 T.........................===..........................T
+49 T...................G.....===.......G..................T
+50 T.........................===..........................T
+51 TTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_sud             warp           26..28,51    libre    # PUSH ↓ → route_43, from_lake (10..12, 0)
+from_route_43        spawn          26..28,51    libre   facing=up  # arrivée de la Route 43 ; titre de zone « Lac Colère »
+warp_sentier         warp           55,3..5      libre    # PUSH → → silver_trail (JOH9), from_lake ; raccord à caler sur sa grille
+from_sentier         spawn          55,3..5      libre   facing=left  # arrivée du sentier du Mont Argenté (JOH9)
+garde_forestier      pnj            53,6         bloque  role=garde facing=up  # A-1 avant johto_act3, A-2 après (JOH9) ; à côté du sentier
+barriere_sentier     declencheur    54,3..5      libre   actif_sans=johto_act3  # A-1 et pas en arrière ; levée à l'acte 3
+panneau              panneau        25,42        bloque   # C-24, lu depuis (25, 43) ↑
+lac                  repere         10..45,8..38 libre   role=surf_peche  # Surf et pêche (tables §5)
+leviator_rouge       pokemon        27,22        bloque  espece=gyarados variant=red niveau=50 combat=fixe actif_sans=johto_red_gyarados_done  # C-25, JH-46 : combat et capture depuis l'eau ; pose johto_red_gyarados_done
+pecheur              pnj            30,39        bloque  role=pecheur facing=up  # C-26 après le Léviator rouge (avant : « Le lac est fou. ») ; regarde l'eau
+ludovic              dresseur       20,39        bloque  role=pecheur facing=up sight=1  # C-27 : Léviator 52, Lokhlass 51 ; regarde l'eau, évitable
+rappel_max           objet_visible  12,3         bloque  item=max_revive  # rive nord (Surf)
+rocher_1             decor          20,15        bloque   # rocher émergé
+rocher_2             decor          35,30        bloque   # rocher émergé
+herbes_h1            herbes         5,44         libre   role=H1  # rive sud-ouest
+herbes_h2            herbes         41,2         libre   role=H2  # rive nord
+herbes_h3            herbes         5,2          libre   role=H3  # rive nord-ouest
+herbes_h4            herbes         50,44        libre   role=H4  # rive sud-est
+FIN
