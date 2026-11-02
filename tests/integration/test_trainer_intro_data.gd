@@ -50,6 +50,7 @@ func test_every_rival_battle_is_grand() -> void:
 
 func test_rival_titles() -> void:
 	assert_eq(_trainers.get_trainer(&"rival_champion").card_title, "Champion de la Ligue")
+	assert_eq(_trainers.get_trainer(&"rival_champion").card_title_rivale, "Championne de la Ligue")
 	for id: StringName in [&"rival_lab", &"rival_route22", &"rival_tower", &"rival_silph"]:
 		assert_eq(_trainers.get_trainer(id).card_title, "Rival", String(id))
 

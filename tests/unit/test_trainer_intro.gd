@@ -129,6 +129,19 @@ func test_rival_images_follow_the_rival_look() -> void:
 	assert_eq(rivale.world_sprite, &"rival_heroine")
 
 
+func test_rivale_gets_the_feminine_title() -> void:
+	var card := ["{rival}", "Champion de la Ligue", &"rival"]
+	var trainer := _trainer("{rival}", card)
+	trainer.card_title_rivale = "Championne de la Ligue"
+	var rival := TrainerIntro.build(trainer, _party(1), _catalog, &"rival")
+	assert_eq(rival.foe_title, "Champion de la Ligue")
+	var rivale := TrainerIntro.build(trainer, _party(1), _catalog, &"rivale")
+	assert_eq(rivale.foe_title, "Championne de la Ligue")
+	var no_variant := TrainerIntro.build(_trainer("{rival}", ["{rival}", "Rival", &"rival"]),
+		_party(1), _catalog, &"rivale")
+	assert_eq(no_variant.foe_title, "Rival", "sans variante : titre commun")
+
+
 func test_reduce_motion_fades_without_shortening() -> void:
 	var trainer := _trainer("Pierre", ["PIERRE", "T", &"pierre"])
 	var normal := TrainerIntro.build(trainer, _party(1), _catalog)

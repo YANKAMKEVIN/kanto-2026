@@ -50,6 +50,8 @@ const _REQUIRED: Array[String] = [
 ]
 const _SLOT_KEYS: Array[String] = ["species", "level", "moves"]
 const _CARD_KEYS: Array[String] = ["name", "title", "portrait"]
+## Clés facultatives de « card » (textes non vides).
+const _CARD_OPTIONAL_KEYS: Array[String] = ["title_rivale"]
 
 var _pokemon: PokemonData
 var _trainers: Dictionary[StringName, TrainerData] = {}
@@ -228,21 +230,27 @@ func _parse(value: Variant, where: String) -> TrainerData:
 	return trainer if ok else null
 
 
-## Lit « card » : { "name", "title" }, deux textes non vides, aucune autre clé.
+## Lit « card » : { "name", "title", "portrait" }, textes non vides, plus « title_rivale »
+## facultatif ; aucune autre clé.
 func _read_card(value: Variant, trainer: TrainerData, where: String) -> bool:
 	if not value is Dictionary:
 		return _fail("%s : « card » doit être { name, title, portrait }" % where)
 	var card: Dictionary = value
 	var ok := true
 	for key: Variant in card:
-		if not _CARD_KEYS.has(str(key)):
+		if not _CARD_KEYS.has(str(key)) and not _CARD_OPTIONAL_KEYS.has(str(key)):
 			ok = _fail("%s card : clé inconnue « %s »" % [where, key])
 	for key: String in _CARD_KEYS:
 		var text: Variant = card.get(key)
 		if not text is String or (text as String).strip_edges().is_empty():
 			ok = _fail("%s card : « %s » doit être un texte non vide" % [where, key])
+	if card.has("title_rivale"):
+		var female: Variant = card["title_rivale"]
+		if not female is String or (female as String).strip_edges().is_empty():
+			ok = _fail("%s card : « title_rivale » doit être un texte non vide" % where)
 	if ok:
 		trainer.card_name = card["name"]
+		trainer.card_title_rivale = card.get("title_rivale", "")
 		trainer.card_title = card["title"]
 		trainer.card_portrait = StringName(card["portrait"])
 	return ok

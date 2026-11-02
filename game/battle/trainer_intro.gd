@@ -29,6 +29,8 @@ enum Ball { FULL, FAINTED, EMPTY }
 const SLOTS: int = Party.MAX_SIZE
 ## Identifiant de portrait du rival dans les données : il suit l'apparence du rival.
 const RIVAL_ID: StringName = &"rival"
+## Apparence féminine du rival : ses images et son titre féminin (« title_rivale »).
+const RIVALE_ID: StringName = &"rivale"
 
 ## Vrai pour un grand combat (séquence « VS » d'abord).
 var grand: bool = false
@@ -71,6 +73,8 @@ static func build(trainer: TrainerData, foe_party: Party, catalog: TrainerIntroC
 		var id := trainer.card_portrait
 		if id == RIVAL_ID and not rival_look.is_empty():
 			id = rival_look
+		if id == RIVALE_ID and not trainer.card_title_rivale.is_empty():
+			intro.foe_title = trainer.card_title_rivale
 		intro.sprite_id = id
 		intro.portrait_id = id
 	elif trainer != null:

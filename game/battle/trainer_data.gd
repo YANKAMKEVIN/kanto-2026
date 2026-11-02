@@ -50,6 +50,9 @@ var team_by_starter: Dictionary[StringName, Array] = {}
 ## (« pierre », « rival ») ; vides = Dresseur ordinaire.
 var card_name: String = ""
 var card_title: String = ""
+## Titre quand le rival a l'apparence de la rivale (« Championne de la Ligue », décision de
+## Kevin du 2026-11-02) ; vide : [member card_title].
+var card_title_rivale: String = ""
 var card_portrait: StringName = &""
 ## Classe de combat imposée par les données (« class ») ; vide : déduite du nom
 ## ([method TrainerIntroCatalog.class_for]).
