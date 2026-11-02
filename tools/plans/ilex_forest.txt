@@ -1,7 +1,7 @@
 # Bois aux Chênes (ilex_forest) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ; dossier
 # docs/design/dossier-joh-05-ecorcia.md §3, §4, §5 à §7, textes E-4 à E-8, E-33 ; autel JH-39, Celebi
 # JH-16 au post-game). Mêmes règles que la Forêt de Jade (« nature dense », tools/plans/viridian_forest.txt).
-# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
 # géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
 #
 # 48 × 48 cases (dossier : ≈ 48 × 48) ; nord en haut ; x = colonne 0..47, y = rangée 0..47.

@@ -1,7 +1,7 @@
 # Écorcia (azalea_town) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ; dossier
 # docs/design/dossier-joh-05-ecorcia.md §3, §4, §9, §10, textes E-9 à E-14, E-25 à E-29, E-31, E-34,
 # E-36 ; Fargas JH-37, Vincent le vendredi).
-# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
 # géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
 #
 # 44 × 36 cases (dossier : ≈ 44 × 36) ; nord en haut ; x = colonne 0..43, y = rangée 0..35.

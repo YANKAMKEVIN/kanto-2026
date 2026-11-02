@@ -1,6 +1,6 @@
 # Route 34 (route_34) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ; dossier
 # docs/design/dossier-joh-05-ecorcia.md §3, §4, §5 à §7, textes E-1 à E-3, E-30, E-32).
-# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
 # géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
 #
 # 24 × 48 cases (dossier : ≈ 24 × 48) ; nord en haut ; x = colonne 0..23, y = rangée 0..47.

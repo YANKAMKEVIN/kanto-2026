@@ -26,7 +26,7 @@
 
 Points de Vol : Écorcia (utilisable à l'acte 2). Retour à Doublonville à pied par le Bois (JOH5).
 
-**Grilles préparées le 2026-11-02 (à valider par Kevin)** : `tools/plans/route_34.txt` (24 × 48),
+**Grilles validées par Kevin le 2026-11-02** : `tools/plans/route_34.txt` (24 × 48),
 `ilex_forest.txt` (48 × 48), `azalea_town.txt` (44 × 36), `slowpoke_well_b1f.txt` et
 `slowpoke_well_b2f.txt` (30 × 24) ; contrôle `tools/art/plan_check_joh4.py`, aperçu
 `reference/joh4-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. Raccords :

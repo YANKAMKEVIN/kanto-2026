@@ -1,7 +1,7 @@
 # Puits Ramoloss B1F (slowpoke_well_b1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ;
 # dossier docs/design/dossier-joh-05-ecorcia.md §3, §4 (étapes 5 et 6), §5 à §7, textes E-15, E-16,
 # E-35). Carte intérieure ; même légende que les grottes de Kanto (tools/plans/mont_selenite_1f.txt).
-# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
 # géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
 #
 # 30 × 24 cases (dossier : ≈ 30 × 24) ; nord en haut ; x = colonne 0..29, y = rangée 0..23.
