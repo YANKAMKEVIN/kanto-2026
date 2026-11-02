@@ -5,7 +5,9 @@ extends RefCounted
 ## stables) ; les Pokémon restent les artworks officiels de [PokedexArt].
 ## - Illustration d'une carte du tableau de bord : [method card_illustration] (par écran).
 ## - Portrait peint du héros en buste : [method hero_bust].
-## - Icône peinte d'un objet : [method item_icon] (null si l'objet n'en a pas encore).
+## - Icône peinte d'un objet : [method item_icon] (null si l'objet n'en a pas encore). Les CT
+##   (hors CS) partagent un disque peint par **type** de la capacité enseignée (RP-256, [D] du
+##   2026-11-02 : `tm_<type>.webp`), table posée par Boot ([method set_tm_types]).
 ## - Pokémon : [method pokemon_thumbnail] (vignette 128 de l'atlas) et [method pokemon_portrait]
 ##   (grand artwork resserré), par numéro du Pokédex ; null pour 0 (numéro inconnu).
 ## - Badge peint (chantier « Menu Dresseur peint », 2026-11-01) : [method badge_icon] par identifiant
@@ -28,8 +30,12 @@ const ZONE_ASPECT := 16.0 / 9.0
 ## Un recadrage de l'illustration couvre au moins ce côté (pixels de l'image) autour de la zone.
 const ZONE_CROP_MIN_HEIGHT := 220.0
 const EXTENSION := ".webp"
+## Disque de CT d'un type : « tm_<type>.webp ».
+const TM_DISC_PREFIX := "tm_"
 
 static var _cache: Dictionary[String, Texture2D] = {}
+## Type de la capacité enseignée par chaque CT (hors CS) : identifiant de l'objet → type.
+static var _tm_types: Dictionary[StringName, StringName] = {}
 
 
 ## « res://assets/ui/menu/cards/team.webp » pour [param screen] ([constant MenuRoute.TEAM]…).
@@ -59,8 +65,36 @@ static func bust_for(look: StringName, costume: StringName = &"") -> Texture2D:
 	return _load(TrainerLooks.bust_path(look, costume))
 
 
+## Chemin de l'icône de [param item_id] ; une CT dont le type est connu prend le disque de son
+## type ([method set_tm_types]).
 static func item_icon_path(item_id: StringName) -> String:
+	if _tm_types.has(item_id):
+		return tm_disc_path(_tm_types[item_id])
 	return ITEM_DIR + String(item_id) + EXTENSION
+
+
+## « res://assets/ui/items/tm_fire.webp » pour [param type].
+static func tm_disc_path(type: StringName) -> String:
+	return ITEM_DIR + TM_DISC_PREFIX + String(type) + EXTENSION
+
+
+## Pose la table CT → type (Boot, une fois les objets et les capacités chargés ; [method tm_types]).
+static func set_tm_types(types: Dictionary[StringName, StringName]) -> void:
+	_tm_types = types
+
+
+## Table CT → type de la capacité enseignée, pour [param items] et [param data] (les CS gardent
+## leur icône propre ; une CT dont la capacité est inconnue est omise).
+static func tm_types(items: ItemLibrary, data: PokemonData) -> Dictionary[StringName, StringName]:
+	var result: Dictionary[StringName, StringName] = {}
+	for item_id: StringName in items.get_ids():
+		var item := items.get_item(item_id)
+		if item == null or not item.is_tm() or item.is_hm() or not data.has_move(item.teaches):
+			continue
+		var type := data.get_move(item.teaches).type
+		if not type.is_empty():
+			result[item_id] = type
+	return result
 
 
 ## Icône peinte de [param item_id] ; null si l'objet n'en a pas (l'écran garde son icône).

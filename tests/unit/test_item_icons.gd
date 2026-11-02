@@ -1,6 +1,19 @@
 extends GutTest
 ## Couverture des icônes du Sac (DAF.5) : chaque objet de `data/items/*.json` a son icône peinte
-## (`assets/ui/items/<id>.webp`, 256 × 256, lue par [method MenuArt.item_icon]).
+## (`assets/ui/items/<id>.webp`, 256 × 256, lue par [method MenuArt.item_icon]) ; une CT prend le
+## disque peint de son type (reliquats du Menu peint, 2026-11-02 : [method MenuArt.set_tm_types]).
+
+
+func before_all() -> void:
+	var items := ItemLibrary.new()
+	items.load_dir()
+	var data := PokemonData.new()
+	data.load_dir()
+	MenuArt.set_tm_types(MenuArt.tm_types(items, data))
+
+
+func after_all() -> void:
+	MenuArt.set_tm_types({})
 
 
 func test_every_item_has_a_painted_icon() -> void:

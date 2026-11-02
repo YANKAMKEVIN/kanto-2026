@@ -353,11 +353,21 @@ func _make_continue_card(summary: SaveSummary) -> Button:
 	divider.custom_minimum_size.y = UiTokens.BORDER_WIDTH
 	divider.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texts.add_child(divider)
-	for line: Array in [[CLOCK_ICON, summary.play_time_text()],
-			[BADGE_ICON, summary.badges_text()], [CAUGHT_ICON, summary.caught_text()]]:
+	for line: Array in [[CLOCK_ICON, summary.play_time_text(), "PlayTime"],
+			[_badge_icon(summary), summary.badges_text(), "Badges"],
+			[CAUGHT_ICON, summary.caught_text(), "Caught"]]:
 		if not (line[1] as String).is_empty():
-			texts.add_child(_stat_line(line[0], line[1]))
+			var stat := _stat_line(line[0], line[1])
+			stat.name = line[2]
+			texts.add_child(stat)
 	return card
+
+
+## Icône de la ligne des badges : le dernier badge obtenu, peint ([method MenuArt.badge_icon]) ;
+## l'emblème SVG générique sans badge connu ou si l'image manque.
+static func _badge_icon(summary: SaveSummary) -> Texture2D:
+	var painted := MenuArt.badge_icon(summary.badge_id) if summary != null else null
+	return painted if painted != null else BADGE_ICON
 
 
 ## Carte secondaire : icône, libellé en capitales, chevron « › ».

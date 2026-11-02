@@ -79,6 +79,23 @@ func test_valid_save_features_continue_with_its_card() -> void:
 	assert_not_null(card.find_child("Bust", true, false), "buste du joueur")
 
 
+## Reliquats du Menu peint (2026-11-02) : la ligne des badges montre le dernier badge obtenu,
+## peint ; l'emblème SVG sans badge connu.
+func test_badge_line_shows_the_last_painted_badge() -> void:
+	var summary := _make_summary(2)
+	summary.badge_id = &"cascade"
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID, summary))
+	var line := screen.get_entry_button(&"continue").find_child("Badges", true, false)
+	assert_not_null(line, "ligne des badges")
+	var icon := line.get_child(0) as TextureRect
+	assert_eq(icon.texture, MenuArt.badge_icon(&"cascade"), "Badge Cascade peint")
+	summary = _make_summary(1)
+	screen = await _screen_in(_model(OpeningFlow.SaveStatus.VALID, summary))
+	line = screen.get_entry_button(&"continue").find_child("Badges", true, false)
+	assert_eq((line.get_child(0) as TextureRect).texture, TitleScreen.BADGE_ICON,
+		"repli sur l'emblème SVG sans badge connu")
+
+
 func test_empty_summary_lines_are_omitted() -> void:
 	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID, _make_summary(0, false)))
 	var texts := screen.get_texts()
