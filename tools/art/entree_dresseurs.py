@@ -65,7 +65,36 @@ JOINTES = {
 	"ED_BUSTE_KEVIN_V2": [M3, ENT / "ref_buste_kevin.png", ART / "ED_BUSTE_KEVIN_r1.png"],
 	"ED_HUGO_LANCER_V2": [M2, ENT / "ref_hugo_lancer.png", ENT / "gamin_lancer_actuel.png"],
 	"ED_BALL_FX": [M2, ENT / "ref_ball.png"],
+	# Itération 5 (revue de Codex sur le comparatif v4) : maquettes recadrées en référence
+	# principale (build/art/entree/ref5_*.png et arene_v4_entree.png, faits par `refs5`).
+	"ED_DECOR_ARENE_V4": [ENT / "arene_v4_entree.png", M3],
+	"ED_DECOR_ROUTE3_LANCER": [M2],
+	"ED_DOS_M1": [ENT / "ref5_joueur_m1.png", M1],
+	"ED_DOS_M2": [ENT / "ref5_joueur_m2.png", ENT / "ref5_joueur_m1.png", M2],
+	"ED_DOS_VS": [ENT / "ref5_joueur_m3.png", ENT / "ref5_joueur_m1.png", M3],
+	"ED_HUGO_LANCER_V3": [ENT / "ref5_hugo_m2.png", M2, ENT / "gamin_debout_actuel.png"],
+	"ED_BANDEROLE_BLEUE_V2": [ENT / "ref5_banderole_bleue.png", M3],
+	# Arène v4 : Codex a recomposé au lieu de prolonger ; on remonte sa composition de 140 px et
+	# on ne lui fait peindre que la bande du bas (le sol).
+	"ED_DECOR_ARENE_V4_SOL": [ENT / "arene_v4_sol.png"],
 }
+
+
+def refs5() -> None:
+	"""Références de l'itération 5 : personnages recadrés des maquettes ; maquette 3 remontée de
+	100 px avec une bande grise en bas (le sol à prolonger) pour l'Arène v4."""
+	m1, m2, m3 = (Image.open(m).convert("RGB") for m in (M1, M2, M3))
+	toile = Image.new("RGB", m3.size, (128, 128, 128))
+	toile.paste(m3.crop((0, 100, m3.width, m3.height)), (0, 0))
+	toile.save(ENT / "arene_v4_entree.png")
+	for im, boite, nom, f in ((m1, (350, 330, 700, 825), "ref5_joueur_m1.png", 3),
+			(m2, (130, 330, 600, 850), "ref5_joueur_m2.png", 2),
+			(m3, (400, 280, 640, 640), "ref5_joueur_m3.png", 3),
+			(m2, (1200, 190, 1420, 480), "ref5_hugo_m2.png", 4),
+			(m3, (0, 560, 1200, 853), "ref5_banderole_bleue.png", 1)):
+		x = im.crop(boite)
+		x.resize((x.width * f, x.height * f), Image.LANCZOS).save(ENT / nom)
+	Image.open(SPR / "gamin.webp").save(ENT / "gamin_debout_actuel.png")
 # Décors v2 : composition retenue → deux tuiles repeintes en plus grand (recette de
 # tools/art/combat_decors/preparer_decor.py, manifeste tools/art/combat_decors/decors.json).
 DECORS = {"ROUTE3": ("ED_DECOR_ROUTE3_r1.png", "ED_TUILE_ROUTE3"),
@@ -290,6 +319,10 @@ def exporter() -> None:
 	_webp(rouge, VS / "banderole_rouge.webp")
 	_webp(bleue, VS / "banderole_bleue.webp")
 	_webp(embleme(), VS / "emblem.webp")
+	# Itération 5 (arrêtée par Kevin) : seule la pose debout de dos du « VS » est gardée, non
+	# branchée (maquette 3, tenue des maquettes 1 et 2).
+	vs = _rogne(_nettoyer(Image.open(ART / "ED_DOS_VS_r2.png").convert("RGBA")))
+	_webp(poses_en_toile(vs, vs, (640, 960), 16)[0], SPR / "dos_hero_vs.webp")
 	trainee, ball = fx()
 	_webp(trainee, FX / "ball_trail.webp")
 	_webp(ball, FX / "ball.webp")

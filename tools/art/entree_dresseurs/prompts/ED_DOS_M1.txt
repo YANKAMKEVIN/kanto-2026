@@ -1,0 +1,9 @@
+ED_DOS_M1 — sprite de combat de Kanto 2026 : le joueur vu de dos. Images jointes : IMAGE 1 = agrandissement du joueur dans la maquette VALIDÉE « entrée » : c'est la CIBLE EXACTE, à recopier ; IMAGE 2 = la maquette entière.
+
+À FAIRE : UNE image portrait 1024 × 1536 : le MÊME garçon que l'IMAGE 1, dans EXACTEMENT la même pose, recopié fidèlement, détouré, en pied, environ 1350 px de haut, pieds près du bas, rien de coupé (main tendue comprise) :
+- de dos, trois-quarts dos vers la droite, debout, jambes modérément écartées, bras DROIT tendu vers l'avant et vers la droite, main GRANDE OUVERTE doigts écartés, bras gauche le long du corps poing serré, exactement comme l'IMAGE 1 ;
+- casquette rouge à visière blanche vue de dos (patte de réglage), cheveux bruns en mèches, t-shirt blanc, gilet rouge sans manches visible sur les côtés, SAC À DOS de l'IMAGE 1 à l'identique (taille, forme : corps jaune moutarde, grande poche avant bleu marine avec fermeture ronde argentée, poches latérales, bretelles bleu marine, mêmes proportions que sur l'IMAGE 1, pas plus massif), jean bleu marine large retroussé, baskets rouges à semelle blanche.
+Mêmes proportions, mêmes plis, même rendu que l'IMAGE 1, en plus net.
+
+STYLE : celui de la maquette (anime peint 2D HD, contours fins brun foncé, ombres douces, lumière chaude venant de la gauche).
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte.

@@ -1,0 +1,12 @@
+DÉCOR DE COMBAT — ARÈNE D'ARGENTA, version 4 (Kanto 2026). RETOUCHE de l'IMAGE 1 jointe.
+
+IMAGE 1 : la maquette VALIDÉE du combat contre le Champion de l'Arène, déjà RECADRÉE comme il faut : on a retiré une bande en haut et ajouté en BAS une bande GRISE UNIE (environ 12 % de la hauteur). IMAGE 2 : la même maquette, entière, pour référence.
+
+À FAIRE : produis EXACTEMENT LA MÊME IMAGE que l'IMAGE 1 (même format, même cadrage au pixel près, même décor à la même place et à la même taille : colonnes et torches à gauche, fenêtres lumineuses, bannières rouges, grande paroi du fond avec le grand médaillon de pierre ronde gravée d'un rocher, escalier discret, rochers, sol de dalles polies et brillantes avec le motif circulaire gravé, rayons de lumière dorée), avec SEULEMENT ces retouches :
+1. RETIRE et repeins le décor à la place : les deux personnages (le garçon de dos, le jeune homme bras croisés) et leurs ombres, les deux banderoles rouge et bleue, les deux portraits, l'emblème « VS » et ses traits dorés, tous les textes, et les rochers violacés posés au bas des banderoles. Là où ils étaient : la suite naturelle des colonnes, de la paroi, des marches, des torches et des dalles.
+2. La bande GRISE du bas devient la SUITE DU SOL de dalles (même perspective, mêmes joints qui s'élargissent vers le bas, mêmes reflets dorés et ombres de colonnes), raccordée sans couture.
+N'ajoute rien d'autre, ne déplace rien, ne change pas la caméra.
+
+FORMAT : même format que l'IMAGE 1 (paysage 2,16 : 1), la plus grande résolution possible, OPAQUE, sans bord.
+RENDU : exactement celui de la maquette (illustration 2D HD peinte, intérieur minéral chaud et doré), netteté partout.
+INTERDITS : personnage, silhouette, Pokémon, Poké Ball, banderole, portrait, emblème, texte, lettres, chiffres, logo, signature, cadre.

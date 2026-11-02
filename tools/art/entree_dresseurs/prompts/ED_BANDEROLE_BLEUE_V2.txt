@@ -1,0 +1,9 @@
+ED_BANDEROLE_BLEUE_V2 — texture de banderole « VS » de Kanto 2026. Images jointes : IMAGE 1 = agrandissement de la banderole BLEUE de la maquette VALIDÉE « VS » (en bas à gauche) : c'est la CIBLE EXACTE de la matière et de la forme du bout ; IMAGE 2 = la maquette entière.
+
+À FAIRE : UNE image paysage 1536 × 1024 contenant UNE SEULE bande BLEUE, HORIZONTALE (à plat, pas en biais : le jeu l'incline), sur toute la largeur, environ 340 px d'épaisseur, centrée en hauteur :
+- matière exactement celle de l'IMAGE 1 : bleu roi profond, coups de pinceau secs dans la longueur, griffures et grain clairs, éclaboussures bleu ciel, liseré lumineux bleu ciel fin le long du bord HAUT et du bord BAS ;
+- bout GAUCHE : net, coupé franc par le bord de l'image ;
+- bout DROIT : terminé en BISEAU OBLIQUE DÉCHIRÉ comme sur l'IMAGE 1 : la bande s'arrête par une coupe en diagonale (le bord haut s'arrête plus à droite que le bord bas, ou l'inverse comme sur l'IMAGE 1), bord déchiré, effiloché, avec quelques éclaboussures et traînées au-delà.
+Aucun texte, aucun nom, aucun filet, aucun losange, aucun portrait, aucun rocher, aucune montagne : seulement la matière peinte.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun cadre.

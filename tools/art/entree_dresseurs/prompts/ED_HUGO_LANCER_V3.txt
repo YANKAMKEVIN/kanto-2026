@@ -1,0 +1,9 @@
+ED_HUGO_LANCER_V3 — sprite de combat de Kanto 2026. Images jointes : IMAGE 1 = agrandissement du Gamin Hugo qui lance dans la maquette VALIDÉE « lancer » : c'est la CIBLE EXACTE, à recopier ; IMAGE 2 = la maquette entière ; IMAGE 3 = Hugo debout dans le jeu (identité, échelle et rendu à garder).
+
+À FAIRE : UNE image portrait 1024 × 1536 : Hugo dans EXACTEMENT la pose de l'IMAGE 1, recopiée fidèlement, détouré, en pied, environ 1300 px de haut, pieds près du bas, rien de coupé :
+- trois-quarts face tourné vers la gauche ; buste droit à peine penché ; bras droit tendu vers la GAUCHE à hauteur d'épaule, main ouverte doigts écartés (la Ball vient de partir, main vide) ; l'autre bras replié derrière, poing près de la hanche ; jambes en fente MODÉRÉE comme l'IMAGE 1 (jambe avant fléchie, jambe arrière tendue), PAS plus étalée que l'IMAGE 1 ; bouche ouverte, regard vers la gauche ;
+- mêmes vêtements et même visage que l'IMAGE 3 : casquette blanche et bleue, t-shirt bleu ciel, sacoche jaune en bandoulière, short gris bleu, chaussettes blanches, baskets bleues et blanches.
+Mains à cinq doigts correctes, pieds entiers.
+
+STYLE : exactement celui des IMAGES 1 et 3 (anime peint 2D HD, contours fins brun foncé, ombres douces, lumière chaude venant de la gauche).
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte, aucune Poké Ball.

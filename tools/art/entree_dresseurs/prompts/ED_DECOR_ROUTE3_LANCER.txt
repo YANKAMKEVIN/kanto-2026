@@ -1,0 +1,10 @@
+DÉCOR DE COMBAT — ROUTE 3, cadrage du lancer (Kanto 2026). RETOUCHE de l'IMAGE 1 jointe.
+
+IMAGE 1 : la maquette VALIDÉE du lancer de Ball sur la Route 3. C'est la CIBLE EXACTE.
+
+À FAIRE : produis EXACTEMENT LA MÊME IMAGE que l'IMAGE 1 (même format, même cadrage au pixel près, même paysage à la même place et à la même taille : grande falaise de roche beige à droite, arbres touffus vert et jaune à gauche, montagnes bleutées et ciel bleu à nuages au fond, grand sol de terre ocre avec herbes sèches jaunes, cailloux et touffes vertes), avec SEULEMENT ces retouches : RETIRE et repeins le décor à la place de : les deux personnages (le garçon de dos en bas à gauche, le garçon qui lance à droite) et leurs ombres, la Poké Ball et sa traînée blanche, la rangée de Balls en haut à gauche, la boîte de dialogue et son texte. Là où ils étaient : la suite naturelle de la terre, des herbes, des rochers, des arbres et du ciel.
+N'ajoute rien d'autre, ne déplace rien, ne change pas la caméra.
+
+FORMAT : même format que l'IMAGE 1 (paysage 2,16 : 1), la plus grande résolution possible, OPAQUE, sans bord.
+RENDU : exactement celui de la maquette, netteté partout.
+INTERDITS : personnage, silhouette, Pokémon, Poké Ball, traînée, interface, boîte de dialogue, texte, lettres, chiffres, logo, signature, cadre.

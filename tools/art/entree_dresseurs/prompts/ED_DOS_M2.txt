@@ -1,0 +1,9 @@
+ED_DOS_M2 — sprite de combat de Kanto 2026 : le joueur vu de dos, en garde. Images jointes : IMAGE 1 = agrandissement du joueur dans la maquette VALIDÉE « lancer » : c'est la CIBLE EXACTE DE LA POSE, à recopier ; IMAGE 2 = le même garçon dans l'autre maquette validée : c'est la référence de la TENUE et du SAC ; IMAGE 3 = la maquette « lancer » entière.
+
+À FAIRE : UNE image portrait 1024 × 1536 : le garçon de l'IMAGE 2 dans EXACTEMENT la pose de l'IMAGE 1, détouré, en pied, environ 1350 px de haut, pieds près du bas, rien de coupé :
+- de dos, trois-quarts dos vers la droite, EN GARDE : jambes très écartées en fente (jambe gauche fléchie devant, jambe droite tendue derrière), genoux pliés, les DEUX POINGS SERRÉS, bras écartés du corps et coudes pliés, exactement comme l'IMAGE 1 ;
+- tenue de l'IMAGE 2 : casquette rouge à visière blanche vue de dos, cheveux bruns, t-shirt blanc, gilet rouge sans manches visible sur les côtés, SAC À DOS de l'IMAGE 2 à l'identique (corps jaune moutarde, grande poche avant bleu marine avec fermeture ronde argentée, poches latérales, bretelles bleu marine, même taille, pas plus massif), jean bleu marine large retroussé, baskets rouges à semelle blanche.
+Mêmes proportions et même rendu que les IMAGES 1 et 2, en plus net.
+
+STYLE : celui des maquettes (anime peint 2D HD, contours fins brun foncé, ombres douces, lumière chaude venant de la gauche).
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte.

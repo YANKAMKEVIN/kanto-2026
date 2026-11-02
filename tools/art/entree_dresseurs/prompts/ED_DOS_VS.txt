@@ -1,0 +1,8 @@
+ED_DOS_VS — sprite de combat de Kanto 2026 : le joueur vu de dos, debout, pour la séquence « VS ». Images jointes : IMAGE 1 = agrandissement du joueur dans la maquette VALIDÉE « VS » : c'est la CIBLE EXACTE DE LA POSE (mais PAS de la tenue) ; IMAGE 2 = le même garçon dans la maquette « entrée » : c'est la référence de la TENUE et du SAC ; IMAGE 3 = la maquette « VS » entière.
+
+À FAIRE : UNE image portrait 1024 × 1536 : le garçon de l'IMAGE 2 dans EXACTEMENT la pose de l'IMAGE 1, détouré, en pied, environ 1350 px de haut, pieds près du bas, rien de coupé :
+- de dos, trois-quarts dos vers la droite, DEBOUT, CAMPÉ, jambes écartées à la largeur des épaules, bien droit, les DEUX BRAS LE LONG DU CORPS un peu écartés, poings fermés, la tête tournée vers l'avant-droite, exactement comme l'IMAGE 1 ;
+- tenue de l'IMAGE 2 (et NON celle de l'IMAGE 1) : casquette rouge à visière blanche vue de dos, cheveux bruns, t-shirt BLANC à manches courtes, gilet rouge sans manches visible sur les côtés, SAC À DOS de l'IMAGE 2 à l'identique (corps jaune moutarde, grande poche avant bleu marine avec fermeture ronde argentée, poches latérales, bretelles bleu marine), jean bleu marine large retroussé, baskets rouges à semelle blanche. Pas de veste rouge à manches, pas de t-shirt noir, pas de bracelet.
+
+STYLE : celui des maquettes (anime peint 2D HD, contours fins brun foncé, ombres douces, lumière chaude).
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte.
