@@ -5,7 +5,7 @@
 > **tous tranchés par Kevin**. Ce dossier fixe la géographie, le scénario acte par acte, les
 > systèmes neufs, la place des 50 espèces et le découpage en jalons **JOH0 à JOH9**.
 >
-> **Statut : proposition à valider.** Les points marqués **[D]** sont des valeurs par défaut de
+> **Statut : arbitrages JH-11 à JH-20 tranchés par Kevin le 2026-11-02 ; le reste du cadre est à valider.** Les points marqués **[D]** sont des valeurs par défaut de
 > Claude (règle 4 de `CLAUDE.md`) ; les vraies questions de game design sont numérotées **JH-11
 > et suivantes** (§11). Chaque jalon aura ensuite son propre dossier (cartes, textes, valeurs),
 > comme pour Kanto. **Pas de code avant la fin de Kanto.**
@@ -197,7 +197,7 @@ mais pas complète). Ho-Oh descend, refuse Dante et s'envole ; Dante relâche En
 
 ### 4.5 Après le chapitre (post-game de Johto)
 
-- **Celebi** à l'autel du Bois aux Chênes (condition à trancher, JH-16).
+- **Celebi** à l'autel du Bois aux Chênes : Orme donne à l'épilogue une ancienne « Balle Verte », qu'on pose sur l'autel (JH-16).
 - Les trois chiens : ceux que le joueur n'a pas capturés reviennent à leur place d'origine
   (Tour Cendrée) **[D]**, comme les légendaires de Kanto qui reviennent après la Ligue.
 - Les combats en duo viendront avec leur propre chantier.
@@ -268,7 +268,7 @@ adaptées sans les créer :
 | Roigada, Tarpaud | Échange en tenant Roche Royale | **Roche Royale**, même règle |
 | Hyporoi | Échange en tenant Écaille Draco | **Écaille Draco**, même règle |
 | Porygon2 | Échange en tenant Améliorator | **Améliorator**, même règle |
-| Leuphorie, Nostenfer, Togetic, Mentali, Noctali | Bonheur élevé (+ heure pour Évoli) | **JH-11** : système de lien simple, ou méthodes de remplacement |
+| Leuphorie, Nostenfer, Togetic, Mentali, Noctali | Bonheur élevé (+ heure pour Évoli) | **Lien simple caché** (JH-11, validé) : au seuil, évolution au prochain passage de niveau ; Évoli → Mentali (matin, jour) ou Noctali (nuit) |
 
 ### 5.6 Pokédex
 
@@ -346,9 +346,9 @@ dépasser 50 espèces neuves.
 | JOH9 Mont Argenté | 68–75 | 55–65 | Dante (2) 72–78, rival 75–80 |
 
 - **Acte 1 plus rapide que Kanto** : environ 4 h de jeu pour monter de 5 à 30 ; expérience
-  multipliée par **1,5** pendant l'acte 1 **[D]** (JH-13).
+  multipliée par **1,5** pendant l'acte 1 (JH-13, validé).
 - **Les nouveaux Pokémon après l'acte 1** : niv. 30 face à une équipe de 60, ils risquent de rester
-  au Stockage. Piste : **Multi Exp** offerte à la Tour Radio (JH-14).
+  au Stockage. **Multi Exp** offerte à la Tour Radio (JH-14, validé).
 - **Difficulté** (mémoire « Difficulté des combats ») : victoire du premier coup ≤ 80 % par
   défaut, 35–60 % pour les grands combats (Dante 1 et 2, rival final).
 
@@ -359,7 +359,7 @@ dépasser 50 espèces neuves.
 | Professeur Orme | Donne le Pokémon de départ, envoie l'œuf, épilogue | Peint dans la même main que Chen |
 | L'infirmière d'Oliville | Témoin du vol | Même modèle que les infirmières de Kanto |
 | Les sages de Rosalia | Gardent les tours | 1 modèle |
-| Deux admins de Dante | Puits Ramoloss / Tour Radio, puis Acajou / Îles Tourbillon | Noms à trouver (JH-15) |
+| **Brace** et **Cenere**, admins de Dante | Brace : Puits Ramoloss puis Acajou ; Cenere : Tour Radio puis Îles Tourbillon **[D]** | JH-15 |
 | Dante | Adversaire final | Âgé, élégant, cicatrice de brûlure **[D]** ; DA à valider |
 | Giovanni | Apparition finale | Modèle de Kanto |
 | Le rival | Relais, dernier combat | Modèle de Kanto, tenue d'hiver au Mont Argenté **[D]** |
@@ -377,7 +377,9 @@ Arcanin (Kanto). Thème feu et ténèbres, cohérent avec « feu et cendres ».
   chaîne que Kanto, mémoire « Pokémon art source »).
 - **Effets de combat** : attaques nouvelles d'Or/Argent (environ 40 à prévoir dans la liste
   d'attaques du JOH0) avec les familles d'effets existantes.
-- **Musique** : bande-son Let's Go pour Kanto ; pour Johto, **JH-12**.
+- **Musique** : bande-son Let's Go pour Kanto ; pour Johto, **HeartGold / SoulSilver** (JH-12).
+- **Souvenir de Dante** (JH-20) : une courte scène de flash-back, avec Dante et Giovanni plus
+  jeunes (deux modèles de personnages en plus).
 
 ## 10. Découpage en jalons
 
@@ -401,16 +403,16 @@ JOH5 (l'acte 1) en série, l'acte 2 pouvant être conçu pendant.
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-11 | **Bonheur** : Leuphorie, Nostenfer, Togetic, Mentali, Noctali en dépendent. On crée un système de lien, ou on remplace ? | Un **lien simple** caché (monte avec les combats, les pas et le compagnon qui suit le joueur ; baisse au K.O.), seuil unique ; s'appuie sur le compagnon du J11 et donne du sens à Évoli de jour / de nuit |
-| JH-12 | **Musique de Johto** | Bande-son de **HeartGold / SoulSilver** pour Johto, comme Let's Go pour Kanto |
-| JH-13 | **Expérience ×1,5** pendant l'acte 1 | Oui, invisible pour le joueur |
-| JH-14 | **Multi Exp** offerte à la Tour Radio pour remettre à niveau les nouveaux Pokémon | Oui |
-| JH-15 | **Noms** des deux admins de Dante | Claude propose une liste au dossier JOH4 |
-| JH-16 | **Celebi** : condition d'apparition | Après le chapitre, à l'autel du Bois aux Chênes, avec un objet donné par Orme à l'épilogue |
-| JH-17 | **Ho-Oh et Lugia capturables tous les deux** dans la même partie ? | Oui (le joueur est Maître ; pas de version Or ou Argent) |
-| JH-18 | **Retour à Kanto pendant l'acte 1** interdit (§3.2) ? | Oui : sinon le joueur va chercher des Pokémon forts ailleurs |
-| JH-19 | **Dernier combat de rivaux** obligatoire ou facultatif ? | Obligatoire : c'est la vraie fin du chapitre |
-| JH-20 | **Dante** a-t-il un passé visible (souvenirs, journal comme Mewtwo au Manoir) ? | Oui, léger : 3 notes trouvées dans le repaire d'Acajou, qui racontent la trahison de Giovanni |
+| JH-11 | ✅ **Lien simple caché** (Kevin, 2026-11-02) : monte avec les combats, les pas et le compagnon, baisse au K.O. ; un seuil ; Évoli devient Mentali le jour, Noctali la nuit | — |
+| JH-12 | ✅ Musique de Johto : bande-son de **HeartGold / SoulSilver** (Kevin) | — |
+| JH-13 | ✅ Expérience **×1,5** pendant l'acte 1, invisible (Kevin) | — |
+| JH-14 | ✅ **Multi Exp** offerte à la Tour Radio (Kevin) | — |
+| JH-15 | ✅ Les admins s'appellent **Brace** (impétueux) et **Cenere** (froide, méthodique) (Kevin) | — |
+| JH-16 | ✅ **Celebi** : après le chapitre, Orme donne une ancienne « Balle Verte » à poser à l'autel du Bois aux Chênes (Kevin) | — |
+| JH-17 | ✅ **Ho-Oh et Lugia** capturables tous les deux (Kevin) | — |
+| JH-18 | ✅ **Retour à Kanto interdit** pendant l'acte 1 (Kevin) | — |
+| JH-19 | ✅ Dernier combat de rivaux **obligatoire** (Kevin) | — |
+| JH-20 | ✅ Le passé de Dante est raconté par **un souvenir mis en scène** (flash-back : Giovanni jeune trahit Dante) (Kevin) ; place et forme au dossier JOH6 | — |
 
 ## 12. Textes
 
@@ -420,7 +422,7 @@ message de Dante à la Tour Radio, la Tour Carillon, l'échange Dante–Giovanni
 
 ## 13. Prochaines étapes
 
-1. Kevin valide ce cadre et tranche JH-11 à JH-20.
+1. ~~Kevin tranche JH-11 à JH-20~~ (fait le 2026-11-02) ; Kevin valide le reste du cadre.
 2. Claude écrit le **dossier JOH0** (systèmes) et les **grilles** des cartes de l'acte 1.
 3. Vues générales peintes de l'acte 1 (Codex), à valider par Kevin.
 4. Code, seulement après la fin de Kanto.
