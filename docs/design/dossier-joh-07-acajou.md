@@ -3,7 +3,7 @@
 > Premier jalon de l'acte 2 du Chapitre Johto (cadre [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md)
 > §4.3). Suite directe du JOH5 ([`dossier-joh-06-tour-radio.md`](dossier-joh-06-tour-radio.md) : équipe
 > rendue, accroche d'Orme). Écrit par Claude le 2026-11-02 ; **textes C-1 à C-46 et arbitrages
-> JH-44 à JH-47 en attente de Kevin**. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
+> JH-44 à JH-47 validés par Kevin le jour même** (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
 
 ## 1. Hors périmètre
 
@@ -201,7 +201,7 @@ poste de péage, Lac Colère (vue générale), repaire (3 étages, générateur 
 existent. Pokémon : Raikou, Entei, Suicune (dos et face), **Léviator rouge** (variante),
 cage à ondes (objet de décor).
 
-## 16. Textes (à valider par Kevin)
+## 16. Textes (lot validé par Kevin le 2026-11-02)
 
 Format : bulles séparées par « / ». `{joueur}` = nom ; *italique* = souvenir.
 
@@ -264,7 +264,7 @@ Colère. » · Lac Colère « Un grand lac de montagne, troublé par d'étranges
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-44 | Où et par qui le souvenir de Dante (JH-20) est-il raconté ? | Au **repaire d'Acajou**, par un **déserteur** emprisonné (il a refusé de suivre Dante à la Tour Radio, JH-43) |
-| JH-45 | Que montre le souvenir ? | **L'incendie de l'ancien QG** : Giovanni laisse Dante derrière une porte bloquée et part ; Dante survit, brûlé (origine de la cicatrice et du « tout réduire en cendres ») |
-| JH-46 | Le Léviator rouge | **Variante rouge unique** (sprite à part), combat et capture, **pas de système de chromatiques** |
-| JH-47 | Quelqu'un accompagne-t-il le joueur au repaire (Peter, comme dans Or/Argent) ? | **Non, le joueur est seul** : le rival garde son rôle d'allié pour l'acte 3 |
+| JH-44 | ✅ Le souvenir est raconté au **repaire d'Acajou** par un **déserteur** emprisonné (Kevin, 2026-11-02) | — |
+| JH-45 | ✅ Le souvenir montre **l'incendie de l'ancien QG** : Giovanni laisse Dante derrière la porte ; Dante survit, brûlé (Kevin) | — |
+| JH-46 | ✅ **Léviator rouge** = variante unique, combat et capture, pas de système de chromatiques (Kevin) | — |
+| JH-47 | ✅ **Joueur seul** au repaire, pas de Peter (Kevin) | — |
