@@ -1,6 +1,6 @@
 # Tour Radio de Doublonville, 3F (archives) (goldenrod_radio_tower_3f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH5 ;
 # dossier docs/design/dossier-joh-06-tour-radio.md §3, §4, §5, §6, textes T-7 à T-11).
-# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
 # géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh5.py.
 #
 # Composition (archives) :

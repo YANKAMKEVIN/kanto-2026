@@ -36,7 +36,7 @@ par les Sbires) jusqu'à la défaite de Cenere ; ensuite il dessert tous les ét
 
 Aucune rencontre sauvage dans la Tour.
 
-**Grilles préparées le 2026-11-02 (à valider par Kevin)** : `tools/plans/radio_tower_1f.txt` à
+**Grilles validées par Kevin le 2026-11-02** : `tools/plans/radio_tower_1f.txt` à
 `radio_tower_5f.txt` (24 × 16 chacune) ; contrôle `tools/art/plan_check_joh5.py`, aperçu
 `reference/joh5-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. Escaliers en
 alternance : 1F ↔ 2F (3, 0), 2F ↔ 3F (20, 0), 3F ↔ 4F (3, 0), 4F ↔ 5F (20, 0) ; ascenseur (18, 0) à
