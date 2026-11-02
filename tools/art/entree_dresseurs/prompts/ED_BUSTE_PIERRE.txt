@@ -1,0 +1,9 @@
+ED_BUSTE_PIERRE — buste de banderole « VS » de Kanto 2026. Images jointes : IMAGE 1 = maquette VALIDÉE de la séquence « VS » (le buste de Pierre est en haut à droite, au bout de la banderole rouge) ; IMAGE 2 = agrandissement de ce buste. C'est la CIBLE EXACTE : même visage, même expression, même cadrage, même rendu.
+
+PERSONNAGE : Pierre, Champion d'Arène d'Argenta, jeune homme d'environ 15 ans, peau hâlée, cheveux bruns hérissés en grandes pointes, sourcils épais froncés, yeux plissés presque fermés (mi-clos, paupières baissées), bouche fermée sérieuse, menton légèrement baissé ; col de gilet vert olive à revers orange ocre ouvert sur un t-shirt.
+
+À FAIRE : UNE image portrait 1024 × 1536 : le buste SEUL, cadrage TÊTE, COU ET ÉPAULES jusqu'au haut de la poitrine, la tête grande, le haut des cheveux près du bord haut (environ 40 px de marge), visage de TROIS-QUARTS tourné vers la GAUCHE de l'image, regard dirigé vers le BAS À GAUCHE, comme sur l'IMAGE 2. Les épaules descendent jusqu'au bord bas de l'image (coupées net par le bas, c'est voulu).
+
+STYLE : exactement celui de l'IMAGE 2 : illustration anime peinte, réaliste-stylisée (PAS chibi, proportions de visage d'adolescent), contours fins brun foncé, ombres douces peintes, lumière chaude venant de la droite, deux à trois valeurs par matériau.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucune banderole, aucun rocher, aucun texte, aucun cadre, aucun halo.

@@ -1,0 +1,17 @@
+DÉCOR DE COMBAT — ROUTE 3, version 2 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 et IMAGE 2 = deux maquettes VALIDÉES de ce combat, dans le même décor. C'est la CIBLE EXACTE du décor : reproduis le paysage de l'IMAGE 1 tel quel, même cadrage, même horizon, mêmes masses, même richesse de peinture : à gauche les arbres touffus vert et jaune et les gros rochers beiges, la petite clôture de bois à gauche, au centre la vallée qui s'ouvre sur les montagnes bleutées, le lac au loin et le ciel bleu à nuages blancs ; à droite les hautes falaises de roche beige et grise en blocs, avec quelques conifères ; au sol, le grand chemin de terre ocre clair qui recule vers la vallée, bordé d'herbes sèches jaune doré, de petits cailloux et de touffes vertes.
+
+RETIRE TOUT ce qui n'est pas le décor et repeins le décor à la place : les deux personnages (le garçon de dos en bas à gauche, le garçon debout à droite), la Ball et sa traînée, le cartouche de Balls, la rangée de Balls, la boîte de dialogue et son texte. Là où ils étaient : la suite naturelle du chemin de terre, des herbes et des rochers.
+
+COMPOSITION (fractions depuis le coin haut gauche), la même que l'IMAGE 1 :
+- Point A (x 67 %, y 52 %) : terre du chemin, nue, plate et lisible (l'adversaire y posera les pieds). Rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : terre plate et nue au premier plan (le joueur, vu de dos, y sera). Rien de haut autour.
+- Zone en bas à droite (de 50 à 100 % de la largeur, de 70 à 100 % de la hauteur) : terre et herbes simples, valeurs moyennes, sans contraste fort (une boîte de dialogue s'y posera).
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : exactement celui des maquettes : illustration 2D HD peinte, lumière de plein jour chaude et dorée, feuillage en masses touffues, rochers peints avec reflets et ombres bleutées, aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette, Pokémon, animal, Poké Ball, interface, boîte de dialogue, texte, lettres, chiffres, logo, signature, cadre, pixel art.

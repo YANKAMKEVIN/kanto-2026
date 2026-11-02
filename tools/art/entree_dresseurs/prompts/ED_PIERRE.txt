@@ -1,0 +1,12 @@
+ED_PIERRE — sprites de combat de Kanto 2026 (jeu 2D HD). Images jointes : IMAGE 1 = maquette validée « VS » (Pierre, Champion d'Arène d'Argenta, est le jeune homme debout à droite, bras croisés, et son buste est en haut à droite) ; IMAGE 2 = agrandissement de Pierre debout dans cette maquette ; IMAGE 3 = maquette « lancer » (pour le RENDU et la pose de lancer, portée ici par un autre personnage). C'est la CIBLE EXACTE du rendu.
+
+PERSONNAGE : Pierre, jeune homme d'environ 15 ans, grand et mince, peau hâlée, cheveux bruns hérissés en pointes, yeux plissés presque fermés (toujours), sourcils épais, expression calme et sûre ; gilet vert olive sans manches ouvert sur un t-shirt orange brun, pantalon cargo beige kaki à poches latérales, baskets marron et blanches. Design comme le buste et la petite silhouette de l'IMAGE 1.
+
+À FAIRE : UNE image paysage 1536 × 1024 avec DEUX poses du même personnage côte à côte, chacune en pied, grande (environ 920 px de haut, des cheveux aux semelles), bien séparées (au moins 120 px de vide entre elles), rien de coupé par le bord, pieds tous à la même hauteur près du bas de l'image :
+- À GAUCHE : pose DEBOUT PRÊT exactement comme sur l'IMAGE 2 : de trois-quarts face, tourné vers la gauche de l'image, bras croisés sur la poitrine, jambes légèrement écartées, posture droite et assurée, visage tourné vers la gauche.
+- À DROITE : pose de LANCER : de trois-quarts face tourné vers la gauche, fente avant (jambe gauche de l'image avancée et fléchie, l'autre tendue en arrière), bras droit tendu loin vers la gauche à hauteur de poitrine, main ouverte doigts écartés, la Ball VIENT DE PARTIR (main vide, pas de Ball dessinée), l'autre bras replié en arrière, expression concentrée, yeux toujours plissés.
+Mains à cinq doigts correctes, pieds entiers.
+
+STYLE (impératif) : exactement la main des maquettes jointes : illustration 2D HD « anime peint », contours fins et doux brun foncé (jamais de trait noir épais), aplats peints avec ombres douces et deux ou trois valeurs par matériau, légère granularité de pinceau, proportions de jeune dresseur des maquettes (tête assez grande mais PAS chibi), lumière de jour chaude et douce venant de la gauche comme sur les maquettes.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte, aucune lettre, aucun cadre, aucun Poké Ball.

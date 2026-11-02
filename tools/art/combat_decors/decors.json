@@ -316,5 +316,23 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_3_roche_v2": {
+		"composition": "ED_DECOR_ROUTE3_r1c.png",
+		"tuiles": [
+			{ "image": "ED_DECOR_ROUTE3_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "ED_DECOR_ROUTE3_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"pewter_gym_roche_v2": {
+		"composition": "ED_DECOR_ARENE_r1.png",
+		"tuiles": [
+			{ "image": "ED_DECOR_ARENE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "ED_DECOR_ARENE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
