@@ -334,5 +334,14 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"pewter_gym_roche_v3": {
+		"composition": "ED_DECOR_ARENE_V3_r2c.png",
+		"tuiles": [
+			{ "image": "ED_DECOR_ARENE_V3_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "ED_DECOR_ARENE_V3_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

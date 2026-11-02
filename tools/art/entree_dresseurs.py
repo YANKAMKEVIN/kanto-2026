@@ -44,6 +44,7 @@ REFS = [
 	(M3, (560, 0, 1844, 260), "ref_banderole_rouge.png", 1),
 	(M3, (0, 560, 1180, 853), "ref_banderole_bleue.png", 1),
 	(M3, (770, 240, 1080, 580), "ref_vs.png", 2),
+	(M2, (1000, 195, 1250, 270), "ref_ball.png", 4),
 ]
 
 # Images jointes par génération (maquettes entières d'abord, puis agrandissements).
@@ -58,11 +59,19 @@ JOINTES = {
 	"ED_JOUEUR_RETOUCHE": [ART / "ED_JOUEUR_r2.png"],
 	"ED_DECOR_ROUTE3": [M1, M2],
 	"ED_DECOR_ARENE": [M3],
+	# Itération 4 (revue de Codex sur le comparatif v3).
+	"ED_DECOR_ARENE_V3": [M3],
+	"ED_BUSTE_PIERRE_V2": [M3, ENT / "ref_buste_pierre.png", ART / "ED_BUSTE_PIERRE_r1.png"],
+	"ED_BUSTE_KEVIN_V2": [M3, ENT / "ref_buste_kevin.png", ART / "ED_BUSTE_KEVIN_r1.png"],
+	"ED_HUGO_LANCER_V2": [M2, ENT / "ref_hugo_lancer.png", ENT / "gamin_lancer_actuel.png"],
+	"ED_BALL_FX": [M2, ENT / "ref_ball.png"],
 }
 # Décors v2 : composition retenue → deux tuiles repeintes en plus grand (recette de
 # tools/art/combat_decors/preparer_decor.py, manifeste tools/art/combat_decors/decors.json).
 DECORS = {"ROUTE3": ("ED_DECOR_ROUTE3_r1.png", "ED_TUILE_ROUTE3"),
-	"ARENE": ("ED_DECOR_ARENE_r1.png", "ED_TUILE_ARENE")}
+	"ARENE": ("ED_DECOR_ARENE_r1.png", "ED_TUILE_ARENE"),
+	# Itération 4 : Arène v3, vue de trois-quarts (r2 retenue : r1 restait frontale).
+	"ARENE_V3": ("ED_DECOR_ARENE_V3_r2.png", "ED_TUILE_ARENE")}
 PORTIONS = {"TL": (0, 0, 1000, 852), "TR": (846, 0, 1846, 852)}
 
 
@@ -102,7 +111,13 @@ def generer(ident: str, rev: str = "1", sans_jointes: bool = False) -> None:
 RETENUS = {
 	"ED_HUGO": "1", "ED_PIERRE": "1", "ED_JOUEUR_RETOUCHE": "1", "ED_BUSTE_PIERRE": "1",
 	"ED_BUSTE_KEVIN": "1", "ED_BANDEROLES": "1", "ED_EMBLEME": "1",
+	# Itération 4 : bustes cadrés poitrine, lancer d'Hugo plus projeté, Ball et traînée.
+	"ED_BUSTE_PIERRE_V2": "1", "ED_BUSTE_KEVIN_V2": "1", "ED_HUGO_LANCER_V2": "1", "ED_BALL_FX": "1",
 }
+# Lancer d'Hugo v2 : une seule pose, peinte un peu plus grande que la planche d'origine ; ramenée
+# à l'échelle de la pose debout (largeur de la casquette mesurée sur les deux images).
+HUGO_LANCER_V2_ECHELLE = 0.9
+FX = SPR / "fx"
 
 
 def source(ident: str) -> Image.Image:
@@ -156,6 +171,36 @@ def mettre_en_toile(images: list[Image.Image], toile: tuple[int, int], marge_hau
 		sorties.append(t)
 	print(f"  échelle {echelle:.3f}")
 	return sorties
+
+
+def _centre_pieds(image: Image.Image, part: float = 0.06) -> float:
+	"""x du milieu des pieds : milieu de l'étendue des pixels opaques des `part` lignes du bas."""
+	a = np.asarray(image)[..., 3] > 96
+	bas = a[int(a.shape[0] * (1 - part)):]
+	xs = np.where(bas.any(0))[0]
+	return (xs[0] + xs[-1]) / 2.0 if len(xs) else image.width / 2.0
+
+
+def poses_en_toile(debout: Image.Image, lancer: Image.Image, toile: tuple[int, int],
+		marge_haut: int) -> tuple[Image.Image, Image.Image]:
+	"""Itération 4 : le jeu met la pose debout à la hauteur voulue (pixels visibles) et donne la
+	MÊME échelle à la pose de lancer, centrée en x, pieds au bas. La pose debout remplit donc sa
+	toile (512 × 768) ; la pose de lancer garde la même échelle et le milieu des pieds au centre,
+	sur une toile de même hauteur ÉLARGIE si le bras dépasse (le bras n'est jamais rogné)."""
+	w, h = toile
+	echelle = min(1.0, (h - marge_haut) / debout.height, (w - 8) / debout.width,
+		(h - marge_haut) / lancer.height)
+	sorties = []
+	for i in (debout, lancer):
+		r = i.resize((round(i.width * echelle), round(i.height * echelle)), Image.LANCZOS)
+		pieds = _centre_pieds(r)
+		demi = max(pieds, r.width - pieds) + 4
+		largeur = max(w, int(np.ceil(demi)) * 2)
+		t = Image.new("RGBA", (largeur, h), (0, 0, 0, 0))
+		t.alpha_composite(r, (round(largeur / 2 - pieds), h - r.height))
+		sorties.append(t)
+	print(f"  échelle {echelle:.3f}, toiles {sorties[0].size} et {sorties[1].size}")
+	return sorties[0], sorties[1]
 
 
 def _webp(image: Image.Image, chemin: Path, qualite: int = 92) -> None:
@@ -225,19 +270,43 @@ def embleme(largeur: int = 720) -> Image.Image:
 
 
 def exporter() -> None:
-	for ident, nom, toile, marge in (("ED_HUGO", "gamin", (512, 768), 16),
-			("ED_PIERRE", "pierre", (512, 768), 16), ("ED_JOUEUR_RETOUCHE", "dos_hero", (640, 960), 16)):
+	print("ED_HUGO + ED_HUGO_LANCER_V2")
+	debout = poses("ED_HUGO")[0]
+	lancer = poses("ED_HUGO_LANCER_V2")[0]
+	lancer = lancer.resize((round(lancer.width * HUGO_LANCER_V2_ECHELLE),
+		round(lancer.height * HUGO_LANCER_V2_ECHELLE)), Image.LANCZOS)
+	debout, lancer = poses_en_toile(debout, lancer, (512, 768), 16)
+	_webp(debout, SPR / "gamin.webp")
+	_webp(lancer, SPR / "gamin_lancer.webp")
+	for ident, nom, toile, marge in (("ED_PIERRE", "pierre", (512, 768), 16), ("ED_JOUEUR_RETOUCHE", "dos_hero", (640, 960), 16)):
 		print(ident)
-		debout, lancer = mettre_en_toile(poses(ident), toile, marge)
+		debout, lancer = poses_en_toile(*poses(ident), toile, marge)
 		_webp(debout, SPR / f"{nom}.webp")
 		_webp(lancer, SPR / f"{nom}_lancer.webp")
-	_webp(buste("ED_BUSTE_PIERRE"), VS / "pierre.webp")
+	_webp(buste("ED_BUSTE_PIERRE_V2"), VS / "pierre.webp")
 	# Buste du joueur au cadrage de la maquette 3 (pas encore de chemin dans la fiche §3).
-	_webp(buste("ED_BUSTE_KEVIN"), VS / "hero.webp")
+	_webp(buste("ED_BUSTE_KEVIN_V2"), VS / "hero.webp")
 	rouge, bleue = banderoles()
 	_webp(rouge, VS / "banderole_rouge.webp")
 	_webp(bleue, VS / "banderole_bleue.webp")
 	_webp(embleme(), VS / "emblem.webp")
+	trainee, ball = fx()
+	_webp(trainee, FX / "ball_trail.webp")
+	_webp(ball, FX / "ball.webp")
+
+
+def fx() -> tuple[Image.Image, Image.Image]:
+	"""Traînée (bande du haut, pointe à droite, bout épais à gauche) et Ball (bande du bas)."""
+	im = _nettoyer(source("ED_BALL_FX"))
+	a = np.asarray(im)[..., 3] > 24
+	lignes = a.any(1)
+	milieu = im.height // 2
+	haut = im.crop((0, 0, im.width, milieu))
+	bas = im.crop((0, milieu, im.width, im.height))
+	trainee = haut.crop(haut.getchannel("A").point(lambda v: 255 if v > 4 else 0).getbbox())
+	ball = _rogne(bas)
+	ball = ball.resize((256, round(ball.height * 256 / ball.width)), Image.LANCZOS)
+	return trainee, ball
 
 
 # ---------------------------------------------------------------- planche et montage de contrôle
@@ -322,9 +391,14 @@ def recompositions() -> list[Image.Image]:
 	_ombre(f, (1312, 466), 150)
 	_poser(f, SPR / "gamin_lancer.webp", (1300, 472), 250)
 	_poser(f, SPR / "dos_hero.webp", (388, 830), 490)
+	t = Image.open(FX / "ball_trail.webp").convert("RGBA")
+	t = t.resize((200, max(1, round(t.height * 200 / t.width))), Image.LANCZOS)
+	f.alpha_composite(t, (1040, 214))
+	b = Image.open(FX / "ball.webp").convert("RGBA").resize((46, 46), Image.LANCZOS)
+	f.alpha_composite(b, (1012, 211))
 	scenes.append(f)
 	# 3. VS : Pierre debout, joueur de dos, banderoles, bustes, emblème.
-	f = _decor("pewter_gym_roche_v2", taille)
+	f = _decor("pewter_gym_roche_v3", taille)
 	_ombre(f, (1312, 562), 110)
 	_poser(f, SPR / "pierre.webp", (1312, 566), 232)
 	_poser(f, SPR / "dos_hero.webp", (520, 640), 345)
@@ -352,7 +426,7 @@ def planches() -> None:
 	for i, (maquette, scene) in enumerate(zip((M1, M2, M3), scenes)):
 		y = i * (lh + entete) + entete
 		for j, (img, leg) in enumerate(((Image.open(maquette).convert("RGB"), "maquette validée"),
-				(scene.convert("RGB"), "lot d'art pilote (décor v2 + sprites, mêmes places et échelles)"))):
+				(scene.convert("RGB"), "lot d'art pilote (décors v2 et v3, sprites aux mêmes places et échelles)"))):
 			x = marge + j * (lw + marge)
 			montage.paste(img.resize((lw, lh), Image.LANCZOS), (x, y))
 			d.text((x, y - 26), f"{noms[i]} — {leg}", font=_fonte(20), fill=(235, 220, 170))
@@ -363,8 +437,9 @@ def planches() -> None:
 	elements = [SPR / f for f in ("gamin.webp", "gamin_lancer.webp", "pierre.webp",
 		"pierre_lancer.webp", "dos_hero.webp", "dos_hero_lancer.webp")]
 	elements += [VS / f for f in ("pierre.webp", "hero.webp", "emblem.webp")]
+	elements += [FX / "ball.webp", FX / "ball_trail.webp"]
 	cellule, haut = 300, 420
-	planche = Image.new("RGB", (cellule * 9 + 20, 1400), (30, 34, 40))
+	planche = Image.new("RGB", (cellule * 11 + 20, 1400), (30, 34, 40))
 	d = ImageDraw.Draw(planche)
 	damier = Image.new("RGBA", (cellule - 10, haut), (0, 0, 0, 0))
 	dd = ImageDraw.Draw(damier)
@@ -395,7 +470,7 @@ def planches() -> None:
 		d.text((1320, y + 70), str(p.relative_to(RACINE / "assets")) + "  2048 × 300", font=_fonte(14),
 			fill=(220, 220, 220))
 		y += im.height + 20
-	for k, nom in enumerate(("route_3_roche_v2", "pewter_gym_roche_v2")):
+	for k, nom in enumerate(("route_3_roche_v2", "pewter_gym_roche_v2", "pewter_gym_roche_v3")):
 		im = Image.open(DECORS_V2 / f"{nom}_back.webp").convert("RGB")
 		im = im.resize((1300, 600), Image.LANCZOS).resize((640, 295), Image.LANCZOS)
 		x = 10 + k * 660
