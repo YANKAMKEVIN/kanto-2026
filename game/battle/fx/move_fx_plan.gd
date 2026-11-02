@@ -116,7 +116,7 @@ var bricks: Dictionary = {}
 ## `foliage`, `darken`.
 var world: Array[StringName] = []
 ## Art peint (CV.1, [FxArt]) par rôle : `charge`, `travel`, `bolt`, `impact`, `particle`, `rise`,
-## `fallout`, `dust`, `stamp` (marque d'impact du Contact), `cheeks`, `feathers` (Éclair) ; la
+## `fallout`, `dust`, `spray` (grains de Jet de Sable), `stamp` (marque d'impact du Contact), `cheeks`, `feathers` (Éclair) ; la
 ## famille, puis la variante d'impact, puis la signature. Rôle absent : forme dessinée en code.
 var art: Dictionary[StringName, StringName] = {}
 ## Teinte des flipbooks de la famille (`fx.tint` ; blanc : aucune).

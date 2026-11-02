@@ -1,12 +1,12 @@
 extends GutTest
 ## Plancher du chantier Combat vivant (CV.1 T9, `docs/tech/combat-vivant.md` §3.2, §5.1) : chaque
 ## attaque des données joue sans erreur, dans chaque issue et chaque mode, et rend la scène à son
-## repos ; les 17 familles ont leur art peint ; les briques propres (Psy, Son, effets sur soi) et
+## repos ; les 19 familles ont leur art peint ; les briques propres (Psy, Son, effets sur soi) et
 ## les 9 modificateurs se voient. Aucun combat ralenti : l'attaque est avancée à la main.
 
 const VIEW := Vector2(1920, 1080)
 const STEP: float = 1.0 / 20.0
-const FAMILIES: int = 17
+const FAMILIES: int = 19
 
 var _data: PokemonData
 var _catalog: MoveFxCatalog
@@ -155,7 +155,7 @@ func test_every_family_has_painted_art() -> void:
 	for move_id: StringName in _catalog.move_ids():
 		var entry := _catalog.entry(move_id)
 		families[entry.family] = true
-	assert_eq(families.size(), FAMILIES, "les 17 familles sont employées")
+	assert_eq(families.size(), FAMILIES, "les 19 familles sont employées (17 + regard et sable de RP-286)")
 	for family: StringName in families:
 		var art := JsonFields.get_dict(JsonFields.get_dict(_catalog.family(family), "fx"), "art")
 		assert_false(art.is_empty(), "%s : art peint" % family)

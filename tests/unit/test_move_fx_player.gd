@@ -315,6 +315,53 @@ func test_self_family_stays_on_user() -> void:
 	_player.stop()
 
 
+## RP-286 : Groz'Yeux et Mimi-Queue n'ont pas de trajet ; rien ne part du lanceur, même avant
+## l'impact, et l'aura naît sur la cible. Jet de Sable garde son trajet.
+func test_gaze_family_sends_nothing_toward_the_target() -> void:
+	var stage := _stage()
+	for move_id: StringName in [&"leer", &"tail_whip"]:
+		var plan := _plan(move_id)
+		assert_null(plan.phase(MoveFxPlan.TRAVEL), "%s : pas de phase de trajet" % move_id)
+		_player.play(plan, stage)
+		for phase: MoveFxPlan.Phase in plan.phases:
+			_player.pose(phase.start + phase.duration * 0.5)
+			assert_false(_player.get_projectile().visible, "%s : rien ne part" % move_id)
+			assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible,
+				"%s : pas d'art de trajet (%s)" % [move_id, phase.name])
+		var anticipation := plan.phase(MoveFxPlan.ANTICIPATION)
+		_player.pose(anticipation.start + anticipation.duration * 0.5)
+		var eye := _player.get_art(MoveFxPlayer.Flip.EXTRA_A)
+		assert_true(eye.visible, "%s : le regard s'ouvre sur le lanceur" % move_id)
+		assert_eq(eye.position, stage.origin(), "%s : sur le lanceur" % move_id)
+		_player.stop()
+		_assert_at_rest(stage)
+	assert_not_null(_plan(&"sand_attack").phase(MoveFxPlan.TRAVEL), "Jet de Sable : trajet gardé")
+
+
+## Jet de Sable (remarque de Kevin du 2026-11-02) : une gerbe de grains part vers la cible au
+## début du trajet, aucun projectile rond ni art de trajet.
+func test_sand_attack_sprays_grains_toward_the_target() -> void:
+	var stage := _stage()
+	var plan := _plan(&"sand_attack")
+	_player.play(plan, stage)
+	var travel := plan.phase(MoveFxPlan.TRAVEL)
+	_player.advance(travel.start + 0.001)
+	_player.pose(travel.start + travel.duration * 0.5)
+	assert_false(_player.get_projectile().visible, "pas de boule")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "pas de projectile peint")
+	var spray: CPUParticles2D = null
+	for emitter: CPUParticles2D in _player.get_pool().get_emitters():
+		if emitter.visible and emitter.spread == FxParticlePool.SPRAY_SPREAD:
+			spray = emitter
+	assert_not_null(spray, "une gerbe en éventail")
+	if spray != null:
+		var toward := (stage.impact_point() - stage.origin()).normalized()
+		assert_gt(spray.direction.dot(toward), 0.99, "vers la cible")
+		assert_gte(spray.amount, 32, "nombreux grains")
+		assert_eq(spray.texture, FxArt.particle(&"grain_sable").get("texture"), "grains peints")
+	_player.stop()
+
+
 # --- Caméra ----------------------------------------------------------------------------
 
 func test_camera_zoom_keeps_pivot_fixed() -> void:

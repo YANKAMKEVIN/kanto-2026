@@ -5,7 +5,7 @@ extends GutTest
 const ANNEX_COUNT: int = 165
 const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", &"plante",
 	&"glace", &"psy", &"poison", &"sol_roche", &"vent", &"spectre", &"dragon", &"energie", &"son",
-	&"statut_plus", &"statut_moins", &"soin"]
+	&"statut_plus", &"statut_moins", &"statut_regard", &"statut_sable", &"soin"]
 
 var _data: PokemonData
 
@@ -35,7 +35,7 @@ func test_real_catalog_has_no_error() -> void:
 	assert_eq(catalog.get_errors(), PackedStringArray(), "\n".join(catalog.get_errors()))
 
 
-func test_the_17_families_exist() -> void:
+func test_the_19_families_exist() -> void:
 	var catalog := MoveFxCatalog.load_dir()
 	assert_eq(catalog.family_ids().size(), FAMILIES.size())
 	for family: StringName in FAMILIES:
@@ -92,6 +92,29 @@ func test_phases_of_every_family_sum_to_one() -> void:
 		for part: float in (catalog.family(family).get("phases", {}) as Dictionary).values():
 			sum += part
 		assert_almost_eq(sum, 1.0, 0.001, String(family))
+
+
+## RP-286 (décision de Kevin du 2026-11-01) : regard ou geste sur le lanceur, puis l'aura sur la
+## cible, sans trajet ; le trajet reste pour Jet de Sable (une gerbe de sable, remarque de Kevin
+## du 2026-11-02) et Sécrétion (son trajet d'origine).
+func test_gaze_moves_have_no_travel_but_sand_and_string_keep_it() -> void:
+	var catalog := MoveFxCatalog.load_dir()
+	for move_id: StringName in [&"leer", &"glare", &"tail_whip", &"disable"]:
+		var family := catalog.family(catalog.entry(move_id).family)
+		var bricks: Dictionary = family.get("bricks", {})
+		assert_eq(String(bricks.get("travel", "")), "", "%s : pas de trajet" % move_id)
+		assert_false((family.get("fx", {}) as Dictionary).get("art", {}).has("travel"),
+			"%s : pas d'art de trajet" % move_id)
+		assert_eq(String(bricks.get("impact", "")), "falling_aura", "%s : aura sur la cible" % move_id)
+		assert_ne(String(family.get("target", "")), "self", "%s : vise l'adversaire" % move_id)
+	var sand := catalog.family(catalog.entry(&"sand_attack").family)
+	assert_eq(String((sand.get("bricks", {}) as Dictionary).get("travel", "")), "sand_spray",
+		"Jet de Sable : une gerbe de grains")
+	var sand_art: Dictionary = (sand.get("fx", {}) as Dictionary).get("art", {})
+	assert_false(sand_art.has("travel"), "Jet de Sable : pas de projectile peint")
+	assert_eq(String(sand_art.get("spray", "")), "grain_sable", "Jet de Sable : grains de sable")
+	var string_shot: Dictionary = catalog.family(catalog.entry(&"string_shot").family).get("bricks", {})
+	assert_eq(String(string_shot.get("travel", "")), "haze", "Sécrétion : trajet d'origine gardé")
 
 
 # --- Repli ------------------------------------------------------------------------------

@@ -15,6 +15,9 @@ const MAX_PER_EMITTER: int = 64
 const MAX_ON_SCREEN: int = 200
 const TEXTURE_SIZE: int = 64
 const SEED_BASE: int = 2026
+## Gerbe (SPRAY) [D] : demi-angle de l'éventail (degrés), étalement des départs (0 : flux).
+const SPRAY_SPREAD: float = 12.0
+const SPRAY_EXPLOSIVENESS: float = 0.35
 
 ## Forme d'un éclat.
 enum Shape {
@@ -26,6 +29,8 @@ enum Shape {
 	FALL,
 	## Aspirée vers le centre (anticipation).
 	GATHER,
+	## Gerbe en éventail serré dans une direction, en flux (Jet de Sable, RP-286).
+	SPRAY,
 }
 
 ## Vitesse des particules (0 : figées ; elles ne partent pas).
@@ -79,7 +84,8 @@ func build() -> void:
 ## Rend l'émetteur utilisé (null si [param amount] ≤ 0 ou si le budget est plein).
 func burst(at: Vector2, amount: int, palette: PackedColorArray, shape: Shape = Shape.BURST,
 		size: float = 28.0, reach: float = 160.0, lifetime: float = 0.5,
-		additive: bool = false, texture: Texture2D = null) -> CPUParticles2D:
+		additive: bool = false, texture: Texture2D = null,
+		direction: Vector2 = Vector2.UP) -> CPUParticles2D:
 	build()
 	var count := mini(mini(amount, MAX_PER_EMITTER), MAX_ON_SCREEN - _busy_particles())
 	if count <= 0:
@@ -100,6 +106,8 @@ func burst(at: Vector2, amount: int, palette: PackedColorArray, shape: Shape = S
 	emitter.scale_amount_max = size / width
 	emitter.scale_amount_curve = _size_curve
 	_shape(emitter, shape, reach, lifetime)
+	if shape == Shape.SPRAY:
+		emitter.direction = direction.normalized() if direction != Vector2.ZERO else Vector2.UP
 	emitter.speed_scale = maxf(speed_scale, 0.0)
 	emitter.visible = true
 	if speed_scale > 0.0:
@@ -201,7 +209,21 @@ func _shape(emitter: CPUParticles2D, shape: Shape, reach: float, lifetime: float
 			emitter.initial_velocity_max = 0.0
 			emitter.radial_accel_min = -speed * 3.0
 			emitter.radial_accel_max = -speed * 2.0
-	emitter.explosiveness = 0.3 if shape == Shape.RISE else 0.9
+		Shape.SPRAY:
+			# Portée atteinte en fin de vie ; éventail de ±[constant SPRAY_SPREAD]°, légère
+			# retombée.
+			emitter.spread = SPRAY_SPREAD
+			emitter.emission_sphere_radius = reach * 0.02
+			emitter.initial_velocity_min = speed * 0.85
+			emitter.initial_velocity_max = speed * 1.15
+			emitter.gravity = Vector2(0.0, speed * 0.6)
+	match shape:
+		Shape.RISE:
+			emitter.explosiveness = 0.3
+		Shape.SPRAY:
+			emitter.explosiveness = SPRAY_EXPLOSIVENESS
+		_:
+			emitter.explosiveness = 0.9
 
 
 ## Taille au cours de la vie : la particule gonfle vite, puis rapetisse.

@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), `spray` : grains de la gerbe de Jet de Sable ; complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
 	"durations": {
 		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
 		"bands": [
@@ -161,6 +161,24 @@
 			"world": {"light": "#A0A0C8", "light_peak": 0.0, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16, "art": {"charge": "oeil_menacant", "travel": "lueur_douce", "particle": "fleche_bas", "fallout": "fumee"}, "tint": "#B8B8E8"}
+		},
+		"statut_regard": {
+			"name": "Statut négatif, regard", "target": "foe",
+			"_doc": "RP-286 (décision de Kevin du 2026-11-01) : Groz'Yeux, Regard Médusant, Mimi-Queue, Entrave. Regard ou geste sur le lanceur, puis l'aura directement sur la cible : comme statut_moins, sans trajet (rien ne part du lanceur).",
+			"bricks": {"launch": "glare", "travel": "", "impact": "falling_aura"},
+			"phases": {"anticipation": 0.35, "travel": 0.0, "impact": 0.45, "return": 0.2},
+			"world": {"light": "#A0A0C8", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16, "art": {"charge": "oeil_menacant", "particle": "fleche_bas", "fallout": "fumee"}, "tint": "#B8B8E8"}
+		},
+		"statut_sable": {
+			"name": "Statut négatif, sable", "target": "foe",
+			"_doc": "Jet de Sable (remarque de Kevin du 2026-11-02, lot RP-286) : une gerbe de grains de sable en éventail du lanceur vers la cible (brique sand_spray : particules, art spray), pas une boule ; les grains retombent sur la cible, un peu de poussière s'élève.",
+			"bricks": {"launch": "glare", "travel": "sand_spray", "impact": "falling_aura"},
+			"phases": {"anticipation": 0.15, "travel": 0.45, "impact": 0.25, "return": 0.15},
+			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#E8CFA0", "#B8874A", "#5A3E22"], "particles": 24, "art": {"charge": "grain_sable", "spray": "grain_sable", "particle": "grain_sable", "fallout": "poussiere"}}
 		},
 		"soin": {
 			"name": "Soin", "target": "self",

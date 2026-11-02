@@ -12,8 +12,9 @@ extends Node2D
 ## (retombée, couche 8 du §2.9).
 ##
 ## Briques (`bricks.travel` de la famille) : `dash` (le lanceur traverse, Contact), `bolt` (arc
-## brisé, Électrique), `beam` / `ice_beam` / `jet` (rayon qui s'allonge), vide (l'effet reste sur
-## le lanceur : statut positif, soin), sinon un projectile lumineux. Formes dessinées en code :
+## brisé, Électrique), `beam` / `ice_beam` / `jet` (rayon qui s'allonge), vide (rien ne part du
+## lanceur : statut positif, soin, regard de RP-286), `sand_spray` (gerbe de grains, Jet de
+## Sable), sinon un projectile lumineux. Formes dessinées en code :
 ## échafaudage de CV.0, remplacé par l'art (flipbooks, §2.9, §3.4).
 ## Valeurs visuelles [D] (règle 4), à régler sur le S24.
 
@@ -107,9 +108,28 @@ const TRAP_SIZE: float = 0.15
 const RECOIL_SHAKE: float = 9.0
 const CRASH_DROP: float = 46.0
 const OHKO_FACTOR: float = 2.0
+## Gerbe de Jet de Sable (RP-286) [D] : taille d'un grain peint et d'une bouffée de poussière
+## teintée (palette de la famille) qui l'accompagne, en hauteurs d'écran ; bouffées par gerbe.
+const SPRAY_GRAIN: float = 0.05
+## Regard (RP-286) [D] : taille de l'œil sur le lanceur, en hauteurs d'écran.
+const GAZE_SIZE: float = 0.16
+const SPRAY_DUST: float = 0.09
+const SPRAY_DUST_AMOUNT: int = 20
 ## Rôles des sprites d'art : le trajet (projectile, arc), l'impact, deux étincelles de joues, trois
 ## copies en série (ondes du trajet, flux du drain, anneau du piège : jamais dans la même phase).
 enum Flip { TRAVEL, IMPACT, EXTRA_A, EXTRA_B, WAVE_A, WAVE_B, WAVE_C }
+## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
+## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
+## images).
+const WARMUP_ALPHA: float = 0.02
+const WARMUP_SIZE: float = 8.0
+const WARMUP_DURATION: float = 0.1
+
+## RP-263 : faux = pas de préchauffage (mesure « avant », `tools/measure_first_fx.gd`).
+static var warmup_enabled: bool = true
+## Préchauffage fait une fois par session : pipelines de rendu, puis chaque art peint déjà vu.
+static var _warmed_pipelines: bool = false
+static var _warmed_art: Dictionary[StringName, bool] = {}
 
 var speed_scale: float = 1.0
 var camera: BattleCamera = BattleCamera.new()
@@ -237,6 +257,61 @@ func get_art(role: Flip) -> Sprite2D:
 	return _flips[role]
 
 
+## Préchauffage (RP-263) : dessine une fois, à peine visible (opacité [constant WARMUP_ALPHA]),
+## en [param at] (px du calque), ce que les effets de [param plans] emploieront : sprites et traits
+## en mélange normal et additif, émetteurs de particules des deux mélanges (une fois par session),
+## et l'art peint pas encore préparé. Le calque se retire seul après [constant WARMUP_DURATION] s
+## (un tween). Rend le nombre d'éléments dessinés (0 : rien de neuf, ou préchauffage coupé).
+func warm_up(plans: Array[MoveFxPlan], at: Vector2) -> int:
+	if not warmup_enabled:
+		return 0
+	_build()
+	var fresh: Array[StringName] = []
+	for id: StringName in MoveFxWarmup.art_ids(plans):
+		if not _warmed_art.has(id):
+			fresh.append(id)
+	if _warmed_pipelines and fresh.is_empty():
+		return 0
+	var layer := Node2D.new()
+	layer.name = &"Warmup"
+	layer.position = at
+	layer.modulate = Color(1, 1, 1, WARMUP_ALPHA)
+	add_child(layer)
+	if not _warmed_pipelines:
+		_warmed_pipelines = true
+		var dot := _projectile.texture
+		for additive: bool in [false, true]:
+			var material := _flip_additive if additive else null
+			layer.add_child(_warm_sprite(dot, material))
+			var line := _new_line(&"WarmLine", 2.0)
+			line.points = PackedVector2Array([Vector2.ZERO, Vector2(WARMUP_SIZE, 0.0)])
+			line.material = material
+			layer.add_child(line)
+			layer.add_child(_warm_emitter(dot, material))
+	for id: StringName in fresh:
+		_warmed_art[id] = true
+		var info := FxArt.flipbook(id)
+		if info.is_empty():
+			info = FxArt.particle(id)
+		if info.is_empty():
+			continue
+		var sprite := _warm_sprite(info["texture"], _flip_additive if info["additive"] else null)
+		sprite.hframes = info.get("columns", 1)
+		sprite.vframes = ceili(float(info.get("frames", 1)) / sprite.hframes)
+		layer.add_child(sprite)
+	var count := layer.get_child_count()
+	var tween := create_tween()
+	tween.tween_interval(WARMUP_DURATION)
+	tween.tween_callback(layer.queue_free)
+	return count
+
+
+## Remet à zéro le préchauffage de la session (tests).
+static func reset_warmup() -> void:
+	_warmed_pipelines = false
+	_warmed_art.clear()
+
+
 ## Pose de la scène à l'instant [param t] (s) de l'attaque en cours (galerie, figé image par
 ## image).
 func pose(t: float) -> void:
@@ -279,6 +354,9 @@ func _start_phase(phase: MoveFxPlan.Phase) -> void:
 				for point: Vector2 in points:
 					_art_burst(&"charge", point, roundi(_plan.particles / 3.0 / points.size()),
 						FxParticlePool.Shape.GATHER, 24.0, 0.12 * height, phase.duration)
+		MoveFxPlan.TRAVEL:
+			if _is_particle_travel() and phase.hit == 0:
+				_spray(phase)
 		MoveFxPlan.IMPACT:
 			_impact_burst(phase)
 			if _plan.has_modifier(&"auto_ko"):
@@ -465,8 +543,11 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 	if _is_contact():
 		if phase.name == MoveFxPlan.IMPACT and not _pose_stamp(k):
 			_pose_marks(k)
-	elif not _pose_art(phase, k) and not _plan.on_self:
+	elif _has_travel() and not _is_particle_travel() and not _pose_art(phase, k):
 		_pose_shapes(phase, k)
+	elif not _has_travel() and not _plan.on_self:
+		# Sans trajet (regard de RP-286) : rien ne part du lanceur ; le regard reste sur lui.
+		_pose_gaze(phase, k)
 	_pose_impact_art()
 	_pose_trap(phase, k)
 	_pose_drain(phase, k)
@@ -901,9 +982,49 @@ func _is_contact() -> bool:
 	return _plan.bricks.get("travel", "") == "dash"
 
 
+## La famille a une brique de trajet (vide : l'effet ne quitte pas le lanceur, ou naît sur la
+## cible).
+func _has_travel() -> bool:
+	return not String(_plan.bricks.get("travel", "")).is_empty()
+
+
 ## Taille d'un projectile peint : un flipbook à [constant ART_PROJECTILE], une particule moins.
 static func _projectile_scale(id: StringName) -> float:
 	return 1.0 if not FxArt.flipbook(id).is_empty() else ART_PARTICLE_PROJECTILE
+
+
+## Regard (RP-286 : Groz'Yeux, Regard Médusant, Mimi-Queue, Entrave) : pendant l'anticipation,
+## l'art `charge` de la famille (œil menaçant) s'ouvre sur le lanceur puis s'éteint ; l'aura
+## naît ensuite sur la cible (impact), sans rien entre les deux.
+func _pose_gaze(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"charge", &"") as StringName
+	if phase.name != MoveFxPlan.ANTICIPATION or id.is_empty():
+		return
+	var alpha := minf(1.0, k * 3.0) * (1.0 - clampf((k - 0.7) / 0.3, 0.0, 1.0))
+	var size := GAZE_SIZE * _stage.view_size.y * lerpf(0.6, 1.0, _ease_out(k))
+	_show_flip(Flip.EXTRA_A, id, _stage.origin(), Vector2.ONE * size, 0.0, alpha)
+
+
+## Trajet fait de particules seules (`sand_spray`, Jet de Sable, RP-286) : ni projectile ni art
+## de trajet ; la gerbe part au début du trajet ([method _spray]).
+func _is_particle_travel() -> bool:
+	return _plan.bricks.get("travel", "") == "sand_spray"
+
+
+## Gerbe de grains (Jet de Sable) : un flux en éventail serré du lanceur vers la cible (ou à côté
+## si l'attaque rate), grains peints (`spray`, sinon `particle`) qui arrivent en fin de trajet.
+func _spray(phase: MoveFxPlan.Phase) -> void:
+	var from := _stage.origin()
+	var to := _miss_point() if _missed(phase.hit) else _stage.impact_point()
+	var role := &"spray" if _plan.art.has(&"spray") else &"particle"
+	var amount := roundi(FxParticlePool.MAX_PER_EMITTER * _plan.particle_scale)
+	var life := maxf(phase.duration * 1.1, 0.1)
+	var height := _stage.view_size.y
+	_pool.burst(from, roundi(SPRAY_DUST_AMOUNT * _plan.particle_scale), _plan.palette,
+		FxParticlePool.Shape.SPRAY, SPRAY_DUST * height, from.distance_to(to), life * 1.1, false,
+		null, to - from)
+	_pool.burst(from, amount, _plan.palette, FxParticlePool.Shape.SPRAY,
+		SPRAY_GRAIN * height, from.distance_to(to), life, false, _art_texture(role), to - from)
 
 
 func _is_wave_travel() -> bool:
@@ -1003,6 +1124,33 @@ func _build() -> void:
 		add_child(flip)
 		_flips.append(flip)
 	_hide_shapes()
+
+
+## Sprite de préchauffage : [param texture] ramenée à [constant WARMUP_SIZE] px.
+func _warm_sprite(texture: Texture2D, material: Material) -> Sprite2D:
+	var sprite := _make_sprite(&"WarmSprite", texture, material)
+	var width := maxf(texture.get_width(), 1.0) if texture != null else 1.0
+	sprite.scale = Vector2.ONE * WARMUP_SIZE / width
+	return sprite
+
+
+## Émetteur de préchauffage : une particule, même réglage de rendu que [FxParticlePool].
+func _warm_emitter(texture: Texture2D, material: Material) -> CPUParticles2D:
+	var emitter := CPUParticles2D.new()
+	emitter.name = &"WarmEmitter"
+	emitter.amount = 1
+	emitter.one_shot = true
+	emitter.explosiveness = 1.0
+	emitter.lifetime = WARMUP_DURATION
+	emitter.local_coords = false
+	emitter.texture = texture
+	emitter.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	emitter.material = material
+	emitter.color_ramp = FxParticlePool.ramp(PackedColorArray([Color.WHITE]))
+	emitter.scale_amount_min = WARMUP_SIZE / maxf(texture.get_width(), 1.0)
+	emitter.scale_amount_max = emitter.scale_amount_min
+	emitter.emitting = true
+	return emitter
 
 
 func _make_sprite(sprite_name: StringName, texture: Texture2D, material: Material) -> Sprite2D:

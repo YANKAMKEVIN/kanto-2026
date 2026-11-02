@@ -773,6 +773,17 @@ func get_move_fx_player() -> MoveFxPlayer:
 	return _fx
 
 
+## Préchauffage des effets (RP-263), pendant l'entrée en combat : points d'origine lus et
+## éléments des chorégraphies [param plans] dessinés une fois, à peine visibles, au centre de la
+## vue ([method MoveFxPlayer.warm_up]). Rend le nombre d'éléments dessinés.
+func warm_up_move_fx(plans: Array[MoveFxPlan]) -> int:
+	if _fx == null or not MoveFxPlayer.warmup_enabled:
+		return 0
+	if _fx_anchors == null:
+		_fx_anchors = FxAnchors.load_file()
+	return _fx.warm_up(plans, _view_size() * 0.5)
+
+
 func _fx_stage(side: BattleEvent.SideId, plan: MoveFxPlan) -> MoveFxStage:
 	var other := _other(side)
 	var stage := MoveFxStage.new()
@@ -808,6 +819,9 @@ func _build_fx() -> void:
 	move_child(_fx, _flash.get_index())
 	_fx.setup(self, _fx_light)
 	FxArt.preload_all()
+	# RP-263 : pipelines de rendu des effets préparés dès le lancement (une fois par session),
+	# loin de tout combat ; l'art des attaques suit à l'entrée en combat (warm_up_move_fx).
+	_fx.warm_up.call_deferred([] as Array[MoveFxPlan], _view_size() * 0.5)
 	_fx.fx_cue.connect(func(cue: StringName, _move_id: StringName) -> void:
 		move_fx_cue.emit(cue, _fx.get_plan()))
 

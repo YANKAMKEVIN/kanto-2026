@@ -331,7 +331,7 @@ sur **25 à 35 % de la distance** entre les deux Pokémon (le tien rétrécit en
 grandit en avançant : la profondeur du cadrage B est respectée), impact au point de contact,
 retour en arc. « Bondit » (Morsure, Croc de Mort, Vive-Attaque) : même trajet en arc.
 
-### 3.2 Les 17 familles
+### 3.2 Les 17 familles (19 depuis RP-286)
 
 | # | Famille (`id`) | Lancement → trajet → impact | Monde | Attaques |
 |---|---|---|---|---|
@@ -350,8 +350,10 @@ retour en arc. « Bondit » (Morsure, Croc de Mort, Vive-Attaque) : même trajet
 | 13 | Énergie, normal spécial (`energie`) | point lumineux → étoiles (Météores) / trois rayons (Triplattaque) / rayon (Ultralaser) → éclat blanc | lumière blanche | 5 |
 | 14 | Son (`son`) | bouche ouverte → **ondes sonores** en arcs → la cible vibre | — | 6 |
 | 15 | Statut positif (`statut_plus`) | sur le lanceur : aura montante (lames pour Danse-Lames, bouclier pour Protection / Mur Lumière, flou de vitesse pour Hâte) ; la teinte de stat d'aujourd'hui reste | — | 25 |
-| 16 | Statut négatif (`statut_moins`) | regard, sable, fumée, fil… vers la cible → aura descendante sur la cible | — | 10 |
+| 16 | Statut négatif (`statut_moins`) | fumée, fil… vers la cible → aura descendante sur la cible | — | 5 |
 | 17 | Soin (`soin`) | lumière verte douce, particules qui montent, la barre remonte | — | 3 |
+| 18 | Statut négatif, regard (`statut_regard`, RP-286, décision de Kevin du 2026-11-01) | regard ou geste sur le lanceur, **sans trajet** → aura descendante directement sur la cible (Groz'Yeux, Regard Médusant, Mimi-Queue, Entrave) | — | 4 |
+| 19 | Statut négatif, sable (`statut_sable`, remarque de Kevin du 2026-11-02) | gerbe de grains de sable en éventail vers la cible (brique `sand_spray`, particules) → grains qui retombent, poussière (Jet de Sable) | — | 1 |
 
 Les nombres comptent les **165 attaques de Rouge/Bleu** : 159 dans les données (`main` et les
 branches `jalon-23` à `jalon-31`) et 6 absentes à ce jour (Coupe-Vent, Copie, E-Coque, Éboulement,
@@ -667,7 +669,7 @@ sans arbitrage.
 | `cut` | Coupe | Normal | phys. | contact | griffe |  |  | main |
 | `defense_curl` | Boul'Armure | Normal | statut | statut_plus |  |  |  | main |
 | `dig` | Tunnel | Sol | phys. | sol_roche |  | charge |  | main |
-| `disable` | Entrave | Normal | statut | statut_moins |  |  |  | main |
+| `disable` | Entrave | Normal | statut | statut_regard |  |  |  | main |
 | `dizzy_punch` | Uppercut | Normal | phys. | contact | coup |  |  | main |
 | `double_edge` | Damoclès | Normal | phys. | contact | corps | contrecoup |  | main |
 | `double_kick` | Double Pied | Combat | phys. | contact | coup | multi |  | main |
@@ -690,7 +692,7 @@ sans arbitrage.
 | `focus_energy` | Puissance | Normal | statut | statut_plus |  |  |  | main |
 | `fury_attack` | Furie | Normal | phys. | contact | percant | multi |  | main |
 | `fury_swipes` | Combo-Griffe | Normal | phys. | contact | griffe | multi |  | main |
-| `glare` | Regard Médusant | Normal | statut | statut_moins |  |  |  | main |
+| `glare` | Regard Médusant | Normal | statut | statut_regard |  |  |  | main |
 | `growl` | Rugissement | Normal | statut | son |  |  |  | main |
 | `growth` | Croissance | Normal | statut | statut_plus |  |  |  | main |
 | `guillotine` | Guillotine | Normal | statut | contact | griffe | ko_un_coup |  | main |
@@ -712,7 +714,7 @@ sans arbitrage.
 | `kinesis` | Télékinésie | Psy | statut | statut_moins |  |  |  | jalon-27 |
 | `leech_life` | Vampirisme | Insecte | phys. | contact | percant | drain |  | main |
 | `leech_seed` | Vampigraine | Plante | statut | plante |  |  |  | main |
-| `leer` | Groz'Yeux | Normal | statut | statut_moins |  |  |  | main |
+| `leer` | Groz'Yeux | Normal | statut | statut_regard |  |  |  | main |
 | `lick` | Léchouille | Spectre | phys. | spectre |  |  |  | main |
 | `light_screen` | Mur Lumière | Psy | statut | statut_plus |  |  |  | main |
 | `lovely_kiss` | Grobisou | Normal | statut | statut_moins |  |  |  | jalon-30 |
@@ -749,7 +751,7 @@ sans arbitrage.
 | `rock_slide` | Éboulement | Roche | phys. | sol_roche |  |  |  | absente |
 | `rock_throw` | Jet-Pierres | Roche | phys. | sol_roche |  |  |  | main |
 | `rolling_kick` | Mawashi Geri | Combat | phys. | contact | coup |  |  | jalon-27 |
-| `sand_attack` | Jet de Sable | Sol | statut | statut_moins |  |  |  | main |
+| `sand_attack` | Jet de Sable | Sol | statut | statut_sable |  |  |  | main |
 | `scratch` | Griffe | Normal | phys. | contact | griffe |  |  | main |
 | `screech` | Grincement | Normal | statut | son |  |  |  | main |
 | `seismic_toss` | Frappe Atlas | Combat | statut | contact | corps |  |  | main |
@@ -783,7 +785,7 @@ sans arbitrage.
 | `swift` | Météores | Normal | spé. | energie |  |  |  | main |
 | `swords_dance` | Danse-Lames | Normal | statut | statut_plus |  |  |  | main |
 | `tackle` | Charge | Normal | phys. | contact | corps |  |  | main |
-| `tail_whip` | Mimi-Queue | Normal | statut | statut_moins |  |  |  | main |
+| `tail_whip` | Mimi-Queue | Normal | statut | statut_regard |  |  |  | main |
 | `take_down` | Bélier | Normal | phys. | contact | corps | contrecoup |  | main |
 | `teleport` | Téléport | Psy | statut | statut_plus |  |  |  | main |
 | `thrash` | Mania | Normal | phys. | contact | corps |  |  | main |
