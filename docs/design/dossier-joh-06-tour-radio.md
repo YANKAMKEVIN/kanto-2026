@@ -36,6 +36,17 @@ par les Sbires) jusqu'à la défaite de Cenere ; ensuite il dessert tous les ét
 
 Aucune rencontre sauvage dans la Tour.
 
+**Grilles préparées le 2026-11-02 (à valider par Kevin)** : `tools/plans/radio_tower_1f.txt` à
+`radio_tower_5f.txt` (24 × 16 chacune) ; contrôle `tools/art/plan_check_joh5.py`, aperçu
+`reference/joh5-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. Escaliers en
+alternance : 1F ↔ 2F (3, 0), 2F ↔ 3F (20, 0), 3F ↔ 4F (3, 0), 4F ↔ 5F (20, 0) ; ascenseur (18, 0) à
+chaque étage, en panne jusqu'à `johto_cenere_defeated` ; sortie du 1F (11..12, 15) ↔ porte de la Tour à
+Doublonville (10..11, 15). Défauts [D] notés dans les en-têtes : faux employé et Cenere lancés par un
+déclencheur de scène (niche de l'escalier au 1F, ouverture de la vitre au 5F) ; Sbires inévitables par
+rétrécissement (2F couloir du bas, 3F passage de la cloison sous la vue du gardien, 4F accès à la niche
+de l'escalier) ; réserve et bureau du directeur fermés par une position `porte_cle` ; cabine de
+l'ascenseur sur le modèle du Grand Magasin de Céladopole ; escalier de secours en décor dans le mur est.
+
 ## 4. Ordre de jeu
 
 | Étape | Lieu | Ce qui se passe | Drapeau |

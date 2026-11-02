@@ -111,7 +111,7 @@ warp_sud             warp           34..36,59    libre   # PUSH ↓ → route_34
 from_route_34        spawn          34..36,59    libre   # arrivée de la Route 34, tournée ↑
 agent_sud            pnj            33,56        bloque  role=agent facing=right  # D-33, D-34 ; avec johto_azalea_clue, il se range en (33, 55) [D]
 barriere_sud         declencheur    34..36,56    libre   actif_sans=johto_azalea_clue  # D-33 et pas en arrière
-porte_tour_radio     warp           10..11,15    libre   # STEP_ON ↑ → goldenrod_radio_tower_1f (hall, « employé » D-18, ascenseur D-19)
+porte_tour_radio     warp           10..11,15    libre   # STEP_ON ↑ → goldenrod_radio_tower_1f, from_city (11..12, 14) (hall, « employé » D-18, ascenseur D-19)
 porte_lien           warp           23,15        libre   # STEP_ON ↑ → goldenrod_bond_house (Mme Clémence, D-24 à D-27)
 porte_centre         warp           9..10,27     libre   # STEP_ON ↑ → goldenrod_center (Orme et l'œuf, D-12 à D-15)
 porte_maison_1       warp           23,27        libre   # STEP_ON ↑ → goldenrod_house_1 (D-37)

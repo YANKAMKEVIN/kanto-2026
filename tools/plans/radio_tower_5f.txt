@@ -1,0 +1,77 @@
+# Tour Radio de Doublonville, 5F (studio de diffusion) (goldenrod_radio_tower_5f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH5 ;
+# dossier docs/design/dossier-joh-06-tour-radio.md §3, §4, §5, §6, §7, §8, textes T-14 à T-32 ; JH-41 à JH-43).
+# Préparée le 2026-11-02 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh5.py.
+#
+# Composition (studio de diffusion) :
+#   - Arrivée du 4F par D (20, 0) sur le PALIER (x 9..22, y 1..4) ; ASCENSEUR (18, 0).
+#   - Le BUREAU DU DIRECTEUR (x 1..7, y 1..4) derrière une cloison (x 8) et sa PORTE FERMÉE (K, (8, 2)),
+#     qui s'ouvre avec johto_dante_revealed (T-24) : le directeur ligoté (2, 3), les Poké Balls de
+#     l'équipe et le sac sur le bureau (M, (2..3, 2)) ; la scène du bureau (7, 2), juste derrière la
+#     porte, joue le retour de l'équipe (§7) et la Multi Exp (T-25 à T-32).
+#   - Le GRAND STUDIO (x 1..22, y 6..13) derrière la VITRE (V, y 5) percée d'une ouverture (12..13, 5) ;
+#     BAIE VITRÉE sur la ville (V, y 14) ; CENERE au micro (11, 10) derrière sa table (M, (11..12, 9)) :
+#     la scène (12..13, 6) couvre le seul accès au studio : T-15, T-16 puis COMBAT OBLIGATOIRE (JH-41),
+#     puis T-18, la voix de Dante (T-19 à T-21, haut-parleur : décor), les Sbires divisés (T-22) et
+#     le départ de Cenere par l'ESCALIER DE SECOURS (S, (23, 10), décor et examen).
+#
+# Raccords :
+#   D (20, 0) ↔ 4F, U (20, 0) [paire e4_5]. Pas d'escalier qui monte : dernier étage.
+#
+# Légende (commune aux cinq étages ; même esprit que la Sylphe SARL, tools/plans/sylphe_1f.txt) :
+#   # mur, cloison ou vide (bloqué)            . sol (praticable)
+#   M mobilier : bureaux, plantes, bancs, écrans, micros (bloqué)   V vitre de studio (bloquée, transparente)
+#   c comptoir d'accueil (bloqué)   r rayonnage d'archives (bloqué)   p pupitre de régie (bloqué)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le mur
+#     nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (18, 0) à chaque étage (praticable ; EN PANNE jusqu'à johto_cenere_defeated :
+#     examen T-5 ; ensuite cabine sur le modèle du Grand Magasin de Céladopole [D])
+#   K porte fermée à clé (praticable ; la position « porte_cle », libre dans la grille, la bloque tant
+#     que la porte est fermée : même logique qu'une barrière)   E sortie vers Doublonville (1F seulement, praticable, PUSH ↓)
+#   S escalier de secours (5F, bloqué : décor et examen ; Cenere s'en va par là)
+# Personnages, objets, scènes et raccords sont dans POSITIONS. 24 × 16 cases par étage
+# (dossier : ≈ 24 × 16) ; x = colonne 0..23, y = rangée 0..15, nord en haut.
+#
+# Format : lignes CARTE et PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+CARTE goldenrod_radio_tower_5f
+
+PRATICABLES .DLK
+
+GRILLE 24 16
+00 ##################L#D###
+01 #.......#..............#
+02 #.MM....K..............#
+03 #.......#..............#
+04 #M......#..............#
+05 #########VVV..VVVVVVVVV#
+06 #M....................M#
+07 #......................#
+08 #......................#
+09 #..........MM..........#
+10 #......................S
+11 #......................#
+12 #......................#
+13 #......................#
+14 #VVVVVVVVVVVVVVVVVVVVVV#
+15 ########################
+FIN
+
+POSITIONS
+vers_4f              escalier       20,0         libre   vers=goldenrod_radio_tower_4f:from_5f paire=e4_5 sens=descend  # → 4F, U (20, 0)
+from_4f              spawn          20,1         libre   paire=e4_5 facing=down  # arrivée depuis le 4F
+scene_cenere         declencheur    12..13,6     libre   actif_sans=johto_cenere_defeated  # seul accès au studio : T-15, T-16 puis combat ; ensuite T-18 → T-23, pose johto_dante_revealed
+cenere               dresseur       11,10        bloque  facing=up sight=0 trainer=goldenrod_radio_tower_admin_cenere actif_sans=johto_dante_revealed  # T-15 à T-18, T-23, Smogogo 33 + Qulbutoké 33 + Farfuret 35 ; OBLIGATOIRE (scène) ; part par l'escalier de secours
+haut_parleur         decor          11,9         bloque  role=haut_parleur  # micro et haut-parleur de la table : la voix de Dante (T-19 à T-21), grésillement [D]
+sbire_1              pnj            4,11         bloque  role=sbire facing=right actif_avec=johto_cenere_defeated actif_sans=johto_team_returned  # T-22 « Dante ? C'est qui, ça ? »
+sbire_2              pnj            18,12        bloque  role=sbire facing=left actif_avec=johto_cenere_defeated actif_sans=johto_team_returned  # T-22, s'en va
+sbire_3              pnj            7,8          bloque  role=sbire facing=down actif_avec=johto_cenere_defeated actif_sans=johto_team_returned  # T-22, suit Dante
+escalier_secours     examen         23,10        bloque   # porte de l'escalier de secours (fermée), examinée depuis (22, 10) → ; sortie de Cenere (T-23)
+porte_bureau         porte_cle      8,2          libre   cle=johto_dante_revealed  # T-24 ; fermée tant que Cenere n'est pas partie ; ouverte depuis (9, 2) ←
+scene_bureau         declencheur    7,2          libre   actif_avec=johto_dante_revealed actif_sans=johto_team_returned  # T-24 : retour de l'équipe (§7), T-25 à T-32 ; pose johto_team_returned, radio_exp_share_given ; retire johto_act1, storage_offline
+directeur            pnj            2,3          bloque  role=directeur facing=right  # T-25, T-26, T-31, T-32 ; ligoté jusqu'à la scène du bureau
+poke_balls           decor          2..3,2       bloque  role=poke_balls_et_sac actif_sans=johto_team_returned  # les Poké Balls et le sac sur le bureau (T-24, T-27)
+ascenseur            ascenseur      18,0         libre   etage=5F vers=goldenrod_radio_tower_elevator:entrance actif_avec=johto_cenere_defeated  # porte de l'ascenseur ; dessert les 5 étages après Cenere (T-32) [D]
+examen_ascenseur     examen         18,0         libre   actif_sans=johto_cenere_defeated  # T-5 (1F au JOH3 : D-19), examiné depuis (18, 1) ↑ tant que l'ascenseur est en panne
+from_elevator        spawn          18,1         libre   paire=ascenseur etage=5F facing=down  # sortie de la cabine, une case devant la porte
+FIN
