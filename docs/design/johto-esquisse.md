@@ -21,6 +21,7 @@
 | 2026-11-02 | ✅ Départ de **Bourg Palette**, par un **passage secret, par l'eau** (détail à trouver) |
 | 2026-11-02 | ✅ Types **Ténèbres** et **Acier** voulus (JH-4) : ils existent déjà dans le jeu (18 types modernes, Fée compris) ; la table actuelle est gardée |
 | 2026-11-02 | ✅ **50 espèces**, choisies par Claude parmi les plus importantes ; liste du §8 validée (JH-5) |
+| 2026-11-02 | ✅ **Écrémeuh** ajoutée pour la Ferme Meumeu (JH-28) : **51 espèces** |
 | 2026-11-02 | ✅ Au Mont Argenté, **option A, le relais** (JH-9) ; les **combats en duo** viendront plus tard, après le chapitre |
 | 2026-11-02 | ✅ L'adversaire final est l'**ancien chef de la Team Rocket, mentor de Giovanni**, trahi par lui (§9) ; il s'appelle **Dante** |
 | 2026-11-02 | ✅ JH-1, JH-2, JH-3, JH-8, JH-10 : propositions de Claude retenues (vol au Centre, équipe et sac rendus ensemble à la Tour Radio, Kanto change peu, révélation de Dante) |
@@ -86,7 +87,7 @@ Pokémon de l'acte 1 restent utiles ensuite s'ils montent avec l'équipe.
 | JH-2 | ✅ Équipe rendue tout d'un coup, à la fin de l'acte 1 (Tour Radio) (Kevin) | — |
 | JH-3 | ✅ Sac volé avec l'équipe, sauf les objets clés, et rendu avec elle (Kevin) | — |
 | JH-4 | ✅ **Table des types actuelle gardée** (Kevin) : le jeu a déjà les 18 types modernes, Ténèbres, Acier et Fée compris (`data/pokemon/types.json`) ; les espèces de Johto prennent leurs types modernes (Marill Eau/Fée, Togepi Fée…) | — |
-| JH-5 | ✅ Les 50 espèces du §8, validées telles quelles (Kevin) | — |
+| JH-5 | ✅ Les 50 espèces du §8, validées telles quelles (Kevin) ; + Écrémeuh (JH-28) = 51 | — |
 | JH-6 | ✅ Jour et nuit **comme Or/Argent** (option C), à l'**heure du téléphone** (Kevin) | — |
 | JH-7 | ✅ L'ancien chef s'appelle **Dante** ; **Giovanni réapparaît à la fin, sans combat**, pour voir tomber son ancien mentor (Kevin) | — |
 | JH-8 | ✅ Kanto change le moins possible : la grotte de Bourg Palette, des messages de Chen, un PNJ ou deux (Kevin) | — |
@@ -111,7 +112,7 @@ Pokémon de l'acte 1 restent utiles ensuite s'ils montent avec l'équipe.
 - Kanto garde son éclairage actuel (JH-8) : les règles de l'heure ne valent qu'à Johto, sauf
   décision contraire.
 
-## 8. Les 50 espèces (validées, JH-5)
+## 8. Les 51 espèces (50 validées, JH-5, + Écrémeuh, JH-28)
 
 Or/Argent ajoutent **100 espèces** (n° 152 à 251). Les types ne bougent pas : le jeu a déjà les 18
 types modernes (JH-4). En prendre 50,
@@ -140,7 +141,8 @@ Ligue ; Togepi est l'exception, comme œuf offert), et les espèces sans rôle n
 | Mont Argenté, Acier | Embrylex, Ymphect, Tyranocif, Airmure, Scarhino, Teddiursa, Ursaring, Phanpy, Donphan | 9 |
 | Routes | Fouinette, Fouinar, Wattouat, Lainergie, Pharamp, Marill, Azumarill | 7 |
 | Œuf offert | Togepi, Togetic | 2 |
-| **Total** | | **50** |
+| Ferme Meumeu (JH-28) | Écrémeuh | 1 |
+| **Total** | | **51** |
 
 ## 9. Le Mont Argenté et l'ancien chef
 
