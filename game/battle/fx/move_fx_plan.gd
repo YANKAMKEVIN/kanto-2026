@@ -77,6 +77,7 @@ class Cue:
 var move_id: StringName = &""
 var family: StringName = &""
 var impact: StringName = &""
+var variant: StringName = &""
 var modifiers: Array[StringName] = []
 var signature: StringName = &""
 var mode: Mode = Mode.FULL
@@ -116,9 +117,21 @@ var bricks: Dictionary = {}
 ## `foliage`, `darken`.
 var world: Array[StringName] = []
 ## Art peint (CV.1, [FxArt]) par rôle : `charge`, `travel`, `bolt`, `impact`, `particle`, `rise`,
-## `fallout`, `dust`, `spray` (grains de Jet de Sable), `stamp` (marque d'impact du Contact), `cheeks`, `feathers` (Éclair) ; la
-## famille, puis la variante d'impact, puis la signature. Rôle absent : forme dessinée en code.
+## `fallout`, `dust`, `spray` (grains de Jet de Sable), `stamp` (marque d'impact du Contact),
+## `cheeks`, `feathers` (Éclair) ; vague 1 « Effets fidèles à Rouge » : `piece` (pièce d'une
+## volée : bulle, aiguille, feuille d'une liane), `sprout` (pousse de Vampigraine), `crack`
+## (claquement), `powder` et `sparkle` (poudres) ; la famille (et sa variante), puis la variante
+## d'impact, puis la signature. Rôle absent : forme dessinée en code.
 var art: Dictionary[StringName, StringName] = {}
+## Volée (`fx.volley`, briques `bubbles`, `needle`, `seed_arc`) : nombre de pièces, écart entre
+## deux départs (part de la fenêtre de vol), taille (hauteurs d'écran), ondulation (hauteurs
+## d'écran).
+var volley_count: int = 1
+var volley_stagger: float = 0.0
+var volley_size: float = 0.08
+var volley_wobble: float = 0.0
+## Claquements par impact (fouet, bec) : `beats` de la variante d'impact, sinon de `fx`.
+var beats: int = 1
 ## Teinte des flipbooks de la famille (`fx.tint` ; blanc : aucune).
 var art_tint: Color = Color.WHITE
 ## Types de la cible (Éclair : plumes sur un Pokémon Vol) ; rempli par la scène, vide sinon.
@@ -223,6 +236,7 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	move_id = entry.move_id
 	family = entry.family
 	impact = entry.impact
+	variant = entry.variant
 	modifiers = entry.modifiers.duplicate()
 	signature = entry.signature
 	mode = plan_mode
@@ -239,12 +253,19 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 		if mode == Mode.REDUCED else 1.0
 	target_shake = mode != Mode.REDUCED
 	bricks = JsonFields.get_dict(family_data, "bricks")
-	var fx := JsonFields.get_dict(family_data, "fx")
+	var fx := catalog.family_fx(family, variant)
 	particles = roundi(JsonFields.get_int(fx, "particles", DEFAULT_PARTICLES) * particle_scale)
 	for color: Variant in JsonFields.get_array(fx, "palette"):
 		if color is String:
 			palette.append(Color.from_string(color, Color.WHITE))
 	_read_art(JsonFields.get_dict(fx, "art"))
+	var volley := JsonFields.get_dict(fx, "volley")
+	volley_count = maxi(1, JsonFields.get_int(volley, "count", 1))
+	volley_stagger = JsonFields.get_float(volley, "stagger", 0.0)
+	volley_size = JsonFields.get_float(volley, "size", volley_size)
+	volley_wobble = JsonFields.get_float(volley, "wobble", 0.0)
+	beats = maxi(1, JsonFields.get_int(catalog.impact(impact), "beats",
+		JsonFields.get_int(fx, "beats", 1)))
 	var stamp := JsonFields.get_id(catalog.impact(impact), "art")
 	if not stamp.is_empty():
 		art[&"stamp"] = stamp

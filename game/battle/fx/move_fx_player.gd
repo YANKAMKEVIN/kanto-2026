@@ -14,7 +14,11 @@ extends Node2D
 ## Briques (`bricks.travel` de la famille) : `dash` (le lanceur traverse, Contact), `bolt` (arc
 ## brisé, Électrique), `beam` / `ice_beam` / `jet` (rayon qui s'allonge), vide (rien ne part du
 ## lanceur : statut positif, soin, regard de RP-286), `sand_spray` (gerbe de grains, Jet de
-## Sable), sinon un projectile lumineux. Formes dessinées en code :
+## Sable) ; vague 1 « Effets fidèles à Rouge » : `bubbles` (bulles qui flottent et éclatent),
+## `needle` (aiguille), `seed_arc` (graines en arc qui germent), `string` (fils tendus puis
+## enroulés), `whip` (liane qui claque), `powder_fall` (poudre qui tombe d'en haut) ; sinon un
+## projectile lumineux. Gestes du lanceur (`bricks.launch`) : `tail_wag` (il se dandine),
+## `powder_shake` (il s'ébroue), `rear_back` (il recule puis se détend). Formes dessinées en code :
 ## échafaudage de CV.0, remplacé par l'art (flipbooks, §2.9, §3.4).
 ## Valeurs visuelles [D] (règle 4), à régler sur le S24.
 
@@ -118,6 +122,58 @@ const SPRAY_DUST_AMOUNT: int = 20
 ## Rôles des sprites d'art : le trajet (projectile, arc), l'impact, deux étincelles de joues, trois
 ## copies en série (ondes du trajet, flux du drain, anneau du piège : jamais dans la même phase).
 enum Flip { TRAVEL, IMPACT, EXTRA_A, EXTRA_B, WAVE_A, WAVE_B, WAVE_C }
+## Vague 1 « Effets fidèles à Rouge » [D] (2026-11-02, à régler sur téléphone).
+## Gestes du lanceur : dandinement (part de sa largeur, balancements), ébrouement (px, secousses),
+## recul (px).
+const WAG_SHIFT: float = 0.09
+const WAG_SWINGS: float = 2.0
+const SHAKE_HOP: float = 10.0
+const SHAKE_SWINGS: float = 3.0
+const REAR_BACK: float = 16.0
+## Briques de lancement qui sont un geste (pas de lueur ni de particules aspirées).
+const GESTURES: Array[String] = ["tail_wag", "powder_shake", "rear_back"]
+## Briques de trajet en pièces ou en traits posés par [method _pose_rouge].
+const ROUGE_TRAVELS: Array[String] = ["bubbles", "needle", "seed_arc", "string", "whip"]
+## Pièces d'une volée (bulles, aiguille, graines, pousses, feuilles d'une liane) : au plus.
+const VOLLEY_MAX: int = 24
+## Bulles : petit soulèvement en vol (hauteurs d'écran), début de l'éclatement (part du vol).
+const BUBBLE_LIFT: float = 0.04
+const BUBBLE_POP: float = 0.85
+## Remplissage d'une bulle (taille, part de la bulle ; opacité).
+const BUBBLE_FILL_SIZE: float = 1.25
+const BUBBLE_FILL_ALPHA: float = 0.45
+## Aiguille : l'art pointe vers le bas à gauche (angle de la pointe dans l'image) ; traînée (part
+## de la taille), éclat de la piqûre (hauteurs d'écran).
+const NEEDLE_POINT: float = PI * 0.75
+const NEEDLE_TRAIL: float = 1.6
+const STING_FLASH: float = 0.14
+## Graines : hauteur de l'arc, pousses (hauteurs d'écran).
+const SEED_ARC: float = 0.22
+const SPROUT_SIZE: float = 0.12
+## Fils de Sécrétion : épaisseur (px), affaissement (hauteurs d'écran), points d'un tour de fil.
+const THREAD_WIDTH: float = 7.0
+const THREAD_SAG: float = 0.03
+const THREAD_COUNT: int = 3
+const WRAP_POINTS: int = 18
+## Liane : épaisseur (px), ondulation au trajet et soulèvement entre deux claquements (hauteurs
+## d'écran), points, taille d'une feuille et de l'étoile du claquement (hauteurs d'écran).
+const WHIP_WIDTH: float = 30.0
+const WHIP_WAVE: float = 0.07
+const WHIP_LIFT: float = 0.16
+const WHIP_POINTS: int = 16
+const WHIP_LEAF: float = 0.07
+const CRACK_SIZE: float = 0.16
+## Bec : taille d'une marque (part de la marque du Contact), points frappés (parts de la cible).
+const PECK_POP: float = 0.5
+const PECK_SPOTS: Array[Vector2] = [Vector2(-0.16, -0.14), Vector2(0.14, 0.06),
+	Vector2(-0.04, 0.2)]
+const DRILL_TURNS: float = 2.5
+## Poudres : départ au-dessus de la cible (hauteurs d'écran), grains et scintillements.
+const POWDER_HEIGHT: float = 0.1
+const POWDER_GRAIN: float = 0.03
+const POWDER_SPARKLE: float = 0.06
+const POWDER_GRAINS: int = 64
+const POWDER_SPARKLES: int = 22
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
 ## images).
@@ -142,6 +198,12 @@ var _beam: Line2D
 var _marks: Array[Line2D] = []
 var _flips: Array[Sprite2D] = []
 var _flip_additive: CanvasItemMaterial
+## Vague 1 « Effets fidèles à Rouge » : pièces d'une volée, fils de Sécrétion, liane du fouet.
+var _volley: Array[Sprite2D] = []
+var _threads: Array[Line2D] = []
+var _whip: Line2D
+var _dot: Texture2D
+var _seed: Texture2D
 ## Instant de la pose en cours (cadence des flipbooks).
 var _t: float = 0.0
 var _tween: Tween
@@ -180,6 +242,11 @@ func play(plan: MoveFxPlan, stage: MoveFxStage) -> void:
 	tween.set_parallel(true)
 	for phase: MoveFxPlan.Phase in plan.phases:
 		tween.tween_callback(_start_phase.bind(phase)).set_delay(phase.start)
+		if phase.name == MoveFxPlan.IMPACT:
+			# Claquements suivants (fouet, bec) : un éclat de plus à chaque temps.
+			for beat: int in range(1, plan.beats):
+				tween.tween_callback(_beat_burst.bind(phase)).set_delay(phase.start
+					+ phase.duration * beat / plan.beats)
 	for cue: MoveFxPlan.Cue in plan.cues:
 		tween.tween_callback(fx_cue.emit.bind(cue.cue, plan.move_id)).set_delay(cue.time)
 	tween.tween_method(pose, 0.0, plan.duration, maxf(plan.duration, 0.001))
@@ -250,6 +317,20 @@ func get_bolt() -> Line2D:
 
 func get_beam() -> Line2D:
 	return _beam
+
+
+## Pièce de volée [param index] : bulle, aiguille, graine, pousse, feuille (tests, galerie).
+func get_piece(index: int) -> Sprite2D:
+	return _volley[index]
+
+
+## Fil [param index] de Sécrétion (0 à 2 : fils tendus ; 3 à 5 : tours autour de la cible).
+func get_thread(index: int) -> Line2D:
+	return _threads[index]
+
+
+func get_whip() -> Line2D:
+	return _whip
 
 
 ## Sprite d'art peint du rôle [param role] (tests, galerie).
@@ -348,7 +429,7 @@ func _start_phase(phase: MoveFxPlan.Phase) -> void:
 	var height := _stage.view_size.y
 	match phase.name:
 		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
-			if not _is_contact():
+			if not _is_contact() and not _is_gesture():
 				var points := _stage.origins if not _stage.origins.is_empty() \
 					else PackedVector2Array([_stage.origin()])
 				for point: Vector2 in points:
@@ -356,7 +437,10 @@ func _start_phase(phase: MoveFxPlan.Phase) -> void:
 						FxParticlePool.Shape.GATHER, 24.0, 0.12 * height, phase.duration)
 		MoveFxPlan.TRAVEL:
 			if _is_particle_travel() and phase.hit == 0:
-				_spray(phase)
+				if _plan.bricks.get("travel", "") == "powder_fall":
+					_powder(phase)
+				else:
+					_spray(phase)
 		MoveFxPlan.IMPACT:
 			_impact_burst(phase)
 			if _plan.has_modifier(&"auto_ko"):
@@ -388,13 +472,26 @@ func _impact_burst(phase: MoveFxPlan.Phase) -> void:
 	match _plan.bricks.get("impact", ""):
 		"rising_aura", "rising_sparkles":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 26.0, reach, life)
-		"falling_aura", "poison_drops", "leaf_fall":
+		"falling_aura", "poison_drops", "leaf_fall", "wrap":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.FALL, 26.0,
 				reach * 0.6, life)
 		"splash":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.FALL, 24.0, reach, life)
 		"debris":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.FALL, 34.0, reach, life)
+		"sting":
+			# Piqûre : un éclat violet bref et serré, quelques gouttes de poison qui tombent.
+			_pool.burst(at, _plan.particles, _plan.palette, FxParticlePool.Shape.BURST, 22.0,
+				reach * 0.45, life * 0.6, true)
+			_art_burst(&"particle", at, roundi(_plan.particles / 2.0), FxParticlePool.Shape.FALL,
+				20.0, reach * 0.5, life)
+		"powder_settle":
+			# La poudre se dépose : un nuage léger de sa couleur gonfle sur la cible.
+			_pool.burst(at, _plan.particles, _plan.palette, FxParticlePool.Shape.RISE, 44.0,
+				reach * 0.35, life * 1.3)
+		"sprout", "whip_crack":
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.FALL, 26.0,
+				reach * 0.6, life)
 		"ember_burst":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.BURST, 30.0, reach, life)
 			_art_burst(&"rise", at, roundi(_plan.particles / 3.0), FxParticlePool.Shape.RISE, 22.0,
@@ -425,6 +522,15 @@ func _art_burst(role: StringName, at: Vector2, amount: int, shape: FxParticlePoo
 		return
 	_pool.burst(at, amount, _plan.palette, shape, maxf(size * 1.6,
 		ART_PARTICLE * _stage.view_size.y), reach, lifetime, info["additive"], info["texture"])
+
+
+## Claquement suivant (fouet, bec) : un éclat plus petit au point d'impact.
+func _beat_burst(phase: MoveFxPlan.Phase) -> void:
+	if _plan == null or _missed(phase.hit):
+		return
+	var height := _stage.view_size.y
+	_art_burst(&"particle", _stage.impact_point(), roundi(_plan.particles / 2.0),
+		FxParticlePool.Shape.BURST, 26.0, 0.12 * height, clampf(phase.duration, 0.3, 0.6))
 
 
 func _art_texture(role: StringName) -> Texture2D:
@@ -470,6 +576,10 @@ func _pose_user(phase: MoveFxPlan.Phase, k: float) -> void:
 					var fall := sin(PI * minf(k * 1.6, 1.0))
 					offset += Vector2(0.0, CRASH_DROP * fall)
 					scale_k *= Vector2(1.0 + CROUCH_SQUASH * fall, 1.0 - CROUCH_SQUASH * 1.5 * fall)
+	elif _is_gesture():
+		var gesture := _gesture(phase, k)
+		offset = gesture[0]
+		scale_k = gesture[1]
 	else:
 		match phase.name:
 			MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
@@ -509,8 +619,13 @@ func _pose_target(phase: MoveFxPlan.Phase, elapsed: float) -> void:
 	if phase.name == MoveFxPlan.IMPACT:
 		# K.O. en un coup réussi : arrêt sur image et tremblement plus longs, plus forts.
 		var heavy := OHKO_FACTOR if _plan.outcome != null and _plan.outcome.ohko else 1.0
-		var stop := minf(HIT_STOP * heavy, phase.duration * 0.5)
-		var k := clampf((elapsed - stop) / maxf(phase.duration - stop, 0.001), 0.0, 1.0)
+		# Claquements (fouet, bec) : la cible encaisse à chaque temps.
+		var beat := phase.duration / _plan.beats
+		if _plan.beats > 1:
+			elapsed = beat if elapsed >= phase.duration - MoveFxPlan.EPSILON \
+				else fmod(elapsed, beat)
+		var stop := minf(HIT_STOP * heavy, beat * 0.5)
+		var k := clampf((elapsed - stop) / maxf(beat - stop, 0.001), 0.0, 1.0)
 		var hit_k := 1.0 - k
 		var impact_brick: String = _plan.bricks.get("impact", "")
 		if elapsed < stop:
@@ -543,6 +658,8 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 	if _is_contact():
 		if phase.name == MoveFxPlan.IMPACT and not _pose_stamp(k):
 			_pose_marks(k)
+	elif ROUGE_TRAVELS.has(String(_plan.bricks.get("travel", ""))):
+		_pose_rouge(phase, k)
 	elif _has_travel() and not _is_particle_travel() and not _pose_art(phase, k):
 		_pose_shapes(phase, k)
 	elif not _has_travel() and not _plan.on_self:
@@ -761,6 +878,9 @@ func _pose_stamp(k: float) -> bool:
 		return false
 	var rect := _stage.target_rect
 	var base := ART_STAMP * minf(rect.size.x, rect.size.y)
+	if _plan.impact == &"bec" or _plan.impact == &"vrille":
+		_pose_beak(stamp, k, base)
+		return true
 	var pop := _ease_out(clampf(k * 3.0, 0.0, 1.0))
 	var alpha := 1.0 - clampf((k - 0.5) * 2.0, 0.0, 1.0)
 	var size := Vector2.ONE * base * lerpf(1.35, 1.0, pop)
@@ -775,6 +895,30 @@ func _pose_stamp(k: float) -> bool:
 			angle = (_stage.target_rest - _stage.user_rest).angle()
 	_show_flip(Flip.IMPACT, stamp, rect.get_center(), size, angle, alpha, false, k)
 	return true
+
+
+## Picpic (`bec`) : une marque brève par coup de bec, à un autre endroit de la cible chaque fois ;
+## Bec Vrille (`vrille`) : la marque tourne en vrille, trois éclats spiralent vers son centre.
+func _pose_beak(stamp: StringName, k: float, base: float) -> void:
+	var rect := _stage.target_rect
+	if _plan.impact == &"bec":
+		var beat := mini(floori(k * _plan.beats), _plan.beats - 1)
+		var kb := k * _plan.beats - beat
+		var pop := _ease_out(clampf(kb * 4.0, 0.0, 1.0))
+		var spot := PECK_SPOTS[beat % PECK_SPOTS.size()] * rect.size
+		_show_flip(Flip.IMPACT, stamp, rect.get_center() + spot, Vector2.ONE * base * PECK_POP
+			* lerpf(1.5, 1.0, pop), 0.3 * beat, 1.0 - clampf((kb - 0.45) / 0.55, 0.0, 1.0))
+		return
+	var spin := TAU * DRILL_TURNS * k
+	var alpha := 1.0 - clampf((k - 0.6) / 0.4, 0.0, 1.0)
+	_show_flip(Flip.IMPACT, stamp, rect.get_center(), Vector2.ONE * base * lerpf(1.2, 0.75,
+		_ease_out(k)), spin, alpha)
+	var roles: Array[Flip] = [Flip.EXTRA_A, Flip.EXTRA_B, Flip.WAVE_A]
+	for i: int in roles.size():
+		var angle := spin * 1.4 + TAU * i / roles.size()
+		var radius := base * 0.6 * (1.0 - _ease_in(k))
+		_show_flip(roles[i], stamp, rect.get_center() + Vector2(cos(angle), sin(angle) * 0.6)
+			* radius, Vector2.ONE * base * 0.3, angle, alpha)
 
 
 ## Sprite d'art [param index] : flipbook ou particule [param id] centré en [param at] (ou, avec
@@ -944,8 +1088,10 @@ func _pose_camera(phase: MoveFxPlan.Phase, elapsed: float, k: float) -> void:
 	match phase.name:
 		MoveFxPlan.IMPACT:
 			var zoom := lerpf(1.0, _plan.camera_zoom, _ease_out(clampf(k * 3.0, 0.0, 1.0)))
-			camera.set_pose(zoom, pivot, BattleCamera.shake_at(elapsed, _plan.camera_shake,
-				phase.duration))
+			var beat := phase.duration / _plan.beats
+			var since := fmod(elapsed, beat) if elapsed < phase.duration - MoveFxPlan.EPSILON \
+				else beat
+			camera.set_pose(zoom, pivot, BattleCamera.shake_at(since, _plan.camera_shake, beat))
 		MoveFxPlan.RETURN:
 			var back := clampf(elapsed / CAMERA_RETURN, 0.0, 1.0)
 			camera.set_pose(lerpf(_plan.camera_zoom, 1.0, _ease_out(back)), pivot)
@@ -1005,10 +1151,377 @@ func _pose_gaze(phase: MoveFxPlan.Phase, k: float) -> void:
 	_show_flip(Flip.EXTRA_A, id, _stage.origin(), Vector2.ONE * size, 0.0, alpha)
 
 
+## La brique de lancement est un geste du lanceur (pas de lueur ni de particules aspirées).
+func _is_gesture() -> bool:
+	return GESTURES.has(String(_plan.bricks.get("launch", "")))
+
+
+## Geste du lanceur : [décalage (px), échelle]. Mimi-Queue (`tail_wag`) : il se dandine de côté
+## (balancements amortis, léger écrasement à chaque bascule) ; poudres (`powder_shake`) : petits
+## sauts rapides ; `rear_back` : il recule pendant l'anticipation et se détend au départ.
+func _gesture(phase: MoveFxPlan.Phase, k: float) -> Array:
+	var offset := Vector2.ZERO
+	var scale_k := Vector2.ONE
+	var dir := (_stage.target_rest - _stage.user_rest).normalized()
+	match String(_plan.bricks.get("launch", "")):
+		"tail_wag":
+			if phase.name == MoveFxPlan.ANTICIPATION:
+				var swing := sin(TAU * WAG_SWINGS * k) * sin(PI * k)
+				offset.x = swing * WAG_SHIFT * _stage.user_rect.size.x
+				scale_k = Vector2(1.0 - 0.03 * absf(swing), 1.0 + 0.02 * absf(swing))
+		"powder_shake":
+			if phase.name == MoveFxPlan.ANTICIPATION:
+				offset.y = -absf(sin(PI * SHAKE_SWINGS * k)) * SHAKE_HOP * sin(PI * k)
+		"rear_back":
+			match phase.name:
+				MoveFxPlan.ANTICIPATION:
+					offset = -dir * REAR_BACK * _ease_out(k)
+				MoveFxPlan.TRAVEL:
+					var snap := clampf(k * 3.0, 0.0, 1.0)
+					offset = -dir * REAR_BACK * (1.0 - snap) + dir * REAR_BACK * 0.6 * sin(PI * snap)
+	return [offset, scale_k]
+
+
+## Trajets de la vague 1 « Effets fidèles à Rouge » (pièces et traits).
+func _pose_rouge(phase: MoveFxPlan.Phase, k: float) -> void:
+	match String(_plan.bricks.get("travel", "")):
+		"bubbles":
+			_pose_bubbles()
+		"needle":
+			_pose_needle(phase, k)
+		"seed_arc":
+			_pose_seeds()
+		"string":
+			_pose_string(phase, k)
+		"whip":
+			_pose_whip(phase, k)
+
+
+## Phase qui conclut le coup 0 : impact, raté ou sans effet (null si l'attaque échoue).
+func _strike() -> MoveFxPlan.Phase:
+	for strike_name: StringName in [MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT]:
+		var found := _plan.phase(strike_name)
+		if found != null:
+			return found
+	return null
+
+
+## Nombre pseudo-aléatoire stable dans [0, 1) pour la pièce [param i] (même rendu à chaque fois).
+static func _rand(i: int) -> float:
+	return fposmod(sin(float(i) * 12.9898 + 4.1414) * 43758.5453, 1.0)
+
+
+func _depth_far() -> float:
+	return PROJECTILE_FAR if _stage.user_is_player else PROJECTILE_NEAR
+
+
+## Écume, Bulles d'O : les bulles partent l'une après l'autre, flottent en ondulant (montée légère)
+## vers des points de la cible, gonflent et s'effacent en arrivant (elles éclatent) ; la volée
+## dure du trajet à la fin de l'impact.
+func _pose_bubbles() -> void:
+	var travel := _plan.phase(MoveFxPlan.TRAVEL)
+	var strike := _strike()
+	var info := FxArt.particle(_plan.art.get(&"piece", &""))
+	if travel == null or strike == null:
+		return
+	var u := (_t - travel.start) / maxf(strike.end() - travel.start, 0.001)
+	if u <= 0.0 or u > 1.0 + MoveFxPlan.EPSILON:
+		return
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var to := _miss_point() if _missed(0) else _stage.impact_point()
+	var normal := (to - from).orthogonal().normalized()
+	var count := mini(_plan.volley_count, floori(VOLLEY_MAX * 0.5))
+	var flight := maxf(1.0 - _plan.volley_stagger * (count - 1), 0.1)
+	var rect := _stage.target_rect
+	for i: int in count:
+		var p := (u - _plan.volley_stagger * i) / flight
+		if p <= 0.0 or p >= 1.0:
+			continue
+		var r := _rand(i)
+		var aim := to + Vector2((r - 0.5) * rect.size.x * 0.5, (_rand(i + 31) - 0.5)
+			* rect.size.y * 0.4)
+		var e := lerpf(p, _ease_out(p), 0.5)
+		var at := from.lerp(aim, e) + normal * sin(TAU * (1.5 * p + r)) * _plan.volley_wobble \
+			* height * (1.0 - 0.5 * p) + Vector2(0.0, -sin(PI * p) * BUBBLE_LIFT * height)
+		var pop := clampf((p - BUBBLE_POP) / (1.0 - BUBBLE_POP), 0.0, 1.0)
+		var size := _plan.volley_size * height * lerpf(0.75, 1.25, r) \
+			* lerpf(1.0, _depth_far(), p * 0.5) * (1.0 + 0.4 * pop)
+		var alpha := minf(1.0, p * 6.0) * (1.0 - pop)
+		# Sous la bulle de verre peinte (presque transparente sur un décor de plein jour), un
+		# remplissage d'eau léger de la couleur de la famille la rend lisible en vol.
+		_show_piece(VOLLEY_MAX - 1 - i, {"texture": _dot, "additive": false}, at, Vector2.ONE
+			* size * BUBBLE_FILL_SIZE, 0.0, alpha * BUBBLE_FILL_ALPHA, _color(1))
+		_show_piece(i, info, at, Vector2.ONE * size, 0.0, alpha)
+
+
+## Dard-Venin : l'aiguille file en accélérant vers la cible, une traînée derrière elle ; elle se
+## plante, un éclat violet marque la piqûre, puis elle s'efface.
+func _pose_needle(phase: MoveFxPlan.Phase, k: float) -> void:
+	var info := FxArt.particle(_plan.art.get(&"piece", &""))
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var to := _miss_point() if _missed(phase.hit) else _stage.impact_point()
+	var dir := (to - from).normalized()
+	var angle := dir.angle() - NEEDLE_POINT
+	var size := Vector2.ONE * _plan.volley_size * height
+	match phase.name:
+		MoveFxPlan.TRAVEL:
+			var p := lerpf(k, _ease_in(k), 0.6)
+			var at := from.lerp(to, p)
+			var scale_k := lerpf(1.0, _depth_far(), p * 0.5)
+			# Halo violet léger sous l'aiguille (fine, elle se perdrait sur le décor).
+			_show_piece(2, {"texture": _dot, "additive": true}, at, size * scale_k * 0.6, 0.0,
+				0.6 * minf(1.0, k * 8.0), _color(1))
+			_show_piece(0, info, at, size * scale_k, angle, minf(1.0, k * 8.0))
+			var trail := _threads[0]
+			trail.visible = k > 0.05
+			trail.points = PackedVector2Array([at - dir * size.x * NEEDLE_TRAIL * scale_k * k, at])
+			_color_line(trail, THREAD_WIDTH * 1.4, 0.75)
+		MoveFxPlan.IMPACT:
+			_show_piece(0, info, to, size * _depth_far(), angle, 1.0 - clampf(k / 0.45, 0.0, 1.0))
+			var flash := _ease_out(clampf(k * 3.0, 0.0, 1.0))
+			_show_piece(1, {"texture": _dot, "additive": true}, to, Vector2.ONE * STING_FLASH
+				* height * lerpf(0.4, 1.0, flash), 0.0, 1.0 - clampf(k / 0.5, 0.0, 1.0), _color(1))
+		MoveFxPlan.MISS:
+			var past := to + (to - from) * MISS_OVERSHOOT * k
+			_show_piece(0, info, past, size * _depth_far(), angle, 1.0 - k)
+
+
+## Vampigraine : les graines partent en arc l'une après l'autre et se posent en haut de la cible ;
+## à l'impact, une pousse sort de chacune (elle grandit avec un léger rebond), puis s'efface au
+## retour. Raté : les graines tombent à côté, rien ne germe.
+func _pose_seeds() -> void:
+	var travel := _plan.phase(MoveFxPlan.TRAVEL)
+	var strike := _strike()
+	if travel == null or strike == null:
+		return
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var rect := _stage.target_rect
+	var missed := _missed(0)
+	var center := _miss_point() if missed else _stage.impact_point()
+	var count := mini(_plan.volley_count, floori(VOLLEY_MAX * 0.5))
+	var flight := maxf(1.0 - _plan.volley_stagger * (count - 1), 0.1)
+	var sprout := FxArt.particle(_plan.art.get(&"sprout", &""))
+	var seed_info := {"texture": _seed, "additive": false}
+	var seed_size := Vector2(1.0, 0.7) * _plan.volley_size * height
+	var back := _plan.phase(MoveFxPlan.RETURN)
+	for i: int in count:
+		var land := center + Vector2((i - (count - 1) * 0.5) * rect.size.x * 0.26,
+			-rect.size.y * (0.12 + 0.08 * _rand(i)))
+		if _t < strike.start:
+			var p := (((_t - travel.start) / travel.duration) - _plan.volley_stagger * i) / flight
+			if p <= 0.0:
+				continue
+			p = minf(p, 1.0)
+			var at := _seed_at(from, land, p, height)
+			var ahead := _seed_at(from, land, minf(p + 0.05, 1.0), height)
+			_show_piece(i, seed_info, at, seed_size * lerpf(1.0, _depth_far(), p),
+				(ahead - at).angle(), 1.0)
+			continue
+		var since := _t - strike.start
+		var fade := 1.0
+		if back != null and _t >= back.start:
+			fade = 1.0 - _ease_in(clampf((_t - back.start) / back.duration, 0.0, 1.0))
+		if missed:
+			var drop := clampf(since / strike.duration, 0.0, 1.0)
+			_show_piece(i, seed_info, land + Vector2(0.0, drop * rect.size.y * 0.5), seed_size
+				* _depth_far(), 0.0, 1.0 - drop)
+			continue
+		_show_piece(i, seed_info, land, seed_size * _depth_far(), 0.0, fade)
+		var grow := clampf(since / (strike.duration * 0.6) - 0.15 * i, 0.0, 1.0)
+		if grow <= 0.0 or sprout.is_empty():
+			continue
+		var g := _ease_out(grow)
+		var size := Vector2(0.8, 1.0 + 0.15 * sin(PI * g)) * SPROUT_SIZE * height * g
+		_show_piece(count + i, sprout, land, size, (_rand(i + 7) - 0.5) * 0.5, fade, Color.WHITE,
+			true)
+
+
+static func _seed_at(from: Vector2, land: Vector2, p: float, height: float) -> Vector2:
+	return from.lerp(land, p) + Vector2(0.0, -sin(PI * p) * SEED_ARC * height)
+
+
+## Sécrétion : trois fils se tendent du lanceur à la cible l'un après l'autre (légèrement
+## affaissés) ; à l'impact, ils s'effacent pendant que trois tours de fil se dessinent autour de
+## la cible (moitié avant), qui restent jusqu'au retour.
+func _pose_string(phase: MoveFxPlan.Phase, k: float) -> void:
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var rect := _stage.target_rect
+	var to := _miss_point() if _missed(phase.hit) else _stage.impact_point()
+	for i: int in THREAD_COUNT:
+		var aim := to + Vector2(0.0, (i - 1) * rect.size.y * 0.22)
+		var reach := 0.0
+		var alpha := 1.0
+		match phase.name:
+			MoveFxPlan.TRAVEL:
+				reach = _ease_out(clampf((k - 0.15 * i) / 0.7, 0.0, 1.0))
+			MoveFxPlan.IMPACT, MoveFxPlan.NO_EFFECT:
+				reach = 1.0
+				alpha = 1.0 - _ease_in(k)
+			MoveFxPlan.MISS:
+				reach = 1.0
+				alpha = 1.0 - k
+		if reach <= 0.0 or alpha <= 0.0:
+			continue
+		var line := _threads[i]
+		line.visible = true
+		var points := PackedVector2Array()
+		var tip := from.lerp(aim, reach)
+		var sag := Vector2(0.0, THREAD_SAG * height * (0.5 + 0.5 * reach))
+		for j: int in 9:
+			var s := j / 8.0
+			points.append(from.lerp(tip, s) + sag * sin(PI * s))
+		line.points = points
+		_color_line(line, THREAD_WIDTH, alpha)
+	if not _plan.lands() or _missed(phase.hit):
+		return
+	var wrap := 0.0
+	var wrap_alpha := 1.0
+	match phase.name:
+		MoveFxPlan.IMPACT:
+			wrap = k
+		MoveFxPlan.RETURN:
+			wrap = 1.0
+			wrap_alpha = 1.0 - _ease_in(k)
+		_:
+			return
+	for i: int in THREAD_COUNT:
+		var w := _ease_out(clampf(wrap * 1.6 - 0.25 * i, 0.0, 1.0))
+		if w <= 0.0:
+			continue
+		var line := _threads[THREAD_COUNT + i]
+		line.visible = true
+		var center := rect.get_center() + Vector2(0.0, (i - 1) * rect.size.y * 0.2)
+		var radius := Vector2(rect.size.x * lerpf(0.5, 0.42, w), rect.size.x * 0.09)
+		var tilt := 0.12 * (i - 1)
+		var points := PackedVector2Array()
+		for j: int in WRAP_POINTS + 1:
+			var a := PI * w * j / WRAP_POINTS
+			points.append(center + Vector2(cos(a) * radius.x, sin(a) * radius.y
+				+ cos(a) * radius.x * tilt))
+		line.points = points
+		_color_line(line, THREAD_WIDTH, wrap_alpha)
+
+
+## Fouet Lianes : la liane sort du lanceur, une ondulation court jusqu'au bout et la tend sur la
+## cible (1er claquement) ; elle se relève en arc et retombe (2e claquement) ; au retour, elle se
+## retire vers le lanceur. Feuilles peintes le long de la liane, étoile à chaque claquement.
+func _pose_whip(phase: MoveFxPlan.Phase, k: float) -> void:
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var missed := _missed(phase.hit)
+	var to := _miss_point() if missed else _stage.impact_point()
+	var tip := to
+	var wave := 0.0
+	var lift := 0.0
+	var alpha := 1.0
+	var crack := -1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION:
+			return
+		MoveFxPlan.TRAVEL:
+			tip = from.lerp(to, _ease_out(k))
+			wave = WHIP_WAVE * height * (1.0 - k)
+		MoveFxPlan.IMPACT, MoveFxPlan.NO_EFFECT:
+			var beat := mini(floori(k * _plan.beats), _plan.beats - 1)
+			var kb := k * _plan.beats - beat
+			crack = kb
+			if beat < _plan.beats - 1 and kb < 0.85:
+				# Entre deux claquements : la liane se relève, puis retombe d'un coup.
+				lift = sin(PI * kb / 0.85)
+				tip = to.lerp(from, 0.18 * lift)
+		MoveFxPlan.MISS:
+			tip = to + (to - from) * 0.15 * k
+			alpha = 1.0 - _ease_in(k)
+		MoveFxPlan.RETURN:
+			tip = to.lerp(from, _ease_in_out(k))
+			alpha = 1.0 - _ease_in(k) * 0.6
+	if from.distance_to(tip) < 1.0:
+		return
+	var normal := (tip - from).orthogonal().normalized()
+	if normal.y > 0.0:
+		normal = -normal
+	var points := PackedVector2Array()
+	for j: int in WHIP_POINTS:
+		var s := j / float(WHIP_POINTS - 1)
+		var at := from.lerp(tip, s)
+		at += normal * sin(TAU * (s * 1.3 - _t * 2.5)) * wave * sin(PI * s)
+		at += normal * sin(PI * s) * lift * WHIP_LIFT * height
+		points.append(at)
+	_whip.points = points
+	_whip.visible = true
+	_color_whip(alpha)
+	var leaf := FxArt.particle(_plan.art.get(&"piece", &""))
+	for i: int in 3:
+		var at := points[roundi((0.3 + 0.25 * i) * (WHIP_POINTS - 1))]
+		var side := 1.0 if i % 2 == 0 else -1.0
+		_show_piece(i, leaf, at + normal * side * WHIP_LEAF * height * 0.35, Vector2.ONE
+			* WHIP_LEAF * height, normal.angle() * side, alpha)
+	if crack >= 0.0 and not missed:
+		var star := FxArt.particle(_plan.art.get(&"crack", &""))
+		var pop := _ease_out(clampf(crack * 4.0, 0.0, 1.0))
+		_show_piece(3, star, to, Vector2.ONE * CRACK_SIZE * height * lerpf(0.5, 1.1, pop),
+			crack * 0.6, 1.0 - clampf((crack - 0.25) / 0.4, 0.0, 1.0))
+
+
+## Liane : corps vert sombre, cœur plus clair.
+func _color_whip(alpha: float) -> void:
+	_whip.width = WHIP_WIDTH
+	_whip.default_color = Color(_color(2), alpha)
+	var core := _whip.get_child(0) as Line2D
+	core.points = _whip.points
+	core.width = WHIP_WIDTH * 0.55
+	core.default_color = Color(_color(1), alpha)
+
+
+## Pièce de volée [param index] : la particule [param info] ({texture, additive}, vide : rien)
+## centrée en [param at] (pieds en [param at] avec [param from_feet]), à [param size] px.
+func _show_piece(index: int, info: Dictionary, at: Vector2, size: Vector2, angle: float,
+		alpha: float, tint: Color = Color.WHITE, from_feet: bool = false) -> void:
+	if info.is_empty() or alpha <= 0.0 or size.x <= 0.0 or size.y <= 0.0 or index >= VOLLEY_MAX:
+		return
+	var texture: Texture2D = info["texture"]
+	var sprite := _volley[index]
+	sprite.visible = true
+	sprite.texture = texture
+	sprite.material = _flip_additive if info["additive"] else null
+	sprite.offset = Vector2(0.0, -texture.get_height() * 0.5) if from_feet else Vector2.ZERO
+	sprite.position = at
+	sprite.rotation = angle
+	sprite.scale = size / Vector2(texture.get_width(), texture.get_height())
+	sprite.modulate = Color(tint, alpha)
+
+
+## Poudres : grains de la couleur de la variante (peints s'il y en a : Spore) et scintillements
+## tombent d'au-dessus de la cible, en pluie continue jusqu'à la fin de l'impact.
+func _powder(phase: MoveFxPlan.Phase) -> void:
+	var height := _stage.view_size.y
+	var rect := _stage.target_rect
+	var to := _miss_point() if _missed(phase.hit) else _stage.impact_point()
+	var top := Vector2(to.x, rect.position.y - POWDER_HEIGHT * height)
+	var fall := to.y + rect.size.y * 0.25 - top.y
+	var strike := _strike()
+	var life := phase.duration + (strike.duration if strike != null else 0.0)
+	var width := rect.size.x * 0.4
+	# La colonne de pluie couvre le haut de la cible et l'air au-dessus.
+	top.y += fall * FxParticlePool.SIFT_COLUMN
+	var grain := _art_texture(&"powder")
+	_pool.burst(top, roundi(POWDER_GRAINS * _plan.particle_scale), _plan.palette,
+		FxParticlePool.Shape.SIFT, POWDER_GRAIN * height * (2.0 if grain != null else 1.0), fall,
+		life, false, grain, Vector2.DOWN, width)
+	_pool.burst(top, roundi(POWDER_SPARKLES * _plan.particle_scale), _plan.palette,
+		FxParticlePool.Shape.SIFT, POWDER_SPARKLE * height, fall, life, true,
+		_art_texture(&"sparkle"), Vector2.DOWN, width, true)
+
+
 ## Trajet fait de particules seules (`sand_spray`, Jet de Sable, RP-286) : ni projectile ni art
 ## de trajet ; la gerbe part au début du trajet ([method _spray]).
 func _is_particle_travel() -> bool:
-	return _plan.bricks.get("travel", "") == "sand_spray"
+	var travel: String = _plan.bricks.get("travel", "")
+	return travel == "sand_spray" or travel == "powder_fall"
 
 
 ## Gerbe de grains (Jet de Sable) : un flux en éventail serré du lanceur vers la cible (ou à côté
@@ -1078,6 +1591,11 @@ func _end() -> void:
 func _hide_shapes() -> void:
 	for flip: Sprite2D in _flips:
 		flip.visible = false
+	for piece: Sprite2D in _volley:
+		piece.visible = false
+	for thread: Line2D in _threads:
+		thread.visible = false
+	_whip.visible = false
 	_projectile.visible = false
 	_bolt.visible = false
 	_beam.visible = false
@@ -1123,7 +1641,40 @@ func _build() -> void:
 		flip.add_child(body)
 		add_child(flip)
 		_flips.append(flip)
+	_dot = dot
+	_seed = _seed_texture()
+	for i: int in VOLLEY_MAX:
+		var piece := _make_sprite(StringName("Piece%d" % i), null, null)
+		add_child(piece)
+		_volley.append(piece)
+	for i: int in THREAD_COUNT * 2:
+		var thread := _make_line(StringName("Thread%d" % i), THREAD_WIDTH)
+		thread.width_curve = null
+		(thread.get_child(0) as Line2D).width_curve = null
+		_threads.append(thread)
+	_whip = _make_line(&"Whip", WHIP_WIDTH)
+	var taper := Curve.new()
+	taper.add_point(Vector2(0.0, 1.0))
+	taper.add_point(Vector2(1.0, 0.3))
+	_whip.width_curve = taper
+	(_whip.get_child(0) as Line2D).width_curve = taper
 	_hide_shapes()
+
+
+## Graine (Vampigraine) dessinée en code [phase DA] : ovale brun, cœur clair.
+static func _seed_texture() -> Texture2D:
+	var gradient := Gradient.new()
+	gradient.offsets = PackedFloat32Array([0.0, 0.25, 0.8, 0.92, 1.0])
+	gradient.colors = PackedColorArray([Color("#F2DEB0"), Color("#B88A4A"), Color("#5A3C1A"),
+		Color("#3A2410"), Color(0.23, 0.14, 0.06, 0.0)])
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.fill = GradientTexture2D.FILL_RADIAL
+	texture.fill_from = Vector2(0.5, 0.5)
+	texture.fill_to = Vector2(1.0, 0.5)
+	texture.width = 64
+	texture.height = 64
+	return texture
 
 
 ## Sprite de préchauffage : [param texture] ramenée à [constant WARMUP_SIZE] px.

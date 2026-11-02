@@ -18,6 +18,9 @@ const SEED_BASE: int = 2026
 ## Gerbe (SPRAY) [D] : demi-angle de l'éventail (degrés), étalement des départs (0 : flux).
 const SPRAY_SPREAD: float = 12.0
 const SPRAY_EXPLOSIVENESS: float = 0.35
+## Pluie (SIFT) [D] : demi-hauteur de la colonne de départ, en part de la portée (centrée sur le
+## point donné).
+const SIFT_COLUMN: float = 0.4
 
 ## Forme d'un éclat.
 enum Shape {
@@ -31,6 +34,9 @@ enum Shape {
 	GATHER,
 	## Gerbe en éventail serré dans une direction, en flux (Jet de Sable, RP-286).
 	SPRAY,
+	## Pluie fine qui tombe d'une bande horizontale, en continu (poudres, vague 1 « Effets
+	## fidèles à Rouge »).
+	SIFT,
 }
 
 ## Vitesse des particules (0 : figées ; elles ne partent pas).
@@ -80,12 +86,15 @@ func build() -> void:
 ## Lance un éclat de [param amount] particules en [param at] (px du calque) : forme
 ## [param shape], dégradé [param palette] (cœur → bord, fondu à la fin), taille [param size] (px),
 ## portée [param reach] (px), durée de vie [param lifetime] (s), matière (mélange normal, par
-## défaut : lisible sur un décor de plein jour) ou lumière additive.
+## défaut : lisible sur un décor de plein jour) ou lumière additive. [param direction] : sens de
+## la gerbe (SPRAY) ; [param extent] : demi-largeur de la bande de départ (SIFT, px) ;
+## [param tinted] : une particule peinte prend aussi les couleurs de [param palette].
 ## Rend l'émetteur utilisé (null si [param amount] ≤ 0 ou si le budget est plein).
 func burst(at: Vector2, amount: int, palette: PackedColorArray, shape: Shape = Shape.BURST,
 		size: float = 28.0, reach: float = 160.0, lifetime: float = 0.5,
 		additive: bool = false, texture: Texture2D = null,
-		direction: Vector2 = Vector2.UP) -> CPUParticles2D:
+		direction: Vector2 = Vector2.UP, extent: float = 0.0,
+		tinted: bool = false) -> CPUParticles2D:
 	build()
 	var count := mini(mini(amount, MAX_PER_EMITTER), MAX_ON_SCREEN - _busy_particles())
 	if count <= 0:
@@ -100,12 +109,15 @@ func burst(at: Vector2, amount: int, palette: PackedColorArray, shape: Shape = S
 	# Particule peinte (CV.1) : ses couleurs telles quelles, fondu à la fin ; sinon le point doux
 	# teinté par la palette.
 	emitter.texture = texture if texture != null else _texture
-	emitter.color_ramp = ramp(PackedColorArray([Color.WHITE]) if texture != null else palette)
+	emitter.color_ramp = ramp(PackedColorArray([Color.WHITE]) if texture != null and not tinted
+		else palette)
 	var width := float(texture.get_width()) if texture != null else float(TEXTURE_SIZE)
 	emitter.scale_amount_min = size / width * 0.6
 	emitter.scale_amount_max = size / width
 	emitter.scale_amount_curve = _size_curve
 	_shape(emitter, shape, reach, lifetime)
+	if shape == Shape.SIFT:
+		emitter.emission_rect_extents = Vector2(maxf(extent, 1.0), reach * SIFT_COLUMN)
 	if shape == Shape.SPRAY:
 		emitter.direction = direction.normalized() if direction != Vector2.ZERO else Vector2.UP
 	emitter.speed_scale = maxf(speed_scale, 0.0)
@@ -217,11 +229,22 @@ func _shape(emitter: CPUParticles2D, shape: Shape, reach: float, lifetime: float
 			emitter.initial_velocity_min = speed * 0.85
 			emitter.initial_velocity_max = speed * 1.15
 			emitter.gravity = Vector2(0.0, speed * 0.6)
+		Shape.SIFT:
+			# Les grains naissent sur toute la colonne (rideau qui tombe, lisible même si la
+			# vie est courte) et descendent doucement, en s'accélérant un peu.
+			emitter.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+			emitter.direction = Vector2.DOWN
+			emitter.spread = 14.0
+			emitter.initial_velocity_min = speed * 0.25
+			emitter.initial_velocity_max = speed * 0.45
+			emitter.gravity = Vector2(0.0, speed * 0.4 / maxf(lifetime, 0.05))
 	match shape:
 		Shape.RISE:
 			emitter.explosiveness = 0.3
 		Shape.SPRAY:
 			emitter.explosiveness = SPRAY_EXPLOSIVENESS
+		Shape.SIFT:
+			emitter.explosiveness = 0.0
 		_:
 			emitter.explosiveness = 0.9
 

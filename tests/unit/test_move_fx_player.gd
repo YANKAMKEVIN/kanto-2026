@@ -315,11 +315,11 @@ func test_self_family_stays_on_user() -> void:
 	_player.stop()
 
 
-## RP-286 : Groz'Yeux et Mimi-Queue n'ont pas de trajet ; rien ne part du lanceur, même avant
-## l'impact, et l'aura naît sur la cible. Jet de Sable garde son trajet.
+## RP-286 : Groz'Yeux et Regard Médusant n'ont pas de trajet ; rien ne part du lanceur, même
+## avant l'impact, et l'aura naît sur la cible. Jet de Sable garde son trajet.
 func test_gaze_family_sends_nothing_toward_the_target() -> void:
 	var stage := _stage()
-	for move_id: StringName in [&"leer", &"tail_whip"]:
+	for move_id: StringName in [&"leer", &"glare"]:
 		var plan := _plan(move_id)
 		assert_null(plan.phase(MoveFxPlan.TRAVEL), "%s : pas de phase de trajet" % move_id)
 		_player.play(plan, stage)
@@ -360,6 +360,221 @@ func test_sand_attack_sprays_grains_toward_the_target() -> void:
 		assert_gte(spray.amount, 32, "nombreux grains")
 		assert_eq(spray.texture, FxArt.particle(&"grain_sable").get("texture"), "grains peints")
 	_player.stop()
+
+
+## Vague 1 « Effets fidèles à Rouge » : rien ne part en lueur (ni projectile rond ni art de
+## trajet) pour ces attaques, à aucun instant, et la scène revient au repos.
+func test_rouge_wave_1_never_sends_a_glow() -> void:
+	var stage := _stage()
+	for move_id: StringName in [&"tail_whip", &"vine_whip", &"bubble", &"bubble_beam",
+			&"string_shot", &"poison_sting", &"peck", &"drill_peck", &"sleep_powder",
+			&"stun_spore", &"poison_powder", &"spore", &"leech_seed"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		for phase: MoveFxPlan.Phase in plan.phases:
+			for part: float in [0.2, 0.5, 0.8]:
+				_player.pose(phase.start + phase.duration * part)
+				assert_false(_player.get_projectile().visible, "%s : pas de lueur" % move_id)
+				assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible,
+					"%s : pas d'art de trajet (%s)" % [move_id, phase.name])
+		_player.stop()
+		_assert_at_rest(stage)
+
+
+## Mimi-Queue : plus d'œil ; le lanceur se dandine de côté (deux balancements et demi), puis
+## revient à sa place.
+func test_tail_whip_wags_the_user_without_an_eye() -> void:
+	var stage := _stage()
+	var plan := _plan(&"tail_whip")
+	_player.play(plan, stage)
+	var anticipation := plan.phase(MoveFxPlan.ANTICIPATION)
+	var lefts := 0
+	var rights := 0
+	for i: int in 41:
+		_player.pose(anticipation.start + anticipation.duration * i / 40.0)
+		assert_false(_player.get_art(MoveFxPlayer.Flip.EXTRA_A).visible, "pas d'œil")
+		var dx := _user.position.x - stage.user_rest.x
+		assert_eq(_user.position.y, stage.user_rest.y, "de côté seulement")
+		if dx < -2.0:
+			lefts += 1
+		elif dx > 2.0:
+			rights += 1
+	assert_gt(lefts, 0, "il se balance à gauche")
+	assert_gt(rights, 0, "et à droite")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Écume et Bulles d'O : plusieurs bulles peintes en vol en même temps, entre le lanceur et la
+## cible ; Bulles d'O en montre plus.
+func test_bubbles_float_toward_the_target_and_bubble_beam_sends_more() -> void:
+	var stage := _stage()
+	var peaks: Dictionary = {}
+	for move_id: StringName in [&"bubble", &"bubble_beam"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		var travel := plan.phase(MoveFxPlan.TRAVEL)
+		var peak := 0
+		for i: int in 21:
+			_player.pose(travel.start + travel.duration * i / 20.0)
+			var shown := 0
+			for index: int in MoveFxPlayer.VOLLEY_MAX:
+				var piece := _player.get_piece(index)
+				if piece.visible and piece.texture == FxArt.particle(&"bulle").get("texture"):
+					shown += 1
+					assert_between(piece.position.x, stage.origin().x - 80.0,
+						stage.target_rect.end.x + 80.0, "%s : entre les deux" % move_id)
+			peak = maxi(peak, shown)
+		peaks[move_id] = peak
+		assert_gte(peak, 3, "%s : une volée de bulles" % move_id)
+		_player.stop()
+	assert_gt(peaks[&"bubble_beam"], peaks[&"bubble"], "Bulles d'O : plus nombreuses")
+
+
+## Dard-Venin : une aiguille peinte, pointe vers la cible, qui avance ; piqûre à l'impact.
+func test_poison_sting_flies_a_needle_point_first() -> void:
+	var stage := _stage()
+	var plan := _plan(&"poison_sting")
+	_player.play(plan, stage)
+	var travel := plan.phase(MoveFxPlan.TRAVEL)
+	_player.pose(travel.start + travel.duration * 0.3)
+	var needle := _player.get_piece(0)
+	assert_true(needle.visible, "l'aiguille vole")
+	assert_eq(needle.texture, FxArt.particle(&"aiguille").get("texture"), "aiguille peinte")
+	var first := needle.position
+	var toward := (stage.impact_point() - stage.origin()).normalized()
+	var point := Vector2.from_angle(needle.rotation + MoveFxPlayer.NEEDLE_POINT)
+	assert_gt(point.dot(toward), 0.99, "pointe vers la cible")
+	_player.pose(travel.start + travel.duration * 0.8)
+	assert_gt((needle.position - first).dot(toward), 0.0, "elle avance")
+	var impact := plan.phase(MoveFxPlan.IMPACT)
+	_player.pose(impact.start + impact.duration * 0.1)
+	assert_true(_player.get_piece(1).visible, "piqûre")
+	_player.stop()
+
+
+## Sécrétion : des fils tendus du lanceur à la cible, puis des tours de fil autour d'elle.
+func test_string_shot_stretches_threads_then_wraps_the_target() -> void:
+	var stage := _stage()
+	var plan := _plan(&"string_shot")
+	_player.play(plan, stage)
+	var travel := plan.phase(MoveFxPlan.TRAVEL)
+	_player.pose(travel.end() - 0.001)
+	for i: int in MoveFxPlayer.THREAD_COUNT:
+		var thread := _player.get_thread(i)
+		assert_true(thread.visible, "fil %d tendu" % i)
+		assert_almost_eq(thread.points[0], stage.origin(), Vector2.ONE, "part du lanceur")
+		assert_true(stage.target_rect.grow(20.0).has_point(thread.points[-1]), "jusqu'à la cible")
+	var impact := plan.phase(MoveFxPlan.IMPACT)
+	_player.pose(impact.end() - 0.001)
+	for i: int in MoveFxPlayer.THREAD_COUNT:
+		var wrap := _player.get_thread(MoveFxPlayer.THREAD_COUNT + i)
+		assert_true(wrap.visible, "tour de fil %d" % i)
+		for point: Vector2 in wrap.points:
+			assert_true(stage.target_rect.grow(stage.target_rect.size.x * 0.1).has_point(point),
+				"autour de la cible")
+	_player.stop()
+
+
+## Fouet Lianes : une liane tendue du lanceur à la cible, qui frappe deux fois (la cible encaisse
+## au début de chaque temps).
+func test_vine_whip_lashes_twice() -> void:
+	var stage := _stage()
+	var plan := _plan(&"vine_whip")
+	assert_eq(plan.beats, 2, "deux claquements")
+	_player.play(plan, stage)
+	var impact := plan.phase(MoveFxPlan.IMPACT)
+	_player.pose(impact.start)
+	var whip := _player.get_whip()
+	assert_true(whip.visible, "la liane est tendue")
+	assert_almost_eq(whip.points[0], stage.origin(), Vector2.ONE, "depuis le lanceur")
+	assert_almost_eq(whip.points[-1], stage.impact_point(), Vector2.ONE * 2.0, "jusqu'à la cible")
+	var first := _target.modulate
+	_player.pose(impact.start + impact.duration * 0.25)
+	assert_true(whip.points[whip.points.size() / 2].y < stage.origin().lerp(stage.impact_point(),
+		0.5).y, "elle se relève entre les deux coups")
+	_player.pose(impact.start + impact.duration * 0.5 + 0.001)
+	assert_eq(_target.modulate, first, "second claquement : la cible encaisse à nouveau")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Poudres : une pluie de grains part d'au-dessus de la cible, vers le bas, de la couleur de la
+## poudre.
+func test_powders_fall_from_above_in_their_color() -> void:
+	var stage := _stage()
+	var colors: Dictionary = {}
+	for move_id: StringName in [&"sleep_powder", &"stun_spore", &"poison_powder", &"spore"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		var travel := plan.phase(MoveFxPlan.TRAVEL)
+		_player.advance(travel.start + 0.001)
+		var rain: CPUParticles2D = null
+		for emitter: CPUParticles2D in _player.get_pool().get_emitters():
+			if emitter.visible and emitter.emission_shape == CPUParticles2D.EMISSION_SHAPE_RECTANGLE \
+					and emitter.material.blend_mode == CanvasItemMaterial.BLEND_MODE_MIX:
+				rain = emitter
+		assert_not_null(rain, "%s : pluie de poudre" % move_id)
+		if rain != null:
+			assert_lt(rain.position.y - rain.emission_rect_extents.y, stage.target_rect.position.y,
+				"%s : d'en haut" % move_id)
+			assert_true(stage.target_rect.has_point(rain.position + Vector2(0.0,
+				rain.emission_rect_extents.y)), "%s : jusque sur la cible" % move_id)
+			assert_eq(rain.direction, Vector2.DOWN, "%s : vers le bas" % move_id)
+			colors[move_id] = plan.palette[1]
+		_player.stop()
+	assert_eq(_plan(&"spore").art.get(&"powder"), &"spore", "Spore : grains peints")
+	var unique: Dictionary = {}
+	for move_id: StringName in colors:
+		unique[colors[move_id]] = true
+	assert_eq(unique.size(), 4, "une couleur par poudre")
+
+
+## Vampigraine : des graines en arc (au-dessus de la ligne droite), puis des pousses sur la cible.
+func test_leech_seed_arcs_seeds_that_sprout() -> void:
+	var stage := _stage()
+	var plan := _plan(&"leech_seed")
+	_player.play(plan, stage)
+	var travel := plan.phase(MoveFxPlan.TRAVEL)
+	_player.pose(travel.start + travel.duration * 0.45)
+	var seed_piece := _player.get_piece(0)
+	assert_true(seed_piece.visible, "une graine vole")
+	var straight_y := stage.origin().lerp(stage.impact_point(), 0.5).y
+	assert_lt(seed_piece.position.y, straight_y, "en arc")
+	var impact := plan.phase(MoveFxPlan.IMPACT)
+	_player.pose(impact.end() - 0.001)
+	var sprout := _player.get_piece(plan.volley_count)
+	assert_true(sprout.visible, "une pousse sort")
+	assert_eq(sprout.texture, FxArt.particle(&"liane").get("texture"), "pousse peinte")
+	assert_true(stage.target_rect.grow(40.0).has_point(sprout.position), "sur la cible")
+	_player.stop()
+
+
+## Picpic : deux marques rapides à deux endroits de la cible ; Bec Vrille : la marque tourne.
+func test_peck_marks_twice_and_drill_peck_spins() -> void:
+	var stage := _stage()
+	var plan := _plan(&"peck")
+	assert_eq(plan.beats, 2, "deux coups de bec")
+	_player.play(plan, stage)
+	var impact := plan.phase(MoveFxPlan.IMPACT)
+	var mark := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+	_player.pose(impact.start + impact.duration * 0.1)
+	assert_true(mark.visible, "premier coup")
+	var first := mark.position
+	_player.pose(impact.start + impact.duration * 0.6)
+	assert_true(mark.visible, "second coup")
+	assert_gt(mark.position.distance_to(first), 10.0, "à un autre endroit")
+	_player.stop()
+	plan = _plan(&"drill_peck")
+	_player.play(plan, stage)
+	impact = plan.phase(MoveFxPlan.IMPACT)
+	_player.pose(impact.start + impact.duration * 0.1)
+	var angle := mark.rotation
+	_player.pose(impact.start + impact.duration * 0.3)
+	assert_ne(mark.rotation, angle, "la marque tourne")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.EXTRA_A).visible, "éclats en spirale")
+	_player.stop()
+	_assert_at_rest(stage)
 
 
 # --- Caméra ----------------------------------------------------------------------------
