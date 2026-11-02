@@ -200,3 +200,46 @@ func test_front_texture_fallback_chain() -> void:
 	var unknown := TrainerIntro.build(trainer, Party.new(), _catalog)
 	assert_eq(TrainerIntroStage.foe_texture(unknown, none).get_size(),
 		Vector2(TrainerIntroStage.SILHOUETTE_SIZE), "aucune classe : silhouette")
+
+
+## Le lancer : la Ball reste ronde (même échelle sur les deux axes), passe par le point de
+## l'arc des données, et la traînée part de la main.
+func test_ball_flies_round_through_the_arc() -> void:
+	var intro := _intro(false)
+	var view := TrainerIntroStage.new()
+	add_child_autofree(view)
+	var size := Vector2(2340, 1080)
+	view.begin(intro, size, TrainerIntroStage.silhouette(), TrainerIntroStage.silhouette())
+	view.speed_scale = 0.0
+	await view.play_enter()
+	var ball := view.get_node(^"ThrownBall") as Sprite2D
+	var trail := view.get_node(^"Trail") as Line2D
+	var via := _catalog.point("foe_via") * size
+	var closest := [INF]
+	var round_ball := [true]
+	var trail_from_hand := [true]
+	var clock := TweenClock.new(get_tree())
+	view.speed_scale = 1.0
+	var done := [false]
+	var runner := func() -> void:
+		await view.play_send(BattleEvent.SideId.FOE, Callable())
+		done[0] = true
+	runner.call()
+	var steps := 0
+	while not done[0] and steps < 300:
+		clock.step()
+		steps += 1
+		if ball.visible:
+			closest[0] = minf(closest[0], ball.position.distance_to(via))
+			round_ball[0] = round_ball[0] and is_equal_approx(ball.scale.x, ball.scale.y)
+			if trail.get_point_count() > 1:
+				var hand := trail.get_point_position(0)
+				trail_from_hand[0] = trail_from_hand[0] and hand.distance_to(
+					trail.get_point_position(0)) < 0.5
+		await get_tree().process_frame
+	clock.release()
+	assert_true(done[0])
+	assert_lt(closest[0], 0.03 * size.x, "l'arc passe près de (56 %, 28 %)")
+	assert_true(round_ball[0], "Ball ronde")
+	assert_almost_eq(ball.scale.x * TrainerIntroStage.BALL_VISIBLE, 0.024 * size.x, 0.5,
+		"diamètre 2,4 % de la largeur")

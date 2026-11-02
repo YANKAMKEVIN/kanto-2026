@@ -6,8 +6,9 @@ extends RefCounted
 ##
 ## - « durations » : durées (s) des étapes ([enum TrainerIntro.Step]) ;
 ## - « message_hold_scale » : tenue des messages de l'ouverture (gestes et messages se chevauchent) ;
-## - « layout » : tailles en hauteurs d'écran ; « points » : positions (x depuis le centre, y depuis
-##   le haut, en hauteurs d'écran) ou décalages, présentation ;
+## - « layout » : tailles ; « poses » : [x, pieds, hauteur] des dresseurs (entrée, lancer, « VS ») ;
+##   « points » : cartouche, mains, arcs des Balls ; fractions de l'écran (x depuis la gauche,
+##   y depuis le haut), présentation ;
 ## - « paths » : conventions des images (sprite de face, pose de lancer, dos du joueur, portrait) ;
 ## - « classes » : classe de Dresseur ordinaire → préfixe de son nom (« Gamin » pour « Gamin
 ##   Hugo » ; vide : seulement imposée par les données, « class » du Dresseur) et apparence du
@@ -17,18 +18,20 @@ extends RefCounted
 
 const PATH: String = "res://data/battle/trainer_intro.json"
 const DURATION_KEYS: Array[String] = [
-	"trainers_delay", "trainers_in", "balls_in", "vs_in", "vs_hold", "vs_out", "send_throw",
-	"send_linger", "send_exit",
+	"trainers_delay", "trainers_in", "balls_in", "vs_in", "vs_hold", "vs_out", "send_windup",
+	"send_throw", "send_linger", "send_exit",
 ]
 const LAYOUT_KEYS: Array[String] = [
-	"player_trainer_height", "foe_trainer_height", "trainer_slide", "shadow_width",
-	"shadow_flatten", "ball_size", "throw_ball_size", "ball_gap", "cartouche_pad", "cartouche_raise", "throw_arc",
-	"trail_width",
+	"trainer_slide", "shadow_width", "shadow_flatten", "cartouche_pad", "ball_gap",
+	"ball_diameter", "trail_width", "windup_tilt",
 ]
 const POINT_KEYS: Array[String] = [
-	"player_feet", "foe_feet", "cartouche_offset", "player_hand", "foe_hand",
-	"player_ball_target", "foe_ball_target",
+	"cartouche_min", "cartouche_max", "player_hand", "foe_hand", "foe_via", "foe_target",
+	"player_via", "player_target",
 ]
+## Poses des dresseurs : à l'entrée, au lancer, pendant le « VS ».
+const POSE_KEYS: Array[String] = ["entry", "throw", "vs"]
+const POSE_SIDES: Array[String] = ["player", "foe"]
 const PATH_KEYS: Array[String] = [
 	"front_dir", "portrait_dir", "extension", "throw_suffix", "player_prefix",
 ]
@@ -37,8 +40,11 @@ const PATH_KEYS: Array[String] = [
 var durations: Dictionary[String, float] = {}
 ## Tailles (hauteurs d'écran) par clé de [constant LAYOUT_KEYS].
 var layout: Dictionary[String, float] = {}
-## Points (hauteurs d'écran) par clé de [constant POINT_KEYS].
+## Points (fractions de l'écran, ou de la hauteur du dresseur pour les mains) par clé de
+## [constant POINT_KEYS].
 var points: Dictionary[String, Vector2] = {}
+## Poses : « entry/player » → (x du centre, y des pieds, hauteur), fractions de l'écran.
+var poses: Dictionary[String, Vector3] = {}
 ## Facteur de tenue des messages de l'ouverture (1 : tenue normale).
 var message_hold_scale: float = 1.0
 var front_dir: String = ""
@@ -82,6 +88,7 @@ func add_from_dict(root: Dictionary) -> bool:
 	ok = _read_numbers(root.get("durations"), DURATION_KEYS, durations, "durations") and ok
 	ok = _read_numbers(root.get("layout"), LAYOUT_KEYS, layout, "layout") and ok
 	ok = _read_points(root.get("points")) and ok
+	ok = _read_poses(root.get("poses")) and ok
 	var hold: Variant = root.get("message_hold_scale", 1.0)
 	if not (hold is float or hold is int) or float(hold) <= 0.0:
 		ok = _fail("TrainerIntroCatalog : message_hold_scale doit être un nombre > 0")
@@ -187,6 +194,12 @@ func point(key: String) -> Vector2:
 	return points.get(key, Vector2.ZERO)
 
 
+## Pose [param pose] (« entry », « throw », « vs ») du dresseur [param side] (« player »,
+## « foe ») : (x du centre, y des pieds, hauteur) en fractions de l'écran.
+func pose(pose_name: String, side: String) -> Vector3:
+	return poses.get(pose_name + "/" + side, Vector3.ZERO)
+
+
 func get_errors() -> PackedStringArray:
 	return _errors
 
@@ -217,6 +230,27 @@ func _read_points(value: Variant) -> bool:
 			ok = _fail("TrainerIntroCatalog : points.%s doit être [x, y]" % key)
 			continue
 		points[key] = Vector2(float(pair[0]), float(pair[1]))
+	return ok
+
+
+func _read_poses(value: Variant) -> bool:
+	if not value is Dictionary:
+		return _fail("TrainerIntroCatalog : « poses » manquant")
+	var ok := true
+	for pose_name: String in POSE_KEYS:
+		var entry: Variant = (value as Dictionary).get(pose_name)
+		for side: String in POSE_SIDES:
+			var triple: Variant = (entry as Dictionary).get(side) if entry is Dictionary else null
+			if not triple is Array or (triple as Array).size() != 3:
+				ok = _fail("TrainerIntroCatalog : poses.%s.%s doit être [x, pieds, hauteur]"
+					% [pose_name, side])
+				continue
+			var numbers: Array = triple
+			if numbers.any(func(n: Variant) -> bool: return not (n is float or n is int)):
+				ok = _fail("TrainerIntroCatalog : poses.%s.%s : nombres attendus"
+					% [pose_name, side])
+				continue
+			poses[pose_name + "/" + side] = Vector3(numbers[0], numbers[1], numbers[2])
 	return ok
 
 

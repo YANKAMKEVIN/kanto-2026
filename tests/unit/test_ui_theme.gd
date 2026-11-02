@@ -277,7 +277,7 @@ func test_battle_move_and_message_variations_match_tokens() -> void:
 	assert_eq(sheet.bg_color, UiTokens.MOVE_DETAIL_BG)
 	var banner := theme.get_stylebox(&"panel", &"BattleMessage") as StyleBoxFlat
 	assert_eq(banner.bg_color, UiTokens.BATTLE_MESSAGE_BG)
-	assert_eq(theme.get_font_size(&"font_size", &"BattleMessageText"), UiTokens.FONT_BODY)
+	assert_eq(theme.get_font_size(&"font_size", &"BattleMessageText"), UiTokens.BATTLE_MESSAGE_FONT)
 
 
 func test_toast_variations_match_tokens() -> void:

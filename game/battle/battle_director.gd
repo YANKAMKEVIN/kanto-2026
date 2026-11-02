@@ -1158,6 +1158,12 @@ func _play_vs(intro: TrainerIntro) -> void:
 	var banner := VsBanner.new()
 	banner.speed_scale = speed_scale
 	banner.step_started.connect(trainer_intro_step.emit)
+	# Les dresseurs prennent leur place du « VS » (entiers sous les banderoles), puis reviennent.
+	if is_instance_valid(_stage):
+		_stage.move_trainers_to(&"vs", intro.duration(TrainerIntro.Step.VS_IN))
+		banner.step_started.connect(func(step: TrainerIntro.Step) -> void:
+			if step == TrainerIntro.Step.VS_OUT and is_instance_valid(_stage):
+				_stage.move_trainers_to(&"entry", intro.duration(TrainerIntro.Step.VS_OUT)))
 	_hud.add_child(banner)
 	vs_started.emit(foe_name.to_upper(), intro.foe_title)
 	await banner.play(intro, foe_name, intro.foe_title, vs_foe_portrait(intro), player_name,

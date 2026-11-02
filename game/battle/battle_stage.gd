@@ -1874,6 +1874,15 @@ func play_trainers_in(intro: TrainerIntro) -> void:
 	await _intro_stage.play_enter()
 
 
+## Coroutine : les deux dresseurs glissent vers leur pose [param pose_name] (« vs » pendant la
+## séquence « VS », « entry » ensuite) en [param duration] s.
+func move_trainers_to(pose_name: StringName, duration: float) -> void:
+	if not _active:
+		return
+	_intro_stage.speed_scale = speed_scale
+	await _intro_stage.move_to_pose(pose_name, duration)
+
+
 ## Le dresseur de [param side] n'a pas encore lancé son Pokémon.
 func has_trainer_send(side: BattleEvent.SideId) -> bool:
 	return _active and _intro_pending.get(side, false)

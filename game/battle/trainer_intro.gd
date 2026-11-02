@@ -108,8 +108,8 @@ func duration(step: Step) -> float:
 		Step.TRAINERS_IN:
 			return _catalog.duration("trainers_in") + _catalog.duration("balls_in")
 		Step.FOE_SEND, Step.PLAYER_SEND:
-			return _catalog.duration("send_throw") + _catalog.duration("send_linger") \
-				+ _catalog.duration("send_exit")
+			return _catalog.duration("send_windup") + _catalog.duration("send_throw") \
+				+ _catalog.duration("send_linger") + _catalog.duration("send_exit")
 	return 0.0
 
 

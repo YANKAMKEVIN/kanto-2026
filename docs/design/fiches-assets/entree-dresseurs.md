@@ -1,4 +1,4 @@
-# Fiche d'art : Entrée des combats de Dresseur (v2, 2026-11-02)
+# Fiche d'art : Entrée des combats de Dresseur (v3, 2026-11-02)
 
 Spécification : `docs/design/dossier-05-combat.md` §3 (décisions de Kevin du 2026-11-02).
 **Cible de rendu validée par Kevin (« exactement ça »)** : les trois maquettes
@@ -9,7 +9,7 @@ bustes peints au cadrage des maquettes, banderoles à l'effet pinceau. Exception
 Poké Balls de la maquette 2 (en haut à gauche) **n'est pas retenue** : le cartouche est au-dessus
 de l'adversaire (maquette 1).
 
-Code et déroulé : livrés avec des images **provisoires** (vidéo `entree-dresseurs-v2.mp4`,
+Code et déroulé : livrés avec des images **provisoires** (vidéo `entree-dresseurs-v3.mp4`,
 comparatif maquette / jeu `entree-dresseurs-comparatif.jpg`). L'art définitif **se branche sans
 code** : il suffit de déposer le fichier au bon chemin (sinon le jeu retombe sur l'image
 provisoire). Données : `data/battle/trainer_intro.json` (classes, grands adversaires, chemins,
@@ -24,9 +24,10 @@ positions et durées [D]). Listes vérifiées par `tests/integration/test_traine
 - **Format** : WebP RGBA, **fond transparent**, toile **512 × 768 px** (2:3), personnage en pied,
   **de trois-quarts, tourné vers la gauche** (vers le joueur), **pieds posés sur le bord bas,
   centrés** (origine aux pieds) ; pas d'ombre au sol peinte (le jeu pose l'ombre).
-- **Affichage** : 0,27 × la hauteur d'écran (≈ 290 px sur 1080), pieds à (0,43 ; 0,55) en hauteurs
-  d'écran depuis le centre ; ombre au sol elliptique sous les pieds ; cartouche des Balls
-  au-dessus de la tête.
+- **Affichage** (fractions de l'écran, x depuis la gauche, y depuis le haut) : à l'entrée, centre
+  70 % x, pieds 56 % y, hauteur 26 % ; au lancer, 71 % / 56 % / 33 % (rapprochement interpolé) ;
+  pendant le « VS », 71 % / 67 % / 28 % ; ombre au sol elliptique sous les pieds ; cartouche des
+  Balls à 69–86 % x, 18–26 % y, au-dessus de la tête.
 - **Rendu** : celui de Gamin Hugo et de Pierre sur les maquettes ; lumière neutre (le décor donne
   l'ambiance), tenue fidèle à l'apparence du monde de la classe.
 - **Repli actuel** : première image de l'apparence du monde agrandie (floue), sinon une silhouette.
@@ -79,8 +80,9 @@ le reste. Les Sbires femmes ont un sprite à part (décision de Kevin du 2026-11
 - **Chemins** : `assets/sprites/trainers/battle/dos_hero.webp` et `dos_heroine.webp` (debout,
   prêt, maquette 1), plus `dos_hero_lancer.webp` / `dos_heroine_lancer.webp` (pose de lancer).
 - **Format** : WebP RGBA, fond transparent, toile **640 × 960 px**, **de dos, trois-quarts vers la
-  droite**, pieds sur le bord bas centrés ; affiché à 0,55 × la hauteur d'écran, pieds à
-  (−0,50 ; 0,93) : grand, au premier plan en bas à gauche.
+  droite**, pieds sur le bord bas centrés. Affichage : à l'entrée silhouette entre 20 et 37 % x,
+  pieds 95 % y, sommet 40 % y ; au lancer centre 21 % x, pieds 97 % y, hauteur 57 % (pose « en
+  garde », Ball qui part de la main droite) ; pendant le « VS » centre 29 % x, pieds 74 % y.
 - **Costume porté** : le jeu garde le lancer de dos du costume (pas de pose dédiée).
 - **Repli actuel** : le lancer de dos existant (`heros_lancer.png` / `joueuse_lancer.png`),
   agrandi.
@@ -135,31 +137,33 @@ Le rival suit l'apparence choisie à l'ouverture : prévoir `rival` **et** `riva
 
 ## 5. Emblème « VS »
 
-Dessiné en code : lettres Cinzel or cernées de brun, éclair doré en diagonale, deux traits
-horizontaux qui s'effacent. Un emblème peint (`assets/ui/battle/vs/emblem.webp`, doré, éclat) peut
-être produit ; il n'est pas encore branché.
+Remplacement peint **branché** : `assets/ui/battle/vs/emblem_vs.webp` (WebP RGBA, fond
+transparent, « VS » doré lumineux avec entaille diagonale et éclair, ≈ 600 × 500 px) ; affiché à
+≈ 12 % de la largeur de l'écran, centré à (50 %, 51 %). Repli actuel dessiné en code : lettres
+Cinzel en dégradé d'or, éclat additif, entaille diagonale, éclair et deux traits.
 
 ## 6. Valeurs par défaut [D] (`data/battle/trainer_intro.json`, `UiTokens.VS_*`)
 
 - Ordinaire : les dresseurs entrent 0,55 s après le début de la caméra (0,45 s), puis le cartouche
-  et ses Balls (0,25 s) ; chaque lancer 0,4 s + accompagnement 0,2 s + recul en fondu 0,3 s, sous
-  son message. **≈ 4,1 s** du début du combat aux commandes (mesuré sur la vidéo).
-- Grand combat : la même entrée, puis le « VS » (0,3 + 0,75 + 0,35 = **1,4 s**), puis les lancers.
-- Cartouche : verre sombre de l'interface, 6 emplacements (plein / éteint / vide), au-dessus de la
-  tête de l'adversaire, décalé de 0,16 vers l'extérieur ; il part au lancer de l'adversaire, avant
-  les jauges.
+  et ses Balls (0,25 s) ; chaque lancer : garde 0,15 s (rapprochement), vol 0,4 s (Ball ronde de
+  2,4 % de la largeur, arc par (56 % ; 28 %) pour l'adversaire, traînée blanche courbe depuis la
+  main), accompagnement 0,2 s, recul en fondu 0,3 s, sous son message. **≈ 4,4 s** du début du
+  combat aux commandes (mesuré sur la vidéo v3).
+- Grand combat : la même entrée, puis le « VS » (0,3 + 0,75 + 0,35 = **1,4 s**) pendant lequel les
+  dresseurs prennent leur place du « VS » puis reviennent ; puis les lancers.
+- Banderoles : rouge ≈ 52–100 % x, 0–30 % y (épaisseur 15 %, 7° montant vers la droite) ; bleue
+  ≈ 0–62 % x, 68–100 % y (épaisseur 18 %, 4°).
+- Bandeau des messages : 49–98 % x, 77–93 % y, texte 36 px, contour plus clair (tokens
+  `BATTLE_MESSAGE_*`, tout le combat).
 
-## 7. Écarts restants avec les maquettes (sans l'art définitif)
+## 7. Écarts restants avec les maquettes (dépendent seulement de l'art)
 
-1. **Personnages** : repli sur l'apparence du monde agrandie (adversaires) et sur le lancer de dos
-   (joueur, toujours dans la pose bras tendu de la maquette 1) : flous, de face et non de
-   trois-quarts, pas de vraie pose de lancer (élan seulement) tant que les images du §1 et du §2
-   manquent.
-2. **Bustes** : Pierre utilise son apparence du monde, en pied et petite, au lieu du buste peint.
-3. **Banderoles** : pinceau dessiné en code, plus net et plus plat que le pinceau peint.
-4. **Emblème** : lettres et éclair plus fins et sans éclat lumineux.
-5. **Cadrage du « VS »** : mêmes positions que l'entrée ordinaire ; sur la maquette 3 les deux
-   dresseurs sont un peu plus hauts et plus proches du centre (cadrage d'Arène). Réglable dans
-   `points` si Kevin le souhaite.
-6. **Traînée de la Ball** : plus fine et plus courte que sur la maquette 2 (réglable :
-   `trail_width`).
+1. **Personnages** : adversaires = apparence du monde agrandie (floue, de face au lieu de
+   trois-quarts) ; poses de lancer absentes (élan de la pose debout à la place) ; joueur = lancer
+   de dos existant (bras tendu, pas la pose « en garde » de la maquette 2).
+2. **Bustes** : Pierre = son apparence du monde en pied, au lieu du buste peint.
+3. **Banderoles** : pinceau dessiné en code (bords déchirés, traînées), plus plat que le pinceau
+   peint (`banderole_rouge.webp` / `banderole_bleue.webp`).
+4. **Emblème « VS »** : dessiné en code, moins riche que l'emblème peint (`emblem_vs.webp`).
+5. **Rattata, Racaillou** : les Pokémon apparaissent à leur place de combat habituelle (inchangée,
+   hors périmètre) ; la Ball s'ouvre au point d'arrivée de son arc.

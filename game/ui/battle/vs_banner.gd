@@ -194,19 +194,21 @@ func get_player_banner() -> Control:
 ## Place banderoles, bustes, textes et emblème pour la taille de vue courante.
 func _layout() -> void:
 	var view := _view()
-	var thick := UiTokens.VS_BANNER_HEIGHT * view.y
+	var thick := UiTokens.VS_FOE_BANNER_THICK * view.y
+	var own_thick := UiTokens.VS_PLAYER_BANNER_THICK * view.y
 	var overhang := 0.1 * view.x
-	# Rouge en haut à droite : son bout extérieur dépasse le bord droit.
+	# Rouge en haut à droite, montant vers la droite : son bout extérieur dépasse le bord droit.
 	_foe_stripe.size = Vector2(UiTokens.VS_FOE_BANNER_WIDTH * view.x + overhang, thick)
 	_foe_stripe.position = Vector2(view.x * (1.0 - UiTokens.VS_FOE_BANNER_WIDTH),
 		UiTokens.VS_FOE_BANNER_Y * view.y - thick / 2.0)
-	_foe_stripe.pivot_offset = _foe_stripe.size / 2.0
-	_foe_stripe.rotation = -deg_to_rad(UiTokens.VS_BANNER_TILT)
+	_foe_stripe.pivot_offset = Vector2(0.0, thick / 2.0)
+	_foe_stripe.rotation = -deg_to_rad(UiTokens.VS_FOE_BANNER_TILT)
 	# Bleue en bas à gauche : son bout extérieur dépasse le bord gauche.
-	_own_stripe.size = Vector2(UiTokens.VS_PLAYER_BANNER_WIDTH * view.x + overhang, thick)
-	_own_stripe.position = Vector2(-overhang, UiTokens.VS_PLAYER_BANNER_Y * view.y - thick / 2.0)
-	_own_stripe.pivot_offset = _own_stripe.size / 2.0
-	_own_stripe.rotation = deg_to_rad(UiTokens.VS_BANNER_TILT)
+	_own_stripe.size = Vector2(UiTokens.VS_PLAYER_BANNER_WIDTH * view.x + overhang, own_thick)
+	_own_stripe.position = Vector2(-overhang,
+		UiTokens.VS_PLAYER_BANNER_Y * view.y - own_thick / 2.0)
+	_own_stripe.pivot_offset = Vector2(_own_stripe.size.x, own_thick / 2.0)
+	_own_stripe.rotation = deg_to_rad(UiTokens.VS_PLAYER_BANNER_TILT)
 	_foe_stripe.queue_redraw()
 	_own_stripe.queue_redraw()
 	# Bustes débordant la banderole : l'adversaire rogné par le bas de sa banderole, le joueur
@@ -215,7 +217,7 @@ func _layout() -> void:
 	var foe_top := UiTokens.VS_FOE_PORTRAIT_TOP * view.y
 	_foe_clip.position = Vector2(view.x * 0.62, foe_top)
 	_foe_clip.size = Vector2(view.x * 0.38,
-		UiTokens.VS_FOE_BANNER_Y * view.y + thick / 2.0 - foe_top)
+		UiTokens.VS_FOE_BANNER_Y * view.y + thick * 0.4 - foe_top)
 	_place_portrait(_foe_portrait, portrait_height, _foe_clip.size, false)
 	_own_clip.position = Vector2(0.0, UiTokens.VS_PLAYER_PORTRAIT_TOP * view.y)
 	_own_clip.size = Vector2(view.x * 0.38, view.y - _own_clip.position.y)
@@ -226,9 +228,10 @@ func _layout() -> void:
 		inset + UiTokens.VS_FOE_BANNER_WIDTH * view.x * 0.36)
 	_center_text(_own_stripe, [_player_name, _own_rule],
 		_own_stripe.size.x - inset - UiTokens.VS_PLAYER_BANNER_WIDTH * view.x * 0.35)
-	_emblem.size = UiTokens.VS_BOLT_SIZE
-	_emblem.pivot_offset = UiTokens.VS_BOLT_SIZE / 2.0
-	_emblem.position = view / 2.0 - UiTokens.VS_BOLT_SIZE / 2.0
+	_emblem.width = UiTokens.VS_EMBLEM_WIDTH * view.x
+	_emblem.size = Vector2(_emblem.width * 1.3, _emblem.width * 1.1)
+	_emblem.pivot_offset = _emblem.size / 2.0
+	_emblem.position = UiTokens.VS_EMBLEM_CENTER * view - _emblem.size / 2.0
 	_emblem.queue_redraw()
 
 
@@ -398,38 +401,88 @@ class VsRule:
 			c + Vector2(0, d), c + Vector2(-d, 0)]), UiTokens.VS_GOLD)
 
 
-## Emblème « VS » : lettres dorées à empattements cernées de sombre, éclair diagonal et deux
-## traits horizontaux, dessinés en code.
+## Emblème « VS » : l'image peinte [constant UiTokens.VS_EMBLEM_TEXTURE] si elle existe ; sinon,
+## dessiné : éclat additif, lettres dorées à empattements en dégradé (or profond dessous, or clair
+## dessus), entaille diagonale, éclair et deux traits horizontaux.
 class VsEmblem:
 	extends Control
 
+	## Largeur voulue des lettres « VS » (px).
+	var width: float = 280.0
+	var _texture: Texture2D
+	## Éclat additif au-dessus des lettres (calque à part, mélange additif).
+	var _halo: Control
+	var _font: Font
+	var _font_size: int = 0
+	var _origin: Vector2 = Vector2.ZERO
+
+	func _init() -> void:
+		if ResourceLoader.exists(UiTokens.VS_EMBLEM_TEXTURE):
+			_texture = load(UiTokens.VS_EMBLEM_TEXTURE) as Texture2D
+		_halo = Control.new()
+		_halo.name = &"Glow"
+		_halo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var additive := CanvasItemMaterial.new()
+		additive.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+		_halo.material = additive
+		_halo.draw.connect(_draw_glow)
+		add_child(_halo)
+
+	func _draw_glow() -> void:
+		if _font == null or _texture != null:
+			return
+		_halo.draw_string_outline(_font, _origin, "VS", HORIZONTAL_ALIGNMENT_LEFT, -1,
+			_font_size, UiTokens.VS_EMBLEM_GLOW_SIZE, UiTokens.VS_EMBLEM_GLOW)
+
 	func _draw() -> void:
 		var s := size
+		var center := s / 2.0
+		if _texture != null:
+			var tex_size := _texture.get_size() * width / maxf(_texture.get_width(), 1.0)
+			draw_texture_rect(_texture, Rect2(center - tex_size / 2.0, tex_size), false)
+			return
 		var gold := UiTokens.VS_GOLD
+		var deep := UiTokens.VS_GOLD_DEEP
 		var fade := gold
 		fade.a = 0.0
 		# Deux traits horizontaux qui s'effacent vers l'extérieur.
 		var line := float(UiTokens.VS_EMBLEM_LINE)
-		var y := s.y * 0.52
-		draw_polyline_colors(PackedVector2Array([Vector2(-line, y), Vector2(s.x * 0.18, y)]),
-			PackedColorArray([fade, gold]), 6.0, true)
-		draw_polyline_colors(PackedVector2Array([Vector2(s.x * 0.82, y), Vector2(s.x + line, y)]),
-			PackedColorArray([gold, fade]), 6.0, true)
-		# Éclair diagonal, du haut à droite vers le bas à gauche (ligne brisée épaisse).
-		var bolt := PackedVector2Array([Vector2(0.92, -0.08), Vector2(0.50, 0.52),
-			Vector2(0.62, 0.50), Vector2(0.10, 1.1)])
+		var half := width * 0.55
+		draw_polyline_colors(PackedVector2Array([Vector2(center.x - half - line, center.y),
+			Vector2(center.x - half, center.y)]), PackedColorArray([fade, gold]), 5.0, true)
+		draw_polyline_colors(PackedVector2Array([Vector2(center.x + half, center.y),
+			Vector2(center.x + half + line, center.y)]), PackedColorArray([gold, fade]), 5.0, true)
+		# Éclair diagonal derrière les lettres.
+		var bolt := PackedVector2Array([Vector2(0.78, 0.0), Vector2(0.48, 0.52),
+			Vector2(0.58, 0.50), Vector2(0.2, 1.0)])
 		for i: int in bolt.size():
 			bolt[i] = bolt[i] * s
-		draw_polyline(bolt, UiTokens.VS_GOLD_DEEP, 16.0, true)
-		draw_polyline(bolt, gold, 6.0, true)
+		draw_polyline(bolt, deep, 14.0, true)
+		draw_polyline(bolt, gold, 5.0, true)
 		var font := VsBanner.serif_font()
 		if font == null:
 			font = get_theme_default_font()
 		var text := "VS"
-		var font_size := UiTokens.VS_EMBLEM_FONT
+		var probe := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 100)
+		var font_size := int(100.0 * width / maxf(probe.x, 1.0))
 		var text_size := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
-		var origin := Vector2((s.x - text_size.x) / 2.0,
-			(s.y + font.get_ascent(font_size) - font.get_descent(font_size)) / 2.0)
+		var origin := Vector2(center.x - text_size.x / 2.0,
+			center.y + (font.get_ascent(font_size) - font.get_descent(font_size)) / 2.0)
+		# Contour sombre, or profond, puis or clair décalé (dégradé du bas vers le haut) ; l'éclat
+		# additif est dessiné par le calque « Glow ».
+		_font = font
+		_font_size = font_size
+		_origin = origin
+		_halo.size = s
+		_halo.queue_redraw()
 		draw_string_outline(font, origin, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size,
 			UiTokens.VS_EMBLEM_OUTLINE, UiTokens.VS_GOLD_OUTLINE)
-		draw_string(font, origin, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, gold)
+		draw_string(font, origin, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, deep)
+		draw_string(font, origin + Vector2(0.0, -font_size * 0.04), text,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, gold)
+		# Entaille diagonale à travers les lettres.
+		var top := origin + Vector2(text_size.x * 0.62, -font.get_ascent(font_size) * 0.95)
+		var bottom := origin + Vector2(text_size.x * 0.38, font.get_descent(font_size))
+		draw_line(top, bottom, UiTokens.VS_GOLD_OUTLINE, maxf(font_size * 0.05, 3.0), true)
+		var light := gold.lightened(0.5)
+		draw_line(top + Vector2(3, 0), bottom + Vector2(3, 0), light, 1.5, true)

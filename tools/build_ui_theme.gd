@@ -560,9 +560,10 @@ func _add_battle_messages(theme: Theme, t: GDScript) -> void:
 	banner.set_content_margin(SIDE_RIGHT, t.BATTLE_MESSAGE_PAD_H)
 	banner.set_content_margin(SIDE_TOP, t.BATTLE_MESSAGE_PAD_V)
 	banner.set_content_margin(SIDE_BOTTOM, t.BATTLE_MESSAGE_PAD_V)
+	banner.border_color = t.BATTLE_MESSAGE_BORDER
 	theme.set_type_variation(&"BattleMessage", &"PanelContainer")
 	theme.set_stylebox(&"panel", &"BattleMessage", banner)
-	_add_plain_label(theme, &"BattleMessageText", t.FONT_BODY, t.TEXT, null)
+	_add_plain_label(theme, &"BattleMessageText", t.BATTLE_MESSAGE_FONT, t.TEXT, null)
 	theme.set_constant(&"line_spacing", &"BattleMessageText", t.DIALOG_LINE_SPACING)
 
 

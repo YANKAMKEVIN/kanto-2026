@@ -66,7 +66,7 @@ func test_grand_battle_opens_on_the_vs_sequence() -> void:
 
 func test_level_one_entry_lasts_about_two_seconds() -> void:
 	var intro := TrainerIntro.build(_trainer("Gamin Hugo"), _party(1), _catalog)
-	assert_almost_eq(intro.total(), 2.5, 0.3, "[D] gestes ≈ 2,5 s, sous les messages")
+	assert_almost_eq(intro.total(), 2.8, 0.3, "[D] gestes ≈ 2,8 s, sous les messages")
 	assert_eq(intro.total(), intro.entry_total())
 	var grand := TrainerIntro.build(_trainer("Pierre", ["PIERRE", "T", &"pierre"]), _party(1),
 		_catalog)
@@ -143,3 +143,17 @@ func test_invalid_catalog_is_reported() -> void:
 	assert_false(catalog.add_from_dict({"durations": {"vs_in": -1}, "classes": {"x": 3}}))
 	assert_gt(catalog.get_errors().size(), 3)
 	assert_push_error_count(catalog.get_errors().size())
+
+
+## Itération 3 (maquettes, fractions de l'écran) : poses d'entrée, de lancer et du « VS ».
+func test_poses_follow_the_mockups() -> void:
+	assert_eq(_catalog.pose("entry", "player"), Vector3(0.285, 0.95, 0.55))
+	assert_eq(_catalog.pose("entry", "foe"), Vector3(0.70, 0.56, 0.26))
+	assert_eq(_catalog.pose("throw", "player"), Vector3(0.21, 0.97, 0.57))
+	assert_eq(_catalog.pose("throw", "foe"), Vector3(0.71, 0.56, 0.33))
+	assert_eq(_catalog.pose("vs", "player"), Vector3(0.29, 0.74, 0.38))
+	assert_eq(_catalog.pose("vs", "foe"), Vector3(0.71, 0.67, 0.28))
+	assert_eq(_catalog.point("cartouche_min"), Vector2(0.69, 0.18))
+	assert_eq(_catalog.point("cartouche_max"), Vector2(0.86, 0.26))
+	assert_eq(_catalog.point("foe_via"), Vector2(0.56, 0.28), "arc de la Ball")
+	assert_almost_eq(_catalog.layout["ball_diameter"], 0.024, 0.0001)
