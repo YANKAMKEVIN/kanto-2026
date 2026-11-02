@@ -256,3 +256,48 @@ captures réelles 2340 × 1080 (entrée, lancer, « VS ») : `entree-champions/<
 est peint, le monde non) ; Cramois'Île : les pieds d'Auguste sont près du muret du fond (sol à
 ≈ 52 %) ; bustes non réglés un par un (cadrage de Pierre, à affiner sur téléphone) ; anciens décors
 de Safrania et Carmin gardés dans le dépôt, à supprimer si Kevin valide les v2.
+
+## 11. Étape 3 : les autres grands combats (2026-11-02)
+
+Même séquence que les Champions pour tous les autres combats à `card.portrait` : le rival à ses 8
+combats (titre « Rival », « Champion de la Ligue » au dernier), Giovanni au repaire et à Sylphe SARL,
+le Conseil des 4. Planches en captures réelles 2340 × 1080 (entrée, lancer, « VS ») :
+`entree-grands-combats/<lieu>.jpg` (`labo-chen`, `route-22`, `route-24`, `ss-anne`, `tour-pokemon`,
+`sylphe`, `repaire-rocket`, `ligue`, `ligue-maitre`) et `entree-grands-combats-ensemble.jpg` (les
+15 « VS », rivale comprise). Refaire : `tools/capture_grands_combats.sh` puis
+`tools/art/planches_grands_combats.py`.
+
+- **Art** (`tools/art/entree_grands_combats.py`, prompts `tools/art/entree_dresseurs/grands/`, mêmes
+  gabarits que les Champions, IMAGE 3 = apparence du monde : portrait peint du rival, feuilles du
+  Conseil) : sprites debout et lancer + buste « VS » du **rival** (épis châtains, gilet violet sans
+  manches, t-shirt noir, pendentif, sac à dos, baskets violettes, comme son portrait et la planche de
+  la Route 22), de la **rivale** (même tenue, queue de cheval), d'**Olga** (carré bleu nuit, lunettes,
+  manteau bleu glacier à fourrure, bottes blanches), d'**Aldo** (karatégi blanc aux manches arrachées,
+  ceinture noire, pantalon orange), d'**Agatha** (âgée, voûtée, chignon gris, robe violette, châle
+  noir, canne), de **Peter** (roux, cape noire doublée d'orange, veste marine à passepoils dorés).
+  Giovanni reprend son jeu de l'étape 2. Peter : poses séparées par composante connexe (capes qui
+  se touchent).
+- **Données** (`trainer_intro.json`) : `scale` [D] rival et rivale 1,05, Olga 1,14, Aldo 1,32,
+  Agatha 0,95, Peter 1,24 ; `hand` = bout des doigts du lancer + (0,061 ; 0,114), la règle des
+  Champions ; bustes au réglage de Pierre (`rival` et `rivale`).
+- **Décors** (recette `preparer_decor.py` : composition + 2 tuiles repeintes, jamais
+  d'agrandissement ; `foe_feet` [1559, 560], sol vers 41–46 %) :
+  - **peints, nouveaux** : les 5 salles de la Ligue, fidèles aux salles du monde (DAF.10d) et non
+    plus empruntées à d'autres lieux : `league_olga_glace`, `league_aldo_roche`,
+    `league_agatha_spectre`, `league_peter_dragon` (`foe_feet` [1559, 585]),
+    `league_champion_salle` ; le **labo de Chen** (`oak_lab_labo`, le labo n'avait aucun fond :
+    repli sur la carte floutée) ; le **couloir du capitaine du S.S. Anne** (`ss_anne_couloir`, pour
+    `ss_anne_captain_corridor` et `_room` ; `foe_feet` [1559, 575]).
+  - **repeints en v2, même identifiant** (vue frontale vide, sous Argenta v3) : `silph_co_bureaux`
+    (tous les étages de bureaux de Sylphe), `tour_pokemon` (tous les étages de la Tour),
+    `rocket_hideout_repaire` (tous les sous-sols du repaire).
+  - **gardés** : Route 22 (`route_5_6_prairie`, deux combats) et Route 24 (`route_24_pont`) :
+    riches, au niveau, sol qui porte les personnages.
+- **Tests** : `test_battle_decor` (le labo a son fond), `test_serie18_assets` (couloir du capitaine).
+
+Écarts restants : la Route 22 garde le fond de prairie des Routes 5-6 (pas les falaises ni les sapins
+de sa vue générale) ; le bureau du président (Giovanni, 11e étage) réutilise le plateau de bureaux ;
+bustes non réglés un par un ; fichiers devenus inutiles, à supprimer si Kevin valide :
+`viridian_gym_sol_back.webp` (plus aucun combat), `silph_co_bureaux_back.webp`,
+`rocket_hideout_repaire_back.webp` (anciennes versions) ; `tour_pokemon_back.webp` reste (fond
+`manoir_salle` du Manoir Pokémon).

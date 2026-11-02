@@ -31,11 +31,11 @@
 		"silph_co_bureaux": {
 			"zone": "silph_co",
 			"variant": "bureaux",
-			"back": "res://assets/battle/decors/silph_co_bureaux_back.webp",
+			"back": "res://assets/battle/decors/silph_co_bureaux_v2_back.webp",
 			"size": [2340, 1080],
-			"foe_feet": [1559, 540],
+			"foe_feet": [1559, 560],
 			"player_feet": [716, 972],
-			"horizon": 330
+			"horizon": 445
 		},
 		"saffron_gym_psy": {
 			"zone": "saffron_gym",
@@ -72,6 +72,69 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 300
+		},
+		"league_olga_glace": {
+			"zone": "league",
+			"variant": "olga_glace",
+			"back": "res://assets/battle/decors/league_olga_glace_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 450
+		},
+		"league_aldo_roche": {
+			"zone": "league",
+			"variant": "aldo_roche",
+			"back": "res://assets/battle/decors/league_aldo_roche_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 455
+		},
+		"league_agatha_spectre": {
+			"zone": "league",
+			"variant": "agatha_spectre",
+			"back": "res://assets/battle/decors/league_agatha_spectre_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 450
+		},
+		"league_peter_dragon": {
+			"zone": "league",
+			"variant": "peter_dragon",
+			"back": "res://assets/battle/decors/league_peter_dragon_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 585],
+			"player_feet": [716, 972],
+			"horizon": 495
+		},
+		"league_champion_salle": {
+			"zone": "league",
+			"variant": "champion_salle",
+			"back": "res://assets/battle/decors/league_champion_salle_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 455
+		},
+		"oak_lab_labo": {
+			"zone": "oak_lab",
+			"variant": "labo",
+			"back": "res://assets/battle/decors/oak_lab_labo_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 445
+		},
+		"ss_anne_couloir": {
+			"zone": "ss_anne",
+			"variant": "couloir",
+			"back": "res://assets/battle/decors/ss_anne_couloir_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 575],
+			"player_feet": [716, 972],
+			"horizon": 475
 		},
 		"viridian_gym_sol_v2": {
 			"zone": "viridian_gym",
@@ -248,11 +311,11 @@
 		"tour_pokemon": {
 			"zone": "pokemon_tower",
 			"variant": "salle",
-			"back": "res://assets/battle/decors/tour_pokemon_back.webp",
+			"back": "res://assets/battle/decors/tour_pokemon_v2_back.webp",
 			"size": [2340, 1080],
-			"foe_feet": [1559, 540],
+			"foe_feet": [1559, 560],
 			"player_feet": [716, 972],
-			"horizon": 335
+			"horizon": 450
 		},
 		"route_7_8_urbaine": {
 			"zone": "route_8",
@@ -275,11 +338,11 @@
 		"rocket_hideout_repaire": {
 			"zone": "rocket_hideout",
 			"variant": "repaire",
-			"back": "res://assets/battle/decors/rocket_hideout_repaire_back.webp",
+			"back": "res://assets/battle/decors/rocket_hideout_repaire_v2_back.webp",
 			"size": [2340, 1080],
-			"foe_feet": [1559, 540],
+			"foe_feet": [1559, 560],
 			"player_feet": [716, 972],
-			"horizon": 433
+			"horizon": 450
 		},
 		"manoir_salle": {
 			"zone": "pokemon_mansion",
@@ -355,6 +418,9 @@
 		}
 	},
 	"places": {
+		"oak_lab": [
+			{ "decor": "oak_lab_labo" }
+		],
 		"route_1": [
 			{ "decor": "route_1_chemin" }
 		],
@@ -396,10 +462,10 @@
 			{ "decor": "ss_anne_salon" }
 		],
 		"ss_anne_captain_corridor": [
-			{ "decor": "ss_anne_salon" }
+			{ "decor": "ss_anne_couloir" }
 		],
 		"ss_anne_captain_room": [
-			{ "decor": "ss_anne_salon" }
+			{ "decor": "ss_anne_couloir" }
 		],
 		"ss_anne_restaurant": [
 			{ "decor": "ss_anne_salon" }
@@ -627,19 +693,19 @@
 			{ "decor": "fuchsia_gym_ninja" }
 		],
 		"league_lorelei": [
-			{ "decor": "seafoam_ice" }
+			{ "decor": "league_olga_glace" }
 		],
 		"league_bruno": [
-			{ "decor": "fighting_dojo_salle" }
+			{ "decor": "league_aldo_roche" }
 		],
 		"league_agatha": [
-			{ "decor": "tour_pokemon" }
+			{ "decor": "league_agatha_spectre" }
 		],
 		"league_lance": [
-			{ "decor": "victory_road_grotte" }
+			{ "decor": "league_peter_dragon" }
 		],
 		"league_champion": [
-			{ "decor": "viridian_gym_sol" }
+			{ "decor": "league_champion_salle" }
 		],
 		"route_22_west": [
 			{ "decor": "route_5_6_prairie" }

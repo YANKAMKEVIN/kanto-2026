@@ -179,6 +179,8 @@ func test_battle_decors_are_placed_on_every_room() -> void:
 			expected = "ss_anne_pont"
 		elif room == "vermilion_gym":
 			expected = "vermilion_gym_salle_v2"  # repeint pour l'entrée des Champions (2026-11-02)
+		elif room in ["ss_anne_captain_corridor", "ss_anne_captain_room"]:
+			expected = "ss_anne_couloir"  # combat du rival (entrée des grands combats, 2026-11-02)
 		assert_eq(String(data["places"][room][0]["decor"]), expected, room)
 
 
