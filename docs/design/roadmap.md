@@ -131,7 +131,8 @@ Cadre général (géographie, scénario, systèmes, jalons JOH0 à JOH9, arbitra
 [`dossier-joh-05-ecorcia.md`](dossier-joh-05-ecorcia.md), textes E-1 à E-36 et JH-37 à JH-39 validés. JOH5 :
 [`dossier-joh-06-tour-radio.md`](dossier-joh-06-tour-radio.md), textes T-1 à T-38 et JH-40 à JH-43 validés (fin de l'acte 1). JOH6 :
 [`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md), textes C-1 à C-46 et JH-44 à JH-47 validés (souvenir de Dante). JOH7 :
-[`dossier-joh-08-iles-tourbillon.md`](dossier-joh-08-iles-tourbillon.md), textes M-1 à M-34 et JH-48 à JH-51 validés (Suicune, Lugia).
+[`dossier-joh-08-iles-tourbillon.md`](dossier-joh-08-iles-tourbillon.md), textes M-1 à M-34 et JH-48 à JH-51 validés (Suicune, Lugia). JOH8 :
+[`dossier-joh-09-tour-carillon.md`](dossier-joh-09-tour-carillon.md), textes H-1 à H-38 et JH-52 à JH-55 validés (Dante 1, Entei, Ho-Oh).
 Pas de code avant la fin de Kanto et la validation d'un dossier. Jalons numérotés **JOH1, JOH2…**.
 
 ## Jalons narratifs à ne pas oublier
