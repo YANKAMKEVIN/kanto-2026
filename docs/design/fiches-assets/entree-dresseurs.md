@@ -1,4 +1,4 @@
-# Fiche d'art : Entrée des combats de Dresseur (v4, 2026-11-02)
+# Fiche d'art : Entrée des combats de Dresseur (v5, 2026-11-02)
 
 Spécification : `docs/design/dossier-05-combat.md` §3 (décisions de Kevin du 2026-11-02).
 **Cible de rendu validée par Kevin (« exactement ça »)** : les trois maquettes
@@ -9,7 +9,7 @@ bustes peints au cadrage des maquettes, banderoles à l'effet pinceau. Exception
 Poké Balls de la maquette 2 (en haut à gauche) **n'est pas retenue** : le cartouche est au-dessus
 de l'adversaire (maquette 1).
 
-Code et déroulé : livrés avec des images **provisoires** (vidéo `entree-dresseurs-v4.mp4`,
+Code et déroulé : livrés avec des images **provisoires** (vidéo `entree-dresseurs-v5.mp4`,
 comparatif maquette / jeu `entree-dresseurs-comparatif.jpg`). L'art définitif **se branche sans
 code** : il suffit de déposer le fichier au bon chemin (sinon le jeu retombe sur l'image
 provisoire). Données : `data/battle/trainer_intro.json` (classes, grands adversaires, chemins,
@@ -26,7 +26,7 @@ positions et durées [D]). Listes vérifiées par `tests/integration/test_traine
   centrés** (origine aux pieds) ; pas d'ombre au sol peinte (le jeu pose l'ombre).
 - **Affichage** (fractions de l'écran, x depuis la gauche, y depuis le haut) : à l'entrée, centre
   70 % x, pieds 56 % y, hauteur 26 % ; au lancer, 72 % / 56 % / 32 % (le décor est recadré avec
-  lui, zoom 1,22) ; pendant le « VS », 71 % / 67 % / 28 % ; ombre au sol elliptique sous les
+  lui, zoom 1,22) ; pendant le « VS », 71 % / 67 % / 23,8 % (réduit de 15 % à l'itération 5) ; ombre au sol elliptique sous les
   pieds ; cartouche des Balls à 69–86 % x, 19–26 % y, au-dessus de la tête. Une pose de lancer peut
   être peinte sur une toile **élargie** (même hauteur et même échelle que la pose debout, milieu
   des pieds au centre de la toile) ; sa main se règle par `hand` dans les données de la classe.
@@ -139,7 +139,7 @@ Le rival suit l'apparence choisie à l'ouverture : prévoir `rival` **et** `riva
 - **Affichage** : rouge 50–100 % x, 5–30 % y (épaisseur 22 %, 1,5° montant vers la droite),
   bleue 0–60 % x (épaisseur 18 %, 4°) ; textes presque horizontaux (70 % de l'inclinaison
   annulée) ; nom Cinzel gras (initiale en capitale, le reste en petites capitales : « Pierre »,
-  « Kevin »), or clair cerné de brun, centré à 69,5 % x (rouge) ou 30,5 % x (bleue), filet et
+  « Kevin »), **blanc ivoire** cerné de brun adouci (filet et losange ivoire), centré à 69,5 % x (rouge) ou 30,5 % x (bleue), filet et
   losange, titre en bas-de-casse **Cormorant Garamond** demi-gras dessous.
 - **Repli actuel** : pinceau dessiné en code (bandes à bord déchiré, traînées, liseré clair).
 - **Polices** : Cinzel (SIL OFL 1.1, `assets/fonts/cinzel/`) pour les noms ; Cormorant Garamond
@@ -159,7 +159,8 @@ Cinzel en dégradé d'or, éclat additif, entaille diagonale, éclair et deux tr
   chaque lancer : garde 0,25 s (rapprochement ; au lancer de l'adversaire, le joueur passe en garde
   au premier plan et **le décor se recadre**, zoom 1,22 autour des pieds de l'adversaire), vol
   0,4 s (Ball de 2,4 % de la largeur, arc par (56 % ; 28 %) depuis la main de la pose de lancer,
-  traînée peinte `fx/ball_trail.webp` sur un halo fin, repli : trait effilé dessiné ; le décor
+  traînée dessinée de la main à la Ball, qui s'amincit et s'efface progressivement, sur un
+  halo fin (la traînée peinte `fx/ball_trail.webp` reste branchable par `fx_trail`) ; le décor
   revient au cadrage du combat pendant la seconde moitié du vol), accompagnement 0,2 s, recul en
   fondu 0,3 s, sous son message. **≈ 4,5 s** du début du combat aux commandes (vidéo v4).
 - Grand combat : la même entrée, puis le « VS » (0,3 + 0,75 + 0,35 = **1,4 s**) pendant lequel les
@@ -211,3 +212,12 @@ cadrés par les données, décor d'Arène v3 (`foe_feet` [1559, 560], horizon 51
    le col et le haut de la poitrine (comme la maquette).
 4. Fichiers d'Arène v1 et v2 et de la Route 3 v1 toujours dans le dépôt, à supprimer si Kevin
    valide.
+
+## 9. Itération 5 (2026-11-02, arrêtée par Kevin : rendu v4 jugé très bien)
+
+Gardé, sûr et non contradictoire : noms, filet et losange du « VS » en blanc ivoire ; Pierre réduit
+de 15 % pendant le « VS » (pieds à 67 %) ; traînée dessinée de la main à la Ball, effilée et
+effacée progressivement. Tout le reste de la v4 est inchangé (cadrage, cartouche, bandeau,
+« VS » à 50 % x). Aucun nouvel art fusionné (`dos_hero_vs.webp` de la branche d'art non branché).
+Comparatif et vidéo `entree-dresseurs-v5.mp4` refaits (v4 retirée). Suite : contrôle dans toutes
+les Arènes et lieux de combat.
