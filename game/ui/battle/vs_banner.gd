@@ -41,12 +41,13 @@ func _init() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_veil = ColorRect.new()
 	_veil.name = &"Veil"
-	_veil.color = Color(UiTokens.VS_VEIL, 0.0)
+	_veil.color = UiTokens.VS_VEIL
+	_veil.modulate.a = 0.0
 	_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_veil.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(_veil)
 	_top = _make_banner(&"FoeBanner", UiTokens.VS_FOE_BG, false)
-	_bottom = _make_banner(&"PlayerBanner", UiTokens.VS_PLAYER_BG, true)
+	_bottom = _make_banner(&"OwnBanner", UiTokens.VS_PLAYER_BG, true)
 	_foe_portrait = _make_portrait(_top)
 	_player_portrait = _make_portrait(_bottom)
 	_foe_name = _make_label(_top, &"VsBannerName")
@@ -82,7 +83,7 @@ func play(intro: TrainerIntro, foe_name: String, foe_title: String, foe_portrait
 	_emblem.modulate.a = 1.0
 	var enter := _new_tween()
 	enter.set_parallel(true)
-	enter.tween_property(_veil, ^"color:a", UiTokens.VS_VEIL.a, duration)
+	enter.tween_property(_veil, ^"modulate:a", 1.0, duration)
 	for pair: Array in [[_top, width], [_bottom, -width]]:
 		var banner: Control = pair[0]
 		banner.modulate.a = 0.0 if not slide else 1.0
@@ -106,7 +107,7 @@ func play(intro: TrainerIntro, foe_name: String, foe_title: String, foe_portrait
 	var out := intro.duration(TrainerIntro.Step.VS_OUT)
 	var leave := _new_tween()
 	leave.set_parallel(true)
-	leave.tween_property(_veil, ^"color:a", 0.0, out)
+	leave.tween_property(_veil, ^"modulate:a", 0.0, out)
 	leave.tween_property(_emblem, ^"modulate:a", 0.0, out)
 	leave.tween_property(_emblem, ^"scale", Vector2.ONE * UiTokens.VS_EMBLEM_POP, out)
 	for pair: Array in [[_top, -width], [_bottom, width]]:
