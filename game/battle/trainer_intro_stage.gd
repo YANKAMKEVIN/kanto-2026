@@ -29,11 +29,16 @@ signal framing_changed(zoom: float, from: Vector2, to: Vector2)
 ## sphère visible dans la texture (≈ 240 px) : la Ball lancée garde ce diamètre, ronde.
 const BALL_ART: float = 1.0 / 256.0
 const BALL_VISIBLE: float = 240.0
-## Rangée (maquette 1) : Balls actives à opacité pleine ; emplacements vides et éteints (K.O.)
-## = Ball en niveaux de gris, claire pour un vide (nettement distincte d'une active, lisible sur
-## le verre sombre), plus sombre pour un K.O. [D].
+## Rangée (maquette 1, itération 5) : Balls actives pleines ; emplacement vide = disque gris
+## foncé translucide cerné d'un liseré clair (sombre et contrasté) ; K.O. = Ball en niveaux de
+## gris atténuée [D].
 const BALL_FAINTED := Color(0.62, 0.62, 0.66, 0.75)
-const BALL_EMPTY := Color(1.0, 1.0, 1.0, 0.95)
+const BALL_EMPTY := Color(1.0, 1.0, 1.0, 1.0)
+const SLOT_FILL := Color(0.3, 0.32, 0.37, 0.75)
+const SLOT_RIM := Color(0.92, 0.94, 0.97, 0.75)
+## Rayon du disque et épaisseur du liseré (part de la toile de 256 px, comme la Poké Ball).
+const SLOT_RADIUS: float = 0.47
+const SLOT_RIM_WIDTH: float = 0.05
 ## Ombre au sol des dresseurs [D].
 const SHADOW_COLOR := Color(0.05, 0.04, 0.02, 0.45)
 ## Éclat à l'arrivée de la Ball (Pokémon qui sort) [D].
@@ -70,9 +75,11 @@ var _view: Vector2 = Vector2.ZERO
 var _foe: Sprite2D
 var _player: Sprite2D
 var _shadows: Dictionary[BattleEvent.SideId, Sprite2D] = {}
-## Poses (debout, lancer) de chaque dresseur ; lancer null : élan de la pose debout.
+## Poses (debout, lancer, « VS ») de chaque dresseur ; lancer null : élan de la pose debout ;
+## « VS » null : l'image de l'entrée.
 var _stand: Dictionary[BattleEvent.SideId, Texture2D] = {}
 var _throw: Dictionary[BattleEvent.SideId, Texture2D] = {}
+var _vs: Dictionary[BattleEvent.SideId, Texture2D] = {}
 var _ball: Sprite2D
 var _trail: Line2D
 var _trail_glow: Line2D
@@ -92,8 +99,10 @@ var _tweens: Array[Tween] = []
 
 ## Hauteur visible (boîte alpha, px de la texture) par texture, mesurée une fois.
 static var _visible_heights: Dictionary[Texture2D, float] = {}
-## Ball en niveaux de gris des emplacements vides ou éteints, construite une fois.
+## Ball en niveaux de gris des emplacements éteints, construite une fois.
 static var _grey_ball: Texture2D
+## Disque des emplacements vides, construit une fois.
+static var _empty_slot: Texture2D
 
 
 func _ready() -> void:
@@ -173,6 +182,15 @@ static func world_texture(sprite: StringName) -> Texture2D:
 	return null
 
 
+## Pose du « VS » du dos du joueur d'apparence [param look] (`dos_<apparence>_vs`), ou null.
+static func player_vs_texture(intro: TrainerIntro, look: StringName,
+		exists: Callable = Callable()) -> Texture2D:
+	var check := exists if exists.is_valid() else resource_exists
+	var path := intro.player_pose_path(look, intro.get_catalog().vs_suffix, check) \
+		if intro != null else ""
+	return load(path) as Texture2D if not path.is_empty() else null
+
+
 ## Silhouette sombre de repli (aucune image).
 static func silhouette() -> Texture2D:
 	var image := Image.create(SILHOUETTE_SIZE.x, SILHOUETTE_SIZE.y, false, Image.FORMAT_RGBA8)
@@ -186,9 +204,11 @@ static func resource_exists(path: String) -> bool:
 
 ## Prépare l'entrée de [param intro] sur une vue de [param view] px : les dresseurs hors champ,
 ## invisibles. [param foe] / [param player] : poses debout ; [param foe_throw] /
-## [param player_throw] : poses de lancer (null : élan de la pose debout).
+## [param player_throw] : poses de lancer (null : élan de la pose debout) ; [param player_vs] :
+## pose du « VS » (null : l'image de l'entrée).
 func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D,
-		foe_throw: Texture2D = null, player_throw: Texture2D = null) -> void:
+		foe_throw: Texture2D = null, player_throw: Texture2D = null,
+		player_vs: Texture2D = null) -> void:
 	clear()
 	_intro = intro
 	_view = view
@@ -196,6 +216,7 @@ func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D
 	var player_side := BattleEvent.SideId.PLAYER
 	_stand = {foe_side: foe, player_side: player}
 	_throw = {foe_side: foe_throw, player_side: player_throw}
+	_vs = {foe_side: null, player_side: player_vs}
 	var catalog := intro.get_catalog()
 	_sizes = {foe_side: catalog.scale_of(intro.sprite_id), player_side: catalog.player_scale}
 	_set_framing(0.0)
@@ -222,8 +243,13 @@ func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D
 		sprite.position = Vector2(-inner / 2.0 + size * 0.5 + i * (size + gap), 0.0)
 		sprite.scale = Vector2.ONE * size * BALL_ART
 		var state := intro.balls[i] if i < intro.balls.size() else TrainerIntro.Ball.EMPTY
-		sprite.texture = BattleStage.BALL_TEXTURE if state == TrainerIntro.Ball.FULL \
-			else grey_ball()
+		match state:
+			TrainerIntro.Ball.FULL:
+				sprite.texture = BattleStage.BALL_TEXTURE
+			TrainerIntro.Ball.FAINTED:
+				sprite.texture = grey_ball()
+			_:
+				sprite.texture = empty_slot()
 		sprite.modulate = _ball_color(state)
 		sprite.visible = false
 	_cartouche.modulate.a = 0.0
@@ -512,10 +538,17 @@ func _setup_trainer(side: BattleEvent.SideId, texture: Texture2D) -> void:
 ## lancer si elle est demandée et existe, sinon sa pose debout.
 func _image(side: BattleEvent.SideId, phase: String) -> Texture2D:
 	var catalog := _intro.get_catalog() if _intro != null else null
-	var throw: Texture2D = _throw.get(side)
-	if catalog != null and throw != null and catalog.uses_throw_image(_side_key(side), phase):
-		return throw
-	return _stand.get(side)
+	var image := catalog.image_of(_side_key(side), phase) if catalog != null \
+		else TrainerIntroCatalog.IMAGE_STAND
+	var texture: Texture2D = null
+	match image:
+		TrainerIntroCatalog.IMAGE_THROW:
+			texture = _throw.get(side)
+		TrainerIntroCatalog.IMAGE_VS:
+			texture = _vs.get(side)
+			if texture == null and phase != "entry":
+				return _image(side, "entry")
+	return texture if texture != null else _stand.get(side)
 
 
 static func _side_key(side: BattleEvent.SideId) -> String:
@@ -578,6 +611,25 @@ static func grey_ball() -> Texture2D:
 				image.set_pixel(x, y, Color(v, v, v * 1.03, c.a))
 		_grey_ball = ImageTexture.create_from_image(image)
 	return _grey_ball
+
+
+## Disque gris foncé translucide à liseré clair (emplacement vide de la rangée), lissé.
+static func empty_slot() -> Texture2D:
+	if _empty_slot == null:
+		var size := 256
+		var image := Image.create(size, size, false, Image.FORMAT_RGBA8)
+		var radius := SLOT_RADIUS * size
+		var rim := SLOT_RIM_WIDTH * size
+		var center := Vector2(size, size) / 2.0
+		for y: int in size:
+			for x: int in size:
+				var d := Vector2(x + 0.5, y + 0.5).distance_to(center)
+				var inside := clampf(radius - d + 0.5, 0.0, 1.0)
+				var ring := clampf(d - (radius - rim) + 0.5, 0.0, 1.0)
+				var c := SLOT_FILL.lerp(SLOT_RIM, ring)
+				image.set_pixel(x, y, Color(c, c.a * inside))
+		_empty_slot = ImageTexture.create_from_image(image)
+	return _empty_slot
 
 
 ## Largeur visible de [param texture] (boîte alpha).
@@ -747,13 +799,17 @@ func _make_trail(line_name: StringName, alpha: float) -> Line2D:
 	line.joint_mode = Line2D.LINE_JOINT_ROUND
 	line.antialiased = true
 	line.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	# Effilée et effacée progressivement de la Ball vers la main (courbes douces : la traînée
+	# reste visible sur toute sa longueur).
 	var taper := Curve.new()
-	taper.add_point(Vector2(0.0, 0.0))
+	taper.add_point(Vector2(0.0, 0.08))
+	taper.add_point(Vector2(0.5, 0.55))
 	taper.add_point(Vector2(1.0, 1.0))
 	line.width_curve = taper
 	var fade := Gradient.new()
 	fade.set_color(0, Color(1, 1, 1, 0))
 	fade.set_color(1, Color(1, 1, 1, alpha))
+	fade.add_point(0.35, Color(1, 1, 1, alpha * 0.55))
 	line.gradient = fade
 	line.set_meta(&"fade", fade)
 	line.visible = false

@@ -450,10 +450,10 @@ const MOVE_DETAIL_SLIDE := 24.0
 # Bandeau des messages (à la place de la grille).
 ## Entrée des Dresseurs, itération 4 (2026-11-02, maquettes validées, mesures de Codex) : sur
 ## l'écran du S24 (2340 × 1080), bandeau à 49–98 % de la largeur et 77–94 % de la hauteur (bas à
-## 66 px du bord ; compromis entre les maquettes 1 et 2), texte un peu plus grand (40), contour
+## 66 px du bord, haut à 77 %), texte un peu plus grand (40), contour
 ## un peu plus clair.
 const BATTLE_MESSAGE_WIDTH := 1140
-const BATTLE_MESSAGE_HEIGHT := 178
+const BATTLE_MESSAGE_HEIGHT := 182
 const BATTLE_MESSAGE_BOTTOM := 66
 const BATTLE_MESSAGE_FONT := 40
 const BATTLE_MESSAGE_BORDER := Color(1, 1, 1, 0.28)
@@ -1709,7 +1709,10 @@ const VS_BRUSH_STREAKS := 7
 ## Bustes : cadrage par les données (`data/battle/trainer_intro.json`, bloc « vs » : place,
 ## hauteur, rognage, réglage par buste).
 const VS_NAME_FONT := 106
-const VS_NAME_OUTLINE := 8
+const VS_NAME_OUTLINE := 6
+## Noms, filet et losange en blanc ivoire (maquette 3, itération 5), contour brun sombre adouci.
+const VS_NAME_COLOR := Color("#F7F1E3")
+const VS_NAME_OUTLINE_COLOR := Color(0.16, 0.08, 0.04, 0.75)
 ## Interligne retiré sous le nom (px de référence) : filet et titre serrés sous lui.
 const VS_NAME_TIGHTEN := 18
 const VS_TITLE_FONT := 40
@@ -1720,11 +1723,11 @@ const VS_TITLE_OUTLINE_COLOR := Color(0.2, 0.04, 0.04, 0.6)
 const VS_RULE_LENGTH := 470
 const VS_RULE_WIDTH := 2
 const VS_RULE_DIAMOND := 7
-## Emblème « VS » (itération 4) : largeur ≈ 12 % de l'écran, centre (50 %, 49 %) ; lettres dorées
+## Emblème « VS » (itération 5) : largeur ≈ 12 % de l'écran, centre (51 %, 49 %) ; lettres dorées
 ## en dégradé (or profond → or clair), éclat additif, entaille diagonale, éclair et deux traits.
 ## Remplacement peint : [constant VS_EMBLEM_TEXTURE] s'il existe.
 const VS_EMBLEM_WIDTH := 0.12
-const VS_EMBLEM_CENTER := Vector2(0.5, 0.49)
+const VS_EMBLEM_CENTER := Vector2(0.51, 0.49)
 const VS_EMBLEM_OUTLINE := 10
 const VS_EMBLEM_GLOW := Color(1.0, 0.85, 0.45, 0.35)
 const VS_EMBLEM_GLOW_SIZE := 28

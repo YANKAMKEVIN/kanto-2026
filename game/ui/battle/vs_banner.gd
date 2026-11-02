@@ -356,8 +356,8 @@ func _make_label(parent: Control, variation: StringName, serif: bool) -> Label:
 	if font != null:
 		label.add_theme_font_override(&"font", font)
 	if serif:
-		label.add_theme_color_override(&"font_color", UiTokens.VS_GOLD)
-		label.add_theme_color_override(&"font_outline_color", UiTokens.VS_GOLD_OUTLINE)
+		label.add_theme_color_override(&"font_color", UiTokens.VS_NAME_COLOR)
+		label.add_theme_color_override(&"font_outline_color", UiTokens.VS_NAME_OUTLINE_COLOR)
 		label.add_theme_constant_override(&"outline_size", UiTokens.VS_NAME_OUTLINE)
 	else:
 		label.add_theme_color_override(&"font_outline_color", UiTokens.VS_TITLE_OUTLINE_COLOR)
@@ -440,7 +440,7 @@ class VsStripe:
 		draw_line(Vector2(depth * 2.0, s.y - 2.0), Vector2(s.x, s.y - 2.0), edge, 3.0)
 
 
-## Filet doré sous un nom, losange au centre.
+## Filet ivoire sous un nom, losange au centre (maquette 3).
 class VsRule:
 	extends Control
 
@@ -450,16 +450,16 @@ class VsRule:
 
 	func _draw() -> void:
 		var y := size.y / 2.0
-		var fade := UiTokens.VS_GOLD
+		var fade := UiTokens.VS_NAME_COLOR
 		fade.a = 0.0
 		var line := PackedVector2Array([Vector2(0, y), Vector2(size.x / 2.0, y),
 			Vector2(size.x, y)])
-		draw_polyline_colors(line, PackedColorArray([fade, UiTokens.VS_GOLD, fade]),
+		draw_polyline_colors(line, PackedColorArray([fade, UiTokens.VS_NAME_COLOR, fade]),
 			UiTokens.VS_RULE_WIDTH, true)
 		var d := float(UiTokens.VS_RULE_DIAMOND)
 		var c := Vector2(size.x / 2.0, y)
 		draw_colored_polygon(PackedVector2Array([c + Vector2(0, -d), c + Vector2(d, 0),
-			c + Vector2(0, d), c + Vector2(-d, 0)]), UiTokens.VS_GOLD)
+			c + Vector2(0, d), c + Vector2(-d, 0)]), UiTokens.VS_NAME_COLOR)
 
 
 ## Emblème « VS » : l'image peinte [constant UiTokens.VS_EMBLEM_TEXTURE] si elle existe ; sinon,

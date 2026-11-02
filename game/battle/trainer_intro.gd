@@ -140,8 +140,14 @@ func front_path(exists: Callable, throw: bool = false) -> String:
 ## Chemin du dos peint du joueur d'apparence [param look] (`dos_<apparence>`, pose de lancer si
 ## [param throw]) s'il existe, sinon "" (repli : le lancer de dos existant).
 func player_path(look: StringName, exists: Callable, throw: bool = false) -> String:
-	var path := _catalog.front_dir + _catalog.player_prefix + String(look) \
-		+ (_catalog.throw_suffix if throw else "") + _catalog.extension
+	return player_pose_path(look, _catalog.throw_suffix if throw else "", exists)
+
+
+## Chemin du dos peint du joueur d'apparence [param look] avec le suffixe de pose
+## [param suffix] (« », « _lancer », « _vs ») s'il existe, sinon "".
+func player_pose_path(look: StringName, suffix: String, exists: Callable) -> String:
+	var path := _catalog.front_dir + _catalog.player_prefix + String(look) + suffix \
+		+ _catalog.extension
 	return path if exists.call(path) else ""
 
 

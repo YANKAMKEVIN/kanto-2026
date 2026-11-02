@@ -147,12 +147,12 @@ func test_invalid_catalog_is_reported() -> void:
 
 ## Itération 3 (maquettes, fractions de l'écran) : poses d'entrée, de lancer et du « VS ».
 func test_poses_follow_the_mockups() -> void:
-	assert_eq(_catalog.pose("entry", "player"), Vector3(0.285, 0.95, 0.55))
+	assert_eq(_catalog.pose("entry", "player"), Vector3(0.29, 0.95, 0.55))
 	assert_eq(_catalog.pose("entry", "foe"), Vector3(0.70, 0.56, 0.26))
 	assert_eq(_catalog.pose("throw", "player"), Vector3(0.215, 0.97, 0.57))
-	assert_eq(_catalog.pose("throw", "foe"), Vector3(0.72, 0.56, 0.32))
+	assert_eq(_catalog.pose("throw", "foe"), Vector3(0.735, 0.58, 0.35))
 	assert_eq(_catalog.pose("vs", "player"), Vector3(0.29, 0.74, 0.38))
-	assert_eq(_catalog.pose("vs", "foe"), Vector3(0.71, 0.67, 0.28))
+	assert_eq(_catalog.pose("vs", "foe"), Vector3(0.71, 0.67, 0.238), "Pierre réduit de 15 %")
 	assert_eq(_catalog.point("cartouche_min"), Vector2(0.69, 0.19))
 	assert_eq(_catalog.point("cartouche_max"), Vector2(0.86, 0.26))
 	assert_eq(_catalog.point("foe_via"), Vector2(0.56, 0.28), "arc de la Ball")
@@ -174,7 +174,8 @@ func test_phase_images_framing_and_busts_come_from_data() -> void:
 	assert_false(_catalog.uses_throw_image("foe", "entry"))
 	assert_true(_catalog.uses_throw_image("foe", "release"))
 	assert_gt(_catalog.framing_zoom, 1.0, "le décor se recadre vraiment")
-	assert_eq(_catalog.framing_to, Vector2(0.72, 0.56), "Hugo pieds (72 %, 56 %)")
+	assert_eq(_catalog.framing_to, Vector2(0.735, 0.58), "pieds de Hugo au lancer")
+	assert_eq(_catalog.image_of("player", "vs"), TrainerIntroCatalog.IMAGE_VS, "pose du « VS »")
 	assert_eq(_catalog.foe_bust.x, 1.0, "buste au bout droit de la banderole")
 	assert_eq(_catalog.bust_adjust(&"inconnu"), Vector3(0, 0, 1), "sans réglage")
 	assert_ne(_catalog.hand_of(&"gamin"), _catalog.point("foe_hand"), "main de sa pose")

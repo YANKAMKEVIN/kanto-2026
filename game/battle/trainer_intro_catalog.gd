@@ -41,9 +41,12 @@ const PATH_KEYS: Array[String] = [
 ## Moments de la mise en scène qui choisissent une image de dresseur (« images ») : l'entrée, la
 ## garde (cadrage du lancer, avant son propre lâcher), le lâcher de la Ball, le « VS ».
 const PHASE_KEYS: Array[String] = ["entry", "guard", "release", "vs"]
-## Image d'un moment : la pose debout ou la pose de lancer (`<id>_lancer`).
+## Image d'un moment : la pose debout, la pose de lancer (`<id>_lancer`) ou la pose du « VS »
+## (`<id>_vs`, repli : l'image de l'entrée).
 const IMAGE_STAND: String = "stand"
 const IMAGE_THROW: String = "throw"
+const IMAGE_VS: String = "vs"
+const IMAGES: Array[String] = [IMAGE_STAND, IMAGE_THROW, IMAGE_VS]
 
 ## Durées (s) par clé de [constant DURATION_KEYS].
 var durations: Dictionary[String, float] = {}
@@ -77,8 +80,10 @@ var foe_bust: Vector3 = Vector3(1.0, 0.0, 0.5)
 var foe_bust_bottom: float = 0.3
 var player_bust: Vector3 = Vector3(0.0, 0.6, 0.45)
 var _bust_adjust: Dictionary[StringName, Vector3] = {}
-## Moment « side/phase » → pose de lancer (vrai) ou pose debout.
-var _images: Dictionary[String, bool] = {}
+## Moment « side/phase » → image (« stand », « throw », « vs »).
+var _images: Dictionary[String, String] = {}
+## Suffixe de la pose du « VS » (`dos_<apparence>_vs`).
+var vs_suffix: String = "_vs"
 
 ## Classe → préfixe du nom, et classe → apparence du monde.
 var _prefixes: Dictionary[StringName, String] = {}
@@ -151,6 +156,7 @@ func add_from_dict(root: Dictionary) -> bool:
 			player_prefix = paths["player_prefix"]
 			fx_ball = str((paths as Dictionary).get("fx_ball", ""))
 			fx_trail = str((paths as Dictionary).get("fx_trail", ""))
+			vs_suffix = str((paths as Dictionary).get("vs_suffix", "_vs"))
 		ok = paths_ok and ok
 	var classes: Variant = root.get("classes")
 	if not classes is Dictionary:
@@ -261,7 +267,12 @@ func pose(pose_name: String, side: String) -> Vector3:
 ## Le dresseur [param side] (« player », « foe ») prend sa pose de lancer (sinon debout) au
 ## moment [param phase] ([constant PHASE_KEYS]).
 func uses_throw_image(side: String, phase: String) -> bool:
-	return _images.get(side + "/" + phase, false)
+	return image_of(side, phase) == IMAGE_THROW
+
+
+## Image (« stand », « throw », « vs ») du dresseur [param side] au moment [param phase].
+func image_of(side: String, phase: String) -> String:
+	return _images.get(side + "/" + phase, IMAGE_STAND)
 
 
 ## Réglage du buste [param id] : [dx, dy] (fractions de l'écran) et échelle de la hauteur.
@@ -340,11 +351,11 @@ func _read_images(value: Variant) -> bool:
 		var entry: Variant = (value as Dictionary).get(side)
 		for phase: String in PHASE_KEYS:
 			var image: Variant = (entry as Dictionary).get(phase) if entry is Dictionary else null
-			if image != IMAGE_STAND and image != IMAGE_THROW:
-				ok = _fail("TrainerIntroCatalog : images.%s.%s : « stand » ou « throw »"
+			if not image is String or not IMAGES.has(image):
+				ok = _fail("TrainerIntroCatalog : images.%s.%s : « stand », « throw » ou « vs »"
 					% [side, phase])
 				continue
-			_images[side + "/" + phase] = image == IMAGE_THROW
+			_images[side + "/" + phase] = image
 	return ok
 
 
