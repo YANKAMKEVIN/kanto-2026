@@ -1,0 +1,16 @@
+EG_BUSTE_RIVAL — buste de banderole « VS » de Kanto 2026. Images jointes : IMAGE 1 = le buste VALIDÉ de Pierre (CIBLE EXACTE du cadrage, du rendu et de la main) ; IMAGE 2 = le personnage à peindre, sprite de combat du jeu (même personnage, même tenue, à GARDER).
+
+PERSONNAGE : le RIVAL du joueur, garçon d'environ 15 ans (même âge que le joueur), mince et sûr de lui, cheveux CHÂTAINS en épis hérissés, yeux gris sombre, sourire en coin arrogant ; t-shirt NOIR, GILET VIOLET sans manches à capuche (liserés blancs), pendentif argenté ovale sur une chaîne, petit sac à dos noir aux bretelles violettes, pantalon NOIR ample, baskets VIOLETTES et blanches.
+
+À FAIRE : le personnage de l'IMAGE 2, même visage, même coiffure, même tenue, en BUSTE POITRINE exactement cadré comme Pierre (IMAGE 1) : tête, cou, les DEUX ÉPAULES entières et le haut de la poitrine avec le col de sa tenue.
+
+MISE EN PAGE (impératif) dans une image portrait 1024 × 1536 :
+- le haut des cheveux à environ 40 px du bord haut ;
+- la TÊTE entière (cheveux compris) occupe seulement les 38 % supérieurs de la hauteur (le menton vers 36 %) ;
+- le cou, le col et la ligne des épaules entre 36 % et 50 % de la hauteur, les épaules bien larges (presque toute la largeur) ;
+- le haut de la poitrine jusqu'au bord bas (coupé net par le bas, c'est voulu).
+Visage de trois-quarts tourné vers la GAUCHE, menton un peu baissé, regard vers le BAS À GAUCHE, expression de défi propre au personnage.
+
+STYLE : celui de l'IMAGE 1 : illustration anime peinte, réaliste-stylisée (PAS chibi), contours fins brun foncé, ombres douces peintes, lumière chaude venant de la droite.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucune banderole, aucun texte, aucun cadre, aucun halo.

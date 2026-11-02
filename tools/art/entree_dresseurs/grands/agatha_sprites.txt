@@ -1,0 +1,12 @@
+EG_AGATHA — sprites de combat de Kanto 2026 (jeu 2D HD). Images jointes : IMAGE 1 = Pierre, Champion d'Arène d'Argenta, sprites de combat VALIDÉS (à gauche debout prêt, à droite pose de lancer) : c'est la CIBLE EXACTE du rendu, de la main, de l'échelle et du cadrage ; IMAGE 2 = son buste « VS » validé (même main) ; IMAGE 3 = son apparence dans le monde du jeu : sa coiffure, sa tenue et ses couleurs font foi.
+
+PERSONNAGE : Agatha, membre du Conseil des Quatre de la Ligue Pokémon (type Spectre), femme TRÈS ÂGÉE (environ 80 ans), PETITE et un peu voûtée, cheveux GRIS-BLANC relevés en chignon, rides marquées, sourire malicieux et inquiétant ; longue ROBE VIOLET SOMBRE, CHÂLE NOIR sur les épaules, CANNE en bois sombre (comme son sprite du monde, IMAGE 3). Design moderne fidèle au personnage de Pokémon Rouge/Bleu.
+
+À FAIRE : UNE image paysage 1536 × 1024 avec DEUX poses du même personnage côte à côte, chacune en pied, grande (environ 900 px de haut, des cheveux aux semelles), bien séparées (au moins 120 px de vide entre elles), rien de coupé par le bord, pieds tous à la même hauteur près du bas de l'image :
+- À GAUCHE : pose DEBOUT PRÊT : de trois-quarts face, corps tourné vers la gauche de l'image, les deux mains posées sur le pommeau de sa canne devant elle, dos un peu voûté, tête tournée vers la gauche, sourire rusé.
+- À DROITE : pose de LANCER comme celle de Pierre (IMAGE 1, à droite) : de trois-quarts face tourné vers la gauche, fente avant (jambe gauche de l'image avancée et fléchie, l'autre tendue en arrière), bras tendu loin vers la gauche à hauteur de poitrine, main ouverte doigts écartés, la Ball VIENT DE PARTIR (main vide, pas de Ball dessinée), l'autre bras replié en arrière, elle lance du bras droit, la canne gardée dans l'autre main, châle qui flotte, geste vif malgré l'âge.
+Mains à cinq doigts correctes, pieds entiers, même personnage, même tenue et mêmes proportions dans les deux poses.
+
+STYLE (impératif) : exactement la main de Pierre (IMAGES 1 et 2) : illustration 2D HD « anime peint », contours fins et doux brun foncé (jamais de trait noir épais), aplats peints avec ombres douces et deux ou trois valeurs par matériau, légère granularité de pinceau, proportions réalistes-stylisées (PAS chibi), lumière neutre et douce venant de la gauche.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun sol, aucune ombre portée, aucun halo, aucun texte, aucune lettre, aucun cadre, aucune Poké Ball.

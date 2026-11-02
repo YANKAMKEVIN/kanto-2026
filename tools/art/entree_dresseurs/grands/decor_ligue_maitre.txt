@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — SALLE DU MAÎTRE DE LA LIGUE (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte le rival, devenu Maître de la Ligue (Champion de la Ligue), au combat FINAL du jeu au Plateau Indigo. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : c'est la CIBLE du rendu, de la richesse, de la lumière, de la vue de trois-quarts et du cadrage (sol vaste, mur du fond vers 40 % de la hauteur) ; ce n'est PAS le lieu à peindre : ne reprends ni ses piliers de roche, ni son médaillon, ni ses bannières rouges.
+
+LIEU : la salle du Maître de la Ligue, sommet du Plateau Indigo, la plus solennelle du jeu : sol de grandes dalles de MARBRE blanc et crème veiné d'or, poli comme un miroir, un LONG TAPIS ROUGE bordé d'or qui mène au fond à une grande porte double ornée (vers le Panthéon) au sommet d'un large escalier de marbre de cinq marches ; murs de hauts PANNEAUX BORDEAUX encadrés de moulures dorées, APPLIQUES DORÉES aux flammes chaudes, quatre grandes STATUES de pierre blanche de Pokémon légendaires stylisés (silhouettes nobles, ailes, sans visage précis) sur de hauts piliers de marbre, de part et d'autre de l'escalier ; un grand vitrail circulaire doré au-dessus de la porte, sans aucun signe. Lumière DORÉE majestueuse qui tombe du vitrail et de hautes fenêtres en haut à gauche, rayons de poussière dorée, reflets sur le marbre ; ambiance de grande finale.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra sur la GAUCHE de la salle, regard légèrement vers la DROITE, en trois-quarts, comme sur IMAGE 1 : point de fuite vers x 62 %. Éléments de GAUCHE proches, grands, coupés par le bord gauche et par le haut ; ceux de droite plus petits et plus lointains.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : sol plat et nu (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

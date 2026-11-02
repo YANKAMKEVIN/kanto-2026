@@ -69,7 +69,13 @@
 			"koga": [-0.005, 0.023, 1.2],
 			"morgane": [-0.005, 0.023, 1.2],
 			"auguste": [-0.005, 0.023, 1.2],
-			"giovanni": [-0.005, 0.023, 1.2]
+			"giovanni": [-0.005, 0.023, 1.2],
+			"rival": [-0.005, 0.023, 1.2],
+			"rivale": [-0.005, 0.023, 1.2],
+			"olga": [-0.005, 0.023, 1.2],
+			"aldo": [-0.005, 0.023, 1.2],
+			"agatha": [-0.005, 0.023, 1.2],
+			"peter": [-0.005, 0.023, 1.2]
 		}
 	},
 	"classes": {
@@ -117,10 +123,10 @@
 		"morgane": { "world_sprite": "beauty", "scale": 1.16, "hand": [-0.011, -0.588] },
 		"auguste": { "world_sprite": "gentleman", "scale": 1.08, "hand": [-0.141, -0.586] },
 		"giovanni": { "world_sprite": "giovanni", "scale": 1.28, "hand": [-0.084, -0.659] },
-		"olga": { "world_sprite": "olga" },
-		"aldo": { "world_sprite": "aldo" },
-		"agatha": { "world_sprite": "agatha" },
-		"peter": { "world_sprite": "peter" },
-		"rival": { "world_sprite": "rival", "scale": 1.0 }
+		"olga": { "world_sprite": "olga", "scale": 1.14, "hand": [-0.109, -0.61] },
+		"aldo": { "world_sprite": "aldo", "scale": 1.32, "hand": [-0.081, -0.607] },
+		"agatha": { "world_sprite": "agatha", "scale": 0.95, "hand": [-0.15, -0.561] },
+		"peter": { "world_sprite": "peter", "scale": 1.24, "hand": [-0.03, -0.585] },
+		"rival": { "world_sprite": "rival", "scale": 1.05, "hand": [-0.091, -0.591] }
 	}
 }

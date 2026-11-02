@@ -42,6 +42,32 @@ const SETUPS := {
 		"trainer": "cinnabar_gym_blaine"},
 	"jadielle": {"map": "viridian_gym", "spawn": "entrance", "facing": "up",
 		"trainer": "viridian_gym_giovanni"},
+	# Étape 3 (les autres grands combats, planches docs/design/fiches-assets/entree-grands-combats/).
+	"rival_labo": {"map": "oak_lab", "spawn": "entrance", "facing": "up", "trainer": "rival_lab"},
+	"rival_route22": {"map": "route_22", "spawn": "from_viridian", "facing": "left",
+		"trainer": "rival_route22"},
+	"rival_route24": {"map": "route_24", "spawn": "bridge_top", "facing": "up",
+		"trainer": "rival_cerulean"},
+	"rival_ss_anne": {"map": "ss_anne_captain_corridor", "spawn": "entrance", "facing": "up",
+		"trainer": "rival_ss_anne"},
+	"rival_tour": {"map": "pokemon_tower_2f", "spawn": "devant_rival", "facing": "up",
+		"trainer": "rival_tower"},
+	"rival_sylphe": {"map": "silph_co_7f", "spawn": "from_elevator", "facing": "up",
+		"trainer": "rival_silph"},
+	"rival_route22_final": {"map": "route_22_west", "spawn": "from_route_22", "facing": "left",
+		"trainer": "rival_route22_final"},
+	"giovanni_repaire": {"map": "rocket_hideout_b4f", "spawn": "from_elevator", "facing": "up",
+		"trainer": "giovanni_hideout"},
+	"giovanni_sylphe": {"map": "silph_co_11f", "spawn": "from_elevator", "facing": "up",
+		"trainer": "silph_co_giovanni"},
+	"olga": {"map": "league_lorelei", "spawn": "from_south", "facing": "up",
+		"trainer": "league_lorelei"},
+	"aldo": {"map": "league_bruno", "spawn": "from_south", "facing": "up", "trainer": "league_bruno"},
+	"agatha": {"map": "league_agatha", "spawn": "from_south", "facing": "up",
+		"trainer": "league_agatha"},
+	"peter": {"map": "league_lance", "spawn": "from_south", "facing": "up", "trainer": "league_lance"},
+	"maitre": {"map": "league_champion", "spawn": "from_south", "facing": "up",
+		"trainer": "rival_champion"},
 }
 const PARTY: Array = [{"species": "squirtle", "level": 14}]
 const LEAD_FRAMES: int = 20
@@ -76,6 +102,9 @@ func _run() -> void:
 	var game_state: Node = root.get_node(^"GameState")
 	game_state.set(&"player_name", "Kevin")
 	game_state.set(&"rival_name", "Régis")
+	if _args.has("rival_look"):  # --rival_look=rivale : la rivale (apparence choisie à l'ouverture)
+		game_state.set(&"rival_look", StringName(_args["rival_look"]))
+		game_state.set(&"rival_name", "Rose")
 	var player: Node = boot.call(&"get_player")
 	var map: Node = boot.call(&"get_map")
 	if setup.has("cell"):
