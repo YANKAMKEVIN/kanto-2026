@@ -20,7 +20,7 @@
 #   - Falaise ouest (R, x 1..10, y 23..39) ; jardin et arbres repères (G) à l'est.
 #
 # Raccords :
-#   EST (49, 20..22) ↔ Route 39 (JOH2, grille à venir) ; fermé par le garde jusqu'au choix du
+#   EST (49, 20..22) ↔ Route 39, bord ouest (0, 20..22) ; fermé par le garde jusqu'au choix du
 #     Pokémon de départ (O-19, PNJ « garde_est » et déclencheur « garde_barriere »).
 #   SUD (20..29, 39), en Surf ↔ Route 40 (JOH7, grille à venir) ; inaccessible pendant l'acte 1
 #     (pas de Pokémon surfeur ; aucun blocage à poser).
@@ -84,7 +84,7 @@ GRILLE 50 40
 FIN
 
 POSITIONS
-warp_est             warp           49,20..22    libre   # PUSH → → route_39 (JOH2) ; raccord à caler sur sa grille
+warp_est             warp           49,20..22    libre   # PUSH → → route_39, from_olivine (0, 20..22)
 from_route_39        spawn          49,20..22    libre   # arrivée de la Route 39, tournée ←
 warp_sud_mer         warp           20..29,39    libre   surf=1  # PUSH ↓ → route_40 (JOH7)
 from_route_40        spawn          20..29,39    libre   surf=1  # arrivée de la Route 40 en Surf, tournée ↑

@@ -1,0 +1,135 @@
+# Rosalia (ecruteak_city) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH2 ; dossier
+# docs/design/dossier-joh-03-rosalia.md §3 à §8, textes R-11 à R-22, R-25 ; retours des JOH6 et
+# JOH8 : dossiers joh-07 §3, joh-09 §3). Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**.
+# Source UNIQUE de la géométrie ; un changement de composition se fait ICI d'abord.
+# Contrôle : tools/art/plan_check_joh2.py.
+#
+# 56 × 48 cases (dossier : ≈ 56 × 48) ; nord en haut ; x = colonne 0..55, y = rangée 0..47.
+#
+# Composition (tout à angles droits ; toits de tuiles, érables) :
+#   - AVENUE y 14..16, du bord OUEST (Route 38) à x 54 ; RUE DU SUD x 26..28, de l'avenue au bord
+#     SUD (Route 37) ; RUE DE L'EST y 30..32, de x 1 au bord EST (Route 42).
+#   - Nord-ouest : la TOUR CENDRÉE (B, 10 × 11, x 4..13, y 2..12 ; ruine noircie, façade seule au
+#     JOH2, porte fermée (8..9, 12), R-19) et son HERBE (h, x 1..3 et 14..16, y 3..12 ; rencontres
+#     de nuit seulement, rares, dossier §5). Parvis y 13 : la scène des Sbires (R-12 à R-15).
+#   - Nord, au centre : MAISON DES SAGES (S, 7 × 6, x 18..24, y 7..12, toit rouge, porte (21, 12)),
+#     derrière une haie (x, y 4..5).
+#   - Nord-est : le BOIS de la Tour Carillon (T, x 33..54, y 0..12) et, derrière lui, la TOUR
+#     CARILLON en façade (K, 8 × 9, x 46..53, y 1..9). Le CHEMIN GARDÉ (p, x 42..43, y 0..13) part
+#     de l'avenue vers le nord et sort par le bord NORD (42..43, 0) vers le Bois de la Tour (JOH8) ;
+#     un garde (R-20) le ferme jusqu'à `johto_bell_tower_open` (JOH8, H-2). Herbe de la tour à
+#     l'ouest du chemin (h, x 36..40, y 9..12).
+#   - Entre l'avenue et la rue de l'est : CENTRE (C, 8 × 7, x 5..12, portes (8..9, 29)), BOUTIQUE
+#     (O, 8 × 7, x 15..22, portes (18..19, 29)) à l'ouest de la rue du sud ; Maison 1 (m, 7 × 6,
+#     porte (35, 29)) et Maison 2 (N, 7 × 6, porte (47, 29)) à l'est, derrière des haies.
+#   - Sud : jardins (massifs de fleurs y, bancs n), érables (G), rue du sud vers la Route 37.
+#
+# Raccords :
+#   OUEST (0, 14..16) ↔ Route 38, bord est (59, 14..16) (mêmes rangées).
+#   SUD (26..28, 47) ↔ Route 37 (JOH3, grille à venir ; dossier joh-04 : on sort de Rosalia par
+#     le sud).
+#   EST (55, 30..32) ↔ Route 42 (JOH6, grille à venir). Fermée pendant l'acte 1 (Kevin, 2026-11-02) : un
+#     garde (« garde_route_42 ») et le déclencheur « barriere_route_42 » sans `johto_act2`, comme le
+#     garde d'Oliville ; son texte s'écrit avec le JOH6.
+#   NORD (42..43, 0) ↔ Bois de la Tour (JOH8, ≈ 24 × 20, grille à venir).
+#
+# Légende :
+#   T forêt, bordure d'arbres et bois de la Tour Carillon (bloqués)   . pelouse
+#   p pavé (praticable)   h herbe des tours (praticable, rencontres de nuit)   x haie (bloquée)
+#   y massif de fleurs (bloqué)   n banc (bloqué)   G érable repère (bloqué)
+#   B Tour Cendrée  K Tour Carillon  S maison des sages  C Centre Pokémon  O Boutique
+#   m Maison 1  N Maison 2  (emprises bloquées ; tours en façade)
+#   D porte d'un bâtiment (praticable, STEP_ON ↑)
+# Emprises comme à Kanto et Oliville : Centre et Boutique 8 × 7 (portes = 4e et 5e colonnes du bas),
+# maisons 7 × 6 (porte = 4e colonne).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 56 caractères), puis POSITIONS.
+
+PRATICABLES .phD
+
+GRILLE 56 48
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTppTTTTTTTTTTTT
+01 TTTT.............................TTTTTTTTTppTTKKKKKKKKTT
+02 TTTTBBBBBBBBBB...................TTTTTTTTTppTTKKKKKKKKTT
+03 TTTTBBBBBBBBBBhhh................TTTTTTTTTppTTKKKKKKKKTT
+04 ThhhBBBBBBBBBBhhhxxxxxxxxx.......TTTTTTTTTppTTKKKKKKKKTT
+05 ThhhBBBBBBBBBBhhhxxxxxxxxx.......TTTTTTTTTppTTKKKKKKKKTT
+06 ThhhBBBBBBBBBBhhh................TTTTTTTTTppTTKKKKKKKKTT
+07 ThhhBBBBBBBBBBhhh.SSSSSSS........TTTTTTTTTppTTKKKKKKKKTT
+08 ThhhBBBBBBBBBBhhh.SSSSSSS........TTTTTTTTTppTTKKKKKKKKTT
+09 ThhhBBBBBBBBBBhhh.SSSSSSS........TTThhhhhTppTTKKKKKKKKTT
+10 ThhhBBBBBBBBBBhhh.SSSSSSS........TTThhhhhTppTTTTTTTTTTTT
+11 ThhhBBBBBBBBBBhhh.SSSSSSS........TTThhhhhTppTTTTTTTTTTTT
+12 T...BBBBBBBBBB....SSSDSSS........TTThhhhhTppTTTTTTTTTTTT
+13 T.........................................pp...........T
+14 pppppppppppppppppppppppppppppppppppppppppppppppppppppppT
+15 pppppppppppppppppppppppppppppppppppppppppppppppppppppppT
+16 pppppppppppppppppppppppppppppppppppppppppppppppppppppppT
+17 T.........................ppp..........................T
+18 T.........................ppp..........................T
+19 T...G.................G...ppp..G.......................T
+20 T.........................ppp.xxxxxxxxx..G.xxxxxxxxx...T
+21 T.........................ppp.......................G..T
+22 T.........................ppp..........................T
+23 T....CCCCCCCC..OOOOOOOO...ppp..........................T
+24 T....CCCCCCCC..OOOOOOOO...ppp...mmmmmmm.....NNNNNNN....T
+25 T....CCCCCCCC..OOOOOOOO...ppp...mmmmmmm.....NNNNNNN....T
+26 T....CCCCCCCC..OOOOOOOO...ppp...mmmmmmm.....NNNNNNN....T
+27 T....CCCCCCCC..OOOOOOOO...ppp...mmmmmmm.....NNNNNNN....T
+28 T....CCCCCCCC..OOOOOOOO...ppp...mmmmmmm.....NNNNNNN....T
+29 T....CCCDDCCC..OOODDOOO...ppp...mmmDmmm.....NNNDNNN....T
+30 Tppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+31 Tppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+32 Tppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+33 T.........................ppp..........................T
+34 T.........................ppp..........................T
+35 T.........................ppp.......................G..T
+36 T.....G.......n...........ppp..........................T
+37 T.........................ppp.....G.....yyyyy..........T
+38 T.......yyyyy.............ppp...........yyyyy..........T
+39 T.......yyyyy.............ppp..n........yyyyy..........T
+40 TTTT....yyyyy.......G.....ppp.......................TTTT
+41 TTTT......................ppp.......................TTTT
+42 TTTT......................ppp.................G.....TTTT
+43 TTTT......................ppp.......................TTTT
+44 TTTT......................ppp.......................TTTT
+45 TTTT..........G...........ppp..........G............TTTT
+46 TTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTT
+47 TTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_ouest           warp           0,14..16     libre   # PUSH ← → route_38, from_ecruteak (59, 14..16)
+from_route_38        spawn          0,14..16     libre   # arrivée de la Route 38, tournée → ; titre de zone « Rosalia » (R-25)
+warp_sud             warp           26..28,47    libre   # PUSH ↓ → route_37 (JOH3) ; raccord à caler sur sa grille
+from_route_37        spawn          26..28,47    libre   # arrivée de la Route 37, tournée ↑
+warp_est             warp           55,30..32    libre   # PUSH → → route_42 (JOH6) ; raccord à caler sur sa grille
+from_route_42        spawn          55,30..32    libre   # arrivée de la Route 42, tournée ←
+garde_route_42       pnj            54,29        bloque  role=garde facing=down  # acte 1 (Kevin) ; texte à écrire avec le JOH6 ; à l'acte 2, il s'efface [D]
+barriere_route_42    declencheur    54,30..32    libre   actif_sans=johto_act2  # acte 1 : texte du garde et pas en arrière
+warp_bois            warp           42..43,0     libre   # PUSH ↑ → bell_tower_woods (JOH8)
+from_bois            spawn          42..43,0     libre   # arrivée du Bois de la Tour, tournée ↓
+garde_carillon       pnj            41,13        bloque  role=garde facing=right  # R-20 ; avec johto_bell_tower_open, il s'efface (JOH8) [D]
+barriere_carillon    declencheur    42..43,13    libre   actif_sans=johto_bell_tower_open  # R-20 et pas en arrière
+porte_centre         warp           8..9,29      libre   # STEP_ON ↑ → ecruteak_center
+porte_boutique       warp           18..19,29    libre   # STEP_ON ↑ → ecruteak_mart
+porte_sages          warp           21,12        libre   # STEP_ON ↑ → ecruteak_elders_house (doyen, R-16 à R-18)
+porte_maison_1       warp           35,29        libre   # STEP_ON ↑ → ecruteak_house_1 (Antidote ×2, dossier §7)
+porte_maison_2       warp           47,29        libre   # STEP_ON ↑ → ecruteak_house_2
+retour_centre        spawn          8..9,30      libre   # tournée ↓ ; point de Vol (utilisable à l'acte 2)
+retour_boutique      spawn          18..19,30    libre
+retour_sages         spawn          21,13        libre
+retour_maison_1      spawn          35,30        libre
+retour_maison_2      spawn          47,30        libre
+porte_tour_cendree   examen         8..9,12      bloque  # R-19, lue depuis (8..9, 13) ↑ ; s'ouvre au JOH6 (C-2)
+scene_sbires         declencheur    1..2,14..16  libre   actif_sans=johto_rosalia_rockets_seen  # R-12 à R-15, à l'entrée (seul passage depuis la Route 38) ; les Sbires fuient vers l'est par l'avenue
+sage_tour            pnj            9,13         bloque  role=sage facing=right  # R-13, R-15 ; devant la porte de la Tour Cendrée
+sbire_1              pnj            11,13        bloque  role=sbire facing=left  actif_sans=johto_rosalia_rockets_seen  # R-12
+sbire_2              pnj            12,14        bloque  role=sbire facing=left  actif_sans=johto_rosalia_rockets_seen  # R-14
+margot               pnj            13,29        bloque  role=conteuse jour=mardi facing=down  # R-22, entre le Centre et la Boutique ; absente hors du mardi
+diane                pnj            23,13        bloque  role=sonneuse jour=dimanche facing=down  # JOH6 (dossier joh-07 §8), devant la maison des sages
+panneau_ville        panneau        2,13         bloque  # R-11, lu depuis (2, 14) ↑
+herbes_ouest         herbes         2,8          libre   role=H1  # herbe de la Tour Cendrée, côté ouest (nuit)
+herbes_cendree       herbes         15,7         libre   role=H2  # herbe de la Tour Cendrée, côté est (nuit)
+herbes_carillon      herbes         38,10        libre   role=H3  # herbe du bois de la Tour Carillon (nuit)
+FIN
