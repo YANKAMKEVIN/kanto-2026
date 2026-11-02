@@ -2,7 +2,7 @@
 
 > Conception des systèmes neufs du Chapitre Johto, à partir du cadre
 > [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md) (JH-1 à JH-20 tranchés par Kevin) et d'un
-> relevé du moteur fait le 2026-11-02. Écrit par Claude ; **à valider par Kevin**. Les valeurs
+> relevé du moteur fait le 2026-11-02. Écrit par Claude ; JH-21 à JH-24 tranchés par Kevin le 2026-11-02 ; **le reste est à valider**. Les valeurs
 > **[D]** sont des défauts (règle 4 de `CLAUDE.md`) ; les vraies questions sont **JH-21 et
 > suivantes** (§12). Le plan technique (`docs/tech/jalon-joh0.md`) viendra après validation.
 > **Pas de code avant la fin de Kanto.**
@@ -240,7 +240,7 @@ Chaque sous-jalon : tests ciblés, puis CI complète avant fusion (règle 2 de `
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-21 | Le **lien** reste caché, avec un PNJ qui l'évalue (§8.3) ? | Oui, caché, comme Or/Argent |
-| JH-22 | Pokédex : liste continue sans cases vides, ou grille nationale 1–251 avec 50 cases vides ? | Liste continue (§11) |
-| JH-23 | Pendant l'acte 1, à **6 Pokémon**, refuser de lancer une Poké Ball (§6.3) ? | Oui ; l'alternative (relâcher un Pokémon pour faire de la place) est plus dure |
-| JH-24 | Au retour de l'équipe, le joueur **choisit ses 6** sur un écran dédié (§6.4) ? | Oui ; l'alternative (l'équipe de Ligue revient en entier, celle de Johto part au Stockage) est plus simple mais brutale |
+| JH-21 | ✅ Lien **caché**, évalué par un PNJ de Doublonville (Kevin, 2026-11-02) | — |
+| JH-22 | ✅ Pokédex en **liste continue**, sans cases vides, filtre Kanto / Johto / Tout (Kevin) | — |
+| JH-23 | ✅ À 6 Pokémon pendant l'acte 1, **lancer refusé** (Kevin) | — |
+| JH-24 | ✅ Au retour, le joueur **choisit ses 6** (Kevin) | — |
