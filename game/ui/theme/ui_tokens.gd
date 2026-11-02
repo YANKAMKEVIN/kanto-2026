@@ -871,6 +871,10 @@ const BATTLE_PARTY_COLUMNS := 2
 ## (BAG_PANEL_WIDTH − 2 × BAG_PANEL_PAD − PICKER_GAP) / 2, arrondi en dessous.
 const BATTLE_PARTY_CARD_WIDTH := 475
 const BATTLE_PARTY_CARD_HEIGHT := PICKER_ROW_HEIGHT
+## Vignette artwork officiel dans un rond (MenuRoundThumb), entre les pastilles de type et le nom,
+## comme la liste de l'Équipe et le choix du Pokémon du Sac ; plus petite qu'au Sac pour que la
+## raison (« Ne peut plus combattre ») tienne encore sur la carte de 475 px.
+const BATTLE_PARTY_THUMB := 84
 ## Pastille de type (cercle à la couleur du type, icône blanche) à gauche de la carte.
 const BATTLE_PARTY_TYPE_CHIP := 52
 const BATTLE_PARTY_TYPE_ICON := 32

@@ -1,7 +1,8 @@
 class_name BattlePartyCard
 extends BagTile
 ## Un Pokémon dans le panneau ÉQUIPE du combat (BattlePartyPanel, jalon 7) : pastilles de type
-## (icône blanche sur la couleur du type, l'une sur l'autre), nom, « Nv. », barre de PV et « 17 / 19 », puis une
+## (icône blanche sur la couleur du type, l'une sur l'autre), artwork officiel dans un rond
+## ([MenuArt], comme la liste de l'Équipe), nom, « Nv. », barre de PV et « 17 / 19 », puis une
 ## étiquette : « ACTIF » (le Pokémon en jeu), le statut en toutes lettres (« K.O. »). Un
 ## Pokémon qui ne peut pas être envoyé reste lisible avec **sa raison** (« Ne peut plus
 ## combattre »), atténué : jamais une carte grisée sans explication.
@@ -17,6 +18,7 @@ var speed_scale: float = 1.0
 
 var _view: BattlePartyView
 var _types: VBoxContainer
+var _thumb: TextureRect
 var _name: Label
 var _level: Label
 var _tag: Label
@@ -44,6 +46,7 @@ func set_view(view: BattlePartyView) -> void:
 	_view = view
 	if view == null:
 		return
+	_thumb.texture = MenuArt.pokemon_thumbnail(view.dex_number)
 	_name.text = view.display_name
 	_level.text = "%s %d" % [BattleInfoCard.LEVEL_TAG, view.level]
 	_hp_bar.set_hp(view.hp, view.max_hp)
@@ -100,6 +103,11 @@ func get_type_count() -> int:
 
 func get_hp_bar() -> HpBar:
 	return _hp_bar
+
+
+## Vignette affichée (null sans numéro de Pokédex).
+func get_thumb_texture() -> Texture2D:
+	return _thumb.texture
 
 
 ## Refus : la carte tremble brièvement (PICKER_SHAKE_TIME), puis revient à sa place.
@@ -169,6 +177,22 @@ func _build() -> void:
 	row.add_child(_types)
 	_dimmed.append(_types)
 
+	var thumb_box := Panel.new()
+	thumb_box.theme_type_variation = &"MenuRoundThumb"
+	thumb_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	thumb_box.custom_minimum_size = Vector2.ONE * UiTokens.BATTLE_PARTY_THUMB
+	thumb_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(thumb_box)
+	_dimmed.append(thumb_box)
+	_thumb = TextureRect.new()
+	_thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var side := UiTokens.BATTLE_PARTY_THUMB * UiTokens.MENU_ROUND_THUMB_ART
+	_thumb.size = Vector2.ONE * side
+	_thumb.position = (Vector2.ONE * UiTokens.BATTLE_PARTY_THUMB - _thumb.size) * 0.5
+	thumb_box.add_child(_thumb)
+
 	var info := VBoxContainer.new()
 	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -209,7 +233,9 @@ func _build() -> void:
 	_tag = _label(&"PickerMeta")
 	_tag.visible = false
 	tag_row.add_child(_tag)
-	_reason = _label(&"PickerMeta")
+	# Police d'indication (BagHint, 22 px) : avec la vignette, « Ne peut plus combattre » doit
+	# encore tenir en entier à côté des pastilles.
+	_reason = _label(&"BagHint")
 	_reason.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_reason.clip_text = true
 	_reason.size_flags_horizontal = Control.SIZE_EXPAND_FILL
