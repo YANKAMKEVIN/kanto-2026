@@ -3,7 +3,7 @@
 > Deuxième jalon de l'acte 2 du Chapitre Johto (cadre [`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md)
 > §4.3). Suite du JOH6 ([`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md) : le déserteur envoie le
 > joueur aux Îles Tourbillon, C-45). Écrit par Claude le 2026-11-02 ; **textes M-1 à M-34 et
-> arbitrages JH-48 à JH-51 en attente de Kevin**. Valeurs **[D]** = défauts. Grilles et vues
+> arbitrages JH-48 à JH-51 validés par Kevin le jour même** (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues
 > peintes après validation.
 
 ## 1. Hors périmètre
@@ -140,7 +140,7 @@ Routes 40 et 41 (mer, tourbillons animés), Îles Tourbillon (extérieur sur la 
 B2F). Personnages : Nageurs (modèles de Kanto), Cenere (JOH5). Pokémon : Suicune et Lugia (dos,
 face), Lokhlass (existe). Musique de Lugia (HeartGold / SoulSilver, JH-12).
 
-## 16. Textes (à valider par Kevin)
+## 16. Textes (lot validé par Kevin le 2026-11-02)
 
 Format : bulles séparées par « / ». `{joueur}` = nom.
 
@@ -185,7 +185,7 @@ Format : bulles séparées par « / ». `{joueur}` = nom.
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-48 | Comment franchir les tourbillons sans CS Siphon ? | **Pas de CS neuve** : tourbillons en décor qui dessinent les chenaux, **puzzle de courants** au B1F, Force au 1F |
-| JH-49 | Comment accéder à Lugia ? | **Directement après Suicune** : un courant ferme le B2F et s'apaise quand Suicune est battu ou capturé ; pas d'Argent Aile |
-| JH-50 | Lokhlass du vendredi | **Chaque vendredi** jusqu'à sa capture |
-| JH-51 | Que devient Cenere après sa défaite ? | **Fidèle à Dante** : elle repart et sera au Mont Argenté, retenue par le rival (JOH9) |
+| JH-48 | ✅ **Pas de CS neuve** : tourbillons en décor, puzzle de courants au B1F, Force au 1F (Kevin, 2026-11-02) | — |
+| JH-49 | ✅ **Lugia accessible après Suicune** (le courant du B2F s'apaise), sans objet (Kevin) | — |
+| JH-50 | ✅ **Lokhlass chaque vendredi** jusqu'à sa capture (Kevin) | — |
+| JH-51 | ✅ **Cenere reste fidèle à Dante** et sera au Mont Argenté (Kevin) | — |
