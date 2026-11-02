@@ -1,7 +1,8 @@
 # Route 41 (route_41) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ; dossier
 # docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étape 2), §5 à §8, textes M-3, M-4, M-6 à M-8).
-# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
-# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
 #
 # 60 × 48 cases (dossier : ≈ 60 × 48) ; nord en haut ; x = colonne 0..59, y = rangée 0..47.
 #

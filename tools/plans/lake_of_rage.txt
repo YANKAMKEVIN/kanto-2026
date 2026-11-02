@@ -1,8 +1,9 @@
 # Lac Colère (lake_of_rage) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ; dossier
 # docs/design/dossier-joh-07-acajou.md §3, §4 (étape 8), §5 à §7, §10, textes C-24 à C-27 ; retouche du JOH9 : dossier joh-10 §3,
 # textes A-1, A-2).
-# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
-# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
 #
 # 56 × 52 cases (dossier : ≈ 56 × 52) ; nord en haut ; x = colonne 0..55, y = rangée 0..51.
 #
@@ -20,7 +21,8 @@
 #
 # Raccords :
 #   SUD (26..28, 51) ↔ Route 43, bord nord (10..12, 0) (colonnes différentes, warps case à case).
-#   EST (55, 3..5) ↔ Sentier du Mont Argenté (JOH9, grille à venir) ; fermé pendant l'acte 2.
+#   EST (55, 3..5) ↔ Sentier du Mont Argenté, bord ouest (0, 40..42) (rangées différentes, warps case à
+#     case) ; fermé pendant l'acte 2.
 #
 # Légende :
 #   T forêt et bordure d'arbres (bloquée)   . pré des rives (praticable)   = chemin et sentier
@@ -91,7 +93,7 @@ FIN
 POSITIONS
 warp_sud             warp           26..28,51    libre    # PUSH ↓ → route_43, from_lake (10..12, 0)
 from_route_43        spawn          26..28,51    libre   facing=up  # arrivée de la Route 43 ; titre de zone « Lac Colère »
-warp_sentier         warp           55,3..5      libre    # PUSH → → silver_trail (JOH9), from_lake ; raccord à caler sur sa grille
+warp_sentier         warp           55,3..5      libre    # PUSH → → silver_trail, from_lake (0, 40..42)
 from_sentier         spawn          55,3..5      libre   facing=left  # arrivée du sentier du Mont Argenté (JOH9)
 garde_forestier      pnj            53,6         bloque  role=garde facing=up  # A-1 avant johto_act3, A-2 après (JOH9) ; à côté du sentier
 barriere_sentier     declencheur    54,3..5      libre   actif_sans=johto_act3  # A-1 et pas en arrière ; levée à l'acte 3

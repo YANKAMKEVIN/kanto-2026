@@ -1,7 +1,8 @@
 # Tour Carillon 1F (bell_tower_1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH8 ; dossier
 # docs/design/dossier-joh-09-tour-carillon.md §3, §4 (étape 3), §6, §7, textes H-6, H-7, H-11). Carte intérieure.
-# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
-# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh8.py.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh8.py.
 #
 # 24 × 24 cases (dossier : ≈ 24 × 24) ; nord en haut ; x = colonne 0..23, y = rangée 0..23.
 #

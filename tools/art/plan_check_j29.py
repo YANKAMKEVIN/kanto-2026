@@ -61,7 +61,7 @@ GRILLES = {
 # Cartes à niveaux de sol (Route Victoire).
 A_NIVEAUX = {"victory_road_1f", "victory_road_2f", "victory_road_3f"}
 # Cartes hors grilles du jalon (destinations admises).
-EXTERNES = {"viridian_city", "indigo_plateau_lobby"}
+EXTERNES = {"viridian_city", "indigo_plateau_lobby", "route_28_gate"}  # route_28_gate : Chapitre Johto (JOH9, JH-8), contrôlée par plan_check_joh9.py
 DEPART = ("route_22", "from_viridian")
 BUT_CARTE = "indigo_plateau_lobby"
 BADGES = ["badge_boulder", "badge_cascade", "badge_thunder", "badge_rainbow", "badge_soul",

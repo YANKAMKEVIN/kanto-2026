@@ -33,7 +33,7 @@
 
 Points de Vol : aucun neuf (Rosalia existe).
 
-**Grilles préparées le 2026-11-03** : `tools/plans/bell_tower_woods.txt`, `bell_tower_1f.txt`,
+**Grilles validées par Kevin le 2026-11-03** (validation d'avance) : `tools/plans/bell_tower_woods.txt`, `bell_tower_1f.txt`,
 `bell_tower_2f.txt`, `bell_tower_roof.txt` (la grille fait foi pour la géométrie ; défauts [D] dans
 leurs en-têtes) ; retouche de `rosalia.txt` (sage blessé, raccord nord) ; contrôle
 `tools/art/plan_check_joh8.py` ; aperçu `reference/joh8-grilles-apercu-v1.png`.

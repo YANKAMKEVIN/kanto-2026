@@ -1,0 +1,92 @@
+# Mont Argenté, extérieur (mt_silver_outside) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ;
+# dossier docs/design/dossier-joh-10-mont-argente.md §3, §4 (étape 3), §5, §7, textes A-7 à A-13).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# 40 × 40 cases (dossier : ≈ 40 × 40) ; nord en haut ; x = colonne 0..39, y = rangée 0..39.
+#
+# Composition (pente enneigée sous la paroi) :
+#   - CHEMIN (=) du bord SUD (18..20, 39), depuis le sentier, jusqu'à l'ESPLANADE (n, x 14..24, y 7..13)
+#     au pied de la PAROI (R, y 1..6) où s'ouvre l'ENTRÉE DE LA GROTTE (E, (19, 6)).
+#   - L'esplanade est un ENTONNOIR (R de part et d'autre, y 7..13) : sa seule entrée est la rangée
+#     y 14 (x 14..24), qui porte la SCÈNE DU RELAIS (« scene_relais », A-8 à A-13) : Brace, Cenere et
+#     quatre Sbires barrent la grotte, le rival arrive en courant et les retient ; le joueur entre seul.
+#   - PENTE (n) avec trois poches d'HERBES SOUS LA NEIGE (H1 x 3..9, y 18..24 ; H2 x 30..36, y 20..26 ;
+#     H3 x 12..17, y 28..33), rochers (o), sapins (G).
+#
+# Raccords :
+#   SUD (18..20, 39) ↔ Sentier, bord nord (11..13, 0) (colonnes différentes, warps case à case).
+#   E (19, 6) ↔ Grotte 1F, entrée (15..16, 27), arrivée (15..16, 26) ; retour (19, 7).
+#
+# Légende :
+#   R paroi, falaise et bordure (bloquées)   n neige (praticable, aucune rencontre)   = chemin (praticable)
+#   h herbes sous la neige (praticables, rencontres)   o rocher (bloqué)   G sapin (bloqué)
+#   E entrée de la grotte (praticable, STEP_ON ↑)
+# Défauts [D] : le rival arrive par le sud (chemin) ; les admins et les Sbires s'effacent avec
+# johto_rival_relay (le combat n'est pas montré, A-13).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 40 caractères), puis POSITIONS.
+
+PRATICABLES n=hE
+
+GRILLE 40 40
+00 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+01 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+02 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+03 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+04 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+05 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+06 RRRRRRRRRRRRRRRRRRRERRRRRRRRRRRRRRRRRRRR
+07 RRRRRRRRRRRRRRnnnnnnnnnnnRRRRRRRRRRRRRRR
+08 RRRRRRRRRRRRRRnnnnnnnnnnnRRRRRRRRRRRRRRR
+09 RRRRRRRRRRRRRRnnnnnnnnnnnRRRRRRRRRRRRRRR
+10 RRRRRRRRRRRRRRnnnnnnnnnnnRRRRRRRRRRRRRRR
+11 RRRRRRRRRRRRRRnnnnnnnnnnnRRRRRRRRRRRRRRR
+12 RRRRRRRRRRRRRRnnnnnnnnnnnRRRRRRRRRRRRRRR
+13 RRRRRRRRRRRRRRnnnnnnnnnnnRRRRRRRRRRRRRRR
+14 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+15 Rnnnnonnnnnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+16 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnnnnonnnnnR
+17 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+18 Rnnhhhhhhhnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+19 Rnnhhhhhhhnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+20 Rnnhhhhhhhnnnnnnnn===nnnnnnnnnhhhhhhhnnR
+21 Rnnhhhhhhhnnnnnnnn===nnnnnnnnnhhhhhhhnnR
+22 Rnnhhhhhhhnnonnnnn===nnnnnnonnhhhhhhhnnR
+23 Rnnhhhhhhhnnnnnnnn===nnnnnnnnnhhhhhhhnnR
+24 Rnnhhhhhhhnnnnnnnn===nnnnnnnnnhhhhhhhnnR
+25 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnhhhhhhhnnR
+26 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnhhhhhhhnnR
+27 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+28 Rnnnnnnnnnnnhhhhhh===nnnnnnnnnnnnnnnnnnR
+29 Rnnnnnnnnnnnhhhhhh===nnnnnnnnnnnnnnnnnnR
+30 RnnGnnnnnnnnhhhhhh===nnnonnnnnnnnnnnnnnR
+31 Rnnnnnnnnnnnhhhhhh===nnnnnnnnnnnnnnnGnnR
+32 Rnnnnnnnnnnnhhhhhh===nnnnnnnnnnnnnnnnnnR
+33 Rnnnnnnnnnnnhhhhhh===nnnnnnnnnnnnnnnnnnR
+34 Rnnnnnnnonnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+35 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnonnnnnnnnR
+36 Rnnnnnnnnnnnnnnnnn===nGnnnnnnnnnnnnnnnnR
+37 RnGnnnnnnnnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+38 Rnnnnnnnnnnnnnnnnn===nnnnnnnnnnnnnnnnnnR
+39 RRRRRRRRRRRRRRRRRR===RRRRRRRRRRRRRRRRRRR
+FIN
+
+POSITIONS
+warp_sud             warp           18..20,39    libre    # PUSH ↓ → silver_trail, from_outside (11..13, 0)
+from_trail           spawn          18..20,39    libre   facing=up  # arrivée du sentier ; titre de zone « Mont Argenté » (A-7)
+entree_grotte        warp           19,6         libre    # STEP_ON ↑ → mt_silver_1f, from_outside (15..16, 26)
+retour_grotte        spawn          19,7         libre   facing=down  # sortie de la grotte (Corde Sortie comprise)
+scene_relais         declencheur    14..24,14    libre   actif_sans=johto_rival_relay  # A-8 à A-13 : le relais du rival ; pose johto_rival_relay ; seule entrée de l'esplanade
+brace                pnj            17,9         bloque  role=admin facing=down actif_sans=johto_rival_relay  # A-8
+cenere               pnj            21,9         bloque  role=admin facing=down actif_sans=johto_rival_relay  # A-9
+sbire_1              pnj            15,8         bloque  role=sbire facing=down actif_sans=johto_rival_relay
+sbire_2              pnj            23,8         bloque  role=sbire facing=down actif_sans=johto_rival_relay
+sbire_3              pnj            16,11        bloque  role=sbire facing=down actif_sans=johto_rival_relay
+sbire_4              pnj            22,11        bloque  role=sbire facing=down actif_sans=johto_rival_relay
+rival_relais         pnj            19,15        libre   role=rival facing=up apparait=scene_relais actif_sans=johto_rival_relay  # A-10 à A-12 ; arrive en courant par le chemin, tenue d'hiver [D]
+herbes_h1            herbes         6,21         libre   role=H1  # sous la neige, ouest
+herbes_h2            herbes         33,23        libre   role=H2  # sous la neige, est
+herbes_h3            herbes         14,30        libre   role=H3  # sous la neige, sud
+FIN

@@ -3,8 +3,9 @@
 # COQUE CONNUE DU PROJET : celle des Boutiques (tools/plans/safrania_boutique.txt, `_poke_mart`,
 # 15 × 10), avec une différence : le rayon mural de droite est l'ÉTAGÈRE qui cache l'ESCALIER du
 # repaire (S, (12, 3)).
-# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
-# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
 #
 # Composition : caisse et vendeur de souvenirs (7, 3) ; présentoirs ; ESCALIER CACHÉ (S, (12, 3)) :
 # mur tant que johto_hideout_found n'est pas posé ; la scène C-28 (déclencheur (12, 4), devant

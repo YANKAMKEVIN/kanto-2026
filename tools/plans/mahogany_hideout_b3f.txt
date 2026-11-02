@@ -1,7 +1,8 @@
 # Repaire Rocket d'Acajou, B3F (mahogany_hideout_b3f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ;
 # dossier docs/design/dossier-joh-07-acajou.md §3, §4, §6, §7, §9, §13, textes C-39 à C-44). Carte intérieure.
-# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
-# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
 #
 # 24 × 18 cases (dossier : ≈ 24 × 18) ; x = colonne 0..23, y = rangée 0..17 ; nord en haut.
 #
