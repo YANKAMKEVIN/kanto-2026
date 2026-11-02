@@ -20,7 +20,9 @@
 | 2026-11-02 | ✅ Types **Ténèbres** et **Acier** ajoutés (JH-4) |
 | 2026-11-02 | ✅ **50 espèces**, choisies par Claude parmi les plus importantes (JH-5, liste au §8 à valider) |
 | 2026-11-02 | ✅ Au Mont Argenté, **option A, le relais** (JH-9) ; les **combats en duo** viendront plus tard, après le chapitre |
-| 2026-11-02 | ✅ L'adversaire final est l'**ancien chef de la Team Rocket, mentor de Giovanni**, trahi par lui (§9) |
+| 2026-11-02 | ✅ L'adversaire final est l'**ancien chef de la Team Rocket, mentor de Giovanni**, trahi par lui (§9) ; il s'appelle **Dante** |
+| 2026-11-02 | ✅ JH-1, JH-2, JH-3, JH-8, JH-10 : propositions de Claude retenues (vol au Centre, équipe et sac rendus ensemble à la Tour Radio, Kanto change peu, révélation de Dante) |
+| 2026-11-02 | ✅ Jour et nuit **comme Or/Argent**, à l'heure du téléphone (JH-6, §7) |
 | 2026-11-02 | ✅ Le joueur **perd son équipe** au début (la Team Rocket la prend), **repart avec de nouveaux Pokémon**, et **retrouve son équipe plus tard** ; ensuite, les adversaires sont **à son niveau** |
 
 ## 2. Fil rouge proposé
@@ -46,7 +48,7 @@ courant découvert, ou un indice laissé par le Professeur Orme à Chen). Le jou
 Surf et ressort aux **Îles Tourbillon**, où il aperçoit une ombre (Lugia, à revoir à l'acte 2),
 puis débarque à **Oliville**.
 
-## 4. Perte de l'équipe (proposition)
+## 4. Perte de l'équipe (validée, JH-1 à JH-3)
 
 - **La scène** : en arrivant à Oliville, épuisé, le joueur confie son équipe au Centre Pokémon pour
   la nuit. La Team Rocket cambriole le Centre. Au matin, plus rien.
@@ -58,7 +60,8 @@ puis débarque à **Oliville**.
 - **La récupération** : **toute l'équipe d'un coup**, à la fin de l'acte 1 (Tour Radio). Rendre les
   Pokémon un par un casserait la difficulté à chaque retour (un niveau 60 dans une équipe de
   niveau 20).
-- **Ce que le joueur garde** : badges, Pokédex, argent. Le sac est à arbitrer (§6, JH-3).
+- **Ce que le joueur garde** : badges, Pokédex, argent et objets clés. Le reste du sac est volé avec
+  l'équipe et rendu avec elle (JH-3).
 
 ## 5. Courbe de niveau (proposition)
 
@@ -76,28 +79,34 @@ Pokémon de l'acte 1 restent utiles ensuite s'ils montent avec l'équipe.
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-1 | La perte de l'équipe : vol au Centre d'Oliville (§4) ? | Oui : scène simple, menace visible tout de suite |
-| JH-2 | Récupération : tout d'un coup à la fin de l'acte 1, ou par étapes ? | Tout d'un coup (§4) |
-| JH-3 | Le sac : gardé, ou en partie volé aussi ? | Volé avec l'équipe, sauf les objets clés, et rendu avec elle ; sinon les Super Bonbons et l'Hyper Ball rendent l'acte 1 trop facile |
+| JH-1 | ✅ Vol au Centre Pokémon d'Oliville pendant la nuit (Kevin, 2026-11-02) | — |
+| JH-2 | ✅ Équipe rendue tout d'un coup, à la fin de l'acte 1 (Tour Radio) (Kevin) | — |
+| JH-3 | ✅ Sac volé avec l'équipe, sauf les objets clés, et rendu avec elle (Kevin) | — |
 | JH-4 | ✅ Types **Ténèbres** et **Acier** ajoutés (Kevin, 2026-11-02). Reste : comment ? | Dans tout le jeu, avec la table des types d'Or/Argent ; les espèces de Kanto gardent leurs types de Rouge/Bleu (pas de Magnéti Électrik/Acier) |
 | JH-5 | ✅ 50 espèces (Kevin). Reste : valider la liste du §8 | Liste du §8 |
-| JH-6 | Jour et nuit (§7) | Option B |
-| JH-7 | ✅ Le dernier adversaire : l'ancien chef, mentor trahi de Giovanni (Kevin). Reste : son nom, et si Giovanni réapparaît | Giovanni réapparaît à la fin, sans combat : il voit tomber son ancien mentor |
-| JH-8 | Ce qui change à Kanto pendant le chapitre | Le moins possible : la grotte de Bourg Palette, des messages de Chen, un PNJ ou deux |
+| JH-6 | ✅ Jour et nuit **comme Or/Argent** (option C), à l'**heure du téléphone** (Kevin) | — |
+| JH-7 | ✅ L'ancien chef, mentor trahi de Giovanni, s'appelle **Dante** (Kevin). Reste : Giovanni réapparaît-il ? | Oui, à la fin, sans combat : il voit tomber son ancien mentor |
+| JH-8 | ✅ Kanto change le moins possible : la grotte de Bourg Palette, des messages de Chen, un PNJ ou deux (Kevin) | — |
 | JH-9 | ✅ Relais (Kevin, 2026-11-02) | — |
-| JH-10 | Qui mène la Team Rocket de l'acte 1, et qui a ordonné le vol de l'équipe ? | Les Sbires croient travailler au retour de Giovanni ; à la Tour Radio, on découvre que l'ancien chef les a repris en main et a fait voler l'équipe du Maître pour l'écarter |
+| JH-10 | ✅ Révélation à la Tour Radio : les Sbires croient travailler au retour de Giovanni ; Dante les a repris en main et a fait voler l'équipe du Maître pour l'écarter (Kevin) | — |
 
-## 7. Jour et nuit : options
+## 7. Jour et nuit : option C retenue (JH-6)
 
 - **A. Ambiance seule** : lumière et couleurs changent, rien d'autre. Le moins cher.
-- **B. Ambiance + quelques règles** *(recommandée)* : des Pokémon de nuit (Hoothoot, Noarfang,
+- **B. Ambiance + quelques règles** : des Pokémon de nuit (Hoothoot, Noarfang,
   Cornèbre, Malosse) ; Évoli évolue en **Mentali le jour, Noctali la nuit** (il existe déjà dans
   Kanto) ; la Team Rocket plus active la nuit ; un ou deux événements de nuit (Tour Cendrée,
   Îles Tourbillon). Peu de règles, mais chacune se remarque.
-- **C. Comme Or/Argent** : jours de la semaine, PNJ et événements par jour, beaucoup de
+- **C. Comme Or/Argent** ✅ *(choix de Kevin)* : jours de la semaine, PNJ et événements par jour, beaucoup de
   rencontres selon l'heure. Riche, mais lourd à produire pour une histoire courte.
 
-Reste à choisir l'heure : celle du téléphone (comme Or/Argent) ou une horloge du jeu.
+**Choix de Kevin : C, à l'heure et au jour du téléphone.** Ce que ça implique pour la production :
+- les règles de B (Pokémon de nuit, Mentali / Noctali, Team Rocket plus active la nuit,
+  événements de nuit) **plus** des PNJ et événements selon le jour de la semaine, et des tables
+  de rencontres par moment (matin, jour, nuit) ;
+- des fonds peints ou un éclairage qui tiennent la nuit sur chaque carte de Johto ;
+- Kanto garde son éclairage actuel (JH-8) : les règles de l'heure ne valent qu'à Johto, sauf
+  décision contraire.
 
 ## 8. Les 50 espèces (proposition, à valider)
 
@@ -134,10 +143,10 @@ Ligue ; Togepi est l'exception, comme œuf offert), et les espèces sans rôle n
 **L'ancien chef** (Kevin, 2026-11-02) : il dirigeait la Team Rocket avant Giovanni et l'a formé.
 Giovanni l'a **trahi** pour prendre sa place. Il s'est fait oublier, a perfectionné ses
 compétences, et revient pour **reprendre la Team Rocket, puis le monde** ; il veut le mettre « en
-feu et en cendres ». Son nom reste à trouver (JH-7).
+feu et en cendres ». Il s'appelle **Dante** (Kevin, 2026-11-02).
 
-Idée de Claude pour le relier aux actes : à l'acte 1, il reprend en main les Sbires de Johto
-(JH-10) ; à l'acte 2, il veut réveiller ou soumettre **Ho-Oh** et la flamme de la Tour Cendrée,
+Le lien avec les actes : à l'acte 1, il a repris en main les Sbires de Johto et fait voler l'équipe
+du joueur, ce qu'on découvre à la Tour Radio (JH-10, validé) ; idée de Claude pour la suite : à l'acte 2, il veut réveiller ou soumettre **Ho-Oh** et la flamme de la Tour Cendrée,
 et le joueur l'en empêche à Rosalia ; à l'acte 3, il se replie au sommet du Mont Argenté.
 
 **Le rival : option A, le relais** (Kevin, 2026-11-02). Le rival retient les Sbires et les admins
