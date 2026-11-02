@@ -58,6 +58,12 @@ var _prefixes: Dictionary[StringName, String] = {}
 var _class_sprites: Dictionary[StringName, StringName] = {}
 ## Grand adversaire (identifiant de portrait) → apparence du monde.
 var _grand_sprites: Dictionary[StringName, StringName] = {}
+## Taille réelle relative par classe ou grand adversaire (« scale » ; absent : [member
+## default_scale]) : un adulte (Pierre) paraît plus grand qu'un enfant (Gamin Hugo).
+var _scales: Dictionary[StringName, float] = {}
+## Taille relative d'un adulte (défaut) et du joueur ; les hauteurs des « poses » valent pour 1.
+var default_scale: float = 1.0
+var player_scale: float = 1.0
 var _errors: PackedStringArray = PackedStringArray()
 
 static var _shared: TrainerIntroCatalog
@@ -89,6 +95,8 @@ func add_from_dict(root: Dictionary) -> bool:
 	ok = _read_numbers(root.get("layout"), LAYOUT_KEYS, layout, "layout") and ok
 	ok = _read_points(root.get("points")) and ok
 	ok = _read_poses(root.get("poses")) and ok
+	default_scale = float(root.get("default_scale", 1.0))
+	player_scale = float(root.get("player_scale", 1.0))
 	var hold: Variant = root.get("message_hold_scale", 1.0)
 	if not (hold is float or hold is int) or float(hold) <= 0.0:
 		ok = _fail("TrainerIntroCatalog : message_hold_scale doit être un nombre > 0")
@@ -121,6 +129,7 @@ func add_from_dict(root: Dictionary) -> bool:
 				continue
 			_prefixes[StringName(str(id))] = entry["prefix"]
 			_class_sprites[StringName(str(id))] = StringName(entry["world_sprite"])
+			_read_scale(StringName(str(id)), entry)
 	var grand: Variant = root.get("grand")
 	if not grand is Dictionary:
 		ok = _fail("TrainerIntroCatalog : « grand » manquant")
@@ -131,6 +140,7 @@ func add_from_dict(root: Dictionary) -> bool:
 				ok = _fail("TrainerIntroCatalog : grand « %s » : { world_sprite }" % id)
 				continue
 			_grand_sprites[StringName(str(id))] = StringName(entry["world_sprite"])
+			_read_scale(StringName(str(id)), entry)
 	return ok
 
 
@@ -186,6 +196,13 @@ func world_sprite(id: StringName) -> StringName:
 	return _grand_sprites.get(id, &"")
 
 
+## Taille réelle relative de la classe ou du grand adversaire [param id] (rival / rivale :
+## celle du rival).
+func scale_of(id: StringName) -> float:
+	var key := TrainerIntro.RIVAL_ID if id == TrainerLooks.RIVALE else id
+	return _scales.get(key, default_scale)
+
+
 func duration(key: String) -> float:
 	return durations.get(key, 0.0)
 
@@ -231,6 +248,12 @@ func _read_points(value: Variant) -> bool:
 			continue
 		points[key] = Vector2(float(pair[0]), float(pair[1]))
 	return ok
+
+
+func _read_scale(id: StringName, entry: Dictionary) -> void:
+	var scale: Variant = entry.get("scale")
+	if scale is float or scale is int:
+		_scales[id] = float(scale)
 
 
 func _read_poses(value: Variant) -> bool:

@@ -77,7 +77,7 @@
 		"route_3_roche": {
 			"zone": "route_3",
 			"variant": "roche",
-			"back": "res://assets/battle/decors/route_3_roche_back.webp",
+			"back": "res://assets/battle/decors/route_3_roche_v2_back.webp",
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
@@ -320,9 +320,9 @@
 		"pewter_gym_roche": {
 			"zone": "pewter_gym",
 			"variant": "roche",
-			"back": "res://assets/battle/decors/pewter_gym_roche_back.webp",
+			"back": "res://assets/battle/decors/pewter_gym_roche_v2_back.webp",
 			"size": [2340, 1080],
-			"foe_feet": [1559, 540],
+			"foe_feet": [1559, 640],
 			"player_feet": [716, 972],
 			"horizon": 460
 		}

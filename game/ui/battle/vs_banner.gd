@@ -216,8 +216,7 @@ func _layout() -> void:
 	var portrait_height := UiTokens.VS_PORTRAIT_HEIGHT * view.y
 	var foe_top := UiTokens.VS_FOE_PORTRAIT_TOP * view.y
 	_foe_clip.position = Vector2(view.x * 0.62, foe_top)
-	_foe_clip.size = Vector2(view.x * 0.38,
-		UiTokens.VS_FOE_BANNER_Y * view.y + thick * 0.4 - foe_top)
+	_foe_clip.size = Vector2(view.x * 0.38, UiTokens.VS_FOE_PORTRAIT_BOTTOM * view.y - foe_top)
 	_place_portrait(_foe_portrait, portrait_height, _foe_clip.size, false)
 	_own_clip.position = Vector2(0.0, UiTokens.VS_PLAYER_PORTRAIT_TOP * view.y)
 	_own_clip.size = Vector2(view.x * 0.38, view.y - _own_clip.position.y)
@@ -437,21 +436,21 @@ class VsEmblem:
 	func _draw() -> void:
 		var s := size
 		var center := s / 2.0
-		if _texture != null:
-			var tex_size := _texture.get_size() * width / maxf(_texture.get_width(), 1.0)
-			draw_texture_rect(_texture, Rect2(center - tex_size / 2.0, tex_size), false)
-			return
 		var gold := UiTokens.VS_GOLD
 		var deep := UiTokens.VS_GOLD_DEEP
 		var fade := gold
 		fade.a = 0.0
-		# Deux traits horizontaux qui s'effacent vers l'extérieur.
+		# Deux traits horizontaux qui s'effacent vers l'extérieur (maquette 3).
 		var line := float(UiTokens.VS_EMBLEM_LINE)
 		var half := width * 0.55
 		draw_polyline_colors(PackedVector2Array([Vector2(center.x - half - line, center.y),
 			Vector2(center.x - half, center.y)]), PackedColorArray([fade, gold]), 5.0, true)
 		draw_polyline_colors(PackedVector2Array([Vector2(center.x + half, center.y),
 			Vector2(center.x + half + line, center.y)]), PackedColorArray([gold, fade]), 5.0, true)
+		if _texture != null:
+			var tex_size := _texture.get_size() * width / maxf(_texture.get_width(), 1.0)
+			draw_texture_rect(_texture, Rect2(center - tex_size / 2.0, tex_size), false)
+			return
 		# Éclair diagonal derrière les lettres.
 		var bolt := PackedVector2Array([Vector2(0.78, 0.0), Vector2(0.48, 0.52),
 			Vector2(0.58, 0.50), Vector2(0.2, 1.0)])

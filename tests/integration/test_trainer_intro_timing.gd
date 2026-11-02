@@ -243,3 +243,12 @@ func test_ball_flies_round_through_the_arc() -> void:
 	assert_true(round_ball[0], "Ball ronde")
 	assert_almost_eq(ball.scale.x * TrainerIntroStage.BALL_VISIBLE, 0.024 * size.x, 0.5,
 		"diamètre 2,4 % de la largeur")
+
+
+## Hauteur visible mesurée sur la boîte alpha (art peint posé sur une toile) : la hauteur
+## affichée d'un personnage ne dépend pas du remplissage de sa toile.
+func test_visible_height_ignores_the_empty_canvas() -> void:
+	var gamin := load("res://assets/sprites/trainers/battle/gamin.webp") as Texture2D
+	var pierre := load("res://assets/sprites/trainers/battle/pierre.webp") as Texture2D
+	assert_almost_eq(TrainerIntroStage.visible_height(gamin), 768.0 - 88.0, 2.0)
+	assert_almost_eq(TrainerIntroStage.visible_height(pierre), 768.0 - 158.0, 2.0)

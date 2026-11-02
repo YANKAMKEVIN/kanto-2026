@@ -14,6 +14,8 @@
 		"send_exit": 0.3
 	},
 	"message_hold_scale": 1.0,
+	"default_scale": 1.18,
+	"player_scale": 1.0,
 	"layout": {
 		"trainer_slide": 0.22,
 		"shadow_width": 0.55,
@@ -48,17 +50,17 @@
 	},
 	"classes": {
 		"beaute": { "prefix": "Beauté", "world_sprite": "beauty" },
-		"campeur": { "prefix": "Campeur", "world_sprite": "camper" },
+		"campeur": { "prefix": "Campeur", "world_sprite": "camper" , "scale": 1.0 },
 		"chercheur": { "prefix": "Chercheur", "world_sprite": "researcher" },
 		"dompteur": { "prefix": "Dompteur", "world_sprite": "docker" },
 		"exorciste": { "prefix": "Exorciste", "world_sprite": "channeler" },
-		"fillette": { "prefix": "Fillette", "world_sprite": "lass" },
-		"gamin": { "prefix": "Gamin", "world_sprite": "youngster" },
+		"fillette": { "prefix": "Fillette", "world_sprite": "lass" , "scale": 1.0 },
+		"gamin": { "prefix": "Gamin", "world_sprite": "youngster" , "scale": 1.0 },
 		"gentleman": { "prefix": "Gentleman", "world_sprite": "gentleman" },
 		"ingenieur": { "prefix": "Ingénieur", "world_sprite": "engineer" },
 		"intello": { "prefix": "Intello", "world_sprite": "nerd" },
-		"jeune_dresseur": { "prefix": "Jeune Dresseur", "world_sprite": "youngster" },
-		"jeune_dresseuse": { "prefix": "Jeune Dresseuse", "world_sprite": "lass" },
+		"jeune_dresseur": { "prefix": "Jeune Dresseur", "world_sprite": "youngster" , "scale": 1.05 },
+		"jeune_dresseuse": { "prefix": "Jeune Dresseuse", "world_sprite": "lass" , "scale": 1.05 },
 		"jongleur": { "prefix": "Jongleur", "world_sprite": "gambler" },
 		"joueur": { "prefix": "Joueur", "world_sprite": "gambler" },
 		"karateka": { "prefix": "Karatéka", "world_sprite": "hiker" },
@@ -78,7 +80,7 @@
 		"sbire_rocket": { "prefix": "Sbire Rocket", "world_sprite": "rocket_grunt_m" },
 		"sbire_rocket_f": { "prefix": "", "world_sprite": "rocket_grunt_f" },
 		"scientifique": { "prefix": "Scientifique", "world_sprite": "researcher" },
-		"scout": { "prefix": "Scout", "world_sprite": "scout" },
+		"scout": { "prefix": "Scout", "world_sprite": "scout" , "scale": 1.0 },
 		"topdresseur": { "prefix": "Topdresseur", "world_sprite": "cooltrainer_m" },
 		"topdresseuse": { "prefix": "Topdresseuse", "world_sprite": "cooltrainer_f" }
 	},
@@ -95,6 +97,6 @@
 		"aldo": { "world_sprite": "aldo" },
 		"agatha": { "world_sprite": "agatha" },
 		"peter": { "world_sprite": "peter" },
-		"rival": { "world_sprite": "rival" }
+		"rival": { "world_sprite": "rival", "scale": 1.0 }
 	}
 }

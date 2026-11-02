@@ -157,3 +157,10 @@ func test_poses_follow_the_mockups() -> void:
 	assert_eq(_catalog.point("cartouche_max"), Vector2(0.86, 0.26))
 	assert_eq(_catalog.point("foe_via"), Vector2(0.56, 0.28), "arc de la Ball")
 	assert_almost_eq(_catalog.layout["ball_diameter"], 0.024, 0.0001)
+
+
+## Taille réelle relative (données) : un adulte (Pierre) paraît plus grand qu'un enfant (Gamin).
+func test_adults_are_taller_than_children() -> void:
+	assert_gt(_catalog.scale_of(&"pierre"), _catalog.scale_of(&"gamin"))
+	assert_eq(_catalog.scale_of(&"rivale"), _catalog.scale_of(&"rival"), "rivale = rival")
+	assert_eq(_catalog.scale_of(&"inconnu"), _catalog.default_scale)

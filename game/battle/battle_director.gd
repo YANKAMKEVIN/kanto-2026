@@ -1182,12 +1182,19 @@ func vs_foe_portrait(intro: TrainerIntro) -> Texture2D:
 	return TrainerIntroStage.foe_texture(intro)
 
 
-## Portrait de banderole du joueur : son buste (apparence et costume portés).
+## Portrait de banderole du joueur : son buste peint de banderole s'il existe (sans costume),
+## sinon le buste du menu (apparence et costume portés).
 func vs_player_portrait() -> Texture2D:
 	var look: Variant = _state.get(&"player_look") if _state != null else null
 	var costume := StringName(_state.call(&"worn_costume")) if _state != null \
 		and _state.has_method(&"worn_costume") else &""
-	var path := TrainerLooks.bust_path(StringName(look) if look != null else &"hero", costume)
+	var look_id := StringName(look) if look != null else &"hero"
+	# Buste peint de banderole (`assets/ui/battle/vs/<apparence>.webp`), sauf costume porté.
+	var catalog := TrainerIntroCatalog.shared()
+	var painted := catalog.portrait_dir + String(look_id) + catalog.extension
+	if costume.is_empty() and ResourceLoader.exists(painted):
+		return load(painted) as Texture2D
+	var path := TrainerLooks.bust_path(look_id, costume)
 	return load(path) as Texture2D if ResourceLoader.exists(path) else null
 
 

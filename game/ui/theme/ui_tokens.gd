@@ -1687,8 +1687,10 @@ const VS_BRUSH_STREAKS := 7
 ## Bustes : hauteur (part de l'écran) et haut de l'image (adversaire : près du haut de l'écran,
 ## rogné par le bas de sa banderole ; joueur : rogné par le bas de l'écran), débordant la
 ## banderole : seuls la tête et les épaules (adversaire) ou le haut du buste (joueur) restent.
-const VS_PORTRAIT_HEIGHT := 0.5
+const VS_PORTRAIT_HEIGHT := 0.42
 const VS_FOE_PORTRAIT_TOP := 0.0
+## Bas visible du buste de l'adversaire (cale le visage entier au-dessus de sa banderole).
+const VS_FOE_PORTRAIT_BOTTOM := 0.31
 const VS_PLAYER_PORTRAIT_TOP := 0.6
 ## Retrait du texte depuis le bord intérieur de la banderole (px de référence).
 const VS_TEXT_INSET := 48
@@ -1708,7 +1710,7 @@ const VS_EMBLEM_CENTER := Vector2(0.5, 0.51)
 const VS_EMBLEM_OUTLINE := 10
 const VS_EMBLEM_GLOW := Color(1.0, 0.85, 0.45, 0.35)
 const VS_EMBLEM_GLOW_SIZE := 28
-const VS_EMBLEM_TEXTURE := "res://assets/ui/battle/vs/emblem_vs.webp"
+const VS_EMBLEM_TEXTURE := "res://assets/ui/battle/vs/emblem.webp"
 const VS_BOLT_SIZE := Vector2(380, 320)
 const VS_EMBLEM_LINE := 260
 ## Pic de l'emblème à son apparition (échelle) et part de VS_HOLD qu'il met à se poser.

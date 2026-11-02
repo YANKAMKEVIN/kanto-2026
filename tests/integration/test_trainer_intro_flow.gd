@@ -149,12 +149,11 @@ func test_grand_battle_plays_vs_first() -> void:
 			"banderoles libérées après la séquence")
 
 
-func test_front_sprite_falls_back_to_the_world_look() -> void:
+func test_painted_front_sprite_is_used_when_present() -> void:
 	await _play(ORDINARY)
-	assert_not_null(_foe_trainer_texture, "un sprite de face (repli)")
-	var expected := TrainerIntroStage.world_texture(&"youngster")
-	assert_eq(_foe_trainer_texture.get_size(), expected.get_size(),
-		"Gamin sans image peinte : apparence du monde « youngster »")
+	assert_not_null(_foe_trainer_texture, "un sprite de face")
+	assert_eq(_foe_trainer_texture.resource_path,
+		"res://assets/sprites/trainers/battle/gamin.webp", "lot d'art pilote : Gamin peint")
 
 
 func test_rival_vs_uses_the_rival_name() -> void:

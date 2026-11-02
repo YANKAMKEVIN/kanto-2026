@@ -156,14 +156,25 @@ Cinzel en dégradé d'or, éclat additif, entaille diagonale, éclair et deux tr
 - Bandeau des messages : 49–98 % x, 77–93 % y, texte 36 px, contour plus clair (tokens
   `BATTLE_MESSAGE_*`, tout le combat).
 
-## 7. Écarts restants avec les maquettes (dépendent seulement de l'art)
+## 7. Lot d'art pilote branché (2026-11-02) et écarts restants
 
-1. **Personnages** : adversaires = apparence du monde agrandie (floue, de face au lieu de
-   trois-quarts) ; poses de lancer absentes (élan de la pose debout à la place) ; joueur = lancer
-   de dos existant (bras tendu, pas la pose « en garde » de la maquette 2).
-2. **Bustes** : Pierre = son apparence du monde en pied, au lieu du buste peint.
-3. **Banderoles** : pinceau dessiné en code (bords déchirés, traînées), plus plat que le pinceau
-   peint (`banderole_rouge.webp` / `banderole_bleue.webp`).
-4. **Emblème « VS »** : dessiné en code, moins riche que l'emblème peint (`emblem_vs.webp`).
-5. **Rattata, Racaillou** : les Pokémon apparaissent à leur place de combat habituelle (inchangée,
-   hors périmètre) ; la Ball s'ouvre au point d'arrivée de son arc.
+Branché sans code : `gamin(_lancer)`, `pierre(_lancer)`, `dos_hero(_lancer)`, bustes `vs/pierre`
+et `vs/hero` (buste peint du joueur : `assets/ui/battle/vs/<apparence>.webp`, sauf costume porté),
+banderoles `banderole_rouge` / `banderole_bleue` (inclinées par le jeu), emblème `vs/emblem.webp`
+(les deux traits horizontaux restent dessinés en code). Décors v2 `route_3_roche_v2_back` et
+`pewter_gym_roche_v2_back` branchés dans `data/battle/decors.json` (Arène : `foe_feet`
+[1559, 640]) ; **les anciens fichiers `route_3_roche_back.webp` et `pewter_gym_roche_back.webp`
+restent dans le dépôt, à supprimer si Kevin valide les v2**.
+Taille des personnages : hauteur **visible** (boîte alpha) × taille réelle relative des données
+(`scale` par classe ou grand adversaire, `default_scale` 1,18 pour un adulte, 1 pour un enfant et
+le joueur) : Pierre paraît plus grand que Gamin Hugo.
+
+Écarts restants (art seulement) :
+1. **Toutes les autres classes et grands adversaires** (32 classes, 12 grands adversaires, la
+   joueuse) : encore sur leur repli (apparence du monde agrandie).
+2. **Titre de la banderole** : Cinzel n'a que des capitales (petites capitales pour les
+   minuscules) ; la maquette montre un titre en bas-de-casse à empattements. Une seconde police
+   OFL à empattements avec minuscules (par exemple Cormorant) réglerait l'écart.
+3. **Décor de l'Arène v2** : recadré par le jeu (sol à 600 px) ; les colonnes du haut sont plus
+   coupées que sur la maquette.
+4. **Traînée de la Ball** : fine et sans éclat ; un sprite de traînée peint ferait mieux.

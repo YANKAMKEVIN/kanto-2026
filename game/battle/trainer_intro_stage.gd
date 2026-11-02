@@ -64,7 +64,12 @@ var _pop: Sprite2D
 var _cartouche: BallCartouche
 var _row: Array[Sprite2D] = []
 var _feet: Dictionary[BattleEvent.SideId, Vector2] = {}
+## Taille réelle relative de chaque dresseur (données) : multiplie la hauteur de ses poses.
+var _sizes: Dictionary[BattleEvent.SideId, float] = {}
 var _tweens: Array[Tween] = []
+
+## Hauteur visible (boîte alpha, px de la texture) par texture, mesurée une fois.
+static var _visible_heights: Dictionary[Texture2D, float] = {}
 
 
 func _ready() -> void:
@@ -172,6 +177,8 @@ func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D
 	var player_side := BattleEvent.SideId.PLAYER
 	_stand = {foe_side: foe, player_side: player}
 	_throw = {foe_side: foe_throw, player_side: player_throw}
+	var catalog := intro.get_catalog()
+	_sizes = {foe_side: catalog.scale_of(intro.sprite_id), player_side: catalog.player_scale}
 	for side: BattleEvent.SideId in [foe_side, player_side]:
 		_setup_trainer(side)
 		_apply_pose(side, &"entry")
@@ -212,7 +219,7 @@ func move_to_pose(pose_name: StringName, duration: float) -> void:
 	for side: BattleEvent.SideId in [BattleEvent.SideId.FOE, BattleEvent.SideId.PLAYER]:
 		var target := _pose_rect(side, pose_name)
 		var sprite := _sprite(side)
-		var scale := Vector2.ONE * target.size.y / maxf(float(sprite.texture.get_height()), 1.0)
+		var scale := Vector2.ONE * _scale_for(sprite.texture, target.size.y)
 		tween.tween_property(sprite, ^"position", target.position, duration) \
 			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 		tween.tween_property(sprite, ^"scale", scale, duration) \
@@ -301,12 +308,12 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 	guard.set_parallel(true)
 	guard.tween_property(sprite, ^"position", pose.position, windup) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	guard.tween_property(sprite, ^"scale", Vector2.ONE * height / maxf(
-		float(sprite.texture.get_height()), 1.0), windup)
+	guard.tween_property(sprite, ^"scale", Vector2.ONE * _scale_for(sprite.texture, height),
+		windup)
 	guard.tween_property(sprite, ^"rotation", -_layout("windup_tilt") * toward, windup)
 	guard.tween_property(_shadows[side], ^"position", pose.position, windup)
-	guard.tween_property(_shadows[side], ^"scale", _shadow_scale(sprite, height / maxf(
-		float(sprite.texture.get_height()), 1.0)), windup)
+	guard.tween_property(_shadows[side], ^"scale", _shadow_scale(sprite,
+		_scale_for(sprite.texture, height)), windup)
 	await _play(guard)
 	if _intro == null:
 		return
@@ -314,7 +321,11 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 	# Libération : pose de lancer (image dédiée, sinon extension du corps vers le terrain).
 	var throw_texture: Texture2D = _throw.get(side)
 	if throw_texture != null:
-		_apply_texture(sprite, throw_texture, height)
+		# Même échelle que la pose debout (les deux poses d'un personnage sont peintes à la même
+		# échelle, pieds sur le bord bas).
+		sprite.texture = throw_texture
+		sprite.offset = Vector2(0.0, -throw_texture.get_height() / 2.0)
+		sprite.scale = Vector2.ONE * _scale_for(_stand[side], height)
 		sprite.rotation = 0.0
 	var hand := pose.position + _point("foe_hand" if foe else "player_hand") * height
 	var via := _frac(_point("foe_via" if foe else "player_via"))
@@ -441,7 +452,31 @@ func _apply_pose(side: BattleEvent.SideId, pose_name: StringName) -> void:
 func _pose_rect(side: BattleEvent.SideId, pose_name: StringName) -> Rect2:
 	var pose := _intro.get_catalog().pose(String(pose_name),
 		"foe" if side == BattleEvent.SideId.FOE else "player") if _intro != null else Vector3.ZERO
-	return Rect2(_frac(Vector2(pose.x, pose.y)), Vector2(0.0, pose.z * _view.y))
+	return Rect2(_frac(Vector2(pose.x, pose.y)),
+		Vector2(0.0, pose.z * _view.y * _sizes.get(side, 1.0)))
+
+
+## Hauteur visible de [param texture] : boîte des pixels non transparents (art peint posé sur
+## une toile), sinon la texture entière.
+static func visible_height(texture: Texture2D) -> float:
+	if texture == null:
+		return 1.0
+	if not _visible_heights.has(texture):
+		var image := texture.get_image()
+		var height := float(texture.get_height())
+		if image != null:
+			if image.is_compressed():
+				image.decompress()
+			var used := image.get_used_rect()
+			if used.size.y > 0:
+				height = float(texture.get_height() - used.position.y)
+		_visible_heights[texture] = height
+	return _visible_heights[texture]
+
+
+## Échelle qui donne à [param texture] une silhouette de [param height] px (pieds au bas).
+static func _scale_for(texture: Texture2D, height: float) -> float:
+	return height / maxf(visible_height(texture), 1.0)
 
 
 ## Échelle de l'ombre au sol d'un dresseur affiché à l'échelle [param scale].
@@ -456,7 +491,7 @@ func _apply_texture(sprite: Sprite2D, texture: Texture2D, height: float) -> void
 	sprite.texture = texture
 	sprite.centered = true
 	sprite.offset = Vector2(0.0, -texture.get_height() / 2.0)
-	sprite.scale = Vector2.ONE * height / maxf(float(texture.get_height()), 1.0)
+	sprite.scale = Vector2.ONE * _scale_for(texture, height)
 
 
 func _sprite(side: BattleEvent.SideId) -> Sprite2D:
