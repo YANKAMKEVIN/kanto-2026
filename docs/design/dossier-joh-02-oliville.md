@@ -5,7 +5,9 @@
 > Écrit par Claude le 2026-11-02 ; **textes (§14) et JH-25 à JH-27 validés par Kevin le jour même** ;
 > le reste du dossier est à valider.
 > Valeurs **[D]** = défauts. Grilles et vues générales peintes après validation du dossier, comme
-> à Kanto. **Pas de code avant la fin de Kanto et du JOH0.**
+> à Kanto. **Grilles validées par Kevin le 2026-11-02** : `tools/plans/grotte_marine_1.txt`,
+> `grotte_marine_2.txt`, `oliville.txt` (contrôle `tools/art/plan_check_joh1.py`, aperçu
+> `reference/joh1-grilles-apercu-v1.png`) ; vues peintes après les grilles de tout l'acte 1. **Pas de code avant la fin de Kanto et du JOH0.**
 
 ## 1. Hors périmètre
 

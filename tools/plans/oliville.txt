@@ -1,0 +1,107 @@
+# Oliville (olivine_city) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH1 ; dossier
+# docs/design/dossier-joh-02-oliville.md §3.3, §7 ; raccords des JOH2 et JOH7). Préparée le
+# 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh1.py.
+#
+# 50 × 40 cases (dossier : ≈ 50 × 40) ; nord en haut ; x = colonne 0..49, y = rangée 0..39.
+#
+# Composition (tout à angles droits, « nature dense, objets rares ») :
+#   - AVENUE y 20..22, de la falaise (x 2) au bord EST (x 49) : sortie vers la Route 39 (JOH2).
+#   - Nord de l'avenue : le PHARE sur son promontoire rocheux (R, x 1..10, y 6..19 ; emprise P
+#     6 × 11, x 3..8, y 8..18 ; façade seule, porte décor fermée « en travaux », O-21) ; Maison 1
+#     (m, 7 × 6, porte (16, 19)) ; massif de fleurs ; CENTRE (C, 8 × 7, portes (27..28, 19)) au
+#     centre de la ville, BOUTIQUE (O, 8 × 7, portes (37..38, 19)). Haie au nord (y 11), bois au-delà.
+#   - Sud de l'avenue : rue de la plage (x 12..14) vers la PLAGE DE GALETS (g, x 11..23, y 30..34),
+#     où s'ouvre la BOUCHE DE LA GROTTE MARINE dans la falaise ouest (E, (10, 31..32)) ; rue du port
+#     (x 24..26) vers la RUE DU QUAI (y 31..32) ; Maison 2 (N, 7 × 6, porte (37, 30)) ; QUAI (q,
+#     y 33) et deux PONTONS (x 28..29 et 40..41, y 34..37) ; caisses (k) sur le quai (O-20).
+#   - Mer au sud (w, y 34..39) : en Surf depuis la plage ou le quai ; bord SUD (20..29, 39) vers la
+#     Route 40 (JOH7, M-1 « plage d'Oliville ») ; ailleurs, la rangée 39 est une ligne de récifs (R).
+#   - Falaise ouest (R, x 1..10, y 23..39) ; jardin et arbres repères (G) à l'est.
+#
+# Raccords :
+#   EST (49, 20..22) ↔ Route 39, bord ouest (0, 20..22) ; fermé par le garde jusqu'au choix du
+#     Pokémon de départ (O-19, PNJ « garde_est » et déclencheur « garde_barriere »).
+#   SUD (20..29, 39), en Surf ↔ Route 40 (JOH7, grille à venir) ; inaccessible pendant l'acte 1
+#     (pas de Pokémon surfeur ; aucun blocage à poser).
+#   OUEST (10, 31..32) ↔ grotte marine salle 2 (3..4, 39).
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   R falaise et rochers (bloqués)   . pelouse
+#   p pavé (praticable)   g plage de galets (praticable)   q quai et pontons en bois (praticables)
+#   w eau SURFABLE   x haie (bloquée)   y massif de fleurs (bloqué)   n banc (bloqué)
+#   G arbre repère (bloqué)   k caisses (bloquées)
+#   C Centre Pokémon  O Boutique  m Maison 1  N Maison 2  P Phare (emprises bloquées)
+#   D porte d'un bâtiment (praticable, STEP_ON ↑)   E bouche de la grotte marine (praticable, warp)
+# Emprises comme à Kanto : Centre et Boutique 8 × 7 (portes = 4e et 5e colonnes du bas), maisons
+# 7 × 6 (porte = 4e colonne).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 50 caractères), puis POSITIONS.
+
+PRATICABLES .pgqwDE
+
+GRILLE 50 40
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+05 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+06 TRRRRRRRRRR.....................................TT
+07 TRRRRRRRRRR.....................................TT
+08 TRRPPPPPPRR.....G.............G.................TT
+09 TRRPPPPPPRR.....................................TT
+10 TRRPPPPPPRR.....................................TT
+11 TRRPPPPPPRR.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...TT
+12 TRRPPPPPPRR.....................................TT
+13 TRRPPPPPPRR.............CCCCCCCC..OOOOOOOO......TT
+14 TRRPPPPPPRR..mmmmmmmyyy.CCCCCCCC..OOOOOOOO......TT
+15 TRRPPPPPPRR..mmmmmmmyyy.CCCCCCCC..OOOOOOOO...G..TT
+16 TRRPPPPPPRR..mmmmmmmyyy.CCCCCCCC..OOOOOOOO......TT
+17 TRRPPPPPPRR..mmmmmmmyyy.CCCCCCCC..OOOOOOOO......TT
+18 TRRPPPPPPRR..mmmmmmmyyy.CCCCCCCC..OOOOOOOO......TT
+19 TRRRRRRRRRR..mmmDmmm....CCCDDCCC..OOODDOOO......TT
+20 T.pppppppppppppppppppppppppppppppppppppppppppppppp
+21 T.pppppppppppppppppppppppppppppppppppppppppppppppp
+22 T.pppppppppppppppppppppppppppppppppppppppppppppppp
+23 TRRRRRRRRRR.ppp.........ppp...............xxxxxxTT
+24 TRRRRRRRRRR.ppp.........ppp.....................TT
+25 TRRRRRRRRRR.ppp.........ppp.......NNNNNNN.......TT
+26 TRRRRRRRRRR.ppp...G.....ppp.......NNNNNNN....G..TT
+27 TRRRRRRRRRR.ppp.nn......ppp.......NNNNNNN.......TT
+28 TRRRRRRRRRR.ppp.........ppp.......NNNNNNN.......TT
+29 TRRRRRRRRRR.ppp.........ppp.......NNNNNNN.......TT
+30 TRRRRRRRRRRgggggggggggggppp.......NNNDNNN.......TT
+31 TRRRRRRRRREggggggggggg..ppppppppppppppppppppppppTT
+32 TRRRRRRRRREggggggggggg.....pppkkppppppppppppkpppTT
+33 TRRRRRRRRRRgggggggggggqqqqqqqqqqqqqqqqqqqqqqqqqqTT
+34 TRRRRRRRRRRgggggggggggwwwwwwqqwwwwwwwwwwqqwwwwwwTT
+35 TRRRRRRRRRRwwwwwwwwwwwwwwwwwqqwwwwwwwwwwqqwwwwwwwT
+36 TRRRRRRRRRRwwwwwwwwwwwwwwwwwqqwwwwwwwwwwqqwwwwwwwT
+37 TRRRRRRRRRRwwwwwwwwwwwwwwwwwqqwwwwwwwwwwqqwwwwwwwT
+38 TRRRRRRRRRRwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwT
+39 TRRRRRRRRRRRRRRRRRRRwwwwwwwwwwRRRRRRRRRRRRRRRRRRRT
+FIN
+
+POSITIONS
+warp_est             warp           49,20..22    libre   # PUSH → → route_39, from_olivine (0, 20..22)
+from_route_39        spawn          49,20..22    libre   # arrivée de la Route 39, tournée ←
+warp_sud_mer         warp           20..29,39    libre   surf=1  # PUSH ↓ → route_40 (JOH7)
+from_route_40        spawn          20..29,39    libre   surf=1  # arrivée de la Route 40 en Surf, tournée ↑
+warp_grotte          warp           10,31..32    libre   # STEP_ON ← → sea_cave_2, from_olivine_city (3..4, 38)
+from_sea_cave        spawn          11,31..32    libre   # arrivée de la grotte marine, tournée → ; nuit imposée (dossier §4, étape 5)
+arrivee_titre        declencheur    11,31..32    libre   drapeau=johto_arrived  # titre de zone « Oliville » + O-23, une fois
+porte_centre         warp           27..28,19    libre   # STEP_ON ↑ → olivine_center
+porte_boutique       warp           37..38,19    libre   # STEP_ON ↑ → olivine_mart
+porte_maison_1       warp           16,19        libre   # STEP_ON ↑ → olivine_house_1 (vieille dame, O-21)
+porte_maison_2       warp           37,30        libre   # STEP_ON ↑ → olivine_house_2 (enfant, O-22)
+retour_centre        spawn          27..28,20    libre   # tournée ↓ ; point de Vol (utilisable à l'acte 2)
+retour_boutique      spawn          37..38,20    libre
+retour_maison_1      spawn          16,20        libre
+retour_maison_2      spawn          37,31        libre
+garde_est            pnj            47,21        bloque  role=garde facing=left  # O-19 ; avec johto_starter_chosen, il se range en (47, 19), hors de l'avenue [D]
+garde_barriere       declencheur    48,20..22    libre   actif_sans=johto_starter_chosen  # O-19 et pas en arrière
+marin_port           pnj            33,33        bloque  role=marin facing=down  # O-20, sur le quai, regarde la mer
+panneau_ville        panneau        23,19        bloque  # O-25, lu depuis (23, 20) ↑ (case de pelouse, bloquée par le panneau)
+panneau_phare        panneau        6,19         bloque  # « PHARE D'OLIVILLE / Fermé pour travaux. » [D], lu depuis (6, 20) ↑
+FIN

@@ -1,0 +1,69 @@
+# Route 36 (route_36) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH3 ; dossier
+# docs/design/dossier-joh-04-doublonville.md §3.1, §4 à §6, §10, §11, textes D-5 à D-7, D-35, D-38).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un
+# changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh3.py.
+#
+# 56 × 20 cases (dossier : ≈ 56 × 20) ; nord en haut ; x = colonne 0..55, y = rangée 0..19.
+#
+# Composition (carrefour, tout à angles droits) :
+#   - CHEMIN (=) : de la Route 37 au bord NORD-OUEST (8..10, 0) vers le sud, puis d'ouest en est
+#     (y 9..11) jusqu'à la rivière ; EMBRANCHEMENT SUD au centre (26..28, y 9..19) vers la Route 35.
+#   - Est : RIVIÈRE (W, x 42..45) franchie par le PONT EN TRAVAUX (b, y 9..11), fermé par une
+#     barrière de chantier (X, x 46) ; au-delà, la forêt (route de Mauville hors périmètre, JH-35).
+#     Le Rappel est posé au bout du pont (45, 10).
+#   - Nord : la GRILLE DU PARC NATIONAL en façade (P, 8 × 6, x 30..37, y 1..6), fermée « pour
+#     entretien » (examen de la grille).
+#   - 3 poches d'herbes hautes (H1 nord, H2 sud-ouest, H3 sud-est), évitables.
+#
+# Raccords :
+#   NORD (8..10, 0) ↔ Route 37, bord sud (8..10, 39) (mêmes colonnes).
+#   SUD (26..28, 19) ↔ Route 35, bord nord (10..12, 0) (colonnes différentes, warps case à case).
+#
+# Légende :
+#   T forêt et bordure (bloquée)   . pré (praticable)   = chemin (praticable)   h herbes hautes
+#   W rivière (bloquée)   b pont (praticable)   X barrière de chantier (bloquée)
+#   P grille du Parc National (façade, bloquée)   G arbre repère (bloqué)   y fleurs (bloquées)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 56 caractères), puis POSITIONS.
+
+PRATICABLES .=hb
+
+GRILLE 56 20
+00 TTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTT...===...................PPPPPPPP....WWWWTTTTTTTTTT
+02 TTTTT...===...................PPPPPPPP....WWWWTTTTTTTTTT
+03 T.......===..hhhhhhhhhh.......PPPPPPPP.G..WWWWTTTTTTTTTT
+04 T....G..===..hhhhhhhhhh.G.....PPPPPPPP....WWWWTTTTTTTTTT
+05 T.......===..hhhhhhhhhh.......PPPPPPPP....WWWWTTTTTTTTTT
+06 T.......===..hhhhhhhhhh.......PPPPPPPP....WWWWTTTTTTTTTT
+07 T.......===..hhhhhhhhhh...................WWWWTTTTTTTTTT
+08 T.......===...............................WWWWTTTTTTTTTT
+09 T.......==================================bbbbXTTTTTTTTT
+10 T.......==================================bbbbXTTTTTTTTT
+11 T.......==================================bbbbXTTTTTTTTT
+12 T......................yy.===.............WWWWTTTTTTTTTT
+13 T...........hhhhhhhhhhh...===...hhhhhhhh..WWWWTTTTTTTTTT
+14 T...........hhhhhhhhhhh...===...hhhhhhhh..WWWWTTTTTTTTTT
+15 T...G.......hhhhhhhhhhh...===...hhhhhhhh..WWWWTTTTTTTTTT
+16 TTTTTTT.....hhhhhhhhhhh...===.G.hhhhhhhh..WWWWTTTTTTTTTT
+17 TTTTTTT.....hhhhhhhhhhh...===...hhhhhhhh..WWWWTTTTTTTTTT
+18 TTTTTTT...................===.............WWWWTTTTTTTTTT
+19 TTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           8..10,0      libre   # PUSH ↑ → route_37, from_route_36 (8..10, 39)
+from_route_37        spawn          8..10,0      libre   # arrivée de la Route 37, tournée ↓
+warp_sud             warp           26..28,19    libre   # PUSH ↓ → route_35, from_route_36 (10..12, 0)
+from_route_35        spawn          26..28,19    libre   # arrivée de la Route 35, tournée ↑
+max                  dresseur       17,8         bloque  facing=up sight=3 trainer=route_36_scout_max  # Scout Max (D-7), Caninos 15 + Nidoran♂ 14 ; voit (17, 5..7), évitable
+ernest               dresseur       31,13        bloque  facing=right sight=3 trainer=route_36_medium_ernest  # Médium Ernest (D-7), Abra 16 ; voit (32..34, 13), évitable
+mercedes             pnj            25,12        bloque  role=jardiniere jour=mercredi facing=down  # D-35, près de l'embranchement ; absente hors du mercredi
+route_36_item_1      objet_visible  45,10        bloque  item=revive  # Rappel, au bout du pont fermé
+panneau_route        panneau        11,8         bloque  # D-5, lu depuis (11, 9) ↑
+panneau_pont         panneau        41,8         bloque  # D-6, lu depuis (41, 9) ↑
+grille_parc          examen         33..34,6     bloque  # « fermé pour entretien » (dossier §3.1) [D], lue depuis (33..34, 7) ↑
+herbes_h1            herbes         17,5         libre   role=H1  # poche nord (évitable)
+herbes_h2            herbes         17,15        libre   role=H2  # poche sud-ouest (évitable)
+herbes_h3            herbes         35,15        libre   role=H3  # poche sud-est (évitable)
+FIN

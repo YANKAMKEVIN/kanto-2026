@@ -1,0 +1,70 @@
+# Route 38 (route_38) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH2 ; dossier
+# docs/design/dossier-joh-03-rosalia.md §3 à §7, textes R-6 à R-10, R-24). Préparée le 2026-11-02
+# pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un changement de composition se
+# fait ICI d'abord. Contrôle : tools/art/plan_check_joh2.py.
+#
+# 60 × 20 cases (dossier : ≈ 60 × 20) ; nord en haut ; x = colonne 0..59, y = rangée 0..19.
+#
+# Composition (tout à angles droits) :
+#   - SENTIER (=) d'ouest en est, en escalier : (0..20, 3..5) → (18..20, 3..11) → (18..40, 9..11)
+#     → (38..40, 9..16) → (38..59, 14..16), bord EST vers Rosalia. Au nord, une PETITE FALAISE
+#     (R, x 15..58, y 1..2) ; au sud, les prés.
+#   - BARRIÈRE D'ARBRES (T, x 43..46, y 3..18) : le sentier la franchit par un passage d'une case
+#     (x 41..46, y 15), où se tient la Dresseuse Inès, inévitable (dossier §6) ; pas de Coupe.
+#   - 3 poches d'herbes hautes : H1 ouest (x 6..14, y 8..13, évitable), H2 au sud du sentier
+#     (x 24..32, y 12..16, évitable), H3 au nord-est derrière la barrière (x 48..56, y 4..10, évitable).
+#   - IMPASSE au sud (x 33..34, y 12..18) : Poké Ball ×2 au fond (dossier §7).
+#   - Tronc à examiner (G en (35, 6)) : Super Potion cachée.
+#
+# Raccords :
+#   OUEST (0, 3..5) ↔ Route 39, bord est (23, 3..5) (mêmes rangées).
+#   EST (59, 14..16) ↔ Rosalia, bord ouest (0, 14..16) (mêmes rangées).
+#
+# Légende :
+#   T forêt, bordure et barrière d'arbres (bloquées)   R petite falaise (bloquée)
+#   . pré (praticable)   = sentier de terre (praticable)   h herbes hautes (praticables, rencontres)
+#   G arbre repère (bloqué ; celui de (35, 6) cache un objet)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 60 caractères), puis POSITIONS.
+
+PRATICABLES .=h
+
+GRILLE 60 20
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRT
+02 TTT.TTTTTTTTTTTRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRT
+03 =====================......................TTTT............T
+04 =====================......................TTTT.hhhhhhhhh..T
+05 =====================.....G................TTTT.hhhhhhhhh..T
+06 TTTTTT............===..............G.......TTTT.hhhhhhhhh..T
+07 TTTTTT.........G..===......................TTTT.hhhhhhhhh..T
+08 TTTTTThhhhhhhhh...===......................TTTT.hhhhhhhhh..T
+09 TTTTTThhhhhhhhh...=======================..TTTT.hhhhhhhhh..T
+10 TTTTTThhhhhhhhh...=======================..TTTT.hhhhhhhhh..T
+11 TTTTTThhhhhhhhh...=======================..TTTT............T
+12 TTTTTThhhhhhhhh.........hhhhhhhhh==...===..TTTT.....G......T
+13 TTTTTThhhhhhhhh.......TThhhhhhhhh==TTT===..TTTT............T
+14 TTTTTT................TThhhhhhhhh==TTT===T.TTTT=============
+15 TTTTTTTTTTTTTTTTTT....TThhhhhhhhh==TTT======================
+16 TTTTTTTTTTTTTTTTTT....TThhhhhhhhh==TTT===TTTTTT=============
+17 TTTTTTTTTTTTTTTTTT....TT......TTT==TTT...TTTTTTTTTTTTTTTTTTT
+18 TTTTTTTTTTTTTTTTTT....TT......TTT==TTT...TTTTTTTTTTTTTTTTTTT
+19 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_ouest           warp           0,3..5       libre   # PUSH ← → route_39, from_route_38 (23, 3..5)
+from_route_39        spawn          0,3..5       libre   # arrivée de la Route 39, tournée →
+warp_est             warp           59,14..16    libre   # PUSH → → ecruteak_city, from_route_38 (0, 14..16)
+from_ecruteak        spawn          59,14..16    libre   # arrivée de Rosalia, tournée ←
+paul                 dresseur       10,7         bloque  facing=down sight=3 trainer=route_38_birdkeeper_paul  # Ornithologue Paul (R-7), Roucool 9 + Hoothoot 10 ; garde H1, évitable
+ines                 dresseur       42,14        bloque  facing=down sight=1 trainer=route_38_trainer_ines  # Dresseuse Inès (R-8), Miaouss 10 + Mystherbe 10 + Wattouat 11 ; voit (42, 15), le passage d'une case : INÉVITABLE
+theo                 dresseur       50,12        bloque  facing=down sight=2 trainer=route_38_picnicker_theo  # Pique-niqueur Théo (R-9), Fouinette 11 + Rattata 11 ; voit (50, 13..14), évitable par y 15..16
+promeneur            pnj            55,13        bloque  role=promeneur facing=down  # R-10 (les deux tours de Rosalia), près de l'entrée de la ville
+route_38_item_1      objet_visible  33,18        bloque  item=poke_ball count=2  # fond de l'impasse (Poké Ball ×2)
+route_38_hidden_1    cache          35,6         bloque  item=super_potion indice=tronc  # tronc examiné depuis (35, 7) ↑
+panneau_route        panneau        3,2          bloque  # R-6, lu depuis (3, 3) ↑
+herbes_h1            herbes         10,10        libre   role=H1  # poche ouest (évitable)
+herbes_h2            herbes         28,14        libre   role=H2  # poche sud (évitable)
+herbes_h3            herbes         52,7         libre   role=H3  # poche nord-est (évitable)
+FIN

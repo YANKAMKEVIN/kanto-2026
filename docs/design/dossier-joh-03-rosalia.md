@@ -25,6 +25,16 @@
 
 Points de Vol : Rosalia (utilisable à l'acte 2).
 
+**Grilles validées par Kevin le 2026-11-02** : `tools/plans/route_39.txt` (24 × 50),
+`route_38.txt` (60 × 20), `rosalia.txt` (56 × 48) ; contrôle `tools/art/plan_check_joh2.py`,
+aperçu `reference/joh2-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. Raccords :
+Oliville (49, 20..22) ↔ Route 39 (0, 20..22) ; Route 39 (23, 3..5) ↔ Route 38 (0, 3..5) ;
+Route 38 (59, 14..16) ↔ Rosalia (0, 14..16). Rosalia sort vers la Route 37 par le **sud**
+(26..28, 47), comme le dit le dossier JOH-04 (le §4 ci-dessous disait « est ») ; la sortie **est**
+(55, 30..32) mène à la Route 42 et reste fermée pendant l'acte 1 par un garde (Kevin, 2026-11-02 ;
+texte à écrire avec le JOH6) ; le chemin gardé de la Tour Carillon (R-20) sort au nord (42..43, 0)
+vers le Bois de la Tour (JOH8).
+
 ## 4. Ordre de jeu
 
 | Étape | Lieu | Ce qui se passe | Drapeau |
@@ -34,7 +44,7 @@ Points de Vol : Rosalia (utilisable à l'acte 2).
 | 3 | Rosalia, entrée | Titre de zone ; le joueur voit deux Sbires devant la Tour Cendrée | — |
 | 4 | Rosalia, Tour Cendrée | Les Sbires interrogent un sage ; ils voient le joueur et s'enfuient vers l'est (sans combat) | `johto_rosalia_rockets_seen` |
 | 5 | Rosalia, maison des sages | Le doyen raconte la Tour Cendrée et les trois Pokémon nés des cendres | `johto_tower_legend_heard` |
-| 6 | Rosalia | Centre (soin, PC hors ligne), Boutique ; sortie est vers la Route 37 | — |
+| 6 | Rosalia | Centre (soin, PC hors ligne), Boutique ; sortie sud vers la Route 37 | — |
 
 Pas de combat obligatoire au JOH2 hors Dresseurs inévitables (un sur la Route 38 **[D]**).
 

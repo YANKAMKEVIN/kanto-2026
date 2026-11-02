@@ -1,0 +1,84 @@
+# Route 37 (route_37) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH3 ; dossier
+# docs/design/dossier-joh-04-doublonville.md §3.1, §4 à §6, §11, textes D-1 à D-4, D-38).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un
+# changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh3.py.
+#
+# 20 × 40 cases (dossier : ≈ 20 × 40) ; nord en haut ; x = colonne 0..19, y = rangée 0..39.
+#
+# Composition (tout à angles droits) :
+#   - CHEMIN (=) du bord NORD (8..10, 0) au bord SUD (8..10, 39), avec une chicane vers l'est
+#     (x 11..13, y 13..28) qui longe le BOSQUET SOMBRE (T, x 14..18, y 17..24).
+#   - Trois ARBRES FRUITIERS en décor (a) à l'ouest ; 3 arbres repères (G).
+#   - 2 poches d'herbes hautes : H1 ouest (x 2..6, y 20..27), H2 sud-est (x 15..18, y 30..36),
+#     toutes deux évitables.
+#   - La nuit seulement, deux Sbires (A au pied du bosquet, B à l'ouest), évitables (JH-31).
+#
+# Raccords :
+#   NORD (8..10, 0) ↔ Rosalia, bord sud (26..28, 47) : la Route 37 est plus étroite, les colonnes
+#     diffèrent (warps case à case, dans l'ordre).
+#   SUD (8..10, 39) ↔ Route 36, bord nord (8..10, 0) (mêmes colonnes).
+#
+# Légende :
+#   T forêt, bordure et bosquet (bloqués)   . pré (praticable)   = chemin (praticable)
+#   h herbes hautes (praticables, rencontres)   a arbre fruitier (bloqué, décor)   G arbre repère (bloqué)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+
+PRATICABLES .=h
+
+GRILLE 20 40
+00 TTTTTTTT===TTTTTTTTT
+01 TTTTTTT.===...TTTTTT
+02 TTTTTTT.===...TTTTTT
+03 TTTTTTT.===...TTTTTT
+04 TTTTTTT.===...TTTTTT
+05 TTTTTTT.===........T
+06 T.......===........T
+07 T.......===.....G..T
+08 T...a...===........T
+09 T.......===........T
+10 T.......===........T
+11 T.......===........T
+12 T....a..===.....G..T
+13 T.......======.....T
+14 T.......======.....T
+15 T..a....======.....T
+16 T..........===.....T
+17 T..........===TTTTTT
+18 T..........===TTTTTT
+19 T..........===TTTTTT
+20 T.hhhhh....===TTTTTT
+21 T.hhhhh....===TTTTTT
+22 T.hhhhh....===TTTTTT
+23 T.hhhhh....===TTTTTT
+24 T.hhhhh....===TTTTTT
+25 T.hhhhh....===.....T
+26 T.hhhhh.======.....T
+27 T.hhhhh.======.....T
+28 T.......======.....T
+29 T.......===........T
+30 T.......===....hhhhT
+31 T.......===....hhhhT
+32 T.......===....hhhhT
+33 T.......===....hhhhT
+34 T.G.....===....hhhhT
+35 T.......===....hhhhT
+36 TTTTTT..===....hhhhT
+37 TTTTTT..===........T
+38 TTTTTT..===........T
+39 TTTTTTTT===TTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           8..10,0      libre   # PUSH ↑ → ecruteak_city, from_route_37 (26..28, 47)
+from_ecruteak        spawn          8..10,0      libre   # arrivée de Rosalia, tournée ↓
+warp_sud             warp           8..10,39     libre   # PUSH ↓ → route_36, from_route_37 (8..10, 0)
+from_route_36        spawn          8..10,39     libre   # arrivée de la Route 36, tournée ↑
+lise                 dresseur       3,19         bloque  facing=down sight=3 trainer=route_37_birdkeeper_lise  # Ornithologue Lise (D-2), Roucool 14 + Hoothoot 15 ; voit (3, 20..22), évitable
+sbire_a              dresseur       16,25        bloque  facing=left sight=2 periode=nuit trainer=route_37_grunt_a  # D-3, Malosse 15 + Rattata 14 ; la nuit seulement ; voit (14..15, 25), évitable
+sbire_b              dresseur       2,29         bloque  facing=right sight=3 periode=nuit trainer=route_37_grunt_b  # D-4, Cornèbre 15 + Abo 15 ; la nuit seulement ; voit (3..5, 29), évitable
+route_37_item_1      objet_visible  16,6         bloque  item=super_potion  # « derrière un arbre » : au nord de l'arbre (16, 7)
+panneau_route        panneau        7,5          bloque  # D-1, lu depuis (7, 6) ↑
+herbes_h1            herbes         4,23         libre   role=H1  # poche ouest (évitable)
+herbes_h2            herbes         16,33        libre   role=H2  # poche sud-est (évitable)
+FIN
