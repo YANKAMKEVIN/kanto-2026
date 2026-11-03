@@ -87,6 +87,22 @@ JALONS: dict[str, list[tuple]] = {
 		("REPAIRE_B3F", "mahogany_hideout_b3f", PAYSAGE, "interieur", "Repaire Rocket d'Acajou B3F (24 × 18)",
 			{"X": "caisse", "c": "cage"}),
 	],
+	"joh7": [
+		("ROUTE40", "route_40", PORTRAIT, "exterieur", "Route 40 (24 × 40)", {"_fond": "mer"}),
+		("ROUTE41", "route_41", PAYSAGE, "exterieur", "Route 41 et Îles Tourbillon (60 × 48)", {"_fond": "mer", "E": "bouche"}),
+		("TOURBILLON_1F", "whirl_islands_1f", PAYSAGE, "grotte", "Îles Tourbillon 1F (30 × 24)"),
+		("TOURBILLON_B1F", "whirl_islands_b1f", PAYSAGE, "grotte", "Îles Tourbillon B1F (36 × 28)"),
+		("TOURBILLON_B2F", "whirl_islands_b2f", PAYSAGE, "grotte", "Îles Tourbillon B2F, salle de Lugia (24 × 24)"),
+	],
+	"joh8": [
+		("BOIS_TOUR", "bell_tower_woods", PAYSAGE, "exterieur", "Bois de la Tour (24 × 20)", {"L": "lanterne"}),
+		("TOUR_CARILLON_1F", "bell_tower_1f", PAYSAGE, "interieur", "Tour Carillon 1F (24 × 24)",
+			{"A": "autel", "M": "colonne", "E": "sortie"}),
+		("TOUR_CARILLON_2F", "bell_tower_2f", PAYSAGE, "interieur", "Tour Carillon 2F (24 × 24)",
+			{"O": "planche", "M": "colonne"}),
+		("TOUR_CARILLON_SOMMET", "bell_tower_roof", PAYSAGE, "interieur", "Tour Carillon, sommet (20 × 20)",
+			{"r": "rambarde", "B": "cloche", "c": "cage_feu", "D": "trappe", "M": "brule_parfum"}),
+	],
 }
 # Styles par défaut des lettres de bâtiment (toit, mur) ; les lettres spéciales ont leur dessin.
 BATIMENTS = {
@@ -103,7 +119,10 @@ BATIMENTS = {
 NOMS = {"ilex_forest": "bois-aux-chenes", "azalea_town": "ecorcia", "slowpoke_well_b1f": "puits-ramoloss-b1f",
 	"slowpoke_well_b2f": "puits-ramoloss-b2f", "souterrain": "souterrain-doublonville",
 	"radio_tower_1f": "tour-radio-1f", "radio_tower_2f": "tour-radio-2f", "radio_tower_3f": "tour-radio-3f",
-	"radio_tower_4f": "tour-radio-4f", "radio_tower_5f": "tour-radio-5f",
+	"radio_tower_4f": "tour-radio-4f", "radio_tower_5f": "tour-radio-5f", "whirl_islands_1f": "iles-tourbillon-1f",
+	"whirl_islands_b1f": "iles-tourbillon-b1f", "whirl_islands_b2f": "iles-tourbillon-b2f",
+	"bell_tower_woods": "bois-de-la-tour", "bell_tower_1f": "tour-carillon-1f", "bell_tower_2f": "tour-carillon-2f",
+	"bell_tower_roof": "tour-carillon-sommet",
 	"burned_tower_1f": "tour-cendree-1f", "burned_tower_b1f": "tour-cendree-b1f", "mahogany_town": "acajou",
 	"mahogany_souvenir_shop": "boutique-souvenirs-acajou", "lake_of_rage": "lac-colere",
 	"mahogany_hideout_b1f": "repaire-acajou-b1f", "mahogany_hideout_b2f": "repaire-acajou-b2f",
@@ -145,19 +164,22 @@ COULEURS_EXT = {
 	"F": PELOUSE,
 	# JOH4 : M mer (décor), H charbonnerie, Q margelle du puits, s souche
 	"M": EAU_PROFONDE, "H": PELOUSE, "Q": PELOUSE, "s": PELOUSE,
-	# JOH6 : o rocher émergé du lac
-	"o": EAU,
+	# JOH6 : o rocher émergé du lac ; JOH7 : s banc de sable, @ tourbillon
+	"o": EAU, "s": (226, 210, 160), "@": EAU,
+	# JOH8 : L lanterne
+	"L": PELOUSE,
 }
 CLAIRIERE = (140, 196, 100)
 SOL_INT, MUR_INT, NOIR = (200, 186, 150), (78, 70, 64), (10, 10, 12)
 COULEURS_INT = {"X": MUR_INT, "#": MUR_INT, ".": SOL_INT, "b": SOL_INT, "k": SOL_INT, "E": SOL_INT, "M": SOL_INT,
 	"V": SOL_INT, "c": SOL_INT, "r": SOL_INT, "p": SOL_INT, "U": SOL_INT, "D": SOL_INT, "L": MUR_INT, "K": SOL_INT,
 	"S": MUR_INT, "P": SOL_INT, "O": SOL_INT, "<": SOL_INT, ">": SOL_INT, "^": SOL_INT, "v": SOL_INT, "o": SOL_INT,
-	"q": SOL_INT, "x": SOL_INT}
+	"q": SOL_INT, "x": SOL_INT, "A": SOL_INT, "r": SOL_INT, "B": SOL_INT}
 CENDRES = (118, 108, 100)
 COULEURS_GROTTE = {
 	"#": ROCHE, "o": EAU, ".": (150, 150, 158), "g": GALETS, "w": EAU, "d": EAU_PROFONDE, ">": EAU, "<": EAU,
 	"v": EAU, "^": EAU, "E": (200, 186, 150), "U": (150, 150, 158), "V": (150, 150, 158), "R": (150, 150, 158),
+	"F": (200, 226, 240),
 }
 LEGENDE_EXT = [
 	("T", "forêt, bordure d'arbres"), ("R", "falaise, rochers"), (".", "pelouse"), ("=", "chemin"),
@@ -168,17 +190,19 @@ LEGENDE_EXT = [
 	("M", "Ferme Meumeu"), ("B", "Tour Cendrée"), ("K", "Tour Carillon"), ("S", "maison des sages"),
 	("a", "arbre fruitier"), ("b", "pont"), ("X", "barrière de chantier"), ("r", "rocher"), ("U", "Tour Radio"),
 	("A", "Grand Magasin"), ("L", "maison du lien"), ("F", "gare"), ("M", "mer (décor)"), ("H", "charbonnerie"),
-	("Q", "margelle du puits"), ("s", "souche"), ("o", "rocher émergé"),
+	("Q", "margelle du puits"), ("s", "souche / banc de sable"), ("o", "rocher émergé"), ("@", "tourbillon"),
+	("L", "lanterne"),
 ]
 LEGENDE_INT = [("X", "mur"), ("#", "mur, cloison"), (".", "sol"), ("b", "boutique fermée"), ("k", "caisse"),
 	("E", "escalier / sortie"), ("M", "mobilier"), ("V", "vitre"), ("c", "comptoir"), ("r", "rayonnage"),
 	("p", "pupitre"), ("U", "escalier qui monte"), ("D", "escalier qui descend"), ("L", "ascenseur"),
 	("K", "porte à clé"), ("S", "escalier de secours"), ("P", "poutre calcinée"), ("O", "trou dans le plancher"),
-	(">", "dalle tournante"), ("o", "case d'arrêt"), ("q", "présentoir"), ("x", "plante")]
+	(">", "dalle tournante"), ("o", "case d'arrêt"), ("q", "présentoir"), ("x", "plante"), ("A", "autel"),
+	("r", "rambarde"), ("B", "grande cloche")]
 LEGENDE_GROTTE = [
 	("#", "paroi"), ("o", "rocher isolé"), (".", "îlot, corniche"), ("g", "plage de galets"), ("w", "eau surfable"),
 	("d", "eau profonde"), (">", "courant →"), ("v", "courant ↓"), ("E", "sortie à pied"), ("U", "échelle qui monte"),
-	("V", "échelle qui descend"), ("R", "caisse marquée R"),
+	("V", "échelle qui descend"), ("R", "caisse marquée R"), ("F", "cascade"),
 ]
 # Pastilles de légende des caractères dont la couleur de fond n'est pas parlante (dessinés par-dessus).
 SWATCH = {
@@ -189,11 +213,12 @@ SWATCH = {
 	"a": (60, 130, 60), "b": BOIS, "X": (230, 120, 40), "r": (128, 118, 108), "U": (190, 190, 200),
 	"A": (230, 200, 80), "L": (176, 70, 52), "F": (110, 110, 120), "M": EAU_PROFONDE, "H": (70, 60, 56),
 	"Q": (150, 146, 140), "s": (120, 86, 56), "U": (160, 110, 60), "V": (160, 110, 60), "R": (200, 50, 50),
+	"@": (235, 245, 255), "F": (200, 226, 240), "L": (240, 200, 120),
 }
 SWATCH_INT = {"M": (120, 86, 56), "V": (170, 210, 230), "c": BOIS, "r": (96, 70, 46), "p": (70, 74, 86),
 	"U": (120, 110, 96), "D": (90, 84, 76), "L": (150, 150, 160), "K": (80, 52, 32), "S": (110, 110, 120),
 	"E": (120, 110, 96), "b": (120, 96, 76), "P": (40, 34, 30), "O": (20, 18, 18), ">": (90, 150, 210), "o": (170, 160, 140),
-	"q": (150, 110, 70), "x": (50, 130, 60)}
+	"q": (150, 110, 70), "x": (50, 130, 60), "A": (110, 84, 56), "r": (120, 100, 80), "B": (190, 150, 60)}
 SYMBOLES = [
 	((255, 120, 220), "warp (raccord, porte)"), ((120, 220, 120), "spawn (arrivée)"), ((80, 150, 255), "PNJ"),
 	((255, 220, 40), "objet"), ((255, 150, 40), "déclencheur"), ((230, 40, 40), "Dresseur et sa vue"),
@@ -366,7 +391,43 @@ def _details_interieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 			d.rectangle([x0 + 1, y0 + 1, x0 + case - 2, y0 + case - 2], fill=(96, 70, 46))
 	for x, y in plan.cells_of("M"):                     # mobilier : bureaux, plantes, bancs (bloc de bois)
 		x0, y0 = coin(x, y)
-		d.rectangle([x0 + 2, y0 + 3, x0 + case - 3, y0 + case - 3], fill=(120, 86, 56), outline=(70, 50, 30))
+		if styles.get("M") == "colonne":                # colonne rouge laquée
+			d.ellipse([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], fill=(180, 50, 40), outline=(100, 24, 20))
+		elif styles.get("M") == "brule_parfum":         # brûle-parfum de bronze
+			d.ellipse([x0 + 3, y0 + 3, x0 + case - 4, y0 + case - 4], fill=(150, 120, 60), outline=(90, 70, 30))
+		else:
+			d.rectangle([x0 + 2, y0 + 3, x0 + case - 3, y0 + case - 3], fill=(120, 86, 56), outline=(70, 50, 30))
+	if styles.get("A") == "autel":                      # autel de bois sombre, nappe rouge
+		cells = plan.cells_of("A")
+		if cells:
+			x0, y0, x1, y1 = _boite(d, cells, coin, fill=(110, 84, 56), outline=(60, 44, 30), width=2)
+			d.rectangle([x0 + case // 2, y0 + case // 3, x1 - case // 2, y1 - case // 3], fill=(170, 50, 40))
+	if styles.get("O") == "planche":                    # planches qui cèdent : lattes plus sombres, fendues
+		for x, y in plan.cells_of("O"):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(150, 130, 100))
+			d.line([x0 + 2, y0 + case // 2, x0 + case - 3, y0 + case // 2 + 2], fill=(70, 50, 30), width=2)
+	if styles.get("r") == "rambarde":                   # rambarde de bois rouge
+		for x, y in plan.cells_of("r"):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(60, 56, 52))
+			d.rectangle([x0 + case // 3, y0 + case // 3, x0 + case * 2 // 3, y0 + case * 2 // 3], fill=(170, 50, 40))
+	if styles.get("B") == "cloche":                     # la grande cloche de bronze
+		cells = plan.cells_of("B")
+		if cells:
+			x0, y0, x1, y1 = _boite(d, cells, coin)
+			d.ellipse([x0 + 2, y0 + 2, x1 - 3, y1 - 3], fill=(190, 150, 60), outline=(110, 80, 30), width=3)
+	if styles.get("c") == "cage_feu":                   # cage de feu : barreaux orange
+		for x, y in plan.cells_of("c"):
+			x0, y0 = coin(x, y)
+			for k in range(2, case - 1, max(3, case // 4)):
+				d.line([x0 + k, y0, x0 + k, y0 + case - 1], fill=(240, 140, 40), width=2)
+	if styles.get("D") == "trappe":                     # trappe de l'escalier dans le palier
+		for x, y in plan.cells_of("D"):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(60, 56, 52))
+			for k in range(4):
+				d.rectangle([x0 + 1, y0 + k * case // 4, x0 + case - 2, y0 + k * case // 4 + case // 8], fill=(110, 104, 96))
 	for x, y in plan.cells_of("V") if "V" not in styles else []:   # vitre : bande bleu clair
 		x0, y0 = coin(x, y)
 		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(170, 210, 230))
@@ -374,7 +435,7 @@ def _details_interieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 	for x, y in plan.cells_of("c") if "c" not in styles else []:   # comptoir d'accueil
 		x0, y0 = coin(x, y)
 		d.rectangle([x0, y0 + 2, x0 + case - 1, y0 + case - 2], fill=BOIS, outline=BOIS_2)
-	for x, y in plan.cells_of("r"):                     # rayonnage : étagères
+	for x, y in plan.cells_of("r") if "r" not in styles else []:   # rayonnage : étagères
 		x0, y0 = coin(x, y)
 		d.rectangle([x0 + 1, y0 + 1, x0 + case - 2, y0 + case - 2], fill=(96, 70, 46))
 		for k in range(case // 4, case - 2, max(3, case // 4)):
@@ -383,7 +444,7 @@ def _details_interieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		x0, y0 = coin(x, y)
 		d.rectangle([x0, y0 + 2, x0 + case - 1, y0 + case - 2], fill=(70, 74, 86), outline=(40, 42, 50))
 		d.ellipse([x0 + case // 3, y0 + case // 3, x0 + case // 3 + 3, y0 + case // 3 + 3], fill=(90, 200, 120))
-	escaliers = (plan.cells_of("U") if "U" not in styles else []) + plan.cells_of("D")
+	escaliers = (plan.cells_of("U") if "U" not in styles else []) + (plan.cells_of("D") if "D" not in styles else [])
 	for x, y in escaliers:                              # escaliers dans le mur nord
 		x0, y0 = coin(x, y)
 		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(60, 56, 52) if plan.at(x, y) == "D" else (120, 110, 96))
@@ -460,6 +521,11 @@ def _details_grotte(d, plan, coin, case) -> None:
 		d.rectangle([x0 + case - m - 3, y0 + 1, x0 + case - m - 1, y0 + case - 2], fill=(160, 110, 60))
 		for k in range(3, case - 2, max(3, case // 4)):
 			d.line([x0 + m, y0 + k, x0 + case - m - 1, y0 + k], fill=(160, 110, 60), width=2)
+	for x, y in plan.cells_of("F"):                     # cascade : traits blancs verticaux
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(120, 170, 220))
+		for k in range(2, case - 1, max(3, case // 4)):
+			d.line([x0 + k, y0, x0 + k, y0 + case - 1], fill=(230, 245, 255), width=1)
 	for x, y in plan.cells_of("R"):                     # caisses marquées d'un R rouge
 		x0, y0 = coin(x, y)
 		d.rectangle([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], fill=BOIS, outline=BOIS_2, width=2)
@@ -492,7 +558,18 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		x0, y0 = coin(x, y)
 		for k in range(0, case, max(3, case // 4)):
 			d.line([x0, y0 + k, x0 + case - 1, y0 + k], fill=BOIS_2, width=1)
-	_vagues(d, plan, coin, case, "wWM")
+	_vagues(d, plan, coin, case, "wWM@")
+	for x, y in plan.cells_of("s") if "@" in plan.praticables or "s" in plan.praticables else []:   # banc de sable
+		x0, y0 = coin(x, y)
+		for k in range(2):
+			px = x0 + (case * (1 + 2 * k) // 4) + ((x + y + k) % 3) - 1
+			py = y0 + case // 2 + ((x * k + y) % 3) - 1
+			d.ellipse([px - 1, py - 1, px + 1, py + 1], fill=(200, 180, 130))
+	for x, y in plan.cells_of("@"):                     # tourbillon : spirale blanche
+		x0, y0 = coin(x, y)
+		cx, cy = x0 + case / 2, y0 + case / 2
+		for r in range(2, case // 2, max(2, case // 6)):
+			d.arc([cx - r, cy - r, cx + r, cy + r], start=(r * 40) % 360, end=(r * 40 + 260) % 360, fill=(235, 245, 255), width=2)
 	if styles.get("C") == "clairiere":                  # clairière de l'autel : herbe rase éclairée
 		for x, y in plan.cells_of("C"):
 			x0, y0 = coin(x, y)
@@ -501,7 +578,7 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		x0, y0 = coin(x, y)
 		d.rectangle([x0 + 1, y0 + case // 4, x0 + case - 2, y0 + case - 2], fill=(110, 84, 56), outline=(60, 44, 30))
 		d.rectangle([x0 + 1, y0 + case // 4, x0 + case - 2, y0 + case // 2], fill=(90, 130, 70))
-	for x, y in plan.cells_of("s"):                     # souche
+	for x, y in plan.cells_of("s") if styles.get("_fond") != "mer" else []:   # souche
 		x0, y0 = coin(x, y)
 		d.ellipse([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], fill=(120, 86, 56), outline=(70, 50, 30))
 		d.ellipse([x0 + case // 3, y0 + case // 3, x0 + case * 2 // 3, y0 + case * 2 // 3], fill=(180, 140, 100))
@@ -531,6 +608,11 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		d.rectangle([x0 + case // 3, y0, x0 + case * 2 // 3, y0 + case - 1], fill=(240, 240, 236))
 		for k in range(0, case, max(4, case // 3)):
 			d.rectangle([x0 + case // 3, y0 + k, x0 + case * 2 // 3, y0 + k + max(2, case // 6)], fill=(230, 120, 40))
+	for x, y in plan.cells_of("L") if styles.get("L") == "lanterne" else []:   # lanterne de pierre : fût et toit, lueur
+		x0, y0 = coin(x, y)
+		d.rectangle([x0 + case // 3, y0 + case // 3, x0 + case * 2 // 3, y0 + case - 2], fill=(150, 146, 140), outline=(90, 88, 84))
+		d.rectangle([x0 + case // 5, y0 + case // 5, x0 + case * 4 // 5, y0 + case // 3 + 1], fill=(110, 108, 104))
+		d.ellipse([x0 + case // 3 + 1, y0 + case // 2, x0 + case * 2 // 3 - 1, y0 + case * 3 // 4], fill=(240, 200, 120))
 	for x, y in plan.cells_of("a"):                     # arbre fruitier : couronne ronde et fruits
 		x0, y0 = coin(x, y)
 		d.ellipse([x0 - case // 4, y0 - case // 4, x0 + case + case // 4, y0 + case + case // 4], fill=(60, 130, 60),
@@ -664,7 +746,10 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		d.rectangle([px + 3, py + case // 4, px + case - 4, py + case - 1], fill=(60, 80, 120))
 	for x, y in plan.cells_of("E"):                     # bouche de grotte dans la falaise, ou escalier
 		px, py = coin(x, y)
-		if styles.get("E") == "escalier":
+		if styles.get("E") == "bouche":
+			d.rectangle([px, py, px + case - 1, py + case - 1], fill=FALAISE)
+			d.ellipse([px + 1, py + 1, px + case - 2, py + case - 1], fill=(30, 30, 36))
+		elif styles.get("E") == "escalier":
 			d.rectangle([px, py, px + case - 1, py + case - 1], fill=(60, 60, 70))
 			for k in range(4):
 				d.rectangle([px + 1, py + k * case // 4, px + case - 2, py + k * case // 4 + case // 8], fill=(150, 150, 160))
@@ -688,7 +773,10 @@ def _geometrie(largeur: int, hauteur: int, taille: tuple[int, int]) -> tuple[int
 
 def plan_codex(zone: str, grille: str, taille: tuple[int, int], genre: str, styles=None) -> Path:
 	plan = lire(PLANS / f"{grille}.txt")
-	img = Image.new("RGB", taille, {"grotte": ROCHE, "interieur": NOIR}.get(genre, FORET))
+	fond = {"grotte": ROCHE, "interieur": NOIR}.get(genre, FORET)
+	if styles and styles.get("_fond") == "mer":
+		fond = EAU_PROFONDE
+	img = Image.new("RGB", taille, fond)
 	case, ox, oy = _geometrie(plan.width, plan.height, taille)
 	dessiner_aplats(img, plan, ox, oy, case, genre, styles)
 	ART.mkdir(parents=True, exist_ok=True)

@@ -229,6 +229,39 @@ cellules à barreaux d'acier, porte à code à voyant rouge, **générateur d'on
   reliée à la machine par des tuyaux (décor).
 - **Tous** : lumière neutre respectée ; intérieurs au néon froid.
 
+## JOH7 — Routes 40 et 41, Îles Tourbillon 1F, B1F, B2F (planche `joh7-vues-v1.png`) — en attente de Kevin
+
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `route-40-vue-generale-v1.png` | r1 / 1 | `route-20-vue-generale-v1.png` (route marine de Kanto) |
+| `route-41-vue-generale-v1.png` | r1 / 1 | Route 40 (ci-dessus) + `route-20-vue-generale-v1.png` |
+| `iles-tourbillon-1f-vue-generale-v1.png` | r1 / 1 | `mont-selenite-vue-generale-v1.png` |
+| `iles-tourbillon-b1f-vue-generale-v1.png` | r1 / 1 | `grotte-marine-2-vue-generale-v1.png` + `iles-ecume-b4f-vue-generale-v1.png` |
+| `iles-tourbillon-b2f-vue-generale-v1.png` | r1 / 1 | B1F (ci-dessus) + `grotte-marine-2-vue-generale-v1.png` |
+
+Outil : routes marines à marge de mer (`_fond: mer`), bancs de sable, tourbillons en spirale, entrée de grotte dans l'île,
+cascade des grottes.
+
+Défauts pris **[D]** : routes marines sans terre ferme hors bancs de sable et îlots, lumière neutre (sans reflets dorés de la
+Route 20) ; tourbillons = spirales d'écume blanches en lignes droites, une case chacun ; île unique de roche sombre et
+abrupte à sommet nu, grotte sur la face ouest ; B1F : courants en traînées d'écume, plate-forme de Suicune peinte **vide** ;
+B2F : bassin bleu nuit, cascade coupée en son milieu, **halo bleu** au-dessus de l'eau, bassin vide (Lugia est un sprite).
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **Route 40** : conforme (bordures rocheuses, entrée large au nord, chenal sud entre deux récifs, trois barres de rochers,
+  rochers isolés, deux bancs de sable).
+- **Route 41** : l'île est peinte un peu **plus petite** que ses 16 × 16 cases et son îlot sud-est plus près du récif ; les
+  quatre lignes de tourbillons et leurs passes sont conformes ; le rocher plat au nord de la passe nord se devine à peine.
+- **Îles Tourbillon 1F** : conforme (entrée ouest, trois salles, deux passages étroits, trois zones de gravats, rochers,
+  échelle) ; quelques coquillages et algues à l'entrée (décor).
+- **Îles Tourbillon B1F** : conforme (muraille et deux passes, lacs est et ouest, rive d'arrivée et échelle, plate-forme du
+  nord, chenal de l'îlot, crique, palier du nord-ouest et courant violent, rochers) ; le courant du palier est peint en
+  petite cascade.
+- **Îles Tourbillon B2F** : conforme (corniche, parois, bassin, rangée d'entrée au sud, cascade coupée au milieu, rochers,
+  échelle, halo).
+- **Tous** : lumière neutre ; grottes en pénombre bleue.
+
 ## Bilan de l'acte 1
 
 21 vues générales en 21 essais (JOH1 : 3, JOH2 : 3, JOH3 : 5, JOH4 : 5, JOH5 : 5), aucun refus de Codex. **Toutes
