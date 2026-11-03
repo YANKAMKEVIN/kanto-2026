@@ -180,7 +180,7 @@ métallique dans le mur est.
   plutôt qu'en cloison de verre du sol au plafond.
 - **Tous** : lumière neutre respectée.
 
-## JOH6 — Tour Cendrée, Route 42, Acajou, boutique, Route 43, Lac Colère, repaire (planche `joh6-vues-v1.png`) — en attente de Kevin
+## JOH6 — Tour Cendrée, Route 42, Acajou, boutique, Route 43, Lac Colère, repaire (planche `joh6-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -229,7 +229,7 @@ cellules à barreaux d'acier, porte à code à voyant rouge, **générateur d'on
   reliée à la machine par des tuyaux (décor).
 - **Tous** : lumière neutre respectée ; intérieurs au néon froid.
 
-## JOH7 — Routes 40 et 41, Îles Tourbillon 1F, B1F, B2F (planche `joh7-vues-v1.png`) — en attente de Kevin
+## JOH7 — Routes 40 et 41, Îles Tourbillon 1F, B1F, B2F (planche `joh7-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -262,7 +262,7 @@ B2F : bassin bleu nuit, cascade coupée en son milieu, **halo bleu** au-dessus d
   échelle, halo).
 - **Tous** : lumière neutre ; grottes en pénombre bleue.
 
-## JOH8 — Bois de la Tour, Tour Carillon 1F, 2F, sommet (planche `joh8-vues-v1.png`) — en attente de Kevin
+## JOH8 — Bois de la Tour, Tour Carillon 1F, 2F, sommet (planche `joh8-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -292,7 +292,7 @@ pierre allumées (seule touche chaude).
   la cage est peinte à droite du centre (grille : x 11..13, conforme) ; l'ouverture du palier (3, 3) se lit mal.
 - **Tous** : lumière neutre sauf le sommet, à l'aube (voulu, JH-55).
 
-## JOH9 — Sentier, Mont Argenté (extérieur, 1F, 2F, 3F, sommet), Route 28, poste (planche `joh9-vues-v1.png`) — en attente de Kevin
+## JOH9 — Sentier, Mont Argenté (extérieur, 1F, 2F, 3F, sommet), Route 28, poste (planche `joh9-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -339,5 +339,5 @@ Route 28 sans neige (versant ouest) ; poste de la Route 28 = une pièce traversa
 **Toutes validées par Kevin le 2026-11-03** (JOH1 : « Oui, enchaîne JOH2 » ; JOH2 à JOH5 : « Oui, fusionne »). Les défauts
 [D] de chaque section deviennent la règle pour les actes 2 et 3.
 
-**Actes 2 et 3** : 27 vues en 27 essais (JOH6 : 10, JOH7 : 5, JOH8 : 4, JOH9 : 8), aucun refus. **À valider par Kevin**
-(planches `joh6` à `joh9-vues-v1.png`). Total du chapitre : **48 vues générales**, 48 essais.
+**Actes 2 et 3** : 27 vues en 27 essais (JOH6 : 10, JOH7 : 5, JOH8 : 4, JOH9 : 8), aucun refus. **Validées par Kevin le
+2026-11-03** (« Oui, fusionne »). Total du chapitre : **48 vues générales**, 48 essais, toutes validées.

@@ -50,7 +50,7 @@ grille de base à la carte ; le code du JOH9 fera basculer la base) ; contrôle
 `mont-argente-2f-…`, `mont-argente-3f-…`, `mont-argente-sommet-…`, `route-28-vue-generale-v1.png`, `poste-route-28-v1.png`,
 plans annotés `reference/plans-johto/`, planche `reference/joh9-vues-v1.png`, écarts et défauts dans
 `fiches-assets/serie-johto-vues-acte1.md` : escalier peint devant la grotte et bord sud du sommet fermé, la grille fait
-foi), en attente de validation de Kevin.
+foi), **validées par Kevin le 2026-11-03** (« Oui, fusionne »).
 
 ## 4. Ordre de jeu
 

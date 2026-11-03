@@ -42,7 +42,7 @@ praticable, panneau C-3, raccord est) ; contrôle `tools/art/plan_check_joh6.py`
 `reference/joh6-grilles-apercu-v1.png`. **Vues générales peintes le 2026-11-03** (`reference/tour-cendree-1f-vue-generale-v1.png`,
 `tour-cendree-b1f-…`, `route-42-…`, `acajou-…`, `boutique-souvenirs-acajou-v1.png`, `route-43-…`, `lac-colere-…`,
 `repaire-acajou-b1f-…` à `b3f-vue-generale-v1.png`, plans annotés `reference/plans-johto/`, planche `reference/joh6-vues-v1.png`,
-écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`), en attente de validation de Kevin.
+écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`), **validées par Kevin le 2026-11-03** (« Oui, fusionne »).
 
 ## 4. Ordre de jeu
 
