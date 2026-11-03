@@ -321,6 +321,8 @@ func _ready() -> void:
 			push_error("Boot : %s" % error)
 	_switch_puzzles.load_file()
 	_items.check_moves(_pokemon)
+	# Icônes des CT (RP-256) : un disque peint par type de la capacité enseignée.
+	MenuArt.set_tm_types(_items.tm_types(_pokemon))
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
@@ -1052,7 +1054,7 @@ func _start_opening() -> void:
 	for badge: StringName in _badges.ids():
 		badge_flags.append(_badges.flag(badge))
 	_opening.setup(save_system, _build_new_game, _fade, _settings, _profile_device_quality(),
-		_zones.zone_name_of, badge_flags)
+		_zones.zone_name_of, badge_flags, _badges.ids())
 	_opening.set_dialogue_box(_dialogue_box)
 	_opening.title_closed.connect(_release_title_backdrop)
 	_opening.intro_opened.connect(_show_intro_backdrop)

@@ -12,6 +12,8 @@ extends Control
 ## ne volent jamais le toucher d'une zone voisine posé sur son propre rectangle.
 ## Un toucher = un seul [signal zone_pressed], au relâchement, si le doigt est resté sur la
 ## zone où il s'était posé.
+## Reliquats du Menu peint (2026-11-02) : étiquettes sans chevauchement ([MapLabelLayout]) ;
+## une étiquette secondaire sans place libre à cette échelle est masquée (zone toujours touchable).
 ## MM.2 (maquette) : étiquettes en pastilles de verre avec l'icône du genre de zone (ville,
 ## route, lieu) ; **lieu courant** en ACCENT, zone du panneau cerclée d'ACCENT (et son halo) ;
 ## portrait du joueur = tête du buste peint dans un rond.
@@ -24,6 +26,12 @@ const KIND_ICONS: Dictionary[StringName, Texture2D] = {
 	ZoneData.KIND_PLACE: preload("res://assets/ui/icons/map/place.svg"),
 }
 const ICON_DEFAULT: Texture2D = preload("res://assets/ui/icons/map/route.svg")
+## Priorité des étiquettes (reliquats du Menu peint) : les deux premières ne sont jamais masquées.
+const LABEL_RANK_CURRENT := 0
+const LABEL_RANK_SELECTED := 1
+const LABEL_RANK_TOWN := 2
+const LABEL_RANK_PLACE := 3
+const LABEL_RANK_ROUTE := 4
 
 var _view: MapView
 var _texture: Texture2D
@@ -260,29 +268,84 @@ func _layout() -> void:
 	var player := zone_rect(_view.player_zone)
 	if player.has_area():
 		_portrait.position = player.get_center() - _portrait.size * 0.5
+	var ids: Array[StringName] = []
+	var sizes: Array[Vector2] = []
+	var candidates: Array[Array] = []
+	var ranks: Array[int] = []
 	for zone: MapZoneView in _view.zones:
 		var pill: PanelContainer = _labels.get(zone.zone_id, null)
 		if pill == null:
 			continue
 		pill.reset_size()
+		var pill_size := pill.get_combined_minimum_size()
 		var rect := zone_rect(zone.zone_id)
-		var center := rect.get_center()
 		var half_height := maxf(rect.size.y, UiTokens.MAP_HIGHLIGHT_MIN) * 0.5
 		var half_width := maxf(rect.size.x, UiTokens.MAP_HIGHLIGHT_MIN) * 0.5
 		if zone.current:
 			half_height = maxf(half_height, portrait_height * 0.5)
-		var at: Vector2
-		if zone.kind == ZoneData.KIND_ROUTE:
-			at = Vector2(center.x + half_width + UiTokens.MAP_LABEL_GAP,
-				center.y - pill.get_combined_minimum_size().y * 0.5)
-		else:
-			at = Vector2(center.x - pill.get_combined_minimum_size().x * 0.5,
-				center.y + half_height + UiTokens.MAP_LABEL_GAP)
-		var pill_size := pill.get_combined_minimum_size()
-		at.x = clampf(at.x, 0.0, maxf(size.x - pill_size.x, 0.0))
-		at.y = clampf(at.y, 0.0, maxf(size.y - pill_size.y, 0.0))
-		pill.position = at
+		ids.append(zone.zone_id)
+		sizes.append(pill_size)
+		candidates.append(_label_candidates(rect.get_center(), Vector2(half_width, half_height),
+			pill_size, zone.kind == ZoneData.KIND_ROUTE))
+		ranks.append(_label_rank(zone))
+	# Priorité : lieu courant, zone du panneau, puis villes, lieux, routes (ordre des données).
+	var order: Array[int] = []
+	order.assign(range(ids.size()))
+	order.sort_custom(func(a: int, b: int) -> bool:
+		return ranks[a] < ranks[b] or (ranks[a] == ranks[b] and a < b))
+	var forced := 0
+	for index: int in order:
+		if ranks[index] < LABEL_RANK_TOWN:
+			forced += 1
+	var obstacles: Array[Rect2] = []
+	if _portrait.visible:
+		obstacles.append(Rect2(_portrait.position, _portrait.size))
+	# Étiquettes gardées sur l'illustration (pas sur le fond flou autour), dans le contrôle.
+	var bounds := get_image_rect().intersection(Rect2(Vector2.ZERO, size))
+	if not bounds.has_area():
+		bounds = Rect2(Vector2.ZERO, size)
+	var placed := MapLabelLayout.place(sizes, candidates, order, forced, bounds, obstacles,
+		float(UiTokens.MAP_LABEL_GAP))
+	for index: int in ids.size():
+		var pill: PanelContainer = _labels[ids[index]]
+		pill.visible = placed[index].has_area()
+		if pill.visible:
+			pill.position = placed[index].position
 	queue_redraw()
+
+
+## Rectangles des étiquettes **affichées** (zone → rectangle) : jamais deux qui se chevauchent.
+func get_label_rects() -> Dictionary[StringName, Rect2]:
+	var rects: Dictionary[StringName, Rect2] = {}
+	for zone_id: StringName in _labels:
+		var pill := _labels[zone_id]
+		if pill.visible:
+			rects[zone_id] = Rect2(pill.position, pill.size)
+	return rects
+
+
+## Rang de priorité de l'étiquette de [param zone] (plus petit = posée d'abord).
+func _label_rank(zone: MapZoneView) -> int:
+	if zone.zone_id == _current:
+		return LABEL_RANK_CURRENT
+	if zone.zone_id == _selected:
+		return LABEL_RANK_SELECTED
+	if zone.kind == ZoneData.KIND_TOWN:
+		return LABEL_RANK_TOWN
+	return LABEL_RANK_PLACE if zone.kind == ZoneData.KIND_PLACE else LABEL_RANK_ROUTE
+
+
+## Positions candidates (coin haut gauche) d'une étiquette de taille [param label] autour d'une
+## zone de centre [param center] et de demi-taille [param half] : sous la zone (à droite pour
+## une route), puis les trois autres côtés.
+static func _label_candidates(center: Vector2, half: Vector2, label: Vector2,
+		route: bool) -> Array:
+	var gap := float(UiTokens.MAP_LABEL_GAP)
+	var below := Vector2(center.x - label.x * 0.5, center.y + half.y + gap)
+	var right := Vector2(center.x + half.x + gap, center.y - label.y * 0.5)
+	var above := Vector2(center.x - label.x * 0.5, center.y - half.y - gap - label.y)
+	var left := Vector2(center.x - half.x - gap - label.x, center.y - label.y * 0.5)
+	return [right, left, below, above] if route else [below, above, right, left]
 
 
 ## [param rect] agrandi autour de son centre jusqu'à [param minimum] de côté (jamais réduit).

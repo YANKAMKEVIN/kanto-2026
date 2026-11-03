@@ -9,9 +9,14 @@ extends SceneTree
 ##   bag_field[_repel]     Sac, onglet AVENTURE (vitamines, PP, Repousses)
 ##   bag_key               Sac, OBJETS CLÉS (Cherch'Objet, Multi Exp)
 ##   map_<zone>            Carte du menu, panneau de la zone et son aperçu peint
+## Avec --reliquats (reliquats du 2026-11-02, `tools/art/menu_peint_reliquats.py`) : badges levés
+## dans la sauvegarde **avant** le titre, puis
+##   title_continue        écran titre, carte Continuer et l'icône du dernier badge obtenu
+##   bag_ball, bag_tm      Sac, onglets BALLS (Master Ball) et CT (disques par type)
+##   map_full              Carte entière, sans zone choisie (étiquettes sans chevauchement)
 ##
 ##   godot --path . --resolution 2340x1080 -s res://tools/capture_menu_peint.gd \
-##     -- --out=build/captures/menu_peint [--badges=3]
+##     -- --out=build/captures/menu_peint [--badges=3] [--reliquats]
 ## Ne référence aucune classe du jeu par son nom (les autoloads ne sont pas encore là quand un
 ## script `-s` se compile) : tout passe par load() et call().
 
@@ -29,11 +34,16 @@ const BADGE_MAPS: Array[StringName] = [&"pewter_city", &"cerulean_city", &"vermi
 const ITEMS: Array[StringName] = [&"protein", &"iron", &"calcium", &"carbos", &"hp_up", &"pp_up",
 	&"ether", &"max_ether", &"elixir", &"max_elixir", &"repel", &"super_repel", &"max_repel",
 	&"itemfinder", &"exp_all"]
+## Reliquats : Balls et CT de types variés au Sac.
+const RELIQUAT_ITEMS: Array[StringName] = [&"poke_ball", &"great_ball", &"ultra_ball",
+	&"master_ball", &"tm01", &"tm06", &"tm11", &"tm13", &"tm17", &"tm21", &"tm23", &"tm24",
+	&"tm26", &"tm29", &"tm38", &"tm43", &"tm48", &"hm01"]
 const MAP_ZONES: Array[StringName] = [&"cerulean_city", &"mt_moon", &"ss_anne", &"route_12",
 	&"indigo_plateau"]
 
 var _out_dir: String = "build/captures/menu_peint"
 var _badges: int = 8
+var _reliquats: bool = false
 var _boot: Node
 var _fs: RefCounted
 
@@ -44,6 +54,8 @@ func _init() -> void:
 			_out_dir = arg.trim_prefix("--out=")
 		elif arg.begins_with("--badges="):
 			_badges = clampi(int(arg.trim_prefix("--badges=")), 0, 8)
+		elif arg == "--reliquats":
+			_reliquats = true
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://") + _out_dir)
 	process_frame.connect(_run, CONNECT_ONE_SHOT)
 
@@ -52,6 +64,9 @@ func _run() -> void:
 	_fs = (load(MEMORY_FS) as GDScript).new()
 	var content: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE))
 	(load(SAVE) as GDScript).call(&"upgrade", content)
+	if _reliquats:
+		for i: int in _badges:
+			(content["flags"] as Array).append("badge_" + String(BADGES[i]))
 	var save: RefCounted = (load(SAVE) as GDScript).new(_fs, SAVE_PATH)
 	save.call(&"write", content)
 	var store: RefCounted = (load(STORE) as GDScript).new(_fs, "user://cap_mp.json")
@@ -65,6 +80,8 @@ func _run() -> void:
 	root.add_child(boot)
 	await _frames(60)
 	var screen: Node = _boot.call(&"get_opening").call(&"get_screen")
+	if _reliquats:
+		await _shot("title_continue")
 	screen.call(&"get_entry_button", &"continue").pressed.emit()
 	for i: int in 600:
 		await process_frame
@@ -76,6 +93,10 @@ func _run() -> void:
 	var menu: Node = _boot.call(&"get_menu_director")
 	var trainer_menu: Node = _boot.call(&"get_trainer_menu")
 	trainer_menu.set(&"speed_scale", 0.0)
+	if _reliquats:
+		await _run_reliquats(menu, trainer_menu, route)
+		quit()
+		return
 	menu.call(&"open", route.call(&"trainer"))
 	await _frames(30)
 	await _shot("trainer")
@@ -105,6 +126,27 @@ func _run() -> void:
 		menu.call(&"handle_back")
 		await _frames(20)
 	quit()
+
+
+## Reliquats : Sac (Balls, CT) puis Carte entière.
+func _run_reliquats(menu: Node, trainer_menu: Node, route: GDScript) -> void:
+	var bag_state: Object = root.get_node("GameState").get(&"bag")
+	for item: StringName in RELIQUAT_ITEMS:
+		bag_state.call(&"add", item, 1)
+	menu.call(&"open", route.call(&"bag"))
+	await _frames(30)
+	var bag: Node = trainer_menu.call(&"get_bag")
+	for shot: Array in [[&"ball", &"master_ball", "bag_ball"], [&"tm", &"tm13", "bag_tm"]]:
+		bag.call(&"open_category", shot[0])
+		await _frames(10)
+		bag.call(&"select_item", shot[1])
+		await _frames(20)
+		await _shot(shot[2])
+	menu.call(&"handle_back")
+	await _frames(20)
+	menu.call(&"go", route.call(&"map"))
+	await _frames(30)
+	await _shot("map_full")
 
 
 ## Badges, moments, cartes découvertes et objets (état de capture seulement).
