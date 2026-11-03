@@ -499,3 +499,18 @@ lumière (4 + 3), rencontres (4), dialogues et PNJ datés (`test_dialogue_varian
 **Reste du lot B** : carte de test `johto_light_test` et captures matin / jour / nuit (à la fin du
 lot, avec le téléphone).
 
+### T10 à T13 — lien, évolutions, œuf, Exp ×1,5 (2026-11-03, lot JOH0C)
+`BondStepCounter` (+1 tous les 256 pas, +1 de plus au compagnon, décompte des œufs),
+`BondRules.apply_battle` (+2 aux participants d'une victoire ou capture, −3 par K.O. du joueur ;
+`BattleDirector.get_fainted_indices`), `Evolution.period_source` (statique, posé par Boot) et
+règles « bond » dans `level_up_target` (seuil 70, moments de la règle) ; `LocalTrade.trade_rule` /
+`trade_item` (règle « trade » + objet : exigé dans le Sac, consommé dans le bloc de l'évolution),
+`LocalTradeDirector` demande « Utiliser {item} ? » (`trade_terminal_item`, jeton `{item}`) ;
+`EggRules` (création niveau 5, phrases [D], éclosion : origine « egg », Pokédex vu et capturé),
+œuf sauté par `Party.first_able`, `Battle.SwitchCheck.EGG` (« Un œuf ne peut pas combattre. »),
+exclu du Multi Exp, du compagnon, de la libération et du favori (`StorageRules.Status.EGG`), ligne
+« Œuf » de l'Équipe (`TeamMemberView.egg`) ; étape de scène `give_egg` (`steps`, `say`) ; Boot :
+éclosion au premier pas stable (`egg_hatched`), lien à chaque pas et en fin de combat,
+`exp_bonus_source` (×1,5 pendant `johto_act1`, `TeamConfiscation.exp_bonus`). Tests :
+`test_bond_and_eggs.gd` (7), `give_egg` (1) ; 339 tests des fichiers touchés verts.
+

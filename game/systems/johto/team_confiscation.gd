@@ -32,6 +32,9 @@ const ARRIVED: StringName = &"johto_arrived"
 ## Dialogue joué par le terminal du Centre (Stockage, échange) tant que le Stockage est hors
 ## ligne (`data/dialogues/johto_systems.json`) [D].
 const STORAGE_OFFLINE_DIALOGUE: StringName = &"storage_offline"
+## Expérience de l'acte 1 (JH-13, `jalon-joh0.md` §2.10) : multiplicateur posé par-dessus les
+## règles du combat tant que [constant ACT1] est levé (×2,25 contre un Dresseur) [D].
+const ACT1_EXP_BONUS: float = 1.5
 
 ## Résultat de [method check_kept].
 enum Check {
@@ -47,6 +50,11 @@ enum Check {
 ## Vrai si l'acte 1 est en cours (l'équipe est confisquée).
 static func is_act1(flags: StoryFlags) -> bool:
 	return flags != null and flags.has_flag(ACT1)
+
+
+## Multiplicateur d'XP de l'acte 1 : [constant ACT1_EXP_BONUS] pendant l'acte 1, 1,0 sinon.
+static func exp_bonus(flags: StoryFlags) -> float:
+	return ACT1_EXP_BONUS if is_act1(flags) else 1.0
 
 
 ## Vrai si le Stockage (et le terminal d'échange) refusent l'accès.

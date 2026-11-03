@@ -88,6 +88,8 @@ signal team_confiscated
 ## JOH0 : l'équipe est revenue (étape « return_team », d'un seul bloc) ; [param stored] Pokémon
 ## sont partis au Stockage.
 signal team_returned(stored: int)
+## JOH0 : un œuf vient de rejoindre l'équipe (étape « give_egg »).
+signal egg_given(egg: Pokemon)
 ## Le point de sauvegarde a échoué : scène et contrôles restent bloqués jusqu'à la réussite.
 signal save_failed(reason: String, error: Error)
 ## Fin d'une étape « wait » (interne).
@@ -472,6 +474,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			_confiscate_team()
 		CutsceneStep.Kind.RETURN_TEAM: # JOH0
 			await _return_team()
+		CutsceneStep.Kind.GIVE_EGG: # JOH0
+			await _give_egg(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -487,6 +491,26 @@ func _confiscate_team() -> void:
 		_step_error("vol de l'équipe refusé (équipe vide ou déjà confisquée)")
 		return
 	team_confiscated.emit()
+
+
+## JOH0 (`jalon-joh0.md` §2.9) : un œuf de [member CutsceneStep.species] à
+## [member CutsceneStep.count] pas rejoint l'équipe ; équipe pleine ou espèce inconnue : erreur,
+## rien n'est donné. Puis le dialogue « say ».
+func _give_egg(step: CutsceneStep) -> void:
+	if _state == null or _pokemon_data == null:
+		_step_error("pas d'état de partie pour donner l'œuf « %s »" % step.species)
+		return
+	var party: Party = _state.party
+	if party.is_full():
+		_step_error("équipe pleine : l'œuf « %s » n'est pas donné" % step.species)
+		return
+	var egg := EggRules.create(_pokemon_data, step.species, step.count, _state.rng as GameRng)
+	if egg == null or not party.add(egg):
+		_step_error("œuf « %s » refusé" % step.species)
+		return
+	egg_given.emit(egg)
+	if not step.dialogue_id.is_empty():
+		await _play_dialogue(step.dialogue_id)
 
 
 ## JOH0 : le retour. Le choix des 6 passe par [member team_return_handler] (coroutine, l'écran

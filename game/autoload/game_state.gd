@@ -539,12 +539,13 @@ func get_companion() -> Pokemon:
 
 
 ## Choisit [param pokemon] comme compagnon (null = aucun). Faux, sans rien changer, s'il n'est
-## pas dans l'équipe. L'éligibilité de l'espèce (planche validée) est la règle du 11D.
+## pas dans l'équipe ou si c'est un œuf (JOH0 [D]). L'éligibilité de l'espèce (planche validée)
+## est la règle du 11D.
 func set_companion(pokemon: Pokemon) -> bool:
 	if pokemon == null:
 		companion_uid = ""
 		return true
-	if party.index_of(pokemon) < 0:
+	if party.index_of(pokemon) < 0 or pokemon.is_egg():
 		return false
 	companion_uid = pokemon.ensure_uid()
 	return true

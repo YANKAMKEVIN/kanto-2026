@@ -179,6 +179,11 @@ var _pending_offline_notice: bool = false
 var _team_return_overlay: TeamReturnOverlay
 ## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
 var _debug_cutscene: StringName = &""
+## JOH0 (`jalon-joh0.md` §2.7, §2.9) : pas du lien et des œufs ; œufs prêts à éclore, joués au
+## prochain pas où la partie est stable ; jeton {pokemon} du dialogue d'éclosion.
+var _bond_steps := BondStepCounter.new()
+var _pending_hatch: Array[Pokemon] = []
+var _hatch_tokens: Dictionary[StringName, String] = {}
 ## Compagnon (jalon 11, 11D) : espèces éligibles et contrôleur (nœud créé tout de suite pour
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
@@ -378,6 +383,11 @@ func _ready() -> void:
 	_cutscenes_node.team_return_handler = _on_team_return_requested
 	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
 	_cutscenes_node.team_returned.connect(_on_team_returned)
+	_cutscenes_node.egg_given.connect(_on_egg_given)
+	# JOH0 : évolutions « bond » datées (Évoli) : le moment de l'horloge à Johto, rien ailleurs.
+	Evolution.period_source = func() -> StringName: return _current_time()[0]
+	# JOH0 : lien et œufs à chaque pas libre du joueur.
+	_player.moved.connect(_on_player_moved_for_bond)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -447,6 +457,9 @@ func _ready() -> void:
 	_battle_director.battle_started.connect(_lighting.set_battle_active.bind(true).unbind(1))
 	_battle_director.battle_finished.connect(_lighting.set_battle_active.bind(false).unbind(2))
 	_battle_director.battle_finished.connect(_on_battle_finished)
+	# JOH0 (JH-13) : Exp ×1,5 pendant l'acte 1 du Chapitre Johto.
+	_battle_director.exp_bonus_source = func() -> float:
+		return TeamConfiscation.exp_bonus(GameState.flags)
 	# Pokédex (jalon 5, décision Kevin 2026-09-29) : le starter est « capturé » à son entrée
 	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
 	# labo, puis les sauvages en 5B).
@@ -1680,6 +1693,7 @@ func _setup_local_trade() -> void:
 	_local_trade.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_local_trade)
 	_local_trade.setup(GameState, _player, _runner, _pokemon, _evolutions)
+	_local_trade.items = _items # JOH0 : nom de l'objet demandé (Peau Métal…)
 	_local_trade.pick_handler = func(view: PartyPickerView) -> int:
 		return await _trade_overlay.pick(view)
 	_local_trade.started.connect(_refresh_controls)
@@ -1766,6 +1780,8 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	# J32 (T5) : {pokemon} de la confirmation du terminal d'échange.
 	if _local_trade != null:
 		values.merge(_local_trade.token_values(), true)
+	# JOH0 : le Pokémon qui vient d'éclore.
+	values.merge(_hatch_tokens, true)
 	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
 	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	return values
@@ -1838,6 +1854,13 @@ func _on_battle_event(event: BattleEvent) -> void:
 ## (écrit à la fin de la scène qui contient le combat). Les sauvages passent par
 ## [method _on_encounter_finished].
 func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
+	# JOH0 (JH-11) : le lien suit le combat (+2 aux participants d'une victoire ou d'une capture,
+	# −3 par K.O. du joueur), avant tout autosave.
+	var participants: Array[int] = []
+	for entry: ExpSummaryEntry in _battle_director.get_exp_summary().get_entries():
+		participants.append(entry.party_index)
+	BondRules.apply_battle(GameState.party, outcome == Battle.Outcome.WIN
+		or outcome == Battle.Outcome.CAUGHT, participants, _battle_director.get_fainted_indices())
 	# Compagnon : réapparaît (espèce après évolution) ; enthousiasme si victoire de Dresseur.
 	_companion.on_battle_finished(not trainer_id.is_empty() and outcome == Battle.Outcome.WIN)
 	if trainer_id.is_empty():
@@ -1934,6 +1957,37 @@ func _on_team_confiscated() -> void:
 func _on_team_returned(_stored: int) -> void:
 	_companion.refresh()
 	request_autosave("retour de l'équipe")
+
+
+## JOH0 : un œuf vient d'entrer dans l'équipe (étape « give_egg ») : autosave demandé.
+func _on_egg_given(_egg: Pokemon) -> void:
+	request_autosave("œuf reçu")
+
+
+## JOH0 : un pas du joueur : le lien et les œufs comptent ([BondStepCounter]) ; un œuf arrivé à
+## terme éclot dès que la partie est stable (hors combat, scène, dialogue, menu).
+func _on_player_moved_for_bond(_cell: Vector2i) -> void:
+	var result := _bond_steps.on_player_moved(GameState.party, GameState.companion_uid,
+		_player.is_input_enabled())
+	for egg: Pokemon in result["hatched"]:
+		if not _pending_hatch.has(egg):
+			_pending_hatch.append(egg)
+	_try_hatch()
+
+
+## JOH0 : joue l'éclosion du premier œuf prêt si la partie est stable : l'œuf devient un
+## Pokémon (origine « egg », Pokédex vu et capturé), le dialogue le nomme, autosave.
+func _try_hatch() -> void:
+	if _pending_hatch.is_empty() or not is_stable() or _menu.is_open():
+		return
+	var egg: Pokemon = _pending_hatch.pop_front()
+	if GameState.party.index_of(egg) < 0 or not EggRules.hatch(egg, GameState, _current_map_id()):
+		return
+	_hatch_tokens = {DialogueTokens.POKEMON: egg.display_name(_pokemon)}
+	_companion.refresh()
+	if not _runner.play(EggRules.HATCH_DIALOGUE, null, SceneRouter.get_current_map()):
+		push_error("Boot : le dialogue de l'éclosion n'a pas été joué")
+	request_autosave("éclosion")
 
 
 ## J25 (§2.5) : échange fait d'un seul bloc : compagnon à jour (le Pokémon donné a pu l'être,

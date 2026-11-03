@@ -176,3 +176,39 @@ func test_a_refused_choice_from_the_handler_changes_nothing() -> void:
 	assert_eq(_state.confiscated.party.size(), 3)
 	assert_true(_flags.has_flag(TeamConfiscation.ACT1))
 	assert_push_error("retour de l'équipe refusé")
+
+
+# --- give_egg (JOH0, §2.9) -----------------------------------------------------------------------
+
+func test_the_give_egg_step_adds_an_egg_or_fails_on_a_full_team() -> void:
+	var scenes := CutsceneLibrary.new()
+	assert_true(scenes.add_from_dict({
+		"egg": {"steps": [{"give_egg": "pidgey", "steps": 300}, {"set": ["after"]}]},
+		"egg_default": {"steps": [{"give_egg": "rattata"}]},
+	}, "test"), str(scenes.get_errors()))
+	var step: CutsceneStep = scenes.get_cutscene(&"egg").variants[0].steps[0]
+	assert_eq(step.kind, CutsceneStep.Kind.GIVE_EGG)
+	assert_eq(step.species, &"pidgey")
+	assert_eq(step.count, 300)
+	assert_eq((scenes.get_cutscene(&"egg_default").variants[0].steps[0] as CutsceneStep).count,
+		EggRules.DEFAULT_STEPS, "2 000 pas par défaut")
+	_director.setup(scenes, _flags, null, null, null)
+	_director.set_badges(null, _state)
+	_director.set_pokemon_data(_data)
+	_add(&"squirtle", 10)
+	assert_true(_director.play(&"egg"))
+	await _await_scene_end()
+	assert_eq(_state.party.size(), 2)
+	assert_true(_state.party.get_at(1).is_egg())
+	assert_eq(_state.party.get_at(1).egg_steps, 300)
+	assert_signal_emitted(_director, "egg_given")
+	for i: int in 4:
+		_add(&"rattata", 5)
+	assert_true(_state.party.is_full())
+	assert_true(_director.play(&"egg_default"))
+	await _await_scene_end()
+	assert_eq(_state.party.size(), 6, "équipe pleine : rien")
+	assert_push_error("équipe pleine")
+	var bad := CutsceneLibrary.new()
+	assert_false(bad.add_from_dict({"x": {"steps": [{"give_egg": "pidgey", "steps": 0}]}}, "b"))
+	assert_push_error("steps")

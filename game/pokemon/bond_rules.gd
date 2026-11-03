@@ -39,6 +39,25 @@ static func reaches_threshold(bond: int) -> bool:
 	return bond >= THRESHOLD
 
 
+## Fin de combat (Boot, `battle_finished`) : victoire ou capture → [constant WIN_GAIN] à chaque
+## place de [param participants] (ceux qui ont gagné de l'XP, [method ExpSummary.get_entries]) ;
+## quelle que soit l'issue, [constant FAINT_LOSS] à chaque place de [param fainted] (un K.O. du
+## joueur par entrée, [method BattleDirector.get_fainted_indices]). Les œufs ne bougent pas.
+static func apply_battle(party: Party, won: bool, participants: Array[int],
+		fainted: Array[int]) -> void:
+	if party == null:
+		return
+	if won:
+		for index: int in participants:
+			var pokemon := party.get_at(index)
+			if pokemon != null and not pokemon.is_egg():
+				pokemon.add_bond(WIN_GAIN)
+	for index: int in fainted:
+		var pokemon := party.get_at(index)
+		if pokemon != null and not pokemon.is_egg():
+			pokemon.add_bond(-FAINT_LOSS)
+
+
 ## Palier de lecture de [param bond] : 0 (< 30), 1 (30–69), 2 (70–89) ou 3 (≥ 90).
 static func tier(bond: int) -> int:
 	var result := 0
