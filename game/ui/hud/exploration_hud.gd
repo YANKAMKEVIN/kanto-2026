@@ -26,6 +26,9 @@ extends CanvasLayer
 ## joueur touche à l'écran passe à [constant UiTokens.BUTTONS_UNDER_PLAYER_ALPHA] : le joueur
 ## se voit à travers, les boutons restent actifs. [D] : plutôt que décaler la caméra (qui
 ## montrerait le vide au-delà de la carte) ou rétrécir les boutons.
+## Portage iOS : le Control racine rentre dans la zone sûre ([SafeArea] : encoche, barre
+## d'accueil) à l'entrée et à chaque changement de taille de fenêtre ; l'éclair plein écran
+## continue de couvrir toute la fenêtre. Retraits nuls sur le S24.
 
 ## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
 signal title_hidden
@@ -63,11 +66,14 @@ var _safari_badge: SafariBadge
 @onready var _menu_button: TouchScreenButton = %MenuButton
 @onready var _bike_button: TouchScreenButton = %BikeButton
 @onready var _corner: Control = %CornerAnchor
+@onready var _root: Control = $Root
 
 
 func _ready() -> void:
 	layer = UiTokens.LAYER_HUD
 	set_process(false)
+	_apply_safe_area()
+	get_viewport().size_changed.connect(_apply_safe_area)
 	_place_corner_buttons()
 	_menu_button.position = Vector2(-UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.x,
 		UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.y)
@@ -87,6 +93,16 @@ func _notification(what: int) -> void:
 		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_EXIT_TREE:
 			Input.action_release(&"run")
 			Input.action_release(&"interact")
+		NOTIFICATION_APPLICATION_FOCUS_IN:
+			# Retour au premier plan : l'appareil a pu tourner de 180° (encoche de l'autre côté)
+			# sans changer la taille de la fenêtre.
+			if is_node_ready():
+				_apply_safe_area()
+
+
+## Rentre le HUD dans la zone sûre de l'écran (iOS) ; l'éclair garde toute la fenêtre.
+func _apply_safe_area() -> void:
+	SafeArea.apply(_root, SafeArea.current(get_viewport()), [_flash] as Array[Control])
 
 
 ## Affiche « NOM / région » en haut à gauche (glissement, maintien, disparition).

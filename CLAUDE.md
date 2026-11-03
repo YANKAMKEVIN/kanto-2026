@@ -1,6 +1,6 @@
 # Kanto 2026
 
-Remake 2D **personnel** de Pokémon Rouge/Bleu pour smartphone, « comme si Pokémon n'avait jamais quitté la 2D ». Godot 4.7 + GDScript, cible Android (Galaxy S24, paysage).
+Remake 2D **personnel** de Pokémon Rouge/Bleu pour smartphone, « comme si Pokémon n'avait jamais quitté la 2D ». Godot 4.7 + GDScript, cible Android (Galaxy S24, paysage) ; seconde cible iOS pour les proches (`docs/tech/ios.md`).
 
 Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude implémente. Toute décision de game design non documentée → la lui poser, ne pas l'inventer.
 
@@ -62,7 +62,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 | Couches physiques | 1 monde · 2 joueur · 3 pnj · 4 interactifs · 5 déclencheurs |
 | Actions d'entrée | `move_up/down/left/right`, `interact`, `run`, `menu` (clavier pour tests desktop, tactile sur mobile) |
 | Tests | GUT 9.7 (`addons/gut`), dossier `tests/` |
-| Package Android | `dev.kevin.kanto2026` |
+| Package Android / bundle iOS | `dev.kevin.kanto2026` |
 
 ## Arborescence
 
@@ -71,7 +71,7 @@ game/          code et scènes (world/, player/, pokemon/, battle/, ui/, systems
 assets/        tiles/, sprites/, ui/, fonts/, audio/
 data/          (à venir) données de jeu
 tests/         unit/, integration/ (GUT)
-tools/         test.sh, build_android.sh, deploy_s24.sh
+tools/         test.sh, build_android.sh, deploy_s24.sh, build_ios.sh
 docs/design/   conception (ignoré par Godot)
 ```
 
@@ -84,6 +84,7 @@ tools/test.sh -f surf,safari   # pendant une tâche : les fichiers de test dont 
 tools/ci_wait.sh [commit]      # dépôt public : après push, attend la CI GitHub (8 lots) ; remplace la suite du Mac avant une fusion
 tools/build_android.sh         # APK debug → build/kanto2026-debug.apk
 tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs (USB ou Wi-Fi)
+tools/build_ios.sh [--run]     # projet Xcode build/ios/ + app simulateur (x86_64, runtime iOS 18) ; --device avec KANTO_IOS_TEAM
 tools/s24_serial.sh            # série adb du S24 (USB ou débogage sans fil)
 godot --headless --path . --import   # réimport / détection d'erreurs de scripts
 ```
