@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnpoxdkrj7bur"
-path="res://.godot/imported/rocket_hideout_repaire_back.webp-148fe335e830b3f17b98b82017386dd9.ctex"
+uid="uid://dtww8u74n2dvj"
+path="res://.godot/imported/dos_heroine_surf.webp-26a2312439fc36b7f162fc110b210cb9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/battle/decors/rocket_hideout_repaire_back.webp"
-dest_files=["res://.godot/imported/rocket_hideout_repaire_back.webp-148fe335e830b3f17b98b82017386dd9.ctex"]
+source_file="res://assets/sprites/trainers/battle/dos_heroine_surf.webp"
+dest_files=["res://.godot/imported/dos_heroine_surf.webp-26a2312439fc36b7f162fc110b210cb9.ctex"]
 
 [params]
 

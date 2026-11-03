@@ -78,6 +78,7 @@
 			"peter": [-0.005, 0.023, 1.2]
 		}
 	},
+	"surf": {"suffix": "_surf", "player": {"scale": 0.9, "hand": [0.32, -0.752]}, "classes": {"nageur": {"scale": 0.522, "hand": [-0.854, -0.505]}, "nageuse": {"scale": 0.495, "hand": [-0.742, -0.5]}}},
 	"classes": {
 		"beaute": { "prefix": "Beauté", "world_sprite": "beauty", "scale": 1.1, "hand": [-0.318, -0.584] },
 		"campeur": { "prefix": "Campeur", "world_sprite": "camper", "scale": 1.0, "hand": [-0.339, -0.49] },
@@ -93,9 +94,9 @@
 		"jeune_dresseuse": { "prefix": "Jeune Dresseuse", "world_sprite": "lass", "scale": 1.05, "hand": [-0.331, -0.571] },
 		"jongleur": { "prefix": "Jongleur", "world_sprite": "gambler", "scale": 1.16, "hand": [-0.334, -0.539] },
 		"joueur": { "prefix": "Joueur", "world_sprite": "gambler", "scale": 1.18, "hand": [-0.357, -0.578] },
-		"karateka": { "prefix": "Karatéka", "world_sprite": "cue_ball", "scale": 1.22, "hand": [-0.336, -0.481] },
+		"karateka": { "prefix": "Karatéka", "world_sprite": "blackbelt", "scale": 1.22, "hand": [-0.336, -0.481] },
 		"loubard": { "prefix": "Loubard", "world_sprite": "cue_ball", "scale": 1.24, "hand": [-0.452, -0.56] },
-		"maitre_dojo": { "prefix": "Maître du Dojo", "world_sprite": "cue_ball", "scale": 1.24, "hand": [-0.369, -0.546] },
+		"maitre_dojo": { "prefix": "Maître du Dojo", "world_sprite": "karate_master", "scale": 1.24, "hand": [-0.369, -0.546] },
 		"marin": { "prefix": "Marin", "world_sprite": "sailor", "scale": 1.2, "hand": [-0.34, -0.59] },
 		"medium": { "prefix": "Médium", "world_sprite": "youngster", "scale": 1.14, "hand": [-0.319, -0.592] },
 		"montagnard": { "prefix": "Montagnard", "world_sprite": "mountaineer", "scale": 1.26, "hand": [-0.358, -0.646] },

@@ -273,7 +273,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	if is_instance_valid(_stage) and camera != null:
 		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
 		# Décor peint du lieu (CB.3) : la carte et la case du déclenchement.
-		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell())
+		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell(),
+			_is_surfing(), wild,
+			&"" if wild else TrainerIntroCatalog.shared().class_of(request.trainer))
 		if wild:
 			var origin_world := Grid.cell_to_world(request.origin_cell)
 			# Jalon 21 : la silhouette du SPECTRE d'abord, puis la révélation.
@@ -1138,6 +1140,12 @@ func _relay_speed() -> void:
 
 
 # --- Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02) -----------
+
+## Le joueur surfe (mise en scène « Surf » du combat, [SurfStaging]).
+func _is_surfing() -> bool:
+	var mount: Variant = _state.get(&"player_mount") if _state != null else null
+	return mount != null and int(mount) == Mount.Kind.SURF
+
 
 ## Plan de l'entrée du combat de Dresseur de [param request] ([TrainerIntro]) : grand combat ou
 ## non, rangée de Poké Balls, images selon l'apparence du rival et « Réduire les animations ».

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtkl8b667gfgi"
-path="res://.godot/imported/pewter_gym_roche_v2_back.webp-0205a26743790656f7ae98434d47df20.ctex"
+uid="uid://d30mxqs3er0xf"
+path="res://.godot/imported/dos_heroine_surf_lancer.webp-58fbb8fea66f1b36e9e70e55bdc9aa99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/battle/decors/pewter_gym_roche_v2_back.webp"
-dest_files=["res://.godot/imported/pewter_gym_roche_v2_back.webp-0205a26743790656f7ae98434d47df20.ctex"]
+source_file="res://assets/sprites/trainers/battle/dos_heroine_surf_lancer.webp"
+dest_files=["res://.godot/imported/dos_heroine_surf_lancer.webp-58fbb8fea66f1b36e9e70e55bdc9aa99.ctex"]
 
 [params]
 

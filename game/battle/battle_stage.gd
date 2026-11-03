@@ -279,6 +279,8 @@ var _ball_rest: Vector2 = Vector2.ZERO
 var _absorb_point: Vector2 = Vector2.ZERO
 ## Décor peint du combat en cours (null : repli sur la carte) ; catalogue lu au premier besoin.
 var _decor: BattleDecor
+## Le combat a lieu en surfant ([SurfStaging]) : décor de mer ouverte, joueur sur sa monture.
+var _surf_staged: bool = false
 var _decor_catalog: BattleDecorCatalog
 var _decor_back: Sprite2D
 var _decor_front: Sprite2D
@@ -381,10 +383,18 @@ func set_decor_catalog(catalog: BattleDecorCatalog) -> void:
 ## Lieu du prochain combat (CB.3, à appeler avant [method enter] / [method play_wild_intro]) :
 ## carte [param map_id] et case du déclenchement [param cell] (variante locale). Choisit le
 ## décor peint ; aucun : repli sur la carte recadrée. Renvoie le décor choisi (null : repli).
-func set_place(map_id: StringName, cell: Vector2i) -> BattleDecor:
+## [param surfing] (le joueur surfe), [param wild] et [param foe_class] (classe du Dresseur) :
+## mise en scène « Surf » ([SurfStaging]) si le réglage des données l'active.
+func set_place(map_id: StringName, cell: Vector2i, surfing: bool = false, wild: bool = true,
+		foe_class: StringName = &"") -> BattleDecor:
 	if _decor_catalog == null:
 		_decor_catalog = BattleDecorCatalog.load_file()
 	_decor = _decor_catalog.pick(map_id, cell)
+	var surf := SurfStaging.surf_decor(_decor_catalog, TrainerIntroCatalog.shared(), _decor,
+		surfing, wild, foe_class)
+	_surf_staged = surf != null
+	if surf != null:
+		_decor = surf
 	if _decor != null and not ResourceLoader.exists(_decor.back_path):
 		push_warning("BattleStage : image du décor absente « %s »" % _decor.back_path)
 		_decor = null
@@ -414,6 +424,11 @@ func get_decor_cache() -> BattleDecorCache:
 ## Décor peint du combat (null : repli sur la carte).
 func get_decor() -> BattleDecor:
 	return _decor
+
+
+## Le combat a lieu en surfant (mise en scène « Surf », [SurfStaging]).
+func is_surf_staged() -> bool:
+	return _surf_staged
 
 
 ## Calques du décor peint (tests, captures) : fond et premier plan.
@@ -1458,6 +1473,7 @@ func _apply_reset() -> void:
 	_arena = Rect2()
 	_bounds = Rect2()
 	_decor = null
+	_surf_staged = false
 	_camera = null
 	_active = false
 	if not is_node_ready():
@@ -1877,6 +1893,7 @@ func play_trainers_in(intro: TrainerIntro) -> void:
 	if not _active or intro == null:
 		return
 	_intro_stage.speed_scale = speed_scale
+	intro.surf = _surf_staged
 	# Dos peint du joueur (`dos_<apparence>`) sauf costume porté : le lancer de dos du costume.
 	var look := GameState.player_look if GameState.worn_costume().is_empty() else &""
 	var back := thrower_texture()

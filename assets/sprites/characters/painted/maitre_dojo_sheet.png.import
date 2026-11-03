@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dk3ex25ijnovv"
-path="res://.godot/imported/tour_pokemon_back.webp-53937f2892f41a3ecfbe47087ea185da.ctex"
+uid="uid://oh0emumxfi3h"
+path="res://.godot/imported/maitre_dojo_sheet.png-dca568245edf66ecf5f745685047631c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/battle/decors/tour_pokemon_back.webp"
-dest_files=["res://.godot/imported/tour_pokemon_back.webp-53937f2892f41a3ecfbe47087ea185da.ctex"]
+source_file="res://assets/sprites/characters/painted/maitre_dojo_sheet.png"
+dest_files=["res://.godot/imported/maitre_dojo_sheet.png-dca568245edf66ecf5f745685047631c.ctex"]
 
 [params]
 

@@ -3257,6 +3257,22 @@
    "sortie": "assets/sprites/characters/painted/rivale_sheet.png",
    "hauteur": 130,
    "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "karateka",
+   "source": "ES_karateka_monde_r1.png",
+   "sortie": "assets/sprites/characters/painted/karateka_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "finitions de l'entrée des Dresseurs (fiche §13) ; blackbelt"
+  },
+  {
+   "id": "maitre_dojo",
+   "source": "ES_maitre_dojo_monde_r1.png",
+   "sortie": "assets/sprites/characters/painted/maitre_dojo_sheet.png",
+   "hauteur": 128,
+   "nettoyer": true,
+   "note": "finitions de l'entrée des Dresseurs (fiche §13) ; karate_master"
   }
  ],
  "pokemon": [

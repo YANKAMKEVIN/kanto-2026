@@ -196,6 +196,10 @@ const LOOKS: Dictionary = {
 	"loubard": [CHARACTERS_DIR, "cue_ball", ""],
 	"pecheur_parmanie": [CHARACTERS_DIR, "fisher_fuchsia", ""],
 	"pecheur_route_12": [CHARACTERS_DIR, "fisher_route_12", ""],
+	# Finitions de l'entrée des Dresseurs (fiche entree-dresseurs §13) : Karatékas (Dojo, Arène
+	# de Jadielle, Route Victoire) et Maître du Dojo, sans planche d'attente → colonne 0 de la marche.
+	"karateka": [CHARACTERS_DIR, "blackbelt", ""],
+	"maitre_dojo": [CHARACTERS_DIR, "karate_master", ""],
 	# Chantier JR (dossier-joueuse-rivale.md) : la joueuse (apparence `heroine` de
 	# `GameState.player_look`, mêmes animations que le héros) et la rivale.
 	"joueuse": [CHARACTERS_DIR, "player_heroine", "joueuse_run"],

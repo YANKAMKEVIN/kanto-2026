@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://df8lldd2vghx5"
-path="res://.godot/imported/vermilion_gym_salle_back.webp-191a1eabce7e785f293ef9404087c443.ctex"
+uid="uid://bpsue6o4s1jqg"
+path="res://.godot/imported/nageur_surf_lancer.webp-fe1d88e4ca8412901cd007d22694c27b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/battle/decors/vermilion_gym_salle_back.webp"
-dest_files=["res://.godot/imported/vermilion_gym_salle_back.webp-191a1eabce7e785f293ef9404087c443.ctex"]
+source_file="res://assets/sprites/trainers/battle/nageur_surf_lancer.webp"
+dest_files=["res://.godot/imported/nageur_surf_lancer.webp-fe1d88e4ca8412901cd007d22694c27b.ctex"]
 
 [params]
 

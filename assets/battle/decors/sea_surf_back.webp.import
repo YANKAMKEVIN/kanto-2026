@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c758e504t30l0"
-path="res://.godot/imported/saffron_gym_psy_back.webp-ed42b0f47c27eea0bb6f1b9f703a159b.ctex"
+uid="uid://gf2fk8fbscwb"
+path="res://.godot/imported/sea_surf_back.webp-ebf2d6109c849bb436f375ad09853950.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/battle/decors/saffron_gym_psy_back.webp"
-dest_files=["res://.godot/imported/saffron_gym_psy_back.webp-ed42b0f47c27eea0bb6f1b9f703a159b.ctex"]
+source_file="res://assets/battle/decors/sea_surf_back.webp"
+dest_files=["res://.godot/imported/sea_surf_back.webp-ebf2d6109c849bb436f375ad09853950.ctex"]
 
 [params]
 

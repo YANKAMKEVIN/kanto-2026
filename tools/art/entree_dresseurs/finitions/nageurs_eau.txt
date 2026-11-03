@@ -1,0 +1,15 @@
+ES_NAGEURS_EAU — sprites de combat de Kanto 2026 (jeu 2D HD), DEUX classes de Dresseurs DANS L'EAU (combat en mer). Images jointes : IMAGE 1 = le NAGEUR, sprites de combat VALIDÉS (à gauche debout prêt, à droite pose de lancer) : CIBLE EXACTE du rendu, du personnage et du geste ; IMAGE 2 = la NAGEUSE, sprites de combat VALIDÉS (même chose) ; IMAGE 3 = les mêmes personnages dans l'eau dans le monde du jeu (petite planche) : ils nagent, l'eau coupe le corps.
+
+PERSONNAGE DU HAUT : le NAGEUR d'IMAGE 1 (homme d'environ 20 ans, athlétique, bronzé, cheveux CHÂTAINS en bataille mouillés, LUNETTES DE NATATION bleues relevées sur le front, torse nu ; pas de serviette dans l'eau).
+PERSONNAGE DU BAS : la NAGEUSE d'IMAGE 2 (jeune femme d'environ 19 ans, cheveux CHÂTAINS en chignon haut, LUNETTES DE NATATION bleues relevées sur le front, MAILLOT une pièce TURQUOISE ; pas de paréo dans l'eau).
+
+À FAIRE : UNE image PORTRAIT 1024 × 1536 en DEUX RANGÉES séparées par une large bande vide (au moins 120 px) : le personnage du HAUT dans la moitié haute, celui du BAS dans la moitié basse. Dans chaque rangée, DEUX poses du même personnage côte à côte, bien séparées (au moins 80 px de vide), rien de coupé par les bords. Le personnage est DANS L'EAU PROFONDE, il nage sur place : l'eau le coupe à hauteur du NOMBRIL (on voit la tête, les épaules, les bras et le torse) ; la partie visible fait environ 400 px de haut, du haut de la tête à la ligne d'eau, à la même taille réelle qu'IMAGES 1 et 2.
+- À GAUCHE : pose PRÊTE : de trois-quarts face, tourné vers la GAUCHE de l'image, une main qui écarte l'eau, l'autre poing serré levé, sourire sportif.
+- À DROITE : pose de LANCER comme IMAGE 1 à droite : de trois-quarts face tourné vers la gauche, le buste qui pivote, un bras tendu loin vers la GAUCHE à hauteur d'épaule, main ouverte doigts écartés, la Ball VIENT DE PARTIR (main vide, pas de Ball dessinée), l'autre bras en arrière qui éclabousse un peu.
+Mains à cinq doigts correctes, même personnage et mêmes proportions dans les deux poses d'une rangée.
+
+EAU : la ligne d'eau est HORIZONTALE et forme le BAS de chaque pose : au ras de l'eau, une couronne d'écume blanche et de petites vaguelettes bleu turquoise translucides, étroite (au plus 40 px de haut), qui entoure ce qui émerge ; rien n'est dessiné sous la ligne d'eau. Les deux poses ont leur ligne d'eau à la même hauteur.
+
+STYLE (impératif) : exactement la main d'IMAGES 1 et 2 : illustration 2D HD « anime peint », contours fins et doux brun foncé (jamais de trait noir épais), aplats peints avec ombres douces, légère granularité de pinceau, proportions réalistes-stylisées (PAS chibi), lumière neutre et douce venant de la gauche.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucune mer au loin, aucun ciel, aucun texte, aucune lettre, aucun cadre, aucune Poké Ball. Seule l'eau qui touche le personnage est peinte (voir EAU).

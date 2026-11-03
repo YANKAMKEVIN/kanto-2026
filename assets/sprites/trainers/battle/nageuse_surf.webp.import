@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bid0168jtivrs"
-path="res://.godot/imported/route_3_roche_back.webp-6f8a092ce5d79e35123c6062d2c38a98.ctex"
+uid="uid://cet7lqtxh6wgk"
+path="res://.godot/imported/nageuse_surf.webp-a9c6064f5339243109a92e7fcd36c929.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/battle/decors/route_3_roche_back.webp"
-dest_files=["res://.godot/imported/route_3_roche_back.webp-6f8a092ce5d79e35123c6062d2c38a98.ctex"]
+source_file="res://assets/sprites/trainers/battle/nageuse_surf.webp"
+dest_files=["res://.godot/imported/nageuse_surf.webp-a9c6064f5339243109a92e7fcd36c929.ctex"]
 
 [params]
 

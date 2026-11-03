@@ -470,7 +470,10 @@ def planches() -> None:
 		d.text((1320, y + 70), str(p.relative_to(RACINE / "assets")) + "  2048 × 300", font=_fonte(14),
 			fill=(220, 220, 220))
 		y += im.height + 20
+	# Argenta v2 supprimé du dépôt (finitions, fiche §13) : la planche ne garde que les fonds présents.
 	for k, nom in enumerate(("route_3_roche_v2", "pewter_gym_roche_v2", "pewter_gym_roche_v3")):
+		if not (DECORS_V2 / f"{nom}_back.webp").exists():
+			continue
 		im = Image.open(DECORS_V2 / f"{nom}_back.webp").convert("RGB")
 		im = im.resize((1300, 600), Image.LANCZOS).resize((640, 295), Image.LANCZOS)
 		x = 10 + k * 660

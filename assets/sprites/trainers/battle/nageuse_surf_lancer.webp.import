@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbcpogsykrnv7"
-path="res://.godot/imported/silph_co_bureaux_back.webp-5b1274f604bbdbb6d58eeaba43d8bd1e.ctex"
+uid="uid://wkueaffqh8hn"
+path="res://.godot/imported/nageuse_surf_lancer.webp-1a9655f6e69d757b38b8f2ae60e0c6fa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/battle/decors/silph_co_bureaux_back.webp"
-dest_files=["res://.godot/imported/silph_co_bureaux_back.webp-5b1274f604bbdbb6d58eeaba43d8bd1e.ctex"]
+source_file="res://assets/sprites/trainers/battle/nageuse_surf_lancer.webp"
+dest_files=["res://.godot/imported/nageuse_surf_lancer.webp-1a9655f6e69d757b38b8f2ae60e0c6fa.ctex"]
 
 [params]
 

@@ -5,7 +5,7 @@
 			3
 		],
 		"facing": "down",
-		"sprite": "cue_ball",
+		"sprite": "karate_master",
 		"dialogue": "fighting_dojo_master"
 	},
 	"hippolyte": {
@@ -14,7 +14,7 @@
 			4
 		],
 		"facing": "right",
-		"sprite": "cue_ball",
+		"sprite": "blackbelt",
 		"dialogue": "fighting_dojo_blackbelt_hippolyte_after",
 		"trainer": {
 			"id": "fighting_dojo_blackbelt_hippolyte",
@@ -29,7 +29,7 @@
 			6
 		],
 		"facing": "right",
-		"sprite": "cue_ball",
+		"sprite": "blackbelt",
 		"dialogue": "fighting_dojo_blackbelt_tancrede_after",
 		"trainer": {
 			"id": "fighting_dojo_blackbelt_tancrede",
@@ -44,7 +44,7 @@
 			5
 		],
 		"facing": "left",
-		"sprite": "cue_ball",
+		"sprite": "blackbelt",
 		"dialogue": "fighting_dojo_blackbelt_urbain_after",
 		"trainer": {
 			"id": "fighting_dojo_blackbelt_urbain",
@@ -59,7 +59,7 @@
 			7
 		],
 		"facing": "left",
-		"sprite": "cue_ball",
+		"sprite": "blackbelt",
 		"dialogue": "fighting_dojo_blackbelt_wilfried_after",
 		"trainer": {
 			"id": "fighting_dojo_blackbelt_wilfried",
