@@ -42,7 +42,9 @@ Points de Vol : **Centre du Mont Argenté**.
 `mt_silver_outside.txt`, `mt_silver_1f.txt`, `mt_silver_2f.txt`, `mt_silver_3f.txt`,
 `mt_silver_summit.txt`, `route_28.txt`, `route_28_gate.txt` (la grille fait foi pour la géométrie ;
 défauts [D] dans leurs en-têtes) ; retouches de `lake_of_rage.txt` (raccord du sentier) et de
-`route_22_ouest.txt` (poste de la Route 28 et porte neuve, JH-8) ; contrôle
+`route_22_ouest.txt` (poste de la Route 28 et porte neuve, JH-8, portée par la **variante `JOH9`** de la
+grille tant que la carte `route_22_west` du jeu n'est pas modifiée : le test `test_j29_maps` compare la
+grille de base à la carte ; le code du JOH9 fera basculer la base) ; contrôle
 `tools/art/plan_check_joh9.py` ; aperçu `reference/joh9-grilles-apercu-v1.png`.
 
 ## 4. Ordre de jeu
