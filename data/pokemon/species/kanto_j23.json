@@ -6,7 +6,8 @@
 		"learnset": [
 			[1, "pound"], [1, "double_slap"], [24, "sing"], [30, "growl"], [38, "minimize"],
 			[44, "defense_curl"], [48, "light_screen"], [54, "double_edge"]
-		]
+		],
+		"evolutions": [{ "into": "blissey", "method": "bond" }]
 	},
 	"scyther": {
 		"dex": 123, "name": "Insécateur", "types": ["bug", "flying"],
@@ -15,7 +16,8 @@
 		"learnset": [
 			[1, "quick_attack"], [17, "leer"], [20, "focus_energy"], [24, "double_team"],
 			[29, "slash"], [35, "swords_dance"], [42, "agility"]
-		]
+		],
+		"evolutions": [{ "into": "scizor", "method": "trade", "item": "metal_coat" }]
 	},
 	"pinsir": {
 		"dex": 127, "name": "Scarabrute", "types": ["bug"],

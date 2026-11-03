@@ -71,7 +71,8 @@
 		"learnset": [
 			[1, "leech_life"], [1, "screech"], [1, "bite"], [10, "supersonic"], [15, "bite"],
 			[21, "confuse_ray"], [32, "wing_attack"], [43, "haze"]
-		]
+		],
+		"evolutions": [{ "into": "crobat", "method": "bond" }]
 	},
 	"paras": {
 		"dex": 46, "name": "Paras", "types": ["bug", "grass"],

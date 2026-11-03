@@ -1,0 +1,286 @@
+{
+	"aeroblast": {
+		"name": "Aéroblast", "type": "flying", "category": "special",
+		"power": 100, "accuracy": 95, "pp": 5, "crit_stage": 1,
+		"description": "Une rafale compressée frappe la cible. Taux de critique élevé."
+	},
+	"ancient_power": {
+		"name": "Pouvoir Antique", "type": "rock", "category": "special",
+		"power": 60, "accuracy": 100, "pp": 5,
+		"pending_effects": ["all_stats_up_chance"],
+		"description": "Une force venue du fond des âges frappe la cible. Le gain de statistiques est sans effet dans le moteur actuel."
+	},
+	"baton_pass": {
+		"name": "Relais", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 40,
+		"pending_effects": ["baton_pass"],
+		"description": "Le lanceur cède sa place en transmettant ses changements de statistiques. Sans effet dans le moteur actuel."
+	},
+	"beat_up": {
+		"name": "Baston", "type": "dark", "category": "physical",
+		"power": 20, "accuracy": 100, "pp": 10,
+		"pending_effects": ["beat_up"],
+		"description": "Les équipiers du lanceur frappent à tour de rôle. Seul un coup simple est joué dans le moteur actuel."
+	},
+	"charm": {
+		"name": "Charme", "type": "fairy", "category": "status",
+		"accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": -2, "target": "foe" }],
+		"description": "Le lanceur attendrit la cible d'un regard. Baisse beaucoup son Attaque."
+	},
+	"conversion_2": {
+		"name": "Conversion 2", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 30,
+		"pending_effects": ["conversion_2"],
+		"description": "Le lanceur prend un type qui résiste à la dernière attaque reçue. Sans effet dans le moteur actuel."
+	},
+	"cotton_spore": {
+		"name": "Spore Coton", "type": "grass", "category": "status",
+		"accuracy": 100, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -2, "target": "foe" }],
+		"description": "Des spores cotonneuses alourdissent la cible. Baisse beaucoup sa Vitesse."
+	},
+	"crunch": {
+		"name": "Mâchouille", "type": "dark", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": -1, "target": "foe", "chance": 20 }],
+		"description": "Le lanceur broie la cible entre ses crocs. Peut baisser sa Défense."
+	},
+	"curse": {
+		"name": "Malédiction", "type": "ghost", "category": "status",
+		"accuracy": 0, "pp": 10,
+		"pending_effects": ["curse"],
+		"description": "Un sort lourd de conséquences, qui varie selon le type du lanceur. Sans effet dans le moteur actuel."
+	},
+	"destiny_bond": {
+		"name": "Lien du Destin", "type": "ghost", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"pending_effects": ["destiny_bond"],
+		"description": "Si le lanceur tombe K.O., il entraîne son adversaire avec lui. Sans effet dans le moteur actuel."
+	},
+	"encore": {
+		"name": "Encore", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 5,
+		"pending_effects": ["encore"],
+		"description": "Le lanceur force la cible à répéter sa dernière capacité. Sans effet dans le moteur actuel."
+	},
+	"endure": {
+		"name": "Ténacité", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 10, "priority": 4,
+		"pending_effects": ["endure"],
+		"description": "Le lanceur tient bon, même sous un coup fatal. Sans effet dans le moteur actuel."
+	},
+	"false_swipe": {
+		"name": "Faux-Chage", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 40,
+		"pending_effects": ["false_swipe"],
+		"description": "Une attaque retenue qui ne devrait pas achever la cible. Le garde-fou est sans effet dans le moteur actuel."
+	},
+	"feint_attack": {
+		"name": "Feinte", "type": "dark", "category": "physical",
+		"power": 60, "accuracy": 0, "pp": 20,
+		"description": "Le lanceur approche sans méfiance, puis frappe par surprise. N'échoue jamais."
+	},
+	"flail": {
+		"name": "Gigotage", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 15,
+		"pending_effects": ["flail"],
+		"description": "Le lanceur se débat d'autant plus fort qu'il est faible. La puissance variable est sans effet dans le moteur actuel."
+	},
+	"flame_wheel": {
+		"name": "Roue de Feu", "type": "fire", "category": "physical",
+		"power": 60, "accuracy": 100, "pp": 25,
+		"effects": [{ "kind": "status", "status": "burn", "chance": 10 }],
+		"description": "Le lanceur fonce enveloppé de flammes. Peut brûler la cible."
+	},
+	"foresight": {
+		"name": "Clairvoyance", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 40,
+		"pending_effects": ["foresight"],
+		"description": "Le lanceur perce à jour la cible, même un Spectre. Sans effet dans le moteur actuel."
+	},
+	"future_sight": {
+		"name": "Prescience", "type": "psychic", "category": "special",
+		"power": 80, "accuracy": 100, "pp": 10,
+		"pending_effects": ["delayed_hit"],
+		"description": "Une vision frappe la cible. Le délai de deux tours est sans effet dans le moteur actuel."
+	},
+	"heal_bell": {
+		"name": "Glas de Soin", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"pending_effects": ["heal_bell"],
+		"description": "Une cloche apaisante soigne les problèmes de statut de l'équipe. Sans effet dans le moteur actuel."
+	},
+	"lock_on": {
+		"name": "Verrouillage", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"pending_effects": ["lock_on"],
+		"description": "Le lanceur garde la cible en ligne de mire : sa prochaine attaque touchera. Sans effet dans le moteur actuel."
+	},
+	"mean_look": {
+		"name": "Regard Noir", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"pending_effects": ["mean_look"],
+		"description": "Un regard qui empêche la cible de s'enfuir. Sans effet dans le moteur actuel."
+	},
+	"megahorn": {
+		"name": "Mégacorne", "type": "bug", "category": "physical",
+		"power": 120, "accuracy": 85, "pp": 10,
+		"description": "Le lanceur charge la cible avec sa corne massive."
+	},
+	"metal_claw": {
+		"name": "Griffe Acier", "type": "steel", "category": "physical",
+		"power": 50, "accuracy": 95, "pp": 35,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": 1, "target": "self", "chance": 10 }],
+		"description": "Des griffes d'acier lacèrent la cible. Peut augmenter l'Attaque du lanceur."
+	},
+	"milk_drink": {
+		"name": "Lait à Boire", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"effects": [{ "kind": "heal", "fraction": 0.5 }],
+		"description": "Le lanceur boit du lait frais. Rend la moitié de ses PV."
+	},
+	"mirror_coat": {
+		"name": "Voile Miroir", "type": "psychic", "category": "status",
+		"accuracy": 100, "pp": 20, "priority": -5,
+		"pending_effects": ["mirror_coat"],
+		"description": "Renvoie le double des dégâts d'une attaque spéciale reçue. Sans effet dans le moteur actuel."
+	},
+	"moonlight": {
+		"name": "Rayon Lune", "type": "fairy", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"effects": [{ "kind": "heal", "fraction": 0.5 }],
+		"description": "Le lanceur puise dans la clarté de la lune. Rend la moitié de ses PV."
+	},
+	"morning_sun": {
+		"name": "Aurore", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"effects": [{ "kind": "heal", "fraction": 0.5 }],
+		"description": "Le lanceur se réchauffe aux premiers rayons du jour. Rend la moitié de ses PV."
+	},
+	"perish_song": {
+		"name": "Requiem", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"pending_effects": ["perish_song"],
+		"description": "Un chant funèbre : au bout de trois tours, tout Pokémon qui l'a entendu tombe K.O. Sans effet dans le moteur actuel."
+	},
+	"psych_up": {
+		"name": "Boost", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 10,
+		"pending_effects": ["psych_up"],
+		"description": "Le lanceur copie les changements de statistiques de la cible. Sans effet dans le moteur actuel."
+	},
+	"pursuit": {
+		"name": "Poursuite", "type": "dark", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 20,
+		"pending_effects": ["pursuit_switch"],
+		"description": "Le lanceur frappe la cible. Le coup double contre un Pokémon qui s'enfuit est sans effet dans le moteur actuel."
+	},
+	"rain_dance": {
+		"name": "Danse Pluie", "type": "water", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"pending_effects": ["weather_rain"],
+		"description": "Le lanceur appelle la pluie pendant cinq tours. Sans effet dans le moteur actuel."
+	},
+	"rapid_spin": {
+		"name": "Tour Rapide", "type": "normal", "category": "physical",
+		"power": 50, "accuracy": 100, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": 1, "target": "self" }],
+		"pending_effects": ["free_binding"],
+		"description": "Le lanceur tournoie et frappe. Augmente sa Vitesse ; se libérer des liens est sans effet dans le moteur actuel."
+	},
+	"reversal": {
+		"name": "Contre", "type": "fighting", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 15,
+		"pending_effects": ["reversal"],
+		"description": "Un sursaut d'énergie d'autant plus violent que le lanceur est à bout. La puissance variable est sans effet dans le moteur actuel."
+	},
+	"rollout": {
+		"name": "Roulade", "type": "rock", "category": "physical",
+		"power": 30, "accuracy": 90, "pp": 20,
+		"pending_effects": ["rollout"],
+		"description": "Le lanceur roule sur la cible. L'enchaînement sur cinq tours est sans effet dans le moteur actuel."
+	},
+	"sacred_fire": {
+		"name": "Feu Sacré", "type": "fire", "category": "physical",
+		"power": 100, "accuracy": 95, "pp": 5,
+		"effects": [{ "kind": "status", "status": "burn", "chance": 50 }],
+		"description": "Un feu mystique embrase la cible. Peut la brûler."
+	},
+	"safeguard": {
+		"name": "Rune Protect", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 25,
+		"pending_effects": ["safeguard"],
+		"description": "Un voile protège l'équipe des problèmes de statut pendant cinq tours. Sans effet dans le moteur actuel."
+	},
+	"sandstorm": {
+		"name": "Tempête de Sable", "type": "rock", "category": "status",
+		"accuracy": 0, "pp": 10,
+		"pending_effects": ["weather_sandstorm"],
+		"description": "Le lanceur déclenche une tempête de sable pendant cinq tours. Sans effet dans le moteur actuel."
+	},
+	"scary_face": {
+		"name": "Grimace", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 10,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -2, "target": "foe" }],
+		"description": "Une grimace effrayante paralyse de peur la cible. Baisse beaucoup sa Vitesse."
+	},
+	"snore": {
+		"name": "Ronflement", "type": "normal", "category": "special",
+		"power": 50, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "flinch", "chance": 30 }],
+		"pending_effects": ["requires_user_asleep"],
+		"description": "Un ronflement assourdissant. Peut apeurer la cible. Qu'il faille dormir pour l'utiliser est sans effet dans le moteur actuel."
+	},
+	"spark": {
+		"name": "Étincelle", "type": "electric", "category": "physical",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "status", "status": "paralysis", "chance": 30 }],
+		"description": "Le lanceur fonce enveloppé d'électricité. Peut paralyser la cible."
+	},
+	"steel_wing": {
+		"name": "Ailes d'Acier", "type": "steel", "category": "physical",
+		"power": 70, "accuracy": 90, "pp": 25,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": 1, "target": "self", "chance": 10 }],
+		"description": "Des ailes d'acier fouettent la cible. Peut augmenter la Défense du lanceur."
+	},
+	"sunny_day": {
+		"name": "Zénith", "type": "fire", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"pending_effects": ["weather_sun"],
+		"description": "Le lanceur fait briller le soleil pendant cinq tours. Sans effet dans le moteur actuel."
+	},
+	"swagger": {
+		"name": "Vantardise", "type": "normal", "category": "status",
+		"accuracy": 85, "pp": 15,
+		"effects": [
+			{ "kind": "stat_stage", "stat": "atk", "stages": 2, "target": "foe" },
+			{ "kind": "confusion" }
+		],
+		"description": "Le lanceur provoque la cible. Augmente beaucoup son Attaque, mais la rend confuse."
+	},
+	"sweet_kiss": {
+		"name": "Doux Baiser", "type": "fairy", "category": "status",
+		"accuracy": 75, "pp": 10,
+		"effects": [{ "kind": "confusion" }],
+		"description": "Un baiser si doux que la cible en perd la tête. La rend confuse."
+	},
+	"synthesis": {
+		"name": "Synthèse", "type": "grass", "category": "status",
+		"accuracy": 0, "pp": 5,
+		"effects": [{ "kind": "heal", "fraction": 0.5 }],
+		"description": "Le lanceur absorbe la lumière du jour. Rend la moitié de ses PV."
+	},
+	"twister": {
+		"name": "Ouragan", "type": "dragon", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "flinch", "chance": 20 }],
+		"description": "Un tourbillon furieux s'abat sur la cible. Peut l'apeurer."
+	},
+	"zap_cannon": {
+		"name": "Élecanon", "type": "electric", "category": "special",
+		"power": 120, "accuracy": 50, "pp": 5,
+		"effects": [{ "kind": "status", "status": "paralysis" }],
+		"description": "Une décharge puissante mais imprécise. Paralyse la cible si elle touche."
+	}
+}
