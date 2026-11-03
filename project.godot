@@ -1,11 +1,12 @@
-; Kanto 2026 — configuration Godot 4.7
+; Pokemake (dépôt kanto-2026) — configuration Godot 4.7
 
 config_version=5
 
 [application]
 
-config/name="Kanto 2026"
-config/description="Remake 2D personnel de Pokémon Rouge/Bleu, version smartphone 2026."
+config/name="Pokemake"
+config/description="Pokémon Kevin Remake : remake 2D personnel de Pokémon Rouge/Bleu, version smartphone 2026."
+config/version="0.34.0"
 run/main_scene="res://game/boot.tscn"
 config/icon="res://assets/ui/icon.png"
 config/features=PackedStringArray("4.7", "Mobile")

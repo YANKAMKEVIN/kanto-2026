@@ -218,3 +218,19 @@ func test_large_text_keeps_the_cards_inside_the_screen() -> void:
 	var label := card.find_children("*", "Label", true, false)[0] as Label
 	assert_gt(label.get_theme_font_size(&"font_size"), UiTokens.TITLE_ENTRY_FONT,
 		"texte agrandi")
+
+
+func test_version_label_sits_on_the_logo_side_outside_the_column() -> void:
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.NONE))
+	var label := screen.get_version_label()
+	assert_eq(label.text, GameVersion.label())
+	assert_true(label.text.contains(str(ProjectSettings.get_setting("application/config/version"))))
+	assert_eq(screen.get_texts(), PackedStringArray(["NOUVELLE PARTIE", "PARAMÈTRES"]),
+		"la version n'est pas une entrée de la colonne")
+	var rect := label.get_global_rect()
+	assert_lt(rect.end.x, 2340 / 2.0, "côté du logo, à gauche")
+	assert_gt(rect.position.y, HEIGHT / 2.0, "en bas")
+	assert_lte(rect.end.y, HEIGHT - UiTokens.SAFE_MARGIN, "dans la marge sûre")
+	screen.set_left_handed(true)
+	await wait_process_frames(2)
+	assert_gt(label.get_global_rect().position.x, 2340 / 2.0, "mode gaucher : côté droit, avec le logo")
