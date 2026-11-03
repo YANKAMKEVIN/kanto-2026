@@ -245,8 +245,11 @@ func test_the_real_v5_save_of_kevin_migrates_without_any_other_change() -> void:
 		for member: Dictionary in saved[key]:
 			assert_true(PokemonUid.is_valid(member.get("uid")), "identifiant")
 			assert_eq(member.get("status_turns"), 0.0, "compteur nul")
+			# JOH0 (v10) : le lien des Pokémon déjà présents vaut 50 à la migration.
+			assert_eq(member.get("bond"), 50.0, "lien de migration")
 			member.erase("uid")
 			member.erase("status_turns")
+			member.erase("bond")
 	assert_eq(saved["companion"], "", "aucun compagnon")
 	saved.erase("companion")
 	# J15 (v7) : Pension vide, seul autre champ ajouté depuis.
