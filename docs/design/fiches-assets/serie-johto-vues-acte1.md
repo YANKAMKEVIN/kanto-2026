@@ -292,8 +292,52 @@ pierre allumées (seule touche chaude).
   la cage est peinte à droite du centre (grille : x 11..13, conforme) ; l'ouverture du palier (3, 3) se lit mal.
 - **Tous** : lumière neutre sauf le sommet, à l'aube (voulu, JH-55).
 
-## Bilan de l'acte 1
+## JOH9 — Sentier, Mont Argenté (extérieur, 1F, 2F, 3F, sommet), Route 28, poste (planche `joh9-vues-v1.png`) — en attente de Kevin
 
-21 vues générales en 21 essais (JOH1 : 3, JOH2 : 3, JOH3 : 5, JOH4 : 5, JOH5 : 5), aucun refus de Codex. **Toutes
-validées par Kevin le 2026-11-03** (JOH1 : « Oui, enchaîne JOH2 » ; JOH2 à JOH5 : « Oui, fusionne »). Les défauts [D]
-de chaque section deviennent la règle pour les actes 2 et 3.
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `sentier-mont-argente-vue-generale-v1.png` | r1 / 1 | `route-43-vue-generale-v1.png` |
+| `mont-argente-exterieur-vue-generale-v1.png` | r1 / 1 | Sentier (ci-dessus) + `route-42-vue-generale-v1.png` (roche) |
+| `mont-argente-1f-vue-generale-v1.png` | r1 / 1 | `mont-selenite-vue-generale-v1.png` + `iles-tourbillon-b1f-vue-generale-v1.png` |
+| `mont-argente-2f-vue-generale-v1.png` | r1 / 1 | 1F (ci-dessus) |
+| `mont-argente-3f-vue-generale-v1.png` | r1 / 1 | 2F (ci-dessus) |
+| `mont-argente-sommet-vue-generale-v1.png` | r1 / 1 | extérieur (ci-dessus) |
+| `route-28-vue-generale-v1.png` | r1 / 1 | `route-43-vue-generale-v1.png` |
+| `poste-route-28-v1.png` | r1 / 1 | `poste-15-v1.png` |
+
+Outil : neige (grain), muraille de glace, herbes givrées sous la neige, mer de nuages, pierres des ruines, trappe dans la
+neige, fond de roche ou de nuages, sortie ouest `e` des grottes, ouverture nord `N` du poste.
+
+Défauts pris **[D]** : limite nette herbe / neige à la muraille de glace du Sentier ; Centre du Mont Argenté = Centre
+standard au toit enneigé ; grotte 2F peinte en pénombre profonde lisible (le voile d'obscurité est un effet du jeu) ;
+3F avec vent et neige soufflée ; sommet = plateau de neige vierge ceint de roche, pierres des ruines éparses, ciel pâle ;
+Route 28 sans neige (versant ouest) ; poste de la Route 28 = une pièce traversante, neige visible par les portes.
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **Sentier** : conforme (chemin en L, muraille de glace et son passage, limite herbe / neige, Centre, trois poches dont
+  deux givrées, sapins, rochers, panneau).
+- **Mont Argenté extérieur** : un **escalier de neige** est peint entre l'esplanade et l'entrée de la grotte (la grille
+  n'a ni marche ni dénivelé : l'entrée est au ras de l'esplanade) ; les masses de roche de l'entonnoir sont plus arrondies ;
+  le reste est conforme (chemin, trois poches givrées, sapins, rochers, paroi).
+- **1F** : conforme (entrée sud, sortie ouest, lac en travers, deux barrières et leurs brèches, échelle, gravats) ; la
+  rangée de gravats du nord-ouest est bien là.
+- **2F** : conforme (échelles, descentes, galerie transversale, alcôve nord, salle latérale sud et son passage).
+- **3F** : conforme (échelle du bas, corniche basse, montée de droite, corniche haute, raidillon, échelle du sommet, salle
+  du vent et son passage, gravats) ; vent et neige soufflée très lisibles.
+- **Sommet** : la **mer de nuages** est peinte autour de la falaise mais le bord sud du plateau est fermé par la
+  falaise au lieu de s'ouvrir sur les nuages (grille : rangée 17 = nuages, pas de roche) ; les ruines sont rendues en
+  blocs de roche enneigés plutôt qu'en pierres taillées ; palier, trappe et pierres sont à leur place.
+- **Route 28** : conforme (versant rocheux, sentier d'une case, poste à l'ouest, maison au centre, deux poches, sapins) ;
+  le poste est peint comme une petite maison à toit d'ardoise.
+- **Poste de la Route 28** : conforme (pièce de 8 × 5, deux portes alignées, quatre plantes).
+- **Tous** : lumière neutre.
+
+## Bilan
+
+**Acte 1** : 21 vues générales en 21 essais (JOH1 : 3, JOH2 : 3, JOH3 : 5, JOH4 : 5, JOH5 : 5), aucun refus de Codex.
+**Toutes validées par Kevin le 2026-11-03** (JOH1 : « Oui, enchaîne JOH2 » ; JOH2 à JOH5 : « Oui, fusionne »). Les défauts
+[D] de chaque section deviennent la règle pour les actes 2 et 3.
+
+**Actes 2 et 3** : 27 vues en 27 essais (JOH6 : 10, JOH7 : 5, JOH8 : 4, JOH9 : 8), aucun refus. **À valider par Kevin**
+(planches `joh6` à `joh9-vues-v1.png`). Total du chapitre : **48 vues générales**, 48 essais.
