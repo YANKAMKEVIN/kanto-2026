@@ -479,6 +479,15 @@
 		"taille": [2340, 1080],
 		"qualite": 90
 	},
+	"route_cyclable_foret": {
+		"composition": "EG_DECOR_ROUTE_CYCLABLE_FORET_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_ROUTE_CYCLABLE_FORET_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_ROUTE_CYCLABLE_FORET_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
 	"route_17_cyclable": {
 		"composition": "EG_DECOR_ROUTE_17_r1.png",
 		"tuiles": [

@@ -197,7 +197,8 @@ func begin(intro: TrainerIntro, view: Vector2, foe: Texture2D, player: Texture2D
 	_stand = {foe_side: foe, player_side: player}
 	_throw = {foe_side: foe_throw, player_side: player_throw}
 	var catalog := intro.get_catalog()
-	_sizes = {foe_side: catalog.scale_of(intro.sprite_id), player_side: catalog.player_scale}
+	_sizes = {foe_side: catalog.scale_of(intro.art_id()),
+		player_side: catalog.surf_player_scale if intro.surf else catalog.player_scale}
 	_set_framing(0.0)
 	_setup_fx(catalog)
 	for side: BattleEvent.SideId in [foe_side, player_side]:
@@ -376,8 +377,8 @@ func play_send(side: BattleEvent.SideId, on_landed: Callable) -> void:
 		_swap_texture(sprite, throw_texture)
 		sprite.scale = keep
 	sprite.rotation = 0.0 if throw_texture != null else sprite.rotation
-	var hand := _feet[side] + (catalog.hand_of(_intro.sprite_id) if foe
-		else _point("player_hand")) * height
+	var player_hand := catalog.surf_player_hand if _intro.surf else _point("player_hand")
+	var hand := _feet[side] + (catalog.hand_of(_intro.art_id()) if foe else player_hand) * height
 	var via := _frac(_point("foe_via" if foe else "player_via"))
 	var target := _frac(_point("foe_target" if foe else "player_target"))
 	# Contrôle de la courbe de Bézier qui passe par « via » à mi-parcours.

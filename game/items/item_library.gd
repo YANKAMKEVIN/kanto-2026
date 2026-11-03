@@ -271,6 +271,20 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 	return item if ok else null
 
 
+## Table CT → type de la capacité enseignée dans [param data] (icônes peintes des CT, RP-256 ;
+## les CS gardent leur icône propre ; une CT dont la capacité est inconnue est omise).
+func tm_types(data: PokemonData) -> Dictionary[StringName, StringName]:
+	var result: Dictionary[StringName, StringName] = {}
+	for item_id: StringName in get_ids():
+		var item := get_item(item_id)
+		if item == null or not item.is_tm() or item.is_hm() or not data.has_move(item.teaches):
+			continue
+		var type := data.get_move(item.teaches).type
+		if not type.is_empty():
+			result[item_id] = type
+	return result
+
+
 ## CT : chaque capacité enseignée existe dans [param data]. Faux (erreur signalée) sinon.
 func check_moves(data: PokemonData) -> bool:
 	var ok := true

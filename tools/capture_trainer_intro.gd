@@ -19,7 +19,13 @@ extends SceneTree
 ##
 ## `--shots=<dossier>` (avec `--fixed-fps 60`) : enregistre aussi les images des moments des
 ## maquettes (`entree.png` : message « … veut se battre ! » ; `lancer.png` : Ball au
-## milieu de son vol ; `vs.png` : emblème posé), pour le comparatif.
+## milieu de son vol ; `lancer_joueur.png` : Ball du joueur au milieu de son vol ; `vs.png` :
+## emblème posé), pour le comparatif.
+##
+## `--surf` : le joueur surfe (`player_mount` = Surf) et la mise en scène « Surf » est activée
+## pour cette capture seulement (réglage `surf.enabled` de data/battle/decors.json forcé à vrai) :
+## planche comparative banc de sable / Surf (fiche entree-dresseurs §13). `--look=heroine` : la
+## joueuse.
 
 const START_PATH: String = "user://trainer_intro_capture_start.json"
 const SETUPS := {
@@ -112,6 +118,13 @@ func _run() -> void:
 	if _args.has("rival_look"):  # --rival_look=rivale : la rivale (apparence choisie à l'ouverture)
 		game_state.set(&"rival_look", StringName(_args["rival_look"]))
 		game_state.set(&"rival_name", "Rose")
+	if _args.has("look"):
+		game_state.set(&"player_look", StringName(_args["look"]))
+	if _args.has("surf"):
+		game_state.set(&"player_mount", 2)  # Mount.Kind.SURF
+		var decors: RefCounted = load("res://game/battle/battle_decor_catalog.gd").call(&"load_file")
+		decors.set(&"surf_enabled", true)
+		boot.call(&"get_battle_stage").call(&"set_decor_catalog", decors)
 	var player: Node = boot.call(&"get_player")
 	var map: Node = boot.call(&"get_map")
 	if setup.has("cell"):
@@ -119,6 +132,9 @@ func _run() -> void:
 		player.call(&"enter_map", map.call(&"get_grid"), Vector2i(cell[0], cell[1]),
 			Vector2i.UP, map.call(&"get_pixel_rect"))
 	await _frames(LEAD_FRAMES)
+	if _args.has("shots"):  # `monde.png` : la carte avant le combat (apparences du monde).
+		DirAccess.make_dir_recursive_absolute(String(_args["shots"]))
+		root.get_texture().get_image().save_png(String(_args["shots"]).path_join("monde.png"))
 	var battles: Node = boot.call(&"get_battle_director")
 	var hud: Node = boot.call(&"get_battle_hud")
 	print("[intro] start frame %d (%s)" % [Engine.get_frames_drawn(), setup["trainer"]])
@@ -155,10 +171,15 @@ func _plan_shot(step: int) -> void:
 	var fps := float(Engine.physics_ticks_per_second)
 	var now := Engine.get_process_frames()
 	match step:
-		4:  # FOE_SEND : Ball au milieu du vol.
+		4, 5:  # FOE_SEND, PLAYER_SEND : Ball au milieu du vol.
+			# `--entree=dresseurs` : l'entrée est prise au début du lancer adverse, dresseurs en
+			# place (le message d'ouverture peut précéder l'arrivée de la caméra dans le décor).
+			if step == 4 and String(_args.get("entree", "")) == "dresseurs":
+				_shots[now + 2] = "entree"
 			var windup: float = catalog.call(&"duration", "send_windup")
 			var throw: float = catalog.call(&"duration", "send_throw")
-			_shots[now + int(round((windup + throw * 0.5) * fps))] = "lancer"
+			_shots[now + int(round((windup + throw * 0.5) * fps))] = \
+				"lancer" if step == 4 else "lancer_joueur"
 		2:  # VS_OUT : Champions sans message d'ouverture, dresseurs revenus à l'entrée.
 			if not _shots.values().has("entree"):
 				var out: float = catalog.call(&"duration", "vs_out")

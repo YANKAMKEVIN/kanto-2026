@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), `spray` : grains de la gerbe de Jet de Sable ; vague 1 « Effets fidèles à Rouge » : piece (pièce d'une volée), sprout, crack, powder, sparkle ; fx.volley : volée (count, stagger, size, wobble en hauteurs d'écran) ; fx.beats ou impacts.*.beats : claquements par impact ; families.*.variants : réglages fx remplacés par la variante d'une attaque (\"variant\" dans son entrée, art fusionné rôle par rôle) ; complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
 	"durations": {
 		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
 		"bands": [
@@ -162,6 +162,96 @@
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16, "art": {"charge": "oeil_menacant", "travel": "lueur_douce", "particle": "fleche_bas", "fallout": "fumee"}, "tint": "#B8B8E8"}
 		},
+		"statut_regard": {
+			"name": "Statut négatif, regard", "target": "foe",
+			"_doc": "RP-286 (décision de Kevin du 2026-11-01) : Groz'Yeux, Regard Médusant, Mimi-Queue, Entrave. Regard ou geste sur le lanceur, puis l'aura directement sur la cible : comme statut_moins, sans trajet (rien ne part du lanceur).",
+			"bricks": {"launch": "glare", "travel": "", "impact": "falling_aura"},
+			"phases": {"anticipation": 0.35, "travel": 0.0, "impact": 0.45, "return": 0.2},
+			"world": {"light": "#A0A0C8", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16, "art": {"charge": "oeil_menacant", "particle": "fleche_bas", "fallout": "fumee"}, "tint": "#B8B8E8"}
+		},
+		"statut_sable": {
+			"name": "Statut négatif, sable", "target": "foe",
+			"_doc": "Jet de Sable (remarque de Kevin du 2026-11-02, lot RP-286) : une gerbe de grains de sable en éventail du lanceur vers la cible (brique sand_spray : particules, art spray), pas une boule ; les grains retombent sur la cible, un peu de poussière s'élève.",
+			"bricks": {"launch": "glare", "travel": "sand_spray", "impact": "falling_aura"},
+			"phases": {"anticipation": 0.15, "travel": 0.45, "impact": 0.25, "return": 0.15},
+			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#E8CFA0", "#B8874A", "#5A3E22"], "particles": 24, "art": {"charge": "grain_sable", "spray": "grain_sable", "particle": "grain_sable", "fallout": "poussiere"}}
+		},
+		"statut_geste": {
+			"name": "Statut négatif, geste", "target": "foe",
+			"_doc": "Mimi-Queue (lot « Effets fidèles à Rouge », vague 1, 2026-11-02) : comme dans Rouge, le lanceur se dandine de côté (brique tail_wag, deux balancements), puis l'aura de baisse sur la cible ; ni œil ni trajet.",
+			"bricks": {"launch": "tail_wag", "travel": "", "impact": "falling_aura"},
+			"phases": {"anticipation": 0.6, "travel": 0.0, "impact": 0.3, "return": 0.1},
+			"world": {"light": "#A0A0C8", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#F4F4FF", "#A0A0C8", "#4A4A6A"], "particles": 16, "art": {"particle": "fleche_bas", "fallout": "fumee"}, "tint": "#B8B8E8"}
+		},
+		"fouet": {
+			"name": "Fouet", "target": "foe",
+			"_doc": "Fouet Lianes (vague 1) : une liane part du lanceur (brique whip, ondulation qui court jusqu'au bout), fouette la cible, se relève et claque une seconde fois (beats 2), puis se retire. Feuilles peintes le long de la liane (piece), étoile de claquement (crack).",
+			"bricks": {"launch": "rear_back", "travel": "whip", "impact": "whip_crack"},
+			"phases": {"anticipation": 0.15, "travel": 0.25, "impact": 0.45, "return": 0.15},
+			"world": {"light": "#B8F28A", "light_peak": 0.0, "flashes": 0, "foliage": true},
+			"camera": {"zoom": 1.02, "shake": 2.0},
+			"fx": {"palette": ["#D8F59A", "#5FA83A", "#22401A"], "particles": 14, "beats": 2, "art": {"piece": "feuille", "particle": "feuille", "crack": "etoile_impact"}}
+		},
+		"bulles": {
+			"name": "Bulles", "target": "foe",
+			"_doc": "Écume et Bulles d'O (vague 1) : des bulles rondes translucides (brique bubbles, art piece) partent l'une après l'autre, flottent en ondulant vers la cible et éclatent dessus (flipbook bulles_eclatent, gouttes) ; la volée court du trajet à la fin de l'impact. Variante rafale (Bulles d'O) : deux fois plus de bulles, plus serrées, plus droites.",
+			"bricks": {"launch": "bubble_swell", "travel": "bubbles", "impact": "bubble_pop"},
+			"phases": {"anticipation": 0.1, "travel": 0.55, "impact": 0.25, "return": 0.1},
+			"world": {"light": "#7FC8FF", "light_peak": 0.1, "flashes": 0, "droplets": true},
+			"camera": {"zoom": 1.02, "shake": 1.0},
+			"fx": {"palette": ["#F0FAFF", "#8FD0F8", "#2E6AA8"], "particles": 18, "volley": {"count": 4, "stagger": 0.1, "size": 0.1, "wobble": 0.035}, "art": {"charge": "bulle", "piece": "bulle", "impact": "bulles_eclatent", "particle": "goutte"}},
+			"variants": {
+				"rafale": {"_doc": "Bulles d'O : plus nombreuses, plus rapides.", "particles": 26, "volley": {"count": 11, "stagger": 0.055, "size": 0.085, "wobble": 0.015}}
+			}
+		},
+		"statut_fil": {
+			"name": "Statut négatif, fil", "target": "foe",
+			"_doc": "Sécrétion (vague 1) : trois fils de soie se tendent du lanceur à la cible (brique string), puis s'enroulent autour d'elle (impact wrap : trois tours de fil qui se dessinent) ; flèches de baisse de Vitesse.",
+			"bricks": {"launch": "rear_back", "travel": "string", "impact": "wrap"},
+			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFFFFF", "#D4D4E2", "#6A6A80"], "particles": 10, "art": {"particle": "fleche_bas"}, "tint": "#B8B8E8"}
+		},
+		"dard": {
+			"name": "Dard", "target": "foe",
+			"_doc": "Dard-Venin (vague 1) : une aiguille fine (brique needle, art piece) file vers la cible en accélérant, avec une traînée ; piqûre violette à l'impact (impact sting : éclat additif, gouttes de poison).",
+			"bricks": {"launch": "rear_back", "travel": "needle", "impact": "sting"},
+			"phases": {"anticipation": 0.2, "travel": 0.25, "impact": 0.35, "return": 0.2},
+			"world": {"light": "#B86BFF", "light_peak": 0.1, "flashes": 0},
+			"camera": {"zoom": 1.02, "shake": 1.5},
+			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 14, "volley": {"count": 1, "size": 0.2}, "art": {"piece": "aiguille", "particle": "goutte_poison", "fallout": "vapeur_poison"}}
+		},
+		"poudre": {
+			"name": "Poudre", "target": "foe",
+			"_doc": "Poudres (vague 1) : comme dans Rouge, une poudre colorée tombe d'en haut sur la cible (brique powder_fall : grains et scintillements, particules) puis se dépose (powder_settle) ; le lanceur s'ébroue (powder_shake). Couleur par variante : dodo (bleue), para (jaune), toxik (violette), spore (vert-beige, grains peints).",
+			"bricks": {"launch": "powder_shake", "travel": "powder_fall", "impact": "powder_settle"},
+			"phases": {"anticipation": 0.15, "travel": 0.5, "impact": 0.25, "return": 0.1},
+			"world": {"light": "#9AB8FF", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#EEF4FF", "#7FA8FF", "#2A4A9A"], "particles": 16, "art": {"sparkle": "etincelle"}},
+			"variants": {
+				"dodo": {"palette": ["#EEF4FF", "#7FA8FF", "#2A4A9A"]},
+				"para": {"palette": ["#FFFBD8", "#F2D63A", "#8A6A00"]},
+				"toxik": {"palette": ["#F4E0FF", "#B070F0", "#4A1A6A"]},
+				"spore": {"palette": ["#FAFFE0", "#B8C86A", "#6A5A2A"], "art": {"powder": "spore"}}
+			}
+		},
+		"graine": {
+			"name": "Graine", "target": "foe",
+			"_doc": "Vampigraine (vague 1) : trois graines lancées en arc (brique seed_arc, formes en code [phase DA]) tombent sur la cible et y germent (impact sprout : pousses peintes qui sortent, art sprout).",
+			"bricks": {"launch": "rear_back", "travel": "seed_arc", "impact": "sprout"},
+			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#B8F28A", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#E8D8A8", "#8A6A3A", "#3A2A14"], "particles": 10, "volley": {"count": 3, "stagger": 0.12, "size": 0.045}, "art": {"sprout": "liane", "particle": "feuille"}}
+		},
 		"soin": {
 			"name": "Soin", "target": "self",
 			"bricks": {"launch": "soft_glow", "travel": "", "impact": "rising_sparkles"},
@@ -177,7 +267,9 @@
 		"griffe": {"name": "Griffe", "brick": "claw_slashes", "art": "entailles_griffes"},
 		"crocs": {"name": "Crocs", "brick": "jaws", "art": "machoires"},
 		"percant": {"name": "Perçant", "brick": "pierce_flash", "art": "aiguille"},
-		"corps": {"name": "Corps", "brick": "shockwave", "art": "onde_choc"}
+		"corps": {"name": "Corps", "brick": "shockwave", "art": "onde_choc"},
+		"bec": {"name": "Bec", "brick": "peck_marks", "art": "etoile_impact", "beats": 2, "_doc": "Picpic (vague 1 « Effets fidèles à Rouge ») : deux coups de bec rapides, une marque à deux endroits de la cible."},
+		"vrille": {"name": "Vrille", "brick": "drill_spin", "art": "etoile_impact", "_doc": "Bec Vrille : la marque tourne en vrille et trois éclats spiralent vers le centre."}
 	},
 	"modifiers": {
 		"_doc": "Morceaux communs ajoutés à la famille (§3.2). band_max : l'attaque prend la dernière ligne de durée de CV-2.",

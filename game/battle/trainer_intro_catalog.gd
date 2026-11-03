@@ -94,6 +94,14 @@ var _hands: Dictionary[StringName, Vector2] = {}
 ## Taille relative d'un adulte (défaut) et du joueur ; les hauteurs des « poses » valent pour 1.
 var default_scale: float = 1.0
 var player_scale: float = 1.0
+## Combat en surfant (bloc « surf », fiche entree-dresseurs §13) : suffixe des images dans
+## l'eau (`dos_<apparence><surf_suffix>`, `<classe><surf_suffix>`), taille et main du joueur
+## sur sa monture ; classes peintes dans l'eau (leurs `scale` et `hand` sont rangés sous
+## `<classe><surf_suffix>`).
+var surf_suffix: String = "_surf"
+var surf_player_scale: float = 1.0
+var surf_player_hand: Vector2 = Vector2.ZERO
+var _surf_classes: Dictionary[StringName, bool] = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 static var _shared: TrainerIntroCatalog
@@ -165,6 +173,7 @@ func add_from_dict(root: Dictionary) -> bool:
 			_prefixes[StringName(str(id))] = entry["prefix"]
 			_class_sprites[StringName(str(id))] = StringName(entry["world_sprite"])
 			_read_scale(StringName(str(id)), entry)
+	ok = _read_surf(root.get("surf")) and ok
 	var grand: Variant = root.get("grand")
 	if not grand is Dictionary:
 		ok = _fail("TrainerIntroCatalog : « grand » manquant")
@@ -300,6 +309,42 @@ func _read_points(value: Variant) -> bool:
 			continue
 		points[key] = Vector2(float(pair[0]), float(pair[1]))
 	return ok
+
+
+## Bloc facultatif « surf » : { suffix, player: { scale, hand }, classes: { <classe>: { scale,
+## hand } } }. Sans lui, aucune classe n'est peinte dans l'eau.
+func _read_surf(value: Variant) -> bool:
+	surf_player_hand = point("player_hand")
+	if value == null:
+		return true
+	if not value is Dictionary:
+		return _fail("TrainerIntroCatalog : « surf » doit être un objet")
+	var surf: Dictionary = value
+	surf_suffix = str(surf.get("suffix", surf_suffix))
+	var player: Variant = surf.get("player", {})
+	if player is Dictionary:
+		var scale: Variant = (player as Dictionary).get("scale")
+		surf_player_scale = float(scale) if scale is float or scale is int else player_scale
+		var hand: Variant = _pair((player as Dictionary).get("hand"))
+		if hand != null:
+			surf_player_hand = hand
+	var classes: Variant = surf.get("classes", {})
+	if not classes is Dictionary:
+		return _fail("TrainerIntroCatalog : surf.classes doit être un objet")
+	var ok := true
+	for id: Variant in classes:
+		var entry: Variant = (classes as Dictionary)[id]
+		if not entry is Dictionary or not _class_sprites.has(StringName(str(id))):
+			ok = _fail("TrainerIntroCatalog : surf.classes.%s : classe inconnue" % id)
+			continue
+		_surf_classes[StringName(str(id))] = true
+		_read_scale(StringName(str(id) + surf_suffix), entry)
+	return ok
+
+
+## La classe [param id] est peinte dans l'eau (combat en surfant).
+func has_surf_art(id: StringName) -> bool:
+	return _surf_classes.has(id)
 
 
 func _read_scale(id: StringName, entry: Dictionary) -> void:

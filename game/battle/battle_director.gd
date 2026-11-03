@@ -267,13 +267,16 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		for event: BattleEvent in opening:
 			if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE:
 				event.revealed = true
+	_warm_up_move_fx([party, request.foe_party] as Array[Party])
 	# Entrée (~1 s, jamais d'écran noir) : intro sauvage dans le décor (herbe, partenaire qui
 	# entre en courant) ou entrée du dresseur (PNJ Pokémon du monde cachés, sprites de combat).
 	var camera := _player.get_camera() if is_instance_valid(_player) else null
 	if is_instance_valid(_stage) and camera != null:
 		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
 		# Décor peint du lieu (CB.3) : la carte et la case du déclenchement.
-		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell())
+		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell(),
+			_is_surfing(), wild,
+			&"" if wild else TrainerIntroCatalog.shared().class_of(request.trainer))
 		if wild:
 			var origin_world := Grid.cell_to_world(request.origin_cell)
 			# Jalon 21 : la silhouette du SPECTRE d'abord, puis la révélation.
@@ -672,6 +675,18 @@ func _move_fx_plan(events: Array[BattleEvent], index: int) -> MoveFxPlan:
 	var entry := _fx_catalog.entry(move.id, move.type, category)
 	return MoveFxPlan.build(_fx_catalog, entry, move, outcome, _stage.move_fx_mode(),
 		_stage.reduce_flashes)
+
+
+## RP-263 : prépare, pendant l'entrée en combat, les effets des attaques connues de
+## [param parties] (catalogue lu, éléments de rendu dessinés une fois, [MoveFxWarmup]).
+## Rend le nombre d'éléments dessinés (tests).
+func _warm_up_move_fx(parties: Array[Party]) -> int:
+	if not is_instance_valid(_stage) or not MoveFxPlayer.warmup_enabled:
+		return 0
+	if _fx_catalog == null:
+		_fx_catalog = MoveFxCatalog.load_dir()
+	return _stage.warm_up_move_fx(MoveFxWarmup.plans_for(_fx_catalog, _data, parties,
+		_stage.move_fx_mode()))
 
 
 ## Journal de QA (builds debug seulement) : chaque gain d'XP et montée de niveau, lisibles
@@ -1138,6 +1153,12 @@ func _relay_speed() -> void:
 
 
 # --- Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02) -----------
+
+## Le joueur surfe (mise en scène « Surf » du combat, [SurfStaging]).
+func _is_surfing() -> bool:
+	var mount: Variant = _state.get(&"player_mount") if _state != null else null
+	return mount != null and int(mount) == Mount.Kind.SURF
+
 
 ## Plan de l'entrée du combat de Dresseur de [param request] ([TrainerIntro]) : grand combat ou
 ## non, rangée de Poké Balls, images selon l'apparence du rival et « Réduire les animations ».

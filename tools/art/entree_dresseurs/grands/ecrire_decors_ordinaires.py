@@ -62,6 +62,29 @@ DECORS = {
 			"la forêt et la route qui file au loin plus petites à droite",
 			"la LIGNE où la chaussée plate rejoint le pied de la forêt du fond et l'horizon",
 			"la chaussée de béton", "béton plat et nu, sur la chaussée", "béton plat et nu")),
+	# Finitions (Kevin, 2026-11-03 : « peindre leur propre fond ») : un fond commun aux Routes 16
+	# ouest et 18 (Piste cyclable en forêt, sans mer). IMAGE 2 = vue générale de la 16 ouest, IMAGE 3 =
+	# celle de la 18.
+	"route_cyclable_foret": ("PISTE CYCLABLE EN FORÊT (ROUTES 16 OUEST ET 18)",
+		"un Loubard, un Motard ou un Ornithologue sur la Piste cyclable, aux deux bouts de la Route "
+		"cyclable (Route 16 ouest au pied de Céladopole, Route 18 à l'entrée de Parmanie)",
+		"(IMAGE 2 = vue générale VALIDÉE de la Route 16 ouest, IMAGE 3 = celle de la Route 18 : même "
+		"usage, le même lieu des deux côtés de la Route cyclable) la PISTE CYCLABLE en pleine FORÊT, loin "
+		"de la mer (AUCUNE mer, AUCUNE plage) : une large "
+		"chaussée de BÉTON gris clair à grandes dalles bordée d'une bordure de pavés clairs, deux voies "
+		"séparées par une BARRIÈRE BASSE de lisses de bois brun sur des poteaux de béton (comme IMAGES 2 "
+		"et 3), marquages blancs effacés, quelques traces de pneus. Sur la GAUCHE (proche) : une haute "
+		"FALAISE de roche beige-ocre à colonnes verticales, coiffée d'herbe et de buissons, qui longe la "
+		"piste (comme le nord de la Route 16 ouest, IMAGE 2), avec de petites touffes de fleurs à son "
+		"pied. Sur la DROITE et au fond : une FORÊT DENSE de grands feuillus vert vif aux troncs bruns qui "
+		"enserre la piste, et, entre les arbres à droite au loin, l'éclat bleu d'un petit ÉTANG calme "
+		"bordé d'herbe (comme à l'est de la Route 18, IMAGE 3). La piste file droit vers le fond entre "
+		"falaise et forêt. Ciel d'après-midi bleu à nuages blancs vu au-dessus des arbres, lumière chaude "
+		"venant de la gauche, ombres douces des feuillages sur le béton ; ambiance de vitesse en forêt.",
+		cadrage("la falaise et la barrière de GAUCHE proches, grandes, coupées par le bord gauche et par "
+			"le haut", "la forêt et l'étang plus petits et lointains à droite",
+			"la LIGNE où la chaussée plate rejoint le pied de la forêt du fond",
+			"la chaussée de béton", "béton plat et nu, sur la chaussée", "béton plat et nu")),
 	"manoir": ("MANOIR POKÉMON DE CRAMOIS'ÎLE",
 		"un Pillard ou un Scientifique dans le Manoir Pokémon abandonné de Cramois'Île",
 		"une grande salle du MANOIR POKÉMON, vieux manoir abandonné et à moitié brûlé où l'on étudiait Mew : "

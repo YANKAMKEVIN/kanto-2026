@@ -16,6 +16,10 @@ const DEFAULT_PATH: String = "res://data/battle/decors.json"
 var _decors: Dictionary[StringName, BattleDecor] = {}
 ## map_id → [{ "decor": StringName, "cells": Rect2i (vide : défaut) }].
 var _places: Dictionary[StringName, Array] = {}
+## Combat en surfant (bloc « surf », [SurfStaging]) : réglage de Kevin (faux : la mise en scène
+## à pied reste, banc de sable de la mer) et décor de remplacement de chaque décor concerné.
+var surf_enabled: bool = false
+var _surf_decors: Dictionary[StringName, StringName] = {}
 
 
 ## Catalogue lu dans [param path] (vide si le fichier manque ou est illisible).
@@ -36,6 +40,13 @@ static func load_file(path: String = DEFAULT_PATH) -> BattleDecorCatalog:
 func read(data: Dictionary) -> void:
 	_decors.clear()
 	_places.clear()
+	_surf_decors.clear()
+	var surf: Variant = data.get("surf", {})
+	surf_enabled = surf is Dictionary and (surf as Dictionary).get("enabled", false) == true
+	if surf is Dictionary and (surf as Dictionary).get("decors") is Dictionary:
+		var swaps: Dictionary = (surf as Dictionary)["decors"]
+		for key: Variant in swaps:
+			_surf_decors[StringName(str(key))] = StringName(str(swaps[key]))
 	var decors: Dictionary = data.get("decors", {})
 	for key: String in decors:
 		var decor := BattleDecor.from_dict(StringName(key), decors[key])
@@ -83,6 +94,11 @@ func default_for(map_id: StringName) -> BattleDecor:
 		if decor != null and not cells.has_area():
 			return decor
 	return null
+
+
+## Décor qui remplace [param decor_id] quand le joueur surfe ; null : aucun (le décor reste).
+func surf_decor_for(decor_id: StringName) -> BattleDecor:
+	return _decors.get(_surf_decors.get(decor_id, &""))
 
 
 func get_decor(decor_id: StringName) -> BattleDecor:

@@ -170,7 +170,7 @@ func test_bag_icons_are_256_squares() -> void:
 func test_battle_decors_are_placed_on_every_room() -> void:
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
 		"res://data/battle/decors.json"))
-	for id: String in ["ss_anne_salon", "ss_anne_pont", "vermilion_gym_salle"]:
+	for id: String in ["ss_anne_salon", "ss_anne_pont", "vermilion_gym_salle_v2"]:
 		var decor: Dictionary = data["decors"][id]
 		assert_true(ResourceLoader.exists(decor["back"]), id)
 	for room: String in ROOMS:

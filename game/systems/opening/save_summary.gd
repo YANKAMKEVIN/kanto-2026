@@ -25,6 +25,10 @@ var zone_name: String = ""
 ## Temps de jeu en secondes.
 var play_time: float = 0.0
 var badge_count: int = 0
+## Dernier badge obtenu dans l'ordre des arènes (même règle que [member DashboardView.badge_id]) ;
+## &"" sans badge ou si l'appelant n'a pas donné les identifiants. Lecture seule : le format de
+## sauvegarde ne change pas (déduit des drapeaux).
+var badge_id: StringName = &""
 ## Espèces capturées.
 var caught_count: int = 0
 var pokedex_active: bool = false
@@ -32,9 +36,12 @@ var pokedex_active: bool = false
 
 ## Résumé de [param save] ([method SaveSystem.read]). [param zone_name_of] :
 ## `func(map_id: StringName) -> String` (peut être invalide : pas de lieu). [param badge_flags] :
-## drapeaux des badges. [param fallback_name] : prénom si la sauvegarde n'en a pas.
+## drapeaux des badges, dans l'ordre des arènes. [param fallback_name] : prénom si la sauvegarde
+## n'en a pas. [param badge_ids] : identifiants des badges, au même rang que leurs drapeaux
+## (vide : pas de [member badge_id]).
 static func from_save(save: Dictionary, zone_name_of: Callable = Callable(),
-		badge_flags: Array[StringName] = [], fallback_name: String = "") -> SaveSummary:
+		badge_flags: Array[StringName] = [], fallback_name: String = "",
+		badge_ids: Array[StringName] = []) -> SaveSummary:
 	var summary := SaveSummary.new()
 	summary.player_name = JsonFields.get_string(save, "player_name").strip_edges()
 	if summary.player_name.is_empty():
@@ -46,9 +53,11 @@ static func from_save(save: Dictionary, zone_name_of: Callable = Callable(),
 		summary.zone_name = zone if zone is String else ""
 	summary.play_time = maxf(JsonFields.get_float(save, "play_time"), 0.0)
 	var flags := JsonFields.get_ids(save, "flags")
-	for flag: StringName in badge_flags:
-		if flags.has(flag):
+	for index: int in badge_flags.size():
+		if flags.has(badge_flags[index]):
 			summary.badge_count += 1
+			if index < badge_ids.size():
+				summary.badge_id = badge_ids[index]
 	summary.pokedex_active = flags.has(StoryFlags.POKEDEX_ACTIVATED)
 	summary.player_costume = CostumeCatalog.shared().worn(
 		JsonFields.get_id(save, "player_costume"), flags.has)

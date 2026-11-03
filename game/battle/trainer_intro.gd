@@ -50,6 +50,10 @@ var sprite_id: StringName = &""
 var portrait_id: StringName = &""
 ## Apparence du monde de l'adversaire (repli du sprite de face et du portrait).
 var world_sprite: StringName = &""
+## Combat en surfant ([SurfStaging]) : le joueur de dos sur sa monture (`dos_<apparence>_surf`)
+## et l'adversaire peint dans l'eau (`<classe>_surf`) si sa classe l'est
+## ([method TrainerIntroCatalog.has_surf_art]).
+var surf: bool = false
 
 var _catalog: TrainerIntroCatalog
 
@@ -136,15 +140,25 @@ func entry_total() -> float:
 func front_path(exists: Callable, throw: bool = false) -> String:
 	if sprite_id.is_empty():
 		return ""
-	var path := _catalog.front_dir + String(sprite_id) \
+	var path := _catalog.front_dir + String(art_id()) \
 		+ (_catalog.throw_suffix if throw else "") + _catalog.extension
 	return path if exists.call(path) else ""
+
+
+## Identifiant des images et des réglages (`scale`, `hand`) de l'adversaire : [member sprite_id],
+## suivi du suffixe « surf » quand le combat a lieu en surfant et que la classe est peinte dans
+## l'eau.
+func art_id() -> StringName:
+	if surf and _catalog.has_surf_art(sprite_id):
+		return StringName(String(sprite_id) + _catalog.surf_suffix)
+	return sprite_id
 
 
 ## Chemin du dos peint du joueur d'apparence [param look] (`dos_<apparence>`, pose de lancer si
 ## [param throw]) s'il existe, sinon "" (repli : le lancer de dos existant).
 func player_path(look: StringName, exists: Callable, throw: bool = false) -> String:
 	var path := _catalog.front_dir + _catalog.player_prefix + String(look) \
+		+ (_catalog.surf_suffix if surf else "") \
 		+ (_catalog.throw_suffix if throw else "") + _catalog.extension
 	return path if exists.call(path) else ""
 
