@@ -437,10 +437,10 @@ def planche(jalon: str) -> Path:
 		for f in (REF / nom_vue(grille), PLANS_REF / nom_plan(grille)):
 			im = Image.open(f).convert("RGB")
 			images.append(im.resize((round(im.width * hauteur / im.height), hauteur), Image.LANCZOS))
-		largeur = sum(i.width for i in images) + 40 * 3
+		texte = f"{titre}  |  {nom_vue(grille)}  |  plan (fait foi) : plans-johto/{nom_plan(grille)}"
+		largeur = max(sum(i.width for i in images) + 40 * 3, int(police.getlength(texte)) + 80)
 		ligne = Image.new("RGB", (largeur, hauteur + 70), (28, 30, 34))
-		ImageDraw.Draw(ligne).text((40, 18), f"{titre}  |  {nom_vue(grille)}  |  plan (fait foi) : "
-			f"plans-johto/{nom_plan(grille)}", fill=(235, 235, 235), font=police)
+		ImageDraw.Draw(ligne).text((40, 18), texte, fill=(235, 235, 235), font=police)
 		x = 40
 		for im in images:
 			ligne.paste(im, (x, 60))
