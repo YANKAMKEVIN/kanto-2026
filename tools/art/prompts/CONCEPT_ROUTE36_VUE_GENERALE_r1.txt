@@ -1,0 +1,38 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 36, LE CARREFOUR DU PONT EN TRAVAUX (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE ; la carte est une LONGUE BANDE HORIZONTALE au milieu de l'image ; tout ce qui est au-dessus et au-dessous de la bande est de la FORÊT DENSE (vert très foncé). C'est un CARREFOUR : la route arrive du NORD-OUEST (le chemin qui descend du bord haut, à gauche), file vers l'EST jusqu'à une rivière, et un EMBRANCHEMENT part vers le SUD au centre (le chemin qui sort par le bord bas).
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (marges) ;
+- beige = CHEMIN DE TERRE BATTUE de trois cases de large : la descente depuis le nord-ouest, la grande traversée d'ouest en est, et l'embranchement vers le sud au centre ;
+- vert moyen = PRÉS d'herbe rase praticables ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), trois blocs nets : un au nord, un au sud-ouest, un au sud-est ;
+- bleu, la bande verticale à l'est = une RIVIÈRE calme qui coupe la route du nord au sud ;
+- brun strié, en travers de la rivière = un PONT DE BOIS en travaux : des planches posées, encore inachevées ; tout au bout, côté est, une BARRIÈRE DE CHANTIER rayée orange et blanc qui ferme le passage ; au-delà, la forêt (la route continue hors de l'image) ;
+- en haut à droite, grand rectangle encadré de deux piliers gris avec des barreaux sombres = la GRILLE DU PARC NATIONAL : un portail monumental de fer forgé entre deux piliers de pierre, FERMÉ, derrière lequel on devine une allée et des arbres taillés ; aucun bâtiment, seulement le portail et son mur bas de pierre de part et d'autre (sur la largeur du rectangle) ;
+- grands disques vert sombre = GRANDS ARBRES ISOLÉS, repères (six) ; petit carré semé de points roses = un petit MASSIF DE FLEURS près de l'embranchement ;
+- petits carrés ocre = deux panneaux en bois SANS TEXTE (un près du bloc d'herbes du nord, un devant le pont).
+Respecte ce plan À LA LETTRE : le chemin en T (descente du nord-ouest, traversée, embranchement sud), les trois blocs d'herbes hautes, la rivière à l'est et le pont en travaux fermé par sa barrière, le portail du Parc au nord-est, les arbres isolés. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 13, une autre route du même jeu (Kanto), peinte en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes, même chemin de terre, même prairie, même EAU calme, même saturation, MÊME LUMIÈRE neutre. Ne reprends PAS sa composition (ni lac, ni clôtures blanches, ni rive rocheuse).
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « le carrefour » : une campagne ouverte où trois chemins se croisent ; à l'est, une rivière tranquille et un pont qu'on n'a pas fini de construire, barré par une barrière de chantier ; au nord, le portail fermé d'un grand parc. Clair, aéré, un peu en attente. Palette : PRÉS vert tendre, CHEMIN beige, FORÊT vert profond, RIVIÈRE bleu profond, BOIS clair du pont neuf, orange et blanc de la barrière, PIERRE grise et fer sombre du portail.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, rive, pont et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier. La rivière est RECTILIGNE, le pont perpendiculaire à la rivière.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse ; le pont est au niveau du chemin.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan (quelques planches et un seau de chantier au pied du pont sont permis, très discrets).
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucun ouvrier. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment (le portail du Parc n'est pas un bâtiment) ; grue, engin de chantier, véhicule ; route goudronnée ; barque, bateau ; clôture blanche ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un carrefour de campagne, un pont de bois inachevé barré sur une rivière calme, et le grand portail fermé d'un parc au nord.

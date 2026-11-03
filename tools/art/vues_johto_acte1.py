@@ -34,8 +34,10 @@ REF = RACINE / "docs" / "design" / "reference"
 PLANS_REF = REF / "plans-johto"
 
 PORTRAIT, PAYSAGE = (1024, 1536), (1536, 1024)
-# jalon → [(ZONE Codex, grille, format, genre, titre)] ; genre : grotte | exterieur
-JALONS: dict[str, list[tuple[str, str, tuple[int, int], str, str]]] = {
+# jalon → [(ZONE Codex, grille, format, genre, titre[, styles])] ; genre : grotte | exterieur | interieur.
+# `styles` : lettre → style de dessin quand la lettre n'a pas son sens habituel dans cette grille
+# (ex. « P » = Phare à Oliville, grille du Parc sur la Route 36, poste de garde sur la Route 35).
+JALONS: dict[str, list[tuple]] = {
 	"joh1": [
 		("GROTTE_MARINE_1", "grotte_marine_1", PORTRAIT, "grotte", "Grotte marine, salle 1 (30 × 40)"),
 		("GROTTE_MARINE_2", "grotte_marine_2", PORTRAIT, "grotte", "Grotte marine, salle 2 (30 × 40)"),
@@ -46,6 +48,21 @@ JALONS: dict[str, list[tuple[str, str, tuple[int, int], str, str]]] = {
 		("ROUTE38", "route_38", PAYSAGE, "exterieur", "Route 38 (60 × 20)"),
 		("ROSALIA", "rosalia", PAYSAGE, "exterieur", "Rosalia (56 × 48)"),
 	],
+	"joh3": [
+		("ROUTE37", "route_37", PORTRAIT, "exterieur", "Route 37 (20 × 40)"),
+		("ROUTE36", "route_36", PAYSAGE, "exterieur", "Route 36 (56 × 20)", {"P": "parc"}),
+		("ROUTE35", "route_35", PORTRAIT, "exterieur", "Route 35 (24 × 44)", {"P": "poste", "x": "cloture"}),
+		("DOUBLONVILLE", "doublonville", PAYSAGE, "exterieur", "Doublonville (72 × 60)", {"E": "escalier"}),
+		("SOUTERRAIN", "souterrain", PAYSAGE, "interieur", "Souterrain de Doublonville (40 × 14)"),
+	],
+}
+# Styles par défaut des lettres de bâtiment (toit, mur) ; les lettres spéciales ont leur dessin.
+BATIMENTS = {
+	"C": ((200, 60, 60), (236, 232, 224)), "O": ((60, 100, 200), (236, 232, 224)),
+	"m": ((176, 70, 52), (226, 214, 190)), "N": ((176, 70, 52), (226, 214, 190)),
+	"S": ((176, 70, 52), (226, 214, 190)), "L": ((176, 70, 52), (226, 214, 190)),
+	"M": ((150, 70, 50), (214, 196, 160)), "A": ((230, 200, 80), (236, 232, 224)),
+	"F": ((110, 110, 120), (214, 206, 190)), "poste": ((84, 92, 110), (214, 206, 190)),
 }
 
 
@@ -76,7 +93,13 @@ COULEURS_EXT = {
 	# JOH2 : W mer (décor), f clôture et e pré de l'enclos, M Ferme Meumeu, B Tour Cendrée, K Tour Carillon,
 	# S maison des sages
 	"W": EAU_PROFONDE, "f": PELOUSE, "e": (122, 170, 80), "M": PELOUSE, "B": PELOUSE, "K": FORET, "S": PELOUSE,
+	# JOH3 : a arbre fruitier, b pont, X barrière de chantier, r rocher, U Tour Radio, A Grand Magasin,
+	# L maison du lien, F gare
+	"a": PELOUSE, "b": EAU_PROFONDE, "X": PELOUSE, "r": PELOUSE, "U": PELOUSE, "A": PELOUSE, "L": PELOUSE,
+	"F": PELOUSE,
 }
+SOL_INT, MUR_INT, NOIR = (200, 186, 150), (78, 70, 64), (10, 10, 12)
+COULEURS_INT = {"X": MUR_INT, ".": SOL_INT, "b": SOL_INT, "k": SOL_INT, "E": SOL_INT}
 COULEURS_GROTTE = {
 	"#": ROCHE, "o": EAU, ".": (150, 150, 158), "g": GALETS, "w": EAU, "d": EAU_PROFONDE, ">": EAU, "<": EAU,
 	"v": EAU, "^": EAU, "E": (200, 186, 150),
@@ -88,7 +111,10 @@ LEGENDE_EXT = [
 	("C", "Centre"), ("O", "Boutique"), ("m", "Maison 1"), ("N", "Maison 2"), ("P", "Phare"), ("D", "porte"),
 	("E", "bouche de grotte"), ("W", "mer (décor)"), ("f", "clôture de l'enclos"), ("e", "pré de l'enclos"),
 	("M", "Ferme Meumeu"), ("B", "Tour Cendrée"), ("K", "Tour Carillon"), ("S", "maison des sages"),
+	("a", "arbre fruitier"), ("b", "pont"), ("X", "barrière de chantier"), ("r", "rocher"), ("U", "Tour Radio"),
+	("A", "Grand Magasin"), ("L", "maison du lien"), ("F", "gare"),
 ]
+LEGENDE_INT = [("X", "mur"), (".", "sol"), ("b", "boutique fermée"), ("k", "caisse"), ("E", "escalier")]
 LEGENDE_GROTTE = [
 	("#", "paroi"), ("o", "rocher isolé"), (".", "îlot, corniche"), ("g", "plage de galets"), ("w", "eau surfable"),
 	("d", "eau profonde"), (">", "courant →"), ("v", "courant ↓"), ("E", "sortie à pied"),
@@ -99,6 +125,8 @@ SWATCH = {
 	"O": (60, 100, 200), "m": (176, 70, 52), "N": (176, 70, 52), "P": (240, 240, 236), "D": (60, 80, 120),
 	"E": (30, 30, 36), "o": (118, 120, 132), ">": (225, 240, 255), "v": (225, 240, 255),
 	"f": (244, 242, 232), "M": (150, 70, 50), "B": (60, 52, 50), "K": (120, 60, 50), "S": (176, 70, 52),
+	"a": (60, 130, 60), "b": BOIS, "X": (230, 120, 40), "r": (128, 118, 108), "U": (190, 190, 200),
+	"A": (230, 200, 80), "L": (176, 70, 52), "F": (110, 110, 120),
 }
 SYMBOLES = [
 	((255, 120, 220), "warp (raccord, porte)"), ((120, 220, 120), "spawn (arrivée)"), ((80, 150, 255), "PNJ"),
@@ -161,11 +189,12 @@ def _fleche(d, x0: int, y0: int, case: int, sens: tuple[int, int], couleur) -> N
 		(cx + dx * r * 0.1 - px * r * 0.6, cy + dy * r * 0.1 - py * r * 0.6)], fill=couleur)
 
 
-def dessiner_aplats(img: Image.Image, plan: Plan, ox: int, oy: int, case: int, genre: str) -> None:
+def dessiner_aplats(img: Image.Image, plan: Plan, ox: int, oy: int, case: int, genre: str,
+		styles: dict[str, str] | None = None) -> None:
 	"""Aplats et détails « muets » (sans PNJ, objet ni étiquette) de la grille, à `case` px la case."""
 	d = ImageDraw.Draw(img)
-	couleurs = COULEURS_GROTTE if genre == "grotte" else COULEURS_EXT
-	defaut = ROCHE if genre == "grotte" else FORET
+	couleurs = {"grotte": COULEURS_GROTTE, "interieur": COULEURS_INT}.get(genre, COULEURS_EXT)
+	defaut = {"grotte": ROCHE, "interieur": MUR_INT}.get(genre, FORET)
 
 	def coin(x: int, y: int) -> tuple[int, int]:
 		return ox + x * case, oy + y * case
@@ -176,8 +205,30 @@ def dessiner_aplats(img: Image.Image, plan: Plan, ox: int, oy: int, case: int, g
 			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=couleurs.get(plan.at(x, y), defaut))
 	if genre == "grotte":
 		_details_grotte(d, plan, coin, case)
+	elif genre == "interieur":
+		_details_interieur(d, plan, coin, case)
 	else:
-		_details_exterieur(d, plan, coin, case)
+		_details_exterieur(d, plan, coin, case, styles or {})
+
+
+def _details_interieur(d, plan, coin, case) -> None:
+	for x, y in plan.cells_of("X"):                     # mur du fond (au-dessus du sol) plus clair
+		if _voisin(plan, x, y, 0, 1) not in (None, "X"):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(150, 128, 104))
+	for x, y in plan.cells_of("b"):                     # boutique fermée : devanture et rideau baissé
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(120, 96, 76))
+		if _voisin(plan, x, y, 0, 1) == "." or _voisin(plan, x, y, 0, -1) == ".":
+			for k in range(2, case - 2, max(3, case // 5)):
+				d.line([x0 + 1, y0 + k, x0 + case - 2, y0 + k], fill=(160, 150, 140), width=1)
+	for x, y in plan.cells_of("k"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], fill=BOIS, outline=BOIS_2, width=2)
+	for x, y in plan.cells_of("E"):                     # escalier : marches
+		x0, y0 = coin(x, y)
+		for k in range(4):
+			d.rectangle([x0 + 1, y0 + k * case // 4, x0 + case - 2, y0 + k * case // 4 + case // 8], fill=(120, 110, 96))
 
 
 def _details_grotte(d, plan, coin, case) -> None:
@@ -210,12 +261,15 @@ def _details_grotte(d, plan, coin, case) -> None:
 		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(228, 216, 180))
 
 
-def _details_exterieur(d, plan, coin, case) -> None:
+def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 	for x, y in plan.cells_of("T"):                     # bord de la forêt
 		if _bord(plan, x, y, "T"):
 			x0, y0 = coin(x, y)
 			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=FORET_BORD)
-	for x, y in plan.cells_of("R") + plan.cells_of("P") + plan.cells_of("E"):   # falaise : rochers
+	rochers = plan.cells_of("R") + plan.cells_of("r")
+	if styles.get("P", "phare") == "phare":
+		rochers += plan.cells_of("P") + plan.cells_of("E")
+	for x, y in rochers:                                # falaise : rochers
 		if (x * 2 + y) % 3 == 0:
 			x0, y0 = coin(x, y)
 			d.ellipse([x0 + 2, y0 + 3, x0 + case - 3, y0 + case - 4], fill=FALAISE_2)
@@ -234,7 +288,28 @@ def _details_exterieur(d, plan, coin, case) -> None:
 		for k in range(0, case, max(3, case // 4)):
 			d.line([x0, y0 + k, x0 + case - 1, y0 + k], fill=BOIS_2, width=1)
 	_vagues(d, plan, coin, case, "wW")
-	for x, y in plan.cells_of("f"):                     # clôture de bois : lisse et poteaux
+	for x, y in plan.cells_of("r"):                     # rocher isolé
+		x0, y0 = coin(x, y)
+		d.ellipse([x0 + 1, y0 + 2, x0 + case - 2, y0 + case - 2], fill=FALAISE, outline=(98, 90, 82))
+	for x, y in plan.cells_of("b"):                     # pont de planches sur la rivière
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=BOIS)
+		for k in range(0, case, max(3, case // 4)):
+			d.line([x0 + k, y0, x0 + k, y0 + case - 1], fill=BOIS_2, width=1)
+	for x, y in plan.cells_of("X"):                     # barrière de chantier rayée
+		x0, y0 = coin(x, y)
+		d.rectangle([x0 + case // 3, y0, x0 + case * 2 // 3, y0 + case - 1], fill=(240, 240, 236))
+		for k in range(0, case, max(4, case // 3)):
+			d.rectangle([x0 + case // 3, y0 + k, x0 + case * 2 // 3, y0 + k + max(2, case // 6)], fill=(230, 120, 40))
+	for x, y in plan.cells_of("a"):                     # arbre fruitier : couronne ronde et fruits
+		x0, y0 = coin(x, y)
+		d.ellipse([x0 - case // 4, y0 - case // 4, x0 + case + case // 4, y0 + case + case // 4], fill=(60, 130, 60),
+			outline=FORET_BORD)
+		for k in range(3):
+			px, py = x0 + case * (1 + 2 * k) // 6, y0 + case // 3 + (k % 2) * case // 3
+			d.ellipse([px - 2, py - 2, px + 2, py + 2], fill=(230, 60, 60))
+	cloture = plan.cells_of("f") + (plan.cells_of("x") if styles.get("x") == "cloture" else [])
+	for x, y in cloture:                                # clôture de bois : lisse et poteaux
 		x0, y0 = coin(x, y)
 		gauche = _voisin(plan, x, y, -1, 0) == "f"
 		droite = _voisin(plan, x, y, 1, 0) == "f"
@@ -250,9 +325,10 @@ def _details_exterieur(d, plan, coin, case) -> None:
 		x0, y0 = coin(x, y)
 		d.line([x0 + 2, y0 + case - 3, x0 + case // 2, y0 + 3], fill=(110, 130, 20), width=1)
 		d.line([x0 + case - 3, y0 + case - 3, x0 + case // 2, y0 + 3], fill=(110, 130, 20), width=1)
-	for x, y in plan.cells_of("x"):                     # haie : bande continue
-		x0, y0 = coin(x, y)
-		d.rectangle([x0, y0 + 2, x0 + case - 1, y0 + case - 3], fill=(40, 110, 50))
+	if styles.get("x") != "cloture":
+		for x, y in plan.cells_of("x"):                 # haie : bande continue
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0 + 2, x0 + case - 1, y0 + case - 3], fill=(40, 110, 50))
 	for x, y in plan.cells_of("y"):                     # massif de fleurs
 		x0, y0 = coin(x, y)
 		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(100, 160, 70))
@@ -270,9 +346,9 @@ def _details_exterieur(d, plan, coin, case) -> None:
 	for x, y in plan.cells_of("k"):                     # caisses
 		x0, y0 = coin(x, y)
 		d.rectangle([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], fill=BOIS, outline=BOIS_2, width=2)
-	for lettre, toit, mur in (("C", (200, 60, 60), (236, 232, 224)), ("O", (60, 100, 200), (236, 232, 224)),
-			("m", (176, 70, 52), (226, 214, 190)), ("N", (176, 70, 52), (226, 214, 190)),
-			("S", (176, 70, 52), (226, 214, 190)), ("M", (150, 70, 50), (214, 196, 160))):
+	for lettre, (toit, mur) in BATIMENTS.items():
+		if len(lettre) != 1 or lettre in styles:
+			continue
 		cases = plan.cells_of(lettre)
 		if not cases:
 			continue
@@ -281,6 +357,35 @@ def _details_exterieur(d, plan, coin, case) -> None:
 		if lettre in "CO":                              # emblème rond sans texte
 			cx, cy, r = (x0 + x1) // 2, y0 + (y1 - y0) * 3 // 10, (y1 - y0) // 8
 			d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(245, 245, 245), outline=(60, 60, 60))
+		if lettre == "A":                               # Grand Magasin : vitrines du rez-de-chaussée
+			for k in range(1, 6):
+				vx = x0 + (x1 - x0) * k // 6
+				d.rectangle([vx - case // 3, y1 - case * 3 // 2, vx + case // 3, y1 - case // 2], fill=(120, 170, 220))
+		if lettre == "F":                               # gare : horloge ronde sur le fronton
+			cx, cy, r = (x0 + x1) // 2, y0 + (y1 - y0) * 3 // 10, (y1 - y0) // 10
+			d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(245, 245, 240), outline=(60, 60, 60))
+	if styles.get("P") == "parc":                       # grille du Parc National : piliers de pierre, grille de fer
+		x0, y0, x1, y1 = _boite(d, plan.cells_of("P"), coin, fill=(100, 150, 80), outline=(70, 60, 50), width=2)
+		d.rectangle([x0, y0, x0 + case - 1, y1 - 1], fill=(180, 174, 160), outline=(70, 60, 50))
+		d.rectangle([x1 - case, y0, x1 - 1, y1 - 1], fill=(180, 174, 160), outline=(70, 60, 50))
+		for k in range(x0 + case + case // 2, x1 - case, max(4, case // 2)):
+			d.line([k, y0 + 2, k, y1 - 2], fill=(40, 40, 48), width=2)
+		d.line([x0 + case, y0 + case // 2, x1 - case, y0 + case // 2], fill=(40, 40, 48), width=2)
+	if styles.get("P") == "poste":                      # poste de garde : murs clairs, toit d'ardoise
+		toit, mur = BATIMENTS["poste"]
+		x0, y0, x1, y1 = _boite(d, plan.cells_of("P"), coin, fill=mur, outline=(70, 70, 80), width=2)
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) // 2], fill=toit, outline=(50, 54, 64), width=2)
+		px, py = x0, (y0 + y1) // 2 - case // 2        # porte latérale côté chemin (ouest)
+		d.rectangle([px, py + 2, px + case - 1, py + case - 3], fill=(80, 52, 32))
+	if plan.cells_of("U"):                              # Tour Radio : haute tour claire, antenne sur le toit
+		x0, y0, x1, y1 = _boite(d, plan.cells_of("U"), coin, fill=(214, 214, 222), outline=(70, 70, 90), width=2)
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) // 4], fill=(120, 130, 160), outline=(50, 54, 70), width=2)
+		cx = (x0 + x1) // 2
+		d.line([cx, y0 - case, cx, y0 + case], fill=(200, 40, 40), width=max(3, case // 3))
+		for k in range(1, 4):                           # rangées de fenêtres
+			yk = y0 + (y1 - y0) * k // 4 + case // 2
+			for vx in range(x0 + case, x1 - case // 2, case):
+				d.rectangle([vx, yk, vx + case // 2, yk + case // 2], fill=(120, 170, 220))
 	if plan.cells_of("M"):                              # Ferme : porte décor fermée au milieu de la façade
 		x0, y0, x1, y1 = _boite(d, plan.cells_of("M"), coin)
 		px, py = (x0 + x1) // 2 - case // 2, y1 - case
@@ -298,7 +403,7 @@ def _details_exterieur(d, plan, coin, case) -> None:
 			yk = y0 + h * k // 3
 			d.rectangle([x0 - case // 4 * (2 - k), yk, x1 - 1 + case // 4 * (2 - k), yk + h // 6], fill=(170, 50, 40),
 				outline=(90, 30, 24), width=2)
-	if plan.cells_of("P"):                              # Phare : tour blanche à bandes, lanterne rouge
+	if plan.cells_of("P") and styles.get("P", "phare") == "phare":   # Phare : tour blanche à bandes, lanterne rouge
 		x0, y0, x1, y1 = _boite(d, plan.cells_of("P"), coin, fill=(240, 240, 236), outline=(90, 90, 100), width=2)
 		h = y1 - y0
 		for k in range(1, 5):
@@ -311,9 +416,14 @@ def _details_exterieur(d, plan, coin, case) -> None:
 	for x, y in plan.cells_of("D"):                     # portes
 		px, py = coin(x, y)
 		d.rectangle([px + 3, py + case // 4, px + case - 4, py + case - 1], fill=(60, 80, 120))
-	for x, y in plan.cells_of("E"):                     # bouche de grotte dans la falaise
+	for x, y in plan.cells_of("E"):                     # bouche de grotte dans la falaise, ou escalier
 		px, py = coin(x, y)
-		d.rectangle([px, py, px + case - 1, py + case - 1], fill=(30, 30, 36))
+		if styles.get("E") == "escalier":
+			d.rectangle([px, py, px + case - 1, py + case - 1], fill=(60, 60, 70))
+			for k in range(4):
+				d.rectangle([px + 1, py + k * case // 4, px + case - 2, py + k * case // 4 + case // 8], fill=(150, 150, 160))
+		else:
+			d.rectangle([px, py, px + case - 1, py + case - 1], fill=(30, 30, 36))
 	for p in plan.of_kind("panneau"):                   # panneaux sans texte
 		for x, y in p.cells:
 			px, py = coin(x, y)
@@ -327,11 +437,11 @@ def _geometrie(largeur: int, hauteur: int, taille: tuple[int, int]) -> tuple[int
 	return case, (taille[0] - case * largeur) // 2, (taille[1] - case * hauteur) // 2
 
 
-def plan_codex(zone: str, grille: str, taille: tuple[int, int], genre: str) -> Path:
+def plan_codex(zone: str, grille: str, taille: tuple[int, int], genre: str, styles=None) -> Path:
 	plan = lire(PLANS / f"{grille}.txt")
-	img = Image.new("RGB", taille, ROCHE if genre == "grotte" else FORET)
+	img = Image.new("RGB", taille, {"grotte": ROCHE, "interieur": NOIR}.get(genre, FORET))
 	case, ox, oy = _geometrie(plan.width, plan.height, taille)
-	dessiner_aplats(img, plan, ox, oy, case, genre)
+	dessiner_aplats(img, plan, ox, oy, case, genre, styles)
 	ART.mkdir(parents=True, exist_ok=True)
 	sortie = ART / f"PLAN_{zone}_codex.png"
 	img.save(sortie)
@@ -427,9 +537,10 @@ def _annoter(img: Image.Image, plan: Plan, ox: int, oy: int, case: int) -> None:
 def _legende(img: Image.Image, x: int, y: int, plan: Plan, genre: str, colonnes: int, t: int = 14) -> int:
 	d = ImageDraw.Draw(img, "RGBA")
 	police = fonte(t)
-	couleurs = COULEURS_GROTTE if genre == "grotte" else COULEURS_EXT
+	couleurs = {"grotte": COULEURS_GROTTE, "interieur": COULEURS_INT}.get(genre, COULEURS_EXT)
 	presents = {ch for row in plan.rows for ch in row}
-	entrees = [(ch, nom) for ch, nom in (LEGENDE_GROTTE if genre == "grotte" else LEGENDE_EXT) if ch in presents]
+	legende = {"grotte": LEGENDE_GROTTE, "interieur": LEGENDE_INT}.get(genre, LEGENDE_EXT)
+	entrees = [(ch, nom) for ch, nom in legende if ch in presents]
 	larg = 230
 	for i, (ch, nom) in enumerate(entrees):
 		cx, cy = x + (i % colonnes) * larg, y + (i // colonnes) * (t + 8)
@@ -443,14 +554,14 @@ def _legende(img: Image.Image, x: int, y: int, plan: Plan, genre: str, colonnes:
 	return y + ((len(SYMBOLES) + colonnes - 1) // colonnes) * (t + 8)
 
 
-def plan_annote(grille: str, genre: str, titre: str) -> Path:
+def plan_annote(grille: str, genre: str, titre: str, styles=None) -> Path:
 	plan = lire(PLANS / f"{grille}.txt")
 	case = max(8, min(36, int(1700 / max(plan.width, plan.height))))
 	marge, haut, bas = 40, 56, 200
 	w = max(plan.width * case + 2 * marge, 960)
 	img = Image.new("RGB", (w, plan.height * case + haut + bas), (28, 30, 34))
 	ox = (w - plan.width * case) // 2
-	dessiner_aplats(img, plan, ox, haut, case, genre)
+	dessiner_aplats(img, plan, ox, haut, case, genre, styles)
 	_annoter(img, plan, ox, haut, case)
 	d = ImageDraw.Draw(img)
 	d.text((ox, 14), f"{titre} — tools/plans/{grille}.txt (fait foi)", font=fonte(22, True), fill=(255, 255, 255))
@@ -472,7 +583,8 @@ def planche(jalon: str) -> Path:
 	hauteur = 640
 	police = fonte(26)
 	lignes = []
-	for _, grille, _, _, titre in JALONS[jalon]:
+	for zone in JALONS[jalon]:
+		grille, titre = zone[1], zone[4]
 		images = []
 		for f in (REF / nom_vue(grille), PLANS_REF / nom_plan(grille)):
 			im = Image.open(f).convert("RGB")
@@ -504,11 +616,12 @@ def main() -> int:
 		return 2
 	jalons = args[1:] or list(JALONS)
 	for jalon in jalons:
-		for zone, grille, taille, genre, titre in JALONS[jalon]:
+		for zone, grille, taille, genre, titre, *reste in JALONS[jalon]:
+			styles = reste[0] if reste else None
 			if args[0] == "--plans":
-				print(plan_codex(zone, grille, taille, genre))
+				print(plan_codex(zone, grille, taille, genre, styles))
 			elif args[0] == "--plans-annotes":
-				print(plan_annote(grille, genre, titre))
+				print(plan_annote(grille, genre, titre, styles))
 		if args[0] == "--planche":
 			print(planche(jalon))
 	return 0

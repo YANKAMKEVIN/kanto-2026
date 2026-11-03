@@ -80,7 +80,42 @@ la Ferme Meumeu a une mangeoire et un abreuvoir dans l'enclos (accessoires, pas 
   Boutique, massifs, bancs : conformes.
 - **Toutes** : lumière neutre respectée.
 
-## JOH3 à JOH5
+## JOH3 — Routes 37, 36, 35, Doublonville, Souterrain (planche `joh3-vues-v1.png`) — en attente de Kevin
 
-À faire après validation du JOH2 (Routes 37, 36, 35, Doublonville, souterrain ; Route 34, Bois aux Chênes,
-Écorcia, Puits Ramoloss ; Tour Radio 1F à 5F).
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `route-37-vue-generale-v1.png` | r1 / 1 | `route-38-vue-generale-v1.png` (Johto, lumière neutre) |
+| `route-36-vue-generale-v1.png` | r1 / 1 | `route-13-vue-generale-v1.png` (prairie, eau, lumière neutre) |
+| `route-35-vue-generale-v1.png` | r1 / 1 | `route-39-vue-generale-v1.png` (Johto, eau, clôture blanche) |
+| `doublonville-vue-generale-v1.png` | r1 / 1 | `celadopole-vue-generale-v1.png` (grande ville, grand magasin) |
+| `souterrain-doublonville-vue-generale-v1.png` | r1 / 1 | `souterrain-vue-generale-v1.png` (Souterrain de Kanto) |
+
+Outil : `vues_johto_acte1.py` connaît désormais un genre `interieur` (Souterrain : murs, sol, devantures, escaliers
+sur fond noir) et des **styles par grille** (la lettre `P` est le Phare à Oliville, la grille du Parc sur la Route 36,
+le poste de garde sur la Route 35 ; `x` est une clôture sur la Route 35 ; `E` un escalier à Doublonville).
+
+Défauts pris **[D]** : Tour Radio = tour moderne claire à toit plat et grande antenne rouge et blanche ; Grand Magasin
+= toit jaune doré, vitrines, terrasse sur le toit ; gare = façade de pierre grise à horloge, portes closes ; Souterrain =
+ancienne galerie marchande aux rideaux de fer baissés, néons froids ; portail du Parc National = grille de fer forgé
+entre deux piliers de pierre, sans bâtiment ; arbres fruitiers de la Route 37 = ronds et bas, fruits rouges.
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **Route 37** : conforme (chemin et chicane, bosquet, trois arbres fruitiers, deux poches d'herbes, trois arbres) ;
+  le panneau est à gauche du chemin un peu plus bas que (12, 19 → ici la grille dit (x, y) du panneau de la Route 37 :
+  voir la grille).
+- **Route 36** : le pont est peint **fini** (planches neuves) plutôt qu'inachevé, la barrière rayée est là ; les deux
+  panneaux ont l'air de petits bancs ; la rivière est conforme ; le petit massif de fleurs est là.
+- **Route 35** : conforme (étang, rocher, trois poches, poste à porte ouest, clôture et passage d'une case, touffe
+  d'herbe) ; les arbres isolés sont un peu plus gros que la grille.
+- **Doublonville** : la **place centrale** n'est pas élargie (le pavé garde la largeur de l'avenue, seuls les quatre
+  massifs et les deux escaliers la marquent) ; l'escalier nord-ouest est collé à l'avenue (grille : (31, 25), trois cases à
+  l'ouest) ; la haie à l'est du Grand Magasin est rendue, celle du nord-ouest aussi ; le parvis de la gare est conforme ;
+  pas de panneau visible près de l'avenue au nord.
+- **Souterrain** : conforme (galerie, trois renfoncements, devantures fermées des deux côtés, deux escaliers, salle du
+  fond et sa caisse) ; la salle du fond est un peu moins profonde que ses 4 rangées.
+- **Toutes** : lumière neutre respectée.
+
+## JOH4 et JOH5
+
+À faire ensuite (Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss ; Tour Radio 1F à 5F).
