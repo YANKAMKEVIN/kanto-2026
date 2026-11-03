@@ -9,7 +9,7 @@ func before_all() -> void:
 	items.load_dir()
 	var data := PokemonData.new()
 	data.load_dir()
-	MenuArt.set_tm_types(MenuArt.tm_types(items, data))
+	MenuArt.set_tm_types(items.tm_types(data))
 
 
 func after_all() -> void:

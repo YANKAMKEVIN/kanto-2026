@@ -78,23 +78,9 @@ static func tm_disc_path(type: StringName) -> String:
 	return ITEM_DIR + TM_DISC_PREFIX + String(type) + EXTENSION
 
 
-## Pose la table CT → type (Boot, une fois les objets et les capacités chargés ; [method tm_types]).
+## Pose la table CT → type (Boot, une fois les objets et les capacités chargés, table de la bibliothèque des objets).
 static func set_tm_types(types: Dictionary[StringName, StringName]) -> void:
 	_tm_types = types
-
-
-## Table CT → type de la capacité enseignée, pour [param items] et [param data] (les CS gardent
-## leur icône propre ; une CT dont la capacité est inconnue est omise).
-static func tm_types(items: ItemLibrary, data: PokemonData) -> Dictionary[StringName, StringName]:
-	var result: Dictionary[StringName, StringName] = {}
-	for item_id: StringName in items.get_ids():
-		var item := items.get_item(item_id)
-		if item == null or not item.is_tm() or item.is_hm() or not data.has_move(item.teaches):
-			continue
-		var type := data.get_move(item.teaches).type
-		if not type.is_empty():
-			result[item_id] = type
-	return result
 
 
 ## Icône peinte de [param item_id] ; null si l'objet n'en a pas (l'écran garde son icône).

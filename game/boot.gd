@@ -322,7 +322,7 @@ func _ready() -> void:
 	_switch_puzzles.load_file()
 	_items.check_moves(_pokemon)
 	# Icônes des CT (RP-256) : un disque peint par type de la capacité enseignée.
-	MenuArt.set_tm_types(MenuArt.tm_types(_items, _pokemon))
+	MenuArt.set_tm_types(_items.tm_types(_pokemon))
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).

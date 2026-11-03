@@ -19,7 +19,7 @@ func after_each() -> void:
 
 
 func test_every_tm_type_has_its_painted_disc() -> void:
-	var types := MenuArt.tm_types(_items, _data)
+	var types := _items.tm_types(_data)
 	assert_gt(types.size(), 40, "toutes les CT ont un type")
 	for type: StringName in types.values():
 		assert_has(TM_TYPES, type, "type de CT prévu : %s" % type)
@@ -32,7 +32,7 @@ func test_every_tm_type_has_its_painted_disc() -> void:
 
 
 func test_tm_resolves_to_its_type_disc_and_hm_keeps_its_own() -> void:
-	MenuArt.set_tm_types(MenuArt.tm_types(_items, _data))
+	MenuArt.set_tm_types(_items.tm_types(_data))
 	assert_eq(MenuArt.item_icon_path(&"tm38"), MenuArt.tm_disc_path(&"fire"), "Déflagration")
 	assert_eq(MenuArt.item_icon_path(&"tm01"), MenuArt.tm_disc_path(&"normal"), "Ultimapoing")
 	assert_eq(MenuArt.item_icon(&"tm24"), load(MenuArt.tm_disc_path(&"electric")), "Tonnerre")
