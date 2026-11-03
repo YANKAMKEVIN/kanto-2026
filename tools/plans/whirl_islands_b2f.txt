@@ -1,7 +1,8 @@
 # Îles Tourbillon B2F (whirl_islands_b2f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ;
 # dossier docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étape 7), §7, §9, textes M-22 à M-25, M-34). Carte intérieure.
-# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
-# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
 #
 # 24 × 24 cases (dossier : ≈ 24 × 24) ; nord en haut ; x = colonne 0..23, y = rangée 0..23.
 #

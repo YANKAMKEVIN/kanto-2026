@@ -1,8 +1,9 @@
 # Îles Tourbillon B1F (whirl_islands_b1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ;
 # dossier docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étapes 4 à 7), §5 à §10, textes M-11 à M-21, M-26 à M-28, M-33).
 # Carte intérieure ; légende des grottes de Kanto et de la grotte marine (courants).
-# Préparée le 2026-11-03 pour la vue générale peinte ; à valider par Kevin. Source UNIQUE de la
-# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
 #
 # 36 × 28 cases (dossier : ≈ 36 × 28) ; nord en haut ; x = colonne 0..35, y = rangée 0..27.
 #

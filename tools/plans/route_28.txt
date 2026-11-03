@@ -1,0 +1,64 @@
+# Route 28 (route_28) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ; dossier
+# docs/design/dossier-joh-10-mont-argente.md §3, §4 (étape 10), §5 à §7, textes A-7, A-46 à A-48).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# 44 × 20 cases (dossier : ≈ 44 × 20) ; nord en haut ; x = colonne 0..43, y = rangée 0..19.
+#
+# Composition (col de montagne, versant ouest du Mont Argenté) :
+#   - CHEMIN (=, y 10) du bord EST (43, 10), sortie ouest de la grotte 1F, jusqu'au POSTE DE LA
+#     ROUTE 28 (P, x 2..6, y 5..9, porte (4, 9)) à l'ouest, vers la Route 22 de Kanto.
+#   - MAISON DU GARDIEN (m, 7 × 6, x 20..26, y 4..9, porte (23, 9)) ; TOPDRESSEUR JULES (30, 14),
+#     évitable ; H1 (x 10..16, y 13..17), H2 (x 30..37, y 4..8) ; versant rocheux (R) au nord.
+#
+# Raccords :
+#   EST (43, 10) ↔ Grotte 1F, sortie ouest (0, 23) (1 case, warps case à case).
+#   D (4, 9) ↔ Poste de la Route 28, ouverture nord (4..5, 1), arrivée (4, 2) ; retour (4, 10).
+#
+# Légende :
+#   T forêt et bordure (bloquée)   R versant rocheux (bloqué)   . pré de montagne (praticable, aucune
+#   rencontre)   = chemin (praticable)   h herbes hautes (praticables, rencontres de jour)
+#   G sapin (bloqué)   P poste de la Route 28   m maison du gardien (emprises bloquées)
+#   D porte (praticable, STEP_ON ↑)
+# Défauts [D] : poste en bâtiment propre (modèle du poste de la Ligue, 10 × 8) ; maison du gardien
+# sans texte dans le dossier (intérieur : modèle des maisons).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 44 caractères), puis POSITIONS.
+
+PRATICABLES .=hD
+
+GRILLE 44 20
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+02 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+03 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+04 T...................mmmmmmm...hhhhhhhh.....T
+05 T.PPPPP.............mmmmmmm.G.hhhhhhhh.....T
+06 T.PPPPP......G......mmmmmmm...hhhhhhhh.....T
+07 T.PPPPP.............mmmmmmm...hhhhhhhh.....T
+08 T.PPPPP.............mmmmmmm...hhhhhhhh.....T
+09 T.PPDPP.............mmmDmmm................T
+10 T...========================================
+11 T...=......................................T
+12 T...=......................................T
+13 T.........hhhhhhh..........................T
+14 T.........hhhhhhh..........................T
+15 T.......G.hhhhhhh...................G......T
+16 T.........hhhhhhh.......................G..T
+17 T.........hhhhhhh..........................T
+18 T..........................................T
+19 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_est             warp           43,10        libre    # PUSH → → mt_silver_1f, from_route_28 (1, 23)
+from_mt_silver       spawn          43,10        libre   facing=left  # arrivée de la grotte 1F ; titre de zone « Route 28 » (A-7)
+porte_poste          warp           4,9          libre    # STEP_ON ↑ → route_28_gate, from_route_28 (4, 2)
+from_gate            spawn          4,10         libre   facing=down  # sortie du poste côté Johto
+porte_maison         warp           23,9         libre    # STEP_ON ↑ → route_28_house (le gardien)
+retour_maison        spawn          23,10        libre   facing=down
+jules                dresseur       30,14        bloque  role=topdresseur facing=up sight=2  # Tyranocif 68, Airmure 66, Arcanin 66 ; évitable
+herbes_h1            herbes         13,15        libre   role=H1  # sud
+herbes_h2            herbes         33,6         libre   role=H2  # nord, près de la maison
+FIN

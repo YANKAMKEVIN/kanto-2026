@@ -1,0 +1,74 @@
+# Mont Argenté, grotte 2F (mt_silver_2f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ;
+# dossier docs/design/dossier-joh-10-mont-argente.md §3, §4 (étape 5), §5, §7, textes A-16, A-17, A-19 à A-21). Carte intérieure
+# dans l'OBSCURITÉ (voile du J17, Flash automatique : A-16, A-17).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# 32 × 28 cases (dossier : ≈ 32 × 28) ; nord en haut ; x = colonne 0..31, y = rangée 0..27.
+#
+# Composition (galeries dans le noir) :
+#   - ÉCHELLE qui descend (D, (28, 2)) au nord-est ; DESCENTE EST (x 26..29, y 3..12) ; GALERIE
+#     TRANSVERSALE (y 10..12, x 4..29) ; DESCENTE OUEST (x 3..5, y 13..22) ; SALLE DE L'ÉCHELLE
+#     (x 2..9, y 20..24) avec l'ÉCHELLE qui monte (U, (2, 21)) vers le 3F.
+#   - La galerie transversale est le seul passage : la SCÈNE DU RIVAL (« scene_rival », (14, 10..12),
+#     A-19 à A-21) le rattrape dans le noir, soigne l'équipe et redescend.
+#   - SALLE LATÉRALE (x 10..20, y 16..22, gravats : Embrylex) par le passage (6..9, 18..19) ; ALCÔVE
+#     NORD (x 20..24, y 4..9, gravats) depuis la galerie.
+#   - Position « obscurite » (zone) : toute la carte sous le voile, Flash automatique à l'entrée.
+#
+# Raccords :
+#   D (28, 2) ↔ 1F, échelle U (28, 2), arrivée (28, 3) de chaque côté (paire ms_1).
+#   U (2, 21) ↔ 3F, échelle D (2, 21), arrivée (3, 21) de chaque côté (paire ms_2).
+#
+# Légende :
+#   # paroi rocheuse (bloquée)   . sol de grotte calme (aucune rencontre)   g gravats (praticables,
+#   rencontres du 2F)   o rocher (bloqué)   U échelle qui monte   D échelle qui descend (praticables, warps)
+# Défauts [D] : le rival repart par la descente est ; aucun Dresseur au 2F.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 32 caractères), puis POSITIONS.
+
+PRATICABLES .gUD
+
+GRILLE 32 28
+00 ################################
+01 ################################
+02 ############################D###
+03 ##########################....##
+04 ####################.....#....##
+05 ####################.ggg.#....##
+06 ####################.gog.#....##
+07 ####################.ggg.#....##
+08 ####################.....#....##
+09 #####################...##....##
+10 ####..........................##
+11 ####....o.......o.............##
+12 ####..........................##
+13 ###...##########################
+14 ###...##########################
+15 ###...##########################
+16 ###...####...........###########
+17 ###...####.ggggggggg.###########
+18 ###........ggggggggg.###########
+19 ###........ggggogggg.###########
+20 ##.........ggggggggg.###########
+21 ##U........ggggggggg.###########
+22 ##...................###########
+23 ##........######################
+24 ##........######################
+25 ################################
+26 ################################
+27 ################################
+FIN
+
+POSITIONS
+vers_1f              escalier       28,2         libre   paire=ms_1 sens=descend vers=mt_silver_1f:from_2f  # échelle vers le 1F
+from_1f              spawn          28,3         libre   paire=ms_1 facing=down  # arrivée depuis le 1F ; A-16 puis Flash (A-17)
+vers_3f              escalier       2,21         libre   paire=ms_2 sens=monte vers=mt_silver_3f:from_2f  # échelle vers le 3F
+from_3f              spawn          3,21         libre   paire=ms_2 facing=left  # arrivée depuis le 3F, à côté de l'échelle
+obscurite            zone           1..30,1..26  libre   role=voile flash=auto  # voile d'obscurité du J17 ; Flash automatique
+scene_rival          declencheur    14,10..12    libre   actif_sans=johto_rival_healed  # A-19 à A-21 : le rival rattrape le joueur, soigne l'équipe ; pose johto_rival_healed
+rival_2f             pnj            18,11        libre   role=rival facing=left apparait=scene_rival actif_sans=johto_rival_healed  # arrive en courant par l'est, repart par là [D]
+gravats_laterale     gravats        15,18        libre   role=G1  # salle latérale (Embrylex)
+gravats_nord         gravats        22,5         libre   role=G2  # alcôve nord
+FIN
