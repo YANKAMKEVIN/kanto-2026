@@ -18,7 +18,7 @@ LOGO = RACINE / f"assets/ui/opening/logo_{NOM}.png"
 SORTIE = RACINE / f"assets/ui/opening/logo_{NOM}_ombre.png"
 TEINTE = (10, 16, 32)       # bleu nuit du contour du logo, plus sombre
 PROCHE = (6, 14, 0.85)      # dilatation (px), flou (px), opacité : ombre portée serrée
-VOILE = (10, 40, 0.78)      # voile large et doux sous tout le logo (lisibilité de « 2026 »)
+VOILE = (12, 44, 0.86)      # voile large et doux sous tout le logo (J34 : un peu plus sombre et large)
 
 
 def couche(masque: Image.Image, dilatation: int, flou: float, opacite: float) -> np.ndarray:

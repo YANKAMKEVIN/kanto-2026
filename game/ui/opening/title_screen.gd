@@ -30,7 +30,7 @@ const LOGO: Texture2D = preload("res://assets/ui/opening/logo_pokemake.png")
 ## Ombre douce du logo (DAF.7b, `tools/art/ombre_logo.py`) : même cadre que le logo, posée sous
 ## lui, décalée vers le bas de [constant LOGO_SHADOW_DROP] pixels de référence.
 const LOGO_SHADOW: Texture2D = preload("res://assets/ui/opening/logo_pokemake_ombre.png")
-const LOGO_SHADOW_DROP: float = 6.0
+const LOGO_SHADOW_DROP: float = 10.0  # J34 : 6 → 10, le logo flotte mieux au-dessus du décor
 ## Étiquette de version : largeur et hauteur de sa zone (texte aligné du côté du logo).
 const VERSION_WIDTH: float = 480.0
 const VERSION_HEIGHT: float = 36.0

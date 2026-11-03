@@ -50,10 +50,10 @@ OUTLINE_RED_MAX = 40
 OUTLINE_RING = 2
 # Halo : plancher du fond (luminance) et force du halo gardé (1 = tel quel sur du noir).
 HALO_FLOOR = 0.02
-HALO_STRENGTH = 0.85
+HALO_STRENGTH = 0.6  # J34 : 0,85 faisait un rectangle pâle visible sur l'herbe du titre
 HALO_GAMMA = 1.15
 # Extinction du halo vers les bords de l'image source (px).
-EDGE_FADE = 140
+EDGE_FADE = 220  # J34 : extinction plus large, halo plus doux
 # Seuil d'alpha du recadrage et marge gardée autour (px source).
 CROP_ALPHA = 4
 CROP_MARGIN = 12
@@ -61,7 +61,12 @@ LOGO_WIDTH = 1280
 # Image de démarrage : taille, fond uni (aussi `application/boot_splash/bg_color`), largeur du logo.
 SPLASH_SIZE = (1920, 1080)
 SPLASH_BG = (20, 16, 11)
-SPLASH_LOGO_WIDTH = 1240
+# J34 : vignette radiale (fond SPLASH_BG au centre vers SPLASH_EDGE aux coins), logo un peu plus
+# petit et remonté (centre à SPLASH_LOGO_CENTER_Y de la hauteur) : la ligne dorée ne coupe plus
+# l'image en deux.
+SPLASH_EDGE = (9, 7, 5)
+SPLASH_LOGO_WIDTH = 1100
+SPLASH_LOGO_CENTER_Y = 0.45
 
 
 def _core_mask(rgb: np.ndarray) -> np.ndarray:
@@ -114,6 +119,19 @@ def _resized(image: Image.Image, target_width: int) -> Image.Image:
     return image.resize((target_width, target_height), Image.LANCZOS)
 
 
+def _splash_background() -> Image.Image:
+    """Fond du splash : vignette radiale douce, SPLASH_BG au centre, SPLASH_EDGE dans les coins."""
+    width, height = SPLASH_SIZE
+    ys, xs = np.mgrid[0:height, 0:width].astype(np.float64)
+    dx = (xs - width / 2) / (width / 2)
+    dy = (ys - height / 2) / (height / 2)
+    d = np.clip(np.sqrt(dx * dx + dy * dy) / np.sqrt(2.0), 0.0, 1.0)
+    k = (d * d * (3.0 - 2.0 * d))[..., None]
+    rgb = (1.0 - k) * np.array(SPLASH_BG, dtype=np.float64) + k * np.array(SPLASH_EDGE, dtype=np.float64)
+    rgba = np.dstack([rgb, np.full((height, width), 255.0)]).round().astype(np.uint8)
+    return Image.fromarray(rgba)
+
+
 def main() -> None:
     source = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_SOURCE
     name = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_NAME
@@ -124,9 +142,10 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     logo = detour(source)
     _resized(logo, LOGO_WIDTH).save(logo_out, optimize=True)
-    splash = Image.new("RGBA", SPLASH_SIZE, SPLASH_BG + (255,))
+    splash = _splash_background()
     small = _resized(logo, SPLASH_LOGO_WIDTH)
-    offset = ((SPLASH_SIZE[0] - small.width) // 2, (SPLASH_SIZE[1] - small.height) // 2)
+    offset = ((SPLASH_SIZE[0] - small.width) // 2,
+              round(SPLASH_SIZE[1] * SPLASH_LOGO_CENTER_Y - small.height / 2))
     splash.alpha_composite(small, offset)
     splash.convert("RGB").save(splash_out, optimize=True)
     print(f"{logo_out.relative_to(ROOT)} : {LOGO_WIDTH} px de large")
