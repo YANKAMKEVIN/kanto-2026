@@ -1,0 +1,101 @@
+# Route 43 (route_43) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ; dossier
+# docs/design/dossier-joh-07-acajou.md §3, §4 (étape 7), §5 à §7, textes C-20 à C-23).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 24 × 52 cases (dossier : ≈ 24 × 52) ; nord en haut ; x = colonne 0..23, y = rangée 0..51.
+#
+# Composition (route boisée, tout à angles droits) :
+#   - CHEMIN (=, x 10..12) du bord SUD (Acajou) au bord NORD (Lac Colère).
+#   - PÉAGE à mi-route (y 24) : CLÔTURE (x) d'un bord à l'autre, POSTE DE PÉAGE en façade (K, x 13..17,
+#     y 21..24, bloqué, pas d'intérieur [D]) et un SEUL PASSAGE (11, 24). Le SBIRE PÉAGER (12, 25)
+#     regarde la case (11, 25), seule case d'où l'on atteint le passage : INÉVITABLE (C-22). Le SBIRE Q
+#     (8, 21), au nord du péage, est évitable par l'est du chemin (C-21).
+#   - CAMPEUR BASILE (14, 10) près de la sortie nord, évitable ; Max Potion dans la poche nord-est
+#     (20, 14) ; H1 (x 2..8, y 4..10), H2 (x 14..21, y 30..36), H3 (x 2..8, y 40..46), évitables.
+#   - Panneau (13, 48) à l'entrée sud.
+#
+# Raccords :
+#   SUD (10..12, 51) ↔ Acajou, bord nord (16..18, 0) (colonnes différentes, warps case à case).
+#   NORD (10..12, 0) ↔ Lac Colère, bord sud (26..28, 51) (colonnes différentes, warps case à case).
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   . pré (praticable)   = chemin (praticable)
+#   h herbes hautes (praticables, rencontres)   x clôture du péage (bloquée)
+#   K poste de péage (façade, bloquée)   G arbre repère (bloqué)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .=h
+
+GRILLE 24 52
+00 TTTTTTTTTT===TTTTTTTTTTT
+01 T.........===..........T
+02 T.........===..........T
+03 T.........===..........T
+04 T.hhhhhhh.===..........T
+05 T.hhhhhhh.===.......G..T
+06 T.hhhhhhh.===..........T
+07 T.hhhhhhh.===..........T
+08 T.hhhhhhh.===..........T
+09 T.hhhhhhh.===..........T
+10 T.hhhhhhh.===..........T
+11 T.........===..........T
+12 T.........===..........T
+13 T.........===..........T
+14 T.........===..........T
+15 T.........===..........T
+16 T..G......===..........T
+17 T.........===..........T
+18 T.........===.......G..T
+19 T.........===..........T
+20 T.........===..........T
+21 T.........===KKKKK.....T
+22 T.........===KKKKK.....T
+23 T.........===KKKKK.....T
+24 Txxxxxxxxxx=xKKKKKxxxxxT
+25 T.........===..........T
+26 T.........===..........T
+27 T.........===..........T
+28 T...G.....===..........T
+29 T.........===..........T
+30 T.........===.hhhhhhhh.T
+31 T.........===.hhhhhhhh.T
+32 T.........===.hhhhhhhh.T
+33 T..G......===.hhhhhhhh.T
+34 T.........===.hhhhhhhh.T
+35 T.........===.hhhhhhhh.T
+36 T.........===.hhhhhhhh.T
+37 T.........===..........T
+38 T.........===..........T
+39 T.........===..........T
+40 T.hhhhhhh.===..........T
+41 T.hhhhhhh.===..........T
+42 T.hhhhhhh.===..........T
+43 T.hhhhhhh.===..........T
+44 T.hhhhhhh.===.......G..T
+45 T.hhhhhhh.===..........T
+46 T.hhhhhhh.===..........T
+47 T.........===..........T
+48 T.........===..........T
+49 T.........===..........T
+50 T.........===..........T
+51 TTTTTTTTTT===TTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_sud             warp           10..12,51    libre    # PUSH ↓ → mahogany_town, from_route_43 (16..18, 0)
+from_mahogany        spawn          10..12,51    libre   facing=up  # arrivée d'Acajou ; titre de zone « Route 43 »
+warp_nord            warp           10..12,0     libre    # PUSH ↑ → lake_of_rage, from_route_43 (26..28, 51)
+from_lake            spawn          10..12,0     libre   facing=down  # arrivée du Lac Colère
+panneau              panneau        13,48        bloque   # C-20, lu depuis (13, 49) ↑
+poste_peage          repere         13..17,21..24 bloque  role=facade  # poste de péage tenu par les Sbires (façade)
+peager               dresseur       12,25        bloque  role=sbire facing=left sight=1  # C-22 : Démolosse 54, Smogogo 53 ; INÉVITABLE ; pose johto_toll_cleared
+sbire_q              dresseur       8,21         bloque  role=sbire facing=right sight=2  # C-21 : Arbok 52, Nosferalto 52 ; évitable
+basile               dresseur       14,10        bloque  role=campeur facing=left sight=2  # C-23 : Nidoking 52, Rapasdepic 51 ; évitable
+max_potion           objet_visible  20,14        bloque  item=max_potion  # poche nord-est
+herbes_h1            herbes         5,7          libre   role=H1  # poche nord-ouest
+herbes_h2            herbes         17,33        libre   role=H2  # poche est
+herbes_h3            herbes         5,43         libre   role=H3  # poche sud-ouest
+FIN

@@ -168,7 +168,6 @@ func _giovanni() -> void:
 	var battle_director: BattleDirector = _boot.call(&"get_battle_director")
 	var battle_hud: BattleHud = _boot.call(&"get_battle_hud")
 	await _press_interact()
-	var shot_card := false
 	var shot_battle := false
 	var battle_frames := 0
 	var guard := 0
@@ -179,12 +178,6 @@ func _giovanni() -> void:
 		if summary != null and summary.visible:
 			await _frames(10)
 			summary.tap()
-		var card: Node = hud.call(&"get_champion_card")
-		if card.call(&"is_showing") and not shot_card:
-			shot_card = true
-			await _frames(25)
-			await _shot("giovanni_carte")
-			card.call(&"skip_hold")
 		if battle_director.is_running():
 			battle_frames += 1
 			if battle_frames == 90 and not shot_battle:

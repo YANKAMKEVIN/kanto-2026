@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — ARÈNE DE JADIELLE, version 2 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte Giovanni, Champion d'Arène de Jadielle (type Sol) et chef de la Team Rocket, au DERNIER badge. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = le décor de combat VALIDÉ de l'Arène d'Argenta : c'est la CIBLE EXACTE de la richesse, de la profondeur, de la perspective de trois-quarts, du cadrage et du rendu ; IMAGE 2 = l'ancien décor de l'Arène de Jadielle (lieu, matériaux, couleurs à GARDER : grande salle de pierre ocre et brune, piliers, lumière chaude) mais trop vide et trop plat.
+
+LIEU : la grande salle de l'Arène de Jadielle, solennelle et un peu inquiétante : murs de grands blocs de pierre brun sombre et ocre, lourds piliers carrés de pierre sculptée, appliques de bronze à flammes chaudes, deux statues de pierre de Rhinocorne de part et d'autre d'une estrade au fond, une large estrade de trois marches au fond à droite surmontée d'un grand emblème circulaire de pierre gravé d'un motif de terre (rien d'écrit), tentures brun-rouge sombre aux murs. Au sol, de grandes dalles de pierre sablée polies avec, sur les côtés, quelques DALLES À FLÈCHES gravées (flèches de pierre incrustées, ocre clair) qui rappellent le puzzle de l'Arène, et du sable fin dans les joints. Lumière dorée chaude qui tombe de hautes fenêtres étroites en haut à gauche, rayons de poussière en diagonale, ombres longues ; fond plus sombre pour la solennité.
+
+PERSPECTIVE (impératif, comme l'IMAGE 1, la vue NE DOIT PAS être symétrique) : caméra sur la GAUCHE de la salle, regard légèrement vers la DROITE, en trois-quarts : point de fuite vers x 62 %. Piliers de GAUCHE proches, énormes, coupés par le bord gauche et par le haut ; ceux de droite plus petits et plus lointains ; l'estrade vers x 60 à 82 %, en retrait.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND ET DE L'ESTRADE est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL de dalles (vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : dalles plates et nues, déjà sur le sol (l'adversaire y posera les pieds). Rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : dalles plates et nues au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : exactement celui de l'IMAGE 1 : illustration 2D HD peinte, aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette humaine, Pokémon vivant, Poké Ball, logo « R » de la Team Rocket, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

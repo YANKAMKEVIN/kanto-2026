@@ -1,0 +1,69 @@
+# Bois de la Tour (bell_tower_woods) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH8 ; dossier
+# docs/design/dossier-joh-09-tour-carillon.md §3, §4 (étape 2), §6, §7, textes H-1, H-4, H-5, H-11).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh8.py.
+#
+# 24 × 20 cases (dossier : ≈ 24 × 20) ; nord en haut ; x = colonne 0..23, y = rangée 0..19.
+#
+# Composition (petit bois d'érables, lanternes, tout à angles droits) :
+#   - ALLÉE pavée (p, x 10..11) du bord SUD (10..11, 19), au bout du chemin gardé de Rosalia, jusqu'à
+#     la PORTE de la Tour Carillon (D, (10..11, 5)) dans la FAÇADE (K, x 8..15, y 1..5 ; la tour vue de
+#     Rosalia est la même, en façade lointaine).
+#   - Quatre LANTERNES (L) le long de l'allée ; érables (G) ; une touffe d'herbe sans rencontre (h).
+#   - SBIRE DE GUET (16, 10) à l'est de l'allée, évitable (H-5) ; Hyper Potion ×2 (3, 4) à l'ouest ;
+#     panneau H-4 (8, 16).
+#   - Le sage blessé (H-1) est à Rosalia, au pied du chemin gardé (« sage_blesse »), puisque le chemin
+#     ne s'ouvre qu'après le doyen (johto_bell_tower_open) [D].
+#
+# Raccords :
+#   SUD (10..11, 19) ↔ Rosalia, bord nord (42..43, 0) (2 cases ; colonnes différentes, warps case à case).
+#   D (10..11, 5) ↔ Tour Carillon 1F, entrée (11..12, 23), arrivée (11..12, 22) ; retour (10..11, 6).
+#
+# Légende :
+#   T érables serrés et bordure (bloqués)   . sous-bois (praticable, aucune rencontre)
+#   p allée pavée (praticable)   h herbe (praticable, aucune rencontre : lieu sacré, §5)
+#   G érable repère (bloqué)   L lanterne (bloquée)   K façade de la Tour Carillon (bloquée)
+#   D porte de la tour (praticable, STEP_ON ↑)
+# Défauts [D] : aucune rencontre ; Sbire placé par Claude ; sage blessé à Rosalia.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .phD
+
+GRILLE 24 20
+00 TTTTTTTTTTTTTTTTTTTTTTTT
+01 Thh.....KKKKKKKK.......T
+02 Thh.....KKKKKKKK.......T
+03 T..G....KKKKKKKK....G..T
+04 T.......KKKKKKKK.......T
+05 T.......KKDDKKKK.......T
+06 T.........pp...........T
+07 T.........pp...........T
+08 T........LppL..........T
+09 T...G.....pp.......G...T
+10 T.........pp...........T
+11 T.........pp..G........T
+12 T.G.......pp.........G.T
+13 T.........pp...........T
+14 T........LppL..........T
+15 T....G....pp......G....T
+16 T.........pp...........T
+17 T......G..pp...........T
+18 T.........pp...........T
+19 TTTTTTTTTTppTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_sud             warp           10..11,19    libre    # PUSH ↓ → ecruteak_city, from_bois (42..43, 0)
+from_ecruteak        spawn          10..11,19    libre   facing=up  # arrivée de Rosalia ; titre de zone « Bois de la Tour » (H-11)
+porte_tour           warp           10..11,5     libre    # STEP_ON ↑ → bell_tower_1f, from_woods (11..12, 22)
+retour_tour          spawn          10..11,6     libre   facing=down  # sortie de la tour (porte ou Corde Sortie)
+sbire_guet           dresseur       16,10        bloque  role=sbire facing=left sight=2  # H-5 : Smogogo 60, Arbok 60 ; évitable
+hyper_potions        objet_visible  3,4          bloque  item=hyper_potion quantite=2  # dossier §7
+panneau              panneau        8,16         bloque   # H-4, lu depuis (8, 17) ↑
+lanterne_1           decor          9,8          bloque  role=lanterne  # lanterne de pierre
+lanterne_2           decor          12,8         bloque  role=lanterne
+lanterne_3           decor          9,14         bloque  role=lanterne
+lanterne_4           decor          12,14        bloque  role=lanterne
+FIN

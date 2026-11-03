@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 28, LE COL DU VERSANT OUEST (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE ; la carte est une LONGUE BANDE HORIZONTALE au milieu de l'image ; au-dessus et au-dessous, de la FORÊT DENSE. Un col de montagne : on arrive de l'EST (le chemin qui entre par le bord droit, à mi-hauteur, depuis la sortie d'une grotte) et l'on va vers l'OUEST jusqu'à un POSTE DE GARDE, qui marque la frontière d'une autre région.
+Légende du plan :
+- vert très foncé = FORÊT DE MONTAGNE dense (sapins et feuillus), infranchissable (marges) ;
+- bande gris rocheux semée de cailloux, tout le long du nord = un VERSANT ROCHEUX qui borde la route au nord (trois cases de haut, face rocheuse visible côté sud) ;
+- beige = CHEMIN DE TERRE BATTUE d'une case de large (un simple sentier) : du bord droit, tout droit vers l'ouest, jusqu'au pied du poste ; au bout, il remonte d'une case vers la porte du poste ;
+- vert moyen = PRÉ DE MONTAGNE praticable, de part et d'autre du sentier ;
+- jaune-vert olive = HAUTES HERBES, deux blocs : un au nord-est près du versant, un au sud-ouest ;
+- à gauche, rectangle à toit d'ardoise gris-bleu et murs clairs = le POSTE DE LA ROUTE 28 : un poste de garde-route de 5 cases sur 5, comme les postes de Kanto (murs crème, toit d'ardoise, porte au milieu de sa façade sud) ;
+- au centre, rectangle à toit brun-rouge = la MAISON DU GARDIEN, une maison de montagne de 7 cases sur 6 (murs de bois et pierre, toit de tuiles brun-rouge, porte au sud) ;
+- grands disques vert sombre = SAPINS isolés, repères (cinq).
+Respecte ce plan À LA LETTRE : le versant rocheux au nord, le sentier d'une case d'est en ouest, le poste à l'ouest et sa porte au sud, la maison au centre, les deux blocs d'herbes, les sapins. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 43, une route de montagne boisée du même chapitre, déjà peinte en lumière neutre : respecte EXACTEMENT son rendu (mêmes arbres, même herbe, même chemin, même poste de garde, même saturation, même lumière neutre). Ne reprends PAS sa composition (ni clôture).
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « le col » : un col de montagne tranquille sur l'autre versant, l'air vif, un versant de roche au nord, des sapins, un sentier étroit qui redescend vers une autre région ; une maison de gardien isolée, et au bout le petit poste frontière. Calme, un peu mélancolique (c'est le chemin du retour). Palette : PRÉ vert de montagne, ROCHE grise, SAPINS vert profond, SENTIER beige, POSTE crème et ardoise, MAISON bois et tuiles brun-rouge.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche ; aucune teinte dorée ; ombres propres bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; sentier et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun escalier.
+RELIEF : le sol est plat ; le versant du nord domine d'une hauteur nette ; aucun autre rebord.
+NATURE DENSE, OBJETS RARES : la forêt est serrée ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment autre que le poste et la maison ; neige (la neige est restée de l'autre côté) ; eau ; route goudronnée ; clôture ; lumière dorée ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un col de montagne au pied d'un versant rocheux, un sentier étroit entre les sapins, une maison isolée, et au bout un petit poste frontière.

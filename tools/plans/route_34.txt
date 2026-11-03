@@ -1,0 +1,103 @@
+# Route 34 (route_34) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ; dossier
+# docs/design/dossier-joh-05-ecorcia.md §3, §4, §5 à §7, textes E-1 à E-3, E-30, E-32).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
+#
+# 24 × 48 cases (dossier : ≈ 24 × 48) ; nord en haut ; x = colonne 0..23, y = rangée 0..47.
+#
+# Composition (tout à angles droits) :
+#   - CHEMIN (=) du bord NORD (10..12, 0), au sud de Doublonville, au bord SUD (10..12, 47), lisière
+#     du Bois aux Chênes. La MER (M) borde toute la route à l'ouest (décor, bloquée ; « route le long
+#     de la côte », E-32).
+#   - Nord-est : la MAISON DE BORD DE ROUTE (m, 7 × 6, porte (17, 9)) ; l'ancienne Pension, à la
+#     retraite (E-30, sans Pension : cadre §1).
+#   - Ouest : l'ÉTANG CÔTIER (w, x 4..8, y 14..22), pêche et SURF autorisés (JH-36) ; le Pêcheur
+#     (E-2) sur sa rive est ; la Super Potion sur la rive sud (4, 23).
+#   - 3 poches d'herbes hautes : H1 nord-est (x 14..21, y 13..19), H3 est (x 14..21, y 24..30),
+#     H2 sud-ouest (x 3..8, y 28..34), toutes évitables par le chemin.
+#   - Sud : la CLÔTURE du jongleur (x, y 40) coupe la route ; le chemin la franchit par un passage
+#     d'une case (10, 40), sous le regard du Jongleur Félix (11, 40) : INÉVITABLE (dossier §6).
+#
+# Raccords :
+#   NORD (10..12, 0) ↔ Doublonville, bord sud (34..36, 59) (colonnes différentes, warps case à case).
+#   SUD (10..12, 47) ↔ Bois aux Chênes, bord nord (8..10, 0) (idem).
+#
+# Légende :
+#   T forêt et bordure (bloquée)   . pré (praticable)   = chemin (praticable)   h herbes hautes
+#   w eau de l'étang (SURFABLE)   M mer (décor, bloquée)   x clôture (bloquée)
+#   m maison de bord de route (emprise bloquée)   D porte (praticable, STEP_ON ↑)   G arbre repère (bloqué)
+# Défauts [D] : mer à l'ouest (Oliville est sur la côte ouest) ; clôture du jongleur comme le poste
+# de garde de la Route 35 (un seul passage) ; Dresseurs et objets placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .=hwD
+
+GRILLE 24 48
+00 TTTTTTTTTT===TTTTTTTTTTT
+01 TTTTTTTTTT===TTTTTTTTTTT
+02 TTTTTTTTTT===TTTTTTTTTTT
+03 TMM.......===..........T
+04 TMM.......===.mmmmmmm..T
+05 TMM.......===.mmmmmmm..T
+06 TMM.......===.mmmmmmm..T
+07 TMM..G....===.mmmmmmm..T
+08 TMM.......===.mmmmmmm..T
+09 TMM.......===.mmmDmmm..T
+10 TMM.......===..........T
+11 TMM.......===....G.....T
+12 TMM.......===..........T
+13 TMM.......===.hhhhhhhh.T
+14 TMM.wwwww.===.hhhhhhhh.T
+15 TMM.wwwww.===.hhhhhhhh.T
+16 TMM.wwwww.===.hhhhhhhh.T
+17 TMM.wwwww.===.hhhhhhhh.T
+18 TMM.wwwww.===.hhhhhhhh.T
+19 TMM.wwwww.===.hhhhhhhh.T
+20 TMM.wwwww.===..........T
+21 TMM.wwwww.===..........T
+22 TMM.wwwww.===..........T
+23 TMM.......===..........T
+24 TMM.......===.hhhhhhhh.T
+25 TMM...G...===.hhhhhhhh.T
+26 TMM.......===.hhhhhhhh.T
+27 TMM.......===.hhhhhhhh.T
+28 TMMhhhhhh.===.hhhhhhhh.T
+29 TMMhhhhhh.===.hhhhhhhh.T
+30 TMMhhhhhh.===.hhhhhhhh.T
+31 TMMhhhhhh.===..........T
+32 TMMhhhhhh.===..........T
+33 TMMhhhhhh.===..........T
+34 TMMhhhhhh.===..........T
+35 TMM.......===..........T
+36 TMM.......===.....G....T
+37 TMM.......===..........T
+38 TMM.......===..........T
+39 TMM.......===..........T
+40 TMMxxxxxxx=.xxxxxxxxxxxT
+41 TMM.......===..........T
+42 TMM.......===..........T
+43 TMM..G....===...G......T
+44 TMM.......===..........T
+45 TTTTTTTTTT===TTTTTTTTTTT
+46 TTTTTTTTTT===TTTTTTTTTTT
+47 TTTTTTTTTT===TTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           10..12,0     libre    # PUSH ↑ → goldenrod_city, from_route_34 (34..36, 59)
+from_goldenrod       spawn          10..12,0     libre    # arrivée de Doublonville, tournée ↓
+warp_sud             warp           10..12,47    libre    # PUSH ↓ → ilex_forest, from_route_34 (8..10, 0)
+from_ilex            spawn          10..12,47    libre    # arrivée du Bois aux Chênes, tournée ↑
+porte_maison         warp           17,9         libre    # STEP_ON ↑ → route_34_house (l'homme de E-30)
+retour_maison        spawn          17,10        libre    # sortie de la maison, tournée ↓
+pecheur              pnj            9,18         bloque  role=pecheur facing=left  # E-2, rive est de l'étang ; regarde l'eau
+sophie               dresseur       16,21        bloque  facing=down sight=3 trainer=route_34_picnicker_sophie  # Pique-niqueuse Sophie (E-3), Marill 18 + Nidoran♀ 18 ; voit (16, 22..24), évitable
+bruno                dresseur       6,37         bloque  facing=right sight=2 trainer=route_34_pokemaniac_bruno  # Pokémaniac Bruno (E-3), Métamorph 19 + Ramoloss 19 ; voit (7..8, 37), évitable
+felix                dresseur       11,40        bloque  facing=left sight=1 trainer=route_34_juggler_felix  # Jongleur Félix (E-3), Abra 18 + Kadabra 20 ; voit (10, 40), le passage de la clôture : INÉVITABLE
+route_34_item_1      objet_visible  4,23         bloque  item=super_potion  # rive sud de l'étang (dossier §7), pris depuis (5, 23) ← ou (4, 24) ↑
+panneau_route        panneau        9,3          bloque   # E-1, lu depuis (9, 4) ↑
+herbes_h1            herbes         17,16        libre   role=H1  # poche nord-est (évitable)
+herbes_h2            herbes         5,31         libre   role=H2  # poche sud-ouest (évitable)
+herbes_h3            herbes         17,27        libre   role=H3  # poche est (évitable)
+FIN

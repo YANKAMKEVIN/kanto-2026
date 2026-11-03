@@ -37,8 +37,6 @@ func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScree
 	LightGlow.set_reduce_motion(s.reduce_motion)
 	# Brume de la Tour Pokémon (jalon 19, T19) : cachée.
 	MistLayer.set_reduce_motion(s.reduce_motion)
-	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
-	hud.get_champion_card().reduce_motion = s.reduce_motion
 	cutscenes.reduce_motion = s.reduce_motion
 	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage.
 	hud.set_flash_reduced(s.reduce_motion or s.reduce_flashes)

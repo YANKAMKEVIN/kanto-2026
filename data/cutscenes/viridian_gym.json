@@ -23,12 +23,6 @@
 						]
 					},
 					{
-						"champion_card": "viridian_gym_giovanni",
-						"unless": [
-							"giovanni_gym_met"
-						]
-					},
-					{
 						"set": [
 							"giovanni_gym_met"
 						]

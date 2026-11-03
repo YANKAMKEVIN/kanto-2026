@@ -1,0 +1,40 @@
+# Poste de la Route 28 (route_28_gate) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ; dossier
+# docs/design/dossier-joh-10-mont-argente.md §3, §4 (étape 10), §13, textes A-47, A-48 ; JH-8 : seule retouche de Kanto, la porte
+# neuve de la Route 22). Même enveloppe que le poste de la Ligue (tools/plans/poste_ligue.txt, 10 × 8).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# Ouverture NORD (4..5, 1) → Route 28 (4, 10) ; PORTE SUD (4..5, 7) → Route 22, partie ouest, porte
+# neuve (2, 10), arrivée (3, 10). GARDE (6, 2) tourné vers l'ouest (A-48 côté Kanto).
+# Depuis Kanto : déclencheur « controle_kanto » (4..5, 2) : sans johto_route28_open, A-48 et recul
+# d'une case. Depuis Johto : « barriere_johto » (4..5, 6) : sans johto_rival_final_done, « la porte
+# est verrouillée » et recul [D] ; avec, la scène A-47 (« scene_porte », une fois) pose
+# johto_route28_open et la porte s'ouvre.
+#
+# Légende : K mur (bloqué) · . sol · X porte sud (STEP_ON ↓, vers Kanto) · N ouverture nord
+#   (STEP_ON ↑, vers la Route 28) · x plante, meuble (bloqué)
+
+PRATICABLES .XN
+
+GRILLE 10 8
+00 KKKKKKKKKK
+01 KKKKNNKKKK
+02 Kx......xK
+03 K........K
+04 K........K
+05 K........K
+06 Kx......xK
+07 KKKKXXKKKK
+FIN
+
+POSITIONS
+from_route_28        spawn          4,2          libre   facing=down  # depuis la Route 28 (Johto)
+from_route_22        spawn          4,6          libre   facing=up  # depuis la Route 22 ouest (Kanto)
+sortie_nord          warp           4..5,1       libre   vers=route_28:from_gate  # STEP_ON ↑ → Route 28 (4, 10)
+sortie_sud           warp           4..5,7       libre   vers=route_22_west:from_route_28_gate  # STEP_ON ↓ → Route 22 ouest (3, 10)
+garde                pnj            6,2          bloque  role=garde facing=left  # A-48 côté Kanto ; côté Johto : « la porte est verrouillée » [D]
+controle_kanto       declencheur    4..5,2       libre   actif_sans=johto_route28_open  # A-48 et recul d'une case (depuis Kanto)
+barriere_johto       declencheur    4..5,6       libre   actif_sans=johto_rival_final_done  # porte verrouillée et recul (depuis Johto) [D]
+scene_porte          declencheur    4..5,6       libre   actif_avec=johto_rival_final_done actif_sans=johto_route28_open drapeau=johto_route28_open  # A-47 : la porte s'ouvre, Kanto !
+FIN

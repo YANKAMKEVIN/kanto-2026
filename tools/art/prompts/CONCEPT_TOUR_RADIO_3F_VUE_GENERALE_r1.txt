@@ -1,0 +1,37 @@
+CONCEPT ART — INTÉRIEUR DE LA TOUR RADIO DE DOUBLONVILLE, 3e NIVEAU : LES ARCHIVES ET LA RÉSERVE FERMÉE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE PIÈCE rectangulaire de 22 cases sur 14 de sol, entourée de murs, sur fond sombre. Format PAYSAGE.
+Légende du plan :
+- gris-brun foncé = murs, cloisons et hors-champ ; bande brun clair en haut = le MUR DU FOND, vu de face ;
+- beige = SOL, dallage clair ;
+- une CLOISON verticale (la bande sombre au milieu) coupe la pièce en deux moitiés, ouest et est ; elle n'a qu'UN SEUL PASSAGE, vers le bas (l'interruption d'une case) ;
+- dans le mur du fond : en haut à gauche, un ESCALIER qui MONTE (marches claires) ; en haut à droite, la porte de l'ASCENSEUR puis un ESCALIER qui DESCEND (marches sombres) ;
+- longs rectangles brun foncé à étagères = des RAYONNAGES D'ARCHIVES hauts, pleins de boîtes et de bobines de bandes : trois rangées en zigzag à l'ouest, deux à l'est ;
+- en bas à droite, un petit local fermé par des cloisons (bandes sombres) avec une PORTE de bois sombre dans sa cloison ouest = la RÉSERVE, fermée à clé ; on ne voit pas l'intérieur en détail (une pièce de rangement, quelques cartons) ;
+- deux carrés bruns dans les coins du bas = deux PLANTES EN POT.
+Respecte ce plan À LA LETTRE : la cloison centrale et son unique passage en bas, les cinq rayonnages à leur place, la réserve fermée en bas à droite et sa porte à l'ouest, les escaliers et l'ascenseur dans le mur du fond. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le 2e niveau de la même tour, déjà peint. Respecte EXACTEMENT son rendu : même sol, mêmes murs, mêmes escaliers, même porte d'ascenseur, même lumière neutre. Ne reprends PAS sa composition (ni studios, ni vitres).
+
+IMAGE 3 : un intérieur du même jeu (le poste de garde de la Route 15) : même pinceau, même découpe de la pièce sur fond sombre.
+
+Format : PAYSAGE 1536 × 1024, la pièce au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « les archives » : un étage de rangement, plus sombre et plus encombré que les studios ; de hauts rayonnages métalliques et de bois, des boîtes d'archives, des bobines, un peu de poussière ; dans un coin, une réserve verrouillée. Calme, un peu étouffant, JAMAIS lugubre. Palette : crème terni, bois et métal sombre des rayonnages, cartons beige, bandeau bleu sobre.
+LUMIÈRE NE (neutre) : éclairage intérieur blanc et diffus, un peu plus bas qu'aux étages du bas ; aucune teinte dorée ; ombres propres légèrement bleutées.
+
+RÈGLE DE LA GRILLE : murs, cloisons, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS.
+OBJETS RARES : seulement les meubles du plan ; pas de bibelots, pas d'affiches lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes lisibles sur les boîtes, affiches, signature, filigrane, cadre, interface, Poké Ball ; fenêtre sur l'extérieur ; vitre ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un étage d'archives coupé en deux par une cloison, des rayonnages pleins, et une réserve fermée à clé dans un coin.

@@ -9,10 +9,12 @@ une couleur et retombe sur le fond du thème DayNight, blanc en mode clair.
 
 Ce script remplace, dans `resources.arsc` de l'APK exporté, cette référence par la couleur
 littérale `boot_splash/bg_color` de `project.godot` (le fond de l'image de démarrage du jeu), puis
-réaligne et re-signe l'APK avec la clé de débogage de Godot. Le motif doit apparaître une seule
-fois : si un futur modèle Godot le change, le script échoue au lieu de produire un APK faux.
+réaligne et re-signe l'APK : avec la clé de débogage de Godot par défaut, avec la clé release lue
+dans l'environnement (`GODOT_ANDROID_KEYSTORE_RELEASE_PATH`, `_USER`, `_PASSWORD`, les variables
+que Godot lit lui-même) avec `--release`. Le motif doit apparaître une seule fois : si un futur
+modèle Godot le change, le script échoue au lieu de produire un APK faux.
 
-Usage : tools/android_splash_bg.py build/kanto2026-debug.apk
+Usage : tools/android_splash_bg.py [--release] build/kanto2026-debug.apk
 """
 import os
 import re
@@ -53,18 +55,28 @@ def entry(value_type: int, data: int) -> bytes:
     return struct.pack("<IHBBI", ATTR_SPLASH_BG, 8, 0, value_type, data)
 
 
-def keystore() -> tuple[str, str, str]:
+def keystore(release: bool) -> tuple[str, str, str]:
+    """Keystore, alias et mot de passe au format `--ks-pass` d'apksigner (`env:` pour la release :
+    il ne passe jamais sur la ligne de commande)."""
+    if release:
+        path = os.environ.get("GODOT_ANDROID_KEYSTORE_RELEASE_PATH", "")
+        user = os.environ.get("GODOT_ANDROID_KEYSTORE_RELEASE_USER", "")
+        if not (path and user and os.environ.get("GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD")):
+            sys.exit("--release : GODOT_ANDROID_KEYSTORE_RELEASE_PATH, _USER et _PASSWORD sont requis")
+        return path, user, "env:GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD"
     text = open(EDITOR_SETTINGS, encoding="utf-8").read()
 
     def get(key: str, default: str) -> str:
         m = re.search(rf'^export/android/{key} = "([^"]*)"', text, re.M)
         return m.group(1) if m and m.group(1) else default
 
-    return get("debug_keystore", ""), get("debug_keystore_user", "androiddebugkey"), get("debug_keystore_pass", "android")
+    return get("debug_keystore", ""), get("debug_keystore_user", "androiddebugkey"), "pass:" + get("debug_keystore_pass", "android")
 
 
 def main() -> None:
-    apk = sys.argv[1]
+    args = sys.argv[1:]
+    release = "--release" in args
+    apk = next(a for a in args if not a.startswith("--"))
     color = splash_color()
     old, new = entry(TYPE_REFERENCE, REF_ICON_BG), entry(TYPE_INT_COLOR_ARGB8, color)
     tmp = tempfile.mkdtemp()
@@ -84,9 +96,9 @@ def main() -> None:
         subprocess.run(["zip", "-q", "-0", unaligned, "resources.arsc"], cwd=tmp, check=True)
         tools = build_tools()
         subprocess.run([os.path.join(tools, "zipalign"), "-P", "16", "-f", "4", unaligned, apk], check=True)
-        ks, alias, password = keystore()
+        ks, alias, ks_pass = keystore(release)
         subprocess.run([os.path.join(tools, "apksigner"), "sign", "--ks", ks, "--ks-key-alias", alias,
-                        "--ks-pass", "pass:" + password, apk], check=True)
+                        "--ks-pass", ks_pass, apk], check=True)
         subprocess.run([os.path.join(tools, "apksigner"), "verify", apk], check=True)
         if os.path.exists(apk + ".idsig"):
             os.remove(apk + ".idsig")

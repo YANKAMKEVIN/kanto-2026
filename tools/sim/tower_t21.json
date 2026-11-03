@@ -111,6 +111,11 @@
 		"rival_tower_s00": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -192,6 +197,11 @@
 		"rival_tower_s01": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -277,6 +287,11 @@
 		"rival_tower_s02": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -362,6 +377,11 @@
 		"rival_tower_c00": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -439,6 +459,11 @@
 		"rival_tower_c01": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -520,6 +545,11 @@
 		"rival_tower_c02": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -601,6 +631,11 @@
 		"rival_tower_b00": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -682,6 +717,11 @@
 		"rival_tower_b01": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -767,6 +807,11 @@
 		"rival_tower_b03": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -852,6 +897,11 @@
 		"rival_tower_b06": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -933,6 +983,11 @@
 		"rival_tower_s10": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1018,6 +1073,11 @@
 		"rival_tower_s12": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1103,6 +1163,11 @@
 		"rival_tower_b11": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1188,6 +1253,11 @@
 		"rival_tower_b12": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1269,6 +1339,11 @@
 		"rival_tower_b13": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1354,6 +1429,11 @@
 		"rival_tower_b14": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1435,6 +1515,11 @@
 		"rival_tower_s20": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1520,6 +1605,11 @@
 		"rival_tower_s22": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1605,6 +1695,11 @@
 		"rival_tower_c24": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1686,6 +1781,11 @@
 		"rival_tower_b23": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1767,6 +1867,11 @@
 		"rival_tower_c31": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1848,6 +1953,11 @@
 		"rival_tower_c32": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -1929,6 +2039,11 @@
 		"rival_tower_c50": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -2010,6 +2125,11 @@
 		"rival_tower_c51": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -2091,6 +2211,11 @@
 		"rival_tower_c52": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,
@@ -2172,6 +2297,11 @@
 		"rival_tower": {
 			"name": "{rival}",
 			"ai": "smart",
+			"card": {
+				"name": "{rival}",
+				"title": "Rival",
+				"portrait": "rival"
+			},
 			"can_lose": false,
 			"heal_after": false,
 			"gives_exp": true,

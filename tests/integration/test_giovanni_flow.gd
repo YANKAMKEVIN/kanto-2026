@@ -36,7 +36,7 @@ const LOST_LINES: Array[String] = ["Rentre chez toi.", "Et oublie ce que tu as v
 const RESUME: Array[String] = ["Encore toi.", "Soit."]
 const SCOPE_LINES: Array[String] = ["Kevin obtient le Scope Sylphe !",
 	"Il permet de voir ce que l'œil seul ne voit pas."]
-const CARD := "card:GIOVANNI/Chef de la Team Rocket"
+const CARD := "vs:GIOVANNI/Chef de la Team Rocket"
 const KEPT: Array[StringName] = [&"beaten_rocket_hideout_b4f_guard_1",
 	&"beaten_rocket_hideout_b4f_guard_2", &"rocket_hideout_b4f_door_open",
 	&"got_rocket_hideout_b4f_lift_key", &"game_corner_switch", &"beaten_rocket_hideout_b1f_1"]
@@ -89,8 +89,8 @@ func test_victory_departure_scope_on_the_floor_moment_and_objective() -> void:
 	var events := _play.events
 	var pages := _play.pages()
 	assert_eq(pages.slice(0, 3), INTRO, "n° 52")
-	assert_gt(events.find(CARD), events.find("page:" + INTRO[2]), "la carte après n° 52")
-	assert_gt(events.find("battle"), events.find(CARD), "le combat après la carte")
+	assert_gt(events.find(CARD), events.find("page:" + INTRO[2]), "la séquence « VS » après n° 52")
+	assert_gt(events.find(CARD), events.find("battle"), "la séquence « VS » ouvre le combat")
 	for line: String in WON_LINES:
 		assert_gt(events.find("page:" + line), events.find("battle"), "« %s » après" % line)
 	for line: String in LOST_LINES + RESUME:
@@ -162,7 +162,7 @@ func test_defeat_wakes_at_the_center_then_retry_without_introduction_nor_card() 
 	assert_eq(pages.slice(0, 2), RESUME, "n° 156")
 	for line: String in INTRO:
 		assert_false(pages.has(line), "« %s » PAS rejouée" % line)
-	assert_false(_play.events.has(CARD), "pas de carte aux reprises")
+	assert_true(_play.events.has(CARD), "séquence « VS » à chaque combat, jamais sautée")
 	assert_true(GameState.flags.has_flag(WON))
 	assert_not_null(_play.boot.get_map().get_npc(BALL))
 	assert_eq(_moments(), 1)

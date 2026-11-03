@@ -44,7 +44,7 @@
 		"name": "Erika", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2871,
 		"start_message": false, "end_message": true, "bag": true, "switch": true,
-		"card": { "name": "ERIKA", "title": "Championne d'Arène de Céladopole" },
+		"card": { "name": "ERIKA", "title": "Championne d'Arène de Céladopole", "portrait": "erika" },
 		"team": [
 			{
 				"species": "tangela", "level": 24,

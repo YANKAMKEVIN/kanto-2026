@@ -1,0 +1,53 @@
+# Souterrain de Doublonville (goldenrod_underground) — grille fonctionnelle v1 (Chapitre Johto,
+# jalon JOH3 ; dossier docs/design/dossier-joh-04-doublonville.md §3.2, §4, §6, §11, textes D-28 à
+# D-32). Carte intérieure.
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un
+# changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh3.py.
+#
+# 40 × 14 cases (dossier : ≈ 40 × 14) ; nord en haut ; x = colonne 0..39, y = rangée 0..13.
+#
+# Composition :
+#   - GALERIE (y 5..8) d'ouest en est, entre deux rangées de BOUTIQUES FERMÉES (b, rideaux baissés) ;
+#     trois renfoncements au nord (x 8..9, 16..17, 24..25, y 1..4).
+#   - ESCALIERS : ouest (1, 5..6) vers la place (31, 25), est (38, 7..8) vers la place (39, 33).
+#   - Au fond, au sud-est, la SALLE DU CHEF (x 28..36, y 9..12) : le chef de bande, obligatoire pour
+#     l'indice (JH-31), et une caisse (k) où est cachée la Perle.
+#   - Sbires C et D dans la galerie, évitables (la galerie a 4 cases de large).
+#
+# Légende :
+#   X mur (bloqué)   . sol (praticable)   b boutique fermée (bloquée)   k caisse (bloquée)
+#   E escalier vers la ville (praticable, warp)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 40 caractères), puis POSITIONS.
+
+PRATICABLES .E
+
+GRILLE 40 14
+00 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+01 XXXbbbbb..bbbbbb..bbbbbb..bbbbbbbbbbbXXX
+02 XXXbbbbb..bbbbbb..bbbbbb..bbbbbbbbbbbXXX
+03 XXXbbbbb..bbbbbb..bbbbbb..bbbbbbbbbbbXXX
+04 XXXb.bbb..bbbbbb..bbbbbb..bbbbbbbbbbbXXX
+05 XE....................................XX
+06 XE....................................XX
+07 XX....................................EX
+08 XX....................................EX
+09 XXXbbbbbbbbbbbbbbbbbbbbbbbbb........kXXX
+10 XXXbbbbbbbbbbbbbbbbbbbbbbbbb.........XXX
+11 XXXbbbbbbbbbbbbbbbbbbbbbbbbb.........XXX
+12 XXXbbbbbbbbbbbbbbbbbbbbbbbbb.bbbbbbb.XXX
+13 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+FIN
+
+POSITIONS
+escalier_ouest       warp           1,5..6       libre   # STEP_ON ← → goldenrod_city, from_underground_w (31, 26)
+from_goldenrod_west  spawn          2,5..6       libre   # arrivée par l'escalier ouest, tournée →
+escalier_est         warp           38,7..8      libre   # STEP_ON → → goldenrod_city, from_underground_e (39, 32)
+from_goldenrod_east  spawn          37,7..8      libre   # arrivée par l'escalier est, tournée ←
+sbire_c              dresseur       16,4         bloque  facing=down sight=2 trainer=goldenrod_underground_grunt_c  # D-29, Rattata 15 + Abo 16 ; voit (16, 5..6), évitable par y 7..8
+sbire_d              dresseur       24,8         bloque  facing=up sight=2 trainer=goldenrod_underground_grunt_d  # D-29, Cornèbre 16 + Malosse 16 ; voit (24, 6..7), évitable par y 5
+chef                 dresseur       32,11        bloque  facing=up sight=2 trainer=goldenrod_underground_boss  # D-30 à D-32, Malosse 17 + Cornèbre 17 + Smogo 18 ; OBLIGATOIRE pour johto_azalea_clue
+souterrain_item_1    objet_visible  9,1          bloque  item=repel count=2  # fond du premier renfoncement
+souterrain_hidden_1  cache          36,9         bloque  item=pearl indice=caisse  # Perle, examinée depuis (35, 9) → ou (36, 10) ↑
+panneau_souterrain   panneau        4,4          bloque  # D-28, lu depuis (4, 5) ↑
+FIN

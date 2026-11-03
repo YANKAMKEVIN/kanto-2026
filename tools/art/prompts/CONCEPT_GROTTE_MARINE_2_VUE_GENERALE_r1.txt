@@ -1,0 +1,41 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA GROTTE MARINE, SALLE 2, LA GRANDE SALLE ET LA PLAGE DE GALETS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. C'est la deuxième salle d'une grotte marine : on arrive EN NAGEANT par le NORD (le chenal étroit en haut, à droite du centre, qui vient de la salle 1), on traverse une GRANDE SALLE à plafond haut, puis un chenal étroit où un COURANT descend vers le SUD jusqu'à une PLAGE DE GALETS, et l'on sort À PIED par le coin SUD-OUEST (vers la ville d'Oliville).
+Légende du plan :
+- gris ardoise très foncé = ROCHE PLEINE et parois infranchissables (toutes les marges de l'image et les masses de roche) ; le liseré un peu plus clair qui borde la roche = l'ARÊTE de la paroi ;
+- bleu = EAU DE MER calme, navigable, dans la grotte : le chenal d'arrivée en haut, puis la GRANDE SALLE presque carrée qui occupe les deux tiers de l'image ;
+- bleu PLUS FONCÉ, le grand rectangle au centre de la salle = EAU PROFONDE : un gouffre sous-marin, l'eau y est d'un bleu nuit très profond, sans fond visible ;
+- disques gris = GROS ROCHERS ISOLÉS qui sortent de l'eau : un groupe de trois dans l'angle nord-ouest de la salle, un groupe de trois dans l'angle nord-est ;
+- gris clair = un ÎLOT DE ROCHE plat au ras de l'eau, dans l'angle sud-est de la salle (un carré de 4 cases sur 4), où l'on peut poser le pied ;
+- bande bleu plus clair à CHEVRONS BLANCS, le chenal étroit en bas à gauche = un COURANT qui pousse vers le SUD (vers le bas), en descente vers la plage : on le lit par des stries et des filets d'écume allongés dans ce sens, pas par des flèches ;
+- gris-beige semé de cailloux, en bas à gauche = une PLAGE DE GALETS gris et beiges, à l'abri dans la grotte, où le courant dépose le nageur ;
+- la petite ouverture beige clair tout en bas à gauche (2 cases) = la SORTIE à pied vers le dehors : une brèche dans la roche d'où vient la lumière du jour.
+Respecte ce plan À LA LETTRE : le chenal d'arrivée à droite du centre, la grande salle et son gouffre central, les deux groupes de rochers, l'îlot du sud-est, le chenal du courant, la plage de galets en bas à gauche, la brèche de sortie. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la SALLE 1 de la même grotte, déjà peinte. Cette vue-ci la PROLONGE vers le sud : respecte EXACTEMENT son rendu (même roche sombre humide, même eau turquoise près des parois et bleu profond au large, mêmes rais de lumière tombant des fissures, même saturation, même pénombre bleue douce). Ne reprends PAS sa composition.
+
+IMAGE 3 : la vue générale d'une grotte des Îles Écume, une grotte du même jeu : même pinceau, même traitement des parois rocheuses, même eau. Mais cette grotte-ci N'EST PAS GELÉE : AUCUNE glace, AUCUNE neige, AUCUN sol blanc, AUCUN cristal.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la salle, comme le plan.
+
+AMBIANCE — « la grande salle » : la grotte s'ouvre en une immense cathédrale de roche au-dessus d'un gouffre d'eau noire ; on sent que quelque chose d'énorme pourrait passer sous la surface. Puis le courant emporte vers une petite plage de galets abritée et la lumière du dehors. Fraîche, solennelle et mystérieuse, JAMAIS effrayante ni illisible. Palette : ROCHE sombre brun-gris et bleu-gris, EAU turquoise au bord et BLEU NUIT au centre, galets gris et beiges, quelques algues vert sombre, de rares stalactites.
+OMBRE SOUS L'EAU (seul élément vivant, très discret) : dans l'eau profonde du centre, une GRANDE SILHOUETTE SOMBRE ET FLOUE, à peine plus foncée que l'eau, glisse sous la surface : la forme très simplifiée d'un immense oiseau marin aux longues ailes, vue de dessus, sans aucun détail, sans yeux, sans contour net (comme une ombre portée sous plusieurs mètres d'eau). Elle occupe environ la moitié de la largeur du gouffre. Rien d'autre ne vit ici.
+LUMIÈRE : des FISSURES DU PLAFOND laissent tomber deux ou trois COLONNES DE LUMIÈRE DU JOUR, blanches et légèrement bleutées, sur l'eau de la grande salle ; la plage de galets, en bas à gauche, reçoit une lumière plus large et plus claire qui vient de la brèche de sortie ; le reste baigne dans une pénombre bleue douce, où l'eau reste lisible partout. La lumière est NEUTRE (ni dorée ni orangée) : le jeu ajoute lui-même l'éclairage.
+LISIBILITÉ AVANT TOUT : l'eau navigable est nettement plus claire que la roche ; le gouffre central est plus foncé que l'eau qui l'entoure mais reste distinct de la roche ; on distingue chaque bassin et chaque chenal sans effort.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; bassins, chenaux, îlot, plage et gouffre ont donc des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUN chenal en diagonale ni en courbe. Les parois peuvent être irrégulières et rocheuses EN SURFACE, mais le bord de l'eau garde des bords droits et lisibles.
+RELIEF : ni marche, ni échelle, ni escalier ; la plage de galets est au niveau de l'eau.
+NATURE DENSE, OBJETS RARES : rien n'est posé dans la grotte ; aucun objet décoratif.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des rochers et leur face avant (côté sud) ; les parois nord des bassins montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, bleu-violet froid, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon visible, aucun animal, aucun poisson. Seule l'ombre floue sous l'eau est permise.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux, logo, signature, filigrane, cadre, interface, Poké Ball ; glace, neige, cristaux, stalagmites géantes lumineuses, champignons, lave, décor féerique ; échelle, escalier, marche, pont, ponton, barque, bateau, corde, lanterne, caisse ; ciel, arbres, herbe, sable doré ; créature détaillée, yeux, bec, écailles (l'ombre reste une forme floue) ; flèches dessinées ; chenaux courbes ou en diagonale ; brouillard épais, flou de profondeur, vignettage noir ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une immense salle de grotte au-dessus d'un gouffre d'eau noire où glisse une ombre géante, puis un courant qui emporte vers une petite plage de galets et la lumière du dehors.

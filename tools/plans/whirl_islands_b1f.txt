@@ -1,0 +1,101 @@
+# Îles Tourbillon B1F (whirl_islands_b1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ;
+# dossier docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étapes 4 à 7), §5 à §10, textes M-11 à M-21, M-26 à M-28, M-33).
+# Carte intérieure ; légende des grottes de Kanto et de la grotte marine (courants).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+#
+# 36 × 28 cases (dossier : ≈ 36 × 28) ; nord en haut ; x = colonne 0..35, y = rangée 0..27.
+#
+# Composition (lac souterrain en Surf, puzzle de courants JH-48) :
+#   - RIVE D'ARRIVÉE à l'est (x 24..34, y 15..26, gravats) avec l'ÉCHELLE qui monte (U, (27, 20)) et
+#     le PP Max (33, 25). LAC EST (w) au nord et à l'ouest de la rive.
+#   - MURAILLE (#, x 16) entre le lac est et le LAC OUEST, percée de deux passes à sens unique :
+#     (16, 9) « < » (aller vers l'ouest) et (16, 20) « > » (retour vers l'est). À pied ou à la nage
+#     sans courant, le lac ouest est inaccessible.
+#   - PLATE-FORME DE SUICUNE (., x 8..14, y 1..6, parois en x 7 et x 15 : on n'accoste que par le
+#     sud), au nord du lac ouest : SUICUNE (11, 3) sur son
+#     rocher plat ; la scène M-12 (rangée y 6, « scene_suicune ») à l'accostage ; la scène de CENERE
+#     (rangée y 4, « scene_cenere », M-14 à M-17, combat obligatoire) couvre tout accès à Suicune ;
+#     Cenere arrive par la GALERIE du nord (14, 1) ; puis Suicune s'avance (M-18, combat et capture).
+#   - CHENAL DE L'ÉCAILLE DRACO (x 1..6, y 11..15, fermé par #) : on y entre par le courant (7, 13)
+#     « < » qui porte jusqu'en (4, 13), devant l'ÎLOT (x 2..3, y 13..14) de l'Écaille Draco (2, 13) ;
+#     on en sort par le courant (7, 15) « > » (M-28).
+#   - CRIQUE DE LOKHLASS (x 1..6, y 20..25, à l'abri des courants, passe (7, 22)) : LOKHLASS (3, 23)
+#     le vendredi (M-26, M-27, M-33).
+#   - ESCALIER DU B2F (V, (2, 2)) sur son palier (x 1..3, y 1..3, accès par la seule colonne x 2), au
+#     nord-ouest : le COURANT VIOLENT
+#     (2, 4..5) « v » repousse tant que johto_suicune_done manque (M-20) ; apaisé ensuite (M-21).
+#
+# Raccords :
+#   U (27, 20) ↔ 1F, échelle V (27, 20), arrivée (27, 21) de chaque côté (paire wi_1).
+#   V (2, 2) ↔ B2F, échelle U (2, 2), arrivée (2, 3) de chaque côté (paire wi_2).
+#
+# Légende :
+#   # paroi rocheuse (bloquée)   . rive, plate-forme ou îlot (praticable à pied)
+#   g gravats de la rive (praticables, terrain de rencontre « sol »)   w eau SURFABLE (rencontres de l'eau)
+#   o rocher émergé (bloqué)   < > ^ v courant sur l'eau : la case pousse le joueur dans ce sens
+#     jusqu'à la première case sans courant (règle de la grotte marine, tools/plans/grotte_marine_2.txt)
+#   U échelle qui monte   V échelle qui descend (praticables, warps)
+# Défauts [D] : puzzle de courants à trois passes (aller, retour, chenal de l'Écaille) ; Cenere n'est
+# pas dans la grille avant sa scène ; Suicune et Lokhlass se combattent en leur parlant.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 36 caractères), puis POSITIONS.
+
+PRATICABLES .gw<>^vUV
+
+GRILLE 36 28
+00 ####################################
+01 #...#ww#.......##wwwwwwwwwwwwwwwwww#
+02 #.V.#ww#.......##wwwwwwwwwwwwwwwwww#
+03 #...#ww#.......##wwwwwwwwwwwwwwwwww#
+04 ##v##ww#.......##wwwwwwwwwwwwwwwwww#
+05 ##v#www#.......##wwwowwwwwwwwwwwwww#
+06 #wwwwww#.......##wwwwwwwwwwwwwwwwww#
+07 #wwwwwwwwwwwwwww#wwwwwwwwwwwwwwwwww#
+08 #wwwwwwwwwwwwwww#wwwwwwwwwowwwwwwww#
+09 #wwwwwwwwwwwwwww<wwwwwwwwwwwwwwwwww#
+10 ########wwwwwwww#wwwwwwwwwwwwwwwwww#
+11 #wwwwww#wwwwwwww#wwwwwwwwwwwwwwowww#
+12 #wwwwww#wwwwwwww#wwwwowwwwwwwwwwwww#
+13 #w..w<<<wwwwwwww#wwwwwwwwwwwwwwwwww#
+14 #w..www#wwwwwwww#wwwwwwwwwwwwwwwwww#
+15 #wwwwww>wwwwwwww#wwwwwww.....gggggg#
+16 ########wwwwwwww#wwwwwww.....gggggg#
+17 #wwwwwwwwwwwwoww#wwwwwww.....gggggg#
+18 #wwwwwwwwwwwwwww#wwwwwww.....gggggg#
+19 ########wwwwwwww#wwwwwww...........#
+20 #wwwwww#wwwwwwww>wwwwwww...U.......#
+21 #wwwwww#wwwwwwww#wwwwwww...........#
+22 #wwwwwwwwwwowwww#wwowwww...........#
+23 #wwwwww#wwwwwwww#wwwwwww...........#
+24 #wwwwww#wwwwwwww#wwwwwww...........#
+25 #wwwwww#wwwwwwww#wwwwwww...........#
+26 #wwwwwwwwwwwwwww#wwwwwww...........#
+27 ####################################
+FIN
+
+POSITIONS
+vers_1f              escalier       27,20        libre   paire=wi_1 sens=monte vers=whirl_islands_1f:from_b1f  # échelle vers le 1F
+from_1f              spawn          27,21        libre   paire=wi_1 facing=down  # arrivée depuis le 1F
+vers_b2f             escalier       2,2          libre   paire=wi_2 sens=descend vers=whirl_islands_b2f:from_b1f  # échelle vers le B2F (salle de Lugia)
+from_b2f             spawn          2,3          libre   paire=wi_2 facing=down  # arrivée depuis le B2F
+courant_aller        courant        16,9         libre   sens=gauche  # passe vers le lac ouest
+courant_retour       courant        16,20        libre   sens=droite  # passe de retour vers le lac est
+courant_ecaille      courant        5..7,13      libre   sens=gauche  # entrée du chenal de l'Écaille Draco (M-11)
+courant_sortie_ecaille courant        7,15         libre   sens=droite  # sortie du chenal
+courant_b2f          courant        2,4..5       libre   sens=bas actif_sans=johto_suicune_done  # courant violent de l'escalier (M-20) ; calme après Suicune (M-21)
+examen_courant_b2f   examen         2,6          libre    # M-20 avant Suicune, M-21 après, au pied du courant
+scene_suicune        declencheur    8..14,6      libre   drapeau=johto_suicune_seen  # M-12, une fois, à l'accostage
+scene_cenere         declencheur    8..14,4      libre   actif_sans=johto_cenere_defeated_2  # M-14 à M-17 : Cenere arrive par la galerie, combat obligatoire ; puis M-18
+suicune              pokemon        11,3         bloque  espece=suicune niveau=60 combat=fixe actif_sans=johto_suicune_done  # M-13 avant Cenere ; M-18, M-19 : combat et capture après ; pose johto_suicune_done
+galerie_cenere       repere         14,1         libre   role=galerie  # galerie d'où Cenere surgit (décor, pas de passage)
+cenere               pnj            14,2         libre   role=admin facing=left apparait=scene_cenere actif_sans=johto_cenere_defeated_2  # Smogogo 62, Qulbutoké 62, Noarfang 63, Lamantine 63, Farfuret 64 ; posée par la scène [D]
+ecaille_draco        objet_visible  2,13         bloque  item=dragon_scale  # M-28, sur l'îlot du chenal
+crique               repere         1..6,20..25  libre   role=crique  # crique de Lokhlass (M-33), pas de courant
+scene_crique         declencheur    7,22         libre    # M-26 le vendredi, M-27 les autres jours, à chaque entrée
+lokhlass             pokemon        3,23         bloque  espece=lapras niveau=50 combat=fixe jour=vendredi actif_sans=johto_lapras_caught  # JH-50 : chaque vendredi jusqu'à la capture
+pp_max               objet_visible  33,25        bloque  item=pp_max  # rive d'arrivée
+gravats_rive         gravats        31,16        libre   role=G1  # rencontres « sol » du B1F
+lac                  repere         1..34,1..26  libre   role=surf  # rencontres de l'eau du B1F
+FIN

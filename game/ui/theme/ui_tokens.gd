@@ -448,11 +448,23 @@ const MOVE_DETAIL_CLOSE := 0.12
 const MOVE_DETAIL_SLIDE := 24.0
 
 # Bandeau des messages (à la place de la grille).
-const BATTLE_MESSAGE_WIDTH := 1164
-const BATTLE_MESSAGE_HEIGHT := 176
+## Entrée des Dresseurs, itération 4 (2026-11-02, maquettes validées, mesures de Codex) : sur
+## l'écran du S24 (2340 × 1080), bandeau à 49–98 % de la largeur et 77–94 % de la hauteur (bas à
+## 66 px du bord ; compromis entre les maquettes 1 et 2), texte un peu plus grand (40), contour
+## un peu plus clair.
+const BATTLE_MESSAGE_WIDTH := 1140
+const BATTLE_MESSAGE_HEIGHT := 178
+const BATTLE_MESSAGE_BOTTOM := 66
+const BATTLE_MESSAGE_FONT := 40
+const BATTLE_MESSAGE_BORDER := Color(1, 1, 1, 0.28)
 const BATTLE_MESSAGE_BG := DIALOG_PANEL_BG
-const BATTLE_MESSAGE_PAD_H := 44
+const BATTLE_MESSAGE_PAD_H := 50
 const BATTLE_MESSAGE_PAD_V := 26
+## Indicateur de suite (petit triangle, maquette 2) quand un message attend : taille, centre à
+## cette distance du coin bas droit du bandeau, couleur.
+const BATTLE_MESSAGE_MORE_SIZE := Vector2(28, 18)
+const BATTLE_MESSAGE_MORE_INSET := Vector2(46, 34)
+const BATTLE_MESSAGE_MORE_COLOR := Color(1, 1, 1, 0.92)
 const BATTLE_MESSAGE_MAX_LINES := 2
 ## Tenue d'un message avant que le combat avance seul (ou au toucher).
 const BATTLE_MESSAGE_HOLD := 0.9
@@ -871,6 +883,10 @@ const BATTLE_PARTY_COLUMNS := 2
 ## (BAG_PANEL_WIDTH − 2 × BAG_PANEL_PAD − PICKER_GAP) / 2, arrondi en dessous.
 const BATTLE_PARTY_CARD_WIDTH := 475
 const BATTLE_PARTY_CARD_HEIGHT := PICKER_ROW_HEIGHT
+## Vignette artwork officiel dans un rond (MenuRoundThumb), entre les pastilles de type et le nom,
+## comme la liste de l'Équipe et le choix du Pokémon du Sac ; plus petite qu'au Sac pour que la
+## raison (« Ne peut plus combattre ») tienne encore sur la carte de 475 px.
+const BATTLE_PARTY_THUMB := 84
 ## Pastille de type (cercle à la couleur du type, icône blanche) à gauche de la carte.
 const BATTLE_PARTY_TYPE_CHIP := 52
 const BATTLE_PARTY_TYPE_ICON := 32
@@ -1640,25 +1656,94 @@ const TRAINER_MOMENT_THUMB := Vector2(150, 92)
 const TRAINER_MOMENT_THUMB_RADIUS := 12
 const TRAINER_MOMENT_ART := 64
 
-## Carte de présentation du Champion (jalon 10, T5) : « PIERRE » / « Champion d'Arène
-## d'Argenta », posée sur le monde avant le combat. Verre sombre du combat (CB.2), liseré
-## ACCENT à gauche, aucun portrait. Réutilisée pour les 8 Champions.
-const CHAMPION_CARD_BG := DIALOG_PANEL_BG
-const CHAMPION_CARD_RADIUS := RADIUS
-## Liseré ACCENT sur le bord gauche de la carte.
-const CHAMPION_CARD_ACCENT_WIDTH := 10
-const CHAMPION_CARD_PAD_H := 56
-const CHAMPION_CARD_PAD_V := 32
-const CHAMPION_CARD_MIN_WIDTH := 640
-const CHAMPION_CARD_LINE_GAP := 8
-const CHAMPION_CARD_NAME_FONT := FONT_TITLE
-const CHAMPION_CARD_TITLE_FONT := FONT_BODY
-## Centre de la carte : fraction de la hauteur d'écran ; bord gauche à SAFE_MARGIN.
-const CHAMPION_CARD_CENTER_Y := 0.42
-## Entrée glissée depuis la gauche, tenue (un toucher l'abrège), sortie.
-const CHAMPION_CARD_SLIDE_IN := 0.4
-const CHAMPION_CARD_HOLD := 3.0
-const CHAMPION_CARD_SLIDE_OUT := 0.25
+## Liseré ACCENT sur le bord gauche des bandeaux de message (ancienne carte de Champion).
+const BANNER_ACCENT_WIDTH := 10
+
+## Séquence « VS » des grands combats (dossier 05 §3, décisions de Kevin du 2026-11-02 ; cible :
+## maquette `reference/entree-dresseur-vs-v1.png`) : posée sur l'arène, les deux dresseurs visibles
+## derrière ; banderole **rouge en haut à droite** (arrive de la droite : buste peint de
+## l'adversaire, nom en capitales à empattements dorées, filet et losange, titre dessous),
+## banderole **bleue en bas à gauche** (arrive de la gauche : buste et prénom du joueur), fines,
+## en biais, à effet pinceau ; « VS » doré au centre, éclair diagonal et deux traits.
+## Durées : `data/battle/trainer_intro.json`. Valeurs par défaut [D].
+const VS_FOE_BG := Color("#B3222C")
+const VS_PLAYER_BG := Color("#1F4FB0")
+## Or des noms, du filet, du « VS » et de l'éclair ; contour sombre des lettres.
+const VS_GOLD := Color("#F4D68C")
+const VS_GOLD_DEEP := Color("#C8932F")
+const VS_GOLD_OUTLINE := Color("#3A2208")
+## Police à empattements des noms et du « VS » (Cinzel, SIL OFL 1.1, `assets/fonts/cinzel/`).
+const VS_SERIF_FONT := "res://assets/fonts/cinzel/Cinzel.ttf"
+const VS_SERIF_WEIGHT := 700
+## Police du titre (bas-de-casse à empattements, maquette 3 : « Champion d'Arène d'Argenta ») :
+## Cormorant Garamond (SIL OFL 1.1, `assets/fonts/cormorant_garamond/`), demi-gras.
+const VS_TITLE_SERIF_FONT := "res://assets/fonts/cormorant_garamond/CormorantGaramond.ttf"
+const VS_TITLE_SERIF_WEIGHT := 600
+## Textures pinceau remplaçables des banderoles (absentes : pinceau dessiné en code).
+const VS_FOE_BANNER_TEXTURE := "res://assets/ui/battle/vs/banderole_rouge.webp"
+const VS_PLAYER_BANNER_TEXTURE := "res://assets/ui/battle/vs/banderole_bleue.webp"
+## Voile léger de l'arène derrière les banderoles (opacité au plus fort).
+const VS_VEIL := Color(0.0, 0.0, 0.0, 0.18)
+## Banderoles en diagonale (itération 4, fractions de l'écran, mesures de Codex) : la rouge occupe
+## 50–100 % x et 5–30 % y en montant légèrement vers la droite (plus longue, moins haute ; son
+## bord bas presque horizontal porte les épaules du buste), la bleue 0–60 % x
+## et ≈ 69–96 % y. Épaisseur (part de la hauteur), largeur visible (part de la largeur), centre
+## vertical de son bout intérieur (rouge) ou extérieur droit (bleue), inclinaison (degrés).
+const VS_FOE_BANNER_THICK := 0.22
+const VS_PLAYER_BANNER_THICK := 0.18
+const VS_FOE_BANNER_WIDTH := 0.5
+const VS_PLAYER_BANNER_WIDTH := 0.6
+const VS_FOE_BANNER_Y := 0.19
+const VS_PLAYER_BANNER_Y := 0.87
+const VS_FOE_BANNER_TILT := 1.5
+const VS_PLAYER_BANNER_TILT := 4.0
+## Part de l'inclinaison de la banderole que les textes NE suivent PAS (titres presque
+## horizontaux, maquette 3).
+const VS_TEXT_UNTILT := 0.7
+## Centre des textes (fractions de l'écran) : nom, filet et titre de l'adversaire (69,5 % x) ;
+## prénom du joueur (30,5 % x, 22–39 %) ; décalage vertical du bloc (part de la hauteur).
+const VS_FOE_TEXT_X := 0.695
+const VS_PLAYER_TEXT_X := 0.305
+const VS_FOE_TEXT_SHIFT := 0.0
+## Largeur maximale du nom et du titre de l'adversaire (part de la largeur de l'écran) : un titre
+## long (« Championne d'Arène de Céladopole ») est réduit pour ne pas passer sous le buste [D].
+const VS_FOE_TEXT_MAX_WIDTH := 0.2
+const VS_PLAYER_TEXT_SHIFT := 0.012
+## Bords déchirés du pinceau : dents (nombre, profondeur en part de l'épaisseur) et traînées.
+const VS_BRUSH_TEETH := 18
+const VS_BRUSH_DEPTH := 0.12
+const VS_BRUSH_STREAKS := 7
+## Bustes : cadrage par les données (`data/battle/trainer_intro.json`, bloc « vs » : place,
+## hauteur, rognage, réglage par buste).
+const VS_NAME_FONT := 106
+const VS_NAME_OUTLINE := 6
+## Noms, filet et losange en blanc ivoire (maquette 3, itération 5), contour brun sombre adouci.
+const VS_NAME_COLOR := Color("#F7F1E3")
+const VS_NAME_OUTLINE_COLOR := Color(0.16, 0.08, 0.04, 0.75)
+## Interligne retiré sous le nom (px de référence) : filet et titre serrés sous lui.
+const VS_NAME_TIGHTEN := 18
+const VS_TITLE_FONT := 40
+const VS_TITLE_COLOR := Color(1.0, 0.97, 0.9, 0.97)
+const VS_TITLE_OUTLINE := 4
+const VS_TITLE_OUTLINE_COLOR := Color(0.2, 0.04, 0.04, 0.6)
+## Filet sous le nom : longueur (px de référence), épaisseur, demi-diagonale du losange.
+const VS_RULE_LENGTH := 470
+const VS_RULE_WIDTH := 2
+const VS_RULE_DIAMOND := 7
+## Emblème « VS » (itération 4) : largeur ≈ 12 % de l'écran, centre (50 %, 49 %) ; lettres dorées
+## en dégradé (or profond → or clair), éclat additif, entaille diagonale, éclair et deux traits.
+## Remplacement peint : [constant VS_EMBLEM_TEXTURE] s'il existe.
+const VS_EMBLEM_WIDTH := 0.12
+const VS_EMBLEM_CENTER := Vector2(0.5, 0.49)
+const VS_EMBLEM_OUTLINE := 10
+const VS_EMBLEM_GLOW := Color(1.0, 0.85, 0.45, 0.35)
+const VS_EMBLEM_GLOW_SIZE := 28
+const VS_EMBLEM_TEXTURE := "res://assets/ui/battle/vs/emblem.webp"
+const VS_BOLT_SIZE := Vector2(380, 320)
+const VS_EMBLEM_LINE := 260
+## Pic de l'emblème à son apparition (échelle) et part de VS_HOLD qu'il met à se poser.
+const VS_EMBLEM_POP := 1.2
+const VS_EMBLEM_POP_SHARE := 0.25
 
 ## Écran Dresseur, badge obtenu (jalon 10, T6) : bulle de détail ancrée sous l'emplacement
 ## (« Badge Roche » / « Argenta — Pierre »), verre sombre du combat, liseré ACCENT en haut.
@@ -1687,6 +1772,8 @@ const CAPTION_CENTER_ANCHOR := 0.5
 ## à droite (à gauche en mode gaucher, le logo passe alors à droite) ; la vraie carte derrière.
 ## Largeur du logo détouré (assets/ui/opening/logo_kanto_2026.png, 1280 × 602 à la source).
 const TITLE_LOGO_WIDTH := 760
+## Étiquette de version du titre (J34) : opacité du texte TEXT_MUTED, en bas du côté du logo.
+const TITLE_VERSION_ALPHA := 0.75
 ## Colonne d'actions : largeur, écart entre cartes, haut de la colonne (centrée en hauteur sinon).
 const TITLE_COLUMN_WIDTH := 660
 const TITLE_COLUMN_GAP := 20

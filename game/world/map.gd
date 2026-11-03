@@ -112,6 +112,8 @@ var _npcs: Array[Npc] = []
 var _npcs_spawned: bool = false
 ## Fichier de PNJ de la carte (présence conditionnelle, refresh_npcs).
 var _roster: NpcRoster
+## Derniers drapeaux de [method refresh_npcs] (null avant) : qui est présent.
+var _npc_flags: StoryFlags
 ## PNJ créés depuis le fichier (les seuls que refresh_npcs peut retirer).
 var _roster_npcs: Array[Npc] = []
 ## Vrai dès qu'un joueur a été placé sur la carte (routines relâchées).
@@ -211,6 +213,7 @@ func remove_npc(id: StringName) -> void:
 ## PNJ ajoutés par [method add_npc] ne sont jamais retirés (ils restent jusqu'au départ de
 ## la carte). Sans doublon si on l'appelle plusieurs fois.
 func refresh_npcs(flags: StoryFlags) -> void:
+	_npc_flags = flags
 	if not _npcs_spawned:
 		_spawn_npcs()
 	apply_flag_gates(flags)
@@ -410,8 +413,9 @@ func spawn_player_at(player: Player, cell: Vector2i, facing: Vector2i) -> void:
 ## elle-même si le joueur peut s'y tenir, sinon la plus proche en marchant (parcours en
 ## largeur à travers les cases ni solides ni d'eau). « Pouvoir s'y tenir » : libre pour
 ## [param mover] ([method GridWorld.is_free]) et pas la case de départ d'un PNJ du fichier de
-## la carte, présent ou non (un PNJ qui marchait peut y revenir, un PNJ conditionné par les
-## drapeaux y est créé après le placement). Case hors carte ramenée au bord. (-1, -1) si
+## la carte **présent** avec les derniers drapeaux de [method refresh_npcs] (un PNJ qui marchait
+## peut y revenir ; un PNJ que les drapeaux masquent ne compte pas, RP-284 ; sans appel de
+## [method refresh_npcs], tout le fichier compte). Case hors carte ramenée au bord. (-1, -1) si
 ## aucune case ne convient.
 func find_standing_cell(cell: Vector2i, mover: Object = null) -> Vector2i:
 	var grid := get_grid()
@@ -419,7 +423,8 @@ func find_standing_cell(cell: Vector2i, mover: Object = null) -> Vector2i:
 	var homes: Dictionary[Vector2i, bool] = {}
 	if _roster != null:
 		for spec: NpcSpec in _roster.get_all():
-			homes[spec.cell] = true
+			if _npc_flags == null or spec.is_present(_npc_flags):
+				homes[spec.placed_for(_npc_flags).cell] = true
 	var seen: Dictionary[Vector2i, bool] = {start: true}
 	var queue: Array[Vector2i] = [start]
 	var head := 0

@@ -1,0 +1,17 @@
+DÉCOR DE COMBAT — ARÈNE D'ARGENTA, version 2 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Image jointe : IMAGE 1 = la maquette VALIDÉE du combat contre le Champion de cette Arène. C'est la CIBLE EXACTE du décor : reproduis cette salle telle quelle, mêmes masses, même richesse, même lumière : grandes colonnes de pierre ocre usée à gauche et à droite, hautes fenêtres à croisillons lumineuses en haut à gauche, bannières rouges pendues ornées d'un motif de roche hexagonal doré, au centre du mur du fond le grand médaillon circulaire de pierre gravé d'un rocher à facettes, l'escalier de pierre large au centre, les torches allumées sur des vasques de pierre (flammes orangées), les gros rochers bruns et violacés au pied des murs, et au sol le grand sol de dalles de pierre polies et brillantes avec, au centre, le grand motif circulaire gravé (cercles concentriques et rocher). Rayons de lumière dorée qui entrent en diagonale depuis la gauche, reflets chauds sur les dalles.
+
+RETIRE TOUT ce qui n'est pas le décor et repeins le décor à la place : les deux personnages (le garçon de dos, le jeune homme bras croisés), les deux banderoles rouge et bleue, les deux portraits, l'emblème « VS » et ses traits dorés, tous les textes. Là où ils étaient : la suite naturelle des colonnes, des rochers, des marches et des dalles.
+
+CADRAGE : la même salle vue de face, mais la CAMÉRA UN PEU PLUS HAUTE ET LÉGÈREMENT PLUS PLONGEANTE que dans l'IMAGE 1, pour que le SOL commence plus haut : le bas des marches et le pied du mur du fond vers 42 à 45 % de la hauteur de l'image (au lieu de 57 %), les colonnes gardent leur place à gauche et à droite, on voit un peu moins le haut des fenêtres, et le sol de dalles occupe toute la moitié basse. Le grand motif circulaire du sol est centré vers (x 50 %, y 72 %), vu en ellipse très aplatie.
+- Point A (x 67 %, y 52 %) : dalles plates et nues (l'adversaire y posera les pieds). Rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : dalles plates et nues au premier plan. Rien de haut autour.
+- Zone en bas à droite (de 50 à 100 % de la largeur, de 70 à 100 % de la hauteur) : dalles simples, valeurs moyennes.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : exactement celui de la maquette : illustration 2D HD peinte, intérieur minéral chaud et doré, aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette, statue humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

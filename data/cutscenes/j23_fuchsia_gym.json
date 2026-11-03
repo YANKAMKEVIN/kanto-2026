@@ -23,12 +23,6 @@
 						]
 					},
 					{
-						"champion_card": "fuchsia_gym_koga",
-						"unless": [
-							"koga_met"
-						]
-					},
-					{
 						"set": [
 							"koga_met"
 						]

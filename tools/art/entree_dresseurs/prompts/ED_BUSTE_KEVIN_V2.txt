@@ -1,0 +1,14 @@
+ED_BUSTE_KEVIN_V2 — buste de banderole « VS » du joueur, Kanto 2026. Images jointes : IMAGE 1 = maquette VALIDÉE de la séquence « VS » (le buste du joueur est en bas à gauche, au bout de la banderole bleue) ; IMAGE 2 = agrandissement de ce buste ; IMAGE 3 = le buste actuel du jeu (même personnage, même rendu, à GARDER) mais trop serré.
+
+À FAIRE : le MÊME personnage que l'IMAGE 3, même visage, même casquette rouge à visière blanche et logo rond, même expression, même rendu, mais cadré PLUS LARGE, en BUSTE POITRINE comme sur l'IMAGE 2 : tête, cou, les DEUX ÉPAULES entières et le haut de la poitrine, avec la veste rouge sans manches à grand col blanc relevé, le t-shirt noir et la bretelle jaune moutarde du sac à dos.
+
+MISE EN PAGE (impératif) dans une image portrait 1024 × 1536 :
+- le haut de la casquette à environ 40 px du bord haut, la visière entière dans l'image ;
+- la TÊTE entière (casquette comprise) occupe seulement les 38 % supérieurs de la hauteur (le menton vers 36 %) ;
+- le cou, le col blanc et la ligne des épaules entre 36 % et 50 % de la hauteur, les épaules bien larges (presque toute la largeur) ;
+- le haut de la poitrine jusqu'au bord bas (coupé net par le bas, c'est voulu).
+Visage de trois-quarts tourné vers la DROITE, regard vers le HAUT À DROITE, sourcils froncés, bouche fermée, déterminé.
+
+STYLE : celui des IMAGES 2 et 3 : illustration anime peinte, réaliste-stylisée (PAS chibi), contours fins brun foncé, ombres douces peintes, lumière chaude venant de la droite.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucune banderole, aucun rocher, aucun texte, aucune lettre, aucun cadre, aucun halo.

@@ -1,0 +1,77 @@
+# Puits Ramoloss B1F (slowpoke_well_b1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH4 ;
+# dossier docs/design/dossier-joh-05-ecorcia.md §3, §4 (étapes 5 et 6), §5 à §7, textes E-15, E-16,
+# E-35). Carte intérieure ; même légende que les grottes de Kanto (tools/plans/mont_selenite_1f.txt).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh4.py.
+#
+# 30 × 24 cases (dossier : ≈ 30 × 24) ; nord en haut ; x = colonne 0..29, y = rangée 0..23.
+#
+# Composition (une seule voie, du nord-ouest au sud-ouest) :
+#   - SALLE D'ENTRÉE (x 2..12, y 2..5) : échelle qui monte vers Écorcia (U, (3, 2)) ; FARGAS tombé
+#     (E-15) en (5, 4), du récit au retour des Ramoloss.
+#   - GOULET (x 13..16, y 4) d'une case de haut, sous la niche du SBIRE E (15, 3) : sa vue couvre
+#     le goulet, INÉVITABLE (dossier §6) ; après le combat, il reste dans sa niche.
+#   - SALLE DES ROCHERS (x 17..27, y 2..9) : rochers isolés (o), gravats de rencontre (g),
+#     Super Ball ×2 au fond (26, 2) ; SBIRE F (21, 2), évitable par le sud de la salle.
+#   - DESCENTE (x 25..27, y 9..12) vers la GRANDE SALLE BASSE (x 2..27, y 12..21) : EAU PEU
+#     PROFONDE (w, x 8..19, y 14..20, SURFABLE : Ramoloss et Ptitard, JH-36) au centre, gravats à
+#     l'ouest et au sud-est ; SBIRE G (14, 21) sur la rive sud, évitable par la rive nord (y 12..13).
+#   - ÉCHELLE qui descend au B2F (V, (3, 20)), au sud-ouest, dans les gravats.
+#
+# Raccords :
+#   U (3, 2) ↔ Écorcia, descente du puits (37, 7), sortie en (37, 8).
+#   V (3, 20) ↔ B2F, échelle U (3, 3), arrivée (3, 4).
+#
+# Légende :
+#   # paroi rocheuse (bloquée)   . sol de grotte calme (aucune rencontre)
+#   g gravats humides (praticables, terrain de rencontre : Ramoloss, Nosferapti, Racaillou)
+#   w eau peu profonde (SURFABLE ; rencontres de l'eau)   o rocher isolé (bloqué)
+#   U échelle qui monte (vers Écorcia)   V échelle qui descend (vers B2F)   (praticables, warps)
+# Défauts [D] : rencontres sur les gravats (g) et dans l'eau seulement ; Sbires placés par Claude ;
+# la chute de Fargas est jouée en dialogue (pas de trou).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 30 caractères), puis POSITIONS.
+
+PRATICABLES .gwUV
+
+GRILLE 30 24
+00 ##############################
+01 ##############################
+02 ##.U.........####...........##
+03 ##...........##.#..o........##
+04 ##..........................##
+05 ##...........####...o.......##
+06 #################...........##
+07 #################.ggggg.o...##
+08 #################.ggggg.....##
+09 #################.ggggg.....##
+10 #########################...##
+11 #########################...##
+12 ##..........................##
+13 ##...o..................o...##
+14 ##......wwwwwwwwwwww........##
+15 ##ggggg.wwwwwwwwwwww..o.....##
+16 ##ggggg.wwwwwwwwwwww........##
+17 ##ggggg.wwwwwwwwwwww........##
+18 ##ggggg.wwwwwwwwwwww.ggggggg##
+19 ##ggggg.wwwwwwwwwwww.ggggggg##
+20 ##gVggg.wwwwwwwwwwww.ggggggg##
+21 ##...................ggggggg##
+22 ##############################
+23 ##############################
+FIN
+
+POSITIONS
+echelle_ville        warp           3,2          libre   sens=monte vers=azalea_town  # STEP_ON → azalea_town, from_well (37, 8)
+from_azalea          spawn          3,3          libre    # arrivée d'Écorcia, tournée ↓
+echelle_b2f          warp           3,20         libre   paire=A sens=descend vers=slowpoke_well_b2f  # STEP_ON → slowpoke_well_b2f, from_b1f (3, 4)
+from_b2f             spawn          3,19         libre    # retour du B2F, tournée ↑
+fargas_b1f           pnj            5,4          bloque  role=fargas facing=right actif_avec=johto_kurt_told actif_sans=johto_slowpoke_well_cleared  # E-15, tombé près de l'échelle ; parle à l'arrivée
+sbire_e              dresseur       15,3         bloque  facing=down sight=2 trainer=slowpoke_well_grunt_e  # E-16, Rattatac 20 + Abo 20 ; voit (15, 4..5), le goulet : INÉVITABLE
+sbire_f              dresseur       21,2         bloque  facing=down sight=2 trainer=slowpoke_well_grunt_f  # E-16, Smogo 21 + Nosferapti 20 ; voit (21, 3..4), évitable par y 5..9
+sbire_g              dresseur       14,21        bloque  facing=left sight=3 trainer=slowpoke_well_grunt_g  # E-16, Malosse 21 + Cornèbre 21 ; voit (11..13, 21), évitable par la rive nord
+well_b1f_item_1      objet_visible  26,2         bloque  item=great_ball count=2  # fond de la salle des rochers (dossier §7), pris depuis (26, 3) ↑ ou (25, 2) →
+gravats_g1           gravats        20,8         libre   role=G1  # salle des rochers (évitables)
+gravats_g2           gravats        4,18         libre   role=G2  # devant l'échelle du B2F (obligatoires)
+gravats_g3           gravats        24,20        libre   role=G3  # sud-est de la grande salle (évitables)
+FIN

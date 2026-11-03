@@ -1,0 +1,97 @@
+# Sentier du Mont Argenté (silver_trail) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ;
+# dossier docs/design/dossier-joh-10-mont-argente.md §3, §4 (étape 2), §5 à §7, textes A-3 à A-7).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# 24 × 44 cases (dossier : ≈ 24 × 44) ; nord en haut ; x = colonne 0..23, y = rangée 0..43.
+#
+# Composition (montée boisée, la neige commence) :
+#   - CHEMIN (=) du bord OUEST (0, 40..42), au bout du sentier du Lac Colère, puis vers le nord
+#     (x 11..13) jusqu'au bord NORD (11..13, 0), l'extérieur du Mont Argenté.
+#   - MURAILLE DE GLACE (R, y 25) d'un bord à l'autre, un seul passage (12, 25) : le KARATÉKA HUGO
+#     (11, 24) regarde (12, 24), seule case d'où l'on sort du passage : INÉVITABLE (A-6). Au-dessus,
+#     la NEIGE (n, praticable) remplace l'herbe rase.
+#   - MONTAGNARD BAPTISTE (6, 34) au sud, TOPDRESSEUSE INÈS (18, 15) au nord, évitables.
+#   - CENTRE DU MONT ARGENTÉ (C, 8 × 7, x 2..9, y 5..11, portes (5..6, 11)) : Centre complet avec
+#     comptoir de Boutique (intérieur : modèle des Centres) ; point de Vol.
+#   - H1 (x 15..21, y 30..36) en herbe, H2 (x 2..7, y 16..21) et H3 (x 16..21, y 8..13) sous la neige ;
+#     panneau A-3 (9, 39).
+#
+# Raccords :
+#   OUEST (0, 40..42) ↔ Lac Colère, sentier du bord est (55, 3..5) (rangées différentes, warps case à case).
+#   NORD (11..13, 0) ↔ Mont Argenté extérieur, bord sud (18..20, 39) (colonnes différentes, warps case à case).
+#
+# Légende :
+#   T forêt et bordure (bloquée)   R muraille de glace, rocher (bloqués)   . herbe rase   n neige
+#   (praticables, aucune rencontre)   = chemin (praticable)   h herbes hautes, sous la neige au nord
+#   (praticables, rencontres)   G sapin repère (bloqué)   o rocher isolé (bloqué)   C Centre du Mont
+#   Argenté (emprise bloquée)   D portes du Centre (praticables, STEP_ON ↑)
+# Défauts [D] : Dresseurs placés par Claude ; Boutique intégrée au Centre.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .=hnD
+
+GRILLE 24 44
+00 TTTTTTTTTTT===TTTTTTTTTT
+01 Tnnnnnnnnnn===nnnnnnnnnT
+02 Tnonnnnnnnn===nnnnnnnnnT
+03 Tnnnnnnnnnn===nnGnnnnnnT
+04 Tnnnnnnnnnn===nnnnnnnnnT
+05 TnCCCCCCCCn===nnnnnnnnnT
+06 TnCCCCCCCCn===nnnnnnnnnT
+07 TnCCCCCCCCn===nnnnnnnnnT
+08 TnCCCCCCCCn===nnhhhhhhnT
+09 TnCCCCCCCCn===nnhhhhhhnT
+10 TnCCCCCCCCn===nnhhhhhhnT
+11 TnCCCDDCCCn===nnhhhhhhnT
+12 Tnnnnnnnnnn===nnhhhhhhnT
+13 Tnnnnnnnnnn===nnhhhhhhnT
+14 TnnnnnnnGnn===nnnnnnnnnT
+15 Tnnnnnnnnnn===nnnnnnnnnT
+16 Tnhhhhhhnnn===nnnnnnnnnT
+17 Tnhhhhhhnnn===nnnnnnnnnT
+18 Tnhhhhhhnnn===nnnnnnnnnT
+19 Tnhhhhhhnnn===nnnnnnnnnT
+20 Tnhhhhhhnnn===nnnnnGnnnT
+21 Tnhhhhhhnnn===nnnnnnnnnT
+22 Tnnnnnnnnnn===nnnnnnnnnT
+23 Tnnnnnnnnnn===nnnnnnnnnT
+24 Tnnnnnnnnnn===nnnnnnnnnT
+25 TRRRRRRRRRRR=RRRRRRRRRRT
+26 T..........===.........T
+27 T.....o....===....o....T
+28 T..........===.........T
+29 T..........===.........T
+30 T...G......===.hhhhhhh.T
+31 T..........===.hhhhhhh.T
+32 T..........===.hhhhhhh.T
+33 T..........===.hhhhhhh.T
+34 T..........===.hhhhhhh.T
+35 T..........===.hhhhhhh.T
+36 T..G.......===.hhhhhhh.T
+37 T..........===.........T
+38 T..........===.........T
+39 T..........===.........T
+40 ==============......G..T
+41 ==============.........T
+42 ==============.........T
+43 TTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_ouest           warp           0,40..42     libre    # PUSH ← → lake_of_rage, from_sentier (55, 3..5)
+from_lake            spawn          0,40..42     libre   facing=right  # arrivée du Lac Colère ; titre de zone « Sentier » (A-7)
+warp_nord            warp           11..13,0     libre    # PUSH ↑ → mt_silver_outside, from_trail (18..20, 39)
+from_outside         spawn          11..13,0     libre   facing=down  # arrivée de l'extérieur du Mont Argenté
+porte_centre         warp           5..6,11      libre    # STEP_ON ↑ → mt_silver_center (Centre + Boutique)
+retour_centre        spawn          5..6,12      libre    # tournée ↓ ; point de Vol « Mont Argenté » ; retour après une défaite contre Dante ou le rival
+panneau              panneau        9,39         bloque   # A-3, lu depuis (9, 40) ↑
+hugo                 dresseur       11,24        bloque  role=karateka facing=right sight=1  # A-6 : Mackogneur 65, Ursaring 65 ; voit (12, 24), sortie du passage : INÉVITABLE
+baptiste             dresseur       6,34         bloque  role=montagnard facing=right sight=2  # A-4 : Grolem 64, Donphan 64 ; évitable
+ines                 dresseur       18,15        bloque  role=topdresseuse facing=left sight=2  # A-5 : Airmure 64, Pharamp 64, Mentali 65 ; évitable
+herbes_h1            herbes         18,33        libre   role=H1  # herbe, sud
+herbes_h2            herbes         4,18         libre   role=H2  # herbes sous la neige, nord-ouest
+herbes_h3            herbes         18,10        libre   role=H3  # herbes sous la neige, nord-est
+FIN

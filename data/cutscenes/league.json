@@ -30,9 +30,6 @@
 						"dialogue": "league_lorelei_before"
 					},
 					{
-						"champion_card": "league_lorelei"
-					},
-					{
 						"battle": "league_lorelei",
 						"win": [
 							"beaten_league_lorelei"
@@ -89,9 +86,6 @@
 					},
 					{
 						"dialogue": "league_bruno_before"
-					},
-					{
-						"champion_card": "league_bruno"
 					},
 					{
 						"battle": "league_bruno",
@@ -152,9 +146,6 @@
 						"dialogue": "league_agatha_before"
 					},
 					{
-						"champion_card": "league_agatha"
-					},
-					{
 						"battle": "league_agatha",
 						"win": [
 							"beaten_league_agatha"
@@ -211,9 +202,6 @@
 					},
 					{
 						"dialogue": "league_lance_before"
-					},
-					{
-						"champion_card": "league_lance"
 					},
 					{
 						"battle": "league_lance",

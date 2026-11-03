@@ -1,0 +1,66 @@
+# Îles Tourbillon B2F (whirl_islands_b2f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ;
+# dossier docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étape 7), §7, §9, textes M-22 à M-25, M-34). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+#
+# 24 × 24 cases (dossier : ≈ 24 × 24) ; nord en haut ; x = colonne 0..23, y = rangée 0..23.
+#
+# Composition (la salle de Lugia : cascade, bassin, lumière bleue) :
+#   - ÉCHELLE qui monte (U, (2, 2)) au nord-ouest ; CORNICHE (.) tout autour du bassin.
+#   - BASSIN PROFOND (d, x 6..18, y 3..16), clos par des parois (x 5, x 19, y 1..2) sauf au SUD : la
+#     rangée d'eau (w, y 17) est le seul accès, et la SCÈNE DE LUGIA (« scene_lugia », (6..18, 17),
+#     M-23, M-24) la couvre : Lugia (12, 9) émerge au centre (combat et capture, niv. 65 ; M-25 s'il
+#     disparaît). HALO de lumière bleue (12, 6), décor.
+#   - CASCADE (F, x 9..17, y 1..2, examen M-34 depuis (11, 3)) ; derrière, la PETITE GROTTE (13, 1..2)
+#     avec le Super Bonbon ×2 (13, 1), atteinte en passant sous la cascade en (13, 2).
+#
+# Raccords :
+#   U (2, 2) ↔ B1F, échelle V (2, 2), arrivée (2, 3) de chaque côté (paire wi_2).
+#
+# Légende :
+#   # paroi rocheuse (bloquée)   . corniche (praticable à pied)   w eau SURFABLE   d eau profonde
+#   (surfable, même règle que w)   F cascade (bloquée, décor animé)   o rocher (bloqué)
+#   U échelle qui monte (praticable, warp)
+# Défauts [D] : aucune rencontre au B2F ; Lugia se combat en l'abordant depuis l'eau.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .wdU
+
+GRILLE 24 24
+00 ########################
+01 #....####FFFF.FFFF##...#
+02 #.U..####FFFF.FFFF##...#
+03 #....#ddddddddddddd#...#
+04 #....#ddddddddddddd#...#
+05 #....#ddddddddddddd#...#
+06 #....#ddddddddddddd#...#
+07 #....#ddddddddddddd#...#
+08 #.o..#ddddddddddddd#.o.#
+09 #....#ddddddddddddd#...#
+10 #....#ddddddddddddd#...#
+11 #....#ddddddddddddd#...#
+12 #....#ddddddddddddd#...#
+13 #....#ddddddddddddd#...#
+14 #....#ddddddddddddd#...#
+15 #....#ddddddddddddd#...#
+16 #....#ddddddddddddd#...#
+17 #.....wwwwwwwwwwwww....#
+18 #......................#
+19 #......................#
+20 #..o................o..#
+21 #......................#
+22 #......................#
+23 ########################
+FIN
+
+POSITIONS
+vers_b1f             escalier       2,2          libre   paire=wi_2 sens=monte vers=whirl_islands_b1f:from_b2f  # échelle vers le B1F
+from_b1f             spawn          2,3          libre   paire=wi_2 facing=down  # arrivée depuis le B1F ; titre de zone (M-22)
+scene_lugia          declencheur    6..18,17     libre   actif_sans=johto_lugia_done  # M-23 puis M-24 : l'ombre, l'émergence ; seul accès au bassin
+lugia                pokemon        12,9         bloque  espece=lugia niveau=65 combat=fixe actif_sans=johto_lugia_done  # combat et capture ; K.O. ou fuite : M-25, revient après le chapitre (§6)
+halo                 decor          12,6         libre   role=lumiere  # lumière bleue venue d'en haut
+cascade              examen         11,2         bloque   # M-34, examinée depuis (11, 3) ↑
+super_bonbons        objet_visible  13,1         bloque  item=rare_candy quantite=2  # derrière la cascade, depuis (13, 2)
+FIN

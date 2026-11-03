@@ -1,0 +1,38 @@
+CONCEPT ART — VUE GÉNÉRALE DU LAC COLÈRE, LE GRAND LAC DE MONTAGNE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE (la carte est presque carrée, centrée, avec de la forêt de part et d'autre). Un GRAND LAC de montagne occupe tout le centre ; on arrive par le SUD (le chemin qui entre par le bord bas, au centre) sur une rive herbeuse ; la rive NORD ne s'atteint qu'en nageant ; au nord-est, un SENTIER part vers l'est (vers une haute montagne, hors de l'image).
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable : toutes les marges, et les deux grands FLANCS boisés à gauche et à droite du lac, qui descendent jusqu'à l'eau ;
+- bleu = le LAC, immense, d'eau calme et profonde, de forêt à forêt ; deux petits ROCHERS émergés (disques gris) ;
+- vert moyen = les RIVES praticables : la RIVE SUD (large bande en bas, où arrive le chemin) et la RIVE NORD (bande en haut) ;
+- beige = le CHEMIN DE TERRE qui arrive du sud et s'arrête à la rive ; en haut à droite, un court SENTIER de terre qui part de la rive nord vers le bord droit ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), quatre blocs nets : deux sur la rive sud (à gauche et à droite), deux sur la rive nord (à gauche et à droite) ;
+- grands disques vert sombre = GRANDS ARBRES ISOLÉS, repères (sept) ;
+- petit carré ocre sur la rive sud, près du chemin = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : le lac de forêt à forêt, les deux rives, le chemin du sud, le sentier du nord-est, les quatre blocs d'herbes, les deux rochers, les arbres. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 42, une route du même chapitre, déjà peinte en lumière neutre : respecte EXACTEMENT son style de rendu (même EAU de lac, mêmes arbres, mêmes hautes herbes, même chemin, même saturation, même lumière neutre). Ne reprends PAS sa composition (ni montagne, ni éperon).
+
+IMAGE 3 : la vue générale de la Route 13 (Kanto), peinte en lumière neutre : même pinceau pour les prairies et l'eau calme. Ne reprends ni ses clôtures ni sa rive rocheuse.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le lac, comme le plan.
+
+AMBIANCE — « le lac de montagne » : une grande étendue d'eau sombre et calme entre deux forêts qui descendent jusqu'à la rive, des sapins mêlés aux feuillus, un ciel qui se reflète ; une rive sud accueillante où l'on pêche, une rive nord sauvage ; le sentier du nord-est monte vers la montagne. Ample, calme, un peu grave (quelque chose d'énorme vit dans ce lac, mais on ne le voit pas). Palette : LAC bleu profond, un peu vert près des rives, RIVES vert tendre, FORÊT vert profond, CHEMIN beige.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; reflets neutres sur l'eau ; aucune teinte dorée ; ombres propres légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rives, chemin, sentier et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe. Les rives du lac sont droites (la berge peut être herbeuse et douce en surface).
+RELIEF : les rives sont plates, au niveau de l'eau ; aucune falaise, aucune terrasse.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon (aucun serpent de mer, aucune ombre dans l'eau), aucun animal, aucun poisson. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment, cabane, ponton, barque ; pont ; route goudronnée ; neige, arbres automnaux ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un grand lac de montagne calme et sombre entre deux forêts, une rive sud où arrive un chemin, une rive nord sauvage d'où part un sentier vers la montagne.

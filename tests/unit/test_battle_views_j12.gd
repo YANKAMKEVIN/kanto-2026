@@ -42,6 +42,8 @@ func test_free_party_is_unchanged() -> void:
 		[false, true, false])
 	assert_eq(views.map(func(v: BattlePartyView) -> String: return v.reason),
 		["Déjà au combat", "", "Ne peut plus combattre"])
+	assert_eq(views.map(func(v: BattlePartyView) -> int: return v.dex_number), [74, 4, 19],
+		"numéro de Pokédex pour la vignette artwork")
 
 
 func test_trapped_player_cannot_send_anyone_and_reads_why() -> void:

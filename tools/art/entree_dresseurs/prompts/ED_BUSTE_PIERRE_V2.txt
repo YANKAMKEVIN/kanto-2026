@@ -1,0 +1,14 @@
+ED_BUSTE_PIERRE_V2 — buste de banderole « VS » de Kanto 2026. Images jointes : IMAGE 1 = maquette VALIDÉE de la séquence « VS » (le buste de Pierre est en haut à droite, au bout de la banderole rouge) ; IMAGE 2 = agrandissement de ce buste ; IMAGE 3 = le buste actuel du jeu (même personnage, même rendu, à GARDER) mais trop serré : on n'y voit qu'une tête.
+
+À FAIRE : le MÊME personnage que l'IMAGE 3, même visage, même expression, même rendu, mais cadré PLUS LARGE, en BUSTE POITRINE comme sur l'IMAGE 2 : tête, cou, les DEUX ÉPAULES entières et le haut de la poitrine, avec le col et le haut du gilet vert olive à revers orange ocre ouvert sur le t-shirt orange.
+
+MISE EN PAGE (impératif) dans une image portrait 1024 × 1536 :
+- le haut des cheveux à environ 40 px du bord haut ;
+- la TÊTE entière (cheveux compris) occupe seulement les 38 % supérieurs de la hauteur (le menton vers 36 %) ;
+- le cou, le col du gilet et la ligne des épaules entre 36 % et 50 % de la hauteur, les épaules bien larges (presque toute la largeur) ;
+- le haut de la poitrine et du gilet jusqu'au bord bas (coupé net par le bas, c'est voulu).
+Visage de trois-quarts tourné vers la GAUCHE, menton un peu baissé, regard vers le BAS À GAUCHE, yeux plissés mi-clos, sourcils épais froncés, bouche fermée sérieuse.
+
+STYLE : celui des IMAGES 2 et 3 : illustration anime peinte, réaliste-stylisée (PAS chibi), contours fins brun foncé, ombres douces peintes, lumière chaude venant de la droite.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucune banderole, aucun rocher, aucun texte, aucun cadre, aucun halo.

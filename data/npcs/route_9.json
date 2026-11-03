@@ -32,7 +32,7 @@
 		}
 	},
 	"benoit": {
-		"cell": [54, 31], "facing": "up", "sprite": "hiker",
+		"cell": [54, 31], "facing": "up", "sprite": "mountaineer",
 		"dialogue": "route_9_hiker_benoit_after",
 		"trainer": {
 			"id": "route_9_hiker_benoit", "sight": 5,
@@ -40,7 +40,7 @@
 		}
 	},
 	"gilles": {
-		"cell": [75, 18], "facing": "left", "sprite": "hiker",
+		"cell": [75, 18], "facing": "left", "sprite": "mountaineer",
 		"dialogue": "route_9_hiker_gilles_after",
 		"trainer": {
 			"id": "route_9_hiker_gilles", "sight": 4,

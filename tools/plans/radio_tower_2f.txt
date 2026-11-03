@@ -1,0 +1,71 @@
+# Tour Radio de Doublonville, 2F (studios) (goldenrod_radio_tower_2f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH5 ;
+# dossier docs/design/dossier-joh-06-tour-radio.md §3, §4, §5, §6, textes T-1, T-6).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh5.py.
+#
+# Composition (studios) :
+#   - Arrivée du 1F par D (3, 0) dans le COULOIR OUEST (x 1..5) ; montée au 3F par U (20, 0) depuis
+#     le COULOIR EST (x 18..22). Les deux couloirs ne se rejoignent que par le COULOIR DU BAS
+#     (y 11..14), rétréci à la seule rangée y 11 par le pupitre du haut-parleur (M, x 11..12,
+#     y 12..14) : le SBIRE I, dans sa niche (11, 12), voit cette case : INÉVITABLE (dossier §5).
+#   - Deux STUDIOS VITRÉS (V) côte à côte : A (x 6..11, y 1..10, porte (8..9, 10)) et B (x 12..17,
+#     y 1..10, porte (14..15, 10)), tables de micro (M) ; SBIRE H dans A et SBIRE J dans B, évitables
+#     (les studios sont des culs-de-sac) ; Super Potion ×2 au fond du studio A (10, 2).
+#   - Le message de Cenere passe en boucle au haut-parleur du pupitre (décor, T-1).
+#
+# Raccords :
+#   D (3, 0) ↔ 1F, U (3, 0) [paire e1_2] ; U (20, 0) ↔ 3F, D (20, 0) [paire e2_3].
+#
+# Légende (commune aux cinq étages ; même esprit que la Sylphe SARL, tools/plans/sylphe_1f.txt) :
+#   # mur, cloison ou vide (bloqué)            . sol (praticable)
+#   M mobilier : bureaux, plantes, bancs, écrans, micros (bloqué)   V vitre de studio (bloquée, transparente)
+#   c comptoir d'accueil (bloqué)   r rayonnage d'archives (bloqué)   p pupitre de régie (bloqué)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le mur
+#     nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (18, 0) à chaque étage (praticable ; EN PANNE jusqu'à johto_cenere_defeated :
+#     examen T-5 ; ensuite cabine sur le modèle du Grand Magasin de Céladopole [D])
+#   K porte fermée à clé (praticable ; la position « porte_cle », libre dans la grille, la bloque tant
+#     que la porte est fermée : même logique qu'une barrière)   E sortie vers Doublonville (1F seulement, praticable, PUSH ↓)
+#   S escalier de secours (5F, bloqué : décor et examen ; Cenere s'en va par là)
+# Personnages, objets, scènes et raccords sont dans POSITIONS. 24 × 16 cases par étage
+# (dossier : ≈ 24 × 16) ; x = colonne 0..23, y = rangée 0..15, nord en haut.
+#
+# Format : lignes CARTE et PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+CARTE goldenrod_radio_tower_2f
+
+PRATICABLES .UDL
+
+GRILLE 24 16
+00 ###D##############L#U###
+01 #M....VVVVVVVVVVVV....M#
+02 #.....V....VV....V.....#
+03 #.....V....VV....V.....#
+04 #.....V.MM.VV.MM.V.....#
+05 #.....V....VV....V.....#
+06 #.....V....VV....V.....#
+07 #.....V....VV....V.....#
+08 #.....V....VV....V.....#
+09 #.....V....VV....V.....#
+10 #.....VV..VVVV..VV.....#
+11 #......................#
+12 #...........M..........#
+13 #..........MM..........#
+14 #M.........MM.........M#
+15 ########################
+FIN
+
+POSITIONS
+vers_1f              escalier       3,0          libre   vers=goldenrod_radio_tower_1f:from_2f paire=e1_2 sens=descend  # → 1F, U (3, 0)
+from_1f              spawn          3,1          libre   paire=e1_2 facing=down  # arrivée depuis le 1F
+vers_3f              escalier       20,0         libre   vers=goldenrod_radio_tower_3f:from_2f paire=e2_3 sens=monte  # → 3F, D (20, 0)
+from_3f              spawn          20,1         libre   paire=e2_3 facing=down  # arrivée depuis le 3F
+sbire_h              dresseur       7,3          bloque  facing=right sight=2 trainer=goldenrod_radio_tower_grunt_h  # T-6, Nosferalto 26 + Smogo 26 ; studio A, voit (8..9, 3), évitable
+sbire_i              dresseur       11,12        bloque  facing=up sight=1 trainer=goldenrod_radio_tower_grunt_i  # T-6, Malosse 27 + Cornèbre 27 ; niche sous le passage, voit (11, 11) : INÉVITABLE
+sbire_j              dresseur       16,8         bloque  facing=left sight=2 trainer=goldenrod_radio_tower_grunt_j  # T-6, Magnéton 27 ; studio B, voit (14..15, 8), évitable
+radio_2f_item_1      objet_visible  10,2         bloque  item=super_potion count=2  # fond du studio A (dossier §6), pris depuis (10, 3) ↑ ou (9, 2) →
+haut_parleur         decor          12,12        bloque  role=haut_parleur  # pupitre du haut-parleur (T-1 en boucle) ; examen libre [D]
+ascenseur            ascenseur      18,0         libre   etage=2F vers=goldenrod_radio_tower_elevator:entrance actif_avec=johto_cenere_defeated  # porte de l'ascenseur ; dessert les 5 étages après Cenere (T-32) [D]
+examen_ascenseur     examen         18,0         libre   actif_sans=johto_cenere_defeated  # T-5 (1F au JOH3 : D-19), examiné depuis (18, 1) ↑ tant que l'ascenseur est en panne
+from_elevator        spawn          18,1         libre   paire=ascenseur etage=2F facing=down  # sortie de la cabine, une case devant la porte
+FIN

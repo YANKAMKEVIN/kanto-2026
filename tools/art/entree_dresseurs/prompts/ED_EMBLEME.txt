@@ -1,0 +1,5 @@
+ED_EMBLEME — emblème « VS » de Kanto 2026. Images jointes : IMAGE 1 = maquette VALIDÉE de la séquence « VS » (l'emblème « VS » doré est au centre) ; IMAGE 2 = agrandissement de l'emblème. C'est la CIBLE EXACTE : mêmes lettres, même matière, même éclair.
+
+À FAIRE : UNE image carrée 1024 × 1024 : l'emblème SEUL, centré, grand (environ 800 px de large) : les deux lettres capitales « V » et « S » à empattements, en italique, en OR poli massif (dégradé or clair à ambre, reflets blancs, arêtes biseautées, fin contour brun foncé), le S légèrement décalé vers le bas à droite du V ; un ÉCLAIR doré lumineux en diagonale (du haut à droite vers le bas à gauche) traverse l'emblème, avec un éclat lumineux doux. PAS les deux traits horizontaux de part et d'autre (le jeu les dessine). Seulement les lettres V et S, aucune autre lettre.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun cadre ; halo lumineux très léger seulement autour de l'éclair.

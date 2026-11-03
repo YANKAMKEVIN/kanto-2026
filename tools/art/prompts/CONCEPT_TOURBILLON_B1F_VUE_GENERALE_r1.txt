@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE DES ÎLES TOURBILLON, NIVEAU -1 : LE LAC SOUTERRAIN AUX COURANTS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Un grand LAC SOUTERRAIN dans une île, que l'on parcourt en nageant, coupé en deux par une MURAILLE de roche.
+Légende du plan :
+- gris ardoise foncé = ROCHE PLEINE et parois (toutes les marges, la MURAILLE verticale au centre, et les parois des criques) ; le liseré plus clair = l'ARÊTE de la paroi ;
+- bleu = EAU navigable : un LAC EST (toute la moitié droite, hors de la rive) et un LAC OUEST (la moitié gauche), séparés par la muraille, qui n'est percée que de DEUX PASSES d'une case (en haut et en bas de la muraille) ;
+- bandes bleu clair à CHEVRONS BLANCS = des COURANTS (stries et filets d'écume dans le sens du flux, pas de flèches) : dans les deux passes de la muraille (l'une vers l'ouest, l'autre vers l'est), dans un chenal à gauche au milieu (vers l'ouest à l'entrée, vers l'est à la sortie), et un COURANT VIOLENT qui descend du palier du nord-ouest ;
+- gris clair = TERRE FERME praticable : la RIVE D'ARRIVÉE à droite en bas (avec une ÉCHELLE qui MONTE et, à sa droite, une zone de GRAVATS gris-beige semés de cailloux) ; la PLATE-FORME au nord du lac ouest (un rectangle de roche plate entre deux parois, que l'on n'aborde que par le sud ; une galerie étroite en part vers le haut à droite) ; un petit ÎLOT de quatre cases au fond d'un CHENAL fermé à gauche au milieu ; en haut à gauche, un PALIER de trois cases sur trois avec une ÉCHELLE qui DESCEND (trou sombre), auquel on n'accède que par le courant violent ;
+- en bas à gauche, une CRIQUE fermée (de l'eau calme entre des parois, ouverte par une passe d'une case) ;
+- disques gris = ROCHERS ÉMERGÉS (six).
+Respecte ce plan À LA LETTRE : la muraille et ses deux passes à courant, les deux lacs, la rive d'arrivée et son échelle, la plate-forme du nord, le chenal de l'îlot et ses courants, la crique du sud-ouest, le palier du nord-ouest et son courant violent, les rochers. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la salle 2 de la grotte marine de Johto, déjà peinte (une grotte marine du même chapitre) : respecte EXACTEMENT son rendu (même roche sombre humide, même eau turquoise près des parois et bleu profond au large, mêmes courants en traînées d'écume, mêmes rais de lumière froide tombant des fissures, même pénombre bleue). Ne reprends PAS sa composition.
+
+IMAGE 3 : la vue générale d'une grotte des Îles Écume (Kanto) : même pinceau pour la roche et l'eau. SANS glace ni neige.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le niveau, comme le plan.
+
+AMBIANCE — « le lac aux courants » : un vaste lac souterrain dans le ventre de l'île, l'eau claire et froide, des courants qui filent entre les parois, une muraille de roche qui coupe la salle, une plate-forme nue au nord où quelque chose attend (NE LE DESSINE PAS : vide). Solennelle, fraîche, mystérieuse, JAMAIS effrayante ni illisible. Palette : ROCHE gris-bleu humide, EAU turquoise à bleu profond, écume blanche des courants, gravats gris-beige.
+LUMIÈRE : pénombre bleue ; deux ou trois rais de lumière du jour tombent des fissures du plafond (un sur la plate-forme du nord, un sur le lac est) ; aucune lampe, aucune teinte dorée.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; lacs, passes, rives, criques ont des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUN chenal en diagonale ni en courbe. Les parois peuvent être irrégulières EN SURFACE, mais le bord de l'eau garde des bords droits et lisibles.
+RELIEF : tout est au niveau de l'eau ; on ne change de niveau que par les échelles.
+OBJETS RARES : rien d'autre que les rochers et les échelles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des rochers et leur face avant (côté sud) ; les parois nord montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucun poisson. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; glace, neige, cristaux ; lampe, caisse ; flèches dessinées ; cascade (pas à ce niveau) ; escalier, pont, ponton, barque ; ciel, arbres ; chenaux courbes ; brouillard épais, vignettage noir ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un lac souterrain coupé par une muraille percée de deux passes à courant, une plate-forme nue au nord, un îlot au fond d'un chenal, une crique à l'abri, et une échelle que garde un courant violent.

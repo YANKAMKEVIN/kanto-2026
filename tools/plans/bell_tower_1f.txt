@@ -1,0 +1,70 @@
+# Tour Carillon 1F (bell_tower_1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH8 ; dossier
+# docs/design/dossier-joh-09-tour-carillon.md §3, §4 (étape 3), §6, §7, textes H-6, H-7, H-11). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh8.py.
+#
+# 24 × 24 cases (dossier : ≈ 24 × 24) ; nord en haut ; x = colonne 0..23, y = rangée 0..23.
+#
+# Composition (grand hall de bois, colonnes rouges, autel) :
+#   - ENTRÉE au sud (E, (11..12, 23)) depuis le Bois ; AUTEL (A, x 9..14, y 1..2, examen) au fond ;
+#     six COLONNES ROUGES (M) en deux rangs ; plantes et brûle-parfums (M) dans les angles.
+#   - Deux SAGES ASSOMMÉS (H-6) au pied des colonnes : (6, 7) et (17, 13).
+#   - ESCALIER qui monte (U, (20, 0)) au fond d'une NICHE d'une case (x 20, y 1..3, cloisons x 19 et
+#     x 21) : le SBIRE V (21, 4) regarde (20, 4), seule case d'accès à la niche : INÉVITABLE (H-7).
+#   - Rappel Max (2, 10). « chute » (12, 12) : arrivée des planches qui cèdent au 2F.
+#
+# Raccords :
+#   E (11..12, 23) ↔ Bois de la Tour, porte (10..11, 5), retour (10..11, 6).
+#   U (20, 0) ↔ 2F, escalier D (20, 0), arrivée (20, 1) de chaque côté (paire ct_1).
+#   « chute » (12, 12) : arrivée des trous du 2F.
+#
+# Légende :
+#   # mur (bloqué)   . plancher de bois (praticable, aucune rencontre)   A autel (bloqué, examen)
+#   M colonne rouge, plante ou brûle-parfum (bloqués)   U escalier qui monte (praticable, warp)
+#   E sortie vers le Bois (praticable, PUSH ↓)
+# Défauts [D] : aucune rencontre (lieu sacré) ; Sbire V inévitable par sa vue plutôt que par une scène.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .UE
+
+GRILLE 24 24
+00 ####################U###
+01 #........AAAAAA....#.#.#
+02 #.M......AAAAAA....#.#.#
+03 #..................#.#.#
+04 #......................#
+05 #......................#
+06 #....M............M....#
+07 #......................#
+08 #......................#
+09 #......................#
+10 #......................#
+11 #......................#
+12 #....M............M....#
+13 #......................#
+14 #......................#
+15 #......................#
+16 #......................#
+17 #......................#
+18 #....M............M....#
+19 #......................#
+20 #......................#
+21 #.M..................M.#
+22 #......................#
+23 ###########EE###########
+FIN
+
+POSITIONS
+sortie               warp           11..12,23    libre    # PUSH ↓ → bell_tower_woods, retour_tour (10..11, 6)
+from_woods           spawn          11..12,22    libre   facing=up  # arrivée depuis le Bois ; titre de zone « Tour Carillon » (H-11)
+vers_2f              escalier       20,0         libre   paire=ct_1 sens=monte vers=bell_tower_2f:from_1f  # escalier vers le 2F
+from_2f              spawn          20,1         libre   paire=ct_1 facing=down  # arrivée depuis le 2F
+chute                spawn          12,12        libre   role=chute facing=down  # arrivée des planches qui cèdent (2F)
+autel                examen         9..14,2      bloque   # autel de la tour, examiné depuis (9..14, 3) ↑ [D]
+sage_1               pnj            6,7          bloque  role=sage facing=down  # H-6, sage 1 assommé
+sage_2               pnj            17,13        bloque  role=sage facing=down  # H-6, sage 2 assommé
+sbire_v              dresseur       21,4         bloque  role=sbire facing=left sight=1  # H-7 : Démolosse 61, Nosferalto 61 ; voit (20, 4), seul accès à l'escalier : INÉVITABLE
+rappel_max           objet_visible  2,10         bloque  item=max_revive  # dossier §7
+FIN

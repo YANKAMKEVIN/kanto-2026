@@ -1,0 +1,76 @@
+# Îles Tourbillon 1F (whirl_islands_1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ;
+# dossier docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étape 3), §5 à §8, textes M-9, M-10). Carte intérieure ; même légende
+# que les grottes de Kanto (tools/plans/mont_selenite_1f.txt) et le Puits Ramoloss.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+#
+# 30 × 24 cases (dossier : ≈ 30 × 24) ; nord en haut ; x = colonne 0..29, y = rangée 0..23.
+#
+# Composition (grotte d'entrée, trois salles en escalier) :
+#   - ENTRÉE à l'ouest (E, (0, 12)) depuis la face ouest de l'île ; COULOIR (y 11..13) vers la SALLE A
+#     (x 7..14, y 4..20, gravats au sud).
+#   - PASSAGE DU ROCHER 1 (y 8, x 15..18) : le ROCHER DE FORCE n° 1 (16, 8) le bouche ; on le pousse
+#     vers l'est (cases (17, 8), (18, 8), puis la salle B) : Force obligatoire (JH-48).
+#   - SALLE B (x 19..28, y 2..10) : SBIRE T (26, 4), évitable ; Rappel Max (27, 9).
+#   - PASSAGE DU ROCHER 2 (x 24, y 11..13) : le ROCHER n° 2 (24, 12), poussé vers le sud jusque dans
+#     la salle C ; à l'arrivée, le SBIRE U (22, 14) voit (23..24, 14), seule case d'entrée : INÉVITABLE.
+#   - SALLE C (x 17..28, y 14..21, gravats au sud-ouest) : ÉCHELLE qui descend (V, (27, 20)) au B1F.
+#
+# Raccords :
+#   E (0, 12) ↔ Route 41, entrée (22, 24) ; retour en Surf en (21, 24).
+#   V (27, 20) ↔ B1F, échelle U (27, 20), arrivée (27, 21) de chaque côté (paire wi_1).
+#
+# Légende :
+#   # paroi rocheuse (bloquée)   . sol de grotte calme (aucune rencontre)
+#   g gravats (praticables, terrain de rencontre : Nosferalto, Grolem, Racaillou, Krabboss, Lamantine)
+#   o rocher isolé (bloqué)   V échelle qui descend   E entrée (praticables, warps)
+# Rochers de Force : positions « rocher » (bloquées tant qu'on ne les pousse pas ; attribut
+# pousse= direction, lane= cases libres devant).
+# Défauts [D] : rencontres sur les gravats seulement ; Dresseurs placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 30 caractères), puis POSITIONS.
+
+PRATICABLES .gVE
+
+GRILLE 30 24
+00 ##############################
+01 ##############################
+02 ###################.gggg.....#
+03 ###################.gggg.....#
+04 #######........####.gggg.....#
+05 #######........####..........#
+06 #######...o....####..........#
+07 #######........####.......o..#
+08 #######......................#
+09 #######........####..........#
+10 #######.....o..####..........#
+11 #..............#########.#####
+12 E..............#########.#####
+13 #..............#########.#####
+14 #######.gggggg.##............#
+15 #######.gggggg.##............#
+16 #######.gggggg.##...o........#
+17 #######.gggggg.##............#
+18 #######.gogggg.##ggggg.......#
+19 #######.gggggg.##ggggg.......#
+20 #######........##ggggg.....V.#
+21 #################ggggg.......#
+22 ##############################
+23 ##############################
+FIN
+
+POSITIONS
+sortie               warp           0,12         libre    # PUSH ← → route_41, from_whirl (21, 24)
+from_route_41        spawn          1,12         libre   facing=right  # arrivée depuis la Route 41 ; titre de zone « Îles Tourbillon » (M-9)
+vers_b1f             escalier       27,20        libre   paire=wi_1 sens=descend vers=whirl_islands_b1f:from_1f  # échelle vers le B1F
+from_b1f             spawn          27,21        libre   paire=wi_1 facing=down  # arrivée depuis le B1F
+rocher_1             rocher         16,8         bloque  force=1 pousse=E lane=17,8;18,8;19,8  # rocher de Force n° 1, poussé vers la salle B
+rocher_2             rocher         24,12        bloque  force=1 pousse=S lane=24,13;24,14;24,15  # rocher de Force n° 2, poussé vers la salle C
+sbire_t              dresseur       26,4         bloque  role=sbire facing=down sight=2  # M-10 T : Grotadmorv 58, Arbok 58 ; évitable
+sbire_u              dresseur       22,14        bloque  role=sbire facing=right sight=2  # M-10 U : Démolosse 59, Nosferalto 58 ; voit l'entrée de la salle C : INÉVITABLE
+rappel_max           objet_visible  27,9         bloque  item=max_revive  # salle B
+gravats_a            gravats        10,16        libre   role=G1  # gravats de la salle A
+gravats_b            gravats        21,3         libre   role=G2  # gravats de la salle B
+gravats_c            gravats        19,19        libre   role=G3  # gravats de la salle C
+FIN

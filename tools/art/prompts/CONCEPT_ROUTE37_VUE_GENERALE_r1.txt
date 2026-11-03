@@ -1,0 +1,36 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 37, LE CHEMIN DES ARBRES FRUITIERS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. La route va du NORD (le chemin qui entre par le bord haut, au centre) au SUD (le chemin qui sort par le bord bas, au centre), entre deux bandes de prés fermées par la forêt.
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (toutes les marges, et un BOSQUET SOMBRE compact à l'est, à mi-hauteur, que le chemin contourne) ;
+- beige = CHEMIN DE TERRE BATTUE de trois cases de large, du nord au sud, avec une CHICANE à angles droits vers l'est au milieu (il se décale de trois cases vers la droite pour longer le bosquet, puis revient à gauche) ;
+- vert moyen = PRÉS d'herbe rase praticables, à l'ouest et à l'est du chemin ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), deux blocs nets : un à l'ouest, à mi-hauteur, un au sud-est ;
+- disques vert moyen semés de points rouges, trois à l'ouest en haut = trois ARBRES FRUITIERS en décor : des arbres ronds et bas, chargés de petits fruits rouges, plantés en quinconce dans le pré ;
+- grands disques vert sombre = trois GRANDS ARBRES ISOLÉS, repères (deux à l'est en haut, un à l'ouest en bas) ;
+- petit carré ocre, près du chemin en haut = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : le chemin et sa chicane, le bosquet sombre à l'est, les deux blocs d'herbes hautes, les trois arbres fruitiers à l'ouest, les trois arbres isolés. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 38, la route voisine du même chapitre, déjà peinte en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes, même chemin de terre, mêmes prés, même saturation, MÊME LUMIÈRE neutre. Ne reprends PAS sa composition (ni falaise, ni barrière d'arbres).
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « le chemin des arbres fruitiers » : une route courte et paisible entre deux villes, des prés ouverts, trois arbres fruitiers chargés de fruits rouges, et un bosquet plus sombre et plus dense que la forêt autour, qui ferme un côté du chemin : c'est là que des silhouettes rôdent la nuit, mais la vue est peinte de jour, calme et claire. Palette : PRÉS vert tendre, CHEMIN beige, FORÊT vert profond, BOSQUET vert très sombre, FRUITS rouge vif.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemin et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment ; clôture ; eau, pont ; route goudronnée, véhicule ; arbres orange ou automnaux (les fruits rouges sont les seules touches rouges) ; neige ; brouillard, flou de profondeur, vignettage ; ambiance de nuit ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un chemin tranquille du nord au sud entre des prés, trois arbres fruitiers rouges d'un côté, un bosquet sombre de l'autre que le chemin contourne.

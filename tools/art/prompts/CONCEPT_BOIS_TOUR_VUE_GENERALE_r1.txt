@@ -1,0 +1,35 @@
+CONCEPT ART — VUE GÉNÉRALE DU BOIS DE LA TOUR, L'ALLÉE DES LANTERNES VERS LA TOUR CARILLON (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Un petit bois sacré entre une ville et une haute tour : on arrive par le SUD (l'allée pavée qui entre par le bord bas, au centre) et l'on monte tout droit jusqu'à la PORTE de la tour, au nord.
+Légende du plan :
+- vert très foncé = ÉRABLES SERRÉS, infranchissables (toutes les marges) ;
+- vert moyen = SOUS-BOIS praticable, herbe rase et mousse ; le petit carré olive en haut à gauche = une touffe d'herbe plus haute ;
+- damier beige-gris = l'ALLÉE PAVÉE de deux cases de large, du bord bas jusqu'à la porte, bordée de QUATRE LANTERNES DE PIERRE (les petits fûts gris à lueur chaude, deux paires de part et d'autre de l'allée) ;
+- en haut au centre, la grande façade à toits rouges étagés = LA TOUR CARILLON vue de face : la base d'une haute PAGODE de bois à plusieurs toits étagés rouge-brun aux coins relevés, murs crème et bois sombre ; on ne voit que ses premiers étages, elle monte hors de l'image ; sa PORTE à deux battants au milieu de sa base (les deux cases sombres), au bout de l'allée ;
+- grands disques vert sombre = GRANDS ÉRABLES isolés, repères (douze), au feuillage vert profond touché de rouge sombre ;
+- petit carré ocre à gauche de l'allée, en bas = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : l'allée du bord bas à la porte, les quatre lanternes, la façade de la pagode en haut au centre et sa porte, les érables, la touffe d'herbe, le panneau. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de Rosalia, la ville du même chapitre où se trouve cette tour, déjà peinte en lumière neutre : respecte EXACTEMENT son rendu (mêmes érables, même pavé, même PAGODE : la façade de la Tour Carillon ici est le même bâtiment, vu de plus près), même lumière neutre. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le bois, comme le plan.
+
+AMBIANCE — « le bois sacré » : une allée de pierre entre des lanternes, sous des érables anciens, qui mène à la porte d'une pagode immense ; recueillement, silence, mousse et pierre. Calme, solennel, un peu mystérieux, JAMAIS lugubre. Palette : ÉRABLES vert profond touché de rouge sombre, SOUS-BOIS vert mousse, PAVÉ gris-beige, LANTERNES de pierre grise à lueur chaude douce, PAGODE crème et bois sombre à toits rouge-brun.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, filtrée par les érables ; les lanternes ont une petite lueur chaude (la seule touche chaude) ; aucune teinte dorée dans la lumière ; ombres propres légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; allée et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe.
+RELIEF : le sol est plat ; aucun escalier, aucune marche (la porte de la tour est au niveau de l'allée).
+NATURE DENSE, OBJETS RARES : les érables sont serrés, en grandes masses ; aucun objet décoratif hors des lanternes et du panneau (pas de torii, pas de statue).
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des objets et leur face avant (côté sud) ; la pagode montre sa façade sud et ses toits étagés.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; torii, statue, puits, pont ; eau ; tout bâtiment autre que la pagode ; arbres entièrement orange, forêt automnale ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une allée pavée bordée de lanternes de pierre, sous des érables anciens, qui monte droit vers la porte d'une immense pagode.

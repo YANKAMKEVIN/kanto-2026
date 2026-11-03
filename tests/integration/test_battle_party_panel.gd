@@ -43,12 +43,18 @@ func _set_screen(width: float) -> void:
 	_screen.size = Vector2(width, SCREEN_HEIGHT)
 
 
+const DEX_NUMBERS: Dictionary[String, int] = {
+	"Salamèche": 4, "Roucool": 16, "Carapuce": 7, "Bulbizarre": 1,
+}
+
+
 func _view(index: int, name: String, types: Array[StringName], hp: int, max_hp: int,
 		active: bool = false) -> BattlePartyView:
 	var view := BattlePartyView.new()
 	view.party_index = index
 	view.display_name = name
 	view.species_id = StringName(name.to_lower())
+	view.dex_number = DEX_NUMBERS.get(name, 0)
 	view.level = 5 + index
 	view.hp = hp
 	view.max_hp = max_hp
@@ -144,6 +150,18 @@ func test_one_card_per_pokemon_with_types_tags_and_reasons() -> void:
 	assert_eq(cards[2].get_tag_text(), "")
 	assert_eq(cards[2].get_reason_text(), "")
 	assert_eq(cards[3].get_hp_text(), "7 / 19")
+
+
+func test_each_card_shows_the_official_artwork_thumbnail() -> void:
+	var team := _team()
+	team[3].dex_number = 0
+	await _open(team)
+	var cards := _panel.get_cards()
+	assert_not_null(cards[0].get_thumb_texture(), "Salamèche : artwork n° 4")
+	assert_not_null(cards[1].get_thumb_texture(), "un K.O. garde sa vignette (atténuée)")
+	assert_ne(cards[0].get_thumb_texture(), cards[1].get_thumb_texture(),
+		"une vignette par espèce")
+	assert_null(cards[3].get_thumb_texture(), "sans numéro de Pokédex : pas de vignette")
 
 
 func test_the_first_sendable_pokemon_is_selected_at_opening() -> void:

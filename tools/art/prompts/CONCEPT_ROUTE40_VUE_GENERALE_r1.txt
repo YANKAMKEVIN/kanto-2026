@@ -1,0 +1,33 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 40, LA ROUTE MARINE D'OLIVILLE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. C'est une route ENTIÈREMENT EN MER : on la parcourt en nageant sur le dos d'un Pokémon, du NORD (la large ouverture en haut, depuis la plage d'une ville) au SUD (un chenal étroit en bas, entre deux récifs).
+Légende du plan :
+- bleu profond = la MER, partout (toutes les marges de l'image sont aussi de la mer, au large) ;
+- gris rocheux semé de cailloux = RÉCIFS ET FALAISES qui ferment la route à l'ouest et à l'est (deux bordures rocheuses continues), et, en bas, deux grands récifs entre lesquels passe le CHENAL de sortie de trois cases ; en haut, deux courts récifs encadrent l'entrée ;
+- disques gris = ROCHERS ÉMERGÉS : trois BARRES DE ROCHERS horizontales (une à gauche en haut, une à droite au milieu, une à gauche en bas) qui obligent à louvoyer, et cinq rochers isolés ;
+- sable clair semé de points = deux BANCS DE SABLE au ras de l'eau, où l'on peut poser le pied : un au nord-est, un au sud-ouest.
+Respecte ce plan À LA LETTRE : les bordures rocheuses, l'entrée large au nord, le chenal étroit au sud, les trois barres de rochers à leur place, les rochers isolés, les deux bancs de sable. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 20, une route marine du même jeu (Kanto). Respecte EXACTEMENT son style de rendu : même pinceau, même MER (bleu profond au large, turquoise au bord des rochers et des bancs de sable, écume fine), mêmes barres de rochers, mêmes bancs de sable, même saturation. Ne reprends PAS sa composition, ni ses îles à grottes, ni ses personnages, NI SA LUMIÈRE DORÉE ni ses reflets de soleil.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « la route marine » : la pleine mer au sud d'un port, entre deux côtes rocheuses ; des barres de rochers où l'écume se brise, deux bancs de sable pâle, le large. Aérée, salée, ample. Palette : MER bleu profond à turquoise, ROCHE grise des récifs et des rochers, SABLE pâle, écume blanche.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée, aucun reflet de soleil couchant ; ombres propres légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; récifs, barres de rochers, bancs de sable suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe. Les barres de rochers sont des alignements droits.
+RELIEF : les récifs des bords sont des falaises basses ; les rochers émergés et les bancs de sable sont au ras de l'eau.
+OBJETS RARES : rien d'autre que la mer, les rochers et le sable.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des rochers et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun nageur, aucun Pokémon, aucun animal, aucun poisson, aucune mouette. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; île, grotte, plage de sable étendue, terre ferme, arbre, herbe ; bateau, bouée, ponton, phare ; tourbillon ; lumière dorée, soleil couchant ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une route de pleine mer entre deux côtes rocheuses, des barres de rochers à contourner, deux bancs de sable, et un chenal étroit vers le sud.

@@ -1,0 +1,100 @@
+# Route 41 (route_41) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH7 ; dossier
+# docs/design/dossier-joh-08-iles-tourbillon.md §3, §4 (étape 2), §5 à §8, textes M-3, M-4, M-6 à M-8).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh7.py.
+#
+# 60 × 48 cases (dossier : ≈ 60 × 48) ; nord en haut ; x = colonne 0..59, y = rangée 0..47.
+#
+# Composition (haute mer autour des Îles Tourbillon, JH-48 : pas de Siphon) :
+#   - MER (w) partout ; au centre, LES ÎLES TOURBILLON (R, x 22..37, y 16..31), une seule île
+#     rocheuse dont l'ENTRÉE (E, (22, 24)) s'ouvre sur la face ouest ; panneau M-8 devant (21, 22).
+#   - TOURBILLONS (@, décor infranchissable, examen M-4) qui dessinent les CHENAUX : la ligne NORD
+#     (y 10) n'a qu'une passe, (15, 10), tenue par le PÊCHEUR NOÉ (16, 9) sur son rocher plat : sa vue
+#     (15, 9) est la seule case d'où l'on atteint la passe, INÉVITABLE (dossier §6) ; la ligne SUD
+#     (y 38) s'ouvre en (44, 38) vers l'îlot de la Max Potion (x 50..52, y 42..43) ; deux lignes
+#     verticales (x 12 et x 47) ouvertes en (12, 24) et (47, 24) ferment le lagon de l'île.
+#   - NAGEUSE LÉA (6, 20) dans le chenal ouest, NAGEUR GABIN (52, 28) dans le chenal est, évitables.
+#   - Entrée au NORD (28..30, 0) depuis la Route 40 ; l'ouest et le sud restent fermés (récifs) :
+#     Irisia est hors périmètre (cadre §1).
+#
+# Raccords :
+#   NORD (28..30, 0) ↔ Route 40, bord sud (10..12, 39), en Surf (colonnes différentes, warps case à case).
+#   E (22, 24) ↔ Îles Tourbillon 1F, entrée (0, 12), arrivée (1, 12) ; retour (Corde Sortie compris)
+#     en Surf devant la grotte, « from_whirl » (21, 24).
+#
+# Légende :
+#   R récif, falaise et île (bloqués)   w mer (SURFABLE ; rencontres de l'eau et pêche)
+#   @ tourbillon (bloqué, décor animé, examen M-4)   o rocher émergé (bloqué)
+#   . rocher plat ou îlot (praticable à pied)   E entrée de la grotte (praticable, STEP_ON →)
+# Défauts [D] : une seule île et une seule entrée ; chenaux tracés par Claude ; Dresseurs placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 60 caractères), puis POSITIONS.
+
+PRATICABLES w.E
+
+GRILLE 60 48
+00 RRRRRRRRRRRRRRRRRRRRRRRRRRRRwwwRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+01 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+02 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+03 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+04 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+05 RwwwwwowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+06 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwowwwwwwwwwwwwwwwwwwR
+07 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+08 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+09 Rwwwwwwwwwwwwwww.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+10 R@@@@@@@@@@@@@@w@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@R
+11 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+12 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+13 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+14 Rwwwwwwwwwww@wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww@wwwwwwwwwwwR
+15 Rwwwwwwwwwww@wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww@wwwwwwwwwwwR
+16 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwowwwR
+17 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+18 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+19 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+20 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwowwwwww@wwwwwwwwwwwR
+21 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+22 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+23 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+24 RwwwwwwwwwwwwwwwwwwwwwERRRRRRRRRRRRRRRwwwwwwwwwwwwwwwwwwwwwR
+25 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+26 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+27 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+28 Rwwwwwwwwwww@wwwwwowwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+29 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+30 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+31 Rwwwwwwwwwww@wwwwwwwwwRRRRRRRRRRRRRRRRwwwwwwwww@wwwwwwwwwwwR
+32 Rwwwwwwwwwww@wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww@wwwwwwwwwwwR
+33 Rwwwwwwwwwww@wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww@wwwwwwwwwwwR
+34 Rwwwwwwwwwww@wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww@wwwwwwwwwwwR
+35 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+36 RwwwwwwwwwwwwwwwwwwwowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+37 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+38 R@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@w@@@@@@@@@@@@@@R
+39 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+40 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+41 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+42 Rwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...wwwwwwR
+43 Rwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww...wwwwwwR
+44 RwwwwwwwowwwwwwwwwwwwwwwwwwwwwowwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+45 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+46 RwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwR
+47 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+FIN
+
+POSITIONS
+warp_nord            warp           28..30,0     libre   surf=1  # PUSH ↑ → route_40, from_route_41 (10..12, 39)
+from_route_40        spawn          28..30,0     libre   surf=1 facing=down  # arrivée de la Route 40 ; titre de zone « Route 41 »
+entree_iles          warp           22,24        libre    # STEP_ON → → whirl_islands_1f, from_route_41 (1, 12)
+from_whirl           spawn          21,24        libre   surf=1 facing=left  # sortie des îles (grotte ou Corde Sortie), en Surf devant l'entrée
+panneau_route        panneau        27,3         bloque   # M-3, piquet dans l'eau, lu depuis (27, 4) ↑
+panneau_iles         panneau        21,22        bloque   # M-8, lu depuis (21, 23) ↑
+tourbillon           examen         14,10        bloque   # M-4, exemple : tout tourbillon (@) donne ce texte
+mer                  repere         1..58,1..46  libre   role=surf_peche  # rencontres de l'eau et pêche (§5)
+noe                  dresseur       16,9         bloque  role=pecheur facing=left sight=1  # M-6 : Hypocéan 52, Poissoroy 52 ; sa vue (15, 9) commande la passe (15, 10) : INÉVITABLE
+lea                  dresseur       6,20         bloque  role=nageuse facing=right sight=3  # M-6 : Lamantine 52, Staross 52 ; évitable
+gabin                dresseur       52,28        bloque  role=nageur facing=left sight=3  # M-6 : Tentacruel 51, Léviator 53 ; évitable
+max_potion           objet_visible  51,42        bloque  item=max_potion  # sur l'îlot du sud-est
+FIN

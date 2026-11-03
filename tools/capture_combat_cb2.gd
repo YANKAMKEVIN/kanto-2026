@@ -157,9 +157,9 @@ func _party_shots() -> void:
 	_party.set(&"speed_scale", 0.0)
 	_hud.call(&"set_card", FOE, _card_view.new("Roucool", 1, 4, 12, 12, false))
 	var views: Array = [
-		_pview(0, &"pikachu", "Pikachu", 7, 24, 24, [&"electric"], ["Électrik"], true, false, "Déjà au combat"),
-		_pview(1, &"charmander", "Salamèche", 5, 19, 19, [&"fire"], ["Feu"], false, true, ""),
-		_pview(2, &"pidgey", "Roucool", 3, 0, 12, [&"normal", &"flying"], ["Normal", "Vol"], false, false, "Ne peut plus combattre"),
+		_pview(0, &"pikachu", 25, "Pikachu", 7, 24, 24, [&"electric"], ["Électrik"], true, false, "Déjà au combat"),
+		_pview(1, &"charmander", 4, "Salamèche", 5, 19, 19, [&"fire"], ["Feu"], false, true, ""),
+		_pview(2, &"pidgey", 16, "Roucool", 3, 0, 12, [&"normal", &"flying"], ["Normal", "Vol"], false, false, "Ne peut plus combattre"),
 	]
 	var typed := Array([], TYPE_OBJECT, &"RefCounted", _party_view)
 	typed.assign(views)
@@ -171,11 +171,13 @@ func _party_shots() -> void:
 	await _frames(12)
 
 
-func _pview(index: int, species: StringName, pname: String, level: int, hp: int, max_hp: int,
-		type_ids: Array, type_names: Array, active: bool, can_send: bool, reason: String) -> RefCounted:
+func _pview(index: int, species: StringName, dex: int, pname: String, level: int, hp: int,
+		max_hp: int, type_ids: Array, type_names: Array, active: bool, can_send: bool,
+		reason: String) -> RefCounted:
 	var v: RefCounted = _party_view.new()
 	v.set(&"party_index", index)
 	v.set(&"species_id", species)
+	v.set(&"dex_number", dex)
 	v.set(&"display_name", pname)
 	v.set(&"level", level)
 	v.set(&"hp", hp)

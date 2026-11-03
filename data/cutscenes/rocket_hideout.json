@@ -100,12 +100,6 @@
 						]
 					},
 					{
-						"champion_card": "giovanni_hideout",
-						"unless": [
-							"giovanni_met"
-						]
-					},
-					{
 						"set": [
 							"giovanni_met"
 						]

@@ -1,0 +1,39 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 39, LA FERME ENTRE LA MER ET LES PRÉS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. La route arrive de l'OUEST (le chemin qui entre par le bord gauche, un peu sous le milieu de l'image), monte vers le NORD le long de la forêt, puis tourne à angle droit vers l'EST tout en haut et sort par le bord droit (vers la Route 38). Tout le reste est une grande campagne de prés ouverts qui descend vers la MER, au sud-ouest.
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (toutes les marges, et le grand bloc du nord-ouest que le chemin contourne) ;
+- beige = CHEMIN DE TERRE BATTUE de trois cases de large : la branche horizontale de l'ouest, la longue montée verticale, le virage et la sortie vers l'est ;
+- vert moyen = PRÉS d'herbe rase praticables, qui occupent tout l'est et tout le sud ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), deux blocs nets : un au nord-est près du chemin, un au sud-ouest entre le chemin et la falaise ;
+- bande gris clair semée de cailloux = une FALAISE BASSE qui tombe sur la mer, au sud-ouest ;
+- bleu profond, tout le quart sud-ouest = la MER, vue du haut de la falaise : on ne peut pas y descendre, aucune plage ;
+- grand rectangle à toit brun-rouge = la FERME MEUMEU : une grande ferme de 7 cases sur 6, murs de bois et pierre, toit de tuiles brun-rouge, une porte au milieu de la façade sud, une fenêtre de chaque côté ; une ferme laitière prospère et bien tenue ;
+- rectangle vert clair entouré de traits blancs à poteaux = l'ENCLOS de la ferme, au sud de la ferme : une CLÔTURE BASSE DE BOIS PEINT EN BLANC (lisses et poteaux), fermée sur ses quatre côtés, autour d'un pré d'herbe plus claire et bien tondue, avec une mangeoire et un abreuvoir de bois contre la clôture (rien d'autre) ;
+- grands disques vert sombre = trois GRANDS ARBRES ISOLÉS, repères (un au nord-est, deux au sud-est) ;
+- petits carrés ocre = panneaux en bois SANS TEXTE (un au bord du chemin, un près de l'enclos).
+Respecte ce plan À LA LETTRE : le chemin en trois segments à angles droits, le bloc de forêt du nord-ouest, les deux blocs d'herbes hautes, la ferme et son enclos clos au sud-est, la falaise et la mer au sud-ouest, les trois arbres. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 25, une route côtière du même jeu (Kanto). Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes, même chemin de terre, même FALAISE rocheuse et même MER vue d'en haut, même facture de maison, même saturation. Ne reprends PAS sa composition (ni sa maison au nord, ni ses clôtures, ni ses personnages) NI SA LUMIÈRE DORÉE.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « la ferme entre la mer et les prés » : la première route de Johto, une campagne large et douce, des prés qui descendent vers la mer, une ferme laitière paisible et son enclos blanc, le vent du large. Claire, aérée, rassurante. Palette : PRÉS vert tendre, CHEMIN beige, FORÊT vert profond, FERME bois clair et tuiles brun-rouge, CLÔTURE blanche, FALAISE grise, MER bleu profond.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. NE REPRENDS PAS la lumière dorée de l'image de référence : le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemin, clôture, falaise et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : les prés sont plats ; la seule dénivellation est la falaise qui tombe sur la mer au sud-ouest (face rocheuse visible côté sud) ; aucun autre rebord, aucune terrasse.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucune vache, aucun bétail (l'enclos est VIDE). Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment autre que la ferme ; grange ou silo en plus ; plage, ponton, bateau ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une campagne douce entre la mer et les prés, un chemin qui monte le long de la forêt, et une ferme laitière bien tenue avec son enclos blanc.

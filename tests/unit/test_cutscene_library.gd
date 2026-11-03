@@ -653,7 +653,7 @@ func test_invalid_background_and_react_steps() -> void:
 
 func test_emote_step() -> void:
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.EMOTE), &"emote")
-	# En fin d'enum au jalon 9 ; le jalon 10 (T9) ajoute CHAMPION_CARD et BADGE après lui.
+	# En fin d’enum au jalon 9 ; le jalon 10 (T9) ajoute BADGE après lui.
 	assert_eq(CutsceneStep.Kind.EMOTE, CutsceneStep.Kind.REACT + 1, "après REACT")
 	assert_eq(CutsceneStep.Kind.EMOTE, 17, "valeur stable")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())

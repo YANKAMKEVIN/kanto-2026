@@ -1,0 +1,9 @@
+ED_BUSTE_KEVIN — buste de banderole « VS » du joueur, Kanto 2026. Images jointes : IMAGE 1 = maquette VALIDÉE de la séquence « VS » (le buste du joueur, nommé Kevin, est en bas à gauche, au bout de la banderole bleue) ; IMAGE 2 = agrandissement de ce buste. C'est la CIBLE EXACTE : même visage, même expression, même cadrage, même rendu.
+
+PERSONNAGE : le joueur, garçon d'environ 12 ans, cheveux noirs en mèches pointues qui dépassent sous la casquette, yeux bruns déterminés, sourcils froncés, bouche fermée ; casquette rouge à visière blanche avec un logo blanc rond (demi-cercle rouge, sans lettre) sur le devant ; veste rouge sans manches à grand col blanc relevé, t-shirt noir dessous, bretelle de sac à dos jaune moutarde sur l'épaule.
+
+À FAIRE : UNE image portrait 1024 × 1536 : le buste SEUL, cadrage TÊTE, COU, ÉPAULES ET HAUT DU TORSE, la tête grande, le haut de la casquette près du bord haut (environ 40 px de marge), visage de TROIS-QUARTS tourné vers la DROITE de l'image, regard vers le HAUT À DROITE, comme sur l'IMAGE 2. Les épaules descendent jusqu'au bord bas de l'image (coupées net par le bas, c'est voulu).
+
+STYLE : exactement celui de l'IMAGE 2 : illustration anime peinte, réaliste-stylisée (PAS chibi), contours fins brun foncé, ombres douces peintes, lumière chaude venant de la droite, deux à trois valeurs par matériau.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucune banderole, aucun rocher, aucun texte, aucune lettre, aucun cadre, aucun halo.

@@ -1,0 +1,36 @@
+CONCEPT ART — INTÉRIEUR DE LA TOUR CENDRÉE DE ROSALIA, SOUS-SOL : LA SALLE DES TROIS CHIENS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE SEULE SALLE rectangulaire de 18 cases sur 14, entourée de murs, sur fond sombre. Format PAYSAGE. C'est le sous-sol de la tour brûlée : la salle où dorment trois Pokémon légendaires (NE LES DESSINE PAS : la salle est vide).
+Légende du plan :
+- gris-brun très foncé = MURS de pierre et de bois noircis, hors-champ ; bande un peu plus claire en haut = le MUR DU FOND, vu de face ;
+- gris-brun = SOL DE CENDRES TASSÉES, lisse et calme ;
+- en haut à gauche, les marches grises = l'ÉCHELLE qui MONTE au rez-de-chaussée (une échelle de bois contre le mur du fond) ;
+- rectangles noirs rayés de clair = COLONNES ET POUTRES CALCINÉES encore debout ou tombées (une en haut à droite, deux au milieu, une rangée en bas à gauche, et une colonne verticale en bas à gauche) ;
+- en bas à gauche, le petit espace fermé par la rangée de poutres et la colonne = une ALCÔVE, accessible par une seule case au-dessus ;
+- au centre de la salle, au milieu des cendres, la place des trois dormeurs reste VIDE sur l'image : juste un sol de cendres un peu plus clair, légèrement creusé, là où la lumière tombe du gouffre du rez-de-chaussée (en haut au centre).
+Respecte ce plan À LA LETTRE : la salle rectangulaire, l'échelle en haut à gauche, chaque poutre et colonne, l'alcôve du sud-ouest. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le rez-de-chaussée de la même tour, déjà peint. Ce sous-sol est EN DESSOUS : respecte EXACTEMENT son rendu (mêmes murs noircis, mêmes cendres, mêmes poutres calcinées, même lumière froide qui tombe d'en haut), seulement plus sombre et plus enfermé. Ne reprends PAS sa composition.
+
+IMAGE 3 : la vue générale de la Tour Pokémon de Lavanville, une tour du même jeu : même pinceau, même découpe sur fond sombre. Ne reprends ni ses tombes, ni ses personnages, ni sa lumière.
+
+Format : PAYSAGE 1536 × 1024, la salle au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « la salle du sommeil » : une cave de cendres sous la tour brûlée, silencieuse et froide ; une seule source de lumière, la trouée du plafond au centre-haut, dont la lumière du jour tombe en une large colonne pâle sur le sol où dormaient trois bêtes légendaires ; des poutres noires, une alcôve dans l'ombre. Solennelle, sacrée, JAMAIS effrayante ni illisible. Palette : gris cendre, noir charbon, brun brûlé, lumière blanche froide.
+LUMIÈRE NE (neutre) : la colonne de lumière du jour depuis la trouée du plafond ; le reste en pénombre grise lisible ; aucune teinte dorée, aucune flamme.
+
+RÈGLE DE LA GRILLE : murs, poutres et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; la salle est un rectangle.
+OBJETS RARES : rien d'autre que les poutres et l'échelle.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, bleu-gris froid, jamais pures noires.
+
+PERSONNE : aucun personnage, aucun Pokémon (ni chien, ni bête endormie, ni silhouette), aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; flammes, braises, fumée ; cage ; tombes, statue ; escalier ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une cave de cendres sous une tour brûlée, où une colonne de lumière tombe du plafond effondré sur un sol vide, entre des poutres noires.

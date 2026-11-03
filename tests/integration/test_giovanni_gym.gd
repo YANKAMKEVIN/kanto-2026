@@ -35,13 +35,13 @@ const TM_LINES: Array[String] = ["Prends aussi la CT27, Abîme.",
 const TM_GOT := "Kevin reçoit la CT27 Abîme !"
 const DEPARTURE: Array[String] = ["La Team Rocket, c'est terminé. Je pars m'entraîner seul.",
 	"Un jour, peut-être, nos chemins se croiseront encore."]
-const CARD := "card:GIOVANNI/Champion d'Arène de Jadielle"
+const CARD := "vs:GIOVANNI/Champion d'Arène de Jadielle"
 
 var _fs: MemoryFs
 var _boot: Boot
 var _player: Player
 var _saved_router: Array = []
-## Ce qui s'est passé, dans l'ordre : « page:<texte> », « card:<nom>/<titre> », « battle »,
+## Ce qui s'est passé, dans l'ordre : « page:<texte> », « vs:<nom>/<titre> », « battle »,
 ## « caption:<texte> », « toast:<titre> / <détail> ».
 var _events: Array[String] = []
 
@@ -85,6 +85,9 @@ func _start(strong: bool = false) -> void:
 	_boot.get_battle_director().speed_scale = 0.0
 	_boot.get_battle_director().battle_started.connect(func(_id: StringName) -> void:
 		_events.append("battle"))
+	# Séquence « VS » des grands combats (2026-11-02, remplace la carte de Champion).
+	_boot.get_battle_director().vs_started.connect(func(foe: String, title: String) -> void:
+		_events.append("vs:%s/%s" % [foe, title]))
 	if strong:
 		_make_strong()
 	await wait_process_frames(2)
@@ -128,7 +131,6 @@ func _talk_to_giovanni() -> bool:
 	Input.action_press(&"interact")
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
-	var card_seen := false
 	var caption_seen := false
 	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
 	while (director.is_running() or runner.is_running() or SceneRouter.is_transitioning()) \
@@ -141,11 +143,6 @@ func _talk_to_giovanni() -> bool:
 						battle_hud.action_selected.emit(ActionGrid.ATTACK)
 					BattleHud.Zone.MOVES:
 						battle_hud.move_selected.emit(0)
-		var card := hud.get_champion_card()
-		if card.is_showing() and not card_seen:
-			_events.append("card:%s/%s" % [card.get_name_text(), card.get_title_text()])
-			card.skip_hold()
-		card_seen = card.is_showing()
 		var caption := hud.get_caption()
 		if caption.is_showing() and not caption_seen:
 			_events.append("caption:" + caption.text)
@@ -251,8 +248,8 @@ func test_victory_badge_tm_departure_and_giovanni_gone() -> void:
 		assert_false(pages.has(line), "« %s » PAS jouée" % line)
 	assert_eq(_index("page:" + INTRO[0]), 0, "l'introduction d'abord")
 	var card := _index(CARD)
-	assert_gt(card, _index("page:" + INTRO[2]), "la carte après l'introduction")
-	assert_gt(_index("battle"), card, "la carte avant le combat")
+	assert_gt(card, _index("page:" + INTRO[2]), "la séquence « VS » après l'introduction")
+	assert_gt(card, _index("battle"), "la séquence « VS » ouvre le combat")
 	assert_gt(_index("page:" + WON[0]), _index("battle"), "T28-06 après le combat")
 	assert_gt(_index("caption:BADGE TERRE"), _index("page:" + WON[1]), "légende ensuite")
 	assert_gt(_index("page:" + BADGE_LINE), _index("caption:BADGE TERRE"))
@@ -314,7 +311,7 @@ func test_defeat_wakes_at_the_center_then_retry_without_introduction_nor_card() 
 	for line: String in INTRO + LOST_LINES:
 		assert_true(pages.has(line), "« %s » jouée" % line)
 	assert_gt(_index("page:" + LOST_LINES[0]), _index("battle"), "défaite après le combat")
-	assert_gt(_index(CARD), -1, "carte à la première rencontre")
+	assert_gt(_index(CARD), -1, "séquence « VS » à la première rencontre")
 	for line: String in WON + [BADGE_LINE]:
 		assert_false(pages.has(line), "« %s » PAS jouée" % line)
 	assert_eq(_index("caption:BADGE TERRE"), -1, "pas de badge")
@@ -339,7 +336,7 @@ func test_defeat_wakes_at_the_center_then_retry_without_introduction_nor_card() 
 	assert_eq(pages.slice(0, 2), RESUME, "reprise courte (T28-05) en premier")
 	for line: String in INTRO:
 		assert_false(pages.has(line), "« %s » PAS rejouée" % line)
-	assert_eq(_index(CARD), -1, "pas de carte aux reprises")
+	assert_gt(_index(CARD), -1, "séquence « VS » à chaque combat, jamais sautée")
 	assert_gt(_index("caption:BADGE TERRE"), _index("battle"))
 	assert_true(GameState.flags.has_flag(&"badge_earth"))
 	assert_true(GameState.flags.has_flag(&"tm27_received"))

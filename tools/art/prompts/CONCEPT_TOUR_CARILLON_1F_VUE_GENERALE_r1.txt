@@ -1,0 +1,34 @@
+CONCEPT ART — INTÉRIEUR DE LA TOUR CARILLON, REZ-DE-CHAUSSÉE : LE GRAND HALL DE BOIS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE GRANDE SALLE carrée de 22 cases sur 22, entourée de murs, sur fond sombre. Format PAYSAGE. Le rez-de-chaussée d'une pagode ancienne et intacte.
+Légende du plan :
+- gris-brun foncé = MURS de bois et hors-champ ; bande brun clair en haut = le MUR DU FOND, vu de face (lambris de bois sombre, panneaux de papier) ;
+- beige = PLANCHER de bois clair ciré ;
+- en haut au centre, le grand rectangle brun à nappe rouge = un AUTEL de bois sombre, long, couvert d'une étoffe rouge, avec deux brûle-parfums et des offrandes simples (fleurs, bols), sans texte ni idole ;
+- disques rouges = huit COLONNES ROUGES LAQUÉES, en deux rangs de trois au milieu de la salle plus deux dans les angles du bas, et deux PLANTES ou brûle-parfums dans les angles du haut (les disques des coins) : traite tous les disques comme des colonnes rouges, sauf ceux des quatre angles qui sont des brûle-parfums de bronze ;
+- en haut à droite, dans le mur du fond : un ESCALIER qui MONTE au fond d'une NICHE étroite d'une case de large, fermée par deux CLOISONS courtes qui descendent du mur du fond (les deux bandes sombres verticales) ;
+- bande rouge sombre au milieu du mur du bas (deux cases) = la SORTIE vers le bois, une grande double porte de bois ouverte, avec un seuil.
+Respecte ce plan À LA LETTRE : l'autel en haut au centre, les colonnes en deux rangs, les brûle-parfums des angles, la niche étroite de l'escalier en haut à droite avec ses deux cloisons, la sortie au milieu du bas. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Tour Pokémon de Lavanville, une tour du même jeu (Kanto). Respecte EXACTEMENT son style de rendu : même pinceau, même découpe d'un étage de tour sur fond sombre, même vue de dessus de trois quarts, même lisibilité du sol. Ne reprends PAS sa composition, ni ses tombes, ni ses personnages, NI SA LUMIÈRE.
+
+Format : PAYSAGE 1536 × 1024, la salle au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « le hall de la pagode » : une grande salle de temple ancien, bois sombre et clair, colonnes rouges laquées, un autel fleuri, une odeur d'encens ; propre, soignée, solennelle, baignée d'une lumière douce qui vient des hautes fenêtres de papier (hors champ). Sereine, sacrée, JAMAIS lugubre. Palette : BOIS clair du plancher, BOIS sombre des murs, ROUGE laqué des colonnes, étoffe rouge de l'autel, bronze des brûle-parfums, crème des panneaux.
+LUMIÈRE NE (neutre) : lumière du jour blanche et diffuse ; aucune teinte dorée ; ombres propres légèrement bleutées.
+
+RÈGLE DE LA GRILLE : murs, cloisons, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; la salle est un carré.
+OBJETS RARES : seulement l'autel, les colonnes, les brûle-parfums et l'escalier ; pas de statue, pas de tapis à motifs.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales ; les colonnes sont vues de dessus avec un peu de leur fût ; le mur du fond montre sa face.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, calligraphie lisible, logo, signature, filigrane, cadre, interface, Poké Ball ; statue, idole, torii ; tombes ; fenêtre sur l'extérieur ; trou dans le plancher ; pixel art, 3D.
+
+L'image doit raconter, sans texte : le grand hall d'une pagode ancienne, deux rangs de colonnes rouges, un autel fleuri au fond, et un escalier au fond d'une niche étroite.

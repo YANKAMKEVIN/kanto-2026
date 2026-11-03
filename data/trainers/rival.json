@@ -1,6 +1,7 @@
 {
 	"rival_lab": {
 		"name": "{rival}", "ai": "random",
+		"card": { "name": "{rival}", "title": "Rival", "portrait": "rival" },
 		"can_lose": true, "heal_after": true, "gives_exp": false, "prize_money": 0,
 		"end_message": false, "start_message": false, "bag": false,
 		"team_by_starter": {
@@ -11,6 +12,7 @@
 	},
 	"rival_route22": {
 		"name": "{rival}", "ai": "smart",
+		"card": { "name": "{rival}", "title": "Rival", "portrait": "rival" },
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 35,
 		"end_message": false, "start_message": true, "bag": true,
@@ -28,6 +30,7 @@
 	},
 	"rival_cerulean": {
 		"name": "{rival}", "ai": "smart",
+		"card": { "name": "{rival}", "title": "Rival", "portrait": "rival" },
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 35,
 		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
@@ -48,6 +51,7 @@
 	},
 	"rival_ss_anne": {
 		"name": "{rival}", "ai": "smart",
+		"card": { "name": "{rival}", "title": "Rival", "portrait": "rival" },
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 35,
 		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
@@ -74,6 +78,7 @@
 	},
 	"rival_silph": {
 		"name": "{rival}", "ai": "smart",
+		"card": { "name": "{rival}", "title": "Rival", "portrait": "rival" },
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 35,
 		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
@@ -103,6 +108,7 @@
 	},
 	"rival_route22_final": {
 		"name": "{rival}", "ai": "smart",
+		"card": { "name": "{rival}", "title": "Rival", "portrait": "rival" },
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 35,
 		"end_message": false, "start_message": true, "bag": true, "switch": true,

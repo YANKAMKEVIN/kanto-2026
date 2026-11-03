@@ -33,6 +33,8 @@ signal entered
 ## plan ; [AudioBridge] y joue le bruitage de l'attaque et celui du coup (§2.5).
 signal move_fx_cue(cue: StringName, plan: MoveFxPlan)
 signal exited
+## Entrée des combats de Dresseur : le dresseur de [param side] a fini son lancer.
+signal trainer_send_finished(side: BattleEvent.SideId)
 
 ## Zoom de la caméra en combat : lieu réel resserré (cadrage « combat » du pilote, CB.1).
 const ZOOM: float = 1.9
@@ -277,6 +279,8 @@ var _ball_rest: Vector2 = Vector2.ZERO
 var _absorb_point: Vector2 = Vector2.ZERO
 ## Décor peint du combat en cours (null : repli sur la carte) ; catalogue lu au premier besoin.
 var _decor: BattleDecor
+## Le combat a lieu en surfant ([SurfStaging]) : décor de mer ouverte, joueur sur sa monture.
+var _surf_staged: bool = false
 var _decor_catalog: BattleDecorCatalog
 var _decor_back: Sprite2D
 var _decor_front: Sprite2D
@@ -298,6 +302,13 @@ var _capture_hush: float = 0.0
 static var _fx_anchors: FxAnchors
 ## Espèces (types de la cible pour les chorégraphies) ; null : pas de types.
 var _fx_pokemon: PokemonData
+## Entrée des combats de Dresseur (2026-11-02) : les deux dresseurs, et les camps dont le
+## dresseur n'a pas encore lancé son Pokémon ([method play_trainer_send]).
+var _intro_stage: TrainerIntroStage
+var _intro_pending: Dictionary[BattleEvent.SideId, bool] = {}
+var _intro_sending: Dictionary[BattleEvent.SideId, bool] = {}
+## [method enter] en cours (sa transition n'est pas finie).
+var _entering: bool = false
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -321,6 +332,7 @@ func _ready() -> void:
 	_build_decor()
 	_build_auras()
 	_build_fx()
+	_build_trainer_intro()
 	_artwork_material = ShaderMaterial.new()
 	_artwork_material.shader = ARTWORK_SHADER
 	# Voile du poison au repos (play_poison en voile une copie).
@@ -371,10 +383,18 @@ func set_decor_catalog(catalog: BattleDecorCatalog) -> void:
 ## Lieu du prochain combat (CB.3, à appeler avant [method enter] / [method play_wild_intro]) :
 ## carte [param map_id] et case du déclenchement [param cell] (variante locale). Choisit le
 ## décor peint ; aucun : repli sur la carte recadrée. Renvoie le décor choisi (null : repli).
-func set_place(map_id: StringName, cell: Vector2i) -> BattleDecor:
+## [param surfing] (le joueur surfe), [param wild] et [param foe_class] (classe du Dresseur) :
+## mise en scène « Surf » ([SurfStaging]) si le réglage des données l'active.
+func set_place(map_id: StringName, cell: Vector2i, surfing: bool = false, wild: bool = true,
+		foe_class: StringName = &"") -> BattleDecor:
 	if _decor_catalog == null:
 		_decor_catalog = BattleDecorCatalog.load_file()
 	_decor = _decor_catalog.pick(map_id, cell)
+	var surf := SurfStaging.surf_decor(_decor_catalog, TrainerIntroCatalog.shared(), _decor,
+		surfing, wild, foe_class)
+	_surf_staged = surf != null
+	if surf != null:
+		_decor = surf
 	if _decor != null and not ResourceLoader.exists(_decor.back_path):
 		push_warning("BattleStage : image du décor absente « %s »" % _decor.back_path)
 		_decor = null
@@ -406,6 +426,11 @@ func get_decor() -> BattleDecor:
 	return _decor
 
 
+## Le combat a lieu en surfant (mise en scène « Surf », [SurfStaging]).
+func is_surf_staged() -> bool:
+	return _surf_staged
+
+
 ## Calques du décor peint (tests, captures) : fond et premier plan.
 func get_decor_back() -> Sprite2D:
 	return _decor_back
@@ -419,10 +444,12 @@ func get_decor_front() -> Sprite2D:
 ## caméra du joueur ; [param player_pokemon] / [param foe_pokemon] : PNJ Pokémon du monde qui
 ## combattent (null : le sprite apparaît à son ancre) ; [param trainer_cells] : cases des
 ## dresseurs, pour le cadrage (la case du parent de la caméra — le joueur — est ajoutée si
-## elle est lisible). Refusé (erreur) si un combat est déjà affiché.
+## elle est lisible). [param hold_pokemon] (entrée des combats de Dresseur) : aucun Pokémon
+## n'apparaît, les dresseurs les lanceront ([method play_trainers_in]). Refusé (erreur) si un
+## combat est déjà affiché.
 func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 		player_species: StringName, foe_species: StringName,
-		trainer_cells: Array[Vector2i] = []) -> void:
+		trainer_cells: Array[Vector2i] = [], hold_pokemon: bool = false) -> void:
 	if _active:
 		push_error("BattleStage : un combat est déjà affiché")
 		return
@@ -459,11 +486,16 @@ func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 		_focus = _cam_start_center
 	for side: BattleEvent.SideId in _sprites:
 		_prepare_sprite(side)
+		if hold_pokemon:
+			# Caché jusqu'à son lancer : show_pokemon le fera apparaître.
+			_fainted[side] = true
 	# Limites levées : la caméra part de son centre réel (bornes comprises), sans saut.
 	_free_camera()
+	_entering = true
 	var tween := _new_tween()
 	tween.tween_method(_set_enter_progress, 0.0, 1.0, ENTER_DURATION)
 	await _play(tween)
+	_entering = false
 	if _active:
 		entered.emit()
 
@@ -1216,6 +1248,11 @@ func is_active() -> bool:
 	return _active
 
 
+## La transition d'entrée ([method enter]) est en cours.
+func is_entering() -> bool:
+	return _active and _entering
+
+
 ## Sprite de combat de [param side] (tests, captures).
 func get_sprite(side: BattleEvent.SideId) -> Sprite2D:
 	return _sprites[side]
@@ -1409,6 +1446,13 @@ func _apply_reset() -> void:
 	_clear_reveal_overlay() # Jalon 21
 	if _fx != null:
 		_fx.stop()
+	if _intro_stage != null:
+		_intro_stage.clear()
+	_intro_pending.clear()
+	var sending := _intro_sending.keys()
+	_intro_sending.clear()
+	for side: BattleEvent.SideId in sending:
+		trainer_send_finished.emit(side)
 	if _active:
 		_restore_camera()
 	for side: BattleEvent.SideId in _world:
@@ -1429,6 +1473,7 @@ func _apply_reset() -> void:
 	_arena = Rect2()
 	_bounds = Rect2()
 	_decor = null
+	_surf_staged = false
 	_camera = null
 	_active = false
 	if not is_node_ready():
@@ -1605,7 +1650,20 @@ func _show_decor() -> void:
 		sprite.position = rect.position.round()
 		sprite.scale = rect.size / sprite.texture.get_size()
 		sprite.set_meta(&"rest", sprite.position)
+		sprite.set_meta(&"base", Rect2(sprite.position, sprite.scale))
 	_set_backdrop(0.0)
+
+
+## Recadrage du décor peint (entrée des Dresseurs, lancer de l'adversaire) : zoom [param zoom]
+## autour du point écran [param from], qui vient en [param to] ; zoom 1 : cadrage du combat.
+func _frame_decor(zoom: float, from: Vector2, to: Vector2) -> void:
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		if not sprite.has_meta(&"base"):
+			continue
+		var base: Rect2 = sprite.get_meta(&"base")
+		sprite.position = to + (base.position - from) * zoom if zoom != 1.0 else base.position
+		sprite.scale = base.size * zoom
+		sprite.set_meta(&"rest", sprite.position)
 
 
 ## Rend les images du décor (seul le décor préchargé de la carte courante reste en mémoire).
@@ -1615,6 +1673,7 @@ func _release_decor() -> void:
 		sprite.visible = false
 		sprite.modulate = Color.WHITE
 		sprite.remove_meta(&"rest")
+		sprite.remove_meta(&"base")
 
 
 ## Léger tremblement de la scène (coup critique) : la caméra du monde, et le décor peint s'il
@@ -1822,6 +1881,83 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 		spark.position = origin + Vector2.from_angle(angle) * SPARK_DISTANCE * out
 		spark.scale = Vector2.ONE * lerpf(0.18, 0.05, t)
 		spark.modulate = Color(color, 1.0 - t)
+
+
+# --- Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02) -----------
+
+## Coroutine (étape TRAINERS_IN, après [method enter] avec `hold_pokemon`) : les deux dresseurs
+## de [param intro] entrent dans le décor (le joueur de dos à gauche, l'adversaire de face à
+## droite) avec la rangée de Poké Balls adverse ; ils restent jusqu'à leur lancer
+## ([method play_trainer_send]). Sans effet hors combat.
+func play_trainers_in(intro: TrainerIntro) -> void:
+	if not _active or intro == null:
+		return
+	_intro_stage.speed_scale = speed_scale
+	intro.surf = _surf_staged
+	# Dos peint du joueur (`dos_<apparence>`) sauf costume porté : le lancer de dos du costume.
+	var look := GameState.player_look if GameState.worn_costume().is_empty() else &""
+	var back := thrower_texture()
+	_intro_stage.begin(intro, _view_size(), TrainerIntroStage.foe_texture(intro),
+		TrainerIntroStage.player_texture(intro, look, back),
+		TrainerIntroStage.foe_texture(intro, Callable(), true),
+		TrainerIntroStage.player_texture(intro, look, back, Callable(), true))
+	_intro_pending = {BattleEvent.SideId.FOE: true, BattleEvent.SideId.PLAYER: true}
+	await _intro_stage.play_enter()
+
+
+## Coroutine : les deux dresseurs glissent vers leur pose [param pose_name] (« vs » pendant la
+## séquence « VS », « entry » ensuite) en [param duration] s.
+func move_trainers_to(pose_name: StringName, duration: float) -> void:
+	if not _active:
+		return
+	_intro_stage.speed_scale = speed_scale
+	await _intro_stage.move_to_pose(pose_name, duration)
+
+
+## Le dresseur de [param side] n'a pas encore lancé son Pokémon.
+func has_trainer_send(side: BattleEvent.SideId) -> bool:
+	return _active and _intro_pending.get(side, false)
+
+
+## Coroutine (étapes FOE_SEND / PLAYER_SEND) : le dresseur de [param side] lance
+## [param species] ; à l'arrivée de la Ball le Pokémon apparaît ([method show_pokemon]) et le
+## dresseur s'efface. Sans dresseur en attente : le Pokémon apparaît seulement. Le directeur la
+## lance sous le message « … envoie … ! » (gestes et messages se chevauchent) puis l'attend
+## ([method wait_trainer_send]).
+func play_trainer_send(side: BattleEvent.SideId, species: StringName) -> void:
+	if not has_trainer_send(side):
+		if not _intro_sending.get(side, false):
+			show_pokemon(side, species)
+		return
+	_intro_pending.erase(side)
+	_intro_sending[side] = true
+	_intro_stage.speed_scale = speed_scale
+	await _intro_stage.play_send(side, show_pokemon.bind(side, species))
+	# La Ball n'est pas arrivée (combat quitté, tweens arrêtés) : le Pokémon apparaît quand même.
+	if _active and not _sprites[side].visible:
+		show_pokemon(side, species)
+	_intro_sending.erase(side)
+	trainer_send_finished.emit(side)
+
+
+## Coroutine : attend la fin du lancer du dresseur de [param side] s'il est en cours.
+func wait_trainer_send(side: BattleEvent.SideId) -> void:
+	while _intro_sending.get(side, false):
+		await trainer_send_finished
+
+
+## Les deux dresseurs de l'entrée (tests, captures).
+func get_trainer_intro_stage() -> TrainerIntroStage:
+	return _intro_stage
+
+
+func _build_trainer_intro() -> void:
+	_intro_stage = TrainerIntroStage.new()
+	_intro_stage.name = &"TrainerIntro"
+	add_child(_intro_stage)
+	_intro_stage.framing_changed.connect(_frame_decor)
+	# Devant le feuillage du premier plan, derrière ton Pokémon.
+	move_child(_intro_stage, _sprites[BattleEvent.SideId.PLAYER].get_index())
 
 
 # --- J23 : rencontre Safari, dos du joueur ---------------------------------------------------
