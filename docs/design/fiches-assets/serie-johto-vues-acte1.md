@@ -101,9 +101,8 @@ entre deux piliers de pierre, sans bâtiment ; arbres fruitiers de la Route 37 =
 
 ### Écarts avec les grilles (la grille fait foi)
 
-- **Route 37** : conforme (chemin et chicane, bosquet, trois arbres fruitiers, deux poches d'herbes, trois arbres) ;
-  le panneau est à gauche du chemin un peu plus bas que (12, 19 → ici la grille dit (x, y) du panneau de la Route 37 :
-  voir la grille).
+- **Route 37** : conforme (chemin et chicane, bosquet, trois arbres fruitiers, deux poches d'herbes, trois arbres,
+  panneau à gauche du chemin en haut).
 - **Route 36** : le pont est peint **fini** (planches neuves) plutôt qu'inachevé, la barrière rayée est là ; les deux
   panneaux ont l'air de petits bancs ; la rivière est conforme ; le petit massif de fleurs est là.
 - **Route 35** : conforme (étang, rocher, trois poches, poste à porte ouest, clôture et passage d'une case, touffe
