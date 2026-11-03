@@ -1,10 +1,10 @@
 {
- "_note": "Bande-annonce de l'ident de démarrage (J34, demande de Kevin du 2026-11-03 : « une courte vidéo de 15 à 20 s de plusieurs moments intéressants, importants, beaux du jeu », « à la Netflix / Canal+ »). Plans = vraies captures du jeu (tools/capture_trailer.gd sur les départs de débogage, capture_trainer_intro.gd pour le VS, capture_t2_combat.gd pour le combat), 1755 × 810 webp. Chaque plan dure « seconds », se fond dans le suivant sur IntroTimeline.FULL.xfade (0,7 s) ; « zoom » [départ, arrivée] et « pan » [x0, y0, x1, y1] (fraction de l'écran) donnent le lent travelling ; sans eux, mouvement alterné par défaut (TrailerReel.default_motion). Ordre et plans [D], à valider par Kevin sur la vidéo. Total ≈ 17,5 s.",
+ "_note": "Bande-annonce de l'ident de démarrage (J34, demande de Kevin du 2026-11-03 : « une courte vidéo de 15 à 20 s de plusieurs moments intéressants, importants, beaux du jeu », « à la Netflix / Canal+ »). Plans = vraies captures du jeu (tools/capture_trailer.gd sur les départs de débogage, capture_trainer_intro.gd pour le VS, capture_t2_combat.gd pour le combat), 1755 × 810 webp. Chaque plan dure « seconds », se fond dans le suivant sur IntroTimeline.FULL.xfade (0,7 s) ; « zoom » [départ, arrivée] et « pan » [x0, y0, x1, y1] (fraction de l'écran) donnent le lent travelling ; sans eux, mouvement alterné par défaut (TrailerReel.default_motion). Ordre et plans [D], à valider par Kevin sur la vidéo ; 13 plans (demande de Kevin du 2026-11-03 : course, vélo, eau, évolution, Menu, Pokédex en plus ; le Vol n'a pas d'animation propre dans le jeu, la Carte du Menu reste en réserve : 12_carte.webp, 13_equipe.webp, 03_pont_pepite.webp). Total ≈ 19.0 s.",
  "letterbox": 0.07,
  "shots": [
   {
    "image": "res://assets/ui/opening/trailer/01_bourg_palette.webp",
-   "seconds": 2.8,
+   "seconds": 2.2,
    "zoom": [
     1.0,
     1.1
@@ -17,36 +17,64 @@
    ]
   },
   {
-   "image": "res://assets/ui/opening/trailer/02_foret_de_jade.webp",
-   "seconds": 2.8,
+   "image": "res://assets/ui/opening/trailer/02_course_route_1.webp",
+   "seconds": 2.0,
    "zoom": [
     1.1,
     1.0
    ],
    "pan": [
-    0.02,
     0.0,
+    -0.02,
     0.0,
-    0.0
+    0.02
    ]
   },
   {
-   "image": "res://assets/ui/opening/trailer/03_pont_pepite.webp",
-   "seconds": 2.8,
+   "image": "res://assets/ui/opening/trailer/02_foret_de_jade.webp",
+   "seconds": 2.0,
    "zoom": [
     1.0,
     1.08
    ],
    "pan": [
-    0.0,
     0.02,
     0.0,
-    -0.02
+    -0.02,
+    0.0
+   ]
+  },
+  {
+   "image": "res://assets/ui/opening/trailer/05_velo_route_11.webp",
+   "seconds": 2.0,
+   "zoom": [
+    1.08,
+    1.0
+   ],
+   "pan": [
+    -0.03,
+    0.0,
+    0.02,
+    0.0
+   ]
+  },
+  {
+   "image": "res://assets/ui/opening/trailer/06_surf_route_19.webp",
+   "seconds": 2.2,
+   "zoom": [
+    1.0,
+    1.1
+   ],
+   "pan": [
+    0.0,
+    0.0,
+    0.0,
+    -0.03
    ]
   },
   {
    "image": "res://assets/ui/opening/trailer/04_mont_selenite.webp",
-   "seconds": 2.8,
+   "seconds": 2.0,
    "zoom": [
     1.08,
     1.0
@@ -59,8 +87,22 @@
    ]
   },
   {
+   "image": "res://assets/ui/opening/trailer/09_evolution.webp",
+   "seconds": 2.2,
+   "zoom": [
+    1.0,
+    1.06
+   ],
+   "pan": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
    "image": "res://assets/ui/opening/trailer/05_vs_championne.webp",
-   "seconds": 2.8,
+   "seconds": 2.4,
    "zoom": [
     1.0,
     1.12
@@ -74,7 +116,7 @@
   },
   {
    "image": "res://assets/ui/opening/trailer/06_combat_plage.webp",
-   "seconds": 2.8,
+   "seconds": 2.0,
    "zoom": [
     1.06,
     1.0
@@ -87,8 +129,36 @@
    ]
   },
   {
+   "image": "res://assets/ui/opening/trailer/10_menu_dresseur.webp",
+   "seconds": 2.0,
+   "zoom": [
+    1.0,
+    1.05
+   ],
+   "pan": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "image": "res://assets/ui/opening/trailer/11_pokedex.webp",
+   "seconds": 2.0,
+   "zoom": [
+    1.05,
+    1.0
+   ],
+   "pan": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
    "image": "res://assets/ui/opening/trailer/07_tour_pokemon.webp",
-   "seconds": 2.8,
+   "seconds": 2.0,
    "zoom": [
     1.0,
     1.1
@@ -102,7 +172,7 @@
   },
   {
    "image": "res://assets/ui/opening/trailer/08_mewtwo.webp",
-   "seconds": 2.8,
+   "seconds": 2.4,
    "zoom": [
     1.0,
     1.12
