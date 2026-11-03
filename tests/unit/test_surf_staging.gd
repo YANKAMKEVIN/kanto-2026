@@ -78,9 +78,9 @@ func test_surf_images_follow_the_suffix() -> void:
 
 # --- Données réelles -------------------------------------------------------------------
 
-func test_real_setting_keeps_the_sandbar_until_kevin_chooses() -> void:
+func test_real_setting_is_surf_and_keeps_the_sandbar() -> void:
 	var decors := BattleDecorCatalog.load_file()
-	assert_false(decors.surf_enabled, "banc de sable par défaut (question ouverte à Kevin)")
+	assert_true(decors.surf_enabled, "Surf choisi par Kevin le 2026-11-03")
 	var surf := decors.surf_decor_for(&"sea_open")
 	assert_not_null(surf, "la mer a son décor en Surf")
 	assert_eq(surf.id, &"sea_surf")

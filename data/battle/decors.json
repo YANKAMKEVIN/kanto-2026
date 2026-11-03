@@ -1,8 +1,8 @@
 {
 	"_doc": "Décors peints de combat (CB.3, dossier 05 §2). decors : zone + variante locale, images (fond opaque, premier plan transparent facultatif), taille du master et LIGNE DE SOL en px du master (pieds de l'adversaire et de ton Pokémon : BattleDecor.fit aligne ces deux points sur les ancres de BattleLayout ; horizon pour mémoire). places : décors par carte (map_id) ; une entrée avec cells [x, y, largeur, hauteur] (cases) est une variante locale, sans cells le décor par défaut. Carte absente : repli sur l'ancien fond (carte recadrée et floutée). Production : tools/art/combat_decors/.",
 	"surf": {
-		"_doc": "Combat en surfant (fiche entree-dresseurs §13, game/battle/surf_staging.gd). enabled : réglage de Kevin, faux tant qu'il n'a pas choisi entre le banc de sable (sea_open, mise en scène à pied) et le Surf (joueur de dos sur la monture du monde, adversaire dans l'eau). Vrai : quand le joueur surfe, chaque décor de « decors » est remplacé par son décor en Surf, pour un combat sauvage ou contre une classe peinte dans l'eau (surf.classes de trainer_intro.json) ; les Dresseurs de la terre ferme gardent le banc de sable.",
-		"enabled": false,
+		"_doc": "Combat en surfant (fiche entree-dresseurs §13, game/battle/surf_staging.gd). enabled : réglage de Kevin, vrai depuis son choix du 2026-11-03 (« Passer au Surf ») entre le banc de sable (sea_open, mise en scène à pied) et le Surf (joueur de dos sur la monture du monde, adversaire dans l'eau). Vrai : quand le joueur surfe, chaque décor de « decors » est remplacé par son décor en Surf, pour un combat sauvage ou contre une classe peinte dans l'eau (surf.classes de trainer_intro.json) ; les Dresseurs de la terre ferme gardent le banc de sable.",
+		"enabled": true,
 		"decors": { "sea_open": "sea_surf" }
 	},
 	"decors": {
