@@ -420,3 +420,6 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
   Ball est refusée avant le lancer (« Ton équipe est pleine, et le PC ne répond pas. »).
 - `johto_return` : comme `johto_confiscated`, puis la scène de test `johto_return_test` (choix des
   6, écriture, PC de nouveau ouvert) dès l'arrivée.
+- `johto_light_test` : Route 1 sous le profil `johto_auto`, moment forcé `night` (changer
+  `"period"` en `morning` ou `day` pour les trois captures du lot B ; l'horloge réelle reprend
+  sans la clé). Clés `light_profile` et `period` de `DebugStart`.

@@ -124,6 +124,9 @@ var _encounter_library: EncounterLibrary
 var _zones := ZoneLibrary.new()
 var _dex := PokedexLibrary.new()
 var _map_illustration := MapIllustration.new()
+## JOH0 : l'illustration provisoire de Johto (page Johto de la Carte).
+var _map_illustration_johto := MapIllustration.new()
+const JOHTO_MAP_AREAS: String = "res://assets/ui/map/johto_placeholder_areas.json"
 var _moments := MomentLibrary.new()
 ## Toasts du Pokédex en attente (au plus un par espèce) : des paires [espèce, [titre, détail]].
 var _dex_toasts: Array[Array] = []
@@ -179,6 +182,9 @@ var _pending_offline_notice: bool = false
 var _team_return_overlay: TeamReturnOverlay
 ## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
 var _debug_cutscene: StringName = &""
+## JOH0 (QA de la lumière) : profil imposé à la carte de départ (clé « light_profile »).
+var _debug_light_profile: StringName = &""
+var _debug_light_map: StringName = &""
 ## JOH0 (`jalon-joh0.md` §2.7, §2.9) : pas du lien et des œufs ; œufs prêts à éclore, joués au
 ## prochain pas où la partie est stable ; jeton {pokemon} du dialogue d'éclosion.
 var _bond_steps := BondStepCounter.new()
@@ -433,6 +439,8 @@ func _ready() -> void:
 	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# JOH0 : moment et jour pour les variantes datées, à Johto seulement.
 	_runner.time_source = _current_time
+	_runner.caught_johto_count = func() -> int:
+		return PokedexQuery.caught_in_region(GameState.pokedex, _pokemon, ZoneData.REGION_JOHTO)
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
 	# Jalon 20 (§2.9.6, §2.16) : variantes selon le Sac et selon les zones jouables (postes de
@@ -505,12 +513,17 @@ func _ready() -> void:
 	# appel) ; l'écran Stockage et le bouton STOCKAGE de l'Équipe n'existent que là.
 	_unlocks.set_location(_zones, _current_map_id)
 	_apply_debug_unlocks()
-	if _dex.load_file():
+	# JOH0 : un fichier par région (`kanto.json`, `johto.json`) : 202 espèces.
+	if _dex.load_dir():
 		_dex.check_references(_pokemon)
 	for error: String in _dex.get_errors():
 		push_error("Pokédex : %s" % error)
 	if _map_illustration.load_file():
 		_map_illustration.check_references(_zones)
+	if _map_illustration_johto.load_file(JOHTO_MAP_AREAS):
+		_map_illustration_johto.check_references(_zones)
+	for error: String in _map_illustration_johto.get_errors():
+		push_error("Carte de Johto : %s" % error)
 	for error: String in _map_illustration.get_errors():
 		push_error(error)
 	if _moments.load_file():
@@ -519,6 +532,7 @@ func _ready() -> void:
 		push_error(error)
 	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex,
 		_map_illustration, _moments)
+	_menu.set_map_illustration(ZoneData.REGION_JOHTO, _map_illustration_johto) # JOH0
 	# Boutique (jalon-07.md §6.10, T12) : stock vérifié contre les objets.
 	_shops.load_dir()
 	_shops.check_references(_items)
@@ -580,6 +594,7 @@ func _ready() -> void:
 		_menu.map_shown.connect(_menu_screen.show_map)
 		_menu.map_zone_shown.connect(_menu_screen.show_map_zone)
 		_menu_screen.map_zone_touched.connect(_menu.open_zone)
+		_menu_screen.map_region_requested.connect(_menu.switch_map_region)
 	# Dresseur (T25) : sans show_trainer (écran pas encore fusionné), l'écran provisoire.
 	if _menu_screen.has_method(&"show_trainer"):
 		_menu.trainer_shown.connect(_menu_screen.show_trainer)
@@ -1397,6 +1412,10 @@ func _apply_debug_start() -> bool:
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
 	_debug_cutscene = start.cutscene
+	_debug_light_profile = start.light_profile
+	_debug_light_map = start.map if not start.light_profile.is_empty() else &""
+	if not start.period.is_empty():
+		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(start.period)])
 	_veil_debug = start.veil
 	_veil_debug_map = start.map if not start.veil.is_empty() else &""
 	if not start.wild.is_empty():
@@ -1469,6 +1488,9 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
 	_flash.on_map_changed(map)
+	# JOH0 (QA) : profil de lumière imposé par le départ de débogage sur sa carte.
+	if not _debug_light_profile.is_empty() and map.map_id == _debug_light_map:
+		map.light_profile = _debug_light_profile
 	_apply_lighting(map)
 	_apply_darkness(map)
 	# JOH0 (JH-8) : la puce de l'heure du menu ne se montre qu'à Johto ; les PNJ datés lisent le
@@ -2788,6 +2810,7 @@ var _fly: FlyDirector
 func _setup_fly() -> void:
 	var rules := FlyRules.new()
 	rules.load_file()
+	rules.stamp_regions(_zones) # JOH0 : la région de chaque destination
 	_fly = FlyDirector.new()
 	_fly.name = "FlyDirector"
 	_fly.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -2795,6 +2818,9 @@ func _setup_fly() -> void:
 	_fly.setup(rules, func() -> Dictionary: return GameState.discovered_maps,
 		func(move: StringName) -> Variant: return _runner.field_source.call(move), _caves, SceneRouter.get_current_map, _player, _runner, SceneRouter,
 		_companion)
+	# JOH0 (JH-18) : pas de Vol entre Kanto et Johto pendant l'acte 1.
+	_fly.region_source = _zones.region_of
+	_fly.cross_source = func() -> bool: return not TeamConfiscation.is_act1(GameState.flags)
 	_menu.set_fly_check(_fly.can_fly_to)
 	_menu.fly_requested.connect(func(zone: StringName) -> void:
 		_menu.close()

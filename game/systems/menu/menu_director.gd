@@ -132,10 +132,15 @@ var _repeat_item: StringName = &""
 var _repeat_index: int = -1
 var _dex: PokedexLibrary
 var _illustration: MapIllustration
+## JOH0 : illustration par région (Johto à part) et page affichée.
+var _illustrations: Dictionary[StringName, MapIllustration] = {}
+var _map_region: StringName = &""
 var _moments: MomentLibrary
 var _dex_filter: int = PokedexQuery.Filter.ALL
 var _dex_zone: StringName = &""
 var _dex_type: StringName = &""
+## JOH0 : filtre région du Pokédex (&"" = tout).
+var _dex_region: StringName = &""
 var _dex_text: String = ""
 var _settings: GameSettings
 var _device_quality: GameSettings.Graphics = GameSettings.Graphics.HIGH
@@ -655,11 +660,13 @@ func repeat_item_use() -> bool:
 
 ## Filtre, zone d'HABITATS, type ou recherche changés (mémoire de la visite seulement, jamais
 ## sauvegardée) : la grille est réémise.
-func set_pokedex_filter(filter: int, zone: StringName, type: StringName, text: String) -> void:
+func set_pokedex_filter(filter: int, zone: StringName, type: StringName, text: String,
+		region: StringName = &"") -> void:
 	_dex_filter = filter
 	_dex_zone = zone
 	_dex_type = type
 	_dex_text = text
+	_dex_region = region
 	_emit_pokedex(&"", false)
 
 
@@ -687,6 +694,35 @@ func open_zone(zone: StringName) -> void:
 ## Passe systèmes 2 (T24) : [param check] = func(zone) -> bool (bouton « S'ENVOLER »).
 func set_fly_check(check: Callable) -> void:
 	_fly_check = check
+
+
+## JOH0 : l'illustration de la page [param region] (Kanto : celle de [method setup]).
+func set_map_illustration(region: StringName, illustration: MapIllustration) -> void:
+	_illustrations[region] = illustration
+
+
+## JOH0 : change de page (bouton « Johto › » / « Kanto › » de la Carte) ; page inconnue : rien.
+func switch_map_region(region: StringName) -> void:
+	if _state == null \
+			or not MapJournal.available_regions(_state.flags as StoryFlags).has(region):
+		return
+	_map_region = region
+	_emit_map(&"")
+
+
+func get_map_region() -> StringName:
+	return _map_region
+
+
+func _emit_map(zone: StringName) -> void:
+	var regions := MapJournal.available_regions(_state.flags as StoryFlags)
+	if not regions.has(_map_region):
+		_map_region = ZoneData.REGION_KANTO
+	var illustration: MapIllustration = _illustrations.get(_map_region, _illustration)
+	var map_view := MapJournal.view(_state, _zones, illustration, zone, _map_region, regions)
+	map_shown.emit(map_view)
+	if not map_view.selected.is_empty():
+		open_zone(map_view.selected)
 
 
 ## « S'ENVOLER » touché : revérifié, puis [signal fly_requested] (Boot ferme le menu). Refusé
@@ -728,7 +764,7 @@ func _emit_pokedex(selected: StringName, with_sheet: bool) -> void:
 	if _state == null or _dex == null:
 		return
 	var view := PokedexQuery.grid(_state.pokedex, _data, _dex, _zones, _dex_filter, _dex_zone,
-		_dex_type, _dex_text, selected)
+		_dex_type, _dex_text, selected, _dex_region)
 	pokedex_shown.emit(view)
 	if with_sheet and not view.selected.is_empty():
 		open_species(view.selected)
@@ -831,13 +867,12 @@ func _on_route_shown(route: MenuRoute) -> void:
 		_dex_zone = &""
 		_dex_type = &""
 		_dex_text = ""
+		_dex_region = &""
 		_emit_pokedex(StringName(route.params.get("species", &"")), true)
 	elif route.screen == MenuRoute.MAP and _zones != null:
-		var map_view := MapJournal.view(_state, _zones, _illustration,
-			StringName(route.params.get("zone", &"")))
-		map_shown.emit(map_view)
-		if not map_view.selected.is_empty():
-			open_zone(map_view.selected)
+		# JOH0 : la page de la région où l'on est.
+		_map_region = _zones.region_of(_state.current_map)
+		_emit_map(StringName(route.params.get("zone", &"")))
 	elif route.screen == MenuRoute.TRAINER:
 		_emit_trainer()
 	elif route.screen == MenuRoute.SETTINGS and _settings != null:

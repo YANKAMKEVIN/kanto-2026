@@ -49,7 +49,8 @@ signal bag_target_chosen(item_id: StringName, index: int)
 signal bag_repeat_requested
 ## Relais de l'écran Pokédex (6C) : filtre, zone, type ou recherche changé ; fiche demandée
 ## (case connue touchée). Le lien Habitat → Carte passe par [signal route_requested].
-signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String,
+	region: StringName)
 signal pokedex_species_opened(species: StringName)
 ## Jalon Son (SonB) : « Cri » d'une espèce capturée au Pokédex (numéro national).
 signal pokedex_cry_requested(number: int)
@@ -58,6 +59,8 @@ signal pokedex_cry_requested(number: int)
 signal map_zone_touched(zone: StringName)
 ## Passe systèmes 2 (§2.8, T24) : « S'ENVOLER » touché sur la Carte.
 signal map_fly_requested(zone: StringName)
+## JOH0 : l'autre page de la Carte demandée.
+signal map_region_requested(region: StringName)
 ## Relais de l'écran Paramètres (6F) : un réglage change (valeur du réglage, jamais un rang) ;
 ## « Sauvegarder maintenant » touché.
 signal setting_changed(key: StringName, value: Variant)
@@ -375,6 +378,7 @@ func show_map(view: MapView) -> void:
 		_map.route_requested.connect(route_requested.emit)
 		_map.zone_touched.connect(map_zone_touched.emit)
 		_map.fly_requested.connect(map_fly_requested.emit)
+		_map.region_requested.connect(map_region_requested.emit)
 		_host.add_child(_map)
 		_map.hide_now()
 	_map.show_map(view)

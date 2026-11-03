@@ -24,11 +24,15 @@ extends MenuScreen
 signal zone_touched(zone: StringName)
 ## Passe systèmes 2 (§2.8, T24) : « S'ENVOLER » touché dans le panneau de [param zone].
 signal fly_requested(zone: StringName)
+## JOH0 : l'autre page demandée (« Johto › », « Kanto › »).
+signal region_requested(region: StringName)
 
 const BACK_TEXT := "RETOUR"
 ## Titre et région de l'en-tête (MM.2 ; la vue garde « CARTE — KANTO » pour les tests de logique).
 const TITLE_TEXT := "Carte"
 const REGION_TEXT := "Kanto"
+## JOH0 : bouton de la page suivante.
+const NEXT_REGION_FORMAT := "%s ›"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const BALL_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const ECHO_SHADER: Shader = preload("res://game/ui/menu/map/map_echo.gdshader")
@@ -36,6 +40,8 @@ const ECHO_SHADER: Shader = preload("res://game/ui/menu/map/map_echo.gdshader")
 var _view: MapView
 var _back: Button
 var _title: Label
+var _region_label: Label
+var _region_button: Button
 var _body: HBoxContainer
 var _frame: PanelContainer
 var _echo: TextureRect
@@ -111,6 +117,35 @@ func show_map(view: MapView) -> void:
 	_view = view
 	if _canvas != null:
 		_apply_map(view)
+	_refresh_region()
+
+
+func get_region_button() -> Button:
+	return _region_button
+
+
+func get_region_text() -> String:
+	return _region_label.text if _region_label != null else ""
+
+
+## JOH0 : nom de la page et bouton de la page suivante.
+func _refresh_region() -> void:
+	if _region_label == null or _view == null:
+		return
+	_region_label.text = _view.region_name if not _view.region_name.is_empty() else REGION_TEXT
+	var next := _view.next_region()
+	_region_button.visible = not next.is_empty()
+	if not next.is_empty():
+		var rank := _view.regions.find(next)
+		_region_button.text = NEXT_REGION_FORMAT % (_view.region_names[rank]
+			if rank >= 0 and rank < _view.region_names.size() else String(next))
+
+
+func _on_region_pressed() -> void:
+	if _view == null or _view.next_region().is_empty():
+		return
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	region_requested.emit(_view.next_region())
 
 
 ## Affiche le panneau de [param view] (sans changer d'écran) et met la zone en avant sur
@@ -194,12 +229,21 @@ func _build_header(parent: Control) -> void:
 	_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(_title)
-	var region := Label.new()
-	region.theme_type_variation = &"MenuScreenCount"
-	region.text = REGION_TEXT
-	region.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	region.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(region)
+	_region_label = Label.new()
+	_region_label.theme_type_variation = &"MenuScreenCount"
+	_region_label.text = REGION_TEXT
+	_region_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_region_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(_region_label)
+	# JOH0 : la page suivante (visible seulement quand il y a deux pages).
+	_region_button = Button.new()
+	_region_button.theme_type_variation = &"PanelButton"
+	_region_button.focus_mode = Control.FOCUS_NONE
+	_region_button.custom_minimum_size = Vector2(0, UiTokens.TOUCH_MIN)
+	_region_button.visible = false
+	_region_button.pressed.connect(_on_region_pressed)
+	row.add_child(_region_button)
+	_refresh_region()
 
 
 func _apply_map(view: MapView) -> void:

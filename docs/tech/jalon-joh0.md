@@ -514,3 +514,38 @@ exclu du Multi Exp, du compagnon, de la libération et du favori (`StorageRules.
 `exp_bonus_source` (×1,5 pendant `johto_act1`, `TeamConfiscation.exp_bonus`). Tests :
 `test_bond_and_eggs.gd` (7), `give_egg` (1) ; 339 tests des fichiers touchés verts.
 
+### T6 — données de Johto (2026-11-03, sous-agent Sonnet, `claude/joh0-donnees` @ `0094298e`, fusionné `e15bc331`)
+`data/pokemon/species/johto.json` (51 espèces, dex 152–251, types et stats modernes, learnsets
+d'Or/Argent de PokeAPI), règles `bond` (Togepi, Leveinard, Nosferalto, Évoli matin/jour et nuit)
+et `trade` + objet (Onix, Insécateur, Ramoloss, Têtarte, Hypocéan, Porygon) dans les fichiers de
+Kanto ; `data/pokemon/moves/johto.json` (47 attaques, 28 en `pending_effects` : météo, Abri,
+Relais, Encore, Ténacité… ; `tools/audit_moves.py` : 0 manquante) ; `data/battle/move_fx/johto.json`
+(familles [D] : acier et ténèbres en contact, météo en statut_plus) ; `data/pokedex/johto.json`
+(51 fiches `draft`, descriptions à relire par Kevin, JOH-Q2) ; `data/items/items_johto.json`
+(4 objets) ; outils `gen_johto_data.py`, `gen_johto_pokedex.py` ; 11 tests de Kanto bornés à
+dex ≤ 151 ; `test_johto_data.gd` (8). Valeurs de substitution [D] : Prescience 80, Baston 20,
+Fléau et Contre-Attaque 40, Voile Miroir en statut (priorité −5), Rayon Lune / Aurore / Synthèse
+50 %. **Reportés** : icônes du Sac des 4 objets, cris 152–251 (lot Son), ancrages d'effets et
+sprites (art hors JOH0), `caught_count` ≥ 150 du Diplôme de Kanto compte toutes les espèces.
+
+### T14, T15 — Pokédex 202, régions, Carte, Vol (2026-11-03, lot JOH0D)
+`PokedexLibrary.load_dir` (les `size` s'additionnent : 202), `MAX_DEX` 251 à la place de
+« ≤ size » ; `PokedexQuery` : liste continue des espèces du Pokédex par numéro (151 puis 152…),
+filtre région (`region_choices` : proposé dès qu'une espèce de Johto est vue, bouton « Région :
+Tout / Kanto / Johto » de l'écran, cinquième paramètre de `filter_changed` /
+`set_pokedex_filter`), `caught_in_region` ; variantes `if_caught_johto_at_least` /
+`unless_caught_johto_at_least` (`DialogueRunner.caught_johto_count`, posé par Boot).
+`zones.json` : Oliville, Rosalia, Doublonville, Écorcia, Acajou (`region: johto`, `maps: []`,
+descriptions [D] `draft`) ; `fly_points.json` : leurs cinq points ; `FlyRules.Point.region`
+(`stamp_regions`), `can_fly_to(..., from_region, cross_allowed)` → `OTHER_REGION` (le bouton
+S'ENVOLER se cache [D], pas de texte), `destinations(discovered, region, cross)` ;
+`FlyDirector.region_source` / `cross_source` (Boot : pas de Vol entre régions pendant
+`johto_act1`). Carte : `MapIllustration` par région (`assets/ui/map/johto_placeholder.webp` +
+`_areas.json`, image provisoire dessinée par `tools/make_johto_map_placeholder.py`),
+`MapJournal.view(..., region, regions)`, `available_regions` (Johto dès `johto_arrived` [D]),
+`MapView.region` / `regions` / `next_region`, `MenuDirector.switch_map_region`, bouton
+« Johto › » / « Kanto › » dans l'en-tête de `MapScreen` (`map_region_requested`). Débogage :
+clés `light_profile` et `period` de `DebugStart`, départ `johto_light_test` (captures du lot B).
+Tests : `test_johto_regions.gd` (5), zones (+1), Vol, Pokédex (bibliothèque, requête, écrans)
+réalignés ; 124 tests des fichiers touchés verts.
+

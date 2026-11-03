@@ -15,6 +15,13 @@ extends RefCounted
 ## cette classe ne le vérifie pas, [MenuNavigator] refuse déjà la route.
 
 enum State { UNKNOWN, SEEN, CAUGHT }
+## Régions du filtre (JOH0, JH-22) : &"" = tout.
+const REGION_ALL: StringName = &""
+const REGION_LABELS: Dictionary[StringName, String] = {
+	REGION_ALL: "Tout", ZoneData.REGION_KANTO: "Kanto", ZoneData.REGION_JOHTO: "Johto",
+}
+## Dernier numéro national de Kanto : au-delà, une espèce est de Johto ([method region_of_number]).
+const LAST_KANTO_NUMBER: int = 151
 ## Filtres de la grille : mêmes valeurs, même ordre que `MenuRoute.DEX_FILTER_*` (T2).
 enum Filter { ALL, SEEN, CAUGHT, HABITAT }
 
@@ -61,10 +68,16 @@ static func counts_text(pokedex: Pokedex, library: PokedexLibrary) -> String:
 ## l'espèce est inconnue). [param zones] peut être null (aucun habitat).
 static func grid(pokedex: Pokedex, data: PokemonData, library: PokedexLibrary,
 		zones: ZoneLibrary, filter: int = Filter.ALL, zone: StringName = &"",
-		type: StringName = &"", text: String = "", selected: StringName = &"") -> PokedexGridView:
+		type: StringName = &"", text: String = "", selected: StringName = &"",
+		region: StringName = REGION_ALL) -> PokedexGridView:
 	var view := PokedexGridView.new()
 	view.title = TITLE
 	view.counts_text = counts_text(pokedex, library)
+	# JOH0 : filtre Kanto / Johto / Tout, proposé dès qu'une espèce de Johto est vue [D].
+	view.region_ids = region_choices(pokedex, data)
+	for id: StringName in view.region_ids:
+		view.region_names.append(REGION_LABELS.get(id, String(id)))
+	view.region = region if view.region_ids.has(region) else REGION_ALL
 	view.filter = filter if filter >= Filter.ALL and filter <= Filter.HABITAT else Filter.ALL
 	view.filter_labels = FILTER_LABELS
 	view.zone_ids = zone_choices(pokedex, zones)
@@ -78,7 +91,8 @@ static func grid(pokedex: Pokedex, data: PokemonData, library: PokedexLibrary,
 		view.type_names.append(chart.get_type_name(id))
 	view.type = type if view.type_ids.has(type) else &""
 	view.text = text
-	view.slots = slots(pokedex, data, library, zones, view.filter, view.zone, view.type, text)
+	view.slots = slots(pokedex, data, library, zones, view.filter, view.zone, view.type, text,
+		view.region)
 	view.empty_text = EMPTY_TEXT if view.slots.is_empty() else ""
 	view.no_species_text = NO_SPECIES_TEXT if pokedex.seen_count() == 0 else ""
 	if state_of(pokedex, selected) != State.UNKNOWN and data.has_species(selected):
@@ -91,17 +105,22 @@ static func grid(pokedex: Pokedex, data: PokemonData, library: PokedexLibrary,
 	return view
 
 
-## Cases de la grille (voir [member PokedexGridView.slots]). Filtre HABITAT : [param zone]
-## doit être une zone connue (sinon aucune case).
+## Cases de la liste (voir [member PokedexGridView.slots]) : les espèces du Pokédex
+## ([param library]) dans l'ordre des numéros nationaux, **sans case vide** entre Kanto et Johto
+## (JOH0, JH-22 : 1 à 151, puis 152, 153…) ; une case inconnue garde son numéro. Filtre HABITAT :
+## [param zone] doit être une zone connue (sinon aucune case). [param region] (JOH0) : Kanto,
+## Johto ou tout ([constant REGION_ALL]).
 static func slots(pokedex: Pokedex, data: PokemonData, library: PokedexLibrary,
 		zones: ZoneLibrary, filter: int = Filter.ALL, zone: StringName = &"",
-		type: StringName = &"", text: String = "") -> Array[PokedexSlotView]:
+		type: StringName = &"", text: String = "",
+		region: StringName = REGION_ALL) -> Array[PokedexSlotView]:
 	var result: Array[PokedexSlotView] = []
-	var by_number := _species_by_number(data)
 	var search := fold(text.strip_edges())
 	var show_unknown := filter == Filter.ALL and type.is_empty() and search.is_empty()
-	for number: int in range(1, library.size() + 1):
-		var species: StringName = by_number.get(number, &"")
+	for number: int in numbers(library, data):
+		if not region.is_empty() and region_of_number(number) != region:
+			continue
+		var species: StringName = _species_at(number, data)
 		var state := state_of(pokedex, species) if not species.is_empty() else State.UNKNOWN
 		if state == State.UNKNOWN:
 			if show_unknown:
@@ -167,6 +186,49 @@ static func sheet(species: StringName, pokedex: Pokedex, data: PokemonData,
 				view.notes.append(note.text)
 	view.notes_empty_text = NOTES_EMPTY_TEXT if view.notes.is_empty() else ""
 	return view
+
+
+## Numéros nationaux des espèces du Pokédex, croissants (JOH0 : la liste continue).
+static func numbers(library: PokedexLibrary, data: PokemonData) -> Array[int]:
+	var result: Array[int] = []
+	if library == null or data == null:
+		return result
+	for id: StringName in library.get_species_ids():
+		if data.has_species(id):
+			result.append(data.get_species(id).dex)
+	result.sort()
+	return result
+
+
+## Région d'un numéro national : Kanto jusqu'à [constant LAST_KANTO_NUMBER], Johto au-delà.
+static func region_of_number(number: int) -> StringName:
+	return ZoneData.REGION_KANTO if number <= LAST_KANTO_NUMBER else ZoneData.REGION_JOHTO
+
+
+## Régions du filtre région : rien tant qu'aucune espèce de Johto n'a été vue [D] ; sinon
+## [Tout, Kanto, Johto] (Tout = [constant REGION_ALL]).
+static func region_choices(pokedex: Pokedex, data: PokemonData) -> Array[StringName]:
+	var result: Array[StringName] = []
+	if pokedex == null or data == null:
+		return result
+	for species: StringName in pokedex.seen_ids():
+		if data.has_species(species) \
+				and region_of_number(data.get_species(species).dex) == ZoneData.REGION_JOHTO:
+			result.assign([REGION_ALL, ZoneData.REGION_KANTO, ZoneData.REGION_JOHTO])
+			break
+	return result
+
+
+## Espèces **capturées** de [param region] (JOH0 : le Diplôme de Johto compte 50 espèces de
+## Johto).
+static func caught_in_region(pokedex: Pokedex, data: PokemonData, region: StringName) -> int:
+	var count := 0
+	if pokedex == null or data == null:
+		return 0
+	for species: StringName in pokedex.caught_ids():
+		if data.has_species(species) and region_of_number(data.get_species(species).dex) == region:
+			count += 1
+	return count
 
 
 ## Zones où [param species] a été observée, dans l'ordre de découverte, chacune une fois
@@ -242,6 +304,13 @@ static func height_text(meters: float) -> String:
 ## « 8,5 kg » (une décimale, virgule française).
 static func weight_text(kilograms: float) -> String:
 	return ("%.1f kg" % kilograms).replace(".", ",")
+
+
+static func _species_at(number: int, data: PokemonData) -> StringName:
+	for id: StringName in data.get_species_ids():
+		if data.get_species(id).dex == number:
+			return id
+	return &""
 
 
 static func _species_by_number(data: PokemonData) -> Dictionary[int, StringName]:

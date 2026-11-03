@@ -53,7 +53,7 @@ const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variant
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
 	"one_in", "if_caught_at_least", "unless_caught_at_least", "field", "shop", "if_items", "unless_items", "if_zone",
-	"if_period", "if_weekday", # Chapitre Johto (JOH0)
+	"if_period", "if_weekday", "if_caught_johto_at_least", "unless_caught_johto_at_least", # JOH0
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -289,7 +289,8 @@ func _read_shop(entry: Dictionary, variant: DialogueVariant, where: String) -> b
 ## premier strictement plus petit que le second.
 func _read_caught(entry: Dictionary, variant: DialogueVariant, where: String) -> bool:
 	var ok := true
-	for key: String in ["if_caught_at_least", "unless_caught_at_least"]:
+	for key: String in ["if_caught_at_least", "unless_caught_at_least",
+			"if_caught_johto_at_least", "unless_caught_johto_at_least"]:
 		if not entry.has(key):
 			continue
 		var value: Variant = entry[key]
@@ -297,13 +298,22 @@ func _read_caught(entry: Dictionary, variant: DialogueVariant, where: String) ->
 				or int(value) < 1:
 			ok = _fail("%s : « %s » doit être un entier ≥ 1" % [where, key])
 			continue
-		if key == "if_caught_at_least":
-			variant.caught_at_least = int(value)
-		else:
-			variant.caught_below = int(value)
+		match key:
+			"if_caught_at_least":
+				variant.caught_at_least = int(value)
+			"unless_caught_at_least":
+				variant.caught_below = int(value)
+			"if_caught_johto_at_least": # JOH0
+				variant.caught_johto_at_least = int(value)
+			"unless_caught_johto_at_least":
+				variant.caught_johto_below = int(value)
 	if ok and variant.caught_at_least > 0 and variant.caught_below > 0 \
 			and variant.caught_at_least >= variant.caught_below:
 		ok = _fail("%s : « if_caught_at_least » doit être < « unless_caught_at_least »"
+			% where)
+	if ok and variant.caught_johto_at_least > 0 and variant.caught_johto_below > 0 \
+			and variant.caught_johto_at_least >= variant.caught_johto_below:
+		ok = _fail("%s : « if_caught_johto_at_least » doit être < « unless_caught_johto_at_least »"
 			% where)
 	return ok
 

@@ -267,8 +267,10 @@ func test_check_references_rejects_unknown_species_and_numbers_beyond_size() -> 
 	assert_false(_lib.check_references(_data))
 	assert_false(_lib.has_species(&"missingno"), "espèce inconnue de PokemonData")
 	assert_null(_lib.get_note(&"m"), "ses notes partent avec elle")
-	assert_false(_lib.has_species(&"pidgey"), "n° 16 hors d'une grille de 10")
-	assert_push_error_count(2)
+	# JOH0 : « size » est un compte d'espèces, plus une grille : le n° 16 reste avec une
+	# « size » de 10 ; seul un numéro au-delà de MAX_DEX (251) serait écarté.
+	assert_true(_lib.has_species(&"pidgey"), "n° 16 gardé : la liste est continue (JH-22)")
+	assert_push_error_count(1)
 
 
 func test_missing_file_and_bad_json() -> void:

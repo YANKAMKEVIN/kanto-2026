@@ -63,6 +63,9 @@ extends RefCounted
 ## des deux non vide) ; les drapeaux `storage_offline` et `johto_act1` sont levés avec, les
 ## espèces « capturées » au Pokédex. « cutscene » : identifiant d'une scène jouée à la première
 ## entrée de carte (QA d'une scène sans son déclencheur, ex. le retour de l'équipe).
+## « light_profile » (JOH0, QA de la lumière de Johto) : profil de lumière imposé à la carte de
+## départ pour la session (« johto_auto », « johto_night »…) ; exige « map ». « period » : moment
+## imposé à l'horloge du monde (« morning », « day », « night ») tant que la session dure.
 ## Passe systèmes 2 (S2E, départ `s2_fly`) : « discovered » : cartes déjà découvertes (villes
 ## ouvertes au Vol), ex. ["pallet_town", "pewter_city"] ; identifiants non vides.
 ## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
@@ -98,7 +101,8 @@ const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
-	"discovered", "safari", "fx_gallery", "caught_except", "confiscated", "cutscene"]
+	"discovered", "safari", "fx_gallery", "caught_except", "confiscated", "cutscene",
+	"light_profile", "period"]
 const _CONFISCATED_KEYS: Array[String] = ["party", "items"]
 ## Starter du joueur → starter que prend le rival (`starter_choice_controller.gd`, RB).
 const _RIVAL_PICK: Dictionary[StringName, StringName] = {
@@ -152,6 +156,10 @@ var caught_except: Variant = null
 var confiscated: Dictionary = {}
 ## JOH0 : scène jouée à la première entrée de carte (&"" = aucune).
 var cutscene: StringName = &""
+## JOH0 : profil de lumière imposé à la carte de départ (&"" = celui de la carte) ; moment
+## imposé à l'horloge (&"" = l'heure réelle).
+var light_profile: StringName = &""
+var period: StringName = &""
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -296,6 +304,20 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 			ok = _fail("%s : « cutscene » est un identifiant de scène non vide" % source)
 		else:
 			new_cutscene = StringName(dict["cutscene"])
+	var new_light: StringName = &""
+	if dict.has("light_profile"):
+		if not _is_text(dict["light_profile"]) or new_map.is_empty():
+			ok = _fail("%s : « light_profile » est un identifiant de profil non vide, avec « map »"
+				% source)
+		else:
+			new_light = StringName(dict["light_profile"])
+	var new_period: StringName = &""
+	if dict.has("period"):
+		if not dict["period"] is String or not WorldClock.PERIOD_NAMES.has(dict["period"]):
+			ok = _fail("%s : « period » vaut %s" % [source,
+				", ".join(PackedStringArray(WorldClock.PERIOD_NAMES.keys()))])
+		else:
+			new_period = StringName(dict["period"])
 	var new_daycare: Dictionary = {}
 	if dict.has("daycare"):
 		new_daycare = _parse_daycare(dict["daycare"], data, "%s daycare" % source)
@@ -384,6 +406,8 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	daycare = new_daycare
 	confiscated = new_confiscated
 	cutscene = new_cutscene
+	light_profile = new_light
+	period = new_period
 	wild_terrain = new_wild_terrain
 	companion = new_companion
 	veil = new_veil
@@ -498,8 +522,11 @@ func describe() -> String:
 	var taken := "" if confiscated.is_empty() else ", confisqués : %d Pokémon, %d objets" % [
 		(confiscated["party"] as Array).size(), (confiscated["items"] as Dictionary).size()]
 	var scene := "" if cutscene.is_empty() else ", scène : %s" % cutscene
-	return "%s/%s, %s%s%s%s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
-		", ".join(members), kept, taken, scene, " (remplace la sauvegarde)" if autosave else ""]
+	var light := "" if light_profile.is_empty() else ", lumière : %s" % light_profile
+	var moment := "" if period.is_empty() else ", moment : %s" % period
+	return "%s/%s, %s%s%s%s%s%s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
+		", ".join(members), kept, taken, scene, light, moment,
+		" (remplace la sauvegarde)" if autosave else ""]
 
 
 func get_errors() -> PackedStringArray:

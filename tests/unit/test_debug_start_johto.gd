@@ -83,3 +83,21 @@ func test_invalid_confiscated_sections_and_cutscenes_are_refused() -> void:
 		assert_false(start.add_from_dict(dict, _data, _items, "bad"), str(extra))
 	assert_push_error_count(bad.size(), "une erreur par départ refusé")
 	assert_true(DebugStart.new().add_from_dict(base, _data, _items, "ok"))
+
+
+func test_light_profile_and_period_keys_are_read() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file("res://tools/debug_start/johto_light_test.json", _data, _items),
+		str(start.get_errors()))
+	assert_eq(start.light_profile, &"johto_auto")
+	assert_eq(start.period, &"night")
+	assert_true(start.describe().contains("lumière : johto_auto"))
+	var bad := [
+		{"party": [{"species": "squirtle", "level": 5}], "light_profile": "johto_auto"},
+		{"party": [{"species": "squirtle", "level": 5}], "map": "route_1", "spawn": "from_pallet_w",
+			"light_profile": ""},
+		{"party": [{"species": "squirtle", "level": 5}], "period": "dusk"},
+	]
+	for dict: Dictionary in bad:
+		assert_false(DebugStart.new().add_from_dict(dict, _data, _items, "bad"), str(dict))
+	assert_push_error_count(bad.size())

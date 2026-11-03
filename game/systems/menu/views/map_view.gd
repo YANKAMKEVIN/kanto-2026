@@ -22,6 +22,20 @@ var player_zone: StringName = &""
 ## Zone dont le panneau s'affiche à l'arrivée : celle de la route si elle est découverte
 ## (lien Habitat du Pokédex), sinon celle du joueur ; &"" = aucun panneau.
 var selected: StringName = &""
+## JOH0 (`jalon-joh0.md` §2.13) : page affichée (région), nom de la page, pages disponibles
+## (Kanto seule tant que le joueur n'est pas arrivé à Johto) et leurs noms.
+var region: StringName = &""
+var region_name: String = ""
+var regions: Array[StringName] = []
+var region_names: PackedStringArray = PackedStringArray()
+
+
+## Page suivante (JOH0 : Kanto ↔ Johto) ; &"" s'il n'y en a qu'une.
+func next_region() -> StringName:
+	if regions.size() < 2:
+		return &""
+	var rank := maxi(regions.find(region), 0)
+	return regions[(rank + 1) % regions.size()]
 
 
 ## Vue de [param zone_id], ou null (zone non découverte).

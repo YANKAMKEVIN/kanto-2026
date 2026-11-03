@@ -22,7 +22,8 @@ extends MenuScreen
 ## MM.2, comme l'Équipe et le Sac).
 
 ## Filtre, zone d'HABITATS, type ou recherche changé (valeurs complètes après le geste).
-signal filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+signal filter_changed(filter: int, zone: StringName, type: StringName, text: String,
+	region: StringName)
 ## Case connue touchée.
 signal species_opened(species: StringName)
 ## Bouton « Cri » d'une espèce capturée (jalon Son, SonB) : numéro national.
@@ -33,6 +34,8 @@ const SEARCH_PLACEHOLDER := "Rechercher"
 const TYPE_FORMAT := "Type : %s"
 const ZONE_FORMAT := "%s"
 const ALL_TYPES_TEXT := "Tous"
+## JOH0 : bouton « Région : Tout / Kanto / Johto ».
+const REGION_FORMAT := "Région : %s"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const BALL_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const SEARCH_ICON: Texture2D = preload("res://assets/ui/icons/pokedex/search.svg")
@@ -44,6 +47,8 @@ var _filter: int = 0
 var _zone: StringName = &""
 var _type: StringName = &""
 var _text: String = ""
+var _region: StringName = &""
+var _region_button: Button
 var _opened: StringName = &""
 var _slots: Array[PokedexSlot] = []
 var _filters: Array[Button] = []
@@ -105,13 +110,14 @@ func show_grid(view: PokedexGridView) -> void:
 	if not (visible and _view != null):
 		_opened = &""  # nouvelle arrivée : jamais l'espèce d'une visite précédente
 	var changed := _view == null or view.filter != _filter or view.zone != _zone \
-		or view.type != _type or view.text != _text
+		or view.type != _type or view.text != _text or view.region != _region
 	var scroll := _scroll.scroll_vertical
 	_view = view
 	_filter = view.filter
 	_zone = view.zone
 	_type = view.type
 	_text = view.text
+	_region = view.region
 	_title.text = view.title
 	_counts.text = view.counts_text
 	_counts.visible = not view.counts_text.is_empty()
@@ -346,6 +352,9 @@ func _build_list(parent: Control) -> void:
 	_zone_button = _refine_button(PIN_ICON)
 	_zone_button.pressed.connect(_on_zone_pressed)
 	refine.add_child(_zone_button)
+	_region_button = _refine_button(PIN_ICON)
+	_region_button.pressed.connect(_on_region_pressed)
+	refine.add_child(_region_button)
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -424,6 +433,12 @@ func _refresh_refine(view: PokedexGridView) -> void:
 		if rank >= 0 and rank < view.type_names.size():
 			type_name = view.type_names[rank]
 		_type_button.text = TYPE_FORMAT % type_name
+	var regions_shown := not view.region_ids.is_empty()
+	_region_button.visible = regions_shown
+	if regions_shown:
+		var region_rank := maxi(view.region_ids.find(view.region), 0)
+		_region_button.text = REGION_FORMAT % (view.region_names[region_rank]
+			if region_rank < view.region_names.size() else "")
 	var zones_shown := view.filter == MenuRoute.DEX_FILTER_HABITAT and not view.zone_ids.is_empty()
 	_zone_button.visible = zones_shown
 	if zones_shown:
@@ -456,7 +471,21 @@ func _select_cell(species: StringName) -> void:
 
 
 func _emit_filter(filter: int, zone: StringName, type: StringName, text: String) -> void:
-	filter_changed.emit(filter, zone, type, text)
+	filter_changed.emit(filter, zone, type, text, _region)
+
+
+## JOH0 : Tout → Kanto → Johto → Tout.
+func _on_region_pressed() -> void:
+	if _view == null or _view.region_ids.is_empty():
+		return
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
+	var rank := maxi(_view.region_ids.find(_region), 0)
+	_region = _view.region_ids[(rank + 1) % _view.region_ids.size()]
+	_emit_filter(_filter, _zone, _type, _text)
+
+
+func get_region_button() -> Button:
+	return _region_button
 
 
 func _on_filter_pressed(filter: int) -> void:

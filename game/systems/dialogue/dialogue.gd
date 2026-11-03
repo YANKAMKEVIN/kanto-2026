@@ -31,9 +31,9 @@ var variants: Array[DialogueVariant] = []
 func pick(flags: StoryFlags, rng: GameRng = null, caught: int = 0,
 		field: Callable = Callable(), has_item: Callable = Callable(),
 		zone_playable: Callable = Callable(), period: StringName = &"",
-		weekday: StringName = &"") -> DialogueVariant:
+		weekday: StringName = &"", caught_johto: int = 0) -> DialogueVariant:
 	for variant: DialogueVariant in variants:
-		if not variant.matches(flags, caught, period, weekday):
+		if not variant.matches(flags, caught, period, weekday, caught_johto):
 			continue
 		if not _items_match(variant, has_item):
 			continue

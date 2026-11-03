@@ -74,6 +74,8 @@ var caught_count: Callable
 ## [WorldClock] ; vides hors de Johto). Non valide : pas d'heure (ces variantes sont sautées).
 ## Posé par [Boot].
 var time_source: Callable
+## JOH0 : espèces de Johto capturées (`func() -> int`, Diplôme de Johto). Non valide : 0.
+var caught_johto_count: Callable
 ## État d'une capacité de terrain (jalon 16, [member DialogueVariant.field]) :
 ## `func(move: StringName) -> FieldMoves.Result`. Non valide : les variantes « field » sont
 ## sautées. Posé par [Boot] ([FieldMoves]). Le Pokémon nommé remplace `{pokemon}` dans la variante
@@ -161,7 +163,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 		return false
 	var time := _time()
 	var variant := dialogue.pick(_flags, _rng(), _caught(), field_source, item_source,
-		zone_source, time[0], time[1])
+		zone_source, time[0], time[1], _caught_johto())
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -200,7 +202,7 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 		return false
 	var time := _time()
 	var variant := dialogue.pick(_flags, null, _caught(), Callable(), item_source, zone_source,
-		time[0], time[1])
+		time[0], time[1], _caught_johto())
 	return variant != null and variant.auto
 
 
@@ -454,6 +456,13 @@ func _time() -> Array[StringName]:
 		result[0] = StringName(str(raw[0]))
 		result[1] = StringName(str(raw[1]))
 	return result
+
+
+## Espèces de Johto capturées ([member caught_johto_count]) ; 0 sans source.
+func _caught_johto() -> int:
+	if not caught_johto_count.is_valid():
+		return 0
+	return int(caught_johto_count.call())
 
 
 ## Espèces capturées ([member caught_count]) ; 0 sans source.

@@ -56,6 +56,11 @@ var caught_at_least: int = 0
 ## … et seulement s'il en a capturé **moins** que ce nombre (clé « unless_caught_at_least ») ;
 ## 0 = sans condition.
 var caught_below: int = 0
+## JOH0 (`jalon-joh0.md` §2.12) : mêmes conditions sur les seules espèces de **Johto**
+## capturées (« if_caught_johto_at_least » / « unless_caught_johto_at_least » ; Diplôme de
+## Johto : 50) ; 0 = sans condition.
+var caught_johto_at_least: int = 0
+var caught_johto_below: int = 0
 ## Capacité de terrain (jalon 16, `jalon-16.md` §2.2) : « cut:ready » (capacité et état de
 ## [constant FieldMoves.STATE_NAMES]) ; la variante ne s'applique que dans cet état, lu par
 ## [member DialogueRunner.field_source] ; "" = toujours. Le jeton `{pokemon}` d'une telle variante
@@ -67,8 +72,9 @@ var field: String = ""
 ## [param caught] espèces capturées au Pokédex (jalon 17 ; 0 par défaut), au moment
 ## [param period] et le jour [param weekday] (JOH0 ; &"" = pas d'heure).
 func matches(flags: StoryFlags, caught: int = 0, period: StringName = &"",
-		weekday: StringName = &"") -> bool:
-	if not matches_caught(caught) or not matches_time(period, weekday):
+		weekday: StringName = &"", caught_johto: int = 0) -> bool:
+	if not matches_caught(caught) or not matches_time(period, weekday) \
+			or not matches_caught_johto(caught_johto):
 		return false
 	if flags == null:
 		return if_flags.is_empty()
@@ -79,6 +85,13 @@ func matches(flags: StoryFlags, caught: int = 0, period: StringName = &"",
 ## [member caught_below].
 func matches_caught(caught: int) -> bool:
 	return caught >= caught_at_least and (caught_below <= 0 or caught < caught_below)
+
+
+## Vrai si [param caught_johto] espèces de Johto capturées satisfont
+## [member caught_johto_at_least] et [member caught_johto_below] (JOH0).
+func matches_caught_johto(caught_johto: int) -> bool:
+	return caught_johto >= caught_johto_at_least \
+		and (caught_johto_below <= 0 or caught_johto < caught_johto_below)
 
 
 ## Vrai si [param period] et [param weekday] satisfont [member if_periods] et
