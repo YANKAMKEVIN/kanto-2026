@@ -201,7 +201,8 @@ def decor(ident: str, rev: str = "1") -> int:
 	IMAGE 2 = ancien fond du lieu s'il est fidèle au lieu (DECOR_ANCIENS)."""
 	GR.mkdir(parents=True, exist_ok=True)
 	j = []
-	for nom in ["pewter_gym_roche_v3"] + ([DECOR_ANCIENS[ident]] if ident in DECOR_ANCIENS else []):
+	anciens = DECOR_ANCIENS.get(ident, [])
+	for nom in ["pewter_gym_roche_v3"] + (anciens if isinstance(anciens, list) else [anciens]):
 		png = GR / f"ref_decor_{Path(nom).stem}.png"
 		src = RACINE / nom if "/" in nom else DECOR_DIR / f"{nom}_back.webp"
 		Image.open(src).convert("RGB").save(png)
@@ -243,7 +244,10 @@ DECOR_ANCIENS: dict[str, str] = {"sylphe": "silph_co_bureaux", "repaire": "rocke
 	# prompts tools/art/entree_dresseurs/grands/ecrire_decors_ordinaires.py.
 	"mer": "docs/design/reference/route-19-vue-generale-v1.png",
 	"route_17": "docs/design/reference/route-17-vue-generale-v1-t2.png",
-	"manoir": "docs/design/reference/manoir-vue-generale-v1.png"}
+	"manoir": "docs/design/reference/manoir-vue-generale-v1.png",
+	# Finitions (« peindre leur propre fond », 2026-11-03) : fond commun des Routes 16 ouest et 18.
+	"route_cyclable_foret": ["docs/design/reference/route-16-ouest-vue-generale-v1.png",
+		"docs/design/reference/route-18-vue-generale-v1.png"]}
 
 
 if __name__ == "__main__":

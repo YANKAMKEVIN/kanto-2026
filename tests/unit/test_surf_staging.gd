@@ -103,12 +103,15 @@ func test_real_surf_art_exists() -> void:
 	assert_between(_intros.surf_player_scale, 0.5, 1.2)
 
 
-func test_cycling_road_routes_share_the_route_17_decor() -> void:
+## Kevin (2026-11-03, « peindre leur propre fond ») : les Routes 16 ouest et 18, en forêt, ont
+## leur fond commun ; la Route 17, en bord de mer, garde le sien.
+func test_cycling_road_routes_have_their_own_decor() -> void:
 	var decors := BattleDecorCatalog.load_file()
-	for map_id: StringName in [&"route_16_west", &"route_17", &"route_18"]:
-		assert_eq(decors.default_for(map_id).id, &"route_17_cyclable", String(map_id))
+	assert_eq(decors.default_for(&"route_17").id, &"route_17_cyclable")
+	for map_id: StringName in [&"route_16_west", &"route_18"]:
+		assert_eq(decors.default_for(map_id).id, &"route_cyclable_foret", String(map_id))
 	assert_eq(decors.pick(&"route_16_west", Vector2i(20, 5)).id, &"route_5_6_prairie",
 		"hautes herbes de la voie haute")
 	assert_eq(decors.pick(&"route_18", Vector2i(60, 6)).id, &"route_5_6_prairie",
 		"hautes herbes à l'est du poste")
-	assert_eq(decors.pick(&"route_18", Vector2i(20, 8)).id, &"route_17_cyclable", "la Piste")
+	assert_eq(decors.pick(&"route_18", Vector2i(20, 8)).id, &"route_cyclable_foret", "la Piste")

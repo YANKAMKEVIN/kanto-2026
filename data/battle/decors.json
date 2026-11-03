@@ -295,6 +295,15 @@
 			"player_feet": [716, 972],
 			"horizon": 450
 		},
+		"route_cyclable_foret": {
+			"zone": "route_16_west",
+			"variant": "cyclable_foret",
+			"back": "res://assets/battle/decors/route_cyclable_foret_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 430
+		},
 		"route_17_cyclable": {
 			"zone": "route_17",
 			"variant": "cyclable",
@@ -575,14 +584,14 @@
 			{ "decor": "route_5_6_prairie" }
 		],
 		"route_16_west": [
-			{ "decor": "route_17_cyclable" },
+			{ "decor": "route_cyclable_foret" },
 			{ "decor": "route_5_6_prairie", "cells": [14, 3, 13, 5] }
 		],
 		"route_17": [
 			{ "decor": "route_17_cyclable" }
 		],
 		"route_18": [
-			{ "decor": "route_17_cyclable" },
+			{ "decor": "route_cyclable_foret" },
 			{ "decor": "route_5_6_prairie", "cells": [58, 4, 11, 5] }
 		],
 		"fuchsia_city": [

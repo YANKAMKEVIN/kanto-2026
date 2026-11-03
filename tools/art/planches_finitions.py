@@ -62,9 +62,9 @@ def comparatif() -> Image.Image:
 		("lancer_joueur", "lancer du joueur")]
 	return _grille("Mer des Routes 19 à 21 — même combat (Route 19, Nageur Yann), captures réelles "
 		"2340 × 1080", [
-		("A. Banc de sable actuel (sea_open_v2, mise en scène à pied, réglage par défaut)",
+		("A. Banc de sable actuel (sea_open_v2, mise en scène à pied, ancien défaut)",
 			[("mer_sable", c, s) for c, s in moments]),
-		("B. Surf (sea_surf : mer ouverte, joueur sur la monture du monde, Nageur dans l'eau)",
+		("B. Surf (sea_surf : mer ouverte, joueur sur la monture du monde, Nageur dans l'eau ; choisi par Kevin)",
 			[("mer_surf", c, s) for c, s in moments]),
 	])
 
@@ -83,13 +83,13 @@ def _feuilles() -> Image.Image:
 
 def finitions() -> Image.Image:
 	p = _grille("Finitions de l'entrée des Dresseurs — captures réelles 2340 × 1080", [
-		("1. Surf, la joueuse (Route 20, Nageuse Solène ; réglage forcé pour la capture)",
+		("1. Surf, la joueuse (Route 20, Nageuse Solène ; Surf choisi par Kevin)",
 			[("mer_surf_joueuse", "entree", "entrée"), ("mer_surf_joueuse", "lancer_joueur", "lancer du joueur")]),
 		("1. Surf, le héros (Route 19, Nageur Yann)",
 			[("mer_surf", "entree", "entrée"), ("mer_surf", "lancer_joueur", "lancer du joueur")]),
-		("3. Route 16 ouest sur route_17_cyclable (Loubard)",
+		("3. Route 16 ouest sur son fond peint route_cyclable_foret (Loubard)",
 			[("route_16_ouest", "entree", "entrée"), ("route_16_ouest", "lancer", "lancer")]),
-		("3. Route 18 sur route_17_cyclable (Ornithologue)",
+		("3. Route 18 sur le même fond route_cyclable_foret (Ornithologue)",
 			[("route_18", "entree", "entrée"), ("route_18", "lancer", "lancer")]),
 		("2. Karatéka : sa feuille du monde (Dojo de Safrania, Maître du Dojo au fond ; Arène de Jadielle)",
 			[("karateka", "monde", "Dojo : monde"), ("karateka_jadielle", "monde", "Arène de Jadielle : monde")]),

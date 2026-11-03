@@ -459,9 +459,20 @@ place de `cue_ball`, qui reste aux Loubards. `test_world_looks_match_the_gender_
 
 **3. Routes 16 ouest et 18 sur `route_17_cyclable`.** Constat : **aucune des deux n'est en bord de
 mer** dans le monde (Piste cyclable en pleine forêt ; falaise au nord de la 16 ouest, étang à l'est
-de la 18) ; le fond montre la mer à gauche. Branché comme demandé. [D] Les hautes herbes, hors
-Piste (voie haute de la 16 ouest, est de la 18), prennent la prairie `route_5_6_prairie` (variantes
-par cases).
+de la 18) ; le fond montre la mer à gauche. [D] Les hautes herbes, hors Piste (voie haute de la 16
+ouest, est de la 18), prennent la prairie `route_5_6_prairie` (variantes par cases).
+**Puis fond propre** (Kevin, 2026-11-03 : « peindre leur propre fond ») : `route_cyclable_foret`,
+**un seul fond commun** aux deux routes (même lieu des deux côtés de la Route cyclable) : chaussée de
+béton à dalles, barrière basse de lisses de bois sur poteaux de béton, haute falaise de roche
+beige-ocre coiffée d'herbe à gauche (nord de la 16 ouest), forêt dense de feuillus à droite et éclat
+d'un petit étang entre les arbres au loin (est de la 18), aucune mer. Recette de l'étape 3
+(`ecrire_decors_ordinaires.py`, `entree_grands_combats.py decor|tuile route_cyclable_foret`,
+`preparer_decor.py`) : IMAGE 1 = Argenta v3, IMAGES 2 et 3 = vues générales validées des Routes 16
+ouest et 18 ; tuiles avec leur propre prompt (`tuile_route_cyclable_foret.txt`) ; **3 images Codex**
+(composition + 2 tuiles, r1, recalage 0,934 et 0,877, couture invisible). Même ligne de sol que
+`route_17_cyclable` (`foe_feet` [1559, 560], horizon 430). La Route 17 garde `route_17_cyclable`.
+Captures : `entree-finitions.jpg`, rangées 3 (Loubard Brutus, Route 16 ouest ; Ornithologue
+Albert, Route 18). Test : `test_cycling_road_routes_have_their_own_decor`.
 
 **4. Nettoyage.** Pour chaque fichier, `git grep` du nom et du `.import` hors `docs/` : aucune
 donnée, scène, script, test ni outil ne le chargeait. **Supprimés** (avec leur `.import`) :
