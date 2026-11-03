@@ -1,6 +1,6 @@
 {
 	"g1_roger": {
-		"cell": [24, 8], "facing": "right", "sprite": "hiker",
+		"cell": [24, 8], "facing": "right", "sprite": "mountaineer",
 		"dialogue": "dark_cave_roger_after",
 		"trainer": {
 			"id": "dark_cave_roger", "sight": 4,

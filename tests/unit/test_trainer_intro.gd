@@ -191,7 +191,7 @@ func test_phase_images_framing_and_busts_come_from_data() -> void:
 	assert_eq(_catalog.foe_bust.x, 1.0, "buste au bout droit de la banderole")
 	assert_eq(_catalog.bust_adjust(&"inconnu"), Vector3(0, 0, 1), "sans réglage")
 	assert_ne(_catalog.hand_of(&"gamin"), _catalog.point("foe_hand"), "main de sa pose")
-	assert_eq(_catalog.hand_of(&"scout"), _catalog.point("foe_hand"), "repli")
+	assert_eq(_catalog.hand_of(&"inconnu"), _catalog.point("foe_hand"), "repli")
 
 
 func test_bad_images_or_framing_are_reported() -> void:

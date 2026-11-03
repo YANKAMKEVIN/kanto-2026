@@ -14,7 +14,7 @@
 	"hiker_gaston": {
 		"cell": [45, 10],
 		"facing": "down",
-		"sprite": "hiker",
+		"sprite": "mountaineer",
 		"dialogue": "route_25_hiker_gaston_after",
 		"trainer": {
 			"id": "route_25_hiker_gaston",

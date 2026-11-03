@@ -11,6 +11,8 @@ extends SceneTree
 ## - `grand` : Arène d'Argenta, Pierre (séquence « VS », puis la même entrée) ;
 ## - `argenta`, `azuria`, `carmin`, `celadopole`, `parmanie`, `safrania`, `cramois`, `jadielle` :
 ##   chaque Champion dans son Arène (planches docs/design/fiches-assets/entree-champions/).
+## - ou `--trainer=<id> --map=<carte> --spawn=<point>` : n'importe quel Dresseur (classes
+##   ordinaires, tools/capture_ordinaires.sh).
 ## Le combat commence ≈ 0,7 s après l'arrivée sur la carte ; l'outil quitte ≈ 1,5 s après
 ## l'apparition de la grille d'actions. Imprime l'image du début du combat (« [intro] start »)
 ## pour rogner la vidéo. Aucune entrée n'est simulée pendant l'entrée (jamais sautée).
@@ -88,7 +90,12 @@ func _init() -> void:
 
 
 func _run() -> void:
-	var setup: Dictionary = SETUPS[String(_args.get("battle", "ordinary"))]
+	var setup: Dictionary = {}
+	if _args.has("trainer"):  # Dresseur quelconque : --trainer=<id> --map=<carte> --spawn=<point>
+		setup = {"map": _args["map"], "spawn": _args["spawn"], "facing": "up",
+			"trainer": _args["trainer"]}
+	else:
+		setup = SETUPS[String(_args.get("battle", "ordinary"))]
 	var file := FileAccess.open(START_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify({"map": setup["map"], "spawn": setup["spawn"],
 		"facing": setup["facing"], "party": PARTY, "seed": 7,

@@ -221,9 +221,11 @@ def tuile(ident: str, cote: str, rev: str = "1") -> int:
 	nom = f"EG_DECOR_{ident.upper()}_r{rev}"
 	src = ed.ART / f"{nom}_{cote}_src.png"
 	Image.open(ed.ART / f"{nom}.png").convert("RGB").crop(portions(ident, rev)[cote]).save(src)
-	cmd = [str(RACINE / "tools" / "art" / "generer.sh"), f"{nom}_{cote}",
-		str(Path(__file__).resolve().parent / "entree_dresseurs" / "champions" / "tuile_decor.txt"),
-		str(src)]
+	# Prompt propre au fond s'il existe (grands/tuile_<id>.txt), sinon celui des Champions.
+	propre = PROMPTS / f"tuile_{ident}.txt"
+	prompt = propre if propre.exists() else \
+		Path(__file__).resolve().parent / "entree_dresseurs" / "champions" / "tuile_decor.txt"
+	cmd = [str(RACINE / "tools" / "art" / "generer.sh"), f"{nom}_{cote}", str(prompt), str(src)]
 	return subprocess.call(cmd, cwd=RACINE)
 
 
@@ -236,7 +238,12 @@ DECOR_ANCIENS: dict[str, str] = {"sylphe": "silph_co_bureaux", "repaire": "rocke
 	"labo": "docs/design/reference/labo-chen-v1.png",
 	# Route 22 (demande de Kevin, 2026-11-02) : fond propre, d'après la planche validée ; prompt
 	# écrit à la main (extérieur), entree_dresseurs/grands/decor_route_22.txt.
-	"route_22": "docs/design/reference/route-22-rival-02-v1.webp"}
+	"route_22": "docs/design/reference/route-22-rival-02-v1.webp",
+	# Étape 4 (classes ordinaires, « Mer, Route 17, Manoir », 2026-11-03) : vues générales validées ;
+	# prompts tools/art/entree_dresseurs/grands/ecrire_decors_ordinaires.py.
+	"mer": "docs/design/reference/route-19-vue-generale-v1.png",
+	"route_17": "docs/design/reference/route-17-vue-generale-v1-t2.png",
+	"manoir": "docs/design/reference/manoir-vue-generale-v1.png"}
 
 
 if __name__ == "__main__":

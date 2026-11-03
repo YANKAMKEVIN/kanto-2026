@@ -469,5 +469,32 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"sea_open_v2": {
+		"composition": "EG_DECOR_MER_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_MER_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_MER_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_17_cyclable": {
+		"composition": "EG_DECOR_ROUTE_17_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_ROUTE_17_r1_TL.png", "portion": [0, 0, 1000, 851] },
+			{ "image": "EG_DECOR_ROUTE_17_r1_TR.png", "portion": [847, 0, 1847, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"manoir_salle": {
+		"composition": "EG_DECOR_MANOIR_r2.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_MANOIR_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_MANOIR_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

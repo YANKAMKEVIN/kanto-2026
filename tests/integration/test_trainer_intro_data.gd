@@ -109,6 +109,32 @@ func test_every_champion_has_complete_art() -> void:
 		assert_ne(_catalog.bust_adjust(id), Vector3(0.0, 0.0, 1.0), "%s : réglage du buste" % id)
 
 
+## Étape 4 (fiche §12) : chaque classe ordinaire a sa pose debout, sa pose de lancer et sa main.
+func test_every_ordinary_class_has_complete_art() -> void:
+	for id: StringName in _catalog.class_ids():
+		var front := _catalog.front_dir + String(id) + _catalog.extension
+		var throw := _catalog.front_dir + String(id) + _catalog.throw_suffix + _catalog.extension
+		for path: String in [front, throw]:
+			assert_true(ResourceLoader.exists(path), "%s : %s" % [id, path])
+		assert_ne(_catalog.hand_of(id), _catalog.point("foe_hand"), "%s : main du lancer" % id)
+
+
+## Taille réelle [D] : enfants < adolescents < adultes.
+func test_ordinary_class_scales() -> void:
+	var children: Array[StringName] = [&"gamin", &"fillette", &"scout", &"campeur"]
+	var teens: Array[StringName] = [&"jeune_dresseur", &"jeune_dresseuse"]
+	for id: StringName in _catalog.class_ids():
+		var scale := _catalog.scale_of(id)
+		assert_between(scale, 1.0, 1.4, "%s : taille réelle relative" % id)
+		if id in children or id in teens:
+			continue
+		for young: StringName in children + teens:
+			assert_gt(scale, _catalog.scale_of(young), "%s plus grand que %s" % [id, young])
+	for child: StringName in children:
+		for teen: StringName in teens:
+			assert_lt(_catalog.scale_of(child), _catalog.scale_of(teen), "%s < %s" % [child, teen])
+
+
 func test_champion_scales() -> void:
 	for id: StringName in CHAMPIONS:
 		var scale := _catalog.scale_of(id)
@@ -118,3 +144,52 @@ func test_champion_scales() -> void:
 		assert_gt(_catalog.scale_of(tall), _catalog.scale_of(&"pierre"), String(tall))
 	for small: StringName in [&"ondine", &"erika", &"auguste"]:
 		assert_lt(_catalog.scale_of(small), _catalog.scale_of(&"pierre"), String(small))
+
+
+## Demande de Kevin (2026-11-03, « il faut fixer ») : une classe masculine ne retombe jamais sur
+## une feuille peinte féminine (Montagnard, Karatéka et Maître du Dojo prenaient `hiker`, feuille
+## `randonneuse`), ni l'inverse ; ni pour le repli de la classe, ni pour ses Dresseurs du monde.
+const FEMALE_CLASSES: Array[StringName] = [&"beaute", &"exorciste", &"fillette", &"jeune_dresseuse",
+	&"nageuse", &"sbire_rocket_f", &"topdresseuse"]
+const FEMALE_SHEETS: Array[String] = ["agatha", "beaute", "chercheuse", "dresseuse", "erika",
+	"exorciste", "fillette", "hotesse", "infirmiere", "joueuse", "maman", "nageuse", "nageuse_eau",
+	"olga", "ondine", "passagere", "randonneuse", "rivale", "sbire_f", "topdresseuse",
+	"vieille_dame"]
+
+
+## Feuille peinte (nom de base, sans « _idle_sheet » ni « _sheet ») d'une apparence du monde.
+func _sheet_of(sprite: String) -> String:
+	var path := "res://assets/sprites/characters/painted/%s_frames.tres" % sprite
+	if not FileAccess.file_exists(path):
+		return ""
+	var found := RegEx.create_from_string("painted/([a-z_]+?)(_idle)?_sheet\\.png") \
+		.search(FileAccess.get_file_as_string(path))
+	return found.get_string(1) if found != null else ""
+
+
+func _assert_same_gender(id: StringName, sprite: String, where: String) -> void:
+	var sheet := _sheet_of(sprite)
+	if sheet.is_empty():
+		return
+	assert_eq(sheet in FEMALE_SHEETS, id in FEMALE_CLASSES,
+		"%s : %s → feuille %s (%s)" % [id, sprite, sheet, where])
+
+
+func test_world_looks_match_the_gender_of_the_class() -> void:
+	for id: StringName in _catalog.class_ids():
+		_assert_same_gender(id, String(_catalog.world_sprite(id)), "repli")
+	for file: String in DirAccess.get_files_at("res://data/npcs"):
+		if not file.ends_with(".json"):
+			continue
+		var npcs: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/npcs/" + file))
+		if not npcs is Dictionary:
+			continue
+		for key: String in npcs:
+			var npc: Variant = npcs[key]
+			if not npc is Dictionary or not npc.get("trainer") is Dictionary:
+				continue
+			var trainer := _trainers.get_trainer(StringName(npc["trainer"].get("id", "")))
+			if trainer == null or trainer.has_card():
+				continue
+			_assert_same_gender(_catalog.class_of(trainer), String(npc.get("sprite", "")),
+				"%s/%s" % [file, key])

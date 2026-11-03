@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — ROUTE 17, ROUTE CYCLABLE (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte un Motard ou un Loubard sur la Route cyclable, la longue route qui descend de Céladopole à Parmanie le long de la mer. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : CIBLE du niveau de rendu, de la richesse, de la profondeur et du cadrage (sol vaste dans la moitié basse) ; ce n'est PAS le lieu à peindre. IMAGE 2 = la vue générale VALIDÉE du lieu, vue de dessus : le LIEU, les matériaux, les couleurs et la lumière à GARDER ; à repeindre comme si l'on s'y tenait, à hauteur d'homme, en vue de trois-quarts (et PAS en pixel art).
+
+LIEU : la ROUTE CYCLABLE : une large route de BÉTON gris clair à grandes dalles, SURÉLEVÉE sur des PILOTIS de béton au-dessus des enrochements, au bord de la mer. Sur la gauche (proche) : la mer bleu profond avec écume, une rangée de gros ROCHERS ronds gris-beige en enrochement contre le pied des pilotis, une glissière basse de béton et de métal le long du bord. Au milieu de la chaussée, un séparateur bas de béton avec de petites BORNES de bois orange (comme IMAGE 2), marquages blancs effacés au sol, quelques traces de pneus et de dérapages, une petite plate-bande d'herbe et un banc de bois. Sur la droite et au fond : la route qui file en pente douce vers le sud jusqu'à l'horizon, bordée d'une FORÊT DENSE de feuillus vert vif. Ciel de fin d'après-midi lumineux, lumière chaude venant de la gauche, embruns dans l'air ; ambiance de vitesse et de bande de motards.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra à hauteur d'homme sur la GAUCHE, regard légèrement vers la DROITE, en trois-quarts : point de fuite vers x 62 %. mer, enrochements et glissière de GAUCHE proches, grands, coupés par le bord gauche ; la forêt et la route qui file au loin plus petites à droite.
+
+CADRAGE (impératif) : la LIGNE où la chaussée plate rejoint le pied de la forêt du fond et l'horizon est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (la chaussée de béton, vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : béton plat et nu, sur la chaussée (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : béton plat et nu au premier plan (le joueur s'y tient).
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage), PAS de pixel art (la planche IMAGE 2 est un aperçu : on veut le rendu peint de l'IMAGE 1).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, panneau avec numéro, texte, lettres, chiffres, logo, signature, cadre, interface, pixel art.

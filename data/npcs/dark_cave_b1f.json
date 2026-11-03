@@ -8,7 +8,7 @@
 		}
 	},
 	"g4_marcel": {
-		"cell": [38, 34], "facing": "left", "sprite": "hiker",
+		"cell": [38, 34], "facing": "left", "sprite": "mountaineer",
 		"dialogue": "dark_cave_marcel_after",
 		"unless": ["beaten_dark_cave_marcel"],
 		"trainer": {
