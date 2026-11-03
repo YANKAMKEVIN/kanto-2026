@@ -441,4 +441,41 @@ projet dans le même commit, push. **A** = JOH0A (seul), **B/C/D** = le lot.
 
 ## 8. Fait
 
-(rempli tâche par tâche)
+### T1 — plan et branche (2026-11-03)
+Branche `claude/joh0-systemes` depuis `main` @ `0b80db1d` ; ce plan ; état du projet.
+
+### T2 — sauvegarde v10 (2026-11-03, `fd908015`)
+`SaveSystem.VERSION = 10`, `_upgrade_9_to_10` (seul `bond = 50` ajouté aux Pokémon présents) ;
+`Pokemon.bond`, `egg_steps`, `Origin.EGG`, `set_bond` / `add_bond` / `is_egg` ; `ConfiscatedTeam`,
+`GameState.confiscated` (écrite seulement si non vide, refus signalé comme la Pension, identifiants
+uniques) ; `BondRules` (constantes, `start_for`, `tier`) ; départ du lien posé par `stamp_meeting`.
+En avance sur T7 : `WorldClock` réel (moments, jours, forçage, `sync`, `DeviceClock.now_dict`,
+`FixedClock.now_dict`) ; en avance sur T11 : règles `bond` (+ `period`) et `trade` + `item` lues par
+`PokemonData` (`EvolutionRule.periods`, `allows_period`). Tests : `test_save_joh0.gd` (14 tests :
+format, migration, fixtures réelles v6 → v10, bornes, section confisquée), `test_world_clock.gd`
+(+5) ; 11 tests de sauvegarde des jalons passés réalignés sur le lien de migration
+(`tests/helpers/save_v10.gd`), 13 assertions `VERSION == 9` passées à 10.
+
+### T3 — vol et retour, logique pure (2026-11-03, `1b1b06bb`)
+`TeamConfiscation` (`confiscate`, `restore`, `check_kept`, `pool`, `is_key_item`, drapeaux
+`storage_offline` / `johto_act1` / `johto_team_returned` / `johto_arrived`), `TeamReturnSelection`
+(réserve, ordre de touche, 6 au plus, `default_selection`), `CaptureGate` ; 13 tests
+(`test_team_confiscation.gd` : objets clés gardés, favoris, K.O. non soigné, fusion des Sacs,
+Stockage dans l'ordre, compagnon, refus EMPTY / TOO_MANY / UNKNOWN / DUPLICATE / NO_ABLE,
+écriture avant / après, gabarit du refus).
+
+### T4 — scènes, écran, hors ligne, combat, débogage (2026-11-03)
+Étapes `confiscate_team` et `return_team` (`CutsceneStep.Kind` en fin d'enum, `_EXTRA_KEYS`,
+drapeaux levés listés) ; `CutsceneDirector.team_return_handler` (coroutine), signaux
+`team_confiscated` / `team_returned` ; `TeamReturnOverlay` (`game/ui/johto/`, liste à bascule,
+compteur « n / 6 », VALIDER, retour avalé) ; Boot : écran branché, `_on_storage_requested` et
+`_on_local_trade_requested` répondent par le dialogue `storage_offline` tant que le Stockage est
+hors ligne, scène de débogage à la première entrée de carte (clé `cutscene`) ; `BattleDirector` :
+Ball refusée avant le lancer (`ball_refused_offline`, `data/battle/messages.json`, liste
+`BattleText.TEMPLATE_IDS`) ; `DebugStart` : clés `confiscated` et `cutscene` ; départs
+`johto_confiscated`, `johto_confiscated_full`, `johto_return` (README) ; données
+`data/dialogues/johto_systems.json`, `data/cutscenes/johto_systems.json` (scènes de test
+`johto_return_test`, `johto_confiscate_test`). Tests : `test_cutscene_johto_steps.gd` (7),
+`test_team_return_overlay.gd` (2), `test_debug_start_johto.gd` (3) ; tests de la bibliothèque de
+scènes réalignés sur les deux kinds de plus. `main` fusionné (`cb43cbae`). Reste du JOH0A : CI
+verte (T5), validation de Kevin sur la copie de sa sauvegarde.
