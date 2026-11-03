@@ -31,8 +31,10 @@ func after_each() -> void:
 
 
 func _catch_all_but(missing: Array[StringName]) -> void:
-	for id: StringName in _boot.get_pokemon_data().get_species_ids():
-		if not missing.has(id):
+	# JOH0 (T6) : « les 150 autres espèces » sont celles de Kanto (numéro national ≤ 151).
+	var data := _boot.get_pokemon_data()
+	for id: StringName in data.get_species_ids():
+		if not missing.has(id) and data.get_species(id).dex <= 151:
 			GameState.pokedex.mark_caught(id)
 
 

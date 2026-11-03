@@ -88,7 +88,9 @@ func test_real_data_loads_without_error() -> void:
 func test_every_species_of_the_data_has_an_entry_and_the_reverse() -> void:
 	_lib.load_file()
 	_lib.check_references(_data)
-	for id: StringName in _data.get_species_ids():
+	var kanto := _data.get_species_ids().filter(func(id: StringName) -> bool:
+		return _data.get_species(id).dex <= 151)
+	for id: StringName in kanto:
 		if NO_ENTRY_YET.has(id):
 			assert_false(_lib.has_species(id), "%s : pas encore de fiche" % id)
 			continue
@@ -97,8 +99,8 @@ func test_every_species_of_the_data_has_an_entry_and_the_reverse() -> void:
 		assert_gt(info.height, 0.0)
 		assert_gt(info.weight, 0.0)
 		assert_false(info.description.is_empty())
-	assert_eq(_lib.get_species_ids().size(),
-		_data.get_species_ids().size() - NO_ENTRY_YET.size())
+	# JOH0 (T6) : les fiches de Johto (data/pokedex/johto.json) sont lues par le chargeur du T14.
+	assert_eq(_lib.get_species_ids().size(), kanto.size() - NO_ENTRY_YET.size())
 
 
 func test_real_heights_and_weights_are_the_official_ones() -> void:

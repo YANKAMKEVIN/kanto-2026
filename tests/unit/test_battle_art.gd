@@ -8,6 +8,8 @@ const VIEWS: Array[Vector2] = [Vector2(1920, 1080), Vector2(2340, 1080)]
 ## Espèces des données jamais affichées au J19 : Osselait et Ossatueur n'apparaissent qu'en
 ## SPECTRE (silhouette), sans image propre (jalon-19.md §2.12) ; leur art arrive au J20 / J21.
 const NEVER_SHOWN: Array[StringName] = [&"cubone", &"marowak"]
+## Dernier numéro national de Kanto ; au-delà (Johto, JOH0), l'art provisoire n'existe pas encore.
+const KANTO_LAST_DEX: int = 151
 
 var _art := BattleArt.new()
 
@@ -64,12 +66,20 @@ func test_every_species_of_the_data_has_its_front_and_back() -> void:
 	for id: StringName in ids:
 		if NEVER_SHOWN.has(id):
 			continue
-		for back: bool in [false, true]:
-			var path := BattleArt.placeholder_path(id, back)
-			assert_true(ResourceLoader.exists(path), "sprite provisoire %s" % path)
+		if data.get_species(id).dex <= KANTO_LAST_DEX:
+			_check_placeholder(id)
 		for rule: EvolutionRule in data.get_species(id).evolutions:
 			assert_true(data.has_species(rule.into), "%s évolue en %s : espèce des données"
 				% [id, rule.into])
+
+
+## Le sprite provisoire de [param id] existe, de face et de dos. Johto (JOH0 T6) : l'art de
+## Johto est un lot à part (levier 4), pas de sprite provisoire ; le combat tombe sur le
+## substitut existant.
+func _check_placeholder(id: StringName) -> void:
+	for back: bool in [false, true]:
+		var path := BattleArt.placeholder_path(id, back)
+		assert_true(ResourceLoader.exists(path), "sprite provisoire %s" % path)
 
 
 ## Repli : une espèce sans sprite de dos montre son artwork officiel, jamais un côté vide.

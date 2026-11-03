@@ -1,0 +1,22 @@
+{
+	"metal_coat": {
+		"name": "Peau Métal", "plural": "Peaux Métal", "feminine": true,
+		"category": "field", "price": 0,
+		"description": "Une pellicule d'un métal étrange. Certains Pokémon évoluent quand ils la reçoivent au terminal d'échange d'un Centre Pokémon."
+	},
+	"kings_rock": {
+		"name": "Roche Royale", "plural": "Roches Royales", "feminine": true,
+		"category": "field", "price": 0,
+		"description": "Une pierre digne d'un roi. Certains Pokémon évoluent quand ils la reçoivent au terminal d'échange d'un Centre Pokémon."
+	},
+	"dragon_scale": {
+		"name": "Écaille Draco", "plural": "Écailles Draco", "feminine": true,
+		"category": "field", "price": 0,
+		"description": "Une écaille épaisse et brillante. Certains Pokémon évoluent quand ils la reçoivent au terminal d'échange d'un Centre Pokémon."
+	},
+	"up_grade": {
+		"name": "Améliorator", "plural": "Améliorators", "feminine": false,
+		"category": "field", "price": 0,
+		"description": "Un appareil de mise à niveau conçu pour les Pokémon artificiels. Il se donne au terminal d'échange d'un Centre Pokémon."
+	}
+}

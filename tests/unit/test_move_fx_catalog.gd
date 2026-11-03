@@ -3,6 +3,8 @@ extends GutTest
 ## annexe A) : `data/battle/move_fx/`, une entrée par attaque, repli par type et catégorie.
 
 const ANNEX_COUNT: int = 165
+## JOH0 (T6) : les 47 attaques d'Or/Argent de data/battle/move_fx/johto.json.
+const JOHTO_COUNT: int = 47
 const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", &"plante",
 	&"glace", &"psy", &"poison", &"sol_roche", &"vent", &"spectre", &"dragon", &"energie", &"son",
 	&"statut_plus", &"statut_moins", &"soin"]
@@ -50,7 +52,7 @@ func test_every_move_of_the_data_has_an_entry() -> void:
 
 
 func test_the_165_moves_of_the_annex_are_listed() -> void:
-	assert_eq(MoveFxCatalog.load_dir().move_ids().size(), ANNEX_COUNT)
+	assert_eq(MoveFxCatalog.load_dir().move_ids().size(), ANNEX_COUNT + JOHTO_COUNT)
 
 
 func test_13_signatures_on_14_moves() -> void:
