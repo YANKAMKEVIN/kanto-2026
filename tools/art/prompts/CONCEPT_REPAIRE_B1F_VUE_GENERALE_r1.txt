@@ -1,0 +1,33 @@
+CONCEPT ART — INTÉRIEUR DU REPAIRE ROCKET D'ACAJOU, NIVEAU -1 : LE COULOIR DES STATUES (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : un niveau souterrain sur fond noir (hors de la carte). Format PAYSAGE.
+Légende du plan :
+- gris-brun foncé = MURS de béton et hors-champ ; bandes brun clair = les MURS DU FOND vus de face (au-dessus de chaque couloir) ;
+- beige = SOL de béton : un HALL horizontal en haut, un COULOIR horizontal en bas, reliés par TROIS PASSAGES verticaux (à gauche, au centre, à droite), ce qui laisse deux gros blocs de mur pleins au milieu ;
+- en haut à gauche, dans le mur du fond : un ESCALIER qui MONTE (marches claires) vers la boutique ; en bas à droite, dans le mur du bas : un ESCALIER qui DESCEND (marches sombres) ;
+- carrés gris à disque doré, encastrés dans les murs = trois STATUES DE PERSIAN : des statues dorées d'un grand chat assis, dans des niches du mur, avec un œil rouge qui luit (une caméra) ; deux dans le mur du fond du hall (au premier tiers et tout à droite), une dans le mur du bas du couloir (au milieu) ;
+- paires de carrés bruns = des CAISSES de bois empilées (deux dans le hall, deux dans le couloir).
+Respecte ce plan À LA LETTRE : le hall, le couloir, les trois passages, les deux escaliers, les trois statues dans leurs niches, les caisses. Le plan ne donne que la composition : son style en aplats ne doit pas appara��tre.
+
+IMAGE 2 : la vue générale du Souterrain de Doublonville, un passage souterrain du même chapitre, déjà peint. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes murs de pierre et de béton, même sol, mêmes escaliers, même découpe sur fond sombre, même éclairage électrique froid. Ne reprends PAS sa composition ni ses boutiques.
+
+Format : PAYSAGE 1536 × 1024, le niveau au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « la base secrète » : un sous-sol de béton propre et froid, éclairé au néon blanc, tuyaux et câbles au plafond (hors champ, seulement suggérés par les ombres), des caisses marquées d'un simple R rouge, et ces statues dorées de chat aux yeux rouges qui surveillent les couloirs. Technique, silencieuse, menaçante sans être sombre. Palette : BÉTON gris-beige, murs gris, OR terni des statues, rouge des yeux et des marques, bois des caisses.
+LUMIÈRE : éclairage électrique blanc et froid, uniforme, lisible ; les yeux des statues luisent en rouge ; aucune teinte dorée dans la lumière.
+
+RÈGLE DE LA GRILLE : murs, passages, niches et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS.
+OBJETS RARES : seulement les statues, les caisses et les escaliers du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les statues du mur du fond montrent leur face ; celle du mur du bas montre son dos et sa tête tournée vers le couloir.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, bleu-gris froid, jamais pures noires.
+
+PERSONNE : aucun personnage, aucun Pokémon vivant (les statues sont des statues), aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres (seul un R rouge simple sur les caisses est permis), affiches, écrans lisibles, signature, filigrane, cadre, interface, Poké Ball ; dalles fléchées ; cellules, cage ; machine ; fenêtre ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un sous-sol de béton aux couloirs surveillés par des statues dorées de chat aux yeux rouges, un escalier qui monte, un escalier qui descend.

@@ -3,6 +3,7 @@
  "spawn": "debug_bush",
  "facing": "down",
  "flags": [
+		"got_hm01",
   "mom_greeted",
   "rival_met",
   "oak_met",

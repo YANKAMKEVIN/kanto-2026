@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — REPAIRE DE LA TEAM ROCKET (version 2) (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte Giovanni, chef de la Team Rocket, au fond du repaire secret sous le Casino de Céladopole. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : CIBLE du rendu, de la richesse, de la vue de trois-quarts et du cadrage ; ce n'est PAS le lieu à peindre. IMAGE 2 = l'ancien décor de ce lieu (lieu, matériaux et couleurs à GARDER), mais trop vide, trop plat et trop frontal : à rendre bien plus riche, profond et vivant, en vue de trois-quarts.
+
+LIEU : le dernier sous-sol du repaire secret de la Team Rocket, sous le Casino : grande salle souterraine de béton et de métal, murs de plaques d'acier gris-bleu rivetées, poutres et tuyaux au plafond, néons blancs froids et une lampe rouge d'alarme, caisses de bois et caisses métalliques empilées, un poste de commande avec écrans verts, une porte blindée à bandes jaunes et noires au fond, quelques DALLES À FLÈCHES métalliques au sol sur le côté (le puzzle du repaire), une grande tache de peinture rouge abstraite au mur (AUCUNE lettre). Le SOL est du béton gris poli, taché, avec des marquages jaunes et noirs. Lumière froide et dure des néons, reflets sur le béton, coins sombres ; ambiance de repaire criminel.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra sur la GAUCHE de la salle, regard légèrement vers la DROITE, en trois-quarts, comme sur IMAGE 1 : point de fuite vers x 62 %. Éléments de GAUCHE proches, grands, coupés par le bord gauche et par le haut ; ceux de droite plus petits et plus lointains.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : sol plat et nu (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

@@ -1,0 +1,72 @@
+# Tour Radio de Doublonville, 1F (hall) (goldenrod_radio_tower_1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH5 ;
+# dossier docs/design/dossier-joh-06-tour-radio.md §3, §4, §5, §6, textes T-2 à T-5, T-33, T-34 ; JH-40).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh5.py.
+#
+# Composition (hall, déjà vu au JOH3 : D-18, D-19) :
+#   - SORTIE (E, (11..12, 15)) vers la porte de la Tour à Doublonville ; COMPTOIR D'ACCUEIL vide
+#     (c, x 8..15, y 4..5) ; deux bancs (M) et des plantes.
+#   - ESCALIER qui monte (U, (3, 0)) au fond d'une NICHE (x 3..4, y 1..2, cloisons en x 2 et x 5)
+#     gardée par le FAUX EMPLOYÉ (4, 2) : la scène (3, 2) couvre le seul accès à la niche ; avec la
+#     Carte d'accès, T-2 puis COMBAT OBLIGATOIRE (JH-40) ; il s'enfuit (T-4) et la niche se libère.
+#   - ASCENSEUR (L, (18, 0)) en panne (T-5).
+#   - Après le retour de l'équipe : l'AGENTE (10, 13) et ORME (13, 13) attendent devant la sortie ;
+#     la scène de sortie couvre toute la largeur du hall (y 12) : T-33 puis T-34, johto_act2.
+#
+# Raccords :
+#   SORTIE (11..12, 15) ↔ Doublonville, porte de la Tour Radio (10..11, 15), retour (10..11, 16).
+#   U (3, 0) ↔ 2F, D (3, 0) [paire e1_2] ; arrivée du 2F en (3, 1).
+#
+# Légende (commune aux cinq étages ; même esprit que la Sylphe SARL, tools/plans/sylphe_1f.txt) :
+#   # mur, cloison ou vide (bloqué)            . sol (praticable)
+#   M mobilier : bureaux, plantes, bancs, écrans, micros (bloqué)   V vitre de studio (bloquée, transparente)
+#   c comptoir d'accueil (bloqué)   r rayonnage d'archives (bloqué)   p pupitre de régie (bloqué)
+#   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le mur
+#     nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
+#   L porte de l'ascenseur (18, 0) à chaque étage (praticable ; EN PANNE jusqu'à johto_cenere_defeated :
+#     examen T-5 ; ensuite cabine sur le modèle du Grand Magasin de Céladopole [D])
+#   K porte fermée à clé (praticable ; la position « porte_cle », libre dans la grille, la bloque tant
+#     que la porte est fermée : même logique qu'une barrière)   E sortie vers Doublonville (1F seulement, praticable, PUSH ↓)
+#   S escalier de secours (5F, bloqué : décor et examen ; Cenere s'en va par là)
+# Personnages, objets, scènes et raccords sont dans POSITIONS. 24 × 16 cases par étage
+# (dossier : ≈ 24 × 16) ; x = colonne 0..23, y = rangée 0..15, nord en haut.
+#
+# Format : lignes CARTE et PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+CARTE goldenrod_radio_tower_1f
+
+PRATICABLES .UKLE
+
+GRILLE 24 16
+00 ###U##############L#####
+01 #.#..#.................#
+02 #.#..#.................#
+03 #......................#
+04 #M......cccccccc......M#
+05 #.......cccccccc.......#
+06 #......................#
+07 #......................#
+08 #......................#
+09 #.....MM........MM.....#
+10 #......................#
+11 #......................#
+12 #......................#
+13 #......................#
+14 #M....................M#
+15 ###########EE###########
+FIN
+
+POSITIONS
+sortie_ville         warp           11..12,15    libre   vers=goldenrod_city:retour_tour_radio  # PUSH ↓ → goldenrod_city, retour_tour_radio (10..11, 16)
+from_city            spawn          11..12,14    libre   facing=up  # arrivée de Doublonville, une case devant la sortie
+vers_2f              escalier       3,0          libre   vers=goldenrod_radio_tower_2f:from_1f paire=e1_2 sens=monte  # → 2F, D (3, 0)
+from_2f              spawn          3,1          libre   paire=e1_2 facing=down  # arrivée depuis le 2F, une case devant l'escalier
+faux_employe         dresseur       4,2          bloque  facing=left sight=0 trainer=goldenrod_radio_tower_impostor actif_sans=johto_radio_impostor_defeated  # T-2 à T-4, Arbok 26 + Rattatac 26 ; OBLIGATOIRE (scène) ; D-18 au JOH3 sans la Carte
+scene_impostor       declencheur    3,2          libre   actif_sans=johto_radio_impostor_defeated  # seul accès à la niche de l'escalier : T-2 (avec johto_radio_pass) puis combat ; sans la Carte, D-18 et pas en arrière
+scene_sortie         declencheur    1..22,12     libre   actif_avec=johto_team_returned actif_sans=johto_act2  # T-33 (Agente, preuves retirées du Sac) puis T-34 (Orme) ; pose johto_act2
+agente               pnj            10,13        bloque  role=agente facing=up actif_avec=johto_team_returned actif_sans=johto_act2  # T-33 ; modèle des agentes de Kanto
+orme                 pnj            13,13        bloque  role=orme facing=up actif_avec=johto_team_returned actif_sans=johto_act2  # T-34, accroche de l'acte 2
+ascenseur            ascenseur      18,0         libre   etage=1F vers=goldenrod_radio_tower_elevator:entrance actif_avec=johto_cenere_defeated  # porte de l'ascenseur ; dessert les 5 étages après Cenere (T-32) [D]
+examen_ascenseur     examen         18,0         libre   actif_sans=johto_cenere_defeated  # T-5 (1F au JOH3 : D-19), examiné depuis (18, 1) ↑ tant que l'ascenseur est en panne
+from_elevator        spawn          18,1         libre   paire=ascenseur etage=1F facing=down  # sortie de la cabine, une case devant la porte
+FIN

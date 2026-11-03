@@ -135,7 +135,7 @@ func test_brock_talks_through_his_scene_until_the_badge() -> void:
 	var kinds: Array[StringName] = []
 	for step: CutsceneStep in scene.variants[0].steps:
 		kinds.append(CutsceneStep.kind_name(step.kind))
-	assert_eq(kinds, [&"face", &"dialogue", &"dialogue", &"champion_card", &"set", &"battle",
+	assert_eq(kinds, [&"face", &"dialogue", &"dialogue", &"set", &"battle",
 		&"wait", &"dialogue", &"badge", &"dialogue", &"dialogue", &"give", &"dialogue", &"set",
 		&"dialogue", &"wake_up"] as Array[StringName])
 	var steps := scene.variants[0].steps
@@ -143,27 +143,25 @@ func test_brock_talks_through_his_scene_until_the_badge() -> void:
 		[&"pewter_gym_brock_intro", [&"brock_met"] as Array[StringName]])
 	assert_eq([steps[2].dialogue_id, steps[2].if_flags],
 		[&"pewter_gym_brock_resume", [&"brock_met"] as Array[StringName]])
-	# Jalon 10 (QA 10C, défaut retenu par Kevin) : la carte de présentation seulement au premier
-	# combat (avant que brock_met soit posé), jamais aux revanches.
-	assert_eq([steps[3].trainer_id, steps[3].if_flags, steps[3].unless_flags],
-		[&"pewter_gym_brock", [] as Array[StringName], [&"brock_met"] as Array[StringName]])
-	assert_eq(steps[4].flags, [&"brock_met"] as Array[StringName])
-	assert_eq([steps[5].trainer_id, steps[5].win_flags],
+	# La carte de présentation du jalon 10 est remplacée par la séquence « VS » du combat
+	# (2026-11-02, dossier 05 §3).
+	assert_eq(steps[3].flags, [&"brock_met"] as Array[StringName])
+	assert_eq([steps[4].trainer_id, steps[4].win_flags],
 		[&"pewter_gym_brock", [&"badge_boulder"] as Array[StringName]])
-	assert_eq(steps[7].dialogue_id, &"pewter_gym_brock_won")
+	assert_eq(steps[6].dialogue_id, &"pewter_gym_brock_won")
 	# « BADGE ROCHE » entre la réplique de victoire et celle du badge (dossier 12 §13).
-	assert_eq([steps[8].badge_id, steps[8].if_flags],
+	assert_eq([steps[7].badge_id, steps[7].if_flags],
 		[&"boulder", [&"badge_boulder"] as Array[StringName]])
-	assert_eq(steps[9].dialogue_id, &"pewter_gym_brock_badge")
+	assert_eq(steps[8].dialogue_id, &"pewter_gym_brock_badge")
 	# Jalon 11 (dossier 14 §6.4, textes n° 45 à 47) : remise de la CT34, une seule fois.
-	for i: int in [10, 11, 12]:
+	for i: int in [9, 10, 11]:
 		assert_eq([steps[i].if_flags, steps[i].unless_flags], [[&"badge_boulder"] as Array[StringName],
 			[&"tm34_received"] as Array[StringName]], "étape %d" % i)
-	assert_eq([steps[10].dialogue_id, steps[11].item_id, steps[12].dialogue_id],
+	assert_eq([steps[9].dialogue_id, steps[10].item_id, steps[11].dialogue_id],
 		[&"pewter_gym_brock_tm", &"tm34", &"pewter_gym_brock_tm_use"])
-	assert_eq([steps[13].flags, steps[13].if_flags], [[&"tm34_received"] as Array[StringName],
+	assert_eq([steps[12].flags, steps[12].if_flags], [[&"tm34_received"] as Array[StringName],
 		[&"badge_boulder"] as Array[StringName]])
-	assert_eq(steps[14].dialogue_id, &"pewter_gym_brock_lost")
+	assert_eq(steps[13].dialogue_id, &"pewter_gym_brock_lost")
 	var late := _cutscenes.get_cutscene(&"pewter_gym_brock_tm_late")
 	var late_kinds: Array[StringName] = []
 	for step: CutsceneStep in late.variants[0].steps:

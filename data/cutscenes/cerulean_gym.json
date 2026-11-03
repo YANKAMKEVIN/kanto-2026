@@ -7,7 +7,6 @@
 					{ "face": "misty", "to": "player" },
 					{ "dialogue": "cerulean_gym_misty_intro", "unless": ["misty_met"] },
 					{ "dialogue": "cerulean_gym_misty_resume", "if": ["misty_met"] },
-					{ "champion_card": "cerulean_gym_misty", "unless": ["misty_met"] },
 					{ "set": ["misty_met"] },
 					{ "battle": "cerulean_gym_misty", "win": ["badge_cascade"] },
 					{ "wait": 0.6, "if": ["badge_cascade"] },

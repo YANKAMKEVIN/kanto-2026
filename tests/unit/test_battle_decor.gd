@@ -53,7 +53,7 @@ func test_route_1_decor_matches_its_zone() -> void:
 
 func test_places_without_decor_fall_back() -> void:
 	var catalog := _catalog()
-	for map_id: StringName in [&"oak_lab", &"player_house_2f", &"inconnue"]:
+	for map_id: StringName in [&"player_house_2f", &"inconnue"]:
 		assert_null(catalog.pick(map_id, Vector2i.ZERO), "%s : repli (pas de décor)" % map_id)
 
 
@@ -135,7 +135,9 @@ func test_real_player_feet_above_the_foreground_band() -> void:
 func test_default_decor_of_a_map() -> void:
 	var catalog := _catalog()
 	assert_eq(catalog.default_for(&"route_1").id, &"route_1_chemin")
-	assert_null(catalog.default_for(&"oak_lab"), "pas de décor : rien à précharger")
+	assert_null(catalog.default_for(&"player_house_2f"), "pas de décor : rien à précharger")
+	# Entrée des grands combats (2026-11-02) : le labo a son fond (premier combat du rival).
+	assert_eq(catalog.default_for(&"oak_lab").id, &"oak_lab_labo")
 
 
 func _mean_alpha(image: Image, x0: int, x1: int, y0: int, y1: int) -> float:

@@ -7,6 +7,8 @@ extends RefCounted
 ## Place dans l'équipe (0 = en tête) : celle qu'émet le panneau quand on l'envoie.
 var party_index: int = 0
 var species_id: StringName = &""
+## Numéro de Pokédex national (vignette artwork, [MenuArt]) ; 0 = pas de vignette.
+var dex_number: int = 0
 ## Surnom, sinon nom de l'espèce.
 var display_name: String = ""
 var level: int = 1

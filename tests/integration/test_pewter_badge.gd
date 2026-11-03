@@ -134,7 +134,6 @@ func _finish_scene() -> void:
 	var box := _boot.get_dialogue_box()
 	var battles := _boot.get_battle_director()
 	var hud := _boot.get_battle_hud()
-	var card := _boot.get_hud().get_champion_card()
 	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
 	while (director.is_running() or runner.is_running() or SceneRouter.is_transitioning()) \
 			and Time.get_ticks_msec() < deadline:
@@ -146,8 +145,6 @@ func _finish_scene() -> void:
 						hud.action_selected.emit(ActionGrid.ATTACK)
 					BattleHud.Zone.MOVES:
 						hud.move_selected.emit(0)
-		if card.is_showing():
-			card.skip_hold()
 		await wait_process_frames(1)
 		if box.is_open():
 			box.advance_requested.emit()

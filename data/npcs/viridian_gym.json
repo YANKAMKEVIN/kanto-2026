@@ -20,7 +20,7 @@
 			13
 		],
 		"facing": "up",
-		"sprite": "hiker",
+		"sprite": "blackbelt",
 		"dialogue": "viridian_gym_blackbelt_bertrand_after",
 		"trainer": {
 			"id": "viridian_gym_blackbelt_bertrand",
@@ -50,7 +50,7 @@
 			9
 		],
 		"facing": "left",
-		"sprite": "hiker",
+		"sprite": "blackbelt",
 		"dialogue": "viridian_gym_blackbelt_didier_after",
 		"trainer": {
 			"id": "viridian_gym_blackbelt_didier",
@@ -80,7 +80,7 @@
 			3
 		],
 		"facing": "down",
-		"sprite": "hiker",
+		"sprite": "blackbelt",
 		"dialogue": "viridian_gym_blackbelt_joel_after",
 		"trainer": {
 			"id": "viridian_gym_blackbelt_joel",

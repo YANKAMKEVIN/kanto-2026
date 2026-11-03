@@ -3,7 +3,7 @@ extends RefCounted
 ## sauvegarde en mémoire, départ de débogage (`tools/debug_start/`), vraies entrées (`move_*`,
 ## `interact`), combats pilotés (ATTAQUE, première capacité), pages, cartes de Champion, légendes
 ## et toasts relevés dans [member events] :
-## « page:<texte> », « card:<nom>/<titre> », « battle », « caption:<texte> »,
+## « page:<texte> », « vs:<nom>/<titre> », « battle », « caption:<texte> »,
 ## « toast:<titre> / <détail> ».
 ##
 ## Les attentes sont bornées par un délai de garde (temps réel) : aucune durée n'est mesurée.
@@ -202,7 +202,6 @@ func run_scene(answer: bool = true) -> bool:
 	var battles := boot.get_battle_director()
 	var battle_hud := boot.get_battle_hud()
 	var toast := hud.get_toast()
-	var card_seen := false
 	var caption_seen := false
 	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
 	await _test.wait_process_frames(1)
@@ -216,11 +215,6 @@ func run_scene(answer: bool = true) -> bool:
 						battle_hud.action_selected.emit(ActionGrid.ATTACK)
 					BattleHud.Zone.MOVES:
 						battle_hud.move_selected.emit(0)
-		var card := hud.get_champion_card()
-		if card.is_showing() and not card_seen:
-			events.append("card:%s/%s" % [card.get_name_text(), card.get_title_text()])
-			card.skip_hold()
-		card_seen = card.is_showing()
 		var caption := hud.get_caption()
 		if caption.is_showing() and not caption_seen:
 			events.append("caption:" + caption.text)
@@ -275,10 +269,17 @@ func _quiet_battles() -> void:
 	boot.get_battle_hud().haptics_enabled = false
 	if not battles.battle_started.is_connected(_on_battle_started):
 		battles.battle_started.connect(_on_battle_started)
+	if not battles.vs_started.is_connected(_on_vs_started):
+		battles.vs_started.connect(_on_vs_started)
 
 
 func _on_battle_started(_id: StringName) -> void:
 	events.append("battle")
+
+
+## Séquence « VS » d'un grand combat (2026-11-02, remplace la carte de Champion).
+func _on_vs_started(foe: String, title: String) -> void:
+	events.append("vs:%s/%s" % [foe, title])
 
 
 func _replace_party(pokemon: Pokemon) -> void:

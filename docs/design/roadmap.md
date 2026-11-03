@@ -105,28 +105,41 @@ Les systèmes principaux existent : on produit le contenu. Mont Sélénite, Azur
 (Major Bob), Océane, Lavanville, Céladopole (Erika), Team Rocket, Safrania (Morgane), Parmanie (Koga),
 Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
 
+### Nom du jeu (décision de Kevin, 2026-11-03)
+Avec le Chapitre Johto, le jeu s'appelle **Pokemake** (« Pokémon Kevin Remake ») ; « Kanto 2026 » reste le nom du dépôt
+et du package Android. Diffusion : Kevin et moins de dix proches de sa maison, APK installé par adb ou par fichier
+signé, jamais de store (J34 à J37).
+
 ### Phase 9 — Fin de jeu
 Conseil 4, Rival Maître, générique, retour à Bourg Palette, monde post-Ligue (Champions améliorés),
 Grotte Azurée / Mewtwo, puis le mystère Mew.
 
-### Phase 10 — Chapitre Johto (idée de Kevin, 2026-10-30, **à concevoir**, rien n'est verrouillé)
+### Phase 10 — Chapitre Johto (idée de Kevin, 2026-10-30 ; **dossiers JOH-00 à JOH-10 écrits et textes validés le 2026-11-02**, code après la fin de Kanto)
 Une suite après la Ligue, pour continuer l'histoire du joueur. Ce qui est décidé :
 - **Johto** comme destination (plutôt que Kalos ou une autre région).
 - **Même partie** : le joueur garde son équipe, ses Pokémon et sa sauvegarde.
 - **Nouvelles espèces** ajoutées selon les besoins de l'histoire, pas la liste complète d'Or/Argent.
 - **Histoire plus courte** que Kanto : **pas 8 badges**, un autre objectif à trouver.
+- **Trois actes** (Kevin, 2026-11-02) : une menace Rocket sur quelques villes, une quête de
+  légendaires, une épreuve finale au Mont Argenté.
+- **Départ de Bourg Palette** par un passage secret, par l'eau.
+- **Équipe perdue au début** (volée par la Team Rocket), nouveau départ avec de nouveaux Pokémon,
+  équipe retrouvée plus tard ; ensuite, adversaires au niveau du joueur.
 
-À concevoir avec Kevin (dossier dédié, après la fin de Kanto) :
-- le fil rouge et l'objectif final, et ce qui remplace les 8 badges ;
-- comment le joueur arrive à Johto, et ce qui change à Kanto ;
-- la liste des espèces ajoutées (art, Pokédex, dos de combat) ;
-- les types Ténèbres et Acier : ajoutés ou non, et leur effet sur l'équilibrage de Kanto ;
-- le niveau des adversaires face à une équipe de fin de Ligue ;
-- le rôle du jour et de la nuit.
-
-Pistes de structure proposées par Claude (non validées) : une menace unique (la Team Rocket
-reformée à Johto, comme dans Or/Argent) menée sur quelques villes et une tour ; une quête de
-légendaires (Tour Cendrée, Tour Carillon, Ho-Oh, Lugia) ; une épreuve finale au Mont Argenté.
+Esquisse, propositions et arbitrages JH-1 à JH-10 : [`johto-esquisse.md`](johto-esquisse.md).
+Cadre général (géographie, scénario, systèmes, jalons JOH0 à JOH9, arbitrages JH-11 à JH-20) :
+[`dossier-joh-00-cadre.md`](dossier-joh-00-cadre.md) (JH-11 à JH-20 tranchés). Systèmes du JOH0 :
+[`dossier-joh-01-systemes-joh0.md`](dossier-joh-01-systemes-joh0.md) (JH-21 à JH-24 tranchés). JOH1 :
+[`dossier-joh-02-oliville.md`](dossier-joh-02-oliville.md), textes O-1 à O-25 validés. JOH2 :
+[`dossier-joh-03-rosalia.md`](dossier-joh-03-rosalia.md), textes R-1 à R-25 validés ; Écrémeuh ajoutée (51 espèces). JOH3 :
+[`dossier-joh-04-doublonville.md`](dossier-joh-04-doublonville.md), textes D-1 à D-38 et JH-31 à JH-36 validés. JOH4 :
+[`dossier-joh-05-ecorcia.md`](dossier-joh-05-ecorcia.md), textes E-1 à E-36 et JH-37 à JH-39 validés. JOH5 :
+[`dossier-joh-06-tour-radio.md`](dossier-joh-06-tour-radio.md), textes T-1 à T-38 et JH-40 à JH-43 validés (fin de l'acte 1). JOH6 :
+[`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md), textes C-1 à C-46 et JH-44 à JH-47 validés (souvenir de Dante). JOH7 :
+[`dossier-joh-08-iles-tourbillon.md`](dossier-joh-08-iles-tourbillon.md), textes M-1 à M-34 et JH-48 à JH-51 validés (Suicune, Lugia). JOH8 :
+[`dossier-joh-09-tour-carillon.md`](dossier-joh-09-tour-carillon.md), textes H-1 à H-38 et JH-52 à JH-55 validés (Dante 1, Entei, Ho-Oh). JOH9 :
+[`dossier-joh-10-mont-argente.md`](dossier-joh-10-mont-argente.md), textes A-1 à A-54 et JH-56 à JH-60 validés (Dante 2, Giovanni, rival final, épilogue, Celebi) : **conception du chapitre complète** (JOH0 à JOH9).
+Pas de code avant la fin de Kanto et la validation d'un dossier. Jalons numérotés **JOH1, JOH2…**.
 
 ## Jalons narratifs à ne pas oublier
 

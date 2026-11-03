@@ -159,9 +159,6 @@ func test_08d_casino_et_repaire() -> void:
 	_play.expect(GameState.flags.has_flag(&"giovanni_hideout_won"), "Giovanni battu")
 	await _play.talk(Vector2i(25, 3), Vector2i.UP)
 	_play.expect(GameState.bag.has(&"silph_scope"), "Scope Sylphe")
-	# RP-284 (P3) : la case de Giovanni (25, 3) redevient occupée au rechargement ; la relance
-	# se fait à côté pour vérifier le reste de la partie.
-	await _play.walk_through(Vector2i(24, 3))
 	await _play.persist()
 	assert_true(_play.report())
 	assert_push_error_count(0)

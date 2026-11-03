@@ -26,13 +26,14 @@ extends CanvasLayer
 ## joueur touche à l'écran passe à [constant UiTokens.BUTTONS_UNDER_PLAYER_ALPHA] : le joueur
 ## se voit à travers, les boutons restent actifs. [D] : plutôt que décaler la caméra (qui
 ## montrerait le vide au-delà de la carte) ou rétrécir les boutons.
+## Portage iOS : le Control racine rentre dans la zone sûre ([SafeArea] : encoche, barre
+## d'accueil) à l'entrée et à chaque changement de taille de fenêtre ; l'éclair plein écran
+## continue de couvrir toute la fenêtre. Retraits nuls sur le S24.
 
 ## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
 signal title_hidden
 ## La légende vient de disparaître (fin de sa tenue ou hide_caption()).
 signal caption_hidden
-## La carte du Champion vient de disparaître (fin de sa tenue ou toucher).
-signal champion_card_hidden
 ## Le bouton Menu rond (coin haut-droit) est touché : on demande le Menu Dresseur.
 signal menu_requested
 ## Le bouton Vélo est touché (passe systèmes 2) : monter ou descendre, ou dire le refus.
@@ -43,7 +44,6 @@ signal interact_long_pressed
 @onready var _zone_title: ZoneTitle = %ZoneTitle
 @onready var _caption: WorldCaption = %WorldCaption
 @onready var _toast: Toast = %Toast
-@onready var _champion_card: ChampionCard = %ChampionCard
 @onready var _joystick: TouchJoystick = %VirtualJoystick
 @onready var _flash: ScreenFlash = %ScreenFlash
 const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left", &"move_right"]
@@ -66,11 +66,14 @@ var _safari_badge: SafariBadge
 @onready var _menu_button: TouchScreenButton = %MenuButton
 @onready var _bike_button: TouchScreenButton = %BikeButton
 @onready var _corner: Control = %CornerAnchor
+@onready var _root: Control = $Root
 
 
 func _ready() -> void:
 	layer = UiTokens.LAYER_HUD
 	set_process(false)
+	_apply_safe_area()
+	get_viewport().size_changed.connect(_apply_safe_area)
 	_place_corner_buttons()
 	_menu_button.position = Vector2(-UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.x,
 		UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.y)
@@ -81,7 +84,6 @@ func _ready() -> void:
 	_apply_bike_button()
 	_zone_title.title_hidden.connect(title_hidden.emit)
 	_caption.caption_hidden.connect(caption_hidden.emit)
-	_champion_card.card_finished.connect(champion_card_hidden.emit)
 
 
 ## Filet de sécurité : sans ce relâchement, l'action run resterait pressée si l'application
@@ -91,6 +93,16 @@ func _notification(what: int) -> void:
 		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_EXIT_TREE:
 			Input.action_release(&"run")
 			Input.action_release(&"interact")
+		NOTIFICATION_APPLICATION_FOCUS_IN:
+			# Retour au premier plan : l'appareil a pu tourner de 180° (encoche de l'autre côté)
+			# sans changer la taille de la fenêtre.
+			if is_node_ready():
+				_apply_safe_area()
+
+
+## Rentre le HUD dans la zone sûre de l'écran (iOS) ; l'éclair garde toute la fenêtre.
+func _apply_safe_area() -> void:
+	SafeArea.apply(_root, SafeArea.current(get_viewport()), [_flash] as Array[Control])
 
 
 ## Affiche « NOM / région » en haut à gauche (glissement, maintien, disparition).
@@ -131,17 +143,6 @@ func get_screen_flash() -> ScreenFlash:
 ## Efface la légende en ANIM_MICRO (changement de carte…) ; émet caption_hidden.
 func hide_caption() -> void:
 	_caption.hide_now()
-
-
-## Carte de présentation d'un Champion (« PIERRE » / « Champion d'Arène d'Argenta ») : glisse
-## depuis la gauche, reste CHAMPION_CARD_HOLD (un toucher l'abrège), ressort ; émet
-## champion_card_hidden. Indépendante des contrôles.
-func show_champion_card(champion_name: String, title: String) -> void:
-	_champion_card.show_card(champion_name, title)
-
-
-func get_champion_card() -> ChampionCard:
-	return _champion_card
 
 
 ## Toast « [param title] — [param detail] » (« Poké Balls ×5 » / « Ajoutées au Sac ») en haut

@@ -316,5 +316,194 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_3_roche_v2": {
+		"composition": "ED_DECOR_ROUTE3_r1c.png",
+		"tuiles": [
+			{ "image": "ED_DECOR_ROUTE3_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "ED_DECOR_ROUTE3_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"pewter_gym_roche_v2": {
+		"composition": "ED_DECOR_ARENE_r1.png",
+		"tuiles": [
+			{ "image": "ED_DECOR_ARENE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "ED_DECOR_ARENE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"pewter_gym_roche_v3": {
+		"composition": "ED_DECOR_ARENE_V3_r2c.png",
+		"tuiles": [
+			{ "image": "ED_DECOR_ARENE_V3_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "ED_DECOR_ARENE_V3_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"viridian_gym_sol_v2": {
+		"composition": "EC_DECOR_JADIELLE_r2.png",
+		"tuiles": [
+			{ "image": "EC_DECOR_JADIELLE_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EC_DECOR_JADIELLE_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"saffron_gym_psy_v2": {
+		"composition": "EC_DECOR_SAFRANIA_r1.png",
+		"tuiles": [
+			{ "image": "EC_DECOR_SAFRANIA_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EC_DECOR_SAFRANIA_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"vermilion_gym_salle_v2": {
+		"composition": "EC_DECOR_CARMIN_r1.png",
+		"tuiles": [
+			{ "image": "EC_DECOR_CARMIN_r1_TL.png", "portion": [0, 0, 1000, 850] },
+			{ "image": "EC_DECOR_CARMIN_r1_TR.png", "portion": [850, 0, 1850, 850] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_olga_glace": {
+		"composition": "EG_DECOR_LIGUE_OLGA_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_OLGA_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_OLGA_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_aldo_roche": {
+		"composition": "EG_DECOR_LIGUE_ALDO_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_ALDO_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_ALDO_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_agatha_spectre": {
+		"composition": "EG_DECOR_LIGUE_AGATHA_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_AGATHA_r1_TL.png", "portion": [0, 0, 1000, 851] },
+			{ "image": "EG_DECOR_LIGUE_AGATHA_r1_TR.png", "portion": [849, 0, 1849, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_peter_dragon": {
+		"composition": "EG_DECOR_LIGUE_PETER_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_PETER_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_PETER_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"league_champion_salle": {
+		"composition": "EG_DECOR_LIGUE_MAITRE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LIGUE_MAITRE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LIGUE_MAITRE_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"oak_lab_labo": {
+		"composition": "EG_DECOR_LABO_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_LABO_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_LABO_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"silph_co_bureaux_v2": {
+		"composition": "EG_DECOR_SYLPHE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_SYLPHE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_SYLPHE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"rocket_hideout_repaire_v2": {
+		"composition": "EG_DECOR_REPAIRE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_REPAIRE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_REPAIRE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"tour_pokemon_v2": {
+		"composition": "EG_DECOR_TOUR_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_TOUR_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_TOUR_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"ss_anne_couloir": {
+		"composition": "EG_DECOR_SS_ANNE_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_SS_ANNE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_SS_ANNE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_22_chemin": {
+		"composition": "EG_DECOR_ROUTE_22_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_ROUTE_22_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_ROUTE_22_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"sea_open_v2": {
+		"composition": "EG_DECOR_MER_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_MER_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_MER_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_cyclable_foret": {
+		"composition": "EG_DECOR_ROUTE_CYCLABLE_FORET_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_ROUTE_CYCLABLE_FORET_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_ROUTE_CYCLABLE_FORET_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_17_cyclable": {
+		"composition": "EG_DECOR_ROUTE_17_r1.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_ROUTE_17_r1_TL.png", "portion": [0, 0, 1000, 851] },
+			{ "image": "EG_DECOR_ROUTE_17_r1_TR.png", "portion": [847, 0, 1847, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"manoir_salle": {
+		"composition": "EG_DECOR_MANOIR_r2.png",
+		"tuiles": [
+			{ "image": "EG_DECOR_MANOIR_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "EG_DECOR_MANOIR_r2_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

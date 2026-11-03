@@ -1,0 +1,36 @@
+CONCEPT ART — INTÉRIEUR DU REPAIRE ROCKET D'ACAJOU, NIVEAU -3 : LE GÉNÉRATEUR D'ONDES (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : un niveau souterrain sur fond noir (hors de la carte). Format PAYSAGE. Le niveau le plus profond du repaire.
+Légende du plan :
+- gris-brun foncé = MURS de béton et hors-champ ; bandes brun clair = les MURS DU FOND vus de face ;
+- beige = SOL de béton ;
+- à gauche, un SAS D'ARRIVÉE : une salle étroite sur toute la hauteur, avec un ESCALIER qui MONTE dans le mur du fond (en haut à gauche), une paire de caisses et deux consoles (carrés bruns) ;
+- une CLOISON verticale (bande sombre) sépare le sas de la grande salle, avec UN SEUL PASSAGE de deux cases au milieu ;
+- à droite, la SALLE DU GÉNÉRATEUR : contre le mur du fond, une grande MACHINE (le bloc de carrés bruns, 6 cases sur 4) = le GÉNÉRATEUR D'ONDES, une machine massive de métal sombre, tuyaux, bobines, cadrans, un cœur qui luit en bleu-violet ; à sa gauche, un PUPITRE DE COMMANDE (le carré gris à voyant vert) ; devant la machine, un peu plus bas, la CAGE À ONDES (les barreaux clairs en fer à cheval ouvert vers le bas) : une cage d'énergie de 3 cases sur 3, ouverte au sud, faite de barreaux de métal clair et d'un champ d'énergie bleu-violet entre les barreaux, VIDE ; en haut à gauche de la salle et en bas à droite, des paires de caisses ou de consoles ;
+- le mur de droite est plein (un passage secret s'y cache à mi-hauteur : NE LE DESSINE PAS, un mur ordinaire).
+Respecte ce plan À LA LETTRE : le sas de gauche et son escalier, la cloison et son unique passage, la machine contre le mur du fond, le pupitre à sa gauche, la cage ouverte au sud devant elle, les caisses. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le niveau -2 du même repaire, déjà peint. Ce niveau est EN DESSOUS : respecte EXACTEMENT son rendu (même béton, mêmes murs, même escalier, mêmes caisses, même lumière froide). Ne reprends PAS sa composition (ni dalles, ni cellules).
+
+IMAGE 3 : la vue générale du Souterrain de Doublonville, déjà peint : même pinceau, même découpe sur fond sombre.
+
+Format : PAYSAGE 1536 × 1024, le niveau au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « le cœur de la machine » : le fond du repaire, une salle de béton dominée par une machine énorme qui émet des ondes, câbles épais au sol vers le pupitre et vers la cage, lueur bleu-violet qui pulse ; la cage d'énergie vide attend quelque chose de grand. Technique, tendu, lisible. Palette : BÉTON gris-beige, MÉTAL sombre de la machine, cuivre des bobines, lueur bleu-violet, acier clair de la cage, bois des caisses.
+LUMIÈRE : éclairage électrique blanc et froid, plus la lueur bleu-violet de la machine et de la cage ; aucune teinte dorée.
+
+RÈGLE DE LA GRILLE : murs, cloison, machine, cage et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS.
+OBJETS RARES : seulement les éléments du plan ; quelques câbles au sol sont permis.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; la machine montre son dessus et sa face sud ; la cage montre ses barreaux.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, bleu-gris froid, jamais pures noires.
+
+PERSONNE : aucun personnage, aucun Pokémon (la cage est VIDE), aucun animal.
+
+INTERDITS : texte, lettres, chiffres (seul un R rouge simple sur les caisses est permis), écrans lisibles, signature, filigrane, cadre, interface, Poké Ball ; créature dans la cage ; statue ; dalles fléchées, cellules ; fenêtre ; explosion, flammes ; pixel art, 3D.
+
+L'image doit raconter, sans texte : le fond d'un repaire, une machine énorme qui pulse en bleu-violet contre le mur, son pupitre, et devant elle une cage d'énergie vide.

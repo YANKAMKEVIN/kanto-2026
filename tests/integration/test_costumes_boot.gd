@@ -92,5 +92,6 @@ func test_the_costume_waits_for_the_tm_toast() -> void:
 	_boot._announce_costume()
 	assert_eq(toast.get_title_text(), "CT11", "le toast de la CT reste")
 	toast.hide_now()
-	await wait_process_frames(2)
+	# La disparition dure ANIM_MICRO : attendre l'état, pas un nombre d'images (CI chargée).
+	await wait_until(func() -> bool: return toast.get_title_text() != "CT11", 2.0)
 	assert_eq(toast.get_title_text(), "Nouveau costume : Luffy", "puis le costume")

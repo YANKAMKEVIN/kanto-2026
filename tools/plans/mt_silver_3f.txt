@@ -1,0 +1,66 @@
+# Mont Argenté, grotte 3F (mt_silver_3f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ;
+# dossier docs/design/dossier-joh-10-mont-argente.md §3, §4 (étape 6), §5, §7, textes A-18, A-22). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# 28 × 24 cases (dossier : ≈ 28 × 24) ; nord en haut ; x = colonne 0..27, y = rangée 0..23.
+#
+# Composition (corniches et vent, la lumière vient d'en haut) :
+#   - ÉCHELLE qui descend (D, (2, 21)) au sud-ouest ; CORNICHE BASSE (y 19..22) vers l'est ; MONTÉE
+#     EST (x 22..24, y 6..22) ; CORNICHE HAUTE (y 6..8, x 14..24) où le MONTAGNARD LUCAS (20, 7),
+#     évitable par y 6 ou y 8 (A-18) ; DERNIER RAIDILLON (x 14..16, y 2..8) vers l'ÉCHELLE DU SOMMET
+#     (U, (16, 2)).
+#   - SALLE DU VENT (x 4..12, y 10..16, gravats : Ymphect), cul-de-sac par le passage (12..21, 12..13),
+#     zone « vent » (A-22).
+#
+# Raccords :
+#   D (2, 21) ↔ 2F, échelle U (2, 21), arrivée (3, 21) de chaque côté (paire ms_2).
+#   U (16, 2) ↔ Sommet, trappe D (16, 2), arrivée (16, 3) de chaque côté (paire ms_3).
+#
+# Légende :
+#   # paroi rocheuse (bloquée)   . corniche (praticable, aucune rencontre)   g gravats (praticables,
+#   rencontres du 3F)   o rocher (bloqué)   U échelle qui monte   D échelle qui descend (praticables, warps)
+# Défauts [D] : Montagnard placé par Claude ; vent en zone de décor.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 28 caractères), puis POSITIONS.
+
+PRATICABLES .gUD
+
+GRILLE 28 24
+00 ############################
+01 ############################
+02 ##############..U###########
+03 ##############...###########
+04 ##############...###########
+05 ##############...###########
+06 ##############...........###
+07 ##############....o......###
+08 ##############...........###
+09 ######################...###
+10 ####.........#########...###
+11 ####.ggggggg.#########...###
+12 ####.ggggggg.............###
+13 ####.ggggggg.............###
+14 ####.ggggggg.#########.o.###
+15 ####.ggggggg.#########...###
+16 ####.........#########...###
+17 ######################...###
+18 ######################...###
+19 ###..............gggg....###
+20 ###.......o......gggg....###
+21 ##D......................###
+22 ###......................###
+23 ############################
+FIN
+
+POSITIONS
+vers_2f              escalier       2,21         libre   paire=ms_2 sens=descend vers=mt_silver_2f:from_3f  # échelle vers le 2F
+from_2f              spawn          3,21         libre   paire=ms_2 facing=right  # arrivée depuis le 2F
+vers_sommet          escalier       16,2         libre   paire=ms_3 sens=monte vers=mt_silver_summit:from_3f  # échelle vers le sommet (A-23)
+from_sommet          spawn          16,3         libre   paire=ms_3 facing=down  # arrivée depuis le sommet
+vent                 zone           4..12,10..16 libre   role=vent  # A-22 : vent glacé, lumière d'en haut (décor, son)
+lucas                dresseur       20,7         bloque  role=montagnard facing=left sight=2  # A-18 : Steelix 67, Ursaring 67 ; évitable
+gravats_vent         gravats        8,13         libre   role=G1  # salle du vent (Ymphect)
+gravats_bas          gravats        18,19        libre   role=G2  # corniche basse
+FIN

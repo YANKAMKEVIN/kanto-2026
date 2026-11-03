@@ -1,0 +1,37 @@
+CONCEPT ART — INTÉRIEUR DU REPAIRE ROCKET D'ACAJOU, NIVEAU -2 : LES DALLES TOURNANTES ET LES CELLULES (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : un niveau souterrain sur fond noir (hors de la carte). Format PAYSAGE.
+Légende du plan :
+- gris-brun foncé = MURS de béton et hors-champ ; bandes brun clair = les MURS DU FOND vus de face ;
+- beige = SOL de béton ;
+- à droite, une SALLE D'ARRIVÉE avec, dans son mur de droite, un ESCALIER qui MONTE (marches claires) et deux paires de caisses ; un couloir en part vers la gauche ;
+- au centre, la SALLE DES DALLES : des couloirs étroits pavés de DALLES BLEUES FLÉCHÉES (des dalles de métal gravées d'une flèche blanche : posé dessus, on glisse dans le sens de la flèche) et de CASES D'ARRÊT grises (dalles de pierre unie) ; les couloirs forment des boucles autour de deux blocs de mur ; respecte le sens de chaque flèche ;
+- en haut à gauche, un petit couloir vertical avec une PORTE métallique à mot de passe (la case sombre barrée de clair) et, derrière, un ESCALIER qui DESCEND dans le mur du fond ;
+- en bas à gauche, le COULOIR DES CELLULES : un couloir horizontal, une paire de caisses, et sous lui trois CELLULES fermées par des GRILLES de barreaux (les bandes rayées) ; la cellule du milieu a sa grille au centre et un petit sol visible derrière ; à droite des cellules, un LEVIER mural (petit carré sombre) ;
+- paires de carrés bruns = CAISSES de bois.
+Respecte ce plan À LA LETTRE : la salle d'arrivée et son escalier à droite, la salle des dalles et le sens de chaque flèche, la porte et l'escalier en haut à gauche, le couloir des cellules et les trois cellules grillagées en bas à gauche. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le niveau -1 du même repaire, déjà peint. Ce niveau est EN DESSOUS : respecte EXACTEMENT son rendu (même béton, mêmes murs, mêmes escaliers, mêmes caisses, même lumière froide). Ne reprends PAS sa composition (ni statues).
+
+IMAGE 3 : la vue générale du Souterrain de Doublonville, déjà peint : même pinceau, même découpe sur fond sombre.
+
+Format : PAYSAGE 1536 × 1024, le niveau au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « le piège et la prison » : un sous-sol de béton froid, des couloirs étroits pavés de dalles fléchées qui luisent faiblement en bleu, des cellules aux barreaux d'acier, une porte blindée à code. Technique, oppressant mais lisible. Palette : BÉTON gris-beige, dalles bleu acier à flèche blanche, pierre grise des cases d'arrêt, acier des barreaux, bois des caisses, un voyant rouge sur la porte à code.
+LIGHT : éclairage électrique blanc et froid ; les dalles fléchées ont une légère lueur bleue ; aucune teinte dorée.
+
+RÈGLE DE LA GRILLE : murs, couloirs, dalles, grilles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; chaque dalle fléchée est un carré, sa flèche est horizontale ou verticale.
+OBJETS RARES : seulement les éléments du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les grilles des cellules montrent leurs barreaux de face.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, bleu-gris froid, jamais pures noires.
+
+PERSONNE : aucun personnage, aucun prisonnier, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres (seul un R rouge simple sur les caisses est permis), écrans lisibles, signature, filigrane, cadre, interface, Poké Ball ; statue ; machine, cage ronde ; fenêtre ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un sous-sol de béton où des couloirs de dalles fléchées font glisser l'intrus en boucles, une porte blindée à code, et trois cellules aux barreaux d'acier.

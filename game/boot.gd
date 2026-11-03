@@ -326,9 +326,9 @@ func _ready() -> void:
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
 	_battle_stage.set_species_source(_pokemon, _dex)
 	_cutscenes_node.set_battle_runner(_battle_director)
-	# Jalon 10 (jalon-10.md §2.7, §2.8) : carte de présentation d'un Champion (bloc « card » de son
-	# Dresseur) et remise d'un badge (légende, vibration, Grand moment « badge »).
-	_cutscenes_node.set_trainers(_trainers)
+	# Jalon 10 (jalon-10.md §2.8) : remise d'un badge (légende, vibration, Grand moment « badge »).
+	# La carte de présentation du Champion est remplacée par la séquence « VS » du combat
+	# (2026-11-02, [TrainerIntro]).
 	_badges.load_file()
 	_cutscenes_node.set_badges(_badges, GameState)
 	# J20 (§2.5.2, T12) : don de Pokémon (étape « gift_pokemon », Évoli) ; le Pokédex suit par

@@ -1,0 +1,83 @@
+# Mont Argenté, grotte 1F (mt_silver_1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ;
+# dossier docs/design/dossier-joh-10-mont-argente.md §3, §4 (étape 4), §5 à §7, textes A-14, A-15). Carte intérieure ; légende des
+# grottes de Kanto et des Îles Tourbillon.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# 32 × 28 cases (dossier : ≈ 32 × 28) ; nord en haut ; x = colonne 0..31, y = rangée 0..27.
+#
+# Composition (trois bandes : sud, lac, nord) :
+#   - ENTRÉE au sud (E, (15..16, 27)) depuis l'extérieur ; PARTIE SUD (y 18..26, gravats) avec le
+#     SBIRE X (6, 20), évitable ; COULOIR DE LA ROUTE 28 (y 22..24, x 1..9) vers la SORTIE OUEST
+#     (e, (0, 23)) : la descente libre de l'épilogue (A-46).
+#   - LAC INTÉRIEUR (w, y 11..17, d'une paroi à l'autre) : SURF obligatoire vers le nord.
+#   - PARTIE NORD (y 2..10) : deux BARRIÈRES DE ROCHERS (o, y 8 et y 4) percées chacune d'un ROCHER
+#     DE FORCE : n° 1 (12, 8), poussé vers le nord sur (12, 7..5) ; n° 2 (22, 4), poussé vers le nord
+#     sur (22, 3..2), puis contourné par la bande y 2..3 (A-15).
+#   - Bande y 2..3 : le SBIRE Y (25, 2) regarde (25, 3) : avec sa propre case, il ferme la bande :
+#     INÉVITABLE (A-14) ; ÉCHELLE qui monte (U, (28, 2)) vers le 2F.
+#
+# Raccords :
+#   E (15..16, 27) ↔ extérieur, entrée de la grotte (19, 6), retour (19, 7).
+#   e (0, 23) ↔ Route 28, bord est (43, 10) (1 case, warps case à case).
+#   U (28, 2) ↔ 2F, échelle D (28, 2), arrivée (28, 3) de chaque côté (paire ms_1).
+#
+# Légende :
+#   # paroi rocheuse (bloquée)   . sol de grotte calme (aucune rencontre)   g gravats (praticables,
+#   rencontres du 1F)   w lac intérieur (SURFABLE ; rencontres de l'eau)   o rocher (bloqué)
+#   U échelle qui monte   E entrée sud   e sortie ouest (praticables, warps)
+# Rochers de Force : positions « rocher » (bloquées tant qu'on ne les pousse pas ; pousse= direction,
+# lane= cases libres devant). Défauts [D] : rencontres sur les gravats et l'eau ; Sbires placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 32 caractères), puis POSITIONS.
+
+PRATICABLES .gwUEe
+
+GRILLE 32 28
+00 ################################
+01 ################################
+02 ##..........................U.##
+03 ##............................##
+04 ##oooooooooooooooooooo.ooooooo##
+05 ##.ggggggg....................##
+06 ##.ggggggg....................##
+07 ##.ggggggg....................##
+08 ##oooooooooo.ooooooooooooooooo##
+09 ##............................##
+10 ##............................##
+11 ##wwwwwwwwwwwwwwwwwwwwwwwwwwww##
+12 ##wwwwwwwwwwwwwwwwwwwwwwowwwww##
+13 ##wwwwwwwwwwwwwwwwwwwwwwwwwwww##
+14 ##wwwwwwwwwwwwowwwwwwwwwwwwwww##
+15 ##wwwwwwwwwwwwwwwwwwwwwwwwwwww##
+16 ##wwwwwowwwwwwwwwwwwwwwwwwwwww##
+17 ##wwwwwwwwwwwwwwwwwwwwwwwwwwww##
+18 ##............................##
+19 ##.gggggg.............ggggggg.##
+20 ##.gggggg.............ggggggg.##
+21 ##.gggggg.............ggggggg.##
+22 #.....................ggggggg.##
+23 e.................o...ggggggg.##
+24 #.....................ggggggg.##
+25 ##....................ggggggg.##
+26 ##............................##
+27 ###############EE###############
+FIN
+
+POSITIONS
+entree               warp           15..16,27    libre    # PUSH ↓ → mt_silver_outside, retour_grotte (19, 7)
+from_outside         spawn          15..16,26    libre   facing=up  # arrivée depuis l'extérieur (A-13)
+sortie_ouest         warp           0,23         libre    # PUSH ← → route_28, from_mt_silver (43, 10)
+from_route_28        spawn          1,23         libre   facing=right  # arrivée de la Route 28
+vers_2f              escalier       28,2         libre   paire=ms_1 sens=monte vers=mt_silver_2f:from_1f  # échelle vers le 2F
+from_2f              spawn          28,3         libre   paire=ms_1 facing=down  # arrivée depuis le 2F
+rocher_1             rocher         12,8         bloque  force=1 pousse=N lane=12,7;12,6;12,5  # A-15 ; rocher de Force n° 1 (barrière y 8)
+rocher_2             rocher         22,4         bloque  force=1 pousse=N lane=22,3;22,2  # A-15 ; rocher de Force n° 2 (barrière y 4), contourné ensuite par la bande y 2..3
+sbire_x              dresseur       6,20         bloque  role=sbire facing=right sight=2 actif_sans=johto_chapter_done  # A-14 X : Démolosse 66, Grotadmorv 66 ; évitable
+sbire_y              dresseur       25,2         bloque  role=sbire facing=down sight=1 actif_sans=johto_chapter_done  # A-14 Y : Farfuret 66, Smogogo 66, Arbok 66 ; ferme la bande y 2..3 : INÉVITABLE
+lac                  repere         2..29,11..17 libre   role=surf  # Surf obligatoire ; rencontres de l'eau
+gravats_sud          gravats        5,20         libre   role=G1
+gravats_est          gravats        25,22        libre   role=G2
+gravats_nord         gravats        6,6          libre   role=G3
+FIN

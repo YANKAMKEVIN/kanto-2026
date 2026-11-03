@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — MANOIR POKÉMON DE CRAMOIS'ÎLE (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte un Pillard ou un Scientifique dans le Manoir Pokémon abandonné de Cramois'Île. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : CIBLE du niveau de rendu, de la richesse, de la profondeur et du cadrage (sol vaste dans la moitié basse) ; ce n'est PAS le lieu à peindre. IMAGE 2 = la vue générale VALIDÉE du lieu, vue de dessus : le LIEU, les matériaux, les couleurs et la lumière à GARDER ; à repeindre comme si l'on s'y tenait, à hauteur d'homme, en vue de trois-quarts (et PAS en pixel art).
+
+LIEU : une grande salle du MANOIR POKÉMON, vieux manoir abandonné et à moitié brûlé où l'on étudiait Mew : PARQUET de bois chaud usé, lames disjointes, brûlées par endroits, quelques trous ; un long TAPIS rouge sombre élimé et déchiré ; murs de lambris et papier peint décollé, fissurés, plâtre tombé laissant voir des briques et des poutres calcinées ; deux STATUES blanches de MEW (petit félin assis sur un socle), de taille MOYENNE, contre le mur du FOND (vers x 45 % et x 80 %), aucune au premier plan ; tonneaux, caisses, une étagère de livres renversée, journaux et papiers épars au sol, un bureau avec une lampe ; une grille de fer entrouverte au fond ; poussière et toiles d'araignée. Lumière dorée chaude de lampes à huile et de rayons qui tombent de hautes fenêtres aux vitres cassées en haut à gauche, coins sombres ; ambiance de lieu interdit, mystérieux mais pas funèbre (PAS de tombes, PAS de bougies funéraires).
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra à hauteur d'homme sur la GAUCHE, regard légèrement vers la DROITE, en trois-quarts : point de fuite vers x 62 %. étagère renversée, poutres et lambris de GAUCHE proches, grandes, coupées par le bord gauche et par le haut ; la grille et le fond plus petits et lointains à droite.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (le parquet, vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : parquet plat et nu (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : parquet plat et nu au premier plan (le joueur s'y tient).
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage), PAS de pixel art (la planche IMAGE 2 est un aperçu : on veut le rendu peint de l'IMAGE 1).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, panneau avec numéro, texte, lettres, chiffres, logo, signature, cadre, interface, pixel art.

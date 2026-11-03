@@ -146,7 +146,7 @@ func test_the_door_closes_behind_and_opens_after_lorelei() -> void:
 	assert_true(await _play.run_scene(), "combat contre Olga")
 	assert_true(GameState.flags.has_flag(&"league_stage_0_cleared"))
 	assert_true(GameState.flags.has_flag(&"beaten_league_lorelei"))
-	assert_true(_play.events.has("card:OLGA/Conseil des Quatre"), "carte de présentation")
+	assert_true(_play.events.has("vs:OLGA/Conseil des Quatre"), "séquence « VS »")
 	assert_true(_play.pages().has("Tu as du talent… Va. Les autres t'attendent."))
 	var map := _play.boot.get_map()
 	assert_false(map.get_grid().is_occupied(Vector2i(4, 0)), "porte nord ouverte")

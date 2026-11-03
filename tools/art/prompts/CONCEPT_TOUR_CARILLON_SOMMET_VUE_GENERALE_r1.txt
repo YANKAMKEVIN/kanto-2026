@@ -1,0 +1,36 @@
+CONCEPT ART — LE SOMMET DE LA TOUR CARILLON : LE TOIT-TERRASSE SOUS LA GRANDE CLOCHE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE TERRASSE carrée de 18 cases sur 18, entourée d'une rambarde, sur fond sombre. Format PAYSAGE. C'est le toit de la plus haute pagode de la région, à ciel ouvert.
+Légende du plan :
+- gris foncé à carrés rouges, tout le pourtour = la RAMBARDE de bois rouge laqué (balustres et main courante) qui ceint la terrasse ; au-delà, le VIDE : tout autour de la terrasse, l'image montre le ciel pâle et, très loin en bas, estompés, les toits d'une ville ancienne et une forêt (très discrets, flous, pour donner la hauteur) ;
+- beige = les DALLES de pierre du toit-terrasse ;
+- en haut à gauche, un petit PALIER fermé par des cloisons (bandes sombres) avec, dans la rambarde, la TRAPPE de l'escalier (les marches grises) ; le palier ne s'ouvre que par une case vers le bas ;
+- en haut au centre, le grand disque doré = LA GRANDE CLOCHE DE BRONZE, énorme, suspendue à un portique de bois rouge au-dessus de la terrasse (on voit son dessus et son flanc, le portique autour) ;
+- barreaux orange au centre, en fer à cheval ouvert vers le bas = une CAGE DE FEU : une cage de 3 cases sur 3 faite de barreaux de flammes orange et de métal noir, ouverte au sud, VIDE ;
+- disques bronze dans trois angles = des BRÛLE-PARFUMS de bronze sur pied.
+Respecte ce plan À LA LETTRE : la rambarde tout autour, le palier et sa trappe en haut à gauche, la cloche en haut au centre, la cage de feu au centre, les brûle-parfums. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le 2e niveau de la même tour, déjà peint : même bois, même rouge laqué, même facture. Ne reprends PAS sa composition (ici tout est à ciel ouvert).
+
+IMAGE 3 : la vue générale de Rosalia, la ville au pied de la tour, déjà peinte : c'est elle que l'on devine très loin en bas autour de la terrasse (toits, érables, pagode vue d'en haut), estompée ; même pinceau.
+
+Format : PAYSAGE 1536 × 1024, la terrasse au centre, le vide et la ville lointaine autour, comme le plan.
+
+AMBIANCE — « le sommet » : le toit de la pagode sous une cloche de bronze immense, le ciel de l'AUBE tout autour (ciel pâle, rose et bleu très doux, pas de soleil visible), la ville minuscule en bas ; au centre, une cage de flammes vide qui brûle encore : la scène d'un affrontement. Grandiose, suspendu, grave. Palette : DALLES gris-beige, ROUGE laqué de la rambarde et du portique, BRONZE de la cloche, ORANGE des flammes de la cage, ciel pâle rose-bleu, ville lointaine bleutée.
+LUMIÈRE : lumière d'aube douce et froide (bleu pâle et rose), diffuse ; les flammes de la cage sont la seule source chaude ; aucune teinte dorée forte, aucun soleil.
+
+RÈGLE DE LA GRILLE : rambarde, palier, cloche, cage et dalles suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; la terrasse est un carré.
+OBJETS RARES : seulement la cloche, la cage, les brûle-parfums, la trappe.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus de la cloche et son flanc sud ; la rambarde montre sa face intérieure au nord et son dessus ailleurs.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon (la cage est VIDE, rien dans le ciel), aucun oiseau. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; créature, oiseau, arc-en-ciel ; soleil visible ; nuages épais qui cacheraient la ville ; escalier à ciel ouvert (seulement la trappe) ; pixel art, 3D.
+
+L'image doit raconter, sans texte : le toit-terrasse d'une pagode sous une cloche de bronze immense, à l'aube, une cage de flammes vide au centre, et la ville très loin en bas.

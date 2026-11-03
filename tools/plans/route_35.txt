@@ -1,0 +1,91 @@
+# Route 35 (route_35) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH3 ; dossier
+# docs/design/dossier-joh-04-doublonville.md §3.1, §4 à §6, §11, textes D-8, D-9, D-38).
+# Préparée le 2026-11-02 pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un
+# changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh3.py.
+#
+# 24 × 44 cases (dossier : ≈ 24 × 44) ; nord en haut ; x = colonne 0..23, y = rangée 0..43.
+#
+# Composition (tout à angles droits) :
+#   - CHEMIN (=) du bord NORD (10..12, 0) au bord SUD (10..12, 43).
+#   - ÉTANG (w, x 2..8, y 14..24) à l'ouest : pêche et SURF autorisés (JH-36) ; rocher (r) au bord
+#     sud, Super Ball ×2 cachée.
+#   - 3 poches d'herbes hautes : H1 nord-est (x 14..21, y 4..10), H2 est (x 14..21, y 16..23),
+#     H3 sud-ouest (x 2..8, y 28..34), toutes évitables.
+#   - Sud : le POSTE DE GARDE en façade (P, 6 × 5, x 13..18, y 35..39) et sa CLÔTURE (x, y 38) ;
+#     le chemin la franchit par un passage d'une case (11, 38), sous le regard de la Campeuse Anna
+#     (inévitable, dossier §6).
+#
+# Raccords :
+#   NORD (10..12, 0) ↔ Route 36, bord sud (26..28, 19) (colonnes différentes, warps case à case).
+#   SUD (10..12, 43) ↔ Doublonville, bord nord (34..36, 0) (idem).
+#
+# Légende :
+#   T forêt et bordure (bloquée)   . pré (praticable)   = chemin (praticable)   h herbes hautes
+#   w eau de l'étang (SURFABLE)   r rocher (bloqué)   x clôture (bloquée)
+#   P poste de garde (façade, bloqué)   G arbre repère (bloqué)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .=hw
+
+GRILLE 24 44
+00 TTTTTTTTTT===TTTTTTTTTTT
+01 TTTT......===......TTTTT
+02 TTTT......===......TTTTT
+03 TTTT......===..........T
+04 T.........===.hhhhhhhh.T
+05 T.........===.hhhhhhhh.T
+06 T...G.....===.hhhhhhhh.T
+07 T.........===.hhhhhhhh.T
+08 T.........===.hhhhhhhh.T
+09 T.........===.hhhhhhhh.T
+10 T.........===.hhhhhhhh.T
+11 T..G......===..........T
+12 T.........===..........T
+13 T.........===......G...T
+14 T.wwwwwww.===..........T
+15 T.wwwwwww.===..........T
+16 T.wwwwwww.===.hhhhhhhh.T
+17 T.wwwwwww.===.hhhhhhhh.T
+18 T.wwwwwww.===.hhhhhhhh.T
+19 T.wwwwwww.===.hhhhhhhh.T
+20 T.wwwwwww.===.hhhhhhhh.T
+21 T.wwwwwww.===.hhhhhhhh.T
+22 T.wwwwwww.===.hhhhhhhh.T
+23 T.wwwwwww.===.hhhhhhhh.T
+24 T.wwwwwww.===..........T
+25 T....r....===..........T
+26 T.........===..........T
+27 T.........===..........T
+28 T.hhhhhhh.===.......G..T
+29 T.hhhhhhh.===..........T
+30 T.hhhhhhh.===..........T
+31 T.hhhhhhh.===..........T
+32 T.hhhhhhh.===..........T
+33 T.hhhhhhh.===..........T
+34 T.hhhhhhh.===..........T
+35 T.........===PPPPPPTTTTT
+36 T.........===PPPPPPTTTTT
+37 T.........===PPPPPPTTTTT
+38 Txxxxxxxxxx=.PPPPPPTTTTT
+39 TTTTTTTTTT===PPPPPPTTTTT
+40 TTTTTTTTTT===TTTTTTTTTTT
+41 TTTTTTTTTT===TTTTTTTTTTT
+42 TTTTTTTTTT===TTTTTTTTTTT
+43 TTTTTTTTTT===TTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           10..12,0     libre   # PUSH ↑ → route_36, from_route_35 (26..28, 19)
+from_route_36        spawn          10..12,0     libre   # arrivée de la Route 36, tournée ↓
+warp_sud             warp           10..12,43    libre   # PUSH ↓ → goldenrod_city, from_route_35 (34..36, 0)
+from_goldenrod       spawn          10..12,43    libre   # arrivée de Doublonville, tournée ↑
+gaston               dresseur       9,18         bloque  facing=left sight=2 trainer=route_35_fisher_gaston  # Pêcheur Gaston (D-9), Magicarpe 13 ×2 + Ptitard 15 ; regarde l'étang, évitable
+armand               dresseur       15,27        bloque  facing=down sight=3 trainer=route_35_gentleman_armand  # Gentleman Armand (D-9), Caninos 17 ; voit (15, 28..30), évitable
+anna                 dresseur       12,38        bloque  facing=left sight=1 trainer=route_35_camper_anna  # Campeuse Anna (D-9), Nidoran♀ 15 + Ponyta 16 ; voit (11, 38), le passage du poste : INÉVITABLE
+route_35_hidden_1    cache          5,25         bloque  item=great_ball count=2 indice=rocher  # rocher au bord de l'étang, examiné depuis (5, 26) ↑
+panneau_route        panneau        9,2          bloque  # D-8, lu depuis (9, 3) ↑
+herbes_h1            herbes         17,7         libre   role=H1  # poche nord-est (évitable)
+herbes_h2            herbes         17,20        libre   role=H2  # poche est (évitable)
+herbes_h3            herbes         5,31         libre   role=H3  # poche sud-ouest (évitable)
+FIN

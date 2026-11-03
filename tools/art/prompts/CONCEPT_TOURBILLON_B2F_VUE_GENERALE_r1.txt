@@ -1,0 +1,38 @@
+CONCEPT ART — VUE GÉNÉRALE DES ÎLES TOURBILLON, NIVEAU -2 : LA SALLE DE LA CASCADE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE (la salle est carrée, centrée). Le niveau le plus profond de l'île : une grande salle autour d'un BASSIN.
+Légende du plan :
+- gris ardoise foncé = ROCHE PLEINE et parois (marges, et deux parois verticales de part et d'autre du bassin, qui montent jusqu'à la cascade) ; le liseré plus clair = l'ARÊTE de la paroi ;
+- gris clair = une CORNICHE de roche praticable tout autour : une large bande à gauche (avec une ÉCHELLE qui MONTE en haut à gauche), une bande étroite à droite, une large bande en bas ;
+- bleu FONCÉ = le BASSIN PROFOND au centre, un grand rectangle d'eau bleu nuit, très profond, clos par les parois sauf au SUD ;
+- bleu moyen, la rangée au sud du bassin = la seule rangée d'EAU peu profonde par où l'on entre dans le bassin, depuis la corniche du bas ;
+- bleu clair à traits blancs, en haut = une grande CASCADE qui tombe du plafond dans le bassin, sur presque toute la largeur, coupée en son milieu par une ouverture d'une case (un passage sous le rideau d'eau) ; derrière, une petite niche de roche ;
+- disques gris = deux ROCHERS isolés sur la corniche (à gauche et à droite) et deux en bas ;
+- au centre du bassin, un peu vers le haut, une tache de lumière bleue : un HALO de lumière qui tombe d'une ouverture du plafond sur l'eau (décor ; rien n'émerge : le bassin est VIDE).
+Respecte ce plan À LA LETTRE : la corniche sur trois côtés et l'échelle en haut à gauche, les deux parois latérales, le bassin profond fermé sauf au sud, la rangée d'entrée au sud, la cascade en haut et son ouverture centrale, les rochers. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le niveau -1 de la même île, déjà peint. Ce niveau est EN DESSOUS : respecte EXACTEMENT son rendu (même roche, même eau, mêmes rais de lumière froide), seulement plus sombre, avec le bassin bleu nuit au centre. Ne reprends PAS sa composition.
+
+IMAGE 3 : la vue générale de la salle 2 de la grotte marine de Johto, déjà peinte : même pinceau pour la roche sombre, l'eau profonde et la pénombre bleue.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la salle, comme le plan.
+
+AMBIANCE — « la salle de la cascade » : le cœur sacré de l'île, une cathédrale de roche sombre ; une cascade tombe du plafond dans un bassin d'eau noire et calme ; un halo de lumière bleue, venu d'en haut, éclaire le centre du bassin ; brume fine au pied de la cascade. Solennelle, immense, silencieuse malgré l'eau, JAMAIS effrayante ni illisible. Palette : ROCHE gris-bleu sombre, BASSIN bleu nuit, eau d'entrée bleu moyen, cascade blanche et bleu pâle, halo bleu clair, corniche gris clair.
+LUMIÈRE : la seule lumière vient du halo au-dessus du bassin (lumière bleue froide, verticale) et de la cascade qui luit faiblement ; la corniche reste lisible dans une pénombre bleue ; aucune lampe, aucune teinte dorée.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; corniche, bassin, cascade ont des bords qui suivent une grille : segments horizontaux et verticaux à angles droits ; le bassin est un rectangle.
+RELIEF : la corniche est au niveau de l'eau ; aucune marche, aucun escalier (seulement l'échelle).
+OBJETS RARES : rien d'autre que les rochers et l'échelle.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des rochers et leur face avant (côté sud) ; la cascade tombe du mur du fond, vue de face.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon (rien n'émerge du bassin, aucune silhouette sous l'eau), aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; créature, ombre dans l'eau ; glace, cristaux, lampe, caisse ; escalier, pont ; ciel visible, arbres ; brouillard épais, vignettage noir ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une salle de roche immense au fond d'une île, une cascade qui tombe dans un bassin d'eau noire, et un halo de lumière bleue qui attend au-dessus de l'eau.

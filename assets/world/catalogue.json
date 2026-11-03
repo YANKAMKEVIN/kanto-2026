@@ -13834,6 +13834,38 @@
     "droite",
     "haut"
    ]
+  },
+  "karateka": {
+   "fichier": "res://assets/sprites/characters/painted/karateka_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "maitre_dojo": {
+   "fichier": "res://assets/sprites/characters/painted/maitre_dojo_sheet.png",
+   "cellule": [
+    88,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {

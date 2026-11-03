@@ -835,12 +835,6 @@
 						"dialogue": "cinnabar_blaine_before"
 					},
 					{
-						"champion_card": "cinnabar_gym_blaine",
-						"unless": [
-							"blaine_met"
-						]
-					},
-					{
 						"set": [
 							"blaine_met"
 						]

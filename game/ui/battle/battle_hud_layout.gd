@@ -89,7 +89,7 @@ static func frame(slot: Slot) -> Array[Vector2]:
 			return [Vector2(1, 1), Vector2(edge - pad, UiTokens.BATTLE_MOVES_BOTTOM - pad),
 				forget_size()]
 		Slot.MESSAGE:
-			return [Vector2(1, 1), Vector2(edge, UiTokens.BATTLE_GRID_BOTTOM),
+			return [Vector2(1, 1), Vector2(edge, UiTokens.BATTLE_MESSAGE_BOTTOM),
 				Vector2(UiTokens.BATTLE_MESSAGE_WIDTH, UiTokens.BATTLE_MESSAGE_HEIGHT)]
 		Slot.BAG:
 			return [Vector2(0, 1), Vector2(edge, edge), bag_size()]

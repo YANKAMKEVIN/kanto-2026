@@ -1,0 +1,36 @@
+CONCEPT ART — VUE GÉNÉRALE DU BOIS AUX CHÊNES, LE SENTIER EN LACETS ET L'AUTEL (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE (la carte est carrée, centrée, avec de la forêt de part et d'autre). C'est une FORÊT SERRÉE, presque entièrement fermée ; on n'y circule que par un SENTIER en lacets. On entre au NORD (le sentier qui part du bord haut, à gauche du centre) et on ressort au SUD (le sentier qui sort par le bord bas, à droite du centre).
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable : presque toute l'image, des chênes en grandes masses, les cimes se touchent ;
+- beige = le SENTIER DE TERRE BATTUE de trois cases de large, en lacets à angles droits : il descend du nord, traverse vers l'est (première traversée), redescend à l'est, retraverse vers l'ouest (deuxième traversée), redescend à l'ouest, retraverse vers l'est (troisième traversée), redescend à l'est et sort au sud ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), quatre blocs nets : deux qui COUPENT le sentier au milieu de la première et de la troisième traversée, un dans une poche à gauche sous la deuxième traversée, un dans une poche au sud-est près de la sortie ;
+- vert moyen = POCHES DE SOUS-BOIS praticables, ouvertes dans la forêt : une petite près de l'entrée (avec le panneau), une à droite de la clairière, une sous la deuxième traversée (autour des herbes), une impasse qui part vers l'ouest au milieu, une sous la troisième traversée, une au sud-est, et une petite lisière au sud près de la sortie, avec deux TAS DE BÛCHES (petits carrés bruns) ;
+- vert clair, le rectangle au cœur du bois, au-dessus de la deuxième traversée = la CLAIRIÈRE DE L'AUTEL, une clairière d'herbe rase où tombe la lumière, reliée à la traversée par une courte sente de terre ; en haut de la clairière, au centre : l'AUTEL (petit rectangle brun à dessus vert) = un petit autel de bois ancien, moussu, entre deux MASSIFS DE FLEURS FRAÎCHES (points roses et blancs) ; rien d'autre dans la clairière ;
+- petit disque brun à cœur clair, à gauche sous la troisième traversée = une SOUCHE ;
+- petit carré ocre près de l'entrée = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : le sentier et ses trois traversées, les quatre blocs d'herbes hautes (deux sur le sentier), chaque poche de sous-bois et l'impasse de l'ouest, la clairière de l'autel et sa sente, l'autel entre ses fleurs, la souche, les bûches. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Forêt de Jade, la forêt du même jeu à Kanto. Respecte EXACTEMENT son style de rendu : même pinceau, même forêt serrée en grandes masses de cimes, même sentier de terre, mêmes hautes herbes, mêmes poches de sous-bois, même saturation, même lisibilité du chemin au milieu des arbres. Ne reprends PAS sa composition, NI SA LUMIÈRE DORÉE.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le bois, comme le plan.
+
+AMBIANCE — « le bois sacré » : une vieille forêt de chênes, dense et silencieuse, où le sentier serpente entre les troncs ; au cœur, une clairière baignée de lumière avec un petit autel de bois moussu fleuri, lieu de recueillement ; à la sortie sud, la lisière d'un charbonnier avec ses tas de bûches. Calme, protectrice, un peu mystérieuse, JAMAIS sombre ni effrayante. Palette : FORÊT vert profond (chênes), SENTIER beige, HERBES vert olive, CLAIRIÈRE vert clair lumineux, AUTEL bois brun et mousse, FLEURS roses et blanches.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; sous les arbres, une pénombre verte douce, et la clairière nettement plus claire ; aucune teinte dorée ou orangée ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; sentier, poches, clairière et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment, cabane, torii, statue, lanterne ; eau, ruisseau, pont ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard épais, flou de profondeur, vignettage ; sentier courbe ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un sentier en lacets dans une forêt de chênes serrée, et, au cœur du bois, une clairière lumineuse avec un petit autel moussu entre deux massifs de fleurs.

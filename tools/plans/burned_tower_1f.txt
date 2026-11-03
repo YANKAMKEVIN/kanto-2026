@@ -1,0 +1,83 @@
+# Tour Cendrée 1F (burned_tower_1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ; dossier
+# docs/design/dossier-joh-07-acajou.md §3, §4 (étape 2), §5 à §7, textes C-3 à C-5). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 28 × 24 cases (dossier : ≈ 28 × 24) ; nord en haut ; x = colonne 0..27, y = rangée 0..23.
+#
+# Composition (ruine noircie, un seul grand plateau) :
+#   - ENTRÉE au sud (E, (13..14, 23)) depuis la porte de la tour à Rosalia ; DALLAGE d'entrée (.)
+#     sans rencontre (x 10..17, y 19..22) ; partout ailleurs des CENDRES (c, rencontres du §5).
+#   - BANDE DE PLANCHER EFFONDRÉ (O, y 11..12, d'un mur à l'autre, deux poutres P qui la traversent
+#     sans la franchir) : on ne passe au nord qu'en TOMBANT au B1F (dossier §4 : « un trou mène au
+#     B1F ») ; trois trous isolés en plus ((16, 5), (20, 15), (6, 17)). La scène C-5 (déclencheur
+#     « plancher_effondre », y 13) prévient une fois avant la bande.
+#   - POUTRES CALCINÉES (P, bloquées) ; l'Hyper Potion est cachée sous celle de (5..9, 15).
+#   - ÉCHELLE qui descend (V, (3, 2)) au nord-ouest : retour normal depuis le B1F (paire tc_1) ;
+#     depuis l'entrée on ne l'atteint qu'après une chute et une remontée.
+#   - MÉDIUM ODILE (4, 19) et SBIRE P (23, 14) au sud de la bande, tous deux évitables (dossier §6).
+#   - Rappel (25, 21). Le panneau C-3 est dehors, à Rosalia (« panneau_tour_cendree »).
+#
+# Raccords :
+#   E (13..14, 23) ↔ Rosalia, porte de la Tour Cendrée (8..9, 12), retour en (8..9, 13).
+#   V (3, 2) ↔ B1F, échelle U (3, 2), arrivée (3, 3) de chaque côté (paire tc_1).
+#   Trous O → B1F, arrivée « chute » (10, 3).
+#
+# Légende :
+#   # mur noirci (bloqué)   . dallage de pierre (praticable, aucune rencontre)
+#   c cendres et débris (praticables, terrain de rencontre : Rattatac, Nosferalto, Smogogo, Spectrum, Magmar)
+#   P poutre calcinée (bloquée)   O trou dans le plancher (praticable, chute au B1F)
+#   V échelle qui descend (praticable, warp)   E sortie vers Rosalia (praticable, PUSH ↓)
+# Défauts [D] : rencontres sur les cendres seulement ; Dresseurs placés par Claude ; la bande de trous
+# est le passage voulu vers le B1F (pas d'escalier direct).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 28 caractères), puis POSITIONS.
+
+PRATICABLES .cOVE
+
+GRILLE 28 24
+00 ############################
+01 #c...cccccccccccccccccccccc#
+02 #c.V.cccccccccccccccccPcccc#
+03 #c...cccccccPcccccccccPcccc#
+04 #cccccccccccPcccccccccPcccc#
+05 #cccccccccccPcccOcccccPcccc#
+06 #ccPPPPPPcccPcccccccccccccc#
+07 #cccccccccccPcccccccccccccc#
+08 #cccccccccccccccccPPPPPPPcc#
+09 #cccccccccccccccccccccccccc#
+10 #cccccccccccccccccccccccccc#
+11 #OOOOOOOOPOOOOOOOOPOOOOOOOO#
+12 #OOOOOOOOPOOOOOOOOPOOOOOOOO#
+13 #cccccccccccccccccccccccccc#
+14 #cccccccccccccccccccccccccc#
+15 #ccccPPPPPccccccccccOcccccc#
+16 #cccccccccccccccccccccccccc#
+17 #cccccOccccccccPPPPPPcccccc#
+18 #cccccccccccccccccccccccccc#
+19 #ccccccccc........ccccccccc#
+20 #ccccccccc........ccccccccc#
+21 #ccccccccc........ccccccccc#
+22 #ccccccccc........ccccccccc#
+23 #############EE#############
+FIN
+
+POSITIONS
+sortie               warp           13..14,23    libre    # PUSH ↓ → ecruteak_city, retour_tour_cendree (8..9, 13)
+from_city            spawn          13..14,22    libre   facing=up  # arrivée depuis Rosalia ; titre de zone « Tour Cendrée »
+vers_b1f             escalier       3,2          libre   paire=tc_1 sens=descend vers=burned_tower_b1f:from_1f  # échelle vers le B1F
+from_b1f             spawn          3,3          libre   paire=tc_1 facing=down  # arrivée depuis le B1F, une case devant l'échelle
+trous_ouest          trou           1..8,11..12  libre   vers=burned_tower_b1f arrivee=chute  # plancher effondré, partie ouest
+trous_centre         trou           10..17,11..12 libre   vers=burned_tower_b1f arrivee=chute  # plancher effondré, partie centrale (passage voulu)
+trous_est            trou           19..26,11..12 libre   vers=burned_tower_b1f arrivee=chute  # plancher effondré, partie est
+trou_nord            trou           16,5         libre   vers=burned_tower_b1f arrivee=chute  # trou isolé
+trou_sud_est         trou           20,15        libre   vers=burned_tower_b1f arrivee=chute  # trou isolé
+trou_sud_ouest       trou           6,17         libre   vers=burned_tower_b1f arrivee=chute  # trou isolé
+plancher_effondre    declencheur    10..17,13    libre   drapeau=johto_burned_floor_seen  # C-5, une fois, en approchant de la bande
+odile                dresseur       4,19         bloque  role=medium facing=right sight=2  # C-4 : Spectrum 46, Ectoplasma 48 ; évitable
+sbire_p              dresseur       23,14        bloque  role=sbire facing=left sight=3  # C-4 : Smogogo 48, Rattatac 48 ; évitable
+rappel               objet_visible  25,21        bloque  item=revive  # dossier §7
+hyper_potion         cache          7,15         bloque  item=hyper_potion  # sous la poutre, examinée depuis (7, 14) ou (7, 16)
+cendres_c1           rencontre      13,16        libre   role=C1  # repère des cendres (toute la carte en c)
+FIN

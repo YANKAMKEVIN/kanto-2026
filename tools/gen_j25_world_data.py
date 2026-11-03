@@ -208,7 +208,6 @@ def gym(trainers):
 		{"steps": [
 			{"face": "auguste", "to": "player"},
 			{"dialogue": "cinnabar_blaine_before"},
-			{"champion_card": BLAINE, "unless": ["blaine_met"]},
 			{"set": ["blaine_met"]},
 			{"battle": BLAINE, "win": won},
 			{"wait": 0.6, "if": won},

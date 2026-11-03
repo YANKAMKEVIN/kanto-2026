@@ -1,0 +1,62 @@
+# Tour Cendrée B1F (burned_tower_b1f) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ; dossier
+# docs/design/dossier-joh-07-acajou.md §3, §4 (étape 3), §7, §9, textes C-6 à C-9). Carte intérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 20 × 16 cases (dossier : ≈ 20 × 16) ; nord en haut ; x = colonne 0..19, y = rangée 0..15.
+#
+# Composition (une seule salle, celle des trois chiens endormis) :
+#   - ARRIVÉE DE LA CHUTE (« chute », (10, 3)) au nord, au centre ; ÉCHELLE qui monte (U, (3, 2))
+#     au nord-ouest, retour vers le 1F (paire tc_1).
+#   - Les TROIS CHIENS endormis au milieu des cendres : Raikou (8, 8), Entei (10, 8), Suicune (12, 8),
+#     présents jusqu'à johto_beasts_awakened. La SCÈNE C-6 à C-9 (déclencheur « scene_chiens », toute
+#     la rangée y 6) couvre les deux arrivées : réveil et fuite, Brace surgit (posé par la scène,
+#     côté est), cage à ondes sur Raikou, départ vers l'est.
+#   - Colonnes calcinées (P) ; ALCÔVE sud-ouest (x 1..3, y 12..14, entrée (2, 11)) avec la PEAU MÉTAL.
+#   - Aucune rencontre au B1F (dossier §5 : tables du 1F seulement) [D].
+#
+# Raccords :
+#   U (3, 2) ↔ 1F, échelle V (3, 2), arrivée (3, 3) de chaque côté (paire tc_1).
+#   « chute » (10, 3) : arrivée de tous les trous du 1F.
+#
+# Légende :
+#   # paroi noircie (bloquée)   . sol de cendres tassées (praticable, aucune rencontre)
+#   P colonne ou poutre calcinée (bloquée)   U échelle qui monte (praticable, warp)
+# Défauts [D] : Brace n'est pas dans la grille avant la scène (il surgit, puis repart) ; après le
+# chapitre, les chiens non capturés reviennent ici (cadre §4.5), positions à poser à ce moment-là.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+
+PRATICABLES .U
+
+GRILLE 20 16
+00 ####################
+01 #..................#
+02 #..U............P..#
+03 #..................#
+04 #..................#
+05 #.....P......P.....#
+06 #..................#
+07 #..................#
+08 #..................#
+09 #..................#
+10 #..................#
+11 #P.PP.P......P.....#
+12 #...P..............#
+13 #...P..............#
+14 #...P..............#
+15 ####################
+FIN
+
+POSITIONS
+vers_1f              escalier       3,2          libre   paire=tc_1 sens=monte vers=burned_tower_1f:from_b1f  # échelle vers le 1F
+from_1f              spawn          3,3          libre   paire=tc_1 facing=down  # arrivée depuis l'échelle du 1F
+chute                spawn          10,3         libre   role=chute facing=down  # arrivée de tous les trous du 1F
+scene_chiens         declencheur    1..18,6      libre   actif_sans=johto_beasts_awakened  # C-6 à C-9 : réveil, fuite, Brace et la cage à ondes ; pose johto_beasts_awakened et johto_raikou_taken
+raikou               pokemon        8,8          bloque  espece=raikou shy=none actif_sans=johto_beasts_awakened  # endormi ; capturé par Brace (C-8)
+entei                pokemon        10,8         bloque  espece=entei shy=none actif_sans=johto_beasts_awakened  # endormi ; fuit vers le nord (JOH8)
+suicune              pokemon        12,8         bloque  espece=suicune shy=none actif_sans=johto_beasts_awakened  # endormi ; fuit vers l'ouest (JOH7)
+brace                pnj            15,7         libre   role=admin facing=left apparait=scene_chiens actif_sans=johto_raikou_taken  # C-7 à C-9 ; surgit pendant la scène, repart vers l'est [D]
+peau_metal           objet_visible  1,14         bloque  item=metal_coat  # Peau Métal (JOH-02 §1, dossier §7), au fond de l'alcôve
+FIN

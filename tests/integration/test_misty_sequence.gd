@@ -45,13 +45,13 @@ const TM_USE := "C'est la CT11, Bulles d'O. Un Pokémon qui l'apprend la garde, 
 const TM_LATE := "J'allais oublier."
 const AFTER_A := "Le pont t'a déjà vu passer ?"
 const AFTER_B := "Tu as fait le pont ? Alors tu sais ce qu'il vaut."
-const CARD := "card:ONDINE/Championne d'Arène d'Azuria"
+const CARD := "vs:ONDINE/Championne d'Arène d'Azuria"
 
 var _fs: MemoryFs
 var _boot: Boot
 var _player: Player
 var _saved_router: Array = []
-## Ce qui s'est passé, dans l'ordre : « page:<texte> », « card:<nom>/<titre> », « battle »,
+## Ce qui s'est passé, dans l'ordre : « page:<texte> », « vs:<nom>/<titre> », « battle »,
 ## « caption:<texte> », « toast:<titre> / <détail> ».
 var _events: Array[String] = []
 var _vibrations: Array[int] = []
@@ -97,6 +97,9 @@ func _start(start_path: String, strong: bool = false) -> void:
 	_boot.get_battle_director().speed_scale = 0.0
 	_boot.get_battle_director().battle_started.connect(func(_id: StringName) -> void:
 		_events.append("battle"))
+	# Séquence « VS » des grands combats (2026-11-02, remplace la carte de Champion).
+	_boot.get_battle_director().vs_started.connect(func(foe: String, title: String) -> void:
+		_events.append("vs:%s/%s" % [foe, title]))
 	if strong:
 		_make_strong()
 	await wait_process_frames(2)
@@ -178,7 +181,6 @@ func _talk_to_misty() -> bool:
 	Input.action_press(&"interact")
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
-	var card_seen := false
 	var caption_seen := false
 	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
 	while (director.is_running() or runner.is_running() or SceneRouter.is_transitioning()) \
@@ -191,11 +193,6 @@ func _talk_to_misty() -> bool:
 						battle_hud.action_selected.emit(ActionGrid.ATTACK)
 					BattleHud.Zone.MOVES:
 						battle_hud.move_selected.emit(0)
-		var card := hud.get_champion_card()
-		if card.is_showing() and not card_seen:
-			_events.append("card:%s/%s" % [card.get_name_text(), card.get_title_text()])
-			card.skip_hold()
-		card_seen = card.is_showing()
 		var caption := hud.get_caption()
 		if caption.is_showing() and not caption_seen:
 			_events.append("caption:" + caption.text)
@@ -354,8 +351,8 @@ func test_victory_badge_tm_moment_objective_and_save() -> void:
 		assert_false(pages.has(line), "« %s » PAS jouée" % line)
 	assert_eq(_index("page:" + INTRO[0]), 0, "l'introduction d'abord")
 	var card := _index(CARD)
-	assert_gt(card, _index("page:" + INTRO[2]), "la carte après l'introduction")
-	assert_gt(_index("battle"), card, "la carte avant le combat")
+	assert_gt(card, _index("page:" + INTRO[2]), "la séquence « VS » après l'introduction")
+	assert_gt(card, _index("battle"), "la séquence « VS » ouvre le combat")
 	assert_gt(_index("page:" + WON_LINES[0]), _index("battle"))
 	assert_gt(_index("caption:BADGE CASCADE"), _index("page:" + WON_LINES[1]), "légende ensuite")
 	assert_gt(_index("page:" + BADGE_LINES[0]), _index("caption:BADGE CASCADE"))
@@ -412,7 +409,7 @@ func test_defeat_wakes_at_the_center_then_resume_without_introduction_nor_card()
 	for line: String in INTRO + LOST_LINES:
 		assert_true(pages.has(line), "« %s » jouée" % line)
 	assert_gt(_index("page:" + LOST_LINES[0]), _index("battle"), "défaite après le combat")
-	assert_gt(_index(CARD), -1, "carte à la première rencontre")
+	assert_gt(_index(CARD), -1, "séquence « VS » à la première rencontre")
 	for line: String in WON_LINES + BADGE_LINES:
 		assert_false(pages.has(line), "« %s » PAS jouée" % line)
 	assert_eq(_index("caption:BADGE CASCADE"), -1, "pas de badge")
@@ -438,7 +435,7 @@ func test_defeat_wakes_at_the_center_then_resume_without_introduction_nor_card()
 	assert_eq(_index("page:" + RESUME), 0, "reprise courte")
 	for line: String in INTRO:
 		assert_false(pages.has(line), "« %s » PAS rejouée" % line)
-	assert_eq(_index(CARD), -1, "pas de carte aux reprises")
+	assert_gt(_index(CARD), -1, "séquence « VS » à chaque combat, jamais sautée")
 	assert_gt(_index("caption:BADGE CASCADE"), _index("battle"))
 	assert_true(GameState.flags.has_flag(&"badge_cascade"))
 	assert_eq(_badge_moments().size(), 1)

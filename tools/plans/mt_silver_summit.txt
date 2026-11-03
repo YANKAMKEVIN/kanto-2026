@@ -1,0 +1,65 @@
+# Mont Argenté, sommet (mt_silver_summit) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH9 ;
+# dossier docs/design/dossier-joh-10-mont-argente.md §3, §4 (étapes 7 à 9), §6, §8, §9, textes A-23 à A-46, A-52). Carte extérieure.
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh9.py.
+#
+# 20 × 18 cases (dossier : ≈ 20 × 18) ; nord en haut ; x = colonne 0..19, y = rangée 0..17.
+#
+# Composition (plateau de neige au-dessus des nuages, ruines du premier camp) :
+#   - TRAPPE de l'échelle (D, (16, 2)) dans un PALIER clos (x 14..18, y 1..4) dont la seule sortie
+#     (16, 5) porte la SCÈNE D'ARRIVÉE (« scene_sommet », A-23, A-26 à A-28 : combat final contre
+#     Dante) ; A-25 au retour après une défaite.
+#   - RUINES (K, examen A-24) éparses ; DANTE (9, 8) au milieu, tourné vers l'est (vers le palier).
+#     Après le combat : Giovanni apparaît derrière les ruines (A-31, position « giovanni »), Cenere
+#     arrive (A-38), puis le rival (A-40, combat final, position « rival_sommet »). Après le chapitre,
+#     l'écharpe brûlée sur une pierre (A-52, examen « echarpe »).
+#   - MER DE NUAGES (c) au sud, falaise (R) tout autour.
+#
+# Raccords :
+#   D (16, 2) ↔ 3F, échelle U (16, 2), arrivée (16, 3) de chaque côté (paire ms_3).
+#   Vol et Corde Sortie interdits ici entre Dante et le rival (dossier §13).
+#
+# Légende :
+#   R falaise et paroi (bloquées)   n neige (praticable)   c mer de nuages (bloquée, décor)
+#   K pierre des ruines (bloquée, examen)   D trappe de l'échelle (praticable, warp)
+# Défauts [D] : Giovanni, Cenere et le rival sont posés par les scènes (positions libres) ; Dante et
+# Cenere restent en (9, 8) et (10, 8) après le chapitre jusqu'à johto_chapter_done, puis le sommet est vide.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+
+PRATICABLES nD
+
+GRILLE 20 18
+00 RRRRRRRRRRRRRRRRRRRR
+01 RnnnnnnnnnnnnRnnnnnR
+02 RnnnnnnnnnnnnRnnDnnR
+03 RnnnnnnnnKnnnRnnnnnR
+04 RnnnKKnnnnnnnRnnnnnR
+05 RnnnKnnnnnnnnRRRnRRR
+06 RnnnnnnnnnnnnnnnnnnR
+07 RnnnnnnnnnKnnnnnnnnR
+08 RnnnnnnnnnnnnnnnnnnR
+09 RnnnnnnnnnnnnnnnnnnR
+10 RnnnnnnnnnnnnnnKnnnR
+11 RnnKnnnnnnnnnnnnnnnR
+12 RnnnnnnnnnnnnnnnnnnR
+13 RnnnnnnKnnnnKnnnnnnR
+14 RnnnnnnnnnnnnnnnnnnR
+15 RnnnnnnnnnnnnnnnnnnR
+16 RnnnnnnnnnnnnnnnnnnR
+17 RccccccccccccccccccR
+FIN
+
+POSITIONS
+vers_3f              escalier       16,2         libre   paire=ms_3 sens=descend vers=mt_silver_3f:from_sommet  # trappe vers le 3F
+from_3f              spawn          16,3         libre   paire=ms_3 facing=down  # arrivée du 3F ; titre de zone « Sommet » (A-7)
+scene_sommet         declencheur    16,5         libre   actif_sans=johto_dante_defeated_2  # A-23, A-26 à A-28 (A-25 au retour) : combat final contre Dante ; seule sortie du palier
+dante                dresseur       9,8          bloque  role=dante facing=right sight=0 actif_sans=johto_chapter_done  # Démolosse 72, Farfuret 73, Magmar 74, Cizayox 74, Arcanin 76, Tyranocif 78 ; reste à genoux ensuite (JH-58)
+giovanni             pnj            9,5          libre   role=giovanni facing=down apparait=scene_giovanni actif_avec=johto_dante_defeated_2 actif_sans=johto_giovanni_seen  # A-31 à A-37 : apparaît derrière les ruines, repart dans la neige
+cenere_sommet        pnj            10,8         libre   role=admin facing=left apparait=scene_giovanni actif_avec=johto_giovanni_seen actif_sans=johto_chapter_done  # A-38, A-39 : s'agenouille près de Dante
+rival_sommet         pnj            14,8         libre   role=rival facing=left apparait=scene_rival actif_avec=johto_giovanni_seen actif_sans=johto_rival_final_done  # A-40 à A-46 : dernier combat de rivaux (équipe §9), puis repart
+ruines               examen         4..5,4       bloque   # A-24, examinées depuis (4..5, 3) ou (4..5, 5)… [D]
+echarpe              examen         7,13         bloque  actif_avec=johto_chapter_done  # A-52 : l'écharpe brûlée sur une pierre
+nuages               repere         1..18,17     bloque  role=decor  # mer de nuages
+FIN

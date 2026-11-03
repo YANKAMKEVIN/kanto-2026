@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — LABORATOIRE DU PROFESSEUR CHEN (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte le rival, au tout premier combat du jeu, juste après le choix des Pokémon de départ. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : CIBLE du rendu, de la richesse, de la vue de trois-quarts et du cadrage ; ce n'est PAS le lieu à peindre. IMAGE 2 = la référence VALIDÉE du laboratoire vue de dessus (lieu, mobilier, matériaux, couleurs et lumière à GARDER) : à repeindre comme si l'on se tenait DANS la pièce, à hauteur d'homme, en vue de trois-quarts.
+
+LIEU : le laboratoire du Professeur Chen à Bourg Palette, chaleureux et encombré : murs crème, grande fenêtre à petits carreaux sur des arbres ensoleillés au fond, bureau de bois avec ordinateur, étagères pleines de livres et de classeurs colorés, plantes vertes en pots, la grande machine cylindrique de métal à écran bleu lumineux à gauche, vitrines et terrariums, une grande carte de la région punaisée au mur (dessin de contours seulement, AUCUN mot), et sur la droite la longue table blanche du présentoir des trois Pokémon de départ, avec ses trois socles et des Poké Balls ROUGES ET BLANCHES posées dessus (pas de Pokémon). Le SOL est un carrelage crème clair, avec un grand tapis gris-bleu orné d'un cercle de Poké Ball rouge et blanc. Lumière CHAUDE et dorée de fin d'après-midi qui entre par la fenêtre en haut à gauche, rayons doux, lampes suspendues allumées ; ambiance de départ d'une aventure.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra sur la GAUCHE de la salle, regard légèrement vers la DROITE, en trois-quarts, comme sur IMAGE 1 : point de fuite vers x 62 %. Éléments de GAUCHE proches, grands, coupés par le bord gauche et par le haut ; ceux de droite plus petits et plus lointains.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : sol plat et nu (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

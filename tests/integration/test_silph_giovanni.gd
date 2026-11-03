@@ -21,7 +21,7 @@ const GOT_BALL := &"silph_master_ball_received"
 const GIOVANNI_CELL := Vector2i(6, 9)
 const BELOW_DOOR := Vector2i(6, 14)
 const PRESIDENT_TALK := Vector2i(6, 5)
-const CARD := "card:GIOVANNI/Chef de la Team Rocket"
+const CARD := "vs:GIOVANNI/Chef de la Team Rocket"
 const T26_13: Array[String] = ["Te voilà encore.",
 	"Tu t'obstines à te mettre en travers de mes affaires.",
 	"Cette fois, je ne te ferai pas de cadeau."]
@@ -114,8 +114,8 @@ func test_victory_frees_the_silph_then_the_president_gives_the_master_ball_once(
 	assert_true(await _enter_office(), "le combat a eu lieu")
 	var events := _play.events
 	assert_eq(_play.pages().slice(0, 3), T26_13, "T26-13")
-	assert_gt(events.find(CARD), events.find("page:" + T26_13[2]), "la carte après T26-13")
-	assert_gt(events.find("battle"), events.find(CARD))
+	assert_gt(events.find(CARD), events.find("page:" + T26_13[2]), "la séquence « VS » après T26-13")
+	assert_gt(events.find(CARD), events.find("battle"), "la séquence « VS » ouvre le combat")
 	for line: String in T26_14:
 		assert_gt(events.find("page:" + line), events.find("battle"), "T26-14")
 	for line: String in T26_15:
@@ -161,7 +161,7 @@ func test_defeat_wakes_up_then_retry_without_the_card() -> void:
 	_make_titan()
 	assert_true(await _enter_office(), "second combat")
 	assert_eq(_play.pages().slice(0, 3), T26_13)
-	assert_false(_play.events.has(CARD), "pas de carte aux reprises")
+	assert_true(_play.events.has(CARD), "séquence « VS » à chaque combat, jamais sautée")
 	assert_true(GameState.flags.has_flag(DEFEATED))
 	assert_push_error_count(0)
 

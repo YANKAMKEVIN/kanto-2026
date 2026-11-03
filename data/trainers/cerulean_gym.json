@@ -13,7 +13,7 @@
 		"name": "Ondine", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2100,
 		"start_message": false, "end_message": true, "bag": true, "switch": true,
-		"card": { "name": "ONDINE", "title": "Championne d'Arène d'Azuria" },
+		"card": { "name": "ONDINE", "title": "Championne d'Arène d'Azuria", "portrait": "ondine" },
 		"team": [
 			{ "species": "staryu", "level": 18, "moves": ["tackle", "water_gun"] },
 			{

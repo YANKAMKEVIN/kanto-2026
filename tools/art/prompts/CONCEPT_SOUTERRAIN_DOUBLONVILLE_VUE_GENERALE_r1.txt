@@ -1,0 +1,33 @@
+CONCEPT ART — VUE GÉNÉRALE DU SOUTERRAIN DE DOUBLONVILLE, LA GALERIE AUX BOUTIQUES FERMÉES (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : une GALERIE SOUTERRAINE allongée, vue de dessus, sur fond noir (hors de la carte). Format PAYSAGE ; la galerie est une bande horizontale au milieu de l'image.
+Légende du plan :
+- noir = hors-champ ; gris-brun foncé = MURS de pierre et de béton du souterrain ; bande brun clair en haut = le MUR DU FOND, vu de face ;
+- beige = SOL de la galerie, dalles de pierre claire : une grande GALERIE horizontale de quatre cases de haut, d'ouest en est, et trois RENFONCEMENTS de deux cases de large qui montent vers le nord entre les boutiques ; au sud-est, une SALLE plus large (la salle du fond) ;
+- brun foncé à lignes claires = des BOUTIQUES FERMÉES : des devantures alignées des deux côtés de la galerie (au nord, quatre blocs séparés par les renfoncements ; au sud, un long bloc), chacune avec son RIDEAU DE FER BAISSÉ côté galerie (les lignes horizontales claires sont les lames des rideaux) ; au fond de la salle sud-est, encore une devanture fermée ;
+- marches grises à gauche et à droite = deux ESCALIERS qui montent vers la ville : un à l'extrémité OUEST de la galerie (sur deux cases, dans le mur gauche), un à l'extrémité EST (dans le mur droit, un peu plus bas) ;
+- petit carré brun dans la salle du fond = une CAISSE de bois.
+Respecte ce plan À LA LETTRE : la galerie, les trois renfoncements, les devantures fermées des deux côtés, les deux escaliers aux deux bouts, la salle du fond au sud-est et sa caisse. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale du Souterrain de Kanto, un passage souterrain du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même sol dallé, mêmes murs de pierre, mêmes escaliers, même découpe du lieu sur fond sombre (murs coupés, vue de dessus de trois quarts), même éclairage électrique froid et un peu avare. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, la galerie au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « la galerie marchande abandonnée » : un passage souterrain qui fut une galerie commerçante ; toutes les boutiques ont baissé leur rideau de fer, quelques enseignes vides sans texte, des néons blafards dont un ou deux grésillent, de la poussière, des cartons. Un lieu délaissé, un peu louche, JAMAIS effrayant ni illisible : le sol reste clair et lisible partout. Palette : SOL dalles gris-beige, MURS gris-brun, RIDEAUX de fer gris-vert, lumière froide verdâtre des néons, quelques touches de rouille.
+LUMIÈRE : éclairage électrique froid (néons au plafond, hors champ), uniforme, légèrement verdâtre ; la salle du fond est un peu plus sombre ; aucune lumière du jour sauf une lueur pâle en haut de chaque escalier. Aucune teinte dorée.
+
+RÈGLE DE LA GRILLE : murs, devantures, escaliers et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; la galerie et les renfoncements sont des rectangles.
+OBJETS RARES : seulement les devantures, les escaliers et la caisse du plan ; pas de mobilier en plus, pas de marchandise exposée (tout est fermé).
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les devantures du nord montrent leur face (rideau baissé) ; celles du sud montrent leur dessus et un bord.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, bleu-vert froid, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, enseignes lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; boutique ouverte, étal, marchandise ; rails, métro, train ; eau, flaque profonde, égout ; graffiti lisible ; brouillard épais, flou de profondeur, vignettage noir ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une galerie souterraine aux rideaux de fer baissés, éclairée de néons froids, un escalier à chaque bout, et une salle du fond où traîne une caisse.

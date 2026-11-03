@@ -154,19 +154,12 @@ func _erika() -> void:
 	var battle_hud: BattleHud = _boot.call(&"get_battle_hud")
 	await _press_interact()
 	var shot_intro := false
-	var shot_card := false
 	var shot_battle := false
 	var shot_badge := false
 	var battle_frames := 0
 	var guard := 0
 	while (director.is_running() or runner.is_running()) and guard < 9000:
 		guard += 1
-		var card: Node = hud.call(&"get_champion_card")
-		if card.call(&"is_showing") and not shot_card:
-			shot_card = true
-			await _frames(25)
-			await _shot("erika_carte")
-			card.call(&"skip_hold")
 		var caption: Node = hud.call(&"get_caption")
 		if caption.call(&"is_showing") and not shot_badge:
 			shot_badge = true

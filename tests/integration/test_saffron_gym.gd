@@ -126,7 +126,7 @@ func test_losing_to_sabrina_gives_nothing_and_can_be_replayed() -> void:
 	assert_false(GameState.flags.has_flag(&"badge_marsh"), "pas de Badge")
 	assert_eq(GameState.bag.count_of(&"tm46"), 0)
 	assert_true(GameState.flags.has_flag(&"sabrina_met"))
-	assert_true(_play.events.has("card:MORGANE/Championne d'Arène de Safrania"), "carte")
+	assert_true(_play.events.has("vs:MORGANE/Championne d'Arène de Safrania"), "séquence « VS »")
 	assert_true(_play.pages().has("C'était écrit."))
 
 

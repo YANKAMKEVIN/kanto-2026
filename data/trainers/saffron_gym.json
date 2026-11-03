@@ -61,7 +61,7 @@
 		"name": "Morgane", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 4257,
 		"start_message": false, "end_message": true, "bag": true, "switch": true,
-		"card": {"name": "MORGANE", "title": "Championne d'Arène de Safrania"},
+		"card": {"name": "MORGANE", "title": "Championne d'Arène de Safrania", "portrait": "morgane"},
 		"team": [
 			{
 				"species": "kadabra", "level": 38,

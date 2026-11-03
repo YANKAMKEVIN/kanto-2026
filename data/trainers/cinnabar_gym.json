@@ -61,7 +61,7 @@
 		"name": "Auguste", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 4653,
 		"start_message": false, "end_message": true, "bag": true, "switch": true,
-		"card": { "name": "AUGUSTE", "title": "Champion d'Arène de Cramois'Île" },
+		"card": { "name": "AUGUSTE", "title": "Champion d'Arène de Cramois'Île", "portrait": "auguste" },
 		"team": [
 			{ "species": "growlithe", "level": 42, "moves": ["ember", "leer", "take_down", "agility"] },
 			{ "species": "ponyta", "level": 40, "moves": ["tail_whip", "stomp", "growl", "fire_spin"] },

@@ -1,0 +1,24 @@
+DÉCOR DE COMBAT — ARÈNE D'ARGENTA, version 3 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Image jointe : IMAGE 1 = la maquette VALIDÉE du combat contre le Champion de cette Arène. C'est la CIBLE EXACTE du décor : même salle, même vue, mêmes masses, même richesse, même lumière. Reproduis sa composition, PAS une vue frontale symétrique :
+- À GAUCHE : deux grandes colonnes de pierre ocre usée au premier plan, hautes fenêtres à croisillons lumineuses en haut à gauche, rayons de lumière dorée qui tombent en diagonale, torches allumées sur vasques de pierre, gros rochers bruns et violacés au pied des colonnes.
+- AU CENTRE-GAUCHE du mur du fond : le grand médaillon circulaire de pierre gravé d'un rocher à facettes, une bannière rouge à motif de roche hexagonal doré à sa gauche.
+- L'ESCALIER de pierre est DÉCENTRÉ, au fond, plutôt au centre-droit et en retrait, large et bas, avec des torches sur ses côtés ; il n'est pas l'élément principal.
+- À DROITE : une autre colonne, une bannière rouge, des torches et des rochers, plus en retrait.
+- Au sol : un GRAND espace central dégagé de dalles de pierre polies et brillantes, avec le grand motif circulaire gravé (cercles concentriques) bien visible au centre, reflets chauds, ombres des colonnes allongées sur le sol.
+
+RETIRE tout ce qui n'est pas le décor (les deux personnages, les banderoles, les portraits, l'emblème « VS », les textes) et repeins le décor à la place.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : la caméra est placée sur la GAUCHE de la salle et regarde légèrement vers la DROITE, en trois-quarts : le point de fuite est vers x 62 %. Les colonnes de GAUCHE sont proches, énormes, coupées par le bord gauche et par le haut ; celles de droite sont plus petites et plus lointaines. Le mur du fond est vu en biais (il fuit vers la droite). Le médaillon est vers x 45 %, l'escalier vers x 60 à 80 %, plus petit, en retrait ; rien n'est centré ni symétrique.
+
+CADRAGE (impératif) : caméra un peu plus haute et plus plongeante que l'IMAGE 1, pour que le PIED DU MUR DU FOND ET DES MARCHES soit vers 40 % de la hauteur de l'image (strictement : la ligne où le mur touche le sol est entre 38 et 42 % de la hauteur, PAS plus bas) : tout ce qui est sous 42 % de la hauteur est le SOL de dalles (vaste, il occupe la moitié basse et plus). On voit un peu moins le haut des colonnes et des fenêtres.
+- Point A (x 67 %, y 50 %) : dalles plates et nues, déjà sur le sol (l'adversaire y posera les pieds). Rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : dalles plates et nues au premier plan.
+- Le grand motif circulaire du sol est centré vers (x 45 %, y 70 %), en ellipse aplatie.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : exactement celui de la maquette : illustration 2D HD peinte, intérieur minéral chaud et doré, aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette, statue humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

@@ -25,10 +25,16 @@ extends RefCounted
 ## de team_by_starter) sont vérifiées contre [PokemonData]. « moves » (facultatif, jalon 10
 ## §2.4) : 1 à 4 capacités distinctes connues de [PokemonData], dans l'ordre, sans contrôle
 ## « apprenable » ; absent = capacités de Rouge/Bleu au niveau.
-## « card » (facultatif, jalon 10 §2.7) : { "name", "title" }, deux textes non vides, la carte
-## de présentation d'un Champion ([member TrainerData.card_name], [member TrainerData.card_title]).
+## « card » (facultatif, jalon 10 §2.7 ; entrée des Dresseurs, 2026-11-02) : { "name", "title",
+## "portrait" }, trois textes non vides : le Dresseur est un **grand adversaire** (Champion, rival,
+## Conseil 4, Giovanni) et son combat s'ouvre sur la séquence « VS » ([TrainerIntro]) ; nom
+## (jetons admis : « {rival} ») et titre de sa banderole, identifiant de son portrait et de son
+## sprite de combat ([member TrainerData.card_portrait], `data/battle/trainer_intro.json`).
 ## « switch » (facultatif, jalon 13, dossier 16 §14) : true = l'IA peut changer de Pokémon une
 ## fois par combat ([member TrainerData.can_switch], [AiSwitchRule]) ; false par défaut.
+## « class » (facultatif, entrée des Dresseurs 2026-11-02) : classe de combat imposée
+## ([member TrainerData.battle_class], `data/battle/trainer_intro.json`), quand le préfixe du nom ne
+## suffit pas (Sbire Rocket femme : « sbire_rocket_f »).
 ## « moment » (facultatif, jalon 13 §2.8) : seule valeur admise "win" = Grand moment du rival
 ## écrit à la victoire seulement ([member TrainerData.moment_on_win], [RivalMoment]).
 
@@ -37,13 +43,15 @@ const DATA_DIR: String = "res://data/trainers/"
 const _KEYS: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
 	"start_message", "team", "team_by_starter", "bag", "prize_per_level", "card", "switch",
-	"moment",
+	"moment", "class",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
 ]
 const _SLOT_KEYS: Array[String] = ["species", "level", "moves"]
-const _CARD_KEYS: Array[String] = ["name", "title"]
+const _CARD_KEYS: Array[String] = ["name", "title", "portrait"]
+## Clés facultatives de « card » (textes non vides).
+const _CARD_OPTIONAL_KEYS: Array[String] = ["title_rivale"]
 
 var _pokemon: PokemonData
 var _trainers: Dictionary[StringName, TrainerData] = {}
@@ -193,6 +201,11 @@ func _parse(value: Variant, where: String) -> TrainerData:
 			trainer.can_switch = entry["switch"]
 		else:
 			ok = _fail("%s : « switch » vaut true ou false" % where)
+	if entry.has("class"):
+		if entry["class"] is String and not (entry["class"] as String).is_empty():
+			trainer.battle_class = StringName(entry["class"])
+		else:
+			ok = _fail("%s : « class » doit être un texte non vide" % where)
 	if entry.has("moment"):
 		if entry["moment"] is String and entry["moment"] == "win":
 			trainer.moment_on_win = true
@@ -217,22 +230,29 @@ func _parse(value: Variant, where: String) -> TrainerData:
 	return trainer if ok else null
 
 
-## Lit « card » : { "name", "title" }, deux textes non vides, aucune autre clé.
+## Lit « card » : { "name", "title", "portrait" }, textes non vides, plus « title_rivale »
+## facultatif ; aucune autre clé.
 func _read_card(value: Variant, trainer: TrainerData, where: String) -> bool:
 	if not value is Dictionary:
-		return _fail("%s : « card » doit être { name, title }" % where)
+		return _fail("%s : « card » doit être { name, title, portrait }" % where)
 	var card: Dictionary = value
 	var ok := true
 	for key: Variant in card:
-		if not _CARD_KEYS.has(str(key)):
+		if not _CARD_KEYS.has(str(key)) and not _CARD_OPTIONAL_KEYS.has(str(key)):
 			ok = _fail("%s card : clé inconnue « %s »" % [where, key])
 	for key: String in _CARD_KEYS:
 		var text: Variant = card.get(key)
 		if not text is String or (text as String).strip_edges().is_empty():
 			ok = _fail("%s card : « %s » doit être un texte non vide" % [where, key])
+	if card.has("title_rivale"):
+		var female: Variant = card["title_rivale"]
+		if not female is String or (female as String).strip_edges().is_empty():
+			ok = _fail("%s card : « title_rivale » doit être un texte non vide" % where)
 	if ok:
 		trainer.card_name = card["name"]
+		trainer.card_title_rivale = card.get("title_rivale", "")
 		trainer.card_title = card["title"]
+		trainer.card_portrait = StringName(card["portrait"])
 	return ok
 
 

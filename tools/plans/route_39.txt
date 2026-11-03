@@ -1,0 +1,106 @@
+# Route 39 (route_39) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH2 ; dossier
+# docs/design/dossier-joh-03-rosalia.md §3 à §7, textes R-1 à R-5, R-23). Préparée le 2026-11-02
+# pour la vue générale peinte ; **validée par Kevin le 2026-11-02**. Source UNIQUE de la géométrie ; un changement de composition se
+# fait ICI d'abord. Contrôle : tools/art/plan_check_joh2.py.
+#
+# 24 × 50 cases (dossier : ≈ 24 × 50) ; nord en haut ; x = colonne 0..23, y = rangée 0..49.
+#
+# Composition (tout à angles droits, « nature dense, objets rares ») :
+#   - CHEMIN de terre (=) : entrée à l'ouest (0..10, 20..22), puis vers le nord (x 8..10, y 3..22),
+#     puis vers l'est (y 3..5) jusqu'au bord EST (23, 3..5) : sortie vers la Route 38.
+#   - Nord-est : poche d'herbes hautes H2 (x 13..20, y 8..14), à côté du chemin (évitable).
+#   - Sud-ouest : poche d'herbes hautes H1 (x 1..7, y 23..29), entre le chemin et la falaise ;
+#     en dessous, la FALAISE (R, y 30..31) et la MER (W, x 1..9, y 32..48), décor non surfable [D]
+#     (R-23 « entre la mer et les prés »).
+#   - Sud-est : la FERME MEUMEU en façade (M, 7 × 6, x 13..19, y 24..29 ; porte décor fermée, pas
+#     d'intérieur au JOH2 [D]) et son ENCLOS (clôture f, x 11..21, y 32..42 ; pré e intérieur) avec
+#     3 Écrémeuh, 1 Tauros, 1 Ponyta en décor (JH-28) ; la fermière devant la façade (R-3).
+#   - Prés (.) partout ailleurs, 3 arbres repères (G).
+#
+# Raccords :
+#   OUEST (0, 20..22) ↔ Oliville, bord est (49, 20..22) (mêmes rangées). Le garde d'Oliville ferme
+#     ce passage jusqu'au choix du Pokémon de départ (O-19) ; rien à poser ici.
+#   EST (23, 3..5) ↔ Route 38, bord ouest (0, 3..5) (mêmes rangées).
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   R falaise (bloquée)   W mer (décor, bloquée)
+#   . pré (praticable)   = chemin de terre (praticable)   h herbes hautes (praticables, rencontres)
+#   f clôture de l'enclos (bloquée)   e pré de l'enclos (bloqué, Pokémon de la ferme en décor)
+#   G arbre repère (bloqué)   M Ferme Meumeu (façade, emprise bloquée)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .=h
+
+GRILLE 24 50
+00 TTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTT================
+04 TTTTTTTT================
+05 TTTTTTTT================
+06 TTTTTTTT===............T
+07 TTTTTTTT===............T
+08 TTTTTTTT===..hhhhhhhh..T
+09 TTTTTTTT===..hhhhhhhh.GT
+10 TTTTTTTT===..hhhhhhhh..T
+11 TTTTTTTT===..hhhhhhhh..T
+12 TTTTTTTT===..hhhhhhhh..T
+13 TTTTTTTT===..hhhhhhhh..T
+14 TTTTTTTT===..hhhhhhhh..T
+15 TTTTTTTT===............T
+16 TTTTTTTT===............T
+17 TTTTTTTT===............T
+18 TTTTTTTT===............T
+19 TTTTTTTT===............T
+20 ===========............T
+21 ===========............T
+22 ===========............T
+23 Thhhhhhh...............T
+24 Thhhhhhh.....MMMMMMM...T
+25 Thhhhhhh.....MMMMMMM...T
+26 Thhhhhhh.....MMMMMMM...T
+27 Thhhhhhh.....MMMMMMM...T
+28 Thhhhhhh.....MMMMMMM...T
+29 Thhhhhhh.....MMMMMMM...T
+30 TRRRRRRRRR.............T
+31 TRRRRRRRRR.............T
+32 TWWWWWWWWW.ffffffffff..T
+33 TWWWWWWWWW.feeeeeeeee..T
+34 TWWWWWWWWW.feeeeeeeee..T
+35 TWWWWWWWWW.feeeeeeeee..T
+36 TWWWWWWWWW.feeeeeeeee..T
+37 TWWWWWWWWW.feeeeeeeee..T
+38 TWWWWWWWWW.feeeeeeeee..T
+39 TWWWWWWWWW.feeeeeeeee..T
+40 TWWWWWWWWW.feeeeeeeee..T
+41 TWWWWWWWWW.feeeeeeeee..T
+42 TWWWWWWWWW.ffffffffff..T
+43 TWWWWWWWWW.............T
+44 TWWWWWWWWW...........G.T
+45 TWWWWWWWWW.............T
+46 TWWWWWWWWW......G......T
+47 TWWWWWWWWW.............T
+48 TWWWWWWWWW.............T
+49 TTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_ouest           warp           0,20..22     libre   # PUSH ← → olivine_city, from_route_39 (49, 20..22)
+from_olivine         spawn          0,20..22     libre   # arrivée d'Oliville, tournée →
+warp_est             warp           23,3..5      libre   # PUSH → → route_38, from_route_39 (0, 3..5)
+from_route_38        spawn          23,3..5      libre   # arrivée de la Route 38, tournée ←
+hugo                 dresseur       14,16        bloque  facing=down sight=3 trainer=route_39_youngster_hugo  # Gamin Hugo (R-4), Rattata 6 + Fouinette 7 ; voit (14, 17..19), évitable
+lina                 dresseur       21,11        bloque  facing=left sight=4 trainer=route_39_schoolgirl_lina  # Écolière Lina (R-5), Wattouat 8 ; garde la poche H2, évitable
+fermiere             pnj            16,30        bloque  role=fermiere facing=down  # R-3, devant la façade de la ferme
+ecremeuh_1           pokemon        14,35        bloque  # décor de l'enclos (JH-28)
+ecremeuh_2           pokemon        18,37        bloque  # décor de l'enclos
+ecremeuh_3           pokemon        13,40        bloque  # décor de l'enclos
+tauros               pokemon        17,34        bloque  # décor de l'enclos
+ponyta               pokemon        19,40        bloque  # décor de l'enclos
+route_39_item_1      objet_visible  20,24        bloque  item=potion  # « derrière la ferme » : angle nord-est de la façade [D]
+panneau_route        panneau        12,19        bloque  # R-1, lu depuis (12, 20) ↑
+panneau_ferme        panneau        20,30        bloque  # R-2, lu depuis (20, 31) ↑
+herbes_h1            herbes         3,26         libre   role=H1  # poche sud-ouest (évitable)
+herbes_h2            herbes         16,11        libre   role=H2  # poche nord-est (évitable)
+FIN

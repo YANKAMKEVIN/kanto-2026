@@ -1,0 +1,38 @@
+CONCEPT ART — VUE GÉNÉRALE DU MONT ARGENTÉ, NIVEAU 1 : LE LAC INTÉRIEUR ET LES BARRIÈRES DE ROCHERS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Le premier niveau d'une grotte de haute montagne, en trois bandes : une partie SUD, un LAC au milieu, une partie NORD.
+Légende du plan :
+- gris ardoise foncé = ROCHE PLEINE et parois (marges) ; le liseré plus clair = l'ARÊTE de la paroi ;
+- gris clair = SOL DE GROTTE praticable ;
+- gris-beige semé de cailloux = zones de GRAVATS (éboulis : là vivent les Pokémon sauvages ; bords nets) : trois au sud (gauche, droite en grand), une au nord-ouest ;
+- bleu = un LAC INTÉRIEUR d'eau froide et claire, d'une paroi à l'autre, en travers de la salle : on ne passe au nord qu'en nageant ; trois rochers émergés ;
+- la partie SUD : l'ENTRÉE au milieu du bord bas (la case claire, lumière du dehors) ; à gauche, un couloir vers une SORTIE sur le bord OUEST (la case claire du bord gauche, lumière du dehors : le col de l'autre versant) ;
+- la partie NORD : deux BARRIÈRES DE ROCHERS horizontales (deux rangées de gros rochers d'une paroi à l'autre), chacune percée d'une seule brèche (la rangée du bas : brèche à gauche du centre ; la rangée du haut : brèche à droite du centre) ; tout en haut, une bande étroite avec une ÉCHELLE qui MONTE en haut à droite ;
+- disques gris = ROCHERS isolés, en plus des barrières.
+Respecte ce plan À LA LETTRE : l'entrée au sud, le couloir et la sortie ouest, le lac en travers, les deux barrières de rochers et leurs brèches, l'échelle en haut à droite, les zones de gravats. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale du Mont Sélénite, une grotte du même jeu (Kanto) : respecte EXACTEMENT son traitement de la ROCHE, des gravats, des rochers et des échelles de bois, sa lisibilité. Ne reprends ni ses lampes, ni ses caisses, ni ses personnages.
+
+IMAGE 3 : la vue générale du niveau -1 des Îles Tourbillon, une grotte à lac du même chapitre, déjà peinte : même EAU souterraine claire et froide, même pénombre bleue, mêmes rais de lumière.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le niveau, comme le plan.
+
+AMBIANCE — « la grotte de la montagne » : une grotte de haute montagne, roche grise et froide, un peu de givre sur les parois, un lac intérieur d'eau glacée et limpide, deux barrières de rochers éboulés à franchir ; de la lumière du jour entre par l'entrée sud et par la sortie ouest. Sombre mais lisible, austère, JAMAIS effrayante. Palette : ROCHE gris froid, SOL gris clair, GRAVATS gris-beige, LAC bleu clair à bleu profond, givre blanc discret.
+LIGHT : pénombre froide bleutée ; lumière du jour aux deux ouvertures et par une fissure au-dessus du lac ; aucune lampe, aucune teinte dorée.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; salles, lac, barrières ont des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUNE galerie en diagonale ni en courbe. Les barrières de rochers sont des rangées droites.
+RELIEF : le sol est PLAT ; on ne change de niveau que par l'échelle.
+OBJETS RARES : rien d'autre que les rochers et l'échelle.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des rochers et leur face sud ; les parois nord montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; lampe, caisse, outil ; cristaux, lave, champignons ; glace épaisse, stalactites de glace géantes ; cascade ; escalier, pont, ponton ; ciel, arbres ; galeries courbes ; brouillard épais, vignettage noir ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une grotte de montagne coupée par un lac glacé, puis deux barrières de rochers éboulés percées d'une brèche chacune, jusqu'à une échelle au fond.

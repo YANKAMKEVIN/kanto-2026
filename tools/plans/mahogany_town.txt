@@ -1,0 +1,90 @@
+# Acajou (mahogany_town) — grille fonctionnelle v1 (Chapitre Johto, jalon JOH6 ; dossier
+# docs/design/dossier-joh-07-acajou.md §3, §4 (étapes 6, 9, 13), §11, textes C-16 à C-19, C-45, C-46).
+# Préparée le 2026-11-03 pour la vue générale peinte ; **validée par Kevin le 2026-11-03** (validation
+# d'avance de toutes les grilles Johto restantes). Source UNIQUE de la géométrie ; un changement de
+# composition se fait ICI d'abord. Contrôle : tools/art/plan_check_joh6.py.
+#
+# 36 × 30 cases (dossier : ≈ 36 × 30) ; nord en haut ; x = colonne 0..35, y = rangée 0..29.
+#
+# Composition (petite ville de montagne, tout à angles droits ; antennes sur la boutique) :
+#   - RUE DE L'OUEST (p, y 14..16) du bord OUEST (Route 42) à la RUE PRINCIPALE (p, x 16..18) qui
+#     monte au bord NORD (16..18, 0), vers la Route 43 ; RUE DU SUD (p, y 25..27). Falaises (R) de
+#     part et d'autre de la sortie nord.
+#   - CENTRE (C, 8 × 7, x 3..10, y 7..13, portes (6..7, 13)) à l'ouest ; devant lui, SAMUEL le
+#     samedi (4, 14). BOUTIQUE DE SOUVENIRS (O, 8 × 7, x 22..29, y 7..13, portes (25..26, 13)) à
+#     l'est, avec l'ANTENNE sur son toit (repère, C-26) ; c'est l'entrée du repaire (intérieur
+#     tools/plans/mahogany_souvenir_shop.txt).
+#   - Maison 1 (m, 7 × 6, porte (6, 24)) et Maison 2 (N, 7 × 6, porte (25, 24)) sur la rue du sud.
+#   - Habitant (21, 15) et habitante (12, 20) ; panneau (14, 13).
+#   - Pas d'Arène ni de Route 44 (hors périmètre, cadre §1) : l'emplacement de l'Arène est réservé
+#     (repère « reserve_arene », x 11..14, y 19..24) [D] ; le bord EST reste fermé.
+#
+# Raccords :
+#   OUEST (0, 14..16) ↔ Route 42, bord est (71, 9..11) (rangées différentes, warps case à case).
+#   NORD (16..18, 0) ↔ Route 43, bord sud (10..12, 51) (colonnes différentes, warps case à case).
+#
+# Légende :
+#   T forêt et bordure d'arbres (bloquée)   R falaise (bloquée)   . pelouse   p pavé (praticable)
+#   x haie (bloquée)   G arbre repère (bloqué)   C Centre Pokémon   O boutique de souvenirs
+#   m Maison 1   N Maison 2 (emprises bloquées)   D porte d'un bâtiment (praticable, STEP_ON ↑)
+# Emprises comme à Kanto : Centre et boutique 8 × 7 (portes = 4e et 5e colonnes du bas), maisons
+# 7 × 6 (porte = 4e colonne).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 36 caractères), puis POSITIONS.
+
+PRATICABLES .pD
+
+GRILLE 36 30
+00 TTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTT
+01 TRRRRRRRRRRRRR..ppp..RRRRRRRRRRRRRRT
+02 TRRRRRRRRRRRRR..ppp..RRRRRRRRRRRRRRT
+03 TRRRRRRRRRRRRR..ppp..RRRRRRRRRRRRRRT
+04 T...............ppp................T
+05 T............G..ppp.............G..T
+06 T...............ppp................T
+07 T..CCCCCCCC.....ppp...OOOOOOOO.x...T
+08 T..CCCCCCCC.....ppp...OOOOOOOO.x...T
+09 T..CCCCCCCC.....ppp...OOOOOOOO.x...T
+10 T..CCCCCCCC.....ppp...OOOOOOOO.x...T
+11 T..CCCCCCCC.....ppp...OOOOOOOO.x...T
+12 T..CCCCCCCC.....ppp...OOOOOOOO.x...T
+13 T..CCCDDCCC.....ppp...OOODDOOO.x...T
+14 ppppppppppppppppppp................T
+15 ppppppppppppppppppp................T
+16 ppppppppppppppppppp..............G.T
+17 T...............ppp................T
+18 T.G.............ppp................T
+19 T..mmmmmmm......ppp.x.NNNNNNN......T
+20 T..mmmmmmm......ppp.x.NNNNNNN......T
+21 T..mmmmmmm..G...ppp.x.NNNNNNN..G...T
+22 T..mmmmmmm......ppp.x.NNNNNNN......T
+23 T..mmmmmmm......ppp.x.NNNNNNN......T
+24 T..mmmDmmm......ppp.x.NNNDNNN......T
+25 Tpppppppppppppppppppppppppppppp....T
+26 Tpppppppppppppppppppppppppppppp....T
+27 Tpppppppppppppppppppppppppppppp....T
+28 T.G..............................G.T
+29 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_ouest           warp           0,14..16     libre    # PUSH ← → route_42, from_mahogany (71, 9..11)
+from_route_42        spawn          0,14..16     libre   facing=right  # arrivée de la Route 42
+arrivee_titre        declencheur    3,14..16     libre   drapeau=johto_mahogany_arrived  # titre de zone « Acajou », une fois
+warp_nord            warp           16..18,0     libre    # PUSH ↑ → route_43, from_mahogany (10..12, 51)
+from_route_43        spawn          16..18,0     libre   facing=down  # arrivée de la Route 43
+porte_centre         warp           6..7,13      libre    # STEP_ON ↑ → mahogany_center (le déserteur y attend après le repaire, C-45)
+porte_boutique       warp           25..26,13    libre    # STEP_ON ↑ → mahogany_souvenir_shop, entrance (C-19, C-28, C-29)
+porte_maison_1       warp           6,24         libre    # STEP_ON ↑ → mahogany_house_1
+porte_maison_2       warp           25,24        libre    # STEP_ON ↑ → mahogany_house_2
+retour_centre        spawn          6..7,14      libre    # tournée ↓ ; point de Vol
+retour_boutique      spawn          25..26,14    libre    # tournée ↓ (sortie normale et Corde Sortie du repaire)
+retour_maison_1      spawn          6,25         libre  
+retour_maison_2      spawn          25,25        libre  
+antenne              repere         27..28,7     bloque  role=vue  # antenne sur le toit de la boutique (C-26, C-39) ; décor
+samuel               pnj            4,14         bloque  role=guide jour=samedi facing=down  # C-46, devant le Centre ; absent hors du samedi
+habitant             pnj            21,15        bloque  role=habitant facing=left  # C-17
+habitante            pnj            12,20        bloque  role=habitante facing=right  # C-18
+panneau_ville        panneau        14,13        bloque   # C-16, lu depuis (14, 14) ↑
+reserve_arene        repere         11..14,19..24 libre   role=reserve  # emplacement de l'Arène d'Acajou (hors périmètre) [D]
+FIN

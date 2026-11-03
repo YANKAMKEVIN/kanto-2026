@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — SALLE D'OLGA, LIGUE POKÉMON (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte Olga, membre du Conseil des Quatre (type Glace), premier des quatre combats de la Ligue au Plateau Indigo. AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : c'est la CIBLE du rendu, de la richesse, de la lumière, de la vue de trois-quarts et du cadrage (sol vaste, mur du fond vers 40 % de la hauteur) ; ce n'est PAS le lieu à peindre : ne reprends ni ses piliers de roche, ni son médaillon, ni ses bannières rouges.
+
+LIEU : la première salle du Conseil des Quatre, au cœur du Plateau Indigo : une salle d'honneur construite (PAS une grotte naturelle) envahie par la GLACE : murs de grands blocs de pierre bleu-gris couverts de givre, hauts piliers de pierre gainés de glace avec des stalactites, grappes de CRISTAUX DE GLACE bleu clair translucides aux pieds des murs et dans les angles, au fond une grande porte double sombre à ferrures dorées (la sortie vers la salle suivante) au sommet de deux ou trois marches givrées. Le SOL est un dallage de pierre recouvert d'une GLACE polie et lisse, bleu pâle, avec des reflets, des veines blanches et une fine neige poudreuse dans les joints. Lumière FROIDE bleutée et blanche qui tombe de hautes fenêtres givrées en haut à gauche, rayons doux, éclats lumineux dans les cristaux, petits flocons en suspension ; ambiance solennelle et glaciale.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra sur la GAUCHE de la salle, regard légèrement vers la DROITE, en trois-quarts, comme sur IMAGE 1 : point de fuite vers x 62 %. Éléments de GAUCHE proches, grands, coupés par le bord gauche et par le haut ; ceux de droite plus petits et plus lointains.
+
+CADRAGE (impératif) : le PIED DU MUR DU FOND est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : sol plat et nu (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu au premier plan.
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, banderole avec texte, interface, texte, lettres, chiffres, logo, signature, cadre, pixel art.

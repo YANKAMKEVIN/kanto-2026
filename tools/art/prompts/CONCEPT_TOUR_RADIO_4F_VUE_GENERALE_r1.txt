@@ -1,0 +1,36 @@
+CONCEPT ART — INTÉRIEUR DE LA TOUR RADIO DE DOUBLONVILLE, 4e NIVEAU : LA RÉGIE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE PIÈCE rectangulaire de 22 cases sur 14 de sol, entourée de murs, sur fond sombre. Format PAYSAGE.
+Légende du plan :
+- gris-brun foncé = murs, cloisons et hors-champ ; bande brun clair en haut = le MUR DU FOND, vu de face ;
+- beige = SOL, dallage clair, avec des CÂBLES qui courent au sol entre les pupitres (décor peint, discret) ;
+- dans le mur du fond : en haut à gauche, un ESCALIER qui DESCEND (marches sombres) ; en haut à droite, la porte de l'ASCENSEUR puis, tout à droite, un ESCALIER qui MONTE (marches claires) au fond d'une NICHE étroite d'une case de large, fermée par deux CLOISONS courtes (les deux bandes sombres verticales) ;
+- longue rangée de carrés bruns contre le mur du fond = un MUR D'ÉCRANS de contrôle (écrans éteints ou qui montrent seulement des courbes, sans texte) ;
+- quatre longs rectangles gris foncé à petits voyants = deux grands PUPITRES DE RÉGIE sur deux rangées, chacun coupé en son milieu par un passage de deux cases : des consoles de mixage à curseurs et boutons, quelques voyants verts ;
+- trois carrés bruns dans les coins = trois PLANTES EN POT.
+Respecte ce plan À LA LETTRE : le mur d'écrans en haut, les deux rangées de pupitres coupées en leur milieu, la niche étroite de l'escalier qui monte en haut à droite, l'escalier qui descend en haut à gauche, l'ascenseur. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le 3e niveau de la même tour, déjà peint. Respecte EXACTEMENT son rendu : même sol, mêmes murs, mêmes escaliers, même porte d'ascenseur, même lumière neutre. Ne reprends PAS sa composition (ni rayonnages, ni réserve).
+
+IMAGE 3 : un intérieur du même jeu (le poste de garde de la Route 15) : même pinceau, même découpe de la pièce sur fond sombre.
+
+Format : PAYSAGE 1536 × 1024, la pièce au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « la régie » : le cœur technique de la radio, des consoles, des écrans, des câbles au sol, des voyants ; tout tourne encore mais personne n'est aux commandes. Technique, sobre, un peu tendu. Palette : crème, gris anthracite des pupitres, bleu sobre, petits voyants verts et rouges, vert des plantes.
+LUMIÈRE NE (neutre) : éclairage intérieur blanc et diffus ; les écrans ajoutent une faible lueur bleutée ; aucune teinte dorée.
+
+RÈGLE DE LA GRILLE : murs, cloisons, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS.
+OBJETS RARES : seulement les meubles du plan et les câbles au sol ; pas de bibelots, pas d'affiches lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, écrans lisibles, signature, filigrane, cadre, interface, Poké Ball ; fenêtre sur l'extérieur ; vitre ; rayonnage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : la régie d'une radio, un mur d'écrans, deux rangées de consoles et des câbles au sol, et un escalier au fond d'une niche étroite.

@@ -1,0 +1,9 @@
+ED_BALL_FX — effets de lancer de Kanto 2026. Images jointes : IMAGE 1 = maquette VALIDÉE « lancer » (une Poké Ball vole vers la gauche, suivie d'une traînée blanche effilée en arc) ; IMAGE 2 = agrandissement de la Ball et de sa traînée. C'est la CIBLE EXACTE du rendu.
+
+À FAIRE : UNE image paysage 1536 × 1024 contenant DEUX éléments séparés par un grand vide :
+- EN HAUT, sur toute la largeur : la TRAÎNÉE SEULE, horizontale (légèrement bombée vers le haut, comme un arc très ouvert), environ 1300 px de long : un ruban de lumière BLANCHE peinte, opaque et épais (environ 40 px) à son extrémité GAUCHE (là où serait la Ball), qui s'affine et s'efface progressivement jusqu'à une pointe transparente à DROITE ; liseré bleuté très léger, aucun autre élément.
+- EN BAS, au centre : une POKÉ BALL SEULE, ronde, vue de face, environ 420 px de diamètre : moitié haute rouge brillante, moitié basse blanche, bande noire au milieu, bouton blanc cerclé de noir, reflet blanc en haut à gauche, ombres douces peintes, contour fin sombre ; même rendu que l'IMAGE 2.
+
+STYLE : illustration 2D HD peinte comme les maquettes, contours fins, ombres douces.
+
+FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucun texte, aucun cadre, aucun halo autre que la lueur propre de la traînée.

@@ -47,7 +47,6 @@
 					{ "face": "giovanni", "to": "player" },
 					{ "face": "player", "to": "giovanni" },
 					{ "dialogue": "silph_co_giovanni_intro" },
-					{ "champion_card": "silph_co_giovanni", "unless": ["silph_giovanni_met"] },
 					{ "set": ["silph_giovanni_met"] },
 					{ "battle": "silph_co_giovanni", "win": ["silph_giovanni_defeated"] },
 					{ "wait": 0.6, "if": ["silph_giovanni_defeated"] },

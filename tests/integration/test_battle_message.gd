@@ -1,5 +1,5 @@
 extends GutTest
-## Interface de combat, jalon 4B (4/4) : bandeau des messages. Texte tel quel en FONT_BODY,
+## Interface de combat, jalon 4B (4/4) : bandeau des messages. Texte tel quel en BATTLE_MESSAGE_FONT,
 ## 2 lignes au plus, show_message se termine après BATTLE_MESSAGE_HOLD ou au toucher, pas de
 ## « › », place de la grille (à droite de la carte joueur, jamais dessous) à 1920 et 2340.
 
@@ -42,7 +42,7 @@ func test_text_shown_as_is_in_body_font() -> void:
 	assert_true(_banner.visible)
 	assert_eq(_banner.get_text(), INTRO, "affiché tel quel")
 	var label := _banner.get_label()
-	assert_eq(label.get_theme_font_size(&"font_size"), UiTokens.FONT_BODY)
+	assert_eq(label.get_theme_font_size(&"font_size"), UiTokens.BATTLE_MESSAGE_FONT)
 	assert_eq(label.max_lines_visible, 2, "2 lignes au plus")
 	assert_eq(label.autowrap_mode, TextServer.AUTOWRAP_WORD_SMART)
 	assert_false(label.text.contains("›"), "pas d'indicateur de suite")

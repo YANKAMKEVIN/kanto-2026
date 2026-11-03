@@ -25,11 +25,11 @@ const ROUTES: Array = [
 ]
 ## Clé du fichier de PNJ → [étage, position de la grille, Dresseur, apparence, inévitable].
 const TRAINERS: Dictionary[StringName, Array] = {
-	&"g1_roger": [&"dark_cave_1f", "g1_roger", &"dark_cave_roger", &"hiker", true],
+	&"g1_roger": [&"dark_cave_1f", "g1_roger", &"dark_cave_roger", &"mountaineer", true],
 	&"g2_simon": [&"dark_cave_1f", "g2_simon", &"dark_cave_simon", &"pokemaniac", false],
 	&"g5_yanis": [&"dark_cave_1f", "g5_yanis", &"dark_cave_yanis", &"pokemaniac", false],
 	&"g3_elsa": [&"dark_cave_b1f", "g3_elsa", &"dark_cave_elsa", &"lass", false],
-	&"g4_marcel": [&"dark_cave_b1f", "g4_marcel", &"dark_cave_marcel", &"hiker", true],
+	&"g4_marcel": [&"dark_cave_b1f", "g4_marcel", &"dark_cave_marcel", &"mountaineer", true],
 }
 const ITEMS: Dictionary[StringName, Array] = {
 	&"dark_cave_1f_item_1": [&"dark_cave_1f", &"escape_rope"],

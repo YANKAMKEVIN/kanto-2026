@@ -5,7 +5,7 @@
 		"team": [{ "species": "rattata", "level": 11 }, { "species": "zubat", "level": 11 }]
 	},
 	"mt_moon_rocket_2": {
-		"name": "Sbire Rocket", "ai": "random",
+		"name": "Sbire Rocket", "class": "sbire_rocket_f", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
 		"team": [{ "species": "ekans", "level": 12 }, { "species": "sandshrew", "level": 12 }]
 	},
