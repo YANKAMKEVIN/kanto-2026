@@ -549,3 +549,11 @@ clés `light_profile` et `period` de `DebugStart`, départ `johto_light_test` (c
 Tests : `test_johto_regions.gd` (5), zones (+1), Vol, Pokédex (bibliothèque, requête, écrans)
 réalignés ; 124 tests des fichiers touchés verts.
 
+### T16 — clôture du code (2026-11-03)
+Captures Mac (Movie Maker, départ `johto_light_test`, Route 1 sous `johto_auto`) : matin (lumière
+chaude rasante, ombres longues), jour (blanc neutre), nuit (étalonnage bleu, sans liseré) bien
+distincts ; planche `build/captures/joh0/johto-lumiere-matin-jour-nuit.jpg` (hors dépôt). Réglage
+fin des trois profils en phase DA. **À Kevin** : T5 (validation de la v10 seule, sur une copie de
+sa vraie sauvegarde), puis le lot B–D sur le téléphone (`jalon-joh0.md` §4, critères 6 à 13).
+CI : voir `etat-projet.md`. Prompt de reprise du JOH1 : `etat-projet.md`, entrée du 2026-11-03.
+

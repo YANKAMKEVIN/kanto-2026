@@ -115,12 +115,13 @@ static func slots(pokedex: Pokedex, data: PokemonData, library: PokedexLibrary,
 		type: StringName = &"", text: String = "",
 		region: StringName = REGION_ALL) -> Array[PokedexSlotView]:
 	var result: Array[PokedexSlotView] = []
+	var by_number := _species_by_number(data)
 	var search := fold(text.strip_edges())
 	var show_unknown := filter == Filter.ALL and type.is_empty() and search.is_empty()
 	for number: int in numbers(library, data):
 		if not region.is_empty() and region_of_number(number) != region:
 			continue
-		var species: StringName = _species_at(number, data)
+		var species: StringName = by_number.get(number, &"")
 		var state := state_of(pokedex, species) if not species.is_empty() else State.UNKNOWN
 		if state == State.UNKNOWN:
 			if show_unknown:
@@ -304,13 +305,6 @@ static func height_text(meters: float) -> String:
 ## « 8,5 kg » (une décimale, virgule française).
 static func weight_text(kilograms: float) -> String:
 	return ("%.1f kg" % kilograms).replace(".", ",")
-
-
-static func _species_at(number: int, data: PokemonData) -> StringName:
-	for id: StringName in data.get_species_ids():
-		if data.get_species(id).dex == number:
-			return id
-	return &""
 
 
 static func _species_by_number(data: PokemonData) -> Dictionary[int, StringName]:
