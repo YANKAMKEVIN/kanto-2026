@@ -1,0 +1,36 @@
+CONCEPT ART — INTÉRIEUR DE LA BOUTIQUE DE SOUVENIRS D'ACAJOU (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE PETITE PIÈCE rectangulaire de 13 cases sur 6 de sol, entourée de murs, sur fond sombre. Format PAYSAGE.
+Légende du plan :
+- gris-brun foncé = murs et hors-champ ; bande brun clair en haut = le MUR DU FOND, vu de face ;
+- beige = PLANCHER de bois clair ;
+- en haut à gauche, petit rectangle brun à étagères = un RAYON MURAL de souvenirs (figurines, boules à neige, cartes postales sans texte) ;
+- en haut au centre, deux paires de carrés brun foncé = l'ARRIÈRE-CAISSE : des étagères de bois sombre contre le mur du fond, pleines de souvenirs ; devant elles, les trois carrés bruns = la CAISSE, un comptoir de bois de trois cases ;
+- en haut à droite, le carré à ÉCHELLE = une ÉTAGÈRE contre le mur du fond qui cache un ESCALIER (sur l'image : une simple étagère de bois pleine de souvenirs, un peu de travers, rien ne doit trahir le passage) ;
+- deux carrés bruns au milieu, à gauche et à droite = deux PRÉSENTOIRS bas de souvenirs ;
+- bande rouge sombre au milieu du bas (trois cases) = la SORTIE, un paillasson devant la porte ;
+- disque vert en bas à droite = une PLANTE EN POT.
+Respecte ce plan À LA LETTRE : le rayon mural à gauche, l'arrière-caisse et la caisse au centre, l'étagère de droite, les deux présentoirs, la sortie, la plante. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : l'intérieur d'une boutique du même jeu (la Boutique de Jadielle). Respecte EXACTEMENT son style de rendu : même pinceau, même plancher, mêmes rayonnages, même comptoir, même découpe de la pièce sur fond sombre, vue de dessus de trois quarts. Ne reprends PAS sa composition ni ses personnages, NI SA LUMIÈRE DORÉE.
+
+Format : PAYSAGE 1536 × 1024, la pièce au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « la boutique de souvenirs » : une petite boutique de montagne chaleureuse et un peu encombrée, bois clair, étagères pleines de babioles (figurines de Pokémon stylisées sans détail, boules à neige, mugs, cartes sans texte), un comptoir de bois ; derrière son air innocent, l'étagère de droite cache un passage, mais rien ne le montre. Palette : bois clair et bois sombre, crème des murs, touches colorées des souvenirs, vert de la plante.
+LUMIÈRE NE (neutre) : éclairage intérieur blanc et diffus ; aucune teinte dorée ; ombres propres légèrement bleutées.
+
+RÈGLE DE LA GRILLE : murs, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; la pièce est un rectangle.
+OBJETS RARES : seulement les meubles du plan ; les souvenirs sont SUR les étagères, pas au sol.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; le mur du fond montre sa face.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon vivant, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes ou prix lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; escalier visible, trappe visible ; fenêtre sur l'extérieur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une petite boutique de souvenirs de montagne, bien rangée, où rien ne laisse deviner l'escalier caché derrière l'étagère de droite.

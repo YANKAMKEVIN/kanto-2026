@@ -1,4 +1,4 @@
-# Série Johto — vues générales de l'acte 1 (JOH1 à JOH5)
+# Série Johto — vues générales (acte 1 : JOH1 à JOH5 ; actes 2 et 3 : JOH6 à JOH9)
 
 > 2026-11-03, branche `claude/johto-vues-acte1` depuis `main`. Vues de **DA et de composition** ; la
 > géométrie vient des grilles validées de `tools/plans/` (JOH1 à JOH9 validées par Kevin les 2026-11-02 et
@@ -179,6 +179,55 @@ métallique dans le mur est.
   table de diffusion, baie vitrée, porte de secours) ; la vitre de studio est peinte à mi-hauteur (garde-corps vitré)
   plutôt qu'en cloison de verre du sol au plafond.
 - **Tous** : lumière neutre respectée.
+
+## JOH6 — Tour Cendrée, Route 42, Acajou, boutique, Route 43, Lac Colère, repaire (planche `joh6-vues-v1.png`) — en attente de Kevin
+
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `tour-cendree-1f-vue-generale-v1.png` | r1 / 1 | `tour-pokemon-vue-generale-v1.png` (étage de tour sur fond sombre) |
+| `tour-cendree-b1f-vue-generale-v1.png` | r1 / 1 | 1F + `tour-pokemon-vue-generale-v1.png` |
+| `route-42-vue-generale-v1.png` | r1 / 1 | `route-36-vue-generale-v1.png` (Johto, eau, lumière neutre) |
+| `acajou-vue-generale-v1.png` | r1 / 1 | `rosalia-vue-generale-v1.png` (Johto, tuiles) |
+| `boutique-souvenirs-acajou-v1.png` | r1 / 1 | `boutique-jadielle-v1.webp` (intérieur de boutique) |
+| `route-43-vue-generale-v1.png` | r1 / 1 | `route-35-vue-generale-v1.png` (poste, clôture) |
+| `lac-colere-vue-generale-v1.png` | r1 / 1 | Route 42 (ci-dessus) + `route-13-vue-generale-v1.png` |
+| `repaire-acajou-b1f-vue-generale-v1.png` | r1 / 1 | `souterrain-doublonville-vue-generale-v1.png` (béton, néons) |
+| `repaire-acajou-b2f-vue-generale-v1.png` | r1 / 1 | B1F + Souterrain |
+| `repaire-acajou-b3f-vue-generale-v1.png` | r1 / 1 | B2F + Souterrain |
+
+Outil : styles par grille étendus (cendres, poutres, trous et échelles de la Tour Cendrée ; porte de grotte murée ;
+boutique de souvenirs à antenne ; poste de péage ; rocher émergé ; statues, caisses, dalles fléchées, cases d'arrêt,
+grilles de cellules, cage à ondes du repaire ; mur, sortie, caisse et escalier caché de la boutique).
+
+Défauts pris **[D]** : Tour Cendrée en bois carbonisé, cendres grises, rais de lumière froide par les étages disparus,
+sans flamme ni fumée ; la salle des trois chiens est peinte **vide** (les chiens sont des sprites) ; repaire en béton gris
+éclairé au néon, **statues de Persian dorées aux yeux rouges** dans des niches, dalles fléchées bleu acier à lueur,
+cellules à barreaux d'acier, porte à code à voyant rouge, **générateur d'ondes** à bobines de cuivre et cœur bleu-violet,
+**cage à ondes vide** à barreaux clairs et champ bleu-violet ; boutique de souvenirs à figurines, boules à neige et mugs,
+étagère de droite « de travers » sans trahir l'escalier ; Acajou avec sapins dans la forêt et antenne fine sur la boutique
+à toit de tuiles ; Lac Colère rectangulaire aux rives droites, deux rochers émergés, sans ombre dans l'eau.
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **Tour Cendrée 1F** : la bande de plancher effondré est peinte plus étroite que ses 2 rangées ; les poutres verticales
+  (x 12, x 22) sont rendues en poteaux debout ; le reste (trous isolés, poutres au sol, dallage d'entrée, échelle) est conforme.
+- **Tour Cendrée B1F** : les colonnes calcinées sont rendues en blocs de pierre bas ; l'alcôve du sud-ouest est là.
+- **Route 42** : conforme (montagne, contrefort et porte murée, lac d'une paroi à l'autre, îlot, éperon à passage unique,
+  trois poches d'herbes) ; le chemin ouest est un peu plus haut que ses rangées 9..11 à l'approche du lac.
+- **Acajou** : conforme ; la boutique de souvenirs porte une enseigne de bois sans texte en plus ; les falaises du nord
+  sont des murets de roche bas.
+- **Boutique de souvenirs** : conforme ; les figurines reprennent des silhouettes de Pokémon connus (souvenirs, pas de collision).
+- **Route 43** : conforme (chemin droit, trois poches, poste à porte ouest, clôture et passage d'une case) ; le poste
+  est peint comme une petite maison plutôt qu'un poste de garde-route ; le passage de la clôture est peint à droite du
+  chemin au lieu de sa colonne centrale (11, 24).
+- **Lac Colère** : conforme (lac de forêt à forêt, rives nord et sud, chemin du sud, sentier du nord-est, quatre poches,
+  deux rochers) ; le sentier du nord-est est court (3 cases visibles sur 6).
+- **Repaire B1F** : conforme (hall, couloir, trois passages, statues dans leurs niches, caisses, escaliers).
+- **Repaire B2F** : conforme (salle d'arrivée, dalles et sens des flèches, porte à code et escalier, couloir des cellules,
+  trois cellules et levier) ; la cellule du milieu montre son sol, les deux autres sont pleines, conforme.
+- **Repaire B3F** : conforme (sas, cloison à passage unique, machine, pupitre, cage ouverte au sud, caisses) ; la cage est
+  reliée à la machine par des tuyaux (décor).
+- **Tous** : lumière neutre respectée ; intérieurs au néon froid.
 
 ## Bilan de l'acte 1
 
