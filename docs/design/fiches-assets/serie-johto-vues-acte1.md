@@ -145,6 +145,42 @@ herbeux (pas de falaise) ; puits = roche sombre humide, eau claire, lumière du 
   alcôve et ses deux caisses) ; le couloir de droite est un peu plus large que ses 3 cases.
 - **Toutes** : lumière neutre respectée ; les grottes en pénombre bleue froide.
 
-## JOH5
+## JOH5 — Tour Radio 1F à 5F (planche `joh5-vues-v1.png`) — en attente de Kevin
 
-Tour Radio 1F à 5F : en cours (cinq intérieurs, référence `poste-15-v1.png`, chaque étage joint au suivant).
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `tour-radio-1f-vue-generale-v1.png` | r1 / 1 | `poste-15-v1.png` (intérieur du J22, lumière neutre) |
+| `tour-radio-2f-vue-generale-v1.png` | r1 / 1 | 1F + `poste-15-v1.png` |
+| `tour-radio-3f-vue-generale-v1.png` | r1 / 1 | 2F + `poste-15-v1.png` |
+| `tour-radio-4f-vue-generale-v1.png` | r1 / 1 | 3F + `poste-15-v1.png` |
+| `tour-radio-5f-vue-generale-v1.png` | r1 / 1 | 4F + `poste-15-v1.png` |
+
+Chaque étage a reçu l'étage précédent en référence : même sol dallé, mêmes murs crème à bandeau bleu, même porte
+d'ascenseur, mêmes escaliers, d'un bout à l'autre de la tour.
+
+Défauts pris **[D]** : décor « radio moderne » (murs crème, bandeau bleu sobre, logo rond à ondes sans texte au 1F,
+panneaux acoustiques gris dans les studios, lampes « à l'antenne » éteintes, mur d'écrans à courbes, câbles au sol de la
+régie, baie du 5F sur les toits de Doublonville de jour) ; l'ascenseur en panne porte un petit panneau sans texte ;
+la réserve du 3F est une pièce de cartons derrière une porte cadenassée ; l'escalier de secours du 5F est une porte
+métallique dans le mur est.
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **1F** : conforme (niche de l'escalier et ses deux cloisons, ascenseur, comptoir, bancs, sortie) ; les deux
+  « plantes » des coins hauts (M en (1, 4) et (22, 4)) sont peintes en caisses de bois.
+- **2F** : conforme (deux studios vitrés et leurs portes au sud, pupitre et haut-parleur au milieu du couloir du bas,
+  escaliers, ascenseur) ; les plantes des coins sont là.
+- **3F** : conforme (cloison centrale à un seul passage en bas, cinq rayonnages, réserve et sa porte à l'ouest) ; la
+  niche du gardien (13, 11) ne se lit pas comme une niche (la cloison y est simplement interrompue).
+- **4F** : conforme (mur d'écrans, deux rangées de pupitres coupées au milieu, câbles) ; les deux cloisons de la niche
+  de l'escalier qui monte (x 19 et x 21) sont rendues en piliers de part et d'autre des marches, pas en cloisons de deux cases ;
+  une plante de plus dans le coin nord-ouest (grille : M en (1, 1), conforme).
+- **5F** : conforme (bureau fermé et sa porte, palier, ascenseur, escalier qui descend, vitre de studio percée au centre,
+  table de diffusion, baie vitrée, porte de secours) ; la vitre de studio est peinte à mi-hauteur (garde-corps vitré)
+  plutôt qu'en cloison de verre du sol au plafond.
+- **Tous** : lumière neutre respectée.
+
+## Bilan de l'acte 1
+
+21 vues générales en 21 essais (JOH1 : 3, JOH2 : 3, JOH3 : 5, JOH4 : 5, JOH5 : 5), aucun refus de Codex. Validées :
+JOH1. À valider : JOH2 à JOH5 (planches `joh2` à `joh5-vues-v1.png`).
