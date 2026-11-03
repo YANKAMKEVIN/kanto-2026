@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw4oi7xp18u"
-path="res://.godot/imported/logo_kanto_2026_ombre.png-aa74956659f239c6c8380b1050d5fe4a.ctex"
+uid="uid://bl7g5h6tojgv7"
+path="res://.godot/imported/splash_pokemake.png-93b32de4e84bb84e7794671feea5886d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/opening/logo_kanto_2026_ombre.png"
-dest_files=["res://.godot/imported/logo_kanto_2026_ombre.png-aa74956659f239c6c8380b1050d5fe4a.ctex"]
+source_file="res://assets/ui/opening/splash_pokemake.png"
+dest_files=["res://.godot/imported/splash_pokemake.png-93b32de4e84bb84e7794671feea5886d.ctex"]
 
 [params]
 

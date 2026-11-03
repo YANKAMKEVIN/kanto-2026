@@ -1770,7 +1770,7 @@ const CAPTION_CENTER_ANCHOR := 0.5
 ## Écran titre (OUV.1, dossier 13 §5.2 ; composition de reference/ouverture-titre-v1.webp, règle
 ## 10 : le décor et le logo de l'image ne font pas foi). Logo en haut à gauche, colonne de cartes
 ## à droite (à gauche en mode gaucher, le logo passe alors à droite) ; la vraie carte derrière.
-## Largeur du logo détouré (assets/ui/opening/logo_kanto_2026.png, 1280 × 602 à la source).
+## Largeur du logo détouré (assets/ui/opening/logo_pokemake.png, 1280 px de large à la source).
 const TITLE_LOGO_WIDTH := 760
 ## Étiquette de version du titre (J34) : opacité du texte TEXT_MUTED, en bas du côté du logo.
 const TITLE_VERSION_ALPHA := 0.75

@@ -3,7 +3,8 @@
 
 Sources (gardées dans docs/design/fiches-assets/daf-7-identite/) :
 - fond-icone-codex.png : paysage peint à l'heure dorée (Codex, prompt-fond-icone.txt) ;
-- le « K » est détouré du logo validé (assets/ui/opening/logo_kanto_2026.png, OUV.1).
+- le « K » est détouré de l'ancien logo « Kanto 2026 » (docs/design/reference/logo-kanto-2026-v1.png,
+  OUV.1 ; remplacé à l'écran par « Pokemake » au J34, l'icône garde son K).
 
 Sorties (assets/ui/icon/) :
 - icon_fond_432.png         fond de l'adaptive icon (108 dp à xxxhdpi), plein cadre ;
@@ -22,7 +23,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 RACINE = Path(__file__).resolve().parents[2]
 SOURCES = RACINE / "docs/design/fiches-assets/daf-7-identite"
-LOGO = RACINE / "assets/ui/opening/logo_kanto_2026.png"
+LOGO = RACINE / "docs/design/reference/logo-kanto-2026-v1.png"
 SORTIE = RACINE / "assets/ui/icon"
 
 CADRE = 432          # 108 dp × 4 (xxxhdpi)

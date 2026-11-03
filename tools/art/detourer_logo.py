@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Détourage reproductible du logo « Kanto 2026 » validé (OUV.1, dossier 13 §9.0 bis).
+"""Détourage reproductible du logo du jeu (OUV.1, dossier 13 §9.0 bis ; J34 : logo « Pokemake »).
 
-Le logo validé (r2, `build/art/VALIDE_LOGO_KANTO_2026.png`, 1536 × 1024, hors dépôt) est peint
-sur un fond sombre lumineux : lettres dorées à contour bleu nuit, « 2026 » bleu clair, halo doré
-qui va jusqu'aux bords de l'image. Ce script en tire :
+Le logo validé (« Kanto 2026 » r2 `build/art/VALIDE_LOGO_KANTO_2026.png`, puis « Pokemake »
+`build/art/VALIDE_LOGO_POKEMAKE.png`, 1536 × 1024, hors dépôt) est peint sur un fond sombre
+lumineux : lettres dorées à contour bleu nuit, halo doré qui va jusqu'aux bords de l'image. Ce
+script en tire, pour un nom de sortie NOM (défaut `pokemake`) :
 
-  assets/ui/opening/logo_kanto_2026.png    logo détouré (écran titre), halo doux gardé
-  assets/ui/opening/splash_kanto_2026.png  image de démarrage 1920 × 1080 : le logo détouré
-                                           posé sur un fond uni sombre et chaud (SPLASH_BG)
+  assets/ui/opening/logo_NOM.png    logo détouré (écran titre), halo doux gardé
+  assets/ui/opening/splash_NOM.png  image de démarrage 1920 × 1080 : le logo détouré
+                                    posé sur un fond uni sombre et chaud (SPLASH_BG)
 
 Méthode (aucune retouche à la main, relançable) :
   1. **cœur opaque** : les lettres (or et bleu clair : luminance haute) et leur contour bleu nuit
@@ -19,8 +20,9 @@ Méthode (aucune retouche à la main, relançable) :
      net ; puis recadrage sur ce qui reste visible et mise à la largeur LOGO_WIDTH.
 
 Usage :
-  python3 tools/art/detourer_logo.py [chemin du logo validé]
-(défaut : build/art/VALIDE_LOGO_KANTO_2026.png du dépôt principal, voir DEFAULT_SOURCE).
+  python3 tools/art/detourer_logo.py [chemin du logo validé] [NOM]
+(défaut : build/art/VALIDE_LOGO_POKEMAKE.png du dépôt principal, NOM « pokemake » ; l'ancien
+logo : `detourer_logo.py build/art/VALIDE_LOGO_KANTO_2026.png kanto_2026`).
 """
 
 from __future__ import annotations
@@ -32,10 +34,9 @@ import numpy as np
 from PIL import Image, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SOURCE = Path("/Users/kevinyankam/dev/kanto-2026/build/art/VALIDE_LOGO_KANTO_2026.png")
+DEFAULT_SOURCE = Path("/Users/kevinyankam/dev/kanto-2026/build/art/VALIDE_LOGO_POKEMAKE.png")
+DEFAULT_NAME = "pokemake"
 OUT_DIR = ROOT / "assets" / "ui" / "opening"
-LOGO_OUT = OUT_DIR / "logo_kanto_2026.png"
-SPLASH_OUT = OUT_DIR / "splash_kanto_2026.png"
 
 # Cœur : luminance (0–1) au-dessus de laquelle un pixel est une lettre.
 CORE_LUMA = 0.8
@@ -115,18 +116,21 @@ def _resized(image: Image.Image, target_width: int) -> Image.Image:
 
 def main() -> None:
     source = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_SOURCE
+    name = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_NAME
+    logo_out = OUT_DIR / f"logo_{name}.png"
+    splash_out = OUT_DIR / f"splash_{name}.png"
     if not source.exists():
         raise SystemExit(f"logo validé introuvable : {source}")
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     logo = detour(source)
-    _resized(logo, LOGO_WIDTH).save(LOGO_OUT, optimize=True)
+    _resized(logo, LOGO_WIDTH).save(logo_out, optimize=True)
     splash = Image.new("RGBA", SPLASH_SIZE, SPLASH_BG + (255,))
     small = _resized(logo, SPLASH_LOGO_WIDTH)
     offset = ((SPLASH_SIZE[0] - small.width) // 2, (SPLASH_SIZE[1] - small.height) // 2)
     splash.alpha_composite(small, offset)
-    splash.convert("RGB").save(SPLASH_OUT, optimize=True)
-    print(f"{LOGO_OUT.relative_to(ROOT)} : {LOGO_WIDTH} px de large")
-    print(f"{SPLASH_OUT.relative_to(ROOT)} : {SPLASH_SIZE[0]} × {SPLASH_SIZE[1]}")
+    splash.convert("RGB").save(splash_out, optimize=True)
+    print(f"{logo_out.relative_to(ROOT)} : {LOGO_WIDTH} px de large")
+    print(f"{splash_out.relative_to(ROOT)} : {SPLASH_SIZE[0]} × {SPLASH_SIZE[1]}")
 
 
 if __name__ == "__main__":

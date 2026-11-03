@@ -4,9 +4,8 @@ extends CanvasLayer
 ## qui ne fait foi ni pour le décor ni pour le logo, règle 10).
 ##
 ## Calque LAYER_MENU posé sur la vraie carte en mode décor ([TitleBackdrop], côté monde) :
-## - logo « Kanto 2026 » détouré en haut à gauche, sans cadre, sur une ombre douce (DAF.7b) ; logo
-##   « Pokemake » à peindre quand Kevin aura tranché l'orthographe (J34) ; version du build en bas du
-##   même côté ;
+## - logo « Pokemake » détouré en haut à gauche, sans cadre, sur une ombre douce (DAF.7b ; nom
+##   décidé par Kevin le 2026-11-03, J34) ; version du build en bas du même côté ;
 ## - colonne de cartes à droite (à gauche en mode gaucher, [method set_left_handed], le logo passe
 ##   alors à droite) : **Continuer** (la plus grande : buste, prénom, lieu, temps de jeu, badges,
 ##   captures), **Nouvelle partie**, **Paramètres** ; l'entrée mise en avant porte un liseré doré ;
@@ -27,10 +26,10 @@ signal settings_back_requested
 ## Un réglage change dans les Paramètres (valeur du réglage).
 signal setting_changed(key: StringName, value: Variant)
 
-const LOGO: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026.png")
+const LOGO: Texture2D = preload("res://assets/ui/opening/logo_pokemake.png")
 ## Ombre douce du logo (DAF.7b, `tools/art/ombre_logo.py`) : même cadre que le logo, posée sous
 ## lui, décalée vers le bas de [constant LOGO_SHADOW_DROP] pixels de référence.
-const LOGO_SHADOW: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026_ombre.png")
+const LOGO_SHADOW: Texture2D = preload("res://assets/ui/opening/logo_pokemake_ombre.png")
 const LOGO_SHADOW_DROP: float = 6.0
 ## Étiquette de version : largeur et hauteur de sa zone (texte aligné du côté du logo).
 const VERSION_WIDTH: float = 480.0

@@ -663,10 +663,10 @@ func _assert_in_the_bedroom() -> void:
 	assert_true(_boot.get_hud().visible)
 
 
-## Splash (§5.1) : le logo Kanto 2026 sur un fond uni sombre et chaud, filtré, à l'échelle.
+## Splash (§5.1) : le logo Pokemake sur un fond uni sombre et chaud, filtré, à l'échelle.
 func test_the_boot_splash_is_the_kanto_logo() -> void:
 	var image: String = ProjectSettings.get_setting("application/boot_splash/image", "")
-	assert_eq(image, "res://assets/ui/opening/splash_kanto_2026.png")
+	assert_eq(image, "res://assets/ui/opening/splash_pokemake.png")
 	assert_true(FileAccess.file_exists(image))
 	assert_true(ProjectSettings.get_setting("application/boot_splash/use_filter", false))
 	var bg: Color = ProjectSettings.get_setting("application/boot_splash/bg_color")
