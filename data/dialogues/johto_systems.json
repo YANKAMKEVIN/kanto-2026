@@ -1,26 +1,46 @@
 {
 	"storage_offline": {
 		"narration": true,
-		"pages": [
-			"Le réseau de Kanto ne répond pas."
+		"variants": [
+			{
+				"pages": [
+					"Le réseau de Kanto ne répond pas."
+				],
+				"draft": true
+			}
 		]
 	},
 	"johto_return_test_before": {
 		"narration": true,
-		"pages": [
-			"(Scène de test du JOH0.)\nLes Poké Balls de ton équipe sont là."
+		"variants": [
+			{
+				"pages": [
+					"(Scène de test du JOH0.)\nLes Poké Balls de ton équipe sont là."
+				],
+				"draft": true
+			}
 		]
 	},
 	"johto_return_test_after": {
 		"narration": true,
-		"pages": [
-			"Le réseau de Kanto répond de nouveau."
+		"variants": [
+			{
+				"pages": [
+					"Le réseau de Kanto répond de nouveau."
+				],
+				"draft": true
+			}
 		]
 	},
 	"egg_hatched": {
 		"narration": true,
-		"pages": [
-			"Oh ?\n… L'œuf a éclos : c'est {pokemon} !"
+		"variants": [
+			{
+				"pages": [
+					"Oh ?\n… L'œuf a éclos : c'est {pokemon} !"
+				],
+				"draft": true
+			}
 		]
 	},
 	"trade_terminal_item": {
@@ -35,7 +55,8 @@
 					"cancel": "ANNULER",
 					"confirm_pages": [],
 					"cancel_pages": []
-				}
+				},
+				"draft": true
 			}
 		]
 	}

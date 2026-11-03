@@ -286,6 +286,7 @@ func _ready() -> void:
 	_clock_timer.name = "WorldClockTimer"
 	_clock_timer.wait_time = WORLD_CLOCK_SYNC_SECONDS
 	_clock_timer.autostart = true
+	_clock_timer.process_mode = Node.PROCESS_MODE_PAUSABLE
 	_clock_timer.timeout.connect(_world_clock.sync)
 	add_child(_clock_timer)
 	_menu_screen.set_clock(_world_clock)

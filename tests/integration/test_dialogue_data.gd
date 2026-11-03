@@ -176,13 +176,22 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## Jalon 17 (T24) : avertissement sans Flash, joué par FlashDirector (dossier 21 T-3).
 ## Jalon 20 (T13) : refus du panneau sans la Clé (T-50), joué par ElevatorDirector.
 ## Passe systèmes 2 (S2B) : refus du Vélo (MountDirector) et Flûte « ailleurs » (KeyItemDirector).
+## Chapitre Johto (JOH0, `jalon-joh0.md`) : répliques des systèmes, jouées par le code (Boot,
+## [LocalTradeDirector]) ou par les scènes de test (`johto_return_test`, `johto_confiscate_test`,
+## jouées par la clé « cutscene » d'un départ de débogage) ; textes [D] en brouillon jusqu'à la
+## relecture de Kevin.
+const IDS_JOH0: Array[StringName] = [&"storage_offline", &"egg_hatched", &"trade_terminal_item",
+	&"johto_return_test_before", &"johto_return_test_after"]
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
 	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
 	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice",
 	# Jalon 32 (T5) : répliques du terminal d'échange local ([LocalTradeDirector]).
 	&"trade_terminal_none", &"trade_terminal_confirm",
 	# Lot 32P : fin de la Repousse (Boot) et Cherch'Objet ([KeyItemDirector]).
-	&"repel_wore_off", &"itemfinder_north", &"itemfinder_south", &"itemfinder_east", &"itemfinder_west", &"itemfinder_here", &"itemfinder_nothing"]
+	&"repel_wore_off", &"itemfinder_north", &"itemfinder_south", &"itemfinder_east", &"itemfinder_west", &"itemfinder_here", &"itemfinder_nothing",
+	# Chapitre Johto (JOH0) : PC hors ligne (Boot), éclosion (Boot), objet du terminal
+	# ([LocalTradeDirector]).
+	&"storage_offline", &"egg_hatched", &"trade_terminal_item"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.
@@ -1438,7 +1447,7 @@ func test_library_loads_without_error() -> void:
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
 		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 + IDS_J32 + IDS_J32_CT + IDS_32P \
-		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids()
+		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids() + IDS_JOH0
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
@@ -1468,6 +1477,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted(PLAYED_J29 + PLAYED_J30 + [
+		# Chapitre Johto (JOH0) : scènes de test du vol et du retour de l'équipe.
+		&"johto_return_test_before", &"johto_return_test_after", &"storage_offline",
 		# Jalon 32 (32N, N-22) : répliques des dons de CT.
 		&"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give",
 		&"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got",
@@ -1606,7 +1617,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		+ J32_TRADE_LINES))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
-		if UNUSED_YET.has(id) or IDS_J31.has(id):
+		if UNUSED_YET.has(id) or IDS_J31.has(id) or IDS_JOH0.has(id):
 			continue
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
@@ -1737,6 +1748,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			# Jalon 30 (fusion du J29) : NON à la question du garde de la porte de la Ligue.
 			+ [&"league_door_declined"]))
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
+		# Chapitre Johto (JOH0) : levés par les étapes « confiscate_team » et « return_team ».
+		&"johto_act1", &"storage_offline", &"johto_team_returned",
 		# Lot 32P : Cherch'Objet, Max Éther de l'Écume B3F, Max Repousse de la Route 21.
 		&"got_itemfinder", &"got_exp_all", &"got_seafoam_b3f_hidden_1", &"got_route_21_item_2",
 		# Jalon 32 (32N) : CT obtenables partout.
@@ -2156,7 +2169,9 @@ const IDS_32P: Array[StringName] = [&"route_12_gate_2f_assistant", &"route_12_ga
 const PENDING_DRAFT_32P: Array[StringName] = []
 const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
 ## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
-const PENDING_DRAFT_VARIANTS: Array[String] = []
+## Chapitre Johto (JOH0) : textes [D] des systèmes, à relire par Kevin avec ceux du JOH1.
+const PENDING_DRAFT_VARIANTS: Array[String] = ["storage_offline:0", "egg_hatched:0",
+	"trade_terminal_item:0", "johto_return_test_before:0", "johto_return_test_after:0"]
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:
@@ -2620,7 +2635,8 @@ func test_oak_parcel_lines() -> void:
 		if IDS_J30.has(row[0]):
 			continue # Jalon 30 : {player} / {rival} des textes de la Ligue (plan §3), test_league_texts
 		var tokens := DialogueTokens.tokens_in(row[1])
-		if String(row[0]).begins_with("daycare_"):
+		if String(row[0]).begins_with("daycare_") or IDS_JOH0.has(row[0]):
+			# JOH0 : {pokemon} de l'éclosion, {item} du terminal d'échange (jetons de contexte).
 			for token: StringName in tokens:
 				assert_true(DialogueTokens.CONTEXT.has(token),
 					"%s : jeton {%s} à sa place" % [row[0], token])
