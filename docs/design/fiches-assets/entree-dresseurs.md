@@ -416,4 +416,62 @@ ordinaire du monde : feuille féminine si et seulement si la classe est féminin
 
 Défauts restants : le fouet enroulé du Dompteur se lit comme un tuyau ; uniforme des Sbires plutôt
 gris-brun très sombre que noir pur ; la Topdresseuse porte deux Poké Balls à la ceinture (r2) ;
-Karatékas et Maître du Dojo n'ont pas de feuille du monde propre (provisoire `cue_ball`).
+Karatékas et Maître du Dojo n'avaient pas de feuille du monde propre (peinte au §13).
+
+## 13. Finitions (2026-11-03)
+
+Quatre finitions tranchées par Kevin, branche `claude/entree-finitions`. Planches en captures
+réelles 2340 × 1080 : `entree-mer-comparatif.jpg` (banc de sable / Surf, même combat) et
+`entree-finitions.jpg`. Refaire : `tools/capture_finitions.sh` puis `tools/art/planches_finitions.py`.
+Art : `tools/art/entree_finitions.py` (prompts `tools/art/entree_dresseurs/finitions/`, lot
+`tools/art/entree_finitions_lot.sh`) ; **5 images Codex**, toutes retenues en r1.
+
+**1. Mer : le joueur sur son Pokémon de Surf, à choisir.** Kevin trouve le banc de sable « très
+bien » et veut voir le Surf avant de choisir : la mise en scène « Surf » est un **réglage**
+(`surf.enabled` de `data/battle/decors.json`, **faux par défaut** : le banc de sable `sea_open_v2`
+reste intact et utilisé).
+- **Monture** : celle du monde, générique (dossier 27, P-7 : « monture générique peinte »,
+  `surf_monture` / `player_surf`), pas le Pokémon de l'équipe. Même monture en combat.
+- **Art** : héros et joueuse montés, vus de dos (pose prête et lancer, main de `dos_hero`) :
+  `dos_hero_surf(_lancer).webp`, `dos_heroine_surf(_lancer).webp`, toile 960 × 960, **bas de la
+  toile = ligne d'eau**. La joueuse n'a pas encore de dos peint à pied (`dos_heroine`) : à pied
+  elle garde le lancer de dos provisoire ; son art en Surf est prêt.
+- **Adversaire** [D] : le Nageur et la Nageuse **dans l'eau**, coupés au nombril, prête et lancer
+  (`nageur_surf`, `nageuse_surf` + `_lancer`), comme leurs PNJ du monde (`swimmer_water`).
+  `scale` [D] = celui de la classe × 0,45 (partie visible) ; joueur monté × 0,9 ; mains mesurées
+  sur la hauteur visible (bloc `surf` de `trainer_intro.json`).
+- **Fond** : `sea_surf` = l'ancienne mer ouverte sans sol (`sea_open_back.webp`, renommée
+  `sea_surf_back.webp`), lumière dorée ; aucune image neuve.
+- **Code** : `SurfStaging` (pur) : Surf si le réglage est vrai, que le joueur surfe
+  (`player_mount`), que le décor a un remplaçant (`surf.decors` : `sea_open` → `sea_surf`) et que
+  le combat est sauvage ou contre une classe peinte dans l'eau. [D] **Dresseurs de la terre ferme**
+  (Pêcheurs sur leur îlot, Topdresseurs, Ornithologue) : banc de sable et joueur à pied, même en
+  Surf (ils ne peuvent pas se tenir sur la mer ouverte). Cramois'Île garde le banc de sable.
+  `BattleStage.set_place(…, surfing, wild, foe_class)`, `TrainerIntro.surf` et `art_id()`.
+- Tests : `test_surf_staging`.
+
+**2. Feuille du monde du Karatéka.** Planches de marche 4 × 4 peintes (modèle des PNJ, série 25,
+128 px [D], sans planche d'attente : colonne 0) : `karateka_sheet` → apparence `blackbelt`
+(bandeau, karatégi, ceinture noire, pieds nus) et `maitre_dojo_sheet` → `karate_master` (crâne
+rasé, moustache et barbiche grises, revers noirs). Branchées sur les 9 PNJ (Dojo : 4 Karatékas +
+le Maître ; Arène de Jadielle : 3 ; Route Victoire 2F : 1) et en repli (`trainer_intro.json`) à la
+place de `cue_ball`, qui reste aux Loubards. `test_world_looks_match_the_gender_of_the_class` vert.
+
+**3. Routes 16 ouest et 18 sur `route_17_cyclable`.** Constat : **aucune des deux n'est en bord de
+mer** dans le monde (Piste cyclable en pleine forêt ; falaise au nord de la 16 ouest, étang à l'est
+de la 18) ; le fond montre la mer à gauche. Branché comme demandé. [D] Les hautes herbes, hors
+Piste (voie haute de la 16 ouest, est de la 18), prennent la prairie `route_5_6_prairie` (variantes
+par cases).
+
+**4. Nettoyage.** Pour chaque fichier, `git grep` du nom et du `.import` hors `docs/` : aucune
+donnée, scène, script, test ni outil ne le chargeait. **Supprimés** (avec leur `.import`) :
+`pewter_gym_roche_back` et `_v2_back` (Argenta v1, v2), `route_3_roche_back` (Route 3 v1),
+`vermilion_gym_salle_back` (ancien Carmin), `saffron_gym_psy_back` (ancien Safrania),
+`viridian_gym_sol_back` (plus aucun combat), `silph_co_bureaux_back`, `rocket_hideout_repaire_back`,
+`tour_pokemon_back` (ancienne Tour ; le Manoir a son fond) ; entrées sans lieu `saffron_gym_psy`,
+`vermilion_gym_salle`, `viridian_gym_sol` retirées de `decors.json`. `entree_dresseurs.py` (planche
+pilote) saute désormais les fonds absents ; `serie20.py` n'écrit `tour_pokemon_back` que dans
+`build/`. **Gardés** : `sea_open_back` (réutilisé, renommé `sea_surf_back`), `sea_open_v2_back`
+(banc de sable), `pewter_gym_roche_v3_back`, `route_3_roche_v2_back` et les autres v2 (en service).
+`dos_hero_vs.webp` n'est pas dans `main` (seulement dans l'ancien commit d5942146) : rien à
+supprimer. Sprites de combat et bustes « VS » : tous branchés par convention.
