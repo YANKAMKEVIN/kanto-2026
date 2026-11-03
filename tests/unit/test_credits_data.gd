@@ -28,7 +28,7 @@ func test_the_file_loads_with_the_decided_texts() -> void:
 		return row["kind"] != CreditsData.RowKind.GAP).map(func(row: Dictionary) -> String:
 			return row["text"])
 	assert_eq(texts[0], "KANTO 2026", "T30-19")
-	assert_eq(texts[1], "Kanto 2026 — un remake personnel de Kevin", "Q30-1")
+	assert_eq(texts[1], "Pokemake — un remake personnel de Kevin", "Q30-1, nom Pokemake du 2026-11-03")
 	assert_eq(texts.slice(2, 5), ["Kevin", "Charizard — N62", "Plume — N58"], "l'équipe du joueur")
 	assert_eq(texts.back(), "Merci d'avoir joué", "Q30-1")
 	assert_false(_credits.skip_label.is_empty())

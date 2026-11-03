@@ -23,6 +23,21 @@
 | Appareils | S24 connu (`tools/s24_serial.sh`) | Autres appareils : **seulement ceux réellement disponibles** |
 | Tag Git | Un seul tag (`j9-t3-base`), aucune branche `release/*` | Conventions posées ici (T1) |
 
+### 0.0 Périmètre réduit (décision de Kevin, 2026-11-03) et avancement
+
+**Diffusion = moins d'une dizaine de proches de la maison de Kevin, par adb ou par APK release
+signé partagé en privé ; jamais de store.** Les arbitrages 1 à 7 restent, lus à cette échelle : pas de
+Play Console ni d'AAB, une seule clé gardée par Kevin, `versionCode` croissant, appareils réellement
+disponibles seulement. Le jeu s'appelle **Pokemake** (orthographe à l'écran à confirmer avec Kevin
+avant de peindre le logo). Procédure complète : `docs/tech/release.md`.
+
+| Tâche | État (2026-11-03, branche `claude/j34-rc`) |
+|---|---|
+| T1 version | **Fait** : `config/version="0.34.0"` dans `project.godot` (source unique), code Android dérivé `MAJEUR × 10000 + MINEUR × 100 + CORRECTIF` = 3400 [D] (plus de second nombre à tenir à jour ; > 33 du J33), `tools/version.py show/set/check`, `GameVersion` (`game/systems/game_version.gd`), test `tests/unit/test_version.gd`, étiquette « v0.34.0 (3400) » en bas de l'écran titre du côté du logo [D]. Convention de tags `v0.34.0` (sans `-rc.N` : pas de cérémonie RC pour la maison) [D]. |
+| T2 build | **Fait** : `tools/build_rc.sh` (arbre propre, version cohérente, clé exigée hors dépôt, CI verte du commit, `--export-release Android`, splash Android 12+ re-signé release, `apksigner verify`, `aapt` identifiant/version, `manifest.json` + `SHA256SUMS` dans `build/rc/`, `--install`) ; `tools/make_keystore.sh` (clé RSA 4096 PKCS12, 30 ans, mot de passe par variable d'environnement) ; preset `Android` : `keystore/release*` vides, lus dans `GODOT_ANDROID_KEYSTORE_RELEASE_*`. |
+| Nom | `config/name`, `package/name`, description et ligne du générique renommés « Pokemake » ; logo du titre et splash **inchangés** (art à peindre après l'orthographe). |
+| T3 à T7 | À faire, réduits au cercle de la maison (`release.md` §5). T3 attend la vraie clé de Kevin et un téléphone. |
+
 ### 0.1 Ce qui peut commencer tout de suite
 - **T1** conventions de version et source unique ; **T2** script de build et manifeste ;
   **T6** inventaire des licences et ressources (lecture seule, utile même si la diffusion n'est jamais décidée).
