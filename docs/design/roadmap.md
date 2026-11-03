@@ -105,6 +105,11 @@ Les systèmes principaux existent : on produit le contenu. Mont Sélénite, Azur
 (Major Bob), Océane, Lavanville, Céladopole (Erika), Team Rocket, Safrania (Morgane), Parmanie (Koga),
 Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
 
+### Nom du jeu (décision de Kevin, 2026-11-03)
+Avec le Chapitre Johto, le jeu s'appelle **Pokemake** (« Pokémon Kevin Remake ») ; « Kanto 2026 » reste le nom du dépôt
+et du package Android. Diffusion : Kevin et moins de dix proches de sa maison, APK installé par adb ou par fichier
+signé, jamais de store (J34 à J37).
+
 ### Phase 9 — Fin de jeu
 Conseil 4, Rival Maître, générique, retour à Bourg Palette, monde post-Ligue (Champions améliorés),
 Grotte Azurée / Mewtwo, puis le mystère Mew.
