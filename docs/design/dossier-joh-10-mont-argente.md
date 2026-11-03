@@ -45,7 +45,12 @@ défauts [D] dans leurs en-têtes) ; retouches de `lake_of_rage.txt` (raccord du
 `route_22_ouest.txt` (poste de la Route 28 et porte neuve, JH-8, portée par la **variante `JOH9`** de la
 grille tant que la carte `route_22_west` du jeu n'est pas modifiée : le test `test_j29_maps` compare la
 grille de base à la carte ; le code du JOH9 fera basculer la base) ; contrôle
-`tools/art/plan_check_joh9.py` ; aperçu `reference/joh9-grilles-apercu-v1.png`.
+`tools/art/plan_check_joh9.py` ; aperçu `reference/joh9-grilles-apercu-v1.png`. **Vues générales peintes le
+2026-11-03** (`reference/sentier-mont-argente-vue-generale-v1.png`, `mont-argente-exterieur-…`, `mont-argente-1f-…`,
+`mont-argente-2f-…`, `mont-argente-3f-…`, `mont-argente-sommet-…`, `route-28-vue-generale-v1.png`, `poste-route-28-v1.png`,
+plans annotés `reference/plans-johto/`, planche `reference/joh9-vues-v1.png`, écarts et défauts dans
+`fiches-assets/serie-johto-vues-acte1.md` : escalier peint devant la grotte et bord sud du sommet fermé, la grille fait
+foi), **validées par Kevin le 2026-11-03** (« Oui, fusionne »).
 
 ## 4. Ordre de jeu
 

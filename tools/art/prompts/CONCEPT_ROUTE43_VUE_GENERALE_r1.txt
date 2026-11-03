@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 43, LA ROUTE BOISÉE ET LE POSTE DE PÉAGE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. La route va tout droit du SUD (le chemin qui entre par le bord bas, depuis une ville de montagne) au NORD (le chemin qui sort par le bord haut, vers un grand lac) ; à mi-chemin, un poste de péage et une clôture barrent la route.
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (toutes les marges) ;
+- beige = CHEMIN DE TERRE BATTUE de trois cases de large, rectiligne du sud au nord ;
+- vert moyen = PRÉS d'herbe rase praticables, de part et d'autre ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), trois blocs nets : un au nord-ouest, un à l'est au milieu-bas, un au sud-ouest ;
+- à mi-hauteur, rectangle à toit d'ardoise gris-bleu et murs clairs, à droite du chemin = le POSTE DE PÉAGE : un petit bâtiment officiel de 5 cases sur 4, comme les postes de garde-route de Kanto (murs crème, toit d'ardoise, une porte dans son mur OUEST, côté chemin) ;
+- traits blancs à poteaux, à mi-hauteur, de part et d'autre = une CLÔTURE BASSE DE BOIS PEINT EN BLANC qui barre toute la route d'un bord à l'autre, sauf UN SEUL PASSAGE d'une case sur le chemin (la clôture mord sur le chemin : seule sa colonne centrale reste ouverte) ;
+- grands disques vert sombre = GRANDS ARBRES ISOLÉS, repères (six) ;
+- petit carré ocre près du chemin en bas = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : le chemin droit, les trois blocs d'herbes hautes, le poste à mi-hauteur avec sa porte à l'ouest, la clôture d'un bord à l'autre et son passage d'une case, les arbres isolés. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 35, une route du même chapitre, déjà peinte en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres, mêmes hautes herbes, même chemin de terre, même poste de garde, même clôture blanche, même saturation, MÊME LUMIÈRE neutre. Ne reprends PAS sa composition (ni étang, ni rocher).
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la route, comme le plan.
+
+AMBIANCE — « la route boisée du péage » : une route droite entre deux forêts de montagne (feuillus mêlés de quelques sapins), des prés, des herbes hautes, et à mi-chemin un petit poste de péage et sa clôture qui ne laissent qu'un passage. Claire, calme, un peu surveillée. Palette : PRÉS vert tendre, CHEMIN beige, FORÊT vert profond, POSTE crème et ardoise, CLÔTURE blanche.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ; ombres propres légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemin, clôture et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol est lisible et plat ; aucun rebord, aucune falaise, aucune terrasse.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan (une barrière levante ou un petit panneau sans texte devant le poste sont permis).
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment autre que le poste ; eau ; route goudronnée, véhicule ; neige, arbres automnaux ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une route droite dans la forêt de montagne, coupée à mi-chemin par un poste de péage et une clôture blanche qui ne laissent qu'un seul passage.

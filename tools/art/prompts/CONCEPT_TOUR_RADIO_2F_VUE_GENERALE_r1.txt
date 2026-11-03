@@ -1,0 +1,37 @@
+CONCEPT ART — INTÉRIEUR DE LA TOUR RADIO DE DOUBLONVILLE, 2e NIVEAU : LES STUDIOS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE PIÈCE rectangulaire de 22 cases sur 14 de sol, entourée de murs, sur fond sombre. Format PAYSAGE.
+Légende du plan :
+- gris-brun foncé = murs et hors-champ ; bande brun clair en haut = le MUR DU FOND, vu de face ;
+- beige = SOL, dallage clair : un COULOIR à gauche, un COULOIR à droite, et un COULOIR DU BAS qui les relie ;
+- dans le mur du fond : en haut à gauche, un ESCALIER qui DESCEND (marches sombres) ; en haut à droite, la porte métallique de l'ASCENSEUR puis, tout à droite, un ESCALIER qui MONTE (marches claires) ;
+- bandes bleu clair = des VITRES : deux STUDIOS D'ENREGISTREMENT VITRÉS côte à côte au centre, chacun un rectangle entièrement clos de vitres (cloisons de verre du sol au plafond, montants fins), avec une PORTE VITRÉE au milieu de sa face sud (l'ouverture de deux cases dans la vitre du bas de chaque studio) ; les deux studios sont séparés par une double vitre ;
+- paires de carrés bruns dans les studios = deux TABLES DE MICRO (une table ronde avec deux micros sur pied, un casque posé) ;
+- groupe de carrés bruns au milieu du couloir du bas = un PUPITRE avec un grand HAUT-PARLEUR sur pied (il diffuse un message en boucle : quelques ondes stylisées peuvent le suggérer) ; il rétrécit le couloir ;
+- quatre carrés bruns dans les coins = quatre PLANTES EN POT.
+Respecte ce plan À LA LETTRE : les deux studios vitrés et leurs portes au sud, le pupitre au milieu du couloir du bas, les trois couloirs, les escaliers et l'ascenseur dans le mur du fond, les plantes. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le hall du 1er niveau de la même tour, déjà peint. Respecte EXACTEMENT son rendu : même sol, mêmes murs crème et bandeau bleu, mêmes plantes, même escalier, même porte d'ascenseur, même lumière neutre. Ne reprends PAS sa composition.
+
+IMAGE 3 : un intérieur du même jeu (le poste de garde de la Route 15) : même pinceau, même découpe de la pièce sur fond sombre.
+
+Format : PAYSAGE 1536 × 1024, la pièce au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « les studios muets » : deux cabines d'enregistrement vitrées, insonorisées (panneaux acoustiques gris sur leurs murs intérieurs, lampe « à l'antenne » éteinte au-dessus de chaque porte, sans texte), micros abandonnés ; dans le couloir, un haut-parleur qui ronronne. Propre, moderne, vide, un peu inquiétant. Palette : crème, bleu sobre, verre bleuté, gris des panneaux acoustiques, bois clair, vert des plantes.
+LUMIÈRE NE (neutre) : éclairage intérieur blanc et diffus ; aucune teinte dorée ; ombres propres légèrement bleutées.
+
+RÈGLE DE LA GRILLE : murs, vitres, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS.
+OBJETS RARES : seulement les meubles du plan ; pas de bibelots, pas d'affiches lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les vitres sont transparentes, on voit l'intérieur des studios.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, affiches ou écrans lisibles, signature, filigrane, cadre, interface, Poké Ball ; fenêtre sur l'extérieur ; comptoir d'accueil ; pixel art, 3D.
+
+L'image doit raconter, sans texte : deux studios de radio vitrés et vides, et dans le couloir un haut-parleur qui tourne en boucle.

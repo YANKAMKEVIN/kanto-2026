@@ -1,0 +1,42 @@
+CONCEPT ART — VUE GÉNÉRALE D'OLIVILLE, LA VILLE DU PHARE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Une petite ville portuaire de Johto, posée sur une côte basse : la MER est au SUD (en bas), une FALAISE ROCHEUSE BASSE borde tout le côté OUEST (à gauche), la forêt ferme le nord et l'est. On arrive dans la ville par la PLAGE DE GALETS du sud-ouest (en sortant d'une grotte marine qui s'ouvre dans la falaise) ; on en repart par l'EST (l'avenue sort par le bord droit de l'image).
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (toutes les marges de l'image, le nord et l'est) ;
+- gris rocheux semé de cailloux = FALAISE BASSE ET ROCHERS infranchissables : tout le bord ouest, et le PROMONTOIRE du phare au nord-ouest ; une ligne de RÉCIFS au ras de l'eau ferme aussi le bord sud de la mer, sauf une ouverture au centre (le passage vers le large) ;
+- grande tour blanche à bandes rouges et lanterne rouge, sur le promontoire = LE PHARE D'OLIVILLE : une haute tour blanche cylindrique, cerclée de bandes rouges, coiffée d'une lanterne vitrée au toit rouge ; vue de dessus de trois quarts, on voit son sommet et sa façade sud avec une porte close au pied ; il est FERMÉ pour travaux (un petit panneau sans texte devant la porte, rien d'autre) ; c'est le grand repère de l'image ;
+- vert moyen = PELOUSE praticable ;
+- damier beige-gris = RUES PAVÉES de pierre claire, trois cases de large : la grande AVENUE horizontale qui traverse toute la ville du pied de la falaise (à gauche) jusqu'au bord droit ; au sud de l'avenue, la RUE DE LA PLAGE (à gauche) qui descend vers la plage de galets, et la RUE DU PORT (au centre-gauche) qui descend vers le quai ; en bas, la RUE DU QUAI horizontale qui longe le port ;
+- ligne vert sombre au nord des bâtiments = une longue HAIE basse et taillée, d'un seul tenant, avec un passage à son extrémité est ;
+- au nord de l'avenue, de gauche à droite : toit brun-rouge = une MAISON d'habitants, avec, collé à son flanc est, un MASSIF DE FLEURS roses et blanches de trois cases de large ; toit ROUGE et façade blanche avec l'emblème rond = le CENTRE POKÉMON (deux portes vitrées au milieu de la façade sud) ; toit BLEU et façade blanche avec l'emblème rond = la BOUTIQUE (deux portes vitrées) ;
+- au sud de l'avenue, à droite = une deuxième MAISON au toit brun-rouge, sa porte au sud ;
+- grands disques vert sombre = GRANDS ARBRES ISOLÉS, repères (deux au nord, un au nord-est, un à l'ouest de la rue du port, deux à l'est) ; petits rectangles bruns = deux BANCS côte à côte sur la pelouse de l'ouest ; une petite haie carrée dans l'angle nord-est ;
+- gris-beige semé de cailloux, en bas à gauche = la PLAGE DE GALETS gris et beiges (pas de sable), au pied de la falaise ouest ; le rectangle NOIR dans la falaise, à la hauteur de la plage = la BOUCHE DE LA GROTTE MARINE, une brèche sombre dans la roche, d'où l'on sort ;
+- bande brune striée sur toute la largeur du port = le QUAI en grosses planches de bois ; deux bandes brunes plus étroites qui partent vers le sud = deux PONTONS de bois perpendiculaires au rivage ; petits carrés bruns sur la rue du quai = CAISSES de port empilées ;
+- bleu = la MER, bleu profond, avec les récifs gris le long du bord sud et une ouverture au centre ;
+- petits carrés ocre = panneaux en bois SANS TEXTE (un devant le phare, un au bord de l'avenue devant le Centre).
+Respecte ce plan À LA LETTRE : la falaise à l'ouest avec le phare sur son promontoire, l'avenue d'ouest en est, les deux rues qui descendent, la haie, la place de chaque bâtiment, le massif de fleurs, la plage de galets et la bouche de grotte, le quai, les deux pontons, les caisses, la ligne de récifs et son ouverture. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de Carmin-sur-Mer, une ville portuaire du même jeu (Kanto). Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même pelouse, même quai de planches sur pilotis, mêmes pontons, mêmes caisses, même mer, même saturation, même échelle des bâtiments ; le CENTRE POKÉMON et la BOUTIQUE sont EXACTEMENT les mêmes bâtiments (identiques dans toutes les villes : Centre au toit rouge avec l'emblème rond blanc et la grande porte vitrée ; Boutique au toit bleu, même emblème, même porte vitrée) ; les maisons ont la même facture. Ne reprends PAS sa composition : NI PAQUEBOT ni aucun bateau (le port d'Oliville est VIDE), ni Arène, ni place pavée, ni Fan Club, NI SA LUMIÈRE DORÉE.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville et le port, comme le plan.
+
+AMBIANCE — « la ville du phare » : une petite ville de pêcheurs propre et tranquille, la première que l'on découvre dans une région nouvelle ; le phare blanc et rouge veille sur un port sans bateau ; des galets gris au pied de la falaise, du bois usé sur le quai, des rues pavées claires et beaucoup de verdure. Calme, accueillante, un peu venteuse. Palette : FAÇADES CLAIRES (blanc cassé, crème), TOITURES chaudes (tuiles brun-rouge) pour les maisons, PAVÉ gris-beige clair, BOIS brun chaud du quai, ROCHE grise de la falaise et des récifs, GALETS gris et beiges, MER bleu profond, VÉGÉTATION dense (arbres en masses rondes, haie taillée, pelouse).
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. NE REPRENDS PAS la lumière dorée de l'image de référence : le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, haie, quai, pontons, plage et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale. Le quai est RECTILIGNE, les pontons perpendiculaires au rivage.
+RELIEF : le sol de la ville est plat ; la falaise de l'ouest et le promontoire du phare dominent la ville d'une petite hauteur (face rocheuse visible côté est et côté sud), sans escalier ni rampe ; le quai domine la mer d'une petite hauteur (bord de planches et pieux visibles côté sud).
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; le phare montre son sommet et sa façade sud.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucune mouette. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre et de la Boutique est permis), signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment non prévu par le plan ; bateau, barque, voilier, paquebot, bouée, filet ; Arène ; place pavée ; plage de sable ; route goudronnée, véhicule ; rues courbes ou en diagonale ; escalier ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une petite ville portuaire paisible sous son phare blanc et rouge, avec son Centre et sa Boutique sur une avenue pavée, une plage de galets au pied d'une falaise percée d'une grotte, et un quai de bois tourné vers une mer vide.

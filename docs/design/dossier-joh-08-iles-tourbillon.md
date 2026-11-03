@@ -32,7 +32,10 @@
 `whirl_islands_1f.txt`, `whirl_islands_b1f.txt`, `whirl_islands_b2f.txt` (la grille fait foi pour la
 géométrie ; défauts [D] dans leurs en-têtes) ; retouche d'`oliville.txt` (marin de la plage, raccord
 sud) ; contrôle `tools/art/plan_check_joh7.py` (courants simulés) ; aperçu
-`reference/joh7-grilles-apercu-v1.png`.
+`reference/joh7-grilles-apercu-v1.png`. **Vues générales peintes le 2026-11-03** (`reference/route-40-vue-generale-v1.png`,
+`route-41-…`, `iles-tourbillon-1f-…`, `iles-tourbillon-b1f-…`, `iles-tourbillon-b2f-vue-generale-v1.png`, plans annotés
+`reference/plans-johto/`, planche `reference/joh7-vues-v1.png`, écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`),
+**validées par Kevin le 2026-11-03** (« Oui, fusionne »).
 
 ## 4. Ordre de jeu
 

@@ -7,7 +7,10 @@
 > Valeurs **[D]** = défauts. Grilles et vues générales peintes après validation du dossier, comme
 > à Kanto. **Grilles validées par Kevin le 2026-11-02** : `tools/plans/grotte_marine_1.txt`,
 > `grotte_marine_2.txt`, `oliville.txt` (contrôle `tools/art/plan_check_joh1.py`, aperçu
-> `reference/joh1-grilles-apercu-v1.png`) ; vues peintes après les grilles de tout l'acte 1. **Pas de code avant la fin de Kanto et du JOH0.**
+> `reference/joh1-grilles-apercu-v1.png`) ; **vues générales peintes le 2026-11-03** (branche
+> `claude/johto-vues-acte1` : `reference/grotte-marine-1-vue-generale-v1.png`, `grotte-marine-2-vue-generale-v1.png`,
+> `oliville-vue-generale-v1.png`, plans annotés `reference/plans-johto/`, planche `reference/joh1-vues-v1.png`,
+> écarts dans `fiches-assets/serie-johto-vues-acte1.md`), **validées par Kevin le 2026-11-03** (« Oui, enchaîne JOH2 »). **Pas de code avant la fin de Kanto et du JOH0.**
 
 ## 1. Hors périmètre
 
@@ -152,6 +155,10 @@ avant le choix du Pokémon de départ (aucun combat). Après le choix : retour a
 - Personnages : **Prof. Orme** (neuf), infirmière (existante), silhouettes de Sbires (existantes,
   assombries, en mouvement dans la pénombre : JH-27), marin, vieille dame, enfant (existants si possible).
 - Ombre de Lugia : silhouette sombre sous l'eau (pas besoin du sprite de combat).
+- **Fait le 2026-11-03** : les trois vues générales (grotte salle 1, salle 2, Oliville) par
+  `tools/art/vues_johto_acte1.py` + Codex, planche `reference/joh1-vues-v1.png` ; défauts pris : kit de
+  bâtiments de Kanto repris tel quel, rues pavées, lumière neutre, ombre de Lugia peinte dans la salle 2
+  (`fiches-assets/serie-johto-vues-acte1.md`). Les intérieurs viennent par lots, plus tard (stratégie, levier 4).
 
 ## 14. Textes (lot validé par Kevin le 2026-11-02)
 

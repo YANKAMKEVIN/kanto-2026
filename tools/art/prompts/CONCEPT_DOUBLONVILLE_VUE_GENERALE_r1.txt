@@ -1,0 +1,41 @@
+CONCEPT ART — VUE GÉNÉRALE DE DOUBLONVILLE, LA GRANDE VILLE DE JOHTO (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. La plus grande ville de la région, entourée de forêt. On y entre par le NORD (la grande avenue qui part du bord haut) et on en ressort par le SUD (la même avenue qui sort par le bord bas).
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (toutes les marges, un bloc à l'est en haut et un ÉCRIN d'arbres au sud-ouest) ;
+- damier beige-gris = RUES PAVÉES de pierre claire : la GRANDE AVENUE verticale de trois cases qui traverse toute la ville du nord au sud ; la RUE DU NORD horizontale ; le BOULEVARD horizontal au milieu ; au centre, la PLACE pavée, plus large, à cheval sur l'avenue et le boulevard, avec QUATRE MASSIFS DE FLEURS à ses angles et DEUX ESCALIERS de pierre qui descendent sous la place (petits rectangles gris à marches, en haut à gauche et en bas à droite de la place : les bouches d'un passage souterrain) ; en bas à droite, le PARVIS pavé devant la gare ;
+- vert moyen = PELOUSE praticable ; lignes vert sombre = HAIES basses taillées (une à l'ouest du boulevard, une à l'est du grand magasin) ;
+- en haut à gauche, grande tour gris-bleu clair avec un mât rouge = la TOUR RADIO : le bâtiment le PLUS HAUT de la ville, une tour moderne et élancée de 10 cases sur 12, façades claires, rangées de fenêtres, un toit plat bleu-gris et une GRANDE ANTENNE rouge et blanche au sommet ; porte double au milieu de la façade sud ; c'est le repère vertical de l'image ;
+- en haut, à droite de la Tour Radio, rectangle à toit brun-rouge = la MAISON DU LIEN, une maison de 7 cases sur 6 ;
+- en haut à droite, rectangle à toit brun-rouge = une MAISON d'habitants ;
+- au milieu à gauche, toit ROUGE et façade blanche avec l'emblème rond = le CENTRE POKÉMON (deux portes vitrées au milieu de la façade sud) ; à sa droite, derrière la haie, une MAISON au toit brun-rouge ;
+- au milieu à droite, grand bâtiment à toit JAUNE DORÉ et façade blanche à grandes vitrines = le GRAND MAGASIN, un grand magasin moderne de 12 cases sur 9, sur plusieurs niveaux, avec une terrasse sur le toit ; porte double au milieu de la façade sud ; c'est le deuxième grand repère ;
+- en bas à droite, grand bâtiment à toit GRIS et horloge ronde sur le fronton = la GARE, une gare de 14 cases sur 8, façade de pierre claire, grandes portes CLOSES (la gare est fermée) ; son parvis pavé devant ;
+- en bas à gauche, dans l'écrin d'arbres = un JARDIN FLEURI : un grand massif de fleurs roses et blanches dans une clairière ;
+- grands disques vert sombre = GRANDS ARBRES ISOLÉS, repères ; petits rectangles bruns = BANCS de bois ;
+- petit carré ocre près de l'avenue, en haut = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : la grande avenue du nord au sud, la rue du nord, le boulevard, la place et ses deux escaliers, le parvis ; la Tour Radio au nord-ouest, la maison du lien, les maisons, le Centre, le Grand Magasin à l'est, la gare au sud-est, le jardin fleuri au sud-ouest, les haies, les bancs, les arbres. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de Céladopole, la grande ville de Kanto dans le même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même pavé, même pelouse, même saturation, même échelle des bâtiments, même facture de GRAND MAGASIN (le tien est plus petit et à toit jaune) ; le CENTRE POKÉMON est EXACTEMENT le même bâtiment (identique dans toutes les villes : toit rouge avec l'emblème rond blanc et la grande porte vitrée). Ne reprends PAS sa composition (ni Arène, ni Casino, ni manoir, ni fontaine) NI SA LUMIÈRE DORÉE.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville, comme le plan.
+
+AMBIANCE — « la grande ville » : une ville moderne, vivante et propre, la plus grande de Johto ; de larges rues pavées, une place centrale fleurie, un grand magasin, une gare, et la haute Tour Radio qui domine tout au nord-ouest. Claire, ordonnée, accueillante. Palette : PAVÉ gris-beige clair, FAÇADES blanches et crème, TOITS brun-rouge des maisons, toit JAUNE du grand magasin, GRIS de la gare, gris-bleu clair de la Tour Radio, VÉGÉTATION dense autour.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. NE REPRENDS PAS la lumière dorée de l'image de référence : le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, place, haies et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+RELIEF : le sol de la ville est plat ; les seuls escaliers sont les deux bouches du passage souterrain sur la place.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan (pas de lampadaires, pas de fontaine, pas de statue, pas de voiture, pas de rails visibles).
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; la Tour Radio montre son toit plat, son antenne et sa façade sud.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre est permis), signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment non prévu par le plan ; Arène, Casino ; train, rails, quai de gare ; fontaine, statue, lampadaire ; route goudronnée, véhicule ; rues courbes ou en diagonale ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une grande ville claire et ordonnée, traversée par une avenue pavée, avec sa place fleurie et ses deux escaliers, son grand magasin, sa gare fermée, et la haute Tour Radio qui la domine.

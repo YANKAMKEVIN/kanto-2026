@@ -1,0 +1,37 @@
+CONCEPT ART — INTÉRIEUR DE LA TOUR RADIO DE DOUBLONVILLE, 5e NIVEAU : LE STUDIO DE DIFFUSION ET LE BUREAU DU DIRECTEUR (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE PIÈCE rectangulaire de 22 cases sur 14 de sol, entourée de murs, sur fond sombre. Format PAYSAGE. Le dernier étage de la tour.
+Légende du plan :
+- gris-brun foncé = murs, cloisons et hors-champ ; bande brun clair en haut = le MUR DU FOND, vu de face ;
+- beige = SOL, dallage clair ;
+- en haut : à gauche, le BUREAU DU DIRECTEUR, un petit bureau fermé par une cloison verticale (bande sombre) percée d'une PORTE de bois sombre, avec un grand bureau (deux carrés bruns) et une plante ; à droite, le PALIER d'arrivée, avec dans le mur du fond la porte de l'ASCENSEUR et un ESCALIER qui DESCEND (marches sombres) ;
+- bande bleu clair horizontale au milieu = une longue VITRE DE STUDIO (cloison de verre) qui sépare le palier du grand studio, percée d'une OUVERTURE de deux cases au centre (la porte du studio, ouverte) ; à gauche de la vitre, la cloison pleine du bureau se prolonge ;
+- la grande moitié basse = le GRAND STUDIO DE DIFFUSION : au centre, une TABLE DE DIFFUSION (deux carrés bruns) avec un grand micro sur pied, un casque et une petite console ; deux plantes en pot dans les coins du haut du studio ;
+- la bande bleu clair tout en bas = une grande BAIE VITRÉE sur toute la largeur, qui donne sur la ville en contrebas (on devine, à travers, les toits de Doublonville et des arbres, de jour) ;
+- le petit rectangle gris dans le mur de droite, à mi-hauteur du studio = la porte métallique d'un ESCALIER DE SECOURS.
+Respecte ce plan À LA LETTRE : le bureau fermé en haut à gauche et sa porte, le palier en haut à droite avec l'ascenseur et l'escalier qui descend, la vitre de studio et son ouverture centrale, la table de diffusion au centre du studio, la baie vitrée en bas, la porte de secours à droite. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le 4e niveau de la même tour, déjà peint. Respecte EXACTEMENT son rendu : même sol, mêmes murs, même escalier, même porte d'ascenseur, même lumière neutre. Ne reprends PAS sa composition (ni pupitres, ni mur d'écrans).
+
+IMAGE 3 : un intérieur du même jeu (le poste de garde de la Route 15) : même pinceau, même découpe de la pièce sur fond sombre.
+
+Format : PAYSAGE 1536 × 1024, la pièce au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « le studio de diffusion » : le sommet de la tour, le studio d'où parle la ville : grand, clair, une table de diffusion au centre, une baie vitrée ouverte sur le ciel et les toits ; à côté, le bureau du directeur, fermé. Solennel, lumineux, le lieu de la confrontation. Palette : crème, bleu sobre, verre bleuté, bois clair, ciel pâle derrière la baie.
+LUMIÈRE NE (neutre) : lumière du jour blanche et diffuse qui entre par la baie vitrée du bas, plus un éclairage intérieur neutre ; aucune teinte dorée ; ombres propres légèrement bleutées.
+
+RÈGLE DE LA GRILLE : murs, cloisons, vitres, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS.
+OBJETS RARES : seulement les meubles du plan ; pas de bibelots, pas d'affiches lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; la vitre de studio est transparente ; la baie vitrée du bas montre sa face, avec la ville au loin.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, écrans lisibles, signature, filigrane, cadre, interface, Poké Ball ; escalier qui monte (dernier étage) ; nuit, lumière dorée ; pixel art, 3D.
+
+L'image doit raconter, sans texte : le studio de diffusion au sommet de la tour, une table et un micro face à une grande baie sur la ville, et, derrière une porte fermée, le bureau du directeur.
