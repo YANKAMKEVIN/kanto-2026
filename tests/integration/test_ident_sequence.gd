@@ -9,7 +9,19 @@ const HEIGHT := 1080
 const MAX_FRAMES := 600
 
 
-func _ident(speed: float, reduced: bool = false) -> IdentSequence:
+const SHOT_IMAGE := "res://assets/ui/opening/splash_pokemake.png"
+
+
+func _reel(count: int) -> TrailerReel:
+	var shots: Array = []
+	for _i: int in count:
+		shots.append({"image": SHOT_IMAGE, "seconds": 2.0})
+	var reel := TrailerReel.new()
+	assert_true(reel.add_from_dict({"letterbox": 0.07, "shots": shots}, "test"), str(reel.get_errors()))
+	return reel
+
+
+func _ident(speed: float, reduced: bool = false, reel: TrailerReel = null) -> IdentSequence:
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(WIDTH, HEIGHT)
 	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
@@ -18,6 +30,8 @@ func _ident(speed: float, reduced: bool = false) -> IdentSequence:
 	ident.speed_scale = speed
 	ident.reduced = reduced
 	ident.set_texts("Les studios Kevin & Co", "vous présentent")
+	if reel != null:
+		ident.set_reel(reel)
 	viewport.add_child(ident)
 	await wait_process_frames(2)
 	return ident
@@ -97,3 +111,30 @@ func test_reduced_motion_fades_the_whole_logo_without_moving_letters() -> void:
 	assert_true(ident.is_done())
 	assert_almost_eq(ident.get_full_logo().modulate.a, 1.0, 0.001)
 	assert_gt(ident.get_letters()[0].position.x, ident.letter_target_x(0), "les lettres n'ont pas bougé")
+
+
+func test_the_reel_plays_its_shots_between_the_card_and_the_letters() -> void:
+	var ident := await _ident(0.02, false, _reel(3))
+	assert_eq(ident.get_shots().size(), 3)
+	assert_eq(ident.get_reel_root().modulate.a, 0.0, "bande-annonce éteinte avant le carton")
+	var shot := ident.get_shots()[0]
+	assert_eq(shot.size, Vector2(WIDTH, HEIGHT), "un plan couvre l'écran")
+	assert_eq(shot.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+	ident.play()
+	assert_almost_eq(ident.total_duration(),
+		IntroTimeline.total(IntroTimeline.build(8, false, [2.0, 2.0, 2.0] as Array[float])), 0.001)
+	assert_gt(ident.total_duration(), IntroTimeline.total(IntroTimeline.build(8)) + 4.0, "plus long avec la bande-annonce")
+	for _i: int in MAX_FRAMES:
+		if ident.is_done():
+			break
+		await wait_process_frames(1)
+	assert_true(ident.is_done())
+	assert_almost_eq(ident.get_reel_root().modulate.a, 0.0, 0.001, "bande-annonce éteinte avant le logo")
+	assert_almost_eq(ident.get_shots()[2].modulate.a, 1.0, 0.001, "le dernier plan a bien été montré")
+	assert_almost_eq(ident.get_shots()[2].scale.x, float(TrailerReel.DEFAULT_ZOOM_IN[1]), 0.01, "poussée finie")
+
+
+func test_reduced_motion_skips_the_reel() -> void:
+	var ident := await _ident(0.02, true, _reel(3))
+	ident.play()
+	assert_almost_eq(ident.total_duration(), IntroTimeline.total(IntroTimeline.build(8, true)), 0.001)

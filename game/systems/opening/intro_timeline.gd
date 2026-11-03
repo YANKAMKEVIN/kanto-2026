@@ -7,11 +7,19 @@ extends RefCounted
 ## repères rendus ici. Toutes les durées sont en secondes, avant [member speed_scale] de la scène.
 ##
 ## Un repère : `{"id": StringName, "start": float, "duration": float, "index": int}` (index : la
-## lettre, -1 sinon). Les ids : `card_in`, `card_out`, `letter` (× lettres), `rule`, `glow`,
-## `logo_in` (version réduite seulement), `fade_out`.
+## lettre ou le plan, -1 sinon). Les ids : `card_in`, `card_out`, `shot` (× plans de la
+## bande-annonce, qui se chevauchent d'un fondu enchaîné), `reel_out`, `letter` (× lettres),
+## `rule`, `glow`, `logo_in` (version réduite seulement), `fade_out`.
+##
+## Bande-annonce (demande de Kevin du 2026-11-03, « à la Netflix / Canal+ ») : entre le carton et
+## les lettres, des plans du jeu ([TrailerReel]) ; chaque plan commence `xfade` avant la fin du
+## précédent, le dernier s'éteint (`reel_out`) avant le noir qui précède les lettres. Sans plans,
+## la partition est celle d'avant. En version réduite, pas de bande-annonce.
 
 const CARD_IN: StringName = &"card_in"
 const CARD_OUT: StringName = &"card_out"
+const SHOT: StringName = &"shot"
+const REEL_OUT: StringName = &"reel_out"
 const LETTER: StringName = &"letter"
 const RULE: StringName = &"rule"
 const GLOW: StringName = &"glow"
@@ -23,6 +31,7 @@ const FADE_OUT: StringName = &"fade_out"
 ## fondu de sortie 0,6 s (≈ 7 s pour 8 lettres).
 const FULL := {
 	"card_in": 0.6, "card_hold": 1.6, "card_out": 0.5, "gap": 0.3,
+	"xfade": 0.7, "reel_out": 0.6,
 	"letter_stagger": 0.14, "letter_travel": 0.55,
 	"rule": 0.4, "glow": 0.5, "hold": 0.9, "fade_out": 0.6,
 }
@@ -34,8 +43,10 @@ const REDUCED := {
 }
 
 
-## Les repères, dans l'ordre, pour [param letter_count] lettres.
-static func build(letter_count: int, reduced: bool = false) -> Array[Dictionary]:
+## Les repères, dans l'ordre, pour [param letter_count] lettres et les plans de durées
+## [param shots] (secondes chacun ; vide : pas de bande-annonce).
+static func build(letter_count: int, reduced: bool = false,
+		shots: Array[float] = []) -> Array[Dictionary]:
 	var cues: Array[Dictionary] = []
 	var d: Dictionary = REDUCED if reduced else FULL
 	var t: float = 0.0
@@ -43,6 +54,13 @@ static func build(letter_count: int, reduced: bool = false) -> Array[Dictionary]
 	t += d["card_in"] + d["card_hold"]
 	cues.append(_cue(CARD_OUT, t, d["card_out"]))
 	t += d["card_out"] + d["gap"]
+	if not reduced and not shots.is_empty():
+		for i: int in shots.size():
+			cues.append(_cue(SHOT, t, shots[i], i))
+			t += shots[i] - (d["xfade"] if i < shots.size() - 1 else 0.0)
+		# Le dernier plan s'éteint sur sa fin, puis un noir avant les lettres.
+		cues.append(_cue(REEL_OUT, t - d["reel_out"], d["reel_out"]))
+		t += d["gap"]
 	if reduced:
 		cues.append(_cue(LOGO_IN, t, d["logo_in"]))
 		t += d["logo_in"]

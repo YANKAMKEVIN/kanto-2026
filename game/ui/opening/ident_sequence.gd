@@ -6,8 +6,14 @@ extends CanvasLayer
 ## centre, le halo du vrai logo qui s'allume, une tenue, puis un fondu qui découvre l'écran titre
 ## déjà en place dessous. La partition vient d'[IntroTimeline] ; ici on ne fait que la jouer.
 ##
+## Bande-annonce (« à la Netflix / Canal+ ») : entre le carton et les lettres, les plans de
+## [TrailerReel] en fondu enchaîné, chacun avec un lent travelling (zoom et glissement), entre
+## deux bandes noires de cinéma ; les textures sont chargées à l'entrée dans l'arbre et libérées
+## avec la scène.
+##
 ## Un toucher, `interact`, Entrée ou le retour Android ([method skip]) saute à la fin : le logo
-## formé, puis le fondu. « Réduire les animations » : le carton puis le logo entier en fondu.
+## formé, puis le fondu. « Réduire les animations » : le carton puis le logo entier en fondu,
+## sans bande-annonce.
 ## [member speed_scale] multiplie les durées (0 : [method play] finit aussitôt).
 
 ## L'ident est terminé (fondu fini) : à retirer de l'arbre.
@@ -30,6 +36,10 @@ var _root: Control
 var _card: VBoxContainer
 var _card_title: Label
 var _card_sub: Label
+var _reel: TrailerReel
+var _reel_root: Control
+var _shots: Array[TextureRect] = []
+var _bars: Array[ColorRect] = []
 var _logo_root: Control
 var _letters: Array[TextureRect] = []
 var _letter_targets: Array[float] = []
@@ -58,6 +68,7 @@ func _ready() -> void:
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(bg)
 	_build_card()
+	_build_reel()
 	_build_logo()
 	_root.resized.connect(_layout)
 	_layout()
@@ -73,6 +84,13 @@ func set_texts(studio: String, presents: String) -> void:
 		_card_sub.text = presents
 
 
+## Plans de la bande-annonce (null ou vide : aucune) ; à donner avant l'entrée dans l'arbre.
+func set_reel(reel: TrailerReel) -> void:
+	_reel = reel
+	if _reel_root != null:
+		_fill_reel()
+
+
 ## Joue la partition. Avec [member speed_scale] à 0, finit tout de suite.
 func play() -> void:
 	if _playing or _done:
@@ -81,7 +99,10 @@ func play() -> void:
 	if speed_scale <= 0.0:
 		_finish.call_deferred()
 		return
-	_cues = IntroTimeline.build(_letters.size(), reduced)
+	var durations: Array[float] = []
+	if _reel != null and not reduced:
+		durations = _reel.durations()
+	_cues = IntroTimeline.build(_letters.size(), reduced, durations)
 	_tween = create_tween().set_parallel(true)
 	_tween.set_speed_scale(1.0 / speed_scale)
 	for cue: Dictionary in _cues:
@@ -89,10 +110,11 @@ func play() -> void:
 	_tween.chain().tween_callback(_finish)
 
 
-## Saute à la fin : logo formé, puis fondu court.
-func skip() -> void:
+## Saute à la fin : logo formé, puis fondu court. [param reason] : pour le journal.
+func skip(reason: String = "demande") -> void:
 	if not _playing or _done:
 		return
+	print("Ident : passé (%s)" % reason)
 	if _tween != null:
 		_tween.kill()
 		_tween = null
@@ -136,6 +158,14 @@ func get_root() -> Control:
 	return _root
 
 
+func get_shots() -> Array[TextureRect]:
+	return _shots
+
+
+func get_reel_root() -> Control:
+	return _reel_root
+
+
 ## Position d'arrivée (x, dans le cadre du logo mis à l'échelle) de la lettre [param index].
 func letter_target_x(index: int) -> float:
 	return _letter_targets[index]
@@ -150,7 +180,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton:
 		pressed = pressed or (event as InputEventMouseButton).pressed
 	if pressed:
-		skip()
+		skip(event.get_class() + " " + event.as_text())
 		get_viewport().set_input_as_handled()
 
 
@@ -184,6 +214,71 @@ func _card_label(name_: String, font: Font, size: int, color: Color) -> Label:
 	label.add_theme_constant_override(&"shadow_offset_y", UiTokens.TEXT_SHADOW_OFFSET)
 	label.uppercase = false
 	return label
+
+
+## Conteneur des plans (plein écran, rogné) et bandes noires ; rempli par [method _fill_reel].
+func _build_reel() -> void:
+	_reel_root = Control.new()
+	_reel_root.name = "Reel"
+	_reel_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_reel_root.clip_contents = true
+	_reel_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_reel_root.modulate.a = 0.0
+	_root.add_child(_reel_root)
+	if _reel != null:
+		_fill_reel()
+
+
+func _fill_reel() -> void:
+	for child: Node in _reel_root.get_children():
+		child.queue_free()
+	_shots.clear()
+	_bars.clear()
+	if _reel == null:
+		return
+	for i: int in _reel.shots.size():
+		var shot: Dictionary = _reel.shots[i]
+		var rect := TextureRect.new()
+		rect.name = "Shot%d" % i
+		rect.texture = load(shot["image"]) as Texture2D
+		rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		rect.modulate.a = 0.0
+		_reel_root.add_child(rect)
+		_shots.append(rect)
+	for side: int in 2:
+		var bar := ColorRect.new()
+		bar.name = "BarTop" if side == 0 else "BarBottom"
+		bar.color = UiTokens.IDENT_BG
+		bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_reel_root.add_child(bar)
+		_bars.append(bar)
+	_layout_reel()
+
+
+## Chaque plan couvre l'écran ; son centre glisse de `pan` et il est mis à l'échelle de `zoom`
+## autour de son centre (pivot) : la trajectoire se joue sur `position` et `scale`.
+func _layout_reel() -> void:
+	var view := _root.size
+	for i: int in _shots.size():
+		var rect := _shots[i]
+		rect.position = Vector2.ZERO
+		rect.size = view
+		rect.pivot_offset = view / 2.0
+		var shot: Dictionary = _reel.shots[i]
+		rect.scale = Vector2.ONE * float(shot["zoom"][0])
+		rect.position = _pan_offset(shot["pan"][0], shot["pan"][1])
+	var bar_height: float = view.y * _reel.letterbox if _reel != null else 0.0
+	if _bars.size() == 2:
+		_bars[0].position = Vector2.ZERO
+		_bars[0].size = Vector2(view.x, bar_height)
+		_bars[1].position = Vector2(0.0, view.y - bar_height)
+		_bars[1].size = Vector2(view.x, bar_height)
+
+
+func _pan_offset(x: float, y: float) -> Vector2:
+	return Vector2(x * _root.size.x, y * _root.size.y)
 
 
 func _build_logo() -> void:
@@ -245,6 +340,8 @@ func _piece(path: String, piece: Dictionary) -> TextureRect:
 func _layout() -> void:
 	var view := _root.size
 	_card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	if not _playing:
+		_layout_reel()
 	var logo_size := _frame * _scale
 	_logo_root.position = Vector2((view.x - logo_size.x) / 2.0,
 		view.y * UiTokens.IDENT_LOGO_CENTER_Y - logo_size.y / 2.0)
@@ -268,6 +365,25 @@ func _schedule(cue: Dictionary) -> void:
 			_tween.tween_property(_card, "modulate:a", 1.0, duration).set_delay(start)
 		IntroTimeline.CARD_OUT:
 			_tween.tween_property(_card, "modulate:a", 0.0, duration).set_delay(start)
+		IntroTimeline.SHOT:
+			var i: int = cue["index"]
+			var rect := _shots[i]
+			var shot: Dictionary = _reel.shots[i]
+			var xfade: float = minf(IntroTimeline.FULL["xfade"], duration)
+			if i == 0:
+				_tween.tween_property(_reel_root, "modulate:a", 1.0, xfade).set_delay(start)
+			else:
+				# Le plan précédent disparaît une fois recouvert : sinon, au fondu de sortie, tous
+				# les plans empilés se verraient l'un à travers l'autre.
+				var previous := _shots[i - 1]
+				_tween.tween_callback(func() -> void: previous.visible = false).set_delay(start + xfade)
+			_tween.tween_property(rect, "modulate:a", 1.0, xfade).set_delay(start)
+			_tween.tween_property(rect, "scale", Vector2.ONE * float(shot["zoom"][1]), duration) \
+				.from(Vector2.ONE * float(shot["zoom"][0])).set_delay(start)
+			_tween.tween_property(rect, "position", _pan_offset(shot["pan"][2], shot["pan"][3]), duration) \
+				.from(_pan_offset(shot["pan"][0], shot["pan"][1])).set_delay(start)
+		IntroTimeline.REEL_OUT:
+			_tween.tween_property(_reel_root, "modulate:a", 0.0, duration).set_delay(start)
 		IntroTimeline.LETTER:
 			var letter := _letters[cue["index"]]
 			_tween.tween_property(letter, "position:x", _letter_targets[cue["index"]], duration) \
@@ -292,6 +408,8 @@ func _schedule(cue: Dictionary) -> void:
 ## État « logo formé » : lettres posées et éteintes, filet tracé et éteint, vrai logo allumé.
 func _show_formed_logo() -> void:
 	_card.modulate.a = 0.0
+	if _reel_root != null:
+		_reel_root.modulate.a = 0.0
 	for i: int in _letters.size():
 		_letters[i].position.x = _letter_targets[i]
 		_letters[i].modulate.a = 0.0
@@ -307,4 +425,5 @@ func _finish() -> void:
 		return
 	_done = true
 	_playing = false
+	print("Ident : fini")
 	finished.emit()

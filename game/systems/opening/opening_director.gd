@@ -151,6 +151,11 @@ func run() -> void:
 		_ident.reduced = _settings != null and _settings.reduce_motion
 		_ident.set_texts(_texts.text(TitleTexts.GROUP_IDENT, &"studio"),
 			_texts.text(TitleTexts.GROUP_IDENT, &"presents"))
+		# Bande-annonce (« à la Netflix / Canal+ ») : les plans de `data/opening/trailer.json` ;
+		# sans fichier ou sans plan valide, l'ident joue sans elle.
+		var reel := TrailerReel.new()
+		if reel.load_file() and not reel.shots.is_empty():
+			_ident.set_reel(reel)
 		add_child(_ident)
 		_ident.finished.connect(_on_ident_finished)
 		_ident.play()
