@@ -18,8 +18,12 @@
 # ROUTE 28 (Q, x 1..2, y 9..11) adossé à la forêt de l'ouest, porte neuve (d, (2, 10), STEP_ON ←)
 # vers route_28_gate ; retour en (3, 10). Fermé depuis Kanto tant que johto_route28_open manque (le
 # garde du poste, A-48). Grille validée par Kevin le 2026-11-03 (validation d'avance des grilles Johto).
+# La retouche est portée par la VARIANTE `JOH9` (sections PRATICABLES_JOH9, GRILLE_JOH9, POSITIONS_JOH9
+# ci-dessous, lues par plan_check_joh9.py avec lire(chemin, "JOH9")) : la grille de base reste celle du
+# J29, conforme à la carte `route_22_west` du jeu (test_j29_maps), jusqu'au code du JOH9 qui modifiera
+# la carte et basculera la base.
 
-PRATICABLES .=hDd
+PRATICABLES .=hD
 
 GRILLE 20 14
 00 TTTTTTTTTTTTTTTTTTTT
@@ -31,9 +35,9 @@ GRILLE 20 14
 06 TTTTTT..=..TTTTTTTTT
 07 TTTTT...=...TTTTTTTT
 08 TTTT....=.....TTTTTT
-09 TQQ.n...============
-10 TQd.....============
-11 TQQ.....============
+09 TTT.n...============
+10 TT......============
+11 TT......============
 12 TTT...hhhhhh...TTTTT
 13 TTTTTTTTTTTTTTTTTTTT
 FIN
@@ -46,6 +50,18 @@ porte_poste         warp            8,5              libre   vers=route_22_gate:
 rival               pnj             8,6              libre   role=R facing=down  # n° 7 (bloque tant qu il est là : si badge_earth, sauf victoire)
 declencheur_rival   declencheur     7..9,7           libre   scene=rival_route22_final
 panneau             panneau         4,9              bloque  texte=route_22_league_sign
+FIN
+
+# Variante JOH9 (Chapitre Johto) : poste de la Route 28 et sa porte, voir l'en-tête.
+PRATICABLES_JOH9 .=hDd
+
+GRILLE_JOH9
+09 TQQ.n...============
+10 TQd.....============
+11 TQQ.....============
+FIN
+
+POSITIONS_JOH9
 porte_route_28      warp            2,10             libre   vers=route_28_gate:from_route_22  # JOH9 : STEP_ON ← → poste de la Route 28 (porte neuve, JH-8)
 from_route_28_gate  spawn           3,10             libre   # JOH9 : sortie du poste de la Route 28, tourné →
 FIN
