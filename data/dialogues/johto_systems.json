@@ -1,0 +1,14 @@
+{
+	"storage_offline": {
+		"narration": true,
+		"pages": ["Le réseau de Kanto ne répond pas."]
+	},
+	"johto_return_test_before": {
+		"narration": true,
+		"pages": ["(Scène de test du JOH0.)\nLes Poké Balls de ton équipe sont là."]
+	},
+	"johto_return_test_after": {
+		"narration": true,
+		"pages": ["Le réseau de Kanto répond de nouveau."]
+	}
+}

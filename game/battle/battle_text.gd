@@ -179,6 +179,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"safari_ball_thrown", &"safari_bait", &"safari_rock", &"safari_eating", &"safari_angry",
 	&"safari_fled", &"safari_left", &"safari_no_balls",
 	&"safari_action_ball", &"safari_action_bait", &"safari_action_rock", &"safari_action_run",
+	&"ball_refused_offline", # Chapitre Johto (JOH0, JH-23)
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "

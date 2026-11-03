@@ -166,6 +166,13 @@ var _pending_daycare: bool = false
 ## commence à la fin du dialogue du terminal.
 var _local_trade: LocalTradeDirector
 var _pending_local_trade: bool = false
+## JOH0 : le Stockage ou le terminal d'échange ont été demandés pendant l'acte 1 du Chapitre
+## Johto (réseau de Kanto coupé) : le refus se dit à la fin du dialogue, à la place de l'écran.
+var _pending_offline_notice: bool = false
+## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
+var _team_return_overlay: TeamReturnOverlay
+## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
+var _debug_cutscene: StringName = &""
 ## Compagnon (jalon 11, 11D) : espèces éligibles et contrôleur (nœud créé tout de suite pour
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
@@ -342,6 +349,17 @@ func _ready() -> void:
 	add_child(_trade_overlay)
 	_cutscenes_node.trade_pick_handler = _on_trade_pick_requested
 	_cutscenes_node.pokemon_traded.connect(_on_pokemon_traded)
+	# JOH0 (`jalon-joh0.md` §2.2) : le vol et le retour de l'équipe (étapes « confiscate_team »
+	# et « return_team ») ; l'écran du choix des 6.
+	_team_return_overlay = TeamReturnOverlay.new()
+	_team_return_overlay.name = "TeamReturnOverlay"
+	_team_return_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
+	_team_return_overlay.label_for = func(pokemon: Pokemon) -> String:
+		return "%s  N. %d" % [pokemon.display_name(_pokemon), pokemon.level]
+	add_child(_team_return_overlay)
+	_cutscenes_node.team_return_handler = _on_team_return_requested
+	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
+	_cutscenes_node.team_returned.connect(_on_team_returned)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -926,6 +944,9 @@ func _on_go_back() -> void:
 	# J25 : choix du Pokémon d'un échange = ANNULER.
 	if _trade_overlay != null and _trade_overlay.handle_back():
 		return
+	# JOH0 : le choix des 6 est obligatoire : retour avalé.
+	if _team_return_overlay != null and _team_return_overlay.handle_back():
+		return
 	# J32 (T5) : le reste de la conversation du terminal d'échange avale le geste.
 	if _local_trade != null and _local_trade.handle_back():
 		return
@@ -1304,6 +1325,7 @@ func _apply_debug_start() -> bool:
 		return true
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
+	_debug_cutscene = start.cutscene
 	_veil_debug = start.veil
 	_veil_debug_map = start.map if not start.veil.is_empty() else &""
 	if not start.wild.is_empty():
@@ -1491,6 +1513,12 @@ func _on_map_entered(map: GameMap) -> void:
 		zone_announced.emit(map.display_name, region)
 	# J17 T24 : Flash (ou l'avertissement) une fois par arrivée, après l'autosave d'arrivée.
 	_flash.on_map_entered(map, from)
+	# JOH0 : scène d'un départ de débogage (clé « cutscene »), une seule fois, à la première
+	# entrée de carte.
+	if not _debug_cutscene.is_empty():
+		var cutscene_id := _debug_cutscene
+		_debug_cutscene = &""
+		_cutscenes_node.play.call_deferred(cutscene_id)
 
 
 func _on_target_changed(kind: int) -> void:
@@ -1528,6 +1556,11 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	elif _pending_local_trade:
 		_pending_local_trade = false
 		_local_trade.run()
+	elif _pending_offline_notice:
+		# JOH0 : acte 1 du Chapitre Johto, le réseau de Kanto est coupé.
+		_pending_offline_notice = false
+		_runner.play(TeamConfiscation.STORAGE_OFFLINE_DIALOGUE, null,
+			SceneRouter.get_current_map())
 
 
 ## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
@@ -1542,6 +1575,9 @@ func _on_shop_requested(shop_id: StringName) -> void:
 ## « open_storage » (le terminal du Centre, jalon-07.md §6.9) : le Stockage s'ouvre en écran
 ## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
 func _on_storage_requested() -> void:
+	if TeamConfiscation.is_storage_offline(GameState.flags):
+		_pending_offline_notice = true
+		return
 	_pending_storage = true
 
 
@@ -1584,6 +1620,10 @@ func get_local_trade_director() -> LocalTradeDirector:
 
 ## « open_local_trade » (le terminal) : la conversation commence à la fin du dialogue.
 func _on_local_trade_requested() -> void:
+	# JOH0 : le terminal d'échange est fermé tant que le Stockage est hors ligne [D].
+	if TeamConfiscation.is_storage_offline(GameState.flags):
+		_pending_offline_notice = true
+		return
 	_pending_local_trade = true
 
 
@@ -1803,6 +1843,24 @@ func _on_pokemon_caught() -> void:
 ## J25 (§2.5) : choix du Pokémon d'un échange fixe (places de l'espèce demandée) ; −1 = renonce.
 func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> int:
 	return await _trade_overlay.pick(InGameTrade.picker_view(GameState.party, accepted, _pokemon))
+
+
+## JOH0 (étape « return_team ») : l'écran du choix des 6 ; rend les identifiants gardés.
+func _on_team_return_requested(selection: TeamReturnSelection) -> Array[String]:
+	return await _team_return_overlay.pick(selection)
+
+
+## JOH0 : l'équipe vient d'être confisquée d'un seul bloc : le compagnon rentre (plus d'équipe) ;
+## la scène écrit par son étape « save » (l'autosave demandé ici est une ceinture de plus).
+func _on_team_confiscated() -> void:
+	_companion.refresh()
+	request_autosave("vol de l'équipe")
+
+
+## JOH0 : l'équipe est revenue d'un seul bloc : compagnon à jour, autosave demandé.
+func _on_team_returned(_stored: int) -> void:
+	_companion.refresh()
+	request_autosave("retour de l'équipe")
 
 
 ## J25 (§2.5) : échange fait d'un seul bloc : compagnon à jour (le Pokémon donné a pu l'être,

@@ -58,6 +58,11 @@ extends RefCounted
 ## "pending_exp": 500 } ; « capturé » au Pokédex ; niveau au dépôt = son niveau.
 ## Jalon 19 (T14) : « rest_point » : carte d'un Centre enregistré comme point de repos (une défaite
 ## réveille là, pas à la maison), ex. "lavender_center".
+## Chapitre Johto, JOH0 (`jalon-joh0.md` §2.2) : « confiscated » : l'équipe et le Sac confisqués
+## pendant l'acte 1, { "party": [membres, 0 à 6], "items": { objet → quantité } } (au moins l'un
+## des deux non vide) ; les drapeaux `storage_offline` et `johto_act1` sont levés avec, les
+## espèces « capturées » au Pokédex. « cutscene » : identifiant d'une scène jouée à la première
+## entrée de carte (QA d'une scène sans son déclencheur, ex. le retour de l'équipe).
 ## Passe systèmes 2 (S2E, départ `s2_fly`) : « discovered » : cartes déjà découvertes (villes
 ## ouvertes au Vol), ex. ["pallet_town", "pewter_city"] ; identifiants non vides.
 ## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
@@ -93,7 +98,8 @@ const VEIL_OFF: StringName = &"off"
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
-	"discovered", "safari", "fx_gallery", "caught_except"]
+	"discovered", "safari", "fx_gallery", "caught_except", "confiscated", "cutscene"]
+const _CONFISCATED_KEYS: Array[String] = ["party", "items"]
 ## Starter du joueur → starter que prend le rival (`starter_choice_controller.gd`, RB).
 const _RIVAL_PICK: Dictionary[StringName, StringName] = {
 	&"bulbasaur": &"charmander", &"charmander": &"squirtle", &"squirtle": &"bulbasaur",
@@ -141,6 +147,11 @@ var fx_gallery: Dictionary = {}
 ## J32 (32J, Mew et Diplôme) : « caught_except » : toutes les espèces des données sont capturées au
 ## Pokédex sauf celles-ci (ex. ["mew"]) ; null = clé absente (rien de plus).
 var caught_except: Variant = null
+## JOH0 : { "party": Array[Dictionary] (membres), "items": Dictionary[StringName, int] } ;
+## vide = rien de confisqué.
+var confiscated: Dictionary = {}
+## JOH0 : scène jouée à la première entrée de carte (&"" = aucune).
+var cutscene: StringName = &""
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -273,6 +284,18 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				for error: String in check.get_errors():
 					_errors.append(error)
 				ok = false
+	var new_confiscated: Dictionary = {}
+	if dict.has("confiscated"):
+		new_confiscated = _parse_confiscated(dict["confiscated"], data, items,
+			"%s confiscated" % source)
+		if new_confiscated.is_empty():
+			ok = false
+	var new_cutscene: StringName = &""
+	if dict.has("cutscene"):
+		if not _is_text(dict["cutscene"]):
+			ok = _fail("%s : « cutscene » est un identifiant de scène non vide" % source)
+		else:
+			new_cutscene = StringName(dict["cutscene"])
 	var new_daycare: Dictionary = {}
 	if dict.has("daycare"):
 		new_daycare = _parse_daycare(dict["daycare"], data, "%s daycare" % source)
@@ -359,6 +382,8 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	autosave = new_autosave
 	wild = new_wild
 	daycare = new_daycare
+	confiscated = new_confiscated
+	cutscene = new_cutscene
 	wild_terrain = new_wild_terrain
 	companion = new_companion
 	veil = new_veil
@@ -410,6 +435,18 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.daycare.pending_exp = mini(daycare["pending_exp"], state.daycare.exp_room)
 		state.pokedex.mark_caught(kept.species_id)
 		state.ensure_unique_uids()
+	if not confiscated.is_empty():
+		# JOH0 : l'équipe et le Sac confisqués, drapeaux de l'acte 1 levés avec.
+		for member: Dictionary in confiscated["party"]:
+			var taken := _create(member, state, data)
+			taken.ensure_uid()
+			state.confiscated.party.append(taken)
+			state.pokedex.mark_caught(taken.species_id)
+		for id: StringName in confiscated["items"]:
+			state.confiscated.items[id] = confiscated["items"][id]
+		state.flags.set_flag(TeamConfiscation.STORAGE_OFFLINE)
+		state.flags.set_flag(TeamConfiscation.ACT1)
+		state.ensure_unique_uids()
 	if companion >= 0:
 		state.set_companion(state.party.get_at(companion))
 	if not rest_point.is_empty():
@@ -458,8 +495,11 @@ func describe() -> String:
 			"" if status.is_empty() else " (%s)" % status])
 	var kept := "" if daycare.is_empty() else ", Pension : %s N%d + %d XP" % [
 		daycare["species"], daycare["level"], daycare["pending_exp"]]
-	return "%s/%s, %s%s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
-		", ".join(members), kept, " (remplace la sauvegarde)" if autosave else ""]
+	var taken := "" if confiscated.is_empty() else ", confisqués : %d Pokémon, %d objets" % [
+		(confiscated["party"] as Array).size(), (confiscated["items"] as Dictionary).size()]
+	var scene := "" if cutscene.is_empty() else ", scène : %s" % cutscene
+	return "%s/%s, %s%s%s%s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
+		", ".join(members), kept, taken, scene, " (remplace la sauvegarde)" if autosave else ""]
 
 
 func get_errors() -> PackedStringArray:
@@ -546,6 +586,46 @@ func _parse_member(value: Variant, data: PokemonData, where: String) -> Dictiona
 
 
 ## « daycare » : un membre ([method _parse_member]) plus « pending_exp » ; {} si invalide.
+## JOH0 : { "party": [membres], "items": { objet → quantité } } ; {} (erreur signalée) si
+## invalide ou si les deux sont vides.
+func _parse_confiscated(value: Variant, data: PokemonData, items: ItemLibrary,
+		where: String) -> Dictionary:
+	if not value is Dictionary:
+		return _empty_fail("%s : un objet { party, items } est attendu" % where)
+	var entry: Dictionary = value
+	var ok := true
+	for key: Variant in entry:
+		if not _CONFISCATED_KEYS.has(str(key)):
+			ok = _fail("%s : clé inconnue « %s »" % [where, key])
+	var members: Array[Dictionary] = []
+	var raw_party: Variant = entry.get("party", [])
+	if not raw_party is Array or (raw_party as Array).size() > MAX_PARTY:
+		ok = _fail("%s : « party » est une liste de 0 à %d Pokémon" % [where, MAX_PARTY])
+	else:
+		for i: int in (raw_party as Array).size():
+			var member := _parse_member(raw_party[i], data, "%s party %d" % [where, i + 1])
+			if member.is_empty():
+				ok = false
+			else:
+				members.append(member)
+	var taken: Dictionary[StringName, int] = {}
+	var raw_items: Variant = entry.get("items", {})
+	if not raw_items is Dictionary:
+		ok = _fail("%s : « items » est un objet « objet → quantité »" % where)
+	else:
+		for key: Variant in raw_items:
+			var id := StringName(str(key))
+			if items == null or not items.has_item(id):
+				ok = _fail("%s items : objet inconnu « %s »" % [where, id])
+			elif not _is_int(raw_items[key]) or int(raw_items[key]) < 1:
+				ok = _fail("%s items « %s » : quantité entière ≥ 1 attendue" % [where, id])
+			else:
+				taken[id] = int(raw_items[key])
+	if ok and members.is_empty() and taken.is_empty():
+		ok = _fail("%s : rien de confisqué (ni Pokémon ni objet)" % where)
+	return {"party": members, "items": taken} if ok else {}
+
+
 func _parse_daycare(value: Variant, data: PokemonData, where: String) -> Dictionary:
 	if not value is Dictionary:
 		return _empty_fail("%s : un objet est attendu" % where)

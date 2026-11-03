@@ -29,6 +29,9 @@ const STORAGE_OFFLINE: StringName = &"storage_offline"
 const ACT1: StringName = &"johto_act1"
 const RETURNED: StringName = &"johto_team_returned"
 const ARRIVED: StringName = &"johto_arrived"
+## Dialogue joué par le terminal du Centre (Stockage, échange) tant que le Stockage est hors
+## ligne (`data/dialogues/johto_systems.json`) [D].
+const STORAGE_OFFLINE_DIALOGUE: StringName = &"storage_offline"
 
 ## Résultat de [method check_kept].
 enum Check {

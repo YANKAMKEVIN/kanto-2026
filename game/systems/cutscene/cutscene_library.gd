@@ -152,6 +152,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["wrong", "refuse", "say"],
 	[], # J23 : safari
 	[], [], # Jalon 30 : hall_of_fame, credits
+	[], [], # Chapitre Johto (JOH0) : confiscate_team, return_team
 ]
 ## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
 const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]
@@ -304,6 +305,10 @@ func get_set_flags() -> Array[StringName]:
 			raised = [InGameTrade.done_flag(step.trade_id)]
 		elif step.kind == CutsceneStep.Kind.GIVE: # Jalon 21 : « set » d'un « give »
 			raised = step.flags
+		elif step.kind == CutsceneStep.Kind.CONFISCATE_TEAM: # JOH0
+			raised = [TeamConfiscation.STORAGE_OFFLINE, TeamConfiscation.ACT1]
+		elif step.kind == CutsceneStep.Kind.RETURN_TEAM: # JOH0
+			raised = [TeamConfiscation.RETURNED]
 		for flag: StringName in raised:
 			found[flag] = true
 	return _sorted_keys(found)
@@ -631,6 +636,9 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			else:
 				step.text = main
 		CutsceneStep.Kind.HALL_OF_FAME, CutsceneStep.Kind.CREDITS: # Jalon 30
+			if not main is bool or not main:
+				ok = _fail("%s : « %s » vaut true" % [where, type_key])
+		CutsceneStep.Kind.CONFISCATE_TEAM, CutsceneStep.Kind.RETURN_TEAM: # JOH0
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])
 	return step if ok else null

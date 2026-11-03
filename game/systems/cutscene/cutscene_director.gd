@@ -82,6 +82,12 @@ signal pokemon_gifted(pokemon: Pokemon, stored: bool)
 ## J25 (§2.5) : échange fixe fait (étape « trade »), d'un seul bloc : Boot rafraîchit le
 ## compagnon (le Pokémon donné a pu l'être) et demande l'autosave.
 signal pokemon_traded(given: Pokemon, received: Pokemon)
+## Chapitre Johto (JOH0) : l'équipe et le Sac viennent d'être confisqués (étape
+## « confiscate_team », d'un seul bloc) ; Boot rafraîchit le compagnon.
+signal team_confiscated
+## JOH0 : l'équipe est revenue (étape « return_team », d'un seul bloc) ; [param stored] Pokémon
+## sont partis au Stockage.
+signal team_returned(stored: int)
 ## Le point de sauvegarde a échoué : scène et contrôles restent bloqués jusqu'à la réussite.
 signal save_failed(reason: String, error: Error)
 ## Fin d'une étape « wait » (interne).
@@ -187,6 +193,10 @@ var save_retry_delay: float = SaveCoordinator.RETRY_DELAY
 ## d'être ajoutée : la partie est alors écrite par le chemin de l'étape « save » ; faux =
 ## cérémonie déjà faite (reprise), rien à écrire. Non valide : étape sautée (push_error).
 var hall_of_fame_handler: Callable
+## JOH0 (étape « return_team ») : l'écran du choix des 6, coroutine
+## `func(selection: TeamReturnSelection) -> Array[String]` posée par Boot ([TeamReturnOverlay]) ;
+## rend les identifiants gardés. Non valide (tests) : [method TeamReturnSelection.default_selection].
+var team_return_handler: Callable
 ## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
 var credits_handler: Callable
 ## Raison de l'écriture qui suit l'entrée du Panthéon.
@@ -458,9 +468,53 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			return await _hall_of_fame()
 		CutsceneStep.Kind.CREDITS: # Jalon 30
 			await _credits()
+		CutsceneStep.Kind.CONFISCATE_TEAM: # JOH0
+			_confiscate_team()
+		CutsceneStep.Kind.RETURN_TEAM: # JOH0
+			await _return_team()
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
+
+
+## JOH0 (`jalon-joh0.md` §2.2) : le vol, d'un seul bloc ([method TeamConfiscation.confiscate]).
+## Sans état de partie, équipe vide ou équipe déjà confisquée : erreur, rien ne change.
+func _confiscate_team() -> void:
+	if _state == null:
+		_step_error("pas d'état de partie pour confisquer l'équipe")
+		return
+	if not TeamConfiscation.confiscate(_state, _items):
+		_step_error("vol de l'équipe refusé (équipe vide ou déjà confisquée)")
+		return
+	team_confiscated.emit()
+
+
+## JOH0 : le retour. Le choix des 6 passe par [member team_return_handler] (coroutine, l'écran
+## de Boot) ; sans lui, la sélection par défaut. Un choix refusé par les règles (ne devrait pas
+## arriver : l'écran ne valide qu'un choix permis) ou rien de confisqué : erreur, rien ne change.
+func _return_team() -> void:
+	if _state == null:
+		_step_error("pas d'état de partie pour rendre l'équipe")
+		return
+	var confiscated: ConfiscatedTeam = _state.confiscated
+	if confiscated.is_empty():
+		_step_error("rien à rendre : aucune équipe confisquée")
+		return
+	var selection := TeamReturnSelection.new((_state.party as Party).get_all(), confiscated.party)
+	var kept: Array[String] = selection.default_selection()
+	if team_return_handler.is_valid():
+		var session := _session
+		var answer: Variant = await team_return_handler.call(selection)
+		if session != _session:
+			return
+		if answer is Array:
+			kept.assign(answer)
+	var result := TeamConfiscation.restore(_state, kept)
+	if not result["ok"]:
+		_step_error("retour de l'équipe refusé (%s)"
+			% TeamConfiscation.Check.find_key(result["check"]))
+		return
+	team_returned.emit((result["stored"] as Array).size())
 
 
 ## Jalon 30 : cérémonie du Panthéon ([member hall_of_fame_handler]) puis, si une entrée vient

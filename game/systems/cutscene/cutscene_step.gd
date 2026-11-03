@@ -138,6 +138,13 @@ extends RefCounted
 ##   Panthéon montre l'équipe, puis le titre et l'entrée du Panthéon sont posés et la partie est
 ##   **écrite** (une seule écriture, comme l'étape « save ») ; sinon (déjà faite) : rien ;
 ## - [constant Kind.CREDITS] : le générique (`data/story/credits.json`) ; la scène attend sa fin.
+## - [constant Kind.CONFISCATE_TEAM] (Chapitre Johto, JOH0, `jalon-joh0.md` §2.2) : le vol de
+##   l'équipe et du Sac ([method TeamConfiscation.confiscate]), d'un seul bloc ; refusé (erreur,
+##   étape sautée) sur une équipe vide ou si une équipe est déjà confisquée. Valeur : true.
+## - [constant Kind.RETURN_TEAM] (JOH0) : le retour de l'équipe : l'écran du choix des 6
+##   ([member CutsceneDirector.team_return_handler], sinon la sélection par défaut), puis
+##   [method TeamConfiscation.restore] d'un seul bloc. Valeur : true. La scène fait suivre d'une
+##   étape « save ».
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -152,6 +159,7 @@ enum Kind {
 	## J23 (`jalon-23.md` §2.1, §2.2) : visite du Parc Safari.
 	SAFARI,
 	HALL_OF_FAME, CREDITS, # Jalon 30
+	CONFISCATE_TEAM, RETURN_TEAM, # Chapitre Johto (JOH0)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -167,6 +175,7 @@ const TYPE_KEYS: Array[String] = [
 	"unset", "toggle", "trade",
 	"safari",
 	"hall_of_fame", "credits", # Jalon 30
+	"confiscate_team", "return_team", # Chapitre Johto (JOH0)
 ]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.

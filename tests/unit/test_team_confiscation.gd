@@ -292,3 +292,10 @@ func test_a_ball_is_refused_only_with_a_full_team_and_the_storage_offline() -> v
 	state.flags.set_flag(TeamConfiscation.STORAGE_OFFLINE, false)
 	assert_false(CaptureGate.blocks(state.party, state.flags))
 	assert_false(CaptureGate.blocks(null, state.flags))
+
+
+func test_the_refusal_text_is_in_the_battle_messages() -> void:
+	var texts := BattleText.new()
+	texts.load_file()
+	assert_eq(texts.get_errors().size(), 0)
+	assert_eq(texts.get_template(CaptureGate.REFUSED_KEY), CaptureGate.REFUSED_TEXT)

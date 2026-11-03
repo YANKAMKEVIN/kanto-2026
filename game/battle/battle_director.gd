@@ -493,6 +493,15 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 			var chosen_item := _items.get_item(chosen.item_id) if _items != null else null
 			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
 					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \
+					and CaptureGate.blocks(_state.party as Party, _state.flags as StoryFlags):
+				# JOH0 (JH-23) : équipe pleine et Stockage hors ligne (acte 1 du Chapitre Johto) :
+				# refusée avant le lancer, rien n'est retiré, aucun tour joué.
+				var text := _texts.get_template(CaptureGate.REFUSED_KEY) if _texts != null else ""
+				await _hud.show_message(text if not text.is_empty() else CaptureGate.REFUSED_TEXT)
+				_show_own_card()
+				continue
+			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
+					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \
 					and _battle.refuses_balls():
 				# SPECTRE (K-8) : refusée avant le lancer, rien n'est retiré, aucun tour joué.
 				# Jalon 21 : même refus pour un sauvage « uncatchable » (Ossatueur), son texte.

@@ -249,6 +249,7 @@
 		"ghost_ball_refused": {
 			"text": "Pas question de lancer une Ball sur… ça. Elle passerait au travers."
 		},
+		"ball_refused_offline": { "text": "Ton équipe est pleine, et le PC ne répond pas." },
 		"safari_ball_thrown": { "text": "{player} lance une SAFARI BALL !" },
 		"safari_bait": { "text": "{player} lance un appât." },
 		"safari_rock": { "text": "{player} lance un caillou." },
