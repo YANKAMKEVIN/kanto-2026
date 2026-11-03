@@ -10,7 +10,7 @@
 > `reference/joh1-grilles-apercu-v1.png`) ; **vues générales peintes le 2026-11-03** (branche
 > `claude/johto-vues-acte1` : `reference/grotte-marine-1-vue-generale-v1.png`, `grotte-marine-2-vue-generale-v1.png`,
 > `oliville-vue-generale-v1.png`, plans annotés `reference/plans-johto/`, planche `reference/joh1-vues-v1.png`,
-> écarts dans `fiches-assets/serie-johto-vues-acte1.md`), **en attente de validation de Kevin**. **Pas de code avant la fin de Kanto et du JOH0.**
+> écarts dans `fiches-assets/serie-johto-vues-acte1.md`), **validées par Kevin le 2026-11-03** (« Oui, enchaîne JOH2 »). **Pas de code avant la fin de Kanto et du JOH0.**
 
 ## 1. Hors périmètre
 

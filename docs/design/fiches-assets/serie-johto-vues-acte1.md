@@ -23,7 +23,9 @@ Défauts pris **[D]**, à confirmer par Kevin sur la planche du JOH1 :
 - **Ombre de Lugia** peinte dans la salle 2 (silhouette floue sous l'eau profonde), seule entorse à
   « aucun Pokémon » : la cinématique O-6 la montrera en jeu, la vue sert de repère.
 
-## JOH1 — grotte marine et Oliville (planche `joh1-vues-v1.png`)
+## JOH1 — grotte marine et Oliville (planche `joh1-vues-v1.png`) — **validé par Kevin le 2026-11-03**
+
+Les défauts ci-dessus sont donc confirmés et servent de règle pour les jalons suivants.
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -49,7 +51,36 @@ Codex : aucun refus, trois images en un essai chacune (≈ 2 min par image).
   caisses, récifs du sud et leur ouverture centrale : conformes.
 - **Toutes** : lumière neutre respectée (Oliville blanche et diffuse ; grottes en pénombre bleue froide).
 
-## JOH2 à JOH5
+## JOH2 — Routes 39 et 38, Rosalia (planche `joh2-vues-v1.png`) — en attente de Kevin
 
-À faire après validation du style sur le JOH1 (Routes 39 et 38, Rosalia ; Routes 37, 36, 35, Doublonville,
-souterrain ; Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss ; Tour Radio 1F à 5F).
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `route-39-vue-generale-v1.png` | r1 / 1 | `route-25-vue-generale-v1.png` (falaise, mer, maison) |
+| `route-38-vue-generale-v1.png` | r1 / 1 | `route-13-vue-generale-v1.png` (prairie, lumière neutre) |
+| `rosalia-vue-generale-v1.png` | r1 / 1 | `argenta-vue-generale-v1.png` (Centre et Boutique identiques) |
+
+Défaut pris **[D]** : à Rosalia, les **érables** repères (`G`) ont un feuillage vert profond touché de rouge
+sombre (le dossier dit « érables » sans couleur ; la forêt autour reste verte) ; la **Tour Carillon** est une
+pagode à toits étagés rouge-brun, la **Tour Cendrée** une tour de bois noircie au toit troué, sans flamme ni fumée ;
+la Ferme Meumeu a une mangeoire et un abreuvoir dans l'enclos (accessoires, pas de collision).
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **Route 39** : la Ferme Meumeu est peinte comme une maison ordinaire (≈ 6 × 4) plutôt qu'une grande ferme de
+  7 × 6 ; la falaise au-dessus de la mer est une simple rangée de rochers (grille : 2 rangées, x 1..9, y 30..31) ;
+  l'enclos et les deux panneaux sont conformes ; le chemin de l'ouest est conforme.
+- **Route 38** : la barrière d'arbres (x 43..46) est rendue en une haie d'arbres d'une case au lieu de quatre, le
+  passage d'une case est bien là ; l'impasse du sud (x 33..34) est rendue en couloir étroit entre deux haies, à peine
+  plus long que deux cases ; les deux arbres sous le palier ouest et le gros tronc du nord (35, 6) sont là ; la falaise
+  s'arrête un peu avant le bord est.
+- **Rosalia** : la rue de l'est s'arrête contre la forêt avant le bord (la grille sort par x 55) ; des haies
+  basses supplémentaires devant les portes des deux maisons de l'est ; la bande d'herbe à l'ouest du chemin gardé
+  (x 36..40, y 9..12) est plus courte ; la Tour Carillon dépasse du bois sans l'« herbe de la tour » autour ;
+  avenue, rue du sud, chemin gardé, Tour Cendrée et ses deux bandes d'herbe, maison des sages et sa haie, Centre,
+  Boutique, massifs, bancs : conformes.
+- **Toutes** : lumière neutre respectée.
+
+## JOH3 à JOH5
+
+À faire après validation du JOH2 (Routes 37, 36, 35, Doublonville, souterrain ; Route 34, Bois aux Chênes,
+Écorcia, Puits Ramoloss ; Tour Radio 1F à 5F).

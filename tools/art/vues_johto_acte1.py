@@ -41,6 +41,11 @@ JALONS: dict[str, list[tuple[str, str, tuple[int, int], str, str]]] = {
 		("GROTTE_MARINE_2", "grotte_marine_2", PORTRAIT, "grotte", "Grotte marine, salle 2 (30 × 40)"),
 		("OLIVILLE", "oliville", PAYSAGE, "exterieur", "Oliville (50 × 40)"),
 	],
+	"joh2": [
+		("ROUTE39", "route_39", PORTRAIT, "exterieur", "Route 39 (24 × 50)"),
+		("ROUTE38", "route_38", PAYSAGE, "exterieur", "Route 38 (60 × 20)"),
+		("ROSALIA", "rosalia", PAYSAGE, "exterieur", "Rosalia (56 × 48)"),
+	],
 }
 
 
@@ -68,6 +73,9 @@ COULEURS_EXT = {
 	"T": FORET, ".": PELOUSE, "=": CHEMIN, "h": HERBES, "p": PAVE, "g": GALETS, "q": BOIS, "w": EAU,
 	"R": FALAISE, "x": PELOUSE, "y": PELOUSE, "n": PELOUSE, "G": PELOUSE, "k": PAVE, "E": FALAISE,
 	"C": PELOUSE, "O": PELOUSE, "m": PELOUSE, "N": PELOUSE, "P": FALAISE, "D": PELOUSE,
+	# JOH2 : W mer (décor), f clôture et e pré de l'enclos, M Ferme Meumeu, B Tour Cendrée, K Tour Carillon,
+	# S maison des sages
+	"W": EAU_PROFONDE, "f": PELOUSE, "e": (122, 170, 80), "M": PELOUSE, "B": PELOUSE, "K": FORET, "S": PELOUSE,
 }
 COULEURS_GROTTE = {
 	"#": ROCHE, "o": EAU, ".": (150, 150, 158), "g": GALETS, "w": EAU, "d": EAU_PROFONDE, ">": EAU, "<": EAU,
@@ -78,7 +86,8 @@ LEGENDE_EXT = [
 	("p", "pavé"), ("h", "hautes herbes"), ("g", "plage de galets"), ("q", "quai, pontons"), ("w", "eau surfable"),
 	("x", "haie"), ("y", "massif de fleurs"), ("n", "banc"), ("G", "arbre repère"), ("k", "caisses"),
 	("C", "Centre"), ("O", "Boutique"), ("m", "Maison 1"), ("N", "Maison 2"), ("P", "Phare"), ("D", "porte"),
-	("E", "bouche de grotte"),
+	("E", "bouche de grotte"), ("W", "mer (décor)"), ("f", "clôture de l'enclos"), ("e", "pré de l'enclos"),
+	("M", "Ferme Meumeu"), ("B", "Tour Cendrée"), ("K", "Tour Carillon"), ("S", "maison des sages"),
 ]
 LEGENDE_GROTTE = [
 	("#", "paroi"), ("o", "rocher isolé"), (".", "îlot, corniche"), ("g", "plage de galets"), ("w", "eau surfable"),
@@ -89,6 +98,7 @@ SWATCH = {
 	"x": (40, 110, 50), "y": (240, 120, 170), "n": BOIS, "G": (32, 96, 48), "k": BOIS, "C": (200, 60, 60),
 	"O": (60, 100, 200), "m": (176, 70, 52), "N": (176, 70, 52), "P": (240, 240, 236), "D": (60, 80, 120),
 	"E": (30, 30, 36), "o": (118, 120, 132), ">": (225, 240, 255), "v": (225, 240, 255),
+	"f": (244, 242, 232), "M": (150, 70, 50), "B": (60, 52, 50), "K": (120, 60, 50), "S": (176, 70, 52),
 }
 SYMBOLES = [
 	((255, 120, 220), "warp (raccord, porte)"), ((120, 220, 120), "spawn (arrivée)"), ((80, 150, 255), "PNJ"),
@@ -223,7 +233,19 @@ def _details_exterieur(d, plan, coin, case) -> None:
 		x0, y0 = coin(x, y)
 		for k in range(0, case, max(3, case // 4)):
 			d.line([x0, y0 + k, x0 + case - 1, y0 + k], fill=BOIS_2, width=1)
-	_vagues(d, plan, coin, case, "w")
+	_vagues(d, plan, coin, case, "wW")
+	for x, y in plan.cells_of("f"):                     # clôture de bois : lisse et poteaux
+		x0, y0 = coin(x, y)
+		gauche = _voisin(plan, x, y, -1, 0) == "f"
+		droite = _voisin(plan, x, y, 1, 0) == "f"
+		haut = _voisin(plan, x, y, 0, -1) == "f"
+		bas = _voisin(plan, x, y, 0, 1) == "f"
+		m, e = case // 2, max(2, case // 6)
+		if gauche or droite or not (haut or bas):
+			d.rectangle([x0, y0 + m - e // 2, x0 + case - 1, y0 + m + e // 2], fill=(244, 242, 232))
+		if haut or bas:
+			d.rectangle([x0 + m - e // 2, y0, x0 + m + e // 2, y0 + case - 1], fill=(244, 242, 232))
+		d.rectangle([x0 + m - e, y0 + m - e, x0 + m + e, y0 + m + e], fill=(255, 255, 250))
 	for x, y in plan.cells_of("h"):                     # hautes herbes : touffes
 		x0, y0 = coin(x, y)
 		d.line([x0 + 2, y0 + case - 3, x0 + case // 2, y0 + 3], fill=(110, 130, 20), width=1)
@@ -249,7 +271,8 @@ def _details_exterieur(d, plan, coin, case) -> None:
 		x0, y0 = coin(x, y)
 		d.rectangle([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], fill=BOIS, outline=BOIS_2, width=2)
 	for lettre, toit, mur in (("C", (200, 60, 60), (236, 232, 224)), ("O", (60, 100, 200), (236, 232, 224)),
-			("m", (176, 70, 52), (226, 214, 190)), ("N", (176, 70, 52), (226, 214, 190))):
+			("m", (176, 70, 52), (226, 214, 190)), ("N", (176, 70, 52), (226, 214, 190)),
+			("S", (176, 70, 52), (226, 214, 190)), ("M", (150, 70, 50), (214, 196, 160))):
 		cases = plan.cells_of(lettre)
 		if not cases:
 			continue
@@ -258,6 +281,23 @@ def _details_exterieur(d, plan, coin, case) -> None:
 		if lettre in "CO":                              # emblème rond sans texte
 			cx, cy, r = (x0 + x1) // 2, y0 + (y1 - y0) * 3 // 10, (y1 - y0) // 8
 			d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(245, 245, 245), outline=(60, 60, 60))
+	if plan.cells_of("M"):                              # Ferme : porte décor fermée au milieu de la façade
+		x0, y0, x1, y1 = _boite(d, plan.cells_of("M"), coin)
+		px, py = (x0 + x1) // 2 - case // 2, y1 - case
+		d.rectangle([px + 3, py + case // 4, px + case - 4, py + case - 1], fill=(80, 52, 32))
+	if plan.cells_of("B"):                              # Tour Cendrée : ruine noircie, toit effondré
+		x0, y0, x1, y1 = _boite(d, plan.cells_of("B"), coin, fill=(74, 66, 62), outline=(40, 34, 32), width=2)
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) * 2 // 5], fill=(50, 44, 42), outline=(30, 26, 24), width=2)
+		for k in range(3):                              # brèches du toit
+			bx = x0 + (x1 - x0) * (1 + 3 * k) // 10
+			d.rectangle([bx, y0 + case // 2, bx + case, y0 + case * 3 // 2], fill=(26, 24, 24))
+	if plan.cells_of("K"):                              # Tour Carillon : pagode à toits rouges étagés
+		x0, y0, x1, y1 = _boite(d, plan.cells_of("K"), coin, fill=(214, 196, 160), outline=(90, 40, 30), width=2)
+		h = y1 - y0
+		for k in range(3):
+			yk = y0 + h * k // 3
+			d.rectangle([x0 - case // 4 * (2 - k), yk, x1 - 1 + case // 4 * (2 - k), yk + h // 6], fill=(170, 50, 40),
+				outline=(90, 30, 24), width=2)
 	if plan.cells_of("P"):                              # Phare : tour blanche à bandes, lanterne rouge
 		x0, y0, x1, y1 = _boite(d, plan.cells_of("P"), coin, fill=(240, 240, 236), outline=(90, 90, 100), width=2)
 		h = y1 - y0
