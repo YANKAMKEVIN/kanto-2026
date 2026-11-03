@@ -109,6 +109,32 @@ func test_every_champion_has_complete_art() -> void:
 		assert_ne(_catalog.bust_adjust(id), Vector3(0.0, 0.0, 1.0), "%s : réglage du buste" % id)
 
 
+## Étape 4 (fiche §12) : chaque classe ordinaire a sa pose debout, sa pose de lancer et sa main.
+func test_every_ordinary_class_has_complete_art() -> void:
+	for id: StringName in _catalog.class_ids():
+		var front := _catalog.front_dir + String(id) + _catalog.extension
+		var throw := _catalog.front_dir + String(id) + _catalog.throw_suffix + _catalog.extension
+		for path: String in [front, throw]:
+			assert_true(ResourceLoader.exists(path), "%s : %s" % [id, path])
+		assert_ne(_catalog.hand_of(id), _catalog.point("foe_hand"), "%s : main du lancer" % id)
+
+
+## Taille réelle [D] : enfants < adolescents < adultes.
+func test_ordinary_class_scales() -> void:
+	var children: Array[StringName] = [&"gamin", &"fillette", &"scout", &"campeur"]
+	var teens: Array[StringName] = [&"jeune_dresseur", &"jeune_dresseuse"]
+	for id: StringName in _catalog.class_ids():
+		var scale := _catalog.scale_of(id)
+		assert_between(scale, 1.0, 1.4, "%s : taille réelle relative" % id)
+		if id in children or id in teens:
+			continue
+		for young: StringName in children + teens:
+			assert_gt(scale, _catalog.scale_of(young), "%s plus grand que %s" % [id, young])
+	for child: StringName in children:
+		for teen: StringName in teens:
+			assert_lt(_catalog.scale_of(child), _catalog.scale_of(teen), "%s < %s" % [child, teen])
+
+
 func test_champion_scales() -> void:
 	for id: StringName in CHAMPIONS:
 		var scale := _catalog.scale_of(id)

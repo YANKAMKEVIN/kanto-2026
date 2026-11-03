@@ -154,7 +154,7 @@ CLASSES: dict[str, tuple] = {
 		"un TOPDRESSEUR, dresseur d'élite (homme d'environ 20 ans, confiant) : cheveux NOIRS en épis, "
 		"regard intense, VESTE DE SURVÊTEMENT VERT FONCÉ à bandes blanches ouverte sur un t-shirt "
 		"noir, gants sans doigts, pantalon noir, baskets noires et blanches",
-		"une main sur la hanche, l'autre tendue vers la gauche paume ouverte, sourire confiant",
+		"bras croisés sur la poitrine, poids sur une jambe, sourire confiant (AUCUN bras tendu)",
 		"veste qui claque"),
 	"topdresseuse": ("topdresseuse", 1.10,
 		"une TOPDRESSEUSE, dresseuse d'élite (jeune femme d'environ 19 ans, confiante) : longue QUEUE "
@@ -232,8 +232,9 @@ CLASSES: dict[str, tuple] = {
 		"foulard qui vole"),
 	"jeune_dresseur": (None, 1.05,
 		"un JEUNE DRESSEUR (garçon d'environ 13 ans, sportif, un peu plus grand qu'un gamin) : cheveux "
-		"BRUNS courts, CASQUETTE ROUGE ET BLANCHE portée visière en avant, t-shirt BLANC à manches "
-		"ROUGES, short en jean, sac à dos bleu, baskets rouges",
+		"BRUNS courts, CASQUETTE VERTE ET BLANCHE portée visière en avant, t-shirt JAUNE à col vert, "
+		"short VERT FONCÉ, petit sac à dos vert, baskets blanches et vertes (surtout PAS de rouge : "
+		"il ne doit pas ressembler au héros)",
 		"poings serrés devant lui, prêt à se battre, sourire décidé",
 		"casquette qui reste bien en place"),
 	"intello": ("intello", 1.12,
@@ -348,7 +349,7 @@ def generer(planche: str, rev: str = "1") -> int:
 
 
 # Révision retenue par planche ; absente = r1.
-RETENUS: dict[str, str] = {}
+RETENUS: dict[str, str] = {"elite": "2", "jeunes": "2"}  # Topdresseur sans bras tendu ; Jeune Dresseur sans rouge (héros)
 
 
 def _rangees(masque: np.ndarray, hauteur_min: int = 120) -> list[tuple[int, int]]:
