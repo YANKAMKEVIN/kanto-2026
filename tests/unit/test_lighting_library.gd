@@ -37,7 +37,9 @@ func test_real_file_loads_without_error() -> void:
 	# de la Grotte Sombre ; J20 (T16) : la serre d'Erika (`greenhouse`) ; DAF.6 : ceux du Mont
 	# Sélénite (`moon_*`, pierre chaude), les `cave_*` restant aux Îles Écume ; J26 (T7) : les
 	# bureaux de la Sylphe (`office`).
-	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest", &"cave_1f",
+	# JOH0 : les trois profils de Johto, après le golden hour de Kanto.
+	assert_eq(_library.get_ids(), [&"golden_hour", &"johto_morning", &"johto_day",
+		&"johto_night", &"interior_warm", &"forest", &"cave_1f",
 		&"cave_b1f", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
 		&"greenhouse", &"hideout", &"lavender", &"tower_cold", &"tower", &"office"] \
 		as Array[StringName])
@@ -340,3 +342,67 @@ func test_tower_uses_the_flat_grade_with_its_midtones() -> void:
 	assert_eq(tower.flat_grade_color(), Color(0.95, 0.93, 1.0))
 	assert_false(_library.get_profile(&"golden_hour").grade_flat, "extérieurs inchangés")
 	assert_false(_library.get_profile(&"tower_cold").grade_flat, "1F inchangé")
+
+
+# --- Chapitre Johto (JOH0, jalon-joh0.md §2.4) ---------------------------------------------------
+
+func test_the_three_johto_profiles_exist_and_differ() -> void:
+	assert_true(_library.load_file(), str(_library.get_errors()))
+	for id: StringName in [&"johto_morning", &"johto_day", &"johto_night"]:
+		assert_true(_library.has_profile(id), String(id))
+	var morning := _library.get_profile(&"johto_morning")
+	var day := _library.get_profile(&"johto_day")
+	var night := _library.get_profile(&"johto_night")
+	assert_true(morning.has_rim() and day.has_rim(), "matin et jour : liseré")
+	assert_false(night.has_rim(), "nuit : pas de liseré de soleil")
+	assert_gt(morning.cast_shadow_length, day.cast_shadow_length, "ombres longues le matin")
+	assert_lt(night.grade_midtones.x, 0.8, "nuit : étalonnage bleu (rouge baissé)")
+	assert_gt(night.grade_midtones.z, 0.95)
+	assert_true(night.has_cast_shadow(), "nuit : ombres très douces, pas absentes")
+	assert_lt(night.cast_shadow_color.a, morning.cast_shadow_color.a)
+	assert_false(_library.has_profile(LightingLibrary.AUTO_PROFILE),
+		"« johto_auto » est réservé, jamais un profil")
+
+
+func test_resolve_maps_auto_to_the_period_and_leaves_others_alone() -> void:
+	assert_eq(LightingLibrary.resolve(&"johto_auto", WorldClock.Period.MORNING), &"johto_morning")
+	assert_eq(LightingLibrary.resolve(&"johto_auto", WorldClock.Period.DAY), &"johto_day")
+	assert_eq(LightingLibrary.resolve(&"johto_auto", WorldClock.Period.NIGHT), &"johto_night")
+	assert_eq(LightingLibrary.resolve(&"golden_hour", WorldClock.Period.NIGHT), &"golden_hour",
+		"Kanto garde son golden hour (JH-8)")
+	assert_eq(LightingLibrary.resolve(&"", WorldClock.Period.DAY), &"")
+	assert_true(LightingLibrary.is_auto(&"johto_auto"))
+	assert_false(LightingLibrary.is_auto(&"johto_day"))
+
+
+func test_a_map_may_declare_the_auto_profile() -> void:
+	var dict := {"profiles": {"p": _profile()}, "maps": {"olivine_city": "johto_auto",
+		"pallet_town": "p"}}
+	assert_true(_library.add_from_dict(dict, "test"), str(_library.get_errors()))
+	assert_eq(_library.get_map_profile(&"olivine_city"), &"johto_auto")
+
+
+func test_lerp_interpolates_every_field_and_fades_absent_blocks() -> void:
+	assert_true(_library.load_file())
+	var day := _library.get_profile(&"johto_day")
+	var night := _library.get_profile(&"johto_night")
+	var start := LightProfile.lerp(day, night, 0.0)
+	var half := LightProfile.lerp(day, night, 0.5)
+	var end := LightProfile.lerp(day, night, 1.0)
+	assert_almost_eq(start.grade_midtones.x, day.grade_midtones.x, EPS)
+	assert_almost_eq(end.grade_midtones.x, night.grade_midtones.x, EPS)
+	assert_almost_eq(half.grade_midtones.x, (day.grade_midtones.x + night.grade_midtones.x) * 0.5,
+		EPS)
+	assert_almost_eq(half.rim_strength, day.rim_strength * 0.5, EPS, "le liseré s'éteint en fondu")
+	assert_true(half.has_rim())
+	assert_false(end.has_rim())
+	assert_almost_eq(half.rim_width, day.rim_width, EPS, "largeur gardée tant que le liseré vit")
+	assert_almost_eq(half.wind_strength, (day.wind_strength + night.wind_strength) * 0.5, EPS)
+	assert_almost_eq(half.cast_shadow_color.a, (day.cast_shadow_color.a
+		+ night.cast_shadow_color.a) * 0.5, EPS)
+	assert_almost_eq(half.cast_shadow_skew_deg, (day.cast_shadow_skew_deg
+		+ night.cast_shadow_skew_deg) * 0.5, EPS)
+	assert_eq(end.id, &"johto_night")
+	assert_eq(LightProfile.lerp(null, null, 0.5).grade_strength, 0.0, "deux vides : vide")
+	var clamped := LightProfile.lerp(day, night, 7.0)
+	assert_almost_eq(clamped.grade_midtones.z, night.grade_midtones.z, EPS, "t borné")

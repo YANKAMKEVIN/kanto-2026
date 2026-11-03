@@ -53,6 +53,7 @@ const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variant
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
 	"one_in", "if_caught_at_least", "unless_caught_at_least", "field", "shop", "if_items", "unless_items", "if_zone",
+	"if_period", "if_weekday", # Chapitre Johto (JOH0)
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -237,6 +238,12 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 	if entry.has("one_in"):
 		ok = _read_one_in(entry, variant, where) and ok
 	ok = _read_caught(entry, variant, where) and ok
+	if entry.has("if_period"):
+		ok = _read_moments(entry["if_period"], variant.if_periods, WorldClock.PERIOD_NAMES.keys(),
+			where + " if_period") and ok
+	if entry.has("if_weekday"):
+		ok = _read_moments(entry["if_weekday"], variant.if_weekdays,
+			Array(WorldClock.WEEKDAY_NAMES), where + " if_weekday") and ok
 	if entry.has("field"):
 		ok = _read_field(entry, variant, where) and ok
 	if entry.has("shop"):
@@ -500,6 +507,24 @@ func _read_turn(value: Variant, into: Dictionary[StringName, StringName], where:
 		if Grid.is_direction_name(str(actor)):
 			return _fail("%s : « turn » : « %s » n'est pas un acteur" % [where, actor])
 		into[StringName(str(actor))] = StringName(target)
+	return true
+
+
+## « if_period » / « if_weekday » (JOH0) : une valeur de [param allowed] ou une liste non vide de
+## valeurs distinctes.
+func _read_moments(value: Variant, into: Array[StringName], allowed: Array,
+		where: String) -> bool:
+	var raw: Array = value if value is Array else [value]
+	if raw.is_empty():
+		return _fail("%s : au moins une valeur" % where)
+	for entry: Variant in raw:
+		if not entry is String or not allowed.has(StringName(entry)) \
+				and not allowed.has(String(entry)):
+			return _fail("%s : valeur inconnue « %s » (attendu : %s)" % [where, str(entry),
+				", ".join(PackedStringArray(allowed))])
+		if into.has(StringName(entry)):
+			return _fail("%s : « %s » en double" % [where, entry])
+		into.append(StringName(entry))
 	return true
 
 

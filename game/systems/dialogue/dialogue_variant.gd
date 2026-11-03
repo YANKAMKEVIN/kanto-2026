@@ -32,6 +32,12 @@ var shop: StringName = &""
 var if_items: Array[StringName] = []
 var unless_items: Array[StringName] = []
 var if_zone: StringName = &""
+## Chapitre Johto (JOH0, `jalon-joh0.md` §2.6) : moments (« if_period ») et jours
+## (« if_weekday », [constant WorldClock.WEEKDAY_NAMES]) où la variante s'applique ; vides =
+## toujours. Lus par [member DialogueRunner.time_source] ; sans heure (Kanto), une variante datée
+## ne s'applique pas.
+var if_periods: Array[StringName] = []
+var if_weekdays: Array[StringName] = []
 ## Choix à deux cartes après la dernière page (la question) ; null = aucun.
 var choice: DialogueChoice = null
 ## Scène lancée à la fin du dialogue ([signal DialogueRunner.cutscene_requested]) ; &"" = aucune.
@@ -57,10 +63,12 @@ var caught_below: int = 0
 var field: String = ""
 
 
-## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau) et
-## [param caught] espèces capturées au Pokédex (jalon 17 ; 0 par défaut).
-func matches(flags: StoryFlags, caught: int = 0) -> bool:
-	if not matches_caught(caught):
+## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau),
+## [param caught] espèces capturées au Pokédex (jalon 17 ; 0 par défaut), au moment
+## [param period] et le jour [param weekday] (JOH0 ; &"" = pas d'heure).
+func matches(flags: StoryFlags, caught: int = 0, period: StringName = &"",
+		weekday: StringName = &"") -> bool:
+	if not matches_caught(caught) or not matches_time(period, weekday):
 		return false
 	if flags == null:
 		return if_flags.is_empty()
@@ -71,6 +79,16 @@ func matches(flags: StoryFlags, caught: int = 0) -> bool:
 ## [member caught_below].
 func matches_caught(caught: int) -> bool:
 	return caught >= caught_at_least and (caught_below <= 0 or caught < caught_below)
+
+
+## Vrai si [param period] et [param weekday] satisfont [member if_periods] et
+## [member if_weekdays] (JOH0) ; une condition posée exige une heure (&"" : faux).
+func matches_time(period: StringName, weekday: StringName) -> bool:
+	if not if_periods.is_empty() and (period.is_empty() or not if_periods.has(period)):
+		return false
+	if not if_weekdays.is_empty() and (weekday.is_empty() or not if_weekdays.has(weekday)):
+		return false
+	return true
 
 
 ## Vrai si la variante ne dépend d'aucun drapeau.

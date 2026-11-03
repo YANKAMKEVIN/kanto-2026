@@ -479,3 +479,23 @@ Ball refusée avant le lancer (`ball_refused_offline`, `data/battle/messages.jso
 `test_team_return_overlay.gd` (2), `test_debug_start_johto.gd` (3) ; tests de la bibliothèque de
 scènes réalignés sur les deux kinds de plus. `main` fusionné (`cb43cbae`). Reste du JOH0A : CI
 verte (T5), validation de Kevin sur la copie de sa sauvegarde.
+
+### T7, T8, T9 — heure, lumière, rencontres et PNJ datés (2026-11-03, lot JOH0B)
+T7 : `ZoneData.region` / `ZoneLibrary.region_of`, `is_johto`, `zones_of_region` (clé `region`) ;
+Boot : `_world_clock` sur `GameState.clock`, Timer d'une seconde (`WORLD_CLOCK_SYNC_SECONDS`),
+`period_for_map`, `_current_time`, `is_johto_map`, `get_world_clock` ; `TrainerMenu.clock_shown`
+(posé par Boot à chaque carte), pictogramme du moment (`PERIOD_ICONS`, 3 SVG provisoires),
+`refresh_status`. T8 : profils `johto_morning` / `johto_day` / `johto_night` [D] dans
+`lighting.json` ; `LightingLibrary.AUTO_PROFILE` (« johto_auto », accepté dans « maps »),
+`resolve`, `FADE_SECONDS` ; `LightProfile.lerp` ; `WorldLighting.blend_to` (tween sur les globals
+et l'étalonnage, ombres et pièce reposées à la fin), `set_night` (groupe `night_lights`) ;
+`Boot._apply_lighting(map, blend)` résout le moment et appelle le fondu sur `period_changed`.
+T9 : `EncounterTable.periods`, index (carte, terrain, moment) et refus des croisements dans
+`EncounterLibrary`, `get_table(map, terrain, period)` ; `EncounterDirector.period_source` ;
+`DialogueVariant.if_periods` / `if_weekdays` (clés `if_period`, `if_weekday`), `Dialogue.pick`
+et `DialogueRunner.time_source` ; `NpcSpec.if_periods` / `if_weekdays`, `NpcRoster.get_present`
+daté, `GameMap.set_time_context` (lu à l'entrée sur la carte [D]). Tests : zones (3), menu (1),
+lumière (4 + 3), rencontres (4), dialogues et PNJ datés (`test_dialogue_variant_time.gd`, 7).
+**Reste du lot B** : carte de test `johto_light_test` et captures matin / jour / nuit (à la fin du
+lot, avec le téléphone).
+

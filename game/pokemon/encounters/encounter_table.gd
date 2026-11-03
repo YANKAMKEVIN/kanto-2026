@@ -48,8 +48,17 @@ var ramp_max: int = 0
 ## [method GhostRule.is_ghost], relu à chaque rencontre avec le Sac du moment, qui remplit
 ## [member WildEncounter.ghost] (jamais un drapeau ni un cache).
 var ghost_unless_item: StringName = &""
+## Moments où la table vaut (Chapitre Johto, JOH0, `jalon-joh0.md` §2.5 ; clé « period ») :
+## vide = toute la journée (toutes les tables de Kanto). Ne décide rien ici :
+## [method EncounterLibrary.get_table] choisit la table du moment.
+var periods: Array[StringName] = []
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
+
+
+## Vrai si la table vaut toute la journée (aucun moment déclaré).
+func is_all_day() -> bool:
+	return periods.is_empty()
 
 
 ## Somme des poids des emplacements.

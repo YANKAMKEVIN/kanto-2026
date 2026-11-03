@@ -413,3 +413,40 @@ func test_j20_zones_texts_maps_and_services() -> void:
 	for map_id: StringName in [&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b4f",
 			&"rocket_hideout_elevator"]:
 		assert_has(_zones.get_zone(&"celadon_city").maps, map_id)
+
+
+# --- Chapitre Johto (JOH0, jalon-joh0.md §2.13) : régions --------------------------------------
+
+func test_region_defaults_to_kanto_and_is_read_per_zone() -> void:
+	var dict := {"zones": {
+		"pallet_town": {"name": "Bourg Palette", "kind": "town", "maps": ["pallet_town"]},
+		"olivine_city": {"name": "Oliville", "kind": "town", "maps": ["olivine_city"],
+			"region": "johto"},
+	}}
+	assert_true(_zones.add_from_dict(dict, "test"), str(_zones.get_errors()))
+	assert_eq(_zones.get_zone(&"pallet_town").region, ZoneData.REGION_KANTO, "défaut : Kanto")
+	assert_eq(_zones.get_zone(&"olivine_city").region, ZoneData.REGION_JOHTO)
+	assert_eq(_zones.region_of(&"pallet_town"), &"kanto")
+	assert_eq(_zones.region_of(&"olivine_city"), &"johto")
+	assert_eq(_zones.region_of(&"carte_inconnue"), &"kanto", "[D] une carte sans zone est à Kanto")
+	assert_true(_zones.is_johto(&"olivine_city"))
+	assert_false(_zones.is_johto(&"pallet_town"))
+	assert_eq(_zones.zones_of_region(&"johto"), [&"olivine_city"] as Array[StringName])
+	assert_eq(_zones.zones_of_region(&"kanto"), [&"pallet_town"] as Array[StringName])
+
+
+func test_an_unknown_region_is_rejected() -> void:
+	var dict := {"zones": {
+		"x": {"name": "X", "kind": "town", "region": "hoenn"},
+		"y": {"name": "Y", "kind": "town", "region": 3},
+	}}
+	assert_false(_zones.add_from_dict(dict, "test"))
+	assert_eq(_zones.size(), 0)
+	assert_push_error_count(2)
+
+
+func test_real_zones_are_all_in_kanto_until_the_johto_content() -> void:
+	assert_true(_zones.load_file())
+	assert_eq(_zones.zones_of_region(ZoneData.REGION_JOHTO), [] as Array[StringName],
+		"les zones de Johto arrivent avec les jalons de contenu (JOH1+)")
+	assert_eq(_zones.zones_of_region(ZoneData.REGION_KANTO).size(), _zones.size())

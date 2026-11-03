@@ -22,11 +22,18 @@ extends CanvasLayer
 ## l'étalonnage et les ombres (jalon-07.md §7).
 ##
 ## Usage : `apply(profile, map)` à chaque changement de carte (écran noir du fondu), carte
-## déjà dans l'arbre. Le jour/nuit (phase 10) appellera [method apply] quand l'heure change.
+## déjà dans l'arbre. Le jour/nuit du Chapitre Johto (JOH0, `jalon-joh0.md` §2.4) appelle
+## [method blend_to] quand le moment change sur la carte : les globals et l'étalonnage glissent
+## ([method LightProfile.lerp]) pendant [constant LightingLibrary.FADE_SECONDS], les ombres
+## portées et la lumière de pièce sont reposées à la fin seulement [D] (leur transformation
+## parcourt la carte). [method set_night] montre ou cache les **lumières de nuit** de la carte
+## (groupe [constant GROUP_NIGHT_LIGHTS] : fenêtres, lampadaires, phare).
 
 ## Groupes des sprites d'ombre des objets peints (scènes de tools/build_painted_props.gd).
 const GROUP_CAST_SHADOWS: StringName = &"cast_shadows"
 const GROUP_CONTACT_SHADOWS: StringName = &"contact_shadows"
+## Lumières de nuit des cartes de Johto (JOH0) : visibles la nuit seulement.
+const GROUP_NIGHT_LIGHTS: StringName = &"night_lights"
 ## Ombre portée telle que pré-calculée par tools/art/preparer.py (manifeste.json,
 ## « ombre_portee » : écrasement 0,26, inclinaison 45° vers le bas à droite, réduction 2).
 ## Un profil identique laisse l'image telle quelle ; un autre la cisaille et l'étire.
@@ -67,6 +74,8 @@ var _grade: ColorRect
 var _grade_flat: ColorRect
 var _world_modulate: CanvasModulate
 var _battle_active: bool = false
+var _blend: Tween
+var _blend_target: LightProfile
 
 
 func _init() -> void:
@@ -102,8 +111,13 @@ func _notification(what: int) -> void:
 
 
 ## Pose [param profile] (null = profil vide : aucun effet) ; règle les ombres des objets
-## peints sous [param map] (tout l'arbre si null).
+## peints sous [param map] (tout l'arbre si null). Un fondu en cours est interrompu.
 func apply(profile: LightProfile, map: Node = null) -> void:
+	_stop_blend()
+	_apply_now(profile, map)
+
+
+func _apply_now(profile: LightProfile, map: Node) -> void:
 	_profile = profile if profile != null else LightProfile.new()
 	_push_globals()
 	_update_grade()
@@ -112,6 +126,59 @@ func apply(profile: LightProfile, map: Node = null) -> void:
 	_update_flat()
 	apply_shadows(map)
 	RoomLight.apply_to(map, _profile)
+
+
+## JOH0 : glisse du profil courant vers [param profile] en [param seconds] (0 ou moins :
+## immédiat, comme [method apply]) ; globals et étalonnage interpolés à chaque image, ombres et
+## lumière de pièce reposées à la fin. Un nouveau fondu remplace le précédent là où il en est.
+func blend_to(profile: LightProfile, map: Node = null, seconds: float = 0.0) -> void:
+	_stop_blend()
+	var target := profile if profile != null else LightProfile.new()
+	if seconds <= 0.0 or not is_inside_tree():
+		_apply_now(target, map)
+		return
+	var from := _profile
+	_blend_target = target
+	_blend = create_tween()
+	_blend.tween_method(func(t: float) -> void: _blend_step(from, target, t), 0.0, 1.0,
+		seconds)
+	_blend.finished.connect(func() -> void:
+		_blend = null
+		_blend_target = null
+		_apply_now(target, map))
+
+
+## Vrai pendant un fondu ([method blend_to]).
+func is_blending() -> bool:
+	return _blend != null and _blend.is_valid()
+
+
+## Profil visé par le fondu en cours (null sinon).
+func get_blend_target() -> LightProfile:
+	return _blend_target
+
+
+## JOH0 : montre ([param night] vrai) ou cache les lumières de nuit sous [param map] (tout l'arbre
+## si null).
+func set_night(night: bool, map: Node = null) -> void:
+	for node: Node in _shadow_nodes(GROUP_NIGHT_LIGHTS, map):
+		(node as CanvasItem).visible = night
+
+
+func _blend_step(from: LightProfile, to: LightProfile, t: float) -> void:
+	_profile = LightProfile.lerp(from, to, t)
+	_push_globals()
+	_update_grade()
+	_grade_flat.color = _profile.flat_grade_color()
+	_world_modulate.color = _profile.flat_grade_color()
+	_update_flat()
+
+
+func _stop_blend() -> void:
+	if _blend != null and _blend.is_valid():
+		_blend.kill()
+	_blend = null
+	_blend_target = null
 
 
 ## Combat en cours (Boot, `battle_started` / `battle_finished`) : l'étalonnage à plat passe

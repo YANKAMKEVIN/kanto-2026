@@ -69,6 +69,11 @@ var rng_source: Callable
 ## de variante (« if_caught_at_least », « unless_caught_at_least »). Non valide : 0. Posé par
 ## [Boot] (GameState.pokedex).
 var caught_count: Callable
+## Chapitre Johto (JOH0, `jalon-joh0.md` §2.6) : moment et jour courants pour les variantes
+## « if_period » / « if_weekday », `func() -> Array` ([moment, jour], identifiants de
+## [WorldClock] ; vides hors de Johto). Non valide : pas d'heure (ces variantes sont sautées).
+## Posé par [Boot].
+var time_source: Callable
 ## État d'une capacité de terrain (jalon 16, [member DialogueVariant.field]) :
 ## `func(move: StringName) -> FieldMoves.Result`. Non valide : les variantes « field » sont
 ## sautées. Posé par [Boot] ([FieldMoves]). Le Pokémon nommé remplace `{pokemon}` dans la variante
@@ -154,8 +159,9 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	if dialogue == null:
 		push_error("DialogueRunner : dialogue inconnu « %s »" % dialogue_id)
 		return false
+	var time := _time()
 	var variant := dialogue.pick(_flags, _rng(), _caught(), field_source, item_source,
-		zone_source)
+		zone_source, time[0], time[1])
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -192,7 +198,9 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 	var dialogue := _library.get_dialogue(dialogue_id) if _library != null else null
 	if dialogue == null:
 		return false
-	var variant := dialogue.pick(_flags, null, _caught(), Callable(), item_source, zone_source)
+	var time := _time()
+	var variant := dialogue.pick(_flags, null, _caught(), Callable(), item_source, zone_source,
+		time[0], time[1])
 	return variant != null and variant.auto
 
 
@@ -434,6 +442,18 @@ func _on_advance_requested() -> void:
 	if Engine.get_process_frames() == _play_frame:
 		return
 	_advance()
+
+
+## [moment, jour] courants ([member time_source]) ; vides sans source.
+func _time() -> Array[StringName]:
+	var result: Array[StringName] = [&"", &""]
+	if not time_source.is_valid():
+		return result
+	var raw: Variant = time_source.call()
+	if raw is Array and (raw as Array).size() == 2:
+		result[0] = StringName(str(raw[0]))
+		result[1] = StringName(str(raw[1]))
+	return result
 
 
 ## Espèces capturées ([member caught_count]) ; 0 sans source.

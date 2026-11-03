@@ -63,6 +63,10 @@ const WATER_ROD_TERRAIN: StringName = &"water_rod"
 
 ## Faux : aucun tirage (outils de capture, tests d'autres systèmes).
 var enabled: bool = true
+## JOH0 (`jalon-joh0.md` §2.5) : moment courant à lire pour la carte, `func(map_id: StringName)
+## -> StringName` (Boot : le moment de l'horloge à Johto, &"" ailleurs). Non valide : &"" (Kanto :
+## tirage inchangé).
+var period_source: Callable
 
 var _library: EncounterLibrary
 var _data: PokemonData
@@ -182,7 +186,7 @@ func start_encounter(encounter: WildEncounter, terrain: StringName = &"") -> boo
 	var table := _library.get_table_by_id(encounter.table_id) \
 		if _library != null and not encounter.table_id.is_empty() else null
 	if table == null and _library != null:
-		table = _library.get_table(_map.map_id, terrain)
+		table = _library.get_table(_map.map_id, terrain, _period())
 	encounter.ghost = encounter.ghost or _is_ghost(table)
 	_run(encounter, _origin_cell(cell), terrain)
 	return true
@@ -195,7 +199,7 @@ func _on_player_moved(cell: Vector2i) -> void:
 	if not _can_encounter(cell):
 		return
 	var terrain := terrain_at(cell)
-	var table := _library.get_table(_map.map_id, terrain)
+	var table := _library.get_table(_map.map_id, terrain, _period())
 	# Un seul tirage de taux par pas, au taux effectif de la série (§3.6, montée du taux).
 	var encounter := table.roll(_state.rng as GameRng, _quiet_steps)
 	if encounter == null:
@@ -249,7 +253,15 @@ func _can_encounter(cell: Vector2i) -> bool:
 	# J23 : dans le Parc, pas de rencontre sans visite active.
 	if is_safari_map() and _active_safari_visit() == null:
 		return false
-	return _library.has_table(_map.map_id, terrain)
+	return _library.has_table(_map.map_id, terrain, _period())
+
+
+## JOH0 : le moment courant de la carte ([member period_source]), &"" sans source ni carte.
+func _period() -> StringName:
+	if not period_source.is_valid() or _map == null:
+		return &""
+	var period: Variant = period_source.call(_map.map_id)
+	return period if period is StringName or period is String else &""
 
 
 ## Case de l'herbe qui bouge (§3.6) : celle devant le joueur si elle est en hautes herbes,
@@ -373,7 +385,7 @@ func _play_rubble_beat(origin: Vector2i, species: StringName, ghost: bool = fals
 ## sur un déclencheur (un pas sur un escalier, la case du rival ou celle du SPECTRE ne tire
 ## jamais de rencontre, quel que soit l'ordre des écouteurs de `moved`).
 func _is_floor(grid: GridWorld, cell: Vector2i) -> bool:
-	if _library == null or not _library.has_table(_map.map_id, _FLOOR_TERRAIN):
+	if _library == null or not _library.has_table(_map.map_id, _FLOOR_TERRAIN, _period()):
 		return false
 	if not grid.is_in_bounds(cell) or grid.is_solid(cell) or grid.is_water(cell):
 		return false

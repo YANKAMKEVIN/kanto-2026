@@ -50,6 +50,8 @@ const MAX_PLAY_TIME_STEP: float = SessionLifecycle.MAX_PLAY_TIME_STEP
 ## Décor de l'introduction de Chen (OUV.2, dossier 13 §9.0) : le labo, cadré en son centre
 ## (16 × 11 cases ; défaut, règle 4).
 const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
+## JOH0 : période de relecture de l'heure du téléphone (secondes) [D].
+const WORLD_CLOCK_SYNC_SECONDS: float = 1.0
 ## Lot 32P : choix de la capacité d'un PP Plus ou d'un Éther (textes validés par Kevin le 2026-10-29).
 const PP_MOVE_CAPTION := "Choisis une capacité"
 const PP_MOVE_CONFIRM := "CHOISIR"
@@ -133,6 +135,10 @@ var _unlocks: MenuUnlocks
 ## changement de carte (écran noir) ; profil vide = aucun effet (Bourg Palette, Route 1).
 var _lighting: WorldLighting
 var _light_profiles := LightingLibrary.new()
+## JOH0 (`jalon-joh0.md` §2.3) : l'heure du monde, sur l'heure réelle du téléphone, relue une
+## fois par seconde ([member _clock_timer]) ; lue seulement sur les cartes de Johto (JH-8).
+var _world_clock := WorldClock.new()
+var _clock_timer: Timer
 ## Évolutions de fin de combat (jalon 9, jalon-09.md §2.3) et leur écran (T9).
 var _evolutions: EvolutionDirector
 var _evolution_screen: EvolutionScreen
@@ -262,6 +268,16 @@ func _ready() -> void:
 	add_child(_lighting.get_world_modulate())
 	_wire_settings_applier()
 	_light_profiles.load_file()
+	# JOH0 : l'horloge tourne partout (heure réelle) ; qui la lit dépend de la région de la carte.
+	_world_clock.start_on_device(GameState.clock)
+	_world_clock.period_changed.connect(_on_period_changed)
+	_clock_timer = Timer.new()
+	_clock_timer.name = "WorldClockTimer"
+	_clock_timer.wait_time = WORLD_CLOCK_SYNC_SECONDS
+	_clock_timer.autostart = true
+	_clock_timer.timeout.connect(_world_clock.sync)
+	add_child(_clock_timer)
+	_menu_screen.set_clock(_world_clock)
 	_darkness = DarknessController.new()
 	_darkness.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_darkness)
@@ -405,6 +421,8 @@ func _ready() -> void:
 	_runner.rng_source = func() -> GameRng: return GameState.rng
 	# J17 (§2.5) : variantes selon les espèces capturées (assistant de Chen, CS05).
 	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
+	# JOH0 : moment et jour pour les variantes datées, à Johto seulement.
+	_runner.time_source = _current_time
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
 	# Jalon 20 (§2.9.6, §2.16) : variantes selon le Sac et selon les zones jouables (postes de
@@ -448,6 +466,8 @@ func _ready() -> void:
 	_cutscenes_node.set_recovery(_recovery)
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
 		SceneRouter, _cutscenes_node, _recovery)
+	# JOH0 : les tables datées ne jouent qu'à Johto (Kanto : tirage inchangé).
+	_encounters.period_source = period_for_map
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
 	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
@@ -679,6 +699,42 @@ func get_map() -> GameMap:
 ## Lumière du monde (jalon 7) : tests et outils de capture.
 func get_world_lighting() -> WorldLighting:
 	return _lighting
+
+
+## JOH0 : l'heure du monde (tests, outils).
+func get_world_clock() -> WorldClock:
+	return _world_clock
+
+
+## JOH0 (JH-8) : vrai si [param map_id] est une carte de Johto (sa zone le dit).
+func is_johto_map(map_id: StringName) -> bool:
+	return _zones != null and _zones.is_johto(map_id)
+
+
+## JOH0 : le moment courant à lire sur [param map_id] : celui de l'horloge à Johto, &"" ailleurs
+## (Kanto n'a pas d'heure).
+func period_for_map(map_id: StringName) -> StringName:
+	return _world_clock.period_name() if is_johto_map(map_id) and _world_clock.is_active() \
+		else &""
+
+
+## JOH0 : [moment, jour] à lire sur [param map_id] (la carte courante si vide) : ceux de
+## l'horloge à Johto, vides ailleurs.
+func _current_time(map_id: StringName = &"") -> Array[StringName]:
+	var id := map_id
+	if id.is_empty():
+		var map := SceneRouter.get_current_map()
+		id = map.map_id if is_instance_valid(map) else &""
+	var period := period_for_map(id)
+	return [period, _world_clock.weekday_name() if not period.is_empty() else &""]
+
+
+## JOH0 : le moment a changé (heure réelle ou scène) : sur une carte de Johto, la lumière suit.
+func _on_period_changed(_period: WorldClock.Period) -> void:
+	var map := SceneRouter.get_current_map()
+	if is_instance_valid(map) and is_johto_map(map.map_id):
+		_apply_lighting(map, true)
+	_menu_screen.refresh_status()
 
 
 func get_settings() -> GameSettings:
@@ -1402,6 +1458,11 @@ func _on_map_changed(map: GameMap) -> void:
 	_flash.on_map_changed(map)
 	_apply_lighting(map)
 	_apply_darkness(map)
+	# JOH0 (JH-8) : la puce de l'heure du menu ne se montre qu'à Johto ; les PNJ datés lisent le
+	# moment et le jour à l'entrée sur la carte.
+	_menu_screen.clock_shown = is_johto_map(map.map_id)
+	var time := _current_time(map.map_id)
+	map.set_time_context(time[0], time[1])
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
@@ -1465,14 +1526,24 @@ func _on_companion_line(dialogue_id: StringName) -> void:
 
 ## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :
 ## aucun effet ([method WorldLighting.apply] avec null).
-func _apply_lighting(map: GameMap) -> void:
+## JOH0 (`jalon-joh0.md` §2.4) : « johto_auto » est remplacé par le profil du moment courant
+## ([method LightingLibrary.resolve]) ; [param blend] (changement de moment sur la carte) : fondu
+## de [constant LightingLibrary.FADE_SECONDS] au lieu de l'application immédiate. Les lumières de
+## nuit de la carte (groupe `night_lights`) ne s'allument que la nuit sur une carte « johto_auto ».
+func _apply_lighting(map: GameMap, blend: bool = false) -> void:
 	var profile: LightProfile = null
+	var auto := LightingLibrary.is_auto(map.light_profile)
+	var period := _world_clock.period()
 	if not map.light_profile.is_empty():
-		profile = _light_profiles.get_profile(map.light_profile)
+		var id := LightingLibrary.resolve(map.light_profile, period)
+		profile = _light_profiles.get_profile(id)
 		if profile == null:
-			push_error("Boot : profil de lumière inconnu « %s » (%s)" % [map.light_profile,
-				map.map_id])
-	_lighting.apply(profile, map)
+			push_error("Boot : profil de lumière inconnu « %s » (%s)" % [id, map.map_id])
+	if blend:
+		_lighting.blend_to(profile, map, LightingLibrary.FADE_SECONDS)
+	else:
+		_lighting.apply(profile, map)
+	_lighting.set_night(auto and period == WorldClock.Period.NIGHT, map)
 
 
 ## Voile d'obscurité (J17 T9) : grotte obscure (`caves.json`, « dark ») ou voile forcé par le
