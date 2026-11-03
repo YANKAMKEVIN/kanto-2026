@@ -81,7 +81,7 @@ if __name__ == "__main__":
 	leg = _legendes()
 	for lot, classes in LOTS.items():
 		planche_lot(classes, leg, 0.4 if apercu else 1.0).save(
-			dossier / f"{lot.replace('_', '-')}.jpg", quality=84)
+			dossier / f"{lot.replace('_', '-')}.jpg", quality=76)
 	ensemble(leg).save((dossier if apercu else SORTIE.parent) / "entree-ordinaires-ensemble.jpg",
 		quality=86)
 	print(dossier)

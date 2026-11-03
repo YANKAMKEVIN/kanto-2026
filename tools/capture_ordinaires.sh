@@ -28,7 +28,7 @@ combat() {
 		maitre_dojo) echo "fighting_dojo_master fighting_dojo entrance" ;;
 		marin) echo "ss_anne_sailor_erwan ss_anne_lower_deck entrance" ;;
 		medium) echo "saffron_gym_psychic_albin saffron_gym entrance" ;;
-		montagnard) echo "dark_cave_roger dark_cave_1f from_route_10_n_w" ;;
+		montagnard) echo "route_9_hiker_benoit route_9 from_cerulean" ;;
 		motard) echo "route_17_biker_1 route_17 from_route_16" ;;
 		nageur) echo "route_19_swimmer_yann route_19 from_fuchsia_city" ;;
 		nageuse) echo "route_20_swimmer_solene route_20 from_cinnabar_island" ;;

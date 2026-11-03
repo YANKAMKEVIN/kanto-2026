@@ -304,3 +304,91 @@ bustes non réglés un par un ; fichiers devenus inutiles, à supprimer si Kevin
 `viridian_gym_sol_back.webp` (plus aucun combat), `silph_co_bureaux_back.webp`,
 `rocket_hideout_repaire_back.webp` (anciennes versions) ; `tour_pokemon_back.webp` reste (fond
 `manoir_salle` du Manoir Pokémon).
+
+## 12. Étape 4 : les classes de Dresseurs ordinaires (2026-11-03)
+
+Demande de Kevin (« Vas y continue ») : les **34 classes** ordinaires du §1 (toutes utilisées, 260
+combats) ont leur art peint ; le Gamin était le pilote, les **33 autres** sont peintes ici, Sbire
+femme comprise (`sbire_rocket_f`, sprite à part, décision de Kevin). Entrée de niveau 1 inchangée
+(les deux dresseurs, la rangée de Balls, le lancer ; pas de « VS »).
+
+- **Art** (`tools/art/entree_ordinaires.py`, prompts `tools/art/entree_dresseurs/ordinaires/`,
+  lot `tools/art/entree_ordinaires_lot.sh`) : **deux classes par image Codex** (portrait
+  1024 × 1536, une rangée par classe : debout prêt à gauche, lancer à droite), références : Pierre
+  (debout + lancer), Gamin (debout + lancer), puis l'apparence du monde de chaque classe quand elle
+  lui est fidèle (face et profil de sa feuille peinte). Figures de 610 à 800 px de haut dans la
+  source : jamais agrandies à l'export. Classes dont l'apparence du monde est un emprunt (et non la
+  classe) : dessinées d'après Rouge/Bleu, sans IMAGE du monde : `medium` (Psy de Safrania, le monde
+  prend `channeler`), `karateka` et `maitre_dojo` (le monde prend `hiker`), `jongleur` et `pillard`
+  (le monde prend `gambler`), `jeune_dresseur` (le monde prend `youngster`). Révisions retenues :
+  `elite` r2 (le Topdresseur tendait déjà le bras à l'entrée), `jeunes` r2 (le Jeune Dresseur en
+  rouge et blanc ressemblait au héros : casquette verte, t-shirt jaune [D]). 19 images Codex.
+- **Export** : rangées séparées par les lignes vides, poses par colonnes vides, sinon par
+  composantes connexes (motard, loubard : la main du lancer passe au-dessus du coude de la pose
+  debout) ; toiles du §1 (debout 512 × 768, lancer élargi, milieu des pieds au centre).
+- **Données** (`trainer_intro.json`, `classes`) : `hand` = bout des doigts du lancer (cherché dans
+  la moitié haute de la pose, pour ne pas prendre le pied avant) + (0,061 ; 0,114), la règle des
+  grands combats ; `scale` [D] : enfants 1,0 (gamin, fillette, scout, campeur), adolescents 1,05
+  (jeune dresseur, jeune dresseuse), adultes 1,06 à 1,26 :
+
+| Classe | scale | Apparence peinte |
+|---|---|---|
+| `beaute` | 1,10 | longs cheveux châtains, robe d'été rose pâle, sac blanc |
+| `campeur` | 1,00 | chemise kaki de scout, foulard rouge, short olive, sac à dos |
+| `chercheur` | 1,12 | jeune, cheveux noirs, lunettes, blouse ouverte, pull vert, carnet |
+| `dompteur` | 1,24 | bonnet gris, barbe, salopette ocre, fouet enroulé |
+| `exorciste` | 1,06 | voile crème, robe brun-violet, chapelet de bois |
+| `fillette` | 1,00 | robe bleu clair, barrette-fleur, sac rose |
+| `gamin` | 1,00 | (pilote, inchangé) |
+| `gentleman` | 1,14 | chapeau melon, moustache blanche, costume noir, canne |
+| `ingenieur` | 1,20 | casque jaune, t-shirt orange, salopette bleue, clé à molette |
+| `intello` | 1,12 | lunettes rondes, chemise blanche, nœud papillon vert, livre |
+| `jeune_dresseur` | 1,05 | casquette verte et blanche, t-shirt jaune, short vert |
+| `jeune_dresseuse` | 1,05 | queue de cheval, bandeau jaune, veste orange, short en jean |
+| `jongleur` | 1,16 | gilet à losanges rouges et jaunes, pantalon violet, balles de jonglage |
+| `joueur` | 1,18 | fedora, moustache, veste marron, gilet moutarde, dé |
+| `karateka` | 1,22 | karatégi blanc, ceinture noire, bandeau, pieds nus |
+| `loubard` | 1,24 | chauve, barbe, gilet de cuir sans manches, cargo noir |
+| `maitre_dojo` | 1,24 | crâne rasé, moustache et barbiche grises, karatégi à revers noirs |
+| `marin` | 1,20 | bachi, col marin, foulard rouge, pantalon marine |
+| `medium` | 1,14 | cheveux noirs sur un œil, tunique violet sombre à liserés dorés |
+| `montagnard` | 1,26 | bob kaki, barbe, chemise à carreaux rouges, gros sac à dos |
+| `motard` | 1,20 | banane noire, lunettes noires, blouson de cuir, t-shirt rouge |
+| `nageur` | 1,16 | lunettes de natation, serviette au cou, short de bain bleu |
+| `nageuse` | 1,10 | chignon, maillot turquoise, paréo blanc |
+| `ornithologue` | 1,16 | chapeau vert à plume bleue, jumelles, gilet bleu-vert |
+| `pecheur` | 1,18 | bob beige, barbe grise, gilet de pêche, canne |
+| `pillard` | 1,18 | bonnet, loup noir, pull rayé, sac de toile |
+| `pokemaniac` | 1,12 | lunettes, chemise à carreaux, sac à dos olive |
+| `rockeur` | 1,18 | banane, lunettes noires, blouson à étoiles, guitare rouge |
+| `sbire_rocket` | 1,16 | casquette et uniforme noirs au R rouge, gants et bottes gris |
+| `sbire_rocket_f` | 1,12 | même uniforme, cheveux courts sous la casquette |
+| `scientifique` | 1,16 | adulte grisonnant, lunettes, longue blouse, pull vert, cravate |
+| `scout` | 1,00 | chapeau de paille, gilet vert, filet à papillons, boîte verte |
+| `topdresseur` | 1,14 | cheveux noirs en épis, veste de survêtement verte, bras croisés |
+| `topdresseuse` | 1,10 | queue de cheval rousse, veste courte marine, mini-short |
+
+- **Captures** (`tools/capture_ordinaires.sh` : un combat par classe, là où elle se bat vraiment ;
+  `tools/capture_trainer_intro.gd` accepte `--trainer`, `--map`, `--spawn` ; planches
+  `tools/art/planches_ordinaires.py`) : `entree-ordinaires/<lot>.jpg` (entrée et lancer en
+  2340 × 1080, un fichier par planche d'art, plus `gamin.jpg`) et `entree-ordinaires-ensemble.jpg`
+  (un lancer par classe). Montagnard capturé sur la Route 9 (dans la Grotte Sombre, le message
+  d'entrée de la carte se superpose au combat lancé dès l'arrivée : artefact de l'outil).
+- **Tests** : `test_every_ordinary_class_has_complete_art` (debout, lancer, main pour chaque
+  classe), `test_ordinary_class_scales` (enfants < adolescents < adultes).
+
+**Décors signalés (non repeints)** :
+- **Mer ouverte** (`sea_open`, Routes 19 à 21, nageurs et nageuses) : aucun sol ; le nageur et le
+  joueur se tiennent debout sur les vagues. Le plus net en dessous d'Argenta v3.
+- **Route 17, Route cyclable** (motards, loubards) : emprunte le parc urbain des Routes 7-8 (allée,
+  réverbères, église) au lieu d'une route en bord de mer.
+- **Manoir Pokémon** (`manoir_salle` = `tour_pokemon_back`, pillards, scientifiques) : niches à
+  bougies et fleurs funéraires de la Tour, rien du manoir.
+- Emprunts lisibles mais pas propres au lieu : Routes 14 et 15 (prairie des Routes 5-6), Route 12
+  (pont de pierre de la Route 24), Route 25 (côte de la Route 11). Arène de Parmanie (dompteurs,
+  jongleurs) : grande salle frontale vide, gardée à l'étape 2.
+
+Défauts restants : le fouet enroulé du Dompteur se lit comme un tuyau ; uniforme des Sbires plutôt
+gris-brun très sombre que noir pur ; la Topdresseuse porte deux Poké Balls à la ceinture (r2) ;
+apparences du monde de `hiker` (feuille `randonneuse`, féminine) toujours utilisée en repli par
+Montagnard, Karatéka et Maître du Dojo (sans effet tant que l'art de combat existe).
