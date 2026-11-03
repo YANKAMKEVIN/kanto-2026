@@ -1772,6 +1772,8 @@ const CAPTION_CENTER_ANCHOR := 0.5
 ## à droite (à gauche en mode gaucher, le logo passe alors à droite) ; la vraie carte derrière.
 ## Largeur du logo détouré (assets/ui/opening/logo_kanto_2026.png, 1280 × 602 à la source).
 const TITLE_LOGO_WIDTH := 760
+## Étiquette de version du titre (J34) : opacité du texte TEXT_MUTED, en bas du côté du logo.
+const TITLE_VERSION_ALPHA := 0.75
 ## Colonne d'actions : largeur, écart entre cartes, haut de la colonne (centrée en hauteur sinon).
 const TITLE_COLUMN_WIDTH := 660
 const TITLE_COLUMN_GAP := 20

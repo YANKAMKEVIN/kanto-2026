@@ -32,8 +32,7 @@ const LOGO: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026.png")
 ## lui, décalée vers le bas de [constant LOGO_SHADOW_DROP] pixels de référence.
 const LOGO_SHADOW: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026_ombre.png")
 const LOGO_SHADOW_DROP: float = 6.0
-## Étiquette de version : opacité et largeur de sa zone (texte aligné du côté du logo).
-const VERSION_ALPHA: float = 0.75
+## Étiquette de version : largeur et hauteur de sa zone (texte aligné du côté du logo).
 const VERSION_WIDTH: float = 480.0
 const VERSION_HEIGHT: float = 36.0
 const BUST: Texture2D = preload("res://assets/ui/menu/hero_bust.webp")
@@ -105,7 +104,8 @@ func _ready() -> void:
 	_version.name = "Version"
 	_version.text = GameVersion.label()
 	_version.add_theme_font_size_override(&"font_size", UiTokens.FONT_CAPTION)
-	_version.add_theme_color_override(&"font_color", Color(UiTokens.TEXT_MUTED, VERSION_ALPHA))
+	_version.add_theme_color_override(&"font_color", UiTokens.TEXT_MUTED)
+	_version.modulate.a = UiTokens.TITLE_VERSION_ALPHA
 	_version.add_theme_color_override(&"font_shadow_color", UiTokens.TEXT_SHADOW)
 	_version.add_theme_constant_override(&"shadow_offset_y", UiTokens.TEXT_SHADOW_OFFSET)
 	_version.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
