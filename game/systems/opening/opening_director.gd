@@ -37,6 +37,9 @@ signal resumed(save: Dictionary)
 signal new_game_entered(warning: String)
 ## Un réglage a changé depuis le titre (à écrire et appliquer).
 signal settings_changed(settings: GameSettings)
+## L'écran titre est découvert : après l'ident de démarrage ([IdentSequence], J34), ou à l'image
+## suivante quand il n'y en a pas (tests, captures, départ instantané). Boot y lance la musique.
+signal title_revealed
 
 const TITLE_SCENE: PackedScene = preload("res://game/ui/opening/title_screen.tscn")
 const INTRO_STAGE_SCENE: PackedScene = preload("res://game/ui/opening/intro_stage.tscn")
@@ -48,6 +51,9 @@ const PREVIOUS_SUFFIX: String = ".previous.json"
 
 ## Durées multipliées (0 = instantané, pour les tests) : fondus et écrans.
 var speed_scale: float = 1.0
+## Ident de démarrage « Les studios Kevin & Co vous présentent… POKEMAKE » avant le titre (J34) ;
+## jamais quand [member speed_scale] vaut 0 (tests, captures).
+var play_ident: bool = true
 
 var _flow: OpeningFlow
 var _model: TitleMenuModel
@@ -67,6 +73,7 @@ var _zone_name_of: Callable
 var _badge_flags: Array[StringName] = []
 var _badge_ids: Array[StringName] = []
 var _screen: TitleScreen
+var _ident: IdentSequence
 ## Vrai pendant la sortie du titre (rideau) : plus aucun toucher n'est pris.
 var _leaving: bool = false
 ## Vrai une fois la partie reprise ou la nouvelle partie construite.
@@ -140,11 +147,28 @@ func run() -> void:
 	if _fade != null:
 		_fade.set_opaque(true)
 		_fade.fade_in(fade_time(UiTokens.TITLE_FADE_IN))
+	if play_ident and speed_scale > 0.0:
+		_ident = IdentSequence.new()
+		_ident.name = "Ident"
+		_ident.speed_scale = speed_scale
+		_ident.reduced = _settings != null and _settings.reduce_motion
+		_ident.set_texts(_texts.text(TitleTexts.GROUP_IDENT, &"studio"),
+			_texts.text(TitleTexts.GROUP_IDENT, &"presents"))
+		# Bande-annonce (« à la Netflix / Canal+ ») : les plans de `data/opening/trailer.json` ;
+		# sans fichier ou sans plan valide, l'ident joue sans elle.
+		var reel := TrailerReel.new()
+		if reel.load_file() and not reel.shots.is_empty():
+			_ident.set_reel(reel)
+		add_child(_ident)
+		_ident.finished.connect(_on_ident_finished)
+		_ident.play()
+	else:
+		title_revealed.emit.call_deferred()
 
 
 ## Une entrée du titre est touchée.
 func choose(entry: StringName) -> void:
-	if _leaving or _finished or _flow == null:
+	if _leaving or _finished or _flow == null or _ident != null:
 		return
 	match entry:
 		TitleMenuModel.ENTRY_CONTINUE:
@@ -179,6 +203,10 @@ func confirm(confirmed: bool) -> void:
 func handle_back() -> bool:
 	if _finished or _flow == null:
 		return false
+	if _ident != null:
+		# Ident de démarrage : le retour le passe (§5.1, J34).
+		_ident.skip()
+		return true
 	if _intro != null:
 		# Introduction : le clavier se ferme, puis rien (§5.5).
 		_intro.handle_back()
@@ -246,6 +274,18 @@ func get_model() -> TitleMenuModel:
 ## L'écran titre (null une fois le titre quitté).
 func get_screen() -> TitleScreen:
 	return _screen
+
+
+## L'ident de démarrage en cours (null avant, après, ou sans ident).
+func get_ident() -> IdentSequence:
+	return _ident
+
+
+func _on_ident_finished() -> void:
+	if _ident != null:
+		_ident.queue_free()
+		_ident = null
+	title_revealed.emit()
 
 
 ## Résultat du dernier commit ([enum OpeningCommit.Result]), -1 s'il n'y en a pas eu.

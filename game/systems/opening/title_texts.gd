@@ -11,11 +11,14 @@ const DEFAULT_PATH: String = "res://data/opening/title.json"
 const GROUP_ENTRIES: StringName = &"entries"
 const GROUP_MESSAGES: StringName = &"messages"
 const GROUP_CONFIRM: StringName = &"confirm"
+## Ident de démarrage (J34) : « Les studios Kevin & Co » / « vous présentent ».
+const GROUP_IDENT: StringName = &"ident"
 ## Clés attendues de chaque groupe (toutes obligatoires).
 const SCHEMA: Dictionary[StringName, Array] = {
 	GROUP_ENTRIES: ["continue", "new_game", "settings"],
 	GROUP_MESSAGES: ["corrupt", "newer", "unsaved"],
 	GROUP_CONFIRM: ["title", "body", "cancel", "confirm"],
+	GROUP_IDENT: ["studio", "presents"],
 }
 
 ## Groupe → { clé → texte }.

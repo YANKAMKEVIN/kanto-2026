@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://delwfvgnh21cd"
-path="res://.godot/imported/splash_kanto_2026.png-c207f51c1ca26429796f0b6e62eb83d8.ctex"
+uid="uid://c0u351l8h1nn4"
+path="res://.godot/imported/05_velo_route_11.webp-6c899cc1bdc5d609fc5220f5067e7233.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/opening/splash_kanto_2026.png"
-dest_files=["res://.godot/imported/splash_kanto_2026.png-c207f51c1ca26429796f0b6e62eb83d8.ctex"]
+source_file="res://assets/ui/opening/trailer/05_velo_route_11.webp"
+dest_files=["res://.godot/imported/05_velo_route_11.webp-6c899cc1bdc5d609fc5220f5067e7233.ctex"]
 
 [params]
 

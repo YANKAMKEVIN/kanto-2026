@@ -1065,9 +1065,10 @@ func _start_opening() -> void:
 	_opening.apply_settings(_settings, _profile.menu_blur)
 	_opening.intro_opened.connect(_audio_bridge.on_intro_opened)
 	_opening.intro_closed.connect(_audio_bridge.on_intro_closed)
+	# Jalon Son (§1.10) : la musique du titre part quand le titre est découvert (après l'ident de
+	# démarrage, J34 ; sans ident, à l'image suivante, comme avant).
+	_opening.title_revealed.connect(_audio_bridge.play_title, CONNECT_ONE_SHOT)
 	_opening.run()
-	# Jalon Son (§1.10) : la musique du titre part après le premier rendu de l'écran titre.
-	get_tree().process_frame.connect(_audio_bridge.play_title, CONNECT_ONE_SHOT)
 
 
 ## Vrai tant que l'écran titre occupe le jeu (avant la reprise ou la chambre).

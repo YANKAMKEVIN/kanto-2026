@@ -3,20 +3,22 @@
 avec une ombre douce »). Même cadre que le logo (1280 × 602) : l'écran titre la pose sous lui,
 au même rectangle, pour que « 2026 » se lise aussi sur les toits clairs de Bourg Palette.
 
-Usage : python3 tools/art/ombre_logo.py   (depuis la racine du dépôt)
-Sortie : assets/ui/opening/logo_kanto_2026_ombre.png
+Usage : python3 tools/art/ombre_logo.py [NOM]   (depuis la racine du dépôt ; NOM défaut « pokemake »)
+Sortie : assets/ui/opening/logo_NOM_ombre.png
 """
+import sys
 from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageFilter
 
 RACINE = Path(__file__).resolve().parents[2]
-LOGO = RACINE / "assets/ui/opening/logo_kanto_2026.png"
-SORTIE = RACINE / "assets/ui/opening/logo_kanto_2026_ombre.png"
+NOM = sys.argv[1] if len(sys.argv) > 1 else "pokemake"
+LOGO = RACINE / f"assets/ui/opening/logo_{NOM}.png"
+SORTIE = RACINE / f"assets/ui/opening/logo_{NOM}_ombre.png"
 TEINTE = (10, 16, 32)       # bleu nuit du contour du logo, plus sombre
 PROCHE = (6, 14, 0.85)      # dilatation (px), flou (px), opacité : ombre portée serrée
-VOILE = (10, 40, 0.78)      # voile large et doux sous tout le logo (lisibilité de « 2026 »)
+VOILE = (12, 44, 0.86)      # voile large et doux sous tout le logo (J34 : un peu plus sombre et large)
 
 
 def couche(masque: Image.Image, dilatation: int, flou: float, opacite: float) -> np.ndarray:
