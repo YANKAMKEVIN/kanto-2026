@@ -144,6 +144,30 @@ func test_current_place_is_highlighted_and_the_panel_zone_is_circled() -> void:
 	assert_eq(screen.get_strip().get_selected(), &"route_1")
 
 
+## Reliquats du Menu peint (2026-11-02) : toutes les zones découvertes, aucune étiquette n'en
+## chevauche une autre (les secondaires sans place sont masquées) ; le lieu courant et la zone
+## du panneau restent nommés ; aux deux largeurs.
+func test_map_labels_never_overlap_with_every_zone_known() -> void:
+	for id: StringName in _zones.get_ids():
+		for map_id: StringName in _zones.get_zone(id).maps:
+			_state.discover_map(map_id)
+	for width: int in WIDTHS:
+		var screen := await _map_in(width, &"saffron_city")
+		var canvas := screen.get_map_canvas()
+		var rects := canvas.get_label_rects()
+		var list: Array[Rect2] = []
+		list.assign(rects.values())
+		assert_false(MapLabelLayout.has_overlap(list), "chevauchement à %d" % width)
+		assert_has(rects.keys(), &"pallet_town", "lieu courant nommé")
+		assert_has(rects.keys(), &"saffron_city", "zone du panneau nommée")
+		var portrait := canvas.get_portrait()
+		for zone_id: StringName in rects:
+			assert_false(rects[zone_id].intersects(Rect2(portrait.position, portrait.size)),
+				"étiquette sur le portrait : %s" % zone_id)
+		_menu.queue_free()
+		await wait_process_frames(1)
+
+
 func test_painted_portrait_on_the_player_zone() -> void:
 	var screen := await _map_in(2340)
 	var portrait := screen.get_map_canvas().get_portrait()

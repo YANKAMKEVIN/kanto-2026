@@ -64,9 +64,11 @@ extends SceneTree
 ##   storage_empty        stockage vide
 ##   storage_team_button  écran Équipe avec le bouton STOCKAGE (au Centre)
 ##
-## Sur le Mac, en 2340×1080 :
+## Sur le Mac, en 2340×1080, **par le lanceur** `tools/run_tool.gd` (ce script nomme des classes
+## qui dépendent de GameState : passé directement à `-s`, il ne compile pas avant les autoloads) :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
-##     -s res://tools/capture_menu.gd -- --out=build/captures/jalon06_t3
+##     -s res://tools/run_tool.gd -- --tool=res://tools/capture_menu.gd \
+##     --out=build/captures/jalon06_t3
 ## (1920x1080 pour l'autre largeur de référence.)
 
 const BOOT_SCENE: String = "res://game/boot.tscn"

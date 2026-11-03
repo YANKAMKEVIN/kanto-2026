@@ -98,6 +98,23 @@ func test_summary_from_game_state_dict() -> void:
 	assert_eq(summary.caught_text(), "2 capturés")
 
 
+## Reliquats du Menu peint (2026-11-02) : dernier badge obtenu dans l'ordre des arènes, comme
+## [member DashboardView.badge_id] ; rien sans les identifiants ni sans badge.
+func test_summary_last_badge_follows_the_gym_order() -> void:
+	var badges := BadgeLibrary.new()
+	assert_true(badges.load_file(), "badges")
+	var save := _state_dict()
+	(save["flags"] as Array).append("badge_thunder")
+	var summary := SaveSummary.from_save(save, _zones.zone_name_of, _badge_flags, "Kevin",
+		badges.ids())
+	assert_eq(summary.badge_count, 2)
+	assert_eq(summary.badge_id, &"thunder", "Roche puis Foudre : Foudre")
+	assert_eq(_summary_of(save).badge_id, &"", "sans identifiants : pas de badge")
+	save["flags"] = []
+	assert_eq(SaveSummary.from_save(save, _zones.zone_name_of, _badge_flags, "Kevin",
+		badges.ids()).badge_id, &"", "sans badge")
+
+
 func test_summary_of_real_kevin_save() -> void:
 	var fs := MemoryFs.new()
 	fs.files["user://save.json"] = FileAccess.get_file_as_string(FIXTURE_V3)

@@ -65,6 +65,7 @@ var _settings: GameSettings
 var _device_quality: GameSettings.Graphics = GameSettings.Graphics.HIGH
 var _zone_name_of: Callable
 var _badge_flags: Array[StringName] = []
+var _badge_ids: Array[StringName] = []
 var _screen: TitleScreen
 ## Vrai pendant la sortie du titre (rideau) : plus aucun toucher n'est pris.
 var _leaving: bool = false
@@ -91,10 +92,11 @@ var _sent_off: bool = false
 
 ## Branche le directeur avant [method run]. [param save_system] : la sauvegarde (null : aucune,
 ## rien n'est jamais écrit). [param zone_name_of] : `func(map_id) -> String` ; [param badge_flags]
-## : drapeaux des badges (carte Continuer).
+## : drapeaux des badges (carte Continuer) ; [param badge_ids] : leurs identifiants, au même rang
+## (icône du dernier badge obtenu).
 func setup(save_system: SaveSystem, build_new_game: Callable, fade: ScreenFade,
 		settings: GameSettings, device_quality: GameSettings.Graphics, zone_name_of: Callable,
-		badge_flags: Array[StringName]) -> void:
+		badge_flags: Array[StringName], badge_ids: Array[StringName] = []) -> void:
 	_save = save_system
 	_build_new_game = build_new_game
 	_fade = fade
@@ -102,6 +104,7 @@ func setup(save_system: SaveSystem, build_new_game: Callable, fade: ScreenFade,
 	_device_quality = device_quality
 	_zone_name_of = zone_name_of
 	_badge_flags = badge_flags
+	_badge_ids = badge_ids
 
 
 ## Boîte de dialogue de l'introduction (celle du jeu). Sans elle, le directeur crée la sienne.
@@ -121,7 +124,7 @@ func run() -> void:
 	var summary: SaveSummary = null
 	if status == OpeningFlow.SaveStatus.VALID:
 		summary = SaveSummary.from_save(_save_content, _zone_name_of, _badge_flags,
-			_names.default_name(OpeningNames.ROLE_PLAYER))
+			_names.default_name(OpeningNames.ROLE_PLAYER), _badge_ids)
 	_model = TitleMenuModel.build(status, summary, _texts)
 	_screen = TITLE_SCENE.instantiate() as TitleScreen
 	_screen.speed_scale = speed_scale
