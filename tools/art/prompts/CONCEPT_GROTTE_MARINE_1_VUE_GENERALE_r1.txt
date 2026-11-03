@@ -1,0 +1,35 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA GROTTE MARINE, SALLE 1, LE PASSAGE SECRET VERS JOHTO (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. C'est une grotte marine que l'on traverse ENTIÈREMENT EN NAGEANT sur le dos d'un Pokémon : il n'y a aucun chemin à pied, seulement de l'eau entre des parois de roche. On entre par le NORD (le chenal étroit en haut au centre, qui vient de la mer) et on ressort par le SUD (le chenal étroit en bas au centre, qui mène à la salle suivante).
+Légende du plan :
+- gris ardoise très foncé = ROCHE PLEINE et parois infranchissables (toutes les marges de l'image et les masses entre les bassins) ; le liseré un peu plus clair qui borde la roche = l'ARÊTE de la paroi, là où elle plonge dans l'eau ;
+- bleu = EAU DE MER calme, navigable, dans une grotte : un chenal d'entrée en haut, un GRAND BASSIN NORD en travers, un long CHENAL VERTICAL qui descend au centre-droit, un BASSIN SUD plus petit, puis le chenal de sortie en bas ;
+- bandes bleu plus clair à CHEVRONS BLANCS, sur deux rangées au bas du bassin nord = un COURANT MARIN qui pousse vers l'EST (vers la droite) : on le lit par des stries et des filets d'écume allongés dans ce sens, pas par des flèches ;
+- gris clair = ÎLOTS ET CORNICHES DE ROCHE au ras de l'eau, plats, où l'on peut poser le pied : un îlot carré dans l'angle nord-ouest du bassin nord, une corniche à droite du chenal vertical (à mi-hauteur), rien d'autre ;
+- disques gris = GROS ROCHERS ISOLÉS qui sortent de l'eau (un groupe de trois dans le bassin nord à droite, un groupe de trois dans le bassin sud à gauche) ;
+Respecte ce plan À LA LETTRE : la forme de chaque bassin et de chaque chenal, les deux chenaux étroits (entrée en haut, sortie en bas), l'îlot du nord-ouest, la corniche de l'est, les deux groupes de rochers, le courant sur deux rangées. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale d'une grotte des Îles Écume, une grotte du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes parois rocheuses sombres et irrégulières en surface, même EAU de mer (turquoise claire près des roches, bleu profond au large, écume fine le long des parois), même saturation, même lisibilité. Mais cette grotte-ci N'EST PAS GELÉE : AUCUNE glace, AUCUNE neige, AUCUN sol blanc, AUCUN cristal ; les parois sont de la ROCHE SOMBRE HUMIDE, brun-gris et bleu-gris, et les îlots sont de la roche grise nue.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur toute la salle, comme le plan.
+
+AMBIANCE — « le passage secret » : une grotte marine oubliée sous la côte, que la marée basse vient de rouvrir. Silence, clapotis, roche mouillée qui brille, odeur de sel. Fraîche et mystérieuse, JAMAIS effrayante ni illisible. Palette : ROCHE sombre brun-gris et bleu-gris, EAU turquoise à bleu profond, quelques algues vert sombre et coquillages pâles au pied des parois, de rares stalactites au bord des masses de roche.
+LUMIÈRE : la grotte est éclairée par des FISSURES DU PLAFOND : deux ou trois COLONNES DE LUMIÈRE DU JOUR, blanches et légèrement bleutées, tombent sur l'eau (une sur le bassin nord, une sur le chenal vertical, une sur le bassin sud) et font des taches claires à la surface ; le reste de la salle baigne dans une pénombre bleue douce, où l'eau reste lisible partout. La lumière est NEUTRE (ni dorée ni orangée) : le jeu ajoute lui-même l'éclairage.
+LISIBILITÉ AVANT TOUT : l'eau navigable est nettement plus claire que la roche ; on distingue chaque bassin et chaque chenal sans effort.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; bassins et chenaux ont donc des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUN chenal en diagonale ni en courbe. Les parois peuvent être irrégulières et rocheuses EN SURFACE, mais le bord de l'eau garde des bords droits et lisibles.
+RELIEF : il n'y a ni marche, ni échelle, ni escalier, ni pente : tout est au niveau de l'eau.
+NATURE DENSE, OBJETS RARES : rien n'est posé dans la grotte ; aucun objet décoratif.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des rochers et leur face avant (côté sud) ; les parois nord des bassins montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, bleu-violet froid, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucun poisson. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux, logo, signature, filigrane, cadre, interface, Poké Ball ; glace, neige, cristaux, stalagmites géantes lumineuses, champignons, lave, décor féerique ; échelle, escalier, marche, pont, ponton, barque, bateau, corde, lanterne, caisse ; ciel, arbres, herbe, sable doré, plage ; flèches dessinées ; chenaux courbes ou en diagonale ; brouillard épais, flou de profondeur, vignettage noir ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une grotte marine secrète que l'on traverse à la nage, d'un chenal étroit à l'autre, entre des parois sombres percées de rais de lumière, avec un courant qui pousse vers l'est.
