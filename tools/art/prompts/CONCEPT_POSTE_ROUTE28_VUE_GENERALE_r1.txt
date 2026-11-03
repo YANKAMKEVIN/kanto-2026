@@ -1,0 +1,33 @@
+CONCEPT ART — INTÉRIEUR DU POSTE DE LA ROUTE 28, LE POSTE FRONTIÈRE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : UNE PETITE PIÈCE rectangulaire de 8 cases sur 5 de sol, entourée de murs, sur fond sombre. Format PAYSAGE. Un poste de garde-route que l'on traverse du nord au sud.
+Légende du plan :
+- gris-brun foncé = murs et hors-champ ; bande brun clair en haut = le MUR DU FOND, vu de face, percé au milieu de l'OUVERTURE NORD (la bande rouge sombre de deux cases en haut : une double porte ouverte vers la montagne, avec son paillasson) ;
+- beige = PLANCHER de bois clair ;
+- bande rouge sombre au milieu du mur du bas (deux cases) = la SORTIE SUD, une double porte ouverte vers l'autre région, avec son paillasson ;
+- disques verts dans les quatre angles = quatre PLANTES EN POT ;
+- le reste est libre ; un petit comptoir de garde-route contre le mur du fond, à gauche de l'ouverture nord (un comptoir bas de bois, un tabouret), est permis mais discret.
+Respecte ce plan À LA LETTRE : la pièce de 8 sur 5, l'ouverture nord et la sortie sud alignées au milieu, les quatre plantes. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : l'intérieur du poste de garde de la Route 15, un poste du même jeu (Kanto), déjà peint. Respecte EXACTEMENT son style de rendu : même pinceau, même plancher, mêmes boiseries, mêmes plantes, même découpe de la pièce sur fond sombre (murs coupés, vue de dessus de trois quarts), même lumière neutre. Ne reprends PAS sa composition (une seule pièce ici, pas d'étage, pas de jumelles).
+
+Format : PAYSAGE 1536 × 1024, la pièce au centre sur fond très sombre, comme le plan.
+
+AMBIANCE — « le poste frontière » : un petit poste officiel de montagne, propre et sobre, murs crème et lambris de bois, plancher clair, deux portes face à face ; on sent le vent froid qui passe. Calme, accueillant. Palette : crème, bois clair, vert des plantes, rouge sombre des paillassons.
+LUMIÈRE NE (neutre) : lumière du jour blanche et diffuse qui entre par les deux portes ; aucune teinte dorée ; ombres propres bleutées.
+
+RÈGLE DE LA GRILLE : murs, meubles et sol suivent une grille ; uniquement des bords horizontaux et verticaux à ANGLES DROITS ; la pièce est un rectangle.
+OBJETS RARES : seulement les plantes et, au plus, le petit comptoir ; pas de bibelots, pas d'affiches lisibles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Le mur du fond montre sa face, l'ouverture nord y est visible.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, affiches ou écrans lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; escalier, étage ; fenêtre avec paysage détaillé ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un petit poste frontière de montagne, une pièce claire que l'on traverse d'une porte à l'autre, quatre plantes dans les angles.

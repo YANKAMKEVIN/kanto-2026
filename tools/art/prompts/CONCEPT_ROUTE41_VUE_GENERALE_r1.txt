@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 41 ET DES ÎLES TOURBILLON, LA HAUTE MER (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE (la carte est presque carrée, centrée, avec de la mer de part et d'autre). C'est la HAUTE MER : on y nage, on arrive par le NORD (l'ouverture étroite en haut, au centre) ; au centre de la mer, UNE GRANDE ÎLE ROCHEUSE, et des lignes de TOURBILLONS qui dessinent des chenaux.
+Légende du plan :
+- bleu profond = la MER, partout (les marges aussi) ;
+- gris rocheux semé de cailloux = RÉCIFS qui ferment tout le pourtour (une bordure rocheuse continue, sauf l'ouverture du nord) et, au centre, L'ÎLE : un grand rocher massif et haut, de 16 cases sur 16, aux parois abruptes, le sommet rocheux et nu avec un peu de végétation rase ; dans sa FACE OUEST, à mi-hauteur, l'ENTRÉE D'UNE GROTTE (le petit disque noir cerclé de roche) ;
+- spirales blanches sur l'eau = des TOURBILLONS : des remous d'écume en spirale, infranchissables, alignés en LIGNES DROITES : une ligne horizontale au nord (avec une seule passe, à gauche du centre), une ligne horizontale au sud (avec une seule passe, à droite du centre), et deux lignes verticales de part et d'autre de l'île (chacune ouverte d'une passe au niveau du milieu de l'île) ; ces lignes découpent la mer en chenaux et enferment un lagon autour de l'île ;
+- disques gris = ROCHERS ÉMERGÉS isolés (une dizaine) ;
+- gris clair, petit carré au nord de la ligne nord, à côté de la passe = un ROCHER PLAT au ras de l'eau, où l'on peut poser le pied ; en bas à droite, un petit ÎLOT plat de trois cases ;
+- aucun chemin, aucune terre ferme en dehors de l'île, du rocher plat et de l'îlot.
+Respecte ce plan À LA LETTRE : la bordure de récifs et l'ouverture du nord, l'île au centre et sa grotte sur la face ouest, les quatre lignes de tourbillons et la place de leurs passes, le rocher plat, l'îlot, les rochers isolés. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 40, la route marine voisine du même chapitre, déjà peinte en lumière neutre. Respecte EXACTEMENT son rendu : même MER, mêmes récifs, mêmes rochers émergés, même saturation, même lumière neutre.
+
+IMAGE 3 : la vue générale de la Route 20 (Kanto) : même pinceau pour la mer et les îles rocheuses à grotte. Ne reprends PAS sa composition ni sa lumière dorée.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la mer, comme le plan.
+
+AMBIANCE — « les îles du tourbillon » : la haute mer, sombre et profonde, et au centre une île de roche noire et abrupte, sacrée, où s'ouvre une grotte ; autour, des tourbillons blancs en lignes qui barrent la route et grondent ; l'eau est plus claire et plus calme dans le lagon. Ample, grave, un peu menaçante. Palette : MER bleu profond, presque bleu nuit au large, turquoise dans le lagon, ROCHE sombre de l'île, écume blanche des tourbillons.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ; ombres propres légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; récifs, île, lignes de tourbillons suivent une grille : les lignes de tourbillons sont DROITES (horizontales ou verticales), chaque tourbillon occupe une case ; l'île a des bords droits ; AUCUNE courbe dans les bords (les tourbillons eux-mêmes sont ronds).
+RELIEF : les récifs sont des falaises basses ; l'île est haute et abrupte, ses parois rocheuses visibles côté sud et côté ouest.
+OBJETS RARES : rien d'autre que la mer, les rochers, l'île et les tourbillons.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus de l'île et sa face sud ; la grotte s'ouvre dans sa face ouest.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun nageur, aucun pêcheur, aucun Pokémon, aucun animal, aucune mouette. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo, signature, filigrane, cadre, interface, Poké Ball ; plusieurs îles (une seule) ; plage de sable, arbre, bâtiment, phare ; bateau, bouée ; lumière dorée ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : la haute mer barrée de lignes de tourbillons, et au centre une île de roche sombre percée d'une grotte sur son flanc ouest.

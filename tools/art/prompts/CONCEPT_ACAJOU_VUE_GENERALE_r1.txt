@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE D'ACAJOU, LA PETITE VILLE DE MONTAGNE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Une petite ville de montagne, serrée dans la forêt, avec deux falaises de part et d'autre de sa sortie nord. On y entre par l'OUEST (la rue qui part du bord gauche) ; on en sort par le NORD (la rue principale qui monte entre les deux falaises jusqu'au bord haut).
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (toutes les marges) ;
+- gris rocheux semé de cailloux, en haut à gauche et en haut à droite = deux FALAISES basses qui encadrent la sortie nord ;
+- damier beige-gris = RUES PAVÉES de pierre claire, trois cases de large : la RUE DE L'OUEST qui arrive du bord gauche ; la RUE PRINCIPALE verticale au centre, de la rue de l'ouest au bord haut ; la RUE DU SUD horizontale en bas ;
+- vert moyen = PELOUSE praticable ; lignes vert sombre = deux HAIES basses (une à droite de la boutique, une à gauche de la maison du sud-est) ;
+- à gauche, toit ROUGE et façade blanche avec l'emblème rond = le CENTRE POKÉMON (deux portes vitrées au milieu de la façade sud) ;
+- à droite, grand bâtiment à toit BRUN et façade claire, avec une ANTENNE métallique sur son toit = la BOUTIQUE DE SOUVENIRS : une boutique de montagne en bois et pierre, enseigne sans texte, et, incongrue, une haute ANTENNE RADIO fine plantée sur le toit (c'est le repère de l'image) ; deux portes au milieu de la façade sud ;
+- en bas à gauche et en bas à droite, deux MAISONS au toit brun-rouge, porte au sud ;
+- grands disques vert sombre = GRANDS ARBRES ISOLÉS, repères (neuf) ; petit carré ocre = un panneau en bois SANS TEXTE, entre le Centre et la rue principale.
+Respecte ce plan À LA LETTRE : les trois rues, les deux falaises de la sortie nord, le Centre à gauche, la boutique à antenne à droite, les deux maisons au sud, les haies, les arbres. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de Rosalia, une autre ville du même chapitre, déjà peinte en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même pavé, même pelouse, même saturation, même échelle des bâtiments, même facture de maisons à toit de tuiles ; le CENTRE POKÉMON est EXACTEMENT le même bâtiment (identique dans toutes les villes). Ne reprends PAS sa composition (ni tours, ni pagode, ni jardins).
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville, comme le plan.
+
+AMBIANCE — « la petite ville de montagne » : un bourg tranquille au pied des montagnes, de l'air frais, des maisons de bois et de pierre aux toits de tuiles, des conifères mêlés aux feuillus dans la forêt alentour ; et cette drôle d'antenne sur la boutique de souvenirs. Calme, un peu à l'écart, un rien suspect. Palette : PAVÉ gris-beige clair, TUILES brun-rouge, BOIS et PIERRE des façades, ROCHE grise des falaises, FORÊT vert profond avec des sapins, PELOUSE vert tendre.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ; ombres propres légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, haies et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+RELIEF : le sol de la ville est plat ; les deux falaises du nord dominent d'une petite hauteur (face rocheuse visible côté sud), sans escalier.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, enseignes lisibles, logo (seul l'emblème rond sans texte du Centre est permis), signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment non prévu par le plan ; Arène ; Boutique bleue standard (ici c'est une boutique de souvenirs à toit brun) ; neige ; route goudronnée, véhicule ; rues courbes ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un petit bourg de montagne entre deux falaises, son Centre, deux maisons de tuiles, et une boutique de souvenirs surmontée d'une antenne radio qui n'a rien à faire là.
