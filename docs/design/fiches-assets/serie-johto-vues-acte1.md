@@ -51,7 +51,7 @@ Codex : aucun refus, trois images en un essai chacune (≈ 2 min par image).
   caisses, récifs du sud et leur ouverture centrale : conformes.
 - **Toutes** : lumière neutre respectée (Oliville blanche et diffuse ; grottes en pénombre bleue froide).
 
-## JOH2 — Routes 39 et 38, Rosalia (planche `joh2-vues-v1.png`) — en attente de Kevin
+## JOH2 — Routes 39 et 38, Rosalia (planche `joh2-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -80,7 +80,7 @@ la Ferme Meumeu a une mangeoire et un abreuvoir dans l'enclos (accessoires, pas 
   Boutique, massifs, bancs : conformes.
 - **Toutes** : lumière neutre respectée.
 
-## JOH3 — Routes 37, 36, 35, Doublonville, Souterrain (planche `joh3-vues-v1.png`) — en attente de Kevin
+## JOH3 — Routes 37, 36, 35, Doublonville, Souterrain (planche `joh3-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -115,7 +115,7 @@ entre deux piliers de pierre, sans bâtiment ; arbres fruitiers de la Route 37 =
   fond et sa caisse) ; la salle du fond est un peu moins profonde que ses 4 rangées.
 - **Toutes** : lumière neutre respectée.
 
-## JOH4 — Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss (planche `joh4-vues-v1.png`) — en attente de Kevin
+## JOH4 — Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss (planche `joh4-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -145,7 +145,7 @@ herbeux (pas de falaise) ; puits = roche sombre humide, eau claire, lumière du 
   alcôve et ses deux caisses) ; le couloir de droite est un peu plus large que ses 3 cases.
 - **Toutes** : lumière neutre respectée ; les grottes en pénombre bleue froide.
 
-## JOH5 — Tour Radio 1F à 5F (planche `joh5-vues-v1.png`) — en attente de Kevin
+## JOH5 — Tour Radio 1F à 5F (planche `joh5-vues-v1.png`) — **validé par Kevin le 2026-11-03**
 
 | Vue | Essai retenu | Référence(s) jointe(s) |
 |---|---|---|
@@ -182,5 +182,6 @@ métallique dans le mur est.
 
 ## Bilan de l'acte 1
 
-21 vues générales en 21 essais (JOH1 : 3, JOH2 : 3, JOH3 : 5, JOH4 : 5, JOH5 : 5), aucun refus de Codex. Validées :
-JOH1. À valider : JOH2 à JOH5 (planches `joh2` à `joh5-vues-v1.png`).
+21 vues générales en 21 essais (JOH1 : 3, JOH2 : 3, JOH3 : 5, JOH4 : 5, JOH5 : 5), aucun refus de Codex. **Toutes
+validées par Kevin le 2026-11-03** (JOH1 : « Oui, enchaîne JOH2 » ; JOH2 à JOH5 : « Oui, fusionne »). Les défauts [D]
+de chaque section deviennent la règle pour les actes 2 et 3.

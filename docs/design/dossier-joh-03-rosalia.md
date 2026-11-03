@@ -30,7 +30,7 @@ Points de Vol : Rosalia (utilisable à l'acte 2).
 aperçu `reference/joh2-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. **Vues générales
 peintes le 2026-11-03** (`reference/route-39-vue-generale-v1.png`, `route-38-vue-generale-v1.png`,
 `rosalia-vue-generale-v1.png`, plans annotés `reference/plans-johto/`, planche `reference/joh2-vues-v1.png`, écarts et
-défauts dans `fiches-assets/serie-johto-vues-acte1.md`), en attente de validation de Kevin. Raccords :
+défauts dans `fiches-assets/serie-johto-vues-acte1.md`), **validées par Kevin le 2026-11-03** (« Oui, fusionne »). Raccords :
 Oliville (49, 20..22) ↔ Route 39 (0, 20..22) ; Route 39 (23, 3..5) ↔ Route 38 (0, 3..5) ;
 Route 38 (59, 14..16) ↔ Rosalia (0, 14..16). Rosalia sort vers la Route 37 par le **sud**
 (26..28, 47), comme le dit le dossier JOH-04 (le §4 ci-dessous disait « est ») ; la sortie **est**

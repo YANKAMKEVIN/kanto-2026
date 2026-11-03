@@ -32,8 +32,7 @@ Points de Vol : Écorcia (utilisable à l'acte 2). Retour à Doublonville à pie
 `reference/joh4-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. **Vues générales peintes le
 2026-11-03** (`reference/route-34-vue-generale-v1.png`, `bois-aux-chenes-vue-generale-v1.png`, `ecorcia-vue-generale-v1.png`,
 `puits-ramoloss-b1f-vue-generale-v1.png`, `puits-ramoloss-b2f-vue-generale-v1.png`, plans annotés `reference/plans-johto/`,
-planche `reference/joh4-vues-v1.png`, écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`), en attente de
-validation de Kevin. Raccords :
+planche `reference/joh4-vues-v1.png`, écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`), **validées par Kevin le 2026-11-03** (« Oui, fusionne »). Raccords :
 Doublonville (34..36, 59) ↔ Route 34 (10..12, 0) ; Route 34 (10..12, 47) ↔ Bois (8..10, 0) ;
 Bois (36..38, 47) ↔ Écorcia (20..22, 0) ; descente du puits (37, 7) ↔ B1F (3, 2) ; B1F (3, 20) ↔
 B2F (3, 3). Défauts [D] notés dans les en-têtes : mer à l'ouest de la Route 34 et clôture du

@@ -49,8 +49,7 @@ Points de Vol : Doublonville (utilisable à l'acte 2).
 `reference/joh3-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. **Vues générales peintes le
 2026-11-03** (`reference/route-37-vue-generale-v1.png`, `route-36-vue-generale-v1.png`, `route-35-vue-generale-v1.png`,
 `doublonville-vue-generale-v1.png`, `souterrain-doublonville-vue-generale-v1.png`, plans annotés `reference/plans-johto/`,
-planche `reference/joh3-vues-v1.png`, écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`), en attente de
-validation de Kevin. Raccords :
+planche `reference/joh3-vues-v1.png`, écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`), **validées par Kevin le 2026-11-03** (« Oui, fusionne »). Raccords :
 Rosalia (26..28, 47) ↔ Route 37 (8..10, 0) ; Route 37 (8..10, 39) ↔ Route 36 (8..10, 0) ;
 Route 36 (26..28, 19) ↔ Route 35 (10..12, 0) ; Route 35 (10..12, 43) ↔ Doublonville (34..36, 0) ;
 escaliers de la place (31, 25) et (39, 33) ↔ Souterrain (1, 5..6) et (38, 7..8). Défauts [D] notés
