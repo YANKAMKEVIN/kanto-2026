@@ -92,7 +92,8 @@ def _edge_fade(height: int, width: int) -> np.ndarray:
     return fade * fade * (3.0 - 2.0 * fade)
 
 
-def detour(source: Path) -> Image.Image:
+def _detour_arrays(source: Path) -> tuple:
+    """RGBA détouré (taille source), masque du cœur (0–1), RGB source et boîte de recadrage."""
     rgb = np.asarray(Image.open(source).convert("RGB")).astype(np.float64)
     height, width = rgb.shape[:2]
     core = _core_mask(rgb)
@@ -104,14 +105,18 @@ def detour(source: Path) -> Image.Image:
     color = core[..., None] * rgb + (1.0 - core[..., None]) * np.clip(glow, 0.0, 255.0)
     alpha = np.maximum(core, halo)
     rgba = np.dstack([color, alpha * 255.0]).round().clip(0, 255).astype(np.uint8)
-    image = Image.fromarray(rgba)
     box = Image.fromarray((rgba[..., 3] > CROP_ALPHA).astype(np.uint8) * 255).getbbox()
     if box is None:
         raise SystemExit("logo vide après détourage")
     left, top, right, bottom = box
     box = (max(left - CROP_MARGIN, 0), max(top - CROP_MARGIN, 0),
            min(right + CROP_MARGIN, width), min(bottom + CROP_MARGIN, height))
-    return image.crop(box)
+    return rgba, core, rgb, box
+
+
+def detour(source: Path) -> Image.Image:
+    rgba, _core, _rgb, box = _detour_arrays(source)
+    return Image.fromarray(rgba).crop(box)
 
 
 def _resized(image: Image.Image, target_width: int) -> Image.Image:
@@ -132,6 +137,96 @@ def _splash_background() -> Image.Image:
     return Image.fromarray(rgba)
 
 
+# Pièces du logo pour l'ident animé (J34, demande de Kevin : les lettres entrent une à une) :
+# lettres et filet découpés dans le cœur opaque (sans halo), dans le cadre du logo détouré.
+PARTS_ALPHA = 0.5
+# Au-dessus de cette part des colonnes pleines, une rangée appartient aux lettres ; en dessous,
+# au filet (le filet est une ligne fine : peu de pixels par rangée en proportion).
+LETTER_COUNT = 8
+
+
+def _parts(core_rgba: np.ndarray) -> dict:
+    """Découpe le cœur (RGBA, cadre du logo) en LETTER_COUNT lettres + le filet.
+
+    Rangées : la bande des lettres est la plus haute des bandes pleines, le filet la plus basse.
+    Colonnes : les contours et les empattements se touchent d'une lettre à l'autre ; on compte
+    donc, par colonne, les pixels **dorés** (luminance ≥ CORE_LUMA) et une colonne n'est pleine
+    qu'au-dessus d'une part de la hauteur de la bande (les pointes d'empattements ne comptent
+    pas). Le seuil est cherché jusqu'à obtenir LETTER_COUNT groupes ; les colonnes entre deux
+    lettres sont partagées au milieu de l'intervalle."""
+    alpha = core_rgba[..., 3] > PARTS_ALPHA * 255
+    rows = alpha.any(axis=1)
+    bands = _runs(rows)
+    if len(bands) < 2:
+        raise SystemExit(f"bandes horizontales trouvées : {len(bands)} (attendu : lettres + filet)")
+    bands.sort(key=lambda b: b[0])
+    letters_band, rule_band = bands[0], bands[-1]
+    y0, y1 = letters_band
+    gold = (core_rgba[y0:y1, :, :3].max(axis=2) >= CORE_LUMA * 255) & alpha[y0:y1]
+    counts = gold.sum(axis=0)
+    letter_runs = []
+    for share in [x / 100.0 for x in range(6, 41, 2)]:
+        letter_runs = _runs(counts >= share * (y1 - y0))
+        if len(letter_runs) == LETTER_COUNT:
+            break
+    if len(letter_runs) != LETTER_COUNT:
+        raise SystemExit(f"lettres trouvées : {len(letter_runs)} (attendu {LETTER_COUNT}) : "
+                         + str(letter_runs))
+    xs_on = np.where(alpha[y0:y1].any(axis=0))[0]
+    bounds = [int(xs_on[0])]
+    for (_a0, a1), (b0, _b1) in zip(letter_runs, letter_runs[1:]):
+        bounds.append((a1 + b0) // 2)
+    bounds.append(int(xs_on[-1]) + 1)
+    pieces = []
+    for x0, x1 in zip(bounds, bounds[1:]):
+        sub = alpha[y0:y1, x0:x1]
+        ys = np.where(sub.any(axis=1))[0]
+        xs = np.where(sub.any(axis=0))[0]
+        pieces.append({"x": x0 + int(xs[0]), "y": y0 + int(ys[0]),
+                       "w": int(xs[-1] - xs[0]) + 1, "h": int(ys[-1] - ys[0]) + 1})
+    rule_cols = alpha[rule_band[0]:rule_band[1]].any(axis=0)
+    xs = np.where(rule_cols)[0]
+    rule = {"x": int(xs[0]), "y": int(rule_band[0]), "w": int(xs[-1] - xs[0] + 1),
+            "h": int(rule_band[1] - rule_band[0])}
+    return {"letters": pieces, "rule": rule}
+
+
+def _runs(mask_1d: np.ndarray) -> list:
+    runs, start = [], None
+    for i, on in enumerate(list(mask_1d) + [False]):
+        if on and start is None:
+            start = i
+        elif not on and start is not None:
+            runs.append((start, i))
+            start = None
+    return runs
+
+
+def core_image(source: Path) -> Image.Image:
+    """Le logo sans halo (lettres + contour seulement), recadré comme [detour] et à LOGO_WIDTH."""
+    _rgba, core, rgb, box = _detour_arrays(source)
+    rgba = np.dstack([rgb, core * 255.0]).round().clip(0, 255).astype(np.uint8)
+    return _resized(Image.fromarray(rgba).crop(box), LOGO_WIDTH)
+
+
+def write_parts(source: Path, name: str, logo_size: tuple) -> None:
+    import json
+    core = core_image(source)
+    parts = _parts(np.asarray(core))
+    out_dir = OUT_DIR / f"logo_{name}_parts"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for old in out_dir.glob("*.png"):
+        old.unlink()
+    for i, piece in enumerate(parts["letters"]):
+        core.crop((piece["x"], piece["y"], piece["x"] + piece["w"], piece["y"] + piece["h"])) \
+            .save(out_dir / f"letter_{i}.png", optimize=True)
+    r = parts["rule"]
+    core.crop((r["x"], r["y"], r["x"] + r["w"], r["y"] + r["h"])).save(out_dir / "rule.png", optimize=True)
+    manifest = {"frame": [logo_size[0], logo_size[1]], "letters": parts["letters"], "rule": r}
+    (out_dir / "parts.json").write_text(json.dumps(manifest, indent=1), encoding="utf-8")
+    print(f"{out_dir.relative_to(ROOT)} : {len(parts['letters'])} lettres + filet, parts.json")
+
+
 def main() -> None:
     source = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_SOURCE
     name = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_NAME
@@ -149,6 +244,7 @@ def main() -> None:
     splash.alpha_composite(small, offset)
     splash.convert("RGB").save(splash_out, optimize=True)
     print(f"{logo_out.relative_to(ROOT)} : {LOGO_WIDTH} px de large")
+    write_parts(source, name, _resized(logo, LOGO_WIDTH).size)
     print(f"{splash_out.relative_to(ROOT)} : {SPLASH_SIZE[0]} × {SPLASH_SIZE[1]}")
 
 

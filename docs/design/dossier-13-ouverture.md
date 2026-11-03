@@ -301,6 +301,8 @@ Durée totale visée : **≈ 60–90 s, plafond retenu** (revue du 2026-10-10 : 
 ## 5. Écrans et interactions
 
 ### 5.1 Splash
+> **Amendement du 2026-11-03 (décision de Kevin, J34)** : après le splash natif, un **ident de démarrage** « à la Netflix » précède l'écran titre : carton « Les studios Kevin & Co / vous présentent », puis les lettres du logo **Pokemake** qui entrent une à une depuis la droite pour former le mot, le filet qui se trace, le halo qui s'allume, fondu vers le titre déjà en place dessous. Un toucher ou le retour le passe ; « Réduire les animations » le réduit (carton puis logo en fondu). La musique du titre part à la fin de l'ident. Partition : `IntroTimeline` ; scène : `IdentSequence` ; textes : `data/opening/title.json` groupe `ident`. La règle « pas de second splash animé » ci-dessous est donc levée.
+
 - Godot `application/boot_splash/image` : logo Kanto 2026 sur un fond uni sombre et chaud (teinte par défaut, ajustée avec l'asset), avec `fullsize=false` et le filtre activé.
 - Android 12+ affiche d'abord l'icône système. On ne la combat pas : elle s'enchaîne avec notre image.
 - Pas de second splash animé : la durée du splash est celle du chargement réel.

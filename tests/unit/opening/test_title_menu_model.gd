@@ -58,6 +58,8 @@ func test_title_texts_validated() -> void:
 	assert_eq(_texts.text(TitleTexts.GROUP_CONFIRM, &"title"), "Une aventure est déjà en cours.")
 	assert_eq(_texts.text(TitleTexts.GROUP_CONFIRM, &"body"), CONFIRM_BODY)
 	assert_eq(_texts.text(TitleTexts.GROUP_ENTRIES, &"new_game"), "Nouvelle partie")
+	assert_eq(_texts.text(TitleTexts.GROUP_IDENT, &"studio"), "Les studios Kevin & Co", "ident J34")
+	assert_eq(_texts.text(TitleTexts.GROUP_IDENT, &"presents"), "vous présentent")
 
 
 func test_title_texts_strict() -> void:
@@ -65,6 +67,7 @@ func test_title_texts_strict() -> void:
 		"entries": {"continue": "C", "new_game": "N", "settings": "P"},
 		"messages": {"corrupt": "c", "newer": "n", "unsaved": "u"},
 		"confirm": {"title": "t", "body": "b", "cancel": "a", "confirm": "o"},
+		"ident": {"studio": "s", "presents": "p"},
 	}
 	assert_true(TitleTexts.new().add_from_dict(good.duplicate(true)))
 	var unknown := good.duplicate(true)

@@ -1774,6 +1774,22 @@ const CAPTION_CENTER_ANCHOR := 0.5
 const TITLE_LOGO_WIDTH := 760
 ## Étiquette de version du titre (J34) : opacité du texte TEXT_MUTED, en bas du côté du logo.
 const TITLE_VERSION_ALPHA := 0.75
+
+## Ident de démarrage (J34, « à la Netflix », [IdentSequence]) : au-dessus du rideau, fond du
+## splash, carton en serif (Cinzel, comme les bustes « VS ») en or et crème, logo à la largeur du
+## splash et à la même hauteur, pour un raccord sans saut avec l'image de démarrage.
+const LAYER_IDENT := 101
+const IDENT_BG := Color("#140F0B")
+const IDENT_CARD_TITLE_FONT := 76
+const IDENT_CARD_SUB_FONT := 40
+const IDENT_CARD_TITLE := Color("#F3D37C")
+const IDENT_CARD_SUB := Color("#E9DCC3")
+const IDENT_CARD_GAP := 26
+const IDENT_CARD_SPACING := 6
+const IDENT_LOGO_WIDTH := 1100
+const IDENT_LOGO_CENTER_Y := 0.45
+## Marge au-delà du bord droit d'où partent les lettres (px de référence).
+const IDENT_LETTER_OFFSCREEN := 96
 ## Colonne d'actions : largeur, écart entre cartes, haut de la colonne (centrée en hauteur sinon).
 const TITLE_COLUMN_WIDTH := 660
 const TITLE_COLUMN_GAP := 20
