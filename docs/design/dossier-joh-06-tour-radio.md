@@ -38,7 +38,10 @@ Aucune rencontre sauvage dans la Tour.
 
 **Grilles validées par Kevin le 2026-11-02** : `tools/plans/radio_tower_1f.txt` à
 `radio_tower_5f.txt` (24 × 16 chacune) ; contrôle `tools/art/plan_check_joh5.py`, aperçu
-`reference/joh5-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. Escaliers en
+`reference/joh5-grilles-apercu-v1.png`. Les grilles font foi pour la géométrie. **Vues générales peintes le
+2026-11-03** (`reference/tour-radio-1f-vue-generale-v1.png` à `tour-radio-5f-vue-generale-v1.png`, plans annotés
+`reference/plans-johto/`, planche `reference/joh5-vues-v1.png`, écarts et défauts dans
+`fiches-assets/serie-johto-vues-acte1.md`), **validées par Kevin le 2026-11-03** (« Oui, fusionne »). Escaliers en
 alternance : 1F ↔ 2F (3, 0), 2F ↔ 3F (20, 0), 3F ↔ 4F (3, 0), 4F ↔ 5F (20, 0) ; ascenseur (18, 0) à
 chaque étage, en panne jusqu'à `johto_cenere_defeated` ; sortie du 1F (11..12, 15) ↔ porte de la Tour à
 Doublonville (10..11, 15). Défauts [D] notés dans les en-têtes : faux employé et Cenere lancés par un

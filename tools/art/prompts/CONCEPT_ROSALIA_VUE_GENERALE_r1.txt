@@ -1,0 +1,40 @@
+CONCEPT ART — VUE GÉNÉRALE DE ROSALIA, LA VILLE ANCIENNE AUX DEUX TOURS (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Une ville ancienne de Johto, entourée de forêt. On y entre par l'OUEST (l'avenue qui part du bord gauche) ; on en ressort par le SUD (la rue qui sort par le bas de l'image) ; une rue sort aussi à l'EST (bord droit, dans la moitié basse) et un chemin étroit sort au NORD (en haut à droite), vers un bois.
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (toutes les marges, et le grand BOIS du nord-est qui cache la tour) ;
+- damier beige-gris = RUES PAVÉES de pierre claire, trois cases de large : la grande AVENUE horizontale qui traverse toute la ville ; la RUE DU SUD verticale, au centre, de l'avenue jusqu'au bord bas ; la RUE DE L'EST horizontale, dans la moitié basse, de gauche à droite jusqu'au bord droit ; et, en haut à droite, un CHEMIN PAVÉ ÉTROIT de deux cases qui part de l'avenue vers le nord, traverse le bois et sort par le bord haut ;
+- vert moyen = PELOUSE praticable ; lignes vert sombre = HAIES basses taillées (une au nord de la maison des sages, deux devant les maisons de l'est) ;
+- jaune-vert olive = HERBE HAUTE (touffue, où vivent les Pokémon sauvages) : deux bandes verticales de part et d'autre de la tour en ruine, et un petit carré à l'ouest du chemin étroit ;
+- en haut à gauche, grand rectangle très sombre à toit troué = la TOUR CENDRÉE : une ancienne tour de bois de trois étages, INCENDIÉE il y a longtemps : murs noircis, poutres calcinées apparentes, toit de tuiles grises effondré par endroits, une double porte close au milieu de sa façade sud ; vue de dessus de trois quarts, on voit son toit abîmé et sa façade ; elle reste digne et massive, pas une ruine écroulée ; deux petits panneaux sans texte devant elle ;
+- en haut au centre, rectangle à toit brun-rouge derrière une haie = la MAISON DES SAGES : une maison ancienne de 7 cases sur 6, murs de bois sombre et plâtre clair, toit de tuiles brun-rouge à larges débords, porte au milieu de la façade sud ;
+- en haut à droite, derrière le bois, grande façade à toits rouges étagés = la TOUR CARILLON : une haute PAGODE de bois à plusieurs toits étagés rouge-brun aux coins relevés, murs crème et bois sombre, vue de dessus de trois quarts ; seule sa façade et ses toits dépassent du bois, on ne peut pas s'en approcher ; c'est le grand repère vertical de l'image ;
+- au centre-gauche, sous l'avenue : toit ROUGE et façade blanche avec l'emblème rond = le CENTRE POKÉMON (deux portes vitrées au milieu de la façade sud) ; toit BLEU et façade blanche avec l'emblème rond = la BOUTIQUE (deux portes vitrées) ;
+- au centre-droit, sous l'avenue, derrière leurs haies : deux MAISONS anciennes au toit de tuiles brun-rouge, porte au sud ;
+- grands disques vert sombre = GRANDS ARBRES ISOLÉS, repères : des ÉRABLES ; carrés semés de points roses et blancs = MASSIFS DE FLEURS ; petits rectangles bruns = BANCS de bois ;
+- la moitié sud est un grand JARDIN public de pelouse, massifs, bancs et érables, traversé par la rue du sud.
+Respecte ce plan À LA LETTRE : l'avenue, la rue du sud, la rue de l'est, le chemin étroit du nord ; la Tour Cendrée au nord-ouest avec ses deux bandes d'herbe, la maison des sages derrière sa haie, la Tour Carillon derrière le bois au nord-est ; le Centre et la Boutique à gauche de la rue du sud, les deux maisons à droite ; les haies, les massifs, les bancs, les érables. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale d'Argenta, une ville du même jeu (Kanto). Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même pelouse, même saturation, même échelle des bâtiments ; le CENTRE POKÉMON et la BOUTIQUE sont EXACTEMENT les mêmes bâtiments (identiques dans toutes les villes : Centre au toit rouge avec l'emblème rond blanc et la grande porte vitrée ; Boutique au toit bleu, même emblème, même porte vitrée). Ne reprends PAS sa composition (ni montagne, ni paroi rocheuse, ni musée, ni Arène) NI SA LUMIÈRE DORÉE.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville, comme le plan.
+
+AMBIANCE — « la ville ancienne aux deux tours » : une ville de traditions, calme et un peu solennelle ; des maisons anciennes aux toits de tuiles et aux larges débords, des rues pavées, des érables, des jardins soignés ; au nord-ouest la tour brûlée, mémoire d'un drame ancien ; au nord-est la pagode intacte qui domine le bois. Paisible, respectueuse, un peu mystérieuse, JAMAIS lugubre. Palette : PAVÉ gris-beige clair, TUILES brun-rouge et grises, BOIS sombre et plâtre crème des maisons anciennes, ÉRABLES au feuillage vert profond avec quelques touches rouge sombre, FORÊT vert profond, la Tour Cendrée en noir charbon et gris cendre.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. NE REPRENDS PAS la lumière dorée de l'image de référence : le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, haies et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+RELIEF : le sol de la ville est plat ; aucun escalier, aucune terrasse, aucune rampe.
+NATURE DENSE, OBJETS RARES : la forêt est serrée, en grandes masses ; les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan (pas de lanternes, pas de statues, pas de torii, pas de puits).
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les deux tours montrent leurs toits et leur façade sud.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre et de la Boutique est permis), signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment non prévu par le plan ; Arène ; torii, lanternes de pierre, statues, puits, pont ; eau, étang, rivière ; fumée ou flammes sur la Tour Cendrée (l'incendie est ancien) ; route goudronnée, véhicule ; rues courbes ou en diagonale ; arbres entièrement orange, forêt automnale ; neige ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une ville ancienne et paisible, avec son Centre et sa Boutique sur des rues pavées, ses maisons de tuiles et ses jardins d'érables, veillée par une tour brûlée au nord-ouest et une pagode intacte au nord-est.

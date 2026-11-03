@@ -1,0 +1,36 @@
+CONCEPT ART — VUE GÉNÉRALE DU PUITS RAMOLOSS, NIVEAU -1 (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. C'est le premier niveau d'un vieux PUITS devenu une petite grotte humide, sous une ville. On y descend par une ÉCHELLE en haut à gauche et on gagne, par une seule voie, une autre échelle qui descend en bas à gauche.
+Légende du plan :
+- gris ardoise foncé = ROCHE PLEINE et parois infranchissables (toutes les marges et les masses entre les salles) ; le liseré un peu plus clair qui borde la roche = l'ARÊTE de la paroi ;
+- gris clair = SOL DE GROTTE praticable, pierre humide et calme ;
+- gris-beige semé de cailloux = zones de GRAVATS humides (éboulis, cailloux, sol accidenté : là vivent les Pokémon sauvages ; bords nets) : une à droite en haut, une grande en bas à gauche, une en bas à droite ;
+- bleu = EAU PEU PROFONDE, une grande nappe d'eau claire au centre de la salle du bas, où l'on peut nager ;
+- disques gris = GROS ROCHERS ISOLÉS (sept) ;
+- petites ÉCHELLES brunes : en haut à gauche, l'échelle qui MONTE vers la ville (dans la salle d'entrée) ; en bas à gauche, dans les gravats, l'échelle qui DESCEND au niveau suivant (un trou sombre dans le sol) ;
+- la composition : une SALLE D'ENTRÉE en haut à gauche ; un GOULET d'une seule case de haut vers la droite (sous une petite niche de roche) ; une SALLE DES ROCHERS en haut à droite ; une DESCENTE étroite le long du bord droit ; et la GRANDE SALLE BASSE qui occupe toute la moitié inférieure, avec la nappe d'eau au centre.
+Respecte ce plan À LA LETTRE : la forme de chaque salle, le goulet d'une case, la descente de droite, la nappe d'eau, les trois zones de gravats, les rochers, les deux échelles. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale du Mont Sélénite, une grotte du même jeu (Kanto). Respecte EXACTEMENT son style de rendu : même pinceau, même traitement de la ROCHE (couches, arêtes adoucies), mêmes gravats, mêmes échelles de bois, même lisibilité (le sol praticable nettement plus clair que la roche). Ne reprends PAS sa composition, ni ses lampes de chantier, ni ses caisses, ni ses personnages, ni ses Pokémon.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le niveau, comme le plan.
+
+AMBIANCE — « le vieux puits » : une grotte basse et humide sous une ville, creusée autour d'un ancien puits ; la roche suinte, de la mousse et des algues au bord de l'eau, quelques stalactites courtes, une odeur d'eau stagnante. Sombre mais lisible, JAMAIS effrayante. Palette : ROCHE gris-brun humide, SOL gris clair, GRAVATS gris-beige, EAU bleu-vert claire (on voit le fond), mousse vert sombre.
+LUMIÈRE : une pénombre fraîche et bleutée ; un peu de lumière du jour tombe par le puits au-dessus de l'échelle d'entrée (en haut à gauche) et par deux ou trois fissures ; l'eau reflète faiblement. Aucune lampe, aucun néon, aucune teinte dorée.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; salles, goulet, nappe d'eau et gravats ont des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUNE galerie en diagonale ni en courbe. Les parois peuvent être irrégulières et rocheuses EN SURFACE, mais le sol praticable garde des bords droits et lisibles.
+RELIEF : le sol du niveau est PLAT ; on ne change de niveau que par les échelles.
+OBJETS RARES : rien n'est posé dans la grotte hors des rochers et des échelles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les parois nord des salles montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux, logo, signature, filigrane, cadre, interface, Poké Ball ; lampe, torche, caisse, outil ; cristaux, lave, champignons géants, glace ; cascade ; escalier, marche, pont ; ciel, arbres, herbe ; galeries courbes ou en diagonale ; brouillard épais, flou de profondeur, vignettage noir ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une petite grotte humide sous un vieux puits, une salle d'entrée, un goulet, une salle de rochers, puis une grande salle basse autour d'une nappe d'eau claire, et une échelle qui s'enfonce encore.
