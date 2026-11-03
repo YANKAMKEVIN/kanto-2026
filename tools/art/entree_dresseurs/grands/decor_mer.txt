@@ -1,0 +1,18 @@
+DÉCOR DE COMBAT — MER DES ROUTES 19 À 21 (version 2) (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat sur smartphone en paysage, où le joueur affronte un Nageur ou une Nageuse en pleine mer au sud de Parmanie (Routes 19, 20 et 21 ; aussi la mer autour de Cramois'Île). AUCUN personnage, AUCUN Pokémon, AUCUNE interface, AUCUN texte.
+
+Images jointes : IMAGE 1 = un décor de combat VALIDÉ d'un autre lieu (l'Arène d'Argenta) : CIBLE du niveau de rendu, de la richesse, de la profondeur et du cadrage (sol vaste dans la moitié basse) ; ce n'est PAS le lieu à peindre. IMAGE 2 = la vue générale VALIDÉE du lieu, vue de dessus : le LIEU, les matériaux, les couleurs et la lumière à GARDER ; à repeindre comme si l'on s'y tenait, à hauteur d'homme, en vue de trois-quarts (et PAS en pixel art).
+
+LIEU : la mer chaude du sud de Kanto, eau TURQUOISE claire et transparente sur des HAUTS-FONDS, qui fonce en bleu profond au loin. Le sol est un grand BANC DE SABLE émergé, plat et mouillé, sable clair doré, avec de fines nappes d'eau de quelques centimètres, de petites rides de sable, des coquillages, quelques galets et touffes d'algues ; de petites vagues mousseuses viennent lécher ses bords. Au premier plan à gauche, de gros ROCHERS ronds gris-beige d'une DIGUE D'ENROCHEMENT (comme sur IMAGE 2), coupés par le bord, éclaboussés d'écume. Au loin à droite, la longue digue d'enrochement qui ferme un bassin, une petite plage avec deux parasols rayés minuscules et la côte boisée très loin ; un îlot rocheux. Ciel d'été bleu à gros nuages blancs, soleil haut à gauche, mille reflets scintillants sur l'eau ; ambiance de vacances au bord de la mer.
+
+PERSPECTIVE (impératif, la vue NE DOIT PAS être symétrique) : caméra à hauteur d'homme sur la GAUCHE, regard légèrement vers la DROITE, en trois-quarts : point de fuite vers x 62 %. rochers de la digue de GAUCHE proches, grands, coupés par le bord gauche ; la côte et la digue du fond plus petites et lointaines à droite.
+
+CADRAGE (impératif) : la LIGNE où le banc de sable rejoint l'eau du fond est entre 38 et 42 % de la hauteur de l'image : tout ce qui est sous 42 % est le SOL (le banc de sable mouillé, vaste, la moitié basse et plus).
+- Point A (x 67 %, y 50 %) : sable plat, mouillé et nu, bien émergé (l'adversaire y posera les pieds), rien de haut dans un rayon de 10 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sable plat, mouillé et nu au premier plan (le joueur s'y tient).
+- Les 9 % de gauche et de droite ne contiennent rien d'important.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+RENDU : illustration 2D HD peinte, riche et détaillée, au niveau de l'IMAGE 1 (même main, même richesse, même profondeur), aucun trait noir épais, netteté partout (pas de flou, pas de vignettage), PAS de pixel art (la planche IMAGE 2 est un aperçu : on veut le rendu peint de l'IMAGE 1).
+
+INTERDITS : personnage, silhouette humaine, Pokémon, Poké Ball, panneau avec numéro, texte, lettres, chiffres, logo, signature, cadre, interface, pixel art.

@@ -8,7 +8,7 @@
 		}
 	},
 	"paul": {
-		"cell": [15, 61], "facing": "right", "sprite": "hiker",
+		"cell": [15, 61], "facing": "right", "sprite": "mountaineer",
 		"dialogue": "route_10_hiker_paul_after",
 		"trainer": {
 			"id": "route_10_hiker_paul", "sight": 5,

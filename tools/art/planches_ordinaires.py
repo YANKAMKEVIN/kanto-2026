@@ -23,7 +23,9 @@ RACINE = Path(__file__).resolve().parents[2]
 CAPT = RACINE / "build" / "ordinaires"
 SORTIE = RACINE / "docs" / "design" / "fiches-assets" / "entree-ordinaires"
 MOMENTS = [("entree", "entrée"), ("lancer", "lancer")]
-LOTS = {**PLANCHES, "gamin": ["gamin"]}
+LOTS = {**PLANCHES, "gamin": ["gamin"],
+	# Fonds repeints à la demande de Kevin (« Mer, Route 17, Manoir », 2026-11-03).
+	"decors_repeints": ["nageur", "motard", "pillard"]}
 
 
 def _legendes() -> dict[str, str]:

@@ -19,7 +19,7 @@ const INF := 1 << 30
 ## Clé du fichier de PNJ → position de la grille, Dresseur, apparence.
 const TRAINERS: Dictionary[StringName, Array] = {
 	&"youngster_jules": ["d1", &"route_25_youngster_jules", &"youngster"],
-	&"hiker_gaston": ["d2", &"route_25_hiker_gaston", &"hiker"],
+	&"hiker_gaston": ["d2", &"route_25_hiker_gaston", &"mountaineer"],
 	&"lass_zoe": ["d3", &"route_25_lass_zoe", &"lass_young"],
 	&"hiker_bernard": ["d4", &"route_25_hiker_bernard", &"mountaineer"],
 	&"jr_trainer_adam": ["d5", &"route_25_jr_trainer_adam", &"camper"],

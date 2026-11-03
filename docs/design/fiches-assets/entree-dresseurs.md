@@ -377,18 +377,43 @@ femme comprise (`sbire_rocket_f`, sprite à part, décision de Kevin). Entrée d
 - **Tests** : `test_every_ordinary_class_has_complete_art` (debout, lancer, main pour chaque
   classe), `test_ordinary_class_scales` (enfants < adolescents < adultes).
 
-**Décors signalés (non repeints)** :
-- **Mer ouverte** (`sea_open`, Routes 19 à 21, nageurs et nageuses) : aucun sol ; le nageur et le
-  joueur se tiennent debout sur les vagues. Le plus net en dessous d'Argenta v3.
-- **Route 17, Route cyclable** (motards, loubards) : emprunte le parc urbain des Routes 7-8 (allée,
-  réverbères, église) au lieu d'une route en bord de mer.
-- **Manoir Pokémon** (`manoir_salle` = `tour_pokemon_back`, pillards, scientifiques) : niches à
-  bougies et fleurs funéraires de la Tour, rien du manoir.
-- Emprunts lisibles mais pas propres au lieu : Routes 14 et 15 (prairie des Routes 5-6), Route 12
-  (pont de pierre de la Route 24), Route 25 (côte de la Route 11). Arène de Parmanie (dompteurs,
-  jongleurs) : grande salle frontale vide, gardée à l'étape 2.
+**Décors signalés, puis repeints** (réponse de Kevin du 2026-11-03 : « Mer, Route 17, Manoir », dans
+cet ordre ; outils de l'étape 3 : prompts `tools/art/entree_dresseurs/grands/ecrire_decors_ordinaires.py`,
+`tools/art/entree_grands_combats.py decor|tuile`, recette `preparer_decor.py`, IMAGE 1 = Argenta v3,
+IMAGE 2 = vue générale validée du lieu ; 10 images Codex : 4 compositions et 6 tuiles, dont une
+composition du Manoir refaite parce que la tuile gauche, avec une grande statue de Mew au premier
+plan, était refusée par Codex) ; planche `entree-ordinaires/decors-repeints.jpg` :
+- **Mer des Routes 19 à 21** (`sea_open`, même identifiant, nouveau fichier `sea_open_v2_back.webp`,
+  aussi la mer de Cramois'Île) : [D] **grand banc de sable émergé** dans des hauts-fonds turquoise,
+  digue d'enrochement au premier plan à gauche et au fond (comme la vue générale de la Route 19) :
+  le joueur et le nageur se tiennent sur du sable mouillé. Alternative possible : le joueur sur son
+  Pokémon de Surf (question à Kevin). `foe_feet` [1559, 560].
+- **Route 17, Route cyclable** (identifiant neuf `route_17_cyclable`, branché sur `route_17` seule) :
+  chaussée de béton à dalles en bord de mer, glissière à bornes orange, enrochements, séparateur
+  central, traces de dérapage, forêt dense de l'autre côté (vue générale de la Route 17). Les pilotis
+  ne se voient presque pas (la chaussée longe les enrochements). Les Routes 16 ouest et 18 gardent
+  le parc urbain des Routes 7-8. `foe_feet` [1559, 560].
+- **Manoir Pokémon** (`manoir_salle`, propre fichier `manoir_salle_back.webp` au lieu du fond de la
+  Tour) : grande salle délabrée, parquet usé et brûlé, tapis rouge déchiré, papier peint décollé,
+  poutres calcinées, deux statues de Mew au fond, grille entrouverte, bibliothèque renversée,
+  lumière dorée des fenêtres brisées (r2 retenue). `foe_feet` [1559, 575].
+- Emprunts lisibles mais pas propres au lieu, non repeints : Routes 14 et 15 (prairie des Routes
+  5-6), Route 12 (pont de pierre de la Route 24), Route 25 (côte de la Route 11). Arène de Parmanie
+  (dompteurs, jongleurs) : grande salle frontale vide, gardée à l'étape 2.
+
+**Jeune Dresseur** en vert et jaune : validé par Kevin (« pas de soucis », 2026-11-03).
+
+**Apparences du monde et replis par genre** (Kevin, 2026-11-03 : « il faut fixer ») : `hiker` (feuille
+`randonneuse`, féminine) servait aux Montagnards, Karatékas et au Maître du Dojo. Désormais :
+Montagnard → `mountaineer` (feuille masculine `montagnard`, la tenue de son art de combat), dans le
+monde (6 Dresseurs) et en repli ; Karatéka et Maître du Dojo → `cue_ball` [D] (feuille `loubard` :
+crâne rasé, carrure musclée, sans manches), dans le monde (9 Dresseurs) et en repli, **faute de
+feuille de karatéka peinte** ; Médium → `youngster` en repli (comme ses Dresseurs du monde ; il
+retombait sur la feuille féminine `exorciste`). Les passants non Dresseurs en `hiker` (Routes 2, 3
+et 5, Forêt de Jade, maisons de repos du Parc Safari) ne changent pas. Garde :
+`test_world_looks_match_the_gender_of_the_class` (repli de chaque classe et chaque Dresseur
+ordinaire du monde : feuille féminine si et seulement si la classe est féminine).
 
 Défauts restants : le fouet enroulé du Dompteur se lit comme un tuyau ; uniforme des Sbires plutôt
 gris-brun très sombre que noir pur ; la Topdresseuse porte deux Poké Balls à la ceinture (r2) ;
-apparences du monde de `hiker` (feuille `randonneuse`, féminine) toujours utilisée en repli par
-Montagnard, Karatéka et Maître du Dojo (sans effet tant que l'art de combat existe).
+Karatékas et Maître du Dojo n'ont pas de feuille du monde propre (provisoire `cue_ball`).

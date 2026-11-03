@@ -302,11 +302,20 @@
 		"sea_open": {
 			"zone": "sea",
 			"variant": "open",
-			"back": "res://assets/battle/decors/sea_open_back.webp",
+			"back": "res://assets/battle/decors/sea_open_v2_back.webp",
 			"size": [2340, 1080],
-			"foe_feet": [1559, 540],
+			"foe_feet": [1559, 560],
 			"player_feet": [716, 972],
-			"horizon": 332
+			"horizon": 450
+		},
+		"route_17_cyclable": {
+			"zone": "route_17",
+			"variant": "cyclable",
+			"back": "res://assets/battle/decors/route_17_cyclable_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 560],
+			"player_feet": [716, 972],
+			"horizon": 430
 		},
 		"seafoam_ice": {
 			"zone": "seafoam",
@@ -356,11 +365,11 @@
 		"manoir_salle": {
 			"zone": "pokemon_mansion",
 			"variant": "salle",
-			"back": "res://assets/battle/decors/tour_pokemon_back.webp",
+			"back": "res://assets/battle/decors/manoir_salle_back.webp",
 			"size": [2340, 1080],
-			"foe_feet": [1559, 540],
+			"foe_feet": [1559, 575],
 			"player_feet": [716, 972],
-			"horizon": 335
+			"horizon": 510
 		},
 		"fuchsia_gym_ninja": {
 			"zone": "fuchsia_gym",
@@ -582,7 +591,7 @@
 			{ "decor": "route_7_8_urbaine" }
 		],
 		"route_17": [
-			{ "decor": "route_7_8_urbaine" }
+			{ "decor": "route_17_cyclable" }
 		],
 		"route_18": [
 			{ "decor": "route_7_8_urbaine" }
