@@ -88,7 +88,7 @@ la Ferme Meumeu a une mangeoire et un abreuvoir dans l'enclos (accessoires, pas 
 | `route-36-vue-generale-v1.png` | r1 / 1 | `route-13-vue-generale-v1.png` (prairie, eau, lumière neutre) |
 | `route-35-vue-generale-v1.png` | r1 / 1 | `route-39-vue-generale-v1.png` (Johto, eau, clôture blanche) |
 | `doublonville-vue-generale-v1.png` | r1 / 1 | `celadopole-vue-generale-v1.png` (grande ville, grand magasin) |
-| `souterrain-doublonville-vue-generale-v1.png` | r1 / 1 | `souterrain-vue-generale-v1.png` (Souterrain de Kanto) |
+| `souterrain-doublonville-vue-generale-v1.png` (plan `souterrain-doublonville-plan-v1.png`) | r1 / 1 | `souterrain-vue-generale-v1.png` (Souterrain de Kanto) |
 
 Outil : `vues_johto_acte1.py` connaît désormais un genre `interieur` (Souterrain : murs, sol, devantures, escaliers
 sur fond noir) et des **styles par grille** (la lettre `P` est le Phare à Oliville, la grille du Parc sur la Route 36,
@@ -115,6 +115,36 @@ entre deux piliers de pierre, sans bâtiment ; arbres fruitiers de la Route 37 =
   fond et sa caisse) ; la salle du fond est un peu moins profonde que ses 4 rangées.
 - **Toutes** : lumière neutre respectée.
 
-## JOH4 et JOH5
+## JOH4 — Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss (planche `joh4-vues-v1.png`) — en attente de Kevin
 
-À faire ensuite (Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss ; Tour Radio 1F à 5F).
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `route-34-vue-generale-v1.png` | r1 / 1 | `route-39-vue-generale-v1.png` (Johto, mer, clôture) |
+| `bois-aux-chenes-vue-generale-v1.png` | r1 / 1 | `foret-jade-vue-generale-v1.png` (forêt serrée) |
+| `ecorcia-vue-generale-v1.png` | r1 / 1 | `rosalia-vue-generale-v1.png` (Johto, maisons anciennes) |
+| `puits-ramoloss-b1f-vue-generale-v1.png` | r1 / 1 | `mont-selenite-vue-generale-v1.png` (roche, échelles) |
+| `puits-ramoloss-b2f-vue-generale-v1.png` | r1 / 1 | B1F (ci-dessus) + `mont-selenite-vue-generale-v1.png` |
+
+Défauts pris **[D]** : maisons d'Écorcia au **toit de chaume** (dossier JOH-05 §3) ; charbonnerie en bois noirci à cheminée
+de pierre, sans porte, sacs de charbon contre le mur ; puits = margelle de pierre et trou à échelle, sans toit ;
+autel du Bois = petit autel de bois moussu entre deux massifs de fleurs ; mer de la Route 34 au pied d'un simple talus
+herbeux (pas de falaise) ; puits = roche sombre humide, eau claire, lumière du jour par le trou de l'échelle d'entrée.
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **Route 34** : conforme (chemin droit, mer sur deux colonnes, étang, maison, trois poches, clôture et passage d'une
+  case, six arbres) ; le passage de la clôture est peint au milieu du chemin plutôt que sur sa colonne ouest (10, 40).
+- **Bois aux Chênes** : conforme (trois traversées, deux poches d'herbes sur le sentier, deux poches latérales, clairière,
+  sente, autel fleuri, impasse de l'ouest, souche, bûches, panneau) ; la poche de sous-bois à droite de la clairière et
+  celle de la Dresseuse sous la troisième traversée sont un peu plus petites.
+- **Écorcia** : conforme (trois rues, charbonnerie, puits en cour ouverte, Centre, Boutique, deux maisons, arbres) ; la
+  margelle du puits est rendue en dalles plates et le trou à échelle devant, sans les deux murets latéraux.
+- **Puits B1F** : conforme (salle d'entrée, goulet sous sa niche, salle des rochers, descente de droite, grande salle
+  basse, nappe d'eau, trois zones de gravats, sept rochers, deux échelles).
+- **Puits B2F** : conforme (salle de l'échelle, couloir, grande salle et mare, gravats, passage et couloir de droite,
+  alcôve et ses deux caisses) ; le couloir de droite est un peu plus large que ses 3 cases.
+- **Toutes** : lumière neutre respectée ; les grottes en pénombre bleue froide.
+
+## JOH5
+
+Tour Radio 1F à 5F : en cours (cinq intérieurs, référence `poste-15-v1.png`, chaque étage joint au suivant).
