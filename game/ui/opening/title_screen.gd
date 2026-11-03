@@ -4,7 +4,9 @@ extends CanvasLayer
 ## qui ne fait foi ni pour le décor ni pour le logo, règle 10).
 ##
 ## Calque LAYER_MENU posé sur la vraie carte en mode décor ([TitleBackdrop], côté monde) :
-## - logo « Kanto 2026 » détouré en haut à gauche, sans cadre, sur une ombre douce (DAF.7b) ;
+## - logo « Kanto 2026 » détouré en haut à gauche, sans cadre, sur une ombre douce (DAF.7b) ; logo
+##   « Pokemake » à peindre quand Kevin aura tranché l'orthographe (J34) ; version du build en bas du
+##   même côté ;
 ## - colonne de cartes à droite (à gauche en mode gaucher, [method set_left_handed], le logo passe
 ##   alors à droite) : **Continuer** (la plus grande : buste, prénom, lieu, temps de jeu, badges,
 ##   captures), **Nouvelle partie**, **Paramètres** ; l'entrée mise en avant porte un liseré doré ;
@@ -30,6 +32,10 @@ const LOGO: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026.png")
 ## lui, décalée vers le bas de [constant LOGO_SHADOW_DROP] pixels de référence.
 const LOGO_SHADOW: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026_ombre.png")
 const LOGO_SHADOW_DROP: float = 6.0
+## Étiquette de version : opacité et largeur de sa zone (texte aligné du côté du logo).
+const VERSION_ALPHA: float = 0.75
+const VERSION_WIDTH: float = 480.0
+const VERSION_HEIGHT: float = 36.0
 const BUST: Texture2D = preload("res://assets/ui/menu/hero_bust.webp")
 const NEW_GAME_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const SETTINGS_ICON: Texture2D = preload("res://assets/ui/icons/menu/settings.svg")
@@ -56,6 +62,9 @@ var _model: TitleMenuModel
 var _left_handed: bool = false
 var _root: Control
 var _logo: TextureRect
+## Version du build (J34 T1, `GameVersion.label`), discrète dans le coin bas du côté du logo :
+## les proches la lisent pour dire quelle version ils ont.
+var _version: Label
 var _column: VBoxContainer
 var _buttons: Dictionary[StringName, Button] = {}
 var _message: PanelContainer
@@ -92,6 +101,16 @@ func _ready() -> void:
 	shadow.offset_top = LOGO_SHADOW_DROP
 	shadow.offset_bottom = LOGO_SHADOW_DROP
 	_logo.add_child(shadow)
+	_version = Label.new()
+	_version.name = "Version"
+	_version.text = GameVersion.label()
+	_version.add_theme_font_size_override(&"font_size", UiTokens.FONT_CAPTION)
+	_version.add_theme_color_override(&"font_color", Color(UiTokens.TEXT_MUTED, VERSION_ALPHA))
+	_version.add_theme_color_override(&"font_shadow_color", UiTokens.TEXT_SHADOW)
+	_version.add_theme_constant_override(&"shadow_offset_y", UiTokens.TEXT_SHADOW_OFFSET)
+	_version.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	_version.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(_version)
 	_column = VBoxContainer.new()
 	_column.name = "Column"
 	_column.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -204,6 +223,10 @@ func get_logo() -> TextureRect:
 	return _logo
 
 
+func get_version_label() -> Label:
+	return _version
+
+
 func get_column() -> VBoxContainer:
 	return _column
 
@@ -281,6 +304,16 @@ func _layout() -> void:
 	_logo.offset_right = _logo.offset_left + logo_size.x
 	_logo.offset_top = margin
 	_logo.offset_bottom = margin + logo_size.y
+	_version.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT if _left_handed \
+		else HORIZONTAL_ALIGNMENT_LEFT
+	_version.anchor_left = logo_side
+	_version.anchor_right = logo_side
+	_version.anchor_top = 1.0
+	_version.anchor_bottom = 1.0
+	_version.offset_left = -margin - VERSION_WIDTH if _left_handed else margin
+	_version.offset_right = _version.offset_left + VERSION_WIDTH
+	_version.offset_bottom = -margin
+	_version.offset_top = -margin - VERSION_HEIGHT
 	var column_side := 0.0 if _left_handed else 1.0
 	_column.anchor_left = column_side
 	_column.anchor_right = column_side

@@ -2,7 +2,7 @@ extends GutTest
 
 
 func test_project_name() -> void:
-	assert_eq(ProjectSettings.get_setting("application/config/name"), "Kanto 2026")
+	assert_eq(ProjectSettings.get_setting("application/config/name"), "Pokemake")
 
 
 func test_viewport_reference_size() -> void:
