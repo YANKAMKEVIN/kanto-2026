@@ -262,6 +262,36 @@ B2F : bassin bleu nuit, cascade coupée en son milieu, **halo bleu** au-dessus d
   échelle, halo).
 - **Tous** : lumière neutre ; grottes en pénombre bleue.
 
+## JOH8 — Bois de la Tour, Tour Carillon 1F, 2F, sommet (planche `joh8-vues-v1.png`) — en attente de Kevin
+
+| Vue | Essai retenu | Référence(s) jointe(s) |
+|---|---|---|
+| `bois-de-la-tour-vue-generale-v1.png` | r1 / 1 | `rosalia-vue-generale-v1.png` (érables, pavé, pagode) |
+| `tour-carillon-1f-vue-generale-v1.png` | r1 / 1 | `tour-pokemon-vue-generale-v1.png` (étage de tour) |
+| `tour-carillon-2f-vue-generale-v1.png` | r1 / 1 | 1F + `tour-pokemon-vue-generale-v1.png` |
+| `tour-carillon-sommet-vue-generale-v1.png` | r1 / 1 | 2F + `rosalia-vue-generale-v1.png` (la ville en bas) |
+
+Outil : lanternes de pierre, colonnes rouges, autel, planches qui cèdent, rambarde, grande cloche, cage de feu,
+trappe, brûle-parfums.
+
+Défauts pris **[D]** : Tour Carillon intérieure = temple de bois clair et colonnes rouges laquées, autel à nappe rouge et
+offrandes, brûle-parfums fumants ; planches qui cèdent = bois vermoulu plus sombre et fendu, intact ; sommet = terrasse
+dallée à rambarde rouge, cloche de bronze sous un portique rouge, **cage de flammes vide**, **ciel d'aube** rose et bleu
+(JH-55), Rosalia et ses érables rouges visibles en bas ; Bois de la Tour = érables verts touchés de rouge, lanternes de
+pierre allumées (seule touche chaude).
+
+### Écarts avec les grilles (la grille fait foi)
+
+- **Bois de la Tour** : conforme (allée, quatre lanternes, façade de la pagode et sa porte, douze érables, touffe d'herbe,
+  panneau) ; la pagode montre trois étages au lieu d'une simple façade (le haut sort de l'image, conforme à l'intention).
+- **Tour Carillon 1F** : conforme (autel, six colonnes en deux rangs, brûle-parfums des angles, niche étroite de l'escalier
+  en haut à droite avec ses deux cloisons, sortie au sud) ; l'autel porte fleurs et bols (offrandes, décor).
+- **Tour Carillon 2F** : conforme (deux escaliers et la niche, trois nappes de planches et leurs passages, quatre planches
+  isolées, six colonnes).
+- **Sommet** : conforme (rambarde, palier et trappe, cloche sous son portique, cage ouverte au sud, trois brûle-parfums) ;
+  la cage est peinte à droite du centre (grille : x 11..13, conforme) ; l'ouverture du palier (3, 3) se lit mal.
+- **Tous** : lumière neutre sauf le sommet, à l'aube (voulu, JH-55).
+
 ## Bilan de l'acte 1
 
 21 vues générales en 21 essais (JOH1 : 3, JOH2 : 3, JOH3 : 5, JOH4 : 5, JOH5 : 5), aucun refus de Codex. **Toutes

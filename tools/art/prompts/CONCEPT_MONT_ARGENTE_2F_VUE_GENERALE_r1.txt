@@ -1,0 +1,33 @@
+CONCEPT ART — VUE GÉNÉRALE DU MONT ARGENTÉ, NIVEAU 2 : LES GALERIES DANS LE NOIR (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Le deuxième niveau de la grotte : des GALERIES étroites creusées dans la roche, sans lumière du jour.
+Légende du plan :
+- gris ardoise foncé = ROCHE PLEINE (presque toute l'image) ; le liseré plus clair = l'ARÊTE des parois ;
+- gris clair = SOL DE GROTTE praticable : en haut à droite, une ÉCHELLE qui DESCEND (petit trou sombre à échelle) et une DESCENTE verticale ; une longue GALERIE TRANSVERSALE horizontale au milieu, d'ouest en est ; une DESCENTE verticale à l'ouest ; en bas à gauche, une SALLE avec une ÉCHELLE qui MONTE ;
+- gris-beige semé de cailloux = GRAVATS (éboulis où vivent les Pokémon) : une petite ALCÔVE en haut au centre-droit (reliée à la galerie par un court passage), et une grande SALLE LATÉRALE en bas au centre (reliée à la salle de l'échelle par un passage) ;
+- disques gris = ROCHERS isolés (quatre).
+Respecte ce plan À LA LETTRE : les deux échelles, les deux descentes, la galerie transversale, l'alcôve du nord, la salle latérale du sud et son passage, les rochers. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le niveau 1 de la même grotte, déjà peint : même roche, mêmes gravats, mêmes échelles ; ce niveau-ci est PLUS SOMBRE (aucune ouverture sur le dehors). Ne reprends PAS sa composition (pas de lac ici).
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le niveau, comme le plan.
+
+AMBIANCE — « les galeries dans le noir » : le cœur de la montagne, des galeries étroites et froides, aucune lumière du jour ; dans le jeu, le joueur n'y voit qu'avec un halo de lumière autour de lui, mais la vue de référence montre tout le niveau dans une PÉNOMBRE PROFONDE, lisible : la roche bleu-gris très sombre, le sol gris à peine plus clair, les gravats devinés, un très faible reflet de givre sur les arêtes. Oppressant mais net. Palette : bleu nuit et gris sombre, sol gris moyen, gravats gris-beige assombris.
+LUMIÈRE : presque aucune ; une lueur froide très faible et uniforme pour la lisibilité, un peu plus de lumière au pied des deux échelles (lueur qui descend des trous). Aucune lampe, aucune torche, aucune teinte dorée.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; galeries et salles ont des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUNE galerie en diagonale ni en courbe. Les parois peuvent être irrégulières EN SURFACE, mais le sol garde des bords droits et lisibles.
+RELIEF : le sol est PLAT ; on ne change de niveau que par les échelles.
+OBJETS RARES : rien d'autre que les rochers et les échelles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les parois nord montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais pures noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; lampe, torche, caisse ; eau, lac, cascade ; cristaux lumineux, lave ; escalier ; galeries courbes ; vignettage noir total (le niveau doit rester lisible) ; ambiance d'horreur ; pixel art, 3D.
+
+L'image doit raconter, sans texte : des galeries étroites dans le noir de la montagne, une longue traverse entre deux descentes, une alcôve et une salle d'éboulis, deux échelles.

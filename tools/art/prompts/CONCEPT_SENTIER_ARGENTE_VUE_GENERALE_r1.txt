@@ -1,0 +1,38 @@
+CONCEPT ART — VUE GÉNÉRALE DU SENTIER DU MONT ARGENTÉ, LA MONTÉE OÙ LA NEIGE COMMENCE (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PORTRAIT. Un sentier de montagne : on arrive par l'OUEST (le chemin qui entre par le bord gauche, tout en bas), on tourne vers le NORD et l'on monte tout droit jusqu'au bord haut (vers le pied de la montagne). À mi-hauteur, une MURAILLE DE GLACE coupe la route ; au-dessus, tout est sous la NEIGE.
+Légende du plan :
+- vert très foncé = FORÊT DE MONTAGNE dense (sapins et feuillus), infranchissable (toutes les marges) ;
+- beige = CHEMIN DE TERRE BATTUE de trois cases de large : l'arrivée horizontale en bas à gauche, puis la montée verticale au centre jusqu'au bord haut ;
+- vert moyen = PRÉS d'herbe rase, dans la moitié BASSE seulement ;
+- blanc légèrement bleuté = NEIGE, dans toute la moitié HAUTE : le sol et les prés sont couverts de neige fraîche ; le chemin reste visible comme une trace battue dans la neige ;
+- bande bleu pâle à facettes, à mi-hauteur, d'un bord à l'autre = la MURAILLE DE GLACE : un mur de glace bleutée et de rochers pris dans la glace, haut d'une case, percé d'UN SEUL PASSAGE d'une case sur le chemin ;
+- jaune-vert olive = HAUTES HERBES : un bloc dans l'herbe en bas à droite, et deux blocs SOUS LA NEIGE en haut (olive pâle givré : des touffes qui dépassent de la neige) ;
+- en haut à gauche, toit ROUGE et façade blanche avec l'emblème rond = le CENTRE POKÉMON du Mont Argenté (deux portes vitrées au milieu de la façade sud), dans la neige, son toit enneigé ;
+- grands disques vert sombre = SAPINS isolés, repères (cinq) ; disques gris = ROCHERS isolés (trois) ;
+- petit carré ocre près du chemin, en bas = un panneau en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : le chemin en L, la muraille de glace et son passage unique, la limite nette herbe / neige à la muraille, le Centre dans la neige en haut à gauche, les trois blocs d'herbes, les sapins, les rochers. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la Route 43, une route de montagne boisée du même chapitre, déjà peinte en lumière neutre : respecte EXACTEMENT son rendu (mêmes arbres, même chemin, mêmes prés, même saturation, même lumière neutre) pour la moitié basse ; le CENTRE POKÉMON est EXACTEMENT le même bâtiment que dans les villes du jeu. Ne reprends PAS sa composition.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur tout le sentier, comme le plan.
+
+AMBIANCE — « la montée vers la neige » : un sentier qui quitte les prés pour entrer dans l'hiver ; en bas, la forêt verte et l'herbe ; passé la muraille de glace, la neige fraîche, les sapins blanchis, l'air qui pique ; un petit Centre, dernier refuge avant la montagne. Progressive, froide, belle. Palette : vert profond et vert tendre en bas, BLANC bleuté de la neige en haut, GLACE bleu pâle de la muraille, CHEMIN beige puis gris-brun dans la neige, rouge du toit du Centre.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche ; la neige est blanche à ombres bleutées douces ; aucune teinte dorée. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemin, muraille et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun escalier. La limite herbe / neige est une ligne droite à la muraille.
+RELIEF : le sol est lisible et plat ; la muraille de glace est la seule hauteur, un mur net d'une case ; pas de pente visible.
+NATURE DENSE, OBJETS RARES : la forêt est serrée ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucune trace de pas. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo (seul l'emblème rond du Centre), signature, filigrane, cadre, interface, Poké Ball ; tout bâtiment autre que le Centre ; bonhomme de neige ; eau, lac ; route goudronnée ; lumière dorée ; brouillard épais, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un sentier de montagne qui monte des prés verts vers la neige, coupé par une muraille de glace percée d'un seul passage, avec un dernier Centre Pokémon dans la neige.

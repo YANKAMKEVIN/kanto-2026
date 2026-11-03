@@ -1,0 +1,33 @@
+CONCEPT ART — VUE GÉNÉRALE DU MONT ARGENTÉ, NIVEAU 3 : LES CORNICHES ET LE VENT (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Le dernier niveau de la grotte avant le sommet : des CORNICHES de roche, et la lumière du jour qui revient par le haut.
+Légende du plan :
+- gris ardoise foncé = ROCHE PLEINE (la plus grande partie) ; le liseré plus clair = l'ARÊTE des parois ;
+- gris clair = CORNICHES praticables : en bas à gauche, une ÉCHELLE qui DESCEND ; une CORNICHE BASSE horizontale en bas, d'ouest en est ; une MONTÉE verticale le long du bord droit ; une CORNICHE HAUTE horizontale en haut à droite ; et, à gauche de celle-ci, un DERNIER RAIDILLON vertical qui monte jusqu'à l'ÉCHELLE DU SOMMET, en haut au centre ;
+- gris-beige semé de cailloux = GRAVATS (éboulis où vivent les Pokémon) : une SALLE DU VENT fermée à gauche au milieu (reliée à la montée par un long passage horizontal), et une petite zone sur la corniche basse ;
+- disques gris = ROCHERS isolés (trois).
+Respecte ce plan À LA LETTRE : l'échelle du bas à gauche, la corniche basse, la montée de droite, la corniche haute, le raidillon et l'échelle du sommet en haut au centre, la salle du vent et son passage, les gravats, les rochers. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : le niveau 2 de la même grotte, déjà peint : même roche, mêmes gravats, mêmes échelles ; ce niveau-ci est de nouveau ÉCLAIRÉ par le jour qui tombe d'en haut. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le niveau, comme le plan.
+
+AMBIANCE — « les corniches » : le haut de la montagne, à l'intérieur ; des corniches étroites le long de gouffres de roche, du givre et un peu de neige soufflée dans les creux, le vent qui s'engouffre par les ouvertures du plafond ; la lumière du jour, blanche et froide, tombe de larges fissures, surtout sur le raidillon qui monte vers le sommet. Austère, aérienne, lisible. Palette : ROCHE gris froid, givre et neige blancs dans les creux, SOL gris clair, GRAVATS gris-beige, lumière blanche.
+LUMIÈRE NE (neutre) : lumière du jour blanche par les fissures du plafond, plus forte en haut ; ombres bleutées ; aucune teinte dorée.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; corniches et salles ont des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUNE galerie en diagonale ni en courbe.
+RELIEF : les corniches sont peintes au même niveau (pas de dénivelé entre elles) ; la roche pleine autour peut suggérer des gouffres, mais le sol praticable est plat ; on ne change de niveau que par les échelles.
+OBJETS RARES : rien d'autre que les rochers et les échelles.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les parois nord montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; lampe, caisse ; eau, cascade ; cristaux, lave ; escalier, pont, corde ; ciel visible en grand (seulement la lumière qui tombe) ; galeries courbes ; vignettage noir ; pixel art, 3D.
+
+L'image doit raconter, sans texte : des corniches de roche froide qui montent vers la lumière, une salle d'éboulis balayée par le vent, et tout en haut l'échelle du sommet.

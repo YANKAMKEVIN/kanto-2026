@@ -36,7 +36,10 @@ Points de Vol : aucun neuf (Rosalia existe).
 **Grilles validées par Kevin le 2026-11-03** (validation d'avance) : `tools/plans/bell_tower_woods.txt`, `bell_tower_1f.txt`,
 `bell_tower_2f.txt`, `bell_tower_roof.txt` (la grille fait foi pour la géométrie ; défauts [D] dans
 leurs en-têtes) ; retouche de `rosalia.txt` (sage blessé, raccord nord) ; contrôle
-`tools/art/plan_check_joh8.py` ; aperçu `reference/joh8-grilles-apercu-v1.png`.
+`tools/art/plan_check_joh8.py` ; aperçu `reference/joh8-grilles-apercu-v1.png`. **Vues générales peintes le
+2026-11-03** (`reference/bois-de-la-tour-vue-generale-v1.png`, `tour-carillon-1f-…`, `tour-carillon-2f-…`,
+`tour-carillon-sommet-vue-generale-v1.png`, plans annotés `reference/plans-johto/`, planche `reference/joh8-vues-v1.png`,
+écarts et défauts dans `fiches-assets/serie-johto-vues-acte1.md`), en attente de validation de Kevin.
 
 ## 4. Ordre de jeu
 

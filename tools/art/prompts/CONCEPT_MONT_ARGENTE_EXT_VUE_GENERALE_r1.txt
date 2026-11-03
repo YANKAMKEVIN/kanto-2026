@@ -1,0 +1,35 @@
+CONCEPT ART — VUE GÉNÉRALE DU MONT ARGENTÉ, L'EXTÉRIEUR : LA PENTE ENNEIGÉE SOUS LA PAROI (Kanto 2026, Chapitre Johto), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE (la carte est carrée, centrée ; de part et d'autre, de la roche). Le pied d'une très haute montagne : on arrive par le SUD (le chemin qui entre par le bord bas, au centre) et l'on monte vers le NORD jusqu'à l'ENTRÉE D'UNE GROTTE dans la paroi.
+Légende du plan :
+- gris rocheux semé de cailloux = ROCHE : toute la bordure, la grande PAROI rocheuse du nord (haute, abrupte, qui barre tout le haut de l'image) et deux masses de roche qui encadrent l'esplanade ;
+- blanc légèrement bleuté = NEIGE : toute la pente, neige fraîche ; une ESPLANADE de neige en haut au centre, en entonnoir entre deux masses de roche, au pied de la paroi ;
+- le petit disque noir dans la paroi, au-dessus de l'esplanade = l'ENTRÉE DE LA GROTTE, une bouche sombre dans la roche ;
+- beige = le CHEMIN, une trace battue dans la neige, de trois cases de large, du bord bas jusqu'à l'esplanade ;
+- olive pâle givré = HAUTES HERBES SOUS LA NEIGE, trois blocs (à gauche, à droite, en bas au centre-gauche) : des touffes qui dépassent de la neige ;
+- grands disques vert sombre = SAPINS isolés, enneigés (cinq) ; disques gris = ROCHERS isolés (sept).
+Respecte ce plan À LA LETTRE : la paroi au nord et l'entrée de la grotte, l'esplanade en entonnoir entre ses deux masses de roche, le chemin du bord bas à l'esplanade, les trois blocs d'herbes sous la neige, les sapins, les rochers. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale du Sentier du Mont Argenté, la carte juste en dessous, déjà peinte en lumière neutre : respecte EXACTEMENT son rendu de la NEIGE, des sapins enneigés, du chemin dans la neige, et sa lumière neutre. Pour la ROCHE de la paroi, reprends la facture des montagnes de la Route 42 du même chapitre (roche grise à couches, arêtes adoucies), ici plus sombre et enneigée sur ses replats.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la pente, comme le plan.
+
+AMBIANCE — « le pied de la montagne » : une vaste pente de neige vierge montant vers une paroi de roche immense qui ferme l'horizon ; le vent, le silence, quelques sapins chargés de neige ; au pied de la paroi, une esplanade où tout le monde se retrouve, et la bouche noire de la grotte. Grandiose, froide, un peu solennelle. Palette : BLANC bleuté de la neige, ROCHE gris sombre à replats blancs, SAPINS vert profond enneigés, CHEMIN gris-beige.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, ciel couvert ; ombres bleutées douces ; aucune teinte dorée. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemin, esplanade et bords de roche suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe.
+RELIEF : la pente est lisible et plate (pas de dénivelé peint entre le bas et le haut) ; la paroi du nord et les masses de roche dominent d'une hauteur nette, faces rocheuses visibles côté sud.
+NATURE DENSE, OBJETS RARES : aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. On voit le dessus des objets et leur face avant (côté sud) ; la paroi montre sa face sud.
+- Aucun trait noir : contours fins et doux. Ombres propres colorées, bleutées, jamais grises ni noires.
+
+PERSONNE : aucun personnage, aucun Pokémon, aucun animal, aucune trace de pas. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, Poké Ball ; bâtiment, cabane, drapeau, tente ; eau ; lumière dorée ; blizzard qui cacherait la composition, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une pente de neige vierge qui monte vers une paroi immense, et au pied de la paroi, entre deux masses de roche, une esplanade et la bouche noire d'une grotte.

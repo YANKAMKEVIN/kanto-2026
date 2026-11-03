@@ -103,6 +103,20 @@ JALONS: dict[str, list[tuple]] = {
 		("TOUR_CARILLON_SOMMET", "bell_tower_roof", PAYSAGE, "interieur", "Tour Carillon, sommet (20 × 20)",
 			{"r": "rambarde", "B": "cloche", "c": "cage_feu", "D": "trappe", "M": "brule_parfum"}),
 	],
+	"joh9": [
+		("SENTIER_ARGENTE", "silver_trail", PORTRAIT, "exterieur", "Sentier du Mont Argenté (24 × 44)",
+			{"R": "glace", "n": "neige"}),
+		("MONT_ARGENTE_EXT", "mt_silver_outside", PAYSAGE, "exterieur", "Mont Argenté, extérieur (40 × 40)",
+			{"_fond": "roche", "E": "bouche", "n": "neige"}),
+		("MONT_ARGENTE_1F", "mt_silver_1f", PAYSAGE, "grotte", "Mont Argenté 1F (32 × 28)"),
+		("MONT_ARGENTE_2F", "mt_silver_2f", PAYSAGE, "grotte", "Mont Argenté 2F, obscurité (32 × 28)"),
+		("MONT_ARGENTE_3F", "mt_silver_3f", PAYSAGE, "grotte", "Mont Argenté 3F (28 × 24)"),
+		("MONT_ARGENTE_SOMMET", "mt_silver_summit", PAYSAGE, "exterieur", "Mont Argenté, sommet (20 × 18)",
+			{"_fond": "nuages", "K": "ruine", "D": "trappe", "n": "neige"}),
+		("ROUTE28", "route_28", PAYSAGE, "exterieur", "Route 28 (44 × 20)", {"P": "poste"}),
+		("POSTE_ROUTE28", "route_28_gate", PAYSAGE, "interieur", "Poste de la Route 28 (10 × 8)",
+			{"K": "mur", "X": "sortie", "N": "sortie"}),
+	],
 }
 # Styles par défaut des lettres de bâtiment (toit, mur) ; les lettres spéciales ont leur dessin.
 BATIMENTS = {
@@ -122,7 +136,9 @@ NOMS = {"ilex_forest": "bois-aux-chenes", "azalea_town": "ecorcia", "slowpoke_we
 	"radio_tower_4f": "tour-radio-4f", "radio_tower_5f": "tour-radio-5f", "whirl_islands_1f": "iles-tourbillon-1f",
 	"whirl_islands_b1f": "iles-tourbillon-b1f", "whirl_islands_b2f": "iles-tourbillon-b2f",
 	"bell_tower_woods": "bois-de-la-tour", "bell_tower_1f": "tour-carillon-1f", "bell_tower_2f": "tour-carillon-2f",
-	"bell_tower_roof": "tour-carillon-sommet",
+	"bell_tower_roof": "tour-carillon-sommet", "silver_trail": "sentier-mont-argente",
+	"mt_silver_outside": "mont-argente-exterieur", "mt_silver_1f": "mont-argente-1f", "mt_silver_2f": "mont-argente-2f",
+	"mt_silver_3f": "mont-argente-3f", "mt_silver_summit": "mont-argente-sommet", "route_28_gate": "poste-route-28",
 	"burned_tower_1f": "tour-cendree-1f", "burned_tower_b1f": "tour-cendree-b1f", "mahogany_town": "acajou",
 	"mahogany_souvenir_shop": "boutique-souvenirs-acajou", "lake_of_rage": "lac-colere",
 	"mahogany_hideout_b1f": "repaire-acajou-b1f", "mahogany_hideout_b2f": "repaire-acajou-b2f",
@@ -132,6 +148,8 @@ NOMS = {"ilex_forest": "bois-aux-chenes", "azalea_town": "ecorcia", "slowpoke_we
 def nom_vue(grille: str) -> str:
 	if grille == "mahogany_souvenir_shop":
 		return "boutique-souvenirs-acajou-v1.png"
+	if grille == "route_28_gate":
+		return "poste-route-28-v1.png"
 	return NOMS.get(grille, grille.replace("_", "-")) + "-vue-generale-v1.png"
 
 
@@ -166,20 +184,21 @@ COULEURS_EXT = {
 	"M": EAU_PROFONDE, "H": PELOUSE, "Q": PELOUSE, "s": PELOUSE,
 	# JOH6 : o rocher émergé du lac ; JOH7 : s banc de sable, @ tourbillon
 	"o": EAU, "s": (226, 210, 160), "@": EAU,
-	# JOH8 : L lanterne
-	"L": PELOUSE,
+	# JOH8 : L lanterne ; JOH9 : n neige, c mer de nuages
+	"L": PELOUSE, "n": (236, 240, 246), "c": (226, 232, 240),
 }
+NEIGE, NUAGES = (236, 240, 246), (226, 232, 240)
 CLAIRIERE = (140, 196, 100)
 SOL_INT, MUR_INT, NOIR = (200, 186, 150), (78, 70, 64), (10, 10, 12)
 COULEURS_INT = {"X": MUR_INT, "#": MUR_INT, ".": SOL_INT, "b": SOL_INT, "k": SOL_INT, "E": SOL_INT, "M": SOL_INT,
 	"V": SOL_INT, "c": SOL_INT, "r": SOL_INT, "p": SOL_INT, "U": SOL_INT, "D": SOL_INT, "L": MUR_INT, "K": SOL_INT,
 	"S": MUR_INT, "P": SOL_INT, "O": SOL_INT, "<": SOL_INT, ">": SOL_INT, "^": SOL_INT, "v": SOL_INT, "o": SOL_INT,
-	"q": SOL_INT, "x": SOL_INT, "A": SOL_INT, "r": SOL_INT, "B": SOL_INT}
+	"q": SOL_INT, "x": SOL_INT, "A": SOL_INT, "r": SOL_INT, "B": SOL_INT, "N": SOL_INT}
 CENDRES = (118, 108, 100)
 COULEURS_GROTTE = {
 	"#": ROCHE, "o": EAU, ".": (150, 150, 158), "g": GALETS, "w": EAU, "d": EAU_PROFONDE, ">": EAU, "<": EAU,
-	"v": EAU, "^": EAU, "E": (200, 186, 150), "U": (150, 150, 158), "V": (150, 150, 158), "R": (150, 150, 158),
-	"F": (200, 226, 240),
+	"v": EAU, "^": EAU, "E": (200, 186, 150), "e": (200, 186, 150), "U": (150, 150, 158), "V": (150, 150, 158),
+	"R": (150, 150, 158), "F": (200, 226, 240),
 }
 LEGENDE_EXT = [
 	("T", "forêt, bordure d'arbres"), ("R", "falaise, rochers"), (".", "pelouse"), ("=", "chemin"),
@@ -191,7 +210,7 @@ LEGENDE_EXT = [
 	("a", "arbre fruitier"), ("b", "pont"), ("X", "barrière de chantier"), ("r", "rocher"), ("U", "Tour Radio"),
 	("A", "Grand Magasin"), ("L", "maison du lien"), ("F", "gare"), ("M", "mer (décor)"), ("H", "charbonnerie"),
 	("Q", "margelle du puits"), ("s", "souche / banc de sable"), ("o", "rocher émergé"), ("@", "tourbillon"),
-	("L", "lanterne"),
+	("L", "lanterne"), ("n", "neige"), ("c", "mer de nuages"),
 ]
 LEGENDE_INT = [("X", "mur"), ("#", "mur, cloison"), (".", "sol"), ("b", "boutique fermée"), ("k", "caisse"),
 	("E", "escalier / sortie"), ("M", "mobilier"), ("V", "vitre"), ("c", "comptoir"), ("r", "rayonnage"),
@@ -202,7 +221,7 @@ LEGENDE_INT = [("X", "mur"), ("#", "mur, cloison"), (".", "sol"), ("b", "boutiqu
 LEGENDE_GROTTE = [
 	("#", "paroi"), ("o", "rocher isolé"), (".", "îlot, corniche"), ("g", "plage de galets"), ("w", "eau surfable"),
 	("d", "eau profonde"), (">", "courant →"), ("v", "courant ↓"), ("E", "sortie à pied"), ("U", "échelle qui monte"),
-	("V", "échelle qui descend"), ("R", "caisse marquée R"), ("F", "cascade"),
+	("V", "échelle qui descend"), ("R", "caisse marquée R"), ("F", "cascade"), ("e", "sortie à pied (ouest)"),
 ]
 # Pastilles de légende des caractères dont la couleur de fond n'est pas parlante (dessinés par-dessus).
 SWATCH = {
@@ -358,10 +377,11 @@ def _details_interieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		for x, y in plan.cells_of("X"):
 			x0, y0 = coin(x, y)
 			d.rectangle([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], fill=BOIS, outline=BOIS_2, width=2)
-	if styles.get("X") == "sortie":
-		for x, y in plan.cells_of("X"):
-			x0, y0 = coin(x, y)
-			d.rectangle([x0 + 1, y0 + 2, x0 + case - 2, y0 + case - 1], fill=(140, 60, 50))
+	for lettre in ("X", "N"):
+		if styles.get(lettre) == "sortie":
+			for x, y in plan.cells_of(lettre):
+				x0, y0 = coin(x, y)
+				d.rectangle([x0 + 1, y0 + 2, x0 + case - 2, y0 + case - 1], fill=(140, 60, 50))
 	for ch, sens in FLECHES.items():                    # dalles tournantes
 		for x, y in plan.cells_of(ch):
 			x0, y0 = coin(x, y)
@@ -509,7 +529,7 @@ def _details_grotte(d, plan, coin, case) -> None:
 			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(72, 124, 190))
 			if (x + y) % 2 == 0:
 				_fleche(d, x0, y0, case, sens, (225, 240, 255))
-	for x, y in plan.cells_of("E"):                     # sortie : lumière du dehors
+	for x, y in plan.cells_of("E") + plan.cells_of("e"):    # sortie : lumière du dehors
 		x0, y0 = coin(x, y)
 		d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(228, 216, 180))
 	for x, y in plan.cells_of("U") + plan.cells_of("V"):    # échelles de bois (montants et barreaux)
@@ -537,9 +557,31 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		if _bord(plan, x, y, "T"):
 			x0, y0 = coin(x, y)
 			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=FORET_BORD)
-	rochers = plan.cells_of("R") + plan.cells_of("r")
+	rochers = (plan.cells_of("R") if styles.get("R") != "glace" else []) + plan.cells_of("r")
 	if styles.get("P", "phare") == "phare":
 		rochers += plan.cells_of("P") + plan.cells_of("E")
+	if styles.get("R") == "glace":                      # muraille de glace : bleu pâle, facettes
+		for x, y in plan.cells_of("R"):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(190, 220, 240))
+			d.line([x0 + 2, y0 + case - 3, x0 + case // 2, y0 + 2], fill=(240, 250, 255), width=1)
+	for x, y in plan.cells_of("n"):                     # neige : grain léger
+		if (x * 2 + y * 3) % 7 == 0:
+			x0, y0 = coin(x, y)
+			d.ellipse([x0 + case // 3, y0 + case // 3, x0 + case // 3 + 2, y0 + case // 3 + 2], fill=(200, 210, 222))
+	for x, y in plan.cells_of("c") if styles.get("_fond") == "nuages" else []:   # mer de nuages
+		x0, y0 = coin(x, y)
+		d.ellipse([x0 - case // 3, y0 + case // 4, x0 + case + case // 3, y0 + case], fill=(240, 244, 250))
+	if styles.get("K") == "ruine":                      # pierres des ruines : blocs gris sur la neige
+		for x, y in plan.cells_of("K"):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0 + 2, y0 + 3, x0 + case - 3, y0 + case - 2], fill=(130, 126, 122), outline=(80, 76, 72))
+	if styles.get("D") == "trappe":                     # trappe de l'échelle dans la neige
+		for x, y in plan.cells_of("D"):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(60, 56, 52))
+			for k in range(4):
+				d.rectangle([x0 + 1, y0 + k * case // 4, x0 + case - 2, y0 + k * case // 4 + case // 8], fill=(150, 150, 160))
 	for x, y in rochers:                                # falaise : rochers
 		if (x * 2 + y) % 3 == 0:
 			x0, y0 = coin(x, y)
@@ -591,6 +633,8 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 			d.rectangle([x0, y0 + case // 4, x0 + case - 1, y0 + case * 3 // 4], fill=(150, 146, 140), outline=(90, 88, 84))
 	for x, y in plan.cells_of("r") + plan.cells_of("o"):    # rocher isolé ou émergé
 		x0, y0 = coin(x, y)
+		if styles.get("n") == "neige":                  # sur la neige, pas d'eau sous le rocher
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=NEIGE)
 		d.ellipse([x0 + 1, y0 + 2, x0 + case - 2, y0 + case - 2], fill=FALAISE, outline=(98, 90, 82))
 	if styles.get("Q") == "porte_grotte":               # porte de grotte fermée dans la paroi (éboulement)
 		for x, y in plan.cells_of("Q"):
@@ -633,8 +677,12 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		if haut or bas:
 			d.rectangle([x0 + m - e // 2, y0, x0 + m + e // 2, y0 + case - 1], fill=(244, 242, 232))
 		d.rectangle([x0 + m - e, y0 + m - e, x0 + m + e, y0 + m + e], fill=(255, 255, 250))
-	for x, y in plan.cells_of("h"):                     # hautes herbes : touffes
+	for x, y in plan.cells_of("h"):                     # hautes herbes : touffes (givrées près de la neige)
 		x0, y0 = coin(x, y)
+		givre = any(_voisin(plan, x, y, dx, dy) == "n" for dx, dy in FACINGS.values()) or (
+			plan.cells_of("n") and not plan.cells_of("."))
+		if givre:
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(190, 206, 150))
 		d.line([x0 + 2, y0 + case - 3, x0 + case // 2, y0 + 3], fill=(110, 130, 20), width=1)
 		d.line([x0 + case - 3, y0 + case - 3, x0 + case // 2, y0 + 3], fill=(110, 130, 20), width=1)
 	if styles.get("x") not in ("cloture", "margelle"):
@@ -648,7 +696,7 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 			px = x0 + case * (1 + 2 * k) // 6 + ((x + y + k) % 2)
 			py = y0 + case // 3 + ((x * k + y) % 3) * case // 4
 			d.ellipse([px - 2, py - 2, px + 2, py + 2], fill=coul)
-	for x, y in plan.cells_of("n"):                     # banc
+	for x, y in plan.cells_of("n") if styles.get("n") != "neige" else []:   # banc
 		x0, y0 = coin(x, y)
 		d.rectangle([x0 + 1, y0 + case // 3, x0 + case - 2, y0 + case * 2 // 3], fill=BOIS, outline=BOIS_2)
 	for x, y in plan.cells_of("G"):                     # arbre repère
@@ -741,7 +789,7 @@ def _details_exterieur(d, plan, coin, case, styles: dict[str, str]) -> None:
 		d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(255, 236, 140))
 		px, py = (x0 + x1) // 2 - case // 2, y1 - case      # porte close au pied de la façade
 		d.rectangle([px + 3, py + case // 4, px + case - 4, py + case - 1], fill=(80, 52, 32))
-	for x, y in plan.cells_of("D"):                     # portes
+	for x, y in plan.cells_of("D") if styles.get("D") != "trappe" else []:   # portes
 		px, py = coin(x, y)
 		d.rectangle([px + 3, py + case // 4, px + case - 4, py + case - 1], fill=(60, 80, 120))
 	for x, y in plan.cells_of("E"):                     # bouche de grotte dans la falaise, ou escalier
@@ -774,8 +822,8 @@ def _geometrie(largeur: int, hauteur: int, taille: tuple[int, int]) -> tuple[int
 def plan_codex(zone: str, grille: str, taille: tuple[int, int], genre: str, styles=None) -> Path:
 	plan = lire(PLANS / f"{grille}.txt")
 	fond = {"grotte": ROCHE, "interieur": NOIR}.get(genre, FORET)
-	if styles and styles.get("_fond") == "mer":
-		fond = EAU_PROFONDE
+	if styles:
+		fond = {"mer": EAU_PROFONDE, "roche": FALAISE, "nuages": NUAGES}.get(styles.get("_fond", ""), fond)
 	img = Image.new("RGB", taille, fond)
 	case, ox, oy = _geometrie(plan.width, plan.height, taille)
 	dessiner_aplats(img, plan, ox, oy, case, genre, styles)
