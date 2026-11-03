@@ -64,7 +64,7 @@ def rochers_force(plan, depart: str, cible: str) -> None:
 def main() -> int:
 	print("lake_of_rage, route_22_ouest (retouches)")
 	lac = lire(PLANS / "lake_of_rage.txt")
-	r22 = lire(PLANS / "route_22_ouest.txt")
+	r22 = lire(PLANS / "route_22_ouest.txt", "JOH9")  # retouche portée par la variante JOH9 jusqu'au code du JOH9
 	r = atteignables(r22, cases(r22, "from_route_22"))
 	verifie(all(c in r for c in cases(r22, "porte_route_28") + cases(r22, "from_route_28_gate")), "porte neuve de la Route 22 atteignable")
 
