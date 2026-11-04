@@ -39,21 +39,23 @@ func test_real_data_loads_without_error() -> void:
 	# ce sont celles des J22 et J25.
 	# Jalon 31 (T4) : items_j31.json (Max Élixir, PP Plus, sans effet) ; le Rappel Max est celui du
 	# J25 (items_j31_emprunts.json retiré à la fusion de main) ; l'Hyper Ball est celle du J22.
-	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"bicycle", &"bike_voucher", &"burn_heal", &"calcium", &"carbos", &"card_key",
-		&"dire_hit", &"dome_fossil", &"dragon_scale", &"elixir", &"escape_rope", &"ether", &"exp_all", &"fire_stone", &"fresh_water", &"full_heal",
-		&"full_restore", &"gold_teeth", &"good_rod", &"great_ball", &"guard_spec", &"helix_fossil",
-		&"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hp_up", &"hyper_potion", &"ice_heal", &"iron", &"itemfinder", &"kings_rock",
+	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"bicycle", &"bike_voucher", &"burn_heal", &"calcium", &"carbos",
+		&"card_key", &"dire_hit", &"dome_fossil", &"dragon_scale", &"elixir", &"escape_rope", &"ether",
+		&"exp_all", &"fire_stone", &"fresh_water", &"full_heal", &"full_restore", &"gold_teeth",
+		&"good_rod", &"great_ball", &"guard_spec", &"helix_fossil", &"hm01", &"hm02", &"hm03", &"hm04",
+		&"hm05", &"hp_up", &"hyper_potion", &"ice_heal", &"iron", &"itemfinder", &"kings_rock",
 		&"leaf_stone", &"lemonade", &"lift_key", &"master_ball", &"max_elixir", &"max_ether",
-		&"max_potion", &"max_repel", &"max_revive", &"metal_coat", &"moon_stone", &"nugget", &"oak_parcel", &"old_amber", &"old_rod",
-		&"paralyze_heal", &"poke_ball", &"poke_doll", &"poke_flute", &"potion", &"pp_up", &"protein", &"rare_candy", &"repel",
-		&"revive", &"secret_key", &"silph_scope", &"soda_pop", &"ss_ticket", &"super_potion",
-		&"super_repel", &"super_rod", &"thunder_stone", &"tm01", &"tm02", &"tm03", &"tm04", &"tm05", &"tm06", &"tm07",
+		&"max_potion", &"max_repel", &"max_revive", &"metal_coat", &"moon_stone", &"nugget",
+		&"oak_parcel", &"old_amber", &"old_rod", &"paralyze_heal", &"pearl", &"poke_ball", &"poke_doll",
+		&"poke_flute", &"potion", &"pp_up", &"protein", &"rare_candy", &"repel", &"revive",
+		&"secret_key", &"silph_scope", &"soda_pop", &"ss_ticket", &"super_potion", &"super_repel",
+		&"super_rod", &"thunder_stone", &"tm01", &"tm02", &"tm03", &"tm04", &"tm05", &"tm06", &"tm07",
 		&"tm08", &"tm09", &"tm10", &"tm11", &"tm12", &"tm13", &"tm14", &"tm15", &"tm16", &"tm17",
 		&"tm18", &"tm19", &"tm20", &"tm21", &"tm22", &"tm23", &"tm24", &"tm25", &"tm26", &"tm27",
 		&"tm28", &"tm29", &"tm30", &"tm32", &"tm33", &"tm34", &"tm35", &"tm36", &"tm37", &"tm38",
 		&"tm39", &"tm40", &"tm41", &"tm42", &"tm43", &"tm44", &"tm45", &"tm46", &"tm47", &"tm48",
-		&"tm49", &"tm50", &"ultra_ball", &"up_grade", &"water_stone", &"x_accuracy", &"x_attack", &"x_defend",
-		&"x_special", &"x_speed"] as Array[StringName])
+		&"tm49", &"tm50", &"ultra_ball", &"up_grade", &"water_stone", &"x_accuracy", &"x_attack",
+		&"x_defend", &"x_special", &"x_speed"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -89,6 +91,8 @@ func test_real_data_loads_without_error() -> void:
 		# Lot 32P (items_j32p.json) : vitamines, Éther, Élixir, Repousses, Cherch'Objet, Multi Exp.
 		&"protein", &"iron", &"calcium", &"ether", &"elixir", &"repel", &"super_repel", &"max_repel",
 		&"itemfinder", &"exp_all",
+		# JOH3 (items_joh3.json) : la Perle du Souterrain de Doublonville.
+		&"pearl",
 		# JOH0 (T6, items_johto.json) : objets d'évolution par échange.
 		&"metal_coat", &"kings_rock", &"dragon_scale", &"up_grade",
 		&"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
@@ -96,7 +100,7 @@ func test_real_data_loads_without_error() -> void:
 		&"full_restore"] as Array[StringName],
 		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, "
 		+ "items_j21, items_j22, items_j23, items_j24, items_j25, items_j26, items_j27 (CT46), items_j28, "
-		+ "items_j29, items_j31, items_j32, items_j32_ct, items_j32p, items_johto, items_systemes2, j17, mt_moon, vermilion)")
+		+ "items_j29, items_j31, items_j32, items_j32_ct, items_j32p, items_joh3, items_johto, items_systemes2, j17, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 

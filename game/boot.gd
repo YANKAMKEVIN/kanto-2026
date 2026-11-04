@@ -438,6 +438,10 @@ func _ready() -> void:
 	_runner.time_source = _current_time
 	_runner.caught_johto_count = func() -> int:
 		return PokedexQuery.caught_in_region(GameState.pokedex, _pokemon, ZoneData.REGION_JOHTO)
+	# JOH3 : jour de la promotion du Grand Magasin (à Johto seulement) et palier du lien du
+	# Pokémon de tête (Mme Clémence).
+	_menu.weekday_source = func() -> StringName: return _current_time()[1]
+	_runner.lead_bond_source = func() -> int: return BondReader.lead_tier(GameState)
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
 	# Jalon 20 (§2.9.6, §2.16) : variantes selon le Sac et selon les zones jouables (postes de

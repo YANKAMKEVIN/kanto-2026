@@ -17,12 +17,17 @@ extends RefCounted
 ## « stock » : liste non vide, dans l'ordre d'affichage ; « item » obligatoire, une seule fois
 ## par boutique ; « if » / « unless » : listes de drapeaux, facultatives. Toute clé inconnue
 ## est une erreur ; une boutique invalide est écartée ([method get_errors], push_error).
+## JOH3 (JH-33) : « if_weekday » d'une ligne (un jour « monday »… ou une liste : vendu ces
+## jours-là seulement) et « promotions » de la boutique ({ jour: [objets du stock] }, moitié prix).
 ## [method check_references] vérifie ensuite les objets (connus, avec un prix, jamais clés).
 
 const DATA_DIR: String = "res://data/shops/"
 
-const _SHOP_KEYS: Array[String] = ["stock"]
-const _STOCK_KEYS: Array[String] = ["item", "if", "unless"]
+const _SHOP_KEYS: Array[String] = ["stock", "promotions"]
+const _STOCK_KEYS: Array[String] = ["item", "if", "unless", "if_weekday"]
+## Jours reconnus (JOH3), mêmes noms que [constant WorldClock.WEEKDAY_NAMES].
+const WEEKDAYS: Array[StringName] = [&"monday", &"tuesday", &"wednesday", &"thursday",
+	&"friday", &"saturday", &"sunday"]
 
 var _shops: Dictionary[StringName, ShopData] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -158,7 +163,33 @@ func _parse_shop(value: Variant, where: String) -> ShopData:
 			ok = _fail("%s : objet « %s » en double" % [where, entry["item"]])
 		else:
 			shop.stock.append(entry)
+	if raw.has("promotions"):
+		ok = _read_promotions(raw["promotions"], shop, where) and ok
 	return shop if ok else null
+
+
+## JOH3 : { "monday": ["poke_ball"], … } ; chaque objet doit être dans le stock.
+func _read_promotions(value: Variant, shop: ShopData, where: String) -> bool:
+	if not value is Dictionary:
+		return _fail("%s : « promotions » est un objet { jour: [objets] }" % where)
+	var ok := true
+	for day: Variant in value:
+		if not WEEKDAYS.has(StringName(str(day))):
+			ok = _fail("%s : promotions, jour inconnu « %s »" % [where, day])
+			continue
+		var list: Variant = value[day]
+		if not list is Array or (list as Array).is_empty():
+			ok = _fail("%s : promotions « %s » : liste d'objets non vide" % [where, day])
+			continue
+		var ids: Array[StringName] = []
+		for id: Variant in list:
+			if not _is_text(id) or not shop.item_ids().has(StringName(id)):
+				ok = _fail("%s : promotions « %s » : « %s » n'est pas dans le stock" \
+					% [where, day, id])
+				continue
+			ids.append(StringName(id))
+		shop.promotions[StringName(str(day))] = ids
+	return ok
 
 
 func _parse_stock_entry(value: Variant, where: String) -> Dictionary:
@@ -176,9 +207,23 @@ func _parse_stock_entry(value: Variant, where: String) -> Dictionary:
 	var unless_flags: Array[StringName] = []
 	ok = _read_flags(raw, "if", if_flags, where) and ok
 	ok = _read_flags(raw, "unless", unless_flags, where) and ok
+	var days: Array[StringName] = []
+	if raw.has("if_weekday"):
+		var list: Variant = raw["if_weekday"]
+		if list is String:
+			list = [list]
+		if not list is Array or (list as Array).is_empty():
+			ok = _fail("%s : « if_weekday » est un jour ou une liste de jours" % where)
+		else:
+			for day: Variant in list:
+				if not WEEKDAYS.has(StringName(str(day))):
+					ok = _fail("%s : « if_weekday » : jour inconnu « %s »" % [where, day])
+				else:
+					days.append(StringName(str(day)))
 	if not ok:
 		return {}
-	return {"item": StringName(raw["item"]), "if": if_flags, "unless": unless_flags}
+	return {"item": StringName(raw["item"]), "if": if_flags, "unless": unless_flags,
+		"if_weekday": days}
 
 
 func _read_flags(raw: Dictionary, key: String, into: Array[StringName], where: String) -> bool:

@@ -2170,7 +2170,7 @@ const PENDING_DRAFT_32P: Array[StringName] = []
 const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
 ## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
 ## Chapitre Johto (JOH0) : textes [D] des systèmes, à relire par Kevin avec ceux du JOH1.
-const PENDING_DRAFT_VARIANTS: Array[String] = ["storage_offline:0", "egg_hatched:0",
+const PENDING_DRAFT_VARIANTS: Array[String] = ["storage_offline:0",
 	"trade_terminal_item:0", "johto_return_test_before:0", "johto_return_test_after:0"]
 
 

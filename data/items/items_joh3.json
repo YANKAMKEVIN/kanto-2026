@@ -1,0 +1,7 @@
+{
+	"pearl": {
+		"name": "Perle", "plural": "Perles", "feminine": true,
+		"category": "field", "price": 1400,
+		"description": "Une jolie perle d'un blanc argenté. Elle ne sert à rien… sauf à être vendue."
+	}
+}
