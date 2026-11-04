@@ -154,16 +154,27 @@ func run() -> void:
 		_ident.reduced = _settings != null and _settings.reduce_motion
 		_ident.set_texts(_texts.text(TitleTexts.GROUP_IDENT, &"studio"),
 			_texts.text(TitleTexts.GROUP_IDENT, &"presents"))
-		# Bande-annonce (« à la Netflix / Canal+ ») : les plans de `data/opening/trailer.json` ;
-		# sans fichier ou sans plan valide, l'ident joue sans elle.
-		var reel := TrailerReel.new()
-		if reel.load_file() and not reel.shots.is_empty():
-			_ident.set_reel(reel)
+		# Bande-annonce (« à la Netflix / Canal+ », v2 : scènes jouées en vidéo) :
+		# `data/opening/trailer.json` ; sans fichier ou sans vidéo valide, l'ident joue sans elle.
+		# v2.1 (décision de Kevin du 2026-11-04) : au premier lancement seulement, c'est-à-dire
+		# sans sauvegarde ; avec une partie en cours, carton et lettres seuls.
+		if trailer_plays_for(status):
+			var reel := TrailerReel.new()
+			if reel.load_file() and reel.has_video():
+				_ident.set_reel(reel)
 		add_child(_ident)
 		_ident.finished.connect(_on_ident_finished)
 		_ident.play()
 	else:
 		title_revealed.emit.call_deferred()
+
+
+## La bande-annonce de l'ident joue pour l'état de sauvegarde [param status] : seulement sans
+## sauvegarde (premier lancement, ou partie effacée) ; une sauvegarde valide, corrompue ou plus
+## récente va droit au carton et aux lettres (décision de Kevin du 2026-11-04 : ≈ 47 s à chaque
+## lancement, c'est trop).
+static func trailer_plays_for(status: OpeningFlow.SaveStatus) -> bool:
+	return status == OpeningFlow.SaveStatus.NONE
 
 
 ## Une entrée du titre est touchée.

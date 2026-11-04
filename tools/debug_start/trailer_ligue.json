@@ -1,0 +1,67 @@
+{
+ "map": "route_23",
+ "spawn": "from_plateau",
+ "facing": "up",
+ "seed": 9,
+ "companion": 0,
+ "flags": [
+  "mom_greeted",
+  "rival_met",
+  "oak_met",
+  "oak_lab_reunion",
+  "starter_offered",
+  "starter_chosen",
+  "rival_lab_won",
+  "rival_challenged",
+  "rival_battle_done",
+  "rival_left_lab",
+  "viridian_arrived",
+  "got_oak_parcel",
+  "pokedex_activated",
+  "poison_unlocked",
+  "rival_route22_won",
+  "taken_charmander",
+  "taken_squirtle",
+  "badge_boulder",
+  "badge_cascade",
+  "badge_thunder",
+  "badge_rainbow",
+  "badge_soul",
+  "badge_marsh",
+  "badge_volcano",
+  "badge_earth",
+  "rival_route22_final_won"
+ ],
+ "party": [
+  {
+   "species": "charizard",
+   "level": 55
+  },
+  {
+   "species": "nidoking",
+   "level": 50
+  },
+  {
+   "species": "gyarados",
+   "level": 48
+  },
+  {
+   "species": "pidgeot",
+   "level": 47
+  },
+  {
+   "species": "raichu",
+   "level": 45
+  }
+ ],
+ "bag": {
+  "ultra_ball": 10,
+  "hyper_potion": 5
+ },
+ "money": 30000,
+ "discovered": [
+  "indigo_plateau",
+  "viridian_city",
+  "pallet_town"
+ ]
+}
