@@ -274,3 +274,18 @@ unzip -l build/kanto2026-debug.apk | grep -cE "addons|tests/|assets/tools|assets
 gh repo view --json visibility,url
 git log --diff-filter=A --format='%ad' --date=short -- assets/audio/music | tail -1
 ```
+
+## 14. Décision de Kevin sur le Go juridique (2026-11-04)
+
+> Inscrite à la demande de Kevin (« tu peux donner le go juridique », session 34E). **Ce n'est pas un avis
+> juridique et ce n'est pas une décision d'une session de développement** : c'est la décision de Kevin,
+> consignée ici, au sens de l'option « droits non déterminés » de `jalon-34.md` T7.
+
+| Périmètre | Décision |
+|---|---|
+| **Cercle de la maison** : Kevin et moins de dix proches de sa maison, APK installé par adb ou fichier signé partagé en privé, jamais de store, jamais public | **Go de Kevin**, sans avis juridique. Droits **non déterminés** : les risques A1 à A5 (§10.2) sont acceptés par Kevin à ce périmètre. |
+| Tout ce qui dépasse la maison (bêta ouverte, lien public, store, autre cercle, J35 au-delà de la maison, J37) | **Pas de Go.** Les risques B1 à B5 (§10.1) restent bloquants ; un avis compétent est requis d'abord (§11). |
+| Dépôt GitHub | Kevin le repasse lui-même en privé (2026-11-04). Le workflow `.github/workflows/godot-tests.yml` reste **tel quel** (consigne de Kevin). Sort de l'historique : non décidé. |
+
+Conditions que cette décision suppose (à tenir par les sessions) : message d'installation du §8.4 transmis aux proches ; aucun fichier de l'APK ni du dépôt n'est publié ; `debuggable` faux dans l'APK release (T7).
+
