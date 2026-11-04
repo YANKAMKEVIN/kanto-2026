@@ -115,6 +115,14 @@ var _library := DialogueLibrary.new()
 var _cutscenes := CutsceneLibrary.new()
 var _pokemon := PokemonData.new()
 var _offer := StarterOffer.new()
+## Chapitre Johto (JOH1, `jalon-joh1.md` §2.6) : l'offre d'Orme (`starters_johto.json`) et son
+## contrôleur, créé en code sur la même fiche que celui de Chen.
+var _offer_johto := StarterOffer.new()
+var _starter_choice_johto: StarterChoice
+## Jeton `{pokemon}` des répliques d'Orme pendant la scène du choix (le starter de Johto).
+var _johto_starter_tokens: Dictionary[StringName, String] = {}
+## JOH1 : un départ de débogage a imposé `period` : la règle d'histoire ([JohtoPeriodRule]) se tait.
+var _debug_period_forced: bool = false
 var _trainers: TrainerLibrary
 ## Badges de Kanto (jalon 10 : étape de scène « badge »).
 var _badges: BadgeLibrary = BadgeLibrary.new()
@@ -346,6 +354,17 @@ func _ready() -> void:
 		_interactions)
 	_starter_choice.sheet_opened.connect(_refresh_controls)
 	_starter_choice.sheet_closed.connect(_refresh_controls)
+	# JOH1 : l'offre de Johto (Orme, salle de repos du Centre d'Oliville), second contrôleur.
+	if _offer_johto.load_file(StarterOffer.JOHTO_DATA_PATH):
+		_offer_johto.check_species(_pokemon)
+	_starter_choice_johto = StarterChoice.new()
+	_starter_choice_johto.name = "StarterChoiceJohto"
+	_starter_choice_johto.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_starter_choice_johto)
+	_starter_choice_johto.setup(_offer_johto, _pokemon, GameState, _player, _sheet, _hud,
+		_cutscenes_node, _interactions)
+	_starter_choice_johto.sheet_opened.connect(_refresh_controls)
+	_starter_choice_johto.sheet_closed.connect(_refresh_controls)
 	# Jalon 4B : combat, dresseurs, messages, objets et Sac.
 	_trainers = TrainerLibrary.new(_pokemon)
 	_trainers.load_dir()
@@ -469,6 +488,7 @@ func _ready() -> void:
 	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
 	# labo, puis les sauvages en 5B).
 	_starter_choice.starter_chosen.connect(_on_starter_chosen)
+	_starter_choice_johto.starter_chosen.connect(_on_johto_starter_chosen)
 	_battle_director.event_played.connect(_on_battle_event)
 	# Capture (jalon 5D) : le Pokémon rangé, l'autosave est demandé (écrit une fois stable).
 	_battle_director.pokemon_caught.connect(_on_pokemon_caught.unbind(2))
@@ -645,6 +665,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
+	SceneRouter.map_entered.connect(_starter_choice_johto.on_map_entered)
 	SceneRouter.coming_soon_finished.connect(_on_coming_soon_finished)
 	_start_game()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
@@ -664,7 +685,7 @@ func _process(delta: float) -> void:
 ## de ce qui s'écrit à la mise en arrière-plan (passe systèmes 2, S2A).
 func _notification(what: int) -> void:
 	if _lifecycle.handle_notification(what):
-		_save_in_background("arrière-plan")
+		_save_in_background(SessionLifecycle.save_reason(what))
 	_on_focus_change(SessionLifecycle.focus_change(what))
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		_on_go_back()
@@ -703,6 +724,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_entered, _on_map_entered],
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 		[SceneRouter.map_entered, _starter_choice.on_map_entered],
+		[SceneRouter.map_entered, _starter_choice_johto.on_map_entered],
 		[SceneRouter.coming_soon_finished, _on_coming_soon_finished],
 		[SceneRouter.transition_started, _audio_bridge.on_transition_started],
 	]
@@ -819,6 +841,16 @@ func get_cutscene_library() -> CutsceneLibrary:
 
 func get_starter_choice() -> StarterChoice:
 	return _starter_choice
+
+
+## JOH1 : le choix du Pokémon de départ de Johto (offre d'Orme).
+func get_johto_starter_choice() -> StarterChoice:
+	return _starter_choice_johto
+
+
+## JOH1 : l'offre d'Orme chargée au démarrage (data/pokemon/starters_johto.json).
+func get_johto_starter_offer() -> StarterOffer:
+	return _offer_johto
 
 
 func get_starter_sheet() -> StarterSheet:
@@ -993,6 +1025,7 @@ func is_stable() -> bool:
 		and is_instance_valid(SceneRouter.get_current_map()) \
 		and not SceneRouter.is_transitioning() and not _runner.is_running() \
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
+		and not _starter_choice_johto.is_sheet_open() \
 		and not _battle_director.is_running() and not _encounters.is_running() \
 		and not _flash.is_running() and not _elevator.is_running() \
 		and not _forced_slide.is_running()
@@ -1109,6 +1142,8 @@ func _finish_start() -> void:
 	# Parties existantes : notes débloquées sans bruit (jalon-06.md §6.9, point 4).
 	PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
 	_dex_toasts.clear()
+	# JOH1 : moment imposé par l'histoire (relu au chargement : survit à une coupure).
+	_apply_story_period()
 
 
 ## Vrai si la partie est en place ; faux si l'ouverture est montrée (la partie démarrera à son
@@ -1130,8 +1165,12 @@ func _start_game_state() -> bool:
 	else:
 		_simulate_checkpoints = save_system == null
 		_open_save_system()
-		if save_system != null and _load_save() and _resume():
-			return true
+		if save_system != null and _load_save():
+			# JOH1 (QA A17) : le moment imposé avant la première carte (sinon fondu depuis le jour).
+			_apply_story_period()
+			if _resume():
+				return true
+	_apply_story_period()
 	SceneRouter.start(start_map, start_spawn, start_facing)
 	return true
 
@@ -1252,6 +1291,9 @@ func _on_opening_resumed(save: Dictionary) -> void:
 		GameState.player_cell, int(GameState.play_time)])
 	_log_loaded_save()
 	_repair_key_items()
+	# JOH1 (QA A17) : le moment imposé par l'histoire est posé avant la première carte, pour que
+	# sa lumière soit immédiate (nuit d'Oliville, matin de la chambre) au lieu d'un fondu de 10 s.
+	_apply_story_period()
 	if not _resume():
 		SceneRouter.start(start_map, start_spawn, start_facing)
 	_finish_opening()
@@ -1416,6 +1458,7 @@ func _apply_debug_start() -> bool:
 	_debug_light_map = start.map if not start.light_profile.is_empty() else &""
 	if not start.period.is_empty():
 		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(start.period)])
+		_debug_period_forced = true
 	_veil_debug = start.veil
 	_veil_debug_map = start.map if not start.veil.is_empty() else &""
 	if not start.wild.is_empty():
@@ -1504,6 +1547,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
+	_starter_choice_johto.set_map(map)
 	_ambient.set_map(map)
 	_trainer_watcher.set_map(map)
 	_encounters.set_map(map)
@@ -1806,6 +1850,8 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 		values.merge(_local_trade.token_values(), true)
 	# JOH0 : le Pokémon qui vient d'éclore.
 	values.merge(_hatch_tokens, true)
+	# JOH1 : le Pokémon de départ de Johto, pendant la scène du choix (répliques d'Orme).
+	values.merge(_johto_starter_tokens, true)
 	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
 	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	return values
@@ -1826,6 +1872,7 @@ func _on_cutscene_requested(cutscene_id: StringName) -> void:
 ## défaite, transition) : pas d'enchaînement, l'autosave ordinaire s'en charge.
 func _on_cutscene_finished(cutscene_id: StringName) -> void:
 	_companion.on_cutscene_finished()
+	_johto_starter_tokens = {}
 	_announce_costume()
 	_refresh_controls()
 	var next := _cutscenes.get_next(cutscene_id)
@@ -1858,6 +1905,33 @@ func _on_starter_chosen(player_species: StringName, _rival_species: StringName) 
 			break
 	GameState.record_moment(GameState.MOMENT_STARTER, map_id,
 		{"species": String(player_species)})
+
+
+## JOH1 (`jalon-joh1.md` §2.6) : le Pokémon de départ de Johto rejoint l'équipe (Pokédex,
+## rencontre « starter » au lien 50, Grand moment comme à Kanto), devient **compagnon** (dossier
+## JOH-02 §8 ; sans planche de compagnon il reste dans sa Ball, JOH0 §2.11) et prête son nom au
+## jeton `{pokemon}` des répliques d'Orme jusqu'à la fin de la scène du choix.
+func _on_johto_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
+	_on_starter_chosen(player_species, &"")
+	var chosen := _starter_choice_johto.get_last_chosen()
+	if chosen == null:
+		return
+	GameState.set_companion(chosen)
+	_johto_starter_tokens = {DialogueTokens.POKEMON: chosen.display_name(_pokemon)}
+
+
+## JOH1 (`jalon-joh1.md` §2.4) : moment du jour imposé par l'histoire ([JohtoPeriodRule]) :
+## nuit de la lettre au vol, matin du vol au départ d'Orme, heure réelle ensuite ; recalculé à la
+## mise en place de la partie et à chaque drapeau. Un départ de débogage qui impose `period` gagne.
+func _apply_story_period() -> void:
+	if _debug_period_forced:
+		return
+	var period := JohtoPeriodRule.forced_period(GameState.flags)
+	if period.is_empty():
+		if _world_clock.is_period_forced():
+			_world_clock.release_period()
+	else:
+		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(period)])
 
 
 ## Pokémon adverse d'un combat de dresseur envoyé au combat : « vu » au Pokédex, avec la carte
@@ -2174,6 +2248,8 @@ func _on_flag_changed(flag: StringName, _value: bool) -> void:
 	var map := SceneRouter.get_current_map()
 	if is_instance_valid(map):
 		map.apply_flag_gates(GameState.flags)
+	if JohtoPeriodRule.FLAGS.has(flag):
+		_apply_story_period()
 	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
 	if flag == StoryFlags.POKEDEX_ACTIVATED:
 		return
@@ -2205,7 +2281,8 @@ func _show_next_dex_toast() -> void:
 func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _is_opening_active() and not _menu.is_open()
 		and not _runner.is_running() and not _cutscenes_node.is_running()
-		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
+		and not _starter_choice.is_sheet_open() and not _starter_choice_johto.is_sheet_open()
+		and not _battle_director.is_running()
 		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM)
 		and not _player.is_blocked_by(RARE_CANDY)
 		and not (_daycare != null and _daycare.is_running())

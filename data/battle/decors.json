@@ -747,6 +747,12 @@
 		"cerulean_cave_b1f": [
 			{ "decor": "cerulean_cave_azuree" }
 		],
+		"sea_cave_1": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"sea_cave_2": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
 		"power_plant": [
 			{ "decor": "power_plant_centrale" }
 		],
