@@ -545,7 +545,7 @@ func test_story_actors_follow_the_contract() -> void:
 	assert_null(NpcRoster.load_for_map(&"burned_tower_b1f").get_spec(&"brace"), "Brace surgit (spawn)")
 	var gyarados := _spec(&"lake_of_rage", &"leviator_rouge")
 	assert_eq([gyarados.sprite, gyarados.dialogue, gyarados.turn_to_player],
-		[&"pokemon/gyarados", &"joh6_red_gyarados", false])
+		[&"pokemon/gyarados_red", &"joh6_red_gyarados", false])
 	assert_eq(gyarados.unless_flags, [&"johto_red_gyarados_done"] as Array[StringName])
 	var deserter := _spec(&"mahogany_hideout_b2f", &"deserteur")
 	assert_eq([deserter.sprite, deserter.dialogue, deserter.cell], [&"rocket_grunt_m", &"joh6_deserter",

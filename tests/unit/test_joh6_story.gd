@@ -194,9 +194,11 @@ func test_texts_word_for_word() -> void:
 # --- Scènes -----------------------------------------------------------------------------------
 
 func test_beasts_scene_sets_its_flags_once() -> void:
+	# Drapeaux posés à la fin : les chiens (PNJ `unless johto_beasts_awakened`) restent pendant la
+	# scène.
 	var steps := _steps(&"burned_tower_beasts")
-	assert_eq(steps[0].flags, [&"johto_beasts_awakened"] as Array[StringName])
-	assert_eq(steps[steps.size() - 1].flags, [&"johto_raikou_taken"] as Array[StringName])
+	assert_eq(steps[steps.size() - 1].flags,
+		[&"johto_beasts_awakened", &"johto_raikou_taken"] as Array[StringName])
 	var cutscene := _cutscenes.get_cutscene(&"burned_tower_beasts")
 	assert_eq(cutscene.variants[0].unless_flags, [&"johto_beasts_awakened"] as Array[StringName])
 
@@ -208,11 +210,14 @@ func test_brace_fight_is_mandatory_and_a_defeat_wakes_up_at_the_center() -> void
 		if step.kind == CutsceneStep.Kind.BATTLE:
 			battle_found = true
 			assert_eq(step.trainer_id, &"mahogany_hideout_b3f_brace")
-			assert_true(step.win_flags.has(&"johto_brace_defeated_2"))
+			assert_true(step.win_flags.has(&"beaten_mahogany_hideout_b3f_brace"))
+		if step.kind == CutsceneStep.Kind.SET_FLAGS:
+			assert_eq(step.flags, [&"johto_brace_defeated_2"] as Array[StringName])
+			assert_eq(step.if_flags, [&"beaten_mahogany_hideout_b3f_brace"] as Array[StringName])
 	assert_true(battle_found)
 	var last := steps[steps.size() - 1]
 	assert_eq(last.kind, CutsceneStep.Kind.WAKE_UP)
-	assert_eq(last.unless_flags, [&"johto_brace_defeated_2"] as Array[StringName])
+	assert_eq(last.unless_flags, [&"beaten_mahogany_hideout_b3f_brace"] as Array[StringName])
 
 
 func test_raikou_flight_consumes_the_encounter() -> void:
