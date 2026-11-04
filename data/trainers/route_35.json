@@ -24,7 +24,7 @@
 	},
 	"route_35_camper_anna": {
 		"name": "Campeuse Anna",
-		"class": "campeur",
+		"class": "jeune_dresseuse",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,

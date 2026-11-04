@@ -20,7 +20,7 @@
 			13
 		],
 		"facing": "right",
-		"sprite": "channeler",
+		"sprite": "youngster",
 		"dialogue": "route_36_medium_ernest_after",
 		"trainer": {
 			"id": "route_36_medium_ernest",

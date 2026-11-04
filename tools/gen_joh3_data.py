@@ -33,7 +33,7 @@ MAPS = [("route_37", "route_37"), ("route_36", "route_36"), ("route_35", "route_
 TRAINER_SPRITES = {
 	"route_37_birdkeeper_lise": "bird_keeper", "route_37_grunt_a": "rocket_grunt_m",
 	"route_37_grunt_b": "rocket_grunt_f", "route_36_scout_max": "scout",
-	"route_36_medium_ernest": "channeler", "route_35_fisher_gaston": "fisher_route_12",
+	"route_36_medium_ernest": "youngster", "route_35_fisher_gaston": "fisher_route_12",
 	"route_35_camper_anna": "lass", "route_35_gentleman_armand": "gentleman",
 	"goldenrod_underground_grunt_c": "rocket_grunt_m",
 	"goldenrod_underground_grunt_d": "rocket_grunt_f",
@@ -68,9 +68,11 @@ TRAINERS = {
 			("koffing", 18)]),
 	},
 }
-# Classes de combat des noms sans préfixe connu ou des Sbires femmes [D].
+# Classes de combat des noms sans préfixe connu ou des Sbires femmes [D]. Campeuse Anna :
+# pas de classe « campeuse » peinte, elle prend la classe féminine Jeune Dresseuse [D] ;
+# Médium Ernest : feuille youngster, comme les Médiums de l'Arène de Safrania.
 TRAINER_CLASSES = {
-	"route_37_grunt_b": "sbire_rocket_f", "route_35_camper_anna": "campeur",
+	"route_37_grunt_b": "sbire_rocket_f", "route_35_camper_anna": "jeune_dresseuse",
 	"goldenrod_underground_grunt_d": "sbire_rocket_f", "goldenrod_underground_boss": "sbire_rocket",
 }
 SMART = {"goldenrod_underground_boss"}
