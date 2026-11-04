@@ -188,8 +188,9 @@ func test_door_is_the_only_reachable_cell_of_a_building() -> void:
 
 func test_door_warps() -> void:
 	var warps := _map.get_warps()
-	# 3 portes STEP_ON + 2 sorties PUSH vers la Route 1 (jalon 5 §15.5).
-	assert_eq(warps.size(), DOORS.size() + 2)
+	# 3 portes STEP_ON + 2 sorties PUSH vers la Route 1 (jalon 5 §15.5) + les 4 cases de la bouche
+	# de la grotte marine (JOH1, PUSH ↓ gardées par `johto_letter_read`).
+	assert_eq(warps.size(), DOORS.size() + 2 + 4)
 	for building: StringName in DOORS:
 		var spec: Array = DOORS[building]
 		var point := _map.get_node(NodePath("Warps/" + String(spec[1]))) as WarpPoint

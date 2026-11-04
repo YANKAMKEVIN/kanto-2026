@@ -84,6 +84,9 @@ const MAPS: Array[StringName] = [
 	# Jalon 21 (T14, T22) : entrée de la Maison des Pokémon (remise de la Flûte), arrivée
 	# silencieuse sur la Route 16.
 	&"pokemon_house", &"route_16",
+	# Chapitre Johto (JOH1) : grotte marine, Oliville et ses intérieurs.
+	&"sea_cave_1", &"sea_cave_2", &"olivine_city", &"olivine_center", &"olivine_center_room",
+	&"olivine_mart", &"olivine_house_1", &"olivine_house_2",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -179,10 +182,20 @@ const FOUND_J29: Array[String] = [
 	"route_23_hidden_1:full_restore",
 	"route_23_hidden_2:ultra_ball",
 	"route_23_hidden_3:max_potion",
+	# Chapitre Johto (JOH1) : la Perle et le Rappel Max de la grotte marine.
+	"sea_cave_1_item_1:pearl",
+	"sea_cave_2_item_1:max_repel",
 ]
 const VARIANT_FLAGS: Dictionary = {
 	# Chapitre Johto (JOH0) : scènes de test, une variante sans condition.
 	&"johto_return_test": [[]],
+	# Chapitre Johto (JOH1) : lettre, grotte marine, Oliville (jalon-joh1.md §2.5, §2.6).
+	&"johto_letter": [[&"oak_met", &"league_champion_defeated", &"oak_post_league_gifts_done"]],
+	&"sea_cave_lugia_shadow": [[]], &"sea_cave_current_back": [[]],
+	&"sea_cave_1_item_1": [[]], &"sea_cave_2_item_1": [[]], &"olivine_arrival": [[]],
+	&"olivine_guard_block": [[]], &"olivine_center_arrival": [[&"johto_arrived"]],
+	&"olivine_morning": [[&"johto_team_stolen"]],
+	&"johto_starter_chosen": [[&"johto_team_stolen", &"johto_starter_offered"]],
 	&"johto_confiscate_test": [[]],
 	# Jalon 32 (32N, N-22) : CT obtenables partout, une variante « unless » chacune.
 	&"route_4_tm04": [[]],
@@ -562,6 +575,10 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# (Oliville) et au JOH5 (Tour Radio).
 	&"johto_return_test": &"viridian_center",
 	&"johto_confiscate_test": &"viridian_center",
+	# Chapitre Johto (JOH1) : la lettre (variante « cutscene » de Chen), les objets de la grotte
+	# (dialogue de leur PNJ objet), le matin (variante « auto » de l'infirmière), le choix (StarterChoice).
+	&"johto_letter": &"oak_lab", &"sea_cave_1_item_1": &"sea_cave_1", &"sea_cave_2_item_1": &"sea_cave_2",
+	&"olivine_morning": &"olivine_center_room", &"johto_starter_chosen": &"olivine_center_room",
 	# Jalon 32 (32N) : CT ramassées, données ou échangées.
 	&"route_4_tm04": &"route_4",
 	&"ss_anne_lower_deck_tm08": &"ss_anne_lower_deck",
@@ -949,6 +966,7 @@ const AWAITING_TRIGGER: Dictionary[StringName, StringName] = {
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
 var _offer: StarterOffer
+var _offer_johto: StarterOffer
 var _pokemon: PokemonData
 var _trainers: TrainerLibrary
 var _items: ItemLibrary
@@ -966,6 +984,8 @@ func before_all() -> void:
 	_pokemon.load_dir()
 	_offer = StarterOffer.new()
 	_offer.load_file()
+	_offer_johto = StarterOffer.new()
+	_offer_johto.load_file(StarterOffer.JOHTO_DATA_PATH)
 	_trainers = TrainerLibrary.new(_pokemon)
 	_trainers.load_dir()
 	_items = ItemLibrary.new()
@@ -1080,7 +1100,11 @@ func test_library_loads_without_error() -> void:
 		# Jalon 32 (32A à 32D, 32J).
 		+ [&"mew", &"j32_diploma", &"j32_oak_gifts", &"j32_dojo_gift_hitmonlee", &"j32_dojo_gift_hitmonchan", &"j32_eevee_gift_2", &"j32_eevee_gift_3", &"j32_fossil_give_helix", &"j32_fossil_give_dome"]
 		# Chapitre Johto (JOH0) : scènes de test du vol et du retour de l'équipe.
-		+ [&"johto_confiscate_test", &"johto_return_test"]))
+		+ [&"johto_confiscate_test", &"johto_return_test"]
+		# Chapitre Johto (JOH1) : lettre, grotte marine, Oliville.
+		+ [&"johto_letter", &"sea_cave_lugia_shadow", &"sea_cave_current_back", &"sea_cave_1_item_1",
+		&"sea_cave_2_item_1", &"olivine_arrival", &"olivine_guard_block", &"olivine_center_arrival",
+		&"olivine_morning", &"johto_starter_chosen"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -1315,8 +1339,9 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 				as GameMap
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
-	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon.
-	assert_eq(count, 9, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon. JOH1 : + la chambre du
+	# Centre d'Oliville, la nuit puis le matin (scène de l'arrivée).
+	assert_eq(count, 11, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
 		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13) ; "
 		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes) ; "
 		+ "la Ligue (J30 T17 : Panthéon, Bourg Palette deux fois ; porte du hall, OUI au garde)")
@@ -1394,6 +1419,12 @@ func test_simulation_knows_the_scare_step() -> void:
 ## Jeux d'alias d'une scène : ceux de l'offre pour la scène du choix (un par starter), un
 ## jeu vide sinon.
 func _alias_sets(cutscene_id: StringName) -> Array[Dictionary]:
+	# JOH1 : l'offre d'Orme n'a pas de rival : un seul alias par Pokémon.
+	if cutscene_id == _offer_johto.chosen_scene:
+		var johto: Array[Dictionary] = []
+		for option: StarterOption in _offer_johto.get_choices():
+			johto.append({StarterChoice.PLAYER_ALIAS: option.npc})
+		return johto
 	if cutscene_id != _offer.chosen_scene:
 		return [{}]
 	var sets: Array[Dictionary] = []

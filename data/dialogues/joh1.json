@@ -1,0 +1,230 @@
+{
+	"johto_letter_1": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"Ah, {player} ! Te voilà.",
+			"J'ai reçu une lettre du Professeur Orme, un vieil ami.",
+			"Il travaille à Johto, la région à l'ouest de Kanto.",
+			"Il écrit que des Pokémon fuient les côtes…",
+			"et que des hommes en noir rôdent près des villes.",
+			"La Team Rocket, à Johto ? Je n'aime pas ça."
+		]
+	},
+	"johto_letter_2": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"Regarde cette vieille carte.",
+			"Une grotte marine relie la rive sud de Bourg Palette à la côte de Johto.",
+			"Elle n'apparaît qu'aux grandes marées basses…",
+			"Et la marée de cette semaine est la plus basse depuis des années.",
+			"Orme a entendu parler du nouveau Maître de Kanto.",
+			"Il serait heureux de te rencontrer. Va le trouver à Oliville !"
+		]
+	},
+	"johto_letter_3": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"La grotte est sur la rive sud, à l'est du ponton.",
+			"Prends garde aux courants."
+		]
+	},
+	"pallet_cave_mouth": {
+		"narration": true,
+		"pages": [
+			"Une grotte s'ouvre dans les rochers.",
+			"L'eau s'y engouffre doucement."
+		]
+	},
+	"sea_cave_lugia_shadow_1": {
+		"narration": true,
+		"pages": ["… !"]
+	},
+	"sea_cave_lugia_shadow_2": {
+		"narration": true,
+		"pages": [
+			"Une ombre immense passe sous l'eau.",
+			"Elle disparaît dans les profondeurs."
+		]
+	},
+	"sea_cave_current_back": {
+		"narration": true,
+		"pages": [
+			"Le courant est trop fort.",
+			"Impossible de repartir par là."
+		]
+	},
+	"sea_cave_1_item_1": { "cutscene": "sea_cave_1_item_1" },
+	"sea_cave_2_item_1": { "cutscene": "sea_cave_2_item_1" },
+
+	"olivine_nurse_arrival_1": {
+		"speaker": "Infirmière",
+		"variants": [
+			{
+				"action": "center_heal",
+				"pages": [
+					"Bonsoir, et bienvenue à Oliville.",
+					"Vous venez de Kanto par la mer ? Quelle aventure !",
+					"Je soigne vos Pokémon."
+				]
+			}
+		]
+	},
+	"olivine_nurse_arrival_2": {
+		"speaker": "Infirmière",
+		"pages": [
+			"Vous avez l'air épuisé…",
+			"Nous avons une chambre à l'étage. Reposez-vous, je veille sur eux."
+		]
+	},
+	"olivine_night_1": { "narration": true, "pages": ["…"] },
+	"olivine_night_2": { "narration": true, "pages": ["Un bruit de verre."] },
+	"olivine_night_3": { "narration": true, "pages": ["Des pas pressés."] },
+	"olivine_night_4": { "narration": true, "pages": ["Une porte qui claque."] },
+	"olivine_nurse_morning": {
+		"speaker": "Infirmière",
+		"pages": [
+			"{player} ! Réveillez-vous !",
+			"Des voleurs sont entrés cette nuit…",
+			"Vos Pokémon… et vos affaires…",
+			"Ils ont tout pris. Je suis désolée…"
+		]
+	},
+	"olivine_nurse_wake": {
+		"speaker": "Infirmière",
+		"variants": [
+			{
+				"auto": true,
+				"unless": ["johto_starter_offered"],
+				"cutscene": "olivine_morning"
+			},
+			{
+				"pages": [
+					"Des voleurs sont entrés cette nuit…",
+					"Ils ont tout pris. Je suis désolée…"
+				]
+			}
+		]
+	},
+	"olivine_orme_arrival": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"Bonjour ! C'est toi, {player} ?",
+			"Je suis le Professeur Orme. Chen m'a prévenu de ta venue.",
+			"J'arrive trop tard… L'infirmière m'a tout raconté.",
+			"Des hommes en noir, un « R » sur la poitrine.",
+			"C'est bien la Team Rocket."
+		]
+	},
+	"olivine_orme_offer": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"Écoute. Tu ne peux pas rester sans Pokémon.",
+			"J'ai apporté trois Pokémon que j'étudie.",
+			"Ils sont jeunes, mais ils ont du cœur.",
+			"Choisis celui qui t'accompagnera."
+		]
+	},
+	"olivine_orme": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"Ils sont jeunes, mais ils ont du cœur.",
+			"Choisis celui qui t'accompagnera."
+		]
+	},
+	"observe_chikorita": {
+		"narration": true,
+		"pages": [
+			{ "text": "Germignon, le Pokémon Feuille. Type Plante.", "react": "chikorita" },
+			"Tu le choisis ?"
+		]
+	},
+	"observe_cyndaquil": {
+		"narration": true,
+		"pages": [
+			{ "text": "Héricendre, le Pokémon Souris Feu. Type Feu.", "react": "cyndaquil" },
+			"Tu le choisis ?"
+		]
+	},
+	"observe_totodile": {
+		"narration": true,
+		"pages": [
+			{ "text": "Kaiminus, le Pokémon Mâchoire. Type Eau.", "react": "totodile" },
+			"Tu le choisis ?"
+		]
+	},
+	"olivine_orme_chosen": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"{pokemon} a l'air de bien t'aimer !",
+			"Prends aussi ces Poké Balls et cette Potion.",
+			"Tu as été Maître à Kanto ; ici, tu repars de zéro.",
+			"Mais je suis sûr que tu retrouveras tes Pokémon."
+		]
+	},
+	"olivine_orme_leaving": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"Je retourne à Doublonville, à l'est.",
+			"La Team Rocket y est très active, paraît-il.",
+			"Si tu passes par là, viens me voir au Centre.",
+			"Bonne chance, {player} !"
+		]
+	},
+	"olivine_guard": {
+		"speaker": "Garde",
+		"variants": [
+			{
+				"unless": ["johto_starter_chosen"],
+				"pages": [
+					"La Route 39 est par là.",
+					"Mais sans Pokémon, n'y pense même pas."
+				]
+			},
+			{
+				"pages": [
+					"La Route 39 est par là.",
+					"Bonne route, et méfie-toi des hommes en noir."
+				],
+				"draft": true
+			}
+		]
+	},
+	"olivine_sailor": {
+		"speaker": "Marin",
+		"pages": [
+			"Depuis quelques semaines, des bateaux sans pavillon passent la nuit.",
+			"Ils déchargent des caisses et repartent avant l'aube."
+		]
+	},
+	"olivine_old_woman": {
+		"speaker": "Vieille dame",
+		"pages": [
+			"Le Phare d'Oliville veille sur la côte depuis des siècles.",
+			"Ces temps-ci, il est en travaux. On se sent moins tranquille."
+		]
+	},
+	"olivine_kid": {
+		"speaker": "Enfant",
+		"pages": [
+			"Mon papa dit que les hommes en noir cherchent les Pokémon les plus forts du monde.",
+			"C'est quoi, le Pokémon le plus fort du monde ?"
+		]
+	},
+	"olivine_city_sign": {
+		"pages": [
+			"OLIVILLE",
+			"La ville où souffle le vent du large"
+		]
+	},
+	"olivine_lighthouse_sign": {
+		"variants": [
+			{
+				"pages": [
+					"PHARE D'OLIVILLE",
+					"Fermé pour travaux."
+				],
+				"draft": true
+			}
+		]
+	}
+}

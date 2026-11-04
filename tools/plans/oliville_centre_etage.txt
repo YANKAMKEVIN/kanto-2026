@@ -1,0 +1,42 @@
+# Salle de repos de l'étage du Centre d'Oliville (olivine_center_room) — grille fonctionnelle (JOH1 T6,
+# dossier JOH 02 §3.3, §8 ; jalon-joh1.md §2.1, §2.5, §2.6). Enveloppe des maisons d'Argenta (15 × 10),
+# comme la salle de l'étage du poste de la Route 12 : pas de sortie sur la rangée 8 (les escaliers
+# sont la seule issue). **Sans PNJ dans la scène** : les cases réservées (h) et les trois Pokémon de la
+# table viennent des données (`data/npcs/olivine_center_room.json`).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   B lit (1..2, 3..5)       T table des starters (6..8, 3..4), pareille à celle du labo de Chen
+#   X escalier qui descend (11..12, 3), praticable (passage STEP_ON ↑)
+#   x plante (1, 7), (13, 7)
+#   h case réservée à un PNJ (praticable) : Orme (11, 5), l'infirmière (9, 6)
+#   Les trois Pokémon (6, 4), (7, 4), (8, 4) sont posés sur la table (cases T, bloquées : le PNJ
+#   occupe sa case, on les observe depuis la rangée 5, comme au labo).
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .Xh
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KBB...TTT..XX.K
+04 KBB...TTT.....K
+05 KBB........h..K
+06 K........h....K
+07 Kx...........xK
+08 KKKKKKKKKKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier            warp           11..12,3     libre   # STEP_ON ↑ → olivine_center, from_room (arrivée tournée ↓)
+from_stairs         spawn          12,4         libre   # au sud de l'escalier
+lit                 spawn          3,4          libre   # juste à l'est du lit
+pokemon_gauche      pnj            6,4          bloque  facing=down  # sur la table (lift 56)
+pokemon_centre      pnj            7,4          bloque  facing=down
+pokemon_droite      pnj            8,4          bloque  facing=down
+orme                pnj            11,5         bloque  facing=left
+infirmiere          pnj            9,6          bloque  facing=up
+FIN

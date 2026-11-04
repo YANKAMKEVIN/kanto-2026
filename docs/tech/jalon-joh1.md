@@ -295,4 +295,41 @@ après le choix (textes `draft`) ; musiques de substitution ; Boutique à 5 obje
 
 ## 8. Fait
 
-(journal rempli tâche par tâche)
+### T1 à T10 — code du jalon (2026-11-04, branche `claude/joh1-oliville-336a58`)
+**JOH1A.** Lettre : variante `johto_letter` de `oak_lab_waiting` (après les cadeaux du J32 [D]) et
+rappel O-4 ; O-1 de la mère (`player_house.json`, avant le soin) ; scène `johto_letter`.
+Bourg Palette : passe idempotente `tools/build_joh1_pallet_cave.gd` (mer surfable rangées ≥ 28,
+quatre passages PUSH ↓ gardés par `johto_letter_read`, arrivées `from_sea_cave*` en Surf forcé,
+bouche ouverte / fermée en aplats, point d'examen O-5) ; la grille figée du jalon 6 est inchangée.
+Grotte marine : `tools/build_joh1_sea_cave.gd` (`sea_cave_1`, `sea_cave_2`, tuiles provisoires,
+profil `sea_cave` [D], `no_fly`), courant permanent de la salle 1, **`CurrentGate`**
+(`game/world/surf/current_gate.gd`, porte de drapeaux générique : chenal actif tant que
+`johto_team_returned` est bas, eau vive dessinée), ombre de Lugia (`FlagGate` `LugiaShadow` +
+sprite provisoire `lugia_shadow.png` de `tools/build_joh1_placeholders.gd`, étape `animate`),
+déclencheurs O-6 / O-7, Perle (`items_joh1.json`, icône provisoire) et Rappel Max, table d'eau
+`sea_cave_water`, zone `sea_cave` (O-24), musique de substitution.
+**JOH1B** (deux sous-agents Sonnet). `tools/build_joh1_olivine.gd` → `olivine_city` (kit de
+bâtiments de Kanto, Phare en aplats, lampadaires, 8 lampes de nuit `night_lights`, raccords
+Route 39 / Route 40 « à venir », panneaux, déclencheurs d'arrivée et du garde) ;
+`build_painted_interiors.gd --oliville` → Centre (escalier en (12..13, 6), déclencheur de
+l'arrivée sur la rangée d'entrée), salle de repos (`oliville_centre_etage.txt` : lit, table des
+starters, escalier, `johto_auto`), Boutique, deux maisons (grilles de Lavanville [D]) ;
+`interiors.json`, `rest_points.json`, `shops/olivine_mart.json`, zone `olivine_city` remplie (O-23).
+**JOH1C.** `JohtoPeriodRule` (`game/systems/story/`, §2.4) appliquée par Boot à la mise en place
+de la partie et sur ses trois drapeaux ; scènes `olivine_arrival`, `olivine_center_arrival`
+(O-8 avec `center_heal`, chambre, O-9 et deux silhouettes de Sbires, `confiscate_team` + `save`,
+`johto_team_stolen`, matin, O-10, Orme O-12 / O-13, `johto_starter_offered`), `olivine_morning`
+(reprise par la variante `auto` de l'infirmière), `johto_starter_chosen` (drapeau puis O-17 au
+jeton `{pokemon}`, 5 Poké Balls, Potion, O-18, `johto_orme_left`), `olivine_guard_block` ;
+`starters_johto.json` (`rival: false`), `StarterOffer.rival`, `StarterChoice` sans rival ni
+`starter_species`, second contrôleur `_starter_choice_johto` dans Boot (compagnon, jeton) ;
+O-11 remplace le brouillon `storage_offline` du JOH0 ; PNJ d'Oliville (garde rangé par `moved`,
+marin jour et nuit, vieille dame, enfant matin et jour, salle : trois Pokémon, Orme, infirmière) ;
+`DebugStart` accepte une équipe vide avec `confiscated` ; six départs de débogage (§2.9).
+**Correctif transversal** : `npc.gd` et `player.gd` lisaient l'autoload `GameState` par son
+identifiant (chantiers JR.2 et Costumes) : aucun outil `-s` ne compilait plus les cartes depuis le
+30 octobre (scènes réenregistrées dégradées) ; lecture par l'arbre désormais.
+**Tests** : `test_johto_period_rule` (4), `test_joh1_debug_starts` (5), `test_joh1_sea_cave` (8),
+`test_joh1_olivine_map` (7), `test_joh1_olivine_interiors` (8), `test_joh1_story` (8, textes O-1 à
+O-25 mot pour mot contre le dossier) ; inventaires réalignés (zones, rencontres, scènes, dialogues,
+brouillons, sauvegardes forcées, portes de Bourg Palette, Boutiques).

@@ -37,12 +37,12 @@ const DATA_DIR := "res://data"
 ## systèmes (`johto_systems.json` : PC hors ligne, éclosion, objet du terminal, scènes de test) et
 ## les 51 fiches du Pokédex de Johto (JOH-Q2), à relire par Kevin avec les textes du JOH1.
 const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
-	"world/zones.json/zones/olivine_city",
 	"world/zones.json/zones/ecruteak_city",
 	"world/zones.json/zones/goldenrod_city",
 	"world/zones.json/zones/azalea_town",
 	"world/zones.json/zones/mahogany_town",
-	"dialogues/johto_systems.json/storage_offline/variants/0",
+	"dialogues/joh1.json/olivine_guard/variants/1",
+	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",
 	"dialogues/johto_systems.json/egg_hatched/variants/0",

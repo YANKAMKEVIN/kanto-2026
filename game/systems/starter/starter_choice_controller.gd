@@ -64,6 +64,7 @@ var _meet_option: StarterOption
 ## Espèces choisies en attente de done_flag (&"" hors attente).
 var _pending: StringName = &""
 var _pending_rival: StringName = &""
+var _last_chosen: Pokemon
 
 
 ## Branche le choix (rappelable : l'ancien branchement est défait, un choix en cours oublié).
@@ -250,8 +251,9 @@ func _on_choose_pressed() -> void:
 		return
 	var option := _meet_option
 	_close_sheet()
-	var rival := _offer.rival_pick(option.species, _data)
-	var rival_option := _offer.get_choice(rival)
+	# JOH1 : l'offre d'Orme n'a pas de rival (`rival: false`) : un seul `taken_`, un seul alias.
+	var rival := _offer.rival_pick(option.species, _data) if _offer.rival else &""
+	var rival_option := _offer.get_choice(rival) if _offer.rival else null
 	_flags.set_flag(taken_flag(option.species))
 	if rival_option != null:
 		_flags.set_flag(taken_flag(rival))
@@ -294,10 +296,19 @@ func _join_party() -> void:
 	if pokemon == null:
 		return
 	(_state.get(&"party") as Party).add(pokemon)
-	_state.set(&"starter_species", species)
+	_last_chosen = pokemon
+	# JOH1 : sans rival (offre d'Orme), le starter de Kanto reste `starter_species`.
+	if _offer.rival:
+		_state.set(&"starter_species", species)
 	if pokemon.gender == Pokemon.Gender.FEMALE and not _offer.female_flag.is_empty():
 		_flags.set_flag(_offer.female_flag)
 	starter_chosen.emit(species, rival)
+
+
+## Le dernier Pokémon entré dans l'équipe par ce choix (null avant) : Boot s'en sert pour le
+## compagnon et le jeton `{pokemon}` des répliques d'Orme (JOH1).
+func get_last_chosen() -> Pokemon:
+	return _last_chosen
 
 
 func _option_of(npc: Npc) -> StarterOption:
