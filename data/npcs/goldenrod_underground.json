@@ -1,0 +1,61 @@
+{
+	"sbire_c": {
+		"cell": [
+			16,
+			4
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "goldenrod_underground_grunt_c_after",
+		"trainer": {
+			"id": "goldenrod_underground_grunt_c",
+			"sight": 2,
+			"before": "goldenrod_underground_grunt_c_before",
+			"defeated": "goldenrod_underground_grunt_c_defeated"
+		}
+	},
+	"sbire_d": {
+		"cell": [
+			24,
+			8
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "goldenrod_underground_grunt_d_after",
+		"trainer": {
+			"id": "goldenrod_underground_grunt_d",
+			"sight": 2,
+			"before": "goldenrod_underground_grunt_d_before",
+			"defeated": "goldenrod_underground_grunt_d_defeated"
+		}
+	},
+	"chef": {
+		"cell": [
+			32,
+			11
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "goldenrod_underground_boss_after",
+		"trainer": {
+			"id": "goldenrod_underground_boss",
+			"sight": 2,
+			"before": "goldenrod_underground_boss_before",
+			"defeated": "goldenrod_underground_boss_defeated"
+		}
+	},
+	"souterrain_item_1": {
+		"cell": [
+			9,
+			1
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "souterrain_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_souterrain_item_1"
+		]
+	}
+}

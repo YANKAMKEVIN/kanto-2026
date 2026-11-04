@@ -471,6 +471,19 @@
 		"league_agatha": "interior_warm",
 		"league_lance": "interior_warm",
 		"league_champion": "interior_warm",
-		"hall_of_fame": "interior_warm"
+		"hall_of_fame": "interior_warm",
+		"route_37": "johto_auto",
+		"route_36": "johto_auto",
+		"route_35": "johto_auto",
+		"goldenrod_city": "johto_auto",
+		"goldenrod_underground": "underground",
+		"goldenrod_center": "interior_warm",
+		"goldenrod_dept_store_1f": "interior_warm",
+		"goldenrod_dept_store_2f": "interior_warm",
+		"goldenrod_dept_store_3f": "interior_warm",
+		"goldenrod_dept_store_roof": "golden_hour",
+		"goldenrod_bond_house": "interior_warm",
+		"goldenrod_house_1": "interior_warm",
+		"goldenrod_house_2": "interior_warm"
 	}
 }

@@ -1,0 +1,60 @@
+{
+	"route_35_fisher_gaston": {
+		"name": "Pêcheur Gaston",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "magikarp",
+				"level": 13
+			},
+			{
+				"species": "magikarp",
+				"level": 13
+			},
+			{
+				"species": "poliwag",
+				"level": 15
+			}
+		]
+	},
+	"route_35_camper_anna": {
+		"name": "Campeuse Anna",
+		"class": "campeur",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "nidoran_f",
+				"level": 15
+			},
+			{
+				"species": "ponyta",
+				"level": 16
+			}
+		]
+	},
+	"route_35_gentleman_armand": {
+		"name": "Gentleman Armand",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 70,
+		"team": [
+			{
+				"species": "growlithe",
+				"level": 17
+			}
+		]
+	}
+}

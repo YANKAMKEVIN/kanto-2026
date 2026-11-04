@@ -1,0 +1,11 @@
+{
+	"woman": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "right",
+		"sprite": "mom",
+		"dialogue": "goldenrod_house_1_woman"
+	}
+}

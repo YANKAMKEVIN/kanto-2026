@@ -1,0 +1,65 @@
+{
+	"route_37_birdkeeper_lise_before": {
+		"speaker": "Ornithologue Lise",
+		"pages": [
+			"Chut ! Tu vas faire fuir\nles oiseaux."
+		]
+	},
+	"route_37_birdkeeper_lise_defeated": {
+		"speaker": "Ornithologue Lise",
+		"pages": [
+			"Bon, ils sont partis\nde toute façon."
+		]
+	},
+	"route_37_birdkeeper_lise_after": {
+		"speaker": "Ornithologue Lise",
+		"pages": [
+			"La nuit, il y a des gens bizarres\nsur cette route."
+		]
+	},
+	"route_37_grunt_a_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Un gamin seul, la nuit ?\nDonne-moi tes Pokémon !"
+		]
+	},
+	"route_37_grunt_a_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Tu n'es pas un gamin ordinaire…"
+		]
+	},
+	"route_37_grunt_a_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"On a l'ordre de ne pas traîner.\nJe file."
+		]
+	},
+	"route_37_grunt_b_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"On t'a vu à Rosalia, toi."
+		]
+	},
+	"route_37_grunt_b_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le chef ne va pas aimer ça."
+		]
+	},
+	"route_37_grunt_b_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Doublonville, c'est chez nous,\nmaintenant."
+		]
+	},
+	"route_37_item_1": {
+		"cutscene": "route_37_item_1"
+	},
+	"route_37_panneau_route": {
+		"narration": true,
+		"pages": [
+			"ROUTE 37\nRosalia — Route 36"
+		]
+	}
+}

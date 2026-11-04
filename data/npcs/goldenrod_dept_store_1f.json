@@ -1,0 +1,10 @@
+{
+	"hostess": {
+		"cell": [
+			9,
+			4
+		],
+		"facing": "down",
+		"sprite": "hostess"
+	}
+}

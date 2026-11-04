@@ -49,7 +49,12 @@
 		"underground_path_7_8": "road_to_viridian",
 		"vermilion_city": "vermilion_city",
 		"viridian_city": "pewter_city",
-		"viridian_forest": "viridian_forest"
+		"viridian_forest": "viridian_forest",
+		"route_37": "road_to_viridian",
+		"route_36": "road_to_cerulean",
+		"route_35": "road_to_viridian",
+		"goldenrod_city": "celadon_city",
+		"goldenrod_underground": "road_to_viridian"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",
@@ -143,7 +148,12 @@
 		"viridian_forest_gate_north": "pewter_city",
 		"viridian_forest_gate_south": "pewter_city",
 		"viridian_gym": "pokemon_gym",
-		"viridian_mart": "pokemon_center"
+		"viridian_mart": "pokemon_center",
+		"goldenrod_center": "pokemon_center",
+		"goldenrod_dept_store_1f": "pokemon_center",
+		"goldenrod_dept_store_2f": "pokemon_center",
+		"goldenrod_dept_store_3f": "pokemon_center",
+		"goldenrod_dept_store_roof": "pokemon_center"
 	},
 	"movement": {
 		"surf": "the_sea",

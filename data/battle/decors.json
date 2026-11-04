@@ -432,6 +432,10 @@
 		}
 	},
 	"places": {
+		"route_37": [{ "decor": "route_1_chemin" }],
+		"route_36": [{ "decor": "route_1_chemin" }],
+		"route_35": [{ "decor": "route_1_chemin" }],
+		"goldenrod_city": [{ "decor": "route_1_chemin" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],

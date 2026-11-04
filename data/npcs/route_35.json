@@ -1,0 +1,47 @@
+{
+	"gaston": {
+		"cell": [
+			9,
+			18
+		],
+		"facing": "left",
+		"sprite": "fisher_route_12",
+		"dialogue": "route_35_fisher_gaston_after",
+		"trainer": {
+			"id": "route_35_fisher_gaston",
+			"sight": 2,
+			"before": "route_35_fisher_gaston_before",
+			"defeated": "route_35_fisher_gaston_defeated"
+		}
+	},
+	"armand": {
+		"cell": [
+			15,
+			27
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "route_35_gentleman_armand_after",
+		"trainer": {
+			"id": "route_35_gentleman_armand",
+			"sight": 3,
+			"before": "route_35_gentleman_armand_before",
+			"defeated": "route_35_gentleman_armand_defeated"
+		}
+	},
+	"anna": {
+		"cell": [
+			12,
+			38
+		],
+		"facing": "left",
+		"sprite": "lass",
+		"dialogue": "route_35_camper_anna_after",
+		"trainer": {
+			"id": "route_35_camper_anna",
+			"sight": 1,
+			"before": "route_35_camper_anna_before",
+			"defeated": "route_35_camper_anna_defeated"
+		}
+	}
+}
