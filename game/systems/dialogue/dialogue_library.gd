@@ -54,6 +54,7 @@ const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
 	"one_in", "if_caught_at_least", "unless_caught_at_least", "field", "shop", "if_items", "unless_items", "if_zone",
 	"if_period", "if_weekday", "if_caught_johto_at_least", "unless_caught_johto_at_least", # JOH0
+	"if_lead_bond_tier", # JOH3
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -238,6 +239,8 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 	if entry.has("one_in"):
 		ok = _read_one_in(entry, variant, where) and ok
 	ok = _read_caught(entry, variant, where) and ok
+	if entry.has("if_lead_bond_tier"): # JOH3
+		ok = _read_lead_bond(entry["if_lead_bond_tier"], variant, where) and ok
 	if entry.has("if_period"):
 		ok = _read_moments(entry["if_period"], variant.if_periods, WorldClock.PERIOD_NAMES.keys(),
 			where + " if_period") and ok
@@ -282,6 +285,23 @@ func _read_shop(entry: Dictionary, variant: DialogueVariant, where: String) -> b
 	if variant.action != &"open_shop":
 		return _fail("%s : « shop » seulement avec « action »: « open_shop »" % where)
 	variant.shop = StringName(value)
+	return true
+
+
+## « if_lead_bond_tier » (JOH3) : un palier 0..3, « egg », ou une liste non vide de ces valeurs.
+func _read_lead_bond(value: Variant, variant: DialogueVariant, where: String) -> bool:
+	var list: Array = value if value is Array else [value]
+	if list.is_empty():
+		return _fail("%s : « if_lead_bond_tier » est une liste non vide" % where)
+	for raw: Variant in list:
+		if raw is String and raw == "egg":
+			variant.lead_bond_tiers.append(BondReader.EGG)
+		elif (raw is float or raw is int) and float(raw) == floorf(float(raw)) \
+				and int(raw) >= 0 and int(raw) <= BondRules.TIER_BOUNDS.size():
+			variant.lead_bond_tiers.append(int(raw))
+		else:
+			return _fail("%s : « if_lead_bond_tier » : palier 0..%d ou « egg »"
+				% [where, BondRules.TIER_BOUNDS.size()])
 	return true
 
 

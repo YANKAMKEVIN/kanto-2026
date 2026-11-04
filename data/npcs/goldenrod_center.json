@@ -1,0 +1,19 @@
+{
+	"nurse": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"orme": {
+		"cell": [
+			10,
+			5
+		],
+		"facing": "left",
+		"sprite": "researcher",
+		"dialogue": "goldenrod_orme"
+	}
+}

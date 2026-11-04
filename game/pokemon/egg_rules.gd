@@ -14,13 +14,14 @@ extends RefCounted
 const DEFAULT_STEPS: int = 2000
 ## Nom affiché d'un œuf (le Pokédex ne connaît pas encore l'espèce).
 const NAME: String = "Œuf"
-## Paliers de la phrase de l'écran Équipe [D] : au-dessus de [constant CALM_ABOVE] pas,
-## « bien tranquille » ; au-dessus de [constant MOVING_ABOVE], « bouge un peu » ; sinon « remue ».
+## Paliers de la phrase de l'écran Équipe (texte D-17 du dossier JOH-04, validé) : plus de
+## [constant CALM_ABOVE] pas, « dort encore » ; de [constant MOVING_FROM] à [constant CALM_ABOVE],
+## « bouge un peu » ; moins de [constant MOVING_FROM], « remuer ».
 const CALM_ABOVE: int = 1000
-const MOVING_ABOVE: int = 300
-const HINT_CALM: String = "Il a l'air bien tranquille."
+const MOVING_FROM: int = 300
+const HINT_CALM: String = "Ce qui est dedans dort encore."
 const HINT_MOVING: String = "Il bouge un peu."
-const HINT_SOON: String = "On l'entend remuer !"
+const HINT_SOON: String = "On l'entend remuer ! Il va bientôt éclore."
 ## Dialogue de l'éclosion (`data/dialogues/johto_systems.json`, jeton {pokemon}).
 const HATCH_DIALOGUE: StringName = &"egg_hatched"
 
@@ -40,7 +41,7 @@ static func create(data: PokemonData, species: StringName, steps: int = DEFAULT_
 static func hint_text(steps: int) -> String:
 	if steps > CALM_ABOVE:
 		return HINT_CALM
-	if steps > MOVING_ABOVE:
+	if steps >= MOVING_FROM:
 		return HINT_MOVING
 	return HINT_SOON
 

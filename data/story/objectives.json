@@ -28,6 +28,20 @@
 		"draft": true
 	},
 	{
+		"id": "search_underground",
+		"text": "fouiller le Souterrain de Doublonville.",
+		"if": ["johto_goldenrod_arrived"],
+		"unless": ["johto_azalea_clue"],
+		"draft": true
+	},
+	{
+		"id": "reach_goldenrod",
+		"text": "rejoindre Doublonville par les Routes 37, 36 et 35.",
+		"if": ["johto_rosalia_rockets_seen"],
+		"unless": ["johto_goldenrod_arrived"],
+		"draft": true
+	},
+	{
 		"id": "go_route_39",
 		"text": "prendre la Route 39, à l'est d'Oliville.",
 		"if": ["johto_starter_chosen"],
