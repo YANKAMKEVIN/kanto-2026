@@ -124,8 +124,10 @@ var _trades: InGameTrade
 const _JOINING_KINDS: Array[CutsceneStep.Kind] = [
 	CutsceneStep.Kind.MOVE, CutsceneStep.Kind.HOP, CutsceneStep.Kind.LEAN,
 	CutsceneStep.Kind.DESPAWN, CutsceneStep.Kind.SCARE, CutsceneStep.Kind.REACT,
-	CutsceneStep.Kind.EMOTE,
+	CutsceneStep.Kind.EMOTE, CutsceneStep.Kind.CARRY,
 ]
+## JOH1 (« carry ») : l'objet porté, relatif aux pieds du porteur (devant sa poitrine) [D].
+const CARRY_OFFSET := Vector2(0.0, -44.0)
 
 var _library: CutsceneLibrary
 var _flags: StoryFlags
@@ -476,6 +478,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _return_team()
 		CutsceneStep.Kind.GIVE_EGG: # JOH0
 			await _give_egg(step)
+		CutsceneStep.Kind.CARRY: # JOH1
+			_carry(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -1013,7 +1017,12 @@ func _change_map(step: CutsceneStep) -> bool:
 	if _router == null:
 		_step_error("pas de routeur pour aller sur « %s »" % step.map_id)
 		return false
+	# JOH1 : la pose du joueur est posée pendant l'écran noir, sur la carte neuve.
+	var on_changed := func(map: GameMap) -> void: _apply_pose(map, step)
+	_router.map_changed.connect(on_changed, CONNECT_ONE_SHOT)
 	await _router.change_map(step.map_id, step.spawn, step.facing)
+	if _router.map_changed.is_connected(on_changed):
+		_router.map_changed.disconnect(on_changed)
 	var map := _router.get_current_map()
 	if not is_instance_valid(map) or map.map_id != step.map_id:
 		_step_error("changement de carte vers « %s » (%s) manqué" % [step.map_id, step.spawn])
@@ -1021,6 +1030,36 @@ func _change_map(step: CutsceneStep) -> bool:
 	# Normalement déjà fait par le relais de map_changed ; sans relais, la carte suit quand même.
 	_map = map
 	return true
+
+
+## JOH1 : pose [member CutsceneStep.pose] du joueur sur [param map] : endormi (lit
+## [SleeperBed] [member CutsceneStep.target], apparence [member GameState.player_look]), caché, ou
+## visible (sans pose). Lit introuvable : erreur, le joueur reste visible.
+func _apply_pose(map: GameMap, step: CutsceneStep) -> void:
+	if not is_instance_valid(_player):
+		return
+	_player.visible = step.pose.is_empty()
+	if step.pose != CutsceneStep.POSE_ASLEEP:
+		return
+	var bed := map.get_node_or_null(NodePath(String(step.target))) as SleeperBed
+	var look: StringName = _state.get(&"player_look") if _state != null else &""
+	if bed == null or not bed.tuck_in(look, reduce_motion):
+		_step_error("lit « %s » introuvable sur %s" % [step.target, map.map_id])
+		_player.visible = true
+
+
+## Étape « carry » (JOH1) : le nœud [member CutsceneStep.target] de la carte passe dans les mains
+## du PNJ [member CutsceneStep.actor] ([constant CARRY_OFFSET]) et le suit (il part avec lui).
+func _carry(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	var node := _map.get_node_or_null(NodePath(String(step.target))) as Node2D \
+		if is_instance_valid(_map) else null
+	if npc == null or node == null:
+		_step_error("« %s » ou son porteur « %s » introuvable (carry)" % [step.target, step.actor])
+		return
+	node.reparent(npc, false)
+	node.position = CARRY_OFFSET
+	node.z_index = 1
 
 
 func _play_dialogue(dialogue_id: StringName) -> void:
@@ -1375,6 +1414,7 @@ func _finish() -> void:
 	_aliases = {}
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
+		_player.visible = true # JOH1 : une pose ne survit pas à la scène
 	set_process(false)
 	cutscene_finished.emit(cutscene_id)
 

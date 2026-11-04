@@ -1,19 +1,23 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_gjsbi"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/int_centre_coque.png" id="2_awuio"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_comptoir.tscn" id="3_rkf03"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_terminal.tscn" id="4_hwicc"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_banquette.tscn" id="5_h7wwy"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="6_6g88y"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/int_escalier_montant_01.tscn" id="7_8qcsx"]
-[ext_resource type="Script" path="res://game/world/props/heal_machine.gd" id="8_gti6u"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="9_hgom7"]
-[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="10_v6sb6"]
-[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="11_hts46"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_h7wwy"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_centre_coque.png" id="2_6g88y"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_comptoir.tscn" id="3_8qcsx"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_terminal.tscn" id="4_gti6u"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_centre_banquette.tscn" id="5_hgom7"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="6_v6sb6"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_escalier_montant_01.tscn" id="7_hts46"]
+[ext_resource type="Script" path="res://game/world/props/heal_machine.gd" id="8_ol7oj"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="9_j2mow"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="10_qw6jf"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_plateau_pokeballs_01.png" id="11_dgqbh"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="12_70hck"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="13_24yi2"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="14_77ho3"]
+[ext_resource type="Script" path="res://game/world/lighting/light_glow.gd" id="15_8ech5"]
 
-[node name="OlivineCenter" type="Node2D" unique_id=1278230772]
-script = ExtResource("1_gjsbi")
+[node name="OlivineCenter" type="Node2D" unique_id=1063837129]
+script = ExtResource("1_h7wwy")
 map_id = &"olivine_center"
 display_name = "Oliville"
 size = Vector2i(15, 10)
@@ -21,142 +25,177 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=852432618]
+[node name="Shell" type="Sprite2D" parent="." unique_id=1612069815]
 z_index = -3
-texture = ExtResource("2_awuio")
+texture = ExtResource("2_6g88y")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=1599050445]
+[node name="Entities" type="Node2D" parent="." unique_id=546011909]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Counter" parent="Entities" unique_id=909808068 instance=ExtResource("3_rkf03")]
+[node name="Counter" parent="Entities" unique_id=909808068 instance=ExtResource("3_8qcsx")]
 position = Vector2(720, 480)
 
-[node name="StorageTerminal" parent="Entities" unique_id=229353350 instance=ExtResource("4_hwicc")]
+[node name="StorageTerminal" parent="Entities" unique_id=229353350 instance=ExtResource("4_gti6u")]
 position = Vector2(192, 326)
 
-[node name="TradeTerminal" parent="Entities" unique_id=2030130722 instance=ExtResource("4_hwicc")]
+[node name="TradeTerminal" parent="Entities" unique_id=53274870 instance=ExtResource("4_gti6u")]
 position = Vector2(1248, 326)
 
-[node name="BenchWest" parent="Entities" unique_id=20476692 instance=ExtResource("5_h7wwy")]
+[node name="BenchWest" parent="Entities" unique_id=20476692 instance=ExtResource("5_hgom7")]
 position = Vector2(288, 691)
 
-[node name="BenchEast" parent="Entities" unique_id=893521939 instance=ExtResource("5_h7wwy")]
+[node name="BenchEast" parent="Entities" unique_id=1168520610 instance=ExtResource("5_hgom7")]
 position = Vector2(1152, 691)
 
-[node name="PlantSouthWest" parent="Entities" unique_id=1145806697 instance=ExtResource("6_6g88y")]
+[node name="PlantSouthWest" parent="Entities" unique_id=1145806697 instance=ExtResource("6_v6sb6")]
 position = Vector2(144, 845)
 
-[node name="PlantSouthEast" parent="Entities" unique_id=149804007 instance=ExtResource("6_6g88y")]
+[node name="PlantSouthEast" parent="Entities" unique_id=212881271 instance=ExtResource("6_v6sb6")]
 position = Vector2(1296, 845)
 
-[node name="StairsUpBody" parent="Entities" unique_id=962606697 instance=ExtResource("7_8qcsx")]
+[node name="StairsUpBody" parent="Entities" unique_id=962606697 instance=ExtResource("7_hts46")]
 position = Vector2(1248, 672)
 
-[node name="HealMachine" type="Node2D" parent="Entities" unique_id=239263376]
+[node name="HealMachine" type="Node2D" parent="Entities" unique_id=2012611649]
 unique_name_in_owner = true
 position = Vector2(720, 481)
-script = ExtResource("8_gti6u")
+script = ExtResource("8_ol7oj")
 slot_offsets = Array[Vector2]([Vector2(120, -130), Vector2(146, -130), Vector2(171, -130), Vector2(122, -116), Vector2(148, -116), Vector2(173, -116)])
 flash_offset = Vector2(147, -123)
 
-[node name="Warps" type="Node2D" parent="." unique_id=1729483581]
+[node name="NightTray" type="Node2D" parent="Entities" unique_id=593205053]
+z_index = 1
+position = Vector2(867, 358)
+script = ExtResource("9_j2mow")
+if_flags = Array[StringName]([&"johto_center_dark"])
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=2127425307]
+[node name="Sprite" type="Sprite2D" parent="Entities/NightTray" unique_id=547609257]
+material = ExtResource("10_qw6jf")
+texture = ExtResource("11_dgqbh")
+
+[node name="Warps" type="Node2D" parent="." unique_id=634401481]
+
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=881080177]
 position = Vector2(624, 864)
-script = ExtResource("9_hgom7")
+script = ExtResource("12_70hck")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"olivine_city"
 target_spawn = &"from_center"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=2146092443]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1351411851]
 position = Vector2(720, 864)
-script = ExtResource("9_hgom7")
+script = ExtResource("12_70hck")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"olivine_city"
 target_spawn = &"from_center"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit2" type="Marker2D" parent="Warps" unique_id=107491771]
+[node name="Exit2" type="Marker2D" parent="Warps" unique_id=517581513]
 position = Vector2(816, 864)
-script = ExtResource("9_hgom7")
+script = ExtResource("12_70hck")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"olivine_city"
 target_spawn = &"from_center_1"
 arrival_facing = Vector2i(0, 1)
 
-[node name="StairsUp" type="Marker2D" parent="Warps" unique_id=622439190]
+[node name="StairsUp" type="Marker2D" parent="Warps" unique_id=1122519325]
 position = Vector2(1296, 672)
-script = ExtResource("9_hgom7")
+script = ExtResource("12_70hck")
 direction = Vector2i(0, -1)
 target_map = &"olivine_center_room"
 target_spawn = &"from_stairs"
 arrival_facing = Vector2i(0, -1)
 
-[node name="StairsUpW" type="Marker2D" parent="Warps" unique_id=752649321]
+[node name="StairsUpW" type="Marker2D" parent="Warps" unique_id=1989439986]
 position = Vector2(1200, 672)
-script = ExtResource("9_hgom7")
+script = ExtResource("12_70hck")
 direction = Vector2i(0, -1)
 target_map = &"olivine_center_room"
 target_spawn = &"from_stairs"
 arrival_facing = Vector2i(0, -1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1742407825]
+[node name="Interactables" type="Node2D" parent="." unique_id=717723060]
 
-[node name="NurseCounter" type="Marker2D" parent="Interactables" unique_id=1436349726]
+[node name="NurseCounter" type="Marker2D" parent="Interactables" unique_id=798141110]
 position = Vector2(624, 480)
-script = ExtResource("10_v6sb6")
+script = ExtResource("13_24yi2")
 dialogue_id = &"nurse"
 kind = 0
 size = Vector2i(3, 1)
 facing = Vector2i(0, -1)
 
-[node name="StorageTerminalScreen" type="Marker2D" parent="Interactables" unique_id=1410714139]
+[node name="StorageTerminalScreen" type="Marker2D" parent="Interactables" unique_id=231093421]
 position = Vector2(144, 384)
-script = ExtResource("10_v6sb6")
+script = ExtResource("13_24yi2")
 dialogue_id = &"storage_terminal"
 size = Vector2i(2, 1)
 facing = Vector2i(0, -1)
 
-[node name="TradeTerminalScreen" type="Marker2D" parent="Interactables" unique_id=822601910]
+[node name="TradeTerminalScreen" type="Marker2D" parent="Interactables" unique_id=108902380]
 position = Vector2(1200, 384)
-script = ExtResource("10_v6sb6")
+script = ExtResource("13_24yi2")
 dialogue_id = &"trade_terminal"
 size = Vector2i(2, 1)
 facing = Vector2i(0, -1)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1303024827]
+[node name="Spawns" type="Node2D" parent="." unique_id=1761154168]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=773141842]
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=588024823]
 position = Vector2(720, 864)
 
-[node name="heal" type="Marker2D" parent="Spawns" unique_id=2081558549]
+[node name="heal" type="Marker2D" parent="Spawns" unique_id=136495316]
 position = Vector2(720, 576)
 
-[node name="terminal" type="Marker2D" parent="Spawns" unique_id=1085676779]
+[node name="terminal" type="Marker2D" parent="Spawns" unique_id=946079507]
 position = Vector2(144, 480)
 
-[node name="trade_terminal" type="Marker2D" parent="Spawns" unique_id=748562712]
+[node name="trade_terminal" type="Marker2D" parent="Spawns" unique_id=1334308376]
 position = Vector2(1200, 480)
 
-[node name="from_room" type="Marker2D" parent="Spawns" unique_id=1549372601]
+[node name="from_room" type="Marker2D" parent="Spawns" unique_id=194347901]
 position = Vector2(1296, 768)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1363345835]
+[node name="night_watch" type="Marker2D" parent="Spawns" unique_id=342251097]
+position = Vector2(336, 672)
 
-[node name="ArrivalTrigger" type="Marker2D" parent="Triggers" unique_id=624974825]
+[node name="Triggers" type="Node2D" parent="." unique_id=1459982014]
+
+[node name="ArrivalTrigger" type="Marker2D" parent="Triggers" unique_id=1477070510]
 position = Vector2(144, 768)
-script = ExtResource("11_hts46")
+script = ExtResource("14_77ho3")
 cutscene_id = &"olivine_center_arrival"
 size = Vector2i(11, 3)
 
-[node name="ArrivalTriggerEast" type="Marker2D" parent="Triggers" unique_id=126380827]
+[node name="ArrivalTriggerEast" type="Marker2D" parent="Triggers" unique_id=417495520]
 position = Vector2(1200, 768)
-script = ExtResource("11_hts46")
+script = ExtResource("14_77ho3")
 cutscene_id = &"olivine_center_arrival"
 size = Vector2i(2, 1)
+
+[node name="NightGlowStorage" type="Node2D" parent="." unique_id=1609877336]
+script = ExtResource("9_j2mow")
+if_flags = Array[StringName]([&"johto_center_dark"])
+
+[node name="Glow" type="Sprite2D" parent="NightGlowStorage" unique_id=1938677727]
+z_index = 5
+z_as_relative = false
+position = Vector2(192, 250)
+script = ExtResource("15_8ech5")
+glow_type = &"shard"
+
+[node name="NightGlowTrade" type="Node2D" parent="." unique_id=1625045886]
+script = ExtResource("9_j2mow")
+if_flags = Array[StringName]([&"johto_center_dark"])
+
+[node name="Glow" type="Sprite2D" parent="NightGlowTrade" unique_id=137647613]
+z_index = 5
+z_as_relative = false
+position = Vector2(1248, 250)
+script = ExtResource("15_8ech5")
+glow_type = &"shard"

@@ -150,6 +150,14 @@ extends RefCounted
 ##   [method TeamConfiscation.restore] d'un seul bloc. Valeur : true. La scène fait suivre d'une
 ##   étape « save ».
 
+## JOH1 (remise en scène du vol, demande de Kevin du 2026-11-04) :
+## - « change_map » : [member pose] (clé « pose », [constant POSES]) appliquée pendant l'écran
+##   noir : [constant POSE_ASLEEP] cache le joueur et couche son apparence dans le [SleeperBed]
+##   [member target] (clé « bed », chemin depuis la carte) ; [constant POSE_HIDDEN] cache le
+##   joueur ; sans pose, le joueur est visible ;
+## - [constant Kind.CARRY] : le nœud [member target] de la carte (chemin depuis la carte, clé
+##   « carry ») passe dans les mains du PNJ [member actor] (clé « by ») et part avec lui.
+
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
@@ -164,6 +172,7 @@ enum Kind {
 	SAFARI,
 	HALL_OF_FAME, CREDITS, # Jalon 30
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
+	CARRY, # JOH1, remise en scène du vol
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -180,7 +189,13 @@ const TYPE_KEYS: Array[String] = [
 	"safari",
 	"hall_of_fame", "credits", # Jalon 30
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
+	"carry", # JOH1, remise en scène du vol
 ]
+## Poses du joueur d'une étape « change_map » (clé « pose », JOH1) : endormi dans le lit
+## [SleeperBed] nommé par « bed », ou caché (plan sur une autre pièce pendant qu'il dort).
+const POSE_ASLEEP: StringName = &"asleep"
+const POSE_HIDDEN: StringName = &"hidden"
+const POSES: Array[StringName] = [POSE_ASLEEP, POSE_HIDDEN]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]
@@ -216,6 +231,8 @@ var background: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
+## JOH1 : pose du joueur d'un « change_map » ([constant POSES], &"" = visible).
+var pose: StringName = &""
 ## Étape « battle » : dresseur, PNJ Pokémon qui
 ## combattent, drapeaux selon l'issue.
 var trainer_id: StringName = &""
@@ -364,6 +381,7 @@ func copy() -> CutsceneStep:
 	other.map_id = map_id
 	other.spawn = spawn
 	other.facing = facing
+	other.pose = pose
 	other.trainer_id = trainer_id
 	other.player_pokemon = player_pokemon
 	other.foe_pokemon = foe_pokemon

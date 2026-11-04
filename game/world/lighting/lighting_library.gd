@@ -38,7 +38,11 @@ extends RefCounted
 ## [constant LightProfile.ROOM_POOL_RADIUS_MAX]]) ; alphas dans [0, 1].
 ## « maps » (facultatif) : profil prévu pour chaque carte peinte, que l'outil de construction de
 ## la carte écrit dans `GameMap.light_profile` (la carte reste la source lue par `Boot`) ; un
-## profil inconnu y est une erreur. Toute clé inconnue est une erreur ; un profil invalide est écarté, l'erreur signalée
+## profil inconnu y est une erreur.
+## « flag_overrides » (facultatif, JOH1, remise en scène du vol) : liste de
+## `{ "map": carte, "if": [drapeaux], "unless": [drapeaux], "profile": profil }` (« unless »
+## facultatif) ; tant que tous les drapeaux « if » sont levés et aucun « unless », la carte prend ce profil au lieu du sien ([method override_for] : la pénombre du Centre
+## d'Oliville pendant que les Sbires passent). Profil inconnu : erreur. Toute clé inconnue est une erreur ; un profil invalide est écarté, l'erreur signalée
 ## ([method get_errors], push_error).
 
 const DATA_PATH: String = "res://data/world/lighting.json"
@@ -53,7 +57,8 @@ const AUTO_BY_PERIOD: Dictionary[WorldClock.Period, StringName] = {
 ## Durée du fondu entre deux profils quand le moment change sur une carte (secondes) [D].
 const FADE_SECONDS: float = 10.0
 
-const _ROOT_KEYS: Array[String] = ["profiles", "maps"]
+const _ROOT_KEYS: Array[String] = ["profiles", "maps", "flag_overrides"]
+const _OVERRIDE_KEYS: Array[String] = ["map", "if", "unless", "profile"]
 const _PROFILE_KEYS: Array[String] = [
 	"grade", "sun_direction", "rim", "cast_shadow", "contact", "wind", "room",
 ]
@@ -70,6 +75,8 @@ const _ROOM_KEYS: Array[String] = [
 
 var _profiles: Dictionary[StringName, LightProfile] = {}
 var _maps: Dictionary[StringName, StringName] = {}
+## JOH1 : surcharges par drapeaux ({ map, if: Array[StringName], profile }), ordre du fichier.
+var _overrides: Array[Dictionary] = []
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -117,7 +124,22 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 		_profiles[id] = profile
 	if data.has("maps"):
 		ok = _add_maps(data["maps"], source) and ok
+	if data.has("flag_overrides"):
+		ok = _add_overrides(data["flag_overrides"], source) and ok
 	return ok
+
+
+## JOH1 : profil qui remplace celui de [param map_id] quand [param flags] lève tous les drapeaux
+## d'une surcharge (la première qui s'applique), &"" sinon.
+func override_for(map_id: StringName, flags: StoryFlags) -> StringName:
+	if flags == null:
+		return &""
+	for entry: Dictionary in _overrides:
+		var needed: Array[StringName] = entry["if"]
+		var excluded: Array[StringName] = entry["unless"]
+		if entry["map"] == map_id and flags.has_all(needed) and flags.has_none(excluded):
+			return entry["profile"]
+	return &""
 
 
 ## Profil [param id], ou null s'il est inconnu (&"" compris : aucune lumière du monde).
@@ -356,6 +378,42 @@ func _add_maps(value: Variant, source: String) -> bool:
 			ok = _fail("%s « maps » « %s » : carte déjà définie" % [source, map_id])
 		else:
 			_maps[map_id] = profile_id
+	return ok
+
+
+func _add_overrides(value: Variant, source: String) -> bool:
+	if not value is Array:
+		return _fail("%s : « flag_overrides » doit être une liste" % source)
+	var ok := true
+	for item: Variant in value:
+		var entry: Dictionary = item if item is Dictionary else {}
+		var bad := entry.is_empty()
+		for key: Variant in entry:
+			bad = bad or not _OVERRIDE_KEYS.has(str(key))
+		var flags: Array[StringName] = []
+		if not bad and entry.get("if") is Array and not (entry["if"] as Array).is_empty():
+			for flag: Variant in entry["if"]:
+				bad = bad or not flag is String or (flag as String).is_empty()
+				flags.append(StringName(str(flag)))
+		else:
+			bad = true
+		var excluded: Array[StringName] = []
+		var unless: Variant = entry.get("unless", [])
+		if unless is Array:
+			for flag: Variant in unless:
+				bad = bad or not flag is String or (flag as String).is_empty()
+				excluded.append(StringName(str(flag)))
+		else:
+			bad = true
+		if bad or not entry.get("map") is String or not entry.get("profile") is String:
+			ok = _fail("%s « flag_overrides » : entrée invalide %s" % [source, item])
+			continue
+		var profile := StringName(entry["profile"])
+		if not _profiles.has(profile):
+			ok = _fail("%s « flag_overrides » : profil inconnu « %s »" % [source, profile])
+			continue
+		_overrides.append({"map": StringName(entry["map"]), "if": flags, "unless": excluded,
+			"profile": profile})
 	return ok
 
 

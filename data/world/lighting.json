@@ -51,6 +51,11 @@
 			"contact": { "color": "#0a0e1a", "alpha": 0.5 },
 			"wind": 2.0
 		},
+		"interior_night_dark": {
+			"grade": { "shadows": [0.24, 0.28, 0.52], "midtones": [0.34, 0.39, 0.66], "highlights": [0.5, 0.55, 0.8], "strength": 1.0, "economy_flat": true },
+			"sun_direction": [-0.7, -0.7],
+			"contact": { "color": "#0a0e1a", "alpha": 0.55 }
+		},
 		"interior_warm": {
 			"grade": {
 				"shadows": [0.9, 0.84, 0.78],
@@ -490,5 +495,9 @@
 		"ecruteak_elders_house": "interior_warm",
 		"ecruteak_house_1": "interior_warm",
 		"ecruteak_house_2": "interior_warm"
-	}
+	},
+	"flag_overrides": [
+		{ "map": "olivine_center", "if": ["johto_center_dark"], "profile": "interior_night_dark" },
+		{ "map": "olivine_center_room", "if": ["johto_slept"], "unless": ["johto_team_stolen"], "profile": "interior_night_dark" }
+	]
 }
