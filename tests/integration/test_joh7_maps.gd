@@ -79,9 +79,9 @@ func test_metadata_light_and_zones() -> void:
 	assert_true(zones.load_file())
 	var expected := {&"route_40": [&"johto_auto", false, &"route_40"],
 		&"route_41": [&"johto_auto", false, &"route_41"],
-		&"whirl_islands_1f": [&"sea_cave", true, &"whirl_islands"],
-		&"whirl_islands_b1f": [&"sea_cave", true, &"whirl_islands"],
-		&"whirl_islands_b2f": [&"whirl_islands_b2f", true, &"whirl_islands"]}
+		&"whirl_islands_1f": [&"sea_cave", false, &"whirl_islands"],
+		&"whirl_islands_b1f": [&"sea_cave", false, &"whirl_islands"],
+		&"whirl_islands_b2f": [&"whirl_islands_b2f", false, &"whirl_islands"]}
 	for map_id: StringName in expected:
 		var map: GameMap = _maps[map_id]
 		var plan: PlanGrid = _plans[map_id]

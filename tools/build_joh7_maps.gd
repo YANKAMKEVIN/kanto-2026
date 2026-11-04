@@ -49,11 +49,11 @@ const MAPS: Dictionary = {
 	&"route_41": {"plan": "route_41", "name": "Route 41", "region": "Îles Tourbillon",
 		"interior": false, "light": &"johto_auto", "seed": 4101, "fishing": true},
 	&"whirl_islands_1f": {"plan": "whirl_islands_1f", "name": "Îles Tourbillon",
-		"region": "Route 41", "interior": true, "light": &"sea_cave", "seed": 4201},
+		"region": "Route 41", "interior": false, "light": &"sea_cave", "seed": 4201},
 	&"whirl_islands_b1f": {"plan": "whirl_islands_b1f", "name": "Îles Tourbillon",
-		"region": "Route 41", "interior": true, "light": &"sea_cave", "seed": 4202},
+		"region": "Route 41", "interior": false, "light": &"sea_cave", "seed": 4202},
 	&"whirl_islands_b2f": {"plan": "whirl_islands_b2f", "name": "Îles Tourbillon",
-		"region": "Route 41", "interior": true, "light": &"whirl_islands_b2f", "seed": 4203},
+		"region": "Route 41", "interior": false, "light": &"whirl_islands_b2f", "seed": 4203},
 }
 ## Passages : « carte/position » → [déclenchement, direction, carte cible, arrivée (suffixe `_n`
 ## par case de rang n), orientation à l'arrivée].
@@ -224,7 +224,7 @@ func _paint(root: Node, plan: Object, blocked: Array[Vector2i], whirlpools: Arra
 					blocked.append(cell)
 			elif c == "g":
 				kind = _over.Kind.RUBBLE
-			elif c == "s" or (c == "." and not root.get(&"interior")):
+			elif c == "s" or (c == "." and not String(root.get(&"map_id")).begins_with("whirl")):
 				kind = _over.Kind.SAND
 			var variant := _rng.randi_range(0, _over.variant_count(kind) - 1)
 			ground.set_cell(cell, _over.SOURCE_ID, _over.atlas_coords(kind, variant))
@@ -474,7 +474,8 @@ func _new_map(map_id: StringName, spec: Dictionary, size: Vector2i) -> Node2D:
 	root.set(&"region", spec["region"])
 	root.set(&"size", size)
 	root.set(&"interior", spec["interior"])
-	root.set(&"no_fly", spec["interior"])
+	# Grottes : `interior` faux comme la grotte marine (compagnon visible), pas de Vol [D].
+	root.set(&"no_fly", spec["plan"].begins_with("whirl"))
 	root.set(&"light_profile", spec["light"])
 	# Tableaux typés posés explicitement : sans les autoloads, map.gd peut ne pas compiler dans
 	# l'outil et un tableau laissé par défaut serait enregistré « Array[int] » (JOH2).
