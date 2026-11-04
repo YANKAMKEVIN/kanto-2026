@@ -40,7 +40,7 @@ const TABLES: Dictionary = {
 		{&"hoothoot": 40, &"rattata": 30, &"meowth": 20, &"oddish": 10}],
 	&"ecruteak_towers_night": [[&"night"], 3, [10, 12], {&"murkrow": 50, &"hoothoot": 50}],
 }
-const DEBUG_STARTS: Array[String] = ["johto_route_39", "johto_route_39_night", "johto_rosalia",
+const DEBUG_STARTS: Array[String] = ["johto_route_39", "johto_route_39_night", "johto_route_38", "johto_rosalia",
 	"johto_rosalia_night", "johto_rosalia_tuesday"]
 
 var _dialogues: DialogueLibrary
@@ -356,7 +356,7 @@ func test_forced_weekday_and_debug_starts() -> void:
 		var start := DebugStart.new()
 		assert_true(start.load_file("res://tools/debug_start/%s.json" % name, _pokemon, _items),
 			"%s : %s" % [name, "\n".join(start.get_errors())])
-		assert_true(start.map in [&"route_39", &"ecruteak_city"], name)
+		assert_true(start.map in [&"route_39", &"route_38", &"ecruteak_city"], name)
 	var tuesday := DebugStart.new()
 	tuesday.load_file("res://tools/debug_start/johto_rosalia_tuesday.json", _pokemon, _items)
 	assert_eq(tuesday.weekday, &"tuesday")
