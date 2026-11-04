@@ -430,6 +430,16 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `johto_orme.json` | JOH1 : reprise après coupure **après le vol** : équipe **vide** (clé `party: []`, permise avec `confiscated`), équipe de Ligue et Sac confisqués, `johto_slept` + `johto_team_stolen`, dans la salle de repos (spawn `lit`, tourné vers l'ouest), **matin imposé** : l'infirmière parle d'elle-même (O-10) puis Orme (O-12, O-13) ; choix de Germignon / Héricendre / Kaiminus, O-17, 5 Poké Balls + Potion, O-18, heure réelle de retour |
 | `johto_olivine_day.json` | JOH1 : après le choix (Kaiminus N5 compagnon, 5 Poké Balls, 1 Potion, équipe de Ligue confisquée, point de repos Oliville), devant le Centre, **moment imposé `day`** : garde rangé (Route 39 « à venir »), marin du port, maisons (vieille dame ; enfant le matin et le jour), Boutique, PC « Le réseau ne répond pas. » (O-11), Ball refusée à 6 jamais atteinte ici |
 | `johto_olivine_night_autosave.json` | JOH1 (QA A17 du 2026-11-04) : `johto_olivine_night` avec **`autosave: true`** : ce départ **REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Sert à vérifier la reprise après l'écriture du vol : entrer au Centre, avancer jusqu'à « Sauvegarde automatique (vol de l'équipe…) » dans le journal, tuer l'appli, relancer **sans** départ : chambre le matin, infirmière (O-10) puis Orme |
+
+- `johto_route_39` (JOH2) : Kaiminus N5, 5 Poké Balls, 1 Potion, équipe de Kanto confisquée
+  (acte 1, Stockage hors ligne), à l'entrée ouest de la Route 39 (`from_olivine`) : ferme,
+  Dresseurs, Potion, Route 38. `johto_route_39_night` : idem, moment forcé `night` ; `johto_route_38` : Kaiminus N10 et Fouinette N9 à l'entrée ouest de la Route 38 (`from_route_39`).
+- `johto_rosalia` (JOH2) : Croconaw N13, Fouinette N12, Wattouat N12, 3 000 ₽, à l'entrée de
+  Rosalia (`from_route_38`) : scène des Sbires, doyen, gardes, Centre, Boutique, maisons.
+- `johto_rosalia_night` : idem, moment forcé `night` (lampes, herbe des tours).
+- `johto_rosalia_tuesday` : idem, jour forcé `tuesday` (Margot, conteuse du mardi). Clé `weekday`
+  de `DebugStart` (JOH2).
+
 ## QA entrée des combats de Dresseur (A17, 2026-11-04)
 
 | Fichier | Partie |

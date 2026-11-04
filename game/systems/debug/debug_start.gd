@@ -66,6 +66,7 @@ extends RefCounted
 ## « light_profile » (JOH0, QA de la lumière de Johto) : profil de lumière imposé à la carte de
 ## départ pour la session (« johto_auto », « johto_night »…) ; exige « map ». « period » : moment
 ## imposé à l'horloge du monde (« morning », « day », « night ») tant que la session dure.
+## « weekday » (JOH2, PNJ de la semaine) : jour imposé à l'horloge (« monday » … « sunday »).
 ## Passe systèmes 2 (S2E, départ `s2_fly`) : « discovered » : cartes déjà découvertes (villes
 ## ouvertes au Vol), ex. ["pallet_town", "pewter_city"] ; identifiants non vides.
 ## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
@@ -102,7 +103,7 @@ const VEIL_OFF: StringName = &"off"
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion", "veil", "rest_point",
 	"discovered", "safari", "fx_gallery", "caught_except", "confiscated", "cutscene",
-	"light_profile", "period"]
+	"light_profile", "period", "weekday"]
 const _CONFISCATED_KEYS: Array[String] = ["party", "items"]
 ## Starter du joueur → starter que prend le rival (`starter_choice_controller.gd`, RB).
 const _RIVAL_PICK: Dictionary[StringName, StringName] = {
@@ -160,6 +161,8 @@ var cutscene: StringName = &""
 ## imposé à l'horloge (&"" = l'heure réelle).
 var light_profile: StringName = &""
 var period: StringName = &""
+## JOH2 : jour de la semaine imposé à l'horloge (&"" = le jour réel).
+var weekday: StringName = &""
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -323,6 +326,14 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				", ".join(PackedStringArray(WorldClock.PERIOD_NAMES.keys()))])
 		else:
 			new_period = StringName(dict["period"])
+	var new_weekday: StringName = &""
+	if dict.has("weekday"):
+		if not dict["weekday"] is String \
+				or not WorldClock.WEEKDAY_NAMES.has(StringName(dict["weekday"])):
+			ok = _fail("%s : « weekday » vaut %s" % [source,
+				", ".join(PackedStringArray(WorldClock.WEEKDAY_NAMES))])
+		else:
+			new_weekday = StringName(dict["weekday"])
 	var new_daycare: Dictionary = {}
 	if dict.has("daycare"):
 		new_daycare = _parse_daycare(dict["daycare"], data, "%s daycare" % source)
@@ -413,6 +424,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	cutscene = new_cutscene
 	light_profile = new_light
 	period = new_period
+	weekday = new_weekday
 	wild_terrain = new_wild_terrain
 	companion = new_companion
 	veil = new_veil
@@ -529,8 +541,9 @@ func describe() -> String:
 	var scene := "" if cutscene.is_empty() else ", scène : %s" % cutscene
 	var light := "" if light_profile.is_empty() else ", lumière : %s" % light_profile
 	var moment := "" if period.is_empty() else ", moment : %s" % period
-	return "%s/%s, %s%s%s%s%s%s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
-		", ".join(members), kept, taken, scene, light, moment,
+	var day := "" if weekday.is_empty() else ", jour : %s" % weekday
+	return "%s/%s, %s%s%s%s%s%s%s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
+		", ".join(members), kept, taken, scene, light, moment, day,
 		" (remplace la sauvegarde)" if autosave else ""]
 
 

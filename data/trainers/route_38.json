@@ -1,0 +1,65 @@
+{
+	"route_38_birdkeeper_paul": {
+		"name": "Ornithologue Paul",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "pidgey",
+				"level": 9
+			},
+			{
+				"species": "hoothoot",
+				"level": 10
+			}
+		]
+	},
+	"route_38_trainer_ines": {
+		"name": "Dresseuse Inès",
+		"class": "topdresseuse",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "meowth",
+				"level": 10
+			},
+			{
+				"species": "oddish",
+				"level": 10
+			},
+			{
+				"species": "mareep",
+				"level": 11
+			}
+		]
+	},
+	"route_38_picnicker_theo": {
+		"name": "Pique-niqueur Théo",
+		"class": "campeur",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "sentret",
+				"level": 11
+			},
+			{
+				"species": "rattata",
+				"level": 11
+			}
+		]
+	}
+}
