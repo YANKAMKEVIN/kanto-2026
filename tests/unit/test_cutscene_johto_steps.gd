@@ -212,3 +212,33 @@ func test_the_give_egg_step_adds_an_egg_or_fails_on_a_full_team() -> void:
 	var bad := CutsceneLibrary.new()
 	assert_false(bad.add_from_dict({"x": {"steps": [{"give_egg": "pidgey", "steps": 0}]}}, "b"))
 	assert_push_error("steps")
+
+
+## JOH3 (dossier JOH-04 §7) : « flag » levé seulement si l'œuf est donné ; « say_full » joué à la
+## place quand l'équipe est pleine (Orme garde l'œuf), sans erreur d'étape.
+func test_the_give_egg_flag_and_full_team_dialogue() -> void:
+	var scenes := CutsceneLibrary.new()
+	assert_true(scenes.add_from_dict({
+		"orme_egg": {"steps": [{"give_egg": "togepi", "steps": 2000, "flag": "egg_received",
+			"say_full": "orme_full"}]},
+	}, "test"), str(scenes.get_errors()))
+	var step: CutsceneStep = scenes.get_cutscene(&"orme_egg").variants[0].steps[0]
+	assert_eq(step.gift_flag, &"egg_received")
+	assert_eq(step.dialogue_stored, &"orme_full")
+	assert_true(scenes.get_set_flags().has(&"egg_received"))
+	assert_true(scenes.get_dialogue_ids().has(&"orme_full"))
+	_director.setup(scenes, _flags, null, null, null)
+	_director.set_badges(null, _state)
+	_director.set_pokemon_data(_data)
+	for i: int in 6:
+		_add(&"rattata", 5)
+	assert_true(_director.play(&"orme_egg"))
+	await _await_scene_end()
+	assert_eq(_state.party.size(), 6)
+	assert_false(_flags.has_flag(&"egg_received"), "équipe pleine : pas de drapeau")
+	assert_push_error("orme_full") # aucun lecteur de dialogue ici : le refus le nomme
+	_state.party.remove_at(5)
+	assert_true(_director.play(&"orme_egg"))
+	await _await_scene_end()
+	assert_true(_state.party.get_at(5).is_egg())
+	assert_true(_flags.has_flag(&"egg_received"))

@@ -107,14 +107,9 @@ T = {
 	"goldenrod_radio_impostor_after": (GRUNT, ["Le vrai personnel ? Enfermé là-haut. Bonne chance !"]),
 	"goldenrod_radio_impostor_flees": (NARRATION,
 		["Le faux employé arrache son uniforme et file dans l'escalier !"]),
-	# D-18 (dossier JOH-04, JOH3) : le faux employé sans la Carte d'accès.
-	"goldenrod_radio_impostor_closed": ("Employé", ["Désolé, la Tour est fermée au public.",
-		"Travaux techniques.", "Revenez… plus tard. Beaucoup plus tard."]),
-	# T-5 et D-19 (1F avant le faux employé) : l'ascenseur.
+	# T-5 : l'ascenseur (D-18 et D-19, au hall avant la Carte d'accès, sont des dialogues du JOH3).
 	"goldenrod_radio_elevator_broken": (NARRATION, ["L'ascenseur est en panne.",
 		"Quelqu'un a coupé le courant."]),
-	"goldenrod_radio_elevator_closed": (NARRATION, ["Un écriteau : « Étages fermés ».",
-		"Des voix étouffées descendent de là-haut."]),
 	# T-9 à T-11 : la réserve.
 	"goldenrod_radio_reserve_opened": (NARRATION, ["{player} ouvre la porte de la réserve."]),
 	"goldenrod_radio_reserve_locked": (NARRATION,
@@ -196,6 +191,12 @@ T = {
 		"« Quand tout sera cendres »… Ça ne me plaît pas.",
 		"Les sages de Rosalia ont appelé ce matin. Ils veulent te voir.",
 		"Je crois que c'est à propos de la Tour Cendrée."]),
+	# T-35, T-36 : chez Raphaël (Doublonville, maison 1 du JOH3 : PNJ dans `tools/gen_joh3_data.py`).
+	"goldenrod_husband_home": ("Femme", ["Mon mari est rentré ! Raphaël m'a tout raconté.",
+		"Merci, merci ! Prends ça, ça vient du fond du cœur."]),
+	"goldenrod_husband_gift_received": (NARRATION, ["{player} reçoit 3 Ultra Balls !"]),
+	"goldenrod_radio_raphael_home": ("Raphaël", ["La Tour est de nouveau à nous.",
+		"Grâce à toi, la radio chante de nouveau."]),
 	# T-38 : grotte marine, premier passage après le retour (variante de `sea_cave_current_back`,
 	# scène du JOH1 dans `data/cutscenes/joh1.json`).
 	"sea_cave_calm": (NARRATION, ["Le courant s'est calmé.", "On peut repartir vers Kanto."]),
@@ -313,7 +314,7 @@ def impostor_scene():
 		{"unless": [won], "steps": [
 			{"face": "faux_employe", "to": "player"},
 			{"face": "player", "to": "faux_employe"},
-			say("goldenrod_radio_impostor_closed"),
+			say("goldenrod_radio_tower_impostor_closed"),
 			{"set": ["johto_radio_tower_closed_seen"]},
 			{"move": "player", "path": ["down"], "keep_facing": True},
 		]},
@@ -325,7 +326,7 @@ def elevator_scene():
 	ensuite et aux autres étages."""
 	return {"variants": [
 		{"unless": ["johto_radio_impostor_defeated"], "steps": [
-			say("goldenrod_radio_elevator_closed")]},
+			say("goldenrod_radio_tower_elevator_closed")]},
 		{"steps": [say("goldenrod_radio_elevator_broken")]},
 	]}
 
@@ -457,6 +458,16 @@ def exp_share_scene():
 	]}
 
 
+def husband_scene():
+	"""T-35 : la femme de D-37 (maison 1 de Doublonville) remercie et donne 3 Ultra Balls."""
+	return {"variants": [{"if": ["johto_act2"], "unless": ["goldenrod_husband_gift"], "steps": [
+		say("goldenrod_husband_home"),
+		{"give": "ultra_ball", "count": 3},
+		say("goldenrod_husband_gift_received"),
+		{"set": ["goldenrod_husband_gift"]},
+	]}]}
+
+
 def exit_scene():
 	"""1F, rangée y 12 : T-33 (l'Agente garde les preuves) puis T-34 (Orme), `johto_act2`."""
 	return {"variants": [{"if": ["johto_team_returned"], "unless": ["johto_act2"], "steps": [
@@ -541,6 +552,7 @@ def main():
 					entry["dialogue"] = "goldenrod_radio_employee_2"
 				elif role == "raphael":
 					entry["dialogue"] = "goldenrod_radio_raphael"
+					entry["unless"] = entry.get("unless", []) + ["johto_act2"]  # rentré chez lui
 					dialogues["goldenrod_radio_raphael"] = {"cutscene": "goldenrod_radio_raphael"}
 					cutscenes["goldenrod_radio_raphael"] = raphael_scene()
 				elif role == "directeur":
@@ -588,6 +600,7 @@ def main():
 		"goldenrod_radio_office": office_scene(),
 		"goldenrod_radio_exp_share": exp_share_scene(),
 		"goldenrod_radio_exit": exit_scene(),
+		"goldenrod_husband_gift": husband_scene(),
 	})
 	write_json(os.path.join(DATA, "trainers", TRAINER_FILE + ".json"), trainers)
 	write_json(os.path.join(DATA, "dialogues", "joh5_radio_tower.json"), dialogues)

@@ -1,0 +1,11 @@
+{
+	"man": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "goldenrod_house_2_man"
+	}
+}

@@ -1,0 +1,48 @@
+{
+	"week_wednesday_gift": {
+		"variants": [
+			{
+				"unless": [
+					"week_wednesday_gift"
+				],
+				"steps": [
+					{
+						"give": "great_ball",
+						"count": 3
+					},
+					{
+						"dialogue": "week_wednesday_received"
+					},
+					{
+						"set": [
+							"week_wednesday_gift"
+						]
+					}
+				]
+			}
+		]
+	},
+	"week_thursday_gift": {
+		"variants": [
+			{
+				"unless": [
+					"week_thursday_gift"
+				],
+				"steps": [
+					{
+						"give": "fresh_water",
+						"count": 3
+					},
+					{
+						"dialogue": "week_thursday_received"
+					},
+					{
+						"set": [
+							"week_thursday_gift"
+						]
+					}
+				]
+			}
+		]
+	}
+}

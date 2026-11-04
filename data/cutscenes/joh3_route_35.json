@@ -1,0 +1,23 @@
+{
+	"route_35_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_35_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "great_ball",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_35_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

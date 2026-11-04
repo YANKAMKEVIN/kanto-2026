@@ -201,26 +201,11 @@
 			"Le faux employé arrache son uniforme et file dans l'escalier !"
 		]
 	},
-	"goldenrod_radio_impostor_closed": {
-		"speaker": "Employé",
-		"pages": [
-			"Désolé, la Tour est fermée au public.",
-			"Travaux techniques.",
-			"Revenez… plus tard. Beaucoup plus tard."
-		]
-	},
 	"goldenrod_radio_elevator_broken": {
 		"narration": true,
 		"pages": [
 			"L'ascenseur est en panne.",
 			"Quelqu'un a coupé le courant."
-		]
-	},
-	"goldenrod_radio_elevator_closed": {
-		"narration": true,
-		"pages": [
-			"Un écriteau : « Étages fermés ».",
-			"Des voix étouffées descendent de là-haut."
 		]
 	},
 	"goldenrod_radio_reserve_opened": {
@@ -478,6 +463,26 @@
 			"« Quand tout sera cendres »… Ça ne me plaît pas.",
 			"Les sages de Rosalia ont appelé ce matin. Ils veulent te voir.",
 			"Je crois que c'est à propos de la Tour Cendrée."
+		]
+	},
+	"goldenrod_husband_home": {
+		"speaker": "Femme",
+		"pages": [
+			"Mon mari est rentré ! Raphaël m'a tout raconté.",
+			"Merci, merci ! Prends ça, ça vient du fond du cœur."
+		]
+	},
+	"goldenrod_husband_gift_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Ultra Balls !"
+		]
+	},
+	"goldenrod_radio_raphael_home": {
+		"speaker": "Raphaël",
+		"pages": [
+			"La Tour est de nouveau à nous.",
+			"Grâce à toi, la radio chante de nouveau."
 		]
 	},
 	"sea_cave_calm": {

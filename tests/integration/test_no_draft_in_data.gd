@@ -42,6 +42,9 @@ const DATA_DIR := "res://data"
 ## JOH4 (2026-11-04) : description d'Écorcia validée (E-34, plus « draft ») ; textes [D] hors du
 ## dossier joh-05 (barrière du puits, Canarticho, Ramoloss sans queue, habitant), JOH4-Q1.
 const PENDING_DRAFTS: Array[String] = [
+	# JOH3 : textes [D] absents du dossier joh-04 (grille du Parc, habitant de la maison 2).
+	"dialogues/joh3_route_36.json/route_36_grille_parc",
+	"dialogues/joh3_goldenrod_interiors.json/goldenrod_house_2_man",
 	"dialogues/joh4_azalea_town.json/azalea_well_block",
 	"dialogues/joh4_ilex_forest.json/ilex_forest_canarticho",
 	"dialogues/joh4_slowpoke_well_b2f.json/slowpoke_well_b2f_ramoloss_sans_queue",
@@ -56,7 +59,6 @@ const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_received",
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_2_habitant",
 	"world/zones.json/zones/saffron_city",
-	"world/zones.json/zones/goldenrod_city",
 	"world/zones.json/zones/mahogany_town",
 	"dialogues/joh1.json/olivine_guard/variants/1",
 	"story/objectives.json/0",
@@ -64,7 +66,8 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/2",
 	"story/objectives.json/3",
 	"story/objectives.json/4",
-	# JOH4 et JOH5 : quatre et trois objectifs [D] en tête ; ceux du JOH1 passent à 7–11.
+	# JOH5 : trois objectifs [D] en tête ; JOH4 : quatre derrière eux ; JOH3 : deux (indices 7, 8) ;
+	# ceux du JOH1 passent de 0–4 à 9–13.
 	"story/objectives.json/5",
 	"story/objectives.json/6",
 	"story/objectives.json/7",
@@ -72,10 +75,11 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/9",
 	"story/objectives.json/10",
 	"story/objectives.json/11",
+	"story/objectives.json/12",
+	"story/objectives.json/13",
 	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",
-	"dialogues/johto_systems.json/egg_hatched/variants/0",
 	"dialogues/johto_systems.json/trade_terminal_item/variants/0",
 	"pokedex/johto.json/species/chikorita",
 	"pokedex/johto.json/species/bayleef",

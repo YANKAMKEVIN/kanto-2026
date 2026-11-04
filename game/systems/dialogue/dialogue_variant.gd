@@ -61,6 +61,10 @@ var caught_below: int = 0
 ## Johto : 50) ; 0 = sans condition.
 var caught_johto_at_least: int = 0
 var caught_johto_below: int = 0
+## JOH3 (Mme Clémence, dossier JOH-04 §9) : paliers du lien du Pokémon de tête
+## (« if_lead_bond_tier » : 0..3 de [method BondRules.tier], [constant BondReader.EGG] pour un
+## œuf en tête) ; vide = sans condition. Lus par [member DialogueRunner.lead_bond_source].
+var lead_bond_tiers: Array[int] = []
 ## Capacité de terrain (jalon 16, `jalon-16.md` §2.2) : « cut:ready » (capacité et état de
 ## [constant FieldMoves.STATE_NAMES]) ; la variante ne s'applique que dans cet état, lu par
 ## [member DialogueRunner.field_source] ; "" = toujours. Le jeton `{pokemon}` d'une telle variante
@@ -89,6 +93,12 @@ func matches_caught(caught: int) -> bool:
 
 ## Vrai si [param caught_johto] espèces de Johto capturées satisfont
 ## [member caught_johto_at_least] et [member caught_johto_below] (JOH0).
+## JOH3 : vrai si [param lead_bond] (palier du Pokémon de tête, [constant BondReader.NONE] sans
+## source) satisfait [member lead_bond_tiers].
+func matches_lead_bond(lead_bond: int) -> bool:
+	return lead_bond_tiers.is_empty() or lead_bond_tiers.has(lead_bond)
+
+
 func matches_caught_johto(caught_johto: int) -> bool:
 	return caught_johto >= caught_johto_at_least \
 		and (caught_johto_below <= 0 or caught_johto < caught_johto_below)

@@ -204,7 +204,7 @@
 						"to": "faux_employe"
 					},
 					{
-						"dialogue": "goldenrod_radio_impostor_closed"
+						"dialogue": "goldenrod_radio_tower_impostor_closed"
 					},
 					{
 						"set": [
@@ -230,7 +230,7 @@
 				],
 				"steps": [
 					{
-						"dialogue": "goldenrod_radio_elevator_closed"
+						"dialogue": "goldenrod_radio_tower_elevator_closed"
 					}
 				]
 			},
@@ -790,6 +790,35 @@
 					},
 					{
 						"despawn": "agente"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_husband_gift": {
+		"variants": [
+			{
+				"if": [
+					"johto_act2"
+				],
+				"unless": [
+					"goldenrod_husband_gift"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_husband_home"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 3
+					},
+					{
+						"dialogue": "goldenrod_husband_gift_received"
+					},
+					{
+						"set": [
+							"goldenrod_husband_gift"
+						]
 					}
 				]
 			}

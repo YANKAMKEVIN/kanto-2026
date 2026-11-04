@@ -163,8 +163,10 @@ func _build(map_id: StringName) -> void:
 			"warp":
 				var exists := ResourceLoader.exists(OUT_DIR + "%s.tscn" % EXIT_MAP)
 				for index: int in cells.size():
+					# Une arrivée par case à Doublonville (`retour_tour_radio`, `_1`).
+					var spawn := EXIT_SPAWN if index == 0 else StringName("%s_%d" % [EXIT_SPAWN, index])
 					var exit := _warp("Exit%d" % index, cells[index], PUSH, Vector2i.DOWN, EXIT_MAP,
-						EXIT_SPAWN, Vector2i.DOWN)
+						spawn, Vector2i.DOWN)
 					if not exists:
 						exit.set(&"coming_soon", EXIT_COMING_SOON)
 			"declencheur":

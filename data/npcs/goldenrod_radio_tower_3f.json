@@ -61,7 +61,8 @@
 		"facing": "left",
 		"sprite": "engineer",
 		"unless": [
-			"johto_radio_staff_talked"
+			"johto_radio_staff_talked",
+			"johto_act2"
 		],
 		"dialogue": "goldenrod_radio_raphael"
 	},

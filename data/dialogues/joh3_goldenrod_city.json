@@ -1,0 +1,63 @@
+{
+	"goldenrod_city_agent": {
+		"speaker": "Agent",
+		"variants": [
+			{
+				"unless": [
+					"johto_azalea_clue"
+				],
+				"pages": [
+					"La Route 34 ?\nPas aujourd'hui.",
+					"Avec ce qui se passe\ndans le Souterrain,\non ne laisse sortir personne."
+				]
+			},
+			{
+				"if": [
+					"johto_azalea_clue"
+				],
+				"pages": [
+					"C'est toi qui as chassé les hommes\ndu Souterrain ?",
+					"Merci.\nLa route du sud est ouverte."
+				]
+			}
+		]
+	},
+	"goldenrod_speaker": {
+		"speaker": "Haut-parleur",
+		"variants": [
+			{
+				"if": [
+					"johto_cenere_defeated"
+				],
+				"pages": [
+					"Ici Radio Doublonville ! Les programmes reprennent.",
+					"Et un grand merci à un jeune Dresseur venu de Kanto !"
+				]
+			},
+			{
+				"if": [
+					"johto_slowpoke_well_cleared"
+				],
+				"pages": [
+					"Ici Radio Rocket.",
+					"À tous les membres de la Team Rocket, où que vous soyez :",
+					"Giovanni, reviens ! La Team Rocket t'attend à Johto.",
+					"Rassemblez-vous. Le grand retour approche."
+				]
+			},
+			{
+				"pages": [
+					"Ici Radio Doublonville…\nbonne jour…",
+					"…crrr… R… reviens… crrr…",
+					"…nous nous excusons\npour cette interruption."
+				]
+			}
+		]
+	},
+	"goldenrod_city_panneau_ville": {
+		"narration": true,
+		"pages": [
+			"DOUBLONVILLE\nLa ville scintillante,\nau carrefour de Johto"
+		]
+	}
+}

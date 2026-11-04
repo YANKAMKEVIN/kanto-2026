@@ -72,7 +72,9 @@ func test_stairs_and_exits_are_paired() -> void:
 			var spawn := String(warp.get(&"target_spawn"))
 			if target == "goldenrod_city":
 				assert_eq(floor_number, 1, "sortie au 1F seulement")
-				assert_eq(spawn, "retour_tour_radio")
+				assert_true(spawn.begins_with("retour_tour_radio"), "retour à la porte")
+				assert_true(String(warp.get(&"coming_soon")).is_empty(), "Doublonville existe")
+				assert_not_null(_map("goldenrod_city").get_node_or_null("Spawns/" + spawn), spawn)
 				assert_eq(warp.get(&"trigger"), Warp.Trigger.PUSH)
 				continue
 			if warp.name == "ElevatorDoor":
@@ -83,6 +85,19 @@ func test_stairs_and_exits_are_paired() -> void:
 			var target_map := _map(target)
 			assert_not_null(target_map.get_node_or_null("Spawns/" + spawn),
 				"%s : %s → %s:%s" % [map_id, warp.name, target, spawn])
+
+
+## Raccord du JOH3 : la porte de la Tour à Doublonville mène au hall, plus « à venir ».
+func test_city_door_leads_to_the_hall() -> void:
+	var city := _map("goldenrod_city")
+	var doors := 0
+	for warp: Node in city.get_node(^"Warps").get_children():
+		if warp.get(&"target_map") == &"goldenrod_radio_tower_1f":
+			doors += 1
+			assert_true(String(warp.get(&"coming_soon")).is_empty(), "%s : plus à venir" % warp.name)
+			assert_not_null(_map("goldenrod_radio_tower_1f").get_node_or_null(
+				"Spawns/" + String(warp.get(&"target_spawn"))), String(warp.get(&"target_spawn")))
+	assert_eq(doors, 2, "porte (10..11, 15)")
 
 
 func test_elevator_serves_the_five_floors() -> void:

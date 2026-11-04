@@ -16,7 +16,9 @@ const MAP_POINTS: Array[StringName] = [&"goldenrod_radio_elevator", &"goldenrod_
 	&"goldenrod_radio_reserve_door", &"goldenrod_radio_office_locked",
 	&"radio_3f_hidden_1", &"radio_4f_hidden_1",
 	# T-38 : joué par la scène `sea_cave_current_back` du JOH1 (grotte marine).
-	&"sea_cave_calm"]
+	&"sea_cave_calm",
+	# T-35, T-36 : la maison 1 de Doublonville (dialogues et PNJ du JOH3).
+	&"goldenrod_husband_gift", &"goldenrod_radio_raphael_home"]
 const MAP_TRIGGERS: Array[StringName] = [&"goldenrod_radio_impostor", &"goldenrod_radio_exit",
 	&"goldenrod_radio_cenere", &"goldenrod_radio_office"]
 ## Drapeaux venus d'autres jalons ou systèmes (lus, jamais posés ici).
@@ -183,3 +185,29 @@ func test_returning_pokemon_token() -> void:
 	assert_eq(DialogueTokens.returning_name(confiscated, data), "Roucarnage",
 		"le compagnon d'avant le vol")
 	assert_true(DialogueTokens.KNOWN.has(DialogueTokens.RETURNING_POKEMON))
+
+
+## Raccords de Doublonville (dossier §4, étapes 1 et 10 ; §11) : le haut-parleur passe D-10 (JOH3),
+## T-1 tant que Cenere tient la Tour, T-37 ensuite ; la femme de D-37 remercie à l'acte 2.
+func test_goldenrod_speaker_and_the_husband_follow_the_story() -> void:
+	var library := DialogueLibrary.new()
+	assert_true(library.load_dir())
+	var flags := StoryFlags.new()
+	var speaker := library.get_dialogue(&"goldenrod_speaker")
+	assert_eq(speaker.pick(flags).pages[0].text, "Ici Radio Doublonville…\nbonne jour…", "D-10")
+	flags.set_flag(&"johto_slowpoke_well_cleared")
+	assert_eq(speaker.pick(flags).pages[0].text, "Ici Radio Rocket.", "T-1")
+	flags.set_flag(&"johto_cenere_defeated")
+	assert_eq(speaker.pick(flags).pages[0].text,
+		"Ici Radio Doublonville ! Les programmes reprennent.", "T-37")
+	var woman := library.get_dialogue(&"goldenrod_house_1_woman")
+	assert_eq(woman.pick(flags).pages[0].text, "Mon mari travaille à la Tour Radio.", "D-37")
+	flags.set_flag(&"johto_act2")
+	assert_eq(woman.pick(flags).cutscene, &"goldenrod_husband_gift", "T-35")
+	flags.set_flag(&"goldenrod_husband_gift")
+	assert_true(woman.pick(flags).pages[0].text.begins_with("Il dort depuis hier soir."))
+	var house := NpcRoster.load_for_map(&"goldenrod_house_1")
+	assert_eq(house.get_spec(&"raphael").if_flags, [&"johto_act2"] as Array[StringName], "T-36")
+	var third := NpcRoster.load_for_map(&"goldenrod_radio_tower_3f")
+	assert_true(third.get_spec(&"raphael").unless_flags.has(&"johto_act2"),
+		"il ne reste pas à la réserve à l'acte 2")
