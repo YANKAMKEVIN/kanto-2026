@@ -54,7 +54,9 @@ func test_escape_rope_data() -> void:
 	# Lot 32P : vitamines, PP Plus, Éthers, Élixirs et Repousses (test_lot_32p_items).
 	var lot_32p: Array[StringName] = [&"hp_up", &"protein", &"iron", &"carbos", &"calcium",
 		&"pp_up", &"ether", &"max_ether", &"elixir", &"max_elixir", &"repel", &"super_repel",
-		&"max_repel"]
+		&"max_repel",
+		# JOH7 : le PP Max (un PP Plus qui porte la capacité à son plafond).
+		&"pp_max"]
 	assert_true(FieldItemRules.is_targetless(_items.get_item(&"repel")), "Repousse : sans cible")
 	# Aucun autre objet n'a d'usage d'exploration.
 	for id: StringName in _items.get_ids():

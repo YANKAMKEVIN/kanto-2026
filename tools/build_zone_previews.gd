@@ -44,6 +44,8 @@ const AUTO_MAPS: Dictionary[String, String] = {
 	"cerulean_cave": "cerulean_cave_1f", "dark_cave": "dark_cave_1f",
 	# JOH1 : la grotte marine (salle 2, eau profonde) ; Oliville a sa propre carte.
 	"sea_cave": "sea_cave_2",
+	# JOH7 : les îles par leur B1F (lac et plate-forme de Suicune).
+	"whirl_islands": "whirl_islands_b1f",
 }
 ## Point visé, en fraction du rectangle de la couche Ground (0,5 ; 0,5 = centre), quand le centre
 ## tombe sur un lieu peu parlant [D].
