@@ -333,3 +333,11 @@ identifiant (chantiers JR.2 et Costumes) : aucun outil `-s` ne compilait plus le
 `test_joh1_olivine_map` (7), `test_joh1_olivine_interiors` (8), `test_joh1_story` (8, textes O-1 à
 O-25 mot pour mot contre le dossier) ; inventaires réalignés (zones, rencontres, scènes, dialogues,
 brouillons, sauvegardes forcées, portes de Bourg Palette, Boutiques).
+
+### Captures et CI (2026-11-04)
+Captures Mac (Movie Maker, départs `johto_olivine_night`, `johto_olivine_day`, `johto_sea_cave`,
+`johto_orme`) relues : nuit et jour distincts à Oliville, bouche de grotte, salle de repos le matin.
+`test_joh1_boot_period` (3) : moment imposé sur les vrais départs. Correctifs de suite complète :
+second contrôleur pausable, Sbires qui marchent. CI : voir `etat-projet.md`. Reste : QA A17 (session
+coordinatrice), fusion `--no-ff` dans `main` après la CI verte et le JOH0.
+
