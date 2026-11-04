@@ -1,0 +1,13 @@
+LOGO — logotype du jeu « Pokemake », pour l'écran titre et l'image de démarrage. Il REMPLACE le logo « KANTO 2026 » joint : même famille, même police, mêmes couleurs, même lumière ; seul le texte change.
+
+Une image est jointe : le logo actuel « KANTO 2026 » (capitales dorées à empattements doux, contour fin bleu nuit, biseau léger, fine ligne dorée en dessous, fond sombre lumineux). Reproduis EXACTEMENT ce style de lettrage et ce rendu.
+
+TEXTE EXACT, orthographe stricte, un seul mot sur une seule ligne :
+« POKEMAKE » (8 lettres : P, O, K, E, M, A, K, E), SANS accent sur le E, sans espace, sans trait d'union.
+Aucun autre mot, aucun chiffre, aucune lettre en plus. Vérifie lettre par lettre avant de rendre l'image.
+
+CARACTÈRE : « POKE » en crème doré lumineux et « MAKE » un cran plus clair, presque crème ivoire à reflets bleu ciel très légers, pour que le mot se lise comme deux parties (POKE + MAKE) tout en restant un seul mot sans espace ; capitales larges à empattements très doux, légèrement épaisses, crème doré lumineux avec un dégradé subtil vers un or chaud, contour fin bleu nuit profond, très légère profondeur (biseau doux), pas de chrome ni de métal brillant. Seul ornement : une fine ligne horizontale dorée continue sous le mot, un peu moins large que lui. Les deux K et les deux E doivent être identiques entre eux ; le O et le A parfaitement lisibles. Le mot est plus long que « KANTO » : lettres un peu moins hautes pour tenir dans la même largeur, espacement généreux.
+IMPORTANT : ce n'est PAS le logo officiel « Pokémon » : ni sa police jaune à contour bleu, ni sa forme, ni le mot Pokémon, ni Poké Ball, ni personnage.
+
+FORMAT : image paysage 1536 × 1024, logotype centré occupant environ 80 % de la largeur, sur le MÊME fond sombre uni et lumineux que l'image jointe (halo doré doux autour des lettres).
+INTERDITS : tout autre texte, signature, filigrane, cadre, décor, personnage, pixel art, rendu 3D réaliste.

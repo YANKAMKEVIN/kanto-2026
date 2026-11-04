@@ -109,7 +109,7 @@ def main() -> None:
 	lw, lh = 1110, 512
 	planche.alpha_composite(ecran_systeme(lw, lh), (60, y))
 	splash = Image.new("RGBA", (2340, 1080), SPLASH_BG + (255,))
-	img = Image.open(RACINE / "assets/ui/opening/splash_kanto_2026.png").convert("RGBA")
+	img = Image.open(RACINE / "assets/ui/opening/splash_pokemake.png").convert("RGBA")
 	img = img.resize((round(img.width * 1080 / img.height), 1080), Image.LANCZOS)
 	splash.alpha_composite(img, ((2340 - img.width) // 2, 0))
 	planche.alpha_composite(splash.resize((lw, lh), Image.LANCZOS), (60 + lw + 60, y))

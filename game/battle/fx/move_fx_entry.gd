@@ -8,14 +8,17 @@ extends RefCounted
 ## "thunder_shock": {"family": "electrique", "signature": "eclair"},
 ## "barrage": {"family": "contact", "impact": "corps", "modifiers": ["multi"]}
 ## [/codeblock]
-## `family` est obligatoire ; `impact` (variante de Contact), `modifiers` et `signature` sont
-## facultatifs. Les lots P1 à P4 y ajouteront la chorégraphie propre de l'attaque (CV-1).
+## `family` est obligatoire ; `impact` (variante de Contact), `variant` (variante de la famille :
+## `families.<famille>.variants`, couleur d'une poudre, nombre de bulles…), `modifiers` et
+## `signature` sont facultatifs. Les lots P1 à P4 y ajouteront la chorégraphie propre de l'attaque (CV-1).
 
 var move_id: StringName = &""
 ## Famille (`families` de `families.json`) : briques communes et plancher.
 var family: StringName = &""
 ## Variante d'impact de la famille Contact ("" : aucune).
 var impact: StringName = &""
+## Variante de la famille (`variants` de la famille, réglages `fx` remplacés ; "" : aucune).
+var variant: StringName = &""
 var modifiers: Array[StringName] = []
 ## Signature (§3.3, brique neuve) ; "" : aucune.
 var signature: StringName = &""

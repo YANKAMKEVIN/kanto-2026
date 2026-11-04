@@ -7,7 +7,63 @@ const ANNEX_COUNT: int = 165
 const JOHTO_COUNT: int = 47
 const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", &"plante",
 	&"glace", &"psy", &"poison", &"sol_roche", &"vent", &"spectre", &"dragon", &"energie", &"son",
-	&"statut_plus", &"statut_moins", &"soin"]
+	&"statut_plus", &"statut_moins", &"statut_regard", &"statut_sable", &"soin",
+	&"statut_geste", &"fouet", &"bulles", &"statut_fil", &"dard", &"poudre", &"graine",
+	&"chute_pierres", &"teleport", &"trempette", &"explosion", &"fumee", &"gaz", &"flash",
+	&"cuiller", &"etoiles", &"foudre", &"poing", &"os", &"onde_folie", &"brume", &"lancer",
+	&"atlas", &"fissure", &"tunnel"]
+## Vague 1 « Effets fidèles à Rouge » (2026-11-02) : attaque → [famille, variante, brique de
+## trajet, brique de lancement].
+const ROUGE_WAVE_1: Dictionary = {
+	&"tail_whip": [&"statut_geste", &"", "", "tail_wag"],
+	&"vine_whip": [&"fouet", &"", "whip", "rear_back"],
+	&"bubble": [&"bulles", &"", "bubbles", "bubble_swell"],
+	&"bubble_beam": [&"bulles", &"rafale", "bubbles", "bubble_swell"],
+	&"string_shot": [&"statut_fil", &"", "string", "rear_back"],
+	&"poison_sting": [&"dard", &"", "needle", "rear_back"],
+	&"sleep_powder": [&"poudre", &"dodo", "powder_fall", "powder_shake"],
+	&"stun_spore": [&"poudre", &"para", "powder_fall", "powder_shake"],
+	&"poison_powder": [&"poudre", &"toxik", "powder_fall", "powder_shake"],
+	&"spore": [&"poudre", &"spore", "powder_fall", "powder_shake"],
+	&"leech_seed": [&"graine", &"", "seed_arc", "rear_back"],
+}
+## Vague 2 « Effets fidèles à Rouge » (2026-11-04) : attaque → [famille, variante, variante
+## d'impact, brique de trajet].
+const ROUGE_WAVE_2: Dictionary = {
+	&"twineedle": [&"dard", &"double", &"", "needle"],
+	&"pin_missile": [&"dard", &"nuee", &"", "needle"],
+	&"spike_cannon": [&"dard", &"picanon", &"", "needle"],
+	&"rock_throw": [&"chute_pierres", &"", &"", "rockfall"],
+	&"rock_slide": [&"chute_pierres", &"eboulement", &"", "rockfall"],
+	&"teleport": [&"teleport", &"", &"", ""],
+	&"splash": [&"trempette", &"", &"", ""],
+	&"explosion": [&"explosion", &"", &"", ""],
+	&"self_destruct": [&"explosion", &"destruction", &"", ""],
+	&"pay_day": [&"contact", &"", &"pieces", "dash"],
+	&"smokescreen": [&"fumee", &"", &"", "smoke_ball"],
+	&"poison_gas": [&"gaz", &"", &"", "gas_drift"],
+	&"smog": [&"gaz", &"smog", &"", "gas_drift"],
+	&"flash": [&"flash", &"", &"", ""],
+	&"kinesis": [&"cuiller", &"", &"", ""],
+	&"swift": [&"etoiles", &"", &"", "stars"],
+	&"thunder": [&"foudre", &"", &"", "sky_bolt"],
+	&"fire_punch": [&"poing", &"feu", &"poing", "dash"],
+	&"ice_punch": [&"poing", &"glace", &"poing", "dash"],
+	&"thunder_punch": [&"poing", &"eclair", &"poing", "dash"],
+	&"lick": [&"contact", &"", &"langue", "dash"],
+	&"bone_club": [&"os", &"massue", &"", "bone"],
+	&"bonemerang": [&"os", &"boomerang", &"", "bone"],
+	&"confuse_ray": [&"onde_folie", &"", &"", "strange_orb"],
+	&"haze": [&"brume", &"", &"", ""],
+	&"clamp": [&"contact", &"", &"claquoir", "dash"],
+	&"crabhammer": [&"contact", &"", &"pince_masse", "dash"],
+	&"waterfall": [&"contact", &"", &"cascade", "dash"],
+	&"egg_bomb": [&"lancer", &"oeuf", &"", "lob"],
+	&"barrage": [&"lancer", &"pilonnage", &"", "lob"],
+	&"seismic_toss": [&"atlas", &"", &"atlas", "dash"],
+	&"fissure": [&"fissure", &"", &"", ""],
+	&"dig": [&"tunnel", &"", &"", "underground"],
+}
 
 var _data: PokemonData
 
@@ -37,7 +93,7 @@ func test_real_catalog_has_no_error() -> void:
 	assert_eq(catalog.get_errors(), PackedStringArray(), "\n".join(catalog.get_errors()))
 
 
-func test_the_17_families_exist() -> void:
+func test_the_44_families_exist() -> void:
 	var catalog := MoveFxCatalog.load_dir()
 	assert_eq(catalog.family_ids().size(), FAMILIES.size())
 	for family: StringName in FAMILIES:
@@ -96,6 +152,101 @@ func test_phases_of_every_family_sum_to_one() -> void:
 		assert_almost_eq(sum, 1.0, 0.001, String(family))
 
 
+## RP-286 (décision de Kevin du 2026-11-01) : regard ou geste sur le lanceur, puis l'aura sur la
+## cible, sans trajet ; le trajet reste pour Jet de Sable (une gerbe de sable, remarque de Kevin
+## du 2026-11-02) et Sécrétion (son trajet d'origine).
+func test_gaze_moves_have_no_travel_but_sand_and_string_keep_it() -> void:
+	var catalog := MoveFxCatalog.load_dir()
+	for move_id: StringName in [&"leer", &"glare", &"tail_whip", &"disable"]:
+		var family := catalog.family(catalog.entry(move_id).family)
+		var bricks: Dictionary = family.get("bricks", {})
+		assert_eq(String(bricks.get("travel", "")), "", "%s : pas de trajet" % move_id)
+		assert_false((family.get("fx", {}) as Dictionary).get("art", {}).has("travel"),
+			"%s : pas d'art de trajet" % move_id)
+		assert_eq(String(bricks.get("impact", "")), "falling_aura", "%s : aura sur la cible" % move_id)
+		assert_ne(String(family.get("target", "")), "self", "%s : vise l'adversaire" % move_id)
+	var sand := catalog.family(catalog.entry(&"sand_attack").family)
+	assert_eq(String((sand.get("bricks", {}) as Dictionary).get("travel", "")), "sand_spray",
+		"Jet de Sable : une gerbe de grains")
+	var sand_art: Dictionary = (sand.get("fx", {}) as Dictionary).get("art", {})
+	assert_false(sand_art.has("travel"), "Jet de Sable : pas de projectile peint")
+	assert_eq(String(sand_art.get("spray", "")), "grain_sable", "Jet de Sable : grains de sable")
+	var string_shot: Dictionary = catalog.family(catalog.entry(&"string_shot").family).get("bricks", {})
+	assert_eq(String(string_shot.get("travel", "")), "string", "Sécrétion : des fils (vague 1)")
+
+
+## Vague 1 « Effets fidèles à Rouge » : chaque attaque est rangée dans sa famille (et sa
+## variante), avec ses briques ; aucune ne part plus en lueur (ni art de trajet `lueur_douce`, ni
+## projectile rond par défaut : son trajet est une brique propre ou vide).
+func test_rouge_wave_1_moves_have_their_family_and_bricks() -> void:
+	var catalog := MoveFxCatalog.load_dir()
+	for move_id: StringName in ROUGE_WAVE_1:
+		var expected: Array = ROUGE_WAVE_1[move_id]
+		var entry := catalog.entry(move_id)
+		assert_false(entry.fallback, "%s : dans les données" % move_id)
+		assert_eq(entry.family, expected[0], "%s : famille" % move_id)
+		assert_eq(entry.variant, expected[1], "%s : variante" % move_id)
+		var family := catalog.family(entry.family)
+		var bricks: Dictionary = family.get("bricks", {})
+		assert_eq(String(bricks.get("travel", "")), expected[2], "%s : trajet" % move_id)
+		assert_eq(String(bricks.get("launch", "")), expected[3], "%s : lancement" % move_id)
+		var art := JsonFields.get_dict(catalog.family_fx(entry.family, entry.variant), "art")
+		assert_false(art.has("travel"), "%s : pas de projectile peint" % move_id)
+		assert_false(art.values().has("lueur_douce"), "%s : pas de lueur" % move_id)
+		assert_false(art.has("charge") and art["charge"] == "oeil_menacant",
+			"%s : pas d'œil" % move_id)
+	for move_id: StringName in [&"peck", &"drill_peck"]:
+		var entry := catalog.entry(move_id)
+		assert_eq(entry.family, &"contact", "%s : au contact" % move_id)
+	assert_eq(catalog.entry(&"peck").impact, &"bec", "Picpic : coups de bec")
+	assert_eq(catalog.entry(&"drill_peck").impact, &"vrille", "Bec Vrille : en vrille")
+	assert_eq(JsonFields.get_int(catalog.impact(&"bec"), "beats"), 2, "deux coups de bec")
+
+
+## Variante de famille : ses réglages `fx` remplacent ceux de la famille, l'art est fusionné.
+func test_variant_overrides_family_fx() -> void:
+	var catalog := MoveFxCatalog.load_dir()
+	var base := catalog.family_fx(&"bulles")
+	var rafale := catalog.family_fx(&"bulles", &"rafale")
+	assert_gt(int(rafale["volley"]["count"]), int(base["volley"]["count"]), "Bulles d'O : plus")
+	assert_lt(float(rafale["volley"]["stagger"]), float(base["volley"]["stagger"]), "plus serrées")
+	assert_eq(rafale["art"], base["art"], "même art")
+	var spore := catalog.family_fx(&"poudre", &"spore")
+	assert_eq(String(spore["art"]["powder"]), "spore", "grains peints de Spore")
+	assert_eq(String(spore["art"]["sparkle"]), "etincelle", "art de la famille gardé")
+	var colors: Dictionary = {}
+	for variant: StringName in [&"dodo", &"para", &"toxik", &"spore"]:
+		colors[String(catalog.family_fx(&"poudre", variant)["palette"][1])] = variant
+	assert_eq(colors.size(), 4, "une couleur par poudre")
+
+
+## Vague 2 « Effets fidèles à Rouge » (2026-11-04) : les 22 lignes de l'audit (33 attaques)
+## dans leur famille, leur variante et leurs briques ; aucune ne garde la famille qui trahissait
+## sa nature (Contact pour des aiguilles tirées, rayon d'énergie pour Météores ou Explosion…).
+func test_rouge_wave_2_moves_have_their_family_and_bricks() -> void:
+	var catalog := MoveFxCatalog.load_dir()
+	for move_id: StringName in ROUGE_WAVE_2:
+		var expected: Array = ROUGE_WAVE_2[move_id]
+		var entry := catalog.entry(move_id)
+		assert_false(entry.fallback, "%s : dans les données" % move_id)
+		assert_eq(entry.family, expected[0], "%s : famille" % move_id)
+		assert_eq(entry.variant, expected[1], "%s : variante" % move_id)
+		assert_eq(entry.impact, expected[2], "%s : variante d'impact" % move_id)
+		var bricks: Dictionary = catalog.family(entry.family).get("bricks", {})
+		assert_eq(String(bricks.get("travel", "")), expected[3], "%s : trajet" % move_id)
+		var art := JsonFields.get_dict(catalog.family_fx(entry.family, entry.variant), "art")
+		assert_false(art.has("travel"), "%s : pas de projectile peint générique" % move_id)
+		assert_false(art.values().has("lueur_douce"), "%s : pas de lueur" % move_id)
+	for move_id: StringName in [&"twineedle", &"pin_missile", &"spike_cannon", &"bonemerang",
+			&"barrage"]:
+		assert_true(catalog.entry(move_id).has_modifier(&"multi"), "%s : coups multiples" % move_id)
+	assert_eq(JsonFields.get_id(catalog.signature(&"fatal_foudre"), "base"), &"foudre",
+		"Fatal-Foudre : la signature tombe du ciel")
+	assert_eq(JsonFields.get_id(catalog.signature(&"explosion"), "base"), &"explosion",
+		"Explosion : sans rayon")
+	assert_true(JsonFields.get_bool(catalog.family(&"teleport"), "vanish"), "Téléport : il part")
+
+
 # --- Repli ------------------------------------------------------------------------------
 
 func test_fallback_by_type_and_category() -> void:
@@ -137,9 +288,10 @@ func test_unknown_references_are_errors() -> void:
 		"c": {"family": "feu", "modifiers": ["spin"]},
 		"d": {"family": "feu", "signature": "eclair"},
 		"e": {"family": "contact", "impact": "gifle"},
+		"f": {"family": "feu", "variant": "bleue"},
 	}}])
 	assert_false(catalog.validate())
-	assert_eq(catalog.get_errors().size(), 5, "\n".join(catalog.get_errors()))
+	assert_eq(catalog.get_errors().size(), 6, "\n".join(catalog.get_errors()))
 
 
 func test_comment_keys_are_ignored() -> void:

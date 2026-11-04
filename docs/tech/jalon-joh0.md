@@ -565,3 +565,32 @@ lot : `Callable` statique `Evolution.period_source` vers Boot), **`3e6fa8d0` ver
 41744538560, 8 lots « success »). Icônes provisoires des quatre objets d'évolution ajoutées en
 passant (test de couverture des icônes).
 
+### T5 — validation de la v10, déléguée (2026-11-04)
+Kevin a délégué la validation (« fais-le toi-même, on doit avancer ») ; pas de vraie sauvegarde
+disponible (S24 indisponible, A17 vierge). Trois niveaux : (1) **fixture v9 de fin de Kanto
+écrite par le code de `main`** (`tests/fixtures/save/v9_fin_kanto.json`, `test_save_kevin_joh0.gd`,
+`1d9ad759`) : lue en v9, seul le lien ajouté, mêmes Pokémon et objets, réécriture stable, refusée
+par une build v9 ; (2) **vrai Boot** (`tests/integration/test_johto_debug_starts_boot.gd`) :
+Continuer sur cette v9 → reprise, premier autosave réécrit en v10 avec le lien ; départ
+`johto_return` (copie `tests/fixtures/debug_start/johto_return_autosave.json` avec `autosave`) :
+scène à l'entrée de carte, écran du choix des 6 avec les 7 de la réserve (« 6 / 6 », retour
+Android avalé), VALIDER → 6 à l'équipe, le 7e au Stockage, objets rendus, `johto_team_returned`,
+fichier v10 sans section `confiscated` ; départ `johto_confiscated` : le terminal du Centre
+répond « Le réseau de Kanto ne répond pas. » et le Stockage ne s'ouvre pas ; (3) QA téléphone
+(A17) dès que la session J34 libère l'appareil (APK release 0.34.0 installé, signature
+différente). La vraie v9 du S24 entrera en fixture quand elle sera relevée (JOH-Q1).
+
+### QA A17 et clôture de la validation déléguée (2026-11-04)
+Consigne de Kevin (relayée par la coordination) : JOH0 se termine sans lui. QA sur l'A17 (13 h 40
+à 13 h 55, APK debug de la branche installé par `adb push` + `pm install -r`, captures
+`build/qa/joh0_a17_2026-11-04/`). **Validé** : Continuer sur `v9_fin_kanto.json` → « [qa]
+sauvegarde v9 → v10 », fichier réécrit v10 avec le lien ; `johto_return` : scène, écran du choix
+des 6 (7 lignes, compteur, bascule, VALIDER), retour exécuté ; `johto_confiscated` : terminal
+« Le réseau de Kanto ne répond pas. », Stockage fermé ; `johto_confiscated_full` : Ball refusée
+(« Ton équipe est pleine, et le PC ne répond pas. ») ; Pokédex 202 espèces ; Carte à deux pages ;
+`johto_light_test` nuit / matin / jour. **Corrigé** : la liste du choix des 6 ne défilait pas au
+doigt (`scroll_deadzone`, boutons en PASS, `TapGuard` ; `23d099ac`). **Non vus** (pas de carte ni
+d'espèce de Johto avant le JOH1) : puce de l'heure, filtre région du Pokédex, refus du Vol
+inter-régions (couverts par les tests). Critères du §4 : 1 à 3 tenus (v10 sur fixture, Boot et
+téléphone) ; le reste par tests, captures et QA. Fusion dans `main` (`--no-ff`) dès la CI verte.
+
