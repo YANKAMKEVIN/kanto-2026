@@ -401,3 +401,23 @@ func test_set_night_shows_only_the_night_lights_of_the_map() -> void:
 	assert_false(elsewhere.visible, "une autre carte n'est pas touchée")
 	lighting.set_night(false, map)
 	assert_false(lamp.visible)
+
+
+## JOH1 (QA A17 du 2026-11-04) : en économie (défaut de l'A17), la nuit de Johto garde son gain
+## à plat (`grade.economy_flat`) au lieu de perdre tout étalonnage ; le golden hour de Kanto non.
+func test_economy_keeps_the_johto_night_as_a_flat_gain() -> void:
+	var lighting := _lighting()
+	var modulate := lighting.get_world_modulate()
+	add_child(modulate)
+	var night := _library.get_profile(&"johto_night")
+	assert_true(night.grade_economy_flat, "donnée : nuit de Johto")
+	lighting.apply(night)
+	assert_false(lighting.is_grade_flat(), "hors économie : étalonnage plein écran")
+	lighting.set_economy(true)
+	assert_true(lighting.is_grade_flat(), "économie : gain à plat gardé")
+	assert_lt(lighting.get_flat_grade_color().r, 0.8, "assombri, bleuté")
+	lighting.apply(_golden)
+	assert_false(lighting.is_grade_visible(), "Kanto en économie : inchangé, aucun étalonnage")
+	lighting.set_economy(false)
+	modulate.queue_free()
+

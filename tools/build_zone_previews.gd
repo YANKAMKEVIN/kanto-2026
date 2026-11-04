@@ -42,6 +42,8 @@ const AUTO_MAPS: Dictionary[String, String] = {
 	"mt_moon": "mt_moon_1f", "safari_zone": "safari_zone_center", "cerulean_cape": "route_25",
 	"ss_anne": "ss_anne_outer_deck", "seafoam_islands": "seafoam_1f",
 	"cerulean_cave": "cerulean_cave_1f", "dark_cave": "dark_cave_1f",
+	# JOH1 : la grotte marine (salle 2, eau profonde) ; Oliville a sa propre carte.
+	"sea_cave": "sea_cave_2",
 }
 ## Point visé, en fraction du rectangle de la couche Ground (0,5 ; 0,5 = centre), quand le centre
 ## tombe sur un lieu peu parlant [D].

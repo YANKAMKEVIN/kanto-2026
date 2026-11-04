@@ -24,13 +24,14 @@ func test_real_data_loads_without_error() -> void:
 		&"celadon_dept_5f", &"celadon_dept_roof_lemonade", &"celadon_dept_roof_soda",
 		&"celadon_dept_roof_water", &"cerulean_mart", &"cinnabar_mart", &"fuchsia_mart",
 		&"goldenrod_dept_2f", &"goldenrod_dept_3f", &"goldenrod_dept_roof_lemonade",
-		&"goldenrod_dept_roof_soda", &"goldenrod_dept_roof_water", &"indigo_plateau_lobby", &"lavender_mart", &"pewter_mart",
+		&"goldenrod_dept_roof_soda", &"goldenrod_dept_roof_water", &"indigo_plateau_lobby",
+		&"lavender_mart", &"olivine_mart", &"pewter_mart",
 		&"saffron_mart", &"vermilion_mart", &"viridian_mart"]
 		as Array[StringName], "jalon 10 : Argenta (test_pewter_data) ; jalon 13 : Azuria ;"
 		+ " jalon 15 : Carmin (test_vermilion_data) ; jalon 20 : grand magasin"
 		+ " (test_celadon_data) ; jalon 22 : Parmanie ; jalon 24 : Cramois'Île (test_j24_data) ;"
 		+ " jalon 26 : Safrania (test_saffron_city) ;"
-		+ " jalon 29 : Plateau Indigo ; JOH3 : Grand Magasin de Doublonville")
+		+ " jalon 29 : Plateau Indigo ; JOH1 : Oliville ; JOH3 : Grand Magasin de Doublonville")
 	var mart := _library.get_shop(&"viridian_mart")
 	assert_eq(mart.id, &"viridian_mart")
 	assert_eq(mart.source, "res://data/shops/viridian_mart.json")

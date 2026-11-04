@@ -129,6 +129,19 @@
 				"cutscene": "j32_oak_gifts"
 			},
 			{
+				"if": ["league_champion_defeated", "oak_post_league_gifts_done"],
+				"unless": ["johto_letter_read"],
+				"cutscene": "johto_letter"
+			},
+			{
+				"if": ["johto_letter_read"],
+				"unless": ["johto_arrived"],
+				"pages": [
+					"La grotte est sur la rive sud, à l'est du ponton.",
+					"Prends garde aux courants."
+				]
+			},
+			{
 				"if": ["got_oak_parcel"],
 				"unless": ["pokedex_activated"],
 				"cutscene": "oak_parcel"

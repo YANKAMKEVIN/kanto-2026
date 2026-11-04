@@ -1,0 +1,11 @@
+{
+	"olivine_mart": {
+		"stock": [
+			{ "item": "poke_ball" },
+			{ "item": "potion" },
+			{ "item": "super_potion" },
+			{ "item": "antidote" },
+			{ "item": "revive" }
+		]
+	}
+}

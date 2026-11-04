@@ -4,9 +4,10 @@
 		"variants": [
 			{
 				"pages": [
-					"Le réseau de Kanto ne répond pas."
-				],
-				"draft": true
+					"Connexion au réseau de Kanto…",
+					"…",
+					"Le réseau ne répond pas."
+				]
 			}
 		]
 	},
