@@ -87,9 +87,14 @@ le reste. Les Sbires femmes ont un sprite à part (décision de Kevin du 2026-11
   37 % x, pieds 95 % y, sommet 40 % y ; pendant le lancer de l'adversaire la **pose debout** (garde,
   poings serrés, maquette 2), centre 21,5 % x, pieds 97 % y, hauteur 57 % ; à son propre lâcher la
   pose de lancer ; pendant le « VS » la pose debout, centre 29 % x, pieds 74 % y.
-- **Costume porté** : le jeu garde le lancer de dos du costume (pas de pose dédiée).
-- **Repli actuel** : le lancer de dos existant (`heros_lancer.png` / `joueuse_lancer.png`),
-  agrandi.
+- **Costume porté** (2026-11-04, Kevin : les costumes « ont encore l'ancienne pose pour le lancer ») :
+  chaque costume a ses dos peints, même recette et mêmes toiles que le héros :
+  `dos_costume_<art>_<joueur|joueuse>[_surf][_lancer].webp` (apparence de combat
+  `costume_<art>_<version>`, `CostumeCatalog.battle_look`) ; outil `tools/art/dos_costumes.py`
+  (Codex, deux poses par image, 33 générations ; Link et Zelda à pied bloqués une fois par la
+  sécurité de Codex, passés au second essai). `dos_heroine(_lancer)` est peint aussi.
+- **Repli** : sans dos peint, le lancer de dos existant (`heros_lancer.png` / `joueuse_lancer.png`,
+  ou `<art>_<version>_lancer.png` du costume), agrandi.
 
 ## 3. Grands adversaires (13 portraits, 22 combats)
 
@@ -434,8 +439,8 @@ reste intact et utilisé).
   `surf_monture` / `player_surf`), pas le Pokémon de l'équipe. Même monture en combat.
 - **Art** : héros et joueuse montés, vus de dos (pose prête et lancer, main de `dos_hero`) :
   `dos_hero_surf(_lancer).webp`, `dos_heroine_surf(_lancer).webp`, toile 960 × 960, **bas de la
-  toile = ligne d'eau**. La joueuse n'a pas encore de dos peint à pied (`dos_heroine`) : à pied
-  elle garde le lancer de dos provisoire ; son art en Surf est prêt.
+  toile = ligne d'eau**. Depuis le 2026-11-04, la joueuse a aussi son dos peint à pied
+  (`dos_heroine`), et chaque costume ses dos en Surf (`dos_costume_<…>_surf(_lancer)`, §2).
 - **Adversaire** [D] : le Nageur et la Nageuse **dans l'eau**, coupés au nombril, prête et lancer
   (`nageur_surf`, `nageuse_surf` + `_lancer`), comme leurs PNJ du monde (`swimmer_water`).
   `scale` [D] = celui de la classe × 0,45 (partie visible) ; joueur monté × 0,9 ; mains mesurées
