@@ -1,0 +1,165 @@
+{
+ "_note": "Montage de la bande-annonce v2 (storyboard docs/design/storyboard-trailer-v1.md, validé par Kevin le 2026-11-04). Points d'entrée en secondes dans build/trailer/raw/<src>.avi (repères « [trailer] » des journaux build/trailer/logs/). Actes I à III : son propre de chaque plan ; acte IV : coupes rapides sous une nappe (la musique de la montée vers la Ligue), sons propres baissés sauf le cri de Mewtwo et la banderole VS. Les plans 3-4 et 5, 8 du storyboard sont pris en deux morceaux quand le jeu met plus de temps que le plan prévu.",
+ "letterbox": 0.07,
+ "tail_black": 0.5,
+ "cuts": [
+  {
+   "id": "01a_chambre",
+   "src": "depart",
+   "in": 3.4,
+   "dur": 2.5,
+   "zoom": [
+    1.55,
+    1.6
+   ]
+  },
+  {
+   "id": "01b_maison",
+   "src": "depart",
+   "in": 8.0,
+   "dur": 2.6,
+   "zoom": [
+    1.5,
+    1.55
+   ]
+  },
+  {
+   "id": "02_bourg_palette",
+   "src": "depart",
+   "in": 13.0,
+   "dur": 3.6,
+   "zoom": [
+    1.0,
+    1.06
+   ]
+  },
+  {
+   "id": "03_route_1_course_rencontre",
+   "src": "depart",
+   "in": 23.3,
+   "dur": 5.0,
+   "xfade": 0.6,
+   "zoom": [
+    1.0,
+    1.06
+   ]
+  },
+  {
+   "id": "05a_flammeche",
+   "src": "depart",
+   "in": 32.9,
+   "dur": 2.0
+  },
+  {
+   "id": "05b_capture",
+   "src": "depart",
+   "in": 41.3,
+   "dur": 4.4
+  },
+  {
+   "id": "06a_rival_surgit",
+   "src": "rival",
+   "in": 13.3,
+   "dur": 2.3
+  },
+  {
+   "id": "06b_rival_ligne",
+   "src": "rival",
+   "in": 17.9,
+   "dur": 1.4
+  },
+  {
+   "id": "07_vs",
+   "src": "rival",
+   "in": 22.2,
+   "dur": 2.0
+  },
+  {
+   "id": "08a_pistolet_a_o",
+   "src": "rival",
+   "in": 33.2,
+   "dur": 2.2
+  },
+  {
+   "id": "08b_griffe_ko",
+   "src": "rival",
+   "in": 37.4,
+   "dur": 2.2
+  },
+  {
+   "id": "09_evolution",
+   "src": "evolution",
+   "in": 7.2,
+   "dur": 2.8
+  },
+  {
+   "id": "10_velo",
+   "src": "velo",
+   "in": 5.0,
+   "dur": 1.0,
+   "xfade": 0.5,
+   "audio": 0.4
+  },
+  {
+   "id": "11_surf",
+   "src": "surf",
+   "in": 10.0,
+   "dur": 1.0,
+   "audio": 0.4
+  },
+  {
+   "id": "12_mont_selenite",
+   "src": "selenite",
+   "in": 4.0,
+   "dur": 0.9,
+   "audio": 0.4
+  },
+  {
+   "id": "13_tour_pokemon",
+   "src": "tour",
+   "in": 6.0,
+   "dur": 0.9,
+   "audio": 0.5
+  },
+  {
+   "id": "14_mewtwo",
+   "src": "mewtwo",
+   "in": 8.35,
+   "dur": 1.0,
+   "audio": 1.0,
+   "zoom": [
+    1.25,
+    1.35
+   ],
+   "focus": [
+    0.6,
+    0.4
+   ]
+  },
+  {
+   "id": "15_ligue",
+   "src": "ligue",
+   "in": 7.7,
+   "dur": 1.2,
+   "audio": 0.4
+  },
+  {
+   "id": "16_championne",
+   "src": "championne",
+   "in": 9.45,
+   "dur": 1.5,
+   "audio": 1.0
+  }
+ ],
+ "beds": [
+  {
+   "src": "ligue",
+   "in": 2.6,
+   "at": 31.9,
+   "dur": 7.5,
+   "gain": 0.9,
+   "fade_in": 0.3,
+   "fade_out": 1.0
+  }
+ ]
+}

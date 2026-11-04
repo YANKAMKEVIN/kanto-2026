@@ -1,9 +1,10 @@
-# Bande-annonce de Pokemake — storyboard v1 (à valider par Kevin)
+# Bande-annonce de Pokemake — storyboard v1 (**validé par Kevin le 2026-11-04**)
 
 > J34, 2026-11-03. Remplace la bande-annonce v1 à 13 images fixes, refusée par Kevin : « ce n'est pas
 > assez alléchant et immersif, on doit avoir des mouvements, des actions, pas juste des images ; c'est
 > beaucoup d'images qui se suivent, pas des scènes, on ne fait pas vivre l'aventure à la personne qui
-> la regarde ». **Rien n'est capturé ni codé avant la validation de ce storyboard.**
+> la regarde ». Validé par Kevin le 2026-11-04 (« Storyboard validé », valeurs par défaut du §5
+> retenues) ; réalisation : §7.
 
 ## 1. Cahier des charges (retour de Kevin)
 
@@ -93,3 +94,35 @@ monde est la star) ; les bandes noires de cinéma restent (7 %).
 
 Scénario et rendu plan par plan (une session), relecture de chaque plan sur planche et vidéo, montage,
 intégration dans l'ident, vidéo complète envoyée à Kevin, puis fusion sur son accord.
+
+## 7. Réalisation (2026-11-04, après validation)
+
+- **Scènes jouées** : `tools/trailer/capture_trailer_scene.gd --scene=<nom>` (Boot sur un départ de
+  débogage `tools/debug_start/trailer_*.json`, HUD caché à chaque image, pas du joueur par le plus
+  court chemin du monde — la direction suivante est posée pendant le pas en cours, car le joueur
+  enchaîne le pas suivant dans l'image où un pas finit —, choix de combat par les gestionnaires des
+  boutons de la HUD, touchers simulés sur les boîtes de dialogue et les cartes, musique jamais
+  atténuée). Dix scènes : `depart` (plans 1 à 5 d'une traite : chambre, maison, Bourg Palette,
+  Route 1 en courant, Roucool forcé par `EncounterDirector.start_encounter`, une Flammèche puis la
+  Poké Ball), `rival` (6 à 8 : la scène du jeu sur la Route 22, équipe du rival réduite à un
+  Carapuce qui ne connaît que Pistolet à O, posé à 6 PV à l'ouverture ; Salamèche part à 17 PV :
+  Rugissement, Pistolet à O, Griffe), `evolution`, `velo`, `surf`, `selenite`, `tour` (SPECTRE),
+  `mewtwo` (Dracaufeu en tête : son dos est peint), `ligue`, `championne` (`rival_look` rivale,
+  « Rose »).
+- **Rendu** : `tools/trailer/render.sh` (Movie Maker 2340 × 1080 à 30 i/s avec le son ; Movie Maker
+  enregistre à la taille `window_width_override` du projet, un `override.cfg` temporaire la porte
+  à 2340 × 1080 pendant le rendu) → `build/trailer/raw/*.avi` et repères `[trailer]` (image,
+  seconde, événement) dans `build/trailer/logs/`.
+- **Montage** : `tools/trailer/cuts.json` (plan → source, point d'entrée, durée, zoom lent, fondu,
+  gain) et `tools/trailer/assemble.py` (ffmpeg : coupes, fondus enchaînés, nappe sonore de l'acte IV,
+  limiteur) → `build/trailer/pokemake-trailer.mp4` (master à partager) et
+  `assets/ui/opening/trailer.ogv` (Theora + Vorbis, 1560 × 720, par l'encodeur d'exemple de
+  libtheora : le ffmpeg d'Homebrew n'a pas libtheora) + `data/opening/trailer.json` (durée).
+- **Dans le jeu** : `TrailerReel` lit `{ "video", "seconds", "letterbox" }` ; `IdentSequence` joue la
+  vidéo dans un `VideoStreamPlayer` (bus Musique, entrée en fondu 0,4 s, extinction `reel_out`,
+  arrêt au passage) entre le carton et les lettres ; les 13 images de la v1 sont retirées.
+- **Écarts avec le §3** : pas de saut de rebord sur la Route 1 (les rebords ne se sautent que vers
+  le sud) ; Mewtwo ne se retourne pas (il fait déjà face), le plan 14 montre l'entrée légendaire
+  du combat ; pas de contre-plongée au plan 15 (2D) ; les plans 10 à 16 partagent une nappe (musique
+  de la montée vers la Ligue) sous leurs sons propres baissés, le cri de Mewtwo et la banderole VS
+  gardés pleins.
