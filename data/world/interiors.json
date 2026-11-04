@@ -119,6 +119,11 @@
 		"league_agatha",
 		"league_lance",
 		"league_champion",
-		"hall_of_fame"
+		"hall_of_fame",
+		"ecruteak_center",
+		"ecruteak_mart",
+		"ecruteak_elders_house",
+		"ecruteak_house_1",
+		"ecruteak_house_2"
 	]
 }

@@ -423,6 +423,15 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 - `johto_light_test` : Route 1 sous le profil `johto_auto`, moment forcé `night` (changer
   `"period"` en `morning` ou `day` pour les trois captures du lot B ; l'horloge réelle reprend
   sans la clé). Clés `light_profile` et `period` de `DebugStart`.
+- `johto_route_39` (JOH2) : Kaiminus N5, 5 Poké Balls, 1 Potion, équipe de Kanto confisquée
+  (acte 1, Stockage hors ligne), à l'entrée ouest de la Route 39 (`from_olivine`) : ferme,
+  Dresseurs, Potion, Route 38. `johto_route_39_night` : idem, moment forcé `night` ; `johto_route_38` : Kaiminus N10 et Fouinette N9 à l'entrée ouest de la Route 38 (`from_route_39`).
+- `johto_rosalia` (JOH2) : Croconaw N13, Fouinette N12, Wattouat N12, 3 000 ₽, à l'entrée de
+  Rosalia (`from_route_38`) : scène des Sbires, doyen, gardes, Centre, Boutique, maisons.
+- `johto_rosalia_night` : idem, moment forcé `night` (lampes, herbe des tours).
+- `johto_rosalia_tuesday` : idem, jour forcé `tuesday` (Margot, conteuse du mardi). Clé `weekday`
+  de `DebugStart` (JOH2).
+
 ## QA entrée des combats de Dresseur (A17, 2026-11-04)
 
 | Fichier | Partie |

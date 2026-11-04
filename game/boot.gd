@@ -664,7 +664,7 @@ func _process(delta: float) -> void:
 ## de ce qui s'écrit à la mise en arrière-plan (passe systèmes 2, S2A).
 func _notification(what: int) -> void:
 	if _lifecycle.handle_notification(what):
-		_save_in_background("arrière-plan")
+		_save_in_background(SessionLifecycle.save_reason(what))
 	_on_focus_change(SessionLifecycle.focus_change(what))
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		_on_go_back()
@@ -1416,6 +1416,8 @@ func _apply_debug_start() -> bool:
 	_debug_light_map = start.map if not start.light_profile.is_empty() else &""
 	if not start.period.is_empty():
 		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(start.period)])
+	if not start.weekday.is_empty():
+		_world_clock.force_weekday(WorldClock.WEEKDAY_NAMES.find(start.weekday))
 	_veil_debug = start.veil
 	_veil_debug_map = start.map if not start.veil.is_empty() else &""
 	if not start.wild.is_empty():

@@ -283,7 +283,10 @@ func test_real_file_plans_the_profiles_of_the_painted_maps() -> void:
 		assert_eq(_library.get_map_profile(map_id), &"interior_warm", String(map_id))
 	assert_eq(_library.get_map_profile(&"no_such_map"), &"", "carte sans profil prévu")
 	for map_id: StringName in _library.get_planned_maps():
-		assert_true(_library.has_profile(_library.get_map_profile(map_id)), String(map_id))
+		# JOH2 : une carte de Johto déclare `johto_auto`, résolu par le moment (pas un profil).
+		var planned := _library.get_map_profile(map_id)
+		assert_true(_library.has_profile(planned) or LightingLibrary.is_auto(planned),
+			String(map_id))
 
 
 func test_maps_must_name_a_known_profile() -> void:
