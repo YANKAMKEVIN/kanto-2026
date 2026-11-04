@@ -1,0 +1,11 @@
+{
+	"clemence": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"dialogue": "goldenrod_bond_house_clemence"
+	}
+}

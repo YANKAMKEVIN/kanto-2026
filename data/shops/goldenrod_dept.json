@@ -1,0 +1,48 @@
+{
+	"goldenrod_dept_2f": {
+		"stock": [
+			{ "item": "poke_ball" },
+			{ "item": "great_ball" },
+			{ "item": "potion" },
+			{ "item": "super_potion" },
+			{ "item": "antidote" },
+			{ "item": "paralyze_heal" },
+			{ "item": "awakening" },
+			{ "item": "full_heal" },
+			{ "item": "revive", "if_weekday": "friday" }
+		],
+		"promotions": {
+			"monday": ["poke_ball"],
+			"tuesday": ["potion", "super_potion"],
+			"wednesday": ["great_ball"],
+			"friday": ["revive"],
+			"saturday": ["full_heal"]
+		}
+	},
+	"goldenrod_dept_3f": {
+		"stock": [
+			{ "item": "repel" },
+			{ "item": "super_repel" },
+			{ "item": "escape_rope" },
+			{ "item": "x_attack" },
+			{ "item": "x_defend" },
+			{ "item": "x_speed" },
+			{ "item": "x_special" }
+		],
+		"promotions": {
+			"thursday": ["repel", "super_repel"]
+		}
+	},
+	"goldenrod_dept_roof_water": {
+		"stock": [{ "item": "fresh_water" }],
+		"promotions": { "sunday": ["fresh_water"] }
+	},
+	"goldenrod_dept_roof_soda": {
+		"stock": [{ "item": "soda_pop" }],
+		"promotions": { "sunday": ["soda_pop"] }
+	},
+	"goldenrod_dept_roof_lemonade": {
+		"stock": [{ "item": "lemonade" }],
+		"promotions": { "sunday": ["lemonade"] }
+	}
+}

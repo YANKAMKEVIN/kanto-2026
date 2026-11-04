@@ -1,0 +1,65 @@
+{
+	"route_35_fisher_gaston_before": {
+		"speaker": "Pêcheur Gaston",
+		"pages": [
+			"Ça mord ! Ah non, c'est toi."
+		]
+	},
+	"route_35_fisher_gaston_defeated": {
+		"speaker": "Pêcheur Gaston",
+		"pages": [
+			"Raté."
+		]
+	},
+	"route_35_fisher_gaston_after": {
+		"speaker": "Pêcheur Gaston",
+		"pages": [
+			"Les Ptitard aiment l'étang."
+		]
+	},
+	"route_35_camper_anna_before": {
+		"speaker": "Campeuse Anna",
+		"pages": [
+			"Tu veux passer ?\nIl faut me battre !"
+		]
+	},
+	"route_35_camper_anna_defeated": {
+		"speaker": "Campeuse Anna",
+		"pages": [
+			"D'accord, la ville est à toi."
+		]
+	},
+	"route_35_camper_anna_after": {
+		"speaker": "Campeuse Anna",
+		"pages": [
+			"Doublonville est immense,\ntu vas t'y perdre !"
+		]
+	},
+	"route_35_gentleman_armand_before": {
+		"speaker": "Gentleman Armand",
+		"pages": [
+			"Un combat, entre gens\nbien élevés ?"
+		]
+	},
+	"route_35_gentleman_armand_defeated": {
+		"speaker": "Gentleman Armand",
+		"pages": [
+			"Quelle élégance."
+		]
+	},
+	"route_35_gentleman_armand_after": {
+		"speaker": "Gentleman Armand",
+		"pages": [
+			"Ma radio ne capte plus\nque des grésillements."
+		]
+	},
+	"route_35_hidden_1": {
+		"cutscene": "route_35_hidden_1"
+	},
+	"route_35_panneau_route": {
+		"narration": true,
+		"pages": [
+			"ROUTE 35\nDoublonville — Route 36"
+		]
+	}
+}

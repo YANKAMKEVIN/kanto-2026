@@ -151,6 +151,11 @@ var _companions: CompanionCatalog
 ## Boutique affichée et son onglet (de session).
 var _shop_id: StringName = &""
 var _shop_mode: StringName = ShopViews.MODE_BUY
+## JOH3 (JH-33) : jour lu à l'ouverture de la Boutique (promotion du jour) ; le prix change à
+## la réouverture (dossier JOH-04 §13).
+var _shop_weekday: StringName = &""
+## JOH3 : source du jour (« monday »… ; &"" = aucun), posée par Boot ; invalide = aucun jour.
+var weekday_source: Callable
 ## Pokémon sélectionné dans le Stockage (de session, jamais sauvegardé).
 var _storage_selection: StorageSelection = StorageSelection.new()
 ## Recherche et tri de la grille du Stockage (T7) : de session, jamais sauvegardés.
@@ -285,7 +290,7 @@ func buy(item_id: StringName, quantity: int) -> ShopRules.Status:
 	var item := _items.get_item(item_id) if _items != null else null
 	if _state == null or shop == null or item == null:
 		return ShopRules.Status.NOT_SOLD_HERE
-	var status := ShopRules.buy(_state, shop, item, quantity)
+	var status := ShopRules.buy(_state, shop, item, quantity, _shop_weekday)
 	_shop_result(status)
 	return status
 
@@ -314,7 +319,7 @@ func build_shop() -> ShopView:
 	var shop := _current_shop()
 	if shop == null or _items == null:
 		return null
-	return ShopViews.build(_state, shop, _items, _shop_mode)
+	return ShopViews.build(_state, shop, _items, _shop_mode, _shop_weekday)
 
 
 ## Vue du Stockage pour la sélection courante (null : directeur non branché).
@@ -880,6 +885,7 @@ func _on_route_shown(route: MenuRoute) -> void:
 	elif route.screen == MenuRoute.SHOP and _shops != null and _items != null \
 			and _shops.has_shop(StringName(route.params.get("shop", &""))):
 		_shop_id = StringName(route.params.get("shop", &""))
+		_shop_weekday = StringName(weekday_source.call()) if weekday_source.is_valid() else &""
 		var mode := StringName(route.params.get("mode", ShopViews.MODE_BUY))
 		_shop_mode = mode if ShopViews.MODES.has(mode) else ShopViews.MODE_BUY
 		_emit_shop()

@@ -1,0 +1,62 @@
+{
+	"route_36_scout_max_before": {
+		"speaker": "Scout Max",
+		"pages": [
+			"Un scout est toujours prêt !"
+		]
+	},
+	"route_36_scout_max_defeated": {
+		"speaker": "Scout Max",
+		"pages": [
+			"Pas assez prêt, apparemment."
+		]
+	},
+	"route_36_scout_max_after": {
+		"speaker": "Scout Max",
+		"pages": [
+			"Doublonville est au sud,\npar la Route 35."
+		]
+	},
+	"route_36_medium_ernest_before": {
+		"speaker": "Médium Ernest",
+		"pages": [
+			"Mon Abra a vu ta victoire…\nou ta défaite ?"
+		]
+	},
+	"route_36_medium_ernest_defeated": {
+		"speaker": "Médium Ernest",
+		"pages": [
+			"Il avait mal vu."
+		]
+	},
+	"route_36_medium_ernest_after": {
+		"speaker": "Médium Ernest",
+		"pages": [
+			"Il a dormi pendant tout le combat."
+		]
+	},
+	"route_36_item_1": {
+		"cutscene": "route_36_item_1"
+	},
+	"route_36_panneau_route": {
+		"narration": true,
+		"pages": [
+			"ROUTE 36\nRoute 37 — Route 35"
+		]
+	},
+	"route_36_panneau_pont": {
+		"narration": true,
+		"pages": [
+			"Pont en travaux.",
+			"Passage interdit jusqu'à nouvel ordre."
+		]
+	},
+	"route_36_grille_parc": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"La grille du Parc National est fermée.",
+			"Un écriteau : « Fermé pour entretien. »"
+		]
+	}
+}

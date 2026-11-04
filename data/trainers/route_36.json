@@ -1,0 +1,36 @@
+{
+	"route_36_scout_max": {
+		"name": "Scout Max",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "growlithe",
+				"level": 15
+			},
+			{
+				"species": "nidoran_m",
+				"level": 14
+			}
+		]
+	},
+	"route_36_medium_ernest": {
+		"name": "Médium Ernest",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "abra",
+				"level": 16
+			}
+		]
+	}
+}

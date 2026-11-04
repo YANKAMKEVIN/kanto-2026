@@ -1,0 +1,47 @@
+{
+	"goldenrod_underground_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_goldenrod_underground_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "goldenrod_underground_item_1"
+					},
+					{
+						"give": "repel",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_goldenrod_underground_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_underground_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_goldenrod_underground_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "pearl",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_goldenrod_underground_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}
