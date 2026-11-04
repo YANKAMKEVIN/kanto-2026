@@ -281,6 +281,23 @@ func test_epilogue_gives_the_green_ball_and_plays_the_johto_credits() -> void:
 	assert_gt(data.block_count(), 10)
 
 
+func test_epilogue_leaves_nobody_in_front_of_the_lab_exit() -> void:
+	# QA A17 : le rival, sur (7,9), bloquait la seule sortie du labo après le générique.
+	var steps := _cutscenes.get_cutscene(&"johto_epilogue").variants[0].steps
+	var present: Array[StringName] = []
+	var credits_at := -1
+	for i: int in steps.size():
+		var step: CutsceneStep = steps[i]
+		if step.kind == CutsceneStep.Kind.SPAWN:
+			present.append(step.actor)
+		elif step.kind == CutsceneStep.Kind.DESPAWN:
+			present.erase(step.actor)
+		elif step.kind == CutsceneStep.Kind.CREDITS:
+			credits_at = i
+			assert_eq(present, [] as Array[StringName], "personnages retirés avant le générique")
+	assert_gt(credits_at, 0)
+
+
 func test_celebi_scene_is_a_catchable_level_60_encounter() -> void:
 	var steps := _scene_steps(&"ilex_altar_celebi")
 	var battle := steps[-1]

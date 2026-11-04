@@ -103,7 +103,7 @@ Ordre du dossier §4 : `johto_rival_relay` (extérieur) → `johto_rival_healed`
 | T9 | Départs de débogage `johto_mt_silver*`, `johto_route_28`, `johto_epilogue`, `johto_after_chapter` (`tools/gen_joh9_debug_starts.py`) | fait |
 | T10 | Tests `test_joh9_data`, `test_joh9_maps` ; inventaires partagés réalignés après la fusion de JOH1 et JOH2 | en cours |
 | T11 | Captures Mac (`tools/capture_joh9.sh`) | en cours |
-| T12 | QA A17 | à faire |
+| T12 | QA A17 | fait (2026-11-04, 22 h 06 à 22 h 35 ; un P1 corrigé, §8) |
 | T13 | CI verte, fusion dans `main` | à faire |
 
 ## 4. Systèmes touchés (ajouts, rien de retiré)

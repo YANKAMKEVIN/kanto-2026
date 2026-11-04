@@ -48,6 +48,10 @@
 			],
 			"escape": { "map": "cinnabar_island", "spawn": "from_manoir", "facing": "down" }
 		},
+		"whirl_islands": {
+			"maps": ["whirl_islands_1f", "whirl_islands_b1f", "whirl_islands_b2f"],
+			"escape": { "map": "route_41", "spawn": "from_whirl", "facing": "left" }
+		},
 		"mt_silver": {
 			"maps": ["mt_silver_1f", "mt_silver_3f"],
 			"escape": { "map": "mt_silver_outside", "spawn": "retour_grotte", "facing": "down" }

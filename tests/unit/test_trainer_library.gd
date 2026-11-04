@@ -401,7 +401,9 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 		&"rival_route22_final",
 		# Jalon 30 (T3) : Agatha (pokered, AgathaAI : change de Pokémon) et le rival Champion.
 		&"league_agatha", &"rival_champion",
-		# Chapitre Johto, JOH9 : Dante (2) et le rival final, grands combats (IA smart).
+		# Chapitre Johto, JOH7 : Cenere aux Îles Tourbillon (grand combat, dossier JOH-08 §6).
+		&"whirl_islands_cenere",
+		# JOH9 : Dante (2) et le rival final, grands combats (IA smart).
 		&"mt_silver_dante_2", &"mt_silver_rival_final"]
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):

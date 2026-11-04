@@ -497,6 +497,9 @@ def epilogue_scene():
 		{"face": "player", "to": "rival_epilogue"},
 		{"dialogue": "johto_epilogue_rival"},
 		{"set": [CHAPTER]},
+		# Le rival est sur (7,9), seule case devant la sortie du labo : il part avant le générique.
+		{"despawn": "rival_epilogue"},
+		{"despawn": "orme"},
 		{"credits": "johto"},
 		{"save": "johto_chapter_done"},
 	]}]}

@@ -1,0 +1,113 @@
+{
+	"map": "whirl_islands_b2f",
+	"spawn": "debug_lugia_water",
+	"facing": "right",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"cerulean_reached",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"league_champion_defeated",
+		"league_credits_seen",
+		"oak_post_league_gifts_done",
+		"johto_letter_read",
+		"johto_lugia_shadow",
+		"johto_arrived",
+		"johto_slept",
+		"johto_team_stolen",
+		"johto_starter_offered",
+		"taken_totodile",
+		"johto_starter_chosen",
+		"johto_orme_left",
+		"johto_team_returned",
+		"johto_act2",
+		"johto_raikou_done",
+		"johto_whirl_clue",
+		"johto_cenere_defeated",
+		"johto_dante_revealed",
+		"johto_suicune_seen",
+		"johto_cenere_defeated_2",
+		"johto_suicune_resolved",
+		"johto_suicune_done"
+	],
+	"party": [
+		{
+			"species": "blastoise",
+			"level": 66,
+			"moves": [
+				"surf",
+				"hydro_pump",
+				"bite",
+				"ice_beam"
+			]
+		},
+		{
+			"species": "venusaur",
+			"level": 63
+		},
+		{
+			"species": "charizard",
+			"level": 64
+		},
+		{
+			"species": "nidoking",
+			"level": 62,
+			"moves": [
+				"strength",
+				"earthquake",
+				"thunderbolt",
+				"horn_drill"
+			]
+		},
+		{
+			"species": "raichu",
+			"level": 60
+		},
+		{
+			"species": "pidgeot",
+			"level": 61
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"hm03": 1,
+		"hm04": 1,
+		"old_rod": 1,
+		"good_rod": 1,
+		"super_rod": 1,
+		"ultra_ball": 30,
+		"master_ball": 1,
+		"full_restore": 10,
+		"max_revive": 5,
+		"escape_rope": 3,
+		"max_repel": 5
+	},
+	"money": 80000,
+	"rest_point": "olivine_center",
+	"discovered": [
+		"pallet_town",
+		"olivine_city"
+	]
+}

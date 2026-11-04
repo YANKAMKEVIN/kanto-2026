@@ -45,7 +45,7 @@ func test_real_data_loads_without_error() -> void:
 		&"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hp_up", &"hyper_potion", &"ice_heal", &"iron", &"itemfinder", &"kings_rock",
 		&"leaf_stone", &"lemonade", &"lift_key", &"master_ball", &"max_elixir", &"max_ether",
 		&"max_potion", &"max_repel", &"max_revive", &"metal_coat", &"moon_stone", &"nugget", &"oak_parcel", &"old_amber", &"old_rod",
-		&"paralyze_heal", &"pearl", &"poke_ball", &"poke_doll", &"poke_flute", &"potion", &"pp_up", &"protein", &"rare_candy", &"repel",
+		&"paralyze_heal", &"pearl", &"poke_ball", &"poke_doll", &"poke_flute", &"potion", &"pp_max", &"pp_up", &"protein", &"rare_candy", &"repel",
 		&"revive", &"secret_key", &"silph_scope", &"soda_pop", &"ss_ticket", &"super_potion",
 		&"super_repel", &"super_rod", &"thunder_stone", &"tm01", &"tm02", &"tm03", &"tm04", &"tm05", &"tm06", &"tm07",
 		&"tm08", &"tm09", &"tm10", &"tm11", &"tm12", &"tm13", &"tm14", &"tm15", &"tm16", &"tm17",
@@ -91,6 +91,8 @@ func test_real_data_loads_without_error() -> void:
 		&"itemfinder", &"exp_all",
 		# JOH1 (items_joh1.json) : la Perle de la grotte marine.
 		&"pearl",
+		# JOH7 (items_joh7.json) : le PP Max des Îles Tourbillon.
+		&"pp_max",
 		# JOH9 (items_joh9.json) : la Balle Verte d'Orme (épilogue).
 		&"green_ball",
 		# JOH0 (T6, items_johto.json) : objets d'évolution par échange.

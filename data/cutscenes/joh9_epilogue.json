@@ -79,6 +79,12 @@
 						]
 					},
 					{
+						"despawn": "rival_epilogue"
+					},
+					{
+						"despawn": "orme"
+					},
+					{
 						"credits": "johto"
 					},
 					{
