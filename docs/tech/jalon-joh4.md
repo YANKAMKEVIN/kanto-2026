@@ -71,8 +71,8 @@
 - Bâtiments du kit peint [D] : Centre `bldg_centre_01`, Boutique `bldg_boutique_01`, maisons
   `bldg_maison_argenta_01` (Fargas, maison, maison de la Route 34) ; charbonnerie : aplat
   provisoire (modèle des tours du JOH2) ; autel : aplat provisoire.
-- Surf : l'étang de la Route 34 et l'eau des deux niveaux du puits (`surf_cells`, JH-36) ; pêche
-  sur l'étang [D].
+- Surf : l'étang de la Route 34 et l'eau des deux niveaux du puits (`surf_cells`, JH-36) ; pas de
+  pêche au JOH4 [D] (aucune table de canne).
 - Lampes de nuit (Écorcia) : fenêtres du Centre et de la Boutique, deux réverbères [D].
 - Écran : la Route 34 et le Bois ont un ciel ; le puits est une grotte (`caves.json`), sans
   rencontre sur le sol calme (`.`), rencontres sur les gravats (`g`) et l'eau.
@@ -104,9 +104,10 @@ Sprites [D] : Sophie `lass`, Bruno `pokemaniac`, Félix `gambler`, Tom `scout`, 
 
 Classes de combat [D] : Sophie `fillette`, Bruno `pokemaniac`, Félix `jongleur`, Tom `scout`,
 Céline `topdresseuse`, Sbires `sbire_rocket` / `sbire_rocket_f`, Brace `sbire_rocket` (nom
-« Brace », carte de grand adversaire « BRACE — Admin de la Team Rocket » sans portrait).
+« Brace » ; pas de carte de grand adversaire, qui exige un portrait, ni de changements, réservés
+par le catalogue à Ondine, Major Bob et au rival : « Reportés »).
 `prize_per_level` [D] : 20 (Fillette, Scout), 25 (Pokémaniac, Jongleur), 35 (Dresseuse), 30
-(Sbires), Brace `prize_money` 2 000 [D], `ai: smart`, sac et changements permis.
+(Sbires), Brace `prize_money` 2 000 [D], `ai: smart`, sac permis.
 
 ### 2.4 Rencontres (T6)
 
@@ -114,12 +115,12 @@ Céline `topdresseuse`, Sbires `sbire_rocket` / `sbire_rocket_f`, Brace `sbire_r
 |---|---|---|---|---|---|---|
 | `route_34_grass_day` | `route_34` | herbe | `["morning", "day"]` | 25 | 16–19 | sentret 25, abra 20, nidoran_f 15, nidoran_m 15, raticate 15, ditto 10 |
 | `route_34_grass_night` | `route_34` | herbe | `night` | 25 | 16–19 | hoothoot 35, raticate 25, ditto 15, nidoran_f 12, nidoran_m 13 |
-| `route_34_water` | `route_34` | eau | toute la journée [D] | 10 | 15–20 | tentacool 60, psyduck 30, wooper 10 [D] |
+| `route_34_water` | `route_34` | eau | toute la journée [D] | 5 | 15–20 | tentacool 60, psyduck 40 [D] (Axoloto absent des 51 espèces) |
 | `ilex_forest_grass_morning` | `ilex_forest` | herbe | `morning` | 25 | 17–20 | teddiursa 25, paras 25, caterpie 15, weedle 15, heracross 5, oddish 15 |
 | `ilex_forest_grass_day` | `ilex_forest` | herbe | `day` | 25 | 17–20 | paras 30, caterpie 20, weedle 20, oddish 20, sentret 10 |
 | `ilex_forest_grass_night` | `ilex_forest` | herbe | `night` | 25 | 17–20 | murkrow 30, noctowl 15, hoothoot 25, oddish 20, paras 10 |
-| `slowpoke_well_cave` | B1F, B2F | grotte (gravats) | toute la journée | 10 [D] | 18–22 | slowpoke 45, zubat 45, geodude 10 |
-| `slowpoke_well_water` | B1F, B2F | eau | toute la journée | 10 [D] | 18–22 | slowpoke 70, poliwag 30 |
+| `slowpoke_well_rubble` | B1F, B2F | gravats | toute la journée | 25 [D] | 18–22 | slowpoke 45, zubat 45, geodude 10 |
+| `slowpoke_well_water` | B1F, B2F | eau | toute la journée | 5 [D] | 18–22 | slowpoke 70, poliwag 30 |
 
 L'eau de la Route 34 n'a pas de ligne au dossier : table [D] (Tentacool côtier). Identifiants
 d'espèces relus contre `data/pokemon/` à l'écriture (sinon la table est refusée par le test).
@@ -131,7 +132,7 @@ d'espèces relus contre `data/pokemon/` à l'écriture (sinon la table est refus
 | Panneaux, pêcheur, vieille femme, charbonnier, habitante | PNJ / panneau | — | E-1, E-2, E-4, E-6, E-8, E-9, E-36 ; habitante E-10 `unless johto_slowpoke_well_cleared`, E-26 `if` |
 | Autel | examen (23, 11) | — | E-5 ; `set johto_shrine_seen` (variante unique, posé à chaque lecture) |
 | Titre d'Écorcia | arrivée (titre de zone automatique, `zones.json`) | — | `johto_azalea_arrived` non posé : le titre de zone suffit [D] (le déclencheur de la grille est ignoré) |
-| `azalea_well_guard` | (37, 8) ↑ | `unless johto_kurt_told` | face Sbire, page 1 de E-14 (`azalea_well_grunt_block`), un pas en arrière |
+| `azalea_well_guard` | (37, 8) ↑ | `unless johto_kurt_told` | face Sbire, texte [D] en brouillon (`azalea_well_block` : E-14 s'adresse à Fargas), un pas en arrière |
 | `azalea_kurt_story` | Fargas (maison), `unless johto_kurt_told` | — | E-11, E-12, E-13 ; `set johto_kurt_told` ; `change_map azalea_town` arrivée `kurt_scene` (37, 10) tournée ↑ ; `spawn` Sbire (38, 8) et Fargas (36, 10) ; E-14 (trois pages, Sbire puis narration [D]) ; Sbire descend (37, 8 → 37, 7), `despawn` ; Fargas le suit, `despawn` |
 | `slowpoke_well_kurt_fall` | B1F, colonne (6, 2..5) → | `unless johto_kurt_fell` [D] | `set johto_kurt_fell` ; `emote` Fargas ; face ; E-15 |
 | Sbires E, F, G | vue | — | combats ordinaires, E-16 |

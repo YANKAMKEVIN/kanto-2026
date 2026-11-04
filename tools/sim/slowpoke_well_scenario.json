@@ -1,0 +1,307 @@
+{
+	"version": 1,
+	"title": "Équilibrage du Puits Ramoloss et de Brace (JOH4)",
+	"description": "JOH4 (dossier joh-05 §6 : Brace grand combat, victoire du premier coup 35–60 % avec une équipe de 20–24). Information : aucune donnée n'est changée. Équipes de Johto estimées à la sortie du Bois aux Chênes. Dresseurs et table recopiés de data/.",
+	"seeds": 400,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Croconaw 22, Furret 20, Lainergie 21, Togepi 13",
+			"starter": "totodile",
+			"members": [
+				{
+					"species": "croconaw",
+					"level": 22
+				},
+				{
+					"species": "furret",
+					"level": 20
+				},
+				{
+					"species": "flaaffy",
+					"level": 21
+				},
+				{
+					"species": "togepi",
+					"level": 13
+				}
+			]
+		},
+		{
+			"name": "Feurisson 22, Furret 20, Lainergie 21, Togepi 13",
+			"starter": "cyndaquil",
+			"members": [
+				{
+					"species": "quilava",
+					"level": 22
+				},
+				{
+					"species": "furret",
+					"level": 20
+				},
+				{
+					"species": "flaaffy",
+					"level": 21
+				},
+				{
+					"species": "togepi",
+					"level": 13
+				}
+			]
+		},
+		{
+			"name": "Macronium 22, Furret 20, Lainergie 21, Togepi 13",
+			"starter": "chikorita",
+			"members": [
+				{
+					"species": "bayleef",
+					"level": 22
+				},
+				{
+					"species": "furret",
+					"level": 20
+				},
+				{
+					"species": "flaaffy",
+					"level": 21
+				},
+				{
+					"species": "togepi",
+					"level": 13
+				}
+			]
+		},
+		{
+			"name": "Croconaw 20, Fouinette 18, Wattouat 18 (sous-entraînée)",
+			"starter": "totodile",
+			"members": [
+				{
+					"species": "croconaw",
+					"level": 20
+				},
+				{
+					"species": "sentret",
+					"level": 18
+				},
+				{
+					"species": "mareep",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Croconaw 24, Furret 22, Lainergie 23, Togekiss? non : Togepi 15",
+			"starter": "totodile",
+			"members": [
+				{
+					"species": "croconaw",
+					"level": 24
+				},
+				{
+					"species": "furret",
+					"level": 22
+				},
+				{
+					"species": "flaaffy",
+					"level": 23
+				},
+				{
+					"species": "togepi",
+					"level": 15
+				}
+			]
+		}
+	],
+	"tables": {
+		"slowpoke_well_rubble": {
+			"terrain": "rubble",
+			"rate": 25,
+			"ramp": {
+				"from_step": 15,
+				"max_steps": 20
+			},
+			"slots": [
+				{
+					"species": "slowpoke",
+					"levels": [
+						18,
+						22
+					],
+					"weight": 45
+				},
+				{
+					"species": "zubat",
+					"levels": [
+						18,
+						22
+					],
+					"weight": 45
+				},
+				{
+					"species": "geodude",
+					"levels": [
+						18,
+						22
+					],
+					"weight": 10
+				}
+			],
+			"maps": [
+				"slowpoke_well_b1f",
+				"slowpoke_well_b2f"
+			]
+		}
+	},
+	"trainers": {
+		"slowpoke_well_grunt_e": {
+			"name": "Sbire",
+			"class": "sbire_rocket",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "raticate",
+					"level": 20
+				},
+				{
+					"species": "ekans",
+					"level": 20
+				}
+			]
+		},
+		"slowpoke_well_grunt_f": {
+			"name": "Sbire",
+			"class": "sbire_rocket_f",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "koffing",
+					"level": 21
+				},
+				{
+					"species": "zubat",
+					"level": 20
+				}
+			]
+		},
+		"slowpoke_well_grunt_g": {
+			"name": "Sbire",
+			"class": "sbire_rocket",
+			"ai": "random",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 30,
+			"team": [
+				{
+					"species": "houndour",
+					"level": 21
+				},
+				{
+					"species": "murkrow",
+					"level": 21
+				}
+			]
+		},
+		"slowpoke_well_admin_brace": {
+			"name": "Brace",
+			"class": "sbire_rocket",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2000,
+			"start_message": false,
+			"end_message": true,
+			"bag": true,
+			"team": [
+				{
+					"species": "murkrow",
+					"level": 24
+				},
+				{
+					"species": "koffing",
+					"level": 24
+				},
+				{
+					"species": "houndoom",
+					"level": 26
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Centre d'Écorcia (départ)",
+			"center": true
+		},
+		{
+			"label": "B1F, gravats devant l'échelle (G2, obligatoires)",
+			"wild": "slowpoke_well_rubble",
+			"cells": 12
+		},
+		{
+			"label": "Sbire E (inévitable)",
+			"trainer": "slowpoke_well_grunt_e"
+		},
+		{
+			"label": "Sbire F (évitable)",
+			"trainer": "slowpoke_well_grunt_f",
+			"optional": "detours"
+		},
+		{
+			"label": "Sbire G (évitable)",
+			"trainer": "slowpoke_well_grunt_g",
+			"optional": "detours"
+		},
+		{
+			"label": "B2F, gravats (G1, G2)",
+			"wild": "slowpoke_well_rubble",
+			"cells": 10,
+			"optional": "detours"
+		},
+		{
+			"label": "Brace (admin, obligatoire)",
+			"trainer": "slowpoke_well_admin_brace"
+		}
+	],
+	"variants": [
+		{
+			"name": "directe, attentif, 3 Super Potions",
+			"player": "attentif",
+			"center": true,
+			"retries": 3,
+			"items": {
+				"super_potion": 3
+			}
+		},
+		{
+			"name": "tous les Sbires, attentif, 3 Super Potions",
+			"player": "attentif",
+			"center": true,
+			"retries": 3,
+			"items": {
+				"super_potion": 3
+			},
+			"optional": [
+				"detours"
+			]
+		},
+		{
+			"name": "directe, naïf, sans objet",
+			"player": "naif",
+			"center": true,
+			"retries": 3
+		}
+	]
+}
