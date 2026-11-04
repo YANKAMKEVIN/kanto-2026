@@ -24,10 +24,34 @@
 	},
 	"goldenrod_speaker": {
 		"speaker": "Haut-parleur",
-		"pages": [
-			"Ici Radio Doublonville…\nbonne jour…",
-			"…crrr… R… reviens… crrr…",
-			"…nous nous excusons\npour cette interruption."
+		"variants": [
+			{
+				"if": [
+					"johto_cenere_defeated"
+				],
+				"pages": [
+					"Ici Radio Doublonville ! Les programmes reprennent.",
+					"Et un grand merci à un jeune Dresseur venu de Kanto !"
+				]
+			},
+			{
+				"if": [
+					"johto_slowpoke_well_cleared"
+				],
+				"pages": [
+					"Ici Radio Rocket.",
+					"À tous les membres de la Team Rocket, où que vous soyez :",
+					"Giovanni, reviens ! La Team Rocket t'attend à Johto.",
+					"Rassemblez-vous. Le grand retour approche."
+				]
+			},
+			{
+				"pages": [
+					"Ici Radio Doublonville…\nbonne jour…",
+					"…crrr… R… reviens… crrr…",
+					"…nous nous excusons\npour cette interruption."
+				]
+			}
 		]
 	},
 	"goldenrod_city_panneau_ville": {
