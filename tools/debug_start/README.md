@@ -449,6 +449,7 @@ drapeaux des JOH1 à JOH3 (dont `johto_azalea_clue`), équipe de Kanto confisqu�
 - `johto_route_34` : entrée nord de la Route 34 (niv. 17–19).
 - `johto_ilex_morning`, `johto_ilex_night` : entrée du Bois aux Chênes, moment imposé.
 - `johto_azalea` : entrée d'Écorcia, avant Fargas (niv. 20–22).
+- `johto_kurt_house` : chez Fargas, avant le récit (scène `azalea_kurt_story` en lui parlant).
 - `johto_slowpoke_well` : B1F, après le récit de Fargas (`johto_kurt_told`).
 - `johto_brace` : B2F, devant le couloir de Brace (niv. 22–24).
 - `johto_azalea_after` : devant le puits, tout le jalon fait (Ramoloss de retour, objets clés).

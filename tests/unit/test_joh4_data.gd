@@ -51,7 +51,7 @@ const TABLES: Dictionary = {
 	&"slowpoke_well_water": [[], &"water", [18, 22], {&"slowpoke": 70, &"poliwag": 30}],
 }
 const DEBUG_STARTS: Array[String] = ["johto_route_34", "johto_ilex_morning", "johto_ilex_night",
-	"johto_azalea", "johto_slowpoke_well", "johto_brace", "johto_azalea_after", "johto_azalea_friday"]
+	"johto_azalea", "johto_kurt_house", "johto_slowpoke_well", "johto_brace", "johto_azalea_after", "johto_azalea_friday"]
 
 var _dialogues: DialogueLibrary
 var _cutscenes: CutsceneLibrary
