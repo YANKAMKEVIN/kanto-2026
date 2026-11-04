@@ -1,0 +1,18 @@
+{
+	"clerk_a": {
+		"cell": [
+			7,
+			4
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	},
+	"clerk_b": {
+		"cell": [
+			12,
+			4
+		],
+		"facing": "down",
+		"sprite": "clerk"
+	}
+}

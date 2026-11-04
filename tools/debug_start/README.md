@@ -448,6 +448,20 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
 
 
+## Chapitre Johto, JOH3 (Routes 37, 36, 35, Doublonville)
+
+- `johto_route_37` : Croconaw N16, Fouinette N14, Wattouat N14 à l'entrée nord de la Route 37
+  (`from_ecruteak`) : Lise, Super Potion, raccords vers la Route 36. `johto_route_37_night` : idem,
+  moment forcé `night` (Sbires A et B, Hoothoot, Malosse).
+- `johto_route_35_night` : Route 35 (`from_route_36`), `night` (étang, Anna).
+- `johto_route_36_wednesday` : Route 36 (`from_route_37`), jour forcé `wednesday` (Mercédès).
+- `johto_goldenrod` : Croconaw N18, Fouinar N17, Lainergie N17 à l'entrée nord de Doublonville
+  (`from_route_35`) : titre et haut-parleur, Centre (Orme, l'œuf), Grand Magasin, maisons,
+  Souterrain, agent de la sortie sud. `johto_goldenrod_night` : idem, `night` (lampes).
+- `johto_goldenrod_thursday` : devant le Grand Magasin, jour forcé `thursday` (Jérôme).
+- `johto_goldenrod_full_party` : au Centre, six Pokémon : Orme garde l'œuf (D-14).
+- `johto_underground` : à l'escalier ouest du Souterrain (Sbires C et D, chef, indice).
+
 ### Chapitre Johto, JOH4 (Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss)
 
 Équipe de Johto (Croconaw avec Surf, Furret, Lainergie, Togepi éclos), badges de Kanto, CS03,

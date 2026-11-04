@@ -152,7 +152,8 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["wrong", "refuse", "say"],
 	[], # J23 : safari
 	[], [], # Jalon 30 : hall_of_fame, credits
-	[], [], ["steps", "say"], # Chapitre Johto (JOH0) : confiscate_team, return_team, give_egg
+	[], [], ["steps", "say", "flag", "say_full"], # Johto (JOH0) : confiscate_team, return_team,
+	# give_egg (JOH3 : « flag », « say_full »)
 ]
 ## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
 const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]
@@ -299,6 +300,8 @@ func get_set_flags() -> Array[StringName]:
 				raised += step.static_encounter.flags_for(Battle.Outcome.CAUGHT)
 		elif step.kind == CutsceneStep.Kind.GIFT_POKEMON: # J20
 			raised = [step.gift_flag]
+		elif step.kind == CutsceneStep.Kind.GIVE_EGG and not step.gift_flag.is_empty(): # JOH3
+			raised = [step.gift_flag]
 		elif step.kind == CutsceneStep.Kind.TOGGLE_FLAGS: # J25 : l'interrupteur se lève aussi
 			raised = step.flags
 		elif step.kind == CutsceneStep.Kind.TRADE: # J25
@@ -376,6 +379,10 @@ func get_dialogue_ids() -> Array[StringName]:
 	for step: CutsceneStep in _all_steps():
 		if step.kind == CutsceneStep.Kind.DIALOGUE:
 			found[step.dialogue_id] = true
+		elif step.kind == CutsceneStep.Kind.GIVE_EGG: # JOH3 : « say », « say_full »
+			for id: StringName in [step.dialogue_id, step.dialogue_stored]:
+				if not id.is_empty():
+					found[id] = true
 		elif step.kind == CutsceneStep.Kind.GIFT_POKEMON: # J20 : « say », « say_stored »
 			found[step.dialogue_id] = true
 			if not step.dialogue_stored.is_empty():
@@ -659,6 +666,14 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			if entry.has("say"):
 				ok = _read_id(entry["say"], where + " say", func(v: StringName) -> void:
 					step.dialogue_id = v) and ok
+			# JOH3 (dossier JOH-04 §7) : drapeau levé seulement si l'œuf est donné, dialogue
+			# joué à sa place si l'équipe est pleine (Orme le garde).
+			if entry.has("flag"):
+				ok = _read_id(entry["flag"], where + " flag", func(v: StringName) -> void:
+					step.gift_flag = v) and ok
+			if entry.has("say_full"):
+				ok = _read_id(entry["say_full"], where + " say_full", func(v: StringName) -> void:
+					step.dialogue_stored = v) and ok
 	return step if ok else null
 
 

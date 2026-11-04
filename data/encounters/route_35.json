@@ -1,0 +1,152 @@
+{
+	"route_35_grass_day": {
+		"maps": [
+			"route_35"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "nidoran_f",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			},
+			{
+				"species": "nidoran_m",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			},
+			{
+				"species": "pidgey",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 20
+			},
+			{
+				"species": "marill",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 20
+			},
+			{
+				"species": "abra",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			},
+			{
+				"species": "sentret",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			}
+		]
+	},
+	"route_35_grass_night": {
+		"maps": [
+			"route_35"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "hoothoot",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 30
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			},
+			{
+				"species": "nidoran_m",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 20
+			},
+			{
+				"species": "marill",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 20
+			}
+		]
+	},
+	"route_35_surf": {
+		"maps": [
+			"route_35"
+		],
+		"terrain": "water",
+		"rate": 10,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "poliwag",
+				"levels": [
+					13,
+					17
+				],
+				"weight": 60
+			},
+			{
+				"species": "marill",
+				"levels": [
+					13,
+					17
+				],
+				"weight": 40
+			}
+		]
+	}
+}

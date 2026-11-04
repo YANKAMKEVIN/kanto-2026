@@ -1,0 +1,91 @@
+{
+	"goldenrod_underground_grunt_c_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le Souterrain est à nous,\ndégage !"
+		]
+	},
+	"goldenrod_underground_grunt_c_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Ouille."
+		]
+	},
+	"goldenrod_underground_grunt_c_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Va voir le chef, au fond.\nIl va t'apprendre la politesse."
+		]
+	},
+	"goldenrod_underground_grunt_d_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Encore toi ?\nOn t'avait dit de disparaître !"
+		]
+	},
+	"goldenrod_underground_grunt_d_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Tu es tenace."
+		]
+	},
+	"goldenrod_underground_grunt_d_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le chef ne recule jamais."
+		]
+	},
+	"goldenrod_underground_boss_before": {
+		"speaker": "Chef de bande",
+		"pages": [
+			"Alors c'est toi, le gamin\nqui fouine partout.",
+			"Ici, c'est notre territoire.\nPersonne ne passe."
+		]
+	},
+	"goldenrod_underground_boss_defeated": {
+		"speaker": "Chef de bande",
+		"variants": [
+			{
+				"set": [
+					"johto_azalea_clue"
+				],
+				"pages": [
+					"Grr… Comment un gamin peut-il\nêtre aussi fort ?",
+					"Tu crois qu'on est seulement ici ?",
+					"Les copains font de bonnes affaires\nà Écorcia, au sud.",
+					"Les queues de Ramoloss,\nça se vend très cher.",
+					"Et les ordres viennent d'en haut.\nDe très haut."
+				]
+			}
+		]
+	},
+	"goldenrod_underground_boss_after": {
+		"speaker": "Chef de bande",
+		"variants": [
+			{
+				"set": [
+					"johto_azalea_clue"
+				],
+				"pages": [
+					"Tu crois qu'on est seulement ici ?",
+					"Les copains font de bonnes affaires\nà Écorcia, au sud.",
+					"Les queues de Ramoloss,\nça se vend très cher.",
+					"Et les ordres viennent d'en haut.\nDe très haut."
+				]
+			}
+		]
+	},
+	"goldenrod_underground_item_1": {
+		"cutscene": "goldenrod_underground_item_1"
+	},
+	"goldenrod_underground_hidden_1": {
+		"cutscene": "goldenrod_underground_hidden_1"
+	},
+	"goldenrod_underground_panneau_souterrain": {
+		"narration": true,
+		"pages": [
+			"SOUTERRAIN DE DOUBLONVILLE\nBoutiques ouvertes de 10 h à 20 h",
+			"(un papier collé :\n« Fermé jusqu'à nouvel ordre »)"
+		]
+	}
+}
