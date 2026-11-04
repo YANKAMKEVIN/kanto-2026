@@ -331,6 +331,8 @@ func test_no_trigger_on_a_step_on_warp() -> void:
 					trigger.cutscene_id, trigger.cell])
 				shared += 1
 	# Jalon 16 (T15) : la passerelle du pont principal du S.S. Anne (2 cases PUSH, départ).
-	assert_eq(shared, 3, "partages : le tapis de sortie du labo, la passerelle du S.S. Anne "
-		+ "(warps PUSH)")
+	# JOH1 (QA A17) : la bouche de la grotte marine à Bourg Palette (4 cases PUSH ↓, O-5 au
+	# premier pas).
+	assert_eq(shared, 7, "partages : le tapis de sortie du labo, la passerelle du S.S. Anne, "
+		+ "la bouche de la grotte marine (warps PUSH)")
 	assert_push_error_count(0)
