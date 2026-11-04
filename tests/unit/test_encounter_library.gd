@@ -144,7 +144,10 @@ func test_real_tables_load_without_error() -> void:
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
 		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
 		&"route_2_north_grass", &"route_34_grass_day", &"route_34_grass_night", &"route_34_water",
-		&"route_38_grass_day", &"route_38_grass_night",
+		# Chapitre Johto (JOH3) : herbe par moment des Routes 37, 36, 35 et Surf de l'étang.
+		&"route_35_grass_day", &"route_35_grass_night", &"route_35_surf", &"route_36_grass_day",
+		&"route_36_grass_morning", &"route_36_grass_night", &"route_37_grass_day",
+		&"route_37_grass_night", &"route_38_grass_day", &"route_38_grass_night",
 		&"route_39_grass_day", &"route_39_grass_night", &"route_3_grass", &"route_40_water",
 		&"route_41_water", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
@@ -240,9 +243,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
 	# Chapitre Johto, JOH1 : l'eau de la grotte marine ; JOH2 : + 5 tables datées (Routes 39 et 38
 	# jour / nuit, herbe des tours de Rosalia), hors de la boucle (tables par moment :
-	# `test_joh2_data`) ; JOH4 : + 8 (Route 34, Bois aux Chênes, Puits Ramoloss : `test_joh4_data`) ;
+	# `test_joh2_data`) ; JOH3 : + 8 (`test_joh3_data`) ; JOH4 : + 8 (Route 34, Bois aux Chênes, Puits Ramoloss : `test_joh4_data`) ;
 	# JOH7 : + 6 tables de la mer et des Îles Tourbillon (`test_joh7_data`).
-	assert_eq(lib.size(), 79, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH4 et les 6 du JOH7")
+	assert_eq(lib.size(), 87, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH3, les 8 du JOH4 et les 6 du JOH7")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],

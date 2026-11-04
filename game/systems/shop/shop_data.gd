@@ -10,8 +10,12 @@ extends RefCounted
 
 var id: StringName = &""
 ## Le stock, dans l'ordre d'affichage : { "item": StringName, "if": Array[StringName],
-## "unless": Array[StringName] }.
+## "unless": Array[StringName], "if_weekday": Array[StringName] } (JOH3 : jours de vente,
+## vide = tous les jours).
 var stock: Array[Dictionary] = []
+## Chapitre Johto (JOH3, JH-33) : promotion du jour, jour (« monday »…) → objets vendus à
+## moitié prix ce jour-là ([method ShopRules.unit_price]). Vide : aucune promotion (Kanto).
+var promotions: Dictionary[StringName, Array] = {}
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
 

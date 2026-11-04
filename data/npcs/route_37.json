@@ -1,0 +1,67 @@
+{
+	"lise": {
+		"cell": [
+			3,
+			19
+		],
+		"facing": "down",
+		"sprite": "bird_keeper",
+		"dialogue": "route_37_birdkeeper_lise_after",
+		"trainer": {
+			"id": "route_37_birdkeeper_lise",
+			"sight": 3,
+			"before": "route_37_birdkeeper_lise_before",
+			"defeated": "route_37_birdkeeper_lise_defeated"
+		}
+	},
+	"sbire_a": {
+		"cell": [
+			16,
+			25
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "route_37_grunt_a_after",
+		"trainer": {
+			"id": "route_37_grunt_a",
+			"sight": 2,
+			"before": "route_37_grunt_a_before",
+			"defeated": "route_37_grunt_a_defeated"
+		},
+		"if_period": [
+			"night"
+		]
+	},
+	"sbire_b": {
+		"cell": [
+			2,
+			29
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "route_37_grunt_b_after",
+		"trainer": {
+			"id": "route_37_grunt_b",
+			"sight": 3,
+			"before": "route_37_grunt_b_before",
+			"defeated": "route_37_grunt_b_defeated"
+		},
+		"if_period": [
+			"night"
+		]
+	},
+	"route_37_item_1": {
+		"cell": [
+			16,
+			6
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_37_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_37_item_1"
+		]
+	}
+}

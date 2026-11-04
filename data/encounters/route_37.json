@@ -1,0 +1,107 @@
+{
+	"route_37_grass_day": {
+		"maps": [
+			"route_37"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "furret",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 25
+			},
+			{
+				"species": "growlithe",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 25
+			},
+			{
+				"species": "pidgey",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 20
+			},
+			{
+				"species": "ponyta",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			},
+			{
+				"species": "rattata",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			}
+		]
+	},
+	"route_37_grass_night": {
+		"maps": [
+			"route_37"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "hoothoot",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 35
+			},
+			{
+				"species": "houndour",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 30
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 20
+			},
+			{
+				"species": "raticate",
+				"levels": [
+					13,
+					16
+				],
+				"weight": 15
+			}
+		]
+	}
+}

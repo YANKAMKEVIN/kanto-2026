@@ -23,9 +23,10 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 21 (T14, jalon-21.md §2.13) : « rendre visite à M. Fuji. » et « trouver M. Fuji… » en tête.
 	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
 	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord.
-	# JOH4 (QA A17) : ses quatre objectifs [D] devant eux (Écorcia et le Puits Ramoloss).
+	# JOH3 (QA A17) : ses deux objectifs [D] devant eux ; JOH4 (QA A17) : ses quatre devant ceux-là.
 	assert_eq(library.get_ids(), [&"talk_to_kurt_in_well", &"take_brace_papers",
-		&"clear_slowpoke_well", &"meet_kurt", &"go_route_39", &"choose_johto_partner", &"rest_olivine",
+		&"clear_slowpoke_well", &"meet_kurt", &"search_underground", &"reach_goldenrod",
+		&"go_route_39", &"choose_johto_partner", &"rest_olivine",
 		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",
 		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
@@ -433,6 +434,24 @@ func test_joh1_objectives_in_order() -> void:
 			assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
 			assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
 
+
+## JOH3 (QA A17 du 2026-11-04 : objectif de la Route 39 périmé à Doublonville) : de Rosalia à
+## l'indice du Souterrain, puis `meet_kurt` du JOH4 ; textes [D].
+func test_joh3_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	assert_true(library.load_file())
+	var flags := StoryFlags.new()
+	flags.set_flag(&"johto_starter_chosen")
+	assert_eq(library.current_id(flags), &"go_route_39", "avant Rosalia")
+	var steps: Array = [
+		[&"johto_rosalia_rockets_seen", &"reach_goldenrod"],
+		[&"johto_goldenrod_arrived", &"search_underground"],
+		[&"johto_azalea_clue", &"meet_kurt"],
+	]
+	for step: Array in steps:
+		flags.set_flag(step[0])
+		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
+		assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
 
 
 ## JOH4 (QA A17 : à Écorcia, l'objectif disait encore « prendre la Route 39 ») : de l'indice de

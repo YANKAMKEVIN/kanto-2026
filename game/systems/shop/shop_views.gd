@@ -41,8 +41,9 @@ const SELL_CANCEL_LABEL: String = "ANNULER"
 ## ACHETER : le stock du moment ([method ShopRules.stock]), chaque objet borné par l'argent.
 ## VENDRE : les objets vendables du Sac (jamais un objet clé), dans l'ordre des données. Un
 ## objet inconnu de [param items] est omis (push_error).
+## [param weekday] (JOH3) : jour de l'ouverture (stock du jour, promotion à moitié prix).
 static func build(state: Object, shop: ShopData, items: ItemLibrary,
-		mode: StringName = MODE_BUY) -> ShopView:
+		mode: StringName = MODE_BUY, weekday: StringName = &"") -> ShopView:
 	var view := ShopView.new()
 	view.mode = mode if MODES.has(mode) else MODE_BUY
 	view.shop_id = shop.id if shop != null else &""
@@ -54,10 +55,11 @@ static func build(state: Object, shop: ShopData, items: ItemLibrary,
 	var bag: Bag = state.bag
 	view.money_text = MenuFormat.money(money)
 	if view.mode == MODE_BUY:
-		for id: StringName in ShopRules.stock(shop, state.flags):
+		for id: StringName in ShopRules.stock(shop, state.flags, weekday):
 			var item := _item(items, id)
 			if item != null:
-				view.entries.append(_buy_entry(item, bag, money))
+				view.entries.append(_buy_entry(item, bag, money,
+					ShopRules.unit_price(shop, item, weekday)))
 	else:
 		var sellable: Array[ItemData] = []
 		for id: StringName in bag.get_ids():
@@ -105,11 +107,11 @@ static func sell_confirm_view(entry: ShopEntryView, quantity: int) -> ChoiceView
 	return view
 
 
-static func _buy_entry(item: ItemData, bag: Bag, money: int) -> ShopEntryView:
+static func _buy_entry(item: ItemData, bag: Bag, money: int, price: int = -1) -> ShopEntryView:
 	var entry := _entry(item, bag)
-	entry.unit_price = item.price
-	entry.price_text = MenuFormat.money(item.price)
-	entry.max_quantity = ShopRules.max_buy(item, money, bag)
+	entry.unit_price = item.price if price < 0 else price
+	entry.price_text = MenuFormat.money(entry.unit_price)
+	entry.max_quantity = ShopRules.max_buy(item, money, bag, entry.unit_price)
 	if item.is_permanent() and bag.has(item.id):
 		entry.price_text = TEXT_ALREADY_OWNED
 		entry.reason = TEXT_ALREADY_OWNED
