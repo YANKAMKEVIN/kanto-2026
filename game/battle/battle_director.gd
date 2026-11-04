@@ -132,6 +132,8 @@ var _party_picker: PartyPicker
 var _party_panel: BattlePartyPanel
 ## Pokémon sauvage du combat en cours (null contre un dresseur) et carte où il se joue.
 var _wild_foe: Pokemon
+## Équipes des deux camps du combat en cours (JOH6 : variante de couleur de chaque entrée).
+var _side_parties: Dictionary[BattleEvent.SideId, Party] = {}
 var _map_id: StringName = &""
 var _haptic_busy: bool = false
 ## Progression du combat en cours (bilan de fin de combat).
@@ -246,6 +248,11 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	_summary = ExpSummary.new()
 	_fainted_indices.clear()
 	_wild_foe = foe if wild else null
+	_side_parties = {BattleEvent.SideId.PLAYER: party, BattleEvent.SideId.FOE: request.foe_party}
+	if is_instance_valid(_stage):
+		_stage.set_variant(BattleEvent.SideId.FOE, foe.variant)
+		var lead := party.first_able()
+		_stage.set_variant(BattleEvent.SideId.PLAYER, lead.variant if lead != null else &"")
 	_map_id = map.map_id if is_instance_valid(map) else &""
 	_trainer_id = trainer.id if trainer != null else &""
 	if is_instance_valid(_player):
@@ -755,6 +762,7 @@ func _play_beat(beat: BattleBeat) -> void:
 				await _hud.show_message(beat.text, beat.wait_touch)
 		BattleBeat.Kind.SEND_OUT:
 			if is_instance_valid(_stage):
+				_stage.set_variant(beat.side, _variant_of(beat.side, beat.event.party_index))
 				if _stage.has_trainer_send(beat.side):
 					# Entrée du combat de Dresseur : son dresseur le lance, puis s'efface.
 					await _stage.play_trainer_send(beat.side, beat.event.species_id)
@@ -1352,3 +1360,13 @@ static func safari_action_labels(texts: BattleText, balls: int) -> Dictionary[St
 		ActionGrid.TEAM: texts.get_template(&"safari_action_rock"),
 		ActionGrid.RUN: texts.get_template(&"safari_action_run"),
 	}
+
+
+## Variante de couleur (JOH6) du Pokémon n° [param index] de l'équipe de [param side] ; &"" si
+## inconnu.
+func _variant_of(side: BattleEvent.SideId, index: int) -> StringName:
+	var party: Party = _side_parties.get(side)
+	if party == null or index < 0 or index >= party.size():
+		return &""
+	var pokemon := party.get_at(index)
+	return pokemon.variant if pokemon != null else &""

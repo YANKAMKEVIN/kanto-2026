@@ -254,6 +254,8 @@ var _world_feet: Dictionary[BattleEvent.SideId, Vector2] = {}
 var _world_height: Dictionary[BattleEvent.SideId, float] = {}
 var _world_modulate: Dictionary[BattleEvent.SideId, Color] = {}
 var _species: Dictionary[BattleEvent.SideId, StringName] = {}
+## Variante de couleur affichée de chaque camp (JOH6, [PokemonVariant]) ; absente = forme normale.
+var _variants: Dictionary[BattleEvent.SideId, StringName] = {}
 ## Côtés K.O. : leur sprite reste caché jusqu'à la sortie.
 var _fainted: Dictionary[BattleEvent.SideId, bool] = {}
 var _buried: Dictionary[BattleEvent.SideId, bool] = {}
@@ -498,6 +500,15 @@ func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 	_entering = false
 	if _active:
 		entered.emit()
+
+
+## Variante de couleur du prochain Pokémon affiché pour [param side] (JOH6) ; &"" = forme normale.
+## Le directeur la règle avant chaque entrée.
+func set_variant(side: BattleEvent.SideId, variant: StringName) -> void:
+	if variant.is_empty():
+		_variants.erase(side)
+	else:
+		_variants[side] = variant
 
 
 ## Affiche le Pokémon de [param side] ([param species]) à son ancre s'il n'y est pas déjà
@@ -1488,6 +1499,7 @@ func _apply_reset() -> void:
 	_boxes.clear()
 	_scales.clear()
 	_sinks.clear()
+	_variants.clear()
 	_arena = Rect2()
 	_bounds = Rect2()
 	_decor = null
@@ -1538,6 +1550,10 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if official \
 		else CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.material = _artwork_material if official else null
+	# JOH6 : variante de couleur (le Léviator rouge) : teinte à la place de l'étalonnage.
+	var variant_material := PokemonVariant.material_for(_variants.get(side, &""))
+	if variant_material != null:
+		sprite.material = variant_material
 	var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
 		_view_size().y, not official)
 	if back:
