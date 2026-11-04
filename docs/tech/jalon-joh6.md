@@ -250,4 +250,16 @@ teinte rouge ; filtre sépia ; textes `draft` (§2.3).
 
 | Tâche | Commit | Note |
 |---|---|---|
-| Plan | (ce commit) | Ce document |
+| Plan | `eaee7cc1` | Ce document |
+| T2, T3, T4 | `5b15a200`, `a063da57` | `tools/build_joh6_maps.gd` (11 cartes + décor du souvenir), `build_painted_interiors.gd --acajou`, Rosalia raccordée (panneau C-3, déclencheur du doyen ajouté à `rosalia.txt`), Corde Sortie (`caves.json`) |
+| T8, T9 | `5284947b` | `PokemonVariant` (clé « variant » du Pokémon, écrite seulement si non vide ; étape `wild_battle` ; teinte en combat), étape `flashback` et `FlashbackFilter` (sépia, joueur caché) |
+| T7, T11 | `0148d3a1`, `beff0e7f` | `tools/gen_joh6_story.py` (scènes d'histoire), 12 départs `johto_joh6_*` |
+| T1, T5, T6, T10 | `270f7d98` | `tools/gen_joh6_data.py` (sous-agent Sonnet) : PNJ, Dresseurs, rencontres par moment, textes, Samuel et Diane, monde, Boutique ; péage qui pose `johto_toll_cleared` |
+| T12 | `a063da57`, `0b48bc99`, `a5badc05` | `test_joh6_maps` (12), `test_joh6_story` (15), `test_joh6_data` ; registres réalignés |
+| T13 | `fa0b57be` | `tools/capture_joh6.sh` (21 plans, `build/captures/joh6/`) relus. Défauts trouvés et corrigés : Pokémon du décor sans planche sautés par la carte (planches provisoires `tools/gen_joh6_world_pokemon.py`, Léviator rouge recoloré) ; drapeaux de scène posés avant le départ des PNJ qui en dépendent (déplacés en fin de scène) |
+
+**Reportés (rendu, phase DA)** : tuiles provisoires, statues, cage, générateur, poste de péage,
+antenne et poutres en aplats ; chiens en silhouettes provisoires, Persian et Léviator rouge
+d'après les artworks ; Brace, Dante et Giovanni jeunes, déserteur, Samuel, Diane sur des sprites
+existants ; boutique de souvenirs = façade de Boutique ; aucune musique de Johto ; la teinte de la
+variante rouge vire le ventre du Léviator au cyan (repeindre la planche).
