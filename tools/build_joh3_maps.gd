@@ -72,14 +72,17 @@ const SURF_MARKS: Dictionary = {"route_35": "w"}
 ## « dir » : sens du pas d'un passage hors bord (défaut ↑) ; « facing » : orientation à l'arrivée
 ## (défaut : attribut de la grille cible, sinon le sens du passage).
 const WARPS: Dictionary = {
-	"route_37/warp_nord": {"to": &"ecruteak_city", "spawn": "from_route_37", "label": "Rosalia"},
+	# Cartes d'autres jalons : « per_cell », une arrivée par case (`<nom>`, `<nom>_1`, `<nom>_2`).
+	"route_37/warp_nord": {"to": &"ecruteak_city", "spawn": "from_route_37", "label": "Rosalia",
+		"per_cell": true},
 	"route_37/warp_sud": {"to": &"route_36", "spawn": "from_route_37"},
 	"route_36/warp_nord": {"to": &"route_37", "spawn": "from_route_36"},
 	"route_36/warp_sud": {"to": &"route_35", "spawn": "from_route_36"},
 	"route_35/warp_nord": {"to": &"route_36", "spawn": "from_route_35"},
 	"route_35/warp_sud": {"to": &"goldenrod_city", "spawn": "from_route_35"},
 	"goldenrod_city/warp_nord": {"to": &"route_35", "spawn": "from_goldenrod"},
-	"goldenrod_city/warp_sud": {"to": &"route_34", "spawn": "from_goldenrod", "label": "Route 34"},
+	"goldenrod_city/warp_sud": {"to": &"route_34", "spawn": "from_goldenrod", "label": "Route 34",
+		"per_cell": true},
 	# JOH5 : le hall de la Tour Radio (faux employé, D-18, D-19).
 	"goldenrod_city/porte_tour_radio": {"to": &"goldenrod_radio_tower_1f", "spawn": "from_city",
 		"label": "Tour Radio"},
@@ -335,7 +338,7 @@ func _add_warp(root: Node2D, id: String, cells: Array[Vector2i], dest: Dictionar
 				dest.get("label", String(target)), if_flags, unless)
 			continue
 		var arrival := spawn
-		if target_cells.size() == cells.size() and i > 0:
+		if (target_cells.size() == cells.size() or dest.get("per_cell", false)) and i > 0:
 			arrival = "%s_%d" % [spawn, i]
 		var facing: Vector2i = dest["facing"] if dest.has("facing") \
 			else _arrival_facing(target, spawn, direction)
