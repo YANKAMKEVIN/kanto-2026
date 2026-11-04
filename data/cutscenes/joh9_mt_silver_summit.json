@@ -160,8 +160,7 @@
 						"to": [
 							10,
 							8
-						],
-						"run": true
+						]
 					},
 					{
 						"face": "cenere_sommet",
@@ -194,8 +193,7 @@
 						"to": [
 							14,
 							8
-						],
-						"run": true
+						]
 					},
 					{
 						"face": "rival_sommet",
@@ -260,8 +258,7 @@
 						"to": [
 							16,
 							3
-						],
-						"run": true
+						]
 					},
 					{
 						"despawn": "rival_sommet"
@@ -365,8 +362,7 @@
 						"to": [
 							10,
 							8
-						],
-						"run": true
+						]
 					},
 					{
 						"face": "cenere_sommet",
@@ -399,8 +395,7 @@
 						"to": [
 							14,
 							8
-						],
-						"run": true
+						]
 					},
 					{
 						"face": "rival_sommet",
@@ -465,8 +460,7 @@
 						"to": [
 							16,
 							3
-						],
-						"run": true
+						]
 					},
 					{
 						"despawn": "rival_sommet"
@@ -564,8 +558,7 @@
 						"to": [
 							16,
 							3
-						],
-						"run": true
+						]
 					},
 					{
 						"despawn": "rival_sommet"
@@ -647,8 +640,7 @@
 						"to": [
 							16,
 							3
-						],
-						"run": true
+						]
 					},
 					{
 						"despawn": "rival_sommet"

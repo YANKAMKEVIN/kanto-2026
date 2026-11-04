@@ -1,36 +1,36 @@
 {
 	"mt_silver_1f_grunt_x_before": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Quelqu'un est passé ? Impossible !"
 		]
 	},
 	"mt_silver_1f_grunt_x_defeated": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Bon, si, c'est possible."
 		]
 	},
 	"mt_silver_1f_grunt_x_after": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Ton copain, en bas, il est fou."
 		]
 	},
 	"mt_silver_1f_grunt_y_before": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Je me suis glissé derrière toi. Le\npatron saura que je suis fidèle !"
 		]
 	},
 	"mt_silver_1f_grunt_y_defeated": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Le patron ne saura rien…"
 		]
 	},
 	"mt_silver_1f_grunt_y_after": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Va. Il t'attend, de toute façon."
 		]

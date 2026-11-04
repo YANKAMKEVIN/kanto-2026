@@ -8,6 +8,7 @@ extends GutTest
 const GRAND: Array[StringName] = [
 	&"celadon_gym_erika", &"cerulean_gym_misty", &"cinnabar_gym_blaine", &"fuchsia_gym_koga",
 	&"giovanni_hideout", &"league_agatha", &"league_bruno", &"league_lance", &"league_lorelei",
+	&"mt_silver_rival_final",
 	&"pewter_gym_brock", &"rival_cerulean", &"rival_champion", &"rival_lab", &"rival_route22",
 	&"rival_route22_final", &"rival_silph", &"rival_ss_anne", &"rival_tower",
 	&"saffron_gym_sabrina", &"silph_co_giovanni", &"vermilion_gym_surge",
@@ -60,7 +61,8 @@ func test_female_grunts_have_their_own_class() -> void:
 	for id: StringName in _trainers.get_ids():
 		if _trainers.get_trainer(id).battle_class == &"sbire_rocket_f":
 			female += 1
-	assert_eq(female, 11, "11 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+	# JOH9 : + le Sbire Y du 1F du Mont Argenté.
+	assert_eq(female, 12, "12 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
 
 
 func test_every_grand_portrait_is_in_the_catalog() -> void:

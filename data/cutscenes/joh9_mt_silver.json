@@ -58,8 +58,7 @@
 									1
 								]
 							]
-						},
-						"run": true
+						}
 					},
 					{
 						"face": "rival_relais",
@@ -148,8 +147,7 @@
 									1
 								]
 							]
-						},
-						"run": true
+						}
 					},
 					{
 						"face": "rival_2f",
@@ -176,8 +174,7 @@
 						"to": [
 							28,
 							3
-						],
-						"run": true
+						]
 					},
 					{
 						"despawn": "rival_2f"

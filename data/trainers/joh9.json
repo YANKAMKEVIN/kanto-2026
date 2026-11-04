@@ -64,7 +64,7 @@
 		]
 	},
 	"mt_silver_1f_grunt_x": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket",
 		"ai": "random",
 		"can_lose": false,
@@ -84,7 +84,7 @@
 		]
 	},
 	"mt_silver_1f_grunt_y": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket_f",
 		"ai": "random",
 		"can_lose": false,
@@ -153,6 +153,7 @@
 	},
 	"mt_silver_dante_2": {
 		"name": "Dante",
+		"class": "gentleman",
 		"ai": "smart",
 		"can_lose": false,
 		"heal_after": false,

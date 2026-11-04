@@ -174,9 +174,9 @@ TRAINERS = {
 		"topdresseuse", "cooltrainer_f", 60, [("skarmory", 64), ("ampharos", 64), ("espeon", 65)]),
 	("silver_trail", "hugo"): ("silver_trail_blackbelt_hugo", "Karatéka Hugo", "karateka",
 		"blackbelt", 36, [("machamp", 65), ("ursaring", 65)]),
-	("mt_silver_1f", "sbire_x"): ("mt_silver_1f_grunt_x", "Sbire", "sbire_rocket",
+	("mt_silver_1f", "sbire_x"): ("mt_silver_1f_grunt_x", "Sbire Rocket", "sbire_rocket",
 		"rocket_grunt_m", 32, [("houndoom", 66), ("muk", 66)]),
-	("mt_silver_1f", "sbire_y"): ("mt_silver_1f_grunt_y", "Sbire", "sbire_rocket_f",
+	("mt_silver_1f", "sbire_y"): ("mt_silver_1f_grunt_y", "Sbire Rocket", "sbire_rocket_f",
 		"rocket_grunt_f", 32, [("sneasel", 66), ("weezing", 66), ("arbok", 66)]),
 	("mt_silver_3f", "lucas"): ("mt_silver_3f_hiker_lucas", "Montagnard Lucas", "montagnard",
 		"mountaineer", 36, [("steelix", 67), ("ursaring", 67)]),
@@ -342,8 +342,7 @@ def relay_scene():
 		{"dialogue": "mt_silver_rival_offscreen"},
 		{"spawn": "rival_relais", "sprite": "rival", "cell": [19, 22], "facing": "up"},
 		{"dialogue": "mt_silver_rival_arrives"},
-		{"move": "rival_relais", "to": {"near": "player", "offsets": [[1, 0], [-1, 0], [0, 1]]},
-			"run": True},
+		{"move": "rival_relais", "to": {"near": "player", "offsets": [[1, 0], [-1, 0], [0, 1]]}},
 		{"face": "rival_relais", "to": "player"},
 		{"face": "player", "to": "rival_relais"},
 		{"dialogue": "mt_silver_rival_relay"},
@@ -363,15 +362,14 @@ def heal_scene():
 		{"set": [HEALED]},
 		{"dialogue": "mt_silver_2f_footsteps"},
 		{"spawn": "rival_2f", "sprite": "rival", "cell": [26, 11], "facing": "left"},
-		{"move": "rival_2f", "to": {"near": "player", "offsets": [[1, 0], [1, -1], [1, 1], [0, 1]]},
-			"run": True},
+		{"move": "rival_2f", "to": {"near": "player", "offsets": [[1, 0], [1, -1], [1, 1], [0, 1]]}},
 		{"face": "rival_2f", "to": "player"},
 		{"face": "player", "to": "rival_2f"},
 		{"dialogue": "mt_silver_2f_rival_news"},
 		{"dialogue": "mt_silver_2f_rival_heal"},
 		{"dialogue": "mt_silver_2f_healed"},
 		{"dialogue": "mt_silver_2f_rival_leaves"},
-		{"move": "rival_2f", "to": [28, 3], "run": True},
+		{"move": "rival_2f", "to": [28, 3] },
 		{"despawn": "rival_2f"},
 	]}]}
 
@@ -416,7 +414,7 @@ def giovanni_steps():
 		{"move": "player", "path": ["right", "right"], "keep_facing": True},
 		{"dialogue": "mt_silver_cenere_arrives"},
 		{"spawn": "cenere_sommet", "sprite": "rocket_grunt_f", "cell": [16, 6], "facing": "left"},
-		{"move": "cenere_sommet", "to": [10, 8], "run": True},
+		{"move": "cenere_sommet", "to": [10, 8] },
 		{"face": "cenere_sommet", "to": "dante"},
 		{"dialogue": "mt_silver_cenere_stays"},
 		{"face": "dante", "to": "down"},
@@ -431,7 +429,7 @@ def rival_steps(approach):
 	if approach == "arrive":
 		steps += [
 			{"spawn": "rival_sommet", "sprite": "rival", "cell": [16, 6], "facing": "left"},
-			{"move": "rival_sommet", "to": [14, 8], "run": True},
+			{"move": "rival_sommet", "to": [14, 8] },
 		]
 	elif approach == "walk":
 		steps += [{"move": "player", "to": {"near": "rival_sommet", "offsets": [[-1, 0], [0, 1],
@@ -450,7 +448,7 @@ def rival_steps(approach):
 		{"dialogue": "mt_silver_rival_agente"},
 		{"dialogue": "mt_silver_rival_race"},
 		{"dialogue": "mt_silver_rival_runs"},
-		{"move": "rival_sommet", "to": [16, 3], "run": True},
+		{"move": "rival_sommet", "to": [16, 3] },
 		{"despawn": "rival_sommet"},
 	]
 	return steps
@@ -550,9 +548,10 @@ def main():
 		trainers[tid] = trainer_entry(name, klass, prize, team)
 
 	# Dante (2) et le rival final : combats de scène (obligatoires, grands combats).
-	trainers["mt_silver_dante_2"] = trainer_entry("Dante", "dante", 99, DANTE_TEAM,
+	# Classe d'entrée de combat [D] : « gentleman » (même apparence que dans le monde) en attendant
+	# l'art de Dante âgé.
+	trainers["mt_silver_dante_2"] = trainer_entry("Dante", "gentleman", 99, DANTE_TEAM,
 		ai="smart", start_message=False, end_message=False, bag=True, switch=True)
-	trainers["mt_silver_dante_2"].pop("class")
 	rival = trainer_entry(RIVAL, "", 99, [], ai="smart", start_message=False, end_message=False,
 		bag=True, switch=True)
 	rival.pop("class")
