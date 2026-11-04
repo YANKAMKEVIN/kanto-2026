@@ -206,7 +206,7 @@ CUTSCENES = {
 		# reste pour la cage.
 		{"despawn": "suicune"},
 		{"despawn": "entei"},
-		{"spawn": "brace", "sprite": "rocket_civilian", "cell": [18, 8], "facing": "left"},
+		{"spawn": "brace", "sprite": "rocket_grunt_m", "cell": [18, 8], "facing": "left"},
 		{"move": "brace", "to": [13, 8]},
 		{"face": "player", "to": "brace"},
 		{"dialogue": "joh6_brace_arrives"},

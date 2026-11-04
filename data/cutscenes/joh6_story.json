@@ -55,7 +55,7 @@
 					},
 					{
 						"spawn": "brace",
-						"sprite": "rocket_civilian",
+						"sprite": "rocket_grunt_m",
 						"cell": [
 							18,
 							8

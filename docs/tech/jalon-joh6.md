@@ -102,7 +102,7 @@ Modèle `gen_joh2_data.py`. Écrit :
   maisons, vendeur après le repaire, déserteur au Centre après C-45, doyen après C-11.
 - Sprites [D] : Odile `channeler`, Sbires `rocket_grunt_m`/`_f`, Marcel et Ludovic
   `fisher_route_12`, Hector `hiker`, Coralie `swimmer_f_water`, Louis `nerd`, Basile `camper`,
-  Scientifique `researcher`, **Brace `rocket_civilian`**, déserteur `rocket_grunt_m`, Samuel
+  Scientifique `researcher`, **Brace `rocket_grunt_m` (comme au Puits, JOH4)**, déserteur `rocket_grunt_m`, Samuel
   `mountaineer`, Diane `aoki`, vendeur `clerk`, habitants `old_man` / `beauty`, pêcheur
   `fisher_fuchsia`, garde forestier `guard`, **Dante jeune `gentleman`**, **Giovanni jeune
   `giovanni`**, Persian `pokemon/meowth` [D] ; chiens : `pokemon/<espèce>` si la planche existe,

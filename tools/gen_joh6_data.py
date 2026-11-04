@@ -241,7 +241,7 @@ TRAINERS = {
 				"Le mot de passe ? Je ne le dirai jamais. Jamais !")),
 	},
 	"mahogany_hideout_b3f": {
-		"brace": ("Brace", "sbire_rocket", "rocket_civilian", 60, "smart",
+		"brace": ("Brace", "sbire_rocket", "rocket_grunt_m", 60, "smart",
 			[("fearow", 60), ("arbok", 60), ("weezing", 61), ("houndoom", 62)], "Brace",
 			("Encore toi ! Tu me suis partout ! / Tant mieux. Au puits, tu avais des Pokémon de rien du "
 				"tout. / Montre-moi tes vrais Pokémon. Je fonce !", "Non, non, non ! Pas encore !",
