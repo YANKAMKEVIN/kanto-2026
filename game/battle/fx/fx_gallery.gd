@@ -109,6 +109,15 @@ func _run() -> void:
 		var outcome := MoveFxOutcome.new()
 		outcome.result = MoveFxOutcome.Result.MISSED if _miss else MoveFxOutcome.Result.HIT
 		outcome.hits = 2 if _catalog.entry(move_id).has_modifier(&"multi") else 1
+		# Téléport joué comme en combat sauvage (il file et ne revient pas ; remis visible après).
+		outcome.vanished = true
+		if _catalog.entry(move_id).has_modifier(&"charge") and _freeze < 0.0:
+			# Attaque à deux tours (Tunnel, Vol…) : le tour de charge d'abord.
+			var charging := MoveFxOutcome.new()
+			charging.result = MoveFxOutcome.Result.CHARGING
+			await _player.play(MoveFxPlan.build(_catalog, _catalog.entry(move_id), move, charging,
+				_mode, _reduce_flashes), stage)
+			await get_tree().create_timer(PAUSE * 0.5).timeout
 		var plan := MoveFxPlan.build(_catalog, _catalog.entry(move_id), move, outcome, _mode,
 			_reduce_flashes)
 		var target := _data.get_species(USER_SPECIES if _foe_attacks else FOE_SPECIES)
@@ -128,6 +137,8 @@ func _run() -> void:
 		else:
 			await _player.play(plan, stage)
 			await get_tree().create_timer(PAUSE).timeout
+		_back_sprite.modulate = Color.WHITE
+		_front_sprite.modulate = Color.WHITE
 		_report(String(move_id), _frames, _time, _worst)
 		_cycle_frames += _frames
 		_cycle_time += _time

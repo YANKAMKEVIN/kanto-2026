@@ -11,6 +11,7 @@ extends RefCounted
 const MANIFESTS: Array[String] = [
 	"res://assets/sprites/battle_fx/manifeste_vague1.json",
 	"res://assets/sprites/battle_fx/manifeste_vague2.json",
+	"res://assets/sprites/battle_fx/manifeste_vague3.json",
 ]
 const DIR: String = "res://assets/sprites/battle_fx/"
 
