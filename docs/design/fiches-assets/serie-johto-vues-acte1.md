@@ -341,3 +341,24 @@ Route 28 sans neige (versant ouest) ; poste de la Route 28 = une pièce traversa
 
 **Actes 2 et 3** : 27 vues en 27 essais (JOH6 : 10, JOH7 : 5, JOH8 : 4, JOH9 : 8), aucun refus. **Validées par Kevin le
 2026-11-03** (« Oui, fusionne »). Total du chapitre : **48 vues générales**, 48 essais, toutes validées.
+
+## Arc des Pierres — JOHP1 à JOHP3 (planches `johp1-vues-v1.png` à `johp3-vues-v1.png`) — **[D], à relire par Kevin**
+
+Générées la nuit du 2026-11-05 (coordination déléguée), un essai chacune, sans refus de Codex. Prompts
+`tools/art/prompts/CONCEPT_<ZONE>_VUE_GENERALE_r1.txt` ; plans annotés dans `reference/plans-johto/`.
+
+| Vue | Référence jointe | À regarder |
+|---|---|---|
+| `ruins-of-alph-vue-generale-v1.png` | Écorcia | Le toit du temple se lit comme une cour dallée ; il est **bloqué** dans la grille. Feuillage un peu plus granuleux que les autres vues |
+| `alph-tent-vue-generale-v1.png` | Maison de Léo | Conforme |
+| `alph-gallery-vue-generale-v1.png` | Puits Ramoloss B1F | Signes des dalles abstraits, conformes ; à accorder avec les bonnes dalles au code |
+| `alph-chamber-vue-generale-v1.png` | Puits Ramoloss B1F | Conforme |
+| `goeland-deck-vue-generale-v1.png` | Oliville | Le bateau ressemble à une barge : proue carrée, moins « bateau de pêche » que demandé |
+| `cianwood-city-vue-generale-v1.png` | Oliville | Le quai est plus court que la grille ; poches d'herbes plus grandes que la grille |
+| `tide-cave-1f-vue-generale-v1.png` | Îles Tourbillon 1F | Pompes réussies, sans lettre |
+| `tide-cave-b1f-vue-generale-v1.png` | Îles Tourbillon 1F | Gués bien visibles sous l'eau |
+| `blackthorn-city-vue-generale-v1.png` | Acajou | Bannières rouges unies, bouche de l'Antre à piliers : réussi |
+| `dragons-den-1f-vue-generale-v1.png` | Mont Argenté 1F | Petite chute d'eau ajoutée dans la salle de l'Eau, non prévue par la grille (décor seulement) |
+| `dragons-den-sanctuary-vue-generale-v1.png` | Îles Tourbillon B2F | Conforme : autel à trois cuvettes, cadrage prêt pour le Réveil |
+
+La grille fait foi pour la géométrie.
