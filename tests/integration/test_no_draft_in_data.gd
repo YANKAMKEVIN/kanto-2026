@@ -75,8 +75,8 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/2",
 	"story/objectives.json/3",
 	"story/objectives.json/4",
-	# JOH4 : quatre objectifs [D] en tête ; JOH3 : deux derrière eux (indices 4, 5) ; ceux du JOH1
-	# passent de 0–4 à 12–16 ; JOH6 : six objectifs [D] devant tous (0–5).
+	# JOH6 : cinq objectifs [D] en tête ; JOH5 : trois derrière eux ; JOH4 : quatre ; JOH3 : deux ; ceux
+	# du JOH1 ensuite.
 	"story/objectives.json/5",
 	"story/objectives.json/6",
 	"story/objectives.json/7",
@@ -89,6 +89,8 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/14",
 	"story/objectives.json/15",
 	"story/objectives.json/16",
+	"story/objectives.json/17",
+	"story/objectives.json/18",
 	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",
@@ -143,7 +145,12 @@ const PENDING_DRAFTS: Array[String] = [
 	"pokedex/johto.json/species/suicune",
 	"pokedex/johto.json/species/lugia",
 	"pokedex/johto.json/species/ho_oh",
-	"pokedex/johto.json/species/celebi"]
+	"pokedex/johto.json/species/celebi",
+	# Chapitre Johto, JOH5 (`jalon-joh5.md` §3) : portes fermées de la Tour Radio (réserve, bureau,
+	# escalier de secours), textes absents du dossier JOH-06.
+	"dialogues/joh5_radio_tower.json/goldenrod_radio_reserve_locked",
+	"dialogues/joh5_radio_tower.json/goldenrod_radio_emergency_stairs",
+	"dialogues/joh5_radio_tower.json/goldenrod_radio_office_locked"]
 
 
 func test_data_has_json_files() -> void:

@@ -293,9 +293,10 @@ func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
 	# Jalon 21 (T14) : `visit_fuji` et `find_fuji` en tête (ordre « plus avancé d'abord ») ;
 	# jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
 	# Chapitre Johto (JOH1) : ses cinq objectifs devant tous ceux de Kanto ; JOH3 : ses deux
-	# objectifs devant eux ; JOH4 : ses quatre objectifs devant ceux-là ; JOH6 : ses six devant tous.
+	# objectifs devant eux ; JOH4 : ses quatre objectifs devant ceux-là ; JOH5 : la Tour Radio ; JOH6 : ses cinq devant.
 	assert_eq(ids.slice(0, first), [&"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
-		&"joh6_lake_of_rage", &"joh6_burned_tower", &"joh6_see_elder", &"talk_to_kurt_in_well", &"take_brace_papers",
+		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"leave_radio_tower",
+		&"free_radio_tower", &"talk_to_kurt_in_well", &"take_brace_papers",
 		&"clear_slowpoke_well", &"meet_kurt", &"search_underground", &"reach_goldenrod",
 		&"go_route_39", &"choose_johto_partner", &"rest_olivine",
 		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",

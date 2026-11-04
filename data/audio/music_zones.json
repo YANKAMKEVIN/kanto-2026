@@ -171,7 +171,13 @@
 		"goldenrod_dept_store_1f": "pokemon_center",
 		"goldenrod_dept_store_2f": "pokemon_center",
 		"goldenrod_dept_store_3f": "pokemon_center",
-		"goldenrod_dept_store_roof": "pokemon_center"
+		"goldenrod_dept_store_roof": "pokemon_center",
+		"goldenrod_radio_tower_1f": "silph_co",
+		"goldenrod_radio_tower_2f": "silph_co",
+		"goldenrod_radio_tower_3f": "silph_co",
+		"goldenrod_radio_tower_4f": "silph_co",
+		"goldenrod_radio_tower_5f": "silph_co",
+		"goldenrod_radio_tower_elevator": "silph_co"
 	},
 	"movement": {
 		"surf": "the_sea",

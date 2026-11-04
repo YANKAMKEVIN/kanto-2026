@@ -109,7 +109,7 @@ Les **objets clés** restent (Vélo, Canne, Multi Exp, CS…). L'**argent**, les
 - Pas de Stockage : au-delà de 6 Pokémon, une capture va… nulle part. Règle **[D]** : à 6 Pokémon,
   le jeu refuse de lancer une Poké Ball (« Ton équipe est pleine, et le PC ne répond pas. »).
 
-### 6.4 Le retour (Tour Radio, fin de l'acte 1)
+### 6.4 Le retour (Antre du Dragon, fin de l'arc des Pierres : JH-61, dossier JOH-11 §14)
 
 1. L'équipe de Johto et l'équipe confisquée se rejoignent. Le joueur **choisit les 6** à garder sur
    un écran de sélection ; les autres vont au Stockage, qui se reconnecte au même moment **[D]**.
@@ -187,7 +187,7 @@ Un PNJ de Doublonville dit ce que le Pokémon de tête pense du joueur, en 4 pal
 
 ## 10. Expérience de l'acte 1 (JH-13, JH-14)
 
-- Drapeau **`johto_act1`** posé au vol, retiré au retour de l'équipe.
+- Drapeau **`johto_act1`** posé au vol, retiré au retour de l'équipe, donc après l'arc des Pierres (JH-70).
 - Pendant l'acte 1, gain d'XP **×1,5** (multiplié avec le ×1,5 des combats de Dresseurs, donc
   ×2,25 contre un Dresseur) **[D]**.
 - **Multi Exp** : c'est déjà un **objet clé** (lot 32P), donc **gardé** au vol. Si le joueur ne l'a

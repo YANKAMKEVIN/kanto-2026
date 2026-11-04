@@ -476,6 +476,11 @@
 			"maps": ["mahogany_hideout_b1f", "mahogany_hideout_b2f", "mahogany_hideout_b3f", "dante_flashback_hq"],
 			"subtitle": "Acajou",
 			"description": "Le repaire de la Team Rocket, sous Acajou."
+		},
+		"goldenrod_radio_tower": {
+			"name": "Tour Radio", "kind": "place", "region": "johto", "subtitle": "Doublonville",
+			"maps": ["goldenrod_radio_tower_1f", "goldenrod_radio_tower_2f", "goldenrod_radio_tower_3f", "goldenrod_radio_tower_4f", "goldenrod_radio_tower_5f", "goldenrod_radio_tower_elevator"],
+			"description": "La Tour Radio de Doublonville, prise par la Team Rocket."
 		}
 	}
 }
