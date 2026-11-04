@@ -47,7 +47,10 @@ DATA = ROOT / "data/opening/trailer.json"
 FPS = 30
 W, H = 2340, 1080
 # Encodeur Theora compilé depuis les exemples de libtheora (voir docs/tech/jalon-34.md).
-THEORA_ENCODER = os.environ.get("THEORA_ENCODER", "theora_encoder")
+# Par défaut : celui compilé dans build/trailer/ (docs/tech/jalon-34.md), sinon le PATH.
+_LOCAL_ENCODER = ROOT / "build/trailer/theora_encoder"
+THEORA_ENCODER = os.environ.get("THEORA_ENCODER",
+                                str(_LOCAL_ENCODER) if _LOCAL_ENCODER.exists() else "theora_encoder")
 # Cartons entre les scènes (v2.1, demande de Kevin : « des textes entre les vidéos ») : mêmes
 # couleurs et même police que le carton « Les studios Kevin & Co » de l'ident (UiTokens).
 CARD_BG = (0x14, 0x0F, 0x0B)
@@ -241,7 +244,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--only-master", action="store_true", help="pas de Theora ni de données")
     parser.add_argument("--width", type=int, default=1920, help="largeur de la vidéo du jeu [D] (v2.1 : plus nette)")
-    parser.add_argument("--quality", type=int, default=5, help="qualité Theora (0 à 10) [D] : 5 ≈ 17 Mo à 1560 × 720")
+    parser.add_argument("--quality", type=int, default=4, help="qualité Theora (0 à 10) [D] : 4 ≈ 24 Mo à 1920 × 886 (5 : 34 Mo, sans différence visible)")
     parser.add_argument("--from-master", action="store_true",
                         help="ne refait que la vidéo du jeu (Theora + données) depuis le master")
     args = parser.parse_args()
