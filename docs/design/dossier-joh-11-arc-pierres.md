@@ -556,11 +556,6 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 2. Kevin relit les grilles et les planches `reference/johp1-vues-v1.png` à `johp3-vues-v1.png`.
 3. Code selon `docs/tech/jalon-joh-pierres.md` : JOHP0 (le Réveil), JOHP1, JOHP2, JOHP3.
 
-1. ~~Arbitrages~~ (2026-11-04), ~~propagation au cadre et aux dossiers~~, ~~lot de textes~~ (2026-11-05).
-2. Grilles dans `tools/plans/`, puis vues générales peintes, validées avant tout code.
-3. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5 : JOHP0 (le Réveil),
-   JOHP1, JOHP2, JOHP3.
-
 ## 20. Annexe : textes encore en jeu jusqu'au JOHP3
 
 Le code du JOH5 et du JOH7 garde l'ancienne version jusqu'à la bascule du JOHP3
