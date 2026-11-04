@@ -1,5 +1,25 @@
 [
 	{
+		"id": "go_ecruteak_sages",
+		"text": "retourner voir les sages de Rosalia.",
+		"if": ["johto_act2"],
+		"draft": true
+	},
+	{
+		"id": "leave_radio_tower",
+		"text": "redescendre au hall de la Tour Radio.",
+		"if": ["johto_team_returned"],
+		"unless": ["johto_act2"],
+		"draft": true
+	},
+	{
+		"id": "free_radio_tower",
+		"text": "libérer la Tour Radio de Doublonville.",
+		"if": ["johto_slowpoke_well_cleared"],
+		"unless": ["johto_team_returned"],
+		"draft": true
+	},
+	{
 		"id": "talk_to_kurt_in_well",
 		"text": "reparler à Fargas, au fond du Puits Ramoloss.",
 		"if": ["johto_radio_pass"],

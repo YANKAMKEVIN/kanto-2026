@@ -123,6 +123,9 @@ func test_every_validated_line_is_in_dossier_joh_04() -> void:
 	dossier = dossier.replace("{joueur}", "{player}")
 	for path: String in KANTO_DOSSIERS:
 		dossier += " " + J22Ids.flat_text(FileAccess.get_file_as_string(path))
+	# JOH5 : T-1, T-35, T-37, variantes du haut-parleur et de la femme de D-37.
+	dossier += " " + J22Ids.flat_text(FileAccess.get_file_as_string(
+		"res://docs/design/dossier-joh-06-tour-radio.md"))
 	var checked := 0
 	for id: StringName in _ids("res://data/dialogues/"):
 		if id == &"goldenrod_dept_board":

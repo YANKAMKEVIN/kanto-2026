@@ -1714,12 +1714,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		for file: String in DirAccess.get_files_at(pair[1]):
 			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
 				continue
-			# JOH2, JOH3, JOH4 : fichiers `joh2_*`, `joh3_*`, `joh4_*` (`test_joh2_data.gd`,
-			# `test_joh3_data.gd`, `test_joh4_data.gd`), même règle que ceux du J23 ; JOH7 : `joh7_*`
-			# (`test_joh7_data.gd`).
+			# JOH2, JOH3, JOH4, JOH5, JOH7 : fichiers `joh<n>_*` (leurs `test_joh<n>_data.gd`), même
+			# règle que ceux du J23.
 			var library: Variant = pair[2] if file.begins_with("j23_") \
 				or file.begins_with("joh2_") or file.begins_with("joh3_") \
-				or file.begins_with("joh4_") \
+				or file.begins_with("joh4_") or file.begins_with("joh5_") \
 				or file.begins_with("joh7_") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
@@ -1787,6 +1786,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"johto_letter_read", &"johto_lugia_passing", &"johto_lugia_shadow", &"got_sea_cave_1_item_1",
 		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_center_dark", &"johto_slept", &"johto_team_stolen",
 		&"johto_starter_offered", &"johto_starter_chosen", &"johto_orme_left", &"johto_cave_mouth_seen",
+		# Chapitre Johto (JOH5, T-38) : le courant calmé, vu une fois (variante de la grotte marine).
+		&"johto_sea_cave_calm_seen",
 		# Lot 32P : Cherch'Objet, Max Éther de l'Écume B3F, Max Repousse de la Route 21.
 		&"got_itemfinder", &"got_exp_all", &"got_seafoam_b3f_hidden_1", &"got_route_21_item_2",
 		# Jalon 32 (32N) : CT obtenables partout.

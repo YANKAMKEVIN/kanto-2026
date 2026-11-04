@@ -209,7 +209,13 @@ func run_scene(answer: bool = true) -> bool:
 			or battles.is_running()) and Time.get_ticks_msec() < deadline:
 		if battles.is_running():
 			var battle := battles.get_battle()
-			if battle != null and battle.get_state() == Battle.State.CHOOSING:
+			# JOH5 : K.O. du Pokémon du joueur, le suivant apte est envoyé (équipes de plusieurs
+			# Pokémon ; sans réserve apte, le combat se termine seul).
+			var panel: BattlePartyPanel = battles.get(&"_party_panel")
+			if battle != null and battle.needs_replacement() and is_instance_valid(panel) \
+					and panel.is_shown() and not panel.is_answered() and not panel.is_sliding():
+				panel.pokemon_chosen.emit(_first_able(battle))
+			elif battle != null and battle.get_state() == Battle.State.CHOOSING:
 				match battle_hud.get_zone():
 					BattleHud.Zone.ACTIONS:
 						battle_hud.action_selected.emit(ActionGrid.ATTACK)
@@ -240,6 +246,17 @@ func run_scene(answer: bool = true) -> bool:
 	await _test.wait_until(func() -> bool:
 		return boot.is_stable() or boot.get_elevator_director().is_panel_open(), 15.0)
 	return events.count("battle") > before
+
+
+## Index du premier Pokémon apte de l'équipe du joueur hors du terrain (remplacement forcé).
+func _first_able(battle: Battle) -> int:
+	var party: Array = GameState.party.get_all()
+	for i: int in party.size():
+		var pokemon: Pokemon = party[i]
+		if pokemon.hp > 0 and pokemon.egg_steps == 0 \
+				and battle.check_switch(i) == Battle.SwitchCheck.OK:
+			return i
+	return 0
 
 
 ## Textes des pages relevées, dans l'ordre.

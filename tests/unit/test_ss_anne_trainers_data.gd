@@ -60,8 +60,10 @@ func test_names_unique_across_all_trainers() -> void:
 	var seen := {}
 	for id: StringName in _trainers.get_ids():
 		var name := _trainers.get_trainer(id).name
-		# Giovanni : le même personnage au repaire (J20) et à la Sylphe SARL (J26).
-		if name.begins_with("{") or name == "Sbire Rocket" or name == "Giovanni":
+		# Giovanni : le même personnage au repaire (J20) et à la Sylphe SARL (J26). Cenere : la même
+		# à la Tour Radio (JOH5) et aux Îles Tourbillon (JOH7).
+		if name.begins_with("{") or name == "Sbire Rocket" or name == "Giovanni" \
+				or name == "Cenere":
 			continue
 		# JOH2 : le dossier joh-03 (§6, R-4) nomme « Gamin Hugo » un Dresseur de la Route 39 ;
 		# celui de la Route 3 (Kanto) garde le sien (identifiants distincts).
