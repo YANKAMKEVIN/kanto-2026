@@ -224,7 +224,9 @@ func _warps(root: Node, plan: Object) -> void:
 func _exit(root: Node, plan: Object, id: String, node_name: String, direction: Vector2i,
 		target: StringName, spawn: String, back: String, facing: Vector2i, label: String) -> void:
 	if ResourceLoader.exists(MAPS_DIR + String(target) + ".tscn"):
-		_warp_group(root, plan, id, node_name, PUSH, direction, target, spawn, facing, "", true)
+		# Passage réel : arrivée tournée dans le sens du pas (JOH2 : Route 39 « tournée → ») ;
+		# [param facing] ne sert qu'au retour d'un « à venir ».
+		_warp_group(root, plan, id, node_name, PUSH, direction, target, spawn, direction, "", true)
 	else:
 		_warp_group(root, plan, id, node_name, PUSH, direction, &"", back, facing, label, true)
 
