@@ -103,6 +103,13 @@ func height_m(species: StringName) -> float:
 	return entry.height if entry.height > 0.0 else BattleLayout.REFERENCE_HEIGHT_M
 
 
+## Vrai si le combat a une image pour [param species] de ce côté (peinte, officielle ou
+## provisoire) : la vérification à utiliser dans les tests de données des cartes, plutôt que
+## l'existence d'un sprite provisoire (ceux de Johto ont été retirés par la série Johto, 2026-11-04).
+func has_image(species: StringName, back: bool) -> bool:
+	return image(species, back)["texture"] != null
+
+
 ## Image de combat de [param species] : { texture (Texture2D ou null), box (Rect2 : boîte
 ## visible dans la texture, pieds au bas-centre), official (bool : artwork HD, filtre
 ## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière), crop (float, dos

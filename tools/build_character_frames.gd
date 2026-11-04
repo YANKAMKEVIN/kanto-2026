@@ -210,6 +210,13 @@ const LOOKS: Dictionary = {
 	"germignon": [POKEMON_DIR, "chikorita", ""],
 	"hericendre": [POKEMON_DIR, "cyndaquil", ""],
 	"kaiminus": [POKEMON_DIR, "totodile", ""],
+	# Leurs évolutions (compagnons, Kevin 2026-11-04 : le compagnon reste après une évolution).
+	"macronium": [POKEMON_DIR, "bayleef", ""],
+	"meganium": [POKEMON_DIR, "meganium", ""],
+	"feurisson": [POKEMON_DIR, "quilava", ""],
+	"typhlosion": [POKEMON_DIR, "typhlosion", ""],
+	"crocrodil": [POKEMON_DIR, "croconaw", ""],
+	"aligueur": [POKEMON_DIR, "feraligatr", ""],
 }
 ## DAF.5 (série 25) : animations en selle d'une apparence (planche de marche → [pédalage, arrêt]) :
 ## `bike_walk_<dir>` (cycle de 4 images sur 2 cases, au pas du vélo) et `bike_idle_<dir>` (arrêt en

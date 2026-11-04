@@ -3493,6 +3493,54 @@
    "hauteur": 62,
    "nettoyer": true,
    "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "macronium",
+   "source": "JOHTO_MONDE_MACRONIUM_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/macronium_sheet.png",
+   "hauteur": 72,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "meganium",
+   "source": "JOHTO_MONDE_MEGANIUM_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/meganium_sheet.png",
+   "hauteur": 86,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "feurisson",
+   "source": "JOHTO_MONDE_FEURISSON_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/feurisson_sheet.png",
+   "hauteur": 72,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "typhlosion",
+   "source": "JOHTO_MONDE_TYPHLOSION_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/typhlosion_sheet.png",
+   "hauteur": 88,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "crocrodil",
+   "source": "JOHTO_MONDE_CROCRODIL_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/crocrodil_sheet.png",
+   "hauteur": 74,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "aligueur",
+   "source": "JOHTO_MONDE_ALIGUEUR_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/aligueur_sheet.png",
+   "hauteur": 90,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
   }
  ],
  "heros_images": [
@@ -5254,6 +5302,51 @@
    "source": "JOHTO_MONDE_SUICUNE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/suicune_sheet.png",
    "hauteur": 190,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
+   "id": "entei",
+   "source": "JOHTO_MONDE_ENTEI_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/entei_sheet.png",
+   "hauteur": 190,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
+   "id": "lugia",
+   "source": "JOHTO_MONDE_LUGIA_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/lugia_sheet.png",
+   "hauteur": 260,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
+   "id": "ho_oh",
+   "source": "JOHTO_MONDE_HO_OH_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/ho_oh_sheet.png",
+   "hauteur": 240,
    "colonnes": 4,
    "seuil_alpha": 24,
    "ordre_colonnes": [

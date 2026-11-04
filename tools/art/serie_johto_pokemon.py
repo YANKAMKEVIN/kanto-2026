@@ -280,6 +280,37 @@ MARCHE: dict[str, tuple[int, str, str, str]] = {
 		"souriante avec deux petites dents, yeux rouges vifs, une CRÊTE d'écailles ROUGES pointues sur le dos "
 		"et la queue. Allure joueuse.",
 		"marche debout en 4 images, petits pas sautillants, la queue qui se balance"),
+	# Compagnons : les évolutions des starters (Kevin, 2026-11-04), ancrées sur la planche validée de la
+	# forme précédente (build/art de cette série).
+	"MACRONIUM": (72, "JOHTO_MONDE_GERMIGNON_r1.png",
+		"créature quadrupède au corps JAUNE PÂLE crème, long cou, tête ronde aux yeux rouges portant une GRANDE "
+		"FEUILLE vert foncé enroulée vers l'arrière, un COLLIER de longues feuilles VERTES pointues comme des "
+		"bourgeons autour du cou, quatre pattes courtes. Allure fière et douce.",
+		"marche à quatre pattes en 4 images, pas posés, la feuille de la tête et le collier qui bougent"),
+	"MEGANIUM": (86, "JOHTO_MONDE_GERMIGNON_r1.png",
+		"grande créature quadrupède VERT CLAIR au long cou, tête aux yeux doux, deux longues ANTENNES fines "
+		"jaunes sur le front, une grande FLEUR ROSE aux pétales bordés de blanc autour du cou comme une "
+		"collerette, quatre pattes épaisses. Allure calme et maternelle.",
+		"marche à quatre pattes en 4 images, pas lents et lourds, les pétales et les antennes qui ondulent"),
+	"FEURISSON": (72, "JOHTO_MONDE_HERICENDRE_r3.png",
+		"créature élancée façon belette qui marche à quatre pattes, DOS BLEU NUIT, ventre, pattes et museau "
+		"CRÈME, yeux rouges en amande, une COURONNE DE FLAMMES orange sur le front et une autre sur le bas du "
+		"dos, visibles dans toutes les poses. Allure vive et fière.",
+		"marche à quatre pattes en 4 images, foulées souples, les flammes qui vacillent"),
+	"TYPHLOSION": (88, "JOHTO_MONDE_HERICENDRE_r3.png",
+		"grande créature massive qui marche debout, DOS BLEU NUIT, ventre et bras CRÈME, museau allongé, yeux "
+		"rouges plissés, une grande COLLERETTE DE FLAMMES orange et jaunes qui jaillit tout autour du cou et de "
+		"la nuque, visible dans toutes les poses. Allure puissante et calme.",
+		"marche debout en 4 images, pas lourds, les flammes du cou qui ondulent"),
+	"CROCRODIL": (74, "JOHTO_MONDE_KAIMINUS_r1.png",
+		"crocodile bipède BLEU au ventre JAUNE, grande gueule aux dents pointues, yeux rouges, de grandes POINTES "
+		"ROUGES sur le crâne, le dos et la queue, une bande noire autour des yeux. Allure espiègle.",
+		"marche debout en 4 images, pas balancés, la queue qui se balance"),
+	"ALIGUEUR": (90, "JOHTO_MONDE_KAIMINUS_r1.png",
+		"grand crocodile bipède massif BLEU au ventre et à la mâchoire JAUNE CRÈME, immense gueule, yeux rouges, "
+		"de grandes CRÊTES ROUGES pointues sur la tête, le dos et la longue queue épaisse, bras puissants. Allure "
+		"forte et joyeuse.",
+		"marche debout en 4 images, pas lourds, la longue queue qui suit"),
 }
 
 ## Révisions des planches de marche (r3 avec ancres, r4 sans ; puis r5, r6…) : (ancre de forme,
@@ -292,7 +323,9 @@ MARCHE_REVISIONS: dict[str, list[tuple[str, str]]] = {
 		"toutes les poses. Allure timide, ronde et douce (pas une musaraigne, pas un fourmilier).")],
 }
 ## Essais relus et écartés (jamais retenus).
-ECARTES: set[str] = {"JOHTO_MONDE_HERICENDRE_r2", "JOHTO_MONDE_HERICENDRE_r4"}
+ECARTES: set[str] = {"JOHTO_MONDE_HERICENDRE_r2", "JOHTO_MONDE_HERICENDRE_r4",
+	# Kevin (2026-11-04) : dos de Tyranocif à refaire plus clair, dans le trait de son artwork.
+	"JOHTO_DOSRB_TYRANOCIF_r2"}
 
 ## Pokémon d'ambiance en boucle (feuille 4 × 1) : identifiant -> (hauteur en jeu [D], description, pose).
 BOUCLE: dict[str, tuple[int, str, str]] = {
@@ -339,6 +372,11 @@ HEROS = "PERSO_P2_PEINT_r1.png"
 PROMPT_MONDE_SANS = "Aucune image n'est jointe."
 
 
+def _ancre(nom: str) -> Path:
+	"""Planche d'ancrage : celles de cette série sont dans $ART, les autres dans le build/art principal."""
+	return (ART if nom.startswith("JOHTO_") else ANCRES) / nom
+
+
 def _espece(ident: str) -> tuple[str, int, str, str, str]:
 	return next(e for e in ESPECES if e[0] == ident)
 
@@ -347,6 +385,19 @@ def _espece(ident: str) -> tuple[str, int, str, str, str]:
 
 ## Révisions du sujet de dos après trois refus (r4 à r6, puis r7 à r9…) : elles priment.
 REVISIONS: dict[str, list[str]] = {
+	"TYRANOCIF": ["grand monstre reptilien bipède massif à la peau VERT CLAIR PÂLE (vert d'eau grisé, lumineux), "
+		"rangées de grosses POINTES vert clair sur le dos, la nuque et les épaules, une corne sur le front, deux "
+		"TROUS ovales noirs sur les flancs, longue queue épaisse ; rendu en aplats nets et clairs avec un trait "
+		"fin, exactement comme l'illustration officielle (pas de texture réaliste, pas d'ombres lourdes, pas de "
+		"tons sombres)"],
+	"MARILL": ["petite boule de dessin animé BLEU VIF, ronde et lisse comme un ballon, ventre blanc, deux grandes "
+		"oreilles rondes à l'intérieur ROUGE-ORANGÉ, très courts bras et pieds, une longue queue fine en ZIGZAG "
+		"noire terminée par une grosse BOULE BLEUE",
+		# 2e révision (r4 à r6 refusés) : sans « oreilles rondes » ni « ballon ».
+		"créature aquatique toute ronde couleur BLEU CIEL, comme un gros galet poli, deux petits lobes arrondis "
+		"sur le dessus de la tête, une fine queue noire en éclair qui se termine par une sphère bleue flottante"],
+	"MENTALI": ["petit animal quadrupède gracile assis, pelage LILAS ROSÉ très lisse, deux grandes oreilles "
+		"triangulaires dressées, une longue queue fine fourchue en deux pointes au bout, silhouette fine et élégante"],
 	"GERMIGNON": ["petit dinosaure herbivore de dessin animé à quatre pattes, peau VERT PÂLE lisse, tête ronde "
 		"portant UNE LARGE FEUILLE vert tendre en forme de goutte, dressée puis courbée vers l'arrière, un collier "
 		"de petites boules VERT FONCÉ autour du cou, dos rond et lisse, très petite queue"],
@@ -366,8 +417,9 @@ def prompt_marche(ident: str, avec: bool, revision: int = 0) -> str:
 		ancre, description = MARCHE_REVISIONS[ident][revision - 1]
 	ancres = (f"Images jointes : le héros du jeu ({HEROS.removesuffix('.png')}) = ancre de STYLE ; "
 		f"{ancre.removesuffix('.png')} = une autre créature du jeu déjà validée : même rendu, même finesse, "
-		"même gabarit de planche, garde ses proportions comme repère de taille (celle-ci est de taille "
-		"comparable).") if avec else PROMPT_MONDE_SANS
+		"même gabarit de planche, garde ses proportions comme repère de taille (celle-ci est "
+		f"{'son évolution, PLUS GRANDE et plus robuste' if ancre.startswith('JOHTO_') else 'de taille comparable'}).") \
+		if avec else PROMPT_MONDE_SANS
 	return f"""MONDE_{ident} — planche d'animation d'une créature du monde d'un jeu d'aventure 2D peint (elle suit le héros).
 {ancres}
 Style : créature peinte simplifiée, même finesse que le héros du jeu, contour fin coloré sans trait noir, volumes peints doux. Ni pixel art, ni 3D, ni anime aux contours noirs.
@@ -422,7 +474,7 @@ def images() -> list[dict]:
 				avec, revision = r % 2 == 1, (r - 1) // 2
 				ancre = MARCHE_REVISIONS[ident][revision - 1][0] if revision else MARCHE[ident][1]
 				liste.append({"ident": ident, "sorte": "monde", "r": r, "nom": f"JOHTO_MONDE_{ident}_r{r}",
-					"jointes": [ANCRES / HEROS, ANCRES / ancre] if avec else [],
+					"jointes": [ANCRES / HEROS, _ancre(ancre)] if avec else [],
 					"texte": prompt_marche(ident, avec, revision)})
 		if ident in BOUCLE:
 			for r, avec in ((1, True), (2, False)):
@@ -475,6 +527,8 @@ def _lot(cle: tuple[str, str]) -> bool:
 	"""Essais de la dernière révision seulement (les précédents sont faits ou refusés), dans l'ordre,
 	jusqu'au premier réussi ; rien à faire si un essai retenu existe déjà dans cette révision."""
 	ident, sorte = cle
+	if sorte != "objets" and retenu(ident, sorte) is not None:
+		return True  # déjà un essai retenu (écarter l'essai dans ECARTES pour le refaire)
 	essais = [im for im in images() if im["ident"] == ident and im["sorte"] == sorte]
 	pas = 3 if sorte == "dos" else 2
 	derniers = essais[-pas:] if sorte != "objets" else essais
@@ -517,6 +571,7 @@ def preparer() -> None:
 	for ident, num, *_ in ESPECES:
 		p = retenu(ident, "dos")
 		if p is None:
+			(SORTIE / f"dos_rb_{num:03d}.png").unlink(missing_ok=True)  # essai écarté : rien de préparé
 			continue
 		im = Image.open(p).convert("RGBA")
 		if im.getchannel("A").getextrema()[0] > 250:
@@ -536,9 +591,9 @@ def preparer() -> None:
 
 def integrer() -> None:
 	n = 0
-	for _ident, num, *_ in ESPECES:
+	for ident, num, *_ in ESPECES:
 		src = SORTIE / f"dos_rb_{num:03d}.png"
-		if src.exists():
+		if src.exists() and retenu(ident, "dos") is not None:
 			(DOS_JEU / src.name).write_bytes(src.read_bytes())
 			n += 1
 	print(n, "dos copiés dans", DOS_JEU.relative_to(RACINE))

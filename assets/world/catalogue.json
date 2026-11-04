@@ -13930,6 +13930,150 @@
     "vent",
     "repos_2"
    ]
+  },
+  "macronium": {
+   "fichier": "res://assets/sprites/pokemon/painted/macronium_sheet.png",
+   "cellule": [
+    67,
+    74
+   ],
+   "hauteur": 72,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "meganium": {
+   "fichier": "res://assets/sprites/pokemon/painted/meganium_sheet.png",
+   "cellule": [
+    92,
+    88
+   ],
+   "hauteur": 86,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "feurisson": {
+   "fichier": "res://assets/sprites/pokemon/painted/feurisson_sheet.png",
+   "cellule": [
+    69,
+    74
+   ],
+   "hauteur": 72,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "crocrodil": {
+   "fichier": "res://assets/sprites/pokemon/painted/crocrodil_sheet.png",
+   "cellule": [
+    76,
+    76
+   ],
+   "hauteur": 74,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "aligueur": {
+   "fichier": "res://assets/sprites/pokemon/painted/aligueur_sheet.png",
+   "cellule": [
+    123,
+    92
+   ],
+   "hauteur": 90,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "typhlosion": {
+   "fichier": "res://assets/sprites/pokemon/painted/typhlosion_sheet.png",
+   "cellule": [
+    74,
+    90
+   ],
+   "hauteur": 88,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "entei": {
+   "fichier": "res://assets/sprites/pokemon/painted/entei_sheet.png",
+   "cellule": [
+    150,
+    204
+   ],
+   "hauteur": 190,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ]
+  },
+  "lugia": {
+   "fichier": "res://assets/sprites/pokemon/painted/lugia_sheet.png",
+   "cellule": [
+    308,
+    276
+   ],
+   "hauteur": 260,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ]
+  },
+  "ho_oh": {
+   "fichier": "res://assets/sprites/pokemon/painted/ho_oh_sheet.png",
+   "cellule": [
+    242,
+    243
+   ],
+   "hauteur": 240,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ]
   }
  },
  "images": {

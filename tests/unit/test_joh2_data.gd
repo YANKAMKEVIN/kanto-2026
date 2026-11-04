@@ -217,12 +217,13 @@ func test_encounter_tables_by_period() -> void:
 	assert_false(_encounters.has_table(&"ecruteak_city", &"grass", &"day"), "herbe des tours de jour")
 	assert_false(_encounters.has_table(&"ecruteak_city", &"grass", &"morning"))
 	assert_false(_encounters.has_table(&"ecruteak_city", &"grass"), "aucune table de toute la journée")
-	# Chaque espèce sauvage a un sprite de combat (provisoire, `gen_placeholder_battlers_johto.py`).
+	# Chaque espèce sauvage a son image de combat (art de Johto : artwork et dos peint).
+	var art := BattleArt.new()
 	for id: StringName in TABLES:
 		for slot: EncounterSlot in _encounters.get_table_by_id(id).slots:
 			assert_true(_pokemon.has_species(slot.species), String(slot.species))
 			for back: bool in [false, true]:
-				assert_true(ResourceLoader.exists(BattleArt.placeholder_path(slot.species, back)),
+				assert_true(art.has_image(slot.species, back),
 					"%s : sprite %s" % [slot.species, "dos" if back else "face"])
 
 

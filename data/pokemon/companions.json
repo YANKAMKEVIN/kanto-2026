@@ -30,7 +30,13 @@
 		"eevee": { "sprite": "pokemon/eevee" },
 		"chikorita": { "sprite": "pokemon/chikorita" },
 		"cyndaquil": { "sprite": "pokemon/cyndaquil" },
-		"totodile": { "sprite": "pokemon/totodile" }
+		"totodile": { "sprite": "pokemon/totodile" },
+		"bayleef": { "sprite": "pokemon/bayleef" },
+		"meganium": { "sprite": "pokemon/meganium" },
+		"quilava": { "sprite": "pokemon/quilava" },
+		"typhlosion": { "sprite": "pokemon/typhlosion" },
+		"croconaw": { "sprite": "pokemon/croconaw" },
+		"feraligatr": { "sprite": "pokemon/feraligatr" }
 	},
 	"contexts": {
 		"viridian_forest": "forest",
