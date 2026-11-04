@@ -26,9 +26,10 @@ func test_real_data_has_the_five_types_within_bounds() -> void:
 	var library := LightGlowLibrary.new()
 	assert_true(library.load_file(), "data/world/light_glows.json valide")
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"beam", &"hint",
-		&"sconce", &"candle", &"purified", &"neon"] as Array[StringName],
-		"« hint » du jalon 14, « sconce » du J15, « candle » du J18, « purified » du J19, « neon » (Casino) du J20 en fin")
+	assert_eq(library.get_ids(), [&"night_lamp", &"night_window", &"lamp", &"shaft", &"shard",
+		&"projector", &"beam", &"hint", &"sconce", &"candle", &"purified", &"neon"]
+		as Array[StringName],
+		"« hint » du jalon 14, « sconce » du J15, « candle » du J18, « purified » du J19, « neon » (Casino) du J20 en fin ; « night_lamp » et « night_window » (nuit de Johto, passe d'ambiance JOH) en tête")
 	# Passe « lumière rare » : le puits de jour a sa colonne de lumière douce.
 	assert_eq(library.get_type(&"beam").shape, LightGlowLibrary.SHAPE_COLUMN)
 	assert_gt(library.get_type(&"beam").height, 1.0)

@@ -1521,6 +1521,15 @@
    "contact": 0.12
   },
   {
+   "id": "bldg_phare_oliville_01",
+   "source": "BLDG_PHARE_OLIVILLE_r1.png",
+   "sortie": "assets/world/buildings/bldg_phare_oliville_01.png",
+   "axe": "w",
+   "cases": 6,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
    "id": "bldg_maison_pokemon_01",
    "source": "WORLD_BLDG_MAISON_POKEMON_01_NE_r1.png",
    "sortie": "assets/world/buildings/bldg_maison_pokemon_01.png",

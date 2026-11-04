@@ -10789,6 +10789,37 @@
      18
     ]
    }
+  },
+  "bldg_phare_oliville_01": {
+   "fichier": "res://assets/world/buildings/bldg_phare_oliville_01.png",
+   "taille": [
+    576,
+    1276
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_phare_oliville_01_shadow.png",
+    "decalage": [
+     -313,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     431,
+     122
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_phare_oliville_01_contact.png",
+    "decalage": [
+     -296,
+     -135
+    ],
+    "echelle": 2,
+    "taille": [
+     296,
+     87
+    ]
+   }
   }
  },
  "personnages": {

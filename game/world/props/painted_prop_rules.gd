@@ -575,6 +575,9 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# J18 T14) : emprise = largeur de l'image.
 	&"bldg_tour_pokemon_01": {"shadow": true, "width": 12, "depth": 11, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Phare d'Oliville (Chapitre Johto, passe d'ambiance JOH) : emprise `P` 6 × 11 de la grille,
+	# porte décor fermée (« en travaux ») ; la carte pose son emprise sans cases propres.
+	&"bldg_phare_oliville_01": {"shadow": true, "width": 6, "depth": 11, "fade": true},
 	&"bldg_maison_pokemon_01": {"shadow": true, "width": 8, "depth": 5, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 	&"bldg_maison_lavanville_01": {"shadow": true, "width": 7, "depth": 5, "fade": true,

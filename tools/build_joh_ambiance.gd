@@ -1,0 +1,650 @@
+extends SceneTree
+## Passe d'ambiance du Chapitre Johto (cartes du JOH1 et du JOH2, décision de Kevin du 2026-11-04 :
+## « prendre de l'avance sur l'art et l'ambiance de Johto »). Repeint en 2D HD les cartes écrites
+## en tuiles provisoires par les outils des jalons, d'après leur vue générale validée ; pilote :
+## **Oliville** (`olivine_city`, `build_joh1_olivine.gd`, vue `oliville-vue-generale-v1.png`).
+##
+## Passe APRÈS l'outil de la carte, sur le modèle de `build_daf10b_routes.gd` ; idempotente (elle
+## retire d'abord ses propres nœuds). **La logique ne change pas** : couches de tuiles (dont
+## `Ground`, source logique), `blocked_cells`, eau surfable, passages, panneaux, déclencheurs, PNJ
+## et nœuds de `Entities` gardés ; les couches sont seulement masquées. L'image vient de
+## `tools/coast_map_kit.gd` (une racine de kit jetable dont on adopte les nœuds), sur une copie
+## **traduite** de la grille (`build/joh_ambiance/plans/`, légende du kit) :
+## - forêt serrée `T`, herbe `.` (touffes et fleurs), pavés `p` (et portes `D`, caisses `k`) ;
+## - plage de galets `g` (et bouche `E`) : canal vert du masque, texture [constant PEBBLES] ;
+## - mer `w` : la mer de Bourg Palette (angles droits, écume) ; rivage rocheux en modules sur les
+##   `R` qui touchent l'eau (récifs du bord sud, pied de la falaise ouest) ; les autres `R` et
+##   l'emprise du phare `P` : paroi de la série 12, **rognée** là où elle monterait sur une case
+##   praticable au nord (avenue) ;
+## - quai et pontons `q` : planches du quai en rectangles répétés, bords de quai en bois (série 17,
+##   bouts de pontons compris), lampadaires de quai et bittes posés dans l'eau au bord du quai ;
+## - haies `x` (haie taillée), massif `y` (hortensias), caisses `k`, arbres repères `G` ;
+## - bouche de la grotte marine (`relief_bouche_paroi_01`, couche du sol) ; phare peint
+##   (`bldg_phare_oliville_01`, remplace `PharePlaceholder`).
+## **Nuit** : les halos du groupe `night_lights` (enfants de `NightLights`) sont reposés par cette
+## passe : `night_lamp` sur chaque lampadaire et la lanterne du phare, `night_window` sur les
+## fenêtres et vitrines des bâtiments ; cachés de jour (`WorldLighting.set_night`).
+## Nœuds posés : racine `PaintedGround`, `JohAmbForestFloor`, `JohAmbDecals` (hors des couches
+## d'emprise de `GameMap`) ; enfants préfixés `JohAmb` dans `Entities` (sans emprise propre : les
+## cases sont celles de la grille) ; halos de `NightLights`.
+## Contrôle : `tools/dump_map_logic.gd` et `tools/dump_map_nodes.gd` identiques avant / après
+## (seule différence attendue : `Entities/PharePlaceholder`, dessin provisoire retiré).
+##
+##   godot --headless --path . -s res://tools/build_joh_ambiance.gd [-- --maps=olivine_city]
+##   (code 2 : masques écrits ; godot --headless --path . --import, puis relancer)
+##   À relancer après chaque reconstruction de la carte par l'outil de son jalon.
+
+const Kit := preload("res://tools/coast_map_kit.gd")
+const PortKit := preload("res://tools/vermilion_map_kit.gd")
+const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
+const MAPS_DIR: String = "res://game/world/maps/"
+const MASK_PATH: String = "res://assets/world/maps/%s_ground.png"
+const TRANSLATED_DIR: String = "res://build/joh_ambiance/plans/"
+const NPCS_PATH: String = "res://data/npcs/%s.json"
+const OWN_PREFIX: String = "JohAmb"
+const OWN_ROOT: Array[String] = ["PaintedGround", "JohAmbForestFloor", "JohAmbDecals"]
+const TILE: int = 96
+## Carte → [grille, graine].
+const MAPS: Dictionary = {
+	&"olivine_city": ["oliville", 39050],
+}
+## Traduction de la grille du JOH1 vers la légende du kit : `T` forêt, `.` herbe, `p` pavés,
+## `=` galets (canal vert), `z` platelage (herbe sous les planches), `w` mer, `R` rivage, `#`
+## paroi, `c` solide sans arbre (objets posés par cette passe ou par la carte).
+const LEGEND: Dictionary = {
+	"T": "T", ".": ".", "p": "p", "D": "p", "k": "p", "g": "=", "E": "=", "q": "z", "w": "w",
+	"R": "R", "P": "#", "x": "c", "y": "c", "n": "c", "G": "c", "C": "c", "O": "c", "m": "c",
+	"N": "c",
+}
+const KIT_WALKABLE: String = ".p=z"
+## Pendant la pose de la paroi, l'eau compte comme praticable : aucun module sur la mer.
+const PAROI_WALKABLE: String = ".p=zw"
+const WATER: String = "w"
+## Galets de la plage (sol rocheux de la Route 3 : galets gris) [D].
+const PEBBLES: String = "res://assets/world/ground/ground_roche_01.png"
+const PLANKS_EW: String = "res://assets/world/ground/ground_planches_quai_01.png"
+const PLANKS_NS: String = "res://assets/world/ground/ground_planches_quai_ns_01.png"
+const WOOD_END: String = "relief_quai_bois_04"
+## Paroi rognée : recouvrement gardé sur la case praticable du dessus (pixels), hauteur minimale
+## d'un module rogné (en deçà : retiré, la rangée suivante couvre déjà la falaise).
+const PAROI_TOP_OVERLAP: float = 12.0
+const PAROI_MIN_KEEP: float = 1.3 * TILE
+const MEADOW_PER_CELL: float = 0.3
+const MEADOW_FLOWER_CHANCE: float = 0.35
+const FLOWERS: Array[int] = [1, 3, 5]
+const SHADE_VALUE: float = 0.98
+const SHADE_RED: float = 1.0
+const SHADE_BLUE: float = 1.02
+const RESERVED_KINDS: Array[String] = ["pnj", "pokemon", "objet_visible", "cache"]
+const LAMP_IDS: Array[String] = ["prop_lampadaire_01", "prop_lampadaire_quai_01"]
+
+## Oliville : réglages de la composition (cases).
+const OLI_TREES: Array = [
+	["tree_c_01", 0.8, false], ["tree_a_01", 0.8, true], ["tree_c_01", 0.75, true],
+	["tree_c_01", 0.8, false], ["tree_a_01", 0.75, false],
+]
+const OLI_HEDGE: String = "prop_haie_taillee_01"
+const OLI_HEDGE_SCALE_Y: float = 1.25
+const OLI_FLOWERS: Array[String] = ["prop_hortensias_01", "prop_fleurs_pales_01"]
+## Lampadaires de quai et bittes, posés dans l'eau au bord sud du quai (rangée 34), colonnes.
+const OLI_QUAY_LAMPS: Array[int] = [24, 35, 45]
+const OLI_BOLLARDS: Array[int] = [26, 31, 38, 43]
+## Phare : case d'ancrage (bas de l'emprise, pied sur le bord gauche de la colonne 6).
+const OLI_LIGHTHOUSE := Vector2i(6, 18)
+## Halos du phare, par rapport au pied (pixels) : lanterne, puis les deux fenêtres de la tour.
+const OLI_LANTERN := Vector2(0.0, -1006.0)
+const OLI_TOWER_WINDOWS: Array[Vector2] = [Vector2(0.0, -749.0), Vector2(0.0, -553.0)]
+## Bouche de la grotte marine : milieu de l'ouverture (pixels de l'image, depuis la gauche) et
+## bord droit gardé (cases : la plage `g` commence en x = 11).
+const OLI_MOUTH_ID: String = "relief_bouche_paroi_01"
+const OLI_MOUTH_COLUMN: int = 10
+const OLI_MOUTH_ROW: int = 32
+const OLI_MOUTH_RIGHT: float = 11.12
+const OLI_MOUTH_TINT := Color(1.0, 0.93, 0.8)
+## Halos des fenêtres des bâtiments, par rapport au pied (pixels) ; tête des lampadaires.
+const WINDOWS: Dictionary = {
+	"bldg_centre_01": [Vector2(-250, -193), Vector2(255, -191), Vector2(-4, -120)],
+	"bldg_boutique_01": [Vector2(-250, -193), Vector2(250, -193), Vector2(0, -120)],
+	"bldg_maison_argenta_01": [Vector2(-176, -165), Vector2(174, -164)],
+}
+const LAMP_HEAD: Dictionary = {
+	"prop_lampadaire_01": Vector2(0, -222), "prop_lampadaire_quai_01": Vector2(0, -160),
+}
+const SIDES: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+
+var _errors: int = 0
+var _masks: int = 0
+
+
+func _init() -> void:
+	var wanted: Array = MAPS.keys()
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--maps="):
+			wanted = Array(arg.trim_prefix("--maps=").split(",")).map(
+				func(s: String) -> StringName: return StringName(s))
+	for map_id: StringName in wanted:
+		if not MAPS.has(map_id):
+			push_error("build_joh_ambiance : carte inconnue %s" % map_id)
+			_errors += 1
+			continue
+		_build(map_id)
+	if _errors > 0:
+		quit(1)
+	elif _masks > 0:
+		print("build_joh_ambiance : %d masque(s) écrit(s) ; importer (--import) puis relancer"
+			% _masks)
+		quit(2)
+	else:
+		quit(0)
+
+
+func _build(map_id: StringName) -> void:
+	var spec: Array = MAPS[map_id]
+	var source := PlanGrid.new()
+	if not source.load_file("res://tools/plans/%s.txt" % spec[0]):
+		push_error("%s : %s" % [map_id, source.error])
+		_errors += 1
+		return
+	var size := Vector2i(source.width, source.height)
+	var seed_value: int = spec[1]
+	var kit: Object = Kit.new(_translate(source, map_id), size, seed_value, seed_value + 1,
+		seed_value + 2)
+	kit.set(&"errors", PackedStringArray())
+	kit.call(&"set_marks", KIT_WALKABLE, "#", "")
+	_reserve(kit, source, map_id)
+	var kit_root: Node2D = kit.call(&"make_root", "Kit", map_id, "", "", &"johto_auto",
+		NPCS_PATH % map_id)
+	kit.call(&"make_shade", SHADE_VALUE, SHADE_RED, SHADE_BLUE)
+	if not kit.call(&"add_ground", MASK_PATH % map_id, kit.call(&"forest_undergrowth")):
+		if (kit.get(&"errors") as PackedStringArray).is_empty():
+			_masks += 1
+		else:
+			push_error("%s :\n%s" % [map_id, "\n".join(kit.get(&"errors"))])
+			_errors += 1
+		kit.call(&"discard")
+		return
+	var painted: Node2D = kit_root.get_node(^"PaintedGround")
+	painted.set(&"g_texture", load(PEBBLES))
+	var decals: Node2D = kit.get(&"decals")
+	var entities: Node2D = kit.get(&"entities")
+	kit.call(&"place_border_decals", seed_value)
+	kit.call(&"place_meadow", int(size.x * size.y * MEADOW_PER_CELL), MEADOW_FLOWER_CHANCE,
+		FLOWERS)
+	var planks := _place_planks(kit, decals, source.cells_of("q"))
+	var edges := _fill_cliff_edges(kit, source)
+	kit.call(&"set_marks", PAROI_WALKABLE, "#", "")
+	var paroi: int = kit.call(&"place_paroi", seed_value + 3)
+	kit.call(&"set_marks", KIT_WALKABLE, "#", "")
+	var cropped := _crop_paroi(decals, source)
+	var shore: int = kit.call(&"place_shore")
+	var quays := _place_wood_quays(kit, source)
+	var counts := {}
+	match map_id:
+		&"olivine_city":
+			counts = _olivine(kit, source, decals, entities)
+	var feet: Array[Vector2] = []
+	feet.assign(counts.get("feet", []))
+	var forest: Vector2i = kit.call(&"place_forest", seed_value + 5, feet, {})
+	var errors: PackedStringArray = kit.get(&"errors")
+	if not errors.is_empty():
+		push_error("%s :\n%s" % [map_id, "\n".join(errors)])
+		_errors += 1
+		kit.call(&"discard")
+		return
+
+	var path := MAPS_DIR + "%s.tscn" % map_id
+	var root := (load(path) as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_MAIN) as Node2D
+	_clean(root)
+	for layer: Node in root.get_children():
+		if layer is TileMapLayer:
+			(layer as TileMapLayer).visible = false
+	var index := root.get_node(^"Obstacles").get_index() + 1
+	var renames := {"PaintedGround": "PaintedGround", "ForestFloor": "JohAmbForestFloor",
+		"GroundDecals": "JohAmbDecals"}
+	for node_name: String in renames:
+		var node: Node = kit_root.get_node(NodePath(node_name))
+		_adopt(node, root, root, kit_root)
+		node.name = renames[node_name]
+		root.move_child(node, index)
+		index += 1
+	var map_entities := root.get_node(^"Entities")
+	for child: Node in (kit_root.get_node(^"Entities") as Node).get_children():
+		child.name = OWN_PREFIX + String(child.name)
+		_adopt(child, map_entities, root, kit_root)
+	var glows := _night_lights(root, counts.get("glows", []) as Array)
+	kit.call(&"discard")
+	var packed := PackedScene.new()
+	var err := packed.pack(root)
+	if err == OK:
+		err = ResourceSaver.save(packed, path)
+	print("%s : %s (planches %d, bord de falaise %d, paroi %d dont %d rognés / %d retirés, "
+		% [map_id, error_string(err), planks, edges, paroi, cropped.x, cropped.y]
+		+ "rivage %d, quai %d, " % [shore, quays]
+		+ "objets %d, halos %d, forêt %d → %d)" % [int(counts.get("props", 0)), glows,
+			forest.x, forest.y])
+	if err != OK:
+		_errors += 1
+	root.free()
+
+
+## Copie traduite de la grille (légende du kit, praticables du kit, positions d'origine) ; les `R`
+## loin de l'eau (8-voisinage) deviennent de la paroi `#`. Renvoie son chemin.
+func _translate(source: Object, map_id: StringName) -> String:
+	var lines := PackedStringArray(["PRATICABLES " + KIT_WALKABLE, "",
+		"GRILLE %d %d" % [source.width, source.height]])
+	for y: int in source.height:
+		var row := ""
+		for x: int in source.width:
+			var mark: String = source.at(Vector2i(x, y))
+			var out: String = LEGEND.get(mark, "T")
+			if mark == "R":
+				var wet := false
+				for dy: int in range(-1, 2):
+					for dx: int in range(-1, 2):
+						wet = wet or source.at(Vector2i(x + dx, y + dy)) == WATER
+				out = "R" if wet else "#"
+			row += out
+		lines.append("%02d %s" % [y, row])
+	lines.append("FIN")
+	var path := TRANSLATED_DIR + "%s.txt" % map_id
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(TRANSLATED_DIR))
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	file.store_string("\n".join(lines) + "\n")
+	file.close()
+	return path
+
+
+## Cases des PNJ et objets de la grille d'origine (et des places de rechange du fichier des PNJ) :
+## la forêt s'en écarte.
+func _reserve(kit: Object, source: Object, map_id: StringName) -> void:
+	var cells: Array[Vector2i] = []
+	var positions: Dictionary = source.get(&"positions")
+	for id: String in positions:
+		if RESERVED_KINDS.has(String(positions[id]["kind"])):
+			cells.append_array(positions[id]["cells"])
+	var npcs := NPCS_PATH % map_id
+	if FileAccess.file_exists(npcs):
+		var roster: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(npcs))
+		for key: String in roster:
+			var moved: Variant = (roster[key] as Dictionary).get("moved")
+			if moved is Dictionary and (moved as Dictionary).has("cell"):
+				var cell: Array = moved["cell"]
+				cells.append(Vector2i(int(cell[0]), int(cell[1])))
+	kit.set(&"reserved_cells", cells)
+
+
+# --- Oliville -----------------------------------------------------------------------------
+
+
+## Décor d'Oliville ; renvoie {"props": nombre, "feet": pieds des arbres repères (cases),
+## "glows": halos [[type, position (pixels)]] en plus de ceux des objets de la carte}.
+func _olivine(kit: Object, source: Object, decals: Node2D, entities: Node2D) -> Dictionary:
+	var count := 0
+	var feet: Array[Vector2] = []
+	var glows: Array = []
+	var rules: GDScript = kit.get(&"rules")
+	var decor: RandomNumberGenerator = kit.get(&"decor_rng")
+	# Arbres repères `G`.
+	var index := 0
+	for cell: Vector2i in source.cells_of("G"):
+		var spec: Array = OLI_TREES[index % OLI_TREES.size()]
+		var tree: Node2D = kit.call(&"add_prop", entities, spec[0],
+			rules.call(&"foot_position", StringName(spec[0]), cell), "Tree%02d" % index)
+		kit.call(&"clear_footprint", tree)
+		tree.scale = Vector2(spec[1], spec[1])
+		kit.call(&"flip", tree, spec[2])
+		feet.append(tree.position / float(TILE))
+		index += 1
+		count += 1
+	# Haies `x` : modules de deux cases, le dernier étiré sur trois si l'étendue est impaire.
+	for run: Rect2i in _runs(source.cells_of("x")):
+		var at := 0
+		while at < run.size.x:
+			var span := 2 if run.size.x - at != 3 else 3
+			span = mini(span, run.size.x - at)
+			var foot := Vector2((run.position.x + at + span / 2.0) * TILE,
+				(run.position.y + 1) * TILE)
+			var hedge: Node2D = kit.call(&"add_prop", entities, OLI_HEDGE, foot,
+				"Hedge%02d" % count)
+			kit.call(&"clear_footprint", hedge)
+			hedge.scale = Vector2(span / 2.0, OLI_HEDGE_SCALE_Y)
+			kit.call(&"flip", hedge, decor.randf() < 0.5)
+			at += span
+			count += 1
+	# Massif `y` : hortensias et fleurs pâles mêlés, deux touffes par case en quinconce (rangées
+	# décalées d'une demi-touffe), pour ne pas lire des rangées de culture.
+	index = 0
+	for cell: Vector2i in source.cells_of("y"):
+		var shift := 0.12 if cell.y % 2 == 0 else -0.12
+		for k: int in 2:
+			var id: String = OLI_FLOWERS[0] if decor.randf() < 0.55 else OLI_FLOWERS[1]
+			var foot := Vector2(cell.x + 0.27 + 0.46 * k + shift + decor.randf_range(-0.1, 0.1),
+				cell.y + 0.6 + 0.35 * k + decor.randf_range(-0.05, 0.05)) * TILE
+			var bush: Node2D = kit.call(&"add_prop", entities, id, foot, "Flowers%03d" % index)
+			kit.call(&"clear_footprint", bush)
+			var s := decor.randf_range(0.72, 0.92)
+			bush.scale = Vector2(s, s)
+			kit.call(&"flip", bush, decor.randf() < 0.5)
+			var value := decor.randf_range(0.92, 1.04)
+			bush.modulate = Color(value, value, value)
+			index += 1
+			count += 1
+	# Caisses `k` : paire → caisses du port, case seule → petite pile.
+	for run: Rect2i in _runs(source.cells_of("k"), 1):
+		var id := "prop_caisses_port_01" if run.size.x >= 2 else "prop_caisses_01"
+		var foot := Vector2((run.position.x + run.size.x / 2.0) * TILE,
+			(run.position.y + 1) * TILE)
+		var crates: Node2D = kit.call(&"add_prop", entities, id, foot, "Crates%02d" % count)
+		kit.call(&"clear_footprint", crates)
+		count += 1
+	# Bord sud du quai (dans l'eau, rangée 34) : lampadaires et bittes.
+	var edge_row := _quay_edge_row(source)
+	for column: int in OLI_QUAY_LAMPS:
+		var lamp: Node2D = kit.call(&"add_prop", entities, "prop_lampadaire_quai_01",
+			Vector2(column * TILE + TILE / 2.0, edge_row * TILE + 16.0), "QuayLamp%d" % column)
+		kit.call(&"clear_footprint", lamp)
+		count += 1
+	for column: int in OLI_BOLLARDS:
+		var bollard: Node2D = kit.call(&"add_prop", entities, "prop_bitte_01",
+			Vector2(column * TILE + TILE / 2.0, edge_row * TILE + 14.0), "Bollard%d" % column)
+		kit.call(&"clear_footprint", bollard)
+		count += 1
+	# Bouche de la grotte marine (couche du sol), rognée à droite au bord de la plage.
+	_place_mouth(kit, decals)
+	count += 1
+	# Phare peint.
+	var lighthouse: Node2D = kit.call(&"add_prop", entities, "bldg_phare_oliville_01",
+		rules.call(&"foot_position", &"bldg_phare_oliville_01", OLI_LIGHTHOUSE), "Phare")
+	kit.call(&"clear_footprint", lighthouse)
+	count += 1
+	glows.append([&"night_lamp", lighthouse.position + OLI_LANTERN])
+	for offset: Vector2 in OLI_TOWER_WINDOWS:
+		glows.append([&"night_window", lighthouse.position + offset])
+	return {"props": count, "feet": feet, "glows": glows}
+
+
+## Rangée d'eau au sud du quai (première rangée d'eau sous une case `q` de la plus longue étendue).
+func _quay_edge_row(source: Object) -> int:
+	var best := Rect2i()
+	for run: Rect2i in _runs(source.cells_of("q"), 1):
+		if run.size.x > best.size.x:
+			best = run
+	return best.position.y + 1
+
+
+## Bouche de la grotte marine : ouverture sur la colonne de la bouche `E`, pied au bas de la
+## dernière rangée de la bouche, image rognée à droite au bord de la plage.
+func _place_mouth(kit: Object, decals: Node2D) -> void:
+	var mouth: Node2D = kit.call(&"add_prop", decals, OLI_MOUTH_ID,
+		Vector2((OLI_MOUTH_COLUMN + 0.5) * TILE, (OLI_MOUTH_ROW + 1) * TILE), "SeaCaveMouth")
+	kit.call(&"clear_footprint", mouth)
+	var sprite := mouth.get_node(^"Sprite") as Sprite2D
+	var size := sprite.texture.get_size()
+	var left := mouth.position.x - size.x / 2.0
+	var keep := clampf(OLI_MOUTH_RIGHT * TILE - left, TILE, size.x)
+	sprite.region_enabled = true
+	sprite.region_rect = Rect2(0.0, 0.0, keep, size.y)
+	# Pierre grise de la bouche réchauffée vers le beige de la paroi de la série 12 [D].
+	mouth.modulate = OLI_MOUTH_TINT
+
+
+# --- Communs ------------------------------------------------------------------------------
+
+
+## Étendues horizontales (rectangles d'une rangée) de [param cells], d'au moins [param minimum]
+## cases, dans l'ordre de la carte.
+func _runs(cells: Array[Vector2i], minimum: int = 2) -> Array[Rect2i]:
+	var left: Dictionary = {}
+	for cell: Vector2i in cells:
+		left[cell] = true
+	var keys: Array = left.keys()
+	keys.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return a.y < b.y or (a.y == b.y and a.x < b.x))
+	var out: Array[Rect2i] = []
+	for start: Vector2i in keys:
+		if left.has(start - Vector2i(1, 0)) or not left.has(start):
+			continue
+		var width := 1
+		while left.has(start + Vector2i(width, 0)):
+			width += 1
+		if width >= minimum:
+			out.append(Rect2i(start, Vector2i(width, 1)))
+	return out
+
+
+## Platelage (`q`) : planches du quai en rectangles répétés (dans les décors au sol), est-ouest
+## sur le quai, nord-sud sur les pontons.
+func _place_planks(kit: Object, decals: Node2D, cells: Array[Vector2i]) -> int:
+	var left: Dictionary = {}
+	for cell: Vector2i in cells:
+		left[cell] = true
+	var index := 0
+	var keys: Array = left.keys()
+	keys.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return a.y < b.y or (a.y == b.y and a.x < b.x))
+	for start: Vector2i in keys:
+		if not left.has(start):
+			continue
+		var width := 1
+		while left.has(start + Vector2i(width, 0)):
+			width += 1
+		var height := 1
+		while true:
+			var full := true
+			for dx: int in width:
+				full = full and left.has(start + Vector2i(dx, height))
+			if not full:
+				break
+			height += 1
+		for dy: int in height:
+			for dx: int in width:
+				left.erase(start + Vector2i(dx, dy))
+		var sprite := Sprite2D.new()
+		sprite.name = "Planks%02d" % index
+		sprite.texture = load(PLANKS_EW if width >= height else PLANKS_NS)
+		sprite.centered = false
+		sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+		sprite.region_enabled = true
+		sprite.region_rect = Rect2(Vector2.ZERO, Vector2(width, height) * TILE)
+		sprite.position = Vector2(start * TILE)
+		kit.call(&"attach", decals, sprite)
+		index += 1
+	return index
+
+
+## Bord de la falaise : un bloc de rocher (`relief_rivage_06`, une case) sur chaque case de paroi
+## qui touche une case praticable de terre, posé **avant** la paroi : il bouche les jours entre
+## les modules (sous-bois sombre) au bord des chemins, de la plage et de la bouche. Renvoie leur
+## nombre.
+func _fill_cliff_edges(kit: Object, source: Object) -> int:
+	var cliffs: Dictionary = kit.get(&"cliff_cells")
+	var ordered: Array = cliffs.keys()
+	ordered.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return a.y < b.y or (a.y == b.y and a.x < b.x))
+	var count := 0
+	for cell: Vector2i in ordered:
+		var edge := false
+		for side: Vector2i in SIDES:
+			edge = edge or _is_land_walkable(source, cell + side)
+		if edge:
+			kit.call(&"_place_block", cell)
+			count += 1
+	return count
+
+
+## Paroi rognée : un module dont le haut monterait sur une case praticable posée **au-dessus** de
+## la falaise (avenue au nord) est coupé à cette case (avec [constant PAROI_TOP_OVERLAP]), ou
+## retiré s'il en reste trop peu. Renvoie [rognés, retirés].
+func _crop_paroi(decals: Node2D, source: Object) -> Vector2i:
+	var cropped := 0
+	var removed := 0
+	for child: Node in decals.get_children():
+		if not String(child.name).begins_with("Paroi"):
+			continue
+		var prop := child as Node2D
+		var sprite := prop.get_node(^"Sprite") as Sprite2D
+		var size := sprite.texture.get_size()
+		var top := prop.position.y - size.y
+		var x0 := floori((prop.position.x - size.x / 2.0 + TILE / 4.0) / TILE)
+		var x1 := floori((prop.position.x + size.x / 2.0 - TILE / 4.0) / TILE)
+		var limit := -INF
+		for x: int in range(x0, x1 + 1):
+			for y: int in range(floori(top / TILE), floori(prop.position.y / TILE)):
+				var cell := Vector2i(x, y)
+				var below: String = source.at(cell + Vector2i.DOWN)
+				if _is_land_walkable(source, cell) and not below.is_empty() \
+						and not _is_land_walkable(source, cell + Vector2i.DOWN):
+					limit = maxf(limit, float((y + 1) * TILE))
+		if limit == -INF:
+			continue
+		var cut := limit - PAROI_TOP_OVERLAP - top
+		if cut <= 0.0:
+			continue
+		if size.y - cut < PAROI_MIN_KEEP:
+			decals.remove_child(prop)
+			prop.free()
+			removed += 1
+			continue
+		sprite.region_enabled = true
+		sprite.region_rect = Rect2(0.0, cut, size.x, size.y - cut)
+		sprite.offset.y = -(size.y - cut)
+		cropped += 1
+	return Vector2i(cropped, removed)
+
+
+func _is_land_walkable(source: Object, cell: Vector2i) -> bool:
+	var mark: String = source.at(cell)
+	return not mark.is_empty() and mark != WATER and source.is_walkable(cell)
+
+
+## Bords de quai en bois (série 17) sur les seules frontières eau / platelage `q` : le reste du
+## sol (plage, rochers) passe pour un « pont » le temps de la pose (aucun quai de pierre). Bouts
+## de pontons (étendue « au nord » d'au plus deux cases, eau des deux côtés) :
+## [constant WOOD_END]. Renvoie le nombre de modules.
+func _place_wood_quays(kit: Object, source: Object) -> int:
+	var water: Dictionary = kit.get(&"water_cells")
+	var bridges: Dictionary = kit.get(&"bridge_cells")
+	var fake: Array[Vector2i] = []
+	for y: int in source.height:
+		for x: int in source.width:
+			var cell := Vector2i(x, y)
+			if not water.has(cell) and source.at(cell) != "q" and not bridges.has(cell):
+				bridges[cell] = true
+				fake.append(cell)
+	var tables := {"z": PortKit.WOOD_PIECES}
+	kit.set(&"quay_sets", tables)
+	var count: int = kit.call(&"place_quays")
+	for cell: Vector2i in fake:
+		bridges.erase(cell)
+	# Bouts de pontons : module « n » sous une case `q` sans platelage à gauche ni à droite.
+	var end_texture: Texture2D = null
+	var end_material: Material = null
+	for piece: Dictionary in kit.get(&"quay_pieces"):
+		if piece["side"] != &"n":
+			continue
+		var rect: Rect2 = piece["rect"]
+		var first := Vector2i(int(rect.position.x) / TILE, int(rect.position.y) / TILE)
+		var cells := int(roundf(rect.size.x / TILE))
+		var land_left: bool = source.at(first + Vector2i(-1, -1)) == "q"
+		var land_right: bool = source.at(first + Vector2i(cells, -1)) == "q"
+		if land_left or land_right or cells > 2:
+			continue
+		if end_texture == null:
+			var model: Sprite2D = (kit.get(&"forest_script") as GDScript).call(
+				&"painted_sprite_model", StringName(WOOD_END))
+			end_texture = model.texture
+			end_material = model.material
+			model.free()
+		var sprite: Sprite2D = piece["node"]
+		sprite.texture = end_texture
+		sprite.material = end_material
+		sprite.scale = Vector2(rect.size.x / end_texture.get_width(), 1.0)
+	return count
+
+
+## Halos de nuit : `NightLights` vidé puis rempli (groupe `night_lights`, cachés au départ) :
+## [param extra] ([type, position]), lampadaires de `Entities` (tête), fenêtres des bâtiments
+## peints de `Entities`. Renvoie le nombre de halos.
+func _night_lights(root: Node, extra: Array) -> int:
+	var lights := root.get_node_or_null(^"NightLights")
+	if lights != null and not lights is CanvasLayer:
+		root.remove_child(lights)
+		lights.free()
+		lights = null
+	if lights == null:
+		# Calque au-dessus de l'étalonnage d'écran (et du gain à plat de l'économie), qui suit la
+		# caméra : la nuit assombrit le monde, pas la lumière des lampes (relevé de QA A17).
+		var layer := CanvasLayer.new()
+		layer.name = "NightLights"
+		layer.layer = UiTokens.LAYER_NIGHT_LIGHTS
+		layer.follow_viewport_enabled = true
+		root.add_child(layer)
+		layer.owner = root
+		lights = layer
+	for child: Node in lights.get_children():
+		lights.remove_child(child)
+		child.free()
+	var entries: Array = extra.duplicate()
+	for prop: Node in root.get_node(^"Entities").get_children():
+		var id := _prop_id(prop)
+		if LAMP_HEAD.has(id):
+			entries.append([&"night_lamp", (prop as Node2D).position + LAMP_HEAD[id]])
+		elif WINDOWS.has(id):
+			for offset: Vector2 in WINDOWS[id]:
+				entries.append([&"night_window", (prop as Node2D).position + offset])
+	var index := 0
+	for entry: Array in entries:
+		var glow := Sprite2D.new()
+		glow.set_script(load("res://game/world/lighting/light_glow.gd"))
+		glow.name = "Lampe%02d" % index
+		glow.set(&"glow_type", entry[0])
+		glow.position = (entry[1] as Vector2).round()
+		glow.visible = false  # écrasé par LightGlow._ready : Boot rappelle set_night
+		glow.add_to_group(&"night_lights", true)
+		lights.add_child(glow)
+		glow.owner = root
+		index += 1
+	return index
+
+
+## Identifiant de l'objet peint d'un nœud de `Entities` (d'après la texture de son `Sprite`).
+func _prop_id(prop: Node) -> String:
+	var sprite := prop.get_node_or_null(^"Sprite") as Sprite2D
+	if sprite == null or sprite.texture == null:
+		return ""
+	return sprite.texture.resource_path.get_file().get_basename()
+
+
+## Retire ce que cette passe a posé (relance) et le phare provisoire de l'outil de la carte.
+func _clean(root: Node) -> void:
+	for node_name: String in OWN_ROOT:
+		var old := root.get_node_or_null(NodePath(node_name))
+		if old != null:
+			root.remove_child(old)
+			old.free()
+	var entities := root.get_node(^"Entities")
+	for child: Node in entities.get_children():
+		var n := String(child.name)
+		if n.begins_with(OWN_PREFIX) or n == "PharePlaceholder":
+			entities.remove_child(child)
+			child.free()
+
+
+## Déplace [param node] du kit jetable vers [param parent] de la carte (voir
+## `build_daf4_exterieurs.gd`).
+func _adopt(node: Node, parent: Node, root: Node, kit_root: Node) -> void:
+	var owned: Array[Node] = []
+	_collect(node, kit_root, owned)
+	for n: Node in owned:
+		n.owner = null
+	node.get_parent().remove_child(node)
+	parent.add_child(node)
+	for n: Node in owned:
+		n.owner = root
+
+
+func _collect(node: Node, kit_root: Node, into: Array[Node]) -> void:
+	if node.owner == kit_root:
+		into.append(node)
+	for child: Node in node.get_children():
+		_collect(child, kit_root, into)

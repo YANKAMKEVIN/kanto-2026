@@ -88,6 +88,10 @@ const PRESSED_SCALE := 0.97
 ## Étalonnage d'écran du monde (jalon-07.md §6.1) : au-dessus du monde et des sprites de
 ## combat (LAYER_BATTLE_STAGE), sous le HUD.
 const LAYER_WORLD_GRADE := 6
+## Lumières de nuit des cartes de Johto (lampadaires, fenêtres) : au-dessus de l'étalonnage, pour
+## que la nuit assombrisse le monde sans éteindre les lampes ; cachées pendant un combat
+## ([method WorldLighting.set_battle_active]).
+const LAYER_NIGHT_LIGHTS := 7
 const LAYER_HUD := 10
 const LAYER_MENU := 20
 const LAYER_DIALOG := 30
