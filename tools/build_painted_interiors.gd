@@ -139,6 +139,7 @@ const SEA_TINT := Color(0.58, 0.68, 0.9)
 const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2"]
 ## Chapitre Johto, JOH2 (T4, `jalon-joh2.md` §2.1) : les cinq intérieurs de Rosalia.
+const ACAJOU := [&"mahogany_center", &"mahogany_house_1", &"mahogany_house_2"]
 const ROSALIA := [&"ecruteak_center", &"ecruteak_mart", &"ecruteak_elders_house",
 	&"ecruteak_house_1", &"ecruteak_house_2"]
 ## Jalon 20 (T15) : postes de Safrania et bâtiments d'entrée du souterrain des Routes 7 et 8.
@@ -203,6 +204,8 @@ func _init() -> void:
 	rooms.append_array(_j29_rooms())
 	# Chapitre Johto, JOH2 : Rosalia (fin de liste).
 	rooms.append_array(_rosalia_rooms())
+	# Chapitre Johto, JOH6 : Acajou (fin de liste).
+	rooms.append_array(_acajou_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -266,6 +269,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ROUTE_12)
 		elif arg == "--rosalia":
 			wanted.append_array(ROSALIA)
+		elif arg == "--acajou":
+			wanted.append_array(ACAJOU)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -2842,4 +2847,36 @@ func _indigo_plateau_lobby() -> Dictionary:
 	(room["spawns"] as Dictionary)["league_door"] = Vector2i(12, 4)
 	room["triggers"] = [["LeagueGuardQuestion", Vector2i(12, 4), Vector2i.ONE,
 		&"league_guard_door"]]
+	return room
+
+
+# --- Chapitre Johto, JOH6 : Acajou ---------------------------------------------------------------
+
+## Intérieurs d'Acajou (`jalon-joh6.md` §2.1) : Centre (définition commune, sortie vers
+## `mahogany_town`) ; deux maisons relues sur les grilles des maisons de Lavanville [D]. La
+## boutique de souvenirs a sa propre grille (escalier caché) : `build_joh6_maps.gd`. PNJ dans
+## `data/npcs/mahogany_*.json` (`tools/gen_joh6_data.py`).
+func _acajou_rooms() -> Array[Dictionary]:
+	var house_1 := _johto_house(&"mahogany_house_1", "MahoganyHouse1", "lavanville_maison_1.txt",
+		&"retour_maison_1", &"mahogany_town", "Acajou")
+	house_1["furniture"] = _mason_furniture()
+	var house_2 := _johto_house(&"mahogany_house_2", "MahoganyHouse2", "lavanville_maison_2.txt",
+		&"retour_maison_2", &"mahogany_town", "Acajou")
+	var azuria := _cerulean_house()
+	house_2["furniture"] = azuria["furniture"]
+	house_2["rugs"] = azuria["rugs"]
+	return [
+		_pokemon_center(&"mahogany_center", "MahoganyCenter", "Acajou",
+			[&"mahogany_town", &"retour_centre"]),
+		house_1, house_2,
+	]
+
+
+## Maison de Johto relue sur une grille de Lavanville (modèle de `_ecruteak_house`), sortie PUSH ↓
+## vers [param town] / [param spawn].
+func _johto_house(id: StringName, node: String, plan: String, spawn: StringName,
+		town: StringName, title: String) -> Dictionary:
+	var room := _ecruteak_house(id, node, plan, spawn)
+	room["title"] = title
+	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, town)
 	return room

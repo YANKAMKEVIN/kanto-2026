@@ -1,0 +1,1234 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_36tii"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_cfeme"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_iyyyu"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_i1ajk"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_tuamo"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="6_aoddn"]
+
+[node name="BurnedTower1f" type="Node2D" unique_id=201594641]
+script = ExtResource("1_36tii")
+map_id = &"burned_tower_1f"
+display_name = "Tour Cendrée"
+region = "Rosalia"
+size = Vector2i(28, 24)
+light_profile = &"johto_auto"
+calm_cells = Array[Vector2i]([Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(2, 3), Vector2i(3, 3), Vector2i(4, 3), Vector2i(10, 19), Vector2i(11, 19), Vector2i(12, 19), Vector2i(13, 19), Vector2i(14, 19), Vector2i(15, 19), Vector2i(16, 19), Vector2i(17, 19), Vector2i(10, 20), Vector2i(11, 20), Vector2i(12, 20), Vector2i(13, 20), Vector2i(14, 20), Vector2i(15, 20), Vector2i(16, 20), Vector2i(17, 20), Vector2i(10, 21), Vector2i(11, 21), Vector2i(12, 21), Vector2i(13, 21), Vector2i(14, 21), Vector2i(15, 21), Vector2i(16, 21), Vector2i(17, 21), Vector2i(10, 22), Vector2i(11, 22), Vector2i(12, 22), Vector2i(13, 22), Vector2i(14, 22), Vector2i(15, 22), Vector2i(16, 22), Vector2i(17, 22), Vector2i(13, 23), Vector2i(14, 23)])
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1205419132]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAABAAcAAAAIAAAAAAABAAcAAAAJAAAAAAABAAcAAAAKAAAAAAAAAAcAAAALAAAAAAAAAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAAcAAAAPAAAAAAABAAcAAAAQAAAAAAAAAAcAAAARAAAAAAABAAcAAAASAAAAAAAAAAcAAAATAAAAAAABAAcAAAAUAAAAAAAAAAcAAAAVAAAAAAABAAcAAAAWAAAAAAAAAAcAAAAXAAAAAAAAAAcAAAAYAAAAAAABAAcAAAAZAAAAAAABAAcAAAAaAAAAAAAAAAcAAAAbAAAAAAABAAcAAAAAAAEAAAAAAAcAAAABAAEAAAACAAIAAAACAAEAAAABAAMAAAADAAEAAAAAAAMAAAAEAAEAAAAAAAMAAAAFAAEAAAAAAAIAAAAGAAEAAAAAAAIAAAAHAAEAAAABAAIAAAAIAAEAAAAAAAIAAAAJAAEAAAABAAIAAAAKAAEAAAAAAAIAAAALAAEAAAACAAIAAAAMAAEAAAAAAAIAAAANAAEAAAACAAIAAAAOAAEAAAABAAIAAAAPAAEAAAACAAIAAAAQAAEAAAACAAIAAAARAAEAAAAAAAIAAAASAAEAAAABAAIAAAATAAEAAAACAAIAAAAUAAEAAAABAAIAAAAVAAEAAAABAAIAAAAWAAEAAAABAAIAAAAXAAEAAAABAAIAAAAYAAEAAAABAAIAAAAZAAEAAAABAAIAAAAaAAEAAAACAAIAAAAbAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAABAAIAAAACAAIAAAABAAMAAAADAAIAAAABAAMAAAAEAAIAAAACAAMAAAAFAAIAAAACAAIAAAAGAAIAAAAAAAIAAAAHAAIAAAABAAIAAAAIAAIAAAABAAIAAAAJAAIAAAAAAAIAAAAKAAIAAAABAAIAAAALAAIAAAABAAIAAAAMAAIAAAABAAIAAAANAAIAAAACAAIAAAAOAAIAAAACAAIAAAAPAAIAAAACAAIAAAAQAAIAAAABAAIAAAARAAIAAAABAAIAAAASAAIAAAABAAIAAAATAAIAAAABAAIAAAAUAAIAAAAAAAIAAAAVAAIAAAAAAAIAAAAWAAIAAAAAAAcAAAAXAAIAAAACAAIAAAAYAAIAAAAAAAIAAAAZAAIAAAABAAIAAAAaAAIAAAAAAAIAAAAbAAIAAAABAAcAAAAAAAMAAAAAAAcAAAABAAMAAAACAAIAAAACAAMAAAAAAAMAAAADAAMAAAACAAMAAAAEAAMAAAAAAAMAAAAFAAMAAAAAAAIAAAAGAAMAAAAAAAIAAAAHAAMAAAACAAIAAAAIAAMAAAABAAIAAAAJAAMAAAABAAIAAAAKAAMAAAABAAIAAAALAAMAAAABAAIAAAAMAAMAAAAAAAcAAAANAAMAAAACAAIAAAAOAAMAAAAAAAIAAAAPAAMAAAACAAIAAAAQAAMAAAACAAIAAAARAAMAAAAAAAIAAAASAAMAAAABAAIAAAATAAMAAAAAAAIAAAAUAAMAAAAAAAIAAAAVAAMAAAABAAIAAAAWAAMAAAAAAAcAAAAXAAMAAAAAAAIAAAAYAAMAAAAAAAIAAAAZAAMAAAABAAIAAAAaAAMAAAABAAIAAAAbAAMAAAABAAcAAAAAAAQAAAABAAcAAAABAAQAAAACAAIAAAACAAQAAAAAAAIAAAADAAQAAAAAAAIAAAAEAAQAAAABAAIAAAAFAAQAAAABAAIAAAAGAAQAAAACAAIAAAAHAAQAAAACAAIAAAAIAAQAAAACAAIAAAAJAAQAAAACAAIAAAAKAAQAAAACAAIAAAALAAQAAAACAAIAAAAMAAQAAAABAAcAAAANAAQAAAAAAAIAAAAOAAQAAAABAAIAAAAPAAQAAAACAAIAAAAQAAQAAAABAAIAAAARAAQAAAAAAAIAAAASAAQAAAACAAIAAAATAAQAAAAAAAIAAAAUAAQAAAACAAIAAAAVAAQAAAABAAIAAAAWAAQAAAABAAcAAAAXAAQAAAAAAAIAAAAYAAQAAAAAAAIAAAAZAAQAAAABAAIAAAAaAAQAAAACAAIAAAAbAAQAAAABAAcAAAAAAAUAAAAAAAcAAAABAAUAAAAAAAIAAAACAAUAAAACAAIAAAADAAUAAAACAAIAAAAEAAUAAAAAAAIAAAAFAAUAAAACAAIAAAAGAAUAAAAAAAIAAAAHAAUAAAAAAAIAAAAIAAUAAAAAAAIAAAAJAAUAAAAAAAIAAAAKAAUAAAAAAAIAAAALAAUAAAACAAIAAAAMAAUAAAAAAAcAAAANAAUAAAACAAIAAAAOAAUAAAAAAAIAAAAPAAUAAAACAAIAAAAQAAUAAAACAAIAAAARAAUAAAACAAIAAAASAAUAAAACAAIAAAATAAUAAAAAAAIAAAAUAAUAAAAAAAIAAAAVAAUAAAAAAAIAAAAWAAUAAAAAAAcAAAAXAAUAAAAAAAIAAAAYAAUAAAACAAIAAAAZAAUAAAABAAIAAAAaAAUAAAACAAIAAAAbAAUAAAAAAAcAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAIAAAACAAYAAAACAAIAAAADAAYAAAABAAcAAAAEAAYAAAABAAcAAAAFAAYAAAAAAAcAAAAGAAYAAAABAAcAAAAHAAYAAAAAAAcAAAAIAAYAAAAAAAcAAAAJAAYAAAACAAIAAAAKAAYAAAACAAIAAAALAAYAAAABAAIAAAAMAAYAAAAAAAcAAAANAAYAAAABAAIAAAAOAAYAAAAAAAIAAAAPAAYAAAACAAIAAAAQAAYAAAAAAAIAAAARAAYAAAACAAIAAAASAAYAAAACAAIAAAATAAYAAAACAAIAAAAUAAYAAAABAAIAAAAVAAYAAAABAAIAAAAWAAYAAAAAAAIAAAAXAAYAAAAAAAIAAAAYAAYAAAAAAAIAAAAZAAYAAAABAAIAAAAaAAYAAAAAAAIAAAAbAAYAAAAAAAcAAAAAAAcAAAAAAAcAAAABAAcAAAACAAIAAAACAAcAAAAAAAIAAAADAAcAAAACAAIAAAAEAAcAAAACAAIAAAAFAAcAAAABAAIAAAAGAAcAAAAAAAIAAAAHAAcAAAAAAAIAAAAIAAcAAAAAAAIAAAAJAAcAAAAAAAIAAAAKAAcAAAAAAAIAAAALAAcAAAABAAIAAAAMAAcAAAABAAcAAAANAAcAAAABAAIAAAAOAAcAAAABAAIAAAAPAAcAAAABAAIAAAAQAAcAAAAAAAIAAAARAAcAAAABAAIAAAASAAcAAAABAAIAAAATAAcAAAACAAIAAAAUAAcAAAABAAIAAAAVAAcAAAAAAAIAAAAWAAcAAAABAAIAAAAXAAcAAAABAAIAAAAYAAcAAAAAAAIAAAAZAAcAAAABAAIAAAAaAAcAAAABAAIAAAAbAAcAAAAAAAcAAAAAAAgAAAABAAcAAAABAAgAAAACAAIAAAACAAgAAAABAAIAAAADAAgAAAABAAIAAAAEAAgAAAACAAIAAAAFAAgAAAACAAIAAAAGAAgAAAACAAIAAAAHAAgAAAABAAIAAAAIAAgAAAABAAIAAAAJAAgAAAAAAAIAAAAKAAgAAAABAAIAAAALAAgAAAAAAAIAAAAMAAgAAAAAAAIAAAANAAgAAAACAAIAAAAOAAgAAAACAAIAAAAPAAgAAAAAAAIAAAAQAAgAAAACAAIAAAARAAgAAAAAAAIAAAASAAgAAAABAAcAAAATAAgAAAAAAAcAAAAUAAgAAAAAAAcAAAAVAAgAAAAAAAcAAAAWAAgAAAAAAAcAAAAXAAgAAAABAAcAAAAYAAgAAAABAAcAAAAZAAgAAAABAAIAAAAaAAgAAAABAAIAAAAbAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAAAAAIAAAACAAkAAAACAAIAAAADAAkAAAAAAAIAAAAEAAkAAAACAAIAAAAFAAkAAAABAAIAAAAGAAkAAAAAAAIAAAAHAAkAAAABAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAACAAIAAAAKAAkAAAACAAIAAAALAAkAAAACAAIAAAAMAAkAAAABAAIAAAANAAkAAAACAAIAAAAOAAkAAAACAAIAAAAPAAkAAAABAAIAAAAQAAkAAAACAAIAAAARAAkAAAACAAIAAAASAAkAAAACAAIAAAATAAkAAAAAAAIAAAAUAAkAAAAAAAIAAAAVAAkAAAAAAAIAAAAWAAkAAAACAAIAAAAXAAkAAAACAAIAAAAYAAkAAAAAAAIAAAAZAAkAAAABAAIAAAAaAAkAAAACAAIAAAAbAAkAAAAAAAcAAAAAAAoAAAAAAAcAAAABAAoAAAACAAIAAAACAAoAAAACAAIAAAADAAoAAAACAAIAAAAEAAoAAAACAAIAAAAFAAoAAAACAAIAAAAGAAoAAAACAAIAAAAHAAoAAAABAAIAAAAIAAoAAAABAAIAAAAJAAoAAAACAAIAAAAKAAoAAAABAAIAAAALAAoAAAABAAIAAAAMAAoAAAABAAIAAAANAAoAAAAAAAIAAAAOAAoAAAABAAIAAAAPAAoAAAABAAIAAAAQAAoAAAACAAIAAAARAAoAAAABAAIAAAASAAoAAAAAAAIAAAATAAoAAAABAAIAAAAUAAoAAAAAAAIAAAAVAAoAAAACAAIAAAAWAAoAAAAAAAIAAAAXAAoAAAABAAIAAAAYAAoAAAAAAAIAAAAZAAoAAAABAAIAAAAaAAoAAAABAAIAAAAbAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAACAAIAAAACAAsAAAAAAAIAAAADAAsAAAACAAIAAAAEAAsAAAACAAIAAAAFAAsAAAABAAIAAAAGAAsAAAAAAAIAAAAHAAsAAAABAAIAAAAIAAsAAAABAAIAAAAJAAsAAAAAAAcAAAAKAAsAAAABAAIAAAALAAsAAAACAAIAAAAMAAsAAAABAAIAAAANAAsAAAACAAIAAAAOAAsAAAABAAIAAAAPAAsAAAACAAIAAAAQAAsAAAACAAIAAAARAAsAAAAAAAIAAAASAAsAAAABAAcAAAATAAsAAAAAAAIAAAAUAAsAAAACAAIAAAAVAAsAAAACAAIAAAAWAAsAAAACAAIAAAAXAAsAAAACAAIAAAAYAAsAAAACAAIAAAAZAAsAAAACAAIAAAAaAAsAAAABAAIAAAAbAAsAAAABAAcAAAAAAAwAAAAAAAcAAAABAAwAAAAAAAIAAAACAAwAAAABAAIAAAADAAwAAAABAAIAAAAEAAwAAAACAAIAAAAFAAwAAAACAAIAAAAGAAwAAAABAAIAAAAHAAwAAAACAAIAAAAIAAwAAAABAAIAAAAJAAwAAAAAAAcAAAAKAAwAAAACAAIAAAALAAwAAAABAAIAAAAMAAwAAAABAAIAAAANAAwAAAABAAIAAAAOAAwAAAABAAIAAAAPAAwAAAABAAIAAAAQAAwAAAAAAAIAAAARAAwAAAACAAIAAAASAAwAAAAAAAcAAAATAAwAAAABAAIAAAAUAAwAAAACAAIAAAAVAAwAAAABAAIAAAAWAAwAAAACAAIAAAAXAAwAAAACAAIAAAAYAAwAAAACAAIAAAAZAAwAAAAAAAIAAAAaAAwAAAABAAIAAAAbAAwAAAAAAAcAAAAAAA0AAAAAAAcAAAABAA0AAAAAAAIAAAACAA0AAAAAAAIAAAADAA0AAAABAAIAAAAEAA0AAAABAAIAAAAFAA0AAAACAAIAAAAGAA0AAAABAAIAAAAHAA0AAAABAAIAAAAIAA0AAAACAAIAAAAJAA0AAAACAAIAAAAKAA0AAAABAAIAAAALAA0AAAAAAAIAAAAMAA0AAAACAAIAAAANAA0AAAABAAIAAAAOAA0AAAACAAIAAAAPAA0AAAAAAAIAAAAQAA0AAAABAAIAAAARAA0AAAAAAAIAAAASAA0AAAACAAIAAAATAA0AAAAAAAIAAAAUAA0AAAAAAAIAAAAVAA0AAAACAAIAAAAWAA0AAAAAAAIAAAAXAA0AAAACAAIAAAAYAA0AAAABAAIAAAAZAA0AAAACAAIAAAAaAA0AAAABAAIAAAAbAA0AAAABAAcAAAAAAA4AAAAAAAcAAAABAA4AAAABAAIAAAACAA4AAAABAAIAAAADAA4AAAAAAAIAAAAEAA4AAAAAAAIAAAAFAA4AAAACAAIAAAAGAA4AAAAAAAIAAAAHAA4AAAACAAIAAAAIAA4AAAABAAIAAAAJAA4AAAAAAAIAAAAKAA4AAAACAAIAAAALAA4AAAAAAAIAAAAMAA4AAAACAAIAAAANAA4AAAABAAIAAAAOAA4AAAAAAAIAAAAPAA4AAAABAAIAAAAQAA4AAAACAAIAAAARAA4AAAABAAIAAAASAA4AAAACAAIAAAATAA4AAAABAAIAAAAUAA4AAAABAAIAAAAVAA4AAAABAAIAAAAWAA4AAAAAAAIAAAAXAA4AAAAAAAIAAAAYAA4AAAACAAIAAAAZAA4AAAABAAIAAAAaAA4AAAABAAIAAAAbAA4AAAAAAAcAAAAAAA8AAAABAAcAAAABAA8AAAACAAIAAAACAA8AAAACAAIAAAADAA8AAAABAAIAAAAEAA8AAAABAAIAAAAFAA8AAAABAAcAAAAGAA8AAAAAAAcAAAAHAA8AAAABAAcAAAAIAA8AAAABAAcAAAAJAA8AAAABAAcAAAAKAA8AAAABAAIAAAALAA8AAAAAAAIAAAAMAA8AAAAAAAIAAAANAA8AAAACAAIAAAAOAA8AAAAAAAIAAAAPAA8AAAACAAIAAAAQAA8AAAAAAAIAAAARAA8AAAAAAAIAAAASAA8AAAABAAIAAAATAA8AAAACAAIAAAAUAA8AAAACAAIAAAAVAA8AAAACAAIAAAAWAA8AAAACAAIAAAAXAA8AAAABAAIAAAAYAA8AAAACAAIAAAAZAA8AAAAAAAIAAAAaAA8AAAACAAIAAAAbAA8AAAABAAcAAAAAABAAAAAAAAcAAAABABAAAAACAAIAAAACABAAAAACAAIAAAADABAAAAABAAIAAAAEABAAAAABAAIAAAAFABAAAAAAAAIAAAAGABAAAAACAAIAAAAHABAAAAABAAIAAAAIABAAAAAAAAIAAAAJABAAAAACAAIAAAAKABAAAAABAAIAAAALABAAAAABAAIAAAAMABAAAAABAAIAAAANABAAAAABAAIAAAAOABAAAAAAAAIAAAAPABAAAAACAAIAAAAQABAAAAAAAAIAAAARABAAAAACAAIAAAASABAAAAACAAIAAAATABAAAAAAAAIAAAAUABAAAAAAAAIAAAAVABAAAAAAAAIAAAAWABAAAAABAAIAAAAXABAAAAACAAIAAAAYABAAAAABAAIAAAAZABAAAAAAAAIAAAAaABAAAAABAAIAAAAbABAAAAAAAAcAAAAAABEAAAABAAcAAAABABEAAAAAAAIAAAACABEAAAABAAIAAAADABEAAAACAAIAAAAEABEAAAAAAAIAAAAFABEAAAAAAAIAAAAGABEAAAAAAAIAAAAHABEAAAACAAIAAAAIABEAAAABAAIAAAAJABEAAAAAAAIAAAAKABEAAAAAAAIAAAALABEAAAABAAIAAAAMABEAAAABAAIAAAANABEAAAAAAAIAAAAOABEAAAABAAIAAAAPABEAAAAAAAcAAAAQABEAAAABAAcAAAARABEAAAAAAAcAAAASABEAAAABAAcAAAATABEAAAABAAcAAAAUABEAAAAAAAcAAAAVABEAAAACAAIAAAAWABEAAAACAAIAAAAXABEAAAACAAIAAAAYABEAAAABAAIAAAAZABEAAAACAAIAAAAaABEAAAAAAAIAAAAbABEAAAABAAcAAAAAABIAAAAAAAcAAAABABIAAAABAAIAAAACABIAAAAAAAIAAAADABIAAAAAAAIAAAAEABIAAAABAAIAAAAFABIAAAACAAIAAAAGABIAAAABAAIAAAAHABIAAAAAAAIAAAAIABIAAAACAAIAAAAJABIAAAABAAIAAAAKABIAAAABAAIAAAALABIAAAACAAIAAAAMABIAAAACAAIAAAANABIAAAABAAIAAAAOABIAAAACAAIAAAAPABIAAAABAAIAAAAQABIAAAABAAIAAAARABIAAAAAAAIAAAASABIAAAAAAAIAAAATABIAAAAAAAIAAAAUABIAAAABAAIAAAAVABIAAAABAAIAAAAWABIAAAABAAIAAAAXABIAAAACAAIAAAAYABIAAAABAAIAAAAZABIAAAACAAIAAAAaABIAAAACAAIAAAAbABIAAAAAAAcAAAAAABMAAAAAAAcAAAABABMAAAAAAAIAAAACABMAAAABAAIAAAADABMAAAAAAAIAAAAEABMAAAAAAAIAAAAFABMAAAACAAIAAAAGABMAAAABAAIAAAAHABMAAAAAAAIAAAAIABMAAAACAAIAAAAJABMAAAABAAIAAAAKABMAAAACAAMAAAALABMAAAABAAMAAAAMABMAAAACAAMAAAANABMAAAACAAMAAAAOABMAAAACAAMAAAAPABMAAAABAAMAAAAQABMAAAACAAMAAAARABMAAAABAAMAAAASABMAAAAAAAIAAAATABMAAAAAAAIAAAAUABMAAAAAAAIAAAAVABMAAAACAAIAAAAWABMAAAAAAAIAAAAXABMAAAAAAAIAAAAYABMAAAACAAIAAAAZABMAAAACAAIAAAAaABMAAAACAAIAAAAbABMAAAABAAcAAAAAABQAAAABAAcAAAABABQAAAABAAIAAAACABQAAAABAAIAAAADABQAAAABAAIAAAAEABQAAAABAAIAAAAFABQAAAAAAAIAAAAGABQAAAACAAIAAAAHABQAAAABAAIAAAAIABQAAAABAAIAAAAJABQAAAABAAIAAAAKABQAAAAAAAMAAAALABQAAAABAAMAAAAMABQAAAABAAMAAAANABQAAAAAAAMAAAAOABQAAAABAAMAAAAPABQAAAACAAMAAAAQABQAAAAAAAMAAAARABQAAAAAAAMAAAASABQAAAABAAIAAAATABQAAAACAAIAAAAUABQAAAAAAAIAAAAVABQAAAABAAIAAAAWABQAAAACAAIAAAAXABQAAAAAAAIAAAAYABQAAAAAAAIAAAAZABQAAAACAAIAAAAaABQAAAACAAIAAAAbABQAAAABAAcAAAAAABUAAAABAAcAAAABABUAAAACAAIAAAACABUAAAABAAIAAAADABUAAAABAAIAAAAEABUAAAABAAIAAAAFABUAAAABAAIAAAAGABUAAAABAAIAAAAHABUAAAACAAIAAAAIABUAAAACAAIAAAAJABUAAAACAAIAAAAKABUAAAACAAMAAAALABUAAAACAAMAAAAMABUAAAAAAAMAAAANABUAAAABAAMAAAAOABUAAAAAAAMAAAAPABUAAAABAAMAAAAQABUAAAAAAAMAAAARABUAAAAAAAMAAAASABUAAAAAAAIAAAATABUAAAAAAAIAAAAUABUAAAAAAAIAAAAVABUAAAABAAIAAAAWABUAAAACAAIAAAAXABUAAAAAAAIAAAAYABUAAAABAAIAAAAZABUAAAACAAIAAAAaABUAAAACAAIAAAAbABUAAAABAAcAAAAAABYAAAABAAcAAAABABYAAAACAAIAAAACABYAAAAAAAIAAAADABYAAAACAAIAAAAEABYAAAAAAAIAAAAFABYAAAABAAIAAAAGABYAAAABAAIAAAAHABYAAAACAAIAAAAIABYAAAABAAIAAAAJABYAAAACAAIAAAAKABYAAAABAAMAAAALABYAAAACAAMAAAAMABYAAAAAAAMAAAANABYAAAABAAMAAAAOABYAAAABAAMAAAAPABYAAAABAAMAAAAQABYAAAAAAAMAAAARABYAAAABAAMAAAASABYAAAACAAIAAAATABYAAAABAAIAAAAUABYAAAABAAIAAAAVABYAAAABAAIAAAAWABYAAAABAAIAAAAXABYAAAACAAIAAAAYABYAAAAAAAIAAAAZABYAAAAAAAIAAAAaABYAAAAAAAIAAAAbABYAAAAAAAcAAAAAABcAAAABAAcAAAABABcAAAAAAAcAAAACABcAAAABAAcAAAADABcAAAABAAcAAAAEABcAAAAAAAcAAAAFABcAAAAAAAcAAAAGABcAAAAAAAcAAAAHABcAAAABAAcAAAAIABcAAAAAAAcAAAAJABcAAAAAAAcAAAAKABcAAAABAAcAAAALABcAAAAAAAcAAAAMABcAAAAAAAcAAAANABcAAAACAAMAAAAOABcAAAABAAMAAAAPABcAAAABAAcAAAAQABcAAAABAAcAAAARABcAAAAAAAcAAAASABcAAAAAAAcAAAATABcAAAABAAcAAAAUABcAAAABAAcAAAAVABcAAAAAAAcAAAAWABcAAAABAAcAAAAXABcAAAAAAAcAAAAYABcAAAAAAAcAAAAZABcAAAAAAAcAAAAaABcAAAABAAcAAAAbABcAAAABAAcAAAA=")
+tile_set = ExtResource("2_cfeme")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=2012006367]
+tile_set = ExtResource("2_cfeme")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=2041321547]
+tile_set = ExtResource("2_cfeme")
+
+[node name="Decor" type="Node2D" parent="." unique_id=755386896]
+
+[node name="Poutre_22_2" type="Polygon2D" parent="Decor" unique_id=1883286895]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2118, 222, 2202, 222, 2202, 262, 2118, 262)
+
+[node name="Poutre_12_3" type="Polygon2D" parent="Decor" unique_id=719892087]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1158, 318, 1242, 318, 1242, 358, 1158, 358)
+
+[node name="Poutre_22_3" type="Polygon2D" parent="Decor" unique_id=612768442]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2118, 318, 2202, 318, 2202, 358, 2118, 358)
+
+[node name="Poutre_12_4" type="Polygon2D" parent="Decor" unique_id=1635283948]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1158, 414, 1242, 414, 1242, 454, 1158, 454)
+
+[node name="Poutre_22_4" type="Polygon2D" parent="Decor" unique_id=989392734]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2118, 414, 2202, 414, 2202, 454, 2118, 454)
+
+[node name="Poutre_12_5" type="Polygon2D" parent="Decor" unique_id=1041541517]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1158, 510, 1242, 510, 1242, 550, 1158, 550)
+
+[node name="Poutre_22_5" type="Polygon2D" parent="Decor" unique_id=650517959]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2118, 510, 2202, 510, 2202, 550, 2118, 550)
+
+[node name="Poutre_3_6" type="Polygon2D" parent="Decor" unique_id=531162753]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(294, 606, 378, 606, 378, 646, 294, 646)
+
+[node name="Poutre_4_6" type="Polygon2D" parent="Decor" unique_id=708428383]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(390, 606, 474, 606, 474, 646, 390, 646)
+
+[node name="Poutre_5_6" type="Polygon2D" parent="Decor" unique_id=363692615]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(486, 606, 570, 606, 570, 646, 486, 646)
+
+[node name="Poutre_6_6" type="Polygon2D" parent="Decor" unique_id=2008229604]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(582, 606, 666, 606, 666, 646, 582, 646)
+
+[node name="Poutre_7_6" type="Polygon2D" parent="Decor" unique_id=767068111]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(678, 606, 762, 606, 762, 646, 678, 646)
+
+[node name="Poutre_8_6" type="Polygon2D" parent="Decor" unique_id=1606917641]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(774, 606, 858, 606, 858, 646, 774, 646)
+
+[node name="Poutre_12_6" type="Polygon2D" parent="Decor" unique_id=358761712]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1158, 606, 1242, 606, 1242, 646, 1158, 646)
+
+[node name="Poutre_12_7" type="Polygon2D" parent="Decor" unique_id=1930295135]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1158, 702, 1242, 702, 1242, 742, 1158, 742)
+
+[node name="Poutre_18_8" type="Polygon2D" parent="Decor" unique_id=595524847]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1734, 798, 1818, 798, 1818, 838, 1734, 838)
+
+[node name="Poutre_19_8" type="Polygon2D" parent="Decor" unique_id=499876806]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1830, 798, 1914, 798, 1914, 838, 1830, 838)
+
+[node name="Poutre_20_8" type="Polygon2D" parent="Decor" unique_id=1911005034]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1926, 798, 2010, 798, 2010, 838, 1926, 838)
+
+[node name="Poutre_21_8" type="Polygon2D" parent="Decor" unique_id=681790292]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2022, 798, 2106, 798, 2106, 838, 2022, 838)
+
+[node name="Poutre_22_8" type="Polygon2D" parent="Decor" unique_id=655764851]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2118, 798, 2202, 798, 2202, 838, 2118, 838)
+
+[node name="Poutre_23_8" type="Polygon2D" parent="Decor" unique_id=1405786894]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2214, 798, 2298, 798, 2298, 838, 2214, 838)
+
+[node name="Poutre_24_8" type="Polygon2D" parent="Decor" unique_id=1202111819]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(2310, 798, 2394, 798, 2394, 838, 2310, 838)
+
+[node name="Poutre_9_11" type="Polygon2D" parent="Decor" unique_id=1562290581]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(870, 1086, 954, 1086, 954, 1126, 870, 1126)
+
+[node name="Poutre_18_11" type="Polygon2D" parent="Decor" unique_id=517818276]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1734, 1086, 1818, 1086, 1818, 1126, 1734, 1126)
+
+[node name="Poutre_9_12" type="Polygon2D" parent="Decor" unique_id=2137227657]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(870, 1182, 954, 1182, 954, 1222, 870, 1222)
+
+[node name="Poutre_18_12" type="Polygon2D" parent="Decor" unique_id=2007441240]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1734, 1182, 1818, 1182, 1818, 1222, 1734, 1222)
+
+[node name="Poutre_5_15" type="Polygon2D" parent="Decor" unique_id=1983472140]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(486, 1470, 570, 1470, 570, 1510, 486, 1510)
+
+[node name="Poutre_6_15" type="Polygon2D" parent="Decor" unique_id=1322762537]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(582, 1470, 666, 1470, 666, 1510, 582, 1510)
+
+[node name="Poutre_7_15" type="Polygon2D" parent="Decor" unique_id=1403187249]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(678, 1470, 762, 1470, 762, 1510, 678, 1510)
+
+[node name="Poutre_8_15" type="Polygon2D" parent="Decor" unique_id=1525444707]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(774, 1470, 858, 1470, 858, 1510, 774, 1510)
+
+[node name="Poutre_9_15" type="Polygon2D" parent="Decor" unique_id=502877349]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(870, 1470, 954, 1470, 954, 1510, 870, 1510)
+
+[node name="Poutre_15_17" type="Polygon2D" parent="Decor" unique_id=2085911018]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1446, 1662, 1530, 1662, 1530, 1702, 1446, 1702)
+
+[node name="Poutre_16_17" type="Polygon2D" parent="Decor" unique_id=709847463]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1542, 1662, 1626, 1662, 1626, 1702, 1542, 1702)
+
+[node name="Poutre_17_17" type="Polygon2D" parent="Decor" unique_id=1300678186]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1638, 1662, 1722, 1662, 1722, 1702, 1638, 1702)
+
+[node name="Poutre_18_17" type="Polygon2D" parent="Decor" unique_id=20077061]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1734, 1662, 1818, 1662, 1818, 1702, 1734, 1702)
+
+[node name="Poutre_19_17" type="Polygon2D" parent="Decor" unique_id=1300325995]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1830, 1662, 1914, 1662, 1914, 1702, 1830, 1702)
+
+[node name="Poutre_20_17" type="Polygon2D" parent="Decor" unique_id=887327477]
+color = Color(0.16, 0.1, 0.07, 1)
+polygon = PackedVector2Array(1926, 1662, 2010, 1662, 2010, 1702, 1926, 1702)
+
+[node name="EscalierVersB1f" type="Node2D" parent="Decor" unique_id=1976000277]
+position = Vector2(336, 288)
+script = ExtResource("3_iyyyu")
+
+[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1181760274]
+color = Color(0.3, 0.29, 0.28, 1)
+polygon = PackedVector2Array(-40, -88, 40, -88, 40, -8, -40, -8)
+
+[node name="@Polygon2D@2" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=429458320]
+color = Color(0.75, 0.75, 0.7125, 1)
+polygon = PackedVector2Array(-36, -84, 36, -84, 36, -72, -36, -72)
+
+[node name="@Polygon2D@3" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1886161976]
+color = Color(0.65, 0.65, 0.6175, 1)
+polygon = PackedVector2Array(-36, -64, 36, -64, 36, -52, -36, -52)
+
+[node name="@Polygon2D@4" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1640940969]
+color = Color(0.55, 0.55, 0.5225, 1)
+polygon = PackedVector2Array(-36, -44, 36, -44, 36, -32, -36, -32)
+
+[node name="@Polygon2D@5" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1724142544]
+color = Color(0.45, 0.45, 0.4275, 1)
+polygon = PackedVector2Array(-36, -24, 36, -24, 36, -12, -36, -12)
+
+[node name="Trou_1_11" type="Node2D" parent="Decor" unique_id=1275775379]
+position = Vector2(144, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_1_11" unique_id=1232102682]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@6" type="Polygon2D" parent="Decor/Trou_1_11" unique_id=1433209146]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_2_11" type="Node2D" parent="Decor" unique_id=1335266228]
+position = Vector2(240, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_2_11" unique_id=748291990]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@7" type="Polygon2D" parent="Decor/Trou_2_11" unique_id=2055618042]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_3_11" type="Node2D" parent="Decor" unique_id=1496207713]
+position = Vector2(336, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_3_11" unique_id=455683183]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@8" type="Polygon2D" parent="Decor/Trou_3_11" unique_id=1427815506]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_4_11" type="Node2D" parent="Decor" unique_id=1979625813]
+position = Vector2(432, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_4_11" unique_id=315817085]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@9" type="Polygon2D" parent="Decor/Trou_4_11" unique_id=1671035168]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_5_11" type="Node2D" parent="Decor" unique_id=1569653359]
+position = Vector2(528, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_5_11" unique_id=1380585886]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@10" type="Polygon2D" parent="Decor/Trou_5_11" unique_id=1179721284]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_6_11" type="Node2D" parent="Decor" unique_id=127420469]
+position = Vector2(624, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_6_11" unique_id=2001770785]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@11" type="Polygon2D" parent="Decor/Trou_6_11" unique_id=1563162394]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_7_11" type="Node2D" parent="Decor" unique_id=701990622]
+position = Vector2(720, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_7_11" unique_id=1981024856]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@12" type="Polygon2D" parent="Decor/Trou_7_11" unique_id=712679662]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_8_11" type="Node2D" parent="Decor" unique_id=1320141853]
+position = Vector2(816, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_8_11" unique_id=1851141930]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@13" type="Polygon2D" parent="Decor/Trou_8_11" unique_id=849573853]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_1_12" type="Node2D" parent="Decor" unique_id=151491729]
+position = Vector2(144, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_1_12" unique_id=984512659]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@14" type="Polygon2D" parent="Decor/Trou_1_12" unique_id=1146396344]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_2_12" type="Node2D" parent="Decor" unique_id=568222483]
+position = Vector2(240, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_2_12" unique_id=696969605]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@15" type="Polygon2D" parent="Decor/Trou_2_12" unique_id=1924481989]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_3_12" type="Node2D" parent="Decor" unique_id=1504545070]
+position = Vector2(336, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_3_12" unique_id=416332363]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@16" type="Polygon2D" parent="Decor/Trou_3_12" unique_id=1931355417]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_4_12" type="Node2D" parent="Decor" unique_id=102632775]
+position = Vector2(432, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_4_12" unique_id=638691008]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@17" type="Polygon2D" parent="Decor/Trou_4_12" unique_id=998441701]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_5_12" type="Node2D" parent="Decor" unique_id=236877377]
+position = Vector2(528, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_5_12" unique_id=835504376]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@18" type="Polygon2D" parent="Decor/Trou_5_12" unique_id=1377484067]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_6_12" type="Node2D" parent="Decor" unique_id=1106688131]
+position = Vector2(624, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_6_12" unique_id=640019491]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@19" type="Polygon2D" parent="Decor/Trou_6_12" unique_id=760727656]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_7_12" type="Node2D" parent="Decor" unique_id=2085686999]
+position = Vector2(720, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_7_12" unique_id=476264136]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@20" type="Polygon2D" parent="Decor/Trou_7_12" unique_id=1928900939]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_8_12" type="Node2D" parent="Decor" unique_id=1963261712]
+position = Vector2(816, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_8_12" unique_id=1607945989]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@21" type="Polygon2D" parent="Decor/Trou_8_12" unique_id=1827848301]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_10_11" type="Node2D" parent="Decor" unique_id=1129448405]
+position = Vector2(1008, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_10_11" unique_id=259144982]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@22" type="Polygon2D" parent="Decor/Trou_10_11" unique_id=1109978935]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_11_11" type="Node2D" parent="Decor" unique_id=335697481]
+position = Vector2(1104, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_11_11" unique_id=179499343]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@23" type="Polygon2D" parent="Decor/Trou_11_11" unique_id=1950936052]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_12_11" type="Node2D" parent="Decor" unique_id=1434664255]
+position = Vector2(1200, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_12_11" unique_id=1615683565]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@24" type="Polygon2D" parent="Decor/Trou_12_11" unique_id=1849413670]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_13_11" type="Node2D" parent="Decor" unique_id=1690921117]
+position = Vector2(1296, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_13_11" unique_id=489853328]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@25" type="Polygon2D" parent="Decor/Trou_13_11" unique_id=463375523]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_14_11" type="Node2D" parent="Decor" unique_id=605167710]
+position = Vector2(1392, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_14_11" unique_id=1919746097]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@26" type="Polygon2D" parent="Decor/Trou_14_11" unique_id=1110478622]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_15_11" type="Node2D" parent="Decor" unique_id=905454853]
+position = Vector2(1488, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_15_11" unique_id=941053802]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@27" type="Polygon2D" parent="Decor/Trou_15_11" unique_id=260801636]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_16_11" type="Node2D" parent="Decor" unique_id=866389721]
+position = Vector2(1584, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_16_11" unique_id=158571601]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@28" type="Polygon2D" parent="Decor/Trou_16_11" unique_id=1723733155]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_17_11" type="Node2D" parent="Decor" unique_id=1886541474]
+position = Vector2(1680, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_17_11" unique_id=993368804]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@29" type="Polygon2D" parent="Decor/Trou_17_11" unique_id=384021037]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_10_12" type="Node2D" parent="Decor" unique_id=916129437]
+position = Vector2(1008, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_10_12" unique_id=594486948]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@30" type="Polygon2D" parent="Decor/Trou_10_12" unique_id=1524530705]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_11_12" type="Node2D" parent="Decor" unique_id=635023917]
+position = Vector2(1104, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_11_12" unique_id=1401388876]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@31" type="Polygon2D" parent="Decor/Trou_11_12" unique_id=33720248]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_12_12" type="Node2D" parent="Decor" unique_id=456614780]
+position = Vector2(1200, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_12_12" unique_id=283908350]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@32" type="Polygon2D" parent="Decor/Trou_12_12" unique_id=625964543]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_13_12" type="Node2D" parent="Decor" unique_id=1922750389]
+position = Vector2(1296, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_13_12" unique_id=646883058]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@33" type="Polygon2D" parent="Decor/Trou_13_12" unique_id=1108028400]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_14_12" type="Node2D" parent="Decor" unique_id=776029265]
+position = Vector2(1392, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_14_12" unique_id=357014032]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@34" type="Polygon2D" parent="Decor/Trou_14_12" unique_id=1734491836]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_15_12" type="Node2D" parent="Decor" unique_id=1172303606]
+position = Vector2(1488, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_15_12" unique_id=1723239293]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@35" type="Polygon2D" parent="Decor/Trou_15_12" unique_id=454169950]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_16_12" type="Node2D" parent="Decor" unique_id=1285300388]
+position = Vector2(1584, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_16_12" unique_id=875863666]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@36" type="Polygon2D" parent="Decor/Trou_16_12" unique_id=1243497481]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_17_12" type="Node2D" parent="Decor" unique_id=1471028218]
+position = Vector2(1680, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_17_12" unique_id=489225548]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@37" type="Polygon2D" parent="Decor/Trou_17_12" unique_id=1227560222]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_19_11" type="Node2D" parent="Decor" unique_id=1560404978]
+position = Vector2(1872, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_19_11" unique_id=846346281]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@38" type="Polygon2D" parent="Decor/Trou_19_11" unique_id=1795478904]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_20_11" type="Node2D" parent="Decor" unique_id=1924746136]
+position = Vector2(1968, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_20_11" unique_id=1223584027]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@39" type="Polygon2D" parent="Decor/Trou_20_11" unique_id=1395009832]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_21_11" type="Node2D" parent="Decor" unique_id=2096993000]
+position = Vector2(2064, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_21_11" unique_id=1548203539]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@40" type="Polygon2D" parent="Decor/Trou_21_11" unique_id=679128293]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_22_11" type="Node2D" parent="Decor" unique_id=78116773]
+position = Vector2(2160, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_22_11" unique_id=507527724]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@41" type="Polygon2D" parent="Decor/Trou_22_11" unique_id=1113910284]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_23_11" type="Node2D" parent="Decor" unique_id=1848733431]
+position = Vector2(2256, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_23_11" unique_id=461657486]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@42" type="Polygon2D" parent="Decor/Trou_23_11" unique_id=1157000245]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_24_11" type="Node2D" parent="Decor" unique_id=919453841]
+position = Vector2(2352, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_24_11" unique_id=262730615]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@43" type="Polygon2D" parent="Decor/Trou_24_11" unique_id=1384523534]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_25_11" type="Node2D" parent="Decor" unique_id=521282020]
+position = Vector2(2448, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_25_11" unique_id=970389830]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@44" type="Polygon2D" parent="Decor/Trou_25_11" unique_id=1945828256]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_26_11" type="Node2D" parent="Decor" unique_id=113210478]
+position = Vector2(2544, 1152)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_26_11" unique_id=1385963092]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@45" type="Polygon2D" parent="Decor/Trou_26_11" unique_id=1828433791]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_19_12" type="Node2D" parent="Decor" unique_id=872426096]
+position = Vector2(1872, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_19_12" unique_id=1672463652]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@46" type="Polygon2D" parent="Decor/Trou_19_12" unique_id=1294805574]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_20_12" type="Node2D" parent="Decor" unique_id=1578452851]
+position = Vector2(1968, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_20_12" unique_id=2007341839]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@47" type="Polygon2D" parent="Decor/Trou_20_12" unique_id=1401452035]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_21_12" type="Node2D" parent="Decor" unique_id=1767507682]
+position = Vector2(2064, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_21_12" unique_id=86137600]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@48" type="Polygon2D" parent="Decor/Trou_21_12" unique_id=1809849201]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_22_12" type="Node2D" parent="Decor" unique_id=2036867727]
+position = Vector2(2160, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_22_12" unique_id=877311516]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@49" type="Polygon2D" parent="Decor/Trou_22_12" unique_id=2138705265]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_23_12" type="Node2D" parent="Decor" unique_id=1116820975]
+position = Vector2(2256, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_23_12" unique_id=1456974811]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@50" type="Polygon2D" parent="Decor/Trou_23_12" unique_id=1502532300]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_24_12" type="Node2D" parent="Decor" unique_id=1873928684]
+position = Vector2(2352, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_24_12" unique_id=987394103]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@51" type="Polygon2D" parent="Decor/Trou_24_12" unique_id=8673583]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_25_12" type="Node2D" parent="Decor" unique_id=1503636724]
+position = Vector2(2448, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_25_12" unique_id=1781445233]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@52" type="Polygon2D" parent="Decor/Trou_25_12" unique_id=1802257524]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_26_12" type="Node2D" parent="Decor" unique_id=1957734733]
+position = Vector2(2544, 1248)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_26_12" unique_id=1082180785]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@53" type="Polygon2D" parent="Decor/Trou_26_12" unique_id=2107442599]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_16_5" type="Node2D" parent="Decor" unique_id=965141391]
+position = Vector2(1584, 576)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_16_5" unique_id=1741326230]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@54" type="Polygon2D" parent="Decor/Trou_16_5" unique_id=874541068]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_20_15" type="Node2D" parent="Decor" unique_id=1502028537]
+position = Vector2(1968, 1536)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_20_15" unique_id=1824488033]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@55" type="Polygon2D" parent="Decor/Trou_20_15" unique_id=692980348]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Trou_6_17" type="Node2D" parent="Decor" unique_id=778077413]
+position = Vector2(624, 1728)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Trou_6_17" unique_id=1723246574]
+color = Color(0.1, 0.07, 0.05, 1)
+polygon = PackedVector2Array(-46, -92, 46, -92, 46, -4, -46, -4)
+
+[node name="@Polygon2D@56" type="Polygon2D" parent="Decor/Trou_6_17" unique_id=1702581450]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-36, -80, 36, -80, 36, -16, -36, -16)
+
+[node name="Entities" type="Node2D" parent="." unique_id=966355744]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=947239569]
+z_index = 10
+tile_set = ExtResource("2_cfeme")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1167220637]
+
+[node name="Sortie_0" type="Marker2D" parent="Warps" unique_id=2070190779]
+position = Vector2(1296, 2304)
+script = ExtResource("4_i1ajk")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"ecruteak_city"
+target_spawn = &"retour_tour_cendree"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Sortie_1" type="Marker2D" parent="Warps" unique_id=1963228640]
+position = Vector2(1392, 2304)
+script = ExtResource("4_i1ajk")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"ecruteak_city"
+target_spawn = &"retour_tour_cendree_1"
+arrival_facing = Vector2i(0, 1)
+
+[node name="VersB1f" type="Marker2D" parent="Warps" unique_id=1682365851]
+position = Vector2(336, 288)
+script = ExtResource("4_i1ajk")
+target_map = &"burned_tower_b1f"
+target_spawn = &"from_1f"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_0" type="Marker2D" parent="Warps" unique_id=834746004]
+position = Vector2(144, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_1" type="Marker2D" parent="Warps" unique_id=622068604]
+position = Vector2(240, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_2" type="Marker2D" parent="Warps" unique_id=2038781562]
+position = Vector2(336, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_3" type="Marker2D" parent="Warps" unique_id=738216849]
+position = Vector2(432, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_4" type="Marker2D" parent="Warps" unique_id=78816924]
+position = Vector2(528, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_5" type="Marker2D" parent="Warps" unique_id=341900924]
+position = Vector2(624, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_6" type="Marker2D" parent="Warps" unique_id=779115556]
+position = Vector2(720, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_7" type="Marker2D" parent="Warps" unique_id=1126321568]
+position = Vector2(816, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_8" type="Marker2D" parent="Warps" unique_id=1373526844]
+position = Vector2(144, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_9" type="Marker2D" parent="Warps" unique_id=722369542]
+position = Vector2(240, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_10" type="Marker2D" parent="Warps" unique_id=704629121]
+position = Vector2(336, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_11" type="Marker2D" parent="Warps" unique_id=867117571]
+position = Vector2(432, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_12" type="Marker2D" parent="Warps" unique_id=2002363498]
+position = Vector2(528, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_13" type="Marker2D" parent="Warps" unique_id=1896821141]
+position = Vector2(624, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_14" type="Marker2D" parent="Warps" unique_id=384203302]
+position = Vector2(720, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousOuest_15" type="Marker2D" parent="Warps" unique_id=546419888]
+position = Vector2(816, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_0" type="Marker2D" parent="Warps" unique_id=1088087705]
+position = Vector2(1008, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_1" type="Marker2D" parent="Warps" unique_id=1172160153]
+position = Vector2(1104, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_2" type="Marker2D" parent="Warps" unique_id=35819446]
+position = Vector2(1200, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_3" type="Marker2D" parent="Warps" unique_id=1083027753]
+position = Vector2(1296, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_4" type="Marker2D" parent="Warps" unique_id=1418906190]
+position = Vector2(1392, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_5" type="Marker2D" parent="Warps" unique_id=735649477]
+position = Vector2(1488, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_6" type="Marker2D" parent="Warps" unique_id=1299245725]
+position = Vector2(1584, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_7" type="Marker2D" parent="Warps" unique_id=1352975634]
+position = Vector2(1680, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_8" type="Marker2D" parent="Warps" unique_id=872004724]
+position = Vector2(1008, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_9" type="Marker2D" parent="Warps" unique_id=929068291]
+position = Vector2(1104, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_10" type="Marker2D" parent="Warps" unique_id=1437815638]
+position = Vector2(1200, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_11" type="Marker2D" parent="Warps" unique_id=1650083045]
+position = Vector2(1296, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_12" type="Marker2D" parent="Warps" unique_id=1796169643]
+position = Vector2(1392, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_13" type="Marker2D" parent="Warps" unique_id=1188872732]
+position = Vector2(1488, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_14" type="Marker2D" parent="Warps" unique_id=755859399]
+position = Vector2(1584, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousCentre_15" type="Marker2D" parent="Warps" unique_id=2087359477]
+position = Vector2(1680, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_0" type="Marker2D" parent="Warps" unique_id=1129496176]
+position = Vector2(1872, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_1" type="Marker2D" parent="Warps" unique_id=201336958]
+position = Vector2(1968, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_2" type="Marker2D" parent="Warps" unique_id=1854833168]
+position = Vector2(2064, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_3" type="Marker2D" parent="Warps" unique_id=1562726478]
+position = Vector2(2160, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_4" type="Marker2D" parent="Warps" unique_id=1613494547]
+position = Vector2(2256, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_5" type="Marker2D" parent="Warps" unique_id=1956146328]
+position = Vector2(2352, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_6" type="Marker2D" parent="Warps" unique_id=402753530]
+position = Vector2(2448, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_7" type="Marker2D" parent="Warps" unique_id=463313473]
+position = Vector2(2544, 1152)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_8" type="Marker2D" parent="Warps" unique_id=2068857824]
+position = Vector2(1872, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_9" type="Marker2D" parent="Warps" unique_id=1776409733]
+position = Vector2(1968, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_10" type="Marker2D" parent="Warps" unique_id=1102273200]
+position = Vector2(2064, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_11" type="Marker2D" parent="Warps" unique_id=1389828492]
+position = Vector2(2160, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_12" type="Marker2D" parent="Warps" unique_id=1942926174]
+position = Vector2(2256, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_13" type="Marker2D" parent="Warps" unique_id=168352528]
+position = Vector2(2352, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_14" type="Marker2D" parent="Warps" unique_id=543247974]
+position = Vector2(2448, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrousEst_15" type="Marker2D" parent="Warps" unique_id=1690523146]
+position = Vector2(2544, 1248)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrouNord_0" type="Marker2D" parent="Warps" unique_id=709081029]
+position = Vector2(1584, 576)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrouSudEst_0" type="Marker2D" parent="Warps" unique_id=503264692]
+position = Vector2(1968, 1536)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="TrouSudOuest_0" type="Marker2D" parent="Warps" unique_id=1125716711]
+position = Vector2(624, 1728)
+script = ExtResource("4_i1ajk")
+trigger = 2
+target_map = &"burned_tower_b1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1539692388]
+
+[node name="HyperPotion" type="Marker2D" parent="Interactables" unique_id=1492155149]
+position = Vector2(720, 1536)
+script = ExtResource("5_tuamo")
+dialogue_id = &"burned_tower_1f_hyper_potion"
+unless_flags = Array[StringName]([&"got_burned_tower_1f_hyper_potion"])
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1373760296]
+
+[node name="from_city" type="Marker2D" parent="Spawns" unique_id=33723075]
+position = Vector2(1296, 2208)
+
+[node name="from_city_1" type="Marker2D" parent="Spawns" unique_id=673795690]
+position = Vector2(1392, 2208)
+
+[node name="from_b1f" type="Marker2D" parent="Spawns" unique_id=541628498]
+position = Vector2(336, 384)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=2016076922]
+
+[node name="PlancherEffondre" type="Marker2D" parent="Triggers" unique_id=1727967937]
+position = Vector2(1008, 1344)
+script = ExtResource("6_aoddn")
+cutscene_id = &"burned_tower_floor"
+size = Vector2i(8, 1)
+
+[node name="NightLights" type="Node2D" parent="." unique_id=2016722332]
