@@ -431,6 +431,15 @@
 						"dialogue": "whirl_lugia_rise_1"
 					},
 					{
+						"move": "player",
+						"path": [
+							"up",
+							"up",
+							"up",
+							"up"
+						]
+					},
+					{
 						"set": [
 							"johto_whirl_lugia_passing"
 						]

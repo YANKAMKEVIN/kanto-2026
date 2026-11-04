@@ -102,12 +102,13 @@ const EXTRA_TRIGGERS: Dictionary = {
 const DEBUG_SPAWNS: Dictionary = {
 	&"whirl_islands_b1f": {"debug_suicune": Vector2i(11, 6), "debug_cove": Vector2i(8, 22),
 		"debug_dragon_scale": Vector2i(4, 13)},
-	&"whirl_islands_b2f": {"debug_lugia": Vector2i(12, 18)},
+	&"whirl_islands_b2f": {"debug_lugia": Vector2i(12, 18), "debug_lugia_water": Vector2i(11, 17)},
 }
-## Ombre de Lugia (B2F) : départ (bord ouest du bassin, rangée du centre) ; la scène la déplace
+## Ombre de Lugia (B2F) : départ (bord ouest du bassin, deux rangées sous Lugia, dans le cadre une
+## fois le joueur avancé de 4 cases par la scène) ; la scène la déplace
 ## de 10 cases vers l'est (`gen_joh7_data.py`, SHADOW_OFFSET).
 const SHADOW_MAP: StringName = &"whirl_islands_b2f"
-const SHADOW_START := Vector2i(7, 9)
+const SHADOW_START := Vector2i(7, 11)
 const SHADOW_FLAG: StringName = &"johto_whirl_lugia_passing"
 const SHADOW_SCALE: float = 2.6
 

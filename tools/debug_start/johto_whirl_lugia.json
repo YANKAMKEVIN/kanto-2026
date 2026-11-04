@@ -1,7 +1,7 @@
 {
 	"map": "whirl_islands_b2f",
-	"spawn": "debug_lugia",
-	"facing": "up",
+	"spawn": "debug_lugia_water",
+	"facing": "right",
 	"flags": [
 		"mom_greeted",
 		"rival_met",

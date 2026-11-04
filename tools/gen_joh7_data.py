@@ -189,7 +189,7 @@ ORME_CENTER_CELL = [3, 5]   # [D] : case libre du Centre d'Oliville, au sud-oues
 # Début du bloc du JOH7 dans `water_rod.json` (sa première table) : relance idempotente.
 FISHING_MARK = '\t"joh7_old_rod": {'
 
-# Ombre de Lugia (B2F, `build_joh7_maps.gd`) : de (7, 9) à (17, 9).
+# Ombre de Lugia (B2F, `build_joh7_maps.gd`) : de (7, 11) à (17, 11).
 SHADOW_OFFSET = [10, 0]
 
 CELL_RE = re.compile(r"^(\d+)(?:\.\.(\d+))?,(\d+)(?:\.\.(\d+))?$")
@@ -310,6 +310,9 @@ def lugia_rise_scene():
 		{"wait": 0.3},
 		{"react": "player"},
 		{"dialogue": "whirl_lugia_rise_1"},
+		# [D] Le joueur glisse de 4 cases vers le centre du bassin : l'ombre (rangée 11) et Lugia
+		# (12, 9) restent dans le cadre (≈ 5 rangées visibles au-dessus du joueur).
+		{"move": "player", "path": ["up", "up", "up", "up"]},
 		{"set": ["johto_whirl_lugia_passing"]},
 		{"animate": "LugiaShadow", "offset": SHADOW_OFFSET, "duration": 4.0, "fade": True},
 		{"unset": ["johto_whirl_lugia_passing"]},

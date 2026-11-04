@@ -258,7 +258,7 @@ func test_triggers_boulders_and_lugia_shadow() -> void:
 	var shadow := b2.get_node(^"LugiaShadow") as FlagGate
 	assert_not_null(shadow)
 	assert_eq(shadow.if_flags, [&"johto_whirl_lugia_passing"] as Array[StringName])
-	assert_eq(Grid.world_to_cell(shadow.position), Vector2i(7, 9))
+	assert_eq(Grid.world_to_cell(shadow.position), Vector2i(7, 11))
 	assert_true(shadow.get_index() < b2.get_node(^"Entities").get_index(), "sous le joueur")
 
 
