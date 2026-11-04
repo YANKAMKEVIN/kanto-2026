@@ -1,0 +1,48 @@
+{
+	"week_monday_gift": {
+		"variants": [
+			{
+				"unless": [
+					"week_monday_gift"
+				],
+				"steps": [
+					{
+						"give": "super_potion",
+						"count": 3
+					},
+					{
+						"dialogue": "week_monday_received"
+					},
+					{
+						"set": [
+							"week_monday_gift"
+						]
+					}
+				]
+			}
+		]
+	},
+	"week_tuesday_gift": {
+		"variants": [
+			{
+				"unless": [
+					"week_tuesday_gift"
+				],
+				"steps": [
+					{
+						"give": "revive",
+						"count": 2
+					},
+					{
+						"dialogue": "week_tuesday_received"
+					},
+					{
+						"set": [
+							"week_tuesday_gift"
+						]
+					}
+				]
+			}
+		]
+	}
+}

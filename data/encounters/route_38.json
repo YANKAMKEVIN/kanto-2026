@@ -1,0 +1,115 @@
+{
+	"route_38_grass_day": {
+		"maps": [
+			"route_38"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "sentret",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 30
+			},
+			{
+				"species": "mareep",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 25
+			},
+			{
+				"species": "pidgey",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 20
+			},
+			{
+				"species": "rattata",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 12
+			},
+			{
+				"species": "meowth",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 9
+			},
+			{
+				"species": "miltank",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 4
+			}
+		]
+	},
+	"route_38_grass_night": {
+		"maps": [
+			"route_38"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "hoothoot",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 40
+			},
+			{
+				"species": "rattata",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 30
+			},
+			{
+				"species": "meowth",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 20
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					7,
+					11
+				],
+				"weight": 10
+			}
+		]
+	}
+}

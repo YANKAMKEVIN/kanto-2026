@@ -138,6 +138,9 @@ const SEA_TINT := Color(0.58, 0.68, 0.9)
 ## Jalon 18 (T14) : les cinq intérieurs peints de Lavanville.
 const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2"]
+## Chapitre Johto, JOH2 (T4, `jalon-joh2.md` §2.1) : les cinq intérieurs de Rosalia.
+const ROSALIA := [&"ecruteak_center", &"ecruteak_mart", &"ecruteak_elders_house",
+	&"ecruteak_house_1", &"ecruteak_house_2"]
 ## Jalon 20 (T15) : postes de Safrania et bâtiments d'entrée du souterrain des Routes 7 et 8.
 const ROUTES_7_8 := [&"route_7_gate", &"route_8_gate", &"route_7_underground_gate",
 	&"route_8_underground_gate"]
@@ -202,6 +205,8 @@ func _init() -> void:
 	rooms.append_array(_j29_rooms())
 	# Jalon JOH1 (T6) : Oliville (fin de liste).
 	rooms.append_array(_olivine_rooms())
+	# Chapitre Johto, JOH2 : Rosalia (fin de liste).
+	rooms.append_array(_rosalia_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -265,6 +270,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(CINNABAR)
 		elif arg == "--route12":
 			wanted.append_array(ROUTE_12)
+		elif arg == "--rosalia":
+			wanted.append_array(ROSALIA)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -2189,6 +2196,50 @@ func _olivine_house_2() -> Dictionary:
 	room["furniture"] = azuria["furniture"]
 	room["rugs"] = azuria["rugs"]
 	return room
+
+
+
+
+# --- Chapitre Johto, JOH2 (T4) : Rosalia --------------------------------------------------------
+
+
+## Les cinq intérieurs de Rosalia (`jalon-joh2.md` §2.1) : Centre et Boutique = définitions
+## communes (sortie vers `ecruteak_city`) ; maison des sages et deux maisons relues sur les
+## grilles des maisons de Lavanville [D] (enveloppe des maisons d'Argenta), PNJ dans
+## `data/npcs/ecruteak_*.json` (`tools/gen_joh2_data.py`). Lumière `interior_warm` (cadre §5.1 :
+## les intérieurs de Johto gardent la lumière chaude).
+func _rosalia_rooms() -> Array[Dictionary]:
+	var elders := _ecruteak_house(&"ecruteak_elders_house", "EcruteakEldersHouse",
+		"lavanville_maison_1.txt", &"retour_sages")
+	elders["furniture"] = _mason_furniture()
+	var house_1 := _ecruteak_house(&"ecruteak_house_1", "EcruteakHouse1",
+		"lavanville_maison_2.txt", &"retour_maison_1")
+	var azuria := _cerulean_house()
+	house_1["furniture"] = azuria["furniture"]
+	house_1["rugs"] = azuria["rugs"]
+	var house_2 := _ecruteak_house(&"ecruteak_house_2", "EcruteakHouse2",
+		"lavanville_maison_1.txt", &"retour_maison_2")
+	house_2["furniture"] = _mason_furniture()
+	return [
+		_pokemon_center(&"ecruteak_center", "EcruteakCenter", "Rosalia",
+			[&"ecruteak_city", &"retour_centre"]),
+		_poke_mart(&"ecruteak_mart", "EcruteakMart", "Rosalia", [&"ecruteak_city", &"retour_boutique"]),
+		elders, house_1, house_2,
+	]
+
+
+## Pièce de Rosalia relue sur une grille de Lavanville : enveloppe des maisons d'Argenta, sortie
+## PUSH ↓ vers `ecruteak_city` / [param spawn].
+func _ecruteak_house(id: StringName, node: String, plan: String, spawn: StringName) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Rosalia", "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": ".Xh",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+			&"ecruteak_city"),
+	}
 
 
 # --- Jalon 20 (T15) : Routes 7 et 8 ------------------------------------------------------------

@@ -1,0 +1,25 @@
+{
+	"ecruteak_house_1_antidote": {
+		"variants": [
+			{
+				"unless": [
+					"got_ecruteak_house_1_antidote"
+				],
+				"steps": [
+					{
+						"give": "antidote",
+						"count": 2
+					},
+					{
+						"dialogue": "ecruteak_house_1_received"
+					},
+					{
+						"set": [
+							"got_ecruteak_house_1_antidote"
+						]
+					}
+				]
+			}
+		]
+	}
+}

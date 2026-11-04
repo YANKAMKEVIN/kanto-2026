@@ -1,0 +1,71 @@
+{
+	"ecruteak_city_garde_route_42": {
+		"speaker": "Garde",
+		"draft": true,
+		"pages": [
+			"La Route 42 est fermée.",
+			"Des éboulements, du côté d'Acajou.\nReviens plus tard."
+		]
+	},
+	"ecruteak_city_garde_carillon": {
+		"speaker": "Garde",
+		"pages": [
+			"La Tour Carillon est sacrée.",
+			"Seuls ceux que les sages autorisent\npeuvent y entrer."
+		]
+	},
+	"ecruteak_city_porte_tour_cendree": {
+		"narration": true,
+		"pages": [
+			"La porte est fermée.",
+			"Une odeur de vieux bois brûlé\nflotte encore."
+		]
+	},
+	"ecruteak_rocket_1": {
+		"speaker": "Sbire",
+		"pages": [
+			"Alors, vieux ? Où sont-ils,\nces trois Pokémon ?",
+			"On sait qu'ils dorment\nsous la tour."
+		]
+	},
+	"ecruteak_sage_refuses": {
+		"speaker": "Sage",
+		"pages": [
+			"Vous n'obtiendrez rien de moi.",
+			"La tour est fermée,\net le restera."
+		]
+	},
+	"ecruteak_rocket_2": {
+		"speaker": "Sbire",
+		"pages": [
+			"Hé ! On nous regarde.",
+			"On s'en va. Le chef n'aime pas\nqu'on se fasse remarquer."
+		]
+	},
+	"ecruteak_city_sage_tour": {
+		"speaker": "Sage",
+		"variants": [
+			{
+				"if": [
+					"johto_rosalia_rockets_seen"
+				],
+				"pages": [
+					"Merci, jeune Dresseur.\nCes hommes reviennent chaque nuit.",
+					"Va voir notre doyen,\ndans la maison au toit rouge."
+				]
+			},
+			{
+				"pages": [
+					"Vous n'obtiendrez rien de moi.",
+					"La tour est fermée,\net le restera."
+				]
+			}
+		]
+	},
+	"ecruteak_city_panneau_ville": {
+		"narration": true,
+		"pages": [
+			"ROSALIA\nVille historique, où le passé\nreste vivant"
+		]
+	}
+}

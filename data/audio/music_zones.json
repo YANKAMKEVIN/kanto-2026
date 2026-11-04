@@ -52,6 +52,9 @@
 		"vermilion_city": "vermilion_city",
 		"viridian_city": "pewter_city",
 		"viridian_forest": "viridian_forest",
+		"route_39": "road_to_viridian",
+		"route_38": "road_to_cerulean",
+		"ecruteak_city": "pewter_city",
 		"bell_tower_woods": "viridian_forest",
 		"bell_tower": "pokemon_tower"
 	},
