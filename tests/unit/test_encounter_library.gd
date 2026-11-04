@@ -129,7 +129,10 @@ func test_real_tables_load_without_error() -> void:
 		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble",
 		# Chapitre Johto, JOH2 : herbe des tours de Rosalia (nuit), Routes 38 et 39 (jour / nuit).
-		&"ecruteak_towers_night", &"mt_moon_1f_rubble",
+		&"ecruteak_towers_night",
+		# Chapitre Johto, JOH4 : Bois aux Chênes (matin / jour / nuit), Route 34, Puits Ramoloss.
+		&"ilex_forest_grass_day", &"ilex_forest_grass_morning", &"ilex_forest_grass_night",
+		&"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
 		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
 		&"pokemon_tower_high", &"pokemon_tower_low",
@@ -140,7 +143,8 @@ func test_real_tables_load_without_error() -> void:
 		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
 		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
-		&"route_2_north_grass", &"route_38_grass_day", &"route_38_grass_night",
+		&"route_2_north_grass", &"route_34_grass_day", &"route_34_grass_night", &"route_34_water",
+		&"route_38_grass_day", &"route_38_grass_night",
 		&"route_39_grass_day", &"route_39_grass_night", &"route_3_grass", &"route_4_grass",
 		&"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
@@ -148,7 +152,8 @@ func test_real_tables_load_without_error() -> void:
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
 		&"safari_zone_west_grass",
 		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
-		&"seafoam_b4f_floor", &"victory_road_1f_rubble", &"victory_road_2f_rubble",
+		&"seafoam_b4f_floor", &"slowpoke_well_rubble", &"slowpoke_well_water",
+		&"victory_road_1f_rubble", &"victory_road_2f_rubble",
 		&"victory_road_3f_rubble", &"viridian_forest_grass"] as Array[StringName])
 
 
@@ -229,8 +234,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
 	# Chapitre Johto, JOH2 : + 5 tables datées (Routes 39 et 38 jour / nuit, herbe des tours de
-	# Rosalia), hors de la boucle (tables par moment : `test_joh2_data`).
-	assert_eq(lib.size(), 64, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) et les 5 du JOH2")
+	# Rosalia), hors de la boucle (tables par moment : `test_joh2_data`). JOH4 : + 8 (Route 34,
+	# Bois aux Chênes, Puits Ramoloss : `test_joh4_data`).
+	assert_eq(lib.size(), 72, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), les 5 du JOH2 et les 8 du JOH4")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],

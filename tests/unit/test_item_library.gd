@@ -44,8 +44,8 @@ func test_real_data_loads_without_error() -> void:
 		&"full_restore", &"gold_teeth", &"good_rod", &"great_ball", &"guard_spec", &"helix_fossil",
 		&"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hp_up", &"hyper_potion", &"ice_heal", &"iron", &"itemfinder", &"kings_rock",
 		&"leaf_stone", &"lemonade", &"lift_key", &"master_ball", &"max_elixir", &"max_ether",
-		&"max_potion", &"max_repel", &"max_revive", &"metal_coat", &"moon_stone", &"nugget", &"oak_parcel", &"old_amber", &"old_rod",
-		&"paralyze_heal", &"poke_ball", &"poke_doll", &"poke_flute", &"potion", &"pp_up", &"protein", &"rare_candy", &"repel",
+		&"max_potion", &"max_repel", &"max_revive", &"metal_coat", &"mission_order", &"moon_stone", &"nugget", &"oak_parcel", &"old_amber", &"old_rod",
+		&"paralyze_heal", &"poke_ball", &"poke_doll", &"poke_flute", &"potion", &"pp_up", &"protein", &"radio_card", &"rare_candy", &"repel",
 		&"revive", &"secret_key", &"silph_scope", &"soda_pop", &"ss_ticket", &"super_potion",
 		&"super_repel", &"super_rod", &"thunder_stone", &"tm01", &"tm02", &"tm03", &"tm04", &"tm05", &"tm06", &"tm07",
 		&"tm08", &"tm09", &"tm10", &"tm11", &"tm12", &"tm13", &"tm14", &"tm15", &"tm16", &"tm17",
@@ -89,6 +89,8 @@ func test_real_data_loads_without_error() -> void:
 		# Lot 32P (items_j32p.json) : vitamines, Éther, Élixir, Repousses, Cherch'Objet, Multi Exp.
 		&"protein", &"iron", &"calcium", &"ether", &"elixir", &"repel", &"super_repel", &"max_repel",
 		&"itemfinder", &"exp_all",
+		# JOH4 (items_joh4.json) : objets clés laissés par Brace.
+		&"mission_order", &"radio_card",
 		# JOH0 (T6, items_johto.json) : objets d'évolution par échange.
 		&"metal_coat", &"kings_rock", &"dragon_scale", &"up_grade",
 		&"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",
@@ -96,7 +98,7 @@ func test_real_data_loads_without_error() -> void:
 		&"full_restore"] as Array[StringName],
 		"ordre alphabétique des fichiers (items, items_j14, items_j16, items_j20, "
 		+ "items_j21, items_j22, items_j23, items_j24, items_j25, items_j26, items_j27 (CT46), items_j28, "
-		+ "items_j29, items_j31, items_j32, items_j32_ct, items_j32p, items_johto, items_systemes2, j17, mt_moon, vermilion)")
+		+ "items_j29, items_j31, items_j32, items_j32_ct, items_j32p, items_joh4, items_johto, items_systemes2, j17, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
