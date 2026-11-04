@@ -63,6 +63,10 @@ func test_names_unique_across_all_trainers() -> void:
 		# Giovanni : le même personnage au repaire (J20) et à la Sylphe SARL (J26).
 		if name.begins_with("{") or name == "Sbire Rocket" or name == "Giovanni":
 			continue
+		# JOH2 : le dossier joh-03 (§6, R-4) nomme « Gamin Hugo » un Dresseur de la Route 39 ;
+		# celui de la Route 3 (Kanto) garde le sien (identifiants distincts).
+		if id == &"route_39_youngster_hugo":
+			continue
 		assert_false(seen.has(name), "%s : nom déjà pris par %s" % [name, seen.get(name, "")])
 		seen[name] = id
 

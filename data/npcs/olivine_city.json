@@ -31,6 +31,18 @@
 			"night"
 		]
 	},
+	"lucien": {
+		"cell": [
+			30,
+			33
+		],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "week_monday_lucien",
+		"if_weekday": [
+			"monday"
+		]
+	},
 	"marin_plage": {
 		"cell": [
 			18,

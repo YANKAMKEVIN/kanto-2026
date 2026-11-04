@@ -54,7 +54,10 @@
 		"underground_path_7_8": "road_to_viridian",
 		"vermilion_city": "vermilion_city",
 		"viridian_city": "pewter_city",
-		"viridian_forest": "viridian_forest"
+		"viridian_forest": "viridian_forest",
+		"route_39": "road_to_viridian",
+		"route_38": "road_to_cerulean",
+		"ecruteak_city": "pewter_city"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",
