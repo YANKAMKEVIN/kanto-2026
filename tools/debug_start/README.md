@@ -439,9 +439,12 @@ rendue, Stockage en ligne) ; équipe : Tortank N64 (Surf), Dracaufeu N62, Alakaz
 N59, Roucarnage N58, Crocrodil N32 ; CS03, Super Canne, Multi Exp, 20 Hyper Balls, 30 000 ₽.
 - `johto_joh6_rosalia` : devant la maison des sages (le doyen ouvre la tour, C-2).
 - `johto_joh6_tower_b1f` : tour ouverte, arrivée de la chute au B1F (scène des chiens, C-6 à C-9).
+- `johto_joh6_tower_1f` : tour ouverte, à l'entrée du 1F (Dresseurs, C-5, trous).
 - `johto_joh6_route_42`, `johto_joh6_mahogany` : chiens réveillés, plan du doyen connu.
+- `johto_joh6_route_43` : idem, à l'entrée sud de la Route 43 (péage).
 - `johto_joh6_lake` : péage franchi, à l'entrée du Lac Colère (Léviator rouge) ; 1 Master Ball.
 - `johto_joh6_hideout` : lac fait, escalier trouvé, au B1F du repaire (alarmes).
+- `johto_joh6_hideout_b2f` : idem, au B2F (dalles, levier, déserteur, souvenir, mot de passe).
 - `johto_joh6_hideout_b3f` : mot de passe dit, au B3F (Brace, générateur, Raikou) ; 1 Master Ball.
 - `johto_joh6_saturday` (Samuel, Acajou), `johto_joh6_sunday` (Diane, Rosalia) : jour forcé.
 
