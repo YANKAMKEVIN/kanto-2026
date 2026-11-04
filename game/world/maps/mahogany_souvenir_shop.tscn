@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_smf8t"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="6_3gnfs"]
 
-[node name="MahoganySouvenirShop" type="Node2D" unique_id=927104574]
+[node name="MahoganySouvenirShop" type="Node2D" unique_id=2038666543]
 script = ExtResource("1_cxhvh")
 map_id = &"mahogany_souvenir_shop"
 display_name = "Boutique de souvenirs"
@@ -17,120 +17,120 @@ blocked_cells = Array[Vector2i]([Vector2i(2, 3), Vector2i(5, 3), Vector2i(6, 3),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1224593509]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=238531035]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAAAAAAAAAAIAAAACAAAAAAABAAIAAAADAAAAAAABAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAABAAIAAAAHAAAAAAABAAIAAAAIAAAAAAABAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAAAAAIAAAALAAAAAAABAAIAAAAMAAAAAAAAAAIAAAANAAAAAAAAAAIAAAAOAAAAAAABAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAAAAAIAAAADAAEAAAAAAAIAAAAEAAEAAAAAAAIAAAAFAAEAAAABAAIAAAAGAAEAAAAAAAIAAAAHAAEAAAABAAIAAAAIAAEAAAAAAAIAAAAJAAEAAAABAAIAAAAKAAEAAAABAAIAAAALAAEAAAAAAAIAAAAMAAEAAAAAAAIAAAANAAEAAAABAAIAAAAOAAEAAAABAAIAAAAAAAIAAAABAAIAAAABAAIAAAAAAAIAAAACAAIAAAAAAAIAAAADAAIAAAAAAAIAAAAEAAIAAAABAAIAAAAFAAIAAAABAAIAAAAGAAIAAAAAAAIAAAAHAAIAAAAAAAIAAAAIAAIAAAAAAAIAAAAJAAIAAAABAAIAAAAKAAIAAAABAAIAAAALAAIAAAABAAIAAAAMAAIAAAABAAIAAAANAAIAAAABAAIAAAAOAAIAAAAAAAIAAAAAAAMAAAAAAAIAAAABAAMAAAAAAAAAAAACAAMAAAAAAAcAAAADAAMAAAABAAAAAAAEAAMAAAABAAAAAAAFAAMAAAABAAcAAAAGAAMAAAABAAcAAAAHAAMAAAABAAAAAAAIAAMAAAABAAcAAAAJAAMAAAABAAcAAAAKAAMAAAABAAAAAAALAAMAAAABAAAAAAAMAAMAAAAAAAAAAAANAAMAAAACAAAAAAAOAAMAAAABAAIAAAAAAAQAAAABAAIAAAABAAQAAAACAAAAAAACAAQAAAAAAAAAAAADAAQAAAABAAAAAAAEAAQAAAABAAAAAAAFAAQAAAABAAAAAAAGAAQAAAAAAAcAAAAHAAQAAAABAAcAAAAIAAQAAAAAAAcAAAAJAAQAAAACAAAAAAAKAAQAAAACAAAAAAALAAQAAAAAAAAAAAAMAAQAAAACAAAAAAANAAQAAAABAAAAAAAOAAQAAAABAAIAAAAAAAUAAAAAAAIAAAABAAUAAAABAAAAAAACAAUAAAAAAAAAAAADAAUAAAABAAAAAAAEAAUAAAAAAAAAAAAFAAUAAAACAAAAAAAGAAUAAAAAAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAACAAAAAAAJAAUAAAAAAAAAAAAKAAUAAAACAAAAAAALAAUAAAAAAAAAAAAMAAUAAAABAAAAAAANAAUAAAABAAAAAAAOAAUAAAAAAAIAAAAAAAYAAAABAAIAAAABAAYAAAABAAAAAAACAAYAAAACAAAAAAADAAYAAAABAAAAAAAEAAYAAAABAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAABAAAAAAAHAAYAAAACAAAAAAAIAAYAAAACAAAAAAAJAAYAAAAAAAAAAAAKAAYAAAABAAAAAAALAAYAAAABAAAAAAAMAAYAAAACAAAAAAANAAYAAAABAAAAAAAOAAYAAAAAAAIAAAAAAAcAAAABAAIAAAABAAcAAAACAAAAAAACAAcAAAACAAAAAAADAAcAAAABAAcAAAAEAAcAAAACAAAAAAAFAAcAAAACAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAABAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAACAAAAAAAKAAcAAAACAAAAAAALAAcAAAAAAAcAAAAMAAcAAAAAAAAAAAANAAcAAAABAAAAAAAOAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAABAAgAAAABAAAAAAACAAgAAAAAAAAAAAADAAgAAAABAAAAAAAEAAgAAAABAAAAAAAFAAgAAAACAAAAAAAGAAgAAAAAAAYAAAAHAAgAAAAAAAYAAAAIAAgAAAAAAAYAAAAJAAgAAAACAAAAAAAKAAgAAAAAAAAAAAALAAgAAAAAAAAAAAAMAAgAAAAAAAAAAAANAAgAAAABAAcAAAAOAAgAAAAAAAIAAAAAAAkAAAAAAAIAAAABAAkAAAABAAIAAAACAAkAAAABAAIAAAADAAkAAAAAAAIAAAAEAAkAAAAAAAIAAAAFAAkAAAABAAIAAAAGAAkAAAAAAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAAAAAIAAAAKAAkAAAABAAIAAAALAAkAAAAAAAIAAAAMAAkAAAABAAIAAAANAAkAAAABAAIAAAAOAAkAAAAAAAIAAAA=")
 tile_set = ExtResource("2_o57db")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1552354074]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=345616504]
 tile_set = ExtResource("2_o57db")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1711677981]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=376670225]
 tile_set = ExtResource("2_o57db")
 
-[node name="Decor" type="Node2D" parent="." unique_id=1316560439]
+[node name="Decor" type="Node2D" parent="." unique_id=1855257831]
 
-[node name="Rayon_2_3" type="Polygon2D" parent="Decor" unique_id=1750502468]
+[node name="Rayon_2_3" type="Polygon2D" parent="Decor" unique_id=640803253]
 color = Color(0.46, 0.32, 0.22, 1)
 polygon = PackedVector2Array(196, 292, 284, 292, 284, 380, 196, 380)
 
-[node name="Rayon_5_3" type="Polygon2D" parent="Decor" unique_id=1811125192]
+[node name="Rayon_5_3" type="Polygon2D" parent="Decor" unique_id=383505561]
 color = Color(0.46, 0.32, 0.22, 1)
 polygon = PackedVector2Array(484, 292, 572, 292, 572, 380, 484, 380)
 
-[node name="Rayon_6_3" type="Polygon2D" parent="Decor" unique_id=1703474078]
+[node name="Rayon_6_3" type="Polygon2D" parent="Decor" unique_id=1786084167]
 color = Color(0.46, 0.32, 0.22, 1)
 polygon = PackedVector2Array(580, 292, 668, 292, 668, 380, 580, 380)
 
-[node name="Rayon_8_3" type="Polygon2D" parent="Decor" unique_id=884998164]
+[node name="Rayon_8_3" type="Polygon2D" parent="Decor" unique_id=1107877382]
 color = Color(0.46, 0.32, 0.22, 1)
 polygon = PackedVector2Array(772, 292, 860, 292, 860, 380, 772, 380)
 
-[node name="Rayon_9_3" type="Polygon2D" parent="Decor" unique_id=472117875]
+[node name="Rayon_9_3" type="Polygon2D" parent="Decor" unique_id=1830019818]
 color = Color(0.46, 0.32, 0.22, 1)
 polygon = PackedVector2Array(868, 292, 956, 292, 956, 380, 868, 380)
 
-[node name="Caisse_6_4" type="Polygon2D" parent="Decor" unique_id=806974943]
+[node name="Caisse_6_4" type="Polygon2D" parent="Decor" unique_id=1644633537]
 color = Color(0.62, 0.44, 0.28, 1)
 polygon = PackedVector2Array(576, 408, 672, 408, 672, 474, 576, 474)
 
-[node name="Caisse_7_4" type="Polygon2D" parent="Decor" unique_id=1571078347]
+[node name="Caisse_7_4" type="Polygon2D" parent="Decor" unique_id=1965631954]
 color = Color(0.62, 0.44, 0.28, 1)
 polygon = PackedVector2Array(672, 408, 768, 408, 768, 474, 672, 474)
 
-[node name="Caisse_8_4" type="Polygon2D" parent="Decor" unique_id=784992665]
+[node name="Caisse_8_4" type="Polygon2D" parent="Decor" unique_id=62953116]
 color = Color(0.62, 0.44, 0.28, 1)
 polygon = PackedVector2Array(768, 408, 864, 408, 864, 474, 768, 474)
 
-[node name="Presentoir_3_7" type="Polygon2D" parent="Decor" unique_id=1968289441]
+[node name="Presentoir_3_7" type="Polygon2D" parent="Decor" unique_id=1852866635]
 color = Color(0.7, 0.52, 0.3, 1)
 polygon = PackedVector2Array(298, 682, 374, 682, 374, 762, 298, 762)
 
-[node name="Presentoir_11_7" type="Polygon2D" parent="Decor" unique_id=53688409]
+[node name="Presentoir_11_7" type="Polygon2D" parent="Decor" unique_id=540081341]
 color = Color(0.7, 0.52, 0.3, 1)
 polygon = PackedVector2Array(1066, 682, 1142, 682, 1142, 762, 1066, 762)
 
-[node name="Plante_13_8" type="Polygon2D" parent="Decor" unique_id=731638986]
+[node name="Plante_13_8" type="Polygon2D" parent="Decor" unique_id=408224206]
 color = Color(0.26, 0.46, 0.24, 1)
 polygon = PackedVector2Array(1268, 778, 1324, 778, 1324, 858, 1268, 858)
 
-[node name="EscalierVersB1f" type="Node2D" parent="Decor" unique_id=2070841623]
+[node name="EscalierVersB1f" type="Node2D" parent="Decor" unique_id=1746740539]
 position = Vector2(1200, 384)
 script = ExtResource("3_l3dsk")
 if_flags = Array[StringName]([&"johto_hideout_found"])
 
-[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1308438409]
+[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=904916868]
 color = Color(0.3, 0.29, 0.28, 1)
 polygon = PackedVector2Array(-40, -88, 40, -88, 40, -8, -40, -8)
 
-[node name="@Polygon2D@67" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=2087652310]
+[node name="@Polygon2D@67" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=814582881]
 color = Color(0.75, 0.75, 0.7125, 1)
 polygon = PackedVector2Array(-36, -84, 36, -84, 36, -72, -36, -72)
 
-[node name="@Polygon2D@68" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1053693257]
+[node name="@Polygon2D@68" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1736566114]
 color = Color(0.65, 0.65, 0.6175, 1)
 polygon = PackedVector2Array(-36, -64, 36, -64, 36, -52, -36, -52)
 
-[node name="@Polygon2D@69" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1387685589]
+[node name="@Polygon2D@69" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=48057441]
 color = Color(0.55, 0.55, 0.5225, 1)
 polygon = PackedVector2Array(-36, -44, 36, -44, 36, -32, -36, -32)
 
-[node name="@Polygon2D@70" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=455357196]
+[node name="@Polygon2D@70" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=755181907]
 color = Color(0.45, 0.45, 0.4275, 1)
 polygon = PackedVector2Array(-36, -24, 36, -24, 36, -12, -36, -12)
 
-[node name="Entities" type="Node2D" parent="." unique_id=1786653155]
+[node name="Entities" type="Node2D" parent="." unique_id=1105903078]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="EtagereCachee" type="Node2D" parent="Entities" unique_id=1208907838]
+[node name="EtagereCachee" type="Node2D" parent="Entities" unique_id=1482628979]
 position = Vector2(1200, 384)
 script = ExtResource("3_l3dsk")
 unless_flags = Array[StringName]([&"johto_hideout_found"])
 blocking_cells = Array[Vector2i]([Vector2i(12, 3)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=65396650]
+[node name="Dessin" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=450265533]
 color = Color(0.46, 0.32, 0.22, 1)
 polygon = PackedVector2Array(-46, -120, 46, -120, 46, -4, -46, -4)
 
-[node name="@Polygon2D@64" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=1483071449]
+[node name="@Polygon2D@64" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=1779480055]
 color = Color(0.3, 0.2, 0.14, 1)
 polygon = PackedVector2Array(-40, -110, 40, -110, 40, -104, -40, -104)
 
-[node name="@Polygon2D@65" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=458374354]
+[node name="@Polygon2D@65" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=1930816367]
 color = Color(0.3, 0.2, 0.14, 1)
 polygon = PackedVector2Array(-40, -76, 40, -76, 40, -70, -40, -70)
 
-[node name="@Polygon2D@66" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=678621185]
+[node name="@Polygon2D@66" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=727909505]
 color = Color(0.3, 0.2, 0.14, 1)
 polygon = PackedVector2Array(-40, -42, 40, -42, 40, -36, -40, -36)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=648859038]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=527039647]
 z_index = 10
 tile_set = ExtResource("2_o57db")
 
-[node name="Warps" type="Node2D" parent="." unique_id=1328615686]
+[node name="Warps" type="Node2D" parent="." unique_id=962823303]
 
-[node name="Sortie_0" type="Marker2D" parent="Warps" unique_id=1133904103]
+[node name="Sortie_0" type="Marker2D" parent="Warps" unique_id=385464041]
 position = Vector2(624, 864)
 script = ExtResource("4_c7h5l")
 trigger = 1
@@ -139,7 +139,7 @@ target_map = &"mahogany_town"
 target_spawn = &"retour_boutique"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Sortie_1" type="Marker2D" parent="Warps" unique_id=107534474]
+[node name="Sortie_1" type="Marker2D" parent="Warps" unique_id=2019989704]
 position = Vector2(720, 864)
 script = ExtResource("4_c7h5l")
 trigger = 1
@@ -148,7 +148,7 @@ target_map = &"mahogany_town"
 target_spawn = &"retour_boutique"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Sortie_2" type="Marker2D" parent="Warps" unique_id=102436768]
+[node name="Sortie_2" type="Marker2D" parent="Warps" unique_id=1607512107]
 position = Vector2(816, 864)
 script = ExtResource("4_c7h5l")
 trigger = 1
@@ -157,7 +157,7 @@ target_map = &"mahogany_town"
 target_spawn = &"retour_boutique"
 arrival_facing = Vector2i(0, 1)
 
-[node name="VersB1f" type="Marker2D" parent="Warps" unique_id=1907211686]
+[node name="VersB1f" type="Marker2D" parent="Warps" unique_id=1396883664]
 position = Vector2(1200, 384)
 script = ExtResource("4_c7h5l")
 target_map = &"mahogany_hideout_b1f"
@@ -165,30 +165,30 @@ target_spawn = &"from_shop"
 arrival_facing = Vector2i(0, 1)
 if_flags = Array[StringName]([&"johto_hideout_found"])
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1996197308]
+[node name="Interactables" type="Node2D" parent="." unique_id=291323923]
 
-[node name="Etagere" type="Marker2D" parent="Interactables" unique_id=736896239]
+[node name="Etagere" type="Marker2D" parent="Interactables" unique_id=717575394]
 position = Vector2(1200, 384)
 script = ExtResource("5_smf8t")
 dialogue_id = &"mahogany_souvenir_shop_etagere"
 unless_flags = Array[StringName]([&"johto_hideout_found"])
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1241533275]
+[node name="Spawns" type="Node2D" parent="." unique_id=1378390723]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=182134405]
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1123290160]
 position = Vector2(720, 864)
 
-[node name="counter" type="Marker2D" parent="Spawns" unique_id=1991470476]
+[node name="counter" type="Marker2D" parent="Spawns" unique_id=1647466299]
 position = Vector2(720, 576)
 
-[node name="from_hideout" type="Marker2D" parent="Spawns" unique_id=1894433934]
+[node name="from_hideout" type="Marker2D" parent="Spawns" unique_id=1369197788]
 position = Vector2(1200, 480)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1591592231]
+[node name="Triggers" type="Node2D" parent="." unique_id=1166749914]
 
-[node name="SceneEscalier" type="Marker2D" parent="Triggers" unique_id=1158858560]
+[node name="SceneEscalier" type="Marker2D" parent="Triggers" unique_id=1509525278]
 position = Vector2(1200, 480)
 script = ExtResource("6_3gnfs")
 cutscene_id = &"souvenir_shop_stairs"
 
-[node name="NightLights" type="Node2D" parent="." unique_id=1756578852]
+[node name="NightLights" type="Node2D" parent="." unique_id=1769898253]

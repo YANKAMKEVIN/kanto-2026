@@ -75,8 +75,8 @@ const TOWER_KINDS: Dictionary = {
 	"U": "COBBLE", "E": "COBBLE",
 }
 const HIDEOUT_KINDS: Dictionary = {
-	"#": "CLIFF", ".": "COBBLE", "M": "CLIFF", "X": "CLIFF", "S": "CLIFF", "<": "SHALLOW",
-	">": "SHALLOW", "^": "SHALLOW", "v": "SHALLOW", "o": "COBBLE", "K": "COBBLE", "c": "CLIFF",
+	"#": "CLIFF", ".": "COBBLE", "M": "CLIFF", "X": "CLIFF", "S": "CLIFF", "<": "BOARDWALK",
+	">": "BOARDWALK", "^": "BOARDWALK", "v": "BOARDWALK", "o": "COBBLE", "K": "COBBLE", "c": "CLIFF",
 	"p": "CLIFF", "U": "COBBLE", "D": "COBBLE",
 }
 ## Boutique (InteriorTiles) : murs, sol, tapis de sortie ; le reste (meubles) bloqué.
@@ -288,6 +288,11 @@ func _add_positions(spec: Dictionary, plan: Object, root: Node2D,
 		var key := "%s/%s" % [map_id, id]
 		var unless := _flags(attrs.get("actif_sans", ""))
 		var if_flags := _flags(attrs.get("actif_avec", ""))
+		# Position « bloque » hors PNJ (cellules fermées, repères, décors) : cases occupées.
+		if entry["blocks"] and not ["dresseur", "pnj", "objet_visible", "pokemon"].has(entry["kind"]):
+			for cell: Vector2i in cells:
+				if not blocked.has(cell):
+					blocked.append(cell)
 		match entry["kind"]:
 			"spawn":
 				for i: int in cells.size():

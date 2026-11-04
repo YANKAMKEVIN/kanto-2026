@@ -7,289 +7,290 @@
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_2oinm"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="6_el1dp"]
 
-[node name="MahoganyHideoutB3f" type="Node2D" unique_id=403484985]
+[node name="MahoganyHideoutB3f" type="Node2D" unique_id=364066115]
 script = ExtResource("1_l6c7f")
 map_id = &"mahogany_hideout_b3f"
 display_name = "Repaire Rocket"
 region = "B3F"
 size = Vector2i(24, 18)
+blocked_cells = Array[Vector2i]([Vector2i(17, 6), Vector2i(13, 5), Vector2i(23, 12)])
 light_profile = &"hideout"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1674272940]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=580405074]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAABAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAABAAcAAAALAAAAAAAAAAcAAAAMAAAAAAAAAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAAcAAAAPAAAAAAABAAcAAAAQAAAAAAAAAAcAAAARAAAAAAABAAcAAAASAAAAAAABAAcAAAATAAAAAAAAAAcAAAAUAAAAAAAAAAcAAAAVAAAAAAABAAcAAAAWAAAAAAAAAAcAAAAXAAAAAAABAAcAAAAAAAEAAAAAAAcAAAABAAEAAAABAAMAAAACAAEAAAABAAMAAAADAAEAAAAAAAMAAAAEAAEAAAACAAMAAAAFAAEAAAABAAMAAAAGAAEAAAAAAAMAAAAHAAEAAAACAAMAAAAIAAEAAAAAAAMAAAAJAAEAAAAAAAcAAAAKAAEAAAAAAAMAAAALAAEAAAACAAMAAAAMAAEAAAABAAMAAAANAAEAAAABAAMAAAAOAAEAAAABAAMAAAAPAAEAAAACAAMAAAAQAAEAAAABAAMAAAARAAEAAAACAAMAAAASAAEAAAAAAAMAAAATAAEAAAAAAAMAAAAUAAEAAAACAAMAAAAVAAEAAAACAAMAAAAWAAEAAAAAAAMAAAAXAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAAAAAMAAAACAAIAAAACAAMAAAADAAIAAAACAAMAAAAEAAIAAAAAAAMAAAAFAAIAAAACAAMAAAAGAAIAAAAAAAMAAAAHAAIAAAACAAMAAAAIAAIAAAABAAMAAAAJAAIAAAABAAcAAAAKAAIAAAAAAAMAAAALAAIAAAAAAAcAAAAMAAIAAAAAAAcAAAANAAIAAAACAAMAAAAOAAIAAAACAAMAAAAPAAIAAAABAAMAAAAQAAIAAAABAAMAAAARAAIAAAACAAMAAAASAAIAAAACAAMAAAATAAIAAAAAAAMAAAAUAAIAAAACAAMAAAAVAAIAAAACAAMAAAAWAAIAAAACAAMAAAAXAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAABAAMAAAACAAMAAAACAAMAAAADAAMAAAAAAAMAAAAEAAMAAAACAAMAAAAFAAMAAAABAAMAAAAGAAMAAAAAAAMAAAAHAAMAAAABAAMAAAAIAAMAAAAAAAMAAAAJAAMAAAAAAAcAAAAKAAMAAAAAAAMAAAALAAMAAAACAAMAAAAMAAMAAAACAAMAAAANAAMAAAACAAMAAAAOAAMAAAACAAMAAAAPAAMAAAABAAcAAAAQAAMAAAABAAcAAAARAAMAAAABAAcAAAASAAMAAAABAAcAAAATAAMAAAAAAAcAAAAUAAMAAAABAAcAAAAVAAMAAAAAAAMAAAAWAAMAAAACAAMAAAAXAAMAAAABAAcAAAAAAAQAAAABAAcAAAABAAQAAAABAAMAAAACAAQAAAABAAMAAAADAAQAAAACAAMAAAAEAAQAAAABAAMAAAAFAAQAAAABAAMAAAAGAAQAAAAAAAMAAAAHAAQAAAACAAMAAAAIAAQAAAACAAMAAAAJAAQAAAABAAcAAAAKAAQAAAABAAMAAAALAAQAAAACAAMAAAAMAAQAAAACAAMAAAANAAQAAAABAAMAAAAOAAQAAAABAAMAAAAPAAQAAAAAAAcAAAAQAAQAAAABAAcAAAARAAQAAAABAAcAAAASAAQAAAAAAAcAAAATAAQAAAABAAcAAAAUAAQAAAABAAcAAAAVAAQAAAAAAAMAAAAWAAQAAAAAAAMAAAAXAAQAAAAAAAcAAAAAAAUAAAAAAAcAAAABAAUAAAACAAMAAAACAAUAAAABAAMAAAADAAUAAAACAAMAAAAEAAUAAAACAAMAAAAFAAUAAAABAAMAAAAGAAUAAAABAAMAAAAHAAUAAAABAAMAAAAIAAUAAAABAAMAAAAJAAUAAAAAAAcAAAAKAAUAAAABAAMAAAALAAUAAAACAAMAAAAMAAUAAAAAAAMAAAANAAUAAAABAAcAAAAOAAUAAAABAAMAAAAPAAUAAAABAAcAAAAQAAUAAAAAAAcAAAARAAUAAAABAAcAAAASAAUAAAABAAcAAAATAAUAAAAAAAcAAAAUAAUAAAAAAAcAAAAVAAUAAAAAAAMAAAAWAAUAAAAAAAMAAAAXAAUAAAABAAcAAAAAAAYAAAABAAcAAAABAAYAAAAAAAcAAAACAAYAAAABAAcAAAADAAYAAAACAAMAAAAEAAYAAAACAAMAAAAFAAYAAAABAAMAAAAGAAYAAAACAAMAAAAHAAYAAAAAAAMAAAAIAAYAAAABAAMAAAAJAAYAAAAAAAcAAAAKAAYAAAACAAMAAAALAAYAAAAAAAMAAAAMAAYAAAACAAMAAAANAAYAAAAAAAMAAAAOAAYAAAABAAMAAAAPAAYAAAAAAAcAAAAQAAYAAAAAAAcAAAARAAYAAAABAAcAAAASAAYAAAABAAcAAAATAAYAAAAAAAcAAAAUAAYAAAAAAAcAAAAVAAYAAAACAAMAAAAWAAYAAAAAAAMAAAAXAAYAAAABAAcAAAAAAAcAAAABAAcAAAABAAcAAAACAAMAAAACAAcAAAACAAMAAAADAAcAAAABAAMAAAAEAAcAAAACAAMAAAAFAAcAAAAAAAMAAAAGAAcAAAACAAMAAAAHAAcAAAABAAMAAAAIAAcAAAACAAMAAAAJAAcAAAABAAcAAAAKAAcAAAAAAAMAAAALAAcAAAABAAMAAAAMAAcAAAACAAMAAAANAAcAAAACAAMAAAAOAAcAAAABAAMAAAAPAAcAAAABAAMAAAAQAAcAAAABAAMAAAARAAcAAAACAAMAAAASAAcAAAABAAMAAAATAAcAAAAAAAMAAAAUAAcAAAABAAMAAAAVAAcAAAACAAMAAAAWAAcAAAAAAAMAAAAXAAcAAAABAAcAAAAAAAgAAAAAAAcAAAABAAgAAAAAAAMAAAACAAgAAAAAAAMAAAADAAgAAAAAAAMAAAAEAAgAAAACAAMAAAAFAAgAAAAAAAMAAAAGAAgAAAAAAAMAAAAHAAgAAAAAAAMAAAAIAAgAAAABAAMAAAAJAAgAAAACAAMAAAAKAAgAAAABAAMAAAALAAgAAAAAAAMAAAAMAAgAAAAAAAMAAAANAAgAAAACAAMAAAAOAAgAAAACAAMAAAAPAAgAAAABAAMAAAAQAAgAAAABAAcAAAARAAgAAAABAAcAAAASAAgAAAAAAAcAAAATAAgAAAABAAMAAAAUAAgAAAABAAMAAAAVAAgAAAAAAAMAAAAWAAgAAAAAAAMAAAAXAAgAAAABAAcAAAAAAAkAAAABAAcAAAABAAkAAAACAAMAAAACAAkAAAACAAMAAAADAAkAAAABAAMAAAAEAAkAAAACAAMAAAAFAAkAAAAAAAMAAAAGAAkAAAABAAMAAAAHAAkAAAABAAMAAAAIAAkAAAABAAMAAAAJAAkAAAAAAAMAAAAKAAkAAAAAAAMAAAALAAkAAAACAAMAAAAMAAkAAAACAAMAAAANAAkAAAABAAMAAAAOAAkAAAACAAMAAAAPAAkAAAACAAMAAAAQAAkAAAAAAAcAAAARAAkAAAAAAAMAAAASAAkAAAAAAAcAAAATAAkAAAACAAMAAAAUAAkAAAAAAAMAAAAVAAkAAAABAAMAAAAWAAkAAAAAAAMAAAAXAAkAAAABAAcAAAAAAAoAAAAAAAcAAAABAAoAAAABAAMAAAACAAoAAAACAAMAAAADAAoAAAACAAMAAAAEAAoAAAACAAMAAAAFAAoAAAAAAAMAAAAGAAoAAAACAAMAAAAHAAoAAAACAAMAAAAIAAoAAAACAAMAAAAJAAoAAAABAAcAAAAKAAoAAAAAAAMAAAALAAoAAAAAAAMAAAAMAAoAAAAAAAMAAAANAAoAAAABAAMAAAAOAAoAAAACAAMAAAAPAAoAAAABAAMAAAAQAAoAAAAAAAcAAAARAAoAAAABAAMAAAASAAoAAAAAAAcAAAATAAoAAAACAAMAAAAUAAoAAAABAAMAAAAVAAoAAAABAAMAAAAWAAoAAAAAAAMAAAAXAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAACAAMAAAACAAsAAAACAAMAAAADAAsAAAABAAMAAAAEAAsAAAACAAMAAAAFAAsAAAABAAMAAAAGAAsAAAAAAAMAAAAHAAsAAAACAAMAAAAIAAsAAAACAAMAAAAJAAsAAAAAAAcAAAAKAAsAAAAAAAMAAAALAAsAAAAAAAMAAAAMAAsAAAACAAMAAAANAAsAAAACAAMAAAAOAAsAAAAAAAMAAAAPAAsAAAAAAAMAAAAQAAsAAAAAAAMAAAARAAsAAAACAAMAAAASAAsAAAABAAMAAAATAAsAAAAAAAMAAAAUAAsAAAAAAAMAAAAVAAsAAAABAAMAAAAWAAsAAAAAAAMAAAAXAAsAAAAAAAcAAAAAAAwAAAABAAcAAAABAAwAAAAAAAMAAAACAAwAAAACAAMAAAADAAwAAAABAAMAAAAEAAwAAAABAAMAAAAFAAwAAAABAAMAAAAGAAwAAAABAAMAAAAHAAwAAAAAAAMAAAAIAAwAAAABAAMAAAAJAAwAAAABAAcAAAAKAAwAAAABAAMAAAALAAwAAAABAAMAAAAMAAwAAAACAAMAAAANAAwAAAABAAMAAAAOAAwAAAACAAMAAAAPAAwAAAAAAAMAAAAQAAwAAAAAAAMAAAARAAwAAAAAAAMAAAASAAwAAAACAAMAAAATAAwAAAAAAAMAAAAUAAwAAAAAAAMAAAAVAAwAAAABAAMAAAAWAAwAAAAAAAMAAAAXAAwAAAAAAAcAAAAAAA0AAAAAAAcAAAABAA0AAAABAAMAAAACAA0AAAABAAMAAAADAA0AAAAAAAMAAAAEAA0AAAACAAMAAAAFAA0AAAABAAMAAAAGAA0AAAAAAAMAAAAHAA0AAAACAAMAAAAIAA0AAAAAAAMAAAAJAA0AAAABAAcAAAAKAA0AAAACAAMAAAALAA0AAAAAAAMAAAAMAA0AAAACAAMAAAANAA0AAAACAAMAAAAOAA0AAAABAAMAAAAPAA0AAAAAAAMAAAAQAA0AAAACAAMAAAARAA0AAAAAAAMAAAASAA0AAAACAAMAAAATAA0AAAAAAAMAAAAUAA0AAAACAAMAAAAVAA0AAAACAAMAAAAWAA0AAAAAAAMAAAAXAA0AAAABAAcAAAAAAA4AAAAAAAcAAAABAA4AAAAAAAMAAAACAA4AAAABAAMAAAADAA4AAAAAAAMAAAAEAA4AAAAAAAMAAAAFAA4AAAACAAMAAAAGAA4AAAABAAcAAAAHAA4AAAAAAAcAAAAIAA4AAAAAAAMAAAAJAA4AAAABAAcAAAAKAA4AAAACAAMAAAALAA4AAAACAAMAAAAMAA4AAAAAAAMAAAANAA4AAAABAAMAAAAOAA4AAAAAAAMAAAAPAA4AAAAAAAMAAAAQAA4AAAAAAAMAAAARAA4AAAACAAMAAAASAA4AAAAAAAMAAAATAA4AAAABAAMAAAAUAA4AAAABAAMAAAAVAA4AAAAAAAcAAAAWAA4AAAAAAAcAAAAXAA4AAAABAAcAAAAAAA8AAAAAAAcAAAABAA8AAAACAAMAAAACAA8AAAACAAMAAAADAA8AAAACAAMAAAAEAA8AAAACAAMAAAAFAA8AAAABAAMAAAAGAA8AAAABAAMAAAAHAA8AAAAAAAMAAAAIAA8AAAACAAMAAAAJAA8AAAABAAcAAAAKAA8AAAABAAMAAAALAA8AAAABAAMAAAAMAA8AAAAAAAMAAAANAA8AAAABAAMAAAAOAA8AAAABAAMAAAAPAA8AAAABAAMAAAAQAA8AAAACAAMAAAARAA8AAAAAAAMAAAASAA8AAAABAAMAAAATAA8AAAACAAMAAAAUAA8AAAAAAAMAAAAVAA8AAAAAAAMAAAAWAA8AAAAAAAMAAAAXAA8AAAAAAAcAAAAAABAAAAAAAAcAAAABABAAAAAAAAMAAAACABAAAAACAAMAAAADABAAAAABAAMAAAAEABAAAAAAAAMAAAAFABAAAAABAAMAAAAGABAAAAAAAAMAAAAHABAAAAACAAMAAAAIABAAAAACAAMAAAAJABAAAAAAAAcAAAAKABAAAAACAAMAAAALABAAAAABAAMAAAAMABAAAAACAAMAAAANABAAAAABAAMAAAAOABAAAAAAAAMAAAAPABAAAAACAAMAAAAQABAAAAAAAAMAAAARABAAAAABAAMAAAASABAAAAAAAAMAAAATABAAAAAAAAMAAAAUABAAAAACAAMAAAAVABAAAAABAAMAAAAWABAAAAAAAAMAAAAXABAAAAABAAcAAAAAABEAAAABAAcAAAABABEAAAAAAAcAAAACABEAAAABAAcAAAADABEAAAABAAcAAAAEABEAAAABAAcAAAAFABEAAAABAAcAAAAGABEAAAABAAcAAAAHABEAAAAAAAcAAAAIABEAAAABAAcAAAAJABEAAAAAAAcAAAAKABEAAAABAAcAAAALABEAAAABAAcAAAAMABEAAAAAAAcAAAANABEAAAABAAcAAAAOABEAAAABAAcAAAAPABEAAAABAAcAAAAQABEAAAAAAAcAAAARABEAAAABAAcAAAASABEAAAAAAAcAAAATABEAAAAAAAcAAAAUABEAAAABAAcAAAAVABEAAAAAAAcAAAAWABEAAAAAAAcAAAAXABEAAAAAAAcAAAA=")
 tile_set = ExtResource("2_h40pr")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1677093125]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=209836258]
 tile_set = ExtResource("2_h40pr")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=20688440]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1826014452]
 tile_set = ExtResource("2_h40pr")
 
-[node name="Decor" type="Node2D" parent="." unique_id=358736212]
+[node name="Decor" type="Node2D" parent="." unique_id=1579956988]
 
-[node name="Console_11_2" type="Polygon2D" parent="Decor" unique_id=236402932]
+[node name="Console_11_2" type="Polygon2D" parent="Decor" unique_id=599216384]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1060, 200, 1148, 200, 1148, 284, 1060, 284)
 
-[node name="Console_12_2" type="Polygon2D" parent="Decor" unique_id=985384262]
+[node name="Console_12_2" type="Polygon2D" parent="Decor" unique_id=1656455729]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1156, 200, 1244, 200, 1244, 284, 1156, 284)
 
-[node name="Console_15_3" type="Polygon2D" parent="Decor" unique_id=1990772816]
+[node name="Console_15_3" type="Polygon2D" parent="Decor" unique_id=614893034]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1444, 296, 1532, 296, 1532, 380, 1444, 380)
 
-[node name="Console_16_3" type="Polygon2D" parent="Decor" unique_id=2050890885]
+[node name="Console_16_3" type="Polygon2D" parent="Decor" unique_id=1450272403]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1540, 296, 1628, 296, 1628, 380, 1540, 380)
 
-[node name="Console_17_3" type="Polygon2D" parent="Decor" unique_id=1912677182]
+[node name="Console_17_3" type="Polygon2D" parent="Decor" unique_id=1481010361]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1636, 296, 1724, 296, 1724, 380, 1636, 380)
 
-[node name="Console_18_3" type="Polygon2D" parent="Decor" unique_id=243710976]
+[node name="Console_18_3" type="Polygon2D" parent="Decor" unique_id=284018015]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1732, 296, 1820, 296, 1820, 380, 1732, 380)
 
-[node name="Console_19_3" type="Polygon2D" parent="Decor" unique_id=191908901]
+[node name="Console_19_3" type="Polygon2D" parent="Decor" unique_id=1994074626]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1828, 296, 1916, 296, 1916, 380, 1828, 380)
 
-[node name="Console_20_3" type="Polygon2D" parent="Decor" unique_id=2101103228]
+[node name="Console_20_3" type="Polygon2D" parent="Decor" unique_id=1254701049]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1924, 296, 2012, 296, 2012, 380, 1924, 380)
 
-[node name="Console_15_4" type="Polygon2D" parent="Decor" unique_id=990552823]
+[node name="Console_15_4" type="Polygon2D" parent="Decor" unique_id=582821359]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1444, 392, 1532, 392, 1532, 476, 1444, 476)
 
-[node name="Console_16_4" type="Polygon2D" parent="Decor" unique_id=471594436]
+[node name="Console_16_4" type="Polygon2D" parent="Decor" unique_id=2115562445]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1540, 392, 1628, 392, 1628, 476, 1540, 476)
 
-[node name="Console_17_4" type="Polygon2D" parent="Decor" unique_id=2042392129]
+[node name="Console_17_4" type="Polygon2D" parent="Decor" unique_id=1122709760]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1636, 392, 1724, 392, 1724, 476, 1636, 476)
 
-[node name="Console_18_4" type="Polygon2D" parent="Decor" unique_id=2033480011]
+[node name="Console_18_4" type="Polygon2D" parent="Decor" unique_id=931488718]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1732, 392, 1820, 392, 1820, 476, 1732, 476)
 
-[node name="Console_19_4" type="Polygon2D" parent="Decor" unique_id=812159157]
+[node name="Console_19_4" type="Polygon2D" parent="Decor" unique_id=2070756513]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1828, 392, 1916, 392, 1916, 476, 1828, 476)
 
-[node name="Console_20_4" type="Polygon2D" parent="Decor" unique_id=230601629]
+[node name="Console_20_4" type="Polygon2D" parent="Decor" unique_id=1745408677]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1924, 392, 2012, 392, 2012, 476, 1924, 476)
 
-[node name="Console_15_5" type="Polygon2D" parent="Decor" unique_id=1080530196]
+[node name="Console_15_5" type="Polygon2D" parent="Decor" unique_id=2070275405]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1444, 488, 1532, 488, 1532, 572, 1444, 572)
 
-[node name="Console_16_5" type="Polygon2D" parent="Decor" unique_id=1709052040]
+[node name="Console_16_5" type="Polygon2D" parent="Decor" unique_id=163941269]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1540, 488, 1628, 488, 1628, 572, 1540, 572)
 
-[node name="Console_17_5" type="Polygon2D" parent="Decor" unique_id=1959780448]
+[node name="Console_17_5" type="Polygon2D" parent="Decor" unique_id=1034366820]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1636, 488, 1724, 488, 1724, 572, 1636, 572)
 
-[node name="Console_18_5" type="Polygon2D" parent="Decor" unique_id=722212244]
+[node name="Console_18_5" type="Polygon2D" parent="Decor" unique_id=1774769945]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1732, 488, 1820, 488, 1820, 572, 1732, 572)
 
-[node name="Console_19_5" type="Polygon2D" parent="Decor" unique_id=1006174294]
+[node name="Console_19_5" type="Polygon2D" parent="Decor" unique_id=444649619]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1828, 488, 1916, 488, 1916, 572, 1828, 572)
 
-[node name="Console_20_5" type="Polygon2D" parent="Decor" unique_id=962836381]
+[node name="Console_20_5" type="Polygon2D" parent="Decor" unique_id=1943671517]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1924, 488, 2012, 488, 2012, 572, 1924, 572)
 
-[node name="Console_1_6" type="Polygon2D" parent="Decor" unique_id=1549615598]
+[node name="Console_1_6" type="Polygon2D" parent="Decor" unique_id=1618083597]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(100, 584, 188, 584, 188, 668, 100, 668)
 
-[node name="Console_2_6" type="Polygon2D" parent="Decor" unique_id=875910457]
+[node name="Console_2_6" type="Polygon2D" parent="Decor" unique_id=1896462976]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(196, 584, 284, 584, 284, 668, 196, 668)
 
-[node name="Console_15_6" type="Polygon2D" parent="Decor" unique_id=665180315]
+[node name="Console_15_6" type="Polygon2D" parent="Decor" unique_id=471521264]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1444, 584, 1532, 584, 1532, 668, 1444, 668)
 
-[node name="Console_16_6" type="Polygon2D" parent="Decor" unique_id=439440518]
+[node name="Console_16_6" type="Polygon2D" parent="Decor" unique_id=1257980752]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1540, 584, 1628, 584, 1628, 668, 1540, 668)
 
-[node name="Console_17_6" type="Polygon2D" parent="Decor" unique_id=573112095]
+[node name="Console_17_6" type="Polygon2D" parent="Decor" unique_id=316831341]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1636, 584, 1724, 584, 1724, 668, 1636, 668)
 
-[node name="Console_18_6" type="Polygon2D" parent="Decor" unique_id=1726062019]
+[node name="Console_18_6" type="Polygon2D" parent="Decor" unique_id=53693339]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1732, 584, 1820, 584, 1820, 668, 1732, 668)
 
-[node name="Console_19_6" type="Polygon2D" parent="Decor" unique_id=512689924]
+[node name="Console_19_6" type="Polygon2D" parent="Decor" unique_id=1986921167]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1828, 584, 1916, 584, 1916, 668, 1828, 668)
 
-[node name="Console_20_6" type="Polygon2D" parent="Decor" unique_id=1751993748]
+[node name="Console_20_6" type="Polygon2D" parent="Decor" unique_id=290235118]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(1924, 584, 2012, 584, 2012, 668, 1924, 668)
 
-[node name="Console_21_14" type="Polygon2D" parent="Decor" unique_id=233718411]
+[node name="Console_21_14" type="Polygon2D" parent="Decor" unique_id=786263004]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(2020, 1352, 2108, 1352, 2108, 1436, 2020, 1436)
 
-[node name="Console_22_14" type="Polygon2D" parent="Decor" unique_id=1335500969]
+[node name="Console_22_14" type="Polygon2D" parent="Decor" unique_id=1360737565]
 color = Color(0.24, 0.3, 0.36, 1)
 polygon = PackedVector2Array(2116, 1352, 2204, 1352, 2204, 1436, 2116, 1436)
 
-[node name="Caisse_6_14" type="Polygon2D" parent="Decor" unique_id=3087876]
+[node name="Caisse_6_14" type="Polygon2D" parent="Decor" unique_id=456065319]
 color = Color(0.5, 0.38, 0.24, 1)
 polygon = PackedVector2Array(584, 1356, 664, 1356, 664, 1436, 584, 1436)
 
-[node name="Caisse_7_14" type="Polygon2D" parent="Decor" unique_id=760978018]
+[node name="Caisse_7_14" type="Polygon2D" parent="Decor" unique_id=1479362243]
 color = Color(0.5, 0.38, 0.24, 1)
 polygon = PackedVector2Array(680, 1356, 760, 1356, 760, 1436, 680, 1436)
 
-[node name="Pupitre_13_5" type="Polygon2D" parent="Decor" unique_id=1796476966]
+[node name="Pupitre_13_5" type="Polygon2D" parent="Decor" unique_id=59629888]
 color = Color(0.2, 0.22, 0.26, 1)
 polygon = PackedVector2Array(1254, 500, 1338, 500, 1338, 570, 1254, 570)
 
-[node name="Barreau_16_8" type="Polygon2D" parent="Decor" unique_id=416786150]
+[node name="Barreau_16_8" type="Polygon2D" parent="Decor" unique_id=146321642]
 color = Color(0.4, 0.55, 0.85, 1)
 polygon = PackedVector2Array(1566, 768, 1602, 768, 1602, 864, 1566, 864)
 
-[node name="Barreau_17_8" type="Polygon2D" parent="Decor" unique_id=1636462569]
+[node name="Barreau_17_8" type="Polygon2D" parent="Decor" unique_id=579056491]
 color = Color(0.4, 0.55, 0.85, 1)
 polygon = PackedVector2Array(1662, 768, 1698, 768, 1698, 864, 1662, 864)
 
-[node name="Barreau_18_8" type="Polygon2D" parent="Decor" unique_id=1422658475]
+[node name="Barreau_18_8" type="Polygon2D" parent="Decor" unique_id=1143925918]
 color = Color(0.4, 0.55, 0.85, 1)
 polygon = PackedVector2Array(1758, 768, 1794, 768, 1794, 864, 1758, 864)
 
-[node name="Barreau_16_9" type="Polygon2D" parent="Decor" unique_id=280200605]
+[node name="Barreau_16_9" type="Polygon2D" parent="Decor" unique_id=2136270178]
 color = Color(0.4, 0.55, 0.85, 1)
 polygon = PackedVector2Array(1566, 864, 1602, 864, 1602, 960, 1566, 960)
 
-[node name="Barreau_18_9" type="Polygon2D" parent="Decor" unique_id=264624681]
+[node name="Barreau_18_9" type="Polygon2D" parent="Decor" unique_id=1143874925]
 color = Color(0.4, 0.55, 0.85, 1)
 polygon = PackedVector2Array(1758, 864, 1794, 864, 1794, 960, 1758, 960)
 
-[node name="Barreau_16_10" type="Polygon2D" parent="Decor" unique_id=1743249122]
+[node name="Barreau_16_10" type="Polygon2D" parent="Decor" unique_id=1887644098]
 color = Color(0.4, 0.55, 0.85, 1)
 polygon = PackedVector2Array(1566, 960, 1602, 960, 1602, 1056, 1566, 1056)
 
-[node name="Barreau_18_10" type="Polygon2D" parent="Decor" unique_id=1945532436]
+[node name="Barreau_18_10" type="Polygon2D" parent="Decor" unique_id=282033189]
 color = Color(0.4, 0.55, 0.85, 1)
 polygon = PackedVector2Array(1758, 960, 1794, 960, 1794, 1056, 1758, 1056)
 
-[node name="EscalierVersB2f" type="Node2D" parent="Decor" unique_id=508007929]
+[node name="EscalierVersB2f" type="Node2D" parent="Decor" unique_id=1867467425]
 position = Vector2(336, 192)
 script = ExtResource("3_c32hx")
 
-[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=1858440957]
+[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=628178486]
 color = Color(0.3, 0.29, 0.28, 1)
 polygon = PackedVector2Array(-40, -88, 40, -88, 40, -8, -40, -8)
 
-[node name="@Polygon2D@107" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=1016959824]
+[node name="@Polygon2D@107" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=13551308]
 color = Color(0.45, 0.45, 0.4275, 1)
 polygon = PackedVector2Array(-36, -84, 36, -84, 36, -72, -36, -72)
 
-[node name="@Polygon2D@108" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=1696445576]
+[node name="@Polygon2D@108" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=1299215320]
 color = Color(0.55, 0.55, 0.5225, 1)
 polygon = PackedVector2Array(-36, -64, 36, -64, 36, -52, -36, -52)
 
-[node name="@Polygon2D@109" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=370137391]
+[node name="@Polygon2D@109" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=1934170420]
 color = Color(0.65, 0.65, 0.6175, 1)
 polygon = PackedVector2Array(-36, -44, 36, -44, 36, -32, -36, -32)
 
-[node name="@Polygon2D@110" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=332806603]
+[node name="@Polygon2D@110" type="Polygon2D" parent="Decor/EscalierVersB2f" unique_id=1066087244]
 color = Color(0.75, 0.75, 0.7125, 1)
 polygon = PackedVector2Array(-36, -24, 36, -24, 36, -12, -36, -12)
 
-[node name="CageHalo" type="Node2D" parent="Decor" unique_id=1932978689]
+[node name="CageHalo" type="Node2D" parent="Decor" unique_id=966542731]
 position = Vector2(1584, 1056)
 script = ExtResource("3_c32hx")
 unless_flags = Array[StringName]([&"johto_generator_off"])
 
-[node name="Dessin" type="Polygon2D" parent="Decor/CageHalo" unique_id=523327549]
+[node name="Dessin" type="Polygon2D" parent="Decor/CageHalo" unique_id=1728268008]
 color = Color(0.45, 0.7, 1, 0.25)
 polygon = PackedVector2Array(-48, -284, 240, -284, 240, -4, -48, -4)
 
-[node name="PassageSecret" type="Polygon2D" parent="Decor" unique_id=1899075201]
+[node name="PassageSecret" type="Polygon2D" parent="Decor" unique_id=1607329428]
 color = Color(0.12, 0.12, 0.14, 1)
 polygon = PackedVector2Array(2216, 1160, 2296, 1160, 2296, 1248, 2216, 1248)
 
-[node name="Entities" type="Node2D" parent="." unique_id=218069611]
+[node name="Entities" type="Node2D" parent="." unique_id=1930475007]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="DessinArretGenerateur" type="Node2D" parent="Entities" unique_id=846334414]
+[node name="DessinArretGenerateur" type="Node2D" parent="Entities" unique_id=644285057]
 position = Vector2(1296, 576)
 
-[node name="Dessin" type="Polygon2D" parent="Entities/DessinArretGenerateur" unique_id=1789045303]
+[node name="Dessin" type="Polygon2D" parent="Entities/DessinArretGenerateur" unique_id=778014884]
 color = Color(0.25, 0.27, 0.3, 1)
 polygon = PackedVector2Array(-30, -70, 30, -70, 30, -6, -30, -6)
 
-[node name="@Polygon2D@111" type="Polygon2D" parent="Entities/DessinArretGenerateur" unique_id=495819600]
+[node name="@Polygon2D@111" type="Polygon2D" parent="Entities/DessinArretGenerateur" unique_id=1540222301]
 color = Color(0.75, 0.2, 0.18, 1)
 polygon = PackedVector2Array(-8, -96, 8, -96, 8, -56, -8, -56)
 
-[node name="CageAOndes" type="Node2D" parent="Entities" unique_id=1546430736]
+[node name="CageAOndes" type="Node2D" parent="Entities" unique_id=1197513661]
 position = Vector2(1680, 1056)
 script = ExtResource("3_c32hx")
 unless_flags = Array[StringName]([&"johto_generator_off"])
 blocking_cells = Array[Vector2i]([Vector2i(17, 10)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/CageAOndes" unique_id=1447664037]
+[node name="Dessin" type="Polygon2D" parent="Entities/CageAOndes" unique_id=2117179224]
 color = Color(0.55, 0.75, 1, 1)
 polygon = PackedVector2Array(-44, -110, -36, -110, -36, -4, -44, -4)
 
-[node name="@Polygon2D@112" type="Polygon2D" parent="Entities/CageAOndes" unique_id=54718181]
+[node name="@Polygon2D@112" type="Polygon2D" parent="Entities/CageAOndes" unique_id=2144052726]
 color = Color(0.55, 0.75, 1, 1)
 polygon = PackedVector2Array(-24, -110, -16, -110, -16, -4, -24, -4)
 
-[node name="@Polygon2D@113" type="Polygon2D" parent="Entities/CageAOndes" unique_id=733571892]
+[node name="@Polygon2D@113" type="Polygon2D" parent="Entities/CageAOndes" unique_id=1626781230]
 color = Color(0.55, 0.75, 1, 1)
 polygon = PackedVector2Array(-4, -110, 4, -110, 4, -4, -4, -4)
 
-[node name="@Polygon2D@114" type="Polygon2D" parent="Entities/CageAOndes" unique_id=1601548372]
+[node name="@Polygon2D@114" type="Polygon2D" parent="Entities/CageAOndes" unique_id=1169569372]
 color = Color(0.55, 0.75, 1, 1)
 polygon = PackedVector2Array(16, -110, 24, -110, 24, -4, 16, -4)
 
-[node name="@Polygon2D@115" type="Polygon2D" parent="Entities/CageAOndes" unique_id=106368861]
+[node name="@Polygon2D@115" type="Polygon2D" parent="Entities/CageAOndes" unique_id=1133607013]
 color = Color(0.55, 0.75, 1, 1)
 polygon = PackedVector2Array(36, -110, 44, -110, 44, -4, 36, -4)
 
-[node name="@Polygon2D@116" type="Polygon2D" parent="Entities/CageAOndes" unique_id=792267032]
+[node name="@Polygon2D@116" type="Polygon2D" parent="Entities/CageAOndes" unique_id=1558945753]
 color = Color(0.4, 0.6, 0.95, 1)
 polygon = PackedVector2Array(-48, -116, 48, -116, 48, -106, -48, -106)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=2040713280]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=2103245328]
 z_index = 10
 tile_set = ExtResource("2_h40pr")
 
-[node name="Warps" type="Node2D" parent="." unique_id=975514364]
+[node name="Warps" type="Node2D" parent="." unique_id=1654656491]
 
-[node name="VersB2f" type="Marker2D" parent="Warps" unique_id=567670032]
+[node name="VersB2f" type="Marker2D" parent="Warps" unique_id=1648903604]
 position = Vector2(336, 192)
 script = ExtResource("4_7qb40")
 target_map = &"mahogany_hideout_b2f"
 target_spawn = &"from_b3f"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1578452959]
+[node name="Interactables" type="Node2D" parent="." unique_id=1855349409]
 
-[node name="Generateur" type="Marker2D" parent="Interactables" unique_id=1514904562]
+[node name="Generateur" type="Marker2D" parent="Interactables" unique_id=1124593999]
 position = Vector2(1680, 672)
 script = ExtResource("5_2oinm")
 dialogue_id = &"mahogany_hideout_b3f_generateur"
 
-[node name="ArretGenerateur" type="Marker2D" parent="Interactables" unique_id=439290227]
+[node name="ArretGenerateur" type="Marker2D" parent="Interactables" unique_id=1738605020]
 position = Vector2(1296, 576)
 script = ExtResource("5_2oinm")
 dialogue_id = &"mahogany_hideout_b3f_arret_generateur"
@@ -297,17 +298,17 @@ facing = Vector2i(0, -1)
 unless_flags = Array[StringName]([&"johto_generator_off"])
 if_flags = Array[StringName]([&"johto_brace_defeated_2"])
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1853941545]
+[node name="Spawns" type="Node2D" parent="." unique_id=769899715]
 
-[node name="from_b2f" type="Marker2D" parent="Spawns" unique_id=396086795]
+[node name="from_b2f" type="Marker2D" parent="Spawns" unique_id=1311462966]
 position = Vector2(336, 288)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=605711149]
+[node name="Triggers" type="Node2D" parent="." unique_id=1959118926]
 
-[node name="SceneBrace" type="Marker2D" parent="Triggers" unique_id=1280263507]
+[node name="SceneBrace" type="Marker2D" parent="Triggers" unique_id=627629698]
 position = Vector2(912, 960)
 script = ExtResource("6_el1dp")
 cutscene_id = &"hideout_brace"
 size = Vector2i(1, 2)
 
-[node name="NightLights" type="Node2D" parent="." unique_id=2139731824]
+[node name="NightLights" type="Node2D" parent="." unique_id=258002661]

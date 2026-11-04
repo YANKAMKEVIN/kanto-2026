@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_i7kum"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="5_ptv22"]
 
-[node name="BurnedTowerB1f" type="Node2D" unique_id=1843103272]
+[node name="BurnedTowerB1f" type="Node2D" unique_id=1193579438]
 script = ExtResource("1_h65wa")
 map_id = &"burned_tower_b1f"
 display_name = "Tour Cendrée"
@@ -15,119 +15,119 @@ size = Vector2i(20, 16)
 light_profile = &"cave_b1f"
 calm_cells = Array[Vector2i]([Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(18, 1), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(15, 2), Vector2i(17, 2), Vector2i(18, 2), Vector2i(1, 3), Vector2i(2, 3), Vector2i(3, 3), Vector2i(4, 3), Vector2i(5, 3), Vector2i(6, 3), Vector2i(7, 3), Vector2i(8, 3), Vector2i(9, 3), Vector2i(10, 3), Vector2i(11, 3), Vector2i(12, 3), Vector2i(13, 3), Vector2i(14, 3), Vector2i(15, 3), Vector2i(16, 3), Vector2i(17, 3), Vector2i(18, 3), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4), Vector2i(4, 4), Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(10, 4), Vector2i(11, 4), Vector2i(12, 4), Vector2i(13, 4), Vector2i(14, 4), Vector2i(15, 4), Vector2i(16, 4), Vector2i(17, 4), Vector2i(18, 4), Vector2i(1, 5), Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5), Vector2i(7, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(14, 5), Vector2i(15, 5), Vector2i(16, 5), Vector2i(17, 5), Vector2i(18, 5), Vector2i(1, 6), Vector2i(2, 6), Vector2i(3, 6), Vector2i(4, 6), Vector2i(5, 6), Vector2i(6, 6), Vector2i(7, 6), Vector2i(8, 6), Vector2i(9, 6), Vector2i(10, 6), Vector2i(11, 6), Vector2i(12, 6), Vector2i(13, 6), Vector2i(14, 6), Vector2i(15, 6), Vector2i(16, 6), Vector2i(17, 6), Vector2i(18, 6), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(4, 7), Vector2i(5, 7), Vector2i(6, 7), Vector2i(7, 7), Vector2i(8, 7), Vector2i(9, 7), Vector2i(10, 7), Vector2i(11, 7), Vector2i(12, 7), Vector2i(13, 7), Vector2i(14, 7), Vector2i(15, 7), Vector2i(16, 7), Vector2i(17, 7), Vector2i(18, 7), Vector2i(1, 8), Vector2i(2, 8), Vector2i(3, 8), Vector2i(4, 8), Vector2i(5, 8), Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(10, 8), Vector2i(11, 8), Vector2i(12, 8), Vector2i(13, 8), Vector2i(14, 8), Vector2i(15, 8), Vector2i(16, 8), Vector2i(17, 8), Vector2i(18, 8), Vector2i(1, 9), Vector2i(2, 9), Vector2i(3, 9), Vector2i(4, 9), Vector2i(5, 9), Vector2i(6, 9), Vector2i(7, 9), Vector2i(8, 9), Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9), Vector2i(12, 9), Vector2i(13, 9), Vector2i(14, 9), Vector2i(15, 9), Vector2i(16, 9), Vector2i(17, 9), Vector2i(18, 9), Vector2i(1, 10), Vector2i(2, 10), Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10), Vector2i(6, 10), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(12, 10), Vector2i(13, 10), Vector2i(14, 10), Vector2i(15, 10), Vector2i(16, 10), Vector2i(17, 10), Vector2i(18, 10), Vector2i(2, 11), Vector2i(5, 11), Vector2i(7, 11), Vector2i(8, 11), Vector2i(9, 11), Vector2i(10, 11), Vector2i(11, 11), Vector2i(12, 11), Vector2i(14, 11), Vector2i(15, 11), Vector2i(16, 11), Vector2i(17, 11), Vector2i(18, 11), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(12, 12), Vector2i(13, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(18, 12), Vector2i(1, 13), Vector2i(2, 13), Vector2i(3, 13), Vector2i(5, 13), Vector2i(6, 13), Vector2i(7, 13), Vector2i(8, 13), Vector2i(9, 13), Vector2i(10, 13), Vector2i(11, 13), Vector2i(12, 13), Vector2i(13, 13), Vector2i(14, 13), Vector2i(15, 13), Vector2i(16, 13), Vector2i(17, 13), Vector2i(18, 13), Vector2i(1, 14), Vector2i(2, 14), Vector2i(3, 14), Vector2i(5, 14), Vector2i(6, 14), Vector2i(7, 14), Vector2i(8, 14), Vector2i(9, 14), Vector2i(10, 14), Vector2i(11, 14), Vector2i(12, 14), Vector2i(13, 14), Vector2i(14, 14), Vector2i(15, 14), Vector2i(16, 14), Vector2i(17, 14), Vector2i(18, 14)])
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=337685676]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=969551901]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAABAAcAAAADAAAAAAABAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAABAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAABAAcAAAALAAAAAAABAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAABAAcAAAASAAAAAAABAAcAAAATAAAAAAABAAcAAAAAAAEAAAABAAcAAAABAAEAAAACAAMAAAACAAEAAAABAAMAAAADAAEAAAACAAMAAAAEAAEAAAABAAMAAAAFAAEAAAACAAMAAAAGAAEAAAABAAMAAAAHAAEAAAACAAMAAAAIAAEAAAACAAMAAAAJAAEAAAAAAAMAAAAKAAEAAAACAAMAAAALAAEAAAABAAMAAAAMAAEAAAABAAMAAAANAAEAAAABAAMAAAAOAAEAAAACAAMAAAAPAAEAAAAAAAMAAAAQAAEAAAACAAMAAAARAAEAAAABAAMAAAASAAEAAAAAAAMAAAATAAEAAAABAAcAAAAAAAIAAAABAAcAAAABAAIAAAABAAMAAAACAAIAAAACAAMAAAADAAIAAAAAAAMAAAAEAAIAAAACAAMAAAAFAAIAAAABAAMAAAAGAAIAAAABAAMAAAAHAAIAAAABAAMAAAAIAAIAAAACAAMAAAAJAAIAAAABAAMAAAAKAAIAAAABAAMAAAALAAIAAAAAAAMAAAAMAAIAAAABAAMAAAANAAIAAAAAAAMAAAAOAAIAAAAAAAMAAAAPAAIAAAABAAMAAAAQAAIAAAAAAAcAAAARAAIAAAACAAMAAAASAAIAAAAAAAMAAAATAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAACAAMAAAACAAMAAAAAAAMAAAADAAMAAAACAAMAAAAEAAMAAAACAAMAAAAFAAMAAAAAAAMAAAAGAAMAAAABAAMAAAAHAAMAAAACAAMAAAAIAAMAAAABAAMAAAAJAAMAAAAAAAMAAAAKAAMAAAABAAMAAAALAAMAAAACAAMAAAAMAAMAAAAAAAMAAAANAAMAAAAAAAMAAAAOAAMAAAACAAMAAAAPAAMAAAABAAMAAAAQAAMAAAABAAMAAAARAAMAAAAAAAMAAAASAAMAAAAAAAMAAAATAAMAAAAAAAcAAAAAAAQAAAAAAAcAAAABAAQAAAACAAMAAAACAAQAAAACAAMAAAADAAQAAAACAAMAAAAEAAQAAAAAAAMAAAAFAAQAAAABAAMAAAAGAAQAAAABAAMAAAAHAAQAAAACAAMAAAAIAAQAAAACAAMAAAAJAAQAAAAAAAMAAAAKAAQAAAABAAMAAAALAAQAAAAAAAMAAAAMAAQAAAACAAMAAAANAAQAAAABAAMAAAAOAAQAAAACAAMAAAAPAAQAAAABAAMAAAAQAAQAAAABAAMAAAARAAQAAAABAAMAAAASAAQAAAACAAMAAAATAAQAAAABAAcAAAAAAAUAAAAAAAcAAAABAAUAAAAAAAMAAAACAAUAAAAAAAMAAAADAAUAAAACAAMAAAAEAAUAAAAAAAMAAAAFAAUAAAABAAMAAAAGAAUAAAAAAAcAAAAHAAUAAAAAAAMAAAAIAAUAAAACAAMAAAAJAAUAAAABAAMAAAAKAAUAAAAAAAMAAAALAAUAAAACAAMAAAAMAAUAAAABAAMAAAANAAUAAAAAAAcAAAAOAAUAAAABAAMAAAAPAAUAAAACAAMAAAAQAAUAAAABAAMAAAARAAUAAAACAAMAAAASAAUAAAACAAMAAAATAAUAAAAAAAcAAAAAAAYAAAAAAAcAAAABAAYAAAABAAMAAAACAAYAAAABAAMAAAADAAYAAAABAAMAAAAEAAYAAAACAAMAAAAFAAYAAAABAAMAAAAGAAYAAAABAAMAAAAHAAYAAAAAAAMAAAAIAAYAAAAAAAMAAAAJAAYAAAABAAMAAAAKAAYAAAACAAMAAAALAAYAAAABAAMAAAAMAAYAAAACAAMAAAANAAYAAAACAAMAAAAOAAYAAAACAAMAAAAPAAYAAAAAAAMAAAAQAAYAAAAAAAMAAAARAAYAAAAAAAMAAAASAAYAAAACAAMAAAATAAYAAAAAAAcAAAAAAAcAAAAAAAcAAAABAAcAAAAAAAMAAAACAAcAAAAAAAMAAAADAAcAAAABAAMAAAAEAAcAAAACAAMAAAAFAAcAAAABAAMAAAAGAAcAAAACAAMAAAAHAAcAAAABAAMAAAAIAAcAAAACAAMAAAAJAAcAAAABAAMAAAAKAAcAAAABAAMAAAALAAcAAAACAAMAAAAMAAcAAAABAAMAAAANAAcAAAAAAAMAAAAOAAcAAAAAAAMAAAAPAAcAAAACAAMAAAAQAAcAAAACAAMAAAARAAcAAAABAAMAAAASAAcAAAABAAMAAAATAAcAAAABAAcAAAAAAAgAAAABAAcAAAABAAgAAAABAAMAAAACAAgAAAACAAMAAAADAAgAAAAAAAMAAAAEAAgAAAAAAAMAAAAFAAgAAAACAAMAAAAGAAgAAAACAAMAAAAHAAgAAAAAAAMAAAAIAAgAAAACAAMAAAAJAAgAAAACAAMAAAAKAAgAAAAAAAMAAAALAAgAAAABAAMAAAAMAAgAAAABAAMAAAANAAgAAAACAAMAAAAOAAgAAAACAAMAAAAPAAgAAAABAAMAAAAQAAgAAAACAAMAAAARAAgAAAAAAAMAAAASAAgAAAAAAAMAAAATAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAABAAMAAAACAAkAAAACAAMAAAADAAkAAAACAAMAAAAEAAkAAAAAAAMAAAAFAAkAAAABAAMAAAAGAAkAAAAAAAMAAAAHAAkAAAABAAMAAAAIAAkAAAABAAMAAAAJAAkAAAABAAMAAAAKAAkAAAAAAAMAAAALAAkAAAAAAAMAAAAMAAkAAAACAAMAAAANAAkAAAAAAAMAAAAOAAkAAAABAAMAAAAPAAkAAAACAAMAAAAQAAkAAAABAAMAAAARAAkAAAACAAMAAAASAAkAAAAAAAMAAAATAAkAAAAAAAcAAAAAAAoAAAAAAAcAAAABAAoAAAABAAMAAAACAAoAAAABAAMAAAADAAoAAAACAAMAAAAEAAoAAAABAAMAAAAFAAoAAAAAAAMAAAAGAAoAAAABAAMAAAAHAAoAAAABAAMAAAAIAAoAAAACAAMAAAAJAAoAAAAAAAMAAAAKAAoAAAACAAMAAAALAAoAAAACAAMAAAAMAAoAAAABAAMAAAANAAoAAAAAAAMAAAAOAAoAAAACAAMAAAAPAAoAAAABAAMAAAAQAAoAAAABAAMAAAARAAoAAAACAAMAAAASAAoAAAABAAMAAAATAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAAAAAcAAAACAAsAAAAAAAMAAAADAAsAAAAAAAcAAAAEAAsAAAABAAcAAAAFAAsAAAAAAAMAAAAGAAsAAAABAAcAAAAHAAsAAAACAAMAAAAIAAsAAAACAAMAAAAJAAsAAAABAAMAAAAKAAsAAAACAAMAAAALAAsAAAABAAMAAAAMAAsAAAAAAAMAAAANAAsAAAAAAAcAAAAOAAsAAAABAAMAAAAPAAsAAAAAAAMAAAAQAAsAAAACAAMAAAARAAsAAAAAAAMAAAASAAsAAAACAAMAAAATAAsAAAAAAAcAAAAAAAwAAAABAAcAAAABAAwAAAAAAAMAAAACAAwAAAABAAMAAAADAAwAAAAAAAMAAAAEAAwAAAABAAcAAAAFAAwAAAABAAMAAAAGAAwAAAABAAMAAAAHAAwAAAACAAMAAAAIAAwAAAAAAAMAAAAJAAwAAAACAAMAAAAKAAwAAAAAAAMAAAALAAwAAAACAAMAAAAMAAwAAAABAAMAAAANAAwAAAACAAMAAAAOAAwAAAAAAAMAAAAPAAwAAAAAAAMAAAAQAAwAAAACAAMAAAARAAwAAAACAAMAAAASAAwAAAABAAMAAAATAAwAAAAAAAcAAAAAAA0AAAABAAcAAAABAA0AAAACAAMAAAACAA0AAAABAAMAAAADAA0AAAACAAMAAAAEAA0AAAAAAAcAAAAFAA0AAAACAAMAAAAGAA0AAAAAAAMAAAAHAA0AAAABAAMAAAAIAA0AAAABAAMAAAAJAA0AAAABAAMAAAAKAA0AAAAAAAMAAAALAA0AAAAAAAMAAAAMAA0AAAAAAAMAAAANAA0AAAACAAMAAAAOAA0AAAAAAAMAAAAPAA0AAAABAAMAAAAQAA0AAAABAAMAAAARAA0AAAABAAMAAAASAA0AAAABAAMAAAATAA0AAAABAAcAAAAAAA4AAAAAAAcAAAABAA4AAAACAAMAAAACAA4AAAACAAMAAAADAA4AAAABAAMAAAAEAA4AAAABAAcAAAAFAA4AAAABAAMAAAAGAA4AAAACAAMAAAAHAA4AAAABAAMAAAAIAA4AAAACAAMAAAAJAA4AAAAAAAMAAAAKAA4AAAACAAMAAAALAA4AAAACAAMAAAAMAA4AAAABAAMAAAANAA4AAAAAAAMAAAAOAA4AAAAAAAMAAAAPAA4AAAAAAAMAAAAQAA4AAAABAAMAAAARAA4AAAACAAMAAAASAA4AAAAAAAMAAAATAA4AAAAAAAcAAAAAAA8AAAAAAAcAAAABAA8AAAABAAcAAAACAA8AAAAAAAcAAAADAA8AAAAAAAcAAAAEAA8AAAAAAAcAAAAFAA8AAAABAAcAAAAGAA8AAAAAAAcAAAAHAA8AAAABAAcAAAAIAA8AAAABAAcAAAAJAA8AAAAAAAcAAAAKAA8AAAAAAAcAAAALAA8AAAAAAAcAAAAMAA8AAAAAAAcAAAANAA8AAAAAAAcAAAAOAA8AAAABAAcAAAAPAA8AAAABAAcAAAAQAA8AAAAAAAcAAAARAA8AAAABAAcAAAASAA8AAAABAAcAAAATAA8AAAAAAAcAAAA=")
 tile_set = ExtResource("2_haihk")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=711391489]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=2078086905]
 tile_set = ExtResource("2_haihk")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=2066591620]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=362257351]
 tile_set = ExtResource("2_haihk")
 
-[node name="Decor" type="Node2D" parent="." unique_id=214898303]
+[node name="Decor" type="Node2D" parent="." unique_id=1394270814]
 
-[node name="Poutre_16_2" type="Polygon2D" parent="Decor" unique_id=1510419049]
+[node name="Poutre_16_2" type="Polygon2D" parent="Decor" unique_id=2121320453]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(1542, 222, 1626, 222, 1626, 262, 1542, 262)
 
-[node name="Poutre_6_5" type="Polygon2D" parent="Decor" unique_id=1190711616]
+[node name="Poutre_6_5" type="Polygon2D" parent="Decor" unique_id=934595354]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(582, 510, 666, 510, 666, 550, 582, 550)
 
-[node name="Poutre_13_5" type="Polygon2D" parent="Decor" unique_id=60797453]
+[node name="Poutre_13_5" type="Polygon2D" parent="Decor" unique_id=1826659250]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(1254, 510, 1338, 510, 1338, 550, 1254, 550)
 
-[node name="Poutre_1_11" type="Polygon2D" parent="Decor" unique_id=674271374]
+[node name="Poutre_1_11" type="Polygon2D" parent="Decor" unique_id=1645383352]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(102, 1086, 186, 1086, 186, 1126, 102, 1126)
 
-[node name="Poutre_3_11" type="Polygon2D" parent="Decor" unique_id=2108905686]
+[node name="Poutre_3_11" type="Polygon2D" parent="Decor" unique_id=1179954837]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(294, 1086, 378, 1086, 378, 1126, 294, 1126)
 
-[node name="Poutre_4_11" type="Polygon2D" parent="Decor" unique_id=558477048]
+[node name="Poutre_4_11" type="Polygon2D" parent="Decor" unique_id=695418188]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(390, 1086, 474, 1086, 474, 1126, 390, 1126)
 
-[node name="Poutre_6_11" type="Polygon2D" parent="Decor" unique_id=918380694]
+[node name="Poutre_6_11" type="Polygon2D" parent="Decor" unique_id=1219581712]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(582, 1086, 666, 1086, 666, 1126, 582, 1126)
 
-[node name="Poutre_13_11" type="Polygon2D" parent="Decor" unique_id=961710267]
+[node name="Poutre_13_11" type="Polygon2D" parent="Decor" unique_id=1259106107]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(1254, 1086, 1338, 1086, 1338, 1126, 1254, 1126)
 
-[node name="Poutre_4_12" type="Polygon2D" parent="Decor" unique_id=345306533]
+[node name="Poutre_4_12" type="Polygon2D" parent="Decor" unique_id=63781817]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(390, 1182, 474, 1182, 474, 1222, 390, 1222)
 
-[node name="Poutre_4_13" type="Polygon2D" parent="Decor" unique_id=983301119]
+[node name="Poutre_4_13" type="Polygon2D" parent="Decor" unique_id=2105186504]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(390, 1278, 474, 1278, 474, 1318, 390, 1318)
 
-[node name="Poutre_4_14" type="Polygon2D" parent="Decor" unique_id=1142929503]
+[node name="Poutre_4_14" type="Polygon2D" parent="Decor" unique_id=2086639592]
 color = Color(0.16, 0.1, 0.07, 1)
 polygon = PackedVector2Array(390, 1374, 474, 1374, 474, 1414, 390, 1414)
 
-[node name="EscalierVers1f" type="Node2D" parent="Decor" unique_id=669184324]
+[node name="EscalierVers1f" type="Node2D" parent="Decor" unique_id=1529670502]
 position = Vector2(336, 288)
 script = ExtResource("3_r71mk")
 
-[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=1061674603]
+[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=886480342]
 color = Color(0.3, 0.29, 0.28, 1)
 polygon = PackedVector2Array(-40, -88, 40, -88, 40, -8, -40, -8)
 
-[node name="@Polygon2D@57" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=1476960301]
+[node name="@Polygon2D@57" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=388485621]
 color = Color(0.45, 0.45, 0.4275, 1)
 polygon = PackedVector2Array(-36, -84, 36, -84, 36, -72, -36, -72)
 
-[node name="@Polygon2D@58" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=241653948]
+[node name="@Polygon2D@58" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=1922637228]
 color = Color(0.55, 0.55, 0.5225, 1)
 polygon = PackedVector2Array(-36, -64, 36, -64, 36, -52, -36, -52)
 
-[node name="@Polygon2D@59" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=1701711334]
+[node name="@Polygon2D@59" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=2002025307]
 color = Color(0.65, 0.65, 0.6175, 1)
 polygon = PackedVector2Array(-36, -44, 36, -44, 36, -32, -36, -32)
 
-[node name="@Polygon2D@60" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=1782179318]
+[node name="@Polygon2D@60" type="Polygon2D" parent="Decor/EscalierVers1f" unique_id=1476041859]
 color = Color(0.75, 0.75, 0.7125, 1)
 polygon = PackedVector2Array(-36, -24, 36, -24, 36, -12, -36, -12)
 
-[node name="Entities" type="Node2D" parent="." unique_id=750868889]
+[node name="Entities" type="Node2D" parent="." unique_id=2028626334]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=226751609]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1468813557]
 z_index = 10
 tile_set = ExtResource("2_haihk")
 
-[node name="Warps" type="Node2D" parent="." unique_id=779601604]
+[node name="Warps" type="Node2D" parent="." unique_id=1960085713]
 
-[node name="Vers1f" type="Marker2D" parent="Warps" unique_id=299794828]
+[node name="Vers1f" type="Marker2D" parent="Warps" unique_id=712913919]
 position = Vector2(336, 288)
 script = ExtResource("4_i7kum")
 target_map = &"burned_tower_1f"
 target_spawn = &"from_b1f"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1612629117]
+[node name="Interactables" type="Node2D" parent="." unique_id=1993766684]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1190723725]
+[node name="Spawns" type="Node2D" parent="." unique_id=1142827095]
 
-[node name="from_1f" type="Marker2D" parent="Spawns" unique_id=940550158]
+[node name="from_1f" type="Marker2D" parent="Spawns" unique_id=1430592175]
 position = Vector2(336, 384)
 
-[node name="chute" type="Marker2D" parent="Spawns" unique_id=39034036]
+[node name="chute" type="Marker2D" parent="Spawns" unique_id=976761476]
 position = Vector2(1008, 384)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1784523658]
+[node name="Triggers" type="Node2D" parent="." unique_id=1177196406]
 
-[node name="SceneChiens" type="Marker2D" parent="Triggers" unique_id=1122333261]
+[node name="SceneChiens" type="Marker2D" parent="Triggers" unique_id=1066403408]
 position = Vector2(144, 672)
 script = ExtResource("5_ptv22")
 cutscene_id = &"burned_tower_beasts"
 size = Vector2i(18, 1)
 
-[node name="NightLights" type="Node2D" parent="." unique_id=1581344069]
+[node name="NightLights" type="Node2D" parent="." unique_id=707777533]
