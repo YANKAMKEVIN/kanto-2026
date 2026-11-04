@@ -1,0 +1,33 @@
+{
+	"lugia": {
+		"cell": [
+			12,
+			9
+		],
+		"facing": "down",
+		"sprite": "pokemon/lugia",
+		"dialogue": "whirl_lugia",
+		"verb": "observe",
+		"turn_to_player": false,
+		"if": [
+			"johto_lugia_emerged"
+		],
+		"unless": [
+			"johto_lugia_resolved"
+		]
+	},
+	"whirl_islands_b2f_item_1": {
+		"cell": [
+			13,
+			1
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "whirl_islands_b2f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_whirl_islands_b2f_item_1"
+		]
+	}
+}
