@@ -7,8 +7,8 @@
 > [`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md)). Écrit par Claude le 2026-11-04.
 >
 > **Statut : proposition, en attente de Kevin.** Rien n'est validé en dehors du §0 : l'histoire se
-> construit avec lui. Les vraies questions sont **JH-61 à JH-79** (§18), réponse possible par numéro
-> (« 61 ok, 66 : … »). Valeurs **[D]** = défauts. Grilles et vues peintes **après** validation ; aucun
+> construit avec lui. Les vraies questions sont **JH-61 à JH-79** (§18, JH-70 déjà tranché), réponse possible par
+> numéro (« 61 ok, 66 : … »). Valeurs **[D]** = défauts. Grilles et vues peintes **après** validation ; aucun
 > code avant. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
 > les plans de l'arc sont neufs ; seuls les noms de lieux viennent de la région.
 
@@ -25,7 +25,8 @@
 | Taille | Chaque lieu reste **petit** : une zone et un donjon court, à peu près comme le JOH4 |
 | Pistes approuvées | Le pouvoir n'agit que sur les Pokémon nés à Johto ; la Team Rocket veut aussi les pierres (course contre un admin) ; le doyen ou Orme raconte la légende à la fin de la Tour Radio |
 | Écartés | Rattrapage d'Exp ; équipe rendue en fin d'acte 2 ; toute baisse des niveaux de JOH6 à JOH9 |
-| Bonus d'Exp ×4 | Non décidé dans le message de lancement ; la note de décision du 2026-11-04 dit **pas de ×4** (« le joueur doit ressentir la puissance libérée par les pierres ») : à confirmer, JH-70 |
+| Exp pendant l'arc | **Pas de ×4**, pour que le joueur ressente la puissance libérée par les pierres. **Le ×1,5 de l'acte 1 reste** pendant l'arc et s'arrête au retour de l'équipe de Kanto |
+| Courbe | L'arc va d'≈ 30 à ≈ 40, boss d'Ébènelle vers 42–45 ; le saut du Réveil est **le moment fort du chapitre** |
 
 ## 1. Passe d'alignement : ce que le relevé a montré
 
@@ -39,7 +40,7 @@ Relevé fait sur `main` (e363db8f), la branche du JOH5 et les dossiers JOH-00 à
 | A-4 | Le Stockage est une **liste unique** sans boîtes, et il contient les Pokémon de Kanto. Le rouvrir pendant l'arc rendrait au joueur ses Pokémon de niveau 50+ avant l'heure | Le Stockage reste fermé pendant l'arc (JH-71) |
 | A-5 | Tant que le Stockage est fermé, **tous** les Pokémon de Johto du joueur sont dans l'équipe : au moment du pouvoir, « nés à Johto » = « l'équipe du moment ». Pas besoin de champ neuf | Simplifie JH-67 ; `met_map` existe de toute façon sur chaque Pokémon |
 | A-6 | Aucune CS ne peut être exigée : les CS sont gardées, mais rien ne garantit qu'un Pokémon de Johto les apprenne | Aucune Surf, Force ou Coupe obligatoire dans l'arc (d'où le bateau et le vol) |
-| A-7 | **La courbe « ≈ 30 à ≈ 50 » n'est pas atteignable sans bonus fort.** Calcul sur les 26 Dresseurs du §10 et 90 combats sauvages, Multi Exp active, courbe d'Exp moyenne : voir §9 | Fin d'arc réelle ≈ 39 à 45 ; JH-70 |
+| A-7 | Trois petits lieux ne donnent pas plus d'≈ 40 sans bonus fort : calcul sur les 26 Dresseurs du §10 et 90 combats sauvages, Multi Exp active, courbe d'Exp moyenne (§9) | Courbe calée sur ≈ 30 à ≈ 40 ; c'est le Réveil qui fait le saut (§13) |
 | A-8 | Les Sbires de Rosalia veulent **réveiller** les trois chiens (R-12, R-17) et le doyen refuse d'ouvrir. Brace dit plus tard « Je savais que tu les réveillerais pour moi » (C-7) | Tient parfaitement : Dante cherche les pierres pour réveiller les chiens sans le doyen, échoue, et se rabat sur le joueur. **Aucun texte du JOH6 ne change** (JH-63) |
 | A-9 | M-14 (Îles Tourbillon, JOH7 déjà dans `main`) compte « Deux erreurs de calcul » pour Cenere | Si elle est battue pendant l'arc, un mot à changer (§5.3) |
 | A-10 | Oliville n'a aujourd'hui « pas de bateau » (JOH-02 §1, §3) mais déjà deux pontons, et O-20 parle de **bateaux sans pavillon**, M-1 d'un **bateau noir** | Le bateau de Cenere à Irisia vient naturellement ; le passeur s'amarre au ponton sans repeindre la ville |
@@ -244,25 +245,26 @@ Déplacés (mêmes noms) : `johto_team_returned`, `johto_act2`.
 ## 9. Courbe de niveau
 
 **Exp calculée** : 26 Dresseurs du §10 (Exp de base réelles des espèces), 30 combats sauvages par lieu,
-Multi Exp active (le total est partagé, il ne grandit pas), départ au niveau 30.
+Multi Exp active (le total est partagé, il ne grandit pas), ×1,5 de l'acte 1 gardé (décision de Kevin,
+JH-70), départ au niveau 30. Le ×1,5 dure tant que `johto_act1` est levé, donc jusqu'au retour de
+l'équipe : **rien à coder**.
 
-| Bonus pendant l'arc | Équipe de 6 | Équipe de 4 | Équipe de 3 |
+| Fin de… | Équipe de 6 | Équipe de 4 | Équipe de 3 |
 |---|---|---|---|
-| Aucun | 36,6 | 39,2 | 41,5 |
-| **×1,5 gardé (recommandé, déjà en place)** | **39,2** | **42,5** | **45,4** |
-| ×4 | 48,7 | 54,3 | 58,9 |
+| JOHP1 Ruines | 32,4 | 33,5 | 34,5 |
+| JOHP2 Irisia | 35,1 | 37,2 | 39,1 |
+| **JOHP3 Antre** | **38,5** | **41,6** | **44,3** |
 
-Le niveau 50 n'est atteint qu'avec le ×4, ou avec le double de combats. **Proposition** : on garde le
-×1,5 de l'acte 1 et on règle les adversaires sur ce que le joueur a vraiment. Le saut vers 58 n'en est
-que plus fort (JH-70).
+Autrement dit, ≈ 40 pour une équipe jouée normalement, ≈ 44 pour un joueur qui ne fait monter que
+trois Pokémon. Les adversaires sont réglés sur ces valeurs, avec l'avance habituelle de 2 à 3 niveaux.
 
 | Moment | Équipe attendue | Sauvages | Dresseurs | Boss |
 |---|---|---|---|---|
 | Sortie de Tour Radio | 28–32 | — | — | — |
-| JOHP1 Ruines | 30–34 | 28–33 | 31–35 | Faux archéologue 36–37 |
-| JOHP2 Irisia | 33–38 | 33–38 | 36–40 | Chef de cale 41–42 |
-| JOHP3 Ébènelle, Antre | 38–45 | 38–43 | 41–44 | Ysolde 45–47 |
-| **Le réveil** | **55–62 (§13)** | | | Cenere 54–56 |
+| JOHP1 Ruines | 30–34 | 27–31 | 30–33 | Faux archéologue 34–35 |
+| JOHP2 Irisia | 33–37 | 30–34 | 33–36 | Chef de cale 37–38 |
+| JOHP3 Ébènelle, Antre | 36–40 | 33–37 | 36–40 | Ysolde 42–45 |
+| **Le Réveil** | **≈ 40 → 55–62 (§13)** | | | Cenere 54–56 |
 | **Retour de l'équipe** | Johto 55–62 + Kanto 55–65 | | | |
 | JOH6 (inchangé) | 58–64 | 40–50 | 46–60 | Brace 60–62 |
 
@@ -270,36 +272,36 @@ que plus fort (JH-70).
 
 | Où | Dresseur | Équipe | Évitable |
 |---|---|---|---|
-| Ruines, ext. | Chercheuse Agnès | Kadabra 32, Nosferalto 31 | oui |
-| Ruines, ext. | Intello Rémi | Magnéton 32, Porygon 31 | oui |
-| Ruines, ext. | Médium Solange | Spectrum 33, Kadabra 32 | oui |
-| Galerie | Sbire (V) | Smogo 33, Rattatac 33 | oui |
-| Galerie | Sbire (W) | Arbok 34 | oui |
-| Galerie | Sbire (X) | Malosse 34, Cornèbre 34 | **non** (couloir) |
-| Galerie | Scientifique Rocket | Magnéton 35, Électrode 35 | oui |
-| Chambre | **Faux archéologue** | Arbok 36, Rattatac 36, Démolosse 37 | **non** |
-| Le Goéland | Marin Yvon | Machopeur 36, Tentacruel 36 | oui |
-| Irisia, plage | Pêcheur Ronan | Hypocéan 37, Tentacruel 37 | oui |
-| Irisia | Karatéka Tanguy | Machopeur 38, Kicklee 38 | oui |
-| Irisia | Topdresseuse Maëlle | Staross 39, Poissirène 38 | oui |
-| Grotte 1F | Sbire (Y) | Nosferalto 38, Smogogo 38 | oui |
-| Grotte 1F | Sbire (Z) | Rattatac 39, Arbok 39 | **non** (passage) |
-| Grotte B1F | Sbire (AA) | Démolosse 40, Cornèbre 40 | oui |
-| Grotte B1F | Scientifique Rocket | Électrode 40, Magnéton 40, Porygon 39 | oui |
-| Grotte B1F | **Chef de cale** | Grotadmorv 41, Noarfang 41, Démolosse 42 | **non** |
-| Ébènelle | Apprentie Nolwenn | Draco 41, Hypocéan 40 | oui |
-| Ébènelle | Apprenti Malo | Draco 41, Léviator 41 | oui |
-| Ébènelle | Montagnard Hervé | Gravalanch 41, Onix 41 | oui |
-| Antre 1F | Sbire (AB) | Démolosse 42, Smogogo 42 | oui |
-| Antre 1F | Sbire (AC) | Rattatac 43, Noarfang 43 | oui |
-| Antre 1F | Gardienne de l'Eau | Hypocéan 42, Lamantine 42, Draco 43 | **non** |
-| Antre 1F | Gardien de la Pierre | Grolem 43, Onix 43, Draco 43 | **non** |
-| Antre 1F | Gardien du Ciel | Rapasdepic 44, Noarfang 44, Draco 44 | **non** |
-| Sanctuaire | **Ysolde** | Léviator 45, Draco 45, Draco 46, Hyporoi 46, Dracolosse 47 | **non** |
+| Ruines, ext. | Chercheuse Agnès | Kadabra 31, Nosferalto 30 | oui |
+| Ruines, ext. | Intello Rémi | Magnéton 31, Porygon 30 | oui |
+| Ruines, ext. | Médium Solange | Spectrum 31, Kadabra 31 | oui |
+| Galerie | Sbire (V) | Smogo 31, Rattatac 31 | oui |
+| Galerie | Sbire (W) | Arbok 32 | oui |
+| Galerie | Sbire (X) | Malosse 32, Cornèbre 32 | **non** (couloir) |
+| Galerie | Scientifique Rocket | Magnéton 33, Électrode 33 | oui |
+| Chambre | **Faux archéologue** | Arbok 34, Rattatac 34, Démolosse 35 | **non** |
+| Le Goéland | Marin Yvon | Machopeur 33, Tentacruel 33 | oui |
+| Irisia, plage | Pêcheur Ronan | Hypocéan 34, Tentacruel 34 | oui |
+| Irisia | Karatéka Tanguy | Machopeur 34, Kicklee 34 | oui |
+| Irisia | Topdresseuse Maëlle | Staross 35, Poissirène 34 | oui |
+| Grotte 1F | Sbire (Y) | Nosferalto 34, Smogogo 34 | oui |
+| Grotte 1F | Sbire (Z) | Rattatac 35, Arbok 35 | **non** (passage) |
+| Grotte B1F | Sbire (AA) | Démolosse 36, Cornèbre 36 | oui |
+| Grotte B1F | Scientifique Rocket | Électrode 36, Magnéton 36, Porygon 35 | oui |
+| Grotte B1F | **Chef de cale** | Grotadmorv 37, Noarfang 37, Démolosse 38 | **non** |
+| Ébènelle | Apprentie Nolwenn | Draco 36, Hypocéan 36 | oui |
+| Ébènelle | Apprenti Malo | Draco 37, Léviator 36 | oui |
+| Ébènelle | Montagnard Hervé | Gravalanch 37, Onix 37 | oui |
+| Antre 1F | Sbire (AB) | Démolosse 37, Smogogo 37 | oui |
+| Antre 1F | Sbire (AC) | Rattatac 38, Noarfang 38 | oui |
+| Antre 1F | Gardienne de l'Eau | Hypocéan 38, Lamantine 38, Draco 39 | **non** |
+| Antre 1F | Gardien de la Pierre | Grolem 39, Onix 39, Draco 39 | **non** |
+| Antre 1F | Gardien du Ciel | Rapasdepic 40, Noarfang 40, Draco 40 | **non** |
+| Sanctuaire | **Ysolde** | Léviator 42, Draco 42, Draco 43, Hyporoi 43, Dracolosse 45 | **non** |
 | Sanctuaire | **Cenere** (après le réveil) | Smogogo 54, Qulbutoké 54, Noarfang 55, Farfuret 56 | **non** |
 
 - **Ysolde** est un grand combat (35–60 % du premier coup, mémoire « Difficulté des combats ») ; c'est
-  le mur de l'arc. Dracolosse niveau 47 : exception d'histoire **[D]**, comme le Pokémon d'un maître.
+  le mur de l'arc. Dracolosse niveau 45 : exception d'histoire **[D]**, comme le Pokémon d'un maître.
 - **Cenere** après le réveil doit faire **sentir la puissance** : recherche ≈ 70–80 % du premier coup,
   sans dépasser les 80 % de la règle (JH-74).
 - 27 lignes : les 26 comptées au §9, plus Cenere. Le JOH4 compte 9 Dresseurs pour une taille comparable à **un** de ces lieux.
@@ -311,17 +313,17 @@ gras ; toutes déjà codées).
 
 | Carte | Moment | Espèces (poids) | Niveaux |
 |---|---|---|---|
-| Ruines, ext. | matin, jour | Abra 25, Kadabra 15, Psykokwak 20, Racaillou 20, **Fouinar** 20 | 28–33 |
-| Ruines, ext. | nuit | **Hoothoot** 30, **Noarfang** 15, Fantominus 25, Nosferapti 30 | 28–33 |
-| Galerie | toute la journée | Nosferapti 35, Nosferalto 15, Racaillou 25, Onix 10, Fantominus 15 | 29–33 |
-| Irisia, herbes | matin, jour | Roucoups 30, Rattatac 25, Ramoloss 25, Machoc 20 | 33–37 |
-| Irisia, herbes | nuit | **Noarfang** 35, Rattatac 30, Ramoloss 35 | 33–37 |
+| Ruines, ext. | matin, jour | Abra 25, Kadabra 15, Psykokwak 20, Racaillou 20, **Fouinar** 20 | 27–31 |
+| Ruines, ext. | nuit | **Hoothoot** 30, **Noarfang** 15, Fantominus 25, Nosferapti 30 | 27–31 |
+| Galerie | toute la journée | Nosferapti 35, Nosferalto 15, Racaillou 25, Onix 10, Fantominus 15 | 28–32 |
+| Irisia, herbes | matin, jour | Roucoups 30, Rattatac 25, Ramoloss 25, Machoc 20 | 30–34 |
+| Irisia, herbes | nuit | **Noarfang** 35, Rattatac 30, Ramoloss 35 | 30–34 |
 | Irisia, pêche | toute la journée | Canne : Magicarpe ; Super Canne : Krabby, Hypotrempe, Poissirène | comme Kanto |
-| Grotte 1F | toute la journée | Krabby 30, Kokiyas 25, Stari 20, Tentacool 25 | 34–38 |
-| Grotte B1F | toute la journée | Krabboss 25, Tentacruel 25, Lamantine 25, Stari 25 | 35–38 |
-| Ébènelle, herbes | matin, jour | Machopeur 25, Gravalanch 25, Rapasdepic 25, **Marill** 25 | 38–42 |
-| Ébènelle, herbes | nuit | **Noarfang** 35, Gravalanch 30, Nosferalto 35 | 38–42 |
-| Antre 1F | toute la journée | **Minidraco 45, Draco 10**, Magicarpe 25, Hypotrempe 20 | 38–43 |
+| Grotte 1F | toute la journée | Krabby 30, Kokiyas 25, Stari 20, Tentacool 25 | 31–34 |
+| Grotte B1F | toute la journée | Krabboss 25, Tentacruel 25, Lamantine 25, Stari 25 | 32–35 |
+| Ébènelle, herbes | matin, jour | Machopeur 25, Gravalanch 25, Rapasdepic 25, **Marill** 25 | 33–37 |
+| Ébènelle, herbes | nuit | **Noarfang** 35, Gravalanch 30, Nosferalto 35 | 33–37 |
+| Antre 1F | toute la journée | **Minidraco 45, Draco 10**, Magicarpe 25, Hypotrempe 20 | 34–38 |
 
 - Minidraco, Draco et Dracolosse : déjà dans les données de Kanto, avec leur art. Aucun art Pokémon à produire.
 - Pas de rencontre au Sanctuaire ni dans la Chambre **[D]**.
@@ -355,21 +357,43 @@ le Sac au réveil). La Pierre Marée n'est jamais dans le Sac du joueur si JH-62
 - **Effet** : niveau = cible, XP au minimum de ce niveau, statistiques recalculées, PV et PP pleins,
   statut retiré. Le lien (`bond`) ne bouge pas (règle « pas de raccourci », JOH-01 §8.1).
 
-### 13.2 Déroulé à l'écran
+### 13.2 Déroulé à l'écran : le moment fort du chapitre
 
-1. Les trois pierres se placent sur l'autel (P-29). Lumière montante, grondement. ≈ 5 s.
-2. Une à une, les Balls de l'équipe s'ouvrent ; chaque Pokémon apparaît en silhouette claire. ≈ 2 s chacun.
-3. **Une seule ligne** de système (P-31). Pas de texte par Pokémon.
-4. **Évolutions** : un flash par Pokémon concerné, l'une après l'autre, sans question ni annulation.
-   Une chaîne entière d'un coup (un Chenipan de niveau 6 passe directement à Papilusion). Espèces par
-   lien (Togetic, Nostenfer) : selon la règle habituelle, si le seuil est atteint.
-5. **Écran du Réveil** (un seul) : une ligne par Pokémon, « Niv. 44 → 58 », l'évolution, le nombre
+Toute la fin de l'arc prépare un seul effet : le joueur doit **sentir** ≈ 18 niveaux d'un coup. Trois
+temps : la faiblesse, le Réveil, la preuve.
+
+**Avant, la faiblesse.** Ysolde vient de pousser l'équipe à bout. Cenere pose la mallette et, pour
+prouver son calcul, fait frapper son Farfuret (niveau 56) : scène sans combat, le Pokémon de tête du
+joueur est projeté d'un seul coup (P-28b). Le joueur voit de quoi l'équipe de Johto est capable sans
+les pierres : de rien.
+
+**Le Réveil** (≈ 60 à 90 s, non passable la première fois **[D]**) :
+
+1. **Silence.** La musique s'arrête net. Les pierres tremblent, la Pierre Marée quitte la main de
+   Cenere, les trois se rejoignent sur l'autel (P-29). Seul un battement sourd, de plus en plus fort.
+2. **La lumière.** Elle sort de l'autel en trois couleurs (gris de la terre, bleu de la mer, blanc du
+   ciel), emplit le Sanctuaire ; l'eau du grand bassin se soulève ; Ysolde et Cenere reculent, le
+   Dracolosse d'Ysolde baisse la tête. Le thème du Réveil commence, à voix basse.
+3. **L'équipe, un par un.** Les Balls s'ouvrent seules. Chaque Pokémon, à commencer par celui qui a
+   été frappé, se relève dans la lumière, en grand, sur un plan à lui : son cri, et un **compteur de
+   niveau qui défile** (« 40… 47… 53… 58 »), sans texte. Si le Pokémon évolue, le compteur s'arrête au
+   palier, la silhouette change d'un coup, et il repart. Une chaîne entière se joue ainsi d'une traite
+   (un Chenipan de niveau 6 passe directement à Papilusion). ≈ 6 à 8 s par Pokémon, sans question ni
+   annulation ; espèces par lien (Togetic, Nostenfer) : selon la règle habituelle, si le seuil est atteint.
+4. **La ligne.** Le thème éclate ; les six sont debout, côte à côte devant l'autel, plan large.
+   **Une seule ligne** de système (P-31). Pas de texte par Pokémon.
+5. **L'écran du Réveil** (un seul) : une ligne par Pokémon, « Niv. 40 → 58 », l'évolution, le nombre
    d'attaques nouvelles. Toucher un Pokémon ouvre le panneau d'attaques existant (`MoveForgetPanel`).
    Attaques proposées : celles de l'apprentissage entre l'ancien et le nouveau niveau, **les trois
    plus récentes** **[D]**. Bouton « Continuer » à tout moment : rien n'est imposé.
-6. Une sauvegarde **en une seule écriture**, avec `johto_stones_awakened`.
+6. Une sauvegarde **en une seule écriture**, avec `johto_stones_awakened`. Les pierres s'éteignent.
 
-Durée visée : ≈ 40 s sans s'attarder sur les attaques.
+**La preuve.** Sans fondu vers une autre scène, sur le même thème : Cenere envoie Farfuret, le même
+(JH-74). Celui qui a été frappé peut lui rendre le coup. C'est le combat où le joueur essaie ses
+nouvelles forces, et le choix des 6 qui suit montre les deux équipes au même niveau, côte à côte.
+
+Le joueur qui recharge ou repasse la scène après une défaite contre Cenere ne revoit pas le Réveil :
+il reprend à Cenere (§15).
 
 ### 13.3 Œuf et cas particuliers
 
@@ -414,9 +438,9 @@ Mêmes systèmes que le JOH5 (dossier JOH-06 §7) :
 | Vues peintes | 10 vues générales (grilles d'abord), Route 36 retouchée |
 | Personnages neufs | Ysolde, Corentin, l'Aïeule, tenue du clan (Gardiens et apprentis, 2 modèles), Goulven si `marin` ne suffit pas |
 | Objets et décors | 3 icônes de pierres, Le Goéland, le bateau noir, l'autel, pompes |
-| Scènes | Dracolosse en vol (2 sens), Réveil (effet de lumière neuf, écran du Réveil neuf) |
+| Scènes | Dracolosse en vol (2 sens) ; **le Réveil**, à soigner comme une scène de fin de chapitre : effet de lumière en trois couleurs, plans par Pokémon avec compteur de niveau, plan large final, écran du Réveil |
 | Espèces, art Pokémon | **Aucune** (hors JH-77) |
-| Son | Pistes de HeartGold / SoulSilver pour les trois lieux, un thème pour le Réveil à choisir |
+| Son | Pistes de HeartGold / SoulSilver pour les trois lieux ; **un thème pour le Réveil**, à choisir avec Kevin (silence, montée, éclat, puis combat) |
 | Système neuf | Le Réveil seul : calcul de cible, évolutions groupées, écran. Le reste est du déjà vu |
 | Durée de jeu | ≈ 3 h à 4 h (1 h, 1 h, 1 h 30 à 2 h) ; l'acte 1 en fait ≈ 4 h |
 | Découpage | **JOHP0** (Réveil, seul, avec tests de sauvegarde **[D]**), puis JOHP1, JOHP2, JOHP3 ; déplacement du retour d'équipe avec JOHP3, validation seule (règle 1) |
@@ -464,10 +488,11 @@ textes de Dresseurs ordinaires et les panneaux viendront après les arbitrages.
 | P-26 | Ysolde, avant | Je suis Ysolde. / Tu n'as que de jeunes Pokémon, et une mission qui n'est pas la tienne. / Moi, je n'ai rien contre toi. Mes dragons non plus. C'est pour ça qu'ils ne te feront aucun cadeau. |
 | P-27 | Ysolde, défaite · la pierre | défaite : … Tu tiens debout. · la pierre : Le clan garde cette pierre depuis sept cents ans. / Elle est à toi. Porte-la à l'autel. · *(système)* {joueur} obtient la Pierre Souffle ! |
 | P-28 | Cenere, à l'autel | Merci d'avoir fait le voyage. / J'ai ma pierre. Tu as les deux autres. / Et moi, j'ai ceci. · *(système)* Cenere pose une mallette à ses pieds. / Tes six Pokémon contre tes pierres. Le calcul est simple. |
+| P-28b | Cenere, la démonstration | Tu hésites ? Regarde ce que valent tes Pokémon. · *(système)* Le Farfuret de Cenere bondit ! {pokemon} est projeté contre l'autel ! · Cenere : Voilà ce que tu as. Voilà ce que j'ai. Les pierres, maintenant. |
 | P-29 | Système, la réunion | Les pierres se mettent à trembler. / La Pierre Marée s'échappe de la main de Cenere ! / Les trois pierres se rejoignent sur l'autel ! |
 | P-30 | Ysolde, Cenere | Ysolde : Elles ne se donnent qu'à qui a passé l'épreuve. / Cenere : … Ce n'était pas dans les données. |
 | P-31 | Système, le réveil | Une lumière monte de la terre, de la mer et du ciel. / Les Pokémon nés à Johto se réveillent ! |
-| P-32 | Cenere, avant · défaite | avant : Quelques niveaux ne changent rien à un calcul. · défaite : … Ils changent tout. Deuxième erreur. |
+| P-32 | Cenere, avant · défaite | avant : … C'est impossible. Recommence, Farfuret. · défaite : … Ils changent tout. Deuxième erreur. |
 | P-33 | Cenere, après | La mallette n'est plus utile. Garde-la. / Le maître n'a plus besoin des pierres. Il a mieux : toi. / Tu verras. · *(système)* Cenere s'en va… |
 | P-34 | Système, retrouvailles (T-27) | {pokemon} sort de sa Poké Ball et bondit vers {joueur} ! / {joueur} retrouve son équipe et son sac ! |
 | P-35 | Écran de sélection (T-28) | Choisis les six Pokémon qui t'accompagnent. / Les autres iront au Stockage. |
@@ -492,11 +517,11 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 | JH-67 | **Qui est concerné ?** Équipe seule ; équipe et Stockage ; captures d'après | Équipe **et** captures de l'arc parties au Stockage (voir JH-71) ; **pas** les captures d'après ; jamais de baisse |
 | JH-68 | **Usage unique ou non** | **Unique** : une scène, pierres éteintes. Répété, il remplacerait tout l'entraînement de l'acte 2 |
 | JH-69 | **Évolutions et attaques** : sans rafale de dialogues | Évolutions d'un coup, sans annulation, chaîne comprise ; **un écran du Réveil**, attaques au choix pour qui veut, 3 plus récentes au plus. À trancher : autoriser un refus d'évolution ? Recommandation : non, c'est le pouvoir qui agit |
-| JH-70 | **Exp pendant l'arc et courbe.** ≈ 50 n'est atteint qu'avec ×4. Note du 2026-11-04 : pas de ×4 | **Garder le ×1,5 de l'acte 1, pas de ×4** ; courbe d'adversaires réglée sur 30 → 45 ; boss 45–47 au lieu de 45–50 |
+| JH-70 | ✅ **Pas de ×4 ; le ×1,5 de l'acte 1 reste pendant l'arc** et s'arrête au retour de l'équipe de Kanto (Kevin, 2026-11-04). Courbe ≈ 30 à ≈ 40, boss d'Ébènelle 42–45 | — |
 | JH-71 | **Capture à 6** pendant 3 à 4 h de plus avec le Stockage fermé (JH-23 : lancer refusé) | Stockage **toujours fermé**, mais à partir de la Tour la capture en trop part **sans retour possible** au Stockage jusqu'à la fin de l'arc (« Le laboratoire d'Orme s'en occupe ») ; changement minime (`CaptureGate`), et Minidraco reste à portée. Sinon : JH-23 tient, le joueur à 6 ne capture plus |
 | JH-72 | **Ordre libre ?** | **Non** : ordre imposé par les drapeaux. Bateau après la Pierre Mémoire, Corentin après la Grotte. Les niveaux et le revers d'Irisia ne fonctionnent que dans cet ordre. Le trou de la mer (A-13) se ferme au même moment |
-| JH-73 | **Le pouvoir à l'écran** : scène visible, ou montée silencieuse ? Marque permanente sur le Pokémon ? | Scène complète de ≈ 40 s et écran du Réveil (§13.2) ; **pas** de marque permanente : rien à stocker, rien à afficher en combat |
-| JH-74 | **Combat de démonstration.** Cenere se bat après le réveil, face à une équipe qui vient de monter de 15 niveaux | **Oui**, niveaux 54–56, ≈ 70–80 % de victoire : c'est là que le joueur sent la puissance. Le retour d'équipe vient après. Les Îles Tourbillon deviennent son troisième combat (M-14 change d'un mot) |
+| JH-73 | **Forme du Réveil** : scène du §13.2 (≈ 60 à 90 s, moment fort du chapitre). Non passable la première fois ? Marque permanente sur le Pokémon ? | Scène complète, **non passable** la première fois ; écran du Réveil ; **pas** de marque permanente : rien à stocker, rien à afficher en combat |
+| JH-74 | **La preuve.** Cenere frappe avant le Réveil (scène, P-28b), puis se bat après, face à une équipe qui vient de monter de ≈ 18 niveaux | **Oui**, niveaux 54–56, ≈ 70–80 % de victoire : c'est là que le joueur sent la puissance. Le retour d'équipe vient après. Les Îles Tourbillon deviennent son troisième combat (M-14 change d'un mot) |
 | JH-75 | **Sauvegarde.** Pas de nouveau format : `johto_stones_awakened` et les autres sont des drapeaux, le niveau et l'XP existent ; **v10 inchangée**. Reste le cas des parties déjà passées par le bureau (équipe rendue avant l'arc) | v10 gardée. Parties déjà passées : **pas de migration**, l'arc reste fermé pour elles (seuls Kevin et la QA sont concernés aujourd'hui). À vérifier : Kevin a-t-il une partie réelle au-delà du JOH5 ? Sinon, rien à faire |
 | JH-76 | **Carte, Vol, Pokédex** | Carte de Johto : 3 repères neufs (Ruines, Irisia, Ébènelle). Vol : **Irisia et Ébènelle** ajoutés à `fly_points.json`, ouverts une fois visités ; pas de point aux Ruines, comme les routes. Pokédex : rien de neuf (202 espèces) sans JH-77 |
 | JH-77 | **Zarbi** : absent des 51 espèces (JH-5). Décor seul, ou espèce neuve ? | **Décor seul** : signes animés et sons dans la Galerie, aucune donnée, Pokédex à 202. Si Kevin en veut un sauvage : **une seule forme** (1 artwork, 1 dos, Pokédex à 203, tests et Diplôme à revoir) ; les 26 formes sont à écarter |
