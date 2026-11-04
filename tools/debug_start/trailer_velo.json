@@ -61,10 +61,6 @@
   "beaten_celadon_gym_erika",
   "badge_rainbow",
   "tm21_received",
-  "snorlax_route_12_woken",
-  "snorlax_route_12_done",
-  "snorlax_route_16_woken",
-  "snorlax_route_16_done",
   "got_bike_voucher",
   "got_bicycle"
  ],
@@ -84,7 +80,8 @@
  ],
  "bag": {
   "bicycle": 1,
-  "poke_ball": 5
+  "poke_ball": 5,
+  "hm01": 1
  },
  "money": 8000,
  "rest_point": "celadon_center"
