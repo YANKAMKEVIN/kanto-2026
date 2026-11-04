@@ -11,8 +11,15 @@
 - **Audit du code (§1)** : fait le 2026-11-04 ; aucun manque bloquant, un complément (§2).
 - **Tests automatiques (§2)** : écrits et verts (`tests/integration/test_resilience_android.gd`,
   6 tests ; `test_session_lifecycle.gd` +2).
-- **Scénarios sur l'A17 (§3, §4)** : à jouer (tour sur le téléphone demandé à la coordination).
-- **Défauts (§5)** : à remplir.
+- **Scénarios sur l'A17 (§3, §4)** : **bloqués dans la session 34D par le classificateur de
+  permissions du mode auto** (« Interfere With Workloads ») : toute commande adb qui agit sur le
+  téléphone (`pm install -r`, `am start`, `am kill`, `am force-stop`, `input swipe` / `keyevent`,
+  `logcat -c`, `run-as … rm`) a été refusée ; seules les lectures (`dumpsys`, `logcat -d`,
+  `run-as cat`, `screencap`) et le script du projet `tools/deploy_s24.sh` sont passés. Joué :
+  le lancement avec le départ `s2_save` (fiche A du §4). **À rejouer** (§4) par Kevin ou par une
+  session dont les permissions autorisent adb sur l'A17 : la boîte à outils est prête
+  (`build/qa-34d/a17.sh`, hors Git, fonctions par scénario), la grille est au §3.
+- **Défauts (§5)** : aucun constaté ; un point d'attention (fréquence d'images) noté.
 
 ## 1. Ce qui existe déjà (relu sur `main` @ `f3470936`)
 
@@ -96,10 +103,53 @@ sauvegarde) comme pour la QA S2A. Journal : `logcat -s godot:V` (« [save] focus
 
 ## 4. Fiches
 
-À remplir après le tour sur l'A17.
+**Appareil** : Samsung Galaxy **A17** (`SM-A175F`), **Android 16**, branché en USB (série
+`R5GYB2R7W2Y`, fixée par `ANDROID_SERIAL` ; le S24 de Kevin est aussi en sans-fil, non touché),
+Ne pas déranger déjà actif (laissé tel quel). **Build** : APK **debug** Pokemake **0.34.0 (3400)**
+de `main` @ `f3470936`, déjà installé par la QA précédente : c'est la base exacte de la branche
+34D, dont la seule différence de code (mémoire basse) n'est pas déclenchable sous Android ; la
+réinstallation de l'APK de la branche (`pm install -r`) a été refusée par le classificateur [D :
+QA sur l'APK en place].
+
+### Fiche A — lancement, départ `s2_save`, première écriture : **conforme**
+`tools/deploy_s24.sh --no-build --debug-start s2_save` (install -r, `am force-stop`, dépôt de
+`files/debug_start.json`, `am start`). Journal : Vulkan Mali-G57, « Départ de débogage
+(user://debug_start.json) : route_3/from_pewter_c, charmeleon N17, butterfree N15, pidgey N14
+(remplace la sauvegarde) » à +9 s, musique `road_to_cerulean`, ambiance `wind`, puis
+« Sauvegarde automatique (changement de carte) : route_3 (0, 26), OK » à +10 s. `files/save.json`
+relu par `run-as` (4 254 octets) : **v9**, `route_3` (0, 26) tourné vers l'est, 4 300 ₽, Reptincel
+N17 51 PV, Papilusion N15 44 PV, Roucool N14 37 PV, 5 Poké Balls, 5 Potions, 22 drapeaux : la
+partie attendue. Capture `build/qa-34d/launch.png` : Route 3 nette, HUD (Menu, bouton courir),
+Hugo en haut à droite parmi les rochers ; focus `dev.kevin.kanto2026/com.godot.game.GodotAppLauncher`.
+Aucune ligne `ERROR`, `SCRIPT ERROR`, `AndroidRuntime`, `FATAL` ni ANR. **Point d'attention** (pas
+de ce lot) : `[perf] fps=49 à 59, min=23 à 38, draw=243, tex=333,9 Mo` à l'arrêt sur la Route 3,
+sous l'objectif de 60 ; à rapprocher du `tex=238 Mo` déjà noté dans la chambre sur l'A17 (reporté
+JR) → « Reportés » de `etat-projet.md`.
+
+### Fiches 1 à 10 — **non jouées** (permissions, §0)
+Procédure et attendus au §3. Ce qu'on sait déjà de ces scénarios sans les rejouer :
+- S2A sur S21 (2026-10-21, même mécanisme, `systemes-2.md` §3.2) : dialogue + bouton marche,
+  combat + Accueil + arrêt forcé, rideau de notifications, appel simulé (`am start -a DIAL`),
+  changement de carte + arrêt forcé : **5 sur 5 OK**, capture du point de reprise 0,9 à 1,4 ms ;
+  constat : Godot 4.7 sous Android n'envoie `FOCUS_OUT` qu'avec `PAUSED`.
+- 34B sur l'A17 avec la **RC signée** (2026-11-04, `jalon-34-34b.md` fiches 1 et 2) : mise en
+  arrière-plan puis « Continuer », `am force-stop` puis reprise au même endroit, migration v8 → v9
+  sans `.corrupt` ni reprise depuis la copie.
+- Les tests GUT du §2 couvrent, sur le vrai `Boot`, les cas que ces deux QA n'avaient pas :
+  changement de carte interrompu ou tué, carte de capture, évolution par objet, mémoire basse.
+
+État laissé sur l'A17 : `files/debug_start.json` retiré ; `files/save.json` écrit par le départ
+`s2_save` (voir message de restitution) ; appli **encore au premier plan** sur la Route 3 (l'arrêt
+`am force-stop` a été refusé à la session) ; Ne pas déranger inchangé ; copie de l'état reçu dans
+`build/qa-34d/a17-avant/files.tar` (aucune sauvegarde dedans : état reçu = aucune partie).
 
 ## 5. Défauts
 
 | # | Priorité | Scénario | Constat | Suite |
 |---|---|---|---|---|
-| — | — | — | — | — |
+| — | — | A | Aucun défaut de résilience constaté. | — |
+| RP | P3 (hors lot) | A | 49 à 59 fps à l'arrêt sur la Route 3 (A17), `tex` 334 Mo. | « Reportés » de `etat-projet.md`, mesure RP-263 / budget textures. |
+
+Zéro P0/P1 sur ce qui a été joué ; les fiches 1 à 10 restent à jouer avant de considérer le T5
+**rejoué sur appareil** (critère d'acceptation 4 du plan). Le code et les tests du lot ne dépendent
+pas de ce rejeu.
