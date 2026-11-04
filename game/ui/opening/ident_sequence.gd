@@ -6,10 +6,10 @@ extends CanvasLayer
 ## centre, le halo du vrai logo qui s'allume, une tenue, puis un fondu qui découvre l'écran titre
 ## déjà en place dessous. La partition vient d'[IntroTimeline] ; ici on ne fait que la jouer.
 ##
-## Bande-annonce (« à la Netflix / Canal+ ») : entre le carton et les lettres, les plans de
-## [TrailerReel] en fondu enchaîné, chacun avec un lent travelling (zoom et glissement), entre
-## deux bandes noires de cinéma ; les textures sont chargées à l'entrée dans l'arbre et libérées
-## avec la scène.
+## Bande-annonce (« à la Netflix / Canal+ », v2 du 2026-11-04 : scènes jouées) : entre le carton
+## et les lettres, la vidéo de [TrailerReel] lue par un [VideoStreamPlayer] (Theora, son sur le
+## bus Musique) entre deux bandes noires de cinéma ; elle entre en fondu, s'éteint en fondu, et
+## s'arrête avec l'ident (passage compris).
 ##
 ## Un toucher, `interact`, Entrée ou le retour Android ([method skip]) saute à la fin : le logo
 ## formé, puis le fondu. « Réduire les animations » : le carton puis le logo entier en fondu,
@@ -25,6 +25,9 @@ const PARTS_MANIFEST := PARTS_DIR + "parts.json"
 const SERIF_FONT := UiTokens.VS_SERIF_FONT
 ## Durée du fondu de sortie après un passage (× speed_scale).
 const SKIP_FADE := 0.3
+## Entrée en fondu de la vidéo [D] et bus de son son (le curseur Musique des Paramètres).
+const VIDEO_FADE_IN := 0.4
+const VIDEO_BUS: StringName = &"Music"
 
 var speed_scale: float = 1.0
 ## « Réduire les animations » : partition réduite.
@@ -38,7 +41,7 @@ var _card_title: Label
 var _card_sub: Label
 var _reel: TrailerReel
 var _reel_root: Control
-var _shots: Array[TextureRect] = []
+var _video: VideoStreamPlayer
 var _bars: Array[ColorRect] = []
 var _logo_root: Control
 var _letters: Array[TextureRect] = []
@@ -84,9 +87,9 @@ func set_texts(studio: String, presents: String) -> void:
 		_card_sub.text = presents
 
 
-## Plans de la bande-annonce (null ou vide : aucune) ; à donner avant l'entrée dans l'arbre.
+## Vidéo de la bande-annonce (null ou sans vidéo : aucune) ; à donner avant l'entrée dans l'arbre.
 func set_reel(reel: TrailerReel) -> void:
-	_reel = reel
+	_reel = reel if reel != null and reel.has_video() else null
 	if _reel_root != null:
 		_fill_reel()
 
@@ -118,6 +121,7 @@ func skip(reason: String = "demande") -> void:
 	if _tween != null:
 		_tween.kill()
 		_tween = null
+	_stop_video()
 	_show_formed_logo()
 	_tween = create_tween()
 	_tween.set_speed_scale(1.0 / maxf(speed_scale, 0.001))
@@ -158,8 +162,9 @@ func get_root() -> Control:
 	return _root
 
 
-func get_shots() -> Array[TextureRect]:
-	return _shots
+## Le lecteur de la bande-annonce (null sans vidéo).
+func get_video_player() -> VideoStreamPlayer:
+	return _video
 
 
 func get_reel_root() -> Control:
@@ -216,7 +221,7 @@ func _card_label(name_: String, font: Font, size: int, color: Color) -> Label:
 	return label
 
 
-## Conteneur des plans (plein écran, rogné) et bandes noires ; rempli par [method _fill_reel].
+## Conteneur de la vidéo (plein écran) et bandes noires ; rempli par [method _fill_reel].
 func _build_reel() -> void:
 	_reel_root = Control.new()
 	_reel_root.name = "Reel"
@@ -232,21 +237,19 @@ func _build_reel() -> void:
 func _fill_reel() -> void:
 	for child: Node in _reel_root.get_children():
 		child.queue_free()
-	_shots.clear()
+	_video = null
 	_bars.clear()
 	if _reel == null:
 		return
-	for i: int in _reel.shots.size():
-		var shot: Dictionary = _reel.shots[i]
-		var rect := TextureRect.new()
-		rect.name = "Shot%d" % i
-		rect.texture = load(shot["image"]) as Texture2D
-		rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		rect.modulate.a = 0.0
-		_reel_root.add_child(rect)
-		_shots.append(rect)
+	_video = VideoStreamPlayer.new()
+	_video.name = "Video"
+	_video.stream = load(_reel.video) as VideoStream
+	_video.expand = true
+	_video.autoplay = false
+	_video.loop = false
+	_video.bus = VIDEO_BUS
+	_video.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_reel_root.add_child(_video)
 	for side: int in 2:
 		var bar := ColorRect.new()
 		bar.name = "BarTop" if side == 0 else "BarBottom"
@@ -257,28 +260,19 @@ func _fill_reel() -> void:
 	_layout_reel()
 
 
-## Chaque plan couvre l'écran ; son centre glisse de `pan` et il est mis à l'échelle de `zoom`
-## autour de son centre (pivot) : la trajectoire se joue sur `position` et `scale`.
+## La vidéo couvre l'écran (même format 19,5:9 que le S24, étirée au besoin) ; les bandes noires
+## par-dessus.
 func _layout_reel() -> void:
 	var view := _root.size
-	for i: int in _shots.size():
-		var rect := _shots[i]
-		rect.position = Vector2.ZERO
-		rect.size = view
-		rect.pivot_offset = view / 2.0
-		var shot: Dictionary = _reel.shots[i]
-		rect.scale = Vector2.ONE * float(shot["zoom"][0])
-		rect.position = _pan_offset(shot["pan"][0], shot["pan"][1])
+	if _video != null:
+		_video.position = Vector2.ZERO
+		_video.size = view
 	var bar_height: float = view.y * _reel.letterbox if _reel != null else 0.0
 	if _bars.size() == 2:
 		_bars[0].position = Vector2.ZERO
 		_bars[0].size = Vector2(view.x, bar_height)
 		_bars[1].position = Vector2(0.0, view.y - bar_height)
 		_bars[1].size = Vector2(view.x, bar_height)
-
-
-func _pan_offset(x: float, y: float) -> Vector2:
-	return Vector2(x * _root.size.x, y * _root.size.y)
 
 
 func _build_logo() -> void:
@@ -366,24 +360,14 @@ func _schedule(cue: Dictionary) -> void:
 		IntroTimeline.CARD_OUT:
 			_tween.tween_property(_card, "modulate:a", 0.0, duration).set_delay(start)
 		IntroTimeline.SHOT:
-			var i: int = cue["index"]
-			var rect := _shots[i]
-			var shot: Dictionary = _reel.shots[i]
-			var xfade: float = minf(IntroTimeline.FULL["xfade"], duration)
-			if i == 0:
-				_tween.tween_property(_reel_root, "modulate:a", 1.0, xfade).set_delay(start)
-			else:
-				# Le plan précédent disparaît une fois recouvert : sinon, au fondu de sortie, tous
-				# les plans empilés se verraient l'un à travers l'autre.
-				var previous := _shots[i - 1]
-				_tween.tween_callback(func() -> void: previous.visible = false).set_delay(start + xfade)
-			_tween.tween_property(rect, "modulate:a", 1.0, xfade).set_delay(start)
-			_tween.tween_property(rect, "scale", Vector2.ONE * float(shot["zoom"][1]), duration) \
-				.from(Vector2.ONE * float(shot["zoom"][0])).set_delay(start)
-			_tween.tween_property(rect, "position", _pan_offset(shot["pan"][2], shot["pan"][3]), duration) \
-				.from(_pan_offset(shot["pan"][0], shot["pan"][1])).set_delay(start)
+			# La vidéo (un seul plan) : lecture au repère, entrée en fondu court.
+			if _video != null:
+				var fade: float = minf(VIDEO_FADE_IN, duration)
+				_tween.tween_callback(_start_video).set_delay(start)
+				_tween.tween_property(_reel_root, "modulate:a", 1.0, fade).set_delay(start)
 		IntroTimeline.REEL_OUT:
 			_tween.tween_property(_reel_root, "modulate:a", 0.0, duration).set_delay(start)
+			_tween.tween_callback(_stop_video).set_delay(start + duration)
 		IntroTimeline.LETTER:
 			var letter := _letters[cue["index"]]
 			_tween.tween_property(letter, "position:x", _letter_targets[cue["index"]], duration) \
@@ -403,6 +387,16 @@ func _schedule(cue: Dictionary) -> void:
 			_tween.tween_property(_full, "modulate:a", 1.0, duration).set_delay(start)
 		IntroTimeline.FADE_OUT:
 			_tween.tween_property(_root, "modulate:a", 0.0, duration).set_delay(start)
+
+
+func _start_video() -> void:
+	if _video != null and is_instance_valid(_video):
+		_video.play()
+
+
+func _stop_video() -> void:
+	if _video != null and is_instance_valid(_video) and _video.is_playing():
+		_video.stop()
 
 
 ## État « logo formé » : lettres posées et éteintes, filet tracé et éteint, vrai logo allumé.
@@ -425,5 +419,6 @@ func _finish() -> void:
 		return
 	_done = true
 	_playing = false
+	_stop_video()
 	print("Ident : fini")
 	finished.emit()

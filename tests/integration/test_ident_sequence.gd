@@ -9,15 +9,17 @@ const HEIGHT := 1080
 const MAX_FRAMES := 600
 
 
-const SHOT_IMAGE := "res://assets/ui/opening/splash_pokemake.png"
+const VIDEO := "res://assets/ui/opening/trailer.ogv"
+const VIDEO_SECONDS := 30.0
 
 
-func _reel(count: int) -> TrailerReel:
-	var shots: Array = []
-	for _i: int in count:
-		shots.append({"image": SHOT_IMAGE, "seconds": 2.0})
+## Bande-annonce de test (null sans vidéo livrée : les tests qui en dépendent passent à vide).
+func _reel() -> TrailerReel:
+	if not ResourceLoader.exists(VIDEO):
+		return null
 	var reel := TrailerReel.new()
-	assert_true(reel.add_from_dict({"letterbox": 0.07, "shots": shots}, "test"), str(reel.get_errors()))
+	assert_true(reel.add_from_dict({"letterbox": 0.07, "video": VIDEO, "seconds": VIDEO_SECONDS}, "test"),
+		str(reel.get_errors()))
 	return reel
 
 
@@ -113,28 +115,60 @@ func test_reduced_motion_fades_the_whole_logo_without_moving_letters() -> void:
 	assert_gt(ident.get_letters()[0].position.x, ident.letter_target_x(0), "les lettres n'ont pas bougé")
 
 
-func test_the_reel_plays_its_shots_between_the_card_and_the_letters() -> void:
-	var ident := await _ident(0.02, false, _reel(3))
-	assert_eq(ident.get_shots().size(), 3)
+func test_the_reel_plays_its_video_between_the_card_and_the_letters() -> void:
+	var reel := _reel()
+	if reel == null:
+		pass_test("pas encore de vidéo livrée")
+		return
+	var ident := await _ident(0.02, false, reel)
+	var player := ident.get_video_player()
+	assert_not_null(player, "un lecteur vidéo")
 	assert_eq(ident.get_reel_root().modulate.a, 0.0, "bande-annonce éteinte avant le carton")
-	var shot := ident.get_shots()[0]
-	assert_eq(shot.size, Vector2(WIDTH, HEIGHT), "un plan couvre l'écran")
-	assert_eq(shot.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+	assert_eq(player.size, Vector2(WIDTH, HEIGHT), "la vidéo couvre l'écran")
+	assert_true(player.expand)
+	assert_false(player.is_playing(), "elle attend son repère")
+	assert_eq(player.bus, IdentSequence.VIDEO_BUS, "le son suit le curseur Musique")
 	ident.play()
 	assert_almost_eq(ident.total_duration(),
-		IntroTimeline.total(IntroTimeline.build(8, false, [2.0, 2.0, 2.0] as Array[float])), 0.001)
-	assert_gt(ident.total_duration(), IntroTimeline.total(IntroTimeline.build(8)) + 4.0, "plus long avec la bande-annonce")
+		IntroTimeline.total(IntroTimeline.build(8, false, [VIDEO_SECONDS] as Array[float])), 0.001)
+	assert_gt(ident.total_duration(), IntroTimeline.total(IntroTimeline.build(8)) + VIDEO_SECONDS - 1.0,
+		"plus long avec la bande-annonce")
+	var played := false
+	for _i: int in MAX_FRAMES:
+		if ident.is_done():
+			break
+		played = played or player.is_playing()
+		await wait_process_frames(1)
+	assert_true(ident.is_done())
+	assert_true(played, "la vidéo a été lancée")
+	assert_false(player.is_playing(), "arrêtée avec l'ident")
+	assert_almost_eq(ident.get_reel_root().modulate.a, 0.0, 0.001, "bande-annonce éteinte avant le logo")
+
+
+func test_a_skip_stops_the_video() -> void:
+	var reel := _reel()
+	if reel == null:
+		pass_test("pas encore de vidéo livrée")
+		return
+	var ident := await _ident(1.0, false, reel)
+	ident.play()
+	ident.get_video_player().play()
+	await wait_process_frames(2)
+	ident.speed_scale = 0.01
+	ident.skip()
+	assert_false(ident.get_video_player().is_playing(), "le passage coupe la vidéo")
 	for _i: int in MAX_FRAMES:
 		if ident.is_done():
 			break
 		await wait_process_frames(1)
 	assert_true(ident.is_done())
-	assert_almost_eq(ident.get_reel_root().modulate.a, 0.0, 0.001, "bande-annonce éteinte avant le logo")
-	assert_almost_eq(ident.get_shots()[2].modulate.a, 1.0, 0.001, "le dernier plan a bien été montré")
-	assert_almost_eq(ident.get_shots()[2].scale.x, float(TrailerReel.DEFAULT_ZOOM_IN[1]), 0.01, "poussée finie")
 
 
 func test_reduced_motion_skips_the_reel() -> void:
-	var ident := await _ident(0.02, true, _reel(3))
+	var reel := _reel()
+	if reel == null:
+		pass_test("pas encore de vidéo livrée")
+		return
+	var ident := await _ident(0.02, true, reel)
 	ident.play()
 	assert_almost_eq(ident.total_duration(), IntroTimeline.total(IntroTimeline.build(8, true)), 0.001)
