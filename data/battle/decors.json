@@ -435,6 +435,13 @@
 		"route_39": [{ "decor": "route_1_chemin" }],
 		"route_38": [{ "decor": "route_1_chemin" }],
 		"ecruteak_city": [{ "decor": "route_1_chemin" }],
+		"burned_tower_1f": [{ "decor": "rocket_hideout_repaire" }],
+		"route_42": [{ "decor": "route_1_chemin" }],
+		"route_43": [{ "decor": "route_1_chemin" }],
+		"lake_of_rage": [{ "decor": "route_1_chemin" }],
+		"mahogany_hideout_b1f": [{ "decor": "rocket_hideout_repaire" }],
+		"mahogany_hideout_b2f": [{ "decor": "rocket_hideout_repaire" }],
+		"mahogany_hideout_b3f": [{ "decor": "rocket_hideout_repaire" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],
