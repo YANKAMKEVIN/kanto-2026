@@ -1,0 +1,73 @@
+{
+	"route_34_picnicker_sophie_before": {
+		"speaker": "Pique-niqueuse Sophie",
+		"pages": [
+			"Tu tombes bien, je m'ennuyais !"
+		]
+	},
+	"route_34_picnicker_sophie_defeated": {
+		"speaker": "Pique-niqueuse Sophie",
+		"pages": [
+			"Bon, je retourne à mon panier."
+		]
+	},
+	"route_34_picnicker_sophie_after": {
+		"speaker": "Pique-niqueuse Sophie",
+		"pages": [
+			"Le Bois aux Chênes est sombre, ne te\nperds pas."
+		]
+	},
+	"route_34_pokemaniac_bruno_before": {
+		"speaker": "Pokémaniac Bruno",
+		"pages": [
+			"Mes Pokémon sont rares, tu vas voir\n!"
+		]
+	},
+	"route_34_pokemaniac_bruno_defeated": {
+		"speaker": "Pokémaniac Bruno",
+		"pages": [
+			"Rares… mais pas assez forts."
+		]
+	},
+	"route_34_pokemaniac_bruno_after": {
+		"speaker": "Pokémaniac Bruno",
+		"pages": [
+			"Mon Métamorph imite tout, sauf la\nvictoire."
+		]
+	},
+	"route_34_juggler_felix_before": {
+		"speaker": "Jongleur Félix",
+		"pages": [
+			"Hop, hop ! Regarde bien mes balles !"
+		]
+	},
+	"route_34_juggler_felix_defeated": {
+		"speaker": "Jongleur Félix",
+		"pages": [
+			"J'en ai fait tomber une."
+		]
+	},
+	"route_34_juggler_felix_after": {
+		"speaker": "Jongleur Félix",
+		"pages": [
+			"Au sud, c'est le Bois aux Chênes.\nSuis le sentier."
+		]
+	},
+	"route_34_pecheur": {
+		"speaker": "Pêcheur",
+		"pages": [
+			"Avant, les Ramoloss d'Écorcia\nvenaient pêcher ici.",
+			"Ça fait des semaines qu'on n'en voit\nplus un seul."
+		]
+	},
+	"route_34_item_1": {
+		"cutscene": "route_34_item_1"
+	},
+	"route_34_panneau_route": {
+		"narration": true,
+		"pages": [
+			"ROUTE 34",
+			"Doublonville — Bois aux Chênes"
+		]
+	}
+}

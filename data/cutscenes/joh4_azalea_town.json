@@ -1,0 +1,31 @@
+{
+	"azalea_well_guard": {
+		"variants": [
+			{
+				"unless": [
+					"johto_kurt_told"
+				],
+				"steps": [
+					{
+						"face": "sbire_puits",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "sbire_puits"
+					},
+					{
+						"dialogue": "azalea_well_block"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	}
+}

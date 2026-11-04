@@ -511,8 +511,9 @@ ROSALIA_NPCS = {
 	# H-37 : habitante sur la pelouse à l'est de l'avenue (case libre hors grille) [D].
 	("ecruteak_city", "habitante_aube"): {"cell": [30, 18], "facing": "down", "sprite": "aoki",
 		"dialogue": "joh8_habitante_aube", "if": [SEEN]},
-	# H-35, H-36 : Orme au Centre de Rosalia après le sommet [D] (case libre de la salle).
-	("ecruteak_center", "orme"): {"cell": [11, 6], "facing": "left", "sprite": "researcher",
+	# H-35, H-36 : Orme au Centre de Rosalia après le sommet [D] : (9, 6), à l'écart du passage et de
+	# la banquette est (l'ancienne case (11, 6) le cachait derrière elle, QA A17).
+	("ecruteak_center", "orme"): {"cell": [9, 6], "facing": "left", "sprite": "researcher",
 		"dialogue": "joh8_orme", "if": [HO_OH_DONE]},
 }
 

@@ -1,0 +1,111 @@
+{
+	"fargas_b2f": {
+		"cell": [
+			5,
+			5
+		],
+		"facing": "down",
+		"if": [
+			"johto_brace_defeated"
+		],
+		"unless": [
+			"johto_slowpoke_well_cleared"
+		],
+		"sprite": "old_man",
+		"dialogue": "slowpoke_well_b2f_fargas_b2f"
+	},
+	"brace": {
+		"cell": [
+			25,
+			5
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"unless": [
+			"johto_brace_defeated"
+		]
+	},
+	"papiers": {
+		"cell": [
+			25,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "slowpoke_well_b2f_papiers",
+		"verb": "take",
+		"turn_to_player": false,
+		"if": [
+			"johto_brace_defeated"
+		],
+		"unless": [
+			"johto_radio_pass"
+		]
+	},
+	"well_b2f_item_1": {
+		"cell": [
+			2,
+			21
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "well_b2f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_well_b2f_item_1"
+		]
+	},
+	"ramoloss_sq_1": {
+		"cell": [
+			9,
+			13
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"turn_to_player": false,
+		"unless": [
+			"johto_slowpoke_well_cleared"
+		],
+		"dialogue": "slowpoke_well_b2f_ramoloss_sans_queue"
+	},
+	"ramoloss_sq_2": {
+		"cell": [
+			19,
+			19
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"turn_to_player": false,
+		"unless": [
+			"johto_slowpoke_well_cleared"
+		],
+		"dialogue": "slowpoke_well_b2f_ramoloss_sans_queue"
+	},
+	"ramoloss_sq_3": {
+		"cell": [
+			12,
+			20
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"turn_to_player": false,
+		"unless": [
+			"johto_slowpoke_well_cleared"
+		],
+		"dialogue": "slowpoke_well_b2f_ramoloss_sans_queue"
+	},
+	"ramoloss_sq_4": {
+		"cell": [
+			21,
+			12
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"turn_to_player": false,
+		"unless": [
+			"johto_slowpoke_well_cleared"
+		],
+		"dialogue": "slowpoke_well_b2f_ramoloss_sans_queue"
+	}
+}

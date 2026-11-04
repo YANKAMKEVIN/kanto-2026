@@ -1,0 +1,63 @@
+{
+	"noe": {
+		"cell": [
+			16,
+			9
+		],
+		"facing": "left",
+		"sprite": "fisher_fuchsia",
+		"dialogue": "route_41_fisher_noe_after",
+		"trainer": {
+			"id": "route_41_fisher_noe",
+			"sight": 1,
+			"before": "route_41_fisher_noe_before",
+			"defeated": "route_41_fisher_noe_defeated"
+		}
+	},
+	"lea": {
+		"cell": [
+			6,
+			20
+		],
+		"facing": "right",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_41_swimmer_lea_after",
+		"trainer": {
+			"id": "route_41_swimmer_lea",
+			"sight": 3,
+			"before": "route_41_swimmer_lea_before",
+			"defeated": "route_41_swimmer_lea_defeated"
+		},
+		"move_mode": "surf"
+	},
+	"gabin": {
+		"cell": [
+			52,
+			28
+		],
+		"facing": "left",
+		"sprite": "swimmer_water",
+		"dialogue": "route_41_swimmer_gabin_after",
+		"trainer": {
+			"id": "route_41_swimmer_gabin",
+			"sight": 3,
+			"before": "route_41_swimmer_gabin_before",
+			"defeated": "route_41_swimmer_gabin_defeated"
+		},
+		"move_mode": "surf"
+	},
+	"route_41_item_1": {
+		"cell": [
+			51,
+			42
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_41_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_41_item_1"
+		]
+	}
+}

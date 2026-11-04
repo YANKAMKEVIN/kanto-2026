@@ -1,5 +1,54 @@
 [
 	{
+		"id": "report_to_ecruteak_elder",
+		"text": "retourner voir le doyen de Rosalia.",
+		"if": ["johto_ho_oh_done"],
+		"unless": ["johto_act3"],
+		"draft": true
+	},
+	{
+		"id": "climb_bell_tower",
+		"text": "gravir la Tour Carillon avant l'aube.",
+		"if": ["johto_bell_tower_open"],
+		"unless": ["johto_ho_oh_done"],
+		"draft": true
+	},
+	{
+		"id": "see_ecruteak_elder",
+		"text": "voir le doyen, à Rosalia.",
+		"if": ["johto_bell_tower_clue"],
+		"unless": ["johto_bell_tower_open"],
+		"draft": true
+	},
+	{
+		"id": "talk_to_kurt_in_well",
+		"text": "reparler à Fargas, au fond du Puits Ramoloss.",
+		"if": ["johto_radio_pass"],
+		"unless": ["johto_slowpoke_well_cleared"],
+		"draft": true
+	},
+	{
+		"id": "take_brace_papers",
+		"text": "ramasser les papiers laissés par Brace.",
+		"if": ["johto_brace_defeated"],
+		"unless": ["johto_radio_pass"],
+		"draft": true
+	},
+	{
+		"id": "clear_slowpoke_well",
+		"text": "chasser la Team Rocket du Puits Ramoloss.",
+		"if": ["johto_kurt_told"],
+		"unless": ["johto_brace_defeated"],
+		"draft": true
+	},
+	{
+		"id": "meet_kurt",
+		"text": "trouver Fargas, à Écorcia.",
+		"if": ["johto_azalea_clue"],
+		"unless": ["johto_kurt_told"],
+		"draft": true
+	},
+	{
 		"id": "go_route_39",
 		"text": "prendre la Route 39, à l'est d'Oliville.",
 		"if": ["johto_starter_chosen"],

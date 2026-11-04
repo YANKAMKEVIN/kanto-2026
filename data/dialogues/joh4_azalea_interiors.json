@@ -1,0 +1,79 @@
+{
+	"azalea_kurt_house_fargas": {
+		"speaker": "Fargas",
+		"variants": [
+			{
+				"unless": [
+					"johto_kurt_told"
+				],
+				"cutscene": "azalea_kurt_story"
+			}
+		]
+	},
+	"azalea_kurt_house_fargas_home": {
+		"speaker": "Fargas",
+		"variants": [
+			{
+				"pages": [
+					"Ces voleurs parlaient de\nDoublonville. De leur « antenne ».",
+					"La Tour Radio, sans doute.",
+					"Fais attention à toi, petit."
+				]
+			}
+		]
+	},
+	"azalea_kurt_greeting": {
+		"speaker": "Fargas",
+		"pages": [
+			"Hein ? Qui es-tu ?",
+			"… Le Maître de Kanto ? Ici ?",
+			"Alors écoute bien, petit."
+		]
+	},
+	"azalea_kurt_story": {
+		"speaker": "Fargas",
+		"pages": [
+			"Des hommes en noir se sont installés\ndans le Puits Ramoloss.",
+			"Ils coupent la queue des Ramoloss,\npour la vendre.",
+			"Une queue de Ramoloss, ça vaut une\nfortune chez certains.",
+			"Les pauvres bêtes ne sentent rien…\nmais c'est une honte !"
+		]
+	},
+	"azalea_kurt_leaves": {
+		"speaker": "Fargas",
+		"pages": [
+			"Ça suffit. J'y vais, moi !",
+			"Suis-moi si tu as du cran."
+		]
+	},
+	"azalea_well_grunt_flees": {
+		"speaker": "Sbire",
+		"pages": [
+			"Hé, le vieux ! On ne passe pas !",
+			"…",
+			"Il a l'air furieux. Je préviens les\nautres !"
+		]
+	},
+	"azalea_center_garcon": {
+		"speaker": "Garçon",
+		"pages": [
+			"Il paraît que le Champion d'Écorcia\nest parti voyager.",
+			"Dommage, j'aurais voulu le défier."
+		]
+	},
+	"route_34_house_homme": {
+		"speaker": "Homme",
+		"pages": [
+			"Ma femme gardait des Pokémon pour\nles Dresseurs, avant.",
+			"Elle a pris sa retraite. La maison\nest bien calme."
+		]
+	},
+	"azalea_house_1_habitant": {
+		"speaker": "Habitant",
+		"draft": true,
+		"pages": [
+			"Le vieux Fargas connaît le puits\nmieux que personne.",
+			"Il y descendait déjà quand il était\npetit."
+		]
+	}
+}

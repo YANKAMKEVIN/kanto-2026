@@ -226,3 +226,9 @@ textes des examens (autel, cloche, rambarde) en brouillon ; équipe des départs
 |---|---|---|
 | Plan, T1–T3, T5, T6 | `cbdd2335`, `85ae12af` | Cartes, données, aube, tests |
 | T7 | (ce commit) | Équilibrage §2.5 |
+
+QA A17 (2026-11-04, 22 h 38 – 23 h 04, APK de `7b72e415`) : aucun bloquant. Vu sur téléphone : Rosalia,
+raccord nord, Bois, 1F, planches du 2F, escalier, sommet, Dante lancé, cloche, Ho-Oh, cage brûlée, Entei
+et Ho-Oh en fuite, plume, reprise après arrêt forcé. Pas vu sur téléphone (tests GUT seulement) : victoire
+complète contre Dante, défaite, captures, Orme et doyen H-34. Corrigé ensuite : Orme déplacé en (9, 6)
+[D] ; trois objectifs du Menu [D] en brouillon.

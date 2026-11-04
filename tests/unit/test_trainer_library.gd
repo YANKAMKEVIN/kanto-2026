@@ -401,6 +401,8 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 		&"rival_route22_final",
 		# Jalon 30 (T3) : Agatha (pokered, AgathaAI : change de Pokémon) et le rival Champion.
 		&"league_agatha", &"rival_champion",
+		# Chapitre Johto, JOH7 : Cenere aux Îles Tourbillon (grand combat, dossier JOH-08 §6).
+		&"whirl_islands_cenere",
 		# JOH8 (JH-54) : Dante (1), grand combat du sommet de la Tour Carillon.
 		&"bell_tower_dante_1"]
 	for id: StringName in library.get_ids():

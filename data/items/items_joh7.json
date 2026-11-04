@@ -1,0 +1,7 @@
+{
+	"pp_max": {
+		"name": "PP Max", "plural": "PP Max", "feminine": false,
+		"category": "field", "field_use": "pp_up", "pp_up_max": true, "price": 0,
+		"description": "Augmente au maximum le nombre de PP d'une capacité."
+	}
+}

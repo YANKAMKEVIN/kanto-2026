@@ -1,0 +1,64 @@
+{
+	"yanis": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "down",
+		"sprite": "swimmer_water",
+		"dialogue": "route_40_swimmer_yanis_after",
+		"trainer": {
+			"id": "route_40_swimmer_yanis",
+			"sight": 3,
+			"before": "route_40_swimmer_yanis_before",
+			"defeated": "route_40_swimmer_yanis_defeated"
+		},
+		"move_mode": "surf"
+	},
+	"elodie": {
+		"cell": [
+			5,
+			17
+		],
+		"facing": "right",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_40_swimmer_elodie_after",
+		"trainer": {
+			"id": "route_40_swimmer_elodie",
+			"sight": 3,
+			"before": "route_40_swimmer_elodie_before",
+			"defeated": "route_40_swimmer_elodie_defeated"
+		},
+		"move_mode": "surf"
+	},
+	"marius": {
+		"cell": [
+			18,
+			31
+		],
+		"facing": "left",
+		"sprite": "swimmer_water",
+		"dialogue": "route_40_swimmer_marius_after",
+		"trainer": {
+			"id": "route_40_swimmer_marius",
+			"sight": 3,
+			"before": "route_40_swimmer_marius_before",
+			"defeated": "route_40_swimmer_marius_defeated"
+		},
+		"move_mode": "surf"
+	},
+	"route_40_item_1": {
+		"cell": [
+			17,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_40_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_40_item_1"
+		]
+	}
+}

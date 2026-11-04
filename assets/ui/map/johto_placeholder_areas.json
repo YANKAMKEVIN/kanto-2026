@@ -1,5 +1,5 @@
 {
-	"_comment": "Rectangles [x, y, w, h] des zones de Johto sur assets/ui/map/johto_placeholder.webp (1586x992, image PROVISOIRE dessinee par tools/make_johto_map_placeholder.py au JOH0 d'apres la geographie du dossier JOH-00 §3 ; refaite en phase DA). Seule la geometrie vit ici ; l'identite des zones est dans data/world/zones.json.",
+	"_comment": "Rectangles [x, y, w, h] des zones de Johto sur assets/ui/map/johto_placeholder.webp (1586x992, image PROVISOIRE dessinee par tools/make_johto_map_placeholder.py au JOH0 d'apres la geographie du dossier JOH-00 \u00a73 ; refaite en phase DA). Seule la geometrie vit ici ; l'identite des zones est dans data/world/zones.json.",
 	"image": "res://assets/ui/map/johto_placeholder.webp",
 	"image_size": [
 		1586,
@@ -20,6 +20,30 @@
 				485,
 				200,
 				110
+			]
+		},
+		"route_40": {
+			"area": [
+				60,
+				560,
+				120,
+				110
+			]
+		},
+		"route_41": {
+			"area": [
+				40,
+				700,
+				160,
+				120
+			]
+		},
+		"whirl_islands": {
+			"area": [
+				60,
+				840,
+				120,
+				90
 			]
 		},
 		"ecruteak_city": {
@@ -68,6 +92,30 @@
 				300,
 				110,
 				90
+			]
+		},
+		"route_34": {
+			"area": [
+				835,
+				580,
+				90,
+				100
+			]
+		},
+		"ilex_forest": {
+			"area": [
+				825,
+				685,
+				110,
+				95
+			]
+		},
+		"slowpoke_well": {
+			"area": [
+				985,
+				795,
+				70,
+				60
 			]
 		},
 		"bell_tower_woods": {

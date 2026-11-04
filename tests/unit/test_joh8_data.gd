@@ -296,3 +296,21 @@ func test_debug_starts_parse() -> void:
 		assert_true(start.load_file(path, _pokemon, _items), "%s : %s" % [name, start.get_errors()])
 		assert_eq(start.party.size(), 6, name)
 		assert_true(start.flags.has(&"johto_lugia_done"), name)
+
+
+## QA A17 : le Menu disait encore « prendre la Route 39 » au sommet de la tour.
+func test_objectives_follow_the_tower() -> void:
+	var library := ObjectiveLibrary.new()
+	assert_true(library.load_file())
+	var flags := StoryFlags.new()
+	flags.set_flag(&"johto_starter_chosen")
+	var steps: Array = [
+		[&"johto_bell_tower_clue", &"see_ecruteak_elder"],
+		[&"johto_bell_tower_open", &"climb_bell_tower"],
+		[&"johto_ho_oh_done", &"report_to_ecruteak_elder"],
+	]
+	for step: Array in steps:
+		flags.set_flag(step[0])
+		assert_eq(library.current_id(flags), step[1], String(step[0]))
+	flags.set_flag(&"johto_act3")
+	assert_ne(library.current_id(flags), &"report_to_ecruteak_elder", "le doyen a parlé (H-34)")

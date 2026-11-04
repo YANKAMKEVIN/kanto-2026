@@ -1,0 +1,63 @@
+{
+	"suicune": {
+		"cell": [
+			11,
+			3
+		],
+		"facing": "down",
+		"sprite": "pokemon/suicune",
+		"dialogue": "whirl_suicune",
+		"verb": "observe",
+		"turn_to_player": false,
+		"unless": [
+			"johto_suicune_done",
+			"johto_suicune_resolved"
+		]
+	},
+	"whirl_islands_b1f_dragon_scale": {
+		"cell": [
+			2,
+			13
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "whirl_islands_b1f_dragon_scale",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_whirl_islands_b1f_dragon_scale"
+		]
+	},
+	"lokhlass": {
+		"cell": [
+			3,
+			23
+		],
+		"facing": "left",
+		"sprite": "pokemon/lapras",
+		"dialogue": "whirl_lapras",
+		"verb": "observe",
+		"turn_to_player": false,
+		"if_weekday": [
+			"friday"
+		],
+		"unless": [
+			"week_friday_lapras",
+			"johto_lapras_caught"
+		]
+	},
+	"whirl_islands_b1f_item_1": {
+		"cell": [
+			33,
+			25
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "whirl_islands_b1f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_whirl_islands_b1f_item_1"
+		]
+	}
+}
