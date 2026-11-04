@@ -87,8 +87,11 @@ BRACE = {
 	"name": "Brace", "class": "sbire_rocket", "ai": "smart",
 	"can_lose": False, "heal_after": False, "gives_exp": True, "prize_money": 2000,
 	"start_message": False, "end_message": True, "bag": True,
-	"team": [{"species": "murkrow", "level": 24}, {"species": "koffing", "level": 24},
-		{"species": "houndoom", "level": 26}],
+	# Niveaux [D] réglés par simulation (dossier §6 : 24, 24, 26 donnait 0,5 à 14,5 % de victoire
+	# du premier coup avec une équipe N22 ; ici 29 à 55 %, cible des grands combats 35–60 % ;
+	# `tools/sim/slowpoke_well_scenario.json`, plan §2.3).
+	"team": [{"species": "murkrow", "level": 21}, {"species": "koffing", "level": 21},
+		{"species": "houndoom", "level": 23}],
 }
 
 # --- Textes des panneaux, PNJ et examens : (carte, position) → (orateur, pages[, brouillon]) ---

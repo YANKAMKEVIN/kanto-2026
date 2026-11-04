@@ -55,13 +55,15 @@ const MAPS: Array[Dictionary] = [
 const OUTDOOR_KINDS: Dictionary = {
 	".": "GRASS", "=": "DIRT", "h": "TALL_GRASS", "p": "COBBLE", "D": "COBBLE", "E": "DIRT",
 	"T": "FOREST", "G": "FOREST", "x": "CLIFF", "M": "WATER", "w": "WATER", "C": "GRASS",
-	"A": "CLIFF", "y": "FLOWERS", "s": "CROP", "k": "CROP", "Q": "CLIFF", "H": "CLIFF",
+	"A": "CLIFF", "y": "GRASS", "s": "CROP", "k": "CROP", "Q": "CLIFF", "H": "CLIFF",
 	"O": "CLIFF", "K": "CLIFF", "m": "CLIFF",
 }
 const CAVE_KINDS: Dictionary = {
 	"#": "CLIFF", ".": "DIRT", "g": "RUBBLE", "w": "WATER", "o": "CLIFF", "R": "CLIFF",
 	"U": "DIRT", "V": "DIRT",
 }
+## Décor posé sur la couche Detail (tuile transparente, sur l'herbe du sol) : fleurs de l'autel.
+const DETAIL_KINDS: Dictionary = {"y": "FLOWERS"}
 ## Caractères d'eau surfable (étang de la Route 34, eau du puits).
 const SURF_CHARS: String = "w"
 
@@ -217,6 +219,10 @@ func _build(spec: Dictionary) -> void:
 			var kind: int = _over.Kind[kinds[mark]]
 			var variant := _rng.randi_range(0, _over.variant_count(kind) - 1)
 			ground.set_cell(cell, _over.SOURCE_ID, _over.atlas_coords(kind, variant))
+			if DETAIL_KINDS.has(mark) and not cave:
+				var detail_kind: int = _over.Kind[DETAIL_KINDS[mark]]
+				(root.get_node(^"Detail") as TileMapLayer).set_cell(cell, _over.SOURCE_ID,
+					_over.atlas_coords(detail_kind, _rng.randi_range(0, _over.variant_count(detail_kind) - 1)))
 			if SURF_CHARS.contains(mark):
 				surf.append(cell)
 			elif y == 0 and not cave:

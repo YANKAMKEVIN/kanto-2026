@@ -109,6 +109,14 @@ par le catalogue à Ondine, Major Bob et au rival : « Reportés »).
 `prize_per_level` [D] : 20 (Fillette, Scout), 25 (Pokémaniac, Jongleur), 35 (Dresseuse), 30
 (Sbires), Brace `prize_money` 2 000 [D], `ai: smart`, sac permis.
 
+**Équilibrage de Brace** (`tools/sim/slowpoke_well_scenario.json`, `simulate_mt_moon.gd`, 200
+graines, joueur « attentif », 3 Super Potions, Centre au départ, Sbire E et gravats obligatoires) :
+l'équipe du dossier (Cornèbre 24, Smogo 24, Démolosse 26) donne **0,5 à 14,5 %** de victoire du
+premier coup avec une équipe N22 (starter, Furret, Lainergie, Togepi), loin de la cible des grands
+combats (35–60 %). Retenu **[D] : Cornèbre 21, Smogo 21, Démolosse 23** : Kaiminus 55,5 %,
+Héricendre 33,5 %, Germignon 29 % (désavantage de types), équipe N24 87,5 % ; essais 22-22-24
+(45 / 18 / 14 %) et 23-23-24 (43 / 23 / 11 %) écartés. Espèces inchangées.
+
 ### 2.4 Rencontres (T6)
 
 | Table | Carte | Terrain | `period` | Taux | Niveaux | Espèces (poids) |
@@ -251,7 +259,7 @@ JOH2). Fichiers `joh4_week.json`.
 
 ## 6. Valeurs par défaut [D] posées par ce plan
 
-Tuiles et bâtiments provisoires ; aplats de la charbonnerie et de l'autel ; sprites et classes des
+Niveaux de Brace (21, 21, 23, par simulation) ; tuiles et bâtiments provisoires ; aplats de la charbonnerie et de l'autel ; sprites et classes des
 PNJ et Dresseurs ; `prize_per_level`, prix de Brace ; table de l'eau de la Route 34 ; taux du
 puits ; Boutique ; grilles des intérieurs ; lecture de l'Ordre de mission par la description ;
 drapeaux `johto_kurt_fell`, `lost_brace` ; scène de la barrière (page 1 de E-14) ; E-14 joué

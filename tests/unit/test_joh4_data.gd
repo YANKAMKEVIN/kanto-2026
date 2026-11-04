@@ -201,14 +201,15 @@ func test_trainers_follow_dossier_6() -> void:
 	assert_eq([felix.cell, felix.facing, felix.sight], [Vector2i(11, 40), Vector2i.LEFT, 1])
 	var grunt_e: NpcSpec = placed[&"slowpoke_well_grunt_e"]
 	assert_eq([grunt_e.cell, grunt_e.facing, grunt_e.sight], [Vector2i(15, 3), Vector2i.DOWN, 2])
-	# Brace : grand combat lancé par la scène (pas par sa vue), Démolosse 26 en tête de son rang.
+	# Brace : grand combat lancé par la scène (pas par sa vue) ; niveaux [D] réglés par simulation
+	# (24, 24, 26 du dossier → 21, 21, 23 : plan §2.3).
 	assert_true(_trainers.has_trainer(BRACE))
 	var brace := _trainers.get_trainer(BRACE)
 	assert_eq(brace.name, "Brace")
 	var team: Array = []
 	for member: Variant in brace.team:
 		team.append([member.species, member.level])
-	assert_eq(team, [[&"murkrow", 24], [&"koffing", 24], [&"houndoom", 26]])
+	assert_eq(team, [[&"murkrow", 21], [&"koffing", 21], [&"houndoom", 23]])
 	var spec := NpcRoster.load_for_map(&"slowpoke_well_b2f").get_spec(&"brace")
 	assert_not_null(spec)
 	if spec != null:
