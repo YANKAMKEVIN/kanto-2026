@@ -440,3 +440,16 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `qa_fx_vagues.json` | Galerie d'effets (`fx_gallery`) : 46 attaques des vagues 1 et 2 « Rouge » en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` |
 | `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
 
+
+### Chapitre Johto, JOH4 (Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss)
+
+Équipe de Johto (Croconaw avec Surf, Furret, Lainergie, Togepi éclos), badges de Kanto, CS03,
+drapeaux des JOH1 à JOH3 (dont `johto_azalea_clue`), équipe de Kanto confisquée.
+
+- `johto_route_34` : entrée nord de la Route 34 (niv. 17–19).
+- `johto_ilex_morning`, `johto_ilex_night` : entrée du Bois aux Chênes, moment imposé.
+- `johto_azalea` : entrée d'Écorcia, avant Fargas (niv. 20–22).
+- `johto_slowpoke_well` : B1F, après le récit de Fargas (`johto_kurt_told`).
+- `johto_brace` : B2F, devant le couloir de Brace (niv. 22–24).
+- `johto_azalea_after` : devant le puits, tout le jalon fait (Ramoloss de retour, objets clés).
+- `johto_azalea_friday` : entrée d'Écorcia, jour imposé `friday` (Vincent).

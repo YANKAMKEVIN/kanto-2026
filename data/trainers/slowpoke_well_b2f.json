@@ -10,11 +10,6 @@
 		"start_message": false,
 		"end_message": true,
 		"bag": true,
-		"switch": true,
-		"card": {
-			"name": "BRACE",
-			"title": "Admin de la Team Rocket"
-		},
 		"team": [
 			{
 				"species": "murkrow",

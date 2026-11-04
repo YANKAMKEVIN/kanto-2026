@@ -86,8 +86,7 @@ PAPERS_DIALOGUE = "slowpoke_well_b2f_papiers"
 BRACE = {
 	"name": "Brace", "class": "sbire_rocket", "ai": "smart",
 	"can_lose": False, "heal_after": False, "gives_exp": True, "prize_money": 2000,
-	"start_message": False, "end_message": True, "bag": True, "switch": True,
-	"card": {"name": "BRACE", "title": "Admin de la Team Rocket"},
+	"start_message": False, "end_message": True, "bag": True,
 	"team": [{"species": "murkrow", "level": 24}, {"species": "koffing", "level": 24},
 		{"species": "houndoom", "level": 26}],
 }
@@ -623,7 +622,7 @@ def write_interiors():
 	})
 	write_json(os.path.join(DATA, "npcs", "azalea_center.json"), {
 		"nurse": {"cell": [7, 3], "facing": "down", "sprite": "nurse"},
-		"garcon": {"cell": [3, 6], "facing": "right", "sprite": "kid",
+		"garcon": {"cell": [11, 5], "facing": "left", "sprite": "kid",
 			"dialogue": "azalea_center_garcon"},
 	})
 	write_json(os.path.join(DATA, "npcs", "azalea_mart.json"), {
@@ -634,7 +633,7 @@ def write_interiors():
 			"dialogue": "azalea_house_1_habitant"},
 	})
 	write_json(os.path.join(DATA, "npcs", "route_34_house.json"), {
-		"homme": {"cell": [4, 5], "facing": "right", "sprite": "gentleman",
+		"homme": {"cell": [10, 6], "facing": "left", "sprite": "gentleman",
 			"dialogue": "route_34_house_homme"},
 	})
 	write_json(os.path.join(DATA, "dialogues", PREFIX + "azalea_interiors.json"), dialogues)

@@ -47,6 +47,10 @@
 				"pokemon_mansion_1f", "pokemon_mansion_2f", "pokemon_mansion_3f", "pokemon_mansion_b1f"
 			],
 			"escape": { "map": "cinnabar_island", "spawn": "from_manoir", "facing": "down" }
+		},
+		"slowpoke_well": {
+			"maps": ["slowpoke_well_b1f", "slowpoke_well_b2f"],
+			"escape": { "map": "azalea_town", "spawn": "from_well", "facing": "down" }
 		}
 	}
 }

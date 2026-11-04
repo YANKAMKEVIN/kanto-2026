@@ -39,7 +39,13 @@ const DATA_DIR := "res://data"
 ## JOH2 (2026-11-04) : description de Rosalia validée (R-25, plus « draft ») ; textes [D] hors du
 ## dossier joh-03 (garde de la Route 42, Pokémon de la ferme, sages et habitants de Rosalia),
 ## JOH2-Q1.
+## JOH4 (2026-11-04) : description d'Écorcia validée (E-34, plus « draft ») ; textes [D] hors du
+## dossier joh-05 (barrière du puits, Canarticho, Ramoloss sans queue, habitant), JOH4-Q1.
 const PENDING_DRAFTS: Array[String] = [
+	"dialogues/joh4_azalea_town.json/azalea_well_block",
+	"dialogues/joh4_ilex_forest.json/ilex_forest_canarticho",
+	"dialogues/joh4_slowpoke_well_b2f.json/slowpoke_well_b2f_ramoloss_sans_queue",
+	"dialogues/joh4_azalea_interiors.json/azalea_house_1_habitant",
 	"dialogues/joh2_ecruteak_city.json/ecruteak_city_garde_route_42",
 	"dialogues/joh2_route_39.json/route_39_ecremeuh",
 	"dialogues/joh2_route_39.json/route_39_tauros",
@@ -52,7 +58,6 @@ const PENDING_DRAFTS: Array[String] = [
 "world/zones.json/zones/saffron_city",
 	"world/zones.json/zones/olivine_city",
 	"world/zones.json/zones/goldenrod_city",
-	"world/zones.json/zones/azalea_town",
 	"world/zones.json/zones/mahogany_town",
 	"dialogues/johto_systems.json/storage_offline/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",

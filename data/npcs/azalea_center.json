@@ -9,10 +9,10 @@
 	},
 	"garcon": {
 		"cell": [
-			3,
-			6
+			11,
+			5
 		],
-		"facing": "right",
+		"facing": "left",
 		"sprite": "kid",
 		"dialogue": "azalea_center_garcon"
 	}

@@ -1,0 +1,110 @@
+{
+	"map": "slowpoke_well_b1f",
+	"spawn": "from_azalea",
+	"facing": "down",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_squirtle",
+		"taken_bulbasaur",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"pokedex_activated",
+		"league_champion_defeated",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"johto_letter_read",
+		"johto_arrived",
+		"johto_act1",
+		"storage_offline",
+		"johto_team_stolen",
+		"johto_starter_chosen",
+		"johto_orme_left",
+		"johto_rosalia_rockets_seen",
+		"johto_tower_legend_heard",
+		"johto_goldenrod_arrived",
+		"johto_egg_received",
+		"johto_radio_tower_closed_seen",
+		"johto_azalea_clue",
+		"johto_kurt_told"
+	],
+	"party": [
+		{
+			"species": "croconaw",
+			"level": 23,
+			"moves": [
+				"surf",
+				"bite",
+				"water_gun",
+				"scary_face"
+			]
+		},
+		{
+			"species": "furret",
+			"level": 21,
+			"moves": [
+				"quick_attack",
+				"fury_swipes",
+				"defense_curl",
+				"slam"
+			]
+		},
+		{
+			"species": "flaaffy",
+			"level": 22,
+			"moves": [
+				"thunder_shock",
+				"thunder_wave",
+				"tackle",
+				"cotton_spore"
+			]
+		},
+		{
+			"species": "togepi",
+			"level": 14,
+			"moves": [
+				"charm",
+				"metronome",
+				"sweet_kiss",
+				"growl"
+			]
+		}
+	],
+	"bag": {
+		"poke_ball": 10,
+		"potion": 5,
+		"super_potion": 4,
+		"antidote": 2,
+		"hm03": 1,
+		"escape_rope": 1
+	},
+	"money": 5000,
+	"confiscated": {
+		"party": [
+			{
+				"species": "blastoise",
+				"level": 62
+			},
+			{
+				"species": "pidgeot",
+				"level": 58
+			}
+		],
+		"items": {
+			"great_ball": 7,
+			"hyper_potion": 4
+		}
+	}
+}
