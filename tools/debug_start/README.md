@@ -407,3 +407,27 @@ n'existe pas encore sur cette base (elle vient du J22).
 
 La victoire contre le Champion pose `league_stage_4_cleared` et **s'arrête là** (Chen paraît dans
 la salle ; la porte nord mène au Panthéon, sans sortie tant que la cérémonie du T17 n'existe pas).
+
+## Chapitre Johto (JOH0, `docs/tech/jalon-joh0.md` §2.2)
+
+Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "party": [...],
+"items": { ... } }`) ; les drapeaux `storage_offline` et `johto_act1` sont levés avec. Clé
+**`cutscene`** : une scène jouée à la première entrée de carte (QA d'une scène sans déclencheur).
+
+- `johto_confiscated` : Centre de Jadielle, 2 Pokémon de Johto, 5 Pokémon de Ligue confisqués :
+  le terminal du PC et le terminal d'échange répondent « Le réseau de Kanto ne répond pas. ».
+- `johto_confiscated_full` : Route 1, 6 Pokémon, Stockage hors ligne, herbes à 100 % : une
+  Ball est refusée avant le lancer (« Ton équipe est pleine, et le PC ne répond pas. »).
+- `johto_return` : comme `johto_confiscated`, puis la scène de test `johto_return_test` (choix des
+  6, écriture, PC de nouveau ouvert) dès l'arrivée.
+- `johto_light_test` : Route 1 sous le profil `johto_auto`, moment forcé `night` (changer
+  `"period"` en `morning` ou `day` pour les trois captures du lot B ; l'horloge réelle reprend
+  sans la clé). Clés `light_profile` et `period` de `DebugStart`.
+## QA entrée des combats de Dresseur (A17, 2026-11-04)
+
+| Fichier | Partie |
+|---|---|
+| `qa_pierre.json` | Copie de `route_3` (Reptincel N17, Papilusion N15, Roucool N14) dans l'Arène d'Argenta (spawn `entrance`, face au nord), **Liam déjà battu**, Badge Roche non obtenu : monter tout droit, PARLER à Pierre → « VS » puis entrée |
+| `qa_fx_vagues.json` | Galerie d'effets (`fx_gallery`) : 46 attaques des vagues 1 et 2 « Rouge » en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` |
+| `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
+

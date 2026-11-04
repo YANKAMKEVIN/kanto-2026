@@ -53,9 +53,24 @@ esac
 CI="non vérifiée (--skip-ci)"
 if [ "$SKIP_CI" = 0 ]; then
 	[ "$DIRTY" = 0 ] || fail "arbre modifié : la CI ne peut pas couvrir ce build (--skip-ci pour un essai local)"
-	CONCLUSION="$(gh run list --workflow godot-tests.yml --commit "$SHA" --limit 1 --json conclusion --jq '.[0].conclusion // ""' 2>/dev/null || true)"
-	[ "$CONCLUSION" = "success" ] || fail "CI non verte sur $SHA (conclusion : « ${CONCLUSION:-aucune} ») : pousse, puis tools/ci_wait.sh"
-	CI="success ($(gh run list --workflow godot-tests.yml --commit "$SHA" --limit 1 --json databaseId --jq '.[0].databaseId'))"
+	# La CI ne se lance pas pour un commit qui ne touche que docs/ ou *.md (paths-ignore du workflow) :
+	# dans ce cas on prend la CI du dernier ancêtre testé, à condition que tout ce qui a changé depuis
+	# soit de la documentation (le code construit est alors celui qui a été testé).
+	CI_SHA="$SHA"
+	CI_RUN="$(gh run list --workflow godot-tests.yml --commit "$CI_SHA" --limit 1 --json databaseId --jq '.[0].databaseId // ""' 2>/dev/null || true)"
+	if [ -z "$CI_RUN" ]; then
+		for ANCESTOR in $(git rev-list --first-parent --max-count=30 "$SHA"); do
+			RUN="$(gh run list --workflow godot-tests.yml --commit "$ANCESTOR" --limit 1 --json databaseId --jq '.[0].databaseId // ""' 2>/dev/null || true)"
+			if [ -n "$RUN" ]; then CI_SHA="$ANCESTOR"; CI_RUN="$RUN"; break; fi
+		done
+		[ -n "$CI_RUN" ] || fail "aucune CI sur $SHA ni sur ses ancêtres récents : pousse, puis tools/ci_wait.sh"
+		if git diff --name-only "$CI_SHA" "$SHA" | grep -v -E '^docs/|\.md$' | grep -q .; then
+			fail "$SHA n'a pas de CI et diffère de ${CI_SHA:0:8} (testé) par autre chose que de la documentation : pousse, puis tools/ci_wait.sh"
+		fi
+	fi
+	CONCLUSION="$(gh run view "$CI_RUN" --json conclusion --jq '.conclusion // ""' 2>/dev/null || true)"
+	[ "$CONCLUSION" = "success" ] || fail "CI non verte sur ${CI_SHA:0:8} (conclusion : « ${CONCLUSION:-aucune} ») : pousse, puis tools/ci_wait.sh"
+	CI="success ($CI_RUN${CI_SHA:+, commit ${CI_SHA:0:8}})"
 fi
 
 # 4. Export release signé par Godot, puis fond du splash Android 12+ (re-signé avec la même clé).

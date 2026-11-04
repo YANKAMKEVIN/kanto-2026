@@ -1,0 +1,17 @@
+{
+	"johto_return_test": {
+		"steps": [
+			{"dialogue": "johto_return_test_before"},
+			{"return_team": true},
+			{"save": "retour de l'équipe (scène de test)"},
+			{"dialogue": "johto_return_test_after"}
+		]
+	},
+	"johto_confiscate_test": {
+		"steps": [
+			{"confiscate_team": true},
+			{"save": "vol de l'équipe (scène de test)"},
+			{"dialogue": "storage_offline"}
+		]
+	}
+}

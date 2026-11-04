@@ -66,8 +66,10 @@ func test_parcours_06_evolution_stockage_pokedex_mew() -> void:
 
 	_play.begin("Pokédex à 150 : Diplôme")
 	_play.shortcut(["league_champion_defeated"], "Ligue (parcours 04)")
-	for species: StringName in _play.boot.get_pokemon_data().get_species_ids():
-		if species != &"mew":
+	# JOH0 (T6) : les 150 autres espèces sont celles de Kanto (numéro national ≤ 151).
+	var data := _play.boot.get_pokemon_data()
+	for species: StringName in data.get_species_ids():
+		if species != &"mew" and data.get_species(species).dex <= 151:
 			GameState.pokedex.mark_caught(species)
 	_play.shortcut([], "les 150 captures de toute l'aventure (Pokédex)")
 	_play.expect(GameState.pokedex.caught_count() == 150, "150 espèces capturées")

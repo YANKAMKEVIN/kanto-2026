@@ -7,6 +7,7 @@ extends GutTest
 ## **Système de sauvegarde : à valider seul par Kevin sur le téléphone (règle 1 de CLAUDE.md).**
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const SaveV10 := preload("res://tests/helpers/save_v10.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const PATH := "user://test/save_j30.json"
@@ -49,7 +50,7 @@ func _entry_of(state: Node) -> Dictionary:
 
 
 func test_no_new_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 9, "champ facultatif : la version reste celle du J23 (v8), v9 JR")
+	assert_eq(SaveSystem.VERSION, 10, "champ facultatif : la version reste celle du J23 (v8), v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
 
 
 func test_an_empty_hall_writes_no_field() -> void:
@@ -106,7 +107,7 @@ func test_a_v7_save_without_the_field_loads_and_rewrites_unchanged() -> void:
 	assert_true(state.load_dict(content, _data), "chargée sans entrée écartée")
 	assert_true(state.hall_of_fame.is_empty(), "Panthéon vide")
 	assert_eq(_save.write(state.to_dict()), OK)
-	var v8: Dictionary = v7.duplicate(true)
+	var v8: Dictionary = SaveV10.with_migrated_bond(v7)
 	v8["version"] = SaveSystem.VERSION
 	assert_eq(JSON.parse_string(_fs.files[PATH]), JSON.parse_string(JSON.stringify(v8)),
 		"réécrite à l'identique (passée en v8), sans « hall_of_fame »")

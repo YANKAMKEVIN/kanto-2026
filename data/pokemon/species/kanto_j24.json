@@ -27,7 +27,10 @@
 			[19, "water_gun"], [26, "double_slap"], [33, "body_slam"], [41, "amnesia"],
 			[49, "hydro_pump"]
 		],
-		"evolutions": [{ "into": "poliwrath", "method": "item", "item": "water_stone" }]
+		"evolutions": [
+			{ "into": "poliwrath", "method": "item", "item": "water_stone" },
+			{ "into": "politoed", "method": "trade", "item": "kings_rock" }
+		]
 	},
 	"poliwrath": {
 		"dex": 62, "name": "Tartard", "types": ["water", "fighting"],
@@ -56,7 +59,10 @@
 			[1, "confusion"], [18, "disable"], [22, "headbutt"], [27, "growl"],
 			[33, "water_gun"], [40, "amnesia"], [48, "psychic"]
 		],
-		"evolutions": [{ "into": "slowbro", "method": "level", "level": 37 }]
+		"evolutions": [
+			{ "into": "slowbro", "method": "level", "level": 37 },
+			{ "into": "slowking", "method": "trade", "item": "kings_rock" }
+		]
 	},
 	"slowbro": {
 		"dex": 80, "name": "Flagadoss", "types": ["water", "psychic"],
@@ -111,7 +117,8 @@
 		"learnset": [
 			[1, "bubble"], [1, "smokescreen"], [19, "smokescreen"], [24, "leer"],
 			[30, "water_gun"], [41, "agility"], [52, "hydro_pump"]
-		]
+		],
+		"evolutions": [{ "into": "kingdra", "method": "trade", "item": "dragon_scale" }]
 	},
 	"omanyte": {
 		"dex": 138, "name": "Amonita", "types": ["rock", "water"],

@@ -135,6 +135,9 @@ func _without_status(saved: Dictionary) -> Dictionary:
 				(member as Dictionary).erase("status_turns")
 				assert_true(PokemonUid.is_valid((member as Dictionary).get("uid")), "identifiant")
 				(member as Dictionary).erase("uid")
+				# JOH0 (v10) : lien de migration.
+				assert_eq((member as Dictionary).get("bond"), 50.0, "lien de migration")
+				(member as Dictionary).erase("bond")
 	# J11 : aucun compagnon au départ.
 	assert_eq(copy.get("companion"), "", "aucun compagnon")
 	copy.erase("companion")

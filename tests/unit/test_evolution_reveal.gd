@@ -46,7 +46,7 @@ func test_family_in_columns() -> void:
 	assert_eq(EvolutionReveal.family(&"charmeleon", _data), expected)
 	assert_eq(EvolutionReveal.family(&"charizard", _data), expected, "depuis le dernier stade")
 	assert_eq(EvolutionReveal.family(&"vaporeon", _data),
-		[[&"eevee"], [&"vaporeon", &"jolteon", &"flareon"]] as Array[Array])
+		[[&"eevee"], [&"vaporeon", &"jolteon", &"flareon", &"espeon", &"umbreon"]] as Array[Array])
 	assert_eq(EvolutionReveal.family(&"missingno", _data), [] as Array[Array])
 
 

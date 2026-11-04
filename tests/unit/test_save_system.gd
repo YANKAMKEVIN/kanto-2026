@@ -4,6 +4,7 @@ extends GutTest
 ## GameState → fichier → GameState neuf.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const SaveV10 := preload("res://tests/helpers/save_v10.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const ScriptedRng := preload("res://tests/helpers/scripted_rng.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
@@ -464,6 +465,8 @@ func test_the_real_v1_save_loads_identically_after_migration() -> void:
 		expected["favorite"] = false
 		expected["status"] = ""
 		expected["status_turns"] = 0.0
+		# JOH0 (v10) : lien de migration.
+		expected["bond"] = 50.0
 		assert_true(PokemonUid.is_valid(after["party"][i].get("uid")), "identifiant (J11)")
 		expected["uid"] = after["party"][i]["uid"]
 		assert_eq(after["party"][i], expected,
@@ -555,7 +558,8 @@ func _without_v4(content: Dictionary) -> Dictionary:
 	for key: String in ["party", "storage"]:
 		for member: Variant in JsonFields.get_array(copy, key):
 			if member is Dictionary:
-				for field: String in ["status", "status_turns", "uid"]:
+				# « bond » : lien de la v10 (JOH0).
+				for field: String in ["status", "status_turns", "uid", "bond"]:
 					(member as Dictionary).erase(field)
 	return copy
 
@@ -712,8 +716,10 @@ func test_upgrade_to_the_j11_version_changes_nothing_but_the_version() -> void:
 	# rien n'est inventé dans le fichier, le chargement s'en charge (test_save_j11).
 	var content := {"version": 4, "party": [{"species": "pidgey"}], "storage": []}
 	assert_eq(SaveSystem.upgrade(content), OK)
-	assert_eq(content, {"version": SaveSystem.VERSION, "party": [{"species": "pidgey"}],
-		"storage": []}, "aucun champ ajouté")
+	# JOH0 (v10) : le seul pas qui ajoute un champ depuis le J11 est le lien de migration.
+	assert_eq(content, {"version": SaveSystem.VERSION,
+		"party": [{"species": "pidgey", "bond": SaveSystem.V10_MIGRATED_BOND}],
+		"storage": []}, "aucun champ ajouté hors le lien de la v10")
 
 
 func test_migration_note() -> void:
@@ -857,7 +863,7 @@ func test_upgrade_4_to_5_changes_nothing_but_the_version() -> void:
 	var bare := {"version": 4}
 	assert_eq(SaveSystem.upgrade(bare, 5), OK)
 	assert_eq(bare, {"version": 5}, "aucun champ inventé : les défauts viennent de load_dict")
-	assert_eq(SaveSystem.VERSION, 9, "v7 depuis le J15 (par-dessus la v6 du J11), v8 au J23, v9 JR")
+	assert_eq(SaveSystem.VERSION, 10, "v7 depuis le J15 (par-dessus la v6 du J11), v8 au J23, v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
 	assert_eq(SaveSystem.migration_note(4, 5), "sauvegarde v4 → v5")
 
 
@@ -871,9 +877,9 @@ func test_the_v4_save_of_kevin_is_migrated_to_v5_without_any_change() -> void:
 	assert_eq(_save.last_status, OK, _save.last_error)
 	assert_eq(int(content["version"]), SaveSystem.VERSION, "migrée à la version courante")
 	assert_eq(_save.read_version, 4, "lue en v4 : le journal note la migration")
-	var expected: Dictionary = v4.duplicate(true)
+	var expected: Dictionary = SaveV10.with_migrated_bond(v4)
 	expected["version"] = SaveSystem.VERSION
-	assert_eq(_json(content), _json(expected), "rien d'autre ne change")
+	assert_eq(_json(content), _json(expected), "rien d'autre ne change (lien de la v10 à part)")
 
 
 func test_the_v4_save_of_kevin_resumes_with_kevin_regis_and_the_hero() -> void:

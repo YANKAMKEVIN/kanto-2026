@@ -5,18 +5,44 @@ extends RefCounted
 ## ([method candidates], jalon-09.md §2.3.1) et [b]ce qui change[/b] ([method evolve] : espèce,
 ## statistiques, capacités à apprendre). La séquence à l'écran (annulable) est jouée par
 ## [EvolutionDirector], qui n'appelle [method evolve] qu'une fois la transformation menée à son
-## terme (dossier 04 §7). Les règles « trade » ne sont jamais déclenchées ici (adaptation solo à
-## décider par Kevin).
+## terme (dossier 04 §7). Les règles « trade » sont déclenchées par le terminal d'échange local
+## ([LocalTrade], J32), jamais ici. Chapitre Johto (JOH0, `jalon-joh0.md` §2.8) : une règle
+## « bond » est satisfaite au prochain niveau gagné si le lien atteint
+## [constant BondRules.THRESHOLD] et, si elle a des moments, si le moment courant en fait partie ;
+## le moment est posé par Boot ([method set_current_period] : celui de l'horloge à Johto, &""
+## ailleurs : à Kanto, Évoli n'évolue ni en Mentali ni en Noctali [D]).
+
+## JOH0 : moment courant (identifiant de [WorldClock]), &"" = pas d'heure. Statique **sans
+## référence d'objet** (une valeur, jamais un Callable : un Callable statique vers Boot survivait
+## à sa destruction et corrompait le tas à la sortie du processus) : tous les chemins (fin de
+## combat, Pension, Super Bonbon) lisent la même valeur. Les tests la remettent à &"".
+static var _current_period: StringName = &""
 
 
-## Espèce vers laquelle [param pokemon] évolue à son niveau actuel (première règle
-## « level » satisfaite), ou &"" s'il n'y en a pas.
-static func level_up_target(pokemon: Pokemon, data: PokemonData) -> StringName:
+## Pose le moment courant (Boot : à chaque changement de carte et de moment).
+static func set_current_period(period: StringName) -> void:
+	_current_period = period
+
+
+## Moment courant ([method set_current_period]) ; &"" sans heure.
+static func current_period() -> StringName:
+	return _current_period
+
+
+## Espèce vers laquelle [param pokemon] évolue à son niveau actuel (première règle « level »
+## satisfaite, ou « bond » satisfaite au moment [param period] ; vide = [method current_period]),
+## ou &"" s'il n'y en a pas.
+static func level_up_target(pokemon: Pokemon, data: PokemonData,
+		period: StringName = &"") -> StringName:
 	var species := data.get_species(pokemon.species_id)
 	if species == null:
 		return &""
+	var moment := period if not period.is_empty() else current_period()
 	for rule: EvolutionRule in species.evolutions:
 		if rule.method == EvolutionRule.Method.LEVEL and pokemon.level >= rule.level:
+			return rule.into
+		if rule.method == EvolutionRule.Method.BOND and BondRules.reaches_threshold(pokemon.bond) \
+				and rule.allows_period(moment):
 			return rule.into
 	return &""
 

@@ -167,7 +167,8 @@ extends RefCounted
 ## ([method replace]) ; ajouté en fin d'enum.
 enum State { READY, CHOOSING, OVER, REPLACING }
 ## Réponse de [method check_switch] : OK, ou la raison du refus.
-enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE }
+## EGG (JOH0) : un œuf ne combat pas ; ajouté en fin d'enum.
+enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE, EGG }
 ## FOE_FLED (jalon 14) : le Pokémon sauvage s'est enfui (Téléport) ; ajouté en fin d'enum.
 enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT, FOE_FLED }
 
@@ -330,6 +331,8 @@ func check_switch(party_index: int) -> SwitchCheck:
 		return SwitchCheck.NO_POKEMON
 	if pokemon.is_fainted():
 		return SwitchCheck.FAINTED
+	if pokemon.is_egg():
+		return SwitchCheck.EGG
 	if _player.active != null and _player.active.pokemon == pokemon:
 		return SwitchCheck.ACTIVE
 	return SwitchCheck.OK
@@ -1455,7 +1458,8 @@ func _award_exp(foe: Pokemon, events: Array[BattleEvent]) -> void:
 	var members: Array[Pokemon] = []
 	if _rules.exp_all and _player.party != null:
 		for pokemon: Pokemon in _player.party.get_all():
-			if not pokemon.is_fainted():
+			# JOH0 : un œuf ne gagne pas d'XP.
+			if not pokemon.is_fainted() and not pokemon.is_egg():
 				members.append(pokemon)
 	var shares := ExpCalc.distribute(ExpCalc.amount(foe, _data, _rules.exp_multiplier),
 		standing, members, _rules.exp_all)

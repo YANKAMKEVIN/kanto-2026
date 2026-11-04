@@ -107,6 +107,11 @@ var look_every: float = LOOK_EVERY_DEFAULT
 ## dialogue. Sans condition, toujours présent.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
+## Chapitre Johto (JOH0, `jalon-joh0.md` §2.6) : moments (« if_period ») et jours
+## (« if_weekday ») où le PNJ est sur la carte ; vides = toujours. Lus à l'entrée sur la carte
+## ([method GameMap.set_time_context]) ; sans heure (Kanto), un PNJ daté est absent.
+var if_periods: Array[StringName] = []
+var if_weekdays: Array[StringName] = []
 ## Espèce d'un Pokémon du décor que le joueur peut OBSERVER (jalon-06.md §3.5, Q-7) : le
 ## geste l'enregistre « vu » au Pokédex sur la carte. &"" = rien n'est enregistré. Seulement
 ## sur un PNJ interactif au verbe OBSERVER ([NpcRoster] le vérifie).
@@ -182,15 +187,28 @@ func has_look() -> bool:
 
 ## Vrai si le PNJ est sur la carte avec les drapeaux [param flags] (null = nouvelle partie,
 ## aucun drapeau levé).
-func is_present(flags: StoryFlags) -> bool:
+func is_present(flags: StoryFlags, period: StringName = &"", weekday: StringName = &"") -> bool:
+	if not matches_time(period, weekday):
+		return false
 	if flags == null:
 		return if_flags.is_empty()
 	return flags.has_all(if_flags) and flags.has_none(unless_flags)
 
 
-## Vrai si la présence dépend d'au moins un drapeau.
+## Vrai si [param period] et [param weekday] satisfont [member if_periods] et
+## [member if_weekdays] (JOH0) ; une condition posée exige une heure (&"" : faux).
+func matches_time(period: StringName, weekday: StringName) -> bool:
+	if not if_periods.is_empty() and (period.is_empty() or not if_periods.has(period)):
+		return false
+	if not if_weekdays.is_empty() and (weekday.is_empty() or not if_weekdays.has(weekday)):
+		return false
+	return true
+
+
+## Vrai si la présence dépend d'au moins un drapeau, d'un moment ou d'un jour.
 func is_conditional() -> bool:
-	return not if_flags.is_empty() or not unless_flags.is_empty()
+	return not if_flags.is_empty() or not unless_flags.is_empty() \
+		or not if_periods.is_empty() or not if_weekdays.is_empty()
 
 
 ## Interaction correspondante sur [param at_cell] (source = [param source]), ou null.

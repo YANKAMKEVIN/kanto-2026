@@ -4,8 +4,8 @@ extends RefCounted
 ## fiches série 01, « Comparaison de lumière », calibration C2). Donnée pure, lue dans
 ## `data/world/lighting.json` par [LightingLibrary] ; `WorldLighting` (T3) la pose sur les
 ## shaders du monde à chaque changement de carte (docs/tech/jalon-07.md §3.2, §6.7).
-## Le jour/nuit (phase 10) interpolera entre plusieurs profils ; rien ne l'anticipe ici
-## au-delà de la forme des données.
+## Le jour/nuit du Chapitre Johto (JOH0, `jalon-joh0.md` §2.4) interpole entre deux profils
+## ([method lerp]) pendant le fondu de 10 s d'un changement de moment.
 
 ## Bornes de validation (lues par [LightingLibrary]).
 const GAIN_MAX: float = 2.0
@@ -85,3 +85,43 @@ func has_wind() -> bool:
 func has_room() -> bool:
 	return (room_edge_color.a > 0.0 and room_edge_width > 0.0) \
 		or (room_pool_color.a > 0.0 and room_pool_radius > 0.0)
+
+
+## Profil intermédiaire entre [param from] (t = 0) et [param to] (t = 1), JOH0 : gains, couleurs
+## (alpha compris), intensités, largeur, longueur, inclinaison, direction du soleil et vent
+## interpolés linéairement ; l'identifiant, « flat » et la lumière de pièce sont ceux de
+## [param to] (ils ne s'interpolent pas). Un bloc absent d'un côté (alpha 0, intensité 0) s'ouvre
+## ou se ferme en fondu. Null d'un côté = profil vide.
+static func lerp(from: LightProfile, to: LightProfile, t: float) -> LightProfile:
+	var a := from if from != null else LightProfile.new()
+	var b := to if to != null else LightProfile.new()
+	var w := clampf(t, 0.0, 1.0)
+	var result := LightProfile.new()
+	result.id = b.id
+	result.grade_shadows = a.grade_shadows.lerp(b.grade_shadows, w)
+	result.grade_midtones = a.grade_midtones.lerp(b.grade_midtones, w)
+	result.grade_highlights = a.grade_highlights.lerp(b.grade_highlights, w)
+	result.grade_strength = lerpf(a.grade_strength, b.grade_strength, w)
+	result.grade_flat = b.grade_flat
+	result.rim_color = a.rim_color.lerp(b.rim_color, w)
+	result.rim_strength = lerpf(a.rim_strength, b.rim_strength, w)
+	result.rim_width = lerpf(a.rim_width if a.has_rim() else b.rim_width,
+		b.rim_width if b.has_rim() else a.rim_width, w)
+	result.sun_direction = a.sun_direction.lerp(b.sun_direction, w)
+	if result.sun_direction.is_zero_approx():
+		result.sun_direction = b.sun_direction
+	result.cast_shadow_color = a.cast_shadow_color.lerp(b.cast_shadow_color, w)
+	result.cast_shadow_length = lerpf(a.cast_shadow_length if a.has_cast_shadow()
+		else b.cast_shadow_length, b.cast_shadow_length if b.has_cast_shadow()
+		else a.cast_shadow_length, w)
+	result.cast_shadow_skew_deg = lerpf(a.cast_shadow_skew_deg if a.has_cast_shadow()
+		else b.cast_shadow_skew_deg, b.cast_shadow_skew_deg if b.has_cast_shadow()
+		else a.cast_shadow_skew_deg, w)
+	result.contact_color = a.contact_color.lerp(b.contact_color, w)
+	result.wind_strength = lerpf(a.wind_strength, b.wind_strength, w)
+	result.room_edge_color = b.room_edge_color
+	result.room_edge_width = b.room_edge_width
+	result.room_pool_color = b.room_pool_color
+	result.room_pool_center = b.room_pool_center
+	result.room_pool_radius = b.room_pool_radius
+	return result

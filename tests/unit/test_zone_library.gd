@@ -2,6 +2,10 @@ extends GutTest
 ## ZoneLibrary : zones du Kanto du projet (data/world/zones.json, jalon-06.md §3.2).
 
 const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
+const JOHTO_AREAS_PATH := "res://assets/ui/map/johto_placeholder_areas.json"
+## JOH0 : les cinq villes de Johto déclarées (cartes vides jusqu'aux jalons de contenu).
+const JOHTO_ZONES: Array[StringName] = [&"olivine_city", &"ecruteak_city", &"goldenrod_city",
+	&"azalea_town", &"mahogany_town"]
 ## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
 ## 2 nord et Argenta (T11) et les intérieurs (T13) sont construits : liste vide. À retirer
 ## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
@@ -54,7 +58,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 48, "Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 53, "JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
@@ -157,16 +161,19 @@ func test_first_zones_of_the_journey() -> void:
 ## rectangle dans le fichier de l'illustration ; mêmes identifiants des deux côtés.
 func test_same_zones_as_the_kanto_illustration() -> void:
 	_zones.load_file()
-	var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(AREAS_PATH))
-	var area_ids: Array[StringName] = []
-	for key: String in doc["zones"]:
-		area_ids.append(StringName(key))
-		var entry: Dictionary = doc["zones"][key]
-		assert_eq(entry.keys(), ["area"], "%s : seulement la géométrie" % key)
-	var ids := _zones.get_ids()
-	ids.sort_custom(func(a: StringName, b: StringName) -> bool: return a < b)
-	area_ids.sort_custom(func(a: StringName, b: StringName) -> bool: return a < b)
-	assert_eq(ids, area_ids)
+	# JOH0 : une illustration par région ; chaque page porte exactement les zones de sa région.
+	for region: StringName in [ZoneData.REGION_KANTO, ZoneData.REGION_JOHTO]:
+		var path := AREAS_PATH if region == ZoneData.REGION_KANTO else JOHTO_AREAS_PATH
+		var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+		var area_ids: Array[StringName] = []
+		for key: String in doc["zones"]:
+			area_ids.append(StringName(key))
+			var entry: Dictionary = doc["zones"][key]
+			assert_eq(entry.keys(), ["area"], "%s : seulement la géométrie" % key)
+		var ids := _zones.zones_of_region(region)
+		ids.sort_custom(func(a: StringName, b: StringName) -> bool: return a < b)
+		area_ids.sort_custom(func(a: StringName, b: StringName) -> bool: return a < b)
+		assert_eq(ids, area_ids, String(region))
 
 
 ## Carte (T18) : chaque zone construite a sa description (validée le 2026-10-06) ; la Route 1 annonce ses
@@ -413,3 +420,44 @@ func test_j20_zones_texts_maps_and_services() -> void:
 	for map_id: StringName in [&"celadon_game_corner", &"rocket_hideout_b1f", &"rocket_hideout_b4f",
 			&"rocket_hideout_elevator"]:
 		assert_has(_zones.get_zone(&"celadon_city").maps, map_id)
+
+
+# --- Chapitre Johto (JOH0, jalon-joh0.md §2.13) : régions --------------------------------------
+
+func test_region_defaults_to_kanto_and_is_read_per_zone() -> void:
+	var dict := {"zones": {
+		"pallet_town": {"name": "Bourg Palette", "kind": "town", "maps": ["pallet_town"]},
+		"olivine_city": {"name": "Oliville", "kind": "town", "maps": ["olivine_city"],
+			"region": "johto"},
+	}}
+	assert_true(_zones.add_from_dict(dict, "test"), str(_zones.get_errors()))
+	assert_eq(_zones.get_zone(&"pallet_town").region, ZoneData.REGION_KANTO, "défaut : Kanto")
+	assert_eq(_zones.get_zone(&"olivine_city").region, ZoneData.REGION_JOHTO)
+	assert_eq(_zones.region_of(&"pallet_town"), &"kanto")
+	assert_eq(_zones.region_of(&"olivine_city"), &"johto")
+	assert_eq(_zones.region_of(&"carte_inconnue"), &"kanto", "[D] une carte sans zone est à Kanto")
+	assert_true(_zones.is_johto(&"olivine_city"))
+	assert_false(_zones.is_johto(&"pallet_town"))
+	assert_eq(_zones.zones_of_region(&"johto"), [&"olivine_city"] as Array[StringName])
+	assert_eq(_zones.zones_of_region(&"kanto"), [&"pallet_town"] as Array[StringName])
+
+
+func test_an_unknown_region_is_rejected() -> void:
+	var dict := {"zones": {
+		"x": {"name": "X", "kind": "town", "region": "hoenn"},
+		"y": {"name": "Y", "kind": "town", "region": 3},
+	}}
+	assert_false(_zones.add_from_dict(dict, "test"))
+	assert_eq(_zones.size(), 0)
+	assert_push_error_count(2)
+
+
+func test_real_zones_declare_the_five_johto_towns() -> void:
+	assert_true(_zones.load_file())
+	assert_eq(_zones.zones_of_region(ZoneData.REGION_JOHTO), JOHTO_ZONES,
+		"les cinq villes de Johto (points de Vol), sans carte jusqu'aux jalons de contenu")
+	for id: StringName in JOHTO_ZONES:
+		assert_true(_zones.get_zone(id).maps.is_empty(), "%s : pas encore de carte" % id)
+		assert_true(_zones.get_zone(id).draft, "%s : description [D]" % id)
+	assert_eq(_zones.zones_of_region(ZoneData.REGION_KANTO).size(),
+		_zones.size() - JOHTO_ZONES.size())

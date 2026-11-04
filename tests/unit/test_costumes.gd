@@ -106,7 +106,7 @@ func test_the_worn_costume_round_trips() -> void:
 	assert_eq(state.to_dict().get("player_costume"), "cascade")
 	var loaded := _round_trip(state)
 	assert_eq(loaded.player_costume, &"cascade")
-	assert_eq(SaveSystem.VERSION, 9, "pas de nouvelle version de sauvegarde")
+	assert_eq(SaveSystem.VERSION, 10, "pas de nouvelle version de sauvegarde, v10 JOH0 (lien, œuf, équipe confisquée)")
 
 
 func test_a_costume_without_its_badge_loads_as_the_original_outfit() -> void:

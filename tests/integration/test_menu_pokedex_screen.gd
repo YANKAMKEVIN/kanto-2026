@@ -40,7 +40,8 @@ func before_each() -> void:
 	_boot.get_hud().get_toast().toast_shown.connect(
 		func(title: String, _detail: String) -> void: _toasts.append(title))
 	_screen.pokedex_filter_changed.connect(
-		func(filter: int, zone: StringName, type: StringName, text: String) -> void:
+		func(filter: int, zone: StringName, type: StringName, text: String,
+				_region: StringName) -> void:
 			_filters.append([filter, zone, type, text]))
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
 

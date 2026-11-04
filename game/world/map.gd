@@ -114,6 +114,10 @@ var _npcs_spawned: bool = false
 var _roster: NpcRoster
 ## Derniers drapeaux de [method refresh_npcs] (null avant) : qui est présent.
 var _npc_flags: StoryFlags
+## JOH0 (`jalon-joh0.md` §2.6) : moment et jour lus à l'entrée sur la carte (PNJ datés) ; vides
+## hors de Johto. Posés par Boot ([method set_time_context]) avant [method refresh_npcs].
+var _npc_period: StringName = &""
+var _npc_weekday: StringName = &""
 ## PNJ créés depuis le fichier (les seuls que refresh_npcs peut retirer).
 var _roster_npcs: Array[Npc] = []
 ## Vrai dès qu'un joueur a été placé sur la carte (routines relâchées).
@@ -212,6 +216,13 @@ func remove_npc(id: StringName) -> void:
 ## présents et manquent, retire ceux qui ne le sont plus (case libérée tout de suite). Les
 ## PNJ ajoutés par [method add_npc] ne sont jamais retirés (ils restent jusqu'au départ de
 ## la carte). Sans doublon si on l'appelle plusieurs fois.
+## JOH0 : le moment et le jour que lisent les PNJ datés (« if_period », « if_weekday ») au
+## prochain [method refresh_npcs] ; &"" = pas d'heure (Kanto : un PNJ daté est absent).
+func set_time_context(period: StringName, weekday: StringName) -> void:
+	_npc_period = period
+	_npc_weekday = weekday
+
+
 func refresh_npcs(flags: StoryFlags) -> void:
 	_npc_flags = flags
 	if not _npcs_spawned:
@@ -221,7 +232,7 @@ func refresh_npcs(flags: StoryFlags) -> void:
 		return
 	for npc: Npc in _roster_npcs.duplicate():
 		var spec := npc.get_spec()
-		if not spec.is_present(flags) or _is_misplaced(spec, flags):
+		if not spec.is_present(flags, _npc_period, _npc_weekday) or _is_misplaced(spec, flags):
 			remove_npc(npc.get_id())
 	for spec: NpcSpec in _present_specs(flags):
 		if get_npc(spec.id) == null:
@@ -423,7 +434,7 @@ func find_standing_cell(cell: Vector2i, mover: Object = null) -> Vector2i:
 	var homes: Dictionary[Vector2i, bool] = {}
 	if _roster != null:
 		for spec: NpcSpec in _roster.get_all():
-			if _npc_flags == null or spec.is_present(_npc_flags):
+			if _npc_flags == null or spec.is_present(_npc_flags, _npc_period, _npc_weekday):
 				homes[spec.placed_for(_npc_flags).cell] = true
 	var seen: Dictionary[Vector2i, bool] = {start: true}
 	var queue: Array[Vector2i] = [start]
@@ -566,7 +577,7 @@ func _spawn_npcs() -> void:
 ## drapeaux ([method NpcSpec.placed_for], clé « moved » du jalon 14).
 func _present_specs(flags: StoryFlags) -> Array[NpcSpec]:
 	var present: Array[NpcSpec] = []
-	for spec: NpcSpec in _roster.get_present(flags):
+	for spec: NpcSpec in _roster.get_present(flags, _npc_period, _npc_weekday):
 		if not awaits_painted_look(spec):
 			present.append(spec.placed_for(flags))
 	return present

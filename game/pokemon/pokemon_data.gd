@@ -43,6 +43,14 @@ const _EVOLUTION_KEYS: Dictionary[EvolutionRule.Method, Array] = {
 	EvolutionRule.Method.LEVEL: ["into", "method", "level"],
 	EvolutionRule.Method.ITEM: ["into", "method", "item"],
 	EvolutionRule.Method.TRADE: ["into", "method"],
+	EvolutionRule.Method.BOND: ["into", "method"],
+}
+## Clés facultatives par méthode (JOH0, `jalon-joh0.md` §2.8).
+const _EVOLUTION_OPTIONAL: Dictionary[EvolutionRule.Method, Array] = {
+	EvolutionRule.Method.LEVEL: [],
+	EvolutionRule.Method.ITEM: [],
+	EvolutionRule.Method.TRADE: ["item"],
+	EvolutionRule.Method.BOND: ["period"],
 }
 const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.STAT_STAGE: ["kind", "stat", "stages", "target", "chance"],
@@ -509,9 +517,11 @@ func _parse_evolution(value: Variant, where: String) -> EvolutionRule:
 			", ".join(PackedStringArray(EvolutionRule.METHOD_NAMES.keys()))])
 	var rule := EvolutionRule.new()
 	rule.method = EvolutionRule.METHOD_NAMES[entry["method"]]
-	var allowed: Array[String] = []
-	allowed.assign(_EVOLUTION_KEYS[rule.method])
-	var ok := _check_keys(entry, allowed, allowed, where)
+	var required: Array[String] = []
+	required.assign(_EVOLUTION_KEYS[rule.method])
+	var allowed: Array[String] = required.duplicate()
+	allowed.append_array(_EVOLUTION_OPTIONAL[rule.method])
+	var ok := _check_keys(entry, allowed, required, where)
 	if entry.get("into") is String and not (entry["into"] as String).is_empty():
 		rule.into = StringName(entry["into"])
 	elif entry.has("into"):
@@ -519,12 +529,31 @@ func _parse_evolution(value: Variant, where: String) -> EvolutionRule:
 	if rule.method == EvolutionRule.Method.LEVEL and entry.has("level"):
 		ok = _read_int(entry["level"], 1, ExpCurve.MAX_LEVEL, where + " level") and ok
 		rule.level = int(entry["level"]) if _is_int(entry["level"]) else 0
-	if rule.method == EvolutionRule.Method.ITEM and entry.has("item"):
+	if entry.has("item") and rule.method in [EvolutionRule.Method.ITEM,
+			EvolutionRule.Method.TRADE]:
 		if not entry["item"] is String or (entry["item"] as String).is_empty():
 			ok = _fail("%s : « item » doit être un identifiant d'objet" % where)
 		else:
 			rule.item = StringName(entry["item"])
+	if rule.method == EvolutionRule.Method.BOND and entry.has("period"):
+		ok = _read_periods(entry["period"], rule.periods, where + " period") and ok
 	return rule if ok else null
+
+
+## « period » d'une règle BOND : un moment ou une liste non vide de moments distincts
+## ([constant WorldClock.PERIOD_NAMES]).
+func _read_periods(value: Variant, into: Array[StringName], where: String) -> bool:
+	var raw: Array = value if value is Array else [value]
+	if raw.is_empty():
+		return _fail("%s : au moins un moment" % where)
+	for entry: Variant in raw:
+		if not entry is String or not WorldClock.PERIOD_NAMES.has(entry):
+			return _fail("%s : moment inconnu « %s » (%s)" % [where, str(entry),
+				", ".join(PackedStringArray(WorldClock.PERIOD_NAMES.keys()))])
+		if into.has(StringName(entry)):
+			return _fail("%s : moment « %s » en double" % [where, entry])
+		into.append(StringName(entry))
+	return true
 
 
 func _parse_move(value: Variant, where: String) -> MoveData:

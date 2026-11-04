@@ -85,7 +85,9 @@ func before_all() -> void:
 
 func test_species_values() -> void:
 	assert_eq(_data.get_errors().size(), 0, "\n".join(_data.get_errors()))
-	assert_eq(_data.get_species_ids().size(), 151,
+	var kanto := _data.get_species_ids().filter(func(id: StringName) -> bool:
+		return _data.get_species(id).dex <= 151)
+	assert_eq(kanto.size(), 151,
 		"38 + 12 + 9 (jalon 13) + 3 (jalon 14) + 2 (jalon 15) + 8 (jalon 17) + 6 (jalon 19) "
 		+ "+ 11 (jalon 20 : Caninos et Goupix sont ceux du J17) + 3 (jalon 21 : Ptitard, Tentacool, "
 		+ "Ronflex) + 13 (jalon 22) + 17 (jalon 24 : Saquedeneu et Léviator sont ceux des J20 et "
@@ -128,7 +130,8 @@ func test_evolutions() -> void:
 		assert_eq([rule.method, rule.into, rule.item],
 			[EvolutionRule.Method.ITEM, pair[1], &"moon_stone"], String(pair[0]))
 	# Voltorbe et Smogo : Électrode (N30) et Smogogo (N35) ajoutés au J32 (lot 32K).
-	for id: StringName in [&"arbok", &"golbat", &"parasect", &"clefable", &"wigglytuff"]:
+	# JOH0 (T6) : Nosferalto évolue en Nostenfer par lien (testé par test_johto_data.gd).
+	for id: StringName in [&"arbok", &"parasect", &"clefable", &"wigglytuff"]:
 		assert_eq(_data.get_species(id).evolutions.size(), 0, "%s : pas d'évolution" % id)
 
 

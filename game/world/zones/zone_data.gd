@@ -14,11 +14,19 @@ const KIND_PLACE: StringName = &"place"
 ## Route maritime (Route 21).
 const KIND_SEA_ROUTE: StringName = &"sea_route"
 const KINDS: Array[StringName] = [KIND_TOWN, KIND_ROUTE, KIND_PLACE, KIND_SEA_ROUTE]
+## Régions du jeu (Chapitre Johto, JOH0, `jalon-joh0.md` §2.13) : clé « region » d'une zone,
+## [constant REGION_KANTO] par défaut. Boot ne lit l'heure (lumière, rencontres, évolutions,
+## puce du menu) que sur les cartes des zones de Johto (JH-8).
+const REGION_KANTO: StringName = &"kanto"
+const REGION_JOHTO: StringName = &"johto"
+const REGIONS: Array[StringName] = [REGION_KANTO, REGION_JOHTO]
 
 var id: StringName = &""
 ## Nom affiché (« Bourg Palette », « Route 1 »).
 var name: String = ""
 var kind: StringName = KIND_TOWN
+## Région de la zone ([constant REGIONS]).
+var region: StringName = REGION_KANTO
 ## Cartes de la zone (identifiants de [MapCatalog]) ; vide tant que la zone n'est pas construite.
 var maps: Array[StringName] = []
 ## Connexions, sous le nom dans le panneau de la Carte (« Bourg Palette — Jadielle », Q-15) ;

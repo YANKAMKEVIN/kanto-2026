@@ -334,3 +334,70 @@ func test_room_light_is_posed_in_an_interior_and_removed_outside() -> void:
 	assert_null(map.get_node_or_null(NodePath(String(RoomLight.NODE_NAME))), "retirée dehors")
 	lighting.apply(_interior, null)
 	assert_null(RoomLight.apply_to(Node2D.new(), _interior), "nœud sans taille : rien")
+
+
+# --- Chapitre Johto (JOH0, jalon-joh0.md §2.4) : fondu et lumières de nuit ---------------------
+
+func _johto(id: StringName) -> LightProfile:
+	var library := LightingLibrary.new()
+	library.load_file()
+	return library.get_profile(id)
+
+
+func test_blend_to_interpolates_then_lands_on_the_target() -> void:
+	var lighting := WorldLighting.new()
+	add_child_autofree(lighting)
+	var day := _johto(&"johto_day")
+	var night := _johto(&"johto_night")
+	lighting.apply(day)
+	lighting.blend_to(night, null, 0.3)
+	assert_true(lighting.is_blending())
+	assert_same(lighting.get_blend_target(), night)
+	await wait_seconds(0.15)
+	var mid: Vector3 = lighting.get_applied_globals()[WorldLighting.GRADE_MIDTONES]
+	assert_true(mid.x < day.grade_midtones.x and mid.x > night.grade_midtones.x,
+		"à mi-chemin : entre jour et nuit (%s)" % mid)
+	await wait_seconds(0.3)
+	assert_false(lighting.is_blending())
+	assert_null(lighting.get_blend_target())
+	assert_same(lighting.get_profile(), night, "posé tel quel à la fin")
+	assert_eq(lighting.get_applied_globals()[WorldLighting.RIM_STRENGTH], 0.0, "nuit : sans liseré")
+
+
+func test_blend_to_with_zero_seconds_or_a_new_apply_is_immediate() -> void:
+	var lighting := WorldLighting.new()
+	add_child_autofree(lighting)
+	var day := _johto(&"johto_day")
+	var night := _johto(&"johto_night")
+	lighting.blend_to(night, null, 0.0)
+	assert_false(lighting.is_blending())
+	assert_same(lighting.get_profile(), night)
+	lighting.blend_to(day, null, 5.0)
+	assert_true(lighting.is_blending())
+	lighting.apply(night)
+	assert_false(lighting.is_blending(), "apply interrompt le fondu")
+	assert_same(lighting.get_profile(), night)
+	var detached := WorldLighting.new()
+	detached.blend_to(day, null, 5.0)
+	assert_same(detached.get_profile(), day, "hors de l'arbre : immédiat")
+	detached.free()
+
+
+func test_set_night_shows_only_the_night_lights_of_the_map() -> void:
+	var lighting := WorldLighting.new()
+	add_child_autofree(lighting)
+	var map := Node2D.new()
+	add_child_autofree(map)
+	var lamp := Sprite2D.new()
+	lamp.add_to_group(WorldLighting.GROUP_NIGHT_LIGHTS)
+	lamp.visible = false
+	map.add_child(lamp)
+	var elsewhere := Sprite2D.new()
+	elsewhere.add_to_group(WorldLighting.GROUP_NIGHT_LIGHTS)
+	elsewhere.visible = false
+	add_child_autofree(elsewhere)
+	lighting.set_night(true, map)
+	assert_true(lamp.visible)
+	assert_false(elsewhere.visible, "une autre carte n'est pas touchée")
+	lighting.set_night(false, map)
+	assert_false(lamp.visible)

@@ -1,5 +1,5 @@
 {
-	"_doc": "Destinations du Vol (passe systèmes 2, docs/tech/systemes-2.md §2.8), dans l'ordre de Rouge/Bleu : zone (zones.json) → carte et point d'arrivée (devant le Centre ; Bourg Palette : devant la maison du joueur [D, RB]). Une destination est ouverte quand sa carte est dans les cartes découvertes. Les villes pas encore construites portent l'identifiant de carte prévu par leur jalon et « from_center » [D] : leur jalon confirme ou corrige le point d'arrivée.",
+	"_doc": "Destinations du Vol (passe systèmes 2, docs/tech/systemes-2.md §2.8), dans l'ordre de Rouge/Bleu : zone (zones.json) → carte et point d'arrivée (devant le Centre ; Bourg Palette : devant la maison du joueur [D, RB]). Une destination est ouverte quand sa carte est dans les cartes découvertes. Les villes pas encore construites portent l'identifiant de carte prévu par leur jalon et « from_center » [D] : leur jalon confirme ou corrige le point d'arrivée. Chapitre Johto (JOH0, jalon-joh0.md §2.13) : les cinq villes de Johto (Oliville, Rosalia, Doublonville, Écorcia, Acajou), cartes des JOH1 à JOH6 ; la région vient de la zone (FlyRules.stamp_regions) ; le Vol entre régions est refusé pendant l'acte 1 (JH-18).",
 	"points": [
 		{ "zone": "pallet_town", "map": "pallet_town", "spawn": "player_house_door" },
 		{ "zone": "viridian_city", "map": "viridian_city", "spawn": "from_center" },
@@ -11,6 +11,11 @@
 		{ "zone": "fuchsia_city", "map": "fuchsia_city", "spawn": "from_center" },
 		{ "zone": "cinnabar_island", "map": "cinnabar_island", "spawn": "from_center" },
 		{ "zone": "indigo_plateau", "map": "indigo_plateau", "spawn": "from_center" },
-		{ "zone": "saffron_city", "map": "saffron_city", "spawn": "from_center" }
+		{ "zone": "saffron_city", "map": "saffron_city", "spawn": "from_center" },
+		{ "zone": "olivine_city", "map": "olivine_city", "spawn": "from_center" },
+		{ "zone": "ecruteak_city", "map": "ecruteak_city", "spawn": "from_center" },
+		{ "zone": "goldenrod_city", "map": "goldenrod_city", "spawn": "from_center" },
+		{ "zone": "azalea_town", "map": "azalea_town", "spawn": "from_center" },
+		{ "zone": "mahogany_town", "map": "mahogany_town", "spawn": "from_center" }
 	]
 }

@@ -26,6 +26,10 @@ var type_ids: Array[StringName] = []
 var type_names: PackedStringArray = PackedStringArray()
 ## Recherche par nom (espèces connues seulement), telle que saisie.
 var text: String = ""
+## JOH0 : filtre région (&"" = tout) et ses choix (vides tant qu'aucune espèce de Johto n'est vue).
+var region: StringName = &""
+var region_ids: Array[StringName] = []
+var region_names: PackedStringArray = PackedStringArray()
 ## Cases à afficher, par numéro. Filtre TOUS sans type ni recherche : les 151 cases (inconnues
 ## comprises) ; sinon, seulement les espèces connues qui correspondent.
 var slots: Array[PokedexSlotView] = []

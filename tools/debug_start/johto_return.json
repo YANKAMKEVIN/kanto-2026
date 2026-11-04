@@ -1,0 +1,21 @@
+{
+	"map": "viridian_center", "spawn": "terminal", "facing": "up",
+	"flags": ["mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered", "starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived", "pokedex_activated", "johto_arrived"],
+	"party": [
+		{ "species": "squirtle", "level": 14 },
+		{ "species": "rattata", "level": 11 }
+	],
+	"bag": { "poke_ball": 6, "potion": 2 },
+	"confiscated": {
+		"party": [
+			{ "species": "charizard", "level": 62 },
+			{ "species": "pidgeot", "level": 58 },
+			{ "species": "raticate", "level": 55, "hp": 0 },
+			{ "species": "nidoking", "level": 57 },
+			{ "species": "alakazam", "level": 60 }
+		],
+		"items": { "great_ball": 7, "super_potion": 4, "tm28": 1 }
+	},
+	"money": 12000,
+	"cutscene": "johto_return_test"
+}

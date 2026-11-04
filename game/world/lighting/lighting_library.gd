@@ -40,6 +40,16 @@ extends RefCounted
 ## ([method get_errors], push_error).
 
 const DATA_PATH: String = "res://data/world/lighting.json"
+## Chapitre Johto (JOH0, `jalon-joh0.md` §2.4) : identifiant **réservé** d'une carte extérieure de
+## Johto (`GameMap.light_profile`), jamais un profil : [method resolve] le remplace par le profil
+## du moment ([constant AUTO_BY_PERIOD]).
+const AUTO_PROFILE: StringName = &"johto_auto"
+const AUTO_BY_PERIOD: Dictionary[WorldClock.Period, StringName] = {
+	WorldClock.Period.MORNING: &"johto_morning", WorldClock.Period.DAY: &"johto_day",
+	WorldClock.Period.NIGHT: &"johto_night",
+}
+## Durée du fondu entre deux profils quand le moment change sur une carte (secondes) [D].
+const FADE_SECONDS: float = 10.0
 
 const _ROOT_KEYS: Array[String] = ["profiles", "maps"]
 const _PROFILE_KEYS: Array[String] = [
@@ -111,6 +121,17 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 ## Profil [param id], ou null s'il est inconnu (&"" compris : aucune lumière du monde).
 func get_profile(id: StringName) -> LightProfile:
 	return _profiles.get(id)
+
+
+## Identifiant du profil à poser pour [param id] au moment [param period] : le profil du
+## moment si [param id] est [constant AUTO_PROFILE], [param id] tel quel sinon (JOH0).
+static func resolve(id: StringName, period: WorldClock.Period) -> StringName:
+	return AUTO_BY_PERIOD[period] if id == AUTO_PROFILE else id
+
+
+## Vrai si [param id] est l'identifiant automatique de Johto.
+static func is_auto(id: StringName) -> bool:
+	return id == AUTO_PROFILE
 
 
 func has_profile(id: StringName) -> bool:
@@ -318,7 +339,7 @@ func _add_maps(value: Variant, source: String) -> bool:
 		var profile_id := StringName(str(maps[key]))
 		if map_id.is_empty() or not maps[key] is String:
 			ok = _fail("%s « maps » : entrée invalide « %s »" % [source, key])
-		elif not _profiles.has(profile_id):
+		elif not _profiles.has(profile_id) and not is_auto(profile_id):
 			ok = _fail("%s « maps » « %s » : profil inconnu « %s »" % [source, map_id,
 				profile_id])
 		elif _maps.has(map_id):

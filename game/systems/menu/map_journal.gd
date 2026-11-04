@@ -20,6 +20,21 @@ const TITLE: String = "CARTE — KANTO"
 ## dans l'ordre de [param zones] (celui du voyage) : zone → date de la première visite (la
 ## plus ancienne de ses cartes ; "" si aucune n'est datée). Une carte rangée dans aucune zone
 ## est ignorée.
+## Noms des pages de la Carte (JOH0).
+const REGION_NAMES: Dictionary[StringName, String] = {
+	ZoneData.REGION_KANTO: "Kanto", ZoneData.REGION_JOHTO: "Johto",
+}
+
+
+## Pages disponibles : Kanto toujours, Johto quand le joueur y est arrivé
+## ([constant TeamConfiscation.ARRIVED]) [D].
+static func available_regions(flags: StoryFlags) -> Array[StringName]:
+	var result: Array[StringName] = [ZoneData.REGION_KANTO]
+	if flags != null and flags.has_flag(TeamConfiscation.ARRIVED):
+		result.append(ZoneData.REGION_JOHTO)
+	return result
+
+
 static func discovered_zones(discovered_maps: Dictionary,
 		zones: ZoneLibrary) -> Dictionary[StringName, String]:
 	var first: Dictionary[StringName, String] = {}
@@ -53,10 +68,18 @@ static func is_discovered(zone: StringName, state: Object, zones: ZoneLibrary) -
 ## Vue de l'écran : illustration, zones découvertes (avec leur rectangle), portrait. Le
 ## panneau à ouvrir à l'arrivée est [param zone] (paramètre « zone » de la route) s'il est
 ## découvert, sinon la zone du joueur.
+## JOH0 : [param region] (&"" = toutes les zones, comportement d'avant) limite la page aux
+## zones de la région ; [param regions] : les pages disponibles.
 static func view(state: Object, zones: ZoneLibrary, illustration: MapIllustration,
-		zone: StringName = &"") -> MapView:
+		zone: StringName = &"", region: StringName = &"",
+		regions: Array[StringName] = []) -> MapView:
 	var result := MapView.new()
 	result.title = TITLE
+	result.region = region
+	result.region_name = REGION_NAMES.get(region, "")
+	result.regions = regions.duplicate()
+	for id: StringName in regions:
+		result.region_names.append(REGION_NAMES.get(id, String(id)))
 	if illustration != null:
 		result.image_path = illustration.get_image_path()
 		result.image_size = illustration.get_image_size()
@@ -64,6 +87,9 @@ static func view(state: Object, zones: ZoneLibrary, illustration: MapIllustratio
 		return result
 	var here := player_zone(state.current_map, zones)
 	var known := _known_zones(state, zones)
+	if not region.is_empty():
+		known = known.filter(func(id: StringName) -> bool:
+			return zones.get_zone(id).region == region)
 	for id: StringName in known:
 		var data := zones.get_zone(id)
 		var entry := MapZoneView.new()

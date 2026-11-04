@@ -1,0 +1,18 @@
+{
+	"map": "route_1", "spawn": "from_pallet_w", "facing": "up",
+	"flags": ["mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered", "starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived", "pokedex_activated", "johto_arrived"],
+	"party": [
+		{ "species": "squirtle", "level": 14 },
+		{ "species": "rattata", "level": 11 },
+		{ "species": "pidgey", "level": 10 },
+		{ "species": "spearow", "level": 9 },
+		{ "species": "nidoran_f", "level": 9 },
+		{ "species": "mankey", "level": 8 }
+	],
+	"bag": { "poke_ball": 6, "potion": 2 },
+	"confiscated": {
+		"party": [ { "species": "charizard", "level": 62 } ],
+		"items": { "great_ball": 7 }
+	},
+	"wild": { "rate": 255, "slots": [ { "species": "rattata", "levels": [3, 4], "weight": 1 } ] }
+}

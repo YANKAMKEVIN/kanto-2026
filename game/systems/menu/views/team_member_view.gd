@@ -36,6 +36,9 @@ var max_hp: int = 1
 ## "" ou [constant STATUS_FAINTED] ou [constant STATUS_POISON] (voir [StatusView]).
 var status_text: String = ""
 var favorite: bool = false
+## JOH0 : un œuf (nom « Œuf », phrase des pas restants dans [member status_text], icône d'œuf
+## à la place du portrait).
+var egg: bool = false
 
 
 ## Vue affichable : un nom, un niveau ≥ 1, 0 ≤ PV ≤ PV max, PV max ≥ 1.

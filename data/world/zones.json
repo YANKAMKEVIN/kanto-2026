@@ -345,6 +345,26 @@
 			"name": "Route 12", "kind": "route", "maps": ["route_12", "route_12_gate", "route_12_gate_2f", "route_12_south", "route_12_rod_house"],
 			"subtitle": "Lavanville — Route 11",
 			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
+		},
+		"olivine_city": {
+			"name": "Oliville", "kind": "town", "maps": [], "region": "johto", "draft": true,
+			"description": "Un port ouvert sur la mer de Johto, dominé par son phare. C'est ici que le Chapitre Johto commence."
+		},
+		"ecruteak_city": {
+			"name": "Rosalia", "kind": "town", "maps": [], "region": "johto", "draft": true,
+			"description": "Une vieille ville de bois et de pagodes, gardienne de deux tours et d'une légende."
+		},
+		"goldenrod_city": {
+			"name": "Doublonville", "kind": "town", "maps": [], "region": "johto", "draft": true,
+			"description": "La plus grande ville de Johto : grand magasin, souterrain et la Tour Radio qui domine tout."
+		},
+		"azalea_town": {
+			"name": "Écorcia", "kind": "town", "maps": [], "region": "johto", "draft": true,
+			"description": "Un bourg à l'orée du Bois aux Chênes, où l'on vit avec les Ramoloss du puits."
+		},
+		"mahogany_town": {
+			"name": "Acajou", "kind": "town", "maps": [], "region": "johto", "draft": true,
+			"description": "Un village de montagne au bord du Lac Colère, un peu trop calme pour être honnête."
 		}
 	}
 }
