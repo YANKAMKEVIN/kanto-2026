@@ -430,3 +430,11 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `johto_orme.json` | JOH1 : reprise après coupure **après le vol** : équipe **vide** (clé `party: []`, permise avec `confiscated`), équipe de Ligue et Sac confisqués, `johto_slept` + `johto_team_stolen`, dans la salle de repos (spawn `lit`, tourné vers l'ouest), **matin imposé** : l'infirmière parle d'elle-même (O-10) puis Orme (O-12, O-13) ; choix de Germignon / Héricendre / Kaiminus, O-17, 5 Poké Balls + Potion, O-18, heure réelle de retour |
 | `johto_olivine_day.json` | JOH1 : après le choix (Kaiminus N5 compagnon, 5 Poké Balls, 1 Potion, équipe de Ligue confisquée, point de repos Oliville), devant le Centre, **moment imposé `day`** : garde rangé (Route 39 « à venir »), marin du port, maisons (vieille dame ; enfant le matin et le jour), Boutique, PC « Le réseau ne répond pas. » (O-11), Ball refusée à 6 jamais atteinte ici |
 | `johto_olivine_night_autosave.json` | JOH1 (QA A17 du 2026-11-04) : `johto_olivine_night` avec **`autosave: true`** : ce départ **REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Sert à vérifier la reprise après l'écriture du vol : entrer au Centre, avancer jusqu'à « Sauvegarde automatique (vol de l'équipe…) » dans le journal, tuer l'appli, relancer **sans** départ : chambre le matin, infirmière (O-10) puis Orme |
+## QA entrée des combats de Dresseur (A17, 2026-11-04)
+
+| Fichier | Partie |
+|---|---|
+| `qa_pierre.json` | Copie de `route_3` (Reptincel N17, Papilusion N15, Roucool N14) dans l'Arène d'Argenta (spawn `entrance`, face au nord), **Liam déjà battu**, Badge Roche non obtenu : monter tout droit, PARLER à Pierre → « VS » puis entrée |
+| `qa_fx_vagues.json` | Galerie d'effets (`fx_gallery`) : 46 attaques des vagues 1 et 2 « Rouge » en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` |
+| `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
+

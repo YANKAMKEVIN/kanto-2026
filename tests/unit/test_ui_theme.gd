@@ -153,9 +153,12 @@ func test_no_hardcoded_color_in_ui_files() -> void:
 
 
 func test_ui_does_not_know_player_map_or_router() -> void:
+	# « Player » du jeu seulement : les classes du moteur (VideoStreamPlayer, AudioStreamPlayer,
+	# AnimationPlayer) sont légitimes dans l'UI.
+	var player := RegEx.create_from_string("(?<![A-Za-z])Player\\b")
 	for path: String in _ui_files():
 		var text := FileAccess.get_file_as_string(path)
-		assert_false(text.contains("Player"), "%s référence Player" % path)
+		assert_null(player.search(text), "%s référence Player" % path)
 		assert_false(text.contains("res://game/player"), "%s charge le joueur" % path)
 		assert_false(text.contains("SceneRouter"), "%s référence SceneRouter" % path)
 		assert_false(text.contains("GameMap"), "%s référence la carte" % path)
