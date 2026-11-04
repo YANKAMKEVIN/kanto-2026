@@ -1,0 +1,55 @@
+{
+	"hugo": {
+		"cell": [
+			14,
+			16
+		],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "route_39_youngster_hugo_after",
+		"trainer": {
+			"id": "route_39_youngster_hugo",
+			"sight": 3,
+			"before": "route_39_youngster_hugo_before",
+			"defeated": "route_39_youngster_hugo_defeated"
+		}
+	},
+	"lina": {
+		"cell": [
+			21,
+			11
+		],
+		"facing": "left",
+		"sprite": "lass_young",
+		"dialogue": "route_39_schoolgirl_lina_after",
+		"trainer": {
+			"id": "route_39_schoolgirl_lina",
+			"sight": 4,
+			"before": "route_39_schoolgirl_lina_before",
+			"defeated": "route_39_schoolgirl_lina_defeated"
+		}
+	},
+	"fermiere": {
+		"cell": [
+			16,
+			30
+		],
+		"facing": "down",
+		"sprite": "beauty",
+		"dialogue": "route_39_fermiere"
+	},
+	"route_39_item_1": {
+		"cell": [
+			20,
+			24
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_39_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_39_item_1"
+		]
+	}
+}

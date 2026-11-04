@@ -1,0 +1,29 @@
+{
+	"doyen": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "down",
+		"sprite": "mr_fuji",
+		"dialogue": "ecruteak_elders_house_doyen"
+	},
+	"sage_1": {
+		"cell": [
+			1,
+			5
+		],
+		"facing": "right",
+		"sprite": "channeler",
+		"dialogue": "ecruteak_elders_house_sage"
+	},
+	"sage_2": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "channeler",
+		"dialogue": "ecruteak_elders_house_sage"
+	}
+}

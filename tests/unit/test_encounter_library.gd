@@ -127,7 +127,9 @@ func test_real_tables_load_without_error() -> void:
 	# des trois étages de la Grotte Azurée.
 	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
 		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
-		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
+		&"dark_cave_b1f_rubble", &"digletts_cave_rubble",
+		# Chapitre Johto, JOH2 : herbe des tours de Rosalia (nuit), Routes 38 et 39 (jour / nuit).
+		&"ecruteak_towers_night", &"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
 		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
 		&"pokemon_tower_high", &"pokemon_tower_low",
@@ -142,7 +144,9 @@ func test_real_tables_load_without_error() -> void:
 		# Chapitre Johto (JOH3) : herbe par moment des Routes 37, 36, 35 et Surf de l'étang.
 		&"route_35_grass_day", &"route_35_grass_night", &"route_35_surf", &"route_36_grass_day",
 		&"route_36_grass_morning", &"route_36_grass_night", &"route_37_grass_day",
-		&"route_37_grass_night", &"route_3_grass", &"route_4_grass", &"route_5_grass",
+		&"route_37_grass_night", &"route_38_grass_day", &"route_38_grass_night",
+		&"route_39_grass_day", &"route_39_grass_night", &"route_3_grass", &"route_4_grass",
+		&"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
@@ -230,7 +234,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
-	assert_eq(lib.size(), 68, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine ; JOH3 : les 8 tables des Routes 37, 36, 35 (test_joh3_data)")
+	# Chapitre Johto, JOH2 : + 5 tables datées (Routes 39 et 38 jour / nuit, herbe des tours de
+	# Rosalia), hors de la boucle (tables par moment : `test_joh2_data`).
+	assert_eq(lib.size(), 73, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine ; JOH2 : 5 tables datées ; JOH3 : 8 tables (test_joh3_data)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -418,12 +424,13 @@ func test_kanto_tables_ignore_the_period() -> void:
 		assert_eq(lib.get_table(&"route_1", &"grass", period).id, &"route_1_grass", period)
 	var real := _lib()
 	assert_true(real.load_dir(), "les vraies tables se chargent")
+	var zones := ZoneLibrary.new()
+	assert_true(zones.load_file())
 	for id: StringName in real.get_ids():
-		# JOH3 : les Routes 37, 36, 35 sont à Johto (tables par moment, test_joh3_data).
-		if String(id).begins_with("route_35_") or String(id).begins_with("route_36_") \
-				or String(id).begins_with("route_37_"):
-			continue
-		assert_true(real.get_table_by_id(id).is_all_day(), "Kanto sans « period » : %s" % id)
+		var table := real.get_table_by_id(id)
+		if zones.region_of(table.maps[0]) == ZoneData.REGION_JOHTO:
+			continue # JOH2 : les tables de Johto sont datées (test_joh2_data).
+		assert_true(table.is_all_day(), "Kanto sans « period » : %s" % id)
 
 
 func test_dated_and_all_day_tables_cannot_share_a_map_and_terrain() -> void:

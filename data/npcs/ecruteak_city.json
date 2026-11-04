@@ -1,0 +1,63 @@
+{
+	"garde_route_42": {
+		"cell": [
+			54,
+			29
+		],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "ecruteak_city_garde_route_42"
+	},
+	"garde_carillon": {
+		"cell": [
+			41,
+			13
+		],
+		"facing": "right",
+		"sprite": "guard",
+		"dialogue": "ecruteak_city_garde_carillon"
+	},
+	"sage_tour": {
+		"cell": [
+			10,
+			13
+		],
+		"facing": "left",
+		"sprite": "channeler",
+		"dialogue": "ecruteak_city_sage_tour"
+	},
+	"sbire_1": {
+		"cell": [
+			11,
+			13
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"unless": [
+			"johto_rosalia_rockets_seen"
+		]
+	},
+	"sbire_2": {
+		"cell": [
+			12,
+			14
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_f",
+		"unless": [
+			"johto_rosalia_rockets_seen"
+		]
+	},
+	"margot": {
+		"cell": [
+			13,
+			29
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"if_weekday": [
+			"tuesday"
+		],
+		"dialogue": "week_tuesday_margot"
+	}
+}

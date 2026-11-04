@@ -1,0 +1,34 @@
+{
+	"ecruteak_towers_night": {
+		"maps": [
+			"ecruteak_city"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 3,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "murkrow",
+				"levels": [
+					10,
+					12
+				],
+				"weight": 50
+			},
+			{
+				"species": "hoothoot",
+				"levels": [
+					10,
+					12
+				],
+				"weight": 50
+			}
+		]
+	}
+}

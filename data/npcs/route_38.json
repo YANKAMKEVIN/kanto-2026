@@ -1,0 +1,70 @@
+{
+	"paul": {
+		"cell": [
+			10,
+			7
+		],
+		"facing": "down",
+		"sprite": "bird_keeper",
+		"dialogue": "route_38_birdkeeper_paul_after",
+		"trainer": {
+			"id": "route_38_birdkeeper_paul",
+			"sight": 3,
+			"before": "route_38_birdkeeper_paul_before",
+			"defeated": "route_38_birdkeeper_paul_defeated"
+		}
+	},
+	"ines": {
+		"cell": [
+			42,
+			14
+		],
+		"facing": "down",
+		"sprite": "cooltrainer_f",
+		"dialogue": "route_38_trainer_ines_after",
+		"trainer": {
+			"id": "route_38_trainer_ines",
+			"sight": 1,
+			"before": "route_38_trainer_ines_before",
+			"defeated": "route_38_trainer_ines_defeated"
+		}
+	},
+	"theo": {
+		"cell": [
+			50,
+			12
+		],
+		"facing": "down",
+		"sprite": "camper",
+		"dialogue": "route_38_picnicker_theo_after",
+		"trainer": {
+			"id": "route_38_picnicker_theo",
+			"sight": 2,
+			"before": "route_38_picnicker_theo_before",
+			"defeated": "route_38_picnicker_theo_defeated"
+		}
+	},
+	"promeneur": {
+		"cell": [
+			55,
+			13
+		],
+		"facing": "down",
+		"sprite": "traveler",
+		"dialogue": "route_38_promeneur"
+	},
+	"route_38_item_1": {
+		"cell": [
+			33,
+			18
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_38_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_38_item_1"
+		]
+	}
+}

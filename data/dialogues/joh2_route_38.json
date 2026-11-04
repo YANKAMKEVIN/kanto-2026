@@ -1,0 +1,76 @@
+{
+	"route_38_birdkeeper_paul_before": {
+		"speaker": "Ornithologue Paul",
+		"pages": [
+			"La nuit, les Hoothoot comptent\nle temps. Et toi ?"
+		]
+	},
+	"route_38_birdkeeper_paul_defeated": {
+		"speaker": "Ornithologue Paul",
+		"pages": [
+			"Ton heure était venue…\nla mienne aussi."
+		]
+	},
+	"route_38_birdkeeper_paul_after": {
+		"speaker": "Ornithologue Paul",
+		"pages": [
+			"Reviens la nuit, tu en verras plein."
+		]
+	},
+	"route_38_trainer_ines_before": {
+		"speaker": "Dresseuse Inès",
+		"pages": [
+			"Personne ne passe sans\nun petit combat !"
+		]
+	},
+	"route_38_trainer_ines_defeated": {
+		"speaker": "Dresseuse Inès",
+		"pages": [
+			"Bon, tu peux passer."
+		]
+	},
+	"route_38_trainer_ines_after": {
+		"speaker": "Dresseuse Inès",
+		"pages": [
+			"Rosalia est juste à l'est.\nSes tours valent le détour."
+		]
+	},
+	"route_38_picnicker_theo_before": {
+		"speaker": "Pique-niqueur Théo",
+		"pages": [
+			"Tu interromps mon pique-nique !"
+		]
+	},
+	"route_38_picnicker_theo_defeated": {
+		"speaker": "Pique-niqueur Théo",
+		"pages": [
+			"Mon sandwich est tombé…"
+		]
+	},
+	"route_38_picnicker_theo_after": {
+		"speaker": "Pique-niqueur Théo",
+		"pages": [
+			"Il en reste un peu, tu veux ?"
+		]
+	},
+	"route_38_promeneur": {
+		"speaker": "Promeneur",
+		"pages": [
+			"À Rosalia, il y a deux tours.",
+			"L'une a brûlé il y a longtemps.",
+			"L'autre, personne n'a le droit\nd'y monter."
+		]
+	},
+	"route_38_item_1": {
+		"cutscene": "route_38_item_1"
+	},
+	"route_38_hidden_1": {
+		"cutscene": "route_38_hidden_1"
+	},
+	"route_38_panneau_route": {
+		"narration": true,
+		"pages": [
+			"ROUTE 38\nRosalia — Route 39"
+		]
+	}
+}
