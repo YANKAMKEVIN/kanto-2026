@@ -21,7 +21,9 @@ extends RefCounted
 ## }
 ## [/codeblock]
 ## « grade.flat » (facultatif, booléen) : étalonnage à plat, sans lecture de l'écran
-## ([member LightProfile.grade_flat] ; tons moyens ≤ 1).
+## ([member LightProfile.grade_flat] ; tons moyens ≤ 1). « grade.economy_flat » (facultatif,
+## booléen, JOH1) : à plat seulement en mode « économie » ([member LightProfile.grade_economy_flat] ;
+## tons moyens ≤ 1).
 ## « grade » et « sun_direction » sont obligatoires ; « rim », « cast_shadow », « contact »
 ## et « wind » sont facultatifs (absents = aucun liseré, aucune ombre portée, aucune ombre de
 ## contact, arbres immobiles). Dans chaque bloc présent, toutes les clés sont obligatoires.
@@ -57,7 +59,7 @@ const _PROFILE_KEYS: Array[String] = [
 ]
 const _GRADE_KEYS: Array[String] = ["shadows", "midtones", "highlights", "strength"]
 ## Clé facultative de « grade » : « flat » (booléen, [member LightProfile.grade_flat]).
-const _GRADE_OPTIONAL_KEYS: Array[String] = ["flat"]
+const _GRADE_OPTIONAL_KEYS: Array[String] = ["flat", "economy_flat"]
 const _RIM_KEYS: Array[String] = ["color", "strength", "width"]
 const _CAST_KEYS: Array[String] = ["color", "alpha", "length", "skew_deg"]
 const _CONTACT_KEYS: Array[String] = ["color", "alpha"]
@@ -193,6 +195,14 @@ static func parse_profile(value: Variant, errors: PackedStringArray) -> LightPro
 					errors.append("« grade.flat » demande des tons moyens ≤ 1")
 				else:
 					profile.grade_flat = true
+		if grade.has("economy_flat"):
+			var mid_e := profile.grade_midtones
+			if not grade["economy_flat"] is bool:
+				errors.append("« grade.economy_flat » doit être un booléen")
+			elif grade["economy_flat"] and (mid_e.x > 1.0 or mid_e.y > 1.0 or mid_e.z > 1.0):
+				errors.append("« grade.economy_flat » demande des tons moyens ≤ 1")
+			else:
+				profile.grade_economy_flat = grade["economy_flat"]
 	if not entry.has("sun_direction"):
 		errors.append("« sun_direction » est obligatoire")
 	else:

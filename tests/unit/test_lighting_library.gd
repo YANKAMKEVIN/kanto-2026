@@ -40,7 +40,8 @@ func test_real_file_loads_without_error() -> void:
 	# JOH0 : les trois profils de Johto, après le golden hour de Kanto.
 	assert_eq(_library.get_ids(), [&"golden_hour", &"johto_morning", &"johto_day",
 		&"johto_night", &"interior_warm", &"forest", &"cave_1f",
-		&"cave_b1f", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
+		# JOH1 : la grotte marine (cave_1f plus bleu), avant cave_b2f dans le fichier.
+		&"cave_b1f", &"sea_cave", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
 		&"greenhouse", &"hideout", &"lavender", &"tower_cold", &"tower", &"office"] \
 		as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")
@@ -283,7 +284,11 @@ func test_real_file_plans_the_profiles_of_the_painted_maps() -> void:
 		assert_eq(_library.get_map_profile(map_id), &"interior_warm", String(map_id))
 	assert_eq(_library.get_map_profile(&"no_such_map"), &"", "carte sans profil prévu")
 	for map_id: StringName in _library.get_planned_maps():
-		assert_true(_library.has_profile(_library.get_map_profile(map_id)), String(map_id))
+		# JOH0 : « johto_auto » (extérieurs de Johto, JOH1 : Oliville et la salle de repos) n'est pas
+		# un profil, il est résolu selon le moment ([method LightingLibrary.resolve]).
+		var profile := _library.get_map_profile(map_id)
+		assert_true(_library.has_profile(profile) or LightingLibrary.is_auto(profile),
+			String(map_id))
 
 
 func test_maps_must_name_a_known_profile() -> void:
@@ -406,3 +411,18 @@ func test_lerp_interpolates_every_field_and_fades_absent_blocks() -> void:
 	assert_eq(LightProfile.lerp(null, null, 0.5).grade_strength, 0.0, "deux vides : vide")
 	var clamped := LightProfile.lerp(day, night, 7.0)
 	assert_almost_eq(clamped.grade_midtones.z, night.grade_midtones.z, EPS, "t borné")
+
+
+## JOH1 : « grade.economy_flat » (booléen, tons moyens ≤ 1).
+func test_economy_flat_is_read_and_checked() -> void:
+	var grade := {"shadows": [0.6, 0.7, 0.9], "midtones": [0.7, 0.8, 1.0],
+		"highlights": [0.8, 0.9, 1.0], "strength": 1.0, "economy_flat": true}
+	assert_true(_library.add_from_dict({"profiles": {"nuit": {"grade": grade,
+		"sun_direction": [-0.7, -0.7]}}}, "ok"), str(_library.get_errors()))
+	assert_true(_library.get_profile(&"nuit").grade_economy_flat)
+	var bright := grade.duplicate()
+	bright["midtones"] = [1.1, 1.0, 1.0]
+	assert_false(_library.add_from_dict({"profiles": {"clair": {"grade": bright,
+		"sun_direction": [-0.7, -0.7]}}}, "trop clair"))
+	assert_push_error_count(1)
+
