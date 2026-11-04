@@ -283,4 +283,5 @@ queue, habitant) ; don du vendredi une fois pour toutes ; musiques de substituti
 | Équilibrage | — | Brace 21/21/23 [D] par simulation (§2.3) |
 | `main` | `c0ef0d77` | JOH1 et JOH2 refusionnés depuis `main` ; CI verte (run 41887881537) |
 | CI | `fa773a9e` | Corrections : Brace fuit à pied, « Sbire Rocket », 12 Sbires femmes, décors de combat, icônes provisoires |
-| T12 | (ce commit) | QA A17 21 h 14 – 21 h 24 (`build/qa/joh4_a17_2026-11-04/`) sans bloquant ; ajout : objectifs du Menu du JOH4 [D] |
+| Fusion | `cf55b979` | `main` (JOH7) refusionné, CI verte (run 41914074631), fusion `--no-ff` |
+| T12 | `5d2ec708` | QA A17 21 h 14 – 21 h 24 (`build/qa/joh4_a17_2026-11-04/`) sans bloquant ; ajout : objectifs du Menu du JOH4 [D] |
