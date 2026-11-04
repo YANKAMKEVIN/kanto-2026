@@ -110,7 +110,7 @@ func test_libraries_load_without_error() -> void:
 	assert_eq(_trainers.get_errors(), PackedStringArray())
 	assert_eq(_encounters.get_errors(), PackedStringArray())
 	assert_gt(_ids("res://data/dialogues/").size(), 60)
-	assert_eq(_ids("res://data/cutscenes/").size(), 10)
+	assert_eq(_ids("res://data/cutscenes/").size(), 11)
 
 
 ## Chaque réplique non marquée « draft » est dans le dossier joh-10 §16, mot pour mot (le nom du

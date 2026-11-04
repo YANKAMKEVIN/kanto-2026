@@ -687,21 +687,21 @@ position = Vector2(1377, 624)
 [node name="Daf4Facade" parent="Entities" unique_id=539471548 instance=ExtResource("21_p07ve")]
 position = Vector2(816, 576)
 
-[node name="Joh9Poste" type="Node2D" parent="Entities" unique_id=307101321]
+[node name="Joh9Poste" type="Node2D" parent="Entities" unique_id=407223791]
 position = Vector2(96, 1152)
 script = ExtResource("3_3n6tq")
 if_flags = Array[StringName]([&"johto_arrived"])
 blocking_cells = Array[Vector2i]([Vector2i(2, 11)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/Joh9Poste" unique_id=1723030828]
+[node name="Dessin" type="Polygon2D" parent="Entities/Joh9Poste" unique_id=1595190269]
 color = Color(0.58, 0.52, 0.46, 1)
 polygon = PackedVector2Array(0, -288, 192, -288, 192, 0, 0, 0)
 
-[node name="@Polygon2D@2" type="Polygon2D" parent="Entities/Joh9Poste" unique_id=781974206]
+[node name="@Polygon2D@2" type="Polygon2D" parent="Entities/Joh9Poste" unique_id=1033219445]
 color = Color(0.3, 0.36, 0.48, 1)
 polygon = PackedVector2Array(-8, -318, 200, -318, 200, -241.2, -8, -241.2)
 
-[node name="@Polygon2D@3" type="Polygon2D" parent="Entities/Joh9Poste" unique_id=703806388]
+[node name="@Polygon2D@3" type="Polygon2D" parent="Entities/Joh9Poste" unique_id=1172383223]
 color = Color(0.18, 0.13, 0.1, 1)
 polygon = PackedVector2Array(166, -180, 188, -180, 188, -104, 166, -104)
 
@@ -746,15 +746,6 @@ target_map = &"route_22_gate"
 target_spawn = &"entrance"
 arrival_facing = Vector2i(0, -1)
 
-[node name="Joh9PorteRoute28" type="Marker2D" parent="Warps" unique_id=571801823]
-position = Vector2(240, 1056)
-script = ExtResource("4_hncji")
-direction = Vector2i(-1, 0)
-target_map = &"route_28_gate"
-target_spawn = &"from_route_22"
-arrival_facing = Vector2i(0, -1)
-if_flags = Array[StringName]([&"johto_arrived"])
-
 [node name="Interactables" type="Node2D" parent="." unique_id=1391996416]
 
 [node name="PanneauPoint4_9" type="Marker2D" parent="Interactables" unique_id=1003543087]
@@ -770,7 +761,7 @@ position = Vector2(1872, 1056)
 [node name="from_gate" type="Marker2D" parent="Spawns" unique_id=351803474]
 position = Vector2(816, 672)
 
-[node name="from_route_28_gate" type="Marker2D" parent="Spawns" unique_id=218378237]
+[node name="from_route_28_gate" type="Marker2D" parent="Spawns" unique_id=661918610]
 position = Vector2(336, 1056)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=580292646]
@@ -789,3 +780,9 @@ cutscene_id = &"rival_route22_final"
 position = Vector2(912, 768)
 script = ExtResource("6_t3fs6")
 cutscene_id = &"rival_route22_final"
+
+[node name="Joh9PorteRoute28" type="Marker2D" parent="Triggers" unique_id=777690673]
+position = Vector2(240, 1056)
+script = ExtResource("6_t3fs6")
+cutscene_id = &"route_22_route_28_door"
+direction = Vector2i(-1, 0)

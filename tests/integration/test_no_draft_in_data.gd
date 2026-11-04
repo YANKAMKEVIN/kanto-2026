@@ -36,7 +36,27 @@ const DATA_DIR := "res://data"
 ## Chapitre Johto (JOH0, 2026-11-03) : descriptions [D] des cinq villes de Johto, textes [D] des
 ## systèmes (`johto_systems.json` : PC hors ligne, éclosion, objet du terminal, scènes de test) et
 ## les 51 fiches du Pokédex de Johto (JOH-Q2), à relire par Kevin avec les textes du JOH1.
-const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
+## JOH9 (2026-11-04) : textes [D] hors du dossier joh-10 (Topdresseur Jules, garde du poste de
+## la Route 28 après l'ouverture, porte verrouillée, gardien) et lignes du petit générique de Johto.
+const PENDING_DRAFTS: Array[String] = [
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_before",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_defeated",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_after",
+	"dialogues/joh9_route_28.json/route_28_gate_guard/variants/0",
+	"dialogues/joh9_route_28.json/route_28_gate_locked",
+	"dialogues/joh9_route_28.json/route_28_house_gardien",
+	"story/credits_johto.json/blocks/0",
+	"story/credits_johto.json/blocks/2",
+	"story/credits_johto.json/blocks/4",
+	"story/credits_johto.json/blocks/6",
+	"story/credits_johto.json/blocks/8",
+	"story/credits_johto.json/blocks/10",
+	"story/credits_johto.json/blocks/12",
+	"story/credits_johto.json/blocks/14",
+	"story/credits_johto.json/blocks/16",
+	"story/credits_johto.json/blocks/18",
+	"story/credits_johto.json/blocks/21",
+	"world/zones.json/zones/saffron_city",
 	"world/zones.json/zones/ecruteak_city",
 	"world/zones.json/zones/goldenrod_city",
 	"world/zones.json/zones/azalea_town",

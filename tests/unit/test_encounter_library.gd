@@ -128,7 +128,11 @@ func test_real_tables_load_without_error() -> void:
 	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
 		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"mt_moon_1f_rubble",
-		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
+		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble",
+		# Chapitre Johto (JOH9) : Mont Argenté (grotte et extérieur, tables datées dehors).
+		&"mt_silver_1f_rubble", &"mt_silver_1f_water", &"mt_silver_2f_rubble",
+		&"mt_silver_3f_rubble", &"mt_silver_outside_grass_day", &"mt_silver_outside_grass_night",
+		&"pokemon_mansion_1f_floor",
 		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
 		&"pokemon_tower_high", &"pokemon_tower_low",
 		&"pokemon_tower_mid", &"pokemon_tower_top",
@@ -137,7 +141,8 @@ func test_real_tables_load_without_error() -> void:
 		&"route_12_south_grass", &"route_13_grass", &"route_14_grass", &"route_15_grass",
 		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
-		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
+		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass",
+		&"route_28_grass_day", &"route_2_grass",
 		&"route_2_north_grass", &"route_3_grass", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
@@ -146,7 +151,9 @@ func test_real_tables_load_without_error() -> void:
 		# Chapitre Johto (JOH1) : l'eau de la grotte marine (deux salles).
 		&"sea_cave_water",
 		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
-		&"seafoam_b4f_floor", &"victory_road_1f_rubble", &"victory_road_2f_rubble",
+		&"seafoam_b4f_floor",
+		# JOH9 : Sentier du Mont Argenté (jour, nuit).
+		&"silver_trail_grass_day", &"silver_trail_grass_night", &"victory_road_1f_rubble", &"victory_road_2f_rubble",
 		&"victory_road_3f_rubble", &"viridian_forest_grass"] as Array[StringName])
 
 
@@ -226,7 +233,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
-	assert_eq(lib.size(), 60, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine")
+	# JOH9 : + 9 tables du Mont Argenté, du sentier et de la Route 28, hors de la boucle (tables
+	# par moment : `test_joh9_data`).
+	assert_eq(lib.size(), 69, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine ; JOH9 : 9 tables")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -414,8 +423,13 @@ func test_kanto_tables_ignore_the_period() -> void:
 		assert_eq(lib.get_table(&"route_1", &"grass", period).id, &"route_1_grass", period)
 	var real := _lib()
 	assert_true(real.load_dir(), "les vraies tables se chargent")
+	var zones := ZoneLibrary.new()
+	assert_true(zones.load_file())
 	for id: StringName in real.get_ids():
-		assert_true(real.get_table_by_id(id).is_all_day(), "Kanto sans « period » : %s" % id)
+		var table := real.get_table_by_id(id)
+		if zones.region_of(table.maps[0]) == ZoneData.REGION_JOHTO:
+			continue # JOH9 (comme le JOH2) : les tables de Johto sont datées (test_joh9_data).
+		assert_true(table.is_all_day(), "Kanto sans « period » : %s" % id)
 
 
 func test_dated_and_all_day_tables_cannot_share_a_map_and_terrain() -> void:

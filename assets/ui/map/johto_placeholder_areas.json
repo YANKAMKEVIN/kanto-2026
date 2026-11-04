@@ -1,5 +1,5 @@
 {
-	"_comment": "Rectangles [x, y, w, h] des zones de Johto sur assets/ui/map/johto_placeholder.webp (1586x992, image PROVISOIRE dessinee par tools/make_johto_map_placeholder.py au JOH0 d'apres la geographie du dossier JOH-00 §3 ; refaite en phase DA). Seule la geometrie vit ici ; l'identite des zones est dans data/world/zones.json.",
+	"_comment": "Rectangles [x, y, w, h] des zones de Johto sur assets/ui/map/johto_placeholder.webp (1586x992, image PROVISOIRE dessinee par tools/make_johto_map_placeholder.py au JOH0 d'apres la geographie du dossier JOH-00 \u00a73 ; refaite en phase DA). Seule la geometrie vit ici ; l'identite des zones est dans data/world/zones.json.",
 	"image": "res://assets/ui/map/johto_placeholder.webp",
 	"image_size": [
 		1586,
@@ -52,6 +52,38 @@
 				195,
 				200,
 				110
+			]
+		},
+		"silver_trail": {
+			"area": [
+				1190,
+				90,
+				130,
+				60
+			]
+		},
+		"mt_silver": {
+			"area": [
+				960,
+				20,
+				220,
+				100
+			]
+		},
+		"mt_silver_summit": {
+			"area": [
+				1190,
+				20,
+				130,
+				60
+			]
+		},
+		"route_28": {
+			"area": [
+				700,
+				30,
+				240,
+				70
 			]
 		}
 	}
