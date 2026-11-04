@@ -1,0 +1,34 @@
+# Le Goéland, pont (goeland_deck) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP2, §6 étape 9, textes P-12, P-13 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 16 × 8 cases ; nord en haut ; x = colonne 0..15, y = rangée 0..7.
+#
+# Composition :
+#   Pont d'un petit bateau de pêche ; la proue à l'est. Cabine (M) ; Goulven à la barre ; Marin Yvon évitable (rangée 5).
+#   Pas de warp : on quitte le pont en parlant à Goulven (fondu vers Irisia ou Oliville).
+#
+# Légende :
+#   X bastingage (bloqué)   . pont   M cabine (bloquée)
+# Défauts [D] : une seule carte pour les deux sens.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 16 caractères), puis POSITIONS.
+
+PRATICABLES .
+
+GRILLE 16 8
+00 XXXXXXXXXXXXXXXX
+01 XXXXXXXXXXXXXXXX
+02 X..........MMMXX
+03 X..............X
+04 X..............X
+05 X.............XX
+06 XXXXXXXXXXXXXXXX
+07 XXXXXXXXXXXXXXXX
+FIN
+
+POSITIONS
+from_quai            spawn          2,4          libre   # arrivée, tournée →
+goulven              pnj            12,3         bloque  role=marin facing=left  # P-13 ; lance la traversée
+yvon                 dresseur       6,2          bloque  role=marin facing=down sight=2 trainer=goeland_sailor_yvon  # P-46, Machopeur 33, Tentacruel 33
+FIN

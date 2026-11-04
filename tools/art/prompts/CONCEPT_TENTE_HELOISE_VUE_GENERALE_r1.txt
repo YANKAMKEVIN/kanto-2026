@@ -1,0 +1,32 @@
+CONCEPT ART — VUE GÉNÉRALE : L'INTÉRIEUR DE LA TENTE D'HÉLOÏSE, ARCHÉOLOGUE (Kanto 2026, Chapitre Johto, arc des Pierres), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. L'intérieur d'une grande tente de fouilles, vu du dessus ; sortie au milieu du bas.
+Légende du plan :
+- brun foncé = PAROI DE TOILE écrue tendue sur des mâts de bois (marges) ;
+- beige clair = TAPIS et plancher de planches ;
+- rangée du haut = CAISSES DE BOIS, carnets et moulages de pierre ;
+- petit rectangle au centre gauche = une TABLE de travail chargée de moulages ;
+- case claire en bas au centre = l'ENTRÉE de la tente, un pan de toile relevé ;
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : un intérieur déjà peint, un autre lieu du même chapitre, déjà peint en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même échelle des meubles. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le lieu, comme le plan.
+
+AMBIANCE — « la tente d'une chercheuse passionnée » : ordre maniaque, poussière de pierre, carnets, lampes éteintes. Palette : TOILE écrue, BOIS clair, PIERRE grise.
+LUMIÈRE NE (neutre) : lumière diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case ; parois, couloirs et salles suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, aucune diagonale. Les passages restent dégagés ; aucun objet ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucune créature, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre est permis), signature, filigrane, cadre, interface ; lit, cuisine, machine moderne, écran ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une tente de fouilles rangée avec soin, pleine de caisses et de moulages.

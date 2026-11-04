@@ -1,0 +1,72 @@
+# Ruines d'Alpha (ruins_of_alph) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP1, §4, §6, §8.1, §10, §11, §12 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 36 × 30 cases ; nord en haut ; x = colonne 0..35, y = rangée 0..29.
+#
+# Composition :
+#   Plateau herbeux dans la forêt. CHEMIN (=) du bord NORD (17..18, 0) au sud ; croisée d'ouest en est (y 14..15).
+#   Ouest : TENTE d'Héloïse (N, 7 × 6, x 5..11, y 8..13, porte (8, 13)). Sud : le TEMPLE enterré (K, 12 × 6, x 12..23,
+#   y 20..25), façade à murets (R, y 19), ESCALIER (E, (17..18, 19)) qui descend à la Galerie, abordé par le nord (STEP_ON ↓).
+#   2 poches d'herbes (H1 nord-est, H2 sud-ouest), évitables ; murets et piliers (R) ; 3 Dresseurs évitables.
+#   Raccord : NORD (17..18, 0) ↔ Route 36, ouverture sud (40..41, 19) (variante ARC de route_36.txt).
+#
+# Légende :
+#   T forêt (bloquée)   . pré   = chemin   h herbes hautes   R muret, pilier (bloqués)   G arbre repère (bloqué)
+#   N tente   K temple enterré (emprises bloquées)   D porte (STEP_ON ↑)   E escalier de la Galerie (STEP_ON ↓)
+# Défauts [D] : tente sur l'emprise d'une maison ; Dresseurs et objets placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 36 caractères), puis POSITIONS.
+
+PRATICABLES .=hDE
+
+GRILLE 36 30
+00 TTTTTTTTTTTTTTTTT==TTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTT==TTTTTTTTTTTTTTTTT
+02 TT...............==...............TT
+03 TT...............==...............TT
+04 TT..........G....==.....hhhhhhhh..TT
+05 TT....RRRRR......==.....hhhhhhhh..TT
+06 TT...............==.....hhhhhhhh..TT
+07 TT...............==.....hhhhhhhh..TT
+08 TT...NNNNNNN.....==.....hhhhhhhh..TT
+09 TT...NNNNNNN.....==.....hhhhhhhh..TT
+10 TT...NNNNNNN.....==...............TT
+11 TT...NNNNNNN.....==...RRRRRR......TT
+12 TT...NNNNNNN.....==...........G...TT
+13 TT...NNNDNNN.....==...............TT
+14 TT....========================....TT
+15 TT....========================....TT
+16 TT...............==...............TT
+17 TT...........R...==...R...........TT
+18 TT..hhhhhhh......==...............TT
+19 TT..hhhhhhh.RRRRREERRRRR..........TT
+20 TT..hhhhhhh.KKKKKKKKKKKK..........TT
+21 TT..hhhhhhh.KKKKKKKKKKKK..........TT
+22 TT..hhhhhhh.KKKKKKKKKKKK..........TT
+23 TT..hhhhhhh.KKKKKKKKKKKK..........TT
+24 TT..hhhhhhh.KKKKKKKKKKKK....G.....TT
+25 TT..........KKKKKKKKKKKK..........TT
+26 TT...G............................TT
+27 TT................................TT
+28 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+29 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+warp_nord            warp           17..18,0     libre   # PUSH ↑ → route_36, from_ruins (40..41, 19)
+from_route_36        spawn          17..18,0     libre   # arrivée de la Route 36, tournée ↓
+arrivee_titre        declencheur    17..18,3     libre   drapeau=johto_alph_arrived  # titre de zone (P-40), une fois
+panneau_ruines       panneau        16,3         bloque  # P-41, lu depuis (16, 4) ↑
+porte_tente          warp           8,13         libre   # STEP_ON ↑ → alph_tent (P-3, P-4, P-10, P-57)
+retour_tente         spawn          8,14         libre
+entree_galerie       warp           17..18,19    libre   # STEP_ON ↓ → alph_gallery, from_ruins (4..5, 13)
+retour_galerie       spawn          17..18,18    libre   # sortie de la Galerie, tournée ↑ ; Corde Sortie
+agnes                dresseur       21,8         bloque  role=chercheuse facing=left sight=2 trainer=alph_researcher_agnes  # P-43, Kadabra 31, Nosferalto 30
+remi                 dresseur       26,16        bloque  role=intello facing=up sight=2 trainer=alph_nerd_remi  # P-43, Magnéton 31, Porygon 30
+solange              dresseur       10,16        bloque  role=medium facing=right sight=3 trainer=alph_medium_solange  # P-43, Spectrum 31, Kadabra 31
+ruins_item_1         objet_visible  32,6         bloque  item=super_potion count=2  # §12, derrière H1
+ruins_hidden_1       cache          4,26         bloque  item=revive indice=pilier  # §12, Rappel
+herbes_h1            herbes         24,4         libre   role=H1  # nord-est
+herbes_h2            herbes         4,18         libre   role=H2  # sud-ouest
+FIN

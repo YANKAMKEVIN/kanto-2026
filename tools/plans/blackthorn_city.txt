@@ -1,0 +1,75 @@
+# Ébènelle (blackthorn_city) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP3, §4, §6, §8.3, §10 à §12 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 32 × 30 cases ; nord en haut ; x = colonne 0..31, y = rangée 0..29.
+#
+# Composition :
+#   Village de montagne, adossé à des falaises (R) au nord et à l'est ; **aucune sortie à pied** (JH-61, §4.1).
+#   AIRE D'ATTERRISSAGE (p, x 12..19, y 20..25) au sud ; rue nord-sud (x 15..16) ; RUE DU VILLAGE (y 13..14), jusqu'à la BOUCHE DE L'ANTRE (E, (28, 13..14), STEP_ON →).
+#   MAISON DE L'AÏEULE (S, 8 × 6, porte (15, 11)) ; CENTRE (C, 8 × 7, portes (23..24, 12)) ; MAISON (m, 7 × 6, porte (7, 12)).
+#   2 poches d'herbes (H1 sud-ouest, H2 sud-est) évitables.
+#
+# Légende :
+#   T sapins (bloqués)   R falaise (bloquée)   . pelouse   p pavé   h herbes hautes   G arbre repère (bloqué)
+#   S maison de l'Aïeule   C Centre   m maison (emprises bloquées)   D porte (STEP_ON ↑)   E bouche de l'Antre
+# Défauts [D] : pas de Boutique ; Dracolosse de Corentin en sprite sur l'aire ; Dresseurs placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 32 caractères), puis POSITIONS.
+
+PRATICABLES .phDE
+
+GRILLE 32 30
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTRRRRRRRRRRRRRRRRRRRRRRRRRRRRTT
+03 TTRRRRRRRRRRRRRRRRRRRRRRRRRRRRTT
+04 TTRRRRRRRRRRRRRRRRRRRRRRRRRRRRTT
+05 TT..........................RRTT
+06 TT.G........SSSSSSSSCCCCCCCCRRTT
+07 TT..mmmmmmm.SSSSSSSSCCCCCCCCRRTT
+08 TT..mmmmmmm.SSSSSSSSCCCCCCCCRRTT
+09 TT..mmmmmmm.SSSSSSSSCCCCCCCCRRTT
+10 TT..mmmmmmm.SSSSSSSSCCCCCCCCRRTT
+11 TT..mmmmmmm.SSSDSSSSCCCCCCCCRRTT
+12 TT..mmmDmmm....pp...CCCDDCCCRRTT
+13 TT..ppppppppppppppppppppppppERTT
+14 TT..ppppppppppppppppppppppppERTT
+15 TT.............pp...........RRTT
+16 TT..hhhhhhh....pp....hhhhhhhRRTT
+17 TT..hhhhhhh....pp....hhhhhhhRRTT
+18 TT..hhhhhhh....pp....hhhhhhhRRTT
+19 TT..hhhhhhh....pp....hhhhhhhRRTT
+20 TT..hhhhhhh.pppppppp.hhhhhhhRRTT
+21 TT..hhhhhhh.pppppppp.hhhhhhhRRTT
+22 TT..hhhhhhh.pppppppp.hhhhhhhRRTT
+23 TT..hhhhhhh.pppppppp.hhhhhhhRRTT
+24 TT..........pppppppp........RRTT
+25 TT.........GppppppppG.....G.RRTT
+26 TT.G........................RRTT
+27 TT..........................RRTT
+28 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+29 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+POSITIONS
+from_dragon          spawn          15..16,24    libre   # arrivée du vol (P-21), tournée ↑ ; point de Vol (JH-76)
+corentin             pnj            17,22        bloque  role=messager facing=left  # P-38, retour vers Rosalia
+dracolosse           pokemon        18..19,23..24 bloque  espece=dragonite shy=none  # monture de Corentin
+panneau_ville        panneau        13,19        bloque  # P-41, lu depuis (13, 20) ↑
+arrivee_titre        declencheur    15..16,23    libre   drapeau=johto_blackthorn_arrived  # P-40, une fois
+porte_aieule         warp           15,11        libre   # STEP_ON ↑ → blackthorn_elder_house (P-22, P-23, P-39)
+porte_centre         warp           23..24,12    libre   # STEP_ON ↑ → blackthorn_center
+porte_maison         warp           7,12         libre   # STEP_ON ↑ → blackthorn_house_1 (Rappel Max, §12)
+retour_aieule        spawn          15,12        libre
+retour_centre        spawn          23..24,13    libre   # tournée ↓
+retour_maison        spawn          7,13         libre
+entree_antre         warp           28,13..14    libre   # STEP_ON → → dragons_den_1f, from_city (13..14, 21)
+retour_antre         spawn          27,13..14    libre   # tournée ←
+barriere_antre       declencheur    27,13..14    libre   actif_sans=johto_clan_trial_open  # l'Aïeule d'abord (P-23) [D]
+nolwenn              dresseur       12,15        bloque  role=apprentie facing=right sight=2 trainer=blackthorn_apprentice_nolwenn  # P-49, Draco 36, Hypocéan 36
+malo                 dresseur       20,19        bloque  role=apprenti facing=left sight=3 trainer=blackthorn_apprentice_malo  # P-49, Draco 37, Léviator 36
+herve                dresseur       26,15        bloque  role=montagnard facing=left sight=3 trainer=blackthorn_hiker_herve  # P-49, Gravalanch 37, Onix 37
+herbes_h1            herbes         4,16         libre   role=H1  # sud-ouest
+herbes_h2            herbes         21,16        libre   role=H2  # sud-est
+FIN

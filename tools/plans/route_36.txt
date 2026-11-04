@@ -67,3 +67,23 @@ herbes_h1            herbes         17,5         libre   role=H1  # poche nord (
 herbes_h2            herbes         17,15        libre   role=H2  # poche sud-ouest (évitable)
 herbes_h3            herbes         35,15        libre   role=H3  # poche sud-est (évitable)
 FIN
+
+# Variante ARC (arc des Pierres, docs/design/dossier-joh-11-arc-pierres.md) : chemin neuf au sud de la route (x 40..41, y 12..19), vers les Ruines d'Alpha. **[D] à relire par Kevin.** La grille de base, validée, ne change pas.
+
+GRILLE_ARC
+12 T......................yy.===...........==WWWWTTTTTTTTTT
+13 T...........hhhhhhhhhhh...===...hhhhhhhh==WWWWTTTTTTTTTT
+14 T...........hhhhhhhhhhh...===...hhhhhhhh==WWWWTTTTTTTTTT
+15 T...G.......hhhhhhhhhhh...===...hhhhhhhh==WWWWTTTTTTTTTT
+16 TTTTTTT.....hhhhhhhhhhh...===.G.hhhhhhhh==WWWWTTTTTTTTTT
+17 TTTTTTT.....hhhhhhhhhhh...===...hhhhhhhh==WWWWTTTTTTTTTT
+18 TTTTTTT...................===...........==WWWWTTTTTTTTTT
+19 TTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTT==TTTTTTTTTTTTTT
+FIN
+
+POSITIONS_ARC
+warp_ruines          warp           40..41,19    libre   # PUSH ↓ → ruins_of_alph, from_route_36 (17..18, 0)
+from_ruins           spawn          40..41,19    libre   # arrivée des Ruines, tournée ↑
+ouvrier              pnj            39,18        bloque  role=ingenieur facing=right  # P-42 avant johto_stones_quest, P-2 ensuite
+barriere_ruines      declencheur    40..41,17    libre   actif_sans=johto_stones_quest  # P-42 et pas en arrière
+FIN

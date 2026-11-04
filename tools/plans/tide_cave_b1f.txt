@@ -1,0 +1,54 @@
+# Grotte de la Marée B1F (tide_cave_b1f) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP2, §6 étape 12, §8.2, textes P-16 à P-19, P-47, P-48 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 20 × 16 cases ; nord en haut ; x = colonne 0..19, y = rangée 0..15.
+#
+# Composition :
+#   QUAI OUEST (x 2..7, y 2..6), échelle (U, (3, 2)), VANNE 1 au nord (6, 1) : elle assèche le GUÉ a (x 8..11, y 4).
+#   QUAI EST (x 12..17, y 2..6) : Sbire AA, Scientifique, évitables ; VANNE 2 au nord (16, 1) : elle assèche le GUÉ b (14, 7..9).
+#   RIVE SUD (x 9..17, y 10..13) ; passage (8, 11) sous le CHEF DE CALE (niche (8, 10)) : INÉVITABLE.
+#   SALLE DU BASSIN (x 2..7, y 10..13) : le SOCLE VIDE (S, (4..5, 11)), Super Bonbon, ouverture sur la mer à l'ouest (d, (1, 11..12)), où part Cenere.
+#
+# Légende :
+#   # paroi (bloquée)   . sol calme (aucune rencontre)   d eau (bloquée, pas de Surf)   U échelle qui monte
+#   a gué de la vanne 1, b gué de la vanne 2 (bloqués sous l'eau tant que leur vanne est fermée, puis praticables)
+#   S socle (bloqué, examen)
+# Défauts [D] : vannes l'une après l'autre, sans retour en arrière ni blocage possible ; aucune rencontre.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+
+PRATICABLES .Uab
+
+GRILLE 20 16
+00 ####################
+01 ####################
+02 ##.U....dddd......##
+03 ##......dddd......##
+04 ##......aaaa......##
+05 ##......dddd......##
+06 ##......dddd......##
+07 ##ddddddddddddbddd##
+08 ##ddddddddddddbddd##
+09 ##ddddddddddddbddd##
+10 ##................##
+11 #d..SS............##
+12 #d......#.........##
+13 ##......#.........##
+14 ####################
+15 ####################
+FIN
+
+POSITIONS
+echelle_haut         warp           3,2          libre   # → tide_cave_1f, from_b1f (5, 15)
+from_1f              spawn          3,3          libre   # arrivée, tournée ↓
+vanne_1              examen         6,1          libre   drapeau=johto_tide_valve_1  # P-48, depuis (6, 2) ↑
+vanne_2              examen         16,1         libre   drapeau=johto_tide_valves_done  # P-48, depuis (16, 2) ↑
+sbire_aa             dresseur       14,2         bloque  role=sbire facing=down sight=2 trainer=tide_grunt_aa  # P-47, Démolosse 36, Cornèbre 36
+scientifique         dresseur       17,6         bloque  role=scientifique facing=up sight=2 trainer=tide_scientist  # P-47, Électrode 36, Magnéton 36, Porygon 35
+chef_cale            dresseur       8,10         bloque  role=sbire facing=down sight=1 trainer=tide_hold_chief  # P-16, Grotadmorv 37, Noarfang 37, Démolosse 38 ; inévitable
+scene_socle          declencheur    7,10..13     libre   actif_sans=johto_stone_tide_lost  # P-17 à P-19
+socle                examen         4..5,11      libre   # P-17
+cenere               pnj            2,11         bloque  role=cenere facing=right actif_sans=johto_stone_tide_lost  # P-18, P-19 ; part par la mer
+tide_item_2          objet_visible  6,13         bloque  item=rare_candy  # §12, au pied du socle
+FIN

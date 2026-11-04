@@ -1,0 +1,40 @@
+# Chambre de la Mémoire (alph_chamber) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP1, §6 étape 7, textes P-6 à P-9 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 14 × 12 cases ; nord en haut ; x = colonne 0..13, y = rangée 0..11.
+#
+# Composition :
+#   Salle ronde à angles droits ; SOCLE (S, (6..7, 3)) au nord ; escalier vers la Galerie (U, (6..7, 10)).
+#   Le FAUX ARCHÉOLOGUE (7, 5) se retourne à la scène (rangée y 7, seul accès au socle).
+#
+# Légende :
+#   # paroi (bloquée)   . dalles anciennes (aucune rencontre)   S socle (bloqué, examen)   U escalier qui monte (warp)
+# Défauts [D] : aucune rencontre.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 14 caractères), puis POSITIONS.
+
+PRATICABLES .U
+
+GRILLE 14 12
+00 ##############
+01 ##############
+02 ###........###
+03 ###...SS...###
+04 ##..........##
+05 ##..........##
+06 ##..........##
+07 ##..........##
+08 ###........###
+09 ###........###
+10 ######UU######
+11 ##############
+FIN
+
+POSITIONS
+escalier_haut        warp           6..7,10      libre   # → alph_gallery, from_chamber (16..17, 3)
+from_gallery         spawn          6..7,9       libre   # arrivée, tournée ↑
+scene_faux           declencheur    2..11,7      libre   actif_sans=johto_stone_memory  # P-6, combat, P-7
+faux_archeologue     dresseur       7,5          bloque  role=faux_employe facing=down sight=0 trainer=alph_fake_archeologist actif_sans=johto_stone_memory  # Arbok 34, Rattatac 34, Démolosse 35
+socle                examen         6..7,3       libre   # P-8 : Pierre Mémoire, johto_stone_memory
+FIN

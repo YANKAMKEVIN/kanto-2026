@@ -1,0 +1,65 @@
+# Galerie des Glyphes (alph_gallery) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP1, §6, §8.1, textes P-5, P-44, P-45 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 24 × 18 cases ; nord en haut ; x = colonne 0..23, y = rangée 0..17.
+#
+# Composition :
+#   SALLE D'ENTRÉE (x 2..8, y 12..16), escalier vers les Ruines (U, (4..5, 12)), mur 1 au nord.
+#   GOULET (x 9..12, y 14) d'une case de haut, sous la niche du SBIRE X (10, 13) : INÉVITABLE.
+#   COULOIR (x 11..12, y 3..14) ; à l'ouest, la SALLE DES FOUILLES (x 2..9, y 3..9), facultative : mur 2, Sbire V,
+#   Scientifique, Hyper Potion ; au nord, Sbire W dans sa niche, évitable (couloir de deux cases).
+#   SALLE DES DALLES (x 15..18, y 3..12) : 3 rangées de 4 dalles (t, y 10, 7, 4) à traverser dans l'ordre de la légende ;
+#   une mauvaise dalle renvoie à retour_dalles ; mur 3 au sud du couloir (16, 15). Barrière du fond, escalier V vers la Chambre.
+#
+# Légende :
+#   # paroi (bloquée)   . sol calme (aucune rencontre)   g gravats (rencontres)   t dalle à glyphes (praticable)
+#   U escalier qui monte   V escalier qui descend (praticables, warps)
+# Défauts [D] : bonnes dalles (16, 10), (18, 7), (15, 4), à accorder avec les signes peints ; pas de système neuf (déclencheurs et drapeaux).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
+
+PRATICABLES .gtUV
+
+GRILLE 24 18
+00 ########################
+01 ########################
+02 ############.###VV######
+03 ##........#..##....#####
+04 ##........#..##tttt#####
+05 ##...........##....#####
+06 ##.gggggg.#..##....#####
+07 ##.gggggg.#..##tttt#####
+08 ##.gggggg.#..##....#####
+09 ##........#..##....#####
+10 ###########..##tttt#####
+11 ###########..##....#####
+12 ##..UU...##..##....#####
+13 ##.......#.........#####
+14 ##.ggggg...........#####
+15 ##.ggggg.###############
+16 ##.......###############
+17 ########################
+FIN
+
+POSITIONS
+escalier_haut        warp           4..5,12      libre   # → ruins_of_alph, retour_galerie (17..18, 18)
+from_ruins           spawn          4..5,13      libre   # arrivée, tournée ↓
+mur_1                examen         6,11         libre   # P-5 « celle qui se souvient », lu depuis (6, 12) ↑
+mur_2                examen         5,2          libre   # P-5 « celle qui revient », lu depuis (5, 3) ↑
+mur_3                examen         16,15        libre   # P-5 « celle qui respire », lu depuis (16, 14) ↓
+sbire_v              dresseur       6,4          bloque  role=sbire facing=down sight=2 trainer=alph_grunt_v  # P-44, Smogo 31, Rattatac 31
+sbire_w              dresseur       12,2         bloque  role=sbire facing=down sight=2 trainer=alph_grunt_w  # P-44, Arbok 32
+sbire_x              dresseur       10,13        bloque  role=sbire facing=down sight=1 trainer=alph_grunt_x  # P-44, Malosse 32, Cornèbre 32 ; inévitable
+scientifique         dresseur       3,8          bloque  role=scientifique facing=right sight=2 trainer=alph_scientist  # P-44, Magnéton 33, Électrode 33
+gallery_item_1       objet_visible  2,3          bloque  item=hyper_potion  # §12
+gravats_g1           gravats        3,14         libre   role=G1  # salle d'entrée
+gravats_g2           gravats        3,6          libre   role=G2  # salle des fouilles
+dalles_r1            dalle          15..18,10    libre   bonne=16,10  # P-45, « se souvient »
+dalles_r2            dalle          15..18,7     libre   bonne=18,7  # P-45, « revient »
+dalles_r3            dalle          15..18,4     libre   bonne=15,4  # P-45, « respire »
+retour_dalles        spawn          16..17,12    libre   # après une mauvaise dalle, tournée ↑
+barriere_fond        declencheur    15..18,3     libre   actif_sans=johto_alph_tiles_done  # et pas en arrière ; le dernier bon pas pose le drapeau
+escalier_bas         warp           16..17,2     libre   # → alph_chamber, from_gallery (6..7, 9)
+from_chamber         spawn          16..17,3     libre   # retour de la Chambre, tournée ↓
+FIN

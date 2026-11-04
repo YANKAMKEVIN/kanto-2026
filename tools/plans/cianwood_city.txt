@@ -1,0 +1,74 @@
+# Irisia (cianwood_city) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP2, §4, §6, §8.2, §10 à §12 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 32 × 28 cases ; nord en haut ; x = colonne 0..31, y = rangée 0..27.
+#
+# Composition :
+#   Île de pêcheurs, ceinturée de falaises (R) sur la mer (w, bloquée à pied : pas de Surf, §1 A-6).
+#   RUE DU PORT (p, y 14..15) du QUAI est (q, x 26..30, y 13..16) à la BOUCHE DE LA GROTTE (E, (4, 14..15), falaise ouest, STEP_ON ←).
+#   CENTRE (C, 8 × 7, portes (21..22, 13)) ; MAISON DE GOULVEN (m, 7 × 6, porte (10, 13)) ; MAISON (N, 7 × 6, porte (21, 21)), ouverte par la plage.
+#   PLAGE DE GALETS (g, x 8..24, y 22..25) au sud ; le BATEAU NOIR est un objet (sprite) au large, jusqu'à johto_stone_tide_lost.
+#   2 poches d'herbes (H1 sud-ouest, H2 nord) évitables.
+#
+# Légende :
+#   w mer (bloquée à pied)   R falaise (bloquée)   . pelouse   p pavé   g galets   q quai   h herbes hautes
+#   G arbre repère (bloqué)   C Centre   m N maisons (emprises bloquées)   D porte (STEP_ON ↑)   E bouche de grotte
+# Défauts [D] : pas de Boutique (le Centre vend le minimum) ; Goéland en sprite amarré à l'est du quai ; Dresseurs placés par Claude.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 32 caractères), puis POSITIONS.
+
+PRATICABLES .phDEgq
+
+GRILLE 32 28
+00 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+01 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+02 wwwRRRRRRRRRRRRRRRRRRRRRRRRRwwww
+03 wwwRRRRRRRRRRRRRRRRRRRRRRRRRwwww
+04 wwwRR............hhhhhhhhh.Rwwww
+05 wwwRR.G..........hhhhhhhhh.Rwwww
+06 wwwRR..........pp..........Rwwww
+07 wwwRR..........pp.CCCCCCCC.Rwwww
+08 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
+09 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
+10 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
+11 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
+12 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
+13 wwwRR..mmmDmmm.pp.CCCDDCCCqqqqqw
+14 wwwREpppppppppppppppppppppqqqqqw
+15 wwwREpppppppppppppppppppppqqqqqw
+16 wwwRR.hhhhhhhh....NNNNNNN.qqqqqw
+17 wwwRR.hhhhhhhh....NNNNNNN..Rwwww
+18 wwwRR.hhhhhhhh....NNNNNNN..Rwwww
+19 wwwRR.hhhhhhhhG...NNNNNNN..Rwwww
+20 wwwRR.hhhhhhhh....NNNNNNN..Rwwww
+21 wwwRR.hhhhhhhh....NNNDNNN..Rwwww
+22 wwwRR...gggggggggggggggggG.Rwwww
+23 wwwRR...ggggggggggggggggg..Rwwww
+24 wwwRRRRRgggggggggggggggggRRRwwww
+25 wwwRRRRRgggggggggggggggggRRRwwww
+26 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+27 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+FIN
+
+POSITIONS
+from_goeland         spawn          28,14..15    libre   # arrivée du bateau, tournée ←
+goulven              pnj            29,13        bloque  role=marin facing=down  # P-55 ; va-et-vient libre après johto_stone_tide_lost
+panneau_ville        panneau        26,12        bloque  # P-41, lu depuis (26, 13) ↑
+arrivee_titre        declencheur    27,14..15    libre   drapeau=johto_cianwood_arrived  # P-40, une fois
+porte_centre         warp           21..22,13    libre   # STEP_ON ↑ → cianwood_center
+porte_goulven        warp           10,13        libre   # STEP_ON ↑ → cianwood_goulven_house
+porte_maison         warp           21,21        libre   # STEP_ON ↑ → cianwood_house_1
+retour_centre        spawn          21..22,14    libre   # tournée ↓ ; point de Vol (JH-76)
+retour_goulven       spawn          10,14        libre
+retour_maison        spawn          21,22        libre
+entree_grotte        warp           4,14..15     libre   # STEP_ON ← → tide_cave_1f, from_city (23, 9..10)
+retour_grotte        spawn          5,14..15     libre   # tournée →
+habitante            pnj            17,12        bloque  role=habitante facing=right  # P-14
+ronan                dresseur       12,23        bloque  role=pecheur facing=right sight=3 trainer=cianwood_fisher_ronan  # P-46, Hypocéan 34, Tentacruel 34
+tanguy               dresseur       14,7         bloque  role=karateka facing=right sight=2 trainer=cianwood_blackbelt_tanguy  # P-46, Machopeur 34, Kicklee 34
+maelle               dresseur       23,23        bloque  role=topdresseuse facing=left sight=3 trainer=cianwood_cooltrainer_maelle  # P-46, Staross 35, Poissirène 34
+bateau_noir          examen         24..27,26    libre   actif_sans=johto_stone_tide_lost  # P-48, depuis la plage (24, 25) ↓
+herbes_h1            herbes         6,16         libre   role=H1  # sud-ouest
+herbes_h2            herbes         17,4         libre   role=H2  # nord
+FIN
