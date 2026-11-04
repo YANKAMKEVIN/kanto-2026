@@ -87,6 +87,7 @@ func _on_step(step: CutsceneStep) -> void:
 		"bed": ((map.get_node(^"Entities/Bed/Sprite") as Sprite2D).texture.resource_path
 			if map.has_node(^"Entities/Bed/Sprite") else ""),
 		"zzz": sleeper.get_z_count() if sleeper != null else 0,
+		"zoom": player.get_camera().zoom.x,
 		"table": table.texture.resource_path if table != null else "",
 		"light": _boot.get_world_lighting().get_profile().id
 			if _boot.get_world_lighting().get_profile() != null else &"",
@@ -118,10 +119,12 @@ func test_the_player_sleeps_while_the_grunts_take_the_tray() -> void:
 	assert_eq(night.get("look"), &"hero")
 	assert_eq(night.get("bed"), HERO_BED, "lit occupé par le héros")
 	assert_gt(int(night.get("zzz", 0)), 0, "des « z » montent")
+	assert_gt(float(night.get("zoom", 1.0)), 1.0, "léger zoom sur le lit (retour de Kevin)")
 	assert_eq(night.get("table"), EMPTY_TABLE, "aucune Poké Ball sur la table")
 	var glass: Dictionary = _seen.get(&"olivine_night_2", {})
 	assert_eq(glass.get("map"), &"olivine_center", "plan sur le rez-de-chaussée")
 	assert_false(glass.get("player_visible", true), "le joueur dort en haut")
+	assert_eq(float(glass.get("zoom", 0.0)), 1.0, "plan du rez-de-chaussée sans zoom")
 	assert_eq(glass.get("light"), &"interior_night_dark", "pénombre")
 	assert_false(glass.get("nurse", true), "l'infirmière n'est pas au comptoir")
 	assert_true(glass.get("tray_on_counter", false), "le plateau est sur le comptoir")
@@ -139,6 +142,8 @@ func test_the_player_sleeps_while_the_grunts_take_the_tray() -> void:
 	# Le matin (O-10) : le joueur se relève (changement de carte sans pose).
 	await wait_until(func() -> bool: return SceneRouter.get_player().visible, TIMEOUT)
 	assert_true(SceneRouter.get_player().visible, "debout au réveil")
+	assert_false(SceneRouter.get_player().is_framed(), "caméra rendue au matin")
+	assert_eq(SceneRouter.get_player().get_camera().zoom, Vector2.ONE)
 
 
 func test_the_heroine_sleeps_in_her_own_bed() -> void:

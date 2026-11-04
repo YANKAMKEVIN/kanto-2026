@@ -128,6 +128,8 @@ const _JOINING_KINDS: Array[CutsceneStep.Kind] = [
 ]
 ## JOH1 (« carry ») : l'objet porté, relatif aux pieds du porteur (devant sa poitrine) [D].
 const CARRY_OFFSET := Vector2(0.0, -44.0)
+## JOH1 (retour de Kevin du 2026-11-04) : léger zoom de la caméra sur le lit du joueur endormi [D].
+const SLEEP_ZOOM: float = 1.8
 
 var _library: CutsceneLibrary
 var _flags: StoryFlags
@@ -1039,6 +1041,7 @@ func _apply_pose(map: GameMap, step: CutsceneStep) -> void:
 	if not is_instance_valid(_player):
 		return
 	_player.visible = step.pose.is_empty()
+	_player.release_frame()
 	if step.pose != CutsceneStep.POSE_ASLEEP:
 		return
 	var bed := map.get_node_or_null(NodePath(String(step.target))) as SleeperBed
@@ -1046,6 +1049,8 @@ func _apply_pose(map: GameMap, step: CutsceneStep) -> void:
 	if bed == null or not bed.tuck_in(look, reduce_motion):
 		_step_error("lit « %s » introuvable sur %s" % [step.target, map.map_id])
 		_player.visible = true
+		return
+	_player.frame_point(bed.get_focus_point(), SLEEP_ZOOM)
 
 
 ## Étape « carry » (JOH1) : le nœud [member CutsceneStep.target] de la carte passe dans les mains
@@ -1415,6 +1420,7 @@ func _finish() -> void:
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
 		_player.visible = true # JOH1 : une pose ne survit pas à la scène
+		_player.release_frame()
 	set_process(false)
 	cutscene_finished.emit(cutscene_id)
 

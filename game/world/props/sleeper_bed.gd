@@ -27,6 +27,8 @@ const ZZZ_FONT_SIZE: int = 30
 @export var heroine_texture: Texture2D
 ## Départ des « z », relatif à ce nœud (pieds du lit) : au-dessus de l'oreiller, côté droit.
 @export var zzz_origin: Vector2 = Vector2(28.0, -196.0)
+## Milieu du lit, relatif à ce nœud (cadrage de la caméra).
+@export var focus_offset: Vector2 = Vector2(0.0, -120.0)
 
 var _tucked: bool = false
 var _timer: Timer
@@ -56,6 +58,11 @@ func tuck_in(look: StringName, reduce_motion: bool = false) -> bool:
 		_timer.start()
 		_add_z(zzz_origin, true)
 	return true
+
+
+## Point que la caméra cadre (milieu du lit, monde).
+func get_focus_point() -> Vector2:
+	return global_position + focus_offset
 
 
 func is_tucked_in() -> bool:
