@@ -149,6 +149,11 @@ func test_lakes_are_surfable_water() -> void:
 	for pair: Array in [[&"route_42", Vector2i(35, 10)], [&"lake_of_rage", Vector2i(27, 30)]]:
 		var grid := _map(pair[0]).get_grid()
 		assert_true(grid.is_water(pair[1]), "%s : eau en %s" % pair)
+		assert_true(grid.is_surfable(pair[1]), "%s : surfable en %s" % pair)
+	assert_eq(_map(&"lake_of_rage").surf_cells.size(), _plan(&"lake_of_rage").cells_of("w").size())
+	assert_eq(_map(&"lake_of_rage").fishable_cells.size(),
+		_plan(&"lake_of_rage").cells_of("w").size(), "pêche sur tout le lac")
+	assert_true(_map(&"route_42").fishable_cells.is_empty(), "pas de pêche notée (grille)")
 	# Les dalles du repaire ne sont pas de l'eau.
 	assert_false(_map(&"mahogany_hideout_b2f").get_grid().is_water(Vector2i(10, 4)))
 

@@ -258,7 +258,9 @@ teinte rouge ; filtre sépia ; textes `draft` (§2.3).
 | T12 | `a063da57`, `0b48bc99`, `a5badc05` | `test_joh6_maps` (12), `test_joh6_story` (15), `test_joh6_data` ; registres réalignés |
 | T13 | `fa0b57be` | `tools/capture_joh6.sh` (21 plans, `build/captures/joh6/`) relus. Défauts trouvés et corrigés : Pokémon du décor sans planche sautés par la carte (planches provisoires `tools/gen_joh6_world_pokemon.py`, Léviator rouge recoloré) ; drapeaux de scène posés avant le départ des PNJ qui en dépendent (déplacés en fin de scène) |
 
-**Reportés (rendu, phase DA)** : tuiles provisoires, statues, cage, générateur, poste de péage,
+| T14 | (ce commit) | QA A17 de 23 h 09 à 23 h 36 (`build/qa/joh6_a17_2026-11-04/`) : scène des chiens et de Brace, doyen C-2 et ouverture, C-5 et chute au B1F, pêche et Surf sur le lac, Léviator rouge (rouge en combat, capturé à la Master Ball, parti au Stockage), reprise « Continuer » (`variant: red` dans la vraie sauvegarde v10, gardée après relecture et réécriture), alarme et Sbire, chaîne de dalles complète, souvenir sépia, Scientifique, C-38, Brace (grand combat, Tortank K.O. contre Démolosse), générateur, Raikou (fuite). Défauts corrigés : **lacs non surfables** (`surf_cells`, `fishable_cells`), **Sbire d'alarme absent** (PNJ non rafraîchi en cours de visite : étape `spawn`), **Raikou présent après une fuite** (`despawn`, non revérifié sur téléphone : test GUT), décor de combat de la Tour, objectifs du Menu du JOH6 |
+
+**Reportés (rendu, phase DA)** : décors de combat sans eau pour le Surf sur les lacs, tuiles provisoires, statues, cage, générateur, poste de péage,
 antenne et poutres en aplats ; chiens en silhouettes provisoires, Persian et Léviator rouge
 d'après les artworks ; Brace, Dante et Giovanni jeunes, déserteur, Samuel, Diane sur des sprites
 existants ; boutique de souvenirs = façade de Boutique ; aucune musique de Johto ; la teinte de la

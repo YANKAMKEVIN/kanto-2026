@@ -226,6 +226,10 @@ func test_raikou_flight_consumes_the_encounter() -> void:
 	assert_eq(battle.level, 60)
 	assert_eq(battle.static_encounter.done_flag, &"johto_raikou_done")
 	assert_true(battle.flee_flags.has(&"johto_raikou_done"))
+	# QA A17 : Raikou restait sur la carte après une fuite.
+	var leave := _steps(&"hideout_raikou")[1]
+	assert_eq(leave.kind, CutsceneStep.Kind.DESPAWN)
+	assert_eq(leave.if_flags, [&"johto_raikou_fled"] as Array[StringName])
 	assert_eq(_cutscenes.get_cutscene(&"hideout_raikou").variants[0].if_flags,
 		[&"johto_generator_off"] as Array[StringName])
 

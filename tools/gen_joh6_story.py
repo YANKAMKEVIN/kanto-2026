@@ -161,16 +161,19 @@ def guard_back(guard, dialogue_id, flag, back):
 
 def alarm_scene(number):
 	"""C-30 puis le Sbire appelé sort de sa porte dérobée et vient au joueur (combat obligatoire,
-	une fois par statue ; il vient même si le joueur recule, dossier §13). Le Sbire est le PNJ de
-	la carte (`sbire_alarme_N`, présent avec `johto_alarm_N`) : le drapeau, posé en tête, le fait
-	paraître à sa porte."""
+	une fois par statue ; il vient même si le joueur recule, dossier §13). Les PNJ du fichier ne
+	changent qu'à l'arrivée sur la carte : le Sbire de cette visite est créé par la scène ; le PNJ
+	`sbire_alarme_N` (présent avec `johto_alarm_N`) prend le relais aux visites suivantes."""
+	cell, facing, sprite = ALARMS[number]
 	trainer = "%s_sbire_alarme_%d" % (HIDEOUT_B1F, number)
-	actor = "sbire_alarme_%d" % number
+	actor = "sbire_alarme_%d_appel" % number
 	flag = "johto_alarm_%d" % number
 	return {"variants": [{"unless": [flag], "steps": [
 		{"set": [flag]},
 		{"flash": 1},
 		{"dialogue": "joh6_hideout_alarm"},
+		{"spawn": actor, "sprite": sprite, "cell": cell, "facing": facing,
+			"dialogue": trainer + "_after"},
 		{"emote": actor, "kind": "exclamation"},
 		{"move": actor,
 			"to": {"near": "player", "offsets": [[0, -1], [0, 1], [-1, 0], [1, 0]]}},
@@ -190,8 +193,7 @@ CUTSCENES = {
 		{"dialogue": "burned_tower_1f_plancher_effondre"},
 	]}]},
 	# C-6 à C-9 : réveil et fuite, Brace et la cage à ondes, départ vers l'est. Drapeaux posés à
-	# la fin : un drapeau levé pendant la visite retire aussitôt les PNJ qui en dépendent (les
-	# chiens) ; scène interrompue = rejouée.
+	# la fin (scène interrompue = rejouée, les chiens sont encore là au rechargement).
 	"burned_tower_beasts": {"variants": [{"unless": ["johto_beasts_awakened"], "steps": [
 		{"face": "player", "to": "entei"},
 		{"dialogue": "joh6_beasts_sleep"},
@@ -314,6 +316,8 @@ CUTSCENES = {
 			{"wild_battle": "raikou", "level": 60, "intro": "legendary", "actor": "raikou",
 				"static": {"done": "johto_raikou_done", "caught": "johto_raikou_caught"},
 				"flee": ["johto_raikou_done", "johto_raikou_fled"]},
+			# Fuite : l'étape ne retire l'acteur que sur capture ou K.O. ; Raikou part aussi.
+			{"despawn": "raikou", "if": ["johto_raikou_fled"]},
 		]}]},
 	# Sentier du Mont Argenté : fermé pendant l'acte 2 (texte du garde : gen_joh6_data).
 	"lake_trail_guard": guard_back("garde_forestier", "lake_of_rage_garde_forestier",

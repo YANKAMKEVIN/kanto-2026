@@ -268,11 +268,21 @@
 						"dialogue": "joh6_hideout_alarm"
 					},
 					{
-						"emote": "sbire_alarme_1",
+						"spawn": "sbire_alarme_1_appel",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							10,
+							1
+						],
+						"facing": "down",
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_1_after"
+					},
+					{
+						"emote": "sbire_alarme_1_appel",
 						"kind": "exclamation"
 					},
 					{
-						"move": "sbire_alarme_1",
+						"move": "sbire_alarme_1_appel",
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -297,10 +307,10 @@
 					},
 					{
 						"face": "player",
-						"to": "sbire_alarme_1"
+						"to": "sbire_alarme_1_appel"
 					},
 					{
-						"face": "sbire_alarme_1",
+						"face": "sbire_alarme_1_appel",
 						"to": "player"
 					},
 					{
@@ -347,11 +357,21 @@
 						"dialogue": "joh6_hideout_alarm"
 					},
 					{
-						"emote": "sbire_alarme_2",
+						"spawn": "sbire_alarme_2_appel",
+						"sprite": "rocket_grunt_f",
+						"cell": [
+							19,
+							13
+						],
+						"facing": "up",
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_2_after"
+					},
+					{
+						"emote": "sbire_alarme_2_appel",
 						"kind": "exclamation"
 					},
 					{
-						"move": "sbire_alarme_2",
+						"move": "sbire_alarme_2_appel",
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -376,10 +396,10 @@
 					},
 					{
 						"face": "player",
-						"to": "sbire_alarme_2"
+						"to": "sbire_alarme_2_appel"
 					},
 					{
-						"face": "sbire_alarme_2",
+						"face": "sbire_alarme_2_appel",
 						"to": "player"
 					},
 					{
@@ -426,11 +446,21 @@
 						"dialogue": "joh6_hideout_alarm"
 					},
 					{
-						"emote": "sbire_alarme_3",
+						"spawn": "sbire_alarme_3_appel",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							24,
+							1
+						],
+						"facing": "down",
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_3_after"
+					},
+					{
+						"emote": "sbire_alarme_3_appel",
 						"kind": "exclamation"
 					},
 					{
-						"move": "sbire_alarme_3",
+						"move": "sbire_alarme_3_appel",
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -455,10 +485,10 @@
 					},
 					{
 						"face": "player",
-						"to": "sbire_alarme_3"
+						"to": "sbire_alarme_3_appel"
 					},
 					{
-						"face": "sbire_alarme_3",
+						"face": "sbire_alarme_3_appel",
 						"to": "player"
 					},
 					{
@@ -757,6 +787,12 @@
 						},
 						"flee": [
 							"johto_raikou_done",
+							"johto_raikou_fled"
+						]
+					},
+					{
+						"despawn": "raikou",
+						"if": [
 							"johto_raikou_fled"
 						]
 					}

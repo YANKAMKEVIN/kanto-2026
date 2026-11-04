@@ -23,7 +23,8 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 21 (T14, jalon-21.md §2.13) : « rendre visite à M. Fuji. » et « trouver M. Fuji… » en tête.
 	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
 	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord.
-	assert_eq(library.get_ids(), [&"go_route_39", &"choose_johto_partner", &"rest_olivine",
+	assert_eq(library.get_ids(), [&"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
+		&"joh6_lake_of_rage", &"joh6_burned_tower", &"joh6_see_elder", &"go_route_39", &"choose_johto_partner", &"rest_olivine",
 		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",
 		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
@@ -90,7 +91,9 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush",
 	&"tower_medium_talked", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope",
 	# Jalon 23 : Badge Âme posé par la scène de Koga (T19).
-	&"badge_soul"]
+	&"badge_soul",
+	# JOH6 : `johto_act2` posé par la scène de fin d'acte 1 (JOH5).
+	&"johto_act2"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

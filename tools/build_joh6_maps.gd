@@ -259,6 +259,13 @@ func _build(spec: Dictionary) -> void:
 	_add_night_glows(spec, root)
 	root.set(&"blocked_cells", blocked)
 	root.set(&"calm_cells", calm)
+	# Eau `w` surfable (sinon simple décor) ; pêche sur le Lac Colère seulement (dossier §5).
+	var water: Array[Vector2i] = []
+	if style == "outdoor":
+		water.assign(plan.cells_of("w"))
+	root.set(&"surf_cells", water)
+	if spec["id"] == &"lake_of_rage":
+		root.set(&"fishable_cells", water)
 	_save(root, MAPS_DIR + "%s.tscn" % spec["id"])
 
 
