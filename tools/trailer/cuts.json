@@ -1,0 +1,187 @@
+{
+ "_note": "Montage v2.1 de la bande-annonce (storyboard docs/design/storyboard-trailer-v1.md validé le 2026-11-04, puis retouches de Kevin le même jour : acte I plus court, acte IV plus lent, capture et combat resserrés, trois scènes de plus, cartons de texte entre les actes, une seule musique sous toute la vidéo avec les sons du jeu baissés, niveau remonté, intérieurs sans zoom, sans bandes noires, 1920 de large). Points d'entrée en secondes dans build/trailer/raw/<src>.avi (repères « [trailer] » des journaux). Textes des cartons [D], à valider par Kevin. Niveau : la vidéo passe par le bus Musique du jeu, la musique est donc le morceau brut (même niveau que les musiques du jeu) ; les sons propres des scènes (déjà atténués par le bus à l'enregistrement) sont remontés à 0,55–0,9. Artikodin (Îles Écume B4F) écarté : le point d'apparition de QA n'a pas de chemin à pied jusqu'à l'oiseau.",
+ "letterbox": 0.0,
+ "tail_black": 0.5,
+ "gain": 1.0,
+ "default_audio": 0.0,
+ "music": {
+  "track": "res://assets/audio/music/title_screen.ogg",
+  "start": 0.0,
+  "gain": 0.9,
+  "fade_in": 0.6,
+  "fade_out": 2.0
+ },
+ "cuts": [
+  {
+   "id": "01a_chambre",
+   "src": "depart",
+   "in": 3.6,
+   "dur": 2.0
+  },
+  {
+   "id": "01b_maison",
+   "src": "depart",
+   "in": 8.6,
+   "dur": 2.0
+  },
+  {
+   "id": "02_bourg_palette",
+   "src": "depart",
+   "in": 13.6,
+   "dur": 3.0
+  },
+  {
+   "card": "Une aventure commence.",
+   "dur": 1.6,
+   "xfade": 0.4
+  },
+  {
+   "id": "03_route_1_course_rencontre",
+   "src": "depart",
+   "in": 23.6,
+   "dur": 4.6,
+   "xfade": 0.4,
+   "audio": 0.6
+  },
+  {
+   "id": "05a_flammeche",
+   "src": "depart",
+   "in": 33.0,
+   "dur": 1.6,
+   "audio": 0.6
+  },
+  {
+   "id": "05b_capture",
+   "src": "depart",
+   "in": 41.9,
+   "dur": 4.2,
+   "audio": 0.6
+  },
+  {
+   "card": "Des rivaux sur ta route.",
+   "dur": 1.6,
+   "xfade": 0.4
+  },
+  {
+   "id": "06a_rival_surgit",
+   "src": "rival",
+   "in": 13.5,
+   "dur": 2.0,
+   "xfade": 0.4,
+   "audio": 0.45
+  },
+  {
+   "id": "06b_rival_ligne",
+   "src": "rival",
+   "in": 17.9,
+   "dur": 1.2,
+   "audio": 0.45
+  },
+  {
+   "id": "07_vs",
+   "src": "rival",
+   "in": 22.3,
+   "dur": 1.8,
+   "audio": 0.8
+  },
+  {
+   "id": "08a_pistolet_a_o",
+   "src": "rival",
+   "in": 33.3,
+   "dur": 2.0,
+   "audio": 0.6
+  },
+  {
+   "id": "08b_griffe_ko",
+   "src": "rival",
+   "in": 37.5,
+   "dur": 2.0,
+   "audio": 0.6
+  },
+  {
+   "id": "09_evolution",
+   "src": "evolution",
+   "in": 7.2,
+   "dur": 2.8,
+   "audio": 0.7
+  },
+  {
+   "card": "Un monde entier à découvrir.",
+   "dur": 1.6,
+   "xfade": 0.4
+  },
+  {
+   "id": "10_velo",
+   "src": "velo",
+   "in": 6.0,
+   "dur": 1.5,
+   "xfade": 0.4
+  },
+  {
+   "id": "11_surf",
+   "src": "surf",
+   "in": 9.8,
+   "dur": 1.5
+  },
+  {
+   "id": "11b_celadopole",
+   "src": "celadopole",
+   "in": 4.0,
+   "dur": 1.5
+  },
+  {
+   "id": "11c_pont_pepite",
+   "src": "pont_pepite",
+   "in": 4.0,
+   "dur": 1.5
+  },
+  {
+   "id": "12_mont_selenite",
+   "src": "selenite",
+   "in": 4.0,
+   "dur": 1.4
+  },
+  {
+   "id": "13_tour_pokemon",
+   "src": "tour",
+   "in": 5.8,
+   "dur": 1.5,
+   "audio": 0.5
+  },
+  {
+   "id": "14_mewtwo",
+   "src": "mewtwo",
+   "in": 8.35,
+   "dur": 1.5,
+   "audio": 0.9,
+   "zoom": [
+    1.25,
+    1.35
+   ],
+   "focus": [
+    0.6,
+    0.4
+   ]
+  },
+  {
+   "card": "Jusqu'au sommet.",
+   "dur": 1.4,
+   "xfade": 0.4
+  },
+  {
+   "id": "15_ligue",
+   "src": "ligue",
+   "in": 7.5,
+   "dur": 1.5,
+   "xfade": 0.4
+  },
+  {
+   "id": "16_championne",
+   "src": "championne",
+   "in": 9.45,
+   "dur": 2.0,
+   "audio": 0.9
+  }
+ ],
+ "beds": []
+}
