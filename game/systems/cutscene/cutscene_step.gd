@@ -138,6 +138,8 @@ extends RefCounted
 ##   Panthéon montre l'équipe, puis le titre et l'entrée du Panthéon sont posés et la partie est
 ##   **écrite** (une seule écriture, comme l'étape « save ») ; sinon (déjà faite) : rien ;
 ## - [constant Kind.CREDITS] : le générique (`data/story/credits.json`) ; la scène attend sa fin.
+##   Chapitre Johto, JOH9 : valeur texte [constant CREDITS_IDS] (« johto ») = le petit générique de
+##   chapitre (`data/story/credits_johto.json`), dans [member text] ; true = celui de Kanto.
 ## - [constant Kind.CONFISCATE_TEAM] (Chapitre Johto, JOH0, `jalon-joh0.md` §2.2) : le vol de
 ##   l'équipe et du Sac ([method TeamConfiscation.confiscate]), d'un seul bloc ; refusé (erreur,
 ##   étape sautée) sur une équipe vide ou si une équipe est déjà confisquée. Valeur : true.
@@ -184,6 +186,8 @@ const TYPE_KEYS: Array[String] = [
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]
+## JOH9 : génériques nommés d'une étape « credits » (`data/story/credits_<id>.json`).
+const CREDITS_IDS: Array[String] = ["johto"]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
 ## Entrées en scène d'une étape « wild_battle » (clé « intro », T30) ; &"" = l'entrée sauvage

@@ -1,0 +1,55 @@
+{
+	"mt_silver_3f_rubble": {
+		"maps": [
+			"mt_silver_3f"
+		],
+		"terrain": "rubble",
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "ursaring",
+				"levels": [
+					62,
+					65
+				],
+				"weight": 30
+			},
+			{
+				"species": "donphan",
+				"levels": [
+					62,
+					65
+				],
+				"weight": 25
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					62,
+					65
+				],
+				"weight": 25
+			},
+			{
+				"species": "machamp",
+				"levels": [
+					62,
+					65
+				],
+				"weight": 15
+			},
+			{
+				"species": "pupitar",
+				"levels": [
+					62,
+					65
+				],
+				"weight": 5
+			}
+		]
+	}
+}

@@ -1,0 +1,126 @@
+{
+	"johto_epilogue": {
+		"variants": [
+			{
+				"if": [
+					"johto_giovanni_seen",
+					"johto_rival_final_done"
+				],
+				"unless": [
+					"johto_chapter_done"
+				],
+				"steps": [
+					{
+						"spawn": "orme",
+						"sprite": "researcher",
+						"cell": [
+							6,
+							3
+						],
+						"facing": "down"
+					},
+					{
+						"move": "player",
+						"to": [
+							5,
+							5
+						]
+					},
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"face": "oak",
+						"to": "player"
+					},
+					{
+						"dialogue": "johto_epilogue_chen"
+					},
+					{
+						"face": "orme",
+						"to": "player"
+					},
+					{
+						"dialogue": "johto_epilogue_orme"
+					},
+					{
+						"give": "green_ball",
+						"count": 1,
+						"set": [
+							"johto_green_ball_received"
+						]
+					},
+					{
+						"dialogue": "johto_epilogue_green_ball"
+					},
+					{
+						"dialogue": "johto_epilogue_orme_altar"
+					},
+					{
+						"spawn": "rival_epilogue",
+						"sprite": "rival",
+						"cell": [
+							5,
+							10
+						],
+						"facing": "up"
+					},
+					{
+						"move": "rival_epilogue",
+						"to": [
+							5,
+							9
+						]
+					},
+					{
+						"face": "player",
+						"to": "rival_epilogue"
+					},
+					{
+						"dialogue": "johto_epilogue_rival"
+					},
+					{
+						"set": [
+							"johto_chapter_done"
+						]
+					},
+					{
+						"credits": "johto"
+					},
+					{
+						"save": "johto_chapter_done"
+					}
+				]
+			}
+		]
+	},
+	"ilex_altar_celebi": {
+		"variants": [
+			{
+				"if": [
+					"johto_chapter_done"
+				],
+				"unless": [
+					"johto_celebi_done"
+				],
+				"steps": [
+					{
+						"dialogue": "ilex_altar_green_ball"
+					},
+					{
+						"dialogue": "ilex_altar_celebi"
+					},
+					{
+						"wild_battle": "celebi",
+						"level": 60,
+						"intro": "legendary",
+						"catch": [
+							"johto_celebi_done"
+						]
+					}
+				]
+			}
+		]
+	}
+}

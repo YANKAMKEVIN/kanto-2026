@@ -1,0 +1,7 @@
+{
+	"green_ball": {
+		"name": "Balle Verte", "plural": "Balles Vertes", "feminine": true,
+		"category": "key", "obtained": true,
+		"description": "Une Poké Ball verte, très ancienne. Elle appartiendrait au Bois aux Chênes."
+	}
+}

@@ -49,7 +49,11 @@
 		"underground_path_7_8": "road_to_viridian",
 		"vermilion_city": "vermilion_city",
 		"viridian_city": "pewter_city",
-		"viridian_forest": "viridian_forest"
+		"viridian_forest": "viridian_forest",
+		"silver_trail": "road_to_lavender",
+		"mt_silver": "mt_moon",
+		"mt_silver_summit": "final_road",
+		"route_28": "pokemon_road"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",

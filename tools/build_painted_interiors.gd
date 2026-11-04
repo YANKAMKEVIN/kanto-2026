@@ -159,6 +159,9 @@ const J22 := [&"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center", &
 	&"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]
 ## Jalon 21 (T21) : le poste traversant de la Route 12 et son étage (CT39) ; `--route12`.
 const ROUTE_12 := [&"route_12_gate", &"route_12_gate_2f"]
+## Chapitre Johto, JOH9 : Centre du Mont Argenté (Centre + comptoir de Boutique), poste de la
+## Route 28, maison du gardien ; `--joh9`.
+const JOH9 := [&"mt_silver_center", &"route_28_gate", &"route_28_house"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -198,6 +201,8 @@ func _init() -> void:
 	rooms.append_array(_route_12_rooms())
 	# Jalon 29 : le poste de la Ligue (Route 22) et le hall du Plateau Indigo (fin de liste).
 	rooms.append_array(_j29_rooms())
+	# Chapitre Johto, JOH9 (fin de liste).
+	rooms.append_array(_joh9_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -259,6 +264,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(CINNABAR)
 		elif arg == "--route12":
 			wanted.append_array(ROUTE_12)
+		elif arg == "--joh9":
+			wanted.append_array(JOH9)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -2793,4 +2800,69 @@ func _indigo_plateau_lobby() -> Dictionary:
 	(room["spawns"] as Dictionary)["league_door"] = Vector2i(12, 4)
 	room["triggers"] = [["LeagueGuardQuestion", Vector2i(12, 4), Vector2i.ONE,
 		&"league_guard_door"]]
+	return room
+
+
+# --- Chapitre Johto, JOH9 : Mont Argenté, Route 28 (`docs/tech/jalon-joh9.md` §2.1) -----------
+
+
+func _joh9_rooms() -> Array[Dictionary]:
+	return [_mt_silver_center(), _route_28_gate(), _route_28_house()]
+
+
+## Centre du Mont Argenté (dossier joh-10 §3 : « Centre complet, Boutique ») : la définition
+## commune des Centres ; le marchand se tient en (13, 5), tourné vers l'ouest, comme au Plateau
+## Indigo (PNJ `clerk`, Boutique `data/shops/mt_silver_center.json`). Point de repos et de Vol.
+func _mt_silver_center() -> Dictionary:
+	return _pokemon_center(&"mt_silver_center", "MtSilverCenter", "Mont Argenté",
+		[&"silver_trail", &"retour_centre"])
+
+
+## Poste de la Route 28 (`tools/plans/route_28_gate.txt`, même enveloppe que le poste de la
+## Ligue) : ouverture nord → Route 28 (Johto), porte sud → Route 22 ouest (Kanto, porte neuve de
+## la variante `JOH9`). Garde (6, 2) dans `data/npcs/route_28_gate.json`. Déclencheurs : rangée
+## (4..5, 2) en montant (depuis Kanto) → `route_28_gate_check` (A-48 et recul sans
+## `johto_route28_open`) ; rangée (4..5, 6) en descendant (depuis Johto) → `route_28_gate_south`
+## (porte verrouillée et recul sans `johto_rival_final_done`, sinon A-47 une fois).
+func _route_28_gate() -> Dictionary:
+	return {
+		"id": &"route_28_gate", "node": "Route28Gate", "size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Route 28", "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 1), Vector2i(5, 1), Vector2i(4, 7), Vector2i(5, 7)],
+		"props": [
+			[&"int_plante", Vector2i(1, 2), 3.0, "PlantNorthWest"],
+			[&"int_plante", Vector2i(8, 2), 3.0, "PlantNorthEast"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+		],
+		"spawns": {"from_route_28": Vector2i(4, 2), "from_route_22": Vector2i(4, 6)},
+		"warps": [
+			["ToRoute28W", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"route_28", &"from_gate",
+				Vector2i.DOWN],
+			["ToRoute28E", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"route_28", &"from_gate",
+				Vector2i.DOWN],
+			["ToRoute22W", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"route_22_west",
+				&"from_route_28_gate", Vector2i.RIGHT],
+			["ToRoute22E", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"route_22_west",
+				&"from_route_28_gate", Vector2i.RIGHT],
+		],
+		"triggers": [
+			["KantoCheck", Vector2i(4, 2), Vector2i(2, 1), &"route_28_gate_check", Vector2i.UP],
+			["JohtoBarrier", Vector2i(4, 6), Vector2i(2, 1), &"route_28_gate_south",
+				Vector2i.DOWN],
+		],
+	}
+
+
+## Maison du gardien (Route 28, dossier §3 [D] : modèle des maisons) : grille et mobilier de la
+## maison 1 de Carmin ; le gardien dans `data/npcs/route_28_house.json`.
+func _route_28_house() -> Dictionary:
+	var room := _vermilion_house(&"route_28_house", "Route28House", "carmin_maison_1.txt", ".Xh",
+		&"retour_maison")
+	room["title"] = "Route 28"
+	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+		&"retour_maison", &"route_28")
+	room["furniture"] = _mason_furniture()
 	return room

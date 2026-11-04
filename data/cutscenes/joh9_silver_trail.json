@@ -1,0 +1,31 @@
+{
+	"lake_of_rage_trail_guard": {
+		"variants": [
+			{
+				"unless": [
+					"johto_act3"
+				],
+				"steps": [
+					{
+						"face": "garde_forestier",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "garde_forestier"
+					},
+					{
+						"dialogue": "lake_of_rage_trail_closed"
+					},
+					{
+						"move": "player",
+						"path": [
+							"left"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	}
+}

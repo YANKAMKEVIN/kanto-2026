@@ -365,6 +365,34 @@
 		"mahogany_town": {
 			"name": "Acajou", "kind": "town", "maps": [], "region": "johto", "draft": true,
 			"description": "Un village de montagne au bord du Lac Colère, un peu trop calme pour être honnête."
+		},
+		"silver_trail": {
+			"name": "Sentier du Mont Argenté", "kind": "route", "region": "johto",
+			"maps": ["silver_trail", "mt_silver_center"],
+			"subtitle": "Lac Colère — Mont Argenté",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "mt_silver_center" },
+				{ "id": "poke_mart", "found_on": "mt_silver_center" }
+			],
+			"description": "Un sentier de montagne, au-dessus du Lac Colère."
+		},
+		"mt_silver": {
+			"name": "Mont Argenté", "kind": "place", "region": "johto",
+			"maps": ["mt_silver_outside", "mt_silver_1f", "mt_silver_2f", "mt_silver_3f"],
+			"subtitle": "Johto — Kanto",
+			"description": "La plus haute montagne entre Johto et Kanto."
+		},
+		"mt_silver_summit": {
+			"name": "Sommet du Mont Argenté", "kind": "place", "region": "johto",
+			"maps": ["mt_silver_summit"],
+			"subtitle": "Mont Argenté",
+			"description": "Le sommet du monde, au-dessus des nuages."
+		},
+		"route_28": {
+			"name": "Route 28", "kind": "route", "region": "johto",
+			"maps": ["route_28", "route_28_gate", "route_28_house"],
+			"subtitle": "Mont Argenté — Route 22",
+			"description": "Un col de montagne, vers Kanto."
 		}
 	}
 }

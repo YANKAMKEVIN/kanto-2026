@@ -1,0 +1,1242 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_0rri7"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_62c65"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_1ixsk"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_dxd0n"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="5_un5ly"]
+
+[node name="MtSilverSummit" type="Node2D" unique_id=575132688]
+script = ExtResource("1_0rri7")
+map_id = &"mt_silver_summit"
+display_name = "Sommet du Mont Argenté"
+region = "Johto"
+size = Vector2i(20, 18)
+no_fly = true
+no_teleport = true
+light_profile = &"johto_auto"
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=244126277]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAcAAAABAAAAAAAAAAcAAAACAAAAAAAAAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAAAAAcAAAAJAAAAAAABAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAAcAAAAMAAAAAAAAAAcAAAANAAAAAAAAAAcAAAAOAAAAAAABAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAABAAcAAAASAAAAAAAAAAcAAAATAAAAAAAAAAcAAAAAAAEAAAABAAcAAAABAAEAAAACAAQAAAACAAEAAAACAAQAAAADAAEAAAACAAQAAAAEAAEAAAAAAAQAAAAFAAEAAAAAAAQAAAAGAAEAAAABAAQAAAAHAAEAAAAAAAQAAAAIAAEAAAABAAQAAAAJAAEAAAACAAQAAAAKAAEAAAABAAQAAAALAAEAAAABAAQAAAAMAAEAAAACAAQAAAANAAEAAAAAAAcAAAAOAAEAAAAAAAQAAAAPAAEAAAACAAQAAAAQAAEAAAACAAQAAAARAAEAAAABAAQAAAASAAEAAAABAAQAAAATAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAABAAQAAAACAAIAAAABAAQAAAADAAIAAAACAAQAAAAEAAIAAAABAAQAAAAFAAIAAAABAAQAAAAGAAIAAAAAAAQAAAAHAAIAAAABAAQAAAAIAAIAAAACAAQAAAAJAAIAAAACAAQAAAAKAAIAAAAAAAQAAAALAAIAAAABAAQAAAAMAAIAAAABAAQAAAANAAIAAAABAAcAAAAOAAIAAAAAAAQAAAAPAAIAAAACAAQAAAAQAAIAAAABAAMAAAARAAIAAAABAAQAAAASAAIAAAAAAAQAAAATAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAAAAAQAAAACAAMAAAAAAAQAAAADAAMAAAAAAAQAAAAEAAMAAAACAAQAAAAFAAMAAAACAAQAAAAGAAMAAAACAAQAAAAHAAMAAAAAAAQAAAAIAAMAAAAAAAQAAAAJAAMAAAAAAAcAAAAKAAMAAAACAAQAAAALAAMAAAAAAAQAAAAMAAMAAAAAAAQAAAANAAMAAAABAAcAAAAOAAMAAAAAAAQAAAAPAAMAAAAAAAQAAAAQAAMAAAAAAAQAAAARAAMAAAAAAAQAAAASAAMAAAABAAQAAAATAAMAAAAAAAcAAAAAAAQAAAAAAAcAAAABAAQAAAACAAQAAAACAAQAAAAAAAQAAAADAAQAAAACAAQAAAAEAAQAAAABAAcAAAAFAAQAAAABAAcAAAAGAAQAAAAAAAQAAAAHAAQAAAACAAQAAAAIAAQAAAACAAQAAAAJAAQAAAACAAQAAAAKAAQAAAACAAQAAAALAAQAAAAAAAQAAAAMAAQAAAACAAQAAAANAAQAAAABAAcAAAAOAAQAAAACAAQAAAAPAAQAAAABAAQAAAAQAAQAAAAAAAQAAAARAAQAAAAAAAQAAAASAAQAAAACAAQAAAATAAQAAAABAAcAAAAAAAUAAAABAAcAAAABAAUAAAABAAQAAAACAAUAAAACAAQAAAADAAUAAAAAAAQAAAAEAAUAAAABAAcAAAAFAAUAAAAAAAQAAAAGAAUAAAABAAQAAAAHAAUAAAACAAQAAAAIAAUAAAAAAAQAAAAJAAUAAAABAAQAAAAKAAUAAAABAAQAAAALAAUAAAABAAQAAAAMAAUAAAABAAQAAAANAAUAAAABAAcAAAAOAAUAAAABAAcAAAAPAAUAAAAAAAcAAAAQAAUAAAACAAQAAAARAAUAAAAAAAcAAAASAAUAAAABAAcAAAATAAUAAAABAAcAAAAAAAYAAAAAAAcAAAABAAYAAAACAAQAAAACAAYAAAAAAAQAAAADAAYAAAABAAQAAAAEAAYAAAABAAQAAAAFAAYAAAABAAQAAAAGAAYAAAACAAQAAAAHAAYAAAACAAQAAAAIAAYAAAABAAQAAAAJAAYAAAAAAAQAAAAKAAYAAAACAAQAAAALAAYAAAABAAQAAAAMAAYAAAABAAQAAAANAAYAAAABAAQAAAAOAAYAAAAAAAQAAAAPAAYAAAACAAQAAAAQAAYAAAAAAAQAAAARAAYAAAABAAQAAAASAAYAAAACAAQAAAATAAYAAAABAAcAAAAAAAcAAAAAAAcAAAABAAcAAAABAAQAAAACAAcAAAABAAQAAAADAAcAAAABAAQAAAAEAAcAAAABAAQAAAAFAAcAAAACAAQAAAAGAAcAAAABAAQAAAAHAAcAAAACAAQAAAAIAAcAAAABAAQAAAAJAAcAAAABAAQAAAAKAAcAAAABAAcAAAALAAcAAAABAAQAAAAMAAcAAAAAAAQAAAANAAcAAAABAAQAAAAOAAcAAAAAAAQAAAAPAAcAAAAAAAQAAAAQAAcAAAABAAQAAAARAAcAAAAAAAQAAAASAAcAAAABAAQAAAATAAcAAAABAAcAAAAAAAgAAAABAAcAAAABAAgAAAABAAQAAAACAAgAAAACAAQAAAADAAgAAAABAAQAAAAEAAgAAAABAAQAAAAFAAgAAAACAAQAAAAGAAgAAAABAAQAAAAHAAgAAAACAAQAAAAIAAgAAAAAAAQAAAAJAAgAAAABAAQAAAAKAAgAAAABAAQAAAALAAgAAAABAAQAAAAMAAgAAAAAAAQAAAANAAgAAAAAAAQAAAAOAAgAAAACAAQAAAAPAAgAAAABAAQAAAAQAAgAAAAAAAQAAAARAAgAAAAAAAQAAAASAAgAAAACAAQAAAATAAgAAAABAAcAAAAAAAkAAAABAAcAAAABAAkAAAACAAQAAAACAAkAAAABAAQAAAADAAkAAAACAAQAAAAEAAkAAAACAAQAAAAFAAkAAAACAAQAAAAGAAkAAAAAAAQAAAAHAAkAAAABAAQAAAAIAAkAAAABAAQAAAAJAAkAAAABAAQAAAAKAAkAAAACAAQAAAALAAkAAAAAAAQAAAAMAAkAAAABAAQAAAANAAkAAAABAAQAAAAOAAkAAAABAAQAAAAPAAkAAAABAAQAAAAQAAkAAAABAAQAAAARAAkAAAABAAQAAAASAAkAAAACAAQAAAATAAkAAAABAAcAAAAAAAoAAAABAAcAAAABAAoAAAACAAQAAAACAAoAAAABAAQAAAADAAoAAAAAAAQAAAAEAAoAAAABAAQAAAAFAAoAAAABAAQAAAAGAAoAAAABAAQAAAAHAAoAAAACAAQAAAAIAAoAAAABAAQAAAAJAAoAAAAAAAQAAAAKAAoAAAABAAQAAAALAAoAAAACAAQAAAAMAAoAAAAAAAQAAAANAAoAAAAAAAQAAAAOAAoAAAAAAAQAAAAPAAoAAAABAAcAAAAQAAoAAAABAAQAAAARAAoAAAACAAQAAAASAAoAAAAAAAQAAAATAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAAAAAQAAAACAAsAAAAAAAQAAAADAAsAAAAAAAcAAAAEAAsAAAACAAQAAAAFAAsAAAACAAQAAAAGAAsAAAAAAAQAAAAHAAsAAAAAAAQAAAAIAAsAAAABAAQAAAAJAAsAAAABAAQAAAAKAAsAAAACAAQAAAALAAsAAAAAAAQAAAAMAAsAAAAAAAQAAAANAAsAAAABAAQAAAAOAAsAAAABAAQAAAAPAAsAAAAAAAQAAAAQAAsAAAABAAQAAAARAAsAAAACAAQAAAASAAsAAAACAAQAAAATAAsAAAABAAcAAAAAAAwAAAAAAAcAAAABAAwAAAACAAQAAAACAAwAAAACAAQAAAADAAwAAAABAAQAAAAEAAwAAAAAAAQAAAAFAAwAAAABAAQAAAAGAAwAAAAAAAQAAAAHAAwAAAAAAAQAAAAIAAwAAAAAAAQAAAAJAAwAAAACAAQAAAAKAAwAAAACAAQAAAALAAwAAAAAAAQAAAAMAAwAAAACAAQAAAANAAwAAAABAAQAAAAOAAwAAAAAAAQAAAAPAAwAAAAAAAQAAAAQAAwAAAACAAQAAAARAAwAAAACAAQAAAASAAwAAAAAAAQAAAATAAwAAAABAAcAAAAAAA0AAAABAAcAAAABAA0AAAACAAQAAAACAA0AAAACAAQAAAADAA0AAAAAAAQAAAAEAA0AAAABAAQAAAAFAA0AAAACAAQAAAAGAA0AAAACAAQAAAAHAA0AAAABAAcAAAAIAA0AAAACAAQAAAAJAA0AAAACAAQAAAAKAA0AAAABAAQAAAALAA0AAAAAAAQAAAAMAA0AAAAAAAcAAAANAA0AAAAAAAQAAAAOAA0AAAABAAQAAAAPAA0AAAACAAQAAAAQAA0AAAACAAQAAAARAA0AAAABAAQAAAASAA0AAAAAAAQAAAATAA0AAAABAAcAAAAAAA4AAAAAAAcAAAABAA4AAAAAAAQAAAACAA4AAAAAAAQAAAADAA4AAAACAAQAAAAEAA4AAAACAAQAAAAFAA4AAAAAAAQAAAAGAA4AAAAAAAQAAAAHAA4AAAABAAQAAAAIAA4AAAACAAQAAAAJAA4AAAACAAQAAAAKAA4AAAAAAAQAAAALAA4AAAABAAQAAAAMAA4AAAABAAQAAAANAA4AAAACAAQAAAAOAA4AAAACAAQAAAAPAA4AAAACAAQAAAAQAA4AAAABAAQAAAARAA4AAAACAAQAAAASAA4AAAACAAQAAAATAA4AAAAAAAcAAAAAAA8AAAABAAcAAAABAA8AAAACAAQAAAACAA8AAAACAAQAAAADAA8AAAACAAQAAAAEAA8AAAABAAQAAAAFAA8AAAACAAQAAAAGAA8AAAACAAQAAAAHAA8AAAAAAAQAAAAIAA8AAAACAAQAAAAJAA8AAAABAAQAAAAKAA8AAAABAAQAAAALAA8AAAAAAAQAAAAMAA8AAAAAAAQAAAANAA8AAAABAAQAAAAOAA8AAAACAAQAAAAPAA8AAAAAAAQAAAAQAA8AAAAAAAQAAAARAA8AAAAAAAQAAAASAA8AAAABAAQAAAATAA8AAAABAAcAAAAAABAAAAAAAAcAAAABABAAAAAAAAQAAAACABAAAAAAAAQAAAADABAAAAABAAQAAAAEABAAAAABAAQAAAAFABAAAAABAAQAAAAGABAAAAACAAQAAAAHABAAAAACAAQAAAAIABAAAAAAAAQAAAAJABAAAAAAAAQAAAAKABAAAAABAAQAAAALABAAAAABAAQAAAAMABAAAAABAAQAAAANABAAAAAAAAQAAAAOABAAAAABAAQAAAAPABAAAAABAAQAAAAQABAAAAABAAQAAAARABAAAAABAAQAAAASABAAAAACAAQAAAATABAAAAAAAAcAAAAAABEAAAABAAcAAAABABEAAAABAAkAAAACABEAAAACAAkAAAADABEAAAAAAAkAAAAEABEAAAAAAAkAAAAFABEAAAAAAAkAAAAGABEAAAABAAkAAAAHABEAAAAAAAkAAAAIABEAAAAAAAkAAAAJABEAAAAAAAkAAAAKABEAAAABAAkAAAALABEAAAABAAkAAAAMABEAAAACAAkAAAANABEAAAACAAkAAAAOABEAAAABAAkAAAAPABEAAAAAAAkAAAAQABEAAAAAAAkAAAARABEAAAABAAkAAAASABEAAAACAAkAAAATABEAAAABAAcAAAA=")
+tile_set = ExtResource("2_62c65")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=155018309]
+tile_set = ExtResource("2_62c65")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=125317629]
+tile_set = ExtResource("2_62c65")
+
+[node name="Decor" type="Node2D" parent="." unique_id=652277618]
+
+[node name="Echelle16_2" type="Node2D" parent="Decor" unique_id=113589769]
+position = Vector2(1584, 288)
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Echelle16_2" unique_id=101986770]
+color = Color(0.08, 0.06, 0.05, 1)
+polygon = PackedVector2Array(-36, -84, 36, -84, 36, -12, -36, -12)
+
+[node name="@Polygon2D@1144" type="Polygon2D" parent="Decor/Echelle16_2" unique_id=1067295057]
+color = Color(0.55, 0.38, 0.2, 1)
+polygon = PackedVector2Array(-24, -70, 24, -70, 24, -62, -24, -62)
+
+[node name="@Polygon2D@1145" type="Polygon2D" parent="Decor/Echelle16_2" unique_id=430505775]
+color = Color(0.55, 0.38, 0.2, 1)
+polygon = PackedVector2Array(-24, -44, 24, -44, 24, -36, -24, -36)
+
+[node name="Neige" type="Node2D" parent="Decor" unique_id=769074374]
+z_index = -1
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Neige" unique_id=930453776]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 96, 192, 96, 192, 192, 96, 192)
+
+[node name="@Polygon2D@1146" type="Polygon2D" parent="Decor/Neige" unique_id=1566780880]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 96, 288, 96, 288, 192, 192, 192)
+
+[node name="@Polygon2D@1147" type="Polygon2D" parent="Decor/Neige" unique_id=473161254]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 96, 384, 96, 384, 192, 288, 192)
+
+[node name="@Polygon2D@1148" type="Polygon2D" parent="Decor/Neige" unique_id=233102503]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 96, 480, 96, 480, 192, 384, 192)
+
+[node name="@Polygon2D@1149" type="Polygon2D" parent="Decor/Neige" unique_id=943226304]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 96, 576, 96, 576, 192, 480, 192)
+
+[node name="@Polygon2D@1150" type="Polygon2D" parent="Decor/Neige" unique_id=843667949]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 96, 672, 96, 672, 192, 576, 192)
+
+[node name="@Polygon2D@1151" type="Polygon2D" parent="Decor/Neige" unique_id=1784560730]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 96, 768, 96, 768, 192, 672, 192)
+
+[node name="@Polygon2D@1152" type="Polygon2D" parent="Decor/Neige" unique_id=1095086022]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 96, 864, 96, 864, 192, 768, 192)
+
+[node name="@Polygon2D@1153" type="Polygon2D" parent="Decor/Neige" unique_id=1848009943]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 96, 960, 96, 960, 192, 864, 192)
+
+[node name="@Polygon2D@1154" type="Polygon2D" parent="Decor/Neige" unique_id=954895645]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 96, 1056, 96, 1056, 192, 960, 192)
+
+[node name="@Polygon2D@1155" type="Polygon2D" parent="Decor/Neige" unique_id=75439513]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 96, 1152, 96, 1152, 192, 1056, 192)
+
+[node name="@Polygon2D@1156" type="Polygon2D" parent="Decor/Neige" unique_id=2145659624]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 96, 1248, 96, 1248, 192, 1152, 192)
+
+[node name="@Polygon2D@1157" type="Polygon2D" parent="Decor/Neige" unique_id=47348007]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 96, 1440, 96, 1440, 192, 1344, 192)
+
+[node name="@Polygon2D@1158" type="Polygon2D" parent="Decor/Neige" unique_id=867912711]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 96, 1536, 96, 1536, 192, 1440, 192)
+
+[node name="@Polygon2D@1159" type="Polygon2D" parent="Decor/Neige" unique_id=80223473]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 96, 1632, 96, 1632, 192, 1536, 192)
+
+[node name="@Polygon2D@1160" type="Polygon2D" parent="Decor/Neige" unique_id=477042414]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 96, 1728, 96, 1728, 192, 1632, 192)
+
+[node name="@Polygon2D@1161" type="Polygon2D" parent="Decor/Neige" unique_id=815344068]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 96, 1824, 96, 1824, 192, 1728, 192)
+
+[node name="@Polygon2D@1162" type="Polygon2D" parent="Decor/Neige" unique_id=1798383392]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 192, 192, 192, 192, 288, 96, 288)
+
+[node name="@Polygon2D@1163" type="Polygon2D" parent="Decor/Neige" unique_id=1440623953]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 192, 288, 192, 288, 288, 192, 288)
+
+[node name="@Polygon2D@1164" type="Polygon2D" parent="Decor/Neige" unique_id=1375112436]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 192, 384, 192, 384, 288, 288, 288)
+
+[node name="@Polygon2D@1165" type="Polygon2D" parent="Decor/Neige" unique_id=1724495210]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 192, 480, 192, 480, 288, 384, 288)
+
+[node name="@Polygon2D@1166" type="Polygon2D" parent="Decor/Neige" unique_id=991542306]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 192, 576, 192, 576, 288, 480, 288)
+
+[node name="@Polygon2D@1167" type="Polygon2D" parent="Decor/Neige" unique_id=323894293]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 192, 672, 192, 672, 288, 576, 288)
+
+[node name="@Polygon2D@1168" type="Polygon2D" parent="Decor/Neige" unique_id=1204712719]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 192, 768, 192, 768, 288, 672, 288)
+
+[node name="@Polygon2D@1169" type="Polygon2D" parent="Decor/Neige" unique_id=1884907279]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 192, 864, 192, 864, 288, 768, 288)
+
+[node name="@Polygon2D@1170" type="Polygon2D" parent="Decor/Neige" unique_id=575099603]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 192, 960, 192, 960, 288, 864, 288)
+
+[node name="@Polygon2D@1171" type="Polygon2D" parent="Decor/Neige" unique_id=1394282368]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 192, 1056, 192, 1056, 288, 960, 288)
+
+[node name="@Polygon2D@1172" type="Polygon2D" parent="Decor/Neige" unique_id=1863879829]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 192, 1152, 192, 1152, 288, 1056, 288)
+
+[node name="@Polygon2D@1173" type="Polygon2D" parent="Decor/Neige" unique_id=1597431404]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 192, 1248, 192, 1248, 288, 1152, 288)
+
+[node name="@Polygon2D@1174" type="Polygon2D" parent="Decor/Neige" unique_id=296835844]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 192, 1440, 192, 1440, 288, 1344, 288)
+
+[node name="@Polygon2D@1175" type="Polygon2D" parent="Decor/Neige" unique_id=2071546235]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 192, 1536, 192, 1536, 288, 1440, 288)
+
+[node name="@Polygon2D@1176" type="Polygon2D" parent="Decor/Neige" unique_id=1513779612]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 192, 1728, 192, 1728, 288, 1632, 288)
+
+[node name="@Polygon2D@1177" type="Polygon2D" parent="Decor/Neige" unique_id=721269443]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 192, 1824, 192, 1824, 288, 1728, 288)
+
+[node name="@Polygon2D@1178" type="Polygon2D" parent="Decor/Neige" unique_id=705491401]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 288, 192, 288, 192, 384, 96, 384)
+
+[node name="@Polygon2D@1179" type="Polygon2D" parent="Decor/Neige" unique_id=1642405203]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 288, 288, 288, 288, 384, 192, 384)
+
+[node name="@Polygon2D@1180" type="Polygon2D" parent="Decor/Neige" unique_id=1793971127]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 288, 384, 288, 384, 384, 288, 384)
+
+[node name="@Polygon2D@1181" type="Polygon2D" parent="Decor/Neige" unique_id=777841709]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 288, 480, 288, 480, 384, 384, 384)
+
+[node name="@Polygon2D@1182" type="Polygon2D" parent="Decor/Neige" unique_id=309295969]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 288, 576, 288, 576, 384, 480, 384)
+
+[node name="@Polygon2D@1183" type="Polygon2D" parent="Decor/Neige" unique_id=1843466007]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 288, 672, 288, 672, 384, 576, 384)
+
+[node name="@Polygon2D@1184" type="Polygon2D" parent="Decor/Neige" unique_id=1804541776]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 288, 768, 288, 768, 384, 672, 384)
+
+[node name="@Polygon2D@1185" type="Polygon2D" parent="Decor/Neige" unique_id=700796881]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 288, 864, 288, 864, 384, 768, 384)
+
+[node name="@Polygon2D@1186" type="Polygon2D" parent="Decor/Neige" unique_id=793340890]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 288, 1056, 288, 1056, 384, 960, 384)
+
+[node name="@Polygon2D@1187" type="Polygon2D" parent="Decor/Neige" unique_id=1083464849]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 288, 1152, 288, 1152, 384, 1056, 384)
+
+[node name="@Polygon2D@1188" type="Polygon2D" parent="Decor/Neige" unique_id=1374527354]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 288, 1248, 288, 1248, 384, 1152, 384)
+
+[node name="@Polygon2D@1189" type="Polygon2D" parent="Decor/Neige" unique_id=1600608733]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 288, 1440, 288, 1440, 384, 1344, 384)
+
+[node name="@Polygon2D@1190" type="Polygon2D" parent="Decor/Neige" unique_id=1843334234]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 288, 1536, 288, 1536, 384, 1440, 384)
+
+[node name="@Polygon2D@1191" type="Polygon2D" parent="Decor/Neige" unique_id=1940939503]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 288, 1632, 288, 1632, 384, 1536, 384)
+
+[node name="@Polygon2D@1192" type="Polygon2D" parent="Decor/Neige" unique_id=1794206545]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 288, 1728, 288, 1728, 384, 1632, 384)
+
+[node name="@Polygon2D@1193" type="Polygon2D" parent="Decor/Neige" unique_id=1013006690]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 288, 1824, 288, 1824, 384, 1728, 384)
+
+[node name="@Polygon2D@1194" type="Polygon2D" parent="Decor/Neige" unique_id=50011786]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 384, 192, 384, 192, 480, 96, 480)
+
+[node name="@Polygon2D@1195" type="Polygon2D" parent="Decor/Neige" unique_id=1291430665]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 384, 288, 384, 288, 480, 192, 480)
+
+[node name="@Polygon2D@1196" type="Polygon2D" parent="Decor/Neige" unique_id=1855807236]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 384, 384, 384, 384, 480, 288, 480)
+
+[node name="@Polygon2D@1197" type="Polygon2D" parent="Decor/Neige" unique_id=302620900]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 384, 672, 384, 672, 480, 576, 480)
+
+[node name="@Polygon2D@1198" type="Polygon2D" parent="Decor/Neige" unique_id=1537554074]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 384, 768, 384, 768, 480, 672, 480)
+
+[node name="@Polygon2D@1199" type="Polygon2D" parent="Decor/Neige" unique_id=2039513949]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 384, 864, 384, 864, 480, 768, 480)
+
+[node name="@Polygon2D@1200" type="Polygon2D" parent="Decor/Neige" unique_id=533878206]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 384, 960, 384, 960, 480, 864, 480)
+
+[node name="@Polygon2D@1201" type="Polygon2D" parent="Decor/Neige" unique_id=1566958337]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 384, 1056, 384, 1056, 480, 960, 480)
+
+[node name="@Polygon2D@1202" type="Polygon2D" parent="Decor/Neige" unique_id=136889290]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 384, 1152, 384, 1152, 480, 1056, 480)
+
+[node name="@Polygon2D@1203" type="Polygon2D" parent="Decor/Neige" unique_id=1711255922]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 384, 1248, 384, 1248, 480, 1152, 480)
+
+[node name="@Polygon2D@1204" type="Polygon2D" parent="Decor/Neige" unique_id=1301212993]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 384, 1440, 384, 1440, 480, 1344, 480)
+
+[node name="@Polygon2D@1205" type="Polygon2D" parent="Decor/Neige" unique_id=1724877286]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 384, 1536, 384, 1536, 480, 1440, 480)
+
+[node name="@Polygon2D@1206" type="Polygon2D" parent="Decor/Neige" unique_id=1411728989]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 384, 1632, 384, 1632, 480, 1536, 480)
+
+[node name="@Polygon2D@1207" type="Polygon2D" parent="Decor/Neige" unique_id=2115923773]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 384, 1728, 384, 1728, 480, 1632, 480)
+
+[node name="@Polygon2D@1208" type="Polygon2D" parent="Decor/Neige" unique_id=1093903490]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 384, 1824, 384, 1824, 480, 1728, 480)
+
+[node name="@Polygon2D@1209" type="Polygon2D" parent="Decor/Neige" unique_id=2104561482]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 480, 192, 480, 192, 576, 96, 576)
+
+[node name="@Polygon2D@1210" type="Polygon2D" parent="Decor/Neige" unique_id=739674493]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 480, 288, 480, 288, 576, 192, 576)
+
+[node name="@Polygon2D@1211" type="Polygon2D" parent="Decor/Neige" unique_id=956339035]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 480, 384, 480, 384, 576, 288, 576)
+
+[node name="@Polygon2D@1212" type="Polygon2D" parent="Decor/Neige" unique_id=1126584870]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 480, 576, 480, 576, 576, 480, 576)
+
+[node name="@Polygon2D@1213" type="Polygon2D" parent="Decor/Neige" unique_id=769807992]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 480, 672, 480, 672, 576, 576, 576)
+
+[node name="@Polygon2D@1214" type="Polygon2D" parent="Decor/Neige" unique_id=2026138444]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 480, 768, 480, 768, 576, 672, 576)
+
+[node name="@Polygon2D@1215" type="Polygon2D" parent="Decor/Neige" unique_id=1428191072]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 480, 864, 480, 864, 576, 768, 576)
+
+[node name="@Polygon2D@1216" type="Polygon2D" parent="Decor/Neige" unique_id=1570508725]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 480, 960, 480, 960, 576, 864, 576)
+
+[node name="@Polygon2D@1217" type="Polygon2D" parent="Decor/Neige" unique_id=590089291]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 480, 1056, 480, 1056, 576, 960, 576)
+
+[node name="@Polygon2D@1218" type="Polygon2D" parent="Decor/Neige" unique_id=658514732]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 480, 1152, 480, 1152, 576, 1056, 576)
+
+[node name="@Polygon2D@1219" type="Polygon2D" parent="Decor/Neige" unique_id=1498975995]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 480, 1248, 480, 1248, 576, 1152, 576)
+
+[node name="@Polygon2D@1220" type="Polygon2D" parent="Decor/Neige" unique_id=1919588996]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 480, 1632, 480, 1632, 576, 1536, 576)
+
+[node name="@Polygon2D@1221" type="Polygon2D" parent="Decor/Neige" unique_id=926077521]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 576, 192, 576, 192, 672, 96, 672)
+
+[node name="@Polygon2D@1222" type="Polygon2D" parent="Decor/Neige" unique_id=2098827238]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 576, 288, 576, 288, 672, 192, 672)
+
+[node name="@Polygon2D@1223" type="Polygon2D" parent="Decor/Neige" unique_id=1497620618]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 576, 384, 576, 384, 672, 288, 672)
+
+[node name="@Polygon2D@1224" type="Polygon2D" parent="Decor/Neige" unique_id=1396613760]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 576, 480, 576, 480, 672, 384, 672)
+
+[node name="@Polygon2D@1225" type="Polygon2D" parent="Decor/Neige" unique_id=1370793094]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 576, 576, 576, 576, 672, 480, 672)
+
+[node name="@Polygon2D@1226" type="Polygon2D" parent="Decor/Neige" unique_id=490148058]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 576, 672, 576, 672, 672, 576, 672)
+
+[node name="@Polygon2D@1227" type="Polygon2D" parent="Decor/Neige" unique_id=691642306]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 576, 768, 576, 768, 672, 672, 672)
+
+[node name="@Polygon2D@1228" type="Polygon2D" parent="Decor/Neige" unique_id=1380761670]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 576, 864, 576, 864, 672, 768, 672)
+
+[node name="@Polygon2D@1229" type="Polygon2D" parent="Decor/Neige" unique_id=1300702465]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 576, 960, 576, 960, 672, 864, 672)
+
+[node name="@Polygon2D@1230" type="Polygon2D" parent="Decor/Neige" unique_id=1582770310]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 576, 1056, 576, 1056, 672, 960, 672)
+
+[node name="@Polygon2D@1231" type="Polygon2D" parent="Decor/Neige" unique_id=1168136405]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 576, 1152, 576, 1152, 672, 1056, 672)
+
+[node name="@Polygon2D@1232" type="Polygon2D" parent="Decor/Neige" unique_id=1813418052]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 576, 1248, 576, 1248, 672, 1152, 672)
+
+[node name="@Polygon2D@1233" type="Polygon2D" parent="Decor/Neige" unique_id=1842339549]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 576, 1344, 576, 1344, 672, 1248, 672)
+
+[node name="@Polygon2D@1234" type="Polygon2D" parent="Decor/Neige" unique_id=275244811]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 576, 1440, 576, 1440, 672, 1344, 672)
+
+[node name="@Polygon2D@1235" type="Polygon2D" parent="Decor/Neige" unique_id=1587436628]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 576, 1536, 576, 1536, 672, 1440, 672)
+
+[node name="@Polygon2D@1236" type="Polygon2D" parent="Decor/Neige" unique_id=1582526448]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 576, 1632, 576, 1632, 672, 1536, 672)
+
+[node name="@Polygon2D@1237" type="Polygon2D" parent="Decor/Neige" unique_id=1433003657]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 576, 1728, 576, 1728, 672, 1632, 672)
+
+[node name="@Polygon2D@1238" type="Polygon2D" parent="Decor/Neige" unique_id=602252937]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 576, 1824, 576, 1824, 672, 1728, 672)
+
+[node name="@Polygon2D@1239" type="Polygon2D" parent="Decor/Neige" unique_id=23801894]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 672, 192, 672, 192, 768, 96, 768)
+
+[node name="@Polygon2D@1240" type="Polygon2D" parent="Decor/Neige" unique_id=1457474268]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 672, 288, 672, 288, 768, 192, 768)
+
+[node name="@Polygon2D@1241" type="Polygon2D" parent="Decor/Neige" unique_id=1331983404]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 672, 384, 672, 384, 768, 288, 768)
+
+[node name="@Polygon2D@1242" type="Polygon2D" parent="Decor/Neige" unique_id=1493408421]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 672, 480, 672, 480, 768, 384, 768)
+
+[node name="@Polygon2D@1243" type="Polygon2D" parent="Decor/Neige" unique_id=65907536]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 672, 576, 672, 576, 768, 480, 768)
+
+[node name="@Polygon2D@1244" type="Polygon2D" parent="Decor/Neige" unique_id=848317250]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 672, 672, 672, 672, 768, 576, 768)
+
+[node name="@Polygon2D@1245" type="Polygon2D" parent="Decor/Neige" unique_id=1710024774]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 672, 768, 672, 768, 768, 672, 768)
+
+[node name="@Polygon2D@1246" type="Polygon2D" parent="Decor/Neige" unique_id=1361713794]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 672, 864, 672, 864, 768, 768, 768)
+
+[node name="@Polygon2D@1247" type="Polygon2D" parent="Decor/Neige" unique_id=1838223626]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 672, 960, 672, 960, 768, 864, 768)
+
+[node name="@Polygon2D@1248" type="Polygon2D" parent="Decor/Neige" unique_id=2123154022]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 672, 1152, 672, 1152, 768, 1056, 768)
+
+[node name="@Polygon2D@1249" type="Polygon2D" parent="Decor/Neige" unique_id=557330264]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 672, 1248, 672, 1248, 768, 1152, 768)
+
+[node name="@Polygon2D@1250" type="Polygon2D" parent="Decor/Neige" unique_id=1189142968]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 672, 1344, 672, 1344, 768, 1248, 768)
+
+[node name="@Polygon2D@1251" type="Polygon2D" parent="Decor/Neige" unique_id=814316548]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 672, 1440, 672, 1440, 768, 1344, 768)
+
+[node name="@Polygon2D@1252" type="Polygon2D" parent="Decor/Neige" unique_id=1940538595]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 672, 1536, 672, 1536, 768, 1440, 768)
+
+[node name="@Polygon2D@1253" type="Polygon2D" parent="Decor/Neige" unique_id=506496468]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 672, 1632, 672, 1632, 768, 1536, 768)
+
+[node name="@Polygon2D@1254" type="Polygon2D" parent="Decor/Neige" unique_id=1533230010]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 672, 1728, 672, 1728, 768, 1632, 768)
+
+[node name="@Polygon2D@1255" type="Polygon2D" parent="Decor/Neige" unique_id=59071220]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 672, 1824, 672, 1824, 768, 1728, 768)
+
+[node name="@Polygon2D@1256" type="Polygon2D" parent="Decor/Neige" unique_id=638593424]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 768, 192, 768, 192, 864, 96, 864)
+
+[node name="@Polygon2D@1257" type="Polygon2D" parent="Decor/Neige" unique_id=1123234205]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 768, 288, 768, 288, 864, 192, 864)
+
+[node name="@Polygon2D@1258" type="Polygon2D" parent="Decor/Neige" unique_id=588617016]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 768, 384, 768, 384, 864, 288, 864)
+
+[node name="@Polygon2D@1259" type="Polygon2D" parent="Decor/Neige" unique_id=1474413154]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 768, 480, 768, 480, 864, 384, 864)
+
+[node name="@Polygon2D@1260" type="Polygon2D" parent="Decor/Neige" unique_id=2111460877]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 768, 576, 768, 576, 864, 480, 864)
+
+[node name="@Polygon2D@1261" type="Polygon2D" parent="Decor/Neige" unique_id=151370025]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 768, 672, 768, 672, 864, 576, 864)
+
+[node name="@Polygon2D@1262" type="Polygon2D" parent="Decor/Neige" unique_id=1235237299]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 768, 768, 768, 768, 864, 672, 864)
+
+[node name="@Polygon2D@1263" type="Polygon2D" parent="Decor/Neige" unique_id=480164482]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 768, 864, 768, 864, 864, 768, 864)
+
+[node name="@Polygon2D@1264" type="Polygon2D" parent="Decor/Neige" unique_id=337630218]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 768, 960, 768, 960, 864, 864, 864)
+
+[node name="@Polygon2D@1265" type="Polygon2D" parent="Decor/Neige" unique_id=35891258]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 768, 1056, 768, 1056, 864, 960, 864)
+
+[node name="@Polygon2D@1266" type="Polygon2D" parent="Decor/Neige" unique_id=1147886750]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 768, 1152, 768, 1152, 864, 1056, 864)
+
+[node name="@Polygon2D@1267" type="Polygon2D" parent="Decor/Neige" unique_id=1656515215]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 768, 1248, 768, 1248, 864, 1152, 864)
+
+[node name="@Polygon2D@1268" type="Polygon2D" parent="Decor/Neige" unique_id=591301117]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 768, 1344, 768, 1344, 864, 1248, 864)
+
+[node name="@Polygon2D@1269" type="Polygon2D" parent="Decor/Neige" unique_id=1997854939]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 768, 1440, 768, 1440, 864, 1344, 864)
+
+[node name="@Polygon2D@1270" type="Polygon2D" parent="Decor/Neige" unique_id=314543961]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 768, 1536, 768, 1536, 864, 1440, 864)
+
+[node name="@Polygon2D@1271" type="Polygon2D" parent="Decor/Neige" unique_id=1563110374]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 768, 1632, 768, 1632, 864, 1536, 864)
+
+[node name="@Polygon2D@1272" type="Polygon2D" parent="Decor/Neige" unique_id=1479830847]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 768, 1728, 768, 1728, 864, 1632, 864)
+
+[node name="@Polygon2D@1273" type="Polygon2D" parent="Decor/Neige" unique_id=461392083]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 768, 1824, 768, 1824, 864, 1728, 864)
+
+[node name="@Polygon2D@1274" type="Polygon2D" parent="Decor/Neige" unique_id=1372640563]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 864, 192, 864, 192, 960, 96, 960)
+
+[node name="@Polygon2D@1275" type="Polygon2D" parent="Decor/Neige" unique_id=1204902089]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 864, 288, 864, 288, 960, 192, 960)
+
+[node name="@Polygon2D@1276" type="Polygon2D" parent="Decor/Neige" unique_id=943682000]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 864, 384, 864, 384, 960, 288, 960)
+
+[node name="@Polygon2D@1277" type="Polygon2D" parent="Decor/Neige" unique_id=832275847]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 864, 480, 864, 480, 960, 384, 960)
+
+[node name="@Polygon2D@1278" type="Polygon2D" parent="Decor/Neige" unique_id=652849054]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 864, 576, 864, 576, 960, 480, 960)
+
+[node name="@Polygon2D@1279" type="Polygon2D" parent="Decor/Neige" unique_id=238278034]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 864, 672, 864, 672, 960, 576, 960)
+
+[node name="@Polygon2D@1280" type="Polygon2D" parent="Decor/Neige" unique_id=1218259332]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 864, 768, 864, 768, 960, 672, 960)
+
+[node name="@Polygon2D@1281" type="Polygon2D" parent="Decor/Neige" unique_id=751824596]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 864, 864, 864, 864, 960, 768, 960)
+
+[node name="@Polygon2D@1282" type="Polygon2D" parent="Decor/Neige" unique_id=1549855393]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 864, 960, 864, 960, 960, 864, 960)
+
+[node name="@Polygon2D@1283" type="Polygon2D" parent="Decor/Neige" unique_id=1770661460]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 864, 1056, 864, 1056, 960, 960, 960)
+
+[node name="@Polygon2D@1284" type="Polygon2D" parent="Decor/Neige" unique_id=768101041]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 864, 1152, 864, 1152, 960, 1056, 960)
+
+[node name="@Polygon2D@1285" type="Polygon2D" parent="Decor/Neige" unique_id=1156717550]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 864, 1248, 864, 1248, 960, 1152, 960)
+
+[node name="@Polygon2D@1286" type="Polygon2D" parent="Decor/Neige" unique_id=652060266]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 864, 1344, 864, 1344, 960, 1248, 960)
+
+[node name="@Polygon2D@1287" type="Polygon2D" parent="Decor/Neige" unique_id=459121997]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 864, 1440, 864, 1440, 960, 1344, 960)
+
+[node name="@Polygon2D@1288" type="Polygon2D" parent="Decor/Neige" unique_id=1402417369]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 864, 1536, 864, 1536, 960, 1440, 960)
+
+[node name="@Polygon2D@1289" type="Polygon2D" parent="Decor/Neige" unique_id=1634077527]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 864, 1632, 864, 1632, 960, 1536, 960)
+
+[node name="@Polygon2D@1290" type="Polygon2D" parent="Decor/Neige" unique_id=125747396]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 864, 1728, 864, 1728, 960, 1632, 960)
+
+[node name="@Polygon2D@1291" type="Polygon2D" parent="Decor/Neige" unique_id=1336460006]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 864, 1824, 864, 1824, 960, 1728, 960)
+
+[node name="@Polygon2D@1292" type="Polygon2D" parent="Decor/Neige" unique_id=361743245]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 960, 192, 960, 192, 1056, 96, 1056)
+
+[node name="@Polygon2D@1293" type="Polygon2D" parent="Decor/Neige" unique_id=1770958543]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 960, 288, 960, 288, 1056, 192, 1056)
+
+[node name="@Polygon2D@1294" type="Polygon2D" parent="Decor/Neige" unique_id=1456956828]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 960, 384, 960, 384, 1056, 288, 1056)
+
+[node name="@Polygon2D@1295" type="Polygon2D" parent="Decor/Neige" unique_id=1148635622]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 960, 480, 960, 480, 1056, 384, 1056)
+
+[node name="@Polygon2D@1296" type="Polygon2D" parent="Decor/Neige" unique_id=1098750519]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 960, 576, 960, 576, 1056, 480, 1056)
+
+[node name="@Polygon2D@1297" type="Polygon2D" parent="Decor/Neige" unique_id=164602280]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 960, 672, 960, 672, 1056, 576, 1056)
+
+[node name="@Polygon2D@1298" type="Polygon2D" parent="Decor/Neige" unique_id=707703892]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 960, 768, 960, 768, 1056, 672, 1056)
+
+[node name="@Polygon2D@1299" type="Polygon2D" parent="Decor/Neige" unique_id=1800713327]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 960, 864, 960, 864, 1056, 768, 1056)
+
+[node name="@Polygon2D@1300" type="Polygon2D" parent="Decor/Neige" unique_id=513808107]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 960, 960, 960, 960, 1056, 864, 1056)
+
+[node name="@Polygon2D@1301" type="Polygon2D" parent="Decor/Neige" unique_id=1576888338]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 960, 1056, 960, 1056, 1056, 960, 1056)
+
+[node name="@Polygon2D@1302" type="Polygon2D" parent="Decor/Neige" unique_id=45375183]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 960, 1152, 960, 1152, 1056, 1056, 1056)
+
+[node name="@Polygon2D@1303" type="Polygon2D" parent="Decor/Neige" unique_id=630205155]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 960, 1248, 960, 1248, 1056, 1152, 1056)
+
+[node name="@Polygon2D@1304" type="Polygon2D" parent="Decor/Neige" unique_id=2021646317]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 960, 1344, 960, 1344, 1056, 1248, 1056)
+
+[node name="@Polygon2D@1305" type="Polygon2D" parent="Decor/Neige" unique_id=294263826]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 960, 1440, 960, 1440, 1056, 1344, 1056)
+
+[node name="@Polygon2D@1306" type="Polygon2D" parent="Decor/Neige" unique_id=2142235073]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 960, 1632, 960, 1632, 1056, 1536, 1056)
+
+[node name="@Polygon2D@1307" type="Polygon2D" parent="Decor/Neige" unique_id=1856823298]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 960, 1728, 960, 1728, 1056, 1632, 1056)
+
+[node name="@Polygon2D@1308" type="Polygon2D" parent="Decor/Neige" unique_id=763179377]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 960, 1824, 960, 1824, 1056, 1728, 1056)
+
+[node name="@Polygon2D@1309" type="Polygon2D" parent="Decor/Neige" unique_id=1180381770]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 1056, 192, 1056, 192, 1152, 96, 1152)
+
+[node name="@Polygon2D@1310" type="Polygon2D" parent="Decor/Neige" unique_id=173752730]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 1056, 288, 1056, 288, 1152, 192, 1152)
+
+[node name="@Polygon2D@1311" type="Polygon2D" parent="Decor/Neige" unique_id=1676157084]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 1056, 480, 1056, 480, 1152, 384, 1152)
+
+[node name="@Polygon2D@1312" type="Polygon2D" parent="Decor/Neige" unique_id=468247170]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 1056, 576, 1056, 576, 1152, 480, 1152)
+
+[node name="@Polygon2D@1313" type="Polygon2D" parent="Decor/Neige" unique_id=59866479]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 1056, 672, 1056, 672, 1152, 576, 1152)
+
+[node name="@Polygon2D@1314" type="Polygon2D" parent="Decor/Neige" unique_id=937520624]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 1056, 768, 1056, 768, 1152, 672, 1152)
+
+[node name="@Polygon2D@1315" type="Polygon2D" parent="Decor/Neige" unique_id=984011936]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 1056, 864, 1056, 864, 1152, 768, 1152)
+
+[node name="@Polygon2D@1316" type="Polygon2D" parent="Decor/Neige" unique_id=1441712205]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 1056, 960, 1056, 960, 1152, 864, 1152)
+
+[node name="@Polygon2D@1317" type="Polygon2D" parent="Decor/Neige" unique_id=664932713]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 1056, 1056, 1056, 1056, 1152, 960, 1152)
+
+[node name="@Polygon2D@1318" type="Polygon2D" parent="Decor/Neige" unique_id=1429604805]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 1056, 1152, 1056, 1152, 1152, 1056, 1152)
+
+[node name="@Polygon2D@1319" type="Polygon2D" parent="Decor/Neige" unique_id=283585957]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 1056, 1248, 1056, 1248, 1152, 1152, 1152)
+
+[node name="@Polygon2D@1320" type="Polygon2D" parent="Decor/Neige" unique_id=73436168]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 1056, 1344, 1056, 1344, 1152, 1248, 1152)
+
+[node name="@Polygon2D@1321" type="Polygon2D" parent="Decor/Neige" unique_id=939613850]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 1056, 1440, 1056, 1440, 1152, 1344, 1152)
+
+[node name="@Polygon2D@1322" type="Polygon2D" parent="Decor/Neige" unique_id=1303576997]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 1056, 1536, 1056, 1536, 1152, 1440, 1152)
+
+[node name="@Polygon2D@1323" type="Polygon2D" parent="Decor/Neige" unique_id=2118636420]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 1056, 1632, 1056, 1632, 1152, 1536, 1152)
+
+[node name="@Polygon2D@1324" type="Polygon2D" parent="Decor/Neige" unique_id=876826153]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 1056, 1728, 1056, 1728, 1152, 1632, 1152)
+
+[node name="@Polygon2D@1325" type="Polygon2D" parent="Decor/Neige" unique_id=1010217607]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 1056, 1824, 1056, 1824, 1152, 1728, 1152)
+
+[node name="@Polygon2D@1326" type="Polygon2D" parent="Decor/Neige" unique_id=1676419858]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 1152, 192, 1152, 192, 1248, 96, 1248)
+
+[node name="@Polygon2D@1327" type="Polygon2D" parent="Decor/Neige" unique_id=139118900]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 1152, 288, 1152, 288, 1248, 192, 1248)
+
+[node name="@Polygon2D@1328" type="Polygon2D" parent="Decor/Neige" unique_id=557846676]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 1152, 384, 1152, 384, 1248, 288, 1248)
+
+[node name="@Polygon2D@1329" type="Polygon2D" parent="Decor/Neige" unique_id=481615561]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 1152, 480, 1152, 480, 1248, 384, 1248)
+
+[node name="@Polygon2D@1330" type="Polygon2D" parent="Decor/Neige" unique_id=503594788]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 1152, 576, 1152, 576, 1248, 480, 1248)
+
+[node name="@Polygon2D@1331" type="Polygon2D" parent="Decor/Neige" unique_id=824277189]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 1152, 672, 1152, 672, 1248, 576, 1248)
+
+[node name="@Polygon2D@1332" type="Polygon2D" parent="Decor/Neige" unique_id=2116375596]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 1152, 768, 1152, 768, 1248, 672, 1248)
+
+[node name="@Polygon2D@1333" type="Polygon2D" parent="Decor/Neige" unique_id=809897690]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 1152, 864, 1152, 864, 1248, 768, 1248)
+
+[node name="@Polygon2D@1334" type="Polygon2D" parent="Decor/Neige" unique_id=1540929726]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 1152, 960, 1152, 960, 1248, 864, 1248)
+
+[node name="@Polygon2D@1335" type="Polygon2D" parent="Decor/Neige" unique_id=1255463492]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 1152, 1056, 1152, 1056, 1248, 960, 1248)
+
+[node name="@Polygon2D@1336" type="Polygon2D" parent="Decor/Neige" unique_id=606920548]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 1152, 1152, 1152, 1152, 1248, 1056, 1248)
+
+[node name="@Polygon2D@1337" type="Polygon2D" parent="Decor/Neige" unique_id=189994383]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 1152, 1248, 1152, 1248, 1248, 1152, 1248)
+
+[node name="@Polygon2D@1338" type="Polygon2D" parent="Decor/Neige" unique_id=1348771480]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 1152, 1344, 1152, 1344, 1248, 1248, 1248)
+
+[node name="@Polygon2D@1339" type="Polygon2D" parent="Decor/Neige" unique_id=408479388]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 1152, 1440, 1152, 1440, 1248, 1344, 1248)
+
+[node name="@Polygon2D@1340" type="Polygon2D" parent="Decor/Neige" unique_id=2719363]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 1152, 1536, 1152, 1536, 1248, 1440, 1248)
+
+[node name="@Polygon2D@1341" type="Polygon2D" parent="Decor/Neige" unique_id=512822807]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 1152, 1632, 1152, 1632, 1248, 1536, 1248)
+
+[node name="@Polygon2D@1342" type="Polygon2D" parent="Decor/Neige" unique_id=920810576]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 1152, 1728, 1152, 1728, 1248, 1632, 1248)
+
+[node name="@Polygon2D@1343" type="Polygon2D" parent="Decor/Neige" unique_id=378059076]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 1152, 1824, 1152, 1824, 1248, 1728, 1248)
+
+[node name="@Polygon2D@1344" type="Polygon2D" parent="Decor/Neige" unique_id=2033654733]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 1248, 192, 1248, 192, 1344, 96, 1344)
+
+[node name="@Polygon2D@1345" type="Polygon2D" parent="Decor/Neige" unique_id=326814202]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 1248, 288, 1248, 288, 1344, 192, 1344)
+
+[node name="@Polygon2D@1346" type="Polygon2D" parent="Decor/Neige" unique_id=543988632]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 1248, 384, 1248, 384, 1344, 288, 1344)
+
+[node name="@Polygon2D@1347" type="Polygon2D" parent="Decor/Neige" unique_id=824086489]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 1248, 480, 1248, 480, 1344, 384, 1344)
+
+[node name="@Polygon2D@1348" type="Polygon2D" parent="Decor/Neige" unique_id=1222544930]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 1248, 576, 1248, 576, 1344, 480, 1344)
+
+[node name="@Polygon2D@1349" type="Polygon2D" parent="Decor/Neige" unique_id=796205632]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 1248, 672, 1248, 672, 1344, 576, 1344)
+
+[node name="@Polygon2D@1350" type="Polygon2D" parent="Decor/Neige" unique_id=2043581264]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 1248, 864, 1248, 864, 1344, 768, 1344)
+
+[node name="@Polygon2D@1351" type="Polygon2D" parent="Decor/Neige" unique_id=1800382240]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 1248, 960, 1248, 960, 1344, 864, 1344)
+
+[node name="@Polygon2D@1352" type="Polygon2D" parent="Decor/Neige" unique_id=2052736287]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 1248, 1056, 1248, 1056, 1344, 960, 1344)
+
+[node name="@Polygon2D@1353" type="Polygon2D" parent="Decor/Neige" unique_id=1342007354]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 1248, 1152, 1248, 1152, 1344, 1056, 1344)
+
+[node name="@Polygon2D@1354" type="Polygon2D" parent="Decor/Neige" unique_id=1893300796]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 1248, 1344, 1248, 1344, 1344, 1248, 1344)
+
+[node name="@Polygon2D@1355" type="Polygon2D" parent="Decor/Neige" unique_id=21033154]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 1248, 1440, 1248, 1440, 1344, 1344, 1344)
+
+[node name="@Polygon2D@1356" type="Polygon2D" parent="Decor/Neige" unique_id=65959052]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 1248, 1536, 1248, 1536, 1344, 1440, 1344)
+
+[node name="@Polygon2D@1357" type="Polygon2D" parent="Decor/Neige" unique_id=490274728]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 1248, 1632, 1248, 1632, 1344, 1536, 1344)
+
+[node name="@Polygon2D@1358" type="Polygon2D" parent="Decor/Neige" unique_id=1525037572]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 1248, 1728, 1248, 1728, 1344, 1632, 1344)
+
+[node name="@Polygon2D@1359" type="Polygon2D" parent="Decor/Neige" unique_id=656867054]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 1248, 1824, 1248, 1824, 1344, 1728, 1344)
+
+[node name="@Polygon2D@1360" type="Polygon2D" parent="Decor/Neige" unique_id=1974215040]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 1344, 192, 1344, 192, 1440, 96, 1440)
+
+[node name="@Polygon2D@1361" type="Polygon2D" parent="Decor/Neige" unique_id=2031131277]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 1344, 288, 1344, 288, 1440, 192, 1440)
+
+[node name="@Polygon2D@1362" type="Polygon2D" parent="Decor/Neige" unique_id=508848995]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 1344, 384, 1344, 384, 1440, 288, 1440)
+
+[node name="@Polygon2D@1363" type="Polygon2D" parent="Decor/Neige" unique_id=1870622436]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 1344, 480, 1344, 480, 1440, 384, 1440)
+
+[node name="@Polygon2D@1364" type="Polygon2D" parent="Decor/Neige" unique_id=940075456]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 1344, 576, 1344, 576, 1440, 480, 1440)
+
+[node name="@Polygon2D@1365" type="Polygon2D" parent="Decor/Neige" unique_id=1606435829]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 1344, 672, 1344, 672, 1440, 576, 1440)
+
+[node name="@Polygon2D@1366" type="Polygon2D" parent="Decor/Neige" unique_id=804017516]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 1344, 768, 1344, 768, 1440, 672, 1440)
+
+[node name="@Polygon2D@1367" type="Polygon2D" parent="Decor/Neige" unique_id=486047078]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 1344, 864, 1344, 864, 1440, 768, 1440)
+
+[node name="@Polygon2D@1368" type="Polygon2D" parent="Decor/Neige" unique_id=2047710153]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 1344, 960, 1344, 960, 1440, 864, 1440)
+
+[node name="@Polygon2D@1369" type="Polygon2D" parent="Decor/Neige" unique_id=395157803]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 1344, 1056, 1344, 1056, 1440, 960, 1440)
+
+[node name="@Polygon2D@1370" type="Polygon2D" parent="Decor/Neige" unique_id=985156961]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 1344, 1152, 1344, 1152, 1440, 1056, 1440)
+
+[node name="@Polygon2D@1371" type="Polygon2D" parent="Decor/Neige" unique_id=1219251701]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 1344, 1248, 1344, 1248, 1440, 1152, 1440)
+
+[node name="@Polygon2D@1372" type="Polygon2D" parent="Decor/Neige" unique_id=575915907]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 1344, 1344, 1344, 1344, 1440, 1248, 1440)
+
+[node name="@Polygon2D@1373" type="Polygon2D" parent="Decor/Neige" unique_id=2088002572]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 1344, 1440, 1344, 1440, 1440, 1344, 1440)
+
+[node name="@Polygon2D@1374" type="Polygon2D" parent="Decor/Neige" unique_id=754587627]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 1344, 1536, 1344, 1536, 1440, 1440, 1440)
+
+[node name="@Polygon2D@1375" type="Polygon2D" parent="Decor/Neige" unique_id=651129458]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 1344, 1632, 1344, 1632, 1440, 1536, 1440)
+
+[node name="@Polygon2D@1376" type="Polygon2D" parent="Decor/Neige" unique_id=505953937]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 1344, 1728, 1344, 1728, 1440, 1632, 1440)
+
+[node name="@Polygon2D@1377" type="Polygon2D" parent="Decor/Neige" unique_id=1319727251]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 1344, 1824, 1344, 1824, 1440, 1728, 1440)
+
+[node name="@Polygon2D@1378" type="Polygon2D" parent="Decor/Neige" unique_id=2085696289]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 1440, 192, 1440, 192, 1536, 96, 1536)
+
+[node name="@Polygon2D@1379" type="Polygon2D" parent="Decor/Neige" unique_id=813923411]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 1440, 288, 1440, 288, 1536, 192, 1536)
+
+[node name="@Polygon2D@1380" type="Polygon2D" parent="Decor/Neige" unique_id=148544402]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 1440, 384, 1440, 384, 1536, 288, 1536)
+
+[node name="@Polygon2D@1381" type="Polygon2D" parent="Decor/Neige" unique_id=581395937]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 1440, 480, 1440, 480, 1536, 384, 1536)
+
+[node name="@Polygon2D@1382" type="Polygon2D" parent="Decor/Neige" unique_id=1976376704]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 1440, 576, 1440, 576, 1536, 480, 1536)
+
+[node name="@Polygon2D@1383" type="Polygon2D" parent="Decor/Neige" unique_id=2041712261]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 1440, 672, 1440, 672, 1536, 576, 1536)
+
+[node name="@Polygon2D@1384" type="Polygon2D" parent="Decor/Neige" unique_id=821917295]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 1440, 768, 1440, 768, 1536, 672, 1536)
+
+[node name="@Polygon2D@1385" type="Polygon2D" parent="Decor/Neige" unique_id=1819345017]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 1440, 864, 1440, 864, 1536, 768, 1536)
+
+[node name="@Polygon2D@1386" type="Polygon2D" parent="Decor/Neige" unique_id=1617981820]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 1440, 960, 1440, 960, 1536, 864, 1536)
+
+[node name="@Polygon2D@1387" type="Polygon2D" parent="Decor/Neige" unique_id=1122962072]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 1440, 1056, 1440, 1056, 1536, 960, 1536)
+
+[node name="@Polygon2D@1388" type="Polygon2D" parent="Decor/Neige" unique_id=1152035956]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 1440, 1152, 1440, 1152, 1536, 1056, 1536)
+
+[node name="@Polygon2D@1389" type="Polygon2D" parent="Decor/Neige" unique_id=1240080815]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 1440, 1248, 1440, 1248, 1536, 1152, 1536)
+
+[node name="@Polygon2D@1390" type="Polygon2D" parent="Decor/Neige" unique_id=1995141722]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 1440, 1344, 1440, 1344, 1536, 1248, 1536)
+
+[node name="@Polygon2D@1391" type="Polygon2D" parent="Decor/Neige" unique_id=734237828]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 1440, 1440, 1440, 1440, 1536, 1344, 1536)
+
+[node name="@Polygon2D@1392" type="Polygon2D" parent="Decor/Neige" unique_id=206478776]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 1440, 1536, 1440, 1536, 1536, 1440, 1536)
+
+[node name="@Polygon2D@1393" type="Polygon2D" parent="Decor/Neige" unique_id=1034553393]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 1440, 1632, 1440, 1632, 1536, 1536, 1536)
+
+[node name="@Polygon2D@1394" type="Polygon2D" parent="Decor/Neige" unique_id=758529602]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 1440, 1728, 1440, 1728, 1536, 1632, 1536)
+
+[node name="@Polygon2D@1395" type="Polygon2D" parent="Decor/Neige" unique_id=320455140]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 1440, 1824, 1440, 1824, 1536, 1728, 1536)
+
+[node name="@Polygon2D@1396" type="Polygon2D" parent="Decor/Neige" unique_id=427212323]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(96, 1536, 192, 1536, 192, 1632, 96, 1632)
+
+[node name="@Polygon2D@1397" type="Polygon2D" parent="Decor/Neige" unique_id=1994908216]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(192, 1536, 288, 1536, 288, 1632, 192, 1632)
+
+[node name="@Polygon2D@1398" type="Polygon2D" parent="Decor/Neige" unique_id=5354661]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(288, 1536, 384, 1536, 384, 1632, 288, 1632)
+
+[node name="@Polygon2D@1399" type="Polygon2D" parent="Decor/Neige" unique_id=720649854]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(384, 1536, 480, 1536, 480, 1632, 384, 1632)
+
+[node name="@Polygon2D@1400" type="Polygon2D" parent="Decor/Neige" unique_id=912618616]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(480, 1536, 576, 1536, 576, 1632, 480, 1632)
+
+[node name="@Polygon2D@1401" type="Polygon2D" parent="Decor/Neige" unique_id=271562137]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(576, 1536, 672, 1536, 672, 1632, 576, 1632)
+
+[node name="@Polygon2D@1402" type="Polygon2D" parent="Decor/Neige" unique_id=1526238873]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(672, 1536, 768, 1536, 768, 1632, 672, 1632)
+
+[node name="@Polygon2D@1403" type="Polygon2D" parent="Decor/Neige" unique_id=366668262]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(768, 1536, 864, 1536, 864, 1632, 768, 1632)
+
+[node name="@Polygon2D@1404" type="Polygon2D" parent="Decor/Neige" unique_id=1082470254]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(864, 1536, 960, 1536, 960, 1632, 864, 1632)
+
+[node name="@Polygon2D@1405" type="Polygon2D" parent="Decor/Neige" unique_id=934578060]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(960, 1536, 1056, 1536, 1056, 1632, 960, 1632)
+
+[node name="@Polygon2D@1406" type="Polygon2D" parent="Decor/Neige" unique_id=1130517517]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1056, 1536, 1152, 1536, 1152, 1632, 1056, 1632)
+
+[node name="@Polygon2D@1407" type="Polygon2D" parent="Decor/Neige" unique_id=1132259085]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1152, 1536, 1248, 1536, 1248, 1632, 1152, 1632)
+
+[node name="@Polygon2D@1408" type="Polygon2D" parent="Decor/Neige" unique_id=959275014]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1248, 1536, 1344, 1536, 1344, 1632, 1248, 1632)
+
+[node name="@Polygon2D@1409" type="Polygon2D" parent="Decor/Neige" unique_id=295045731]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1344, 1536, 1440, 1536, 1440, 1632, 1344, 1632)
+
+[node name="@Polygon2D@1410" type="Polygon2D" parent="Decor/Neige" unique_id=980565995]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1440, 1536, 1536, 1536, 1536, 1632, 1440, 1632)
+
+[node name="@Polygon2D@1411" type="Polygon2D" parent="Decor/Neige" unique_id=503551041]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1536, 1536, 1632, 1536, 1632, 1632, 1536, 1632)
+
+[node name="@Polygon2D@1412" type="Polygon2D" parent="Decor/Neige" unique_id=1997569739]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1632, 1536, 1728, 1536, 1728, 1632, 1632, 1632)
+
+[node name="@Polygon2D@1413" type="Polygon2D" parent="Decor/Neige" unique_id=1801980458]
+color = Color(1, 1, 1, 0.35)
+polygon = PackedVector2Array(1728, 1536, 1824, 1536, 1824, 1632, 1728, 1632)
+
+[node name="Nuages" type="Node2D" parent="Decor" unique_id=1102010955]
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Nuages" unique_id=254704649]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(88, 1616, 200, 1616, 200, 1736, 88, 1736)
+
+[node name="@Polygon2D@1414" type="Polygon2D" parent="Decor/Nuages" unique_id=283299951]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(184, 1616, 296, 1616, 296, 1736, 184, 1736)
+
+[node name="@Polygon2D@1415" type="Polygon2D" parent="Decor/Nuages" unique_id=2063026575]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(280, 1616, 392, 1616, 392, 1736, 280, 1736)
+
+[node name="@Polygon2D@1416" type="Polygon2D" parent="Decor/Nuages" unique_id=227573950]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(376, 1616, 488, 1616, 488, 1736, 376, 1736)
+
+[node name="@Polygon2D@1417" type="Polygon2D" parent="Decor/Nuages" unique_id=1803732512]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(472, 1616, 584, 1616, 584, 1736, 472, 1736)
+
+[node name="@Polygon2D@1418" type="Polygon2D" parent="Decor/Nuages" unique_id=846073732]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(568, 1616, 680, 1616, 680, 1736, 568, 1736)
+
+[node name="@Polygon2D@1419" type="Polygon2D" parent="Decor/Nuages" unique_id=4369893]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(664, 1616, 776, 1616, 776, 1736, 664, 1736)
+
+[node name="@Polygon2D@1420" type="Polygon2D" parent="Decor/Nuages" unique_id=661803811]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(760, 1616, 872, 1616, 872, 1736, 760, 1736)
+
+[node name="@Polygon2D@1421" type="Polygon2D" parent="Decor/Nuages" unique_id=192077744]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(856, 1616, 968, 1616, 968, 1736, 856, 1736)
+
+[node name="@Polygon2D@1422" type="Polygon2D" parent="Decor/Nuages" unique_id=1060080416]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(952, 1616, 1064, 1616, 1064, 1736, 952, 1736)
+
+[node name="@Polygon2D@1423" type="Polygon2D" parent="Decor/Nuages" unique_id=105334748]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1048, 1616, 1160, 1616, 1160, 1736, 1048, 1736)
+
+[node name="@Polygon2D@1424" type="Polygon2D" parent="Decor/Nuages" unique_id=1132981592]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1144, 1616, 1256, 1616, 1256, 1736, 1144, 1736)
+
+[node name="@Polygon2D@1425" type="Polygon2D" parent="Decor/Nuages" unique_id=723304094]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1240, 1616, 1352, 1616, 1352, 1736, 1240, 1736)
+
+[node name="@Polygon2D@1426" type="Polygon2D" parent="Decor/Nuages" unique_id=2138076682]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1336, 1616, 1448, 1616, 1448, 1736, 1336, 1736)
+
+[node name="@Polygon2D@1427" type="Polygon2D" parent="Decor/Nuages" unique_id=1650948881]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1432, 1616, 1544, 1616, 1544, 1736, 1432, 1736)
+
+[node name="@Polygon2D@1428" type="Polygon2D" parent="Decor/Nuages" unique_id=2024791468]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1528, 1616, 1640, 1616, 1640, 1736, 1528, 1736)
+
+[node name="@Polygon2D@1429" type="Polygon2D" parent="Decor/Nuages" unique_id=1087311951]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1624, 1616, 1736, 1616, 1736, 1736, 1624, 1736)
+
+[node name="@Polygon2D@1430" type="Polygon2D" parent="Decor/Nuages" unique_id=1933865518]
+color = Color(0.94, 0.95, 0.98, 0.92)
+polygon = PackedVector2Array(1720, 1616, 1832, 1616, 1832, 1736, 1720, 1736)
+
+[node name="Entities" type="Node2D" parent="." unique_id=1098436188]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=585770622]
+z_index = 10
+tile_set = ExtResource("2_62c65")
+
+[node name="Warps" type="Node2D" parent="." unique_id=239603534]
+
+[node name="Vers3f" type="Marker2D" parent="Warps" unique_id=1802640641]
+position = Vector2(1584, 288)
+script = ExtResource("3_1ixsk")
+target_map = &"mt_silver_3f"
+target_spawn = &"from_sommet"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1117840296]
+
+[node name="Ruines" type="Marker2D" parent="Interactables" unique_id=295447734]
+position = Vector2(432, 480)
+script = ExtResource("4_dxd0n")
+dialogue_id = &"mt_silver_summit_ruines"
+size = Vector2i(2, 1)
+
+[node name="Echarpe" type="Marker2D" parent="Interactables" unique_id=832937621]
+position = Vector2(720, 1344)
+script = ExtResource("4_dxd0n")
+dialogue_id = &"mt_silver_summit_echarpe"
+if_flags = Array[StringName]([&"johto_chapter_done"])
+
+[node name="Spawns" type="Node2D" parent="." unique_id=646987971]
+
+[node name="from_3f" type="Marker2D" parent="Spawns" unique_id=1915262973]
+position = Vector2(1584, 384)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=1949217604]
+
+[node name="SceneSommet" type="Marker2D" parent="Triggers" unique_id=1499682626]
+position = Vector2(1584, 576)
+script = ExtResource("5_un5ly")
+cutscene_id = &"mt_silver_summit"
+
+[node name="NightLights" type="Node2D" parent="." unique_id=2020729837]

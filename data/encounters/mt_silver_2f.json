@@ -1,0 +1,55 @@
+{
+	"mt_silver_2f_rubble": {
+		"maps": [
+			"mt_silver_2f"
+		],
+		"terrain": "rubble",
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "golbat",
+				"levels": [
+					60,
+					64
+				],
+				"weight": 30
+			},
+			{
+				"species": "ursaring",
+				"levels": [
+					60,
+					64
+				],
+				"weight": 25
+			},
+			{
+				"species": "donphan",
+				"levels": [
+					60,
+					64
+				],
+				"weight": 20
+			},
+			{
+				"species": "onix",
+				"levels": [
+					60,
+					64
+				],
+				"weight": 20
+			},
+			{
+				"species": "larvitar",
+				"levels": [
+					60,
+					64
+				],
+				"weight": 5
+			}
+		]
+	}
+}

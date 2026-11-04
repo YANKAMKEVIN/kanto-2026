@@ -1,0 +1,191 @@
+{
+	"mt_silver_1f_grunt_x_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Quelqu'un est passé ?\nImpossible !"
+		]
+	},
+	"mt_silver_1f_grunt_x_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Bon, si, c'est possible."
+		]
+	},
+	"mt_silver_1f_grunt_x_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Ton copain, en bas, il est\nfou."
+		]
+	},
+	"mt_silver_1f_grunt_y_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Je me suis glissé derrière\ntoi. Le patron saura que je\nsuis fidèle !"
+		]
+	},
+	"mt_silver_1f_grunt_y_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le patron ne saura rien…"
+		]
+	},
+	"mt_silver_1f_grunt_y_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Va. Il t'attend, de toute\nfaçon."
+		]
+	},
+	"mt_silver_3f_hiker_lucas_before": {
+		"speaker": "Montagnard Lucas",
+		"pages": [
+			"Un rival de montagne ! Enfin !"
+		]
+	},
+	"mt_silver_3f_hiker_lucas_defeated": {
+		"speaker": "Montagnard Lucas",
+		"pages": [
+			"Je redescends m'entraîner."
+		]
+	},
+	"mt_silver_3f_hiker_lucas_after": {
+		"speaker": "Montagnard Lucas",
+		"pages": [
+			"Au sommet, il y a déjà deux\nhommes. Je n'ose pas monter."
+		]
+	},
+	"mt_silver_brace_block": {
+		"speaker": "Brace",
+		"pages": [
+			"Le revoilà, le gamin !",
+			"Cette fois, tu ne passes pas.\nLe patron finit son œuvre\nlà-haut."
+		]
+	},
+	"mt_silver_cenere_block": {
+		"speaker": "Cenere",
+		"pages": [
+			"Six contre un. J'ai refait le\ncalcul trois fois.",
+			"Tu ne passeras pas."
+		]
+	},
+	"mt_silver_rival_offscreen": {
+		"speaker": "{rival}",
+		"pages": [
+			"Six contre un ? Refais ton\ncalcul."
+		]
+	},
+	"mt_silver_rival_arrives": {
+		"narration": true,
+		"pages": [
+			"{rival} arrive en courant !"
+		]
+	},
+	"mt_silver_rival_relay": {
+		"speaker": "{rival}",
+		"pages": [
+			"Chen m'a tout raconté. La\nradio, le vol, la tour.",
+			"Ne me regarde pas comme ça. Je\nne fais pas ça pour toi.",
+			"Je fais ça parce que personne\nne vole l'équipe du Maître de\nKanto. Personne, à part moi,\nun jour."
+		]
+	},
+	"mt_silver_rival_to_admins": {
+		"speaker": "{rival}",
+		"variants": [
+			{
+				"if": [
+					"taken_bulbasaur",
+					"taken_charmander"
+				],
+				"pages": [
+					"Allez, Dracaufeu ! On\ns'occupe\nd'eux.",
+					"{player}, monte. Va finir ça."
+				]
+			},
+			{
+				"if": [
+					"taken_charmander",
+					"taken_squirtle"
+				],
+				"pages": [
+					"Allez, Tortank ! On\ns'occupe\nd'eux.",
+					"{player}, monte. Va finir ça."
+				]
+			},
+			{
+				"if": [
+					"taken_squirtle",
+					"taken_bulbasaur"
+				],
+				"pages": [
+					"Allez, Florizarre ! On\ns'occupe\nd'eux.",
+					"{player}, monte. Va finir ça."
+				]
+			},
+			{
+				"pages": [
+					"{player}, monte. Va finir ça."
+				]
+			}
+		]
+	},
+	"mt_silver_enter_cave": {
+		"narration": true,
+		"pages": [
+			"{player} entre dans la grotte.",
+			"Derrière, on entend les cris\ndes Pokémon…"
+		]
+	},
+	"mt_silver_boulder": {
+		"narration": true,
+		"pages": [
+			"Un gros rocher. On pourrait le\npousser."
+		]
+	},
+	"mt_silver_2f_dark": {
+		"narration": true,
+		"pages": [
+			"Il fait noir comme dans un\nfour."
+		]
+	},
+	"mt_silver_2f_footsteps": {
+		"narration": true,
+		"pages": [
+			"Quelqu'un court dans le noir…",
+			"{rival} rattrape {player} !"
+		]
+	},
+	"mt_silver_2f_rival_news": {
+		"speaker": "{rival}",
+		"pages": [
+			"Pff… Pff… Tu marches vite.",
+			"L'impétueux, je l'ai coincé.\nL'Agente arrive pour lui.",
+			"La froide a filé. Elle monte,\nelle aussi. Fais attention."
+		]
+	},
+	"mt_silver_2f_rival_heal": {
+		"speaker": "{rival}",
+		"heal": true,
+		"pages": [
+			"Tes Pokémon sont dans un état…\nTiens.",
+			"Je ne veux pas que tu perdes\navant notre combat."
+		]
+	},
+	"mt_silver_2f_healed": {
+		"narration": true,
+		"pages": [
+			"L'équipe de {player} est\nsoignée."
+		]
+	},
+	"mt_silver_2f_rival_leaves": {
+		"speaker": "{rival}",
+		"pages": [
+			"Je redescends surveiller\nl'entrée. Ne t'avise pas de\ntomber."
+		]
+	},
+	"mt_silver_3f_wind": {
+		"narration": true,
+		"pages": [
+			"Un vent glacé souffle dans la\ngrotte.",
+			"La lumière vient d'en haut."
+		]
+	}
+}

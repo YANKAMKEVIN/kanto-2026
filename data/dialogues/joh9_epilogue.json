@@ -1,0 +1,52 @@
+{
+	"johto_epilogue_chen": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"{player} ! Te voilà rentré !",
+			"Orme m'a tout raconté. Johto\nte doit beaucoup.",
+			"Moi, je savais que tu\nreviendrais. Tu reviens\ntoujours."
+		]
+	},
+	"johto_epilogue_orme": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"Le Maître de Kanto a sauvé\nJohto. Je l'écrirai dans mon\nprochain livre !",
+			"J'ai quelque chose pour toi.\nJe l'ai trouvé chez un\nantiquaire d'Écorcia.",
+			"Une Balle Verte. Très\nancienne. Les gens de là-bas\ndisent qu'elle appartient au\nBois aux Chênes."
+		]
+	},
+	"johto_epilogue_green_ball": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit la Balle Verte\n!"
+		]
+	},
+	"johto_epilogue_orme_altar": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"Pose-la sur l'autel du bois.\nQui sait ce qui viendra ?"
+		]
+	},
+	"johto_epilogue_rival": {
+		"speaker": "{rival}",
+		"pages": [
+			"Grand-père, il reste à manger\n?",
+			"… Ah, {player} est arrivé\navant moi. Je paie le dîner,\nalors."
+		]
+	},
+	"ilex_altar_green_ball": {
+		"narration": true,
+		"pages": [
+			"{player} pose la Balle Verte\nsur l'autel.",
+			"…",
+			"La forêt se tait. Les feuilles\ntremblent."
+		]
+	},
+	"ilex_altar_celebi": {
+		"narration": true,
+		"pages": [
+			"Un petit Pokémon vert apparaît\nau-dessus de l'autel !",
+			"Celebi veut jouer avec\n{player} !"
+		]
+	}
+}

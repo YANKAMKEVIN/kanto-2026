@@ -3057,6 +3057,9 @@ func _play_hall_of_fame() -> bool:
 ## Étape « credits » : générique sur la dernière entrée du Panthéon ; passable seulement s'il a
 ## déjà été vu (`league_credits_seen`, posé à la fin).
 func _play_credits() -> void:
+	if not _cutscenes_node.credits_id.is_empty():
+		await _play_named_credits(_cutscenes_node.credits_id)
+		return
 	var hall := GameState.hall_of_fame
 	var entry := hall.get_entry(hall.size() - 1) if not hall.is_empty() else HallOfFame.snapshot(
 		GameState.party.get_all(), GameState.player_name, GameState.starter_species,
@@ -3064,6 +3067,21 @@ func _play_credits() -> void:
 	var skippable := GameState.flags.has_flag(LeagueAttempt.CREDITS_SEEN)
 	await _credits_screen.present(_credits.rows(entry, _hall_member_name), skippable)
 	GameState.flags.set_flag(LeagueAttempt.CREDITS_SEEN)
+
+
+## JOH9 : petit générique de chapitre [param id] (`data/story/credits_<id>.json`) sur l'équipe
+## du moment ; passable s'il a déjà été vu (drapeau `<id>_credits_seen`, posé à la fin).
+func _play_named_credits(id: StringName) -> void:
+	var credits := CreditsData.new()
+	credits.load_file(CreditsData.NAMED_PATH % id)
+	var entry := HallOfFame.snapshot(GameState.party.get_all(), GameState.player_name,
+		GameState.starter_species, GameState.play_time, "")
+	var seen := StringName("%s_credits_seen" % id)
+	_credits_screen.skip_label = credits.skip_label
+	await _credits_screen.present(credits.rows(entry, _hall_member_name),
+		GameState.flags.has_flag(seen))
+	_credits_screen.skip_label = _credits.skip_label
+	GameState.flags.set_flag(seen)
 
 
 ## Vue de l'écran du Panthéon pour [param entry] : en-tête (joueur, date), et pour chaque Pokémon

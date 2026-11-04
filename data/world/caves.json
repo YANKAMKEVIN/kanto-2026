@@ -47,6 +47,17 @@
 				"pokemon_mansion_1f", "pokemon_mansion_2f", "pokemon_mansion_3f", "pokemon_mansion_b1f"
 			],
 			"escape": { "map": "cinnabar_island", "spawn": "from_manoir", "facing": "down" }
+		},
+		"mt_silver": {
+			"maps": ["mt_silver_1f", "mt_silver_3f"],
+			"escape": { "map": "mt_silver_outside", "spawn": "retour_grotte", "facing": "down" }
+		},
+		"mt_silver_dark": {
+			"maps": ["mt_silver_2f"],
+			"escape": { "map": "mt_silver_outside", "spawn": "retour_grotte", "facing": "down" },
+			"dark": true,
+			"warn_dialogue": "mt_silver_2f_dark",
+			"flash_cue": "{pokemon} éclaire la grotte avec Flash !"
 		}
 	}
 }
