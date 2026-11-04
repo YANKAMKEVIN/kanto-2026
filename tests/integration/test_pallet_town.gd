@@ -188,8 +188,9 @@ func test_door_is_the_only_reachable_cell_of_a_building() -> void:
 
 func test_door_warps() -> void:
 	var warps := _map.get_warps()
-	# 3 portes STEP_ON + 2 sorties PUSH vers la Route 1 (jalon 5 §15.5).
-	assert_eq(warps.size(), DOORS.size() + 2)
+	# 3 portes STEP_ON + 2 sorties PUSH vers la Route 1 (jalon 5 §15.5) + les 4 cases de la bouche
+	# de la grotte marine (JOH1, PUSH ↓ gardées par `johto_letter_read`).
+	assert_eq(warps.size(), DOORS.size() + 2 + 4)
 	for building: StringName in DOORS:
 		var spec: Array = DOORS[building]
 		var point := _map.get_node(NodePath("Warps/" + String(spec[1]))) as WarpPoint
@@ -319,7 +320,8 @@ func test_prairie_pokemon_stand_on_grass_in_view_of_the_route() -> void:
 
 func test_route1_trigger_covers_the_cells_just_before_the_grass() -> void:
 	var triggers := _map.get_triggers()
-	assert_eq(triggers.size(), TRIGGER_CELLS.size())
+	# JOH1 (QA A17) : + les quatre cases de la bouche de la grotte marine (O-5, `pallet_cave_mouth`).
+	assert_eq(triggers.size(), TRIGGER_CELLS.size() + 4)
 	var point := _map.get_node_or_null(^"Triggers/Route1Grass") as EventTriggerPoint
 	assert_not_null(point, "Triggers/Route1Grass")
 	for cell: Vector2i in TRIGGER_CELLS:

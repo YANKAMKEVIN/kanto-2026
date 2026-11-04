@@ -194,6 +194,7 @@ func set_battle_active(active: bool) -> void:
 func set_economy(enabled: bool) -> void:
 	_economy = enabled
 	_update_grade()
+	_update_flat()
 
 
 func _update_grade() -> void:
@@ -201,7 +202,9 @@ func _update_grade() -> void:
 
 
 func _update_flat() -> void:
-	var flat := _profile.has_grade() and _profile.grade_flat
+	# JOH1 : en économie, un profil `grade_economy_flat` (nuit de Johto) garde son gain à plat.
+	var flat := _profile.has_grade() and (_profile.grade_flat
+		or (_economy and _profile.grade_economy_flat))
 	_world_modulate.visible = flat
 	_grade_flat.visible = flat and _battle_active
 

@@ -1,0 +1,6 @@
+{
+	"enfant": {
+		"cell": [4, 5], "facing": "down", "sprite": "kid", "dialogue": "olivine_kid",
+		"if_period": ["morning", "day"]
+	}
+}
