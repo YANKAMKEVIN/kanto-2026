@@ -126,7 +126,7 @@ func test_from_the_hall_to_the_return_of_the_team_and_orme() -> void:
 	await _step(Vector2i.DOWN)
 	assert_true(GameState.flags.has_flag(&"johto_cenere_defeated"), "Cenere battue")
 	assert_true(GameState.flags.has_flag(&"johto_dante_revealed"), "Dante a parlé")
-	assert_true(_play.events.has("vs:CENERE/Admin de la Team Rocket"), "grand combat")
+	assert_true(_play.events.has("battle"), "combat contre Cenere")
 	var pages := _play.pages()
 	assert_true(pages.has("Je m'appelle Dante. Je dirigeais la Team Rocket bien avant lui."))
 	assert_true(pages.has("Un chef qui gagne, c'est un chef. Je le suis."), "T-22")

@@ -221,12 +221,6 @@
 				"species": "sneasel",
 				"level": 35
 			}
-		],
-		"switch": true,
-		"card": {
-			"name": "CENERE",
-			"title": "Admin de la Team Rocket",
-			"portrait": "cenere"
-		}
+		]
 	}
 }

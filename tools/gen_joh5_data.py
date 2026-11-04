@@ -306,7 +306,7 @@ def impostor_scene():
 			say("goldenrod_radio_impostor_defeated", **{"if": [won]}),
 			say("goldenrod_radio_impostor_after", **{"if": [won]}),
 			say("goldenrod_radio_impostor_flees", **{"if": [won]}),
-			{"move": "faux_employe", "to": [3, 1], "run": True, "if": [won]},
+			{"move": "faux_employe", "to": [3, 1], "if": [won]},
 			{"despawn": "faux_employe", "if": [won]},
 			{"wake_up": True, "unless": [won]},
 		]},
@@ -489,10 +489,8 @@ def main():
 			"heal_after": False, "gives_exp": True, "prize_money": 0, "prize_per_level": prize,
 			"team": [{"species": s, "level": lv} for s, lv in team]}
 		if trainer_id == "goldenrod_radio_tower_admin_cenere":
+			# Comme Brace (JOH4) : IA « smart », ni séquence « VS » ni changement de Pokémon [D].
 			entry["ai"] = "smart"
-			entry["switch"] = True
-			entry["card"] = {"name": "CENERE", "title": "Admin de la Team Rocket",
-				"portrait": "cenere"}
 		trainers[trainer_id] = entry
 		if trainer_id in TRAINER_LINES:
 			before, defeated, after = TRAINER_LINES[trainer_id]

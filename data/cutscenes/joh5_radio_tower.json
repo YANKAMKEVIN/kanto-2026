@@ -172,7 +172,6 @@
 							3,
 							1
 						],
-						"run": true,
 						"if": [
 							"johto_radio_impostor_defeated"
 						]
