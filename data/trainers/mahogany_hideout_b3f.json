@@ -1,0 +1,30 @@
+{
+	"mahogany_hideout_b3f_brace": {
+		"name": "Brace",
+		"class": "sbire_rocket",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"team": [
+			{
+				"species": "fearow",
+				"level": 60
+			},
+			{
+				"species": "arbok",
+				"level": 60
+			},
+			{
+				"species": "weezing",
+				"level": 61
+			},
+			{
+				"species": "houndoom",
+				"level": 62
+			}
+		]
+	}
+}

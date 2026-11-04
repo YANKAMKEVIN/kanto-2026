@@ -1,0 +1,65 @@
+{
+	"route_43_panneau": {
+		"narration": true,
+		"pages": [
+			"ROUTE 43\nAcajou — Lac Colère"
+		]
+	},
+	"route_43_peager_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Tu veux passer sans payer ? Chez\nnous, ça se règle en combat."
+		]
+	},
+	"route_43_peager_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le péage est fermé.\nDéfinitivement."
+		]
+	},
+	"route_43_peager_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Va voir le lac, si ça t'amuse.\nLes ondes, c'est notre œuvre."
+		]
+	},
+	"route_43_sbire_q_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Péage ! 1 000 Pokédollars pour\npasser. Ou tes Pokémon."
+		]
+	},
+	"route_43_sbire_q_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Bon, c'est gratuit aujourd'hui."
+		]
+	},
+	"route_43_sbire_q_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le péager, devant,\nne rigole pas."
+		]
+	},
+	"route_43_basile_before": {
+		"speaker": "Campeur Basile",
+		"pages": [
+			"La route du lac est à moi !"
+		]
+	},
+	"route_43_basile_defeated": {
+		"speaker": "Campeur Basile",
+		"pages": [
+			"Elle est à toi."
+		]
+	},
+	"route_43_basile_after": {
+		"speaker": "Campeur Basile",
+		"pages": [
+			"Au milieu du lac, il y a un\nLéviator rouge. Rouge !"
+		]
+	},
+	"route_43_max_potion": {
+		"cutscene": "route_43_max_potion"
+	}
+}

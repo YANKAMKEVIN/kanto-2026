@@ -1,0 +1,23 @@
+{
+	"mahogany_town_habitant": {
+		"speaker": "Habitant",
+		"pages": [
+			"Tu as vu l'homme en\nnoir, tout à l'heure ?",
+			"Il traînait une\ncage qui crépitait.",
+			"Il est entré quelque part en\nville, mais où ?"
+		]
+	},
+	"mahogany_town_habitante": {
+		"speaker": "Habitante",
+		"pages": [
+			"Au Lac Colère, au nord, les\nMagicarpe sont devenus fous.",
+			"Ils évoluent tous en Léviator,\net ils sont furieux."
+		]
+	},
+	"mahogany_town_panneau_ville": {
+		"narration": true,
+		"pages": [
+			"ACAJOU\nLa ville des montagnes et des\nvieux secrets"
+		]
+	}
+}

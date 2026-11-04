@@ -1688,9 +1688,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		for file: String in DirAccess.get_files_at(pair[1]):
 			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
 				continue
-			# JOH2 : fichiers `joh2_*` (`test_joh2_data.gd`), même règle que ceux du J23.
+			# JOH2 : fichiers `joh2_*` (`test_joh2_data.gd`), JOH6 : `joh6_*` (`test_joh6_data.gd`),
+			# même règle que ceux du J23.
 			var library: Variant = pair[2] if file.begins_with("j23_") \
-				or file.begins_with("joh2_") else pair[0]
+				or file.begins_with("joh2_") or file.begins_with("joh6_") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer) + generated_dialogues.get_set_flags() \

@@ -1,0 +1,55 @@
+{
+	"lake_of_rage_sentier_guard": {
+		"variants": [
+			{
+				"unless": [
+					"johto_act3"
+				],
+				"steps": [
+					{
+						"face": "garde_forestier",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "garde_forestier"
+					},
+					{
+						"dialogue": "lake_of_rage_garde_forestier"
+					},
+					{
+						"move": "player",
+						"path": [
+							"left"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"lake_of_rage_rappel_max": {
+		"variants": [
+			{
+				"unless": [
+					"got_lake_of_rage_rappel_max"
+				],
+				"steps": [
+					{
+						"despawn": "rappel_max"
+					},
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_lake_of_rage_rappel_max"
+						]
+					}
+				]
+			}
+		]
+	}
+}

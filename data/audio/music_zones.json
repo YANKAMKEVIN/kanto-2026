@@ -52,7 +52,13 @@
 		"viridian_forest": "viridian_forest",
 		"route_39": "road_to_viridian",
 		"route_38": "road_to_cerulean",
-		"ecruteak_city": "pewter_city"
+		"ecruteak_city": "pewter_city",
+		"burned_tower": "pokemon_tower",
+		"route_42": "road_to_cerulean",
+		"mahogany_town": "pewter_city",
+		"route_43": "road_to_viridian",
+		"lake_of_rage": "road_to_cerulean",
+		"mahogany_hideout": "rocket_hideout"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",
