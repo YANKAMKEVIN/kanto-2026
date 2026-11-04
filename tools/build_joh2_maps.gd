@@ -37,7 +37,7 @@ const MAPS: Array[Dictionary] = [
 		"seed": 3901},
 	{"plan": "route_38", "id": &"route_38", "name": "Route 38", "region": "Rosalia — Route 39",
 		"seed": 3801},
-	{"plan": "rosalia", "id": &"ecruteak_city", "name": "Rosalia", "region": "Rosalia",
+	{"plan": "rosalia", "id": &"ecruteak_city", "name": "Rosalia", "region": "Johto",
 		"seed": 4201},
 ]
 

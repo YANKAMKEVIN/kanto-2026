@@ -162,6 +162,21 @@ func test_links_between_the_three_maps_and_the_coming_soon_exits() -> void:
 	assert_eq(_map(&"ecruteak_city").get_spawn_cell(&"from_center"), Vector2i(8, 30))
 
 
+## QA A17 (2026-11-04) : le Centre n'avait pas d'infirmière. Centre et Boutique ont leur
+## infirmière et leur vendeur derrière le comptoir, et le comptoir répond.
+func test_center_and_mart_are_staffed() -> void:
+	for pair: Array in [[&"ecruteak_center", &"nurse"], [&"ecruteak_mart", &"clerk"]]:
+		var spec := NpcRoster.load_for_map(pair[0]).get_spec(pair[1])
+		assert_not_null(spec, "%s : %s" % pair)
+		if spec != null:
+			assert_eq(spec.cell, Vector2i(7, 3), "%s derrière le comptoir" % pair[1])
+		var counter: Node = null
+		for point: Node in _map(pair[0]).get_node(^"Interactables").get_children():
+			if point.get(&"dialogue_id") == pair[1]:
+				counter = point
+		assert_not_null(counter, "%s : on lui parle par-dessus le comptoir" % pair[1])
+
+
 func test_doors_lead_to_the_interiors_and_back() -> void:
 	var doors: Dictionary = {Vector2i(8, 29): &"ecruteak_center", Vector2i(18, 29): &"ecruteak_mart",
 		Vector2i(21, 12): &"ecruteak_elders_house", Vector2i(35, 29): &"ecruteak_house_1",

@@ -410,6 +410,14 @@ def write_interiors():
 		"sage_2": {"cell": [12, 6], "facing": "left", "sprite": "channeler",
 			"dialogue": "ecruteak_elders_house_sage"},
 	})
+	# Centre et Boutique : l'infirmière et le vendeur derrière leur comptoir, comme à Kanto
+	# (définitions communes : `nurse` / `clerk` en (7, 3), dialogues partagés).
+	write_json(os.path.join(DATA, "npcs", "ecruteak_center.json"), {
+		"nurse": {"cell": [7, 3], "facing": "down", "sprite": "nurse"},
+	})
+	write_json(os.path.join(DATA, "npcs", "ecruteak_mart.json"), {
+		"clerk": {"cell": [7, 3], "facing": "down", "sprite": "clerk"},
+	})
 	write_json(os.path.join(DATA, "npcs", "ecruteak_house_1.json"), {
 		"habitante": {"cell": [4, 5], "facing": "right", "sprite": "aoki",
 			"dialogue": "ecruteak_house_1_habitante"},

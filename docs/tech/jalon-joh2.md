@@ -262,4 +262,16 @@ Pokémon de la ferme) ; clé `weekday` du départ de débogage ; warp de la Tour
 
 ## 8. Fait
 
-(journal rempli tâche par tâche)
+| Tâche | Commit | Note |
+|---|---|---|
+| Plan | `e04a5c4e` | Ce document |
+| T1–T6, T8, T9 | `2217d85e` | `gen_joh2_data.py`, `build_joh2_maps.gd`, `--rosalia`, zones, Boutique, repos, musiques, aperçus de la Carte, tables par moment, Margot et Lucien (textes ; PNJ de Lucien à poser sur Oliville après la fusion du JOH1, case (30, 33) donnée par le JOH1), clé `weekday`, départs de débogage |
+| Correctifs partagés | `2217d85e` | `npc.gd` et `player.gd` lisent l'autoload `GameState` par l'arbre (compilation de `map.gd` sous `godot -s`, tableaux typés des scènes) ; sprites de combat provisoires des 51 espèces de Johto (`gen_placeholder_battlers_johto.py`) |
+| T7, T10 | `2217d85e`, `aa330c58` | `test_joh2_data` (11), `test_joh2_maps` (8), `test_joh2_boot` (3 : nuit et lampes, Sbires une fois au premier pas, Margot le mardi seulement) ; registres réalignés |
+| T11 | `aa330c58` | `tools/capture_joh2.sh` (20 plans, `build/captures/joh2/`) relus : Route 39 jour / nuit, Route 38 (Inès sur le passage), Rosalia jour / nuit (luminance 142 → 112), scène des Sbires, Margot un mardi. Sous-titre de Rosalia « Johto » au lieu de « Rosalia » [D] (doublon vu sur la capture) |
+| `main` | `fe3b5a3a` | JOH0 et 34B fusionnés ; conflits de documentation seulement |
+| T12 | (ce commit) | QA A17 15 h 34 – 16 h 05 (`build/qa/joh2_a17_2026-11-04/`) : nuit, Sbires, PC hors ligne, soin, Margot, doyen, rencontre de nuit, Hugo. Défaut corrigé : Centre et Boutique sans infirmière ni vendeur |
+
+**Reportés (rendu, phase DA)** : tuiles et bâtiments provisoires, tours en aplats, lampes de nuit
+peu visibles sur le Mac (halo `lamp` réglé pour les grottes), Pokémon de la ferme sans planche,
+silhouettes provisoires des espèces de Johto en combat, aucune musique de Johto.
