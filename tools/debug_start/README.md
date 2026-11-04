@@ -451,6 +451,7 @@ N59, Roucarnage N58, Crocrodil N32 ; CS03, Super Canne, Multi Exp, 20 Hyper Ball
 - `johto_joh6_route_42`, `johto_joh6_mahogany` : chiens réveillés, plan du doyen connu.
 - `johto_joh6_route_43` : idem, à l'entrée sud de la Route 43 (péage).
 - `johto_joh6_lake` : péage franchi, à l'entrée du Lac Colère (Léviator rouge) ; 1 Master Ball.
+- `johto_joh6_lake_autosave` : idem, mais le départ **devient la partie sauvegardée** (`autosave`) : capturer le Léviator rouge (sauvegarde forcée), puis reprise par « Continuer » (clé « variant » dans la vraie sauvegarde).
 - `johto_joh6_hideout` : lac fait, escalier trouvé, au B1F du repaire (alarmes).
 - `johto_joh6_hideout_b2f` : idem, au B2F (dalles, levier, déserteur, souvenir, mot de passe).
 - `johto_joh6_hideout_b3f` : mot de passe dit, au B3F (Brace, générateur, Raikou) ; 1 Master Ball.
