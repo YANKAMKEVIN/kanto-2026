@@ -45,3 +45,20 @@ func test_focus_changes_for_the_save_grace_delay() -> void:
 		SessionLifecycle.Focus.REGAINED)
 	assert_eq(SessionLifecycle.focus_change(Node.NOTIFICATION_APPLICATION_PAUSED),
 		SessionLifecycle.Focus.NONE)
+
+
+func test_a_memory_warning_requests_a_save_but_keeps_the_foreground() -> void:
+	var lifecycle := SessionLifecycle.new()
+	assert_true(lifecycle.handle_notification(Node.NOTIFICATION_OS_MEMORY_WARNING))
+	assert_true(lifecycle.in_foreground, "le jeu reste au premier plan : le temps de jeu continue")
+	assert_eq(lifecycle.play_time_step(0.1, false), 0.1)
+	assert_eq(SessionLifecycle.audio_change(Node.NOTIFICATION_OS_MEMORY_WARNING),
+		SessionLifecycle.AudioChange.NONE, "le son n'y touche pas")
+	assert_eq(SessionLifecycle.focus_change(Node.NOTIFICATION_OS_MEMORY_WARNING),
+		SessionLifecycle.Focus.NONE)
+
+
+func test_save_reasons_name_the_notification() -> void:
+	assert_eq(SessionLifecycle.save_reason(Node.NOTIFICATION_APPLICATION_PAUSED), "arrière-plan")
+	assert_eq(SessionLifecycle.save_reason(Node.NOTIFICATION_WM_CLOSE_REQUEST), "fermeture")
+	assert_eq(SessionLifecycle.save_reason(Node.NOTIFICATION_OS_MEMORY_WARNING), "mémoire basse")
