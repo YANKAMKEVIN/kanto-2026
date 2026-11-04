@@ -664,7 +664,7 @@ func _process(delta: float) -> void:
 ## de ce qui s'écrit à la mise en arrière-plan (passe systèmes 2, S2A).
 func _notification(what: int) -> void:
 	if _lifecycle.handle_notification(what):
-		_save_in_background("arrière-plan")
+		_save_in_background(SessionLifecycle.save_reason(what))
 	_on_focus_change(SessionLifecycle.focus_change(what))
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		_on_go_back()
