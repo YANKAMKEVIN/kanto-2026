@@ -674,3 +674,332 @@ func test_water_jet_is_much_thicker_than_a_beam() -> void:
 		assert_gte(peak, MoveFxPlayer.JET_WIDTH * 0.9, "%s : épais" % move_id)
 		assert_true(halo_seen, "%s : halo" % move_id)
 	_assert_at_rest(stage)
+
+
+# --- Vague 2 « Effets fidèles à Rouge » (2026-11-04) -------------------------------------
+
+func _visible_pieces() -> int:
+	var count := 0
+	for i: int in MoveFxPlayer.VOLLEY_MAX:
+		count += 1 if _player.get_piece(i).visible else 0
+	return count
+
+
+func _pose_at(plan: MoveFxPlan, phase_name: StringName, share: float, hit: int = 0) -> void:
+	var phase := plan.phase(phase_name, hit)
+	assert_not_null(phase, "%s : phase %s" % [plan.move_id, phase_name])
+	if phase != null:
+		_player.pose(phase.start + phase.duration * share)
+
+
+## Aucune attaque de la vague 2 n'envoie la lueur ronde par défaut ni le rayon d'énergie.
+func test_rouge_wave_2_never_sends_a_glow_or_a_beam() -> void:
+	var stage := _stage()
+	for move_id: StringName in [&"twineedle", &"pin_missile", &"spike_cannon", &"rock_throw",
+			&"rock_slide", &"teleport", &"splash", &"explosion", &"self_destruct", &"pay_day",
+			&"smokescreen", &"poison_gas", &"smog", &"flash", &"kinesis", &"swift", &"thunder",
+			&"fire_punch", &"ice_punch", &"thunder_punch", &"lick", &"bone_club", &"bonemerang",
+			&"confuse_ray", &"haze", &"clamp", &"crabhammer", &"waterfall", &"egg_bomb", &"barrage",
+			&"seismic_toss", &"fissure", &"dig"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		for phase: MoveFxPlan.Phase in plan.phases:
+			for part: float in [0.2, 0.5, 0.8]:
+				_player.pose(phase.start + phase.duration * part)
+				assert_false(_player.get_projectile().visible, "%s : pas de lueur" % move_id)
+				assert_false(_player.get_beam().visible, "%s : pas de rayon" % move_id)
+		_player.stop()
+		_assert_at_rest(stage)
+
+
+## Double-Dard : deux aiguilles peintes côte à côte ; Dard-Nuée : trois ; à chaque coup, sans
+## que le lanceur ne fonce.
+func test_needle_volleys_fly_side_by_side_each_hit() -> void:
+	var stage := _stage()
+	for pair: Array in [[&"twineedle", 2], [&"pin_missile", 3]]:
+		var plan := _plan(pair[0], MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.HIT, 2))
+		_player.play(plan, stage)
+		for hit: int in 2:
+			_pose_at(plan, MoveFxPlan.TRAVEL, 0.95, hit)
+			var needles := 0
+			for i: int in pair[1]:
+				needles += 1 if _player.get_piece(3 * i).visible else 0
+			assert_eq(needles, pair[1], "%s : %d aiguilles au coup %d" % [pair[0], pair[1], hit])
+			assert_eq(_user.position, stage.user_rest, "%s : le lanceur reste à sa place" % pair[0])
+		_player.stop()
+
+
+## Jet-Pierres, Éboulement : les pierres tombent d'en haut sur la cible ; Éboulement en fait
+## tomber plus, et plus grosses.
+func test_rocks_fall_from_above_and_rock_slide_drops_more() -> void:
+	var stage := _stage()
+	var counts: Array[int] = []
+	for move_id: StringName in [&"rock_throw", &"rock_slide"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.TRAVEL, 0.3)
+		var rock := _player.get_piece(0)
+		assert_true(rock.visible, "%s : la première pierre tombe" % move_id)
+		var high := rock.position.y
+		assert_lt(high, stage.target_rect.position.y, "%s : au-dessus de la cible" % move_id)
+		_pose_at(plan, MoveFxPlan.TRAVEL, 0.9)
+		assert_gt(rock.position.y, high, "%s : elle descend" % move_id)
+		assert_lt(absf(rock.position.x - stage.impact_point().x), stage.target_rect.size.x,
+			"%s : à la verticale de la cible" % move_id)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.95)
+		counts.append(plan.volley_count)
+		_player.stop()
+		_assert_at_rest(stage)
+	assert_gt(counts[1], counts[0], "Éboulement : plus de rochers")
+
+
+## Téléport : le lanceur se resserre en un trait et file vers le haut ; réussi, il reste caché à
+## la fin ; sinon il revient à sa place.
+func test_teleport_zips_up_and_stays_gone_when_teleported() -> void:
+	var stage := _stage()
+	var gone := _outcome(MoveFxOutcome.Result.AFFECTED)
+	gone.vanished = true
+	var plan := _plan(&"teleport", MoveFxPlan.Mode.FULL, gone)
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.9)
+	assert_lt(_user.scale.x, 0.5, "un trait")
+	assert_lt(_user.position.y, stage.user_rest.y - 200.0, "il file vers le haut")
+	_player.stop()
+	assert_eq(_user.modulate.a, 0.0, "il ne revient pas")
+	_user.modulate = Color.WHITE
+	var stays := _plan(&"teleport", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.AFFECTED))
+	_player.play(stays, stage)
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Trempette : il saute sur place (même quand « rien ne se passe »), rien ne part vers la cible.
+func test_splash_hops_in_place_and_sends_nothing() -> void:
+	var stage := _stage()
+	var plan := _plan(&"splash", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.FAILED))
+	_player.play(plan, stage)
+	var highest := 0.0
+	var anticipation := plan.phase(MoveFxPlan.ANTICIPATION)
+	for i: int in 21:
+		_player.pose(anticipation.start + anticipation.duration * i / 20.0)
+		highest = maxf(highest, stage.user_rest.y - _user.position.y)
+		assert_eq(_target.position, stage.target_rest, "la cible ne bouge pas")
+		assert_eq(_visible_pieces(), 0, "rien ne part")
+	assert_gt(highest, 40.0, "il saute")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Explosion : le lanceur gonfle, puis plusieurs explosions peintes éclatent sur la cible (plus
+## que pour Destruction), avec un éclair blanc plafonné par « Réduire les flashs ».
+func test_explosions_burst_one_after_another_without_a_beam() -> void:
+	var stage := _stage()
+	var shown: Array[int] = []
+	for move_id: StringName in [&"explosion", &"self_destruct"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.ANTICIPATION, 0.9)
+		assert_gt(_user.scale.x, 2.0, "%s : il gonfle" % move_id)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.05)
+		assert_true(_player.get_screen().visible, "%s : éclair blanc" % move_id)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.95)
+		var count := 0
+		for role: MoveFxPlayer.Flip in [MoveFxPlayer.Flip.IMPACT, MoveFxPlayer.Flip.EXTRA_A,
+				MoveFxPlayer.Flip.EXTRA_B, MoveFxPlayer.Flip.WAVE_A, MoveFxPlayer.Flip.WAVE_B]:
+			count += 1 if _player.get_art(role).visible else 0
+		shown.append(count)
+		assert_gt(count, 1, "%s : plusieurs explosions à la fois" % move_id)
+		_player.stop()
+		_assert_at_rest(stage)
+	assert_gte(shown[0], shown[1], "Explosion : au moins autant que Destruction")
+	var capped := MoveFxPlan.build(_catalog, _catalog.entry(&"explosion"),
+		_data.get_move(&"explosion"), null, MoveFxPlan.Mode.FULL, true)
+	_player.play(capped, stage)
+	_pose_at(capped, MoveFxPlan.IMPACT, 0.02)
+	assert_lte(_player.get_screen().color.a, 0.35 + EPS, "éclair plafonné")
+	_player.stop()
+
+
+## Flash : l'écran entier flashe en blanc (deux fois), la cible ne tremble pas.
+func test_flash_whitens_the_whole_screen_and_never_shakes_the_target() -> void:
+	var stage := _stage()
+	var plan := _plan(&"flash")
+	_player.play(plan, stage)
+	var impact := plan.phase(MoveFxPlan.IMPACT)
+	var peaks := 0
+	var last := 0.0
+	var rising := false
+	for i: int in 41:
+		_player.pose(impact.start + impact.duration * i / 40.0)
+		var a := _player.get_screen().color.a if _player.get_screen().visible else 0.0
+		if a < last and rising:
+			peaks += 1
+		rising = a > last
+		last = a
+		assert_eq(_target.position, stage.target_rest, "la cible ne tremble pas")
+	assert_eq(peaks, 2, "deux éclairs blancs")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Fatal-Foudre : la scène s'assombrit, puis la foudre tombe du haut de l'écran sur la cible.
+func test_thunder_falls_from_the_sky() -> void:
+	var stage := _stage()
+	var plan := _plan(&"thunder")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.ANTICIPATION, 0.9)
+	assert_true(_player.get_light().is_lit(), "la scène s'assombrit")
+	assert_ne(_decor.modulate, Color(0.9, 0.95, 1.0, 1.0), "le décor change")
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.1)
+	var bolt := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(bolt.visible, "la foudre")
+	var top := bolt.position.y - bolt.scale.y * 320.0 * 0.5
+	assert_lt(top, 0.0, "elle part du haut de l'écran")
+	assert_almost_eq(bolt.position.x, stage.impact_point().x, 60.0, "à la verticale de la cible")
+	assert_eq(bolt.rotation, 0.0, "verticale")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Poings : course de Contact, poing peint sur la cible, lumière de l'élément.
+func test_elemental_punches_hit_with_a_fist_then_their_element() -> void:
+	var stage := _stage()
+	for move_id: StringName in [&"fire_punch", &"ice_punch", &"thunder_punch"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.TRAVEL, 0.9)
+		assert_gt(_user.position.distance_to(stage.user_rest), 40.0, "%s : il fonce" % move_id)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.3)
+		var fist := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+		assert_true(fist.visible, "%s : le poing" % move_id)
+		assert_eq(fist.texture, FxArt.particle(&"poing").get("texture"), "%s : poing peint" % move_id)
+		assert_true(_player.get_light().is_lit(), "%s : la lumière de l'élément" % move_id)
+		_player.stop()
+		_assert_at_rest(stage)
+
+
+## Météores : plusieurs étoiles en vol à la fois, chacune tournée dans son sens de vol.
+func test_swift_stars_fly_head_first() -> void:
+	var stage := _stage()
+	var plan := _plan(&"swift")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.6)
+	var flying := 0
+	var toward := (stage.impact_point() - stage.origin()).normalized()
+	for i: int in plan.volley_count:
+		var star := _player.get_piece(i)
+		if star.visible:
+			flying += 1
+			assert_gt(Vector2.from_angle(star.rotation).dot(toward), 0.5, "étoile %d vers la cible" % i)
+	assert_gt(flying, 2, "un ruban d'étoiles")
+	_player.stop()
+
+
+## Osmerang : l'os part, frappe, puis revient vers le lanceur à chaque coup ; Massd'Os : il
+## s'abat d'en haut sur la cible.
+func test_bones_club_down_or_come_back() -> void:
+	var stage := _stage()
+	var plan := _plan(&"bonemerang", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.HIT, 2))
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.RETURN, 0.1)
+	var near_target := _player.get_piece(0).position.distance_to(stage.impact_point())
+	_pose_at(plan, MoveFxPlan.RETURN, 0.7)
+	var bone := _player.get_piece(0)
+	assert_true(bone.visible, "l'os revient")
+	assert_gt(bone.position.distance_to(stage.impact_point()), near_target, "il s'éloigne de la cible")
+	_player.stop()
+	var club := _plan(&"bone_club")
+	_player.play(club, stage)
+	_pose_at(club, MoveFxPlan.IMPACT, 0.05)
+	var before := _player.get_piece(0).position.y
+	_pose_at(club, MoveFxPlan.IMPACT, 0.25)
+	assert_gt(_player.get_piece(0).position.y, before, "il s'abat")
+	assert_lt(before, stage.impact_point().y, "d'au-dessus de la cible")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Brouillard : une boule de fumée en arc, puis la cible assombrie sous le nuage ; Gaz Toxik :
+## des bouffées qui grossissent en chemin.
+func test_smoke_and_gas_cover_the_target() -> void:
+	var stage := _stage()
+	var smoke := _plan(&"smokescreen")
+	_player.play(smoke, stage)
+	_pose_at(smoke, MoveFxPlan.TRAVEL, 0.5)
+	var ball := _player.get_piece(0)
+	assert_true(ball.visible, "la boule de fumée")
+	assert_lt(ball.position.y, stage.origin().lerp(stage.impact_point(), 0.5).y, "en arc")
+	_pose_at(smoke, MoveFxPlan.IMPACT, 0.6)
+	assert_lt(_target.modulate.r, 0.9, "la cible s'assombrit")
+	_player.stop()
+	_assert_at_rest(stage)
+	var gas := _plan(&"poison_gas")
+	_player.play(gas, stage)
+	_pose_at(gas, MoveFxPlan.TRAVEL, 0.2)
+	var early := _player.get_piece(0).scale.x
+	_pose_at(gas, MoveFxPlan.TRAVEL, 0.7)
+	assert_gt(_player.get_piece(0).scale.x, early, "la bouffée gonfle")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Frappe Atlas : la cible est soulevée, puis projetée au sol ; Abîme : elle s'enfonce dans la
+## fissure ; Buée Noire : la brume traverse le terrain sans toucher à la cible.
+func test_toss_fissure_and_haze_move_the_target_their_way() -> void:
+	var stage := _stage()
+	var toss := _plan(&"seismic_toss")
+	_player.play(toss, stage)
+	_pose_at(toss, MoveFxPlan.IMPACT, MoveFxPlayer.TOSS_SLAM * 0.5)
+	assert_lt(_target.position.y, stage.target_rest.y - 100.0, "soulevée")
+	_pose_at(toss, MoveFxPlan.IMPACT, 0.99)
+	assert_almost_eq(_target.position.y, stage.target_rest.y, 1.0, "au sol")
+	_player.stop()
+	_assert_at_rest(stage)
+	var fissure := _plan(&"fissure")
+	_player.play(fissure, stage)
+	_pose_at(fissure, MoveFxPlan.IMPACT, 0.5)
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "la fissure")
+	assert_gt(_target.position.y, stage.target_rest.y, "elle s'y enfonce")
+	_player.stop()
+	_assert_at_rest(stage)
+	var haze := _plan(&"haze")
+	_player.play(haze, stage)
+	_pose_at(haze, MoveFxPlan.IMPACT, 0.5)
+	assert_gt(_visible_pieces(), 2, "des nappes de brume")
+	assert_eq(_target.position, stage.target_rest, "la cible ne bouge pas")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Tunnel : au tour 1 il creuse sur place ; au tour 2, la traînée court sous le sol jusqu'à la
+## cible, qui est soulevée.
+func test_dig_burrows_then_erupts_under_the_target() -> void:
+	var stage := _stage()
+	var charge := _plan(&"dig", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.CHARGING))
+	_player.play(charge, stage)
+	_pose_at(charge, MoveFxPlan.CHARGE, 0.8)
+	assert_gt(_user.position.y, stage.user_rest.y, "il creuse")
+	_player.stop()
+	var strike := _plan(&"dig")
+	_player.play(strike, stage)
+	_pose_at(strike, MoveFxPlan.TRAVEL, 0.5)
+	assert_gt(_visible_pieces(), 2, "une traînée de terre")
+	_pose_at(strike, MoveFxPlan.IMPACT, 0.3)
+	assert_lt(_target.position.y, stage.target_rest.y, "le sol la soulève")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Jackpot, Léchouille, Claquoir, Pince-Masse, Cascade : la marque peinte de la variante d'impact.
+func test_contact_wave_2_stamps_their_own_art() -> void:
+	var stage := _stage()
+	for pair: Array in [[&"lick", &"langue"], [&"clamp", &"coquille"], [&"crabhammer", &"pince"],
+			[&"waterfall", &"goutte_cascade"], [&"pay_day", &"etoile_impact"]]:
+		var plan := _plan(pair[0])
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.4)
+		var stamp := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+		assert_true(stamp.visible, "%s : marque" % pair[0])
+		assert_eq(stamp.texture, FxArt.particle(pair[1]).get("texture"), "%s : %s" % pair)
+		_player.stop()
+		_assert_at_rest(stage)

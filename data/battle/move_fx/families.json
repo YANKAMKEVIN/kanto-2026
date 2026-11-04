@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), `spray` : grains de la gerbe de Jet de Sable ; vague 1 « Effets fidèles à Rouge » : piece (pièce d'une volée), sprout, crack, powder, sparkle ; fx.volley : volée (count, stagger, size, wobble en hauteurs d'écran) ; fx.beats ou impacts.*.beats : claquements par impact ; families.*.variants : réglages fx remplacés par la variante d'une attaque (\"variant\" dans son entrée, art fusionné rôle par rôle) ; complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), `spray` : grains de la gerbe de Jet de Sable ; vague 1 « Effets fidèles à Rouge » : piece (pièce d'une volée), sprout, crack, powder, sparkle ; fx.volley : volée (count, stagger, size, wobble en hauteurs d'écran) ; fx.beats ou impacts.*.beats : claquements par impact ; families.*.variants : réglages fx remplacés par la variante d'une attaque (\"variant\" dans son entrée, art fusionné rôle par rôle) ; complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; vague 2 (2026-11-04) : families.*.duration (durée en Complètes d'une attaque sans dégâts), families.*.vanish (Téléport : le lanceur reste caché si TELEPORTED), fx.light / fx.light_peak / fx.flashes (lumière d'une variante), impacts.*.roles (art propre d'une variante d'impact), world.storm (la scène s'assombrit avant la foudre), rôles blast, spark, crack, bolt_sky, column, glow, spoon, ring, coin, glint, drool, splash, burst, star, rock, grit ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
 	"durations": {
 		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
 		"bands": [
@@ -221,12 +221,17 @@
 		},
 		"dard": {
 			"name": "Dard", "target": "foe",
-			"_doc": "Dard-Venin (vague 1) : une aiguille fine (brique needle, art piece) file vers la cible en accélérant, avec une traînée ; piqûre violette à l'impact (impact sting : éclat additif, gouttes de poison).",
+			"_doc": "Dard-Venin (vague 1) : une aiguille fine (brique needle, art piece) file vers la cible en accélérant, avec une traînée ; piqûre violette à l'impact (impact sting : éclat additif, gouttes de poison). Vague 2 : variantes double (Double-Dard), nuee (Dard-Nuée), picanon (Picanon), une volée d'aiguilles par coup (modificateur multi), sans course du lanceur.",
 			"bricks": {"launch": "rear_back", "travel": "needle", "impact": "sting"},
 			"phases": {"anticipation": 0.2, "travel": 0.25, "impact": 0.35, "return": 0.2},
 			"world": {"light": "#B86BFF", "light_peak": 0.1, "flashes": 0},
 			"camera": {"zoom": 1.02, "shake": 1.5},
-			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 14, "volley": {"count": 1, "size": 0.2}, "art": {"piece": "aiguille", "particle": "goutte_poison", "fallout": "vapeur_poison"}}
+			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 14, "volley": {"count": 1, "size": 0.2}, "art": {"piece": "aiguille", "particle": "goutte_poison", "fallout": "vapeur_poison"}},
+			"variants": {
+				"double": {"_doc": "Double-Dard : deux aiguilles côte à côte par coup (Rouge : deux dards qui filent ensemble).", "palette": ["#FFFFFF", "#C8E07A", "#4A5A1A"], "light": "#E8F0C0", "particles": 10, "volley": {"count": 2, "size": 0.17, "stagger": 0.12}, "art": {"particle": "etoile_impact", "fallout": "poussiere"}},
+				"nuee": {"_doc": "Dard-Nuée : trois aiguilles en rafale par coup (Rouge : une nuée d'aiguilles).", "palette": ["#FFFFFF", "#C8E07A", "#4A5A1A"], "light": "#E8F0C0", "particles": 10, "volley": {"count": 3, "size": 0.13, "stagger": 0.16}, "art": {"particle": "etoile_impact", "fallout": "poussiere"}},
+				"picanon": {"_doc": "Picanon : une épine épaisse par coup (Rouge : des piquants tirés vers la cible).", "palette": ["#FFFFFF", "#D8C8A0", "#5A4A2A"], "light": "#F2E6D0", "particles": 10, "volley": {"count": 1, "size": 0.2}, "art": {"piece": "epine", "particle": "eclats_pierre", "fallout": "poussiere"}}
+			}
 		},
 		"poudre": {
 			"name": "Poudre", "target": "foe",
@@ -252,6 +257,190 @@
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#E8D8A8", "#8A6A3A", "#3A2A14"], "particles": 10, "volley": {"count": 3, "stagger": 0.12, "size": 0.045}, "art": {"sprout": "liane", "particle": "feuille"}}
 		},
+		"chute_pierres": {
+			"name": "Chute de pierres", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Jet-Pierres et Éboulement. Comme Rouge, les pierres TOMBENT d'en haut sur la cible (brique rockfall) : gravillons à l'anticipation et ombres qui grandissent au sol, chaque pierre tourne en tombant, frappe (un claquement par pierre : beats = pierres), rebondit et s'efface ; éclats et poussière à chaque chute. Variante eboulement : rochers plus gros et plus nombreux.",
+			"bricks": {"launch": "heavy_stomp", "travel": "rockfall", "impact": "rock_land"},
+			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.4, "return": 0.1},
+			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true},
+			"camera": {"zoom": 1.03, "shake": 4.0},
+			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 20, "beats": 3, "volley": {"count": 3, "size": 0.09, "stagger": 0.0}, "art": {"piece": "caillou", "particle": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere", "grit": "grain_sable"}},
+			"variants": {
+				"eboulement": {"_doc": "Éboulement : quatre rochers, plus gros.", "particles": 28, "beats": 4, "volley": {"count": 4, "size": 0.16}, "art": {"piece": "rocher"}}
+			}
+		},
+		"teleport": {
+			"name": "Téléport", "target": "self", "vanish": true, "duration": 1.0,
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : comme Rouge, le lanceur se resserre en un trait et file vers le haut (geste teleport_out, impact beam_up : colonne de lumière, étincelles qui montent). Téléport réussi (TELEPORTED) : il reste caché, BattleStage.play_vanish ne rejoue pas le scintillement ; sinon il redescend.",
+			"bricks": {"launch": "teleport_out", "travel": "", "impact": "beam_up"},
+			"phases": {"anticipation": 0.4, "travel": 0.0, "impact": 0.45, "return": 0.15},
+			"world": {"light": "#FFD8F4", "light_peak": 0.35, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFFFFF", "#FFC8EE", "#8A4A8A"], "particles": 22, "art": {"charge": "etincelle", "particle": "etincelle", "column": "flash_blanc"}}
+		},
+		"trempette": {
+			"name": "Trempette", "target": "self", "duration": 1.0,
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : la blague de Magicarpe, comme Rouge : il saute sur place, rien ne part (geste splash_hop : deux sauts avec écrasement à la réception, gouttelettes à chaque retombée). « Rien ne se passe » (échec) joue les mêmes sauts.",
+			"bricks": {"launch": "splash_hop", "travel": "", "impact": ""},
+			"phases": {"anticipation": 0.85, "travel": 0.0, "impact": 0.0, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#F0FAFF", "#8FD0F8", "#2E6AA8"], "particles": 12, "art": {"particle": "gouttelettes"}}
+		},
+		"explosion": {
+			"name": "Explosion", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Explosion et Destruction, sans rayon. Rouge : des explosions éclatent les unes après les autres sur le terrain adverse et l'écran tremble. Ici : le lanceur gonfle et chauffe à blanc (geste swell), éclair blanc plafonné, puis des explosions peintes (flipbook explosion) éclatent tour à tour autour de la cible (un claquement par explosion), braises, fumée. Variante destruction : trois explosions au lieu de cinq.",
+			"bricks": {"launch": "swell", "travel": "", "impact": "explosions"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.55, "return": 0.15},
+			"world": {"light": "#FFB060", "light_peak": 0.8, "flashes": 2, "dust": true},
+			"camera": {"zoom": 1.05, "shake": 6.0},
+			"fx": {"palette": ["#FFF4C8", "#FF8A2A", "#7A1A0A"], "particles": 40, "beats": 5, "volley": {"count": 5, "size": 0.5}, "art": {"charge": "braise", "blast": "explosion", "particle": "braise_explosion", "spark": "eclat_explosion", "fallout": "fumee"}},
+			"variants": {
+				"destruction": {"_doc": "Destruction : trois explosions.", "particles": 30, "beats": 3, "volley": {"count": 3, "size": 0.45}}
+			}
+		},
+		"fumee": {
+			"name": "Fumée", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Brouillard. Rouge : une boule de fumée part vers la cible puis un nuage noir la couvre. Ici : une boule de fumée noire en arc, traînée de bouffées (smoke_ball), puis un nuage de volutes sombres enveloppe la cible (smoke_cloud, flipbook fumee_volutes assombri) qui s'assombrit dessous.",
+			"bricks": {"launch": "rear_back", "travel": "smoke_ball", "impact": "smoke_cloud"},
+			"phases": {"anticipation": 0.15, "travel": 0.3, "impact": 0.4, "return": 0.15},
+			"world": {"light": "#4A4A55", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#9A9AA8", "#3A3A44", "#121218"], "particles": 16, "volley": {"count": 1, "size": 0.13}, "art": {"piece": "fumee_noire", "impact": "fumee_volutes", "particle": "fumee_noire", "fallout": "fumee"}, "tint": "#4A4A58"}
+		},
+		"gaz": {
+			"name": "Gaz", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Gaz Toxik et Purédpois. Rouge : un nuage de gaz glisse vers la cible et la recouvre. Ici : des bouffées de gaz partent l'une après l'autre en ondulant, gonflent en chemin (gas_drift), puis un nuage toxique peint enveloppe la cible (gas_cloud, flipbook nuage_poison) ; variante smog : bouffées brun-violet, plus lourdes.",
+			"bricks": {"launch": "poison_bubbles", "travel": "gas_drift", "impact": "gas_cloud"},
+			"phases": {"anticipation": 0.15, "travel": 0.45, "impact": 0.3, "return": 0.1},
+			"world": {"light": "#B86BFF", "light_peak": 0.1, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 1.0},
+			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 16, "volley": {"count": 6, "stagger": 0.08, "size": 0.14, "wobble": 0.03}, "art": {"charge": "bulle_poison", "piece": "vapeur_poison", "impact": "nuage_poison", "particle": "vapeur_poison", "fallout": "vapeur_poison"}},
+			"variants": {
+				"smog": {"_doc": "Purédpois : bouffées de fumée toxique brun-violet.", "palette": ["#E8D8E0", "#8A5A7A", "#3A2430"], "art": {"piece": "smog", "particle": "smog", "fallout": "fumee"}, "tint": "#C8A0B8", "light": "#8A5A7A"}
+			}
+		},
+		"flash": {
+			"name": "Flash", "target": "foe", "duration": 1.0,
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : comme Rouge, l'écran entier flashe en blanc (impact screen_flash : calque plein écran, deux éclats, plafonné par « Réduire les flashs » et 3 flashs/s) ; une lueur naît d'abord sur le lanceur, la cible éblouie reçoit ensuite les flèches de baisse de Précision. Aucun tremblement de la cible.",
+			"bricks": {"launch": "light_point", "travel": "", "impact": "screen_flash"},
+			"phases": {"anticipation": 0.35, "travel": 0.0, "impact": 0.45, "return": 0.2},
+			"world": {"light": "#FFFFFF", "light_peak": 0.9, "flashes": 2},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFFFFF", "#FFFBE8", "#B8B8C8"], "particles": 14, "art": {"charge": "flash_blanc", "glow": "flash_blanc", "particle": "fleche_bas"}}
+		},
+		"cuiller": {
+			"name": "Cuiller", "target": "foe", "duration": 1.0,
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Télékinésie. Rouge : souvenir incertain (une ondulation psy). Ici : la cuiller de Kadabra apparaît au-dessus du lanceur et se tord dans une lueur psy (geste spoon), puis la cible ondule sur place (warp_aura) et reçoit les flèches de baisse de Précision.",
+			"bricks": {"launch": "spoon", "travel": "", "impact": "warp_aura"},
+			"phases": {"anticipation": 0.5, "travel": 0.0, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 14, "art": {"spoon": "cuiller", "ring": "anneau_psy", "particle": "fleche_bas"}}
+		},
+		"etoiles": {
+			"name": "Étoiles", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Météores. Rouge : des étoiles filent en ruban vers la cible. Ici : six étoiles peintes à traînée (etoile_filante) partent l'une après l'autre en serpentant, chacune tournée dans son sens de vol, et éclatent en scintillements sur la cible.",
+			"bricks": {"launch": "light_point", "travel": "stars", "impact": "star_burst"},
+			"phases": {"anticipation": 0.15, "travel": 0.5, "impact": 0.25, "return": 0.1},
+			"world": {"light": "#FFF4C0", "light_peak": 0.3, "flashes": 0},
+			"camera": {"zoom": 1.02, "shake": 1.5},
+			"fx": {"palette": ["#FFFFFF", "#FFF0A0", "#C8A030"], "particles": 20, "volley": {"count": 6, "stagger": 0.08, "size": 0.1, "wobble": 0.05}, "art": {"charge": "etincelle", "piece": "etoile_filante", "particle": "etoile", "spark": "etincelle_or"}}
+		},
+		"foudre": {
+			"name": "Foudre", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Fatal-Foudre. Rouge : l'écran s'assombrit et un éclair tombe du ciel sur la cible. Ici : la scène s'assombrit (world storm), des étincelles se rassemblent sur le lanceur, puis la foudre peinte (flipbook foudre) tombe du haut de l'écran sur la cible, éclair plein écran plafonné, décharge en étoile et étincelles.",
+			"bricks": {"launch": "charge_spark", "travel": "sky_bolt", "impact": "spark_burst"},
+			"phases": {"anticipation": 0.3, "travel": 0.15, "impact": 0.4, "return": 0.15},
+			"world": {"light": "#FFF3A0", "light_peak": 0.9, "flashes": 2, "storm": true},
+			"camera": {"zoom": 1.04, "shake": 5.0},
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#5A4AC8"], "particles": 30, "art": {"charge": "etincelle", "bolt_sky": "foudre", "impact": "decharge_etoile", "particle": "etincelle", "rise": "eclair_vertical"}}
+		},
+		"poing": {
+			"name": "Poing élémentaire", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Poing de Feu, Poing-Glace, Poing-Éclair. Rouge : un poing frappe la cible, puis l'élément éclate dessus. Ici : course de Contact, poing peint (impact poing), puis l'élément au contact (element_burst : flipbook, particules qui montent, lumière de l'élément) ; une variante par élément.",
+			"bricks": {"launch": "crouch", "travel": "dash", "impact": "element_burst"},
+			"phases": {"anticipation": 0.25, "travel": 0.25, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "dust": true},
+			"camera": {"zoom": 1.03, "shake": 3.5},
+			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 26, "art": {"dust": "poussiere"}},
+			"variants": {
+				"feu": {"palette": ["#FFF1B0", "#FF8A3C", "#8A1E0A"], "light": "#FF9A3C", "light_peak": 0.5, "flashes": 1, "art": {"burst": "gerbe_braises", "particle": "braise", "rise": "flamme", "fallout": "fumee"}},
+				"glace": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "light": "#CFEFFF", "light_peak": 0.35, "flashes": 1, "art": {"particle": "eclat_glace", "rise": "flocon", "fallout": "flocon"}},
+				"eclair": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "light": "#FFF3A0", "light_peak": 0.55, "flashes": 2, "art": {"burst": "decharge_etoile", "particle": "etincelle", "rise": "etincelle_bleue"}}
+			}
+		},
+		"os": {
+			"name": "Os", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Massd'Os et Osmerang. Rouge : un os frappe la cible ; Osmerang fait l'aller et le retour. Ici : un os peint qui tournoie (brique bone) ; variante massue : lancé haut, il s'abat sur la cible ; variante boomerang : il part en courbe, frappe et revient au lanceur par l'autre côté, à chaque coup.",
+			"bricks": {"launch": "rear_back", "travel": "bone", "impact": "bone_hit"},
+			"phases": {"anticipation": 0.15, "travel": 0.3, "impact": 0.3, "return": 0.25},
+			"world": {"light": "#F2E2C4", "light_peak": 0.0, "flashes": 0, "dust": true},
+			"camera": {"zoom": 1.03, "shake": 3.5},
+			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 16, "volley": {"count": 1, "size": 0.13}, "art": {"piece": "os", "particle": "eclats_pierre", "star": "etoile_impact", "dust": "poussiere"}},
+			"variants": {
+				"massue": {"_doc": "Massd'Os : l'os s'abat d'en haut."},
+				"boomerang": {"_doc": "Osmerang : aller et retour."}
+			}
+		},
+		"onde_folie": {
+			"name": "Onde Folie", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Onde Folie. Rouge : souvenir incertain (une lueur étrange vers la cible). Ici : une sphère irisée qui change de couleur (orbe_folie, anneau qui pulse) flotte en ondulant jusqu'à la tête de la cible, tourne autour d'elle en rétrécissant, la cible vacille (dizzy), éclats roses.",
+			"bricks": {"launch": "shadow_stretch", "travel": "strange_orb", "impact": "dizzy"},
+			"phases": {"anticipation": 0.2, "travel": 0.4, "impact": 0.3, "return": 0.1},
+			"world": {"light": "#FFB8F0", "light_peak": 0.25, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFFFFF", "#FFB8F0", "#6A4A9A"], "particles": 14, "volley": {"count": 1, "size": 0.11}, "art": {"piece": "orbe_folie", "ring": "anneau_folie", "particle": "eclat_rose"}}
+		},
+		"brume": {
+			"name": "Brume", "target": "foe", "duration": 1.2,
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Buée Noire. Rouge : souvenir incertain (une brume sombre sur l'écran). Ici : des nappes de brume peintes traversent tout le terrain à plusieurs hauteurs (field_haze), le décor s'assombrit, puis la brume se dissipe ; aucun coup sur la cible.",
+			"bricks": {"launch": "frost", "travel": "", "impact": "field_haze"},
+			"phases": {"anticipation": 0.2, "travel": 0.0, "impact": 0.6, "return": 0.2},
+			"world": {"light": "#4A4058", "light_peak": 0.0, "flashes": 0, "darken": true},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#C8C0D8", "#5A5068", "#1E1A28"], "particles": 12, "volley": {"count": 5, "size": 0.7}, "art": {"piece": "brume", "particle": "fumee"}}
+		},
+		"lancer": {
+			"name": "Lancer", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Bomb'Œuf et Pilonnage. Rouge : un œuf (une boule pour Pilonnage) est lancé vers la cible et éclate. Ici : l'objet peint part en cloche en tournant (brique lob) ; variante oeuf : il explose (flipbook explosion), éclats de coquille, fumée ; variante pilonnage : une boule dure par coup, étoile d'impact.",
+			"bricks": {"launch": "rear_back", "travel": "lob", "impact": "lob_burst"},
+			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "dust": true},
+			"camera": {"zoom": 1.03, "shake": 3.0},
+			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 16, "volley": {"count": 1, "size": 0.1}, "art": {"piece": "boulet", "star": "etoile_impact", "particle": "eclats_pierre"}},
+			"variants": {
+				"oeuf": {"_doc": "Bomb'Œuf : l'œuf explose.", "palette": ["#FFF4C8", "#FF8A2A", "#7A1A0A"], "light": "#FFB060", "light_peak": 0.5, "flashes": 1, "particles": 26, "volley": {"count": 1, "size": 0.13}, "art": {"piece": "oeuf", "blast": "explosion", "particle": "coquille_oeuf", "rise": "braise_explosion", "fallout": "fumee"}},
+				"pilonnage": {"_doc": "Pilonnage : boules dures, une par coup.", "volley": {"count": 1, "size": 0.08}}
+			}
+		},
+		"atlas": {
+			"name": "Frappe Atlas", "target": "foe", "duration": 1.3,
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Frappe Atlas. Rouge : souvenir incertain (le lanceur saisit la cible et la projette). Ici : course de Contact, la cible est soulevée en tournoyant (impact atlas, brique toss) puis projetée au sol : arrêt sur image, forte secousse, anneau de poussière.",
+			"bricks": {"launch": "crouch", "travel": "dash", "impact": "toss_slam"},
+			"phases": {"anticipation": 0.15, "travel": 0.15, "impact": 0.55, "return": 0.15},
+			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "dust": true},
+			"camera": {"zoom": 1.04, "shake": 6.0},
+			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 24, "art": {"dust": "poussiere", "particle": "poussiere"}}
+		},
+		"fissure": {
+			"name": "Fissure", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Abîme. Rouge : souvenir incertain (l'écran tremble longuement). Ici : le lanceur frappe le sol (geste stomp), une fissure peinte s'ouvre sous la cible (flipbook fissure, fissure_open), la cible s'y enfonce en tremblant, mottes et poussière jaillissent ; à côté si l'attaque rate.",
+			"bricks": {"launch": "stomp", "travel": "", "impact": "fissure_open"},
+			"phases": {"anticipation": 0.25, "travel": 0.0, "impact": 0.55, "return": 0.2},
+			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true, "foliage": true},
+			"camera": {"zoom": 1.03, "shake": 6.0},
+			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 30, "art": {"crack": "fissure", "particle": "motte_terre", "rise": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere"}}
+		},
+		"tunnel": {
+			"name": "Tunnel", "target": "foe",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Tunnel, autour des animations du J14 (play_burrow, play_surface). Tour 1 : le lanceur creuse, la terre gicle à ses pieds (charge). Tour 2 : une traînée de terre court sous le sol jusqu'à la cible (underground), puis le sol éclate sous elle (eruption) : mottes, rochers, la cible est soulevée.",
+			"bricks": {"launch": "rear_back", "travel": "underground", "impact": "eruption"},
+			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true},
+			"camera": {"zoom": 1.03, "shake": 5.0},
+			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 30, "volley": {"count": 6, "size": 0.07}, "art": {"piece": "motte_terre", "particle": "motte_terre", "rise": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere", "rock": "rocher"}}
+		},
 		"soin": {
 			"name": "Soin", "target": "self",
 			"bricks": {"launch": "soft_glow", "travel": "", "impact": "rising_sparkles"},
@@ -269,7 +458,14 @@
 		"percant": {"name": "Perçant", "brick": "pierce_flash", "art": "aiguille"},
 		"corps": {"name": "Corps", "brick": "shockwave", "art": "onde_choc"},
 		"bec": {"name": "Bec", "brick": "peck_marks", "art": "etoile_impact", "beats": 2, "_doc": "Picpic (vague 1 « Effets fidèles à Rouge ») : deux coups de bec rapides, une marque à deux endroits de la cible."},
-		"vrille": {"name": "Vrille", "brick": "drill_spin", "art": "etoile_impact", "_doc": "Bec Vrille : la marque tourne en vrille et trois éclats spiralent vers le centre."}
+		"vrille": {"name": "Vrille", "brick": "drill_spin", "art": "etoile_impact", "_doc": "Bec Vrille : la marque tourne en vrille et trois éclats spiralent vers le centre."},
+		"pieces": {"name": "Pièces", "brick": "coin_burst", "art": "etoile_impact", "roles": {"coin": "piece_or", "glint": "etincelle_or"}, "_doc": "Jackpot (vague 2) : le coup, puis des pièces d'or jaillissent de la cible et retombent, avec des scintillements."},
+		"langue": {"name": "Langue", "brick": "lick", "art": "langue", "roles": {"drool": "salive"}, "_doc": "Léchouille (vague 2) : la langue balaie la cible de bas en haut, gouttes de salive."},
+		"claquoir": {"name": "Claquoir", "brick": "shell_clamp", "art": "coquille", "roles": {"particle": "goutte"}, "_doc": "Claquoir (vague 2) : deux coquilles se referment sur la cible, gouttes."},
+		"pince_masse": {"name": "Pince-Masse", "brick": "pincer_smash", "art": "pince", "roles": {"particle": "goutte", "splash": "eclaboussure"}, "_doc": "Pince-Masse (vague 2) : une grosse pince s'abat sur la cible, éclaboussure."},
+		"cascade": {"name": "Cascade", "brick": "waterfall", "art": "goutte_cascade", "roles": {"particle": "goutte", "splash": "eclaboussure"}, "_doc": "Cascade (vague 2) : une colonne d'eau tombe sur la cible, éclaboussure."},
+		"atlas": {"name": "Atlas", "brick": "toss", "art": "onde_choc", "_doc": "Frappe Atlas (vague 2) : la cible est soulevée puis projetée au sol."},
+		"poing": {"name": "Poing", "brick": "punch", "art": "poing", "_doc": "Poings élémentaires (vague 2) : le poing peint frappe, l'élément vient de la famille poing."}
 	},
 	"modifiers": {
 		"_doc": "Morceaux communs ajoutés à la famille (§3.2). band_max : l'attaque prend la dernière ligne de durée de CV-2.",
@@ -287,7 +483,7 @@
 		"_doc": "Attaques qui demandent une brique neuve (§3.3). Priorité A : CV.0 à CV.2 ; B ensuite.",
 		"eclair": {"base": "electrique", "priority": "A", "origin": "joues", "art": {"cheeks": "arc_electrique_b", "bolt": "arc_electrique_a", "impact": "decharge_etoile", "feathers": "plume"}, "light_peak": 0.85, "flashes": 2},
 		"tonnerre": {"base": "electrique", "priority": "A", "origin": "joues"},
-		"fatal_foudre": {"base": "electrique", "priority": "A", "origin": "centre"},
+		"fatal_foudre": {"base": "foudre", "priority": "A", "origin": "centre"},
 		"lance_flammes": {"base": "feu", "priority": "A", "origin": "bouche"},
 		"deflagration": {"base": "feu", "priority": "A", "origin": "bouche"},
 		"hydrocanon": {"base": "eau", "priority": "A", "origin": "canons"},
@@ -297,6 +493,6 @@
 		"psyko": {"base": "psy", "priority": "A", "origin": "yeux"},
 		"blizzard": {"base": "glace", "priority": "B", "origin": "bouche"},
 		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche"},
-		"explosion": {"base": "energie", "priority": "B", "origin": "centre"}
+		"explosion": {"base": "explosion", "priority": "B", "origin": "centre"}
 	}
 }

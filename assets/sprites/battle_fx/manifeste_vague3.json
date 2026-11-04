@@ -1,0 +1,150 @@
+{
+ "flipbooks": {
+  "explosion": {
+   "fichier": "fb_explosion.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "foudre": {
+   "fichier": "fb_foudre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "fissure": {
+   "fichier": "fb_fissure.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "piece_or": {
+   "fichier": "p_piece_or.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "oeuf": {
+   "fichier": "p_oeuf.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "cuiller": {
+   "fichier": "p_cuiller.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "pince": {
+   "fichier": "p_pince.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "rocher": {
+   "fichier": "p_rocher.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "motte_terre": {
+   "fichier": "p_motte_terre.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "boulet": {
+   "fichier": "p_boulet.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "coquille_oeuf": {
+   "fichier": "p_coquille_oeuf.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "langue": {
+   "fichier": "p_langue.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "coquille": {
+   "fichier": "p_coquille.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "fumee_noire": {
+   "fichier": "p_fumee_noire.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "smog": {
+   "fichier": "p_smog.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "brume": {
+   "fichier": "p_brume.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "salive": {
+   "fichier": "p_salive.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "goutte_cascade": {
+   "fichier": "p_goutte_cascade.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "eclat_rose": {
+   "fichier": "p_eclat_rose.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "eclair_vertical": {
+   "fichier": "p_eclair_vertical.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "orbe_folie": {
+   "fichier": "p_orbe_folie.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etincelle_or": {
+   "fichier": "p_etincelle_or.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "eclat_explosion": {
+   "fichier": "p_eclat_explosion.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etoile_filante": {
+   "fichier": "p_etoile_filante.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "flash_blanc": {
+   "fichier": "p_flash_blanc.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "anneau_folie": {
+   "fichier": "p_anneau_folie.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "braise_explosion": {
+   "fichier": "p_braise_explosion.webp",
+   "taille": 192,
+   "melange": "add"
+  }
+ }
+}
