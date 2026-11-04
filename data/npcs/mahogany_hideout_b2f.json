@@ -1,0 +1,87 @@
+{
+	"sbire_r": {
+		"cell": [
+			23,
+			14
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "mahogany_hideout_b2f_sbire_r_after",
+		"trainer": {
+			"id": "mahogany_hideout_b2f_sbire_r",
+			"sight": 3,
+			"before": "mahogany_hideout_b2f_sbire_r_before",
+			"defeated": "mahogany_hideout_b2f_sbire_r_defeated"
+		}
+	},
+	"sbire_s": {
+		"cell": [
+			9,
+			13
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "mahogany_hideout_b2f_sbire_s_after",
+		"trainer": {
+			"id": "mahogany_hideout_b2f_sbire_s",
+			"sight": 1,
+			"before": "mahogany_hideout_b2f_sbire_s_before",
+			"defeated": "mahogany_hideout_b2f_sbire_s_defeated"
+		}
+	},
+	"scientifique": {
+		"cell": [
+			2,
+			4
+		],
+		"facing": "right",
+		"sprite": "researcher",
+		"dialogue": "mahogany_hideout_b2f_scientifique_after",
+		"trainer": {
+			"id": "mahogany_hideout_b2f_scientifique",
+			"sight": 1,
+			"before": "mahogany_hideout_b2f_scientifique_before",
+			"defeated": "mahogany_hideout_b2f_scientifique_defeated"
+		}
+	},
+	"deserteur": {
+		"cell": [
+			7,
+			18
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "joh6_deserter",
+		"unless": [
+			"johto_raikou_done"
+		]
+	},
+	"ultra_balls": {
+		"cell": [
+			12,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "mahogany_hideout_b2f_ultra_balls",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_mahogany_hideout_b2f_ultra_balls"
+		]
+	},
+	"pp_plus": {
+		"cell": [
+			2,
+			13
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "mahogany_hideout_b2f_pp_plus",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_mahogany_hideout_b2f_pp_plus"
+		]
+	}
+}

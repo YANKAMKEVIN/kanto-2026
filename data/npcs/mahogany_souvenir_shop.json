@@ -1,0 +1,11 @@
+{
+	"vendeur": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "clerk",
+		"dialogue": "mahogany_souvenir_shop_vendeur"
+	}
+}

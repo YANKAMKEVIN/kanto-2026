@@ -1,0 +1,50 @@
+{
+	"mahogany_hideout_b2f_ultra_balls": {
+		"variants": [
+			{
+				"unless": [
+					"got_mahogany_hideout_b2f_ultra_balls"
+				],
+				"steps": [
+					{
+						"despawn": "ultra_balls"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 3,
+						"found": true
+					},
+					{
+						"set": [
+							"got_mahogany_hideout_b2f_ultra_balls"
+						]
+					}
+				]
+			}
+		]
+	},
+	"mahogany_hideout_b2f_pp_plus": {
+		"variants": [
+			{
+				"unless": [
+					"got_mahogany_hideout_b2f_pp_plus"
+				],
+				"steps": [
+					{
+						"despawn": "pp_plus"
+					},
+					{
+						"give": "pp_up",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_mahogany_hideout_b2f_pp_plus"
+						]
+					}
+				]
+			}
+		]
+	}
+}

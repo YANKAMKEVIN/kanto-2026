@@ -1,0 +1,74 @@
+{
+	"lake_of_rage_garde_forestier": {
+		"speaker": "Garde forestier",
+		"variants": [
+			{
+				"unless": [
+					"johto_act3"
+				],
+				"pages": [
+					"La montagne est fermée.",
+					"Là-haut, la neige\nne pardonne pas."
+				]
+			},
+			{
+				"if": [
+					"johto_act3"
+				],
+				"pages": [
+					"Le Mont Argenté ? Des hommes en\nnoir y sont montés cette nuit.",
+					"Je n'ai pas pu les arrêter. Toi,\npeut-être. Passe."
+				]
+			}
+		]
+	},
+	"lake_of_rage_panneau": {
+		"narration": true,
+		"pages": [
+			"LAC COLÈRE\nNe pas déranger\nles Pokémon du lac"
+		]
+	},
+	"lake_of_rage_pecheur": {
+		"speaker": "Pêcheur",
+		"variants": [
+			{
+				"if": [
+					"johto_red_gyarados_done"
+				],
+				"pages": [
+					"Tu l'as calmé ? Bravo !",
+					"Ce Léviator était un Magicarpe,\nil y a dix jours.",
+					"Des ondes viennent d'Acajou et\nforcent les Magicarpe à évoluer.",
+					"J'ai vu une antenne sur le toit\nde la boutique de souvenirs.",
+					"Drôle d'endroit pour une\nantenne, non ?"
+				]
+			},
+			{
+				"pages": [
+					"Le lac est fou."
+				]
+			}
+		]
+	},
+	"lake_of_rage_ludovic_before": {
+		"speaker": "Pêcheur Ludovic",
+		"pages": [
+			"Le lac est calme, enfin. Un\ncombat pour fêter ça ?"
+		]
+	},
+	"lake_of_rage_ludovic_defeated": {
+		"speaker": "Pêcheur Ludovic",
+		"pages": [
+			"Bien joué."
+		]
+	},
+	"lake_of_rage_ludovic_after": {
+		"speaker": "Pêcheur Ludovic",
+		"pages": [
+			"Les Léviator reviendront à la\nnormale, j'espère."
+		]
+	},
+	"lake_of_rage_rappel_max": {
+		"cutscene": "lake_of_rage_rappel_max"
+	}
+}

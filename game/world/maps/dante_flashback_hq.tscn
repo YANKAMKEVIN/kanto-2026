@@ -6,61 +6,61 @@
 [ext_resource type="Script" path="res://game/world/props/prop.gd" id="4_2jtud"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="5_wp7lf"]
 
-[node name="DanteFlashbackHq" type="Node2D" unique_id=1861973314]
+[node name="DanteFlashbackHq" type="Node2D" unique_id=973328180]
 script = ExtResource("1_nvwyl")
 map_id = &"dante_flashback_hq"
-display_name = "Souvenir"
+display_name = "Repaire Rocket"
 region = "Kanto, il y a vingt ans"
 size = Vector2i(15, 10)
 blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(0, 3), Vector2i(14, 3), Vector2i(0, 4), Vector2i(14, 4), Vector2i(0, 5), Vector2i(14, 5), Vector2i(0, 6), Vector2i(14, 6), Vector2i(0, 7), Vector2i(14, 7), Vector2i(0, 8), Vector2i(14, 8), Vector2i(0, 9), Vector2i(1, 9), Vector2i(2, 9), Vector2i(3, 9), Vector2i(4, 9), Vector2i(5, 9), Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9), Vector2i(12, 9), Vector2i(13, 9), Vector2i(14, 9), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(9, 6), Vector2i(10, 6), Vector2i(11, 6), Vector2i(12, 6), Vector2i(7, 4)])
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=2083310321]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1823727109]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAIAAAABAAAAAAAAAAIAAAACAAAAAAABAAIAAAADAAAAAAABAAIAAAAEAAAAAAABAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAAAAAIAAAAIAAAAAAABAAIAAAAJAAAAAAABAAIAAAAKAAAAAAABAAIAAAALAAAAAAAAAAIAAAAMAAAAAAAAAAIAAAANAAAAAAABAAIAAAAOAAAAAAAAAAIAAAAAAAEAAAAAAAIAAAABAAEAAAAAAAIAAAACAAEAAAAAAAIAAAADAAEAAAABAAIAAAAEAAEAAAAAAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAABAAIAAAAIAAEAAAABAAIAAAAJAAEAAAAAAAIAAAAKAAEAAAABAAIAAAALAAEAAAAAAAIAAAAMAAEAAAAAAAIAAAANAAEAAAAAAAIAAAAOAAEAAAAAAAIAAAAAAAIAAAABAAIAAAABAAIAAAABAAIAAAACAAIAAAABAAIAAAADAAIAAAABAAIAAAAEAAIAAAABAAIAAAAFAAIAAAAAAAIAAAAGAAIAAAAAAAIAAAAHAAIAAAAAAAIAAAAIAAIAAAABAAIAAAAJAAIAAAAAAAIAAAAKAAIAAAAAAAIAAAALAAIAAAABAAIAAAAMAAIAAAABAAIAAAANAAIAAAABAAIAAAAOAAIAAAAAAAIAAAAAAAMAAAABAAIAAAABAAMAAAABAAAAAAACAAMAAAACAAAAAAADAAMAAAACAAAAAAAEAAMAAAABAAAAAAAFAAMAAAACAAAAAAAGAAMAAAAAAAAAAAAHAAMAAAACAAAAAAAIAAMAAAAAAAAAAAAJAAMAAAACAAAAAAAKAAMAAAABAAAAAAALAAMAAAACAAAAAAAMAAMAAAAAAAAAAAANAAMAAAAAAAAAAAAOAAMAAAABAAIAAAAAAAQAAAAAAAIAAAABAAQAAAABAAAAAAACAAQAAAACAAAAAAADAAQAAAAAAAAAAAAEAAQAAAABAAAAAAAFAAQAAAABAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAACAAAAAAAIAAQAAAAAAAAAAAAJAAQAAAACAAAAAAAKAAQAAAAAAAAAAAALAAQAAAACAAAAAAAMAAQAAAABAAAAAAANAAQAAAAAAAAAAAAOAAQAAAABAAIAAAAAAAUAAAABAAIAAAABAAUAAAAAAAAAAAACAAUAAAACAAAAAAADAAUAAAAAAAAAAAAEAAUAAAABAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAACAAAAAAAHAAUAAAACAAAAAAAIAAUAAAACAAAAAAAJAAUAAAABAAAAAAAKAAUAAAAAAAAAAAALAAUAAAACAAAAAAAMAAUAAAAAAAAAAAANAAUAAAACAAAAAAAOAAUAAAABAAIAAAAAAAYAAAABAAIAAAABAAYAAAAAAAAAAAACAAYAAAACAAAAAAADAAYAAAAAAAAAAAAEAAYAAAAAAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAACAAAAAAAHAAYAAAABAAAAAAAIAAYAAAAAAAAAAAAJAAYAAAABAAAAAAAKAAYAAAABAAAAAAALAAYAAAABAAAAAAAMAAYAAAABAAAAAAANAAYAAAABAAAAAAAOAAYAAAABAAIAAAAAAAcAAAABAAIAAAABAAcAAAABAAAAAAACAAcAAAABAAAAAAADAAcAAAAAAAAAAAAEAAcAAAACAAAAAAAFAAcAAAAAAAAAAAAGAAcAAAACAAAAAAAHAAcAAAACAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAACAAAAAAAKAAcAAAABAAAAAAALAAcAAAABAAAAAAAMAAcAAAABAAAAAAANAAcAAAACAAAAAAAOAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAABAAgAAAAAAAAAAAACAAgAAAACAAAAAAADAAgAAAABAAAAAAAEAAgAAAACAAAAAAAFAAgAAAABAAAAAAAGAAgAAAACAAAAAAAHAAgAAAABAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAAAAAAAAAAKAAgAAAACAAAAAAALAAgAAAAAAAAAAAAMAAgAAAACAAAAAAANAAgAAAACAAAAAAAOAAgAAAAAAAIAAAAAAAkAAAAAAAIAAAABAAkAAAAAAAIAAAACAAkAAAAAAAIAAAADAAkAAAAAAAIAAAAEAAkAAAABAAIAAAAFAAkAAAABAAIAAAAGAAkAAAAAAAYAAAAHAAkAAAAAAAYAAAAIAAkAAAAAAAYAAAAJAAkAAAABAAIAAAAKAAkAAAAAAAIAAAALAAkAAAAAAAIAAAAMAAkAAAABAAIAAAANAAkAAAAAAAIAAAAOAAkAAAABAAIAAAA=")
 tile_set = ExtResource("2_a1fym")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1531364513]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=468452438]
 tile_set = ExtResource("2_a1fym")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=879557193]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1479691309]
 tile_set = ExtResource("2_a1fym")
 
-[node name="Decor" type="Node2D" parent="." unique_id=679241534]
+[node name="Decor" type="Node2D" parent="." unique_id=1493738785]
 
-[node name="Flamme_2" type="Polygon2D" parent="Decor" unique_id=418614871]
+[node name="Flamme_2" type="Polygon2D" parent="Decor" unique_id=1410652115]
 color = Color(1, 0.45, 0.1, 0.85)
 polygon = PackedVector2Array(206, 222, 274, 222, 274, 288, 206, 288)
 
-[node name="Flamme_4" type="Polygon2D" parent="Decor" unique_id=1969587903]
+[node name="Flamme_4" type="Polygon2D" parent="Decor" unique_id=2076659826]
 color = Color(1, 0.45, 0.1, 0.85)
 polygon = PackedVector2Array(398, 222, 466, 222, 466, 288, 398, 288)
 
-[node name="Flamme_6" type="Polygon2D" parent="Decor" unique_id=1162212165]
+[node name="Flamme_6" type="Polygon2D" parent="Decor" unique_id=729405845]
 color = Color(1, 0.45, 0.1, 0.85)
 polygon = PackedVector2Array(590, 222, 658, 222, 658, 288, 590, 288)
 
-[node name="Flamme_8" type="Polygon2D" parent="Decor" unique_id=1897720158]
+[node name="Flamme_8" type="Polygon2D" parent="Decor" unique_id=1541459435]
 color = Color(1, 0.45, 0.1, 0.85)
 polygon = PackedVector2Array(782, 222, 850, 222, 850, 288, 782, 288)
 
-[node name="Flamme_10" type="Polygon2D" parent="Decor" unique_id=219461875]
+[node name="Flamme_10" type="Polygon2D" parent="Decor" unique_id=1009199770]
 color = Color(1, 0.45, 0.1, 0.85)
 polygon = PackedVector2Array(974, 222, 1042, 222, 1042, 288, 974, 288)
 
-[node name="Flamme_12" type="Polygon2D" parent="Decor" unique_id=876763607]
+[node name="Flamme_12" type="Polygon2D" parent="Decor" unique_id=188130360]
 color = Color(1, 0.45, 0.1, 0.85)
 polygon = PackedVector2Array(1166, 222, 1234, 222, 1234, 288, 1166, 288)
 
-[node name="FlammeMur_1" type="Polygon2D" parent="Decor" unique_id=989296220]
+[node name="FlammeMur_1" type="Polygon2D" parent="Decor" unique_id=327146138]
 color = Color(1, 0.4, 0.08, 0.7)
 polygon = PackedVector2Array(106, 480, 182, 480, 182, 576, 106, 576)
 
-[node name="FlammeMur_13" type="Polygon2D" parent="Decor" unique_id=145899449]
+[node name="FlammeMur_13" type="Polygon2D" parent="Decor" unique_id=1769782483]
 color = Color(1, 0.4, 0.08, 0.7)
 polygon = PackedVector2Array(1258, 480, 1334, 480, 1334, 576, 1258, 576)
 
-[node name="Entities" type="Node2D" parent="." unique_id=2029713218]
+[node name="Entities" type="Node2D" parent="." unique_id=2072139700]
 unique_name_in_owner = true
 y_sort_enabled = true
 
@@ -69,24 +69,24 @@ position = Vector2(1056, 672)
 script = ExtResource("4_2jtud")
 footprint = Array[Vector2i]([Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
 
-[node name="PorteBloquee" type="Node2D" parent="Entities" unique_id=725106012]
+[node name="PorteBloquee" type="Node2D" parent="Entities" unique_id=42840134]
 position = Vector2(720, 480)
 
-[node name="Dessin" type="Polygon2D" parent="Entities/PorteBloquee" unique_id=1835720354]
+[node name="Dessin" type="Polygon2D" parent="Entities/PorteBloquee" unique_id=1249371277]
 color = Color(0.3, 0.18, 0.1, 1)
 polygon = PackedVector2Array(-48, -150, 48, -150, 48, -4, -48, -4)
 
-[node name="@Polygon2D@117" type="Polygon2D" parent="Entities/PorteBloquee" unique_id=574167813]
+[node name="@Polygon2D@9" type="Polygon2D" parent="Entities/PorteBloquee" unique_id=1977785578]
 color = Color(1, 0.55, 0.15, 0.9)
 polygon = PackedVector2Array(-40, -140, 40, -140, 40, -100, -40, -100)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=845216955]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=566730357]
 z_index = 10
 tile_set = ExtResource("2_a1fym")
 
-[node name="Warps" type="Node2D" parent="." unique_id=1902692319]
+[node name="Warps" type="Node2D" parent="." unique_id=1780708905]
 
-[node name="SortieSecours_0" type="Marker2D" parent="Warps" unique_id=89514973]
+[node name="SortieSecours_0" type="Marker2D" parent="Warps" unique_id=1400326319]
 position = Vector2(624, 960)
 script = ExtResource("5_wp7lf")
 trigger = 1
@@ -95,7 +95,7 @@ target_map = &"mahogany_hideout_b2f"
 target_spawn = &"devant_deserteur"
 arrival_facing = Vector2i(0, -1)
 
-[node name="SortieSecours_1" type="Marker2D" parent="Warps" unique_id=1465457282]
+[node name="SortieSecours_1" type="Marker2D" parent="Warps" unique_id=2014268252]
 position = Vector2(720, 960)
 script = ExtResource("5_wp7lf")
 trigger = 1
@@ -104,7 +104,7 @@ target_map = &"mahogany_hideout_b2f"
 target_spawn = &"devant_deserteur"
 arrival_facing = Vector2i(0, -1)
 
-[node name="SortieSecours_2" type="Marker2D" parent="Warps" unique_id=1629445353]
+[node name="SortieSecours_2" type="Marker2D" parent="Warps" unique_id=1698807597]
 position = Vector2(816, 960)
 script = ExtResource("5_wp7lf")
 trigger = 1
@@ -113,13 +113,13 @@ target_map = &"mahogany_hideout_b2f"
 target_spawn = &"devant_deserteur"
 arrival_facing = Vector2i(0, -1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=84180465]
+[node name="Interactables" type="Node2D" parent="." unique_id=494052937]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1695303082]
+[node name="Spawns" type="Node2D" parent="." unique_id=769574942]
 
-[node name="vue" type="Marker2D" parent="Spawns" unique_id=1435559065]
+[node name="vue" type="Marker2D" parent="Spawns" unique_id=695936618]
 position = Vector2(720, 768)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=475645363]
+[node name="Triggers" type="Node2D" parent="." unique_id=834820238]
 
-[node name="NightLights" type="Node2D" parent="." unique_id=1860712941]
+[node name="NightLights" type="Node2D" parent="." unique_id=1751006270]

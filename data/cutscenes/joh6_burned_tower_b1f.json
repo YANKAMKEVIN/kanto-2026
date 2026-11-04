@@ -1,0 +1,26 @@
+{
+	"burned_tower_b1f_peau_metal": {
+		"variants": [
+			{
+				"unless": [
+					"got_burned_tower_b1f_peau_metal"
+				],
+				"steps": [
+					{
+						"despawn": "peau_metal"
+					},
+					{
+						"give": "metal_coat",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_burned_tower_b1f_peau_metal"
+						]
+					}
+				]
+			}
+		]
+	}
+}

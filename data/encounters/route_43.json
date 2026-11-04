@@ -1,0 +1,115 @@
+{
+	"route_43_grass_day": {
+		"maps": [
+			"route_43"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "furret",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 25
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 20
+			},
+			{
+				"species": "pidgeotto",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 15
+			},
+			{
+				"species": "venomoth",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 20
+			}
+		]
+	},
+	"route_43_grass_night": {
+		"maps": [
+			"route_43"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "noctowl",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 30
+			},
+			{
+				"species": "houndoom",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidorino",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 15
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 15
+			},
+			{
+				"species": "venomoth",
+				"levels": [
+					44,
+					48
+				],
+				"weight": 20
+			}
+		]
+	}
+}

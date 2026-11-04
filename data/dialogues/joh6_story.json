@@ -80,14 +80,6 @@
 			"Un escalier !"
 		]
 	},
-	"mahogany_souvenir_shop_etagere": {
-		"narration": true,
-		"draft": true,
-		"pages": [
-			"Des souvenirs d'Acajou, bien alignés.",
-			"Rien de particulier."
-		]
-	},
 	"joh6_hideout_alarm": {
 		"narration": true,
 		"pages": [

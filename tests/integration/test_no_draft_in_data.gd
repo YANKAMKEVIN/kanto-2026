@@ -39,6 +39,9 @@ const DATA_DIR := "res://data"
 ## JOH2 (2026-11-04) : description de Rosalia validée (R-25, plus « draft ») ; textes [D] hors du
 ## dossier joh-03 (garde de la Route 42, Pokémon de la ferme, sages et habitants de Rosalia),
 ## JOH2-Q1.
+## JOH6 (2026-11-04) : description d'Acajou validée (dossier joh-07 §16, plus « draft ») ; textes [D]
+## hors du dossier : sage après l'ouverture de la tour, étagère de la boutique de souvenirs, habitants
+## des deux maisons d'Acajou.
 const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh2_ecruteak_city.json/ecruteak_city_garde_route_42",
 	"dialogues/joh2_route_39.json/route_39_ecremeuh",
@@ -49,10 +52,16 @@ const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_habitante/variants/1",
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_received",
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_2_habitant",
+	"dialogues/joh2_ecruteak_city.json/ecruteak_city_sage_tour/variants/1",
+	"dialogues/joh6_mahogany_house_1.json/mahogany_house_1_habitante",
+	"dialogues/joh6_story.json/mahogany_hideout_b2f_levier/variants/0",
+	"dialogues/joh6_story.json/joh6_lever_pulled",
+	"dialogues/joh6_mahogany_house_2.json/mahogany_house_2_habitant_1",
+	"dialogues/joh6_mahogany_house_2.json/mahogany_house_2_habitant_2",
+	"dialogues/joh6_mahogany_souvenir_shop.json/mahogany_souvenir_shop_etagere",
 	"world/zones.json/zones/saffron_city",
 	"world/zones.json/zones/goldenrod_city",
 	"world/zones.json/zones/azalea_town",
-	"world/zones.json/zones/mahogany_town",
 	"dialogues/joh1.json/olivine_guard/variants/1",
 	"story/objectives.json/0",
 	"story/objectives.json/1",

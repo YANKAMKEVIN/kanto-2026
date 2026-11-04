@@ -1,0 +1,60 @@
+{
+	"week_saturday_samuel": {
+		"speaker": "Samuel",
+		"variants": [
+			{
+				"unless": [
+					"week_saturday_gift"
+				],
+				"cutscene": "week_saturday_gift",
+				"pages": [
+					"Le samedi, je guide les\nrandonneurs dans la montagne.",
+					"Tiens, en montagne, on n'en a\njamais trop."
+				]
+			},
+			{
+				"if": [
+					"week_saturday_gift"
+				],
+				"pages": [
+					"À samedi, sur les sentiers !"
+				]
+			}
+		]
+	},
+	"week_saturday_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Hyper Potions !"
+		]
+	},
+	"week_sunday_diane": {
+		"speaker": "Diane",
+		"variants": [
+			{
+				"unless": [
+					"week_sunday_gift"
+				],
+				"cutscene": "week_sunday_gift",
+				"pages": [
+					"Le dimanche, je sonne les\ncloches de Rosalia.",
+					"Elles réveillent les cœurs\nendormis. Prends ceci."
+				]
+			},
+			{
+				"if": [
+					"week_sunday_gift"
+				],
+				"pages": [
+					"Reviens un dimanche\nécouter les cloches."
+				]
+			}
+		]
+	},
+	"week_sunday_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit un Rappel Max !"
+		]
+	}
+}

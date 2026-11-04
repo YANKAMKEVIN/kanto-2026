@@ -49,7 +49,7 @@ const MAPS: Array[Dictionary] = [
 	{"plan": "mahogany_town", "id": &"mahogany_town", "name": "Acajou", "region": "Johto",
 		"style": "outdoor", "light": &"johto_auto", "seed": 6301},
 	{"plan": "mahogany_souvenir_shop", "id": &"mahogany_souvenir_shop",
-		"name": "Boutique de souvenirs", "region": "Acajou", "style": "shop",
+		"name": "Acajou", "region": "Boutique de souvenirs", "style": "shop",
 		"light": &"interior_warm", "interior": true, "seed": 6302},
 	{"plan": "route_43", "id": &"route_43", "name": "Route 43", "region": "Acajou — Lac Colère",
 		"style": "outdoor", "light": &"johto_auto", "seed": 6401},
@@ -622,7 +622,7 @@ func _draw_shop(root: Node2D, plan: Object) -> void:
 ## souvenir).
 func _build_flashback() -> void:
 	_rng.seed = 6699
-	var spec := {"id": FLASHBACK_ID, "name": "Souvenir", "region": "Kanto, il y a vingt ans",
+	var spec := {"id": FLASHBACK_ID, "name": "Repaire Rocket", "region": "Kanto, il y a vingt ans",
 		"light": &"interior_warm", "interior": true}
 	var root := _new_map(spec, FLASHBACK_SIZE, true)
 	var ground := root.get_node(^"Ground") as TileMapLayer

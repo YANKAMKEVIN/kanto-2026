@@ -54,7 +54,6 @@
 					},
 					{
 						"move": "suicune",
-						"run": true,
 						"to": [
 							2,
 							9
@@ -63,7 +62,6 @@
 					},
 					{
 						"move": "entei",
-						"run": true,
 						"to": [
 							16,
 							13
@@ -72,7 +70,6 @@
 					},
 					{
 						"move": "raikou",
-						"run": true,
 						"to": [
 							14,
 							8
@@ -314,7 +311,6 @@
 					},
 					{
 						"move": "sbire_alarme_1_appel",
-						"run": true,
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -404,7 +400,6 @@
 					},
 					{
 						"move": "sbire_alarme_2_appel",
-						"run": true,
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -494,7 +489,6 @@
 					},
 					{
 						"move": "sbire_alarme_3_appel",
-						"run": true,
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -753,7 +747,6 @@
 							22,
 							12
 						],
-						"run": true,
 						"if": [
 							"johto_brace_defeated_2"
 						]

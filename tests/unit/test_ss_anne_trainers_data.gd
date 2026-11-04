@@ -67,6 +67,9 @@ func test_names_unique_across_all_trainers() -> void:
 		# celui de la Route 3 (Kanto) garde le sien (identifiants distincts).
 		if id == &"route_39_youngster_hugo":
 			continue
+		# JOH6 : le dossier joh-07 (§6, C-15) nomme « Pêcheur Marcel » un Dresseur de la Route 42.
+		if id == &"route_42_marcel":
+			continue
 		assert_false(seen.has(name), "%s : nom déjà pris par %s" % [name, seen.get(name, "")])
 		seen[name] = id
 
