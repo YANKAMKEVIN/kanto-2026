@@ -5,7 +5,7 @@ const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 const JOHTO_AREAS_PATH := "res://assets/ui/map/johto_placeholder_areas.json"
 ## JOH0 : les cinq villes de Johto déclarées (cartes vides jusqu'aux jalons de contenu).
 const JOHTO_ZONES: Array[StringName] = [&"olivine_city", &"ecruteak_city", &"goldenrod_city",
-	&"azalea_town", &"mahogany_town"]
+	&"azalea_town", &"mahogany_town", &"goldenrod_radio_tower"]
 ## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
 ## 2 nord et Argenta (T11) et les intérieurs (T13) sont construits : liste vide. À retirer
 ## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
@@ -58,7 +58,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 53, "JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 54, "JOH5 : + la Tour Radio ; JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
@@ -457,6 +457,11 @@ func test_real_zones_declare_the_five_johto_towns() -> void:
 	assert_eq(_zones.zones_of_region(ZoneData.REGION_JOHTO), JOHTO_ZONES,
 		"les cinq villes de Johto (points de Vol), sans carte jusqu'aux jalons de contenu")
 	for id: StringName in JOHTO_ZONES:
+		# JOH5 : la Tour Radio a ses cartes et sa description validée (T-14).
+		if id == &"goldenrod_radio_tower":
+			assert_eq(_zones.get_zone(id).maps.size(), 6, "Tour Radio : 5 étages et la cabine")
+			assert_false(_zones.get_zone(id).draft, "Tour Radio : description validée (T-14)")
+			continue
 		assert_true(_zones.get_zone(id).maps.is_empty(), "%s : pas encore de carte" % id)
 		assert_true(_zones.get_zone(id).draft, "%s : description [D]" % id)
 	assert_eq(_zones.zones_of_region(ZoneData.REGION_KANTO).size(),

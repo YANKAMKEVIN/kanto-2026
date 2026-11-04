@@ -414,9 +414,15 @@ func _apply_grass_front() -> void:
 
 
 ## Apparence du monde de `GameState.player_look` (`player` ou `player_heroine`, [TrainerLooks]),
-## ou du costume porté (dossier-costumes.md, CO-5 ; [method GameState.worn_costume]).
+## ou du costume porté (dossier-costumes.md, CO-5 ; [method GameState.worn_costume]). L'autoload
+## est résolu à l'exécution, jamais par son identifiant : les outils de construction des cartes
+## (`godot -s`) compilent ce script sans les autoloads (JOH2).
 static func look_sprite() -> StringName:
-	return TrainerLooks.player_sprite(GameState.player_look, GameState.worn_costume())
+	var tree := Engine.get_main_loop() as SceneTree
+	var state: Node = tree.root.get_node_or_null(^"GameState") if tree != null else null
+	if state == null:
+		return TrainerLooks.player_sprite(&"hero")
+	return TrainerLooks.player_sprite(state.get(&"player_look"), state.call(&"worn_costume"))
 
 
 ## Recharge l'apparence (costume changé dans le menu, CO-7) en gardant l'animation en cours.

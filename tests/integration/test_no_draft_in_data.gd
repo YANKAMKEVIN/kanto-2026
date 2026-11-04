@@ -97,7 +97,12 @@ const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
 	"pokedex/johto.json/species/suicune",
 	"pokedex/johto.json/species/lugia",
 	"pokedex/johto.json/species/ho_oh",
-	"pokedex/johto.json/species/celebi"]
+	"pokedex/johto.json/species/celebi",
+	# Chapitre Johto, JOH5 (`jalon-joh5.md` §3) : portes fermées de la Tour Radio (réserve, bureau,
+	# escalier de secours), textes absents du dossier JOH-06.
+	"dialogues/joh5_radio_tower.json/goldenrod_radio_reserve_locked/variants/0",
+	"dialogues/joh5_radio_tower.json/goldenrod_radio_emergency_stairs/variants/0",
+	"dialogues/joh5_radio_tower.json/goldenrod_radio_office_locked/variants/0"]
 
 
 func test_data_has_json_files() -> void:

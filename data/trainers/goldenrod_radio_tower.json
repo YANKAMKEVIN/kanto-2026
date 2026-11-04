@@ -1,0 +1,232 @@
+{
+	"goldenrod_radio_tower_impostor": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "arbok",
+				"level": 26
+			},
+			{
+				"species": "raticate",
+				"level": 26
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_h": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "golbat",
+				"level": 26
+			},
+			{
+				"species": "koffing",
+				"level": 26
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_i": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 27
+			},
+			{
+				"species": "murkrow",
+				"level": 27
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_j": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "magneton",
+				"level": 27
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_k": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "muk",
+				"level": 28
+			},
+			{
+				"species": "ekans",
+				"level": 27
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_l": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "raticate",
+				"level": 28
+			},
+			{
+				"species": "golbat",
+				"level": 28
+			}
+		]
+	},
+	"goldenrod_radio_tower_keeper": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 28
+			},
+			{
+				"species": "koffing",
+				"level": 28
+			},
+			{
+				"species": "murkrow",
+				"level": 29
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_m": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "arbok",
+				"level": 29
+			},
+			{
+				"species": "muk",
+				"level": 29
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_n": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "magneton",
+				"level": 29
+			},
+			{
+				"species": "weezing",
+				"level": 29
+			}
+		]
+	},
+	"goldenrod_radio_tower_grunt_o": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 30
+			},
+			{
+				"species": "golbat",
+				"level": 30
+			}
+		]
+	},
+	"goldenrod_radio_tower_admin_cenere": {
+		"name": "Cenere",
+		"class": "sbire_rocket_f",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"team": [
+			{
+				"species": "weezing",
+				"level": 33
+			},
+			{
+				"species": "wobbuffet",
+				"level": 33
+			},
+			{
+				"species": "sneasel",
+				"level": 35
+			}
+		],
+		"switch": true,
+		"card": {
+			"name": "CENERE",
+			"title": "Admin de la Team Rocket",
+			"portrait": "cenere"
+		}
+	}
+}

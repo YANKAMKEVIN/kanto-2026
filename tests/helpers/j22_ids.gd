@@ -7,8 +7,9 @@ extends RefCounted
 
 const PREFIX: String = "j22_"
 ## Jalon 23 : mêmes règles pour ses fichiers générés (`tools/gen_j23_data.py`), vérifiés par
-## `test_j23_data.gd`.
-const PREFIXES: Array[String] = ["j22_", "j23_"]
+## `test_j23_data.gd`. Chapitre Johto : fichiers `joh2_*` (`tools/gen_joh2_data.py`,
+## `test_joh2_data.gd`) et `joh5_*` (`tools/gen_joh5_data.py`, `test_joh5_data.gd`).
+const PREFIXES: Array[String] = ["j22_", "j23_", "joh2_", "joh5_"]
 ## Textes validés du J22 (§16) et recommandés validés d'avance (§16.8).
 const DOSSIER_25: String = "res://docs/design/dossier-25-deux-chemins-parmanie.md"
 

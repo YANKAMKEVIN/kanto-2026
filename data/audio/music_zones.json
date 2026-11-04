@@ -143,7 +143,13 @@
 		"viridian_forest_gate_north": "pewter_city",
 		"viridian_forest_gate_south": "pewter_city",
 		"viridian_gym": "pokemon_gym",
-		"viridian_mart": "pokemon_center"
+		"viridian_mart": "pokemon_center",
+		"goldenrod_radio_tower_1f": "silph_co",
+		"goldenrod_radio_tower_2f": "silph_co",
+		"goldenrod_radio_tower_3f": "silph_co",
+		"goldenrod_radio_tower_4f": "silph_co",
+		"goldenrod_radio_tower_5f": "silph_co",
+		"goldenrod_radio_tower_elevator": "silph_co"
 	},
 	"movement": {
 		"surf": "the_sea",

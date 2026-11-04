@@ -582,6 +582,8 @@ func test_save_step_only_in_the_departure() -> void:
 	assert_eq(found, [&"cinnabar_fossil_give_aerodactyl", &"cinnabar_fossil_give_kabuto",
 		&"cinnabar_fossil_give_omanyte", &"cinnabar_fossil_take_aerodactyl",
 		&"cinnabar_fossil_take_kabuto", &"cinnabar_fossil_take_omanyte", &"cinnabar_lab_tm35",
+		# Chapitre Johto (JOH5) : le retour de l'équipe au bureau de la Tour Radio.
+		&"goldenrod_radio_office",
 		# Chapitre Johto (JOH0, `jalon-joh0.md` §2.2) : le vol et le retour de l'équipe s'écrivent
 		# d'un seul bloc (scènes de test ; les vraies scènes des JOH1 et JOH5 feront de même).
 		&"johto_confiscate_test", &"johto_return_test",

@@ -11,8 +11,9 @@ extends TmLearnOverlay
 ## Le joueur a validé : les identifiants gardés, dans l'ordre de touche.
 signal confirmed(kept: Array[String])
 
-## Titre et textes [D].
-const TITLE_TEXT := "Choisis les 6 qui t'accompagnent"
+## Titre et consigne : T-28 du dossier JOH-06 (JOH5, textes validés le 2026-11-02) ; le reste [D].
+const TITLE_TEXT := "Choisis les six Pokémon qui t'accompagnent."
+const HINT_TEXT := "Les autres iront au Stockage."
 const COUNT_FORMAT := "%d / %d"
 const CONFIRM_TEXT := "VALIDER"
 const SOURCE_TEXTS: Dictionary[TeamReturnSelection.Source, String] = {
@@ -26,6 +27,7 @@ const PANEL_HEIGHT := 1080 - 2 * UiTokens.SAFE_MARGIN - UiTokens.TOUCH_MIN
 var _panel: PanelContainer
 var _title: Label
 var _count: Label
+var _hint: Label
 var _list: VBoxContainer
 var _confirm: Button
 var _buttons: Array[Button] = []
@@ -62,12 +64,17 @@ func _ready() -> void:
 	_title.name = "Title"
 	_title.theme_type_variation = &"PickerTitle"
 	_title.text = TITLE_TEXT
+	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_title)
 	_count = Label.new()
 	_count.name = "Count"
 	_count.theme_type_variation = &"PickerTitle"
 	header.add_child(_count)
+	_hint = Label.new()
+	_hint.name = "Hint"
+	_hint.text = HINT_TEXT
+	column.add_child(_hint)
 	var scroll := ScrollContainer.new()
 	scroll.name = "Scroll"
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED

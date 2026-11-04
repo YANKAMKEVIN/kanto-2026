@@ -180,6 +180,8 @@ var _pending_local_trade: bool = false
 var _pending_offline_notice: bool = false
 ## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
 var _team_return_overlay: TeamReturnOverlay
+## JOH5 (T-29) : des Pokémon sont allés au Stockage au retour de l'équipe (drapeau de travail).
+const JOHTO_RETURN_STORED_FLAG: StringName = &"johto_return_stored"
 ## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
 var _debug_cutscene: StringName = &""
 ## JOH0 (QA de la lumière) : profil imposé à la carte de départ (clé « light_profile »).
@@ -1808,6 +1810,10 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	values.merge(_hatch_tokens, true)
 	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
 	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
+	# JOH5 (T-27) : {returning_pokemon}, tant qu'une équipe est confisquée.
+	var returning := DialogueTokens.returning_name(GameState.confiscated, _pokemon)
+	if not returning.is_empty():
+		values[DialogueTokens.RETURNING_POKEMON] = returning
 	return values
 
 
@@ -1967,6 +1973,9 @@ func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> in
 
 ## JOH0 (étape « return_team ») : l'écran du choix des 6 ; rend les identifiants gardés.
 func _on_team_return_requested(selection: TeamReturnSelection) -> Array[String]:
+	# JOH5 (dossier JOH-06 §7.3) : six Pokémon ou moins en tout, pas d'écran, tout le monde rentre.
+	if selection.get_pool().size() <= TeamReturnSelection.MAX_KEPT:
+		return selection.default_selection()
 	var labels: Array[String] = []
 	for pokemon: Pokemon in selection.get_pool():
 		labels.append("%s  N. %d" % [pokemon.display_name(_pokemon), pokemon.level])
@@ -1981,7 +1990,10 @@ func _on_team_confiscated() -> void:
 
 
 ## JOH0 : l'équipe est revenue d'un seul bloc : compagnon à jour, autosave demandé.
-func _on_team_returned(_stored: int) -> void:
+func _on_team_returned(stored: int) -> void:
+	# JOH5 (T-29) : drapeau de travail lu par la scène du bureau, baissé par elle après l'écriture.
+	if stored > 0:
+		GameState.flags.set_flag(JOHTO_RETURN_STORED_FLAG)
 	_companion.refresh()
 	request_autosave("retour de l'équipe")
 

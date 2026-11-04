@@ -102,7 +102,13 @@
 		"silph_co_9f": "building",
 		"victory_road_1f": "cave",
 		"victory_road_2f": "cave",
-		"victory_road_3f": "cave"
+		"victory_road_3f": "cave",
+		"goldenrod_radio_tower_1f": "building",
+		"goldenrod_radio_tower_2f": "building",
+		"goldenrod_radio_tower_3f": "building",
+		"goldenrod_radio_tower_4f": "building",
+		"goldenrod_radio_tower_5f": "building",
+		"goldenrod_radio_tower_elevator": "building"
 	},
 	"weather": {
 		"rain": "rain"
