@@ -432,6 +432,9 @@
 		}
 	},
 	"places": {
+		"route_39": [{ "decor": "route_1_chemin" }],
+		"route_38": [{ "decor": "route_1_chemin" }],
+		"ecruteak_city": [{ "decor": "route_1_chemin" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],
@@ -745,6 +748,12 @@
 			{ "decor": "cerulean_cave_azuree" }
 		],
 		"cerulean_cave_b1f": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"sea_cave_1": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"sea_cave_2": [
 			{ "decor": "cerulean_cave_azuree" }
 		],
 		"power_plant": [

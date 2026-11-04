@@ -1,0 +1,25 @@
+{
+	"chikorita": {
+		"cell": [6, 4], "facing": "down", "sprite": "pokemon/chikorita",
+		"dialogue": "observe_chikorita", "verb": "observe", "species": "chikorita", "lift": 56,
+		"hop_style": "calm", "if": ["johto_team_stolen"], "unless": ["taken_chikorita"]
+	},
+	"cyndaquil": {
+		"cell": [7, 4], "facing": "down", "sprite": "pokemon/cyndaquil",
+		"dialogue": "observe_cyndaquil", "verb": "observe", "species": "cyndaquil", "lift": 56,
+		"hop_style": "eager", "if": ["johto_team_stolen"], "unless": ["taken_cyndaquil"]
+	},
+	"totodile": {
+		"cell": [8, 4], "facing": "down", "sprite": "pokemon/totodile",
+		"dialogue": "observe_totodile", "verb": "observe", "species": "totodile", "lift": 56,
+		"hop_style": "playful", "if": ["johto_team_stolen"], "unless": ["taken_totodile"]
+	},
+	"orme": {
+		"cell": [11, 5], "facing": "left", "sprite": "researcher", "dialogue": "olivine_orme",
+		"if": ["johto_team_stolen"], "unless": ["johto_orme_left"]
+	},
+	"infirmiere": {
+		"cell": [9, 6], "facing": "left", "sprite": "nurse", "dialogue": "olivine_nurse_wake",
+		"if": ["johto_team_stolen"], "unless": ["johto_starter_offered"]
+	}
+}

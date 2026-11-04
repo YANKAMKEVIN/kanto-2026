@@ -12,6 +12,15 @@
 				]
 			},
 			{
+				"if": ["league_champion_defeated"],
+				"unless": ["johto_letter_read"],
+				"pages": [
+					"Bonjour, Maître de la Ligue !",
+					"Le Professeur Chen est passé ce matin.",
+					"Il voudrait te voir au labo, ça avait l'air important."
+				]
+			},
+			{
 				"if": ["starter_chosen"],
 				"heal": true,
 				"pages": [

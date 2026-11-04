@@ -36,13 +36,30 @@ const DATA_DIR := "res://data"
 ## Chapitre Johto (JOH0, 2026-11-03) : descriptions [D] des cinq villes de Johto, textes [D] des
 ## systèmes (`johto_systems.json` : PC hors ligne, éclosion, objet du terminal, scènes de test) et
 ## les 51 fiches du Pokédex de Johto (JOH-Q2), à relire par Kevin avec les textes du JOH1.
-const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/saffron_city",
-	"world/zones.json/zones/olivine_city",
-	"world/zones.json/zones/ecruteak_city",
+## JOH2 (2026-11-04) : description de Rosalia validée (R-25, plus « draft ») ; textes [D] hors du
+## dossier joh-03 (garde de la Route 42, Pokémon de la ferme, sages et habitants de Rosalia),
+## JOH2-Q1.
+const PENDING_DRAFTS: Array[String] = [
+	"dialogues/joh2_ecruteak_city.json/ecruteak_city_garde_route_42",
+	"dialogues/joh2_route_39.json/route_39_ecremeuh",
+	"dialogues/joh2_route_39.json/route_39_tauros",
+	"dialogues/joh2_route_39.json/route_39_ponyta",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_elders_house_sage",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_habitante/variants/0",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_habitante/variants/1",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_received",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_2_habitant",
+	"world/zones.json/zones/saffron_city",
 	"world/zones.json/zones/goldenrod_city",
 	"world/zones.json/zones/azalea_town",
 	"world/zones.json/zones/mahogany_town",
-	"dialogues/johto_systems.json/storage_offline/variants/0",
+	"dialogues/joh1.json/olivine_guard/variants/1",
+	"story/objectives.json/0",
+	"story/objectives.json/1",
+	"story/objectives.json/2",
+	"story/objectives.json/3",
+	"story/objectives.json/4",
+	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",
 	"dialogues/johto_systems.json/egg_hatched/variants/0",

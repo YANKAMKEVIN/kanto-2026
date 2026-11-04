@@ -89,7 +89,6 @@
 [ext_resource type="PackedScene" path="res://game/world/props/painted/prop_herbes_dune_01.tscn" id="87_v2x3u"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/ground_hautes_herbes_jaune_01.tscn" id="88_y5pnw"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_03.tscn" id="89_ud7j1"]
-[ext_resource type="Script" path="res://game/world/props/prop.gd" id="90_wkx04"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_02.tscn" id="91_fjffn"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_01.tscn" id="92_y784y"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_07.tscn" id="93_6c83b"]
@@ -97,11 +96,12 @@
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_04.tscn" id="95_ef7no"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_06.tscn" id="96_ch5p3"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_05.tscn" id="97_0cv8o"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="97_qda6l"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="98_bvc00"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="99_x0ryq"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="100_ed6m2"]
 
-[sub_resource type="Image" id="Image_xnt2e"]
+[sub_resource type="Image" id="Image_qda6l"]
 data = {
 "data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////////////////////////////////////8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/"),
 "format": "RedGreen",
@@ -111,7 +111,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_0kes8"]
-image = SubResource("Image_xnt2e")
+image = SubResource("Image_qda6l")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_seipv"]
 shader = ExtResource("4_otko4")
@@ -129,8 +129,12 @@ shader_parameter/shore_mask = SubResource("ImageTexture_0kes8")
 shader_parameter/sand_texture = ExtResource("9_dx1d7")
 shader_parameter/water_texture = ExtResource("10_uxyvh")
 shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = null
+shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
 
-[sub_resource type="Image" id="Image_fodju"]
+[sub_resource type="Image" id="Image_aqncb"]
 data = {
 "data": PackedByteArray("/////////////////////////////wAAAAD/////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "Lum8",
@@ -140,7 +144,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_2qbp0"]
-image = SubResource("Image_fodju")
+image = SubResource("Image_aqncb")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tptpx"]
 shader = ExtResource("12_jp7mw")
@@ -148,6 +152,8 @@ shader_parameter/forest_mask = SubResource("ImageTexture_2qbp0")
 shader_parameter/tile_size = 96.0
 shader_parameter/dark_color = null
 shader_parameter/light_color = null
+shader_parameter/opacity = null
+shader_parameter/softness = null
 
 [node name="PalletTown" type="Node2D" unique_id=668958885]
 script = ExtResource("1_qda6l")
@@ -158,6 +164,8 @@ size = Vector2i(48, 34)
 blocked_cells = Array[Vector2i]([Vector2i(23, 0), Vector2i(24, 0)])
 light_profile = &"golden_hour"
 grass_front = ExtResource("2_aqncb")
+surf_cells = Array[Vector2i]([Vector2i(0, 28), Vector2i(1, 28), Vector2i(2, 28), Vector2i(0, 29), Vector2i(1, 29), Vector2i(2, 29), Vector2i(0, 30), Vector2i(1, 30), Vector2i(2, 30), Vector2i(0, 31), Vector2i(1, 31), Vector2i(2, 31), Vector2i(0, 32), Vector2i(1, 32), Vector2i(2, 32), Vector2i(3, 32), Vector2i(4, 32), Vector2i(5, 32), Vector2i(6, 32), Vector2i(7, 32), Vector2i(8, 32), Vector2i(10, 32), Vector2i(11, 32), Vector2i(12, 32), Vector2i(13, 32), Vector2i(14, 32), Vector2i(15, 32), Vector2i(16, 32), Vector2i(17, 32), Vector2i(18, 32), Vector2i(19, 32), Vector2i(20, 32), Vector2i(21, 32), Vector2i(22, 32), Vector2i(23, 32), Vector2i(24, 32), Vector2i(25, 32), Vector2i(26, 32), Vector2i(27, 32), Vector2i(28, 32), Vector2i(29, 32), Vector2i(30, 32), Vector2i(31, 32), Vector2i(32, 32), Vector2i(33, 32), Vector2i(34, 32), Vector2i(35, 32), Vector2i(36, 32), Vector2i(37, 32), Vector2i(38, 32), Vector2i(39, 32), Vector2i(40, 32), Vector2i(41, 32), Vector2i(42, 32), Vector2i(43, 32), Vector2i(44, 32), Vector2i(45, 32), Vector2i(46, 32), Vector2i(47, 32), Vector2i(0, 33), Vector2i(1, 33), Vector2i(2, 33), Vector2i(3, 33), Vector2i(4, 33), Vector2i(5, 33), Vector2i(6, 33), Vector2i(7, 33), Vector2i(8, 33), Vector2i(10, 33), Vector2i(11, 33), Vector2i(12, 33), Vector2i(13, 33), Vector2i(14, 33), Vector2i(15, 33), Vector2i(16, 33), Vector2i(17, 33), Vector2i(18, 33), Vector2i(19, 33), Vector2i(20, 33), Vector2i(21, 33), Vector2i(22, 33), Vector2i(23, 33), Vector2i(24, 33), Vector2i(25, 33), Vector2i(26, 33), Vector2i(27, 33), Vector2i(28, 33), Vector2i(29, 33), Vector2i(30, 33), Vector2i(31, 33), Vector2i(32, 33), Vector2i(33, 33), Vector2i(34, 33), Vector2i(35, 33), Vector2i(36, 33), Vector2i(37, 33), Vector2i(38, 33), Vector2i(39, 33), Vector2i(40, 33), Vector2i(41, 33), Vector2i(42, 33), Vector2i(43, 33), Vector2i(44, 33), Vector2i(45, 33), Vector2i(46, 33), Vector2i(47, 33)])
+forced_surf_cells = Array[Vector2i]([Vector2i(22, 33), Vector2i(23, 33), Vector2i(24, 33), Vector2i(25, 33)])
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=866126694]
 visible = false
@@ -7471,988 +7479,748 @@ scale = Vector2(1.2909479, 1.2909479)
 position = Vector2(2336, 288)
 scale = Vector2(1.1363094, 1.1363094)
 
-[node name="Forest000" type="Node2D" parent="Entities" unique_id=1444814528 instance=ExtResource("89_ud7j1")]
+[node name="Forest000" parent="Entities" unique_id=1444814528 instance=ExtResource("89_ud7j1")]
 modulate = Color(1.10123, 1.0782439, 1.0667528, 1)
 position = Vector2(4477.224, 1643.3962)
 scale = Vector2(1.0476457, 1.0476457)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest001" type="Node2D" parent="Entities" unique_id=1725449244 instance=ExtResource("91_fjffn")]
+[node name="Forest001" parent="Entities" unique_id=1725449244 instance=ExtResource("91_fjffn")]
 modulate = Color(1.0334252, 1.0520252, 1.0189768, 1)
 position = Vector2(3933.027, 80.85047)
 scale = Vector2(0.98188424, 0.98188424)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest002" type="Node2D" parent="Entities" unique_id=1790335438 instance=ExtResource("92_y784y")]
+[node name="Forest002" parent="Entities" unique_id=1790335438 instance=ExtResource("92_y784y")]
 modulate = Color(0.9107547, 0.92654777, 0.9194252, 1)
 position = Vector2(4504.206, 900.8862)
 scale = Vector2(1.1493958, 1.1493958)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest003" type="Node2D" parent="Entities" unique_id=1103557981 instance=ExtResource("93_6c83b")]
+[node name="Forest003" parent="Entities" unique_id=1103557981 instance=ExtResource("93_6c83b")]
 modulate = Color(0.9727598, 0.9693517, 0.9676381, 1)
 position = Vector2(253.40875, 1074.5146)
 scale = Vector2(1.0666991, 1.0666991)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest004" type="Node2D" parent="Entities" unique_id=1201538534 instance=ExtResource("94_63rcf")]
+[node name="Forest004" parent="Entities" unique_id=1201538534 instance=ExtResource("94_63rcf")]
 modulate = Color(1.0379038, 1.0703937, 1.0972564, 1)
 position = Vector2(4270.541, 1771.4292)
 scale = Vector2(1.0783141, 1.0783141)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest005" type="Node2D" parent="Entities" unique_id=659440798 instance=ExtResource("95_ef7no")]
+[node name="Forest005" parent="Entities" unique_id=659440798 instance=ExtResource("95_ef7no")]
 modulate = Color(0.87336177, 0.8773324, 0.8708177, 1)
 position = Vector2(4052.6885, 932.801)
 scale = Vector2(1.0924515, 1.0924515)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest006" type="Node2D" parent="Entities" unique_id=334675661 instance=ExtResource("94_63rcf")]
+[node name="Forest006" parent="Entities" unique_id=334675661 instance=ExtResource("94_63rcf")]
 modulate = Color(1.0677508, 1.0400634, 1.0802923, 1)
 position = Vector2(4445.0273, 179.73425)
 scale = Vector2(0.9816613, 0.9816613)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest007" type="Node2D" parent="Entities" unique_id=881590371 instance=ExtResource("96_ch5p3")]
+[node name="Forest007" parent="Entities" unique_id=881590371 instance=ExtResource("96_ch5p3")]
 modulate = Color(1.0212486, 1.0319647, 0.97323483, 1)
 position = Vector2(264.42712, 2040.0972)
 scale = Vector2(0.9728717, 0.9728717)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest008" type="Node2D" parent="Entities" unique_id=605940987 instance=ExtResource("93_6c83b")]
+[node name="Forest008" parent="Entities" unique_id=605940987 instance=ExtResource("93_6c83b")]
 modulate = Color(1.0484554, 1.0199472, 1.0374197, 1)
 position = Vector2(180.20288, 809.3725)
 scale = Vector2(1.1471684, 1.1471684)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest009" type="Node2D" parent="Entities" unique_id=1213360395 instance=ExtResource("89_ud7j1")]
+[node name="Forest009" parent="Entities" unique_id=1213360395 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.88225067, 0.87109405, 0.82219344, 1)
 position = Vector2(4543.243, 238.05414)
 scale = Vector2(1.0801783, 1.0801783)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest010" type="Node2D" parent="Entities" unique_id=1725561186 instance=ExtResource("89_ud7j1")]
+[node name="Forest010" parent="Entities" unique_id=1725561186 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.8926286, 0.9383256, 0.91132253, 1)
 position = Vector2(4159.673, 2395.4976)
 scale = Vector2(0.86418396, 0.86418396)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest011" type="Node2D" parent="Entities" unique_id=1827338449 instance=ExtResource("91_fjffn")]
+[node name="Forest011" parent="Entities" unique_id=1827338449 instance=ExtResource("91_fjffn")]
 modulate = Color(0.90099096, 0.91131896, 0.9086933, 1)
 position = Vector2(116.320526, 2437.6074)
 scale = Vector2(1.0082867, 1.0082867)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest012" type="Node2D" parent="Entities" unique_id=1085498556 instance=ExtResource("95_ef7no")]
+[node name="Forest012" parent="Entities" unique_id=1085498556 instance=ExtResource("95_ef7no")]
 modulate = Color(0.998913, 1.0362349, 1.0116488, 1)
 position = Vector2(330.83835, 2243.377)
 scale = Vector2(0.9366611, 0.9366611)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest013" type="Node2D" parent="Entities" unique_id=1343168614 instance=ExtResource("92_y784y")]
+[node name="Forest013" parent="Entities" unique_id=1343168614 instance=ExtResource("92_y784y")]
 modulate = Color(0.8958388, 0.87975156, 0.92007875, 1)
 position = Vector2(4097.1245, 1181.6857)
 scale = Vector2(1.0840895, 1.0840895)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest014" type="Node2D" parent="Entities" unique_id=665381965 instance=ExtResource("92_y784y")]
+[node name="Forest014" parent="Entities" unique_id=665381965 instance=ExtResource("92_y784y")]
 modulate = Color(1.0252106, 1.0481577, 1.0478069, 1)
 position = Vector2(4368.4404, 2274.5815)
 scale = Vector2(1.0591767, 1.0591767)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest015" type="Node2D" parent="Entities" unique_id=894280451 instance=ExtResource("92_y784y")]
+[node name="Forest015" parent="Entities" unique_id=894280451 instance=ExtResource("92_y784y")]
 modulate = Color(0.9107369, 0.9329604, 0.97335196, 1)
 position = Vector2(3205.6194, 84.97996)
 scale = Vector2(1.0476998, 1.0476998)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest016" type="Node2D" parent="Entities" unique_id=310917507 instance=ExtResource("96_ch5p3")]
+[node name="Forest016" parent="Entities" unique_id=310917507 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.9307786, 0.9626696, 0.998145, 1)
 position = Vector2(4568.077, 1051.475)
 scale = Vector2(1.104858, 1.104858)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest017" type="Node2D" parent="Entities" unique_id=970735037 instance=ExtResource("95_ef7no")]
+[node name="Forest017" parent="Entities" unique_id=970735037 instance=ExtResource("95_ef7no")]
 modulate = Color(0.8692883, 0.89443475, 0.8970991, 1)
 position = Vector2(4145.005, 1711.7849)
 scale = Vector2(1.0914831, 1.0914831)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest018" type="Node2D" parent="Entities" unique_id=170866115 instance=ExtResource("93_6c83b")]
+[node name="Forest018" parent="Entities" unique_id=170866115 instance=ExtResource("93_6c83b")]
 modulate = Color(0.97483987, 1.0029733, 0.9988754, 1)
 position = Vector2(68.38417, 198.70523)
 scale = Vector2(1.0580024, 1.0580024)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest019" type="Node2D" parent="Entities" unique_id=629337909 instance=ExtResource("96_ch5p3")]
+[node name="Forest019" parent="Entities" unique_id=629337909 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.9254281, 0.92759943, 0.9187853, 1)
 position = Vector2(105.6598, 418.11597)
 scale = Vector2(0.9231576, 0.9231576)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest020" type="Node2D" parent="Entities" unique_id=951888049 instance=ExtResource("89_ud7j1")]
+[node name="Forest020" parent="Entities" unique_id=951888049 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.97750074, 0.9781302, 0.95132256, 1)
 position = Vector2(83.41063, 1000.16675)
 scale = Vector2(1.0406508, 1.0406508)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest021" type="Node2D" parent="Entities" unique_id=672596073 instance=ExtResource("96_ch5p3")]
+[node name="Forest021" parent="Entities" unique_id=672596073 instance=ExtResource("96_ch5p3")]
 modulate = Color(1.0234928, 1.0536942, 1.0973259, 1)
 position = Vector2(4420.061, 1207.5251)
 scale = Vector2(0.94583875, 0.94583875)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest022" type="Node2D" parent="Entities" unique_id=1947984129 instance=ExtResource("92_y784y")]
+[node name="Forest022" parent="Entities" unique_id=1947984129 instance=ExtResource("92_y784y")]
 modulate = Color(0.93836373, 0.94055617, 0.9141414, 1)
 position = Vector2(432.95538, 1988.4343)
 scale = Vector2(1.0521889, 1.0521889)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest023" type="Node2D" parent="Entities" unique_id=502823003 instance=ExtResource("97_0cv8o")]
+[node name="Forest023" parent="Entities" unique_id=502823003 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.9235428, 0.9215659, 0.9025305, 1)
 position = Vector2(87.011734, 1995.0857)
 scale = Vector2(0.9837596, 0.9837596)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest024" type="Node2D" parent="Entities" unique_id=2121205771 instance=ExtResource("89_ud7j1")]
+[node name="Forest024" parent="Entities" unique_id=2121205771 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.92483324, 0.9257079, 0.9527788, 1)
 position = Vector2(4334.33, 613.6835)
 scale = Vector2(1.003896, 1.003896)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest025" type="Node2D" parent="Entities" unique_id=1049114894 instance=ExtResource("92_y784y")]
+[node name="Forest025" parent="Entities" unique_id=1049114894 instance=ExtResource("92_y784y")]
 modulate = Color(0.86905646, 0.87310195, 0.90087837, 1)
 position = Vector2(4129.698, 2082.558)
 scale = Vector2(1.0369985, 1.0369985)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest026" type="Node2D" parent="Entities" unique_id=1479454071 instance=ExtResource("93_6c83b")]
+[node name="Forest026" parent="Entities" unique_id=1479454071 instance=ExtResource("93_6c83b")]
 modulate = Color(1.1076624, 1.0772722, 1.1236943, 1)
 position = Vector2(553.072, 2169.499)
 scale = Vector2(1.13479, 1.13479)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest027" type="Node2D" parent="Entities" unique_id=1852038925 instance=ExtResource("93_6c83b")]
+[node name="Forest027" parent="Entities" unique_id=1852038925 instance=ExtResource("93_6c83b")]
 modulate = Color(1.0708016, 1.0692608, 1.0542513, 1)
 position = Vector2(4528.428, 483.89008)
 scale = Vector2(1.1416171, 1.1416171)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest028" type="Node2D" parent="Entities" unique_id=1315230641 instance=ExtResource("91_fjffn")]
+[node name="Forest028" parent="Entities" unique_id=1315230641 instance=ExtResource("91_fjffn")]
 modulate = Color(0.91531825, 0.95029104, 0.966658, 1)
 position = Vector2(4386.973, 295.58435)
 scale = Vector2(0.9033289, 0.9033289)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest029" type="Node2D" parent="Entities" unique_id=11719540 instance=ExtResource("94_63rcf")]
+[node name="Forest029" parent="Entities" unique_id=11719540 instance=ExtResource("94_63rcf")]
 modulate = Color(0.9947351, 0.9764155, 0.9797561, 1)
 position = Vector2(4321.14, 949.1791)
 scale = Vector2(1.0093415, 1.0093415)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest030" type="Node2D" parent="Entities" unique_id=107286946 instance=ExtResource("92_y784y")]
+[node name="Forest030" parent="Entities" unique_id=107286946 instance=ExtResource("92_y784y")]
 modulate = Color(0.9309029, 0.97876847, 0.9508724, 1)
 position = Vector2(4433.1997, 564.80396)
 scale = Vector2(1.0331467, 1.0331467)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest031" type="Node2D" parent="Entities" unique_id=409759178 instance=ExtResource("95_ef7no")]
+[node name="Forest031" parent="Entities" unique_id=409759178 instance=ExtResource("95_ef7no")]
 modulate = Color(0.92542803, 0.93968433, 0.92126215, 1)
 position = Vector2(4478.725, 1886.0483)
 scale = Vector2(0.9198845, 0.9198845)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest032" type="Node2D" parent="Entities" unique_id=975195479 instance=ExtResource("95_ef7no")]
+[node name="Forest032" parent="Entities" unique_id=975195479 instance=ExtResource("95_ef7no")]
 modulate = Color(0.94136906, 0.9290155, 0.92201406, 1)
 position = Vector2(297.4591, 2586.3801)
 scale = Vector2(1.1164801, 1.1164801)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest033" type="Node2D" parent="Entities" unique_id=562070646 instance=ExtResource("93_6c83b")]
+[node name="Forest033" parent="Entities" unique_id=562070646 instance=ExtResource("93_6c83b")]
 modulate = Color(1.0530896, 1.0528715, 1.0590284, 1)
 position = Vector2(4560.915, 2714.5273)
 scale = Vector2(0.9630028, 0.9630028)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest034" type="Node2D" parent="Entities" unique_id=712910118 instance=ExtResource("89_ud7j1")]
+[node name="Forest034" parent="Entities" unique_id=712910118 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.95027614, 0.98090476, 0.9265198, 1)
 position = Vector2(2844.6548, 90.366234)
 scale = Vector2(0.86726916, 0.86726916)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest035" type="Node2D" parent="Entities" unique_id=1472808800 instance=ExtResource("92_y784y")]
+[node name="Forest035" parent="Entities" unique_id=1472808800 instance=ExtResource("92_y784y")]
 modulate = Color(0.97999567, 0.9834019, 0.9612085, 1)
 position = Vector2(1196.6439, 66.892746)
 scale = Vector2(0.9339669, 0.9339669)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest036" type="Node2D" parent="Entities" unique_id=1741562844 instance=ExtResource("92_y784y")]
+[node name="Forest036" parent="Entities" unique_id=1741562844 instance=ExtResource("92_y784y")]
 modulate = Color(1.0541015, 1.060484, 1.0597119, 1)
 position = Vector2(4543.112, 1496.6997)
 scale = Vector2(1.144416, 1.144416)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest037" type="Node2D" parent="Entities" unique_id=971743257 instance=ExtResource("95_ef7no")]
+[node name="Forest037" parent="Entities" unique_id=971743257 instance=ExtResource("95_ef7no")]
 modulate = Color(0.968195, 0.98369074, 1.0092945, 1)
 position = Vector2(185.24783, 1324.7427)
 scale = Vector2(1.0212128, 1.0212128)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest038" type="Node2D" parent="Entities" unique_id=952328363 instance=ExtResource("97_0cv8o")]
+[node name="Forest038" parent="Entities" unique_id=952328363 instance=ExtResource("97_0cv8o")]
 modulate = Color(1.0032059, 0.9977881, 1.0237459, 1)
 position = Vector2(4438.372, 2142.5005)
 scale = Vector2(0.9415465, 0.9415465)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest039" type="Node2D" parent="Entities" unique_id=239091022 instance=ExtResource("97_0cv8o")]
+[node name="Forest039" parent="Entities" unique_id=239091022 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.89046174, 0.9320104, 0.95749384, 1)
 position = Vector2(4518.694, 2596.0178)
 scale = Vector2(1.1128805, 1.1128805)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest040" type="Node2D" parent="Entities" unique_id=1820454306 instance=ExtResource("89_ud7j1")]
+[node name="Forest040" parent="Entities" unique_id=1820454306 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.9612517, 0.9760405, 0.95630705, 1)
 position = Vector2(4372.751, 1847.8048)
 scale = Vector2(0.89508635, 0.89508635)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest041" type="Node2D" parent="Entities" unique_id=643784241 instance=ExtResource("97_0cv8o")]
+[node name="Forest041" parent="Entities" unique_id=643784241 instance=ExtResource("97_0cv8o")]
 modulate = Color(1.0654286, 1.078513, 1.034769, 1)
 position = Vector2(4230.324, 2013.2875)
 scale = Vector2(0.9752068, 0.9752068)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest042" type="Node2D" parent="Entities" unique_id=753369569 instance=ExtResource("91_fjffn")]
+[node name="Forest042" parent="Entities" unique_id=753369569 instance=ExtResource("91_fjffn")]
 modulate = Color(0.99242246, 1.0351046, 1.0765127, 1)
 position = Vector2(1043.5022, 61.499573)
 scale = Vector2(0.8649346, 0.8649346)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest043" type="Node2D" parent="Entities" unique_id=1970799459 instance=ExtResource("94_63rcf")]
+[node name="Forest043" parent="Entities" unique_id=1970799459 instance=ExtResource("94_63rcf")]
 modulate = Color(1.0552123, 1.0718347, 1.0083383, 1)
 position = Vector2(4561.3125, 120.12695)
 scale = Vector2(0.9166161, 0.9166161)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest044" type="Node2D" parent="Entities" unique_id=1832512105 instance=ExtResource("96_ch5p3")]
+[node name="Forest044" parent="Entities" unique_id=1832512105 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.96708274, 0.9847917, 0.99005574, 1)
 position = Vector2(416.00665, 2314.461)
 scale = Vector2(0.93304104, 0.93304104)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest045" type="Node2D" parent="Entities" unique_id=1330683305 instance=ExtResource("94_63rcf")]
+[node name="Forest045" parent="Entities" unique_id=1330683305 instance=ExtResource("94_63rcf")]
 modulate = Color(1.0186218, 1.0617735, 0.9900651, 1)
 position = Vector2(257.08783, 280.06924)
 scale = Vector2(0.85353404, 0.85353404)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest046" type="Node2D" parent="Entities" unique_id=1457879 instance=ExtResource("94_63rcf")]
+[node name="Forest046" parent="Entities" unique_id=1457879 instance=ExtResource("94_63rcf")]
 modulate = Color(0.9062506, 0.95314974, 0.92758846, 1)
 position = Vector2(249.99225, 1562.235)
 scale = Vector2(1.0829631, 1.0829631)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest047" type="Node2D" parent="Entities" unique_id=1899974396 instance=ExtResource("95_ef7no")]
+[node name="Forest047" parent="Entities" unique_id=1899974396 instance=ExtResource("95_ef7no")]
 modulate = Color(0.84250635, 0.8705227, 0.831954, 1)
 position = Vector2(4254.2, 2298.0374)
 scale = Vector2(0.9563425, 0.9563425)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest048" type="Node2D" parent="Entities" unique_id=155981806 instance=ExtResource("94_63rcf")]
+[node name="Forest048" parent="Entities" unique_id=155981806 instance=ExtResource("94_63rcf")]
 modulate = Color(0.9172503, 0.9292475, 0.8816003, 1)
 position = Vector2(90.66329, 625.8103)
 scale = Vector2(1.0694025, 1.0694025)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest049" type="Node2D" parent="Entities" unique_id=1799810286 instance=ExtResource("95_ef7no")]
+[node name="Forest049" parent="Entities" unique_id=1799810286 instance=ExtResource("95_ef7no")]
 modulate = Color(0.93191886, 0.91394216, 0.87090594, 1)
 position = Vector2(4560.451, 1330.5491)
 scale = Vector2(1.1424042, 1.1424042)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest050" type="Node2D" parent="Entities" unique_id=1884388181 instance=ExtResource("93_6c83b")]
+[node name="Forest050" parent="Entities" unique_id=1884388181 instance=ExtResource("93_6c83b")]
 modulate = Color(1.0339819, 1.069342, 1.0431834, 1)
 position = Vector2(4125.229, 1354.2388)
 scale = Vector2(0.95687604, 0.95687604)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest051" type="Node2D" parent="Entities" unique_id=1617866974 instance=ExtResource("93_6c83b")]
+[node name="Forest051" parent="Entities" unique_id=1617866974 instance=ExtResource("93_6c83b")]
 modulate = Color(0.87355125, 0.9143314, 0.8846783, 1)
 position = Vector2(136.6543, 1561.0012)
 scale = Vector2(1.0250162, 1.0250162)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest052" type="Node2D" parent="Entities" unique_id=1525644718 instance=ExtResource("97_0cv8o")]
+[node name="Forest052" parent="Entities" unique_id=1525644718 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.96547216, 0.9536183, 0.9367724, 1)
 position = Vector2(4475.3467, 2275.061)
 scale = Vector2(0.86251235, 0.86251235)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest053" type="Node2D" parent="Entities" unique_id=1689062203 instance=ExtResource("92_y784y")]
+[node name="Forest053" parent="Entities" unique_id=1689062203 instance=ExtResource("92_y784y")]
 modulate = Color(0.9281283, 0.9701568, 0.9254904, 1)
 position = Vector2(1807.9009, 70.77103)
 scale = Vector2(0.8609582, 0.8609582)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest054" type="Node2D" parent="Entities" unique_id=1687552017 instance=ExtResource("93_6c83b")]
+[node name="Forest054" parent="Entities" unique_id=1687552017 instance=ExtResource("93_6c83b")]
 modulate = Color(1.0288311, 1.0098139, 0.9956652, 1)
 position = Vector2(4176.7324, 1087.6249)
 scale = Vector2(0.85905564, 0.85905564)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest055" type="Node2D" parent="Entities" unique_id=651022664 instance=ExtResource("92_y784y")]
+[node name="Forest055" parent="Entities" unique_id=651022664 instance=ExtResource("92_y784y")]
 modulate = Color(0.9051073, 0.938412, 0.97182167, 1)
 position = Vector2(4355.7783, 1292.7549)
 scale = Vector2(0.9360005, 0.9360005)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest056" type="Node2D" parent="Entities" unique_id=240655828 instance=ExtResource("94_63rcf")]
+[node name="Forest056" parent="Entities" unique_id=240655828 instance=ExtResource("94_63rcf")]
 modulate = Color(0.8457045, 0.88721967, 0.8372058, 1)
 position = Vector2(229.31235, 2378.3108)
 scale = Vector2(1.0194125, 1.0194125)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest057" type="Node2D" parent="Entities" unique_id=513801336 instance=ExtResource("94_63rcf")]
+[node name="Forest057" parent="Entities" unique_id=513801336 instance=ExtResource("94_63rcf")]
 modulate = Color(0.88195854, 0.88096935, 0.85129297, 1)
 position = Vector2(4538.015, 345.0023)
 scale = Vector2(1.1399214, 1.1399214)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest058" type="Node2D" parent="Entities" unique_id=164348648 instance=ExtResource("89_ud7j1")]
+[node name="Forest058" parent="Entities" unique_id=164348648 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.8949683, 0.9401094, 0.8964499, 1)
 position = Vector2(216.57977, 1437.2107)
 scale = Vector2(1.1205995, 1.1205995)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest059" type="Node2D" parent="Entities" unique_id=1721227092 instance=ExtResource("95_ef7no")]
+[node name="Forest059" parent="Entities" unique_id=1721227092 instance=ExtResource("95_ef7no")]
 modulate = Color(0.88623416, 0.91704816, 0.954907, 1)
 position = Vector2(365.18137, 2075.9204)
 scale = Vector2(0.85981405, 0.85981405)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest060" type="Node2D" parent="Entities" unique_id=802310875 instance=ExtResource("95_ef7no")]
+[node name="Forest060" parent="Entities" unique_id=802310875 instance=ExtResource("95_ef7no")]
 modulate = Color(0.88645726, 0.91457504, 0.9416418, 1)
 position = Vector2(4261.201, 1602.7554)
 scale = Vector2(1.0909232, 1.0909232)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest061" type="Node2D" parent="Entities" unique_id=138335309 instance=ExtResource("89_ud7j1")]
+[node name="Forest061" parent="Entities" unique_id=138335309 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.9604253, 0.97694325, 0.91658837, 1)
 position = Vector2(4245.704, 2118.4287)
 scale = Vector2(0.86295706, 0.86295706)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest062" type="Node2D" parent="Entities" unique_id=1089360494 instance=ExtResource("93_6c83b")]
+[node name="Forest062" parent="Entities" unique_id=1089360494 instance=ExtResource("93_6c83b")]
 modulate = Color(1.0396043, 1.049417, 1.0205218, 1)
 position = Vector2(4252.702, 837.9934)
 scale = Vector2(0.96616274, 0.96616274)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest063" type="Node2D" parent="Entities" unique_id=374319011 instance=ExtResource("89_ud7j1")]
+[node name="Forest063" parent="Entities" unique_id=374319011 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.96442586, 0.94207686, 0.98510325, 1)
 position = Vector2(514.70087, 2584.4148)
 scale = Vector2(1.1483573, 1.1483573)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest064" type="Node2D" parent="Entities" unique_id=77179060 instance=ExtResource("89_ud7j1")]
+[node name="Forest064" parent="Entities" unique_id=77179060 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.93153834, 0.9270451, 0.9577998, 1)
 position = Vector2(4287.9727, 1422.6869)
 scale = Vector2(0.9999882, 0.9999882)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest065" type="Node2D" parent="Entities" unique_id=806247277 instance=ExtResource("93_6c83b")]
+[node name="Forest065" parent="Entities" unique_id=806247277 instance=ExtResource("93_6c83b")]
 modulate = Color(0.88763416, 0.87620544, 0.8972882, 1)
 position = Vector2(4406.241, 1477.3876)
 scale = Vector2(0.8546294, 0.8546294)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest066" type="Node2D" parent="Entities" unique_id=1004238816 instance=ExtResource("91_fjffn")]
+[node name="Forest066" parent="Entities" unique_id=1004238816 instance=ExtResource("91_fjffn")]
 modulate = Color(0.8429199, 0.87574, 0.8270913, 1)
 position = Vector2(197.51605, 152.4694)
 scale = Vector2(0.88856345, 0.88856345)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest067" type="Node2D" parent="Entities" unique_id=1378791201 instance=ExtResource("89_ud7j1")]
+[node name="Forest067" parent="Entities" unique_id=1378791201 instance=ExtResource("89_ud7j1")]
 modulate = Color(1.0670277, 1.0552312, 1.0081396, 1)
 position = Vector2(4201.328, 1861.6853)
 scale = Vector2(1.0923827, 1.0923827)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest068" type="Node2D" parent="Entities" unique_id=677735149 instance=ExtResource("92_y784y")]
+[node name="Forest068" parent="Entities" unique_id=677735149 instance=ExtResource("92_y784y")]
 modulate = Color(0.99729896, 1.0223749, 0.97140306, 1)
 position = Vector2(281.9525, 1820.4609)
 scale = Vector2(1.0306985, 1.0306985)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest069" type="Node2D" parent="Entities" unique_id=1209550853 instance=ExtResource("94_63rcf")]
+[node name="Forest069" parent="Entities" unique_id=1209550853 instance=ExtResource("94_63rcf")]
 modulate = Color(1.026266, 1.0573368, 1.0314887, 1)
 position = Vector2(85.95151, 1263.0289)
 scale = Vector2(1.0888422, 1.0888422)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest070" type="Node2D" parent="Entities" unique_id=1278116827 instance=ExtResource("97_0cv8o")]
+[node name="Forest070" parent="Entities" unique_id=1278116827 instance=ExtResource("97_0cv8o")]
 modulate = Color(1.0081333, 1.0221463, 0.99993914, 1)
 position = Vector2(158.02722, 1167.0098)
 scale = Vector2(0.88057625, 0.88057625)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest071" type="Node2D" parent="Entities" unique_id=31874728 instance=ExtResource("95_ef7no")]
+[node name="Forest071" parent="Entities" unique_id=31874728 instance=ExtResource("95_ef7no")]
 modulate = Color(0.9277294, 0.92592233, 0.9353312, 1)
 position = Vector2(4511.7485, 732.0076)
 scale = Vector2(1.0035326, 1.0035326)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest072" type="Node2D" parent="Entities" unique_id=174625147 instance=ExtResource("91_fjffn")]
+[node name="Forest072" parent="Entities" unique_id=174625147 instance=ExtResource("91_fjffn")]
 modulate = Color(0.9247452, 0.9274228, 0.90335906, 1)
 position = Vector2(355.54352, 2479.3782)
 scale = Vector2(1.0725185, 1.0725185)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest073" type="Node2D" parent="Entities" unique_id=1246955115 instance=ExtResource("94_63rcf")]
+[node name="Forest073" parent="Entities" unique_id=1246955115 instance=ExtResource("94_63rcf")]
 modulate = Color(1.0669318, 1.0602092, 1.0252795, 1)
 position = Vector2(271.54297, 646.4907)
 scale = Vector2(1.0422045, 1.0422045)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest074" type="Node2D" parent="Entities" unique_id=1894339283 instance=ExtResource("94_63rcf")]
+[node name="Forest074" parent="Entities" unique_id=1894339283 instance=ExtResource("94_63rcf")]
 modulate = Color(0.8902251, 0.89935243, 0.9096591, 1)
 position = Vector2(41.89646, 2301.0686)
 scale = Vector2(1.0694417, 1.0694417)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest075" type="Node2D" parent="Entities" unique_id=2069689390 instance=ExtResource("97_0cv8o")]
+[node name="Forest075" parent="Entities" unique_id=2069689390 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.9325954, 0.9197662, 0.9590027, 1)
 position = Vector2(146.20581, 1895.4745)
 scale = Vector2(0.900946, 0.900946)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest076" type="Node2D" parent="Entities" unique_id=1414658319 instance=ExtResource("96_ch5p3")]
+[node name="Forest076" parent="Entities" unique_id=1414658319 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.92937255, 0.90586483, 0.85148746, 1)
 position = Vector2(4477.5654, 2465.3608)
 scale = Vector2(0.9843219, 0.9843219)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest077" type="Node2D" parent="Entities" unique_id=815799524 instance=ExtResource("93_6c83b")]
+[node name="Forest077" parent="Entities" unique_id=815799524 instance=ExtResource("93_6c83b")]
 modulate = Color(0.94007945, 0.9806159, 0.92172027, 1)
 position = Vector2(3086.5967, 67.89067)
 scale = Vector2(1.1206677, 1.1206677)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest078" type="Node2D" parent="Entities" unique_id=1360277802 instance=ExtResource("97_0cv8o")]
+[node name="Forest078" parent="Entities" unique_id=1360277802 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.9124214, 0.90514004, 0.8737763, 1)
 position = Vector2(223.29497, 473.26227)
 scale = Vector2(0.9084816, 0.9084816)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest079" type="Node2D" parent="Entities" unique_id=1254525243 instance=ExtResource("94_63rcf")]
+[node name="Forest079" parent="Entities" unique_id=1254525243 instance=ExtResource("94_63rcf")]
 modulate = Color(0.8874805, 0.93227196, 0.9219241, 1)
 position = Vector2(4202.0728, 1200.9658)
 scale = Vector2(0.89959097, 0.89959097)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest080" type="Node2D" parent="Entities" unique_id=947655725 instance=ExtResource("89_ud7j1")]
+[node name="Forest080" parent="Entities" unique_id=947655725 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.87781084, 0.9209324, 0.925074, 1)
 position = Vector2(2086.9165, 59.827904)
 scale = Vector2(0.9478313, 0.9478313)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest081" type="Node2D" parent="Entities" unique_id=649380109 instance=ExtResource("97_0cv8o")]
+[node name="Forest081" parent="Entities" unique_id=649380109 instance=ExtResource("97_0cv8o")]
 modulate = Color(1.0016052, 0.9817973, 0.9698654, 1)
 position = Vector2(4530.318, 2042.8362)
 scale = Vector2(1.1056635, 1.1056635)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest082" type="Node2D" parent="Entities" unique_id=1878056266 instance=ExtResource("89_ud7j1")]
+[node name="Forest082" parent="Entities" unique_id=1878056266 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.8875014, 0.892221, 0.9304116, 1)
 position = Vector2(4182.8926, 953.645)
 scale = Vector2(1.1466675, 1.1466675)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest083" type="Node2D" parent="Entities" unique_id=130750129 instance=ExtResource("94_63rcf")]
+[node name="Forest083" parent="Entities" unique_id=130750129 instance=ExtResource("94_63rcf")]
 modulate = Color(0.8994493, 0.8892265, 0.9214895, 1)
 position = Vector2(3716.012, 59.071884)
 scale = Vector2(1.0021061, 1.0021061)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest084" type="Node2D" parent="Entities" unique_id=2042608117 instance=ExtResource("97_0cv8o")]
+[node name="Forest084" parent="Entities" unique_id=2042608117 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.93641776, 0.964832, 0.9418649, 1)
 position = Vector2(4222.1846, 72.89848)
 scale = Vector2(1.1437087, 1.1437087)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest085" type="Node2D" parent="Entities" unique_id=997058699 instance=ExtResource("96_ch5p3")]
+[node name="Forest085" parent="Entities" unique_id=997058699 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.9716976, 0.9777897, 0.9803135, 1)
 position = Vector2(4466.0317, 1381.4443)
 scale = Vector2(0.9579217, 0.9579217)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest086" type="Node2D" parent="Entities" unique_id=1628294586 instance=ExtResource("95_ef7no")]
+[node name="Forest086" parent="Entities" unique_id=1628294586 instance=ExtResource("95_ef7no")]
 modulate = Color(0.89869285, 0.9047494, 0.8662515, 1)
 position = Vector2(4352.787, 471.3211)
 scale = Vector2(0.94148517, 0.94148517)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest087" type="Node2D" parent="Entities" unique_id=1048143214 instance=ExtResource("89_ud7j1")]
+[node name="Forest087" parent="Entities" unique_id=1048143214 instance=ExtResource("89_ud7j1")]
 modulate = Color(1.0213245, 1.0706828, 1.0674686, 1)
 position = Vector2(238.7442, 949.66974)
 scale = Vector2(0.9079669, 0.9079669)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest088" type="Node2D" parent="Entities" unique_id=1737864717 instance=ExtResource("89_ud7j1")]
+[node name="Forest088" parent="Entities" unique_id=1737864717 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.9360098, 0.93162614, 0.9674636, 1)
 position = Vector2(195.06744, 2145.2358)
 scale = Vector2(0.90792483, 0.90792483)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest089" type="Node2D" parent="Entities" unique_id=75784051 instance=ExtResource("96_ch5p3")]
+[node name="Forest089" parent="Entities" unique_id=75784051 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.9084106, 0.88225615, 0.9020914, 1)
 position = Vector2(4088.0513, 2489.7715)
 scale = Vector2(1.0990951, 1.0990951)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest090" type="Node2D" parent="Entities" unique_id=2026252183 instance=ExtResource("96_ch5p3")]
+[node name="Forest090" parent="Entities" unique_id=2026252183 instance=ExtResource("96_ch5p3")]
 modulate = Color(1.0420558, 1.0735865, 1.0089567, 1)
 position = Vector2(4105.3896, 2280.2695)
 scale = Vector2(0.9949254, 0.9949254)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest091" type="Node2D" parent="Entities" unique_id=1786682792 instance=ExtResource("93_6c83b")]
+[node name="Forest091" parent="Entities" unique_id=1786682792 instance=ExtResource("93_6c83b")]
 modulate = Color(0.84273976, 0.86685044, 0.8248729, 1)
 position = Vector2(44.62249, 1614.3535)
 scale = Vector2(1.1094098, 1.1094098)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest092" type="Node2D" parent="Entities" unique_id=1301483534 instance=ExtResource("89_ud7j1")]
+[node name="Forest092" parent="Entities" unique_id=1301483534 instance=ExtResource("89_ud7j1")]
 modulate = Color(0.87533784, 0.91366214, 0.859323, 1)
 position = Vector2(4241.3545, 696.6527)
 scale = Vector2(1.1077518, 1.1077518)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest093" type="Node2D" parent="Entities" unique_id=1640078993 instance=ExtResource("94_63rcf")]
+[node name="Forest093" parent="Entities" unique_id=1640078993 instance=ExtResource("94_63rcf")]
 modulate = Color(0.9350102, 0.9677271, 0.9418633, 1)
 position = Vector2(4353.137, 1091.1501)
 scale = Vector2(0.91125894, 0.91125894)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest094" type="Node2D" parent="Entities" unique_id=881482768 instance=ExtResource("91_fjffn")]
+[node name="Forest094" parent="Entities" unique_id=881482768 instance=ExtResource("91_fjffn")]
 modulate = Color(0.8981052, 0.9032261, 0.8502356, 1)
 position = Vector2(51.780704, 1735.132)
 scale = Vector2(0.97310406, 0.97310406)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest095" type="Node2D" parent="Entities" unique_id=1499787266 instance=ExtResource("97_0cv8o")]
+[node name="Forest095" parent="Entities" unique_id=1499787266 instance=ExtResource("97_0cv8o")]
 modulate = Color(1.0348618, 1.0209743, 1.0677166, 1)
 position = Vector2(3560.375, 66.45666)
 scale = Vector2(0.96635985, 0.96635985)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest096" type="Node2D" parent="Entities" unique_id=1176366685 instance=ExtResource("91_fjffn")]
+[node name="Forest096" parent="Entities" unique_id=1176366685 instance=ExtResource("91_fjffn")]
 modulate = Color(1.0179452, 1.0480914, 1.0474367, 1)
 position = Vector2(4558.8203, 1796.0503)
 scale = Vector2(0.89295983, 0.89295983)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest097" type="Node2D" parent="Entities" unique_id=545483164 instance=ExtResource("95_ef7no")]
+[node name="Forest097" parent="Entities" unique_id=545483164 instance=ExtResource("95_ef7no")]
 modulate = Color(0.90572834, 0.9277849, 0.8701753, 1)
 position = Vector2(430.75116, 71.87497)
 scale = Vector2(1.004827, 1.004827)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest098" type="Node2D" parent="Entities" unique_id=1099013004 instance=ExtResource("91_fjffn")]
+[node name="Forest098" parent="Entities" unique_id=1099013004 instance=ExtResource("91_fjffn")]
 modulate = Color(0.8913542, 0.9366022, 0.9211476, 1)
 position = Vector2(4548.076, 2356.9272)
 scale = Vector2(0.87814033, 0.87814033)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest099" type="Node2D" parent="Entities" unique_id=2026881931 instance=ExtResource("89_ud7j1")]
+[node name="Forest099" parent="Entities" unique_id=2026881931 instance=ExtResource("89_ud7j1")]
 modulate = Color(1.0741177, 1.0675597, 1.0663074, 1)
 position = Vector2(4266.286, 2461.6174)
 scale = Vector2(1.0601679, 1.0601679)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest100" type="Node2D" parent="Entities" unique_id=1722844542 instance=ExtResource("94_63rcf")]
+[node name="Forest100" parent="Entities" unique_id=1722844542 instance=ExtResource("94_63rcf")]
 modulate = Color(1.0968804, 1.07584, 1.0133653, 1)
 position = Vector2(435.63446, 2166.2695)
 scale = Vector2(1.0425107, 1.0425107)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest101" type="Node2D" parent="Entities" unique_id=792713530 instance=ExtResource("97_0cv8o")]
+[node name="Forest101" parent="Entities" unique_id=792713530 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.9652436, 0.94147784, 0.9428093, 1)
 position = Vector2(268.89502, 1701.6831)
 scale = Vector2(1.0974653, 1.0974653)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest102" type="Node2D" parent="Entities" unique_id=1119904687 instance=ExtResource("93_6c83b")]
+[node name="Forest102" parent="Entities" unique_id=1119904687 instance=ExtResource("93_6c83b")]
 modulate = Color(0.87985975, 0.8678003, 0.8507947, 1)
 position = Vector2(202.63362, 2261.4578)
 scale = Vector2(0.9292836, 0.9292836)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest103" type="Node2D" parent="Entities" unique_id=1732480541 instance=ExtResource("91_fjffn")]
+[node name="Forest103" parent="Entities" unique_id=1732480541 instance=ExtResource("91_fjffn")]
 modulate = Color(0.96688664, 0.9607133, 0.9392659, 1)
 position = Vector2(525.9663, 2294.495)
 scale = Vector2(1.1329274, 1.1329274)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest104" type="Node2D" parent="Entities" unique_id=1935985015 instance=ExtResource("96_ch5p3")]
+[node name="Forest104" parent="Entities" unique_id=1935985015 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.9900532, 1.0245974, 1.0757817, 1)
 position = Vector2(4413.218, 1738.3855)
 scale = Vector2(1.1283877, 1.1283877)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest105" type="Node2D" parent="Entities" unique_id=200176056 instance=ExtResource("95_ef7no")]
+[node name="Forest105" parent="Entities" unique_id=200176056 instance=ExtResource("95_ef7no")]
 modulate = Color(0.9149347, 0.8962758, 0.87831193, 1)
 position = Vector2(1386.5518, 66.620346)
 scale = Vector2(0.90994, 0.90994)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest106" type="Node2D" parent="Entities" unique_id=83178306 instance=ExtResource("95_ef7no")]
+[node name="Forest106" parent="Entities" unique_id=83178306 instance=ExtResource("95_ef7no")]
 modulate = Color(0.9276434, 0.90752345, 0.919622, 1)
 position = Vector2(4455.169, 1049.9409)
 scale = Vector2(0.98764324, 0.98764324)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest107" type="Node2D" parent="Entities" unique_id=609004150 instance=ExtResource("93_6c83b")]
+[node name="Forest107" parent="Entities" unique_id=609004150 instance=ExtResource("93_6c83b")]
 modulate = Color(0.9714014, 0.99471617, 0.98325354, 1)
 position = Vector2(85.13197, 735.8377)
 scale = Vector2(1.1317801, 1.1317801)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest108" type="Node2D" parent="Entities" unique_id=1064723894 instance=ExtResource("94_63rcf")]
+[node name="Forest108" parent="Entities" unique_id=1064723894 instance=ExtResource("94_63rcf")]
 modulate = Color(0.8865656, 0.8949626, 0.90726775, 1)
 position = Vector2(4107.442, 830.99133)
 scale = Vector2(0.9632181, 0.9632181)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest109" type="Node2D" parent="Entities" unique_id=1139143949 instance=ExtResource("95_ef7no")]
+[node name="Forest109" parent="Entities" unique_id=1139143949 instance=ExtResource("95_ef7no")]
 modulate = Color(1.0075219, 1.0132866, 1.0265619, 1)
 position = Vector2(4059.8342, 715.0958)
 scale = Vector2(1.102181, 1.102181)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest110" type="Node2D" parent="Entities" unique_id=1451088465 instance=ExtResource("96_ch5p3")]
+[node name="Forest110" parent="Entities" unique_id=1451088465 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.9500533, 0.9289877, 0.94843966, 1)
 position = Vector2(4370.0415, 1958.6506)
 scale = Vector2(1.0252007, 1.0252007)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest111" type="Node2D" parent="Entities" unique_id=203652831 instance=ExtResource("92_y784y")]
+[node name="Forest111" parent="Entities" unique_id=203652831 instance=ExtResource("92_y784y")]
 modulate = Color(0.9489696, 0.9684508, 0.9462332, 1)
 position = Vector2(4042.341, 1040.5603)
 scale = Vector2(0.8931259, 0.8931259)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest112" type="Node2D" parent="Entities" unique_id=792495307 instance=ExtResource("95_ef7no")]
+[node name="Forest112" parent="Entities" unique_id=792495307 instance=ExtResource("95_ef7no")]
 modulate = Color(0.88698447, 0.884291, 0.86470526, 1)
 position = Vector2(4535.642, 1160.0005)
 scale = Vector2(0.8890019, 0.8890019)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest113" type="Node2D" parent="Entities" unique_id=1680723942 instance=ExtResource("91_fjffn")]
+[node name="Forest113" parent="Entities" unique_id=1680723942 instance=ExtResource("91_fjffn")]
 modulate = Color(0.9218408, 0.95298964, 0.8971357, 1)
 position = Vector2(1945.8518, 73.75196)
 scale = Vector2(1.1060573, 1.1060573)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest114" type="Node2D" parent="Entities" unique_id=274393208 instance=ExtResource("97_0cv8o")]
+[node name="Forest114" parent="Entities" unique_id=274393208 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.90798926, 0.9459183, 0.94850385, 1)
 position = Vector2(560.11365, 2474.4424)
 scale = Vector2(0.8835658, 0.8835658)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest115" type="Node2D" parent="Entities" unique_id=524083083 instance=ExtResource("92_y784y")]
+[node name="Forest115" parent="Entities" unique_id=524083083 instance=ExtResource("92_y784y")]
 modulate = Color(1.0042737, 1.0487905, 1.0620102, 1)
 position = Vector2(94.02059, 2202.808)
 scale = Vector2(1.0621814, 1.0621814)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest116" type="Node2D" parent="Entities" unique_id=1392888041 instance=ExtResource("92_y784y")]
+[node name="Forest116" parent="Entities" unique_id=1392888041 instance=ExtResource("92_y784y")]
 modulate = Color(0.89294136, 0.8990355, 0.86335456, 1)
 position = Vector2(649.3089, 76.04619)
 scale = Vector2(0.95820606, 0.95820606)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest117" type="Node2D" parent="Entities" unique_id=2101720301 instance=ExtResource("89_ud7j1")]
+[node name="Forest117" parent="Entities" unique_id=2101720301 instance=ExtResource("89_ud7j1")]
 modulate = Color(1.0901299, 1.0656935, 1.0044581, 1)
 position = Vector2(562.79926, 2011.4476)
 scale = Vector2(1.092787, 1.092787)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest118" type="Node2D" parent="Entities" unique_id=724372304 instance=ExtResource("93_6c83b")]
+[node name="Forest118" parent="Entities" unique_id=724372304 instance=ExtResource("93_6c83b")]
 modulate = Color(0.9176705, 0.90406746, 0.88018084, 1)
 position = Vector2(108.583694, 1426.4414)
 scale = Vector2(0.97244877, 0.97244877)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest119" type="Node2D" parent="Entities" unique_id=1206418346 instance=ExtResource("96_ch5p3")]
+[node name="Forest119" parent="Entities" unique_id=1206418346 instance=ExtResource("96_ch5p3")]
 modulate = Color(0.9765349, 0.96823394, 1.003831, 1)
 position = Vector2(4376.6587, 764.5813)
 scale = Vector2(1.0282713, 1.0282713)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest120" type="Node2D" parent="Entities" unique_id=1636797267 instance=ExtResource("95_ef7no")]
+[node name="Forest120" parent="Entities" unique_id=1636797267 instance=ExtResource("95_ef7no")]
 modulate = Color(0.9858768, 0.9592582, 0.8937286, 1)
 position = Vector2(4323.862, 190.25778)
 scale = Vector2(0.99364936, 0.99364936)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest121" type="Node2D" parent="Entities" unique_id=770641724 instance=ExtResource("92_y784y")]
+[node name="Forest121" parent="Entities" unique_id=770641724 instance=ExtResource("92_y784y")]
 modulate = Color(0.8778112, 0.88037086, 0.88573605, 1)
 position = Vector2(42.46082, 857.84705)
 scale = Vector2(1.0763284, 1.0763284)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest122" type="Node2D" parent="Entities" unique_id=922969538 instance=ExtResource("97_0cv8o")]
+[node name="Forest122" parent="Entities" unique_id=922969538 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.96726733, 0.9579651, 0.96087635, 1)
 position = Vector2(155.41376, 1759.9854)
 scale = Vector2(1.0906916, 1.0906916)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest123" type="Node2D" parent="Entities" unique_id=1180458947 instance=ExtResource("93_6c83b")]
+[node name="Forest123" parent="Entities" unique_id=1180458947 instance=ExtResource("93_6c83b")]
 modulate = Color(0.845616, 0.88186604, 0.91859615, 1)
 position = Vector2(3411.4434, 63.46416)
 scale = Vector2(0.99933684, 0.99933684)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest124" type="Node2D" parent="Entities" unique_id=444478070 instance=ExtResource("91_fjffn")]
+[node name="Forest124" parent="Entities" unique_id=444478070 instance=ExtResource("91_fjffn")]
 modulate = Color(0.91926146, 0.9182884, 0.92746985, 1)
 position = Vector2(4192.026, 2212.2861)
 scale = Vector2(1.0989712, 1.0989712)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest125" type="Node2D" parent="Entities" unique_id=1977206705 instance=ExtResource("97_0cv8o")]
+[node name="Forest125" parent="Entities" unique_id=1977206705 instance=ExtResource("97_0cv8o")]
 modulate = Color(0.9898425, 0.9761462, 0.99952537, 1)
 position = Vector2(40.491608, 1868.0044)
 scale = Vector2(1.1209228, 1.1209228)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest126" type="Node2D" parent="Entities" unique_id=664609030 instance=ExtResource("94_63rcf")]
+[node name="Forest126" parent="Entities" unique_id=664609030 instance=ExtResource("94_63rcf")]
 modulate = Color(1.0403037, 1.0729172, 1.0599052, 1)
 position = Vector2(4545.3916, 593.25214)
 scale = Vector2(0.9870079, 0.9870079)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest127" type="Node2D" parent="Entities" unique_id=292784156 instance=ExtResource("91_fjffn")]
+[node name="Forest127" parent="Entities" unique_id=292784156 instance=ExtResource("91_fjffn")]
 modulate = Color(0.99759823, 0.9836412, 0.99300843, 1)
 position = Vector2(4344.857, 60.828766)
 scale = Vector2(0.88802844, 0.88802844)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="Forest128" type="Node2D" parent="Entities" unique_id=2068168835 instance=ExtResource("95_ef7no")]
+[node name="Forest128" parent="Entities" unique_id=2068168835 instance=ExtResource("95_ef7no")]
 modulate = Color(1.0387895, 1.010625, 1.0362864, 1)
 position = Vector2(284.00696, 64.30409)
 scale = Vector2(0.88347054, 0.88347054)
-script = ExtResource("90_wkx04")
-footprint = Array[Vector2i]([])
 
-[node name="ForestBush000" type="Node2D" parent="Entities" unique_id=2009002947 instance=ExtResource("65_he8fv")]
+[node name="ForestBush000" parent="Entities" unique_id=2009002947 instance=ExtResource("65_he8fv")]
 position = Vector2(828.63794, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush001" type="Node2D" parent="Entities" unique_id=451702896 instance=ExtResource("65_he8fv")]
+[node name="ForestBush001" parent="Entities" unique_id=451702896 instance=ExtResource("65_he8fv")]
 position = Vector2(905.70056, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush002" type="Node2D" parent="Entities" unique_id=838393095 instance=ExtResource("66_y0is6")]
+[node name="ForestBush002" parent="Entities" unique_id=838393095 instance=ExtResource("66_y0is6")]
 position = Vector2(1496.1757, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush003" type="Node2D" parent="Entities" unique_id=2104736616 instance=ExtResource("65_he8fv")]
+[node name="ForestBush003" parent="Entities" unique_id=2104736616 instance=ExtResource("65_he8fv")]
 position = Vector2(1689.9087, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush004" type="Node2D" parent="Entities" unique_id=1426534296 instance=ExtResource("65_he8fv")]
+[node name="ForestBush004" parent="Entities" unique_id=1426534296 instance=ExtResource("65_he8fv")]
 position = Vector2(2551.9683, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush005" type="Node2D" parent="Entities" unique_id=984207616 instance=ExtResource("65_he8fv")]
+[node name="ForestBush005" parent="Entities" unique_id=984207616 instance=ExtResource("65_he8fv")]
 position = Vector2(2749.0857, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush006" type="Node2D" parent="Entities" unique_id=893985466 instance=ExtResource("65_he8fv")]
+[node name="ForestBush006" parent="Entities" unique_id=893985466 instance=ExtResource("65_he8fv")]
 position = Vector2(3304.111, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush007" type="Node2D" parent="Entities" unique_id=238164502 instance=ExtResource("65_he8fv")]
+[node name="ForestBush007" parent="Entities" unique_id=238164502 instance=ExtResource("65_he8fv")]
 position = Vector2(4093.01, 91.2)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush008" type="Node2D" parent="Entities" unique_id=1749733001 instance=ExtResource("66_y0is6")]
+[node name="ForestBush008" parent="Entities" unique_id=1749733001 instance=ExtResource("66_y0is6")]
 position = Vector2(4068.3157, 1819.2001)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush009" type="Node2D" parent="Entities" unique_id=176411475 instance=ExtResource("65_he8fv")]
+[node name="ForestBush009" parent="Entities" unique_id=176411475 instance=ExtResource("65_he8fv")]
 position = Vector2(4364.2734, 2395.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush010" type="Node2D" parent="Entities" unique_id=1249988799 instance=ExtResource("65_he8fv")]
+[node name="ForestBush010" parent="Entities" unique_id=1249988799 instance=ExtResource("65_he8fv")]
 position = Vector2(4373.0605, 2491.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush011" type="Node2D" parent="Entities" unique_id=281915621 instance=ExtResource("65_he8fv")]
+[node name="ForestBush011" parent="Entities" unique_id=281915621 instance=ExtResource("65_he8fv")]
 position = Vector2(4067.6104, 2683.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush012" type="Node2D" parent="Entities" unique_id=917626255 instance=ExtResource("65_he8fv")]
+[node name="ForestBush012" parent="Entities" unique_id=917626255 instance=ExtResource("65_he8fv")]
 position = Vector2(4162.6367, 2683.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush013" type="Node2D" parent="Entities" unique_id=1418847813 instance=ExtResource("65_he8fv")]
+[node name="ForestBush013" parent="Entities" unique_id=1418847813 instance=ExtResource("65_he8fv")]
 position = Vector2(4286.345, 2683.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush014" type="Node2D" parent="Entities" unique_id=1029524933 instance=ExtResource("66_y0is6")]
+[node name="ForestBush014" parent="Entities" unique_id=1029524933 instance=ExtResource("66_y0is6")]
 position = Vector2(4364.9277, 2683.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush015" type="Node2D" parent="Entities" unique_id=321774242 instance=ExtResource("66_y0is6")]
+[node name="ForestBush015" parent="Entities" unique_id=321774242 instance=ExtResource("66_y0is6")]
 position = Vector2(4072.6748, 2779.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush016" type="Node2D" parent="Entities" unique_id=1759970557 instance=ExtResource("66_y0is6")]
+[node name="ForestBush016" parent="Entities" unique_id=1759970557 instance=ExtResource("66_y0is6")]
 position = Vector2(4167.619, 2779.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush017" type="Node2D" parent="Entities" unique_id=2067931037 instance=ExtResource("66_y0is6")]
+[node name="ForestBush017" parent="Entities" unique_id=2067931037 instance=ExtResource("66_y0is6")]
 position = Vector2(4258.199, 2779.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush018" type="Node2D" parent="Entities" unique_id=1209056542 instance=ExtResource("65_he8fv")]
+[node name="ForestBush018" parent="Entities" unique_id=1209056542 instance=ExtResource("65_he8fv")]
 position = Vector2(4364.5127, 2779.2002)
-script = ExtResource("90_wkx04")
 
-[node name="ForestBush019" type="Node2D" parent="Entities" unique_id=709707410 instance=ExtResource("66_y0is6")]
+[node name="ForestBush019" parent="Entities" unique_id=709707410 instance=ExtResource("66_y0is6")]
 position = Vector2(4460.179, 2779.2002)
-script = ExtResource("90_wkx04")
+
+[node name="Joh1GrotteOuverte" type="Node2D" parent="Entities" unique_id=732799966]
+position = Vector2(2304, 3264)
+script = ExtResource("97_qda6l")
+if_flags = Array[StringName]([&"johto_letter_read"])
+
+[node name="Dessin0" type="Polygon2D" parent="Entities/Joh1GrotteOuverte" unique_id=921893065]
+color = Color(0.42, 0.4, 0.38, 1)
+polygon = PackedVector2Array(-192, -134.4, 192, -134.4, 192, 0, -192, 0)
+
+[node name="Dessin1" type="Polygon2D" parent="Entities/Joh1GrotteOuverte" unique_id=278435015]
+color = Color(0.16, 0.2, 0.26, 1)
+polygon = PackedVector2Array(-153.6, -105.6, 153.6, -105.6, 153.6, 0, -153.6, 0)
+
+[node name="Dessin2" type="Polygon2D" parent="Entities/Joh1GrotteOuverte" unique_id=1891703078]
+color = Color(0.05, 0.07, 0.11, 1)
+polygon = PackedVector2Array(-124.8, -86.4, 124.8, -86.4, 124.8, 0, -124.8, 0)
+
+[node name="Joh1GrotteFermee" type="Node2D" parent="Entities" unique_id=835032439]
+position = Vector2(2304, 3264)
+script = ExtResource("97_qda6l")
+unless_flags = Array[StringName]([&"johto_letter_read"])
+
+[node name="Dessin0" type="Polygon2D" parent="Entities/Joh1GrotteFermee" unique_id=591831395]
+color = Color(0.42, 0.4, 0.38, 1)
+polygon = PackedVector2Array(-192, -96, 192, -96, 192, 0, -192, 0)
+
+[node name="Dessin1" type="Polygon2D" parent="Entities/Joh1GrotteFermee" unique_id=46190168]
+color = Color(0.28, 0.27, 0.26, 1)
+polygon = PackedVector2Array(-153.6, -129.6, -67.200005, -129.6, -67.200005, -72.00001, -153.6, -72.00001)
+
+[node name="Dessin2" type="Polygon2D" parent="Entities/Joh1GrotteFermee" unique_id=446530115]
+color = Color(0.28, 0.27, 0.26, 1)
+polygon = PackedVector2Array(-48, -129.6, 38.4, -129.6, 38.4, -72.00001, -48, -72.00001)
+
+[node name="Dessin3" type="Polygon2D" parent="Entities/Joh1GrotteFermee" unique_id=1171636505]
+color = Color(0.28, 0.27, 0.26, 1)
+polygon = PackedVector2Array(67.2, -129.6, 153.6, -129.6, 153.6, -72.00001, 67.2, -72.00001)
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=1595930439]
 visible = false
@@ -8500,6 +8268,46 @@ target_map = &"route_1"
 target_spawn = &"from_pallet_e"
 arrival_facing = Vector2i(0, -1)
 
+[node name="Joh1Grotte_0" type="Marker2D" parent="Warps" unique_id=1217414117]
+position = Vector2(2160, 3264)
+script = ExtResource("98_bvc00")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"sea_cave_1"
+target_spawn = &"from_pallet_town"
+arrival_facing = Vector2i(0, 1)
+if_flags = Array[StringName]([&"johto_letter_read"])
+
+[node name="Joh1Grotte_1" type="Marker2D" parent="Warps" unique_id=168128683]
+position = Vector2(2256, 3264)
+script = ExtResource("98_bvc00")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"sea_cave_1"
+target_spawn = &"from_pallet_town_1"
+arrival_facing = Vector2i(0, 1)
+if_flags = Array[StringName]([&"johto_letter_read"])
+
+[node name="Joh1Grotte_2" type="Marker2D" parent="Warps" unique_id=551687758]
+position = Vector2(2352, 3264)
+script = ExtResource("98_bvc00")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"sea_cave_1"
+target_spawn = &"from_pallet_town_2"
+arrival_facing = Vector2i(0, 1)
+if_flags = Array[StringName]([&"johto_letter_read"])
+
+[node name="Joh1Grotte_3" type="Marker2D" parent="Warps" unique_id=561456538]
+position = Vector2(2448, 3264)
+script = ExtResource("98_bvc00")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"sea_cave_1"
+target_spawn = &"from_pallet_town_3"
+arrival_facing = Vector2i(0, 1)
+if_flags = Array[StringName]([&"johto_letter_read"])
+
 [node name="Interactables" type="Node2D" parent="." unique_id=846224454]
 
 [node name="SignPallet" type="Marker2D" parent="Interactables" unique_id=79682764]
@@ -8527,6 +8335,18 @@ position = Vector2(2256, 192)
 [node name="from_route_1_e" type="Marker2D" parent="Spawns" unique_id=1189473412]
 position = Vector2(2352, 192)
 
+[node name="from_sea_cave" type="Marker2D" parent="Spawns" unique_id=181852041]
+position = Vector2(2160, 3264)
+
+[node name="from_sea_cave_1" type="Marker2D" parent="Spawns" unique_id=1710445197]
+position = Vector2(2256, 3264)
+
+[node name="from_sea_cave_2" type="Marker2D" parent="Spawns" unique_id=30879069]
+position = Vector2(2352, 3264)
+
+[node name="from_sea_cave_3" type="Marker2D" parent="Spawns" unique_id=1012717295]
+position = Vector2(2448, 3264)
+
 [node name="Triggers" type="Node2D" parent="." unique_id=1914264713]
 
 [node name="Route1Grass" type="Marker2D" parent="Triggers" unique_id=1093306949]
@@ -8534,3 +8354,9 @@ position = Vector2(2256, 384)
 script = ExtResource("100_ed6m2")
 cutscene_id = &"route1_grass"
 size = Vector2i(2, 1)
+
+[node name="Joh1GrotteDecouverte" type="Marker2D" parent="Triggers" unique_id=310526953]
+position = Vector2(2160, 3264)
+script = ExtResource("100_ed6m2")
+cutscene_id = &"pallet_cave_mouth"
+size = Vector2i(4, 1)

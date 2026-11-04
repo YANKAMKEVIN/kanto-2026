@@ -346,13 +346,37 @@
 			"subtitle": "Lavanville — Route 11",
 			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
 		},
+		"sea_cave": {
+			"name": "Grotte marine", "kind": "place", "maps": ["sea_cave_1", "sea_cave_2"], "region": "johto",
+			"subtitle": "Bourg Palette — Oliville",
+			"description": "Un passage sous la mer, entre Kanto et Johto."
+		},
 		"olivine_city": {
-			"name": "Oliville", "kind": "town", "maps": [], "region": "johto", "draft": true,
-			"description": "Un port ouvert sur la mer de Johto, dominé par son phare. C'est ici que le Chapitre Johto commence."
+			"name": "Oliville", "kind": "town",
+			"maps": ["olivine_city", "olivine_center", "olivine_center_room", "olivine_mart", "olivine_house_1", "olivine_house_2"],
+			"region": "johto", "subtitle": "Grotte marine — Route 39",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "olivine_center" },
+				{ "id": "poke_mart", "found_on": "olivine_mart" }
+			],
+			"description": "Une ville portuaire au pied de son vieux phare."
 		},
 		"ecruteak_city": {
-			"name": "Rosalia", "kind": "town", "maps": [], "region": "johto", "draft": true,
-			"description": "Une vieille ville de bois et de pagodes, gardienne de deux tours et d'une légende."
+			"name": "Rosalia", "kind": "town", "region": "johto",
+			"maps": ["ecruteak_city", "ecruteak_center", "ecruteak_mart", "ecruteak_elders_house", "ecruteak_house_1", "ecruteak_house_2"],
+			"subtitle": "Route 38 — Route 37",
+			"services": [{"id": "pokemon_center", "found_on": "ecruteak_center"}, {"id": "poke_mart", "found_on": "ecruteak_mart"}],
+			"description": "Une ville ancienne, gardée par deux tours."
+		},
+		"route_39": {
+			"name": "Route 39", "kind": "route", "region": "johto", "maps": ["route_39"],
+			"subtitle": "Oliville — Route 38",
+			"description": "Une route de campagne, entre la mer et les prés de la ferme."
+		},
+		"route_38": {
+			"name": "Route 38", "kind": "route", "region": "johto", "maps": ["route_38"],
+			"subtitle": "Route 39 — Rosalia",
+			"description": "Un chemin entre les prés, vers la vieille ville de Rosalia."
 		},
 		"goldenrod_city": {
 			"name": "Doublonville", "kind": "town", "maps": [], "region": "johto", "draft": true,

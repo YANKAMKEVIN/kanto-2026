@@ -1,0 +1,7 @@
+{
+	"sea_cave_1_item_1": {
+		"cell": [7, 10], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "sea_cave_1_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_sea_cave_1_item_1"]
+	}
+}

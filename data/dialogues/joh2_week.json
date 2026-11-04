@@ -1,0 +1,60 @@
+{
+	"week_monday_lucien": {
+		"speaker": "Lucien",
+		"variants": [
+			{
+				"unless": [
+					"week_monday_gift"
+				],
+				"cutscene": "week_monday_gift",
+				"pages": [
+					"Le lundi, je reviens toujours\nau port.",
+					"Tiens, ça porte chance\npour la semaine !"
+				]
+			},
+			{
+				"if": [
+					"week_monday_gift"
+				],
+				"pages": [
+					"À lundi prochain, peut-être !"
+				]
+			}
+		]
+	},
+	"week_monday_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Super Potions !"
+		]
+	},
+	"week_tuesday_margot": {
+		"speaker": "Margot",
+		"variants": [
+			{
+				"unless": [
+					"week_tuesday_gift"
+				],
+				"cutscene": "week_tuesday_gift",
+				"pages": [
+					"Le mardi, je raconte les vieilles\nhistoires de Rosalia.",
+					"Tu as écouté jusqu'au bout ?\nTiens, pour la route."
+				]
+			},
+			{
+				"if": [
+					"week_tuesday_gift"
+				],
+				"pages": [
+					"Reviens un mardi,\nj'en connais d'autres."
+				]
+			}
+		]
+	},
+	"week_tuesday_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 2 Rappels !"
+		]
+	}
+}
