@@ -60,7 +60,8 @@ func test_female_grunts_have_their_own_class() -> void:
 	for id: StringName in _trainers.get_ids():
 		if _trainers.get_trainer(id).battle_class == &"sbire_rocket_f":
 			female += 1
-	assert_eq(female, 11, "11 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+	# JOH8 : + le Sbire W de la Tour Carillon.
+	assert_eq(female, 12, "12 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
 
 
 func test_every_grand_portrait_is_in_the_catalog() -> void:
