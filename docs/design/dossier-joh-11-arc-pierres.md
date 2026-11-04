@@ -6,10 +6,9 @@
 > [`dossier-joh-06-tour-radio.md`](dossier-joh-06-tour-radio.md),
 > [`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md)). Écrit par Claude le 2026-11-04.
 >
-> **Statut : arbitrages JH-61 à JH-79 validés par Kevin le 2026-11-04** (recommandations retenues, §18).
-> **Reste à valider : les textes du §17, en un seul lot.** Valeurs **[D]** = défauts. Grilles et vues
-> peintes après la validation des textes ; aucun
-> code avant. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
+> **Statut : arbitrages JH-61 à JH-79 validés par Kevin le 2026-11-04** (recommandations retenues, §18) ;
+> **textes du §17 validés le 2026-11-05.** Valeurs **[D]** = défauts. Grilles et vues peintes à faire, à
+> valider avant tout code. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
 > les plans de l'arc sont neufs ; seuls les noms de lieux viennent de la région.
 
 ## 0. Décisions de Kevin (2026-11-04)
@@ -445,7 +444,7 @@ Mêmes systèmes que le JOH5 (dossier JOH-06 §7) :
 | Durée de jeu | ≈ 3 h à 4 h (1 h, 1 h, 1 h 30 à 2 h) ; l'acte 1 en fait ≈ 4 h |
 | Découpage | **JOHP0** (Réveil, seul, avec tests de sauvegarde **[D]**), puis JOHP1, JOHP2, JOHP3 ; déplacement du retour d'équipe avec JOHP3, validation seule (règle 1) |
 
-## 17. Textes (à valider en un lot)
+## 17. Textes (lot validé par Kevin le 2026-11-05)
 
 Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms ; *italique* = voix, légende.
 
@@ -548,9 +547,8 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 
 ## 19. Prochaines étapes
 
-1. ~~Kevin répond aux arbitrages~~ (fait le 2026-11-04) ; ~~propagation au cadre et aux dossiers~~ (faite,
-   sauf les textes T- et M- déjà validés, réécrits seulement après le lot du §17, et la roadmap).
-2. Kevin relit les textes du §17 **en un seul lot**.
-3. Grilles dans `tools/plans/`, puis vues générales peintes, validées avant tout code.
-4. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5 : JOHP0 (le Réveil),
+1. ~~Arbitrages~~ (2026-11-04), ~~propagation au cadre et aux dossiers~~, ~~lot de textes~~ (2026-11-05).
+2. Grilles dans `tools/plans/`, puis vues générales peintes, validées avant tout code.
+3. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5 : JOHP0 (le Réveil),
    JOHP1, JOHP2, JOHP3.
+4. Roadmap : à mettre à jour sur accord de Kevin.

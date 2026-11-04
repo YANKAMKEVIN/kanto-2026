@@ -6,16 +6,17 @@
 > le 2026-11-02 ; **textes T-1 à T-38 et arbitrages JH-40 à JH-43 validés par Kevin le jour même**
 > (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
 >
-> **Modifié par l'arc des Pierres** (Kevin, 2026-11-04, JH-61) : l'équipe ne revient plus au bureau. Liste exacte
-> dans [`dossier-joh-11-arc-pierres.md`](dossier-joh-11-arc-pierres.md) §5.1 ; T-21, T-23, T-24, T-26, T-31, T-32, T-34 et §7
-> sont remplacés quand le lot de textes du §17 de ce dossier sera validé. Le JOH5 fusionne tel quel, l'arc le modifie ensuite.
+> **Modifié par l'arc des Pierres** (Kevin, 2026-11-04, JH-61, textes validés) : l'équipe ne revient plus au bureau ;
+> ce dossier est à jour de cette décision. **Le code du JOH5 garde l'ancienne version** (équipe rendue au bureau,
+> anciens T-21 à T-34) jusqu'au JOHP3 : liste des changements dans
+> [`dossier-joh-11-arc-pierres.md`](dossier-joh-11-arc-pierres.md) §5.1.
 
 ## 1. Hors périmètre
 
 - Le sous-sol de la Tour Radio et l'entrepôt souterrain d'Or/Argent, la carte Radio du Pokématos,
   les émissions (Musique Pokémon, Loterie, Professeur Chen à la radio).
 - Le souvenir de Dante (JH-20) : au JOH6. Brace : revient au JOH6 (Acajou, JH-15).
-- Le contenu de l'acte 2 ; ce dossier s'arrête à l'accroche (Orme, sages de Rosalia).
+- La suite ; ce dossier s'arrête à l'accroche de l'arc des Pierres (Orme, légende, dossier JOH-11).
 
 ## 2. Hypothèses d'entrée
 
@@ -36,7 +37,7 @@ par les Sbires) jusqu'à la défaite de Cenere ; ensuite il dessert tous les ét
 | **2F, studios** | Deux studios vitrés, micros, Sbires ; un haut-parleur passe le message de Cenere en boucle |
 | **3F, archives** | Rayonnages ; la **réserve fermée** où sont enfermés les employés, dont **Raphaël**, le mari de la femme de D-37 |
 | **4F, régie** | Pupitres, écrans, câbles au sol ; la dernière ligne de Sbires |
-| **5F, studio de diffusion** | Grand studio vitré sur la ville ; **Cenere** au micro ; le **bureau du directeur** (porte fermée) où sont le directeur ligoté, les **Poké Balls de l'équipe** et le **sac** ; un escalier de secours (par où Cenere s'en va) |
+| **5F, studio de diffusion** | Grand studio vitré sur la ville ; **Cenere** au micro ; le **bureau du directeur** (porte fermée) où sont le directeur ligoté et le papier oublié par Cenere ; un escalier de secours (par où Cenere s'en va) |
 
 Aucune rencontre sauvage dans la Tour.
 
@@ -64,9 +65,9 @@ l'ascenseur sur le modèle du Grand Magasin de Céladopole ; escalier de secours
 | 4 | 3F | 3 Sbires (le gardien de la réserve obligatoire) ; on libère les employés et **Raphaël** | `johto_radio_staff_freed` |
 | 5 | 4F | 3 Sbires (1 obligatoire) | — |
 | 6 | 5F | Cenere au micro (T-15) ; **combat obligatoire** contre **Cenere seule** (JH-41) | `johto_cenere_defeated` |
-| 7 | 5F | **Dante prend l'antenne**, voix seule (T-19) ; les Sbires présents se divisent (JH-43) ; Dante ordonne la retraite, Cenere laisse tout (JH-42) et part | `johto_dante_revealed` |
-| 8 | 5F, bureau | Le directeur, les Poké Balls et le sac : **retour de l'équipe** (§7) ; le directeur offre la **Multi Exp** | `johto_team_returned`, `radio_exp_share_given` ; retire `johto_act1`, `storage_offline` |
-| 9 | 1F | L'Agente garde l'**Ordre de mission** et la **Carte d'accès** comme preuves (§8) ; **Orme** donne l'accroche de l'acte 2 | `johto_act2` |
+| 7 | 5F | **Dante prend l'antenne**, voix seule (T-19) ; les Sbires présents se divisent (JH-43) ; Dante ordonne la retraite, Cenere emporte équipe, sac et relais (JH-61) | `johto_dante_revealed` |
+| 8 | 5F, bureau | Le directeur, le papier ; le directeur offre la **Multi Exp** | `johto_radio_office_done`, `radio_exp_share_given` |
+| 9 | 1F | L'Agente garde l'**Ordre de mission** et la **Carte d'accès** comme preuves (§8) ; **Orme** raconte la légende | `johto_stones_quest` |
 | 10 | Doublonville | Les haut-parleurs reprennent ; Raphaël est rentré chez lui (T-35) | `goldenrod_husband_gift` |
 
 ## 5. Dresseurs **[D]**
@@ -102,24 +103,11 @@ l'ascenseur sur le modèle du Grand Magasin de Céladopole ; escalier de secours
 | Directeur | **Multi Exp** (ou Super Bonbon ×3 si le joueur l'a déjà, JOH0 §10) |
 | Femme de D-37 (après) | Ultra Ball ×3 |
 
-## 7. Le retour de l'équipe (JH-2, JH-3, JH-24)
+## 7. Le retour de l'équipe (déplacé)
 
-Système du JOH0 (§6.4), ici sa mise en scène :
-
-1. **Le bureau** : T-24 à T-26. Les Poké Balls sont sur le bureau, le sac posé à côté.
-2. **Retrouvailles** : le compagnon d'avant le vol sort de sa Ball et saute vers le joueur (T-27),
-   petite animation du compagnon du J11 **[D]**. S'il n'y avait pas de compagnon, le premier de
-   l'équipe confisquée **[D]**.
-3. **Choix des 6** (JH-24) : écran de sélection sur les deux équipes réunies (Johto et confisquée),
-   l'œuf compris s'il n'a pas éclos. Si le total fait **6 ou moins**, pas d'écran : tout le monde
-   reste dans l'équipe **[D]**. Les Pokémon non choisis vont au **Stockage**, qui se reconnecte au
-   même moment (T-29).
-4. **Sacs** : fusion, quantités additionnées, plafond habituel (le surplus est perdu au-delà du
-   plafond ; en pratique jamais atteint) **[D]** (T-30).
-5. **Une seule écriture** de sauvegarde (JOH0 §6.2), puis le directeur parle (T-31, T-32).
-6. **Fin de l'acte 1** : `johto_act1` retiré (fin de l'Exp ×1,5), `storage_offline` retiré, terminal
-   d'échange local rouvert, `johto_team_returned` posé ; à partir de là, **Vol entre régions** et
-   **grotte marine** ouverts (JOH0 §5, JH-18) : le courant de la grotte (O-7) disparaît.
+Déplacé à la fin de l'arc des Pierres (JH-61), à l'Antre du Dragon : dossier JOH-11 §14. Mêmes systèmes
+(JOH0 §6.4, JH-24). `johto_act1` et `storage_offline` restent levés après la Tour ; Vol entre régions et
+grotte marine restent fermés jusque-là.
 
 ## 8. L'Ordre de mission et la Carte d'accès
 
@@ -127,36 +115,31 @@ Système du JOH0 (§6.4), ici sa mise en scène :
 objets clés comme preuves (T-33) ; ils **quittent le Sac** **[D]**. Le « D. » de l'ordre prend son
 sens : « D. comme Dante ».
 
-## 9. L'accroche de l'acte 2
+## 9. L'accroche de l'arc des Pierres
 
 Orme attend au 1F, avec l'Agente (T-34). Il a tout entendu à la radio ; Chen lui a déjà parlé de
-Dante ; les **sages de Rosalia** ont appelé : la Tour Cendrée (JOH6). Le souvenir de Dante (JH-20)
-vient au JOH6.
+Dante. Il lit le papier de Cenere, reconnaît la légende (P-1) et envoie le joueur à Héloïse, aux Ruines
+d'Alpha (JOHP1). Le souvenir de Dante (JH-20) vient au JOH6.
 
 ## 10. Drapeaux **[D]**
 
 `johto_radio_impostor_defeated`, `johto_radio_staff_freed`, `johto_cenere_defeated`,
-`johto_dante_revealed`, `johto_team_returned`, `radio_exp_share_given`, `johto_act2`,
-`goldenrod_husband_gift` ; **retirés** : `johto_act1`, `storage_offline`.
+`johto_dante_revealed`, `johto_radio_office_done`, `radio_exp_share_given`, `johto_stones_quest`,
+`goldenrod_husband_gift`. `johto_team_returned` et `johto_act2` sont posés à la fin de l'arc.
 
 ## 11. Cas limites (à tester)
 
-- **Application tuée** pendant l'écran de sélection : au rechargement, `confiscated` est intact et la
-  scène reprend au bureau (T-24) ; jamais d'équipe perdue (JOH0 §6.5).
 - Défaite contre Cenere : retour au Centre de Doublonville ; étages nettoyés, Cenere toujours au 5F.
 - Le joueur sort de la Tour avant Cenere : les haut-parleurs passent toujours T-1.
-- Total ≤ 6 Pokémon (pas d'écran) ; œuf non éclos au retour (sélectionnable, éclot ensuite) ;
-  compagnon d'avant le vol non retenu dans les 6 (compagnon = premier de l'équipe, JOH0 §6.4).
 - Multi Exp déjà possédée (Super Bonbon ×3).
-- Sauvegarde chargée juste après : Vol vers Kanto proposé, grotte marine franchissable.
+- Sauvegarde chargée juste après : Vol vers Kanto refusé, grotte marine toujours fermée (jusqu'à la fin de l'arc).
 
 ## 12. Validation (sous-jalon JOH5)
 
-- Le retour de l'équipe touche la sauvegarde : **test dédié** (cadre §10), sur une copie de la vraie
-  sauvegarde de Kevin passée par l'acte 1 en scène de test.
-- Tests : ordre faux employé → étages → Cenere → Dante → bureau ; écran des 6 (total ≤ 6, > 6, œuf) ;
-  fusion des sacs ; drapeaux de fin d'acte ; Multi Exp ou Super Bonbons ; preuves remises.
-- Captures : 1F avec le faux employé, 3F réserve, 5F studio (Cenere), écran des 6, bureau.
+- Le test dédié du retour de l'équipe passe au JOHP3 (JOH-11 §16).
+- Tests : ordre faux employé → étages → Cenere → Dante → bureau ; Multi Exp ou Super Bonbons ; preuves
+  remises ; `johto_stones_quest` posé.
+- Captures : 1F avec le faux employé, 3F réserve, 5F studio (Cenere), bureau vide.
 
 ## 13. Art
 
@@ -166,7 +149,7 @@ Personnages neufs : **Cenere** (froide, méthodique, tenue d'admin assortie à B
 existent. **Dante n'apparaît pas** (voix seule, cadre §4.2) : rien à peindre ; à l'écran, le
 haut-parleur et un grésillement **[D]**.
 
-## 14. Textes (lot validé par Kevin le 2026-11-02)
+## 14. Textes (lot validé par Kevin le 2026-11-02 ; T-21, T-23, T-24, T-26, T-31, T-32, T-34 revus et validés le 2026-11-05)
 
 Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms ; *italique* = voix dans les
 haut-parleurs.
@@ -193,20 +176,18 @@ haut-parleurs.
 | T-18 | Cenere, après | Tu crois que ce message était pour Giovanni ? / Écoute. Quelqu'un veut te parler. |
 | T-19 | **Dante**, à l'antenne (haut-parleurs, voix seule) | *Cenere. Coupe ce message, il a fait son travail.* / *Membres de la Team Rocket, écoutez-moi.* / *Vous attendez Giovanni. Giovanni ne viendra pas.* / *Il vous a abandonnés, comme il a abandonné celui qui lui a tout appris.* / *Je m'appelle Dante. Je dirigeais la Team Rocket bien avant lui.* / *C'est moi qui vous ai réunis. C'est moi qui donne les ordres, depuis le début.* |
 | T-20 | **Dante**, au joueur | *Et toi, le Maître de Kanto…* / *Tes Pokémon, à Oliville, c'est moi qui les ai fait prendre.* / *Un champion n'avait rien à faire sur mon chemin.* / *Tu es venu quand même. Bien.* / *Ce qui a brûlé une fois peut brûler encore.* / *Nous nous reverrons quand tout sera cendres.* |
-| T-21 | **Dante**, l'ordre de retraite | *Cenere. Laisse tout. On part.* |
+| T-21 | **Dante**, l'ordre de retraite | *Cenere. Prends tout. On part.* |
 | T-22 | Sbires, après la voix (JH-43) | Sbire 1 : Dante ? C'est qui, ça ? / Sbire 2 : Moi, je suis entré pour Giovanni… Je m'en vais. / Sbire 3 : Un chef qui gagne, c'est un chef. Je le suis. |
-| T-23 | Cenere, départ | Tu as entendu. / Tes Pokémon sont dans le bureau. Garde-les bien. / Ils ne te serviront à rien contre ce qui vient. · *(système)* Cenere s'en va par l'escalier de secours… |
-| T-24 | Système, le bureau | La porte du bureau est ouverte. / Sur la table : des Poké Balls. Et un sac. / Ce sont les tiens ! |
+| T-23 | Cenere, départ | Tu as entendu. / Tes Pokémon étaient dans ce bureau. Étaient. / Un Maître sans son équipe, c'est une variable de moins dans mes calculs. · *(système)* Cenere s'en va par l'escalier de secours, une mallette à la main… |
+| T-24 | Système, le bureau | La porte du bureau est ouverte. / Sur la table, rien. / Juste un papier tombé par terre. |
 | T-25 | Directeur, ligoté | Mmmh ! Mmmh ! · *(système)* {joueur} détache le directeur. |
-| T-26 | Directeur, libéré | Merci ! Ils m'ont enfermé dans mon propre bureau. / Ces Poké Balls… ils les gardaient comme un trésor. Elles sont à toi ? |
-| T-27 | Système, retrouvailles | {pokemon} sort de sa Poké Ball et bondit vers {joueur} ! / {joueur} retrouve son équipe et son sac ! |
-| T-28 | Écran de sélection (JH-24) | Choisis les six Pokémon qui t'accompagnent. / Les autres iront au Stockage. |
-| T-29 | Système, Stockage | Connexion au réseau de Kanto… / … / Connexion rétablie ! Les autres Pokémon sont au Stockage. |
-| T-30 | Système, sac | Les objets de ton ancien sac ont rejoint les nouveaux. |
-| T-31 | Directeur, la Multi Exp | Tu as sauvé la Tour, et toute la radio de Johto. / La Radio de Doublonville t'offre ceci. / Avec, tes nouveaux Pokémon apprendront vite auprès des anciens. · *(système)* {joueur} reçoit une Multi Exp ! · *(déjà possédée)* Tu en as déjà une ? Alors prends ces bonbons. · *(système)* {joueur} reçoit 3 Super Bonbons ! |
-| T-32 | Directeur, après | L'ascenseur remarche. Les émissions reprendront dès ce soir. / Reviens nous voir quand tu veux. |
+| T-26 | Directeur, libéré | Merci ! Ils m'ont enfermé dans mon propre bureau. / Tes Poké Balls ? Elle les a mises dans une mallette, avec ton sac. / Et le relais du réseau de Kanto, aussi. / Elle a laissé tomber ce papier. · *(système)* « Ruines d'Alpha. Irisia. Ébènelle. Réunir les trois pierres. » |
+| T-27 à T-30 | Déplacés à l'Antre du Dragon | Voir P-34 à P-37, dossier JOH-11 §17 |
+| T-31 | Directeur, la Multi Exp | Tu as sauvé la Tour, et toute la radio de Johto. / La Radio de Doublonville t'offre ceci. / Avec, toute ton équipe apprendra à chaque combat. · *(système)* {joueur} reçoit une Multi Exp ! · *(déjà possédée)* Tu en as déjà une ? Alors prends ces bonbons. · *(système)* {joueur} reçoit 3 Super Bonbons ! |
+| T-32 | Directeur, après | L'ascenseur remarche. Les émissions reprendront dès ce soir. / Le réseau de Kanto, lui, restera coupé tant que le relais ne sera pas revenu. / Reviens nous voir quand tu veux. |
 | T-33 | Agente, 1F | C'est toi qui as libéré la Tour ? Bravo. / Ces papiers… un ordre signé « D. ». / D comme Dante, sans doute. Je les garde comme preuves. · *(système)* {joueur} remet l'Ordre de mission et la Carte d'accès. |
-| T-34 | Orme, 1F (accroche de l'acte 2) | {joueur} ! J'ai tout entendu à la radio. / Dante… Chen m'a parlé de lui, un jour. Il le croyait disparu depuis des années. / « Quand tout sera cendres »… Ça ne me plaît pas. / Les sages de Rosalia ont appelé ce matin. Ils veulent te voir. / Je crois que c'est à propos de la Tour Cendrée. |
+| T-34 | Orme, 1F | {joueur} ! J'ai tout entendu à la radio. / Dante… Chen m'a parlé de lui, un jour. Il le croyait disparu depuis des années. / « Quand tout sera cendres »… Ça ne me plaît pas. / Et ils ont emporté ton équipe ? Fais voir ce papier. / … Trois pierres. Je connais cette histoire. |
+| P-1 | Orme, la légende (suite de T-34) | Voir dossier JOH-11 §17 |
 | T-35 | Femme de D-37, après | Mon mari est rentré ! Raphaël m'a tout raconté. / Merci, merci ! Prends ça, ça vient du fond du cœur. · *(système)* {joueur} reçoit 3 Ultra Balls ! · après : Il dort depuis hier soir. Il dit qu'il ne remontera jamais dans le noir. |
 | T-36 | Raphaël, chez lui | La Tour est de nouveau à nous. / Grâce à toi, la radio chante de nouveau. |
 | T-37 | Haut-parleurs de la ville (après) | *Ici Radio Doublonville ! Les programmes reprennent.* / *Et un grand merci à un jeune Dresseur venu de Kanto !* |
