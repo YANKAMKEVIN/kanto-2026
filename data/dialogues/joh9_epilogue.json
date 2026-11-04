@@ -3,41 +3,41 @@
 		"speaker": "Prof. Chen",
 		"pages": [
 			"{player} ! Te voilà rentré !",
-			"Orme m'a tout raconté. Johto\nte doit beaucoup.",
-			"Moi, je savais que tu\nreviendrais. Tu reviens\ntoujours."
+			"Orme m'a tout raconté. Johto te doit\nbeaucoup.",
+			"Moi, je savais que tu reviendrais.\nTu reviens toujours."
 		]
 	},
 	"johto_epilogue_orme": {
 		"speaker": "Prof. Orme",
 		"pages": [
-			"Le Maître de Kanto a sauvé\nJohto. Je l'écrirai dans mon\nprochain livre !",
-			"J'ai quelque chose pour toi.\nJe l'ai trouvé chez un\nantiquaire d'Écorcia.",
-			"Une Balle Verte. Très\nancienne. Les gens de là-bas\ndisent qu'elle appartient au\nBois aux Chênes."
+			"Le Maître de Kanto a sauvé Johto. Je\nl'écrirai dans mon prochain livre !",
+			"J'ai quelque chose pour toi. Je l'ai\ntrouvé chez un antiquaire d'Écorcia.",
+			"Une Balle Verte. Très ancienne. Les\ngens de là-bas disent qu'elle\nappartient au Bois aux Chênes."
 		]
 	},
 	"johto_epilogue_green_ball": {
 		"narration": true,
 		"pages": [
-			"{player} reçoit la Balle Verte\n!"
+			"{player} reçoit la Balle Verte !"
 		]
 	},
 	"johto_epilogue_orme_altar": {
 		"speaker": "Prof. Orme",
 		"pages": [
-			"Pose-la sur l'autel du bois.\nQui sait ce qui viendra ?"
+			"Pose-la sur l'autel du bois. Qui\nsait ce qui viendra ?"
 		]
 	},
 	"johto_epilogue_rival": {
 		"speaker": "{rival}",
 		"pages": [
-			"Grand-père, il reste à manger\n?",
-			"… Ah, {player} est arrivé\navant moi. Je paie le dîner,\nalors."
+			"Grand-père, il reste à manger ?",
+			"… Ah, {player} est arrivé avant moi.\nJe paie le dîner, alors."
 		]
 	},
 	"ilex_altar_green_ball": {
 		"narration": true,
 		"pages": [
-			"{player} pose la Balle Verte\nsur l'autel.",
+			"{player} pose la Balle Verte sur\nl'autel.",
 			"…",
 			"La forêt se tait. Les feuilles\ntremblent."
 		]
@@ -46,7 +46,7 @@
 		"narration": true,
 		"pages": [
 			"Un petit Pokémon vert apparaît\nau-dessus de l'autel !",
-			"Celebi veut jouer avec\n{player} !"
+			"Celebi veut jouer avec {player} !"
 		]
 	}
 }

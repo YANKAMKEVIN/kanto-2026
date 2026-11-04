@@ -4,7 +4,8 @@ extends SceneTree
 ## - `route_22_west` : la **variante `JOH9`** de `tools/plans/route_22_ouest.txt` (JH-8, seule
 ##   retouche de Kanto) : poste de la Route 28 en aplats provisoires (`FlagGate` Joh9Poste, cases Q
 ##   **occupées** et non solides : la grille de base du J29 reste exacte, `test_j29_maps`), porte
-##   neuve (2, 10) STEP_ON ← vers `route_28_gate` / `from_route_22`, arrivée `from_route_28_gate`
+##   neuve (2, 10) : déclencheur ← (scène `route_22_route_28_door` → `route_28_gate` /
+##   `from_route_22`), arrivée `from_route_28_gate`
 ##   (3, 10) ; tout n'existe qu'**avec `johto_arrived`** [D] (le Chapitre Johto commencé) ;
 ## - `oak_lab` : déclencheur de l'épilogue (7, 8), en montant depuis la porte → `johto_epilogue`
 ##   (JH-60 ; la scène ne se joue qu'avec `johto_giovanni_seen` + `johto_rival_final_done`, une fois).
@@ -16,7 +17,6 @@ extends SceneTree
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const MAPS_DIR: String = "res://game/world/maps/"
 const TILE: int = 96
-const STEP_ON: int = 0
 ## Drapeau d'activation de la variante [D].
 const VARIANT_FLAG: StringName = &"johto_arrived"
 const COLOR_WALL := Color(0.58, 0.52, 0.46)
@@ -41,7 +41,7 @@ func _route_22_west() -> void:
 	var root := _open(&"route_22_west")
 	if root == null:
 		return
-	for path: NodePath in [^"Entities/Joh9Poste", ^"Warps/Joh9PorteRoute28",
+	for path: NodePath in [^"Entities/Joh9Poste", ^"Warps/Joh9PorteRoute28", ^"Triggers/Joh9PorteRoute28",
 			^"Spawns/from_route_28_gate"]:
 		var old := root.get_node_or_null(path)
 		if old != null:
@@ -79,19 +79,17 @@ func _route_22_west() -> void:
 	var door_x := float((door.x - min_cell.x) * TILE)
 	var door_y := float((door.y - max_cell.y) * TILE)
 	_rect(root, gate, Rect2(door_x + TILE - 26, door_y - 84, 22, 76), COLOR_DOOR)
-	var warp := Marker2D.new()
-	warp.set_script(load("res://game/world/warp_point.gd"))
-	warp.name = "Joh9PorteRoute28"
-	warp.position = _world(door)
-	warp.set(&"trigger", STEP_ON)
-	warp.set(&"direction", Vector2i.LEFT)
-	warp.set(&"target_map", &"route_28_gate")
-	warp.set(&"target_spawn", &"from_route_22")
-	warp.set(&"arrival_facing", Vector2i.UP)
-	warp.set(&"coming_soon", "")
-	warp.set(&"if_flags", if_flags)
-	warp.set(&"unless_flags", none)
-	_attach(root, root.get_node(^"Warps"), warp)
+	# Porte neuve : un déclencheur (pas un passage) vers la gauche, scène `route_22_route_28_door`
+	# (`change_map` avec `johto_arrived`) : la liste des passages du J29 reste celle de sa grille
+	# (`test_j29_maps`).
+	var door_trigger := Marker2D.new()
+	door_trigger.set_script(load("res://game/world/triggers/event_trigger_point.gd"))
+	door_trigger.name = "Joh9PorteRoute28"
+	door_trigger.position = _world(door)
+	door_trigger.set(&"size", Vector2i.ONE)
+	door_trigger.set(&"direction", Vector2i.LEFT)
+	door_trigger.set(&"cutscene_id", &"route_22_route_28_door")
+	_attach(root, root.get_node(^"Triggers"), door_trigger)
 	var spawn := Marker2D.new()
 	spawn.name = "from_route_28_gate"
 	spawn.position = _world(arrival)

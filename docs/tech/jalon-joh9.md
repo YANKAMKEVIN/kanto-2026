@@ -90,14 +90,73 @@ Ordre du dossier §4 : `johto_rival_relay` (extérieur) → `johto_rival_healed`
 
 ## 3. Tâches
 
-(tenues à jour au §8 « Fait »)
+| N° | Tâche | État |
+|---|---|---|
+| T1 | `tools/gen_joh9_data.py` : PNJ, Dresseurs (`data/trainers/joh9.json`), textes `joh9_*` A-1 à A-54 mot pour mot, scènes, rencontres | fait |
+| T2 | `tools/build_joh9_maps.gd` : 7 cartes depuis les grilles (neige, lac surfable, rochers de Force, échelles, mer de nuages, Vol interdit au sommet) | fait |
+| T3 | `build_painted_interiors.gd --joh9` : Centre du Mont Argenté (Centre + marchand), poste de la Route 28, maison du gardien | fait |
+| T4 | Zones (`silver_trail`, `mt_silver`, `mt_silver_summit`, `route_28`), point de Vol, point de repos, grottes (`mt_silver`, `mt_silver_dark` : voile), lumière, musique, décors de combat, Boutique | fait |
+| T5 | Scènes : relais, rival du 2F (soin), sommet (Dante, Giovanni, Cenere, sauvegarde, rival ; reprises), A-22 | fait |
+| T6 | Poste de la Route 28 (A-48, porte verrouillée, A-47) ; variante `JOH9` de la Route 22 (`tools/build_joh9_route22.gd`) | fait |
+| T7 | Épilogue au labo (déclencheur posé par `build_joh9_route22.gd`), Balle Verte (`items_joh9.json`), générique nommé `"credits": "johto"` (`data/story/credits_johto.json`, bloc « image ») | fait |
+| T8 | Celebi (A-53, A-54, scène `ilex_altar_celebi`) : branchée sur l'autel du JOH4 à sa fusion | données faites ; branchement à la fusion du JOH4 |
+| T9 | Départs de débogage `johto_mt_silver*`, `johto_route_28`, `johto_epilogue`, `johto_after_chapter` (`tools/gen_joh9_debug_starts.py`) | fait |
+| T10 | Tests `test_joh9_data`, `test_joh9_maps` ; inventaires partagés réalignés après la fusion de JOH1 et JOH2 | en cours |
+| T11 | Captures Mac (`tools/capture_joh9.sh`) | en cours |
+| T12 | QA A17 | à faire |
+| T13 | CI verte, fusion dans `main` | à faire |
+
+## 4. Systèmes touchés (ajouts, rien de retiré)
+
+- `CaveLibrary` + `FlashDirector` : clés facultatives `warn_dialogue` et `flash_cue` d'une grotte
+  (A-16, A-17 propres au 2F ; la Grotte Sombre garde les siens).
+- Étape `credits` : `true` (Kanto, inchangé) ou un nom (`"johto"` → `data/story/credits_johto.json`) ;
+  `CutsceneDirector.credits_id`, `Boot._play_named_credits` ; `CreditsData` : bloc `image`, rangée
+  `IMAGE` ; drapeau `johto_credits_seen` (générique passable ensuite).
+- `npc.gd`, `player.gd` : correctif du JOH2 (autoload résolu à l'exécution) repris tel quel.
 
 ## 6. Valeurs par défaut [D]
 
-(remplies pendant le code)
+- Tuiles provisoires : neige `n` = SAND + voile blanc ; grotte sur `OverworldTiles` (DIRT, RUBBLE,
+  CLIFF, WATER) ; mer de nuages = aplat blanc ; échelles en aplats ; Centre `bldg_centre_01`, poste
+  `bldg_poste_route_22_01`, maison du gardien `bldg_maison_argenta_01`.
+- Lumière : extérieurs `johto_auto`, grottes `cave_1f`.
+- Sprites : Dante `gentleman`, Brace et Sbires `rocket_grunt_m`, Cenere `rocket_grunt_f`, Orme
+  `researcher`, rival `rival` (tenue d'hiver : art), Montagnards `mountaineer`, Karatéka
+  `blackbelt`, Topdresseurs `cooltrainer_m/f`, gardien `old_man`.
+- Prix par niveau : Montagnard, Karatéka 36 ; Topdresseur(se) 60 ; Sbires 32 ; Dante et rival 99.
+- IA `smart` + changement de Pokémon pour Dante et le rival ; rival final sans attaques imposées
+  (attaques de niveau).
+- Drapeaux de travail : `johto_summit_reached` (A-23/A-26 à A-28 une fois, A-25 ensuite),
+  `johto_rival_final_met` (A-40/A-41 une fois, A-45 ensuite), `johto_green_ball_received`,
+  `johto_mt_silver_wind_seen` (A-22 une fois, déclencheur (12, 12..13) vers l'ouest).
+- Vol et Téléport interdits au sommet **en permanence** (le dossier : entre Dante et le rival ;
+  la scène enchaîne tout, on redescend par l'échelle).
+- Variante de la Route 22 active avec `johto_arrived` ; cases Q occupées (FlagGate), pas solides.
+- Rocher du 1F : texte d'EXAMINER = texte commun de Force (« Un gros rocher. Il pourrait être
+  déplacé. ») ; A-15 n'est pas repris (même sens, un seul texte système de Force).
+- Rival du relais : arrive en courant par le chemin depuis (19, 22) ; le joueur monte seul jusqu'à
+  (19, 7), A-13, puis la grotte. Rival du 2F : arrive par la galerie est, repart vers l'échelle.
+- Sommet : le joueur affronte Dante depuis (10, 8), recule de deux cases avant Cenere (10, 8) ; le
+  rival se poste en (14, 8) ; sauvegarde (`save`) juste avant l'arrivée du rival.
+- Garde du poste : A-48 (avant), texte [D] après l'ouverture ; « La porte est verrouillée. » [D] côté
+  Johto ; gardien de la Route 28 [D] ; Topdresseur Jules [D] (textes absents du dossier, `draft`).
+- Épilogue : Orme en (9, 5), le joueur en (8, 5) face à Chen, le rival à la porte (7, 9).
+- Générique de Johto : 9 vues peintes réduites (800 px, `assets/ui/credits/`), noms de lieux [D]
+  (`draft`), équipe du moment ; les légendaires ne sont pas listés un à un.
+- Celebi niv. 60, `wild_battle` avec `catch` = `johto_celebi_done` : K.O. ou fuite → il revient.
+- Boutique du Centre : Hyper Ball, Super Ball, Guérison, Potion Max, Hyper Potion, Total Soin,
+  Rappel, Max Repousse.
+- Musique : sentier `road_to_lavender`, grotte `mt_moon`, sommet `final_road`, Route 28
+  `pokemon_road` ; Dante `gym_leader`, rival `rival_final` (HeartGold / SoulSilver au lot Son).
 
 ## 8. Fait
 
 ### T0 — plan et branche (2026-11-04)
 
 Plan écrit ; branche `claude/joh9-mont-argente-f6ee3a`.
+
+### T1 à T9 (2026-11-04)
+
+Voir §3. Tests `test_joh9_data` (13) et `test_joh9_maps` (9) verts. Scènes jouées sur le Mac
+(captures `build/captures/joh9/`).

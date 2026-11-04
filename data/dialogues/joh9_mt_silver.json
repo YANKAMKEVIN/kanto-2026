@@ -2,7 +2,7 @@
 	"mt_silver_1f_grunt_x_before": {
 		"speaker": "Sbire",
 		"pages": [
-			"Quelqu'un est passé ?\nImpossible !"
+			"Quelqu'un est passé ? Impossible !"
 		]
 	},
 	"mt_silver_1f_grunt_x_defeated": {
@@ -14,13 +14,13 @@
 	"mt_silver_1f_grunt_x_after": {
 		"speaker": "Sbire",
 		"pages": [
-			"Ton copain, en bas, il est\nfou."
+			"Ton copain, en bas, il est fou."
 		]
 	},
 	"mt_silver_1f_grunt_y_before": {
 		"speaker": "Sbire",
 		"pages": [
-			"Je me suis glissé derrière\ntoi. Le patron saura que je\nsuis fidèle !"
+			"Je me suis glissé derrière toi. Le\npatron saura que je suis fidèle !"
 		]
 	},
 	"mt_silver_1f_grunt_y_defeated": {
@@ -32,7 +32,7 @@
 	"mt_silver_1f_grunt_y_after": {
 		"speaker": "Sbire",
 		"pages": [
-			"Va. Il t'attend, de toute\nfaçon."
+			"Va. Il t'attend, de toute façon."
 		]
 	},
 	"mt_silver_3f_hiker_lucas_before": {
@@ -50,27 +50,27 @@
 	"mt_silver_3f_hiker_lucas_after": {
 		"speaker": "Montagnard Lucas",
 		"pages": [
-			"Au sommet, il y a déjà deux\nhommes. Je n'ose pas monter."
+			"Au sommet, il y a déjà deux hommes.\nJe n'ose pas monter."
 		]
 	},
 	"mt_silver_brace_block": {
 		"speaker": "Brace",
 		"pages": [
 			"Le revoilà, le gamin !",
-			"Cette fois, tu ne passes pas.\nLe patron finit son œuvre\nlà-haut."
+			"Cette fois, tu ne passes pas. Le\npatron finit son œuvre là-haut."
 		]
 	},
 	"mt_silver_cenere_block": {
 		"speaker": "Cenere",
 		"pages": [
-			"Six contre un. J'ai refait le\ncalcul trois fois.",
+			"Six contre un. J'ai refait le calcul\ntrois fois.",
 			"Tu ne passeras pas."
 		]
 	},
 	"mt_silver_rival_offscreen": {
 		"speaker": "{rival}",
 		"pages": [
-			"Six contre un ? Refais ton\ncalcul."
+			"Six contre un ? Refais ton calcul."
 		]
 	},
 	"mt_silver_rival_arrives": {
@@ -82,9 +82,9 @@
 	"mt_silver_rival_relay": {
 		"speaker": "{rival}",
 		"pages": [
-			"Chen m'a tout raconté. La\nradio, le vol, la tour.",
-			"Ne me regarde pas comme ça. Je\nne fais pas ça pour toi.",
-			"Je fais ça parce que personne\nne vole l'équipe du Maître de\nKanto. Personne, à part moi,\nun jour."
+			"Chen m'a tout raconté. La radio, le\nvol, la tour.",
+			"Ne me regarde pas comme ça. Je ne\nfais pas ça pour toi.",
+			"Je fais ça parce que personne ne\nvole l'équipe du Maître de Kanto.\nPersonne, à part moi, un jour."
 		]
 	},
 	"mt_silver_rival_to_admins": {
@@ -131,7 +131,7 @@
 		"narration": true,
 		"pages": [
 			"{player} entre dans la grotte.",
-			"Derrière, on entend les cris\ndes Pokémon…"
+			"Derrière, on entend les cris des\nPokémon…"
 		]
 	},
 	"mt_silver_boulder": {
@@ -143,7 +143,7 @@
 	"mt_silver_2f_dark": {
 		"narration": true,
 		"pages": [
-			"Il fait noir comme dans un\nfour."
+			"Il fait noir comme dans un four."
 		]
 	},
 	"mt_silver_2f_footsteps": {
@@ -158,7 +158,7 @@
 		"pages": [
 			"Pff… Pff… Tu marches vite.",
 			"L'impétueux, je l'ai coincé.\nL'Agente arrive pour lui.",
-			"La froide a filé. Elle monte,\nelle aussi. Fais attention."
+			"La froide a filé. Elle monte, elle\naussi. Fais attention."
 		]
 	},
 	"mt_silver_2f_rival_heal": {
@@ -166,19 +166,19 @@
 		"heal": true,
 		"pages": [
 			"Tes Pokémon sont dans un état…\nTiens.",
-			"Je ne veux pas que tu perdes\navant notre combat."
+			"Je ne veux pas que tu perdes avant\nnotre combat."
 		]
 	},
 	"mt_silver_2f_healed": {
 		"narration": true,
 		"pages": [
-			"L'équipe de {player} est\nsoignée."
+			"L'équipe de {player} est soignée."
 		]
 	},
 	"mt_silver_2f_rival_leaves": {
 		"speaker": "{rival}",
 		"pages": [
-			"Je redescends surveiller\nl'entrée. Ne t'avise pas de\ntomber."
+			"Je redescends surveiller l'entrée.\nNe t'avise pas de tomber."
 		]
 	},
 	"mt_silver_3f_wind": {

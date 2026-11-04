@@ -42,7 +42,7 @@ GREEN_BALL = "johto_green_ball_received"     # [D] : la Balle Verte reçue (A-50
 WIND = "johto_mt_silver_wind_seen"           # [D] : A-22 une fois (entrée de la salle du vent)
 
 
-def wrap(text, width=30):
+def wrap(text, width=36):
 	"""Bulle → lignes d'au plus [width] caractères (retours « \\n », comme le JOH2)."""
 	words = text.split(" ")
 	lines = []
@@ -485,8 +485,8 @@ def epilogue_scene():
 	"""JH-60, A-49 à A-51 : à l'entrée du labo de Chen, une fois ; Orme en visite, la Balle Verte,
 	le rival passe la tête à la porte, petit générique de Johto, sauvegarde."""
 	return {"variants": [{"if": [GIOVANNI, RIVAL_DONE], "unless": [CHAPTER], "steps": [
-		{"spawn": "orme", "sprite": "researcher", "cell": [6, 3], "facing": "down"},
-		{"move": "player", "to": [5, 5]},
+		{"spawn": "orme", "sprite": "researcher", "cell": [9, 5], "facing": "left"},
+		{"move": "player", "to": [8, 5]},
 		{"face": "player", "to": "up"},
 		{"face": "oak", "to": "player"},
 		{"dialogue": "johto_epilogue_chen"},
@@ -495,8 +495,7 @@ def epilogue_scene():
 		{"give": "green_ball", "count": 1, "set": [GREEN_BALL]},
 		{"dialogue": "johto_epilogue_green_ball"},
 		{"dialogue": "johto_epilogue_orme_altar"},
-		{"spawn": "rival_epilogue", "sprite": "rival", "cell": [5, 10], "facing": "up"},
-		{"move": "rival_epilogue", "to": [5, 9]},
+		{"spawn": "rival_epilogue", "sprite": "rival", "cell": [7, 9], "facing": "up"},
 		{"face": "player", "to": "rival_epilogue"},
 		{"dialogue": "johto_epilogue_rival"},
 		{"set": [CHAPTER]},
@@ -703,6 +702,9 @@ def main():
 	south = guard_back_scene("", "route_28_gate_locked", "up", [RIVAL_DONE])
 	south["variants"].append(gate_scene()["variants"][0])
 	cut["route_28_gate_south"] = south
+	# Porte neuve de la Route 22 (variante JOH9, côté Kanto) : vers le poste, avec `johto_arrived`.
+	cut["route_22_route_28_door"] = {"variants": [{"if": ["johto_arrived"], "steps": [
+		{"change_map": "route_28_gate", "at": "from_route_22", "facing": "up"}]}]}
 	npcs["route_28_house"] = {"gardien": {"cell": [12, 6], "facing": "left", "sprite": "old_man",
 		"dialogue": "route_28_house_gardien"}}
 	dlg["route_28_house_gardien"] = dialogue("Gardien", DRAFTS["route_28_house_gardien"], True)

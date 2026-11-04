@@ -14,15 +14,15 @@
 						"spawn": "orme",
 						"sprite": "researcher",
 						"cell": [
-							6,
-							3
+							9,
+							5
 						],
-						"facing": "down"
+						"facing": "left"
 					},
 					{
 						"move": "player",
 						"to": [
-							5,
+							8,
 							5
 						]
 					},
@@ -61,17 +61,10 @@
 						"spawn": "rival_epilogue",
 						"sprite": "rival",
 						"cell": [
-							5,
-							10
+							7,
+							9
 						],
 						"facing": "up"
-					},
-					{
-						"move": "rival_epilogue",
-						"to": [
-							5,
-							9
-						]
 					},
 					{
 						"face": "player",

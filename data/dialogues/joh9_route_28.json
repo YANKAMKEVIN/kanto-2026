@@ -3,7 +3,7 @@
 		"speaker": "Topdresseur Jules",
 		"draft": true,
 		"pages": [
-			"Le col de la Route 28 ne\nlaisse passer que les\nmeilleurs."
+			"Le col de la Route 28 ne laisse\npasser que les meilleurs."
 		]
 	},
 	"route_28_topdresseur_jules_defeated": {
@@ -17,7 +17,7 @@
 		"speaker": "Topdresseur Jules",
 		"draft": true,
 		"pages": [
-			"Kanto est tout près, à\nl'ouest. On ne dirait pas,\nhein ?"
+			"Kanto est tout près, à l'ouest. On\nne dirait pas, hein ?"
 		]
 	},
 	"route_28_gate_guard": {
@@ -30,7 +30,7 @@
 				"draft": true,
 				"pages": [
 					"Le col est rouvert.",
-					"Bonne route, de part et\nd'autre."
+					"Bonne route, de part et d'autre."
 				]
 			},
 			{
@@ -38,13 +38,13 @@
 					"johto_rival_final_done"
 				],
 				"pages": [
-					"Le col vers le Mont Argenté\nest fermé.",
+					"Le col vers le Mont Argenté est\nfermé.",
 					"Trop dangereux."
 				]
 			},
 			{
 				"pages": [
-					"Le col vers le Mont Argenté\nest fermé.",
+					"Le col vers le Mont Argenté est\nfermé.",
 					"Trop dangereux."
 				]
 			}
@@ -53,7 +53,7 @@
 	"route_28_gate_check": {
 		"speaker": "Garde",
 		"pages": [
-			"Le col vers le Mont Argenté\nest fermé.",
+			"Le col vers le Mont Argenté est\nfermé.",
 			"Trop dangereux."
 		]
 	},
@@ -68,15 +68,15 @@
 		"narration": true,
 		"pages": [
 			"La porte s'ouvre.",
-			"Devant {player}, la Route 22.\nKanto !"
+			"Devant {player}, la Route 22. Kanto\n!"
 		]
 	},
 	"route_28_house_gardien": {
 		"speaker": "Gardien",
 		"draft": true,
 		"pages": [
-			"Je garde ce col depuis trente\nans.",
-			"Les Dresseurs qui en\nreviennent ne sont jamais tout\nà fait les mêmes."
+			"Je garde ce col depuis trente ans.",
+			"Les Dresseurs qui en reviennent ne\nsont jamais tout à fait les mêmes."
 		]
 	}
 }

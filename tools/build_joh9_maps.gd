@@ -122,7 +122,7 @@ const FACINGS: Dictionary = {"up": Vector2i.UP, "down": Vector2i.DOWN, "left": V
 const COLOR_LADDER := Color(0.55, 0.38, 0.2)
 const COLOR_LADDER_RUNG := Color(0.3, 0.2, 0.1)
 const COLOR_CLOUDS := Color(0.94, 0.95, 0.98, 0.92)
-const COLOR_SNOW := Color(1.0, 1.0, 1.0, 0.35)
+const COLOR_SNOW := Color(0.96, 0.97, 1.0, 0.8)
 
 var _over: GDScript
 var _rules: GDScript
@@ -530,7 +530,6 @@ func _add_snow(spec: Dictionary, plan: Object, root: Node) -> void:
 		return
 	var layer := Node2D.new()
 	layer.name = "Neige"
-	layer.z_index = -1
 	_attach(root, root.get_node(^"Decor"), layer)
 	for cell: Vector2i in cells:
 		_rect(root, layer, Rect2(cell.x * TILE, cell.y * TILE, TILE, TILE), COLOR_SNOW)
