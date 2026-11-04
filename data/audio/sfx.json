@@ -1075,7 +1075,7 @@
 	},
 	"cries": {
 		"path_format": "res://assets/audio/cries/%d.ogg",
-		"count": 151,
+		"count": 251,
 		"bus": "Cries",
 		"volume_db": 0.0,
 		"faint_pitch": 0.8,

@@ -36,8 +36,10 @@ const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
 ## QA A17 du J30 : Roucarnage du rival tournait le dos) : retournés côté adversaire. Relevé refait
 ## sur les 151 en grand le 2026-10-27 (Kevin : « aucun Pokémon adverse ne doit regarder vers la
 ## droite ») : + 6, 96, 100, 104, 125, 131, 148 ; − 21, 55, 58, 83 (déjà tournés vers la gauche).
+## Johto (art des Pokémon de Johto, 2026-11-04, planche des 51) : Méganium, Héricendre, Wattouat,
+## Porygon2, Ho-Oh.
 const FACING_RIGHT: Array[int] = [2, 6, 9, 10, 18, 28, 30, 38, 53, 78, 96, 100, 104, 106, 118,
-	125, 131, 146, 147, 148]
+	125, 131, 146, 147, 148, 154, 155, 179, 233, 250]
 
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}
@@ -205,5 +207,5 @@ func _dex_data() -> PokedexLibrary:
 		return _dex
 	if _shared_dex == null:
 		_shared_dex = PokedexLibrary.new()
-		_shared_dex.load_file()
+		_shared_dex.load_dir()
 	return _shared_dex

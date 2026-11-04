@@ -41,7 +41,7 @@ func test_right_facing_artwork_is_flipped_toward_the_player() -> void:
 	assert_eq(box.position.y, unflipped.position.y)
 	assert_false(_art.image(&"pidgeot", true).get("flip", false), "dos : jamais retourné")
 	for number: int in BattleArt.FACING_RIGHT:
-		assert_between(number, 1, 151)
+		assert_between(number, 1, PokedexArt.COUNT)
 
 
 func test_player_side_keeps_the_placeholder_back() -> void:
@@ -128,7 +128,7 @@ func test_every_species_fits_the_framing() -> void:
 	var data := PokemonData.new()
 	data.load_dir()
 	var dex := PokedexLibrary.new()
-	dex.load_file()
+	dex.load_dir()
 	_art.setup(data, dex)
 	for species: StringName in dex.get_species_ids():
 		for back: bool in [true, false]:
