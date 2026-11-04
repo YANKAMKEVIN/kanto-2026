@@ -557,3 +557,11 @@ fin des trois profils en phase DA. **À Kevin** : T5 (validation de la v10 seule
 sa vraie sauvegarde), puis le lot B–D sur le téléphone (`jalon-joh0.md` §4, critères 6 à 13).
 CI : voir `etat-projet.md`. Prompt de reprise du JOH1 : `etat-projet.md`, entrée du 2026-11-03.
 
+### CI (2026-11-04)
+Trois passages : `b6b7468e` rouge (tests d'inventaire des données à réaligner : dialogues et
+scènes du JOH0 en brouillon et déclarés, Carte par région, kinds, jetons, évolutions de Leveinard
+et Insécateur), `0cf93128` rouge (tous les tests verts mais plantage glibc à la sortie de chaque
+lot : `Callable` statique `Evolution.period_source` vers Boot), **`3e6fa8d0` verte** (run
+41744538560, 8 lots « success »). Icônes provisoires des quatre objets d'évolution ajoutées en
+passant (test de couverture des icônes).
+
