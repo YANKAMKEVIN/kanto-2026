@@ -82,6 +82,8 @@ const TEXTS: Dictionary = {
 }
 const SIGNS: Array[String] = ["route_40/panneau", "route_41/panneau_route", "route_41/panneau_iles"]
 const WHIRLPOOL_DIALOGUE: StringName = &"whirlpool_examine"
+const CURRENT_DIALOGUE: StringName = &"whirl_current"
+const CURRENT_GATED_DIALOGUE: StringName = &"whirl_b2f_current_examine"
 ## Déclencheurs : « carte/position » → [scène, direction du pas (ZERO = toutes)].
 const TRIGGERS: Dictionary = {
 	"whirl_islands_b1f/scene_suicune": [&"whirl_suicune_seen", Vector2i.ZERO],
@@ -93,6 +95,8 @@ const TRIGGERS: Dictionary = {
 ## Déclencheurs hors grille [D] : la crique s'ouvre aussi par le sud (rangée 26) ; même scène.
 const EXTRA_TRIGGERS: Dictionary = {
 	&"whirl_islands_b1f": {"SceneCriqueSud": [Rect2i(1, 25, 6, 1), &"whirl_cove", Vector2i.UP]},
+	# M-22 : premier pas sur la corniche sous l'échelle d'arrivée (toutes directions).
+	&"whirl_islands_b2f": {"SceneCoeur": [Rect2i(1, 4, 4, 1), &"whirl_b2f_heart", Vector2i.ZERO]},
 }
 ## Arrivées de débogage [D] (départs `tools/debug_start/johto_whirl_*.json`).
 const DEBUG_SPAWNS: Dictionary = {
@@ -177,6 +181,7 @@ func _build(map_id: StringName) -> void:
 	_warps(root, plan, map_id)
 	_texts(root, plan, map_id, blocked)
 	_triggers(root, plan, map_id)
+	_current_examines(root, plan, map_id)
 	if not whirlpools.is_empty():
 		_whirlpools(root, whirlpools)
 	if not falls.is_empty():
@@ -306,6 +311,24 @@ func _triggers(root: Node, plan: Object, map_id: StringName) -> void:
 	for node_name: String in extra:
 		var spec: Array = extra[node_name]
 		_trigger(root, node_name, spec[0], spec[2], spec[1])
+
+
+## Examen des courants (M-11 « Le courant emporte {player} ! ») sur chaque case de courant
+## permanente ; le courant violent du B1F (position à drapeau) dit M-20 / M-21.
+func _current_examines(root: Node, plan: Object, map_id: StringName) -> void:
+	var gated: Dictionary = {}
+	for id: String in _ids(plan, "courant"):
+		if plan.attr(id, "actif_sans").is_empty():
+			continue
+		for cell: Vector2i in plan.cells_at(id):
+			gated[cell] = true
+			_interact(root, "ExamenCourantViolent%d_%d" % [cell.x, cell.y], cell, Vector2i.ONE,
+				Vector2i.ZERO, CURRENT_GATED_DIALOGUE)
+	for c: String in CURRENTS:
+		for cell: Vector2i in plan.cells_of(c):
+			if not gated.has(cell):
+				_interact(root, "ExamenCourant%d_%d" % [cell.x, cell.y], cell, Vector2i.ONE,
+					Vector2i.ZERO, CURRENT_DIALOGUE)
 
 
 ## Tourbillons : dessin animé et examen M-4 par rangée ou colonne continue de tourbillons.

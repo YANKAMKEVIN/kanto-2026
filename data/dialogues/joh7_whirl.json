@@ -142,37 +142,37 @@
 		"cutscene": "route_41_item_1"
 	},
 	"whirl_islands_grunt_t_before": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Cenere a dit : personne ne descend !"
 		]
 	},
 	"whirl_islands_grunt_t_defeated": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Elle avait tout calculé, sauf toi."
 		]
 	},
 	"whirl_islands_grunt_t_after": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Elle est déjà en bas."
 		]
 	},
 	"whirl_islands_grunt_u_before": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Pour Dante ! Tu ne passes pas !"
 		]
 	},
 	"whirl_islands_grunt_u_defeated": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"… Pour Dante…"
 		]
 	},
 	"whirl_islands_grunt_u_after": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Le bleu court plus vite que nous. Mais Cenere a un plan."
 		]
@@ -291,6 +291,12 @@
 			"Lugia replonge dans le bassin et disparaît."
 		]
 	},
+	"whirl_b2f_heart": {
+		"narration": true,
+		"pages": [
+			"Le cœur des îles, où la mer tombe en cascade."
+		]
+	},
 	"whirl_dragon_scale_found": {
 		"narration": true,
 		"pages": [
@@ -346,6 +352,26 @@
 		"pages": [
 			"Le courant s'est apaisé.",
 			"On entend une cascade, tout en bas."
+		]
+	},
+	"whirl_b2f_current_examine": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_suicune_done"
+				],
+				"pages": [
+					"Un courant violent remonte de l'escalier.",
+					"Impossible de descendre."
+				]
+			},
+			{
+				"pages": [
+					"Le courant s'est apaisé.",
+					"On entend une cascade, tout en bas."
+				]
+			}
 		]
 	},
 	"whirl_cove": {

@@ -361,6 +361,22 @@
 			],
 			"description": "Une ville portuaire au pied de son vieux phare."
 		},
+		"route_40": {
+			"name": "Route 40", "kind": "route", "maps": ["route_40"], "region": "johto",
+			"subtitle": "Oliville — Route 41",
+			"description": "Une route marine, au sud d'Oliville."
+		},
+		"route_41": {
+			"name": "Route 41", "kind": "route", "maps": ["route_41"], "region": "johto",
+			"subtitle": "Route 40 — Îles Tourbillon",
+			"description": "La haute mer, autour des Îles Tourbillon."
+		},
+		"whirl_islands": {
+			"name": "Îles Tourbillon", "kind": "place",
+			"maps": ["whirl_islands_1f", "whirl_islands_b1f", "whirl_islands_b2f"], "region": "johto",
+			"subtitle": "Route 41",
+			"description": "Des grottes battues par la mer, où l'eau tourne sans fin."
+		},
 		"ecruteak_city": {
 			"name": "Rosalia", "kind": "town", "maps": [], "region": "johto", "draft": true,
 			"description": "Une vieille ville de bois et de pagodes, gardienne de deux tours et d'une légende."

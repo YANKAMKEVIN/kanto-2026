@@ -169,6 +169,25 @@
 			}
 		]
 	},
+	"whirl_b2f_heart": {
+		"variants": [
+			{
+				"unless": [
+					"johto_whirl_b2f_seen"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_whirl_b2f_seen"
+						]
+					},
+					{
+						"dialogue": "whirl_b2f_heart"
+					}
+				]
+			}
+		]
+	},
 	"whirl_cenere": {
 		"next": "whirl_suicune_battle",
 		"variants": [

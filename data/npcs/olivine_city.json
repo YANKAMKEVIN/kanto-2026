@@ -1,10 +1,43 @@
 {
 	"garde_est": {
-		"cell": [47, 21], "facing": "left", "sprite": "guard", "dialogue": "olivine_guard",
-		"moved": { "cell": [47, 19], "facing": "down", "if": ["johto_starter_chosen"] }
+		"cell": [
+			47,
+			21
+		],
+		"facing": "left",
+		"sprite": "guard",
+		"dialogue": "olivine_guard",
+		"moved": {
+			"cell": [
+				47,
+				19
+			],
+			"facing": "down",
+			"if": [
+				"johto_starter_chosen"
+			]
+		}
 	},
 	"marin_port": {
-		"cell": [33, 33], "facing": "down", "sprite": "sailor", "dialogue": "olivine_sailor",
-		"if_period": ["day", "night"]
+		"cell": [
+			33,
+			33
+		],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "olivine_sailor",
+		"if_period": [
+			"day",
+			"night"
+		]
+	},
+	"marin_plage": {
+		"cell": [
+			18,
+			32
+		],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "olivine_beach_sailor"
 	}
 }

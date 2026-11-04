@@ -1,6 +1,37 @@
 {
 	"enfant": {
-		"cell": [4, 5], "facing": "down", "sprite": "kid", "dialogue": "olivine_kid",
-		"if_period": ["morning", "day"]
+		"cell": [
+			4,
+			5
+		],
+		"facing": "down",
+		"sprite": "kid",
+		"dialogue": "olivine_kid",
+		"if_period": [
+			"morning",
+			"day"
+		],
+		"unless": [
+			"johto_lugia_done"
+		]
+	},
+	"enfant_joh7": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "down",
+		"sprite": "kid",
+		"dialogue": "olivine_kid_sea",
+		"if_period": [
+			"morning",
+			"day"
+		],
+		"unless": [
+			"johto_lugia_done"
+		],
+		"if": [
+			"johto_lugia_done"
+		]
 	}
 }

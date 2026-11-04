@@ -4,8 +4,8 @@ extends GutTest
 const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 const JOHTO_AREAS_PATH := "res://assets/ui/map/johto_placeholder_areas.json"
 ## JOH0 : les cinq villes de Johto déclarées (cartes vides jusqu'aux jalons de contenu).
-const JOHTO_ZONES: Array[StringName] = [&"sea_cave", &"olivine_city", &"ecruteak_city", &"goldenrod_city",
-	&"azalea_town", &"mahogany_town"]
+const JOHTO_ZONES: Array[StringName] = [&"sea_cave", &"olivine_city", &"route_40", &"route_41",
+	&"whirl_islands", &"ecruteak_city", &"goldenrod_city", &"azalea_town", &"mahogany_town"]
 ## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
 ## 2 nord et Argenta (T11) et les intérieurs (T13) sont construits : liste vide. À retirer
 ## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
@@ -58,7 +58,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 54, "JOH1 : + la grotte marine ; JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 57, "JOH7 : + Routes 40, 41, Îles Tourbillon ; JOH1 : + la grotte marine ; JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
@@ -458,7 +458,7 @@ func test_real_zones_declare_the_five_johto_towns() -> void:
 		"les cinq villes de Johto (points de Vol), sans carte jusqu'aux jalons de contenu")
 	for id: StringName in JOHTO_ZONES:
 		# JOH1 : la grotte marine et Oliville ont leurs cartes et leur description validée (O-23, O-24).
-		if id in [&"sea_cave", &"olivine_city"]:
+		if id in [&"sea_cave", &"olivine_city", &"route_40", &"route_41", &"whirl_islands"]:
 			assert_false(_zones.get_zone(id).maps.is_empty(), "%s : cartes du JOH1" % id)
 			assert_false(_zones.get_zone(id).draft, "%s : description validée" % id)
 			continue

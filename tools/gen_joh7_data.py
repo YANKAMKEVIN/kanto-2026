@@ -46,9 +46,9 @@ TRAINERS = {
 		[("tentacruel", 51), ("gyarados", 53)], "swimmer_water", None),
 	("route_41", "noe"): ("route_41_fisher_noe", "Pêcheur Noé", 35,
 		[("seadra", 52), ("seaking", 52)], "fisher_fuchsia", None),
-	("whirl_islands_1f", "sbire_t"): ("whirl_islands_grunt_t", "Sbire", 30,
+	("whirl_islands_1f", "sbire_t"): ("whirl_islands_grunt_t", "Sbire Rocket", 30,
 		[("muk", 58), ("arbok", 58)], "rocket_grunt_m", None),
-	("whirl_islands_1f", "sbire_u"): ("whirl_islands_grunt_u", "Sbire", 30,
+	("whirl_islands_1f", "sbire_u"): ("whirl_islands_grunt_u", "Sbire Rocket", 30,
 		[("houndoom", 59), ("golbat", 58)], "rocket_grunt_f", "sbire_rocket_f"),
 }
 SURF_TRAINERS = {"swimmer_water", "swimmer_f_water"}
@@ -159,6 +159,7 @@ DIALOGUES = {
 		"La même que dans la grotte de Bourg Palette !"]),
 	"whirl_lugia_rise_3": (NARRATION, ["L'eau se soulève.", "Lugia surgit des profondeurs !"]),
 	"whirl_lugia_gone": (NARRATION, ["Lugia replonge dans le bassin et disparaît."]),
+	"whirl_b2f_heart": (NARRATION, ["Le cœur des îles, où la mer tombe en cascade."]),
 	"whirl_dragon_scale_found": (NARRATION, ["{player} trouve une Écaille Draco !",
 		"Une écaille dure et brillante."]),
 }
@@ -282,7 +283,7 @@ def cenere_scene():
 	]}]}
 
 
-def legendary_battle(species, level, actor, resolved, caught, after_steps):
+def legendary_battle(species, level, actor, resolved, caught):
 	return {"wild_battle": species, "level": level, "intro": "legendary", "actor": actor,
 		"static": {"done": resolved, "caught": caught}, "flee": [resolved]}
 
@@ -296,7 +297,7 @@ def suicune_scene():
 			{"dialogue": "whirl_suicune_leap_1"},
 			{"lean": "suicune", "to": "player"},
 			{"dialogue": "whirl_suicune_leap_2"},
-			legendary_battle("suicune", 60, "suicune", resolved, "johto_suicune_caught", []),
+			legendary_battle("suicune", 60, "suicune", resolved, "johto_suicune_caught"),
 			{"dialogue": "whirl_suicune_after", "if": [resolved]},
 			{"set": ["johto_suicune_done"], "if": [resolved]},
 		]}]}
@@ -324,7 +325,7 @@ def lugia_rise_scene():
 def lugia_scene():
 	resolved = "johto_lugia_resolved"
 	return {"variants": [{"unless": [resolved], "steps": [
-		legendary_battle("lugia", 65, "lugia", resolved, "johto_lugia_caught", []),
+		legendary_battle("lugia", 65, "lugia", resolved, "johto_lugia_caught"),
 		{"dialogue": "whirl_lugia_gone", "if": [resolved], "unless": ["johto_lugia_caught"]},
 		{"set": ["johto_lugia_done"], "if": [resolved]},
 	]}]}
@@ -432,6 +433,11 @@ def main():
 	# Courant violent de l'escalier du B2F : M-20 avant Suicune, M-21 une fois après (scène).
 	dialogues["whirl_b2f_current_strong"] = dialogue(NARRATION, M20)
 	dialogues["whirl_b2f_current_calm"] = dialogue(NARRATION, M21)
+	# Examen du courant violent lui-même (cases (2, 4..5)) : M-20 avant Suicune, M-21 après.
+	dialogues["whirl_b2f_current_examine"] = {"narration": True, "variants": [
+		{"unless": ["johto_suicune_done"], "pages": M20},
+		{"pages": M21},
+	]}
 	# Crique (M-26, M-27, M-33) : capturé → M-33 ; vendredi et Lokhlass là → M-26 ; autre jour →
 	# M-27 ; vendredi après un K.O. → M-33 [D].
 	dialogues["whirl_cove"] = {"narration": True, "variants": [
@@ -455,6 +461,12 @@ def main():
 		{"set": ["johto_suicune_seen"]},
 		{"face": "player", "to": "suicune"},
 		{"dialogue": "whirl_suicune_seen"},
+	]}]}
+	# M-22 (« description de zone » du B2F) : narration au premier pas après l'échelle [D] (le B2F
+	# fait partie de la zone « whirl_islands », décrite par M-9).
+	cutscenes["whirl_b2f_heart"] = {"variants": [{"unless": ["johto_whirl_b2f_seen"], "steps": [
+		{"set": ["johto_whirl_b2f_seen"]},
+		{"dialogue": "whirl_b2f_heart"},
 	]}]}
 	cutscenes["whirl_cenere"] = cenere_scene()
 	cutscenes["whirl_suicune_battle"] = suicune_scene()

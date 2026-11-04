@@ -110,7 +110,7 @@
 		]
 	},
 	"whirl_islands_grunt_t": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,
@@ -129,7 +129,7 @@
 		]
 	},
 	"whirl_islands_grunt_u": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket_f",
 		"ai": "random",
 		"can_lose": false,

@@ -138,7 +138,8 @@ func test_real_tables_load_without_error() -> void:
 		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
 		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
-		&"route_2_north_grass", &"route_3_grass", &"route_4_grass", &"route_5_grass",
+		&"route_2_north_grass", &"route_3_grass", &"route_40_water",
+		&"route_41_water", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
@@ -147,7 +148,10 @@ func test_real_tables_load_without_error() -> void:
 		&"sea_cave_water",
 		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
 		&"seafoam_b4f_floor", &"victory_road_1f_rubble", &"victory_road_2f_rubble",
-		&"victory_road_3f_rubble", &"viridian_forest_grass"] as Array[StringName])
+		&"victory_road_3f_rubble", &"viridian_forest_grass",
+		# Chapitre Johto, JOH7 : la mer et les Îles Tourbillon (dossier JOH-08 §5).
+		&"whirl_islands_1f_rubble_day", &"whirl_islands_1f_rubble_night",
+		&"whirl_islands_b1f_rubble", &"whirl_islands_b1f_water"] as Array[StringName])
 
 
 func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
@@ -226,7 +230,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
-	assert_eq(lib.size(), 60, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine")
+	assert_eq(lib.size(), 66, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine ; JOH7 : 6 tables de la mer")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -414,8 +418,13 @@ func test_kanto_tables_ignore_the_period() -> void:
 		assert_eq(lib.get_table(&"route_1", &"grass", period).id, &"route_1_grass", period)
 	var real := _lib()
 	assert_true(real.load_dir(), "les vraies tables se chargent")
+	var zones := ZoneLibrary.new()
+	assert_true(zones.load_file())
 	for id: StringName in real.get_ids():
-		assert_true(real.get_table_by_id(id).is_all_day(), "Kanto sans « period » : %s" % id)
+		var table := real.get_table_by_id(id)
+		if table.maps.size() == 1 and zones.is_johto(table.maps[0]):
+			continue # Johto (JOH7 : 1F des Îles Tourbillon) : tables datées permises.
+		assert_true(table.is_all_day(), "Kanto sans « period » : %s" % id)
 
 
 func test_dated_and_all_day_tables_cannot_share_a_map_and_terrain() -> void:

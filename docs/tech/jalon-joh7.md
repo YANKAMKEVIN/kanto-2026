@@ -95,8 +95,10 @@ niv. 10 ; Méga Canne : table par défaut [D] (« comme Kanto »).
 | `whirl_cenere` | B1F (8..14, 4) | `unless johto_cenere_defeated_2` | `spawn cenere` (14, 1) ; marche vers le joueur ; M-14, M-15 ; `battle` (win `johto_cenere_defeated_2`) ; M-16 ; M-17 ; système « Cenere s'en va… » ; Cenere repart dans la galerie, `despawn` ; `next: whirl_suicune` |
 | `whirl_suicune` | dialogue de Suicune après Cenere, ou suite de `whirl_cenere` | `if johto_cenere_defeated_2`, `unless johto_suicune_done` | M-18 ; `wild_battle suicune 60` (`intro legendary`, `static {done: johto_suicune_resolved, caught: johto_suicune_caught}`, `flee [johto_suicune_resolved]`, `actor suicune`) ; M-19 et `set johto_suicune_done` si `johto_suicune_resolved` |
 | Suicune (PNJ) | (11, 3) | `unless johto_suicune_done` | avant Cenere : M-13 ; après : `whirl_suicune` |
-| `whirl_b2f_current` | B1F (2, 6) ↑ | — | M-20 tant que `johto_suicune_done` manque ; M-21 une fois après (`johto_whirl_current_calm_seen`) |
-| `whirl_cove` | B1F (7, 22) ← | — | capturé : M-33 ; vendredi et Lokhlass présent : M-26 ; autre jour : M-27 ; vendredi après un K.O. : M-33 [D] |
+| `whirl_b2f_current` | B1F (2, 6) ↑ | — | M-20 tant que `johto_suicune_done` manque ; M-21 une fois après (`johto_whirl_current_calm_seen`) ; l'examen des cases du courant (2, 4..5) dit M-20 / M-21 |
+| Courants (examen) | chaque case de courant permanent | — | M-11 |
+| `whirl_b2f_heart` | B2F (1..4, 4), premier pas sous l'échelle | `unless johto_whirl_b2f_seen` | M-22 [D] (le B2F appartient à la zone « Îles Tourbillon », décrite par M-9) |
+| `whirl_cove` | B1F (7, 22) ← et (1..6, 25) ↑ [D] (la crique s'ouvre aussi au sud, rangée 26) | — | capturé : M-33 ; vendredi et Lokhlass présent : M-26 ; autre jour : M-27 ; vendredi après un K.O. : M-33 [D] |
 | Lokhlass (PNJ) | (3, 23), `if_weekday friday` | `unless week_friday_lapras, johto_lapras_caught` | `wild_battle lapras 50`, `static {done: week_friday_lapras, caught: johto_lapras_caught}`, `flee [week_friday_lapras]` |
 | `whirl_lugia_rise` | B2F (6..18, 17) | `unless johto_lugia_emerged` | M-23 (ombre qui passe) ; M-24 ; `set johto_lugia_emerged` (Lugia apparaît au centre) |
 | Lugia (PNJ) | (12, 9) | `if johto_lugia_emerged`, `unless johto_lugia_resolved` | `wild_battle lugia 65` (`static {done: johto_lugia_resolved, caught: johto_lugia_caught}`, `flee [johto_lugia_resolved]`) ; M-25 si non capturé ; `set johto_lugia_done` |
