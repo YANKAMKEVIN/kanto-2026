@@ -432,6 +432,19 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 - `johto_rosalia_tuesday` : idem, jour forcé `tuesday` (Margot, conteuse du mardi). Clé `weekday`
   de `DebugStart` (JOH2).
 
+### JOH6 — les cendres (`docs/tech/jalon-joh6.md` §2.9)
+
+État de fin d'acte 1 posé à la main (drapeaux des dossiers JOH-02 à JOH-06, `johto_act2`, équipe
+rendue, Stockage en ligne) ; équipe : Tortank N64 (Surf), Dracaufeu N62, Alakazam N60, Nidoking
+N59, Roucarnage N58, Crocrodil N32 ; CS03, Super Canne, Multi Exp, 20 Hyper Balls, 30 000 ₽.
+- `johto_joh6_rosalia` : devant la maison des sages (le doyen ouvre la tour, C-2).
+- `johto_joh6_tower_b1f` : tour ouverte, arrivée de la chute au B1F (scène des chiens, C-6 à C-9).
+- `johto_joh6_route_42`, `johto_joh6_mahogany` : chiens réveillés, plan du doyen connu.
+- `johto_joh6_lake` : péage franchi, à l'entrée du Lac Colère (Léviator rouge) ; 1 Master Ball.
+- `johto_joh6_hideout` : lac fait, escalier trouvé, au B1F du repaire (alarmes).
+- `johto_joh6_hideout_b3f` : mot de passe dit, au B3F (Brace, générateur, Raikou) ; 1 Master Ball.
+- `johto_joh6_saturday` (Samuel, Acajou), `johto_joh6_sunday` (Diane, Rosalia) : jour forcé.
+
 ## QA entrée des combats de Dresseur (A17, 2026-11-04)
 
 | Fichier | Partie |

@@ -634,19 +634,28 @@ func _build_flashback() -> void:
 					kind = _inside.Kind.MAT
 			var variant := _rng.randi_range(0, _inside.VARIANTS[kind] - 1)
 			ground.set_cell(cell, _inside.SOURCE_ID, _inside.atlas_coords(kind, variant))
-	# Bureau (5..8, 4) : objet peint du bureau de Giovanni, cases bloquées.
-	for x: int in range(5, 9):
-		blocked.append(Vector2i(x, 4))
-	_add_prop(root, "int_bureau_giovanni_01", Vector2i(7, 4), "Bureau")
-	# Porte en feu (7, 2) et flammes le long du mur nord [D].
+	# Bureau (9..12, 5..6) : objet peint du bureau de Giovanni (ancré sur la 3e case de la rangée
+	# du bas, comme au repaire de Céladopole), cases bloquées.
+	for y: int in [5, 6]:
+		for x: int in range(9, 13):
+			blocked.append(Vector2i(x, y))
+	_add_prop(root, "int_bureau_giovanni_01", Vector2i(11, 6), "Bureau")
+	# Porte bloquée (7, 4) entre Dante (7, 3) et Giovanni (7, 5), flammes le long du mur nord [D].
 	var decor := root.get_node(^"Decor")
-	_poly_cell(root, decor, "PorteBloquee", Vector2i(7, 2), Rect2(8, 0, 80, 96),
-		Color(0.30, 0.18, 0.10))
+	blocked.append(Vector2i(7, 4))
+	var door := Node2D.new()
+	door.name = "PorteBloquee"
+	door.position = _world(Vector2i(7, 4))
+	_attach(root, root.get_node(^"Entities"), door)
+	_rect(root, door, Rect2(-48, -150, 96, 146), Color(0.30, 0.18, 0.10))
+	_rect(root, door, Rect2(-40, -140, 80, 40), Color(1.0, 0.55, 0.15, 0.9))
 	for x: int in [2, 4, 6, 8, 10, 12]:
 		_poly_cell(root, decor, "Flamme_%d" % x, Vector2i(x, 2), Rect2(14, 30, 68, 66),
 			Color(1.0, 0.45, 0.10, 0.85))
+	for x: int in [1, 13]:
+		_poly_cell(root, decor, "FlammeMur_%d" % x, Vector2i(x, 5), Rect2(10, 0, 76, 96),
+			Color(1.0, 0.40, 0.08, 0.7))
 	_spawn(root, "vue", Vector2i(7, 7))
-	_spawn(root, "devant_porte", Vector2i(7, 3))
 	for i: int in 3:
 		_warp(root, "SortieSecours_%d" % i, Vector2i(6 + i, FLASHBACK_SIZE.y - 1), PUSH,
 			Vector2i.DOWN, &"mahogany_hideout_b2f", &"devant_deserteur", Vector2i.UP, "", [], [])
