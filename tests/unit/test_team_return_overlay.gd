@@ -58,6 +58,15 @@ func test_pick_shows_the_pool_with_the_default_six_and_returns_the_choice() -> v
 	assert_false(buttons[6].button_pressed)
 	assert_eq(_overlay.get_count_text(), "6 / 6")
 	assert_false(_overlay.get_confirm_button().disabled)
+	# Défilement au doigt (QA A17 du 2026-11-04) : zone morte de la liste, boutons en PASS avec
+	# un garde « toucher ou défilement », comme les Paramètres.
+	var scroll := buttons[0].get_parent().get_parent() as ScrollContainer
+	assert_not_null(scroll, "la liste est dans un ScrollContainer")
+	if scroll != null:
+		assert_eq(scroll.scroll_deadzone, roundi(UiTokens.TAP_SLOP))
+	for button: Button in buttons:
+		assert_eq(button.mouse_filter, Control.MOUSE_FILTER_PASS)
+		assert_not_null(button.get_node_or_null("TapGuard"), "garde posé")
 	# Décocher Rattata puis cocher Alakazam : l'ordre de touche met Alakazam en dernier.
 	buttons[1].button_pressed = false
 	buttons[6].button_pressed = true

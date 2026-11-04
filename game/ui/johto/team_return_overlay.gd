@@ -71,10 +71,14 @@ func _ready() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.name = "Scroll"
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	# Défilement au doigt par-dessus les boutons (QA A17 du 2026-11-04 : sans zone morte ni
+	# garde, la liste ne défilait pas et les lignes 5 à 7 restaient hors d'atteinte).
+	scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(scroll)
 	_list = VBoxContainer.new()
 	_list.name = "List"
+	_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_list.add_theme_constant_override(&"separation", UiTokens.PICKER_GAP)
 	scroll.add_child(_list)
@@ -137,6 +141,9 @@ func _rebuild() -> void:
 		button.toggle_mode = true
 		button.custom_minimum_size = Vector2(0, UiTokens.TOUCH_MIN)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		# Toucher ou défilement : le glissement atteint la liste, un appui court bascule.
+		button.mouse_filter = Control.MOUSE_FILTER_PASS
+		TapGuard.attach(button)
 		var label: String = _labels[i] if i < _labels.size() else uids[i]
 		button.text = ROW_FORMAT % [label, SOURCE_TEXTS[_selection.source_of(i)]]
 		button.toggled.connect(_on_row_toggled.bind(uids[i]))
