@@ -19,13 +19,20 @@ extends RefCounted
 ## une femelle ; les dialogues s'accordent avec (« c'est lui / elle que tu as choisi ? »).
 ## [method rival_pick] applique la règle du dossier 02 §9 (« il choisit le Pokémon avantagé
 ## contre celui du joueur ») sans aucun nom d'espèce.
+## **Chapitre Johto (JOH1, `jalon-joh1.md` §2.6)** : une seconde offre, celle d'Orme
+## (`data/pokemon/starters_johto.json`), portée par un second [StarterChoice]. Sa clé facultative
+## « rival » (booléen, vrai par défaut) à faux veut dire : aucun Pokémon pour le rival (cadre
+## JOH-00 §5.7) **et** `starter_species` (le starter de Kanto, dont dépendent les équipes du
+## rival) n'est pas modifié à l'entrée du Pokémon dans l'équipe.
 
 const DATA_PATH: String = "res://data/pokemon/starters.json"
+## Offre de Johto (Orme, JOH1).
+const JOHTO_DATA_PATH: String = "res://data/pokemon/starters_johto.json"
 
 const _KEYS: Array[String] = [
 	"map", "level", "prompt", "choices", "open_flag", "done_flag", "chosen_scene",
 ]
-const _OPTIONAL_KEYS: Array[String] = ["female_flag"]
+const _OPTIONAL_KEYS: Array[String] = ["female_flag", "rival"]
 const _CHOICE_KEYS: Array[String] = ["species", "npc", "blurb"]
 
 ## Carte du labo.
@@ -42,6 +49,9 @@ var done_flag: StringName = &""
 var chosen_scene: StringName = &""
 ## Drapeau levé quand le starter du joueur est une femelle (&"" : aucun).
 var female_flag: StringName = &""
+## Le rival prend un Pokémon de l'offre (Kanto) ; faux : offre sans rival (Johto, JOH1), et le
+## starter de Kanto (`starter_species`) reste celui qu'il est.
+var rival: bool = true
 
 var _choices: Array[StarterOption] = []
 var _errors: PackedStringArray = PackedStringArray()
@@ -78,6 +88,8 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	if data.has("female_flag") and (not data["female_flag"] is String
 			or (data["female_flag"] as String).strip_edges().is_empty()):
 		ok = _fail("%s : « female_flag » doit être un texte non vide" % source)
+	if data.has("rival") and not data["rival"] is bool:
+		ok = _fail("%s : « rival » doit être un booléen" % source)
 	var level_value: Variant = data["level"]
 	if not (level_value is int or level_value is float) \
 			or float(level_value) != floorf(float(level_value)) \
@@ -93,6 +105,7 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	done_flag = StringName(data["done_flag"])
 	chosen_scene = StringName(data["chosen_scene"])
 	female_flag = StringName(data.get("female_flag", ""))
+	rival = data.get("rival", true)
 	_choices = choices
 	return true
 

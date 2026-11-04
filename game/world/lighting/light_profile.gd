@@ -28,6 +28,11 @@ var grade_strength: float = 0.0
 ## ≈ 6 i/s sur un Mali-G57). Réservé aux ambiances dont les trois gains sont proches et ≤ 1
 ## (Tour Pokémon) : l'écart avec l'étalonnage par zones y reste sous 2 % de la luminance.
 var grade_flat: bool = false
+## JOH1 (QA A17 du 2026-11-04) : en mode « économie » (lumière d'ambiance coupée, défaut de l'A17),
+## l'étalonnage plein écran disparaît ; un profil qui porte ce drapeau garde alors son gain des
+## tons moyens **à plat** (presque gratuit), pour que la nuit de Johto reste une nuit. Tons
+## moyens ≤ 1 exigés (le calque ne fait qu'assombrir).
+var grade_economy_flat: bool = false
 ## Liseré de soleil sur les bords des objets tournés vers la lumière ; [member rim_width] en
 ## pixels de texture ; [member rim_strength] 0 = aucun liseré.
 var rim_color: Color = Color.WHITE
@@ -103,6 +108,7 @@ static func lerp(from: LightProfile, to: LightProfile, t: float) -> LightProfile
 	result.grade_highlights = a.grade_highlights.lerp(b.grade_highlights, w)
 	result.grade_strength = lerpf(a.grade_strength, b.grade_strength, w)
 	result.grade_flat = b.grade_flat
+	result.grade_economy_flat = b.grade_economy_flat
 	result.rim_color = a.rim_color.lerp(b.rim_color, w)
 	result.rim_strength = lerpf(a.rim_strength, b.rim_strength, w)
 	result.rim_width = lerpf(a.rim_width if a.has_rim() else b.rim_width,

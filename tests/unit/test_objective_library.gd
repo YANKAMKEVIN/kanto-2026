@@ -22,7 +22,9 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 20 (T17, jalon-20.md §2.11) : ses quatre objectifs en tête, le plus avancé d'abord.
 	# Jalon 21 (T14, jalon-21.md §2.13) : « rendre visite à M. Fuji. » et « trouver M. Fuji… » en tête.
 	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
-	assert_eq(library.get_ids(), [&"return_gold_teeth", &"challenge_koga", &"visit_fuji",
+	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord.
+	assert_eq(library.get_ids(), [&"go_route_39", &"choose_johto_partner", &"rest_olivine",
+		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",
 		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
 		&"cross_dark_cave", &"cross_route_9", &"face_surge", &"open_surge_barrier",
@@ -405,3 +407,25 @@ func test_j21_fuji_objectives_in_order() -> void:
 		assert_ne(library.current_id(flags), id, "aucun objectif du J21 après la Flûte")
 	for id: StringName in [&"visit_fuji", &"find_fuji"]:
 		assert_false(library.is_draft(id), "texte validé (dossier 24 §15.9)")
+
+
+## JOH1 (QA A17 du 2026-11-04 : objectif de Kanto périmé à Oliville) : les objectifs de Johto, du
+## retour chez Chen au départ vers la Route 39, passent devant ceux de Kanto ; textes [D].
+func test_joh1_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	assert_true(library.load_file())
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"pokedex_activated", &"badge_soul", &"oak_post_league_gifts_done"]:
+		flags.set_flag(flag)
+	var steps: Array = [
+		[&"", &"talk_to_oak"], [&"johto_letter_read", &"reach_olivine"],
+		[&"johto_arrived", &"rest_olivine"], [&"johto_slept", &""],
+		[&"johto_team_stolen", &"choose_johto_partner"], [&"johto_starter_chosen", &"go_route_39"],
+	]
+	for step: Array in steps:
+		if not (step[0] as StringName).is_empty():
+			flags.set_flag(step[0])
+		if not (step[1] as StringName).is_empty():
+			assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
+			assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
+

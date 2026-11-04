@@ -1,0 +1,12 @@
+{
+	"map": "olivine_center_room", "level": 5,
+	"prompt": "CHOISIS TON PARTENAIRE DE JOHTO",
+	"choices": [
+		{ "species": "chikorita", "npc": "chikorita", "blurb": "Doux et obstiné." },
+		{ "species": "cyndaquil", "npc": "cyndaquil", "blurb": "Timide, mais ardent." },
+		{ "species": "totodile", "npc": "totodile", "blurb": "Joueur et mordant." }
+	],
+	"open_flag": "johto_starter_offered", "done_flag": "johto_starter_chosen",
+	"chosen_scene": "johto_starter_chosen", "female_flag": "johto_starter_female",
+	"rival": false
+}

@@ -222,9 +222,14 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 			new_flags.append(StringName(flag))
 	var new_party: Array[Dictionary] = []
 	var raw_party: Variant = dict.get("party")
-	if not raw_party is Array or (raw_party as Array).is_empty() \
+	# JOH1 (`jalon-joh1.md` §2.9) : une équipe vide est permise quand l'équipe est confisquée
+	# (le matin du vol, avant le Pokémon de départ d'Orme).
+	var empty_allowed := dict.get("confiscated") is Dictionary \
+		and not (dict["confiscated"] as Dictionary).is_empty()
+	if not raw_party is Array or ((raw_party as Array).is_empty() and not empty_allowed) \
 			or (raw_party as Array).size() > MAX_PARTY:
-		ok = _fail("%s : « party » est une liste de 1 à %d Pokémon" % [source, MAX_PARTY])
+		ok = _fail("%s : « party » est une liste de 1 à %d Pokémon (0 permis avec « confiscated »)"
+			% [source, MAX_PARTY])
 	else:
 		for i: int in (raw_party as Array).size():
 			var member := _parse_member(raw_party[i], data, "%s party %d" % [source, i + 1])
