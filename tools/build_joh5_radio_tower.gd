@@ -21,7 +21,7 @@ extends SceneTree
 ##   `examen_ascenseur` : point EXAMINER (scène `goldenrod_radio_elevator`) tant qu'elle est en panne.
 ## - `declencheur` : [EventTriggerPoint] sur toutes les cases de la position (scène du plan §2.3).
 ## - `porte_cle` : [FlagGate] bloquante (fermée tant que son drapeau d'ouverture est bas, panneau
-##   sombre provisoire) et un point OUVRIR sur la case.
+##   sombre provisoire) et un point EXAMINER sur la case (scène de la porte).
 ## - `examen`, `decor`, `cache` : points EXAMINER. Dresseurs, PNJ et objets visibles : données
 ##   (`data/npcs/goldenrod_radio_tower_<n>f.json`, `tools/gen_joh5_data.py`).
 ## Cartes intérieures (`interior = true`, `interiors.json`) [D] ; lumière `office` ; titre
@@ -34,7 +34,6 @@ const TILE: int = 96
 const STEP_ON: int = 0
 const PUSH: int = 1
 const KIND_EXAMINE: int = 1
-const KIND_OPEN: int = 5
 const INTERIORS: String = "res://assets/world/interiors/"
 const OUT_DIR: String = "res://game/world/maps/"
 const MASK_PATH: String = "res://assets/world/maps/%s_ground.png"
@@ -401,7 +400,8 @@ func _add_locked_door(entities: Node2D, plan: PlanGrid, id: String, cell: Vector
 	panel.color = Color(0.22, 0.24, 0.28)
 	panel.z_index = -2
 	_attach(gate, panel)
-	_add_point("Open_%s" % id, cell, Vector2i.ZERO, DOOR_DIALOGUES[id], KIND_OPEN, [],
+	# EXAMINER (pas OUVRIR : ce verbe va au KeyDoorDirector des portes à carte).
+	_add_point("Open_%s" % id, cell, Vector2i.ZERO, DOOR_DIALOGUES[id], KIND_EXAMINE, [],
 		[StringName(open_flag)])
 
 

@@ -50,7 +50,7 @@ scène = grille).
   `spawn` → Marker2D ; `ascenseur` → porte STEP_ON vers la cabine, **`if_flags:
   [johto_cenere_defeated]`** ; `examen_ascenseur` → InteractPoint `unless johto_cenere_defeated` ;
   `declencheur` → EventTriggerPoint (scène du §2.3) ; `porte_cle` → `FlagGate` bloquante
-  (`unless` le drapeau d'ouverture) + InteractPoint OUVRIR vers la scène de la porte ;
+  (`unless` le drapeau d'ouverture) + InteractPoint EXAMINER vers la scène de la porte ;
   `examen`, `decor` (haut-parleur), `cache` → InteractPoint. PNJ, Dresseurs, objets visibles :
   données (`data/npcs/`), cases praticables dans la scène.
 - Ascenseur (`data/world/elevators.json`, entrée `goldenrod_radio_tower`, sans clé) : 5 étages,
@@ -79,7 +79,7 @@ scène = grille).
 | Scène | Lancement | Contenu |
 |---|---|---|
 | `goldenrod_radio_impostor` | déclencheur (3, 2), `unless johto_radio_impostor_defeated` | **avec** `johto_radio_pass` : T-2, combat (défaite : réveil), T-3, T-4, fuite par l'escalier ; **sans** : D-18 (JOH3), `johto_radio_tower_closed_seen`, un pas en arrière |
-| `goldenrod_radio_reserve_door` | OUVRIR (17, 11) | avec `johto_radio_reserve_key` (posé par la réplique « défaite » du gardien, T-8) : T-9, `johto_radio_staff_freed` ; sinon « fermée à clé » [D] |
+| `goldenrod_radio_reserve_door` | EXAMINER (17, 11) | avec `johto_radio_reserve_key` (posé par la réplique « défaite » du gardien, T-8) : T-9, `johto_radio_staff_freed` ; sinon « fermée à clé » [D] |
 | `goldenrod_radio_raphael` | Raphaël | T-11, il sort par la porte, `johto_radio_staff_talked` |
 | `goldenrod_radio_cenere` | déclencheur (12..13, 6), `unless johto_cenere_defeated` | T-15, T-16, combat (défaite : réveil, Cenere reste), T-17, T-18, T-19 à T-21, apparition de trois Sbires, T-22 (deux partent, JH-43), T-23, Cenere sort par l'escalier de secours, `johto_dante_revealed` |
 | `goldenrod_radio_office` | déclencheur (7, 2) **ou** le directeur, `if johto_dante_revealed unless johto_team_returned` | §2.5 |
@@ -124,7 +124,9 @@ du bureau, sauvegarde rechargée = équipe rendue, acte 2).
 
 ### 2.8 Raccords (JOH5C)
 
-Après la fusion du JOH3 : T-1 / T-37 aux haut-parleurs de Doublonville (variantes `unless` /
+Après la fusion du JOH3 : D-18 et D-19 joués avec les dialogues du JOH3
+(`goldenrod_radio_tower_impostor_closed`, `goldenrod_radio_tower_elevator_closed`, prévus pour le
+hall du JOH5) à la place des copies du JOH5 ; T-1 / T-37 aux haut-parleurs de Doublonville (variantes `unless` /
 `if johto_cenere_defeated`), femme de D-37 (variante T-35, Ultra Ball ×3,
 `goldenrod_husband_gift`), Raphaël chez lui (T-36, `if johto_radio_staff_talked`), raccord de la
 porte vérifié. Après la fusion du JOH1 : T-38 au premier passage dans la grotte marine.
