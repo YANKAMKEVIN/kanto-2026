@@ -7,6 +7,8 @@ extends GutTest
 const J22Ids := preload("res://tests/helpers/j22_ids.gd")
 const DOSSIER := "res://docs/design/dossier-joh-06-tour-radio.md"
 const DOSSIER_JOH3 := "res://docs/design/dossier-joh-04-doublonville.md"
+## Anciens T-21 à T-34, encore en jeu jusqu'à la bascule du JOHP3 (dossier JOH-11 §20) : à retirer au JOHP3.
+const DOSSIER_ARC := "res://docs/design/dossier-joh-11-arc-pierres.md"
 const DIALOGUES := "res://data/dialogues/joh5_radio_tower.json"
 const CUTSCENES := "res://data/cutscenes/joh5_radio_tower.json"
 const NPC_FILE := "res://data/npcs/goldenrod_radio_tower_%df.json"
@@ -70,7 +72,8 @@ func test_trainers_follow_the_dossier() -> void:
 
 func test_texts_are_the_validated_ones_word_for_word() -> void:
 	var corpus := J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER)) + " " \
-		+ J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER_JOH3))
+		+ J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER_JOH3)) + " " \
+		+ J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER_ARC))
 	var checked := 0
 	for id: StringName in _dialogues.get_ids():
 		var dialogue := _dialogues.get_dialogue(id)
