@@ -33,7 +33,7 @@ SHOTS=(
 	"5f_studio|50|$T5 --cell=12,4 --facing=down"
 	"5f_cenere_micro|140|$T5 --cell=12,5 --hold=down"
 	"5f_bureau|50|$TO --cell=9,2 --facing=left"
-	"5f_choix_des_6|560|$TO --cell=9,2 --hold=left --mash=14"
+	"5f_choix_des_6|900|$TO --cell=9,2 --hold=left --mash=24"
 )
 for shot in "${SHOTS[@]}"; do
 	IFS='|' read -r name frames opts <<< "$shot"

@@ -398,7 +398,8 @@ func _add_locked_door(entities: Node2D, plan: PlanGrid, id: String, cell: Vector
 	panel.polygon = PackedVector2Array([Vector2(6, 6), Vector2(TILE - 6, 6),
 		Vector2(TILE - 6, TILE), Vector2(6, TILE)])
 	panel.color = Color(0.22, 0.24, 0.28)
-	panel.z_index = -2
+	# Au niveau des personnages (trié par la case) : au-dessus du sol peint et du seuil.
+	panel.z_index = 0
 	_attach(gate, panel)
 	# EXAMINER (pas OUVRIR : ce verbe va au KeyDoorDirector des portes à carte).
 	_add_point("Open_%s" % id, cell, Vector2i.ZERO, DOOR_DIALOGUES[id], KIND_EXAMINE, [],
