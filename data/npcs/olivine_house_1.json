@@ -1,0 +1,5 @@
+{
+	"vieille_dame": {
+		"cell": [12, 6], "facing": "left", "sprite": "aoki", "dialogue": "olivine_old_woman"
+	}
+}

@@ -116,6 +116,9 @@ func test_an_unknown_item_is_ordinary_and_a_key_item_stays() -> void:
 	assert_true(TeamConfiscation.is_key_item(&"oak_parcel", _items))
 	assert_false(TeamConfiscation.is_key_item(&"potion", _items))
 	assert_false(TeamConfiscation.is_key_item(&"tm28", _items), "une CT est un objet du Sac")
+	# JOH1 (QA A17) : une CS est gardée (le rattrapage des objets la rendrait en double).
+	assert_true(TeamConfiscation.is_key_item(&"hm03", _items), "CS03 gardée")
+	assert_true(TeamConfiscation.is_key_item(&"hm01", _items), "CS01 gardée")
 	assert_false(TeamConfiscation.is_key_item(&"objet_inconnu", _items), "[D] confisqué")
 	assert_false(TeamConfiscation.is_key_item(&"oak_parcel", null))
 
