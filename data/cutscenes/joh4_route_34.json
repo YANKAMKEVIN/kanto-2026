@@ -1,0 +1,26 @@
+{
+	"route_34_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_34_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "route_34_item_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_34_item_1"
+						]
+					}
+				]
+			}
+		]
+	}
+}

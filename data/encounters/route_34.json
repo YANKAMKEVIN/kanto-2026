@@ -1,0 +1,148 @@
+{
+	"route_34_grass_day": {
+		"maps": [
+			"route_34"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "sentret",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 25
+			},
+			{
+				"species": "abra",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 20
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 15
+			},
+			{
+				"species": "nidoran_m",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 15
+			},
+			{
+				"species": "raticate",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 15
+			},
+			{
+				"species": "ditto",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 10
+			}
+		]
+	},
+	"route_34_grass_night": {
+		"maps": [
+			"route_34"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "hoothoot",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 35
+			},
+			{
+				"species": "raticate",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 25
+			},
+			{
+				"species": "ditto",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 15
+			},
+			{
+				"species": "nidoran_f",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 12
+			},
+			{
+				"species": "nidoran_m",
+				"levels": [
+					16,
+					19
+				],
+				"weight": 13
+			}
+		]
+	},
+	"route_34_water": {
+		"maps": [
+			"route_34"
+		],
+		"terrain": "water",
+		"rate": 5,
+		"slots": [
+			{
+				"species": "tentacool",
+				"levels": [
+					15,
+					20
+				],
+				"weight": 60
+			},
+			{
+				"species": "psyduck",
+				"levels": [
+					15,
+					20
+				],
+				"weight": 40
+			}
+		]
+	}
+}
