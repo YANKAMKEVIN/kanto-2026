@@ -448,3 +448,21 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `qa_fx_vagues.json` | Galerie d'effets (`fx_gallery`) : 46 attaques des vagues 1 et 2 « Rouge » en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` |
 | `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
 
+
+## Chapitre Johto, JOH9 (Mont Argenté, Route 28, épilogue)
+
+Générés par `tools/gen_joh9_debug_starts.py` : état de fin du JOH8 (drapeaux des dossiers joh-02 à joh-09, `johto_act3`, Dante en fuite), équipe 70–74 (Tortank Surf, Typhlosion, Roucarnage Vol, Mackogneur Force, Raichu Flash, Ho-Oh), CS02 à CS05, Corde Sortie, point de repos `mt_silver_center`, moment `day`. Captures : `tools/capture_joh9.sh`.
+
+| Fichier | Partie |
+|---|---|
+| `johto_mt_silver.json` | Sentier, entrée ouest (`from_lake`) : Hugo inévitable au passage de la muraille, Baptiste, Inès, Centre et Boutique (point de Vol) |
+| `johto_mt_silver_outside.json` | Extérieur (`from_trail`) : monter le chemin, la rangée y 14 joue le relais (A-8 à A-13) puis la grotte |
+| `johto_mt_silver_1f.json` | Grotte 1F après le relais : Sbire X, lac (Surf), deux rochers de Force, Sbire Y inévitable, échelle du 2F |
+| `johto_mt_silver_2f.json` | Grotte 2F (noir) : Flash automatique (A-17) ; la galerie (14, 10..12) joue le rival et le soin (A-19 à A-21) |
+| `johto_mt_silver_summit.json` | Sommet sous la trappe : un pas vers le sud joue Dante (A-23, A-26 à A-30), Giovanni, Cenere, sauvegarde, le rival final |
+| `johto_mt_silver_rival.json` | Sommet après Giovanni, rival non battu : un pas vers le sud joue A-45 et le combat |
+| `johto_route_28.json` | Grotte 1F après le rival final : descente libre par la sortie ouest (0, 23) vers la Route 28 |
+| `johto_route_28_gate.json` | Poste de la Route 28, côté Johto : descendre → A-47, porte vers la Route 22 de Kanto |
+| `johto_kanto_gate.json` | Route 22 ouest (Kanto) devant la porte neuve, sans le rival final : entrer, monter → A-48 et recul |
+| `johto_epilogue.json` | Bourg Palette devant le labo, chapitre presque fini : entrer et monter d'un pas → épilogue (A-49 à A-51), Balle Verte, générique de Johto |
+| `johto_after_chapter.json` | Sommet après le chapitre : vide, écharpe (A-52) en (7, 13) |
