@@ -48,10 +48,6 @@ Germignon, Héricendre, Kaiminus (dos RB, planche de marche), Suicune (dos RB, f
 Tyranocif (grand dos RB) et les quatre icônes d'objets. Les artworks et les cris (sources
 officielles, mécaniques) n'attendent pas la validation.
 
-Questions à Kevin avec la planche (défauts appliqués s'il ne répond pas) :
-- **Compagnons de Johto** [D] : les trois starters seulement (comme A-10 pour Kanto au départ). Leurs
-  évolutions et d'autres espèces plus tard, sur demande.
-
 ### Résultat de la pilote (2026-11-04)
 
 Planche `serie-johto/planche-pilote.jpg`, captures `serie-johto/pilote-combat.jpg` (vrai combat,
@@ -67,15 +63,28 @@ Refus de Codex : le filtre n'est pas déterministe (dos de Germignon refusé 3 f
 4e essai, même prompt) ; le script relance la dernière révision, et `REVISIONS` /
 `MARCHE_REVISIONS` reformulent le sujet.
 
-## 4. Suivi
+### Décisions de Kevin sur la pilote (2026-11-04)
 
-| Étape | État |
-|---|---|
-| Artworks 51 + atlas + cadres + orientation | fait |
-| Cris 51 | fait |
-| Planche pilote | faite, envoyée à Kevin (2026-11-04) |
-| Dos RB 51 | après validation |
-| Planches du monde (3 starters, 4 légendaires) | après validation |
-| Icônes du Sac (4) | après validation |
-| Points d'effets de combat | après les dos |
-| Silhouettes provisoires de Johto retirées | à la fin |
+Rendu validé pour toute la série ; dos de Tyranocif refait plus clair, dans le vert et le trait de
+son artwork (r4) ; compagnons de Johto : les 3 de départ et leurs 6 évolutions, pour que le compagnon
+reste après une évolution.
+
+## 4. Bilan de la production
+
+- **51 dos RB** dans `assets/sprites/pokemon/dos/`. Codex a refusé souvent avec l'artwork joint
+  (`moderation_blocked`) : beaucoup viennent de r2 ou r3 (sans image). Marill (r7) et Mentali (r5) ont
+  demandé une reformulation du sujet (`REVISIONS`). Retenus avec réserve : Noarfang et Togetic
+  sobres, Celebi plus jaune que son artwork, Hyporoi aux nageoires plus larges.
+- **9 planches de marche** (starters et évolutions). Aligatueur et Typhlosion viennent de l'essai
+  sans ancre (r2) : un peu plus texturés que les autres.
+- **4 feuilles d'ambiance** : Suicune, Entei, Lugia, Ho-Oh, face au joueur, en boucle.
+- **Quota** : la production de masse a épuisé le quota Codex de l'abonnement à mi-parcours
+  (2026-11-04, 21 h 32) ; Kevin l'a rechargé le soir même.
+- **Silhouettes de combat de Johto retirées** (204 fichiers, avec `gen_placeholder_battlers_johto.py`).
+  Un test de données de carte vérifie maintenant `BattleArt.has_image(espèce, dos)`, jamais
+  `placeholder_path`.
+- **Hors de cette série** : Écrémeuh de la ferme (marqueurs sans image, Route 39) ; pas de planche du
+  monde pour les autres espèces : une espèce sans planche n'est pas éligible comme compagnon (A-11).
+
+Outils : `tools/art/serie_johto_pokemon.py`, `tools/capture_johto_art.gd` (Pokédex, Équipe, Sac),
+`tools/capture_battle_stage_cb1.gd --pairs=adversaire:toi`, départ de débogage `johto_compagnon`.

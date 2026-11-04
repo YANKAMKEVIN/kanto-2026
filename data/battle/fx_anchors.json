@@ -10026,6 +10026,10 @@
      1000
     ],
     "points": {
+     "tete": [
+      0.7,
+      0.38
+     ],
      "centre": [
       0.527,
       0.527
@@ -10068,21 +10072,25 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/bayleef_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_153.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     114,
+     24,
+     795,
+     1000
     ],
     "points": {
+     "tete": [
+      0.53,
+      0.45
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.51,
+      0.66
      ]
     }
    }
@@ -10122,21 +10130,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/meganium_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_154.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     66,
+     24,
+     892,
+     1000
     ],
     "points": {
+     "tete": [
+      0.76,
+      0.25
+     ],
+     "cornes": [
+      0.88,
+      0.07
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.489,
+      0.684
      ]
     }
    }
@@ -10188,6 +10204,10 @@
      1000
     ],
     "points": {
+     "tete": [
+      0.78,
+      0.3
+     ],
      "centre": [
       0.449,
       0.573
@@ -10234,21 +10254,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/quilava_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_156.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     89,
+     24,
+     845,
+     1000
     ],
     "points": {
+     "tete": [
+      0.72,
+      0.37
+     ],
+     "queue": [
+      0.2,
+      0.75
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.591,
+      0.62
      ]
     }
    }
@@ -10298,21 +10326,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/typhlosion_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_157.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
      45,
-     58
+     24,
+     933,
+     1000
     ],
     "points": {
+     "tete": [
+      0.7,
+      0.27
+     ],
+     "mains": [
+      [
+       0.1,
+       0.7
+      ],
+      [
+       0.83,
+       0.82
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.475,
+      0.552
      ]
     }
    }
@@ -10374,6 +10416,24 @@
      1000
     ],
     "points": {
+     "tete": [
+      0.63,
+      0.27
+     ],
+     "mains": [
+      [
+       0.23,
+       0.5
+      ],
+      [
+       0.92,
+       0.55
+      ]
+     ],
+     "queue": [
+      0.1,
+      0.95
+     ],
      "centre": [
       0.55,
       0.573
@@ -10430,21 +10490,39 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/croconaw_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_159.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     22,
+     24,
+     980,
+     1000
     ],
     "points": {
+     "tete": [
+      0.57,
+      0.4
+     ],
+     "mains": [
+      [
+       0.14,
+       0.58
+      ],
+      [
+       0.93,
+       0.66
+      ]
+     ],
+     "queue": [
+      0.12,
+      0.9
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.507,
+      0.621
      ]
     }
    }
@@ -10490,21 +10568,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/feraligatr_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_160.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     26,
+     1000,
+     998
     ],
     "points": {
+     "tete": [
+      0.64,
+      0.31
+     ],
+     "mains": [
+      [
+       0.07,
+       0.65
+      ],
+      [
+       0.93,
+       0.8
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.471,
+      0.62
      ]
     }
    }
@@ -10540,21 +10632,43 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/sentret_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_161.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     110,
+     24,
+     803,
+     1000
     ],
     "points": {
+     "tete": [
+      0.52,
+      0.44
+     ],
+     "mains": [
+      [
+       0.4,
+       0.38
+      ],
+      [
+       0.92,
+       0.43
+      ]
+     ],
+     "queue": [
+      0.4,
+      0.9
+     ],
+     "cornes": [
+      0.75,
+      0.1
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.588,
+      0.553
      ]
     }
    }
@@ -10614,21 +10728,39 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/furret_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_162.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     33,
+     24,
+     958,
+     1000
     ],
     "points": {
+     "tete": [
+      0.72,
+      0.22
+     ],
+     "mains": [
+      [
+       0.5,
+       0.7
+      ],
+      [
+       0.92,
+       0.72
+      ]
+     ],
+     "queue": [
+      0.15,
+      0.55
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.543,
+      0.62
      ]
     }
    }
@@ -10684,21 +10816,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/hoothoot_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_163.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     123,
+     24,
+     778,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.45
+     ],
+     "mains": [
+      [
+       0.03,
+       0.72
+      ],
+      [
+       0.88,
+       0.72
+      ]
+     ],
+     "centre": [
+      0.465,
+      0.547
      ]
     }
    }
@@ -10748,21 +10894,25 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/noctowl_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_164.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     132,
+     24,
+     759,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.45
+     ],
+     "centre": [
+      0.511,
+      0.576
      ]
     }
    }
@@ -10808,21 +10958,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/crobat_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_169.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     246,
+     1000,
+     778
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.5
+     ],
+     "mains": [
+      [
+       0.1,
+       0.25
+      ],
+      [
+       0.9,
+       0.25
+      ]
+     ],
+     "centre": [
+      0.448,
+      0.499
      ]
     }
    }
@@ -10878,21 +11042,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/togepi_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_175.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     42,
+     24,
+     940,
+     1000
     ],
     "points": {
+     "tete": [
+      0.45,
+      0.45
+     ],
+     "mains": [
+      [
+       0.05,
+       0.55
+      ],
+      [
+       0.92,
+       0.4
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.515,
+      0.573
      ]
     }
    }
@@ -10938,21 +11116,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/togetic_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_176.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     68,
+     24,
+     888,
+     1000
     ],
     "points": {
+     "tete": [
+      0.7,
+      0.2
+     ],
+     "mains": [
+      [
+       0.2,
+       0.6
+      ],
+      [
+       0.85,
+       0.72
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.545,
+      0.57
      ]
     }
    }
@@ -11002,21 +11194,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/mareep_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_179.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     27,
+     24,
+     969,
+     1000
     ],
     "points": {
+     "tete": [
+      0.55,
+      0.25
+     ],
+     "queue": [
+      0.1,
+      0.22
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.519,
+      0.565
      ]
     }
    }
@@ -11066,21 +11266,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/flaaffy_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_180.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     64,
+     24,
+     895,
+     1000
     ],
     "points": {
+     "tete": [
+      0.6,
+      0.18
+     ],
+     "queue": [
+      0.07,
+      0.6
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.573,
+      0.571
      ]
     }
    }
@@ -11134,21 +11342,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/ampharos_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_181.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     67,
+     24,
+     890,
+     1000
     ],
     "points": {
+     "tete": [
+      0.7,
+      0.2
+     ],
+     "queue": [
+      0.18,
+      0.45
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.551,
+      0.622
      ]
     }
    }
@@ -11208,21 +11424,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/marill_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_183.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     123,
+     1000,
+     901
     ],
     "points": {
+     "tete": [
+      0.48,
+      0.3
+     ],
+     "queue": [
+      0.12,
+      0.2
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.515,
+      0.531
      ]
     }
    }
@@ -11282,21 +11506,39 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/azumarill_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_184.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     15,
+     24,
+     994,
+     1000
     ],
     "points": {
+     "tete": [
+      0.55,
+      0.45
+     ],
+     "mains": [
+      [
+       0.2,
+       0.62
+      ],
+      [
+       0.9,
+       0.77
+      ]
+     ],
+     "queue": [
+      0.07,
+      0.75
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.53,
+      0.582
      ]
     }
    }
@@ -11348,21 +11590,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/politoed_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_186.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     55,
+     24,
+     914,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.4
+     ],
+     "mains": [
+      [
+       0.04,
+       0.67
+      ],
+      [
+       0.92,
+       0.5
+      ]
+     ],
+     "centre": [
+      0.453,
+      0.642
      ]
     }
    }
@@ -11416,21 +11672,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/espeon_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_196.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     43,
+     24,
+     937,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.38
+     ],
+     "queue": [
+      0.05,
+      0.7
+     ],
+     "centre": [
+      0.494,
+      0.513
      ]
     }
    }
@@ -11470,21 +11734,25 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/umbreon_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_197.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     38,
+     24,
+     948,
+     1000
     ],
     "points": {
+     "tete": [
+      0.7,
+      0.38
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.53,
+      0.622
      ]
     }
    }
@@ -11530,21 +11798,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/murkrow_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_198.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     36,
+     1000,
+     988
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.45
+     ],
+     "queue": [
+      0.2,
+      0.75
+     ],
+     "centre": [
+      0.506,
+      0.614
      ]
     }
    }
@@ -11598,21 +11874,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/slowking_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_199.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     99,
+     24,
+     825,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.3
+     ],
+     "queue": [
+      0.07,
+      0.92
+     ],
+     "centre": [
+      0.544,
+      0.581
      ]
     }
    }
@@ -11672,21 +11956,39 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/wobbuffet_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_202.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     72,
+     24,
+     879,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.35
+     ],
+     "mains": [
+      [
+       0.3,
+       0.07
+      ],
+      [
+       0.95,
+       0.15
+      ]
+     ],
+     "queue": [
+      0.1,
+      0.85
+     ],
+     "centre": [
+      0.503,
+      0.512
      ]
     }
    }
@@ -11726,21 +12028,25 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/steelix_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_208.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     28,
+     24,
+     968,
+     1000
     ],
     "points": {
+     "tete": [
+      0.6,
+      0.18
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.483,
+      0.519
      ]
     }
    }
@@ -11792,21 +12098,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/scizor_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_212.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     13,
+     24,
+     998,
+     1000
     ],
     "points": {
+     "tete": [
+      0.42,
+      0.3
+     ],
+     "mains": [
+      [
+       0.15,
+       0.3
+      ],
+      [
+       0.78,
+       0.65
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.439,
+      0.583
      ]
     }
    }
@@ -11866,21 +12186,39 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/heracross_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_214.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     23,
+     24,
+     978,
+     1000
     ],
     "points": {
+     "tete": [
+      0.55,
+      0.5
+     ],
+     "mains": [
+      [
+       0.07,
+       0.85
+      ],
+      [
+       0.85,
+       0.83
+      ]
+     ],
+     "cornes": [
+      0.8,
+      0.15
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.499,
+      0.677
      ]
     }
    }
@@ -11936,21 +12274,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/sneasel_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_215.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     18,
+     24,
+     987,
+     1000
     ],
     "points": {
+     "tete": [
+      0.38,
+      0.3
+     ],
+     "mains": [
+      [
+       0.08,
+       0.6
+      ],
+      [
+       0.9,
+       0.15
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.472,
+      0.529
      ]
     }
    }
@@ -12006,21 +12358,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/teddiursa_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_216.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     106,
+     24,
+     812,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.4
+     ],
+     "mains": [
+      [
+       0.05,
+       0.83
+      ],
+      [
+       0.95,
+       0.65
+      ]
+     ],
+     "centre": [
+      0.512,
+      0.509
      ]
     }
    }
@@ -12066,21 +12432,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/ursaring_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_217.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     39,
+     24,
+     945,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.2
+     ],
+     "mains": [
+      [
+       0.05,
+       0.8
+      ],
+      [
+       0.95,
+       0.88
+      ]
+     ],
+     "centre": [
+      0.49,
+      0.604
      ]
     }
    }
@@ -12116,21 +12496,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/skarmory_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_227.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     167,
+     1000,
+     857
     ],
     "points": {
+     "tete": [
+      0.58,
+      0.17
+     ],
+     "mains": [
+      [
+       0.1,
+       0.35
+      ],
+      [
+       0.88,
+       0.35
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.448,
+      0.533
      ]
     }
    }
@@ -12170,21 +12564,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/houndour_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_228.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     62,
+     24,
+     899,
+     1000
     ],
     "points": {
+     "tete": [
+      0.7,
+      0.2
+     ],
+     "cornes": [
+      0.65,
+      0.13
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.569,
+      0.606
      ]
     }
    }
@@ -12228,21 +12630,33 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/houndoom_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_229.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     49,
+     24,
+     925,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
+      0.82,
+      0.2
+     ],
+     "queue": [
+      0.4,
+      0.3
+     ],
+     "cornes": [
       0.5,
-      0.525
+      0.1
+     ],
+     "centre": [
+      0.559,
+      0.593
      ]
     }
    }
@@ -12286,21 +12700,39 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/kingdra_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_230.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     17,
+     24,
+     989,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
+      0.58,
+      0.3
+     ],
+     "mains": [
+      [
+       0.1,
+       0.8
+      ],
+      [
+       0.8,
+       0.72
+      ]
+     ],
+     "cornes": [
       0.5,
-      0.525
+      0.12
+     ],
+     "centre": [
+      0.466,
+      0.626
      ]
     }
    }
@@ -12336,21 +12768,25 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/phanpy_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_231.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     38,
+     24,
+     948,
+     1000
     ],
     "points": {
+     "tete": [
+      0.55,
+      0.28
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.503,
+      0.536
      ]
     }
    }
@@ -12386,21 +12822,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/donphan_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_232.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     251,
+     1000,
+     773
     ],
     "points": {
+     "tete": [
+      0.7,
+      0.3
+     ],
+     "cornes": [
+      0.95,
+      0.3
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.45,
+      0.538
      ]
     }
    }
@@ -12436,21 +12880,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/porygon2_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_233.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     25,
+     1000,
+     999
     ],
     "points": {
+     "tete": [
+      0.65,
+      0.25
+     ],
+     "mains": [
+      [
+       0.15,
+       0.45
+      ],
+      [
+       0.98,
+       0.2
+      ]
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.487,
+      0.543
      ]
     }
    }
@@ -12500,21 +12958,33 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/miltank_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_241.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     28,
+     24,
+     968,
+     1000
     ],
     "points": {
+     "tete": [
+      0.6,
+      0.2
+     ],
+     "queue": [
+      0.08,
+      0.55
+     ],
+     "cornes": [
+      0.62,
+      0.08
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.512,
+      0.572
      ]
     }
    }
@@ -12570,21 +13040,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/blissey_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_242.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     13,
+     24,
+     997,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.25
+     ],
+     "mains": [
+      [
+       0.12,
+       0.45
+      ],
+      [
+       0.85,
+       0.55
+      ]
+     ],
+     "centre": [
+      0.474,
+      0.561
      ]
     }
    }
@@ -12624,21 +13108,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/raikou_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_243.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     96,
+     1000,
+     928
     ],
     "points": {
+     "tete": [
+      0.68,
+      0.15
+     ],
+     "queue": [
+      0.05,
+      0.38
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.498,
+      0.56
      ]
     }
    }
@@ -12682,21 +13174,25 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/entei_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_244.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     20,
+     24,
+     983,
+     1000
     ],
     "points": {
+     "tete": [
+      0.75,
+      0.3
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.534,
+      0.574
      ]
     }
    }
@@ -12752,6 +13248,14 @@
      979
     ],
     "points": {
+     "tete": [
+      0.82,
+      0.3
+     ],
+     "cornes": [
+      0.9,
+      0.05
+     ],
      "centre": [
       0.508,
       0.6
@@ -12798,21 +13302,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/larvitar_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_246.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     70,
+     24,
+     883,
+     1000
     ],
     "points": {
+     "tete": [
+      0.6,
+      0.3
+     ],
+     "cornes": [
+      0.8,
+      0.12
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.583,
+      0.622
      ]
     }
    }
@@ -12852,21 +13364,29 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/pupitar_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_247.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     40,
+     24,
+     944,
+     1000
     ],
     "points": {
+     "tete": [
+      0.55,
+      0.4
+     ],
+     "cornes": [
+      0.72,
+      0.1
+     ],
      "centre": [
-      0.5,
-      0.525
+      0.533,
+      0.629
      ]
     }
    }
@@ -12922,15 +13442,19 @@
      1024
     ],
     "box": [
-     19,
-     24,
-     985,
-     1000
+     12,
+     25,
+     1000,
+     999
     ],
     "points": {
+     "tete": [
+      0.62,
+      0.12
+     ],
      "centre": [
-      0.5,
-      0.611
+      0.489,
+      0.593
      ]
     }
    }
@@ -12980,21 +13504,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/lugia_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_249.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     25,
+     1000,
+     999
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.25
+     ],
+     "mains": [
+      [
+       0.12,
+       0.35
+      ],
+      [
+       0.85,
+       0.3
+      ]
+     ],
+     "centre": [
+      0.475,
+      0.54
      ]
     }
    }
@@ -13048,21 +13586,43 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/ho_oh_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_250.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     12,
+     31,
+     1000,
+     993
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.33
+     ],
+     "mains": [
+      [
+       0.1,
+       0.35
+      ],
+      [
+       0.88,
+       0.35
+      ]
+     ],
+     "queue": [
+      0.5,
+      0.95
+     ],
+     "cornes": [
+      0.55,
+      0.15
+     ],
+     "centre": [
+      0.45,
+      0.532
      ]
     }
    }
@@ -13118,21 +13678,35 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/placeholder/celebi_back.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_251.png",
     "size": [
-     64,
-     64
+     1024,
+     1024
     ],
     "box": [
-     10,
-     4,
-     45,
-     58
+     69,
+     24,
+     886,
+     1000
     ],
     "points": {
-     "centre": [
+     "tete": [
       0.5,
-      0.525
+      0.45
+     ],
+     "mains": [
+      [
+       0.13,
+       0.9
+      ],
+      [
+       0.9,
+       0.67
+      ]
+     ],
+     "centre": [
+      0.463,
+      0.568
      ]
     }
    }
