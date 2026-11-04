@@ -17,18 +17,31 @@ var in_foreground: bool = true
 
 
 ## Vrai si la notification demande une sauvegarde stable avant la suspension / fermeture.
+## J34 (34D) : `OS_MEMORY_WARNING` (mémoire basse : iOS la transmet, Android pas dans Godot 4.7)
+## demande la même écriture, sans quitter le premier plan : le système peut tuer le processus
+## juste après, le point de reprise doit déjà être sur le disque.
 func handle_notification(what: int) -> bool:
 	match what:
 		Node.NOTIFICATION_APPLICATION_PAUSED:
 			in_foreground = false
 			return true
-		Node.NOTIFICATION_WM_CLOSE_REQUEST:
+		Node.NOTIFICATION_WM_CLOSE_REQUEST, Node.NOTIFICATION_OS_MEMORY_WARNING:
 			return true
 		Node.NOTIFICATION_APPLICATION_RESUMED, Node.NOTIFICATION_APPLICATION_FOCUS_IN:
 			in_foreground = true
 		Node.NOTIFICATION_APPLICATION_FOCUS_OUT:
 			in_foreground = false
 	return false
+
+
+## Motif de l'écriture demandée par [method handle_notification] (journal de Boot).
+static func save_reason(what: int) -> String:
+	match what:
+		Node.NOTIFICATION_WM_CLOSE_REQUEST:
+			return "fermeture"
+		Node.NOTIFICATION_OS_MEMORY_WARNING:
+			return "mémoire basse"
+	return "arrière-plan"
 
 
 ## `FOCUS_OUT` → [constant Focus.LOST] ; `FOCUS_IN` ou `RESUMED` → [constant Focus.REGAINED].
