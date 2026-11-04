@@ -104,7 +104,8 @@ func test_scene_grid_matches_the_plan() -> void:
 			for x: int in plan.width:
 				var cell := Vector2i(x, y)
 				var c := plan.at(cell)
-				var solid := not WALKABLE.contains(c)
+				# QA A17 (caméra) : la rangée 0 des entrées nord est bloquée, on entre en rangée 1.
+				var solid := not WALKABLE.contains(c) or (y == 0 and WATER.contains(c))
 				if grid.is_solid(cell) != solid:
 					wrong.append("%s solide=%s" % [cell, grid.is_solid(cell)])
 				var water := WATER.contains(c)
@@ -140,20 +141,20 @@ func test_room_1_current_is_permanent_and_room_2_channel_follows_the_act() -> vo
 
 func test_act_1_goes_one_way_and_act_2_both_ways() -> void:
 	var one: GameMap = _maps[&"sea_cave_1"]
-	var from_pallet := _reachable(one, [Vector2i(12, 0)])
+	var from_pallet := _reachable(one, [Vector2i(12, 1)])
 	assert_true(from_pallet.has(Vector2i(20, 39)), "salle 1 : sortie sud atteinte")
 	assert_true(from_pallet.has(Vector2i(7, 10)), "salle 1 : îlot de la Perle atteint")
 	var two: GameMap = _maps[&"sea_cave_2"]
 	two.apply_flag_gates(_flags([]))
-	var from_north := _reachable(two, [Vector2i(20, 0)])
+	var from_north := _reachable(two, [Vector2i(20, 1)])
 	assert_true(from_north.has(Vector2i(3, 39)), "acte 1 : la plage est atteinte")
 	assert_true(from_north.has(Vector2i(23, 24)), "acte 1 : le Rappel Max est atteint")
 	assert_true(from_north.has(Vector2i(9, 17)), "acte 1 : la rangée de l'ombre")
 	var back := _reachable(two, [Vector2i(3, 38)])
-	assert_false(back.has(Vector2i(20, 0)), "acte 1 : impossible de remonter")
+	assert_false(back.has(Vector2i(20, 1)), "acte 1 : impossible de remonter")
 	two.apply_flag_gates(_flags([&"johto_team_returned"]))
 	var back_2 := _reachable(two, [Vector2i(3, 38)])
-	assert_true(back_2.has(Vector2i(20, 0)), "acte 2 : la grotte se traverse dans les deux sens")
+	assert_true(back_2.has(Vector2i(20, 1)), "acte 2 : la grotte se traverse dans les deux sens")
 	two.apply_flag_gates(_flags([]))
 
 
@@ -171,8 +172,9 @@ func test_warps_and_spawns_match_on_both_sides() -> void:
 		assert_eq(warp.target_spawn, spawn)
 		assert_eq(warp.if_flags, [&"johto_letter_read"] as Array[StringName], "fermée avant la lettre")
 		assert_true(one.has_spawn(spawn), String(spawn))
-		assert_eq(one.get_spawn_cell(spawn), Vector2i(12 + i, 0))
-		var back := _warp_at(one, Vector2i(12 + i, 0))
+		assert_eq(one.get_spawn_cell(spawn), Vector2i(12 + i, 1), "rangée 1 (caméra)")
+		assert_true(one.get_grid().is_solid(Vector2i(12 + i, 0)), "rangée 0 bloquée")
+		var back := _warp_at(one, Vector2i(12 + i, 1))
 		assert_not_null(back)
 		assert_eq(back.trigger, Warp.Trigger.PUSH)
 		assert_eq(back.direction, Vector2i.UP)
@@ -189,13 +191,13 @@ func test_warps_and_spawns_match_on_both_sides() -> void:
 		assert_eq(down.trigger, Warp.Trigger.PUSH)
 		var spawn := StringName("from_sea_cave_1" if i == 0 else "from_sea_cave_1_%d" % i)
 		assert_eq(down.target_spawn, spawn)
-		assert_eq(two.get_spawn_cell(spawn), Vector2i(20 + i, 0))
-		var up := _warp_at(two, Vector2i(20 + i, 0))
+		assert_eq(two.get_spawn_cell(spawn), Vector2i(20 + i, 1), "rangée 1 (caméra)")
+		var up := _warp_at(two, Vector2i(20 + i, 1))
 		assert_eq(up.target_map, &"sea_cave_1")
 		var spawn_up := StringName("from_sea_cave_2" if i == 0 else "from_sea_cave_2_%d" % i)
 		assert_eq(up.target_spawn, spawn_up)
 		assert_eq(one.get_spawn_cell(spawn_up), Vector2i(20 + i, 39))
-	assert_true(two.forced_surf_cells.has(Vector2i(20, 0)))
+	assert_true(two.forced_surf_cells.has(Vector2i(20, 1)))
 	assert_true(one.forced_surf_cells.has(Vector2i(21, 39)))
 	# Salle 2 ↔ Oliville.
 	for i: int in 2:
@@ -280,10 +282,12 @@ func test_pallet_town_sea_is_surfable_and_the_mouth_is_gated() -> void:
 		assert_true(grid.is_surfable(cell), str(cell))
 	assert_true(grid.is_surfable(Vector2i(5, 32)), "plage : départ du Surf")
 	assert_false(grid.is_surfable(Vector2i(9, 32)), "le ponton n'est pas de l'eau")
-	var examine := _pallet.get_interactions().get_at(MOUTH[0])
-	assert_eq(examine.size(), 1, "point d'examen de la bouche")
-	assert_eq(examine[0].dialogue_id, &"pallet_cave_mouth")
-	assert_eq(examine[0].if_flags, [&"johto_letter_read"] as Array[StringName])
+	for cell: Vector2i in MOUTH:
+		var trigger := _pallet.get_triggers().find_on_step(cell, Vector2i.RIGHT)
+		assert_not_null(trigger, "O-5 au premier pas sur la bouche %s" % cell)
+		if trigger != null:
+			assert_eq(trigger.cutscene_id, &"pallet_cave_mouth")
+	assert_eq(_pallet.get_interactions().get_at(MOUTH[0]).size(), 0, "plus de point d'examen")
 	var open := _pallet.get_node(^"Entities/Joh1GrotteOuverte") as FlagGate
 	var closed := _pallet.get_node(^"Entities/Joh1GrotteFermee") as FlagGate
 	assert_false(open.is_open(_flags([])))

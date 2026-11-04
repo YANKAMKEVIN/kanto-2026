@@ -2,7 +2,7 @@ extends GutTest
 ## Histoire du jalon JOH1 (`jalon-joh1.md` §2.5, §2.6, §2.8 ; dossier JOH-02) sur les vraies
 ## données : les textes O-1 à O-25 du dossier **mot pour mot** (tableau du §14), la lettre de Chen
 ## et le mot de la mère (variantes et drapeaux), la scène du Centre (soin, nuit, `confiscate_team`
-## puis `save` puis `johto_team_stolen`, matin, offre), sa reprise par la variante `auto` de
+## puis `johto_team_stolen` puis `save`, matin, offre), sa reprise par la variante `auto` de
 ## l'infirmière, l'offre d'Orme (`rival: false`, PNJ de la salle), la scène du choix (le drapeau
 ## avant la réplique au jeton `{pokemon}`, dons, départ d'Orme), le garde et les PNJ datés.
 
@@ -155,12 +155,18 @@ func test_center_arrival_scene_heals_steals_in_one_write_and_opens_the_offer() -
 	assert_eq(steps[first_map].spawn, &"lit")
 	var theft := kinds.find(CutsceneStep.Kind.CONFISCATE_TEAM)
 	var save := kinds.find(CutsceneStep.Kind.SAVE)
-	assert_true(theft > first_map and save == theft + 1, "vol puis écriture, d'un seul bloc")
-	var stolen := -1
-	for i: int in range(save, steps.size()):
-		if steps[i].kind == CutsceneStep.Kind.SET_FLAGS and steps[i].flags.has(&"johto_team_stolen"):
-			stolen = i
-	assert_true(stolen == save + 1, "johto_team_stolen juste après l'écriture (matin imposé)")
+	# QA A17 (2026-11-04) : le drapeau du matin est posé AVANT l'écriture, sinon une coupure juste
+	# après l'écriture reprend dans une chambre de nuit sans Orme ni infirmière (impasse).
+	var stolen := theft + 1
+	assert_true(theft > first_map, "le vol dans la chambre")
+	assert_eq(steps[stolen].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(steps[stolen].flags, [&"johto_team_stolen"] as Array[StringName])
+	assert_eq(save, stolen + 1, "vol, drapeau du matin, puis une seule écriture")
+	var raised := 0
+	for step: CutsceneStep in steps:
+		if step.kind == CutsceneStep.Kind.SET_FLAGS and step.flags.has(&"johto_team_stolen"):
+			raised += 1
+	assert_eq(raised, 1, "drapeau du matin posé une seule fois")
 	var second_map := kinds.rfind(CutsceneStep.Kind.CHANGE_MAP)
 	assert_true(second_map > stolen, "la chambre recharge au matin")
 	assert_eq(steps[-1].kind, CutsceneStep.Kind.SET_FLAGS)

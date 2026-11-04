@@ -13,8 +13,10 @@ extends SceneTree
 ##     [johto_letter_read]`** (avant la lettre : bord de carte ordinaire) ; arrivées `from_sea_cave`,
 ##     `_1`… sur ces cases, en Surf forcé ;
 ##   - le décor : [FlagGate] `Joh1GrotteOuverte` (`if johto_letter_read`, bouche sombre en aplats)
-##     et `Joh1GrotteFermee` (`unless`, rochers) ; point d'examen `Joh1GrotteExamen` (tourné ↓,
-##     dialogue `pallet_cave_mouth`, O-5, `if johto_letter_read`).
+##     et `Joh1GrotteFermee` (`unless`, rochers) ; déclencheur `Joh1GrotteDecouverte` sur les
+##     quatre cases de la bouche (scène `pallet_cave_mouth` : O-5 au premier pas, une fois ; QA A17
+##     du 2026-11-04 : un point d'examen sur l'eau n'était jamais proposé, pousser vers le bas
+##     entrait directement).
 ## Aplats provisoires : le décor peint de la bouche vient avec le lot d'art de Johto.
 ##
 ##   godot --headless --path . -s res://tools/build_joh1_pallet_cave.gd
@@ -31,7 +33,7 @@ const TARGET_MAP: StringName = &"sea_cave_1"
 const TARGET_SPAWN: String = "from_pallet_town"
 const SPAWN: String = "from_sea_cave"
 const FLAG: StringName = &"johto_letter_read"
-const DIALOGUE: StringName = &"pallet_cave_mouth"
+const CUTSCENE: StringName = &"pallet_cave_mouth"
 const ROCK := Color(0.42, 0.40, 0.38)
 const ROCK_DARK := Color(0.28, 0.27, 0.26)
 const MOUTH := Color(0.05, 0.07, 0.11)
@@ -69,11 +71,6 @@ func _build() -> int:
 	var spawns := root.get_node(^"Spawns")
 	var warps := root.get_node(^"Warps")
 	var entities := root.get_node(^"Entities")
-	var interactables := root.get_node_or_null(^"Interactables")
-	if interactables == null:
-		interactables = Node2D.new()
-		interactables.name = "Interactables"
-		_attach(root, root, interactables)
 	for i: int in MOUTH_CELLS.size():
 		var cell := MOUTH_CELLS[i]
 		var marker := Marker2D.new()
@@ -102,16 +99,14 @@ func _build() -> int:
 	_rect(root, closed, Rect2(-2.0 * TILE, -1.0 * TILE, 4.0 * TILE, 1.0 * TILE), ROCK)
 	for x: float in [-1.6, -0.5, 0.7]:
 		_rect(root, closed, Rect2(x * TILE, -1.35 * TILE, 0.9 * TILE, 0.6 * TILE), ROCK_DARK)
-	var examine := Marker2D.new()
-	examine.set_script(load("res://game/world/interactions/interact_point.gd"))
-	examine.name = OWN_PREFIX + "GrotteExamen"
-	examine.position = _world(MOUTH_CELLS[0])
-	examine.set(&"size", Vector2i(MOUTH_CELLS.size(), 1))
-	examine.set(&"facing", Vector2i.DOWN)
-	examine.set(&"dialogue_id", DIALOGUE)
-	var examine_if: Array[StringName] = [FLAG]
-	examine.set(&"if_flags", examine_if)
-	_attach(root, interactables, examine)
+	var triggers := root.get_node(^"Triggers")
+	var trigger := Marker2D.new()
+	trigger.set_script(load("res://game/world/triggers/event_trigger_point.gd"))
+	trigger.name = OWN_PREFIX + "GrotteDecouverte"
+	trigger.position = _world(MOUTH_CELLS[0])
+	trigger.set(&"size", Vector2i(MOUTH_CELLS.size(), 1))
+	trigger.set(&"cutscene_id", CUTSCENE)
+	_attach(root, triggers, trigger)
 	var packed := PackedScene.new()
 	var err := packed.pack(root)
 	if err == OK:
@@ -136,7 +131,7 @@ func _sea_cells(size: Vector2i) -> Array[Vector2i]:
 
 
 func _clean(root: Node) -> void:
-	for group: NodePath in [^"Entities", ^"Warps", ^"Interactables"]:
+	for group: NodePath in [^"Entities", ^"Warps", ^"Interactables", ^"Triggers"]:
 		var parent := root.get_node_or_null(group)
 		if parent == null:
 			continue

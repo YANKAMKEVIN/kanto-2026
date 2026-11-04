@@ -2,7 +2,7 @@
 	"sea_cave_water": {
 		"maps": ["sea_cave_1", "sea_cave_2"],
 		"terrain": "water",
-		"rate": 10,
+		"rate": 5,
 		"slots": [
 			{ "species": "tentacool", "levels": [40, 45], "weight": 154 },
 			{ "species": "shellder", "levels": [40, 45], "weight": 77 },

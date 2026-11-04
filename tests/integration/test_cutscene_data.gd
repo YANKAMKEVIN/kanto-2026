@@ -192,6 +192,7 @@ const VARIANT_FLAGS: Dictionary = {
 	# Chapitre Johto (JOH1) : lettre, grotte marine, Oliville (jalon-joh1.md §2.5, §2.6).
 	&"johto_letter": [[&"oak_met", &"league_champion_defeated", &"oak_post_league_gifts_done"]],
 	&"sea_cave_lugia_shadow": [[]], &"sea_cave_current_back": [[]],
+	&"pallet_cave_mouth": [[&"johto_letter_read"]],
 	&"sea_cave_1_item_1": [[]], &"sea_cave_2_item_1": [[]], &"olivine_arrival": [[]],
 	&"olivine_guard_block": [[]], &"olivine_center_arrival": [[&"johto_arrived"]],
 	&"olivine_morning": [[&"johto_team_stolen"]],
@@ -576,9 +577,10 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"johto_return_test": &"viridian_center",
 	&"johto_confiscate_test": &"viridian_center",
 	# Chapitre Johto (JOH1) : la lettre (variante « cutscene » de Chen), les objets de la grotte
-	# (dialogue de leur PNJ objet), le matin (variante « auto » de l'infirmière), le choix (StarterChoice).
+	# (dialogue de leur PNJ objet), le choix (StarterChoice). Le matin (`olivine_morning`) est lancé par
+	# la variante « auto » de l'infirmière ET par les déclencheurs de la chambre (reprise, QA A17).
 	&"johto_letter": &"oak_lab", &"sea_cave_1_item_1": &"sea_cave_1", &"sea_cave_2_item_1": &"sea_cave_2",
-	&"olivine_morning": &"olivine_center_room", &"johto_starter_chosen": &"olivine_center_room",
+	&"johto_starter_chosen": &"olivine_center_room",
 	# Jalon 32 (32N) : CT ramassées, données ou échangées.
 	&"route_4_tm04": &"route_4",
 	&"ss_anne_lower_deck_tm08": &"ss_anne_lower_deck",
@@ -1104,7 +1106,7 @@ func test_library_loads_without_error() -> void:
 		# Chapitre Johto (JOH1) : lettre, grotte marine, Oliville.
 		+ [&"johto_letter", &"sea_cave_lugia_shadow", &"sea_cave_current_back", &"sea_cave_1_item_1",
 		&"sea_cave_2_item_1", &"olivine_arrival", &"olivine_guard_block", &"olivine_center_arrival",
-		&"olivine_morning", &"johto_starter_chosen"]))
+		&"olivine_morning", &"johto_starter_chosen", &"pallet_cave_mouth"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:

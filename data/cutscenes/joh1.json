@@ -13,6 +13,15 @@
 			{ "dialogue": "johto_letter_3" }
 		]
 	},
+	"pallet_cave_mouth": {
+		"if": ["johto_letter_read"],
+		"unless": ["johto_cave_mouth_seen"],
+		"steps": [
+			{ "face": "player", "to": "down" },
+			{ "dialogue": "pallet_cave_mouth" },
+			{ "set": ["johto_cave_mouth_seen"] }
+		]
+	},
 	"sea_cave_lugia_shadow": {
 		"unless": ["johto_lugia_shadow"],
 		"steps": [
@@ -91,8 +100,8 @@
 			{ "despawn": "sbire_1" },
 			{ "dialogue": "olivine_night_4" },
 			{ "confiscate_team": true },
-			{ "save": "vol de l'équipe (Centre d'Oliville)" },
 			{ "set": ["johto_team_stolen"] },
+			{ "save": "vol de l'équipe (Centre d'Oliville)" },
 			{ "wait": 0.8 },
 			{ "change_map": "olivine_center_room", "at": "lit", "facing": "left" },
 			{ "wait": 0.8 },

@@ -186,6 +186,7 @@ const IDS_JOH0: Array[StringName] = [&"storage_offline", &"egg_hatched", &"trade
 ## Orme et le Pokémon de départ de Johto ; textes O-2 à O-25 du dossier JOH-02 §14 validés par Kevin
 ## (test_joh1_story), deux répliques [D] en brouillon (garde après le choix, panneau du Phare).
 const IDS_JOH1: Array[StringName] = [&"johto_letter_1", &"johto_letter_2", &"johto_letter_3",
+	&"olivine_nurse_center",
 	&"pallet_cave_mouth", &"sea_cave_lugia_shadow_1", &"sea_cave_lugia_shadow_2", &"sea_cave_current_back",
 	&"sea_cave_1_item_1", &"sea_cave_2_item_1", &"olivine_nurse_arrival_1", &"olivine_nurse_arrival_2",
 	&"olivine_night_1", &"olivine_night_2", &"olivine_night_3", &"olivine_night_4", &"olivine_nurse_morning",
@@ -1499,7 +1500,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		# Chapitre Johto (JOH0) : scènes de test du vol et du retour de l'équipe.
 		&"johto_return_test_before", &"johto_return_test_after", &"storage_offline",
 		# Chapitre Johto (JOH1) : lettre de Chen, grotte marine, Centre d'Oliville, Orme, garde.
-		&"johto_letter_1", &"johto_letter_2", &"johto_letter_3", &"sea_cave_lugia_shadow_1",
+		&"johto_letter_1", &"johto_letter_2", &"johto_letter_3", &"sea_cave_lugia_shadow_1", &"pallet_cave_mouth",
 		&"sea_cave_lugia_shadow_2", &"sea_cave_current_back", &"olivine_nurse_arrival_1",
 		&"olivine_nurse_arrival_2", &"olivine_night_1", &"olivine_night_2", &"olivine_night_3",
 		&"olivine_night_4", &"olivine_nurse_morning", &"olivine_orme_arrival", &"olivine_orme_offer",
@@ -1779,7 +1780,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# Chapitre Johto (JOH1) : lettre, grotte marine, arrivée, nuit, vol, offre, choix, départ d'Orme.
 		&"johto_letter_read", &"johto_lugia_passing", &"johto_lugia_shadow", &"got_sea_cave_1_item_1",
 		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_slept", &"johto_team_stolen",
-		&"johto_starter_offered", &"johto_starter_chosen", &"johto_orme_left",
+		&"johto_starter_offered", &"johto_starter_chosen", &"johto_orme_left", &"johto_cave_mouth_seen",
 		# Lot 32P : Cherch'Objet, Max Éther de l'Écume B3F, Max Repousse de la Route 21.
 		&"got_itemfinder", &"got_exp_all", &"got_seafoam_b3f_hidden_1", &"got_route_21_item_2",
 		# Jalon 32 (32N) : CT obtenables partout.
@@ -2086,7 +2087,8 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			# Maman, et le garde du poste sud à son premier passage (jalon 9, Q-4).
 			# JOH1 : l'infirmière de la salle de repos d'Oliville (reprise du matin après une coupure).
-			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard", &"olivine_nurse_wake"]
+			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard", &"olivine_nurse_wake",
+				&"olivine_nurse_center"]
 			assert_eq(variant.auto, first_of.has(id) and variant == \
 				_library.get_dialogue(id).variants[0], "%s : auto" % id)
 
@@ -2651,8 +2653,9 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13) ; 32A à 32D : Chen, le
 	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2) ; 32J : le camion, le concepteur. 32N (N-22) : neuf CT
 	# ramassées, le don de la CT18, de la CT29 et de la CT41.
-	# JOH1 : + la lettre d'Orme (Chen), les deux objets de la grotte marine, le matin (infirmière).
-	assert_eq(launched, 249, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# JOH1 : + la lettre d'Orme (Chen), les deux objets de la grotte marine, le matin (infirmière),
+	# l'arrivée au Centre d'Oliville (infirmière du comptoir, QA A17).
+	assert_eq(launched, 250, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "

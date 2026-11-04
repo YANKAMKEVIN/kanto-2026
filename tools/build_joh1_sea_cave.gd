@@ -130,15 +130,24 @@ func _build(map_id: StringName) -> void:
 			if not gated.has(cell):
 				currents[cell] = CURRENTS[c]
 	root.set(&"current_cells", currents)
-	# Arrivées (une par case) et Surf forcé.
+	# Arrivées (une par case) et Surf forcé. Bord nord (QA A17, caméra) : la rangée 0 est bloquée
+	# et entrées et arrivées passent à la rangée 1, comme le haut de la Route 1 à Bourg Palette
+	# (BLOCKED_CELLS) : sinon le joueur arrive la tête hors de l'écran.
 	var forced: Array[Vector2i] = []
+	var top_row: Array[Vector2i] = []
 	for id: String in _ids(plan, "spawn"):
 		var cells: Array[Vector2i] = plan.cells_at(id)
 		for i: int in cells.size():
-			_spawn(root, id if i == 0 else "%s_%d" % [id, i], cells[i])
+			var cell := _off_top(cells[i])
+			_spawn(root, id if i == 0 else "%s_%d" % [id, i], cell)
 			if plan.attr(id, "surf") == "1":
-				forced.append(cells[i])
+				forced.append(cell)
+	for id: String in _ids(plan, "warp"):
+		for cell: Vector2i in plan.cells_at(id):
+			if cell.y == 0:
+				top_row.append(cell)
 	root.set(&"forced_surf_cells", forced)
+	root.set(&"blocked_cells", top_row)
 	var debug: Dictionary = DEBUG_SPAWNS.get(map_id, {})
 	for spawn_name: String in debug:
 		_spawn(root, spawn_name, debug[spawn_name])
@@ -152,8 +161,8 @@ func _build(map_id: StringName) -> void:
 		var cells: Array[Vector2i] = plan.cells_at(id)
 		for i: int in cells.size():
 			var arrival: String = spec[3] if i == 0 else "%s_%d" % [spec[3], i]
-			_warp(root, "%s_%d" % [id.to_pascal_case(), i], cells[i], spec[0], spec[1], spec[2],
-				StringName(arrival), spec[4])
+			_warp(root, "%s_%d" % [id.to_pascal_case(), i], _off_top(cells[i]), spec[0], spec[1],
+				spec[2], StringName(arrival), spec[4])
 	# Déclencheurs.
 	for id: String in _ids(plan, "declencheur"):
 		if not TRIGGERS.has(id):
@@ -163,6 +172,11 @@ func _build(map_id: StringName) -> void:
 	if map_id == SHADOW_MAP:
 		_shadow(root, entities)
 	_save(root, MAPS_DIR + String(map_id) + ".tscn")
+
+
+## Une case de la rangée 0 (bord nord) passe à la rangée 1 (voir les arrivées).
+func _off_top(cell: Vector2i) -> Vector2i:
+	return cell + Vector2i.DOWN if cell.y == 0 else cell
 
 
 ## Sol provisoire : un type de tuile par caractère.

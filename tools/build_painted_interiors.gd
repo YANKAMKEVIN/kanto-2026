@@ -2111,7 +2111,11 @@ func _olivine_center() -> Dictionary:
 	(room["spawns"] as Dictionary)["from_room"] = Vector2i(13, 7)
 	# JOH1 (`jalon-joh1.md` §2.5) : rangée d'entrée (5..9, 7), traversée en entrant → scène de
 	# l'arrivée (O-8, nuit, vol, matin), qui ne joue que si `johto_arrived` et pas `johto_slept`.
-	room["triggers"] = [["ArrivalTrigger", Vector2i(5, 7), Vector2i(5, 1),
+	# QA A17 : l'infirmière (PNJ, variante « auto ») lance la scène dès l'arrivée ; le
+	# déclencheur couvre en plus tout le sol (hors escalier) pour une reprise sur n'importe quelle
+	# case (sauvegarde du soin écrite au comptoir).
+	room["triggers"] = [["ArrivalTrigger", Vector2i(1, 7), Vector2i(11, 3),
+		&"olivine_center_arrival"], ["ArrivalTriggerEast", Vector2i(12, 7), Vector2i(2, 1),
 		&"olivine_center_arrival"]]
 	room["warps"] = [
 		["StairsUp", Vector2i(13, 6), STEP_ON, Vector2i.UP, &"olivine_center_room",
@@ -2139,6 +2143,10 @@ func _olivine_center_room() -> Dictionary:
 		],
 		"props": [[&"int_escalier_descendant_01", Vector2i(12, 3), 4.0, "StairsDown"]],
 		"spawns": {"from_stairs": Vector2i(12, 4), "lit": Vector2i(3, 4)},
+		# QA A17 : reprise du matin sur n'importe quelle case (en plus de la variante « auto » de
+		# l'infirmière) ; la scène ne joue qu'entre le vol et l'offre d'Orme.
+		"triggers": [["MorningTrigger", Vector2i(3, 7), Vector2i(10, 4), &"olivine_morning"],
+			["MorningTriggerEast", Vector2i(13, 6), Vector2i(1, 3), &"olivine_morning"]],
 		"warps": [
 			["StairsDown", Vector2i(12, 3), STEP_ON, Vector2i.UP, &"olivine_center", &"from_room",
 				Vector2i.DOWN],

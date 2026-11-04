@@ -1165,8 +1165,12 @@ func _start_game_state() -> bool:
 	else:
 		_simulate_checkpoints = save_system == null
 		_open_save_system()
-		if save_system != null and _load_save() and _resume():
-			return true
+		if save_system != null and _load_save():
+			# JOH1 (QA A17) : le moment imposé avant la première carte (sinon fondu depuis le jour).
+			_apply_story_period()
+			if _resume():
+				return true
+	_apply_story_period()
 	SceneRouter.start(start_map, start_spawn, start_facing)
 	return true
 
@@ -1287,6 +1291,9 @@ func _on_opening_resumed(save: Dictionary) -> void:
 		GameState.player_cell, int(GameState.play_time)])
 	_log_loaded_save()
 	_repair_key_items()
+	# JOH1 (QA A17) : le moment imposé par l'histoire est posé avant la première carte, pour que
+	# sa lumière soit immédiate (nuit d'Oliville, matin de la chambre) au lieu d'un fondu de 10 s.
+	_apply_story_period()
 	if not _resume():
 		SceneRouter.start(start_map, start_spawn, start_facing)
 	_finish_opening()

@@ -56,6 +56,17 @@
 	"sea_cave_1_item_1": { "cutscene": "sea_cave_1_item_1" },
 	"sea_cave_2_item_1": { "cutscene": "sea_cave_2_item_1" },
 
+	"olivine_nurse_center": {
+		"speaker": "Infirmière",
+		"variants": [
+			{
+				"auto": true,
+				"if": ["johto_arrived"],
+				"unless": ["johto_slept"],
+				"cutscene": "olivine_center_arrival"
+			}
+		]
+	},
 	"olivine_nurse_arrival_1": {
 		"speaker": "Infirmière",
 		"variants": [

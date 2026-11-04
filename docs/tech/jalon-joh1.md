@@ -341,3 +341,50 @@ Captures Mac (Movie Maker, départs `johto_olivine_night`, `johto_olivine_day`, 
 second contrôleur pausable, Sbires qui marchent. CI : voir `etat-projet.md`. Reste : QA A17 (session
 coordinatrice), fusion `--no-ff` dans `main` après la CI verte et le JOH0.
 
+### Correctifs de la QA A17 (2026-11-04, compte rendu de la session coordinatrice)
+- **Bloquant** : la scène du vol écrivait la sauvegarde **avant** `johto_team_stolen` ; une
+  coupure juste après l'écriture reprenait dans une chambre de nuit sans Orme ni infirmière.
+  Ordre corrigé (`confiscate_team`, `johto_team_stolen`, `save`) ; test de bout en bout
+  `test_joh1_theft_resume` (vrai Boot, fichiers en mémoire : jouer jusqu'à l'écriture, « tuer »,
+  Continuer → matin, infirmière, Orme, légende du choix, offre ouverte).
+- **Nuit invisible sur l'A17** : le mode « économie » (défaut de l'A17) coupe l'étalonnage plein
+  écran ; clé de profil `grade.economy_flat` (lue par `LightingLibrary`, appliquée par
+  `WorldLighting`) : la nuit de Johto garde son gain à plat, presque gratuit ; Kanto inchangé.
+  Le moment imposé est aussi posé **avant** la première carte (plus de fondu de 10 s depuis le jour).
+- Infirmière du Centre et vendeur de la Boutique absents (`data/npcs/olivine_center.json`,
+  `olivine_mart.json`) ; l'infirmière lance la scène de l'arrivée **dès l'entrée** (variante
+  `auto`), le déclencheur couvre tout le sol (reprise sur n'importe quelle case) ; la chambre a des
+  déclencheurs du matin (reprise).
+- O-5 : le point d'examen sur l'eau n'était jamais proposé ; remplacé par un déclencheur sur les
+  quatre cases de la bouche (`pallet_cave_mouth`, une fois).
+- CS gardées au vol (`TeamConfiscation.is_key_item`) : le rattrapage des objets les rendait au
+  chargement, d'où un doublon au retour de l'équipe.
+- Objectifs du Menu Dresseur : cinq objectifs de Johto [D] en tête (`objectives.json`, brouillons).
+- Rencontres de la grotte : taux 10 → 5 [D] ; entrées nord des deux salles décalées à la rangée 1
+  (rangée 0 bloquée) : le joueur n'arrive plus la tête hors de l'écran.
+- Inventaires de la suite complète : décor de combat de la grotte (`cerulean_cave_azuree` [D]),
+  profils et cartes `johto_auto`, Perle, aperçus de zone de la grotte et d'Oliville (captures).
+- Non reproduit : légende du choix « non vue » (affichée, testée) ; artefacts de la sauvegarde
+  fabriquée (Pokédex « 3 vus »). Reportés : halos des lampes discrets (rayon du type `lamp`).
+
+## 9. Passation (JOH3)
+
+Le JOH2 (Rosalia) tourne déjà en parallèle (branche `claude/joh2-rosalia-bd0f78`, raccord Route 39
+décrit dans la note partagée `joh1-oliville.md`). Prompt de reprise du **JOH3** (session neuve) :
+
+> Reprise du JOH3 (Routes 37, 36, 35, Doublonville, Souterrain, œuf de Togepi ; Tour Radio fermée).
+> Lis CLAUDE.md, docs/tech/etat-projet.md (entrées JOH0 à JOH2), docs/tech/jalon-joh0.md §2 et §8,
+> docs/tech/jalon-joh1.md (modèle de plan et conventions : zone `region: johto`, `johto_auto`,
+> `night_lights`, `if_period` / `if_weekday`, `CurrentGate`, `JohtoPeriodRule`, sorties « à venir »
+> qui deviennent réelles quand la carte voisine existe), docs/design/dossier-joh-04-doublonville.md
+> (textes D-1 à D-38 et JH-31 à JH-36 validés), la note partagée joh1-oliville.md. Grilles
+> tools/plans/route_37.txt, route_36.txt, route_35.txt, doublonville.txt, souterrain.txt ; vues
+> docs/design/reference/joh3-vues-v1.png. Branche coupée de main une fois JOH1 et JOH2 fusionnés
+> (sinon de la plus avancée, puis fusionne main). Écris docs/tech/jalon-joh3.md puis code : cartes en
+> tuiles provisoires (modèles tools/build_joh1_olivine.gd, build_painted_interiors.gd --oliville),
+> premiers Sbires de nuit sur la Route 37 (`if_period: night`), PNJ de la semaine (`if_weekday`),
+> Grand Magasin, assistant d'Orme et étape `give_egg`, Tour Radio gardée, départs de débogage,
+> tests GUT, CI verte, etat-projet à chaque tâche, QA A17 via la session coordinatrice, fusion
+> --no-ff. Petites questions → [D] notées ; vraies décisions de game design → listées pour Kevin
+> sans bloquer.
+

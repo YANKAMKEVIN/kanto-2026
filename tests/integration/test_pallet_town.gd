@@ -320,7 +320,8 @@ func test_prairie_pokemon_stand_on_grass_in_view_of_the_route() -> void:
 
 func test_route1_trigger_covers_the_cells_just_before_the_grass() -> void:
 	var triggers := _map.get_triggers()
-	assert_eq(triggers.size(), TRIGGER_CELLS.size())
+	# JOH1 (QA A17) : + les quatre cases de la bouche de la grotte marine (O-5, `pallet_cave_mouth`).
+	assert_eq(triggers.size(), TRIGGER_CELLS.size() + 4)
 	var point := _map.get_node_or_null(^"Triggers/Route1Grass") as EventTriggerPoint
 	assert_not_null(point, "Triggers/Route1Grass")
 	for cell: Vector2i in TRIGGER_CELLS:
