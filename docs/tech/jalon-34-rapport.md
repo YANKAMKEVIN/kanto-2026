@@ -1,7 +1,7 @@
 # Jalon 34 — rapport de la Release Candidate 0.34.1 (T7, lot 34F)
 
 > Plan : `docs/tech/jalon-34.md`. Procédure : `docs/tech/release.md`. Rédigé le 2026-11-05.
-> **Décisions (§6) : Go juridique consigné ; Go technique en attente de Kevin.**
+> **Décisions (§6) : Go juridique consigné ; Go technique de Kevin pour le T4 (2026-11-05).**
 
 ## 1. Build identifié
 
@@ -102,4 +102,4 @@ nouveau défaut de jeu trouvé.
 | Décision | État |
 |---|---|
 | **Go juridique** | **Go de Kevin pour le cercle de la maison seulement**, droits non déterminés (`jalon-34-34e.md` §14). Rien au-delà. |
-| **Go technique** | **En attente de Kevin.** Recommandation : Go pour lancer le T4 chez un proche avec cet APK, le critère 3 (première utilisation sans aide) restant à prouver avant de diffuser au reste du cercle. |
+| **Go technique** | **Go de Kevin pour le T4** (« Go pour le T4 », 2026-11-05) : cet APK peut aller chez un proche pour la première utilisation. La diffusion au reste du cercle attend que le T4 soit réussi (critère 3). |
