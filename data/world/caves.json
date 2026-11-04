@@ -48,6 +48,10 @@
 			],
 			"escape": { "map": "cinnabar_island", "spawn": "from_manoir", "facing": "down" }
 		},
+		"slowpoke_well": {
+			"maps": ["slowpoke_well_b1f", "slowpoke_well_b2f"],
+			"escape": { "map": "azalea_town", "spawn": "from_well", "facing": "down" }
+		},
 		"whirl_islands": {
 			"maps": ["whirl_islands_1f", "whirl_islands_b1f", "whirl_islands_b2f"],
 			"escape": { "map": "route_41", "spawn": "from_whirl", "facing": "left" }

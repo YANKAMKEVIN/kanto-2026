@@ -1,0 +1,31 @@
+{
+	"week_friday_vincent": {
+		"speaker": "Vincent",
+		"variants": [
+			{
+				"unless": [
+					"week_friday_gift"
+				],
+				"cutscene": "week_friday_gift",
+				"pages": [
+					"Le vendredi, je livre le charbon à\ntoute la ville.",
+					"Tu sens la fumée ? Ça éloigne les\npetites bêtes. Prends ça."
+				]
+			},
+			{
+				"if": [
+					"week_friday_gift"
+				],
+				"pages": [
+					"À vendredi !"
+				]
+			}
+		]
+	},
+	"week_friday_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 2 Super Repousses !"
+		]
+	}
+}
