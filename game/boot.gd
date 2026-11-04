@@ -384,15 +384,11 @@ func _ready() -> void:
 	_team_return_overlay = TeamReturnOverlay.new()
 	_team_return_overlay.name = "TeamReturnOverlay"
 	_team_return_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	_team_return_overlay.label_for = func(pokemon: Pokemon) -> String:
-		return "%s  N. %d" % [pokemon.display_name(_pokemon), pokemon.level]
 	add_child(_team_return_overlay)
 	_cutscenes_node.team_return_handler = _on_team_return_requested
 	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
 	_cutscenes_node.team_returned.connect(_on_team_returned)
 	_cutscenes_node.egg_given.connect(_on_egg_given)
-	# JOH0 : évolutions « bond » datées (Évoli) : le moment de l'horloge à Johto, rien ailleurs.
-	Evolution.period_source = func() -> StringName: return _current_time()[0]
 	# JOH0 : lien et œufs à chaque pas libre du joueur.
 	_player.moved.connect(_on_player_moved_for_bond)
 	_evolutions = EvolutionDirector.new()
@@ -758,11 +754,13 @@ func _current_time(map_id: StringName = &"") -> Array[StringName]:
 	return [period, _world_clock.weekday_name() if not period.is_empty() else &""]
 
 
-## JOH0 : le moment a changé (heure réelle ou scène) : sur une carte de Johto, la lumière suit.
+## JOH0 : le moment a changé (heure réelle ou scène) : sur une carte de Johto, la lumière suit ;
+## les évolutions « bond » datées lisent le nouveau moment.
 func _on_period_changed(_period: WorldClock.Period) -> void:
 	var map := SceneRouter.get_current_map()
 	if is_instance_valid(map) and is_johto_map(map.map_id):
 		_apply_lighting(map, true)
+	Evolution.set_current_period(_current_time()[0])
 	_menu_screen.refresh_status()
 
 
@@ -1499,6 +1497,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_menu_screen.clock_shown = is_johto_map(map.map_id)
 	var time := _current_time(map.map_id)
 	map.set_time_context(time[0], time[1])
+	# JOH0 : évolutions « bond » datées (Évoli) : le moment de l'horloge à Johto, rien ailleurs.
+	Evolution.set_current_period(time[0])
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
@@ -1966,7 +1966,10 @@ func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> in
 
 ## JOH0 (étape « return_team ») : l'écran du choix des 6 ; rend les identifiants gardés.
 func _on_team_return_requested(selection: TeamReturnSelection) -> Array[String]:
-	return await _team_return_overlay.pick(selection)
+	var labels: Array[String] = []
+	for pokemon: Pokemon in selection.get_pool():
+		labels.append("%s  N. %d" % [pokemon.display_name(_pokemon), pokemon.level])
+	return await _team_return_overlay.pick(selection, labels)
 
 
 ## JOH0 : l'équipe vient d'être confisquée d'un seul bloc : le compagnon rentre (plus d'équipe) ;

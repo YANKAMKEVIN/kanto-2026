@@ -15,8 +15,6 @@ func before_all() -> void:
 
 func before_each() -> void:
 	_overlay = TeamReturnOverlay.new()
-	_overlay.label_for = func(pokemon: Pokemon) -> String:
-		return "%s N%d" % [pokemon.display_name(_data), pokemon.level]
 	add_child_autofree(_overlay)
 
 
@@ -26,6 +24,13 @@ func _mon(species: StringName, level: int, hp: int = -1) -> Pokemon:
 	if hp >= 0:
 		mon.hp = hp
 	return mon
+
+
+func _labels(selection: TeamReturnSelection) -> Array[String]:
+	var labels: Array[String] = []
+	for pokemon: Pokemon in selection.get_pool():
+		labels.append("%s N%d" % [pokemon.display_name(_data), pokemon.level])
+	return labels
 
 
 func _selection() -> TeamReturnSelection:
@@ -39,7 +44,7 @@ func test_pick_shows_the_pool_with_the_default_six_and_returns_the_choice() -> v
 	var selection := _selection()
 	var picked: Array = []
 	var task := func() -> void:
-		picked.append(await _overlay.pick(selection))
+		picked.append(await _overlay.pick(selection, _labels(selection)))
 	task.call()
 	await get_tree().process_frame
 	assert_true(_overlay.is_open())

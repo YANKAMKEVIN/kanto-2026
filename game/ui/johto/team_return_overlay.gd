@@ -23,10 +23,6 @@ const ROW_FORMAT := "%s   ·   %s"
 ## les marges sûres.
 const PANEL_HEIGHT := 1080 - 2 * UiTokens.SAFE_MARGIN - UiTokens.TOUCH_MIN
 
-## Étiquette d'une ligne : `func(pokemon: Pokemon) -> String` (Boot : nom affiché et niveau ;
-## l'écran ne lit pas les données Pokémon). Non valide : l'identifiant d'espèce.
-var label_for: Callable
-
 var _panel: PanelContainer
 var _title: Label
 var _count: Label
@@ -34,6 +30,7 @@ var _list: VBoxContainer
 var _confirm: Button
 var _buttons: Array[Button] = []
 var _selection: TeamReturnSelection
+var _labels: Array[String] = []
 
 
 func _ready() -> void:
@@ -90,10 +87,12 @@ func _ready() -> void:
 	column.add_child(_confirm)
 
 
-## Ouvre le choix sur [param selection] (sélection par défaut posée si elle est vide) et attend
-## VALIDER ; rend les identifiants gardés.
-func pick(selection: TeamReturnSelection) -> Array[String]:
+## Ouvre le choix sur [param selection] (sélection par défaut posée si elle est vide), avec
+## [param labels] (une étiquette par ligne de la réserve, dans son ordre : nom et niveau, fournis
+## par Boot ; l'écran ne lit pas les données) et attend VALIDER ; rend les identifiants gardés.
+func pick(selection: TeamReturnSelection, labels: Array[String] = []) -> Array[String]:
 	_selection = selection
+	_labels = labels
 	if selection.count() == 0:
 		selection.select(selection.default_selection())
 	_rebuild()
@@ -130,29 +129,27 @@ func _rebuild() -> void:
 	for button: Button in _buttons:
 		button.queue_free()
 	_buttons.clear()
-	var pool := _selection.get_pool()
-	for i: int in pool.size():
-		var pokemon := pool[i]
+	var uids := _selection.uids()
+	for i: int in uids.size():
 		var button := Button.new()
 		button.name = "Row%d" % i
 		button.theme_type_variation = &"PanelButton"
 		button.toggle_mode = true
 		button.custom_minimum_size = Vector2(0, UiTokens.TOUCH_MIN)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		var label: String = label_for.call(pokemon) if label_for.is_valid() \
-			else String(pokemon.species_id)
+		var label: String = _labels[i] if i < _labels.size() else uids[i]
 		button.text = ROW_FORMAT % [label, SOURCE_TEXTS[_selection.source_of(i)]]
-		button.toggled.connect(_on_row_toggled.bind(pokemon.uid))
+		button.toggled.connect(_on_row_toggled.bind(uids[i]))
 		_list.add_child(button)
 		_buttons.append(button)
 	_refresh()
 
 
 func _refresh() -> void:
-	var pool := _selection.get_pool()
+	var uids := _selection.uids()
 	for i: int in _buttons.size():
-		_buttons[i].set_pressed_no_signal(_selection.is_selected(pool[i].uid))
-	_count.text = COUNT_FORMAT % [_selection.count(), Party.MAX_SIZE]
+		_buttons[i].set_pressed_no_signal(_selection.is_selected(uids[i]))
+	_count.text = COUNT_FORMAT % [_selection.count(), TeamReturnSelection.MAX_KEPT]
 	_confirm.disabled = not _selection.can_confirm()
 
 

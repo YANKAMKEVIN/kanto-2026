@@ -15,7 +15,7 @@ func before_all() -> void:
 
 
 func after_each() -> void:
-	Evolution.period_source = Callable()
+	Evolution.set_current_period(&"")
 
 
 func _mon(species: StringName, level: int, seed: int = 1) -> Pokemon:
@@ -102,16 +102,16 @@ func test_bond_evolution_needs_the_threshold_and_the_period_of_the_rule() -> voi
 	assert_eq(Evolution.level_up_target(mon, _data), &"", "sans heure (Kanto) : non")
 	assert_eq(Evolution.level_up_target(mon, _data, &"day"), &"")
 	assert_eq(Evolution.level_up_target(mon, _data, &"night"), &"pidgeot")
-	Evolution.period_source = func() -> StringName: return &"night"
-	assert_eq(Evolution.level_up_target(mon, _data), &"pidgeot", "la source statique")
+	Evolution.set_current_period(&"night")
+	assert_eq(Evolution.level_up_target(mon, _data), &"pidgeot", "la valeur statique")
 	assert_eq(Evolution.current_period(), &"night")
-	Evolution.period_source = Callable()
+	Evolution.set_current_period(&"")
 	assert_eq(Evolution.current_period(), &"")
 	var party := Party.new()
 	party.add(mon)
 	var found := Evolution.candidates(party, [0], _data)
 	assert_eq(found.size(), 0, "fin de combat : même règle")
-	Evolution.period_source = func() -> StringName: return &"night"
+	Evolution.set_current_period(&"night")
 	assert_eq(Evolution.candidates(party, [0], _data).size(), 1)
 	species.evolutions = saved
 

@@ -10,6 +10,8 @@ extends RefCounted
 
 ## Provenance d'un Pokémon de la réserve.
 enum Source { JOHTO, KANTO }
+## Pokémon gardés au plus (la taille de l'équipe) ; l'écran lit cette borne, pas [Party].
+const MAX_KEPT: int = Party.MAX_SIZE
 
 var _pool: Array[Pokemon] = []
 var _sources: Array[Source] = []
@@ -41,6 +43,14 @@ func source_of(index: int) -> Source:
 
 func size() -> int:
 	return _pool.size()
+
+
+## Identifiants de la réserve, dans l'ordre d'affichage (l'écran parle en identifiants).
+func uids() -> Array[String]:
+	var result: Array[String] = []
+	for pokemon: Pokemon in _pool:
+		result.append(pokemon.uid)
+	return result
 
 
 ## Vrai si le Pokémon [param uid] est choisi.

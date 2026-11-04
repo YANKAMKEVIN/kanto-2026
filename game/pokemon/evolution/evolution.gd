@@ -9,21 +9,24 @@ extends RefCounted
 ## ([LocalTrade], J32), jamais ici. Chapitre Johto (JOH0, `jalon-joh0.md` §2.8) : une règle
 ## « bond » est satisfaite au prochain niveau gagné si le lien atteint
 ## [constant BondRules.THRESHOLD] et, si elle a des moments, si le moment courant en fait partie ;
-## le moment vient de [member period_source] (posé par Boot : celui de l'horloge à Johto, &""
+## le moment est posé par Boot ([method set_current_period] : celui de l'horloge à Johto, &""
 ## ailleurs : à Kanto, Évoli n'évolue ni en Mentali ni en Noctali [D]).
 
-## JOH0 : `func() -> StringName`, le moment courant (identifiant de [WorldClock]) ; non valide
-## ou vide = pas d'heure. Statique : tous les chemins (fin de combat, Pension, Super Bonbon)
-## lisent la même source. Les tests le remettent à `Callable()`.
-static var period_source: Callable
+## JOH0 : moment courant (identifiant de [WorldClock]), &"" = pas d'heure. Statique **sans
+## référence d'objet** (une valeur, jamais un Callable : un Callable statique vers Boot survivait
+## à sa destruction et corrompait le tas à la sortie du processus) : tous les chemins (fin de
+## combat, Pension, Super Bonbon) lisent la même valeur. Les tests la remettent à &"".
+static var _current_period: StringName = &""
 
 
-## Moment courant lu par [member period_source] (&"" sans source).
+## Pose le moment courant (Boot : à chaque changement de carte et de moment).
+static func set_current_period(period: StringName) -> void:
+	_current_period = period
+
+
+## Moment courant ([method set_current_period]) ; &"" sans heure.
 static func current_period() -> StringName:
-	if not period_source.is_valid():
-		return &""
-	var raw: Variant = period_source.call()
-	return StringName(str(raw)) if raw is StringName or raw is String else &""
+	return _current_period
 
 
 ## Espèce vers laquelle [param pokemon] évolue à son niveau actuel (première règle « level »
