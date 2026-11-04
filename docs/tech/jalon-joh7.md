@@ -192,3 +192,15 @@ la mer.
 
 ### T1 — plan (2026-11-04)
 Ce document ; branche `claude/joh7-tourbillon-886122` poussée.
+
+### T2 à T7 — code, tests, captures (2026-11-04)
+Cartes (`build_joh7_maps.gd`, `WhirlpoolField`, `WaterfallDecor`), sprites provisoires
+(`build_joh7_placeholders.py`), données (`gen_joh7_data.py`), `WeeklyFlags` + Boot, PP Max, données
+de monde (zones, lumière, grottes, musiques, décors, Carte), Oliville (marin, enfant, Orme), départs
+`johto_whirl_*`. Tests : `test_joh7_maps` (raccords des deux côtés, courants et accessibilité,
+légendaires et réapparition, Lokhlass à l'horloge injectée, Écaille Draco → Hyporoi),
+`test_joh7_data` (M-1 à M-34, Dresseurs, objets, rencontres, pêche, rencontres fixes),
+`test_weekly_flags` ; inventaires réalignés (zones, lumière, grottes, rencontres, pêche, objets,
+Dresseurs, préfixe `joh7_`). Captures Mac (`build/captures/joh7/`) : Route 41 et ses tourbillons,
+B1F (Suicune, arrivée de Cenere), B2F (ombre, halo, Lugia, entrée du combat). Correctif de capture :
+la scène de Lugia fait avancer le joueur de 4 cases (sans quoi l'ombre et Lugia sortaient du cadre).
