@@ -16,6 +16,9 @@
 		"power_plant": "rocket_hideout",
 		"pallet_town": "pallet_town",
 		"sea_cave": "mt_moon",
+		"route_40": "road_to_cerulean",
+		"route_41": "road_to_cerulean",
+		"whirl_islands": "viridian_forest",
 		"olivine_city": "cinnabar_island",
 		"pewter_city": "pewter_city",
 		"route_1": "road_to_viridian",
@@ -54,7 +57,11 @@
 		"viridian_forest": "viridian_forest",
 		"route_39": "road_to_viridian",
 		"route_38": "road_to_cerulean",
-		"ecruteak_city": "pewter_city"
+		"ecruteak_city": "pewter_city",
+		"route_34": "road_to_cerulean",
+		"ilex_forest": "viridian_forest",
+		"azalea_town": "pewter_city",
+		"slowpoke_well": "mt_moon"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",

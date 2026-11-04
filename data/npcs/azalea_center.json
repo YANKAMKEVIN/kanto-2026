@@ -1,0 +1,19 @@
+{
+	"nurse": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"garcon": {
+		"cell": [
+			11,
+			5
+		],
+		"facing": "left",
+		"sprite": "kid",
+		"dialogue": "azalea_center_garcon"
+	}
+}

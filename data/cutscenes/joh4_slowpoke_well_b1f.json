@@ -1,0 +1,60 @@
+{
+	"well_b1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_well_b1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "well_b1f_item_1"
+					},
+					{
+						"give": "great_ball",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_well_b1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"slowpoke_well_kurt_fall": {
+		"variants": [
+			{
+				"if": [
+					"johto_kurt_told"
+				],
+				"unless": [
+					"johto_kurt_fell"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_kurt_fell"
+						]
+					},
+					{
+						"emote": "fargas_b1f",
+						"kind": "exclamation"
+					},
+					{
+						"face": "fargas_b1f",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "fargas_b1f"
+					},
+					{
+						"dialogue": "slowpoke_well_kurt_fall"
+					}
+				]
+			}
+		]
+	}
+}

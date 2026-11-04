@@ -1,0 +1,116 @@
+{
+	"azalea_kurt_story": {
+		"variants": [
+			{
+				"unless": [
+					"johto_kurt_told"
+				],
+				"steps": [
+					{
+						"face": "fargas",
+						"to": "player"
+					},
+					{
+						"dialogue": "azalea_kurt_greeting"
+					},
+					{
+						"dialogue": "azalea_kurt_story"
+					},
+					{
+						"dialogue": "azalea_kurt_leaves"
+					},
+					{
+						"set": [
+							"johto_kurt_told"
+						]
+					},
+					{
+						"change_map": "azalea_town",
+						"at": "kurt_scene",
+						"facing": "up"
+					},
+					{
+						"spawn": "sbire_scene",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							38,
+							8
+						],
+						"facing": "left"
+					},
+					{
+						"spawn": "fargas_scene",
+						"sprite": "old_man",
+						"cell": [
+							36,
+							11
+						],
+						"facing": "up"
+					},
+					{
+						"move": "fargas_scene",
+						"to": [
+							36,
+							8
+						]
+					},
+					{
+						"face": "fargas_scene",
+						"to": "sbire_scene"
+					},
+					{
+						"emote": "sbire_scene",
+						"kind": "exclamation"
+					},
+					{
+						"face": "sbire_scene",
+						"to": "fargas_scene"
+					},
+					{
+						"dialogue": "azalea_well_grunt_flees"
+					},
+					{
+						"move": "sbire_scene",
+						"to": [
+							37,
+							8
+						]
+					},
+					{
+						"face": "sbire_scene",
+						"to": "up"
+					},
+					{
+						"move": "sbire_scene",
+						"path": [
+							"up"
+						]
+					},
+					{
+						"despawn": "sbire_scene"
+					},
+					{
+						"move": "fargas_scene",
+						"to": [
+							37,
+							8
+						]
+					},
+					{
+						"face": "fargas_scene",
+						"to": "up"
+					},
+					{
+						"move": "fargas_scene",
+						"path": [
+							"up"
+						]
+					},
+					{
+						"despawn": "fargas_scene"
+					}
+				]
+			}
+		]
+	}
+}

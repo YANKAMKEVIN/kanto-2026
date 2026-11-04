@@ -122,10 +122,10 @@ func test_warps() -> void:
 	for i: int in 3:
 		_check_warp("WarpEst_%d" % i, Vector2i(49, 20 + i), 1, Vector2i.RIGHT, &"route_39",
 			&"from_olivine" if i == 0 else StringName("from_olivine_%d" % i), Vector2i.RIGHT, "")
+	# JOH7 : la Route 40 existe, le passage est réel (arrivées `from_olivine`, `_1`… en Surf).
 	for i: int in 10:
-		_check_warp("WarpSudMer_%d" % i, Vector2i(20 + i, 39), 1, Vector2i.DOWN, &"",
-			&"from_route_40" if i == 0 else StringName("from_route_40_%d" % i), Vector2i.UP,
-			"Route 40")
+		_check_warp("WarpSudMer_%d" % i, Vector2i(20 + i, 39), 1, Vector2i.DOWN, &"route_40",
+			&"from_olivine" if i == 0 else StringName("from_olivine_%d" % i), Vector2i.DOWN, "")
 
 
 func test_interaction_points_and_triggers() -> void:

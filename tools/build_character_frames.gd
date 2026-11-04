@@ -36,8 +36,8 @@ const CATALOGUE := "res://assets/world/catalogue.json"
 ## Costumes du Dresseur (dossier-costumes.md) : planches de `tools/art/costumes/` (catalogue à
 ## part, `preparer_co.py`) et liste des costumes du jeu. Pour chaque costume et chaque version
 ## (`joueur`, `joueuse`) : `painted/costumes/<art>_<version>_frames.tres` (mêmes animations que
-## le héros : marche, course, attente, vélo, pêche) et `<…>_surf_frames.tres` (comme
-## `player_surf`). `-- --costumes` : seulement eux.
+## le héros : marche, course, attente, vélo, pêche, Surf) et `<…>_surf_frames.tres` (comme
+## `player_surf`, gardé pour les outils). `-- --costumes` : seulement eux.
 const COSTUMES_CATALOGUE := "res://tools/art/costumes/catalogue_co.json"
 const COSTUMES_DATA := "res://data/costumes.json"
 const COSTUME_VERSIONS: Array[String] = ["joueur", "joueuse"]
@@ -215,6 +215,19 @@ const BIKE: Dictionary = {
 }
 ## BikeRules.BIKE_STEP_DURATION.
 const BIKE_STEP := 0.12
+## Surf peint (série 27 du J24, branché le 2026-11-04 à la demande de Kevin : « pourquoi ce n'est
+## pas branché ? ») : planche du joueur assis sur le nageur (4 × 4, lignes bas, gauche, droite,
+## haut) → `surf_walk_<dir>` (cycle de 4 images sur 2 cases, au pas du Surf) et `surf_idle_<dir>`
+## (les 4 images en boucle lente : le nageur ondule sur place), lues par
+## `Player._mounted_animation` (la monture provisoire dessinée en code s'efface).
+const SURF: Dictionary = {
+	"heros": "heros_surf",
+	"joueuse": "joueuse_surf",
+}
+## MountRules : Grid.WALK_STEP_DURATION / SURF_SPEED_FACTOR.
+const SURF_STEP := 0.27 / 1.15
+## Ondulation à l'arrêt [D] : 4 images par seconde.
+const SURF_IDLE_FPS := 4.0
 ## DAF.5 (série 25) : poses fixes 4 × 1 (bas, gauche, droite, haut) d'une apparence : planche de
 ## marche → {préfixe : planche}. `fish_cast_<dir>` (lancer) et `fish_wait_<dir>` (fil tendu), jouées
 ## par `FishingDirector` ; cellule plus haute que la marche (la canne), pieds au même ancrage.
@@ -396,6 +409,7 @@ func _build_costumes() -> int:
 				"bike": [sheets[sheet + "_bike"], sheets[sheet + "_bike_idle"]],
 				"poses": {"fish_cast": sheets[sheet + "_fish_cast"],
 					"fish_wait": sheets[sheet + "_fish_wait"]},
+				"surf": sheets[sheet + "_surf"],
 			}
 			var dir := CHARACTERS_DIR + "costumes/"
 			_build(sheets[sheet], sheets[sheet + "_run"], sheets[sheet + IDLE_SUFFIX],
@@ -451,6 +465,8 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 		_add_kneeling(frames, kneel_sheet)
 	if added.has("bike"):
 		_add_bike(frames, added["bike"][0], added["bike"][1], walk_cell)
+	if added.has("surf"):
+		_add_surf(frames, added["surf"])
 	for prefix: String in added.get("poses", {}):
 		_add_poses(frames, prefix, added["poses"][prefix])
 	_save(frames, path, "%s (%d × %d%s%s%s%s)" % [path, walk_cell.x, walk_cell.y,
@@ -476,6 +492,8 @@ func _is_extra_sheet(sheet_id: String) -> bool:
 func _extra_sheets(sheets: Dictionary, sheet_id: String) -> Dictionary:
 	var extra := {}
 	var wanted: Array = BIKE.get(sheet_id, []) + POSES.get(sheet_id, {}).values()
+	if SURF.has(sheet_id):
+		wanted.append(SURF[sheet_id])
 	for id: String in wanted:
 		if not sheets.has(id):
 			push_error("build_character_frames : planche « %s » absente du catalogue" % id)
@@ -483,6 +501,8 @@ func _extra_sheets(sheets: Dictionary, sheet_id: String) -> Dictionary:
 			return extra
 	if BIKE.has(sheet_id):
 		extra["bike"] = [sheets[BIKE[sheet_id][0]], sheets[BIKE[sheet_id][1]]]
+	if SURF.has(sheet_id):
+		extra["surf"] = sheets[SURF[sheet_id]]
 	if POSES.has(sheet_id):
 		var poses := {}
 		for prefix: String in POSES[sheet_id]:
@@ -509,6 +529,24 @@ func _add_bike(frames: SpriteFrames, ride: Dictionary, stop: Dictionary, walk_ce
 		frames.add_frame(idle, _atlas(stop_texture, stop_cell, IDLE_COLUMNS[dir], 0))
 		_add_cycle(frames, StringName("bike_walk_" + dir), ride_texture, ride_cell, ROWS[dir],
 			4.0 / (2.0 * BIKE_STEP))
+
+
+## `surf_walk_<dir>` (4 × 4, au pas du Surf) et `surf_idle_<dir>` (les 4 images de la ligne, en
+## boucle lente). Cellule un peu plus haute que la marche (136 contre 130 px : le nageur sous le
+## héros), pieds au même ancrage à 3 px près, sous la ligne de flottaison (à l'œil, capture
+## `build/surf_check/`).
+func _add_surf(frames: SpriteFrames, sheet: Dictionary) -> void:
+	var texture := load(sheet["fichier"]) as Texture2D
+	var cell := Vector2(sheet["cellule"][0], sheet["cellule"][1])
+	for dir: String in ROWS:
+		_add_cycle(frames, StringName("surf_walk_" + dir), texture, cell, ROWS[dir],
+			4.0 / (2.0 * SURF_STEP))
+		var idle := StringName("surf_idle_" + dir)
+		frames.add_animation(idle)
+		frames.set_animation_loop(idle, true)
+		frames.set_animation_speed(idle, SURF_IDLE_FPS)
+		for column: int in [0, 1, 2, 3]:
+			frames.add_frame(idle, _atlas(texture, cell, column, ROWS[dir]))
 
 
 ## `<prefix>_<dir>` : une image chacune, colonnes bas, gauche, droite, haut.

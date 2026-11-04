@@ -10,5 +10,17 @@
 		"unless": [
 			"johto_center_dark"
 		]
+	},
+	"orme_joh7": {
+		"cell": [
+			3,
+			5
+		],
+		"facing": "down",
+		"sprite": "researcher",
+		"dialogue": "olivine_orme_bell_tower",
+		"if": [
+			"johto_lugia_done"
+		]
 	}
 }

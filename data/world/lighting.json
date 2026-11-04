@@ -104,6 +104,13 @@
 			"contact": { "color": "#0a1424", "alpha": 0.6 },
 			"wind": 0.0
 		},
+		"whirl_islands_b2f": {
+			"grade": { "shadows": [0.62, 0.78, 1.0], "midtones": [0.78, 0.9, 1.0], "highlights": [0.9, 0.97, 1.0], "strength": 1.0 },
+			"sun_direction": [0.0, -1.0],
+			"rim": { "color": "#8fd0ff", "strength": 0.26, "width": 3.0 },
+			"contact": { "color": "#06122a", "alpha": 0.62 },
+			"wind": 0.0
+		},
 		"cave_b2f": {
 			"grade": {
 				"shadows": [0.84, 0.88, 0.98],
@@ -402,6 +409,8 @@
 		"cerulean_cave_2f": "cave_1f",
 		"cerulean_cave_b1f": "cave_b1f", "power_plant": "office",
 		"sea_cave_1": "sea_cave", "sea_cave_2": "sea_cave",
+		"route_40": "johto_auto", "route_41": "johto_auto",
+		"whirl_islands_1f": "sea_cave", "whirl_islands_b1f": "sea_cave", "whirl_islands_b2f": "whirl_islands_b2f",
 		"olivine_city": "johto_auto", "olivine_center": "interior_warm", "olivine_center_room": "johto_auto",
 		"olivine_mart": "interior_warm", "olivine_house_1": "interior_warm", "olivine_house_2": "interior_warm",
 		"route_8_gate": "interior_warm",
@@ -484,7 +493,17 @@
 		"ecruteak_mart": "interior_warm",
 		"ecruteak_elders_house": "interior_warm",
 		"ecruteak_house_1": "interior_warm",
-		"ecruteak_house_2": "interior_warm"
+		"ecruteak_house_2": "interior_warm",
+		"route_34": "johto_auto",
+		"ilex_forest": "johto_auto",
+		"azalea_town": "johto_auto",
+		"slowpoke_well_b1f": "cave_1f",
+		"slowpoke_well_b2f": "cave_b1f",
+		"azalea_center": "interior_warm",
+		"azalea_mart": "interior_warm",
+		"azalea_kurt_house": "interior_warm",
+		"azalea_house_1": "interior_warm",
+		"route_34_house": "interior_warm"
 	},
 	"flag_overrides": [
 		{ "map": "olivine_center", "if": ["johto_center_dark"], "profile": "interior_night_dark" },

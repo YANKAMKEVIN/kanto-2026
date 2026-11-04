@@ -71,7 +71,7 @@ const EARTH: String = "res://assets/world/ground/ground_sable_01.png"
 ## nuit (`night_pane` en plus de `night_window` : l'additif se perd sur les vitres claires).
 const MAPS: Dictionary = {
 	&"olivine_city": {"plan": "oliville", "seed": 39050, "rock": Rock.SHORE_THEN_PAROI,
-		"path": PEBBLES, "panes": false},
+		"path": PEBBLES, "panes": true},
 	&"route_39": {"plan": "route_39", "seed": 39101, "rock": Rock.SHORE, "path": EARTH,
 		"panes": true},
 	&"route_38": {"plan": "route_38", "seed": 38101, "rock": Rock.WALL, "path": EARTH,

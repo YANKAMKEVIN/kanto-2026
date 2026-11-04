@@ -1,0 +1,27 @@
+{
+	"azalea_mart": {
+		"stock": [
+			{
+				"item": "poke_ball"
+			},
+			{
+				"item": "great_ball"
+			},
+			{
+				"item": "potion"
+			},
+			{
+				"item": "super_potion"
+			},
+			{
+				"item": "antidote"
+			},
+			{
+				"item": "paralyze_heal"
+			},
+			{
+				"item": "repel"
+			}
+		]
+	}
+}

@@ -42,7 +42,8 @@ func test_real_file_loads_without_error() -> void:
 	assert_eq(_library.get_ids(), [&"golden_hour", &"johto_morning", &"johto_day",
 		&"johto_night", &"interior_night_dark", &"interior_warm", &"forest", &"cave_1f",
 		# JOH1 : la grotte marine (cave_1f plus bleu), avant cave_b2f dans le fichier.
-		&"cave_b1f", &"sea_cave", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
+		# JOH7 : le B2F des Îles Tourbillon (lumière bleue venue d'en haut).
+		&"cave_b1f", &"sea_cave", &"whirl_islands_b2f", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
 		&"greenhouse", &"hideout", &"lavender", &"tower_cold", &"tower", &"office"] \
 		as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")

@@ -435,6 +435,10 @@
 		"route_39": [{ "decor": "route_1_chemin" }],
 		"route_38": [{ "decor": "route_1_chemin" }],
 		"ecruteak_city": [{ "decor": "route_1_chemin" }],
+		"route_34": [{ "decor": "route_1_chemin" }],
+		"ilex_forest": [{ "decor": "viridian_forest_clairiere" }],
+		"slowpoke_well_b1f": [{ "decor": "mt_moon_galerie" }],
+		"slowpoke_well_b2f": [{ "decor": "mt_moon_galerie" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],
@@ -748,6 +752,21 @@
 			{ "decor": "cerulean_cave_azuree" }
 		],
 		"cerulean_cave_b1f": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"route_40": [
+			{ "decor": "sea_open" }
+		],
+		"route_41": [
+			{ "decor": "sea_open" }
+		],
+		"whirl_islands_1f": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"whirl_islands_b1f": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"whirl_islands_b2f": [
 			{ "decor": "cerulean_cave_azuree" }
 		],
 		"sea_cave_1": [

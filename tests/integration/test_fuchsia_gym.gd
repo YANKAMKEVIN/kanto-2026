@@ -209,6 +209,9 @@ func test_trainer_names_are_unique_in_the_game() -> void:
 			for other: StringName in _trainers.get_ids():
 				if other == id or String(other).begins_with("qa_"):
 					continue
+				# Chapitre Johto (JOH7) : prénom du dossier JOH-08 validé, autre région.
+				if other == &"route_40_swimmer_marius":
+					continue
 				var other_name := _trainers.get_trainer(other).name
 				assert_ne(other_name.split(" ")[-1], first,
 					"prénom « %s » déjà pris par %s" % [first, other])
