@@ -17,6 +17,8 @@
 
 - JOH6 fait : `johto_raikou_done`, `johto_whirl_clue` ; équipe 60–66 attendue.
 - Le joueur a Surf et Force (Kanto) ; aucune CS neuve (JH-48).
+- Arc des Pierres (JOH-11) : Cenere a déjà été battue à l'Antre du Dragon ; **M-14** dira « Trois erreurs »
+  quand le lot de textes sera validé ; la mer au sud d'Oliville est fermée tant que `johto_act2` manque (JH-72).
 
 ## 3. Géographie **[D]**
 

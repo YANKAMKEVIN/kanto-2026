@@ -5,6 +5,10 @@
 > [`dossier-joh-01-systemes-joh0.md`](dossier-joh-01-systemes-joh0.md) §6 et §10). Écrit par Claude
 > le 2026-11-02 ; **textes T-1 à T-38 et arbitrages JH-40 à JH-43 validés par Kevin le jour même**
 > (recommandations retenues) ; le reste est à valider. Valeurs **[D]** = défauts. Grilles et vues peintes après validation.
+>
+> **Modifié par l'arc des Pierres** (Kevin, 2026-11-04, JH-61) : l'équipe ne revient plus au bureau. Liste exacte
+> dans [`dossier-joh-11-arc-pierres.md`](dossier-joh-11-arc-pierres.md) §5.1 ; T-21, T-23, T-24, T-26, T-31, T-32, T-34 et §7
+> sont remplacés quand le lot de textes du §17 de ce dossier sera validé. Le JOH5 fusionne tel quel, l'arc le modifie ensuite.
 
 ## 1. Hors périmètre
 
@@ -214,5 +218,5 @@ haut-parleurs.
 |---|---|---|
 | JH-40 | ✅ Le faux employé est démasqué par la **Carte d'accès** (il reconnaît la carte de Brace), **combat obligatoire**, puis il s'enfuit (Kevin, 2026-11-02) | — |
 | JH-41 | ✅ **Cenere seule** à la Tour ; Brace gardé pour Acajou (Kevin) | — |
-| JH-42 | ✅ **Dante ordonne la retraite** (« Laisse tout ») : Cenere abandonne l'équipe et le sac dans le bureau (Kevin) | — |
+| JH-42 | ~~Cenere abandonne l'équipe et le sac dans le bureau~~ : **rouvert et remplacé par JH-61** (Kevin, 2026-11-04) : Dante dit « Prends tout », Cenere emporte tout | — |
 | JH-43 | ✅ Les Sbires **se divisent** après la révélation : certains partent, d'autres suivent Dante (Kevin) | — |

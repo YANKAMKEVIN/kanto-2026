@@ -1,4 +1,4 @@
-# Dossier JOH-11 — L'arc des Pierres : Ruines d'Alpha, Irisia, Ébènelle, Antre du Dragon (jalons JOHP1 à JOHP3, v0.1)
+# Dossier JOH-11 — L'arc des Pierres : Ruines d'Alpha, Irisia, Ébènelle, Antre du Dragon (jalons JOHP0 à JOHP3, v0.1)
 
 > Nouvel arc du Chapitre Johto, entre la Tour Radio (JOH5) et l'acte 2 (JOH6), décidé par Kevin le
 > 2026-11-04 pour résoudre l'écart entre l'équipe de Kanto (55–65) et celle de Johto (≈ 30), sans
@@ -6,9 +6,9 @@
 > [`dossier-joh-06-tour-radio.md`](dossier-joh-06-tour-radio.md),
 > [`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md)). Écrit par Claude le 2026-11-04.
 >
-> **Statut : proposition, en attente de Kevin.** Rien n'est validé en dehors du §0 : l'histoire se
-> construit avec lui. Les vraies questions sont **JH-61 à JH-79** (§18, JH-70 déjà tranché), réponse possible par
-> numéro (« 61 ok, 66 : … »). Valeurs **[D]** = défauts. Grilles et vues peintes **après** validation ; aucun
+> **Statut : arbitrages JH-61 à JH-79 validés par Kevin le 2026-11-04** (recommandations retenues, §18).
+> **Reste à valider : les textes du §17, en un seul lot.** Valeurs **[D]** = défauts. Grilles et vues
+> peintes après la validation des textes ; aucun
 > code avant. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
 > les plans de l'arc sont neufs ; seuls les noms de lieux viennent de la région.
 
@@ -54,7 +54,7 @@ Relevé fait sur `main` (e363db8f), la branche du JOH5 et les dossiers JOH-00 à
 - La Route 44, la Route de Glace, le Phare d'Oliville (intérieur), les Routes 32, Bourg Geon, Mauville.
 - Les énigmes à glissière et les chambres de Zarbi d'Or/Argent ; le quiz du doyen de l'Antre.
 - La liaison à pied entre Ébènelle et Acajou : aucune (§4.1).
-- Toute espèce neuve (sauf si Kevin choisit autrement à JH-77).
+- Toute espèce neuve (JH-77) : Zarbi reste en décor.
 - Toute baisse ou hausse des niveaux de JOH6 à JOH9 (JH-78).
 
 ## 3. L'histoire en bref
@@ -162,7 +162,7 @@ ponton (40..41, 34..37), sans repeindre), Rosalia (aire d'atterrissage sur une p
 
 ### 5.3 JOH7 (dossier JOH-08)
 
-- **M-14** : « Deux erreurs de calcul » devient « Trois erreurs de calcul » (si JH-74 est retenu).
+- **M-14** : « Deux erreurs de calcul » devient « Trois erreurs de calcul » (JH-74).
 - Rien d'autre ; §1 garde « Irisia hors de ce jalon ».
 
 ### 5.4 Cadre et systèmes
@@ -342,11 +342,11 @@ gras ; toutes déjà codées).
 | Antre 1F | Super Bonbon (caché) ; CT13 Laser Glace (le seul appui contre les dragons sans Farfuret) |
 
 **Trois objets clés neufs** : Pierre Mémoire, Pierre Marée, Pierre Souffle (icônes neuves, ils quittent
-le Sac au réveil). La Pierre Marée n'est jamais dans le Sac du joueur si JH-62 est retenu.
+le Sac au réveil). La Pierre Marée n'entre jamais dans le Sac du joueur (JH-62).
 
 ## 13. Le réveil (le pouvoir des pierres)
 
-### 13.1 Règle proposée (JH-66 à JH-69)
+### 13.1 Règle (JH-66 à JH-69)
 
 - **Cible** : moyenne des **trois plus hauts niveaux** de l'équipe de Kanto confisquée, arrondie à
   l'entier, **bornée à 55–62**. Une équipe de Kanto avec deux Pokémon faibles (porteurs de CS) ne fait
@@ -401,7 +401,7 @@ il reprend à Cenere (§15).
 - Compagnon : garde son sprite d'évolution, comme d'habitude ; rafraîchi à la fin.
 - Pokédex : chaque évolution note l'espèce « capturée », comme d'habitude (à tester sur le chemin
   groupé, qui n'est pas celui du combat).
-- Stockage : si JH-71 est retenu, les captures en trop reçoivent niveau et évolution sans écran, avec
+- Stockage (JH-71) : les captures en trop reçoivent niveau et évolution sans écran, avec
   les 4 dernières attaques de l'apprentissage ; le Réveil l'annonce en une ligne.
 
 ## 14. Le retour de l'équipe
@@ -427,7 +427,7 @@ Mêmes systèmes que le JOH5 (dossier JOH-06 §7) :
 - Équipe sans aucun Pokémon sous la cible (impossible sans triche) : le réveil se joue sans écran.
 - Le joueur a Vol avec un Pokémon de Johto : il vole dans Johto, jamais vers Kanto (JH-18 inchangé).
 - Surf au sud d'Oliville avant `johto_act2` : refusé une fois A-13 corrigé (à tester).
-- **Sauvegardes déjà passées par le bureau** (`johto_team_returned` posé avant l'arc) : voir JH-75.
+- **Sauvegardes déjà passées par le bureau** (`johto_team_returned` posé avant l'arc) : l'arc reste fermé, pas de migration (JH-75).
 
 ## 16. Ampleur
 
@@ -439,16 +439,15 @@ Mêmes systèmes que le JOH5 (dossier JOH-06 §7) :
 | Personnages neufs | Ysolde, Corentin, l'Aïeule, tenue du clan (Gardiens et apprentis, 2 modèles), Goulven si `marin` ne suffit pas |
 | Objets et décors | 3 icônes de pierres, Le Goéland, le bateau noir, l'autel, pompes |
 | Scènes | Dracolosse en vol (2 sens) ; **le Réveil**, à soigner comme une scène de fin de chapitre : effet de lumière en trois couleurs, plans par Pokémon avec compteur de niveau, plan large final, écran du Réveil |
-| Espèces, art Pokémon | **Aucune** (hors JH-77) |
+| Espèces, art Pokémon | **Aucune** (JH-77) |
 | Son | Pistes de HeartGold / SoulSilver pour les trois lieux ; **un thème pour le Réveil**, à choisir avec Kevin (silence, montée, éclat, puis combat) |
 | Système neuf | Le Réveil seul : calcul de cible, évolutions groupées, écran. Le reste est du déjà vu |
 | Durée de jeu | ≈ 3 h à 4 h (1 h, 1 h, 1 h 30 à 2 h) ; l'acte 1 en fait ≈ 4 h |
 | Découpage | **JOHP0** (Réveil, seul, avec tests de sauvegarde **[D]**), puis JOHP1, JOHP2, JOHP3 ; déplacement du retour d'équipe avec JOHP3, validation seule (règle 1) |
 
-## 17. Textes (proposition, à valider en un lot)
+## 17. Textes (à valider en un lot)
 
-Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms ; *italique* = voix, légende. Les
-textes de Dresseurs ordinaires et les panneaux viendront après les arbitrages.
+Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms ; *italique* = voix, légende.
 
 | N° | Où | Texte |
 |---|---|---|
@@ -501,6 +500,25 @@ textes de Dresseurs ordinaires et les panneaux viendront après les arbitrages.
 | P-38 | Corentin, retour | Les pierres sont éteintes, l'Aïeule dit qu'elles ont fini leur travail. / Et les sages de Rosalia ont appelé le clan. Ils te cherchent. / Allez, je te dépose devant leur porte ! |
 | P-39 | L'Aïeule, après | Ce qui dort sous Rosalia ne dormira plus longtemps. / Les pierres n'y sont plus pour rien. Les hommes, si. |
 | P-40 | Descriptions de zone | Ruines d'Alpha : Des ruines plus vieilles que Johto, et qui se souviennent. · Irisia : Une île de pêcheurs, au bout de la mer. · Grotte de la Marée : Une grotte que la mer visite deux fois par jour. · Ébènelle : Un village perché, au pays des dragons. · Antre du Dragon : Là où le clan des dragons met ses enfants à l'épreuve. |
+| P-41 | Panneaux | **RUINES D'ALPHA** / Fouilles en cours. Ne rien emporter. · **IRISIA** / L'île au bout de la mer · **GROTTE DE LA MARÉE** / Entrée interdite à marée haute · **ÉBÈNELLE** / Le village du clan des dragons · **ANTRE DU DRAGON** / Réservé au clan |
+| P-42 | Ouvrier, Route 36 (avant la Tour) | Chantier de fouilles. / Entrée réservée au personnel. |
+| P-43 | Agnès · Rémi · Solange (Ruines) | Agnès — avant : Une chercheuse doit tester ses hypothèses. Toi, par exemple. · défaite : Hypothèse rejetée. · après : Ces signes changent quand on ne les regarde pas. Je te jure. — Rémi — avant : J'ai calculé l'âge de ces murs. Veux-tu calculer ta défaite ? · défaite : J'ai oublié une retenue. · après : Personne n'a jamais compté toutes les dalles. — Solange — avant : Les ruines murmurent. Écoute-les avec moi. · défaite : Elles murmuraient ton nom. · après : La nuit, les signes bougent sur les murs. |
+| P-44 | Sbires V · W · X, Scientifique (Galerie) | V — avant : On creuse ! Dégage ! · défaite : Ma pelle… · après : On cherche un caillou. Trois jours pour un caillou. — W — avant : Pas de visite aujourd'hui ! · défaite : La visite est terminée. · après : Le patron des fouilles porte une fausse barbe. Ne lui dis pas que ça se voit. — X — avant : Tu ne passeras pas ce couloir ! · défaite : Bon, si. · après : Personne ne comprend ces dalles. Elles nous renvoient toujours au début. — Scientifique — avant : Ces signes sont du bruit. Mes machines le prouveront. · défaite : Du bruit. Rien que du bruit. · après : Comment peut-on lire ça ? |
+| P-45 | Examen, dalles | bonne dalle : Le signe s'éclaire. · mauvaise dalle : Le sol gronde. {joueur} est ramené à l'entrée de la salle. · fin : La porte du fond s'ouvre. |
+| P-46 | Yvon · Ronan · Tanguy · Maëlle (bateau, Irisia) | Yvon — avant : À bord, on se bat pour passer le temps ! · défaite : Le temps a passé vite. · après : Goulven n'a jamais raté une traversée. — Ronan — avant : Sur cette île, le poisson décide. · défaite : Il a décidé. · après : La grotte ne se remplit plus. Les poissons ont fui. — Tanguy — avant : Je m'entraîne contre les vagues. Tu seras plus facile. · défaite : Les vagues frappent moins fort. · après : Ces hommes en noir n'ont pas salué l'île. Ça ne se fait pas. — Maëlle — avant : On vient à Irisia pour une seule raison : la mer. Et toi ? · défaite : Tu as une bonne raison. · après : Le bateau noir est là depuis hier. |
+| P-47 | Sbires Y · Z · AA, Scientifique (Grotte) | Y — avant : Les pompes tournent, personne n'entre ! · défaite : Ça tourne sans moi. · après : Une grotte qu'on vide, c'est long. — Z — avant : Encore toi ? On t'a vu aux ruines ! · défaite : Et on te reverra, c'est ça le problème. · après : Cenere a dit qu'on aurait fini à l'heure. Elle a toujours raison. — AA — avant : Cenere est déjà descendue. Tu perds ton temps ! · défaite : C'est moi qui perds. · après : Vas-y, cours. Elle a calculé ça aussi. — Scientifique — avant : Niveau de l'eau, débit, durée : tout est prévu. Sauf toi. · défaite : Sauf toi. · après : Tourne les vannes si tu veux. Il est trop tard. |
+| P-48 | Examen, vanne · bateau noir | vanne : {joueur} tourne la vanne. / On entend l'eau bouger, plus bas. · bateau : Un bateau noir, sans pavillon, à l'ancre devant l'île. |
+| P-49 | Nolwenn · Malo · Hervé (Ébènelle) | Nolwenn — avant : Je suis apprentie, mais mon Draco, lui, ne l'est pas ! · défaite : Il a encore à apprendre. Moi aussi. · après : L'Aïeule entend tout. Ne dis pas de mal d'elle, même ici. — Malo — avant : Tu es venu sur le Dracolosse de Corentin ? Il t'a parlé tout le long ? · défaite : Il parle mieux qu'il ne se bat. Moi aussi. · après : Il n'y a qu'un moyen de quitter le village : par les airs. — Hervé — avant : Je suis monté à pied. Trois semaines. Montre-moi que ça en valait la peine. · défaite : Ça en valait la peine. · après : Acajou est juste derrière ces montagnes. Il n'y a pas de chemin. |
+| P-50 | Sbires AB · AC (Antre) | AB — avant : Le clan ne nous a pas vus entrer. Toi non plus, tu ne nous as pas vus ! · défaite : Tu nous as vus. · après : On prépare le chemin de Cenere. — AC — avant : Ces dragons me font peur. Pas toi. · défaite : Si, un peu toi aussi. · après : Elle arrive, tu sais. Elle arrive toujours. |
+| P-51 | Gardiens, après | Eau : L'Aïeule te soignera quand tu auras les trois. · Pierre : Il reste deux portes. Ou une. Je ne compte pas pour toi. · Ciel : Ysolde t'attend au Sanctuaire. |
+| P-52 | Ysolde, Corentin, après le Réveil | Ysolde : Cette femme a porté sa pierre jusqu'à toi. Elle n'aurait pas dû. / Le clan te doit la fin de sa garde. · Corentin : J'ai tout raté ! J'étais dehors avec le Dracolosse ! |
+| P-53 | Examen, autel (après) | Trois pierres ternes, posées sur l'autel. / Elles sont froides, maintenant. |
+| P-54 | Doyen, Rosalia (pendant l'arc) | Les pierres ? Une vieille histoire. / Ces hommes frappent à ma porte, et je ne l'ouvre pas. Alors ils en cherchent une autre. |
+| P-55 | Goulven, après l'arc | Irisia ? Toujours. / La mer ne change pas d'avis, et moi non plus. |
+| P-56 | Corentin, Rosalia, après l'arc | Ébènelle ? Monte ! / Il paraît que je parle trop. Tu trouves que je parle trop ? |
+| P-57 | Héloïse, après l'arc | Elles sont éteintes, donc. / Je vais écrire trois cents pages là-dessus, et personne ne les lira. |
+| P-58 | Système, capture à 6 pendant l'arc | Ton équipe est pleine. {pokemon} part au laboratoire d'Orme, qui s'en occupe en attendant. |
+| P-59 | Marin, plage d'Oliville (avant `johto_act2`) | La mer est mauvaise au sud, en ce moment. / Le bateau noir rôde. Fais demi-tour. |
 
 M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça commence à faire beaucoup.
 
@@ -508,30 +526,31 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 
 | N° | Question | Recommandation de Claude |
 |---|---|---|
-| JH-61 | **Comment l'équipe quitte la Tour.** JH-42 validé disait que Cenere abandonne l'équipe. Si elle revient à la fin de l'arc, il faut autre chose | Rouvrir JH-42 : Dante dit « Prends tout », Cenere emporte équipe, sac et relais (T-21', T-23') |
-| JH-62 | **La course.** Le joueur gagne-t-il chaque pierre, ou Cenere en prend-elle une ? | **Cenere prend la Pierre Marée** à Irisia : un vrai revers au milieu de l'arc, et c'est elle qui l'apporte à l'autel. Sinon : le joueur prend les trois, Cenere n'arrive qu'à la fin |
-| JH-63 | **Pourquoi Dante veut les pierres** | Pour réveiller les trois chiens sans le doyen ; il s'en passe ensuite (C-7 tient, zéro texte changé au JOH6) |
-| JH-64 | **Noms** | **Pierre Mémoire, Pierre Marée, Pierre Souffle** (« se souvient, revient, respire ») ; le pouvoir s'appelle **le Réveil**. Jalons JOHP0 à JOHP3 |
-| JH-65 | **Le clan des dragons** : personnages neufs (Ysolde, l'Aïeule, Corentin) ou Sandra et les figures d'Or/Argent ? | **Neufs**, sans Arène ni badge (cadre §1), comme Dante et les admins |
-| JH-66 | **Niveau cible et formule.** Fixe (58) ; moyenne de toute l'équipe ; moyenne des 3 plus hauts, bornée | **Moyenne des 3 plus hauts de l'équipe de Kanto, bornée à 55–62** |
-| JH-67 | **Qui est concerné ?** Équipe seule ; équipe et Stockage ; captures d'après | Équipe **et** captures de l'arc parties au Stockage (voir JH-71) ; **pas** les captures d'après ; jamais de baisse |
-| JH-68 | **Usage unique ou non** | **Unique** : une scène, pierres éteintes. Répété, il remplacerait tout l'entraînement de l'acte 2 |
-| JH-69 | **Évolutions et attaques** : sans rafale de dialogues | Évolutions d'un coup, sans annulation, chaîne comprise ; **un écran du Réveil**, attaques au choix pour qui veut, 3 plus récentes au plus. À trancher : autoriser un refus d'évolution ? Recommandation : non, c'est le pouvoir qui agit |
-| JH-70 | ✅ **Pas de ×4 ; le ×1,5 de l'acte 1 reste pendant l'arc** et s'arrête au retour de l'équipe de Kanto (Kevin, 2026-11-04). Courbe ≈ 30 à ≈ 40, boss d'Ébènelle 42–45 | — |
-| JH-71 | **Capture à 6** pendant 3 à 4 h de plus avec le Stockage fermé (JH-23 : lancer refusé) | Stockage **toujours fermé**, mais à partir de la Tour la capture en trop part **sans retour possible** au Stockage jusqu'à la fin de l'arc (« Le laboratoire d'Orme s'en occupe ») ; changement minime (`CaptureGate`), et Minidraco reste à portée. Sinon : JH-23 tient, le joueur à 6 ne capture plus |
-| JH-72 | **Ordre libre ?** | **Non** : ordre imposé par les drapeaux. Bateau après la Pierre Mémoire, Corentin après la Grotte. Les niveaux et le revers d'Irisia ne fonctionnent que dans cet ordre. Le trou de la mer (A-13) se ferme au même moment |
-| JH-73 | **Forme du Réveil** : scène du §13.2 (≈ 60 à 90 s, moment fort du chapitre). Non passable la première fois ? Marque permanente sur le Pokémon ? | Scène complète, **non passable** la première fois ; écran du Réveil ; **pas** de marque permanente : rien à stocker, rien à afficher en combat |
-| JH-74 | **La preuve.** Cenere frappe avant le Réveil (scène, P-28b), puis se bat après, face à une équipe qui vient de monter de ≈ 18 niveaux | **Oui**, niveaux 54–56, ≈ 70–80 % de victoire : c'est là que le joueur sent la puissance. Le retour d'équipe vient après. Les Îles Tourbillon deviennent son troisième combat (M-14 change d'un mot) |
-| JH-75 | **Sauvegarde.** Pas de nouveau format : `johto_stones_awakened` et les autres sont des drapeaux, le niveau et l'XP existent ; **v10 inchangée**. Reste le cas des parties déjà passées par le bureau (équipe rendue avant l'arc) | v10 gardée. Parties déjà passées : **pas de migration**, l'arc reste fermé pour elles (seuls Kevin et la QA sont concernés aujourd'hui). À vérifier : Kevin a-t-il une partie réelle au-delà du JOH5 ? Sinon, rien à faire |
-| JH-76 | **Carte, Vol, Pokédex** | Carte de Johto : 3 repères neufs (Ruines, Irisia, Ébènelle). Vol : **Irisia et Ébènelle** ajoutés à `fly_points.json`, ouverts une fois visités ; pas de point aux Ruines, comme les routes. Pokédex : rien de neuf (202 espèces) sans JH-77 |
-| JH-77 | **Zarbi** : absent des 51 espèces (JH-5). Décor seul, ou espèce neuve ? | **Décor seul** : signes animés et sons dans la Galerie, aucune donnée, Pokédex à 202. Si Kevin en veut un sauvage : **une seule forme** (1 artwork, 1 dos, Pokédex à 203, tests et Diplôme à revoir) ; les 26 formes sont à écarter |
-| JH-78 | **Dresseurs de l'acte 2.** L'équipe la plus forte ne change pas (Kanto 55–65), mais le joueur en a deux et choisit les meilleurs types | **Niveaux inchangés** (décision de Kevin). Refaire seulement la simulation des 3 grands combats (Brace, Cenere à Tourbillon, Dante 1) avec une équipe mixte ; si l'on dépasse 80 %, corriger par l'IA et les attaques, pas les niveaux |
-| JH-79 | **Après l'arc** : Irisia, Ébènelle et les Ruines restent-elles ouvertes ? | Oui : Goulven fait toujours la traversée, Corentin garde son vol depuis Rosalia, les Ruines restent ouvertes. Dresseurs battus ne reviennent pas (pas de revanches, cadre §1) |
+| JH-61 | ✅ **Rouvre JH-42** : Dante dit « Prends tout », Cenere emporte équipe, sac et relais du réseau (T-21', T-23') (Kevin, 2026-11-04) | — |
+| JH-62 | ✅ **Cenere prend la Pierre Marée** à Irisia : revers au milieu de l'arc ; elle l'apporte elle-même à l'autel (Kevin, 2026-11-04) | — |
+| JH-63 | ✅ Dante veut les pierres pour **réveiller les trois chiens** sans le doyen ; il s'en passe ensuite (C-7 tient, aucun texte du JOH6 ne change) (Kevin, 2026-11-04) | — |
+| JH-64 | ✅ **Pierre Mémoire, Pierre Marée, Pierre Souffle** ; le pouvoir s'appelle **le Réveil** ; jalons **JOHP0 à JOHP3** (Kevin, 2026-11-04) | — |
+| JH-65 | ✅ Clan des dragons en **personnages neufs** (Ysolde, l'Aïeule, Corentin), sans Arène ni badge (Kevin, 2026-11-04) | — |
+| JH-66 | ✅ Cible du Réveil : **moyenne des 3 plus hauts niveaux de l'équipe de Kanto, bornée à 55–62** (Kevin, 2026-11-04) | — |
+| JH-67 | ✅ Concernés : **l'équipe et les captures de l'arc parties au Stockage** ; pas les captures d'après ; jamais de baisse (Kevin, 2026-11-04) | — |
+| JH-68 | ✅ **Usage unique** : une scène, pierres éteintes (Kevin, 2026-11-04) | — |
+| JH-69 | ✅ Évolutions d'un coup, **sans annulation ni refus**, chaîne comprise ; **un seul écran du Réveil**, 3 attaques les plus récentes au choix (Kevin, 2026-11-04) | — |
+| JH-70 | ✅ **Pas de ×4 ; le ×1,5 de l'acte 1 reste pendant l'arc** et s'arrête au retour de l'équipe de Kanto. Courbe ≈ 30 à ≈ 40, boss d'Ébènelle 42–45 (Kevin, 2026-11-04) | — |
+| JH-71 | ✅ Stockage **fermé** pendant l'arc, mais à partir de la Tour la **capture en trop y part sans retrait possible** jusqu'à la fin de l'arc (`CaptureGate`, P-58) (Kevin, 2026-11-04) | — |
+| JH-72 | ✅ **Ordre imposé** par les drapeaux (bateau après la Pierre Mémoire, Corentin après la Grotte) ; mer au sud d'Oliville fermée tant que `johto_act2` manque (A-13, P-59) (Kevin, 2026-11-04) | — |
+| JH-73 | ✅ Réveil en **scène complète** (§13.2, ≈ 60 à 90 s), **non passable** la première fois, écran du Réveil ; **pas** de marque permanente (Kevin, 2026-11-04) | — |
+| JH-74 | ✅ **Cenere frappe avant le Réveil, se bat après**, niveaux 54–56, ≈ 70–80 % de victoire ; retour d'équipe ensuite ; les Îles Tourbillon deviennent son troisième combat (M-14 change d'un mot) (Kevin, 2026-11-04) | — |
+| JH-75 | ✅ Sauvegarde **v10 inchangée** (drapeaux seulement). Parties déjà passées par le bureau : **pas de migration**, l'arc reste fermé pour elles (Kevin, 2026-11-04) | — |
+| JH-76 | ✅ Carte de Johto : **3 repères neufs**. Vol : **Irisia et Ébènelle**, ouverts une fois visités, pas de point aux Ruines. Pokédex : 202 espèces, inchangé (Kevin, 2026-11-04) | — |
+| JH-77 | ✅ **Zarbi en décor seul** : signes animés et sons dans la Galerie, aucune donnée (Kevin, 2026-11-04) | — |
+| JH-78 | ✅ Dresseurs de l'acte 2 : **niveaux inchangés** ; simulation de Brace, Cenere (Tourbillon) et Dante 1 avec une équipe mixte ; au-delà de 80 %, corriger par l'IA et les attaques (Kevin, 2026-11-04) | — |
+| JH-79 | ✅ Après l'arc, **tout reste ouvert** : Goulven traverse toujours, Corentin garde son vol depuis Rosalia, Ruines ouvertes ; pas de revanches (Kevin, 2026-11-04) | — |
 
 ## 19. Prochaines étapes
 
-1. Kevin répond aux arbitrages JH-61 à JH-79, puis relit les textes du §17 en un seul lot.
-2. Claude reprend le dossier avec ses décisions, complète les textes de Dresseurs, et propage les
-   corrections (cadre, JOH-01, JOH-06, JOH-07, JOH-08 ; roadmap sur accord).
+1. ~~Kevin répond aux arbitrages~~ (fait le 2026-11-04) ; ~~propagation au cadre et aux dossiers~~ (faite,
+   sauf les textes T- et M- déjà validés, réécrits seulement après le lot du §17, et la roadmap).
+2. Kevin relit les textes du §17 **en un seul lot**.
 3. Grilles dans `tools/plans/`, puis vues générales peintes, validées avant tout code.
-4. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5.
+4. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5 : JOHP0 (le Réveil),
+   JOHP1, JOHP2, JOHP3.
