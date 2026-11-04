@@ -1,0 +1,90 @@
+{
+	"slowpoke_well_brace_before": {
+		"speaker": "Brace",
+		"pages": [
+			"Alors c'est toi, le gamin de Kanto.",
+			"On m'avait dit de me méfier de toi.",
+			"Moi, je ne me méfie de personne. Je\nfonce !"
+		]
+	},
+	"slowpoke_well_brace_defeated": {
+		"speaker": "Brace",
+		"pages": [
+			"Quoi ? Battu par un gamin avec des\nPokémon de rien du tout ?"
+		]
+	},
+	"slowpoke_well_brace_after": {
+		"speaker": "Brace",
+		"pages": [
+			"Tu crois avoir gagné ? On a déjà ce\nqu'on voulait.",
+			"Le vrai travail commence ailleurs.",
+			"Profite bien de ta petite victoire !"
+		]
+	},
+	"slowpoke_well_brace_flees": {
+		"narration": true,
+		"pages": [
+			"Brace s'enfuit…",
+			"Il a laissé tomber des papiers !"
+		]
+	},
+	"slowpoke_well_b2f_papiers": {
+		"cutscene": "slowpoke_well_papers"
+	},
+	"well_b2f_item_1": {
+		"cutscene": "well_b2f_item_1"
+	},
+	"slowpoke_well_b2f_ramoloss_sans_queue": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Ramoloss n'a plus de queue.",
+			"Il n'a pas l'air de s'en rendre\ncompte."
+		]
+	},
+	"slowpoke_well_b2f_fargas_b2f": {
+		"speaker": "Fargas",
+		"variants": [
+			{
+				"unless": [
+					"johto_slowpoke_well_cleared"
+				],
+				"cutscene": "slowpoke_well_kings_rock"
+			},
+			{
+				"pages": [
+					"Leurs queues repousseront, ne t'en\nfais pas."
+				]
+			}
+		]
+	},
+	"slowpoke_well_kurt_thanks": {
+		"speaker": "Fargas",
+		"pages": [
+			"Tu les as chassés !",
+			"Regarde, les Ramoloss rentrent à la\nmaison.",
+			"Leurs queues repousseront, ne t'en\nfais pas."
+		]
+	},
+	"slowpoke_well_kurt_kings_rock": {
+		"speaker": "Fargas",
+		"pages": [
+			"Tiens, je l'ai trouvée au fond du\npuits il y a bien longtemps.",
+			"Une Roche Royale.",
+			"On dit qu'un Ramoloss qui la porte,\nquand on l'échange, devient un roi."
+		]
+	},
+	"slowpoke_well_kings_rock_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit une Roche Royale !"
+		]
+	},
+	"slowpoke_well_papers_taken": {
+		"narration": true,
+		"pages": [
+			"{player} ramasse un Ordre de\nmission.",
+			"{player} ramasse une Carte d'accès.\nIl y est écrit : « Tour Radio de\nDoublonville »."
+		]
+	}
+}

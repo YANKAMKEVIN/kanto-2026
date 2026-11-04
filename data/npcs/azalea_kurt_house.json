@@ -1,0 +1,26 @@
+{
+	"fargas": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "down",
+		"sprite": "old_man",
+		"dialogue": "azalea_kurt_house_fargas",
+		"unless": [
+			"johto_kurt_told"
+		]
+	},
+	"fargas_home": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "down",
+		"sprite": "old_man",
+		"dialogue": "azalea_kurt_house_fargas_home",
+		"if": [
+			"johto_slowpoke_well_cleared"
+		]
+	}
+}

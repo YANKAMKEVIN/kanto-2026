@@ -1,0 +1,215 @@
+{
+	"slowpoke_well_brace": {
+		"variants": [
+			{
+				"unless": [
+					"johto_brace_defeated"
+				],
+				"steps": [
+					{
+						"emote": "brace",
+						"kind": "exclamation"
+					},
+					{
+						"move": "brace",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									-1,
+									-1
+								],
+								[
+									1,
+									-1
+								],
+								[
+									-1,
+									0
+								],
+								[
+									1,
+									0
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "brace"
+					},
+					{
+						"face": "brace",
+						"to": "player"
+					},
+					{
+						"dialogue": "slowpoke_well_brace_before"
+					},
+					{
+						"battle": "slowpoke_well_admin_brace",
+						"win": [
+							"johto_brace_defeated"
+						],
+						"lose": [
+							"lost_brace"
+						]
+					},
+					{
+						"dialogue": "slowpoke_well_brace_defeated",
+						"if": [
+							"johto_brace_defeated"
+						]
+					},
+					{
+						"dialogue": "slowpoke_well_brace_after",
+						"if": [
+							"johto_brace_defeated"
+						]
+					},
+					{
+						"move": "brace",
+						"to": [
+							24,
+							16
+						],
+						"run": true,
+						"if": [
+							"johto_brace_defeated"
+						]
+					},
+					{
+						"despawn": "brace",
+						"if": [
+							"johto_brace_defeated"
+						]
+					},
+					{
+						"dialogue": "slowpoke_well_brace_flees",
+						"if": [
+							"johto_brace_defeated"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_brace_defeated"
+						]
+					},
+					{
+						"spawn": "papiers",
+						"sprite": "object/poke_ball_ground",
+						"cell": [
+							25,
+							5
+						],
+						"facing": "down",
+						"dialogue": "slowpoke_well_b2f_papiers",
+						"verb": "take",
+						"turn_to_player": false
+					},
+					{
+						"spawn": "fargas_b2f",
+						"sprite": "old_man",
+						"cell": [
+							5,
+							5
+						],
+						"facing": "down",
+						"dialogue": "slowpoke_well_b2f_fargas_b2f"
+					}
+				]
+			}
+		]
+	},
+	"slowpoke_well_papers": {
+		"variants": [
+			{
+				"unless": [
+					"johto_radio_pass"
+				],
+				"steps": [
+					{
+						"despawn": "papiers"
+					},
+					{
+						"give": "mission_order",
+						"count": 1
+					},
+					{
+						"give": "radio_card",
+						"count": 1
+					},
+					{
+						"dialogue": "slowpoke_well_papers_taken"
+					},
+					{
+						"set": [
+							"johto_radio_pass"
+						]
+					}
+				]
+			}
+		]
+	},
+	"well_b2f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_well_b2f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "well_b2f_item_1"
+					},
+					{
+						"give": "escape_rope",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_well_b2f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"slowpoke_well_kings_rock": {
+		"variants": [
+			{
+				"unless": [
+					"johto_slowpoke_well_cleared"
+				],
+				"steps": [
+					{
+						"face": "fargas_b2f",
+						"to": "player"
+					},
+					{
+						"dialogue": "slowpoke_well_kurt_thanks"
+					},
+					{
+						"dialogue": "slowpoke_well_kurt_kings_rock"
+					},
+					{
+						"give": "kings_rock",
+						"count": 1
+					},
+					{
+						"dialogue": "slowpoke_well_kings_rock_received"
+					},
+					{
+						"set": [
+							"johto_slowpoke_well_cleared"
+						]
+					}
+				]
+			}
+		]
+	}
+}

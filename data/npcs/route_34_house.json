@@ -1,0 +1,11 @@
+{
+	"homme": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "right",
+		"sprite": "gentleman",
+		"dialogue": "route_34_house_homme"
+	}
+}

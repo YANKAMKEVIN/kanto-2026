@@ -1,0 +1,59 @@
+{
+	"azalea_well_block": {
+		"speaker": "Sbire",
+		"draft": true,
+		"pages": [
+			"Hé, toi ! On ne passe pas !",
+			"Le puits est fermé. Circule."
+		]
+	},
+	"azalea_town_panneau_puits": {
+		"narration": true,
+		"pages": [
+			"PUITS RAMOLOSS",
+			"Lieu de repos des Ramoloss. Ne pas\ndéranger."
+		]
+	},
+	"azalea_town_ramoloss_margelle": {
+		"narration": true,
+		"pages": [
+			"Le Puits Ramoloss.",
+			"Un Ramoloss somnole sur la margelle."
+		]
+	},
+	"azalea_town_habitante": {
+		"speaker": "Habitante",
+		"variants": [
+			{
+				"if": [
+					"johto_slowpoke_well_cleared"
+				],
+				"pages": [
+					"Les Ramoloss sont revenus !",
+					"Tu les entends bâiller ? C'est le\nplus beau bruit du monde."
+				]
+			},
+			{
+				"pages": [
+					"Tu vois des Ramoloss, toi ?",
+					"Avant, ils dormaient partout dans\nles rues.",
+					"Depuis que les hommes en noir sont\nlà, plus un seul."
+				]
+			}
+		]
+	},
+	"azalea_town_ramoloss": {
+		"narration": true,
+		"pages": [
+			"Ramoloss bâille.",
+			"… Il a déjà oublié pourquoi."
+		]
+	},
+	"azalea_town_panneau_ville": {
+		"narration": true,
+		"pages": [
+			"ÉCORCIA",
+			"La ville où l'on vit au rythme des\nRamoloss"
+		]
+	}
+}
