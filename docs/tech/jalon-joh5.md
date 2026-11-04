@@ -141,4 +141,10 @@ texte T-27 (phase DA) ; textes « porte fermée » en `draft`.
 
 ## 4. Fait
 
-(à remplir)
+| Date | Quoi |
+|---|---|
+| 2026-11-04 | T1 cartes (5 étages + cabine), T2 données, T3 scènes, T4 zone / ascenseur / musique / départs, T5 bureau et retour de l'équipe, T6 Agente et Orme, T7 tests (`test_joh5_data`, `test_joh5_maps`, `test_joh5_story` : parcours joué, arrêt pendant l'écran des 6 et reprise, œuf, Multi Exp déjà possédée, défaite contre Cenere) ; T-38 dans la grotte marine (JOH1 refusionné) ; objectifs [D] ; captures Mac relues ; CI verte sur `b150bbc0` |
+| — | Reste : QA A17, raccords Doublonville après la fusion du JOH3, fusion dans `main` |
+
+Écarts au plan : points des portes fermées en EXAMINER (OUVRIR est réservé aux portes à carte du
+`KeyDoorDirector`) ; Cenere sans séquence « VS » ni changement de Pokémon, comme Brace au JOH4.
