@@ -1,0 +1,65 @@
+{
+	"goldenrod_underground_grunt_c": {
+		"name": "Sbire Rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "rattata",
+				"level": 15
+			},
+			{
+				"species": "ekans",
+				"level": 16
+			}
+		]
+	},
+	"goldenrod_underground_grunt_d": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "murkrow",
+				"level": 16
+			},
+			{
+				"species": "houndour",
+				"level": 16
+			}
+		]
+	},
+	"goldenrod_underground_boss": {
+		"name": "Chef de bande",
+		"class": "sbire_rocket",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 17
+			},
+			{
+				"species": "murkrow",
+				"level": 17
+			},
+			{
+				"species": "koffing",
+				"level": 18
+			}
+		]
+	}
+}

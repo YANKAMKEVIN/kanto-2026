@@ -1,0 +1,60 @@
+{
+	"route_37_birdkeeper_lise": {
+		"name": "Ornithologue Lise",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "pidgey",
+				"level": 14
+			},
+			{
+				"species": "hoothoot",
+				"level": 15
+			}
+		]
+	},
+	"route_37_grunt_a": {
+		"name": "Sbire Rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 15
+			},
+			{
+				"species": "rattata",
+				"level": 14
+			}
+		]
+	},
+	"route_37_grunt_b": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "murkrow",
+				"level": 15
+			},
+			{
+				"species": "ekans",
+				"level": 15
+			}
+		]
+	}
+}

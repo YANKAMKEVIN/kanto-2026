@@ -76,6 +76,9 @@ var caught_count: Callable
 var time_source: Callable
 ## JOH0 : espèces de Johto capturées (`func() -> int`, Diplôme de Johto). Non valide : 0.
 var caught_johto_count: Callable
+## JOH3 : palier du lien du Pokémon de tête (`func() -> int`, [method BondReader.lead_tier]) pour
+## les variantes « if_lead_bond_tier » ; invalide = [constant BondReader.NONE].
+var lead_bond_source: Callable
 ## État d'une capacité de terrain (jalon 16, [member DialogueVariant.field]) :
 ## `func(move: StringName) -> FieldMoves.Result`. Non valide : les variantes « field » sont
 ## sautées. Posé par [Boot] ([FieldMoves]). Le Pokémon nommé remplace `{pokemon}` dans la variante
@@ -163,7 +166,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 		return false
 	var time := _time()
 	var variant := dialogue.pick(_flags, _rng(), _caught(), field_source, item_source,
-		zone_source, time[0], time[1], _caught_johto())
+		zone_source, time[0], time[1], _caught_johto(), _lead_bond())
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -202,7 +205,7 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 		return false
 	var time := _time()
 	var variant := dialogue.pick(_flags, null, _caught(), Callable(), item_source, zone_source,
-		time[0], time[1], _caught_johto())
+		time[0], time[1], _caught_johto(), _lead_bond())
 	return variant != null and variant.auto
 
 
@@ -456,6 +459,11 @@ func _time() -> Array[StringName]:
 		result[0] = StringName(str(raw[0]))
 		result[1] = StringName(str(raw[1]))
 	return result
+
+
+## JOH3 : palier du lien du Pokémon de tête ([member lead_bond_source]).
+func _lead_bond() -> int:
+	return int(lead_bond_source.call()) if lead_bond_source.is_valid() else BondReader.NONE
 
 
 ## Espèces de Johto capturées ([member caught_johto_count]) ; 0 sans source.

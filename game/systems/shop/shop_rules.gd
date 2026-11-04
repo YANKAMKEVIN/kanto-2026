@@ -35,11 +35,17 @@ const MAX_QUANTITY: int = 99
 
 ## Objets en vente dans [param shop] pour l'état de [param flags] (conditions « if » /
 ## « unless »), dans l'ordre des données. Sans drapeaux (null) : les objets sans condition.
-static func stock(shop: ShopData, flags: StoryFlags) -> Array[StringName]:
+## JOH3 : une ligne « if_weekday » n'est en vente que le jour [param weekday] (« monday »…) ;
+## sans jour (&""), jamais.
+static func stock(shop: ShopData, flags: StoryFlags, weekday: StringName = &"") \
+		-> Array[StringName]:
 	var ids: Array[StringName] = []
 	if shop == null:
 		return ids
 	for entry: Dictionary in shop.stock:
+		var days: Array = entry.get("if_weekday", [])
+		if not days.is_empty() and not days.has(weekday):
+			continue
 		var if_flags: Array[StringName] = entry["if"]
 		var unless_flags: Array[StringName] = entry["unless"]
 		if flags == null:
@@ -53,14 +59,35 @@ static func stock(shop: ShopData, flags: StoryFlags) -> Array[StringName]:
 ## Quantité maximale achetable de [param item] avec [param money] : 0 à
 ## [constant MAX_QUANTITY] (0 : objet sans prix, ou pas assez d'argent pour un seul). Un objet
 ## permanent (une CT, jalon 20 §2.9.2) : 1 s'il n'est pas dans [param bag], 0 sinon.
-static func max_buy(item: ItemData, money: int, bag: Bag = null) -> int:
+## [param price] : prix unitaire (JOH3, promotion) ; -1 = [member ItemData.price].
+static func max_buy(item: ItemData, money: int, bag: Bag = null, price: int = -1) -> int:
 	if item == null or item.price <= 0 or item.is_key() or money <= 0:
+		return 0
+	var unit := item.price if price < 0 else price
+	if unit <= 0:
 		return 0
 	if item.is_permanent():
 		if bag != null and bag.has(item.id):
 			return 0
-		return 1 if money >= item.price else 0
-	return mini(MAX_QUANTITY, floori(float(money) / item.price))
+		return 1 if money >= unit else 0
+	return mini(MAX_QUANTITY, floori(float(money) / unit))
+
+
+## Prix unitaire de [param item] dans [param shop] le jour [param weekday] (JOH3, JH-33) : la
+## moitié du prix (arrondie à l'unité inférieure, au moins 1) si l'objet est en promotion ce
+## jour-là, sinon [member ItemData.price]. Sans boutique ou sans jour : le prix normal.
+static func unit_price(shop: ShopData, item: ItemData, weekday: StringName = &"") -> int:
+	if item == null:
+		return 0
+	if shop == null or weekday.is_empty() or item.price <= 0:
+		return item.price
+	var promoted: Array = shop.promotions.get(weekday, [])
+	return maxi(1, item.price / 2) if promoted.has(item.id) else item.price
+
+
+## Vrai si [param item] est en promotion dans [param shop] le jour [param weekday] (JOH3).
+static func is_promoted(shop: ShopData, item: ItemData, weekday: StringName) -> bool:
+	return item != null and unit_price(shop, item, weekday) < item.price
 
 
 ## Quantité maximale vendable de [param item] : ce que contient [param bag], borné à
@@ -72,8 +99,11 @@ static func max_sell(item: ItemData, bag: Bag) -> int:
 
 
 ## Total d'un achat (prix × quantité, en ₽).
-static func buy_total(item: ItemData, quantity: int) -> int:
-	return item.price * quantity if item != null and quantity > 0 else 0
+## [param price] : prix unitaire (-1 = celui de l'objet ; JOH3 : promotion du jour).
+static func buy_total(item: ItemData, quantity: int, price: int = -1) -> int:
+	if item == null or quantity <= 0:
+		return 0
+	return (item.price if price < 0 else price) * quantity
 
 
 ## Total d'une vente (prix de reprise × quantité, en ₽).
@@ -84,17 +114,19 @@ static func sell_total(item: ItemData, quantity: int) -> int:
 ## Achète [param quantity] [param item] dans [param shop] : l'argent est débité, les objets
 ## ajoutés au Sac (et marqués « obtenus en dernier »). Sinon le refus, et rien ne change. Un
 ## objet permanent (CT) s'achète un à la fois, seulement s'il n'est pas déjà dans le Sac.
-static func buy(state: Object, shop: ShopData, item: ItemData, quantity: int) -> Status:
+## [param weekday] (JOH3) : jour de l'achat (lignes « if_weekday », promotion du jour).
+static func buy(state: Object, shop: ShopData, item: ItemData, quantity: int,
+		weekday: StringName = &"") -> Status:
 	if state == null or item == null or quantity < 1 or quantity > MAX_QUANTITY:
 		return Status.BAD_QUANTITY
-	if not stock(shop, state.flags).has(item.id) or item.price <= 0 or item.is_key():
+	if not stock(shop, state.flags, weekday).has(item.id) or item.price <= 0 or item.is_key():
 		return Status.NOT_SOLD_HERE
 	if item.is_permanent():
 		if (state.bag as Bag).has(item.id):
 			return Status.ALREADY_OWNED
 		if quantity > 1:
 			return Status.BAD_QUANTITY
-	var total := buy_total(item, quantity)
+	var total := buy_total(item, quantity, unit_price(shop, item, weekday))
 	if total > int(state.money):
 		return Status.NOT_ENOUGH_MONEY
 	if not state.spend_money(total):

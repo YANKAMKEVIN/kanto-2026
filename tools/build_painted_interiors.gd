@@ -141,6 +141,10 @@ const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 ## Chapitre Johto, JOH2 (T4, `jalon-joh2.md` §2.1) : les cinq intérieurs de Rosalia.
 const ROSALIA := [&"ecruteak_center", &"ecruteak_mart", &"ecruteak_elders_house",
 	&"ecruteak_house_1", &"ecruteak_house_2"]
+## Chapitre Johto, JOH3 (T7, `jalon-joh3.md` §2.1) : les neuf intérieurs de Doublonville.
+const DOUBLONVILLE := [&"goldenrod_center", &"goldenrod_dept_store_1f", &"goldenrod_dept_store_2f",
+	&"goldenrod_dept_store_3f", &"goldenrod_dept_store_roof", &"goldenrod_bond_house",
+	&"goldenrod_house_1", &"goldenrod_house_2"]
 ## Chapitre Johto, JOH4 (T4, `jalon-joh4.md` §2.1) : Écorcia et la maison de la Route 34.
 const AZALEA := [&"azalea_center", &"azalea_mart", &"azalea_kurt_house", &"azalea_house_1",
 	&"route_34_house"]
@@ -210,6 +214,8 @@ func _init() -> void:
 	rooms.append_array(_olivine_rooms())
 	# Chapitre Johto, JOH2 : Rosalia (fin de liste).
 	rooms.append_array(_rosalia_rooms())
+	# Chapitre Johto, JOH3 : Doublonville (fin de liste).
+	rooms.append_array(_goldenrod_rooms())
 	# Chapitre Johto, JOH4 : Écorcia et la Route 34 (fin de liste).
 	rooms.append_array(_azalea_rooms())
 	for room: Dictionary in rooms:
@@ -277,6 +283,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ROUTE_12)
 		elif arg == "--rosalia":
 			wanted.append_array(ROSALIA)
+		elif arg == "--doublonville":
+			wanted.append_array(DOUBLONVILLE)
 		elif arg == "--azalea":
 			wanted.append_array(AZALEA)
 		elif arg.begins_with("--rooms="):
@@ -2278,6 +2286,51 @@ func _rosalia_rooms() -> Array[Dictionary]:
 		"lavanville_maison_1.txt", &"retour_sages")
 	elders["furniture"] = _mason_furniture()
 	var house_1 := _ecruteak_house(&"ecruteak_house_1", "EcruteakHouse1",
+# --- Chapitre Johto, JOH3 (T7) : Doublonville ---------------------------------------------------
+
+const GOLDENROD_TITLE := "Doublonville"
+## Grand Magasin (dossier JOH-04 §3.2, §8 : RdC, 1er, 2e, toit) : étages relus sur les grilles et
+## coques de Céladopole [D] (sans ascenseur : sa porte reste bloquée) ; [identifiant, grille de
+## Céladopole, coque de Céladopole].
+const GOLDENROD_DEPT: Array = [
+	["1f", "celadopole_magasin_rdc.txt", "gf"], ["2f", "celadopole_magasin_2e.txt", "2f"],
+	["3f", "celadopole_magasin_5e.txt", "5f"],
+]
+## Comptoirs parlants : [nœud, case de gauche, largeur, dialogue] par étage.
+const GOLDENROD_COUNTERS: Dictionary = {
+	"1f": [["HostessCounter", Vector2i(7, 5), 6, &"goldenrod_dept_hostess"]],
+	"2f": [["ClerkCounterA", Vector2i(6, 5), 3, &"goldenrod_dept_2f_clerk"],
+		["ClerkCounterB", Vector2i(11, 5), 3, &"goldenrod_dept_2f_clerk"]],
+	"3f": [["ClerkCounter", Vector2i(9, 5), 3, &"goldenrod_dept_3f_clerk"]],
+}
+
+
+## Les intérieurs de Doublonville (`jalon-joh3.md` §2.1) : Centre (définition commune, Orme y
+## attend), Grand Magasin sur les étages de Céladopole, maison du lien et deux maisons relues sur
+## les grilles de Lavanville (enveloppe des maisons d'Argenta). PNJ dans
+## `data/npcs/goldenrod_*.json` (`tools/gen_joh3_data.py`).
+func _goldenrod_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = [_pokemon_center(&"goldenrod_center", "GoldenrodCenter",
+		GOLDENROD_TITLE, [&"goldenrod_city", &"retour_centre"])]
+	for index: int in GOLDENROD_DEPT.size():
+		rooms.append(_goldenrod_dept_floor(index))
+	var roof := _celadon_room(&"goldenrod_dept_store_roof", "GoldenrodDeptRoof",
+		"celadopole_magasin_toit.txt", ".XSZ", &"golden_hour")
+	roof["shell"] = INTERIORS_DIR + "int_celadon_dept_roof_coque.png"
+	roof["title"] = GOLDENROD_TITLE
+	(roof["spawns"] as Dictionary)["from_down"] = Vector2i(2, 3)
+	(roof["warps"] as Array).append_array(_celadon_stairs("StairsDown", 2,
+		&"goldenrod_dept_store_3f", &"from_up"))
+	for entry: Array in [["DispenserWater", Vector2i(10, 2), &"goldenrod_dept_roof_water"],
+			["DispenserSoda", Vector2i(12, 2), &"goldenrod_dept_roof_soda"],
+			["DispenserLemonade", Vector2i(14, 2), &"goldenrod_dept_roof_lemonade"]]:
+		(roof["interactables"] as Array).append([entry[0], entry[1], Vector2i.ONE, entry[2],
+			EXAMINE, Vector2i.UP])
+	rooms.append(roof)
+	var bond := _goldenrod_house(&"goldenrod_bond_house", "GoldenrodBondHouse",
+		"lavanville_maison_1.txt", &"retour_lien")
+	bond["furniture"] = _mason_furniture()
+	var house_1 := _goldenrod_house(&"goldenrod_house_1", "GoldenrodHouse1",
 		"lavanville_maison_2.txt", &"retour_maison_1")
 	var azuria := _cerulean_house()
 	house_1["furniture"] = azuria["furniture"]
@@ -2304,6 +2357,57 @@ func _ecruteak_house(id: StringName, node: String, plan: String, spawn: StringNa
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
 			&"ecruteak_city"),
+	var house_2 := _goldenrod_house(&"goldenrod_house_2", "GoldenrodHouse2",
+		"lavanville_maison_1.txt", &"retour_maison_2")
+	house_2["furniture"] = _mason_furniture()
+	rooms.append_array([bond, house_1, house_2])
+	return rooms
+
+
+## Étage du Grand Magasin : escalier montant S (2..3, 2), descendant Z (4..5, 2) ; le RdC sort par
+## (9..10, 11) vers `retour_magasin` ; arrivées `from_up` (devant S), `from_down` (devant Z).
+func _goldenrod_dept_floor(index: int) -> Dictionary:
+	var floor_id: String = GOLDENROD_DEPT[index][0]
+	var room := _celadon_room(StringName("goldenrod_dept_store_" + floor_id),
+		"GoldenrodDept" + floor_id.to_upper(), GOLDENROD_DEPT[index][1], ".XSZ")
+	room["shell"] = INTERIORS_DIR + "int_celadon_dept_%s_coque.png" % GOLDENROD_DEPT[index][2]
+	room["title"] = GOLDENROD_TITLE
+	var spawns: Dictionary = room["spawns"]
+	var warps: Array = room["warps"]
+	spawns["from_up"] = Vector2i(2, 3)
+	if index > 0:
+		spawns["from_down"] = Vector2i(4, 3)
+		warps.append_array(_celadon_stairs("StairsDown", 4,
+			StringName("goldenrod_dept_store_" + GOLDENROD_DEPT[index - 1][0]), &"from_up"))
+	var above: StringName = &"goldenrod_dept_store_roof" if index == GOLDENROD_DEPT.size() - 1 \
+		else StringName("goldenrod_dept_store_" + GOLDENROD_DEPT[index + 1][0])
+	warps.append_array(_celadon_stairs("StairsUp", 2, above, &"from_down"))
+	if index == 0:
+		spawns["entrance"] = Vector2i(9, 11)
+		for door: int in 2:
+			warps.append(["Exit%d" % door, Vector2i(9 + door, 11), PUSH, Vector2i.DOWN,
+				&"goldenrod_city", &"retour_magasin" if door == 0 else &"retour_magasin_1",
+				Vector2i.DOWN])
+		# Panneau de la promotion du jour (D-21), lu depuis la case devant lui, tourné ↑.
+		room["interactables"] = [["PromotionBoard", Vector2i(9, 2), Vector2i(2, 1),
+			&"goldenrod_dept_board", EXAMINE, Vector2i.UP]]
+	for counter: Array in GOLDENROD_COUNTERS.get(floor_id, []):
+		(room["interactables"] as Array).append([counter[0], counter[1],
+			Vector2i(counter[2], 1), counter[3], TALK, Vector2i.UP])
+	return room
+
+
+## Pièce de Doublonville relue sur une grille de Lavanville : enveloppe des maisons d'Argenta,
+## sortie PUSH ↓ vers `goldenrod_city` / [param spawn].
+func _goldenrod_house(id: StringName, node: String, plan: String, spawn: StringName) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": GOLDENROD_TITLE, "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": ".Xh",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+			&"goldenrod_city"),
 	}
 
 

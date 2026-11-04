@@ -1,0 +1,38 @@
+{
+	"agent_sud": {
+		"cell": [
+			33,
+			56
+		],
+		"facing": "right",
+		"sprite": "guard",
+		"dialogue": "goldenrod_city_agent",
+		"unless": [
+			"johto_azalea_clue"
+		]
+	},
+	"agent_range": {
+		"cell": [
+			33,
+			55
+		],
+		"facing": "right",
+		"sprite": "guard",
+		"dialogue": "goldenrod_city_agent",
+		"if": [
+			"johto_azalea_clue"
+		]
+	},
+	"jerome": {
+		"cell": [
+			56,
+			27
+		],
+		"facing": "left",
+		"sprite": "courier",
+		"if_weekday": [
+			"thursday"
+		],
+		"dialogue": "week_thursday_jerome"
+	}
+}
