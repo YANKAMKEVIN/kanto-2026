@@ -13,7 +13,8 @@ const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const TILE: int = 96
 const MAP_ID: StringName = &"olivine_city"
 const PLAN: String = "res://tools/plans/oliville.txt"
-const OUT: String = "res://game/world/maps/olivine_city.tscn"
+const MAPS_DIR: String = "res://game/world/maps/"
+const OUT: String = MAPS_DIR + "olivine_city.tscn"
 const PROPS_DIR: String = "res://game/world/props/painted/"
 const STEP_ON: int = 0
 const PUSH: int = 1
@@ -209,10 +210,23 @@ func _warps(root: Node, plan: Object) -> void:
 		&"olivine_house_2", "entrance", Vector2i.UP, "", false)
 	_warp_group(root, plan, "warp_grotte", "WarpGrotte", STEP_ON, Vector2i.LEFT,
 		&"sea_cave_2", "from_olivine_city", Vector2i.UP, "", false)
-	_warp_group(root, plan, "warp_est", "WarpEst", PUSH, Vector2i.RIGHT, &"",
-		"from_route_39", Vector2i.LEFT, "Route 39", true)
-	_warp_group(root, plan, "warp_sud_mer", "WarpSudMer", PUSH, Vector2i.DOWN, &"",
-		"from_route_40", Vector2i.UP, "Route 40", true)
+	# Raccords des jalons suivants : « à venir » tant que la carte voisine n'existe pas ; dès
+	# qu'elle existe (JOH2 : Route 39, arrivées `from_olivine`, `_1`, `_2` sur (0, 20..22) ;
+	# JOH7 : Route 40, `from_olivine`… sur (7..16, 0)), relancer cet outil : le passage devient réel.
+	_exit(root, plan, "warp_est", "WarpEst", Vector2i.RIGHT, &"route_39", "from_olivine",
+		"from_route_39", Vector2i.LEFT, "Route 39")
+	_exit(root, plan, "warp_sud_mer", "WarpSudMer", Vector2i.DOWN, &"route_40", "from_olivine",
+		"from_route_40", Vector2i.UP, "Route 40")
+
+
+## Sortie vers une carte d'un autre jalon : passage PUSH réel vers [param target] /
+## [param spawn] (rangé) si sa scène existe, sinon « à venir » avec retour sur [param back].
+func _exit(root: Node, plan: Object, id: String, node_name: String, direction: Vector2i,
+		target: StringName, spawn: String, back: String, facing: Vector2i, label: String) -> void:
+	if ResourceLoader.exists(MAPS_DIR + String(target) + ".tscn"):
+		_warp_group(root, plan, id, node_name, PUSH, direction, target, spawn, facing, "", true)
+	else:
+		_warp_group(root, plan, id, node_name, PUSH, direction, &"", back, facing, label, true)
 
 
 ## Un passage par case de [param id] ; l'arrivée cible porte le suffixe `_i` (rang de la case),
