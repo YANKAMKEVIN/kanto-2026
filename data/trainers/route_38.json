@@ -20,6 +20,7 @@
 	},
 	"route_38_trainer_ines": {
 		"name": "Dresseuse Inès",
+		"class": "topdresseuse",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,
@@ -43,6 +44,7 @@
 	},
 	"route_38_picnicker_theo": {
 		"name": "Pique-niqueur Théo",
+		"class": "campeur",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,

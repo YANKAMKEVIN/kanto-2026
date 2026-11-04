@@ -272,7 +272,7 @@ func test_rockets_flee_without_a_battle() -> void:
 			despawned.append(step.actor)
 	assert_eq(said, [&"ecruteak_rocket_1", &"ecruteak_sage_refuses", &"ecruteak_rocket_2"]
 		as Array[StringName], "R-12, R-13, R-14")
-	assert_eq(moved, [[&"sbire_1", Vector2i(54, 15)], [&"sbire_2", Vector2i(54, 16)]],
+	assert_eq(moved, [[&"sbire_1", Vector2i(24, 15)], [&"sbire_2", Vector2i(24, 16)]],
 		"fuite vers l'est par l'avenue")
 	assert_eq(despawned, [&"sbire_1", &"sbire_2"] as Array[StringName])
 	# Les Sbires sont des PNJ de la carte, absents une fois vus ; le sage dit R-15 ensuite.

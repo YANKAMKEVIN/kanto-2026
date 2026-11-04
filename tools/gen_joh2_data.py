@@ -61,6 +61,12 @@ TRAINERS = {
 		"route_38_picnicker_theo": ("Pique-niqueur Théo", 25, [("sentret", 11), ("rattata", 11)]),
 	},
 }
+# Classes de combat (`data/battle/trainer_intro.json`) des noms sans préfixe connu [D] : Écolière →
+# Fillette, Dresseuse → Topdresseuse, Pique-niqueur → Campeur (même feuille, même genre).
+TRAINER_CLASSES = {
+	"route_39_schoolgirl_lina": "fillette", "route_38_trainer_ines": "topdresseuse",
+	"route_38_picnicker_theo": "campeur",
+}
 # Répliques des Dresseurs (R-4, R-5, R-7, R-8, R-9) : avant · défaite · après.
 TRAINER_LINES = {
 	"route_39_youngster_hugo": ("Toi aussi tu viens d'avoir\nton premier Pokémon ?",
@@ -244,7 +250,8 @@ def guard_scene(guard, flag, dialogue_id, back):
 
 def rockets_scene():
 	"""R-12 à R-14 : les Sbires interrogent le sage, voient le joueur et filent vers l'est par
-	l'avenue, sans combat. Le drapeau est posé en tête (scène interrompue = jouée)."""
+	l'avenue (à pied, effacés au bout de 12 cases), sans combat. Le drapeau est posé en tête
+	(scène interrompue = jouée)."""
 	return {"variants": [{"unless": ["johto_rosalia_rockets_seen"], "steps": [
 		{"set": ["johto_rosalia_rockets_seen"]},
 		{"face": "sage_tour", "to": "sbire_1"},
@@ -254,8 +261,10 @@ def rockets_scene():
 		{"face": "sbire_2", "to": "player"},
 		{"face": "sbire_1", "to": "player"},
 		{"dialogue": "ecruteak_rocket_2"},
-		{"move": "sbire_1", "to": [54, 15], "run": True, "background": True},
-		{"move": "sbire_2", "to": [54, 16], "run": True},
+		# Fuite à pied vers l'est par l'avenue (aucune animation de course pour les Sbires),
+		# effacement au bout de 12 cases [D].
+		{"move": "sbire_1", "to": [24, 15], "background": True},
+		{"move": "sbire_2", "to": [24, 16]},
 		{"despawn": "sbire_1"},
 		{"despawn": "sbire_2"},
 		{"face": "sage_tour", "to": "player"},
@@ -283,11 +292,14 @@ def main():
 			dialogues[trainer_id + "_before"] = dialogue(name, [before])
 			dialogues[trainer_id + "_defeated"] = dialogue(name, [defeated])
 			dialogues[trainer_id + "_after"] = dialogue(name, [after])
-			all_trainers[trainer_id] = {
-				"name": name, "ai": "random", "can_lose": False, "heal_after": False,
+			all_trainers[trainer_id] = {"name": name}
+			if trainer_id in TRAINER_CLASSES:
+				all_trainers[trainer_id]["class"] = TRAINER_CLASSES[trainer_id]
+			all_trainers[trainer_id].update({
+				"ai": "random", "can_lose": False, "heal_after": False,
 				"gives_exp": True, "prize_money": 0, "prize_per_level": prize,
 				"team": [{"species": species, "level": level} for species, level in team],
-			}
+			})
 		for ident, (kind, cells, attrs, comment) in positions.items():
 			key = (map_id, ident)
 			if key in SKIPPED:

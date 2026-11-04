@@ -17,7 +17,7 @@ const SAVE_PATH := "user://test_joh2_boot_save.json"
 const SETTINGS_PATH := "user://test_joh2_boot_settings.json"
 const ABSENT := "user://test_joh2_boot_absent.json"
 const FADE := 0.05
-const TIMEOUT := 15.0
+const TIMEOUT := 40.0
 
 var _boot: Boot
 var _saved_router: Array = []

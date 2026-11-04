@@ -20,6 +20,7 @@
 	},
 	"route_39_schoolgirl_lina": {
 		"name": "Écolière Lina",
+		"class": "fillette",
 		"ai": "random",
 		"can_lose": false,
 		"heal_after": false,

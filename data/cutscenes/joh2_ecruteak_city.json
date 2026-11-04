@@ -97,19 +97,17 @@
 					{
 						"move": "sbire_1",
 						"to": [
-							54,
+							24,
 							15
 						],
-						"run": true,
 						"background": true
 					},
 					{
 						"move": "sbire_2",
 						"to": [
-							54,
+							24,
 							16
-						],
-						"run": true
+						]
 					},
 					{
 						"despawn": "sbire_1"
