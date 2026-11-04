@@ -53,7 +53,7 @@ const MAPS: Array[Dictionary] = [
 const OUTDOOR_KINDS: Dictionary = {
 	".": "GRASS", "=": "DIRT", "h": "TALL_GRASS", "p": "COBBLE", "D": "COBBLE", "E": "COBBLE",
 	"T": "FOREST", "x": "FOREST", "G": "FOREST", "a": "FOREST", "W": "WATER", "w": "WATER",
-	"b": "BOARDWALK", "X": "CLIFF", "P": "CLIFF", "r": "CLIFF", "y": "FLOWERS", "n": "CROP",
+	"b": "BOARDWALK", "X": "CLIFF", "P": "CLIFF", "r": "CLIFF", "y": "GRASS", "n": "CROP",
 	"U": "CLIFF", "A": "CLIFF", "L": "CLIFF", "C": "CLIFF", "m": "CLIFF", "N": "CLIFF",
 	"F": "CLIFF", "k": "CROP",
 }
@@ -61,6 +61,10 @@ const MAP_KINDS: Dictionary = {
 	# Souterrain : dalles, murs, boutiques fermées (rideaux baissés).
 	"goldenrod_underground": {".": "COBBLE", "b": "CLIFF"},
 }
+## Massifs de fleurs (bloqués) : herbe + fleurs peintes de Kanto, une par case (la tuile FLOWERS
+## a un fond noir) [D].
+const FLOWER_MARK: String = "y"
+const FLOWER_PROP: String = "prop_fleurs_pales_01"
 ## Eau surfable (JH-36) : caractère par carte ; les cases qui touchent la berge sont pêchables.
 const SURF_MARKS: Dictionary = {"route_35": "w"}
 
@@ -208,6 +212,8 @@ func _build(spec: Dictionary) -> void:
 			var kind: int = _over.Kind[kinds[mark]]
 			var variant := _rng.randi_range(0, _over.variant_count(kind) - 1)
 			ground.set_cell(cell, _over.SOURCE_ID, _over.atlas_coords(kind, variant))
+			if mark == FLOWER_MARK:
+				_add_prop(root, FLOWER_PROP, cell, "Fleurs_%d_%d" % [x, y])
 			if not plan.walkable.contains(mark) and not _over.is_solid_kind(kind):
 				blocked.append(cell)
 	_add_water(spec, plan, root, size)

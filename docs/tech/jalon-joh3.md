@@ -188,4 +188,13 @@ dossier en `draft` (grille du Parc, habitant de la maison 2, hôtesse du toit…
 
 | Tâche | Commit | Note |
 |---|---|---|
-| Plan | (ce commit) | Ce document |
+| Plan | `9081f8a4` | Ce document |
+| T1–T4 (JOH3A) | `d0e17e7d` | Promotion du jour, `if_lead_bond_tier` et `BondReader`, `give_egg` `flag` / `say_full`, Perle ; D-16 et D-17 du JOH0 réalignés ; `test_joh3_systems` |
+| T5–T11 | `7c2e2565` | `gen_joh3_data.py`, `build_joh3_maps.gd`, `--doublonville`, données de monde, départs de débogage ; `npc.gd` / `player.gd` repris du JOH2 (outils sous `godot -s`) |
+| T12 | `76a4caf3` | `test_joh3_maps` (10), `test_joh3_data` (11), `test_joh3_boot` (4) ; registres réalignés ; objets du Souterrain préfixés `goldenrod_underground_` (collision avec `underground_7_8`) ; Grand Magasin en aplat (le bâtiment peint de Céladopole fait 14 cases pour une emprise de 12 et bloquait Jérôme) |
+
+Écarts [D] relevés pendant le code : D-12 « Tu es venu » écrit `{g:venu|venue}` (accord de la
+joueuse, JR-7) ; `{pokemon}` de D-12 = le compagnon (page omise sans compagnon, règle des jetons) ;
+D-28 : la mention entre parenthèses du dossier devient la seconde bulle du panneau ; Orme redonne
+l'œuf sans répéter D-12 ; le chef dit l'indice (D-32) comme réplique « après » (posée à chaque
+fois, une partie fermée juste après le combat le retrouve).

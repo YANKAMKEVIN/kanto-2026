@@ -44,8 +44,19 @@
 	},
 	"goldenrod_underground_boss_defeated": {
 		"speaker": "Chef de bande",
-		"pages": [
-			"Grr… Comment un gamin peut-il\nêtre aussi fort ?"
+		"variants": [
+			{
+				"set": [
+					"johto_azalea_clue"
+				],
+				"pages": [
+					"Grr… Comment un gamin peut-il\nêtre aussi fort ?",
+					"Tu crois qu'on est seulement ici ?",
+					"Les copains font de bonnes affaires\nà Écorcia, au sud.",
+					"Les queues de Ramoloss,\nça se vend très cher.",
+					"Et les ordres viennent d'en haut.\nDe très haut."
+				]
+			}
 		]
 	},
 	"goldenrod_underground_boss_after": {

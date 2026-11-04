@@ -220,6 +220,10 @@ func test_the_clue_opens_the_south_exit() -> void:
 	var clue := _pick(&"goldenrod_underground_boss_after", _flags())
 	assert_eq(clue.set_flags, [&"johto_azalea_clue"] as Array[StringName])
 	assert_eq(clue.pages.size(), 4)
+	var defeated := _pick(&"goldenrod_underground_boss_defeated", _flags())
+	assert_eq(defeated.set_flags, [&"johto_azalea_clue"] as Array[StringName],
+		"l'indice suit la défaite, sans qu'il faille lui reparler")
+	assert_eq(defeated.pages.size(), 5, "D-31 puis D-32")
 	assert_string_contains(_pick(&"goldenrod_city_agent", _flags()).pages[0].text, "Pas aujourd'hui")
 	assert_string_contains(_pick(&"goldenrod_city_agent", _flags([&"johto_azalea_clue"])).pages[1].text,
 		"La route du sud est ouverte")

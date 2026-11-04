@@ -291,7 +291,13 @@ def main():
 		for trainer_id, (name, prize, team) in trainers.items():
 			before, defeated, after = TRAINER_LINES[trainer_id]
 			dialogues[trainer_id + "_before"] = dialogue(name, before)
-			dialogues[trainer_id + "_defeated"] = dialogue(name, defeated)
+			if after is None:
+				# JH-31 : le chef vaincu dit D-31 puis l'indice D-32 tout de suite (le joueur ne
+				# peut pas le manquer) ; le drapeau est posé à la fin de la réplique.
+				dialogues[trainer_id + "_defeated"] = {"speaker": name, "variants": [
+					{"set": ["johto_azalea_clue"], "pages": defeated + CLUE}]}
+			else:
+				dialogues[trainer_id + "_defeated"] = dialogue(name, defeated)
 			if after is None:
 				# Le chef du Souterrain : l'indice (D-32) pose johto_azalea_clue, chaque fois
 				# qu'on lui parle (une partie fermée juste après le combat le retrouve).
