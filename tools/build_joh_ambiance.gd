@@ -1,8 +1,10 @@
 extends SceneTree
 ## Passe d'ambiance du Chapitre Johto (cartes du JOH1 et du JOH2, décision de Kevin du 2026-11-04 :
 ## « prendre de l'avance sur l'art et l'ambiance de Johto »). Repeint en 2D HD les cartes écrites
-## en tuiles provisoires par les outils des jalons, d'après leur vue générale validée ; pilote :
-## **Oliville** (`olivine_city`, `build_joh1_olivine.gd`, vue `oliville-vue-generale-v1.png`).
+## en tuiles provisoires par les outils des jalons, d'après leur vue générale validée : pilote
+## **Oliville** (`olivine_city`, `build_joh1_olivine.gd`, vue `oliville-vue-generale-v1.png`), puis
+## **Route 39**, **Route 38** et **Rosalia** (`build_joh2_maps.gd`, vues `route-39-`, `route-38-`
+## et `rosalia-vue-generale-v1.png`).
 ##
 ## Passe APRÈS l'outil de la carte, sur le modèle de `build_daf10b_routes.gd` ; idempotente (elle
 ## retire d'abord ses propres nœuds). **La logique ne change pas** : couches de tuiles (dont
@@ -24,13 +26,24 @@ extends SceneTree
 ## **Nuit** : les halos du groupe `night_lights` (enfants de `NightLights`) sont reposés par cette
 ## passe : `night_lamp` sur chaque lampadaire et la lanterne du phare, `night_window` sur les
 ## fenêtres et vitrines des bâtiments ; cachés de jour (`WorldLighting.set_night`).
+## **Route 39** : chemin, hautes herbes (champs de la vue), arbres repères ; rochers et mer de
+## décor (la mare de la vue, `W`) ; enclos à clôture blanche (avec son côté est, sur le pré `e`
+## bloqué : la grille n'a pas de `f` à l'est), mangeoire et seau [D]. La ferme reste la maison du
+## kit de Kanto [D].
+## **Route 38** : sentier, hautes herbes, forêt (dont la barrière d'arbres), arbres repères ;
+## petite falaise `R` : muret de pierre sur la rangée du bas, forêt sur celle du haut [D].
+## **Rosalia** : pavés, hautes herbes, érables (`tree_automne_01` [D]), haies, massifs, bancs ;
+## Tour Cendrée, Tour Carillon et maisons traditionnelles peintes. Les tours en aplats de `Decor`
+## sont retirées ; `Bat_MaisonSages`, `Bat_Maison1` et `Bat_Maison2` (kit de Kanto) restent dans la
+## carte mais **cachés** : leur emprise ne change pas, leur image est remplacée.
 ## Nœuds posés : racine `PaintedGround`, `JohAmbForestFloor`, `JohAmbDecals` (hors des couches
 ## d'emprise de `GameMap`) ; enfants préfixés `JohAmb` dans `Entities` (sans emprise propre : les
 ## cases sont celles de la grille) ; halos de `NightLights`.
 ## Contrôle : `tools/dump_map_logic.gd` et `tools/dump_map_nodes.gd` identiques avant / après
-## (seule différence attendue : `Entities/PharePlaceholder`, dessin provisoire retiré).
+## (différences attendues : `Entities/PharePlaceholder`, dessin provisoire retiré ; `NightLights`,
+## `Node2D` de `build_joh2_maps.gd` devenu calque).
 ##
-##   godot --headless --path . -s res://tools/build_joh_ambiance.gd [-- --maps=olivine_city]
+##   godot --headless --path . -s res://tools/build_joh_ambiance.gd [-- --maps=olivine_city,route_39]
 ##   (code 2 : masques écrits ; godot --headless --path . --import, puis relancer)
 ##   À relancer après chaque reconstruction de la carte par l'outil de son jalon.
 
@@ -44,24 +57,42 @@ const NPCS_PATH: String = "res://data/npcs/%s.json"
 const OWN_PREFIX: String = "JohAmb"
 const OWN_ROOT: Array[String] = ["PaintedGround", "JohAmbForestFloor", "JohAmbDecals"]
 const TILE: int = 96
-## Carte → [grille, graine].
+## Ce que devient la roche `R` de la grille : rivage au bord de l'eau et paroi ailleurs (Oliville),
+## rivage partout (Route 39 : deux rangées au-dessus de la mer), muret sur la rangée du bas et
+## forêt au-dessus (Route 38).
+enum Rock { SHORE_THEN_PAROI, SHORE, WALL }
+
+## Galets de la plage (sol rocheux de la Route 3 : galets gris) [D].
+const PEBBLES: String = "res://assets/world/ground/ground_roche_01.png"
+## Chemin des routes du JOH2 : le sable, plus proche de la terre orangée des vues générales que
+## `ground_chemin_01` (gris-beige, et mauve la nuit) [D].
+const EARTH: String = "res://assets/world/ground/ground_sable_01.png"
+## Carte → grille, graine, roche, texture du chemin `=` (vide : celle du kit), vitres éclairées la
+## nuit (`night_pane` en plus de `night_window` : l'additif se perd sur les vitres claires).
 const MAPS: Dictionary = {
-	&"olivine_city": ["oliville", 39050],
+	&"olivine_city": {"plan": "oliville", "seed": 39050, "rock": Rock.SHORE_THEN_PAROI,
+		"path": PEBBLES, "panes": false},
+	&"route_39": {"plan": "route_39", "seed": 39101, "rock": Rock.SHORE, "path": EARTH,
+		"panes": true},
+	&"route_38": {"plan": "route_38", "seed": 38101, "rock": Rock.WALL, "path": EARTH,
+		"panes": true},
+	&"ecruteak_city": {"plan": "rosalia", "seed": 42101, "rock": Rock.SHORE, "path": "",
+		"panes": true},
 }
-## Traduction de la grille du JOH1 vers la légende du kit : `T` forêt, `.` herbe, `p` pavés,
-## `=` galets (canal vert), `z` platelage (herbe sous les planches), `w` mer, `R` rivage, `#`
-## paroi, `c` solide sans arbre (objets posés par cette passe ou par la carte).
+## Traduction des grilles du JOH1 et du JOH2 vers la légende du kit : `T` forêt, `.` herbe, `p`
+## pavés, `=` chemin (galets à Oliville, terre ailleurs), `h` hautes herbes, `z` platelage (herbe
+## sous les planches), `w` mer, `R` rivage, `#` paroi, `c` solide sans arbre (objets posés par
+## cette passe ou par la carte).
 const LEGEND: Dictionary = {
 	"T": "T", ".": ".", "p": "p", "D": "p", "k": "p", "g": "=", "E": "=", "q": "z", "w": "w",
 	"R": "R", "P": "#", "x": "c", "y": "c", "n": "c", "G": "c", "C": "c", "O": "c", "m": "c",
-	"N": "c",
+	"N": "c", "=": "=", "h": "h", "W": "w", "f": "c", "e": "c", "M": "c", "B": "c", "K": "c",
+	"S": "c",
 }
-const KIT_WALKABLE: String = ".p=z"
+const KIT_WALKABLE: String = ".p=zh"
 ## Pendant la pose de la paroi, l'eau compte comme praticable : aucun module sur la mer.
-const PAROI_WALKABLE: String = ".p=zw"
-const WATER: String = "w"
-## Galets de la plage (sol rocheux de la Route 3 : galets gris) [D].
-const PEBBLES: String = "res://assets/world/ground/ground_roche_01.png"
+const PAROI_WALKABLE: String = ".p=zhw"
+const WATER_MARKS: Array[String] = ["w", "W"]
 const PLANKS_EW: String = "res://assets/world/ground/ground_planches_quai_01.png"
 const PLANKS_NS: String = "res://assets/world/ground/ground_planches_quai_ns_01.png"
 const WOOD_END: String = "relief_quai_bois_04"
@@ -101,11 +132,70 @@ const OLI_MOUTH_COLUMN: int = 10
 const OLI_MOUTH_ROW: int = 32
 const OLI_MOUTH_RIGHT: float = 11.12
 const OLI_MOUTH_TINT := Color(1.0, 0.93, 0.8)
+
+## Routes du JOH2 : arbres repères.
+const ROUTE_TREES: Array = [
+	["tree_c_01", 0.85, false], ["tree_a_01", 0.85, true], ["tree_c_01", 0.8, true],
+]
+## Route 39 : clôture blanche de l'enclos (modules de 4 et 3 cases, vertical de 3 cases, un peu
+## rentré aux angles pour tomber sur les bouts des modules horizontaux), objets du pré `e` [D].
+const R39_FENCE_H: Dictionary = {4: "prop_cloture_piquets_01", 3: "prop_cloture_piquets_01_court"}
+const R39_FENCE_V: String = "prop_cloture_piquets_v_01"
+const R39_FENCE_V_SPAN: int = 3
+const R39_FENCE_V_INSET: float = 0.2
+## Clôture plus basse que dans le kit (la vue générale la montre à hauteur de genou) [D].
+const R39_FENCE_SCALE: float = 0.75
+const R39_FEEDER_CELL := Vector2i(13, 33)
+const R39_BUCKET_CELL := Vector2i(16, 33)
+## Route 38 : muret de pierre (module de 4 cases, un peu plus haut que la rangée).
+const R38_WALL: String = "relief_muret_01"
+const R38_WALL_SPAN: int = 4
+const R38_WALL_SCALE_Y: float = 1.3
+## Rosalia : érables repères, bancs, bâtiments peints [identifiant, case d'ancrage, nœud].
+const ROS_TREES: Array = [
+	["tree_automne_01", 0.72, false], ["tree_automne_01", 0.66, true],
+	["tree_automne_01", 0.7, true], ["tree_automne_01", 0.68, false],
+]
+const ROS_BENCH_SCALE: float = 0.75
+## Lampadaires de Rosalia [D], pieds (cases) sur des cases déjà bloquées (la vue générale n'en
+## montre pas, mais la ville serait sans lumière la nuit) : angles des bâtiments le long des rues,
+## entrée du chemin gardé.
+const ROS_LAMPS: Array[Vector2] = [
+	Vector2(13.5, 13), Vector2(24.9, 13), Vector2(41.5, 13), Vector2(12.9, 30), Vector2(22.9, 30),
+	Vector2(32.1, 30), Vector2(50.9, 30),
+]
+## Massifs : part d'hortensias et teinte (roses, comme la vue générale) [D].
+const ROS_HYDRANGEA_SHARE: float = 0.4
+const ROS_HYDRANGEA_TINT := Color(1.25, 0.82, 0.85)
+## La porte de la maison de Rosalia est à gauche du milieu de l'image : pied décalé (pixels) pour
+## la poser sur la case de la grille.
+const ROS_HOUSE_DOOR_SHIFT: float = 40.0
+const ROS_BUILDINGS: Array = [
+	["bldg_tour_cendree_01", Vector2i(9, 12), "TourCendree"],
+	["bldg_tour_carillon_01", Vector2i(50, 9), "TourCarillon"],
+	["bldg_maison_rosalia_01", Vector2i(21, 12), "MaisonSages"],
+	["bldg_maison_rosalia_01", Vector2i(35, 29), "Maison1"],
+	["bldg_maison_rosalia_01", Vector2i(47, 29), "Maison2"],
+]
+## Bâtiments du kit de Kanto remplacés par la maison de Rosalia : cachés, emprise gardée.
+const HIDDEN_PROPS: Array[String] = ["Bat_MaisonSages", "Bat_Maison1", "Bat_Maison2"]
+## Lueur douce sur le parvis de la Tour Cendrée (cases, de part et d'autre de la porte).
+const ROS_FORECOURT: Array[Vector2] = [Vector2(6.5, 12.5), Vector2(11.5, 12.5)]
 ## Halos des fenêtres des bâtiments, par rapport au pied (pixels) ; tête des lampadaires.
 const WINDOWS: Dictionary = {
 	"bldg_centre_01": [Vector2(-250, -193), Vector2(255, -191), Vector2(-4, -120)],
 	"bldg_boutique_01": [Vector2(-250, -193), Vector2(250, -193), Vector2(0, -120)],
 	"bldg_maison_argenta_01": [Vector2(-176, -165), Vector2(174, -164)],
+	"bldg_maison_pecheur_01": [Vector2(-181, -143), Vector2(198, -143)],
+	"bldg_maison_rosalia_01": [Vector2(-184, -168), Vector2(156, -168)],
+	"bldg_tour_carillon_01": [Vector2(0, -680), Vector2(0, -552), Vector2(0, -426),
+		Vector2(0, -298)],
+}
+## Vitres éclairées, là où elles diffèrent des halos de [constant WINDOWS] (pas sur les portes, ni
+## sur le store de la Boutique).
+const PANES: Dictionary = {
+	"bldg_centre_01": [Vector2(-240, -190), Vector2(250, -190)],
+	"bldg_boutique_01": [Vector2(-272, -150), Vector2(228, -150)],
 }
 const LAMP_HEAD: Dictionary = {
 	"prop_lampadaire_01": Vector2(0, -222), "prop_lampadaire_quai_01": Vector2(0, -160),
@@ -139,16 +229,16 @@ func _init() -> void:
 
 
 func _build(map_id: StringName) -> void:
-	var spec: Array = MAPS[map_id]
+	var spec: Dictionary = MAPS[map_id]
 	var source := PlanGrid.new()
-	if not source.load_file("res://tools/plans/%s.txt" % spec[0]):
+	if not source.load_file("res://tools/plans/%s.txt" % spec["plan"]):
 		push_error("%s : %s" % [map_id, source.error])
 		_errors += 1
 		return
 	var size := Vector2i(source.width, source.height)
-	var seed_value: int = spec[1]
-	var kit: Object = Kit.new(_translate(source, map_id), size, seed_value, seed_value + 1,
-		seed_value + 2)
+	var seed_value: int = spec["seed"]
+	var kit: Object = Kit.new(_translate(source, map_id, spec["rock"]), size, seed_value,
+		seed_value + 1, seed_value + 2)
 	kit.set(&"errors", PackedStringArray())
 	kit.call(&"set_marks", KIT_WALKABLE, "#", "")
 	_reserve(kit, source, map_id)
@@ -164,12 +254,14 @@ func _build(map_id: StringName) -> void:
 		kit.call(&"discard")
 		return
 	var painted: Node2D = kit_root.get_node(^"PaintedGround")
-	painted.set(&"g_texture", load(PEBBLES))
+	if not String(spec["path"]).is_empty():
+		painted.set(&"g_texture", load(spec["path"]))
 	var decals: Node2D = kit.get(&"decals")
 	var entities: Node2D = kit.get(&"entities")
 	kit.call(&"place_border_decals", seed_value)
 	kit.call(&"place_meadow", int(size.x * size.y * MEADOW_PER_CELL), MEADOW_FLOWER_CHANCE,
 		FLOWERS)
+	kit.call(&"place_tall_grass")
 	var planks := _place_planks(kit, decals, source.cells_of("q"))
 	var edges := _fill_cliff_edges(kit, source)
 	kit.call(&"set_marks", PAROI_WALKABLE, "#", "")
@@ -177,11 +269,17 @@ func _build(map_id: StringName) -> void:
 	kit.call(&"set_marks", KIT_WALKABLE, "#", "")
 	var cropped := _crop_paroi(decals, source)
 	var shore: int = kit.call(&"place_shore")
-	var quays := _place_wood_quays(kit, source)
+	var quays := 0 if source.cells_of("q").is_empty() else _place_wood_quays(kit, source)
 	var counts := {}
 	match map_id:
 		&"olivine_city":
 			counts = _olivine(kit, source, decals, entities)
+		&"route_39":
+			counts = _route_39(kit, source, entities)
+		&"route_38":
+			counts = _route_38(kit, source, decals, entities)
+		&"ecruteak_city":
+			counts = _rosalia(kit, source, entities)
 	var feet: Array[Vector2] = []
 	feet.assign(counts.get("feet", []))
 	var forest: Vector2i = kit.call(&"place_forest", seed_value + 5, feet, {})
@@ -211,7 +309,7 @@ func _build(map_id: StringName) -> void:
 	for child: Node in (kit_root.get_node(^"Entities") as Node).get_children():
 		child.name = OWN_PREFIX + String(child.name)
 		_adopt(child, map_entities, root, kit_root)
-	var glows := _night_lights(root, counts.get("glows", []) as Array)
+	var glows := _night_lights(root, counts.get("glows", []) as Array, spec["panes"])
 	kit.call(&"discard")
 	var packed := PackedScene.new()
 	var err := packed.pack(root)
@@ -227,9 +325,9 @@ func _build(map_id: StringName) -> void:
 	root.free()
 
 
-## Copie traduite de la grille (légende du kit, praticables du kit, positions d'origine) ; les `R`
-## loin de l'eau (8-voisinage) deviennent de la paroi `#`. Renvoie son chemin.
-func _translate(source: Object, map_id: StringName) -> String:
+## Copie traduite de la grille (légende du kit, praticables du kit, positions d'origine), la roche
+## selon [param rock]. Renvoie son chemin.
+func _translate(source: Object, map_id: StringName, rock: Rock) -> String:
 	var lines := PackedStringArray(["PRATICABLES " + KIT_WALKABLE, "",
 		"GRILLE %d %d" % [source.width, source.height]])
 	for y: int in source.height:
@@ -238,11 +336,7 @@ func _translate(source: Object, map_id: StringName) -> String:
 			var mark: String = source.at(Vector2i(x, y))
 			var out: String = LEGEND.get(mark, "T")
 			if mark == "R":
-				var wet := false
-				for dy: int in range(-1, 2):
-					for dx: int in range(-1, 2):
-						wet = wet or source.at(Vector2i(x + dx, y + dy)) == WATER
-				out = "R" if wet else "#"
+				out = _rock_mark(source, Vector2i(x, y), rock)
 			row += out
 		lines.append("%02d %s" % [y, row])
 	lines.append("FIN")
@@ -252,6 +346,21 @@ func _translate(source: Object, map_id: StringName) -> String:
 	file.store_string("\n".join(lines) + "\n")
 	file.close()
 	return path
+
+
+## Caractère du kit pour la roche de [param cell] : voir [enum Rock] (`R` loin de l'eau, en
+## 8-voisinage, devient de la paroi `#`).
+func _rock_mark(source: Object, cell: Vector2i, rock: Rock) -> String:
+	match rock:
+		Rock.SHORE:
+			return "R"
+		Rock.WALL:
+			return "T" if source.at(cell + Vector2i.DOWN) == "R" else "c"
+	for dy: int in range(-1, 2):
+		for dx: int in range(-1, 2):
+			if WATER_MARKS.has(source.at(cell + Vector2i(dx, dy))):
+				return "R"
+	return "#"
 
 
 ## Cases des PNJ et objets de la grille d'origine (et des places de rechange du fichier des PNJ) :
@@ -279,56 +388,12 @@ func _reserve(kit: Object, source: Object, map_id: StringName) -> void:
 ## Décor d'Oliville ; renvoie {"props": nombre, "feet": pieds des arbres repères (cases),
 ## "glows": halos [[type, position (pixels)]] en plus de ceux des objets de la carte}.
 func _olivine(kit: Object, source: Object, decals: Node2D, entities: Node2D) -> Dictionary:
-	var count := 0
 	var feet: Array[Vector2] = []
 	var glows: Array = []
 	var rules: GDScript = kit.get(&"rules")
-	var decor: RandomNumberGenerator = kit.get(&"decor_rng")
-	# Arbres repères `G`.
-	var index := 0
-	for cell: Vector2i in source.cells_of("G"):
-		var spec: Array = OLI_TREES[index % OLI_TREES.size()]
-		var tree: Node2D = kit.call(&"add_prop", entities, spec[0],
-			rules.call(&"foot_position", StringName(spec[0]), cell), "Tree%02d" % index)
-		kit.call(&"clear_footprint", tree)
-		tree.scale = Vector2(spec[1], spec[1])
-		kit.call(&"flip", tree, spec[2])
-		feet.append(tree.position / float(TILE))
-		index += 1
-		count += 1
-	# Haies `x` : modules de deux cases, le dernier étiré sur trois si l'étendue est impaire.
-	for run: Rect2i in _runs(source.cells_of("x")):
-		var at := 0
-		while at < run.size.x:
-			var span := 2 if run.size.x - at != 3 else 3
-			span = mini(span, run.size.x - at)
-			var foot := Vector2((run.position.x + at + span / 2.0) * TILE,
-				(run.position.y + 1) * TILE)
-			var hedge: Node2D = kit.call(&"add_prop", entities, OLI_HEDGE, foot,
-				"Hedge%02d" % count)
-			kit.call(&"clear_footprint", hedge)
-			hedge.scale = Vector2(span / 2.0, OLI_HEDGE_SCALE_Y)
-			kit.call(&"flip", hedge, decor.randf() < 0.5)
-			at += span
-			count += 1
-	# Massif `y` : hortensias et fleurs pâles mêlés, deux touffes par case en quinconce (rangées
-	# décalées d'une demi-touffe), pour ne pas lire des rangées de culture.
-	index = 0
-	for cell: Vector2i in source.cells_of("y"):
-		var shift := 0.12 if cell.y % 2 == 0 else -0.12
-		for k: int in 2:
-			var id: String = OLI_FLOWERS[0] if decor.randf() < 0.55 else OLI_FLOWERS[1]
-			var foot := Vector2(cell.x + 0.27 + 0.46 * k + shift + decor.randf_range(-0.1, 0.1),
-				cell.y + 0.6 + 0.35 * k + decor.randf_range(-0.05, 0.05)) * TILE
-			var bush: Node2D = kit.call(&"add_prop", entities, id, foot, "Flowers%03d" % index)
-			kit.call(&"clear_footprint", bush)
-			var s := decor.randf_range(0.72, 0.92)
-			bush.scale = Vector2(s, s)
-			kit.call(&"flip", bush, decor.randf() < 0.5)
-			var value := decor.randf_range(0.92, 1.04)
-			bush.modulate = Color(value, value, value)
-			index += 1
-			count += 1
+	var count := _place_trees(kit, source, entities, OLI_TREES, feet)
+	count += _place_hedges(kit, source, entities)
+	count += _place_flowers(kit, source, entities)
 	# Caisses `k` : paire → caisses du port, case seule → petite pile.
 	for run: Rect2i in _runs(source.cells_of("k"), 1):
 		var id := "prop_caisses_port_01" if run.size.x >= 2 else "prop_caisses_01"
@@ -388,7 +453,183 @@ func _place_mouth(kit: Object, decals: Node2D) -> void:
 	mouth.modulate = OLI_MOUTH_TINT
 
 
+# --- Route 39 -----------------------------------------------------------------------------
+
+
+## Décor de la Route 39 : arbres repères, enclos et ses objets ; halos : fenêtres de la ferme.
+func _route_39(kit: Object, source: Object, entities: Node2D) -> Dictionary:
+	var feet: Array[Vector2] = []
+	var count := _place_trees(kit, source, entities, ROUTE_TREES, feet)
+	var fence := Rect2i()
+	for cell: Vector2i in source.cells_of("f"):
+		fence = Rect2i(cell, Vector2i.ONE) if fence.size == Vector2i.ZERO \
+			else fence.expand(cell + Vector2i.ONE)
+	count += _place_fence(kit, entities, fence)
+	for entry: Array in [["prop_mangeoire_01", R39_FEEDER_CELL, "Feeder"],
+			["prop_arrosoir_seau_01", R39_BUCKET_CELL, "Bucket"]]:
+		var cell: Vector2i = entry[1]
+		var prop: Node2D = kit.call(&"add_prop", entities, entry[0],
+			(Vector2(cell) + Vector2(0.5, 1.0)) * TILE, entry[2])
+		kit.call(&"clear_footprint", prop)
+		count += 1
+	return {"props": count, "feet": feet}
+
+
+## Clôture blanche autour de [param rect] (cases des côtés compris) : nord et sud en modules du
+## plus long au plus court, ouest et est en modules de [constant R39_FENCE_V_SPAN] cases.
+func _place_fence(kit: Object, entities: Node2D, rect: Rect2i) -> int:
+	var count := 0
+	for row: int in [rect.position.y, rect.end.y - 1]:
+		var at := 0
+		while at < rect.size.x:
+			var rest := rect.size.x - at
+			var span := 3 if rest == 3 or rest == 6 else 4
+			var fence: Node2D = kit.call(&"add_prop", entities, R39_FENCE_H[span],
+				Vector2((rect.position.x + at + span / 2.0) * TILE, (row + 1) * TILE),
+				"Fence%02d" % count)
+			kit.call(&"clear_footprint", fence)
+			fence.scale.y = R39_FENCE_SCALE
+			at += span
+			count += 1
+	for side: float in [rect.position.x + R39_FENCE_V_INSET, rect.end.x - R39_FENCE_V_INSET]:
+		var y := rect.position.y + R39_FENCE_V_SPAN
+		while y < rect.end.y - 1:
+			var fence: Node2D = kit.call(&"add_prop", entities, R39_FENCE_V,
+				Vector2(side, y + 1) * TILE, "Fence%02d" % count)
+			kit.call(&"clear_footprint", fence)
+			fence.scale.x = R39_FENCE_SCALE
+			y += R39_FENCE_V_SPAN
+			count += 1
+	return count
+
+
+# --- Route 38 -----------------------------------------------------------------------------
+
+
+## Décor de la Route 38 : arbres repères et muret de pierre sur la rangée du bas de la falaise.
+func _route_38(kit: Object, source: Object, decals: Node2D, entities: Node2D) -> Dictionary:
+	var feet: Array[Vector2] = []
+	var count := _place_trees(kit, source, entities, ROUTE_TREES, feet)
+	var decor: RandomNumberGenerator = kit.get(&"decor_rng")
+	var foot_cells: Array[Vector2i] = []
+	for cell: Vector2i in source.cells_of("R"):
+		if source.at(cell + Vector2i.DOWN) != "R":
+			foot_cells.append(cell)
+	for run: Rect2i in _runs(foot_cells):
+		var at := 0
+		while at < run.size.x:
+			var span := mini(R38_WALL_SPAN, run.size.x - at)
+			var wall: Node2D = kit.call(&"add_prop", decals, R38_WALL,
+				Vector2((run.position.x + at + span / 2.0) * TILE, (run.position.y + 1) * TILE),
+				"Wall%02d" % count)
+			wall.scale = Vector2(float(span) / R38_WALL_SPAN, R38_WALL_SCALE_Y)
+			kit.call(&"flip", wall, decor.randf() < 0.5)
+			at += span
+			count += 1
+	return {"props": count, "feet": feet}
+
+
+# --- Rosalia ------------------------------------------------------------------------------
+
+
+## Décor de Rosalia : érables, haies, massifs, bancs et bâtiments peints ; halos : parvis de la
+## Tour Cendrée (les fenêtres viennent des objets de la carte).
+func _rosalia(kit: Object, source: Object, entities: Node2D) -> Dictionary:
+	var feet: Array[Vector2] = []
+	var glows: Array = []
+	var rules: GDScript = kit.get(&"rules")
+	var count := _place_trees(kit, source, entities, ROS_TREES, feet)
+	count += _place_hedges(kit, source, entities)
+	count += _place_flowers(kit, source, entities, ROS_HYDRANGEA_SHARE, ROS_HYDRANGEA_TINT)
+	for cell: Vector2i in source.cells_of("n"):
+		var bench: Node2D = kit.call(&"add_prop", entities, "prop_banc_01",
+			(Vector2(cell) + Vector2(0.5, 1.0)) * TILE, "Bench%02d" % count)
+		kit.call(&"clear_footprint", bench)
+		bench.scale = Vector2.ONE * ROS_BENCH_SCALE
+		count += 1
+	for entry: Array in ROS_BUILDINGS:
+		var foot: Vector2 = rules.call(&"foot_position", StringName(entry[0]), entry[1])
+		if entry[0] == "bldg_maison_rosalia_01":
+			foot.x += ROS_HOUSE_DOOR_SHIFT
+		var building: Node2D = kit.call(&"add_prop", entities, entry[0], foot, entry[2])
+		kit.call(&"clear_footprint", building)
+		count += 1
+	# Après les bâtiments : à pieds égaux, le dernier posé est dessiné devant.
+	for foot: Vector2 in ROS_LAMPS:
+		var lamp: Node2D = kit.call(&"add_prop", entities, "prop_lampadaire_01", foot * TILE,
+			"Lamp%02d" % count)
+		kit.call(&"clear_footprint", lamp)
+		count += 1
+	for cell: Vector2 in ROS_FORECOURT:
+		glows.append([&"night_window", cell * TILE])
+	return {"props": count, "feet": feet, "glows": glows}
+
+
 # --- Communs ------------------------------------------------------------------------------
+
+
+## Arbres repères `G` ([param specs] : [identifiant, échelle, miroir], à tour de rôle) ; ajoute
+## leurs pieds (cases) à [param feet]. Renvoie leur nombre.
+func _place_trees(kit: Object, source: Object, entities: Node2D, specs: Array,
+		feet: Array[Vector2]) -> int:
+	var rules: GDScript = kit.get(&"rules")
+	var index := 0
+	for cell: Vector2i in source.cells_of("G"):
+		var spec: Array = specs[index % specs.size()]
+		var tree: Node2D = kit.call(&"add_prop", entities, spec[0],
+			rules.call(&"foot_position", StringName(spec[0]), cell), "Tree%02d" % index)
+		kit.call(&"clear_footprint", tree)
+		tree.scale = Vector2(spec[1], spec[1])
+		kit.call(&"flip", tree, spec[2])
+		feet.append(tree.position / float(TILE))
+		index += 1
+	return index
+
+
+## Haies `x` : modules de deux cases, le dernier étiré sur trois si l'étendue est impaire. Renvoie
+## leur nombre.
+func _place_hedges(kit: Object, source: Object, entities: Node2D) -> int:
+	var decor: RandomNumberGenerator = kit.get(&"decor_rng")
+	var count := 0
+	for run: Rect2i in _runs(source.cells_of("x")):
+		var at := 0
+		while at < run.size.x:
+			var span := 2 if run.size.x - at != 3 else 3
+			span = mini(span, run.size.x - at)
+			var foot := Vector2((run.position.x + at + span / 2.0) * TILE,
+				(run.position.y + 1) * TILE)
+			var hedge: Node2D = kit.call(&"add_prop", entities, OLI_HEDGE, foot,
+				"Hedge%02d" % count)
+			kit.call(&"clear_footprint", hedge)
+			hedge.scale = Vector2(span / 2.0, OLI_HEDGE_SCALE_Y)
+			kit.call(&"flip", hedge, decor.randf() < 0.5)
+			at += span
+			count += 1
+	return count
+
+
+## Massif `y` : hortensias et fleurs pâles mêlés, deux touffes par case en quinconce (rangées
+## décalées d'une demi-touffe), pour ne pas lire des rangées de culture. Renvoie leur nombre.
+func _place_flowers(kit: Object, source: Object, entities: Node2D,
+		hydrangea_share: float = 0.55, hydrangea_tint: Color = Color.WHITE) -> int:
+	var decor: RandomNumberGenerator = kit.get(&"decor_rng")
+	var index := 0
+	for cell: Vector2i in source.cells_of("y"):
+		var shift := 0.12 if cell.y % 2 == 0 else -0.12
+		for k: int in 2:
+			var hydrangea := decor.randf() < hydrangea_share
+			var id: String = OLI_FLOWERS[0] if hydrangea else OLI_FLOWERS[1]
+			var foot := Vector2(cell.x + 0.27 + 0.46 * k + shift + decor.randf_range(-0.1, 0.1),
+				cell.y + 0.6 + 0.35 * k + decor.randf_range(-0.05, 0.05)) * TILE
+			var bush: Node2D = kit.call(&"add_prop", entities, id, foot, "Flowers%03d" % index)
+			kit.call(&"clear_footprint", bush)
+			var s := decor.randf_range(0.72, 0.92)
+			bush.scale = Vector2(s, s)
+			kit.call(&"flip", bush, decor.randf() < 0.5)
+			var value := decor.randf_range(0.92, 1.04)
+			bush.modulate = Color(value, value, value) * (hydrangea_tint if hydrangea else Color.WHITE)
+			index += 1
+	return index
 
 
 ## Étendues horizontales (rectangles d'une rangée) de [param cells], d'au moins [param minimum]
@@ -514,7 +755,7 @@ func _crop_paroi(decals: Node2D, source: Object) -> Vector2i:
 
 func _is_land_walkable(source: Object, cell: Vector2i) -> bool:
 	var mark: String = source.at(cell)
-	return not mark.is_empty() and mark != WATER and source.is_walkable(cell)
+	return not mark.is_empty() and not WATER_MARKS.has(mark) and source.is_walkable(cell)
 
 
 ## Bords de quai en bois (série 17) sur les seules frontières eau / platelage `q` : le reste du
@@ -564,8 +805,8 @@ func _place_wood_quays(kit: Object, source: Object) -> int:
 
 ## Halos de nuit : `NightLights` vidé puis rempli (groupe `night_lights`, cachés au départ) :
 ## [param extra] ([type, position]), lampadaires de `Entities` (tête), fenêtres des bâtiments
-## peints de `Entities`. Renvoie le nombre de halos.
-func _night_lights(root: Node, extra: Array) -> int:
+## peints de `Entities` (et leurs vitres avec [param panes]). Renvoie le nombre de halos.
+func _night_lights(root: Node, extra: Array, panes: bool) -> int:
 	var lights := root.get_node_or_null(^"NightLights")
 	if lights != null and not lights is CanvasLayer:
 		root.remove_child(lights)
@@ -587,11 +828,16 @@ func _night_lights(root: Node, extra: Array) -> int:
 	var entries: Array = extra.duplicate()
 	for prop: Node in root.get_node(^"Entities").get_children():
 		var id := _prop_id(prop)
+		if prop is CanvasItem and not (prop as CanvasItem).visible:
+			continue
 		if LAMP_HEAD.has(id):
 			entries.append([&"night_lamp", (prop as Node2D).position + LAMP_HEAD[id]])
 		elif WINDOWS.has(id):
 			for offset: Vector2 in WINDOWS[id]:
 				entries.append([&"night_window", (prop as Node2D).position + offset])
+			if panes:
+				for offset: Vector2 in PANES.get(id, WINDOWS[id]):
+					entries.append([&"night_pane", (prop as Node2D).position + offset])
 	var index := 0
 	for entry: Array in entries:
 		var glow := Sprite2D.new()
@@ -615,7 +861,8 @@ func _prop_id(prop: Node) -> String:
 	return sprite.texture.resource_path.get_file().get_basename()
 
 
-## Retire ce que cette passe a posé (relance) et le phare provisoire de l'outil de la carte.
+## Retire ce que cette passe a posé (relance) et les dessins provisoires de l'outil de la carte
+## (phare, tours en aplats de `Decor`) ; cache les bâtiments du kit remplacés.
 func _clean(root: Node) -> void:
 	for node_name: String in OWN_ROOT:
 		var old := root.get_node_or_null(NodePath(node_name))
@@ -628,6 +875,14 @@ func _clean(root: Node) -> void:
 		if n.begins_with(OWN_PREFIX) or n == "PharePlaceholder":
 			entities.remove_child(child)
 			child.free()
+		elif HIDDEN_PROPS.has(n):
+			(child as CanvasItem).visible = false
+	var decor := root.get_node_or_null(^"Decor")
+	if decor != null:
+		for child: Node in decor.get_children():
+			if child is Polygon2D:
+				decor.remove_child(child)
+				child.free()
 
 
 ## Déplace [param node] du kit jetable vers [param parent] de la carte (voir

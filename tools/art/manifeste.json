@@ -1530,6 +1530,33 @@
    "contact": 0.12
   },
   {
+   "id": "bldg_tour_cendree_01",
+   "source": "BLDG_TOUR_CENDREE_r1.png",
+   "sortie": "assets/world/buildings/bldg_tour_cendree_01.png",
+   "axe": "w",
+   "cases": 10,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_tour_carillon_01",
+   "source": "BLDG_TOUR_CARILLON_r1.png",
+   "sortie": "assets/world/buildings/bldg_tour_carillon_01.png",
+   "axe": "h",
+   "cases": 9.6,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_rosalia_01",
+   "source": "BLDG_MAISON_ROSALIA_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_rosalia_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
    "id": "bldg_maison_pokemon_01",
    "source": "WORLD_BLDG_MAISON_POKEMON_01_NE_r1.png",
    "sortie": "assets/world/buildings/bldg_maison_pokemon_01.png",

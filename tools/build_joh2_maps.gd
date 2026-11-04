@@ -17,6 +17,9 @@ extends SceneTree
 ## (groupe `night_lights`, allumées la nuit seulement par `WorldLighting.set_night`).
 ## Relancer `--maps=route_39` quand `olivine_city.tscn` (JOH1) existe : le raccord ouest cesse
 ## d'être « À venir ».
+## **Image** : la passe d'ambiance `tools/build_joh_ambiance.gd` repeint ces cartes (sol peint,
+## forêt, tours et maisons peintes, calque `NightLights`) sans toucher à la logique ; la relancer
+## après cet outil.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 

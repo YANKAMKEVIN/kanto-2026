@@ -89,6 +89,9 @@ def generer(ident: str, tour: int) -> str:
 # L'entrée du manifeste (`manifeste.json`, mêmes réglages) permet aussi un `preparer.py` complet.
 RETENUS = {
 	"bldg_phare_oliville_01": "BLDG_PHARE_OLIVILLE_r1.png",
+	"bldg_tour_cendree_01": "BLDG_TOUR_CENDREE_r1.png",
+	"bldg_tour_carillon_01": "BLDG_TOUR_CARILLON_r1.png",
+	"bldg_maison_rosalia_01": "BLDG_MAISON_ROSALIA_r1.png",
 }
 
 

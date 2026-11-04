@@ -578,6 +578,15 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# Phare d'Oliville (Chapitre Johto, passe d'ambiance JOH) : emprise `P` 6 × 11 de la grille,
 	# porte décor fermée (« en travaux ») ; la carte pose son emprise sans cases propres.
 	&"bldg_phare_oliville_01": {"shadow": true, "width": 6, "depth": 11, "fade": true},
+	# Rosalia (passe d'ambiance JOH, `rosalia.txt`) : Tour Cendrée `B` 10 × 11 (double porte aux
+	# 5e et 6e colonnes, fermée jusqu'au JOH6), Tour Carillon `K` 8 × 9 (porte décor, derrière le
+	# bois), maison traditionnelle 7 × 6 (Maison des Sages, Maisons 1 et 2 ; porte à la 4e colonne).
+	# La carte pose ces façades sans cases propres (la grille bloque leurs emprises).
+	&"bldg_tour_cendree_01": {"shadow": true, "width": 10, "depth": 11, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_tour_carillon_01": {"shadow": true, "width": 8, "depth": 9, "fade": true},
+	&"bldg_maison_rosalia_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
 	&"bldg_maison_pokemon_01": {"shadow": true, "width": 8, "depth": 5, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 	&"bldg_maison_lavanville_01": {"shadow": true, "width": 7, "depth": 5, "fade": true,

@@ -1,7 +1,9 @@
 extends GutTest
 ## Ambiance de Johto (2026-11-04, relevé de QA A17 « nuit discrète, lampes peu visibles ») :
-## - les lumières de nuit d'Oliville sont sur un calque au-dessus de l'étalonnage d'écran
-##   (`NightLights`, [constant UiTokens.LAYER_NIGHT_LIGHTS], qui suit la caméra) ;
+## - les lumières de nuit d'Oliville et des cartes du JOH2 sont sur un calque au-dessus de
+##   l'étalonnage d'écran (`NightLights`, [constant UiTokens.LAYER_NIGHT_LIGHTS], qui suit la
+##   caméra) ;
+## - Rosalia : tours et maisons peintes, maisons du kit cachées mais emprises gardées ;
 ## - [method WorldLighting.set_battle_active] les cache pendant un combat et les rend après ;
 ## - la nuit de Johto assombrit franchement (tons moyens ≤ 0,5 sur le rouge et le vert).
 
@@ -21,6 +23,34 @@ func test_olivine_night_lights_sit_above_the_grade() -> void:
 		for glow: Node in layer.get_children():
 			types[glow.get(&"glow_type")] = true
 		assert_true(types.has(&"night_lamp") and types.has(&"night_window"))
+	map.free()
+
+
+func test_joh2_night_lights_sit_on_the_same_layer() -> void:
+	for id: String in ["route_39", "route_38", "ecruteak_city"]:
+		var map := (load("res://game/world/maps/%s.tscn" % id) as PackedScene).instantiate()
+		var layer := map.get_node_or_null(^"NightLights") as CanvasLayer
+		assert_not_null(layer, "%s : calque des lumières de nuit" % id)
+		if layer != null:
+			assert_eq(layer.layer, UiTokens.LAYER_NIGHT_LIGHTS, id)
+			assert_true(layer.follow_viewport_enabled, id)
+		map.free()
+
+
+func test_rosalia_paints_its_towers_and_houses_over_the_kit() -> void:
+	var map := (load("res://game/world/maps/ecruteak_city.tscn") as PackedScene).instantiate()
+	assert_eq(map.get_node(^"Decor").get_child_count(), 0, "tours en aplats retirées")
+	var entities := map.get_node(^"Entities")
+	for node_name: String in ["TourCendree", "TourCarillon", "MaisonSages", "Maison1", "Maison2"]:
+		var painted := entities.get_node_or_null("JohAmb" + node_name) as WorldProp
+		assert_not_null(painted, node_name)
+		if painted != null:
+			assert_true(painted.footprint.is_empty(), "%s : les cases sont celles de la grille"
+				% node_name)
+	for node_name: String in ["Bat_MaisonSages", "Bat_Maison1", "Bat_Maison2"]:
+		var kit_house := entities.get_node(NodePath(node_name)) as WorldProp
+		assert_false(kit_house.visible, "%s : image remplacée" % node_name)
+		assert_false(kit_house.footprint.is_empty(), "%s : emprise gardée" % node_name)
 	map.free()
 
 

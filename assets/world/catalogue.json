@@ -10820,6 +10820,99 @@
      87
     ]
    }
+  },
+  "bldg_tour_cendree_01": {
+   "fichier": "res://assets/world/buildings/bldg_tour_cendree_01.png",
+   "taille": [
+    960,
+    1058
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_tour_cendree_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     603,
+     102
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_tour_cendree_01_contact.png",
+    "decalage": [
+     -488,
+     -109
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     74
+    ]
+   }
+  },
+  "bldg_tour_carillon_01": {
+   "fichier": "res://assets/world/buildings/bldg_tour_carillon_01.png",
+   "taille": [
+    622,
+    922
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_tour_carillon_01_shadow.png",
+    "decalage": [
+     -336,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     421,
+     89
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_tour_carillon_01_contact.png",
+    "decalage": [
+     -319,
+     -93
+    ],
+    "echelle": 2,
+    "taille": [
+     319,
+     66
+    ]
+   }
+  },
+  "bldg_maison_rosalia_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_rosalia_01.png",
+   "taille": [
+    672,
+    533
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_rosalia_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     410,
+     53
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_rosalia_01_contact.png",
+    "decalage": [
+     -344,
+     -46
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     42
+    ]
+   }
   }
  },
  "personnages": {
