@@ -28,7 +28,7 @@ Méthode : un script lancé **sur le téléphone** (`nohup`, indépendant des re
 | Ordinaire (Liam), sans rafale | 1,26 s | +1,18 s | +1,16 s |
 | Champion Pierre « VS », 240 touchers | **2,76 s** | +1,19 s | +1,14 s |
 | Champion Pierre « VS », touchers espacés | 2,76 s | +1,17 s | +1,14 s |
-| Morgane « VS », ≈ 135 touchers (adb) | 2,81 s | +1,18 s | +1,14 s |
+| Morgane « VS », ≈ 135 touchers (adb) | 2,84 s | +1,18 s | +1,14 s |
 | Rival « VS », ≈ 120 touchers (adb) | 2,79 s | +1,13 s | +1,19 s |
 
 Aucune étape raccourcie ; la vidéo `pierre_vs_tap_continu.mp4` montre le « VS » entier (≈ 1,4 s) puis les deux lancers pendant la rafale. (Le même essai en Surf n'est **pas** compté : le serveur adb a redémarré en cours de route et la plupart des touchers se sont perdus.)
