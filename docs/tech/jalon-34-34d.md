@@ -4,22 +4,21 @@
 > système de sauvegarde : `docs/tech/systemes-2.md` §2.12 et §3.2 (S2A), `jalon-33.md` T4 (copie
 > de secours, stockage plein). Branche `claude/j34-34d-resilience`. Appareil : Galaxy A17
 > (`SM-A175F`, série `R5GYB2R7W2Y`, Android 16), le S24 n'étant pas disponible. Session : 34D
-> (2026-11-04). **État : voir §0.**
+> (2026-11-04). **État : T5 fait. Scénarios joués sur l'A17 le 2026-11-04 sans P0 ni P1 (§4), tests
+verts, fusion dans `main` sur CI verte (validation déléguée).**
 
 ## 0. État
 
 - **Audit du code (§1)** : fait le 2026-11-04 ; aucun manque bloquant, un complément (§2).
 - **Tests automatiques (§2)** : écrits et verts (`tests/integration/test_resilience_android.gd`,
-  6 tests ; `test_session_lifecycle.gd` +2).
-- **Scénarios sur l'A17 (§3, §4)** : **bloqués dans la session 34D par le classificateur de
-  permissions du mode auto** (« Interfere With Workloads ») : toute commande adb qui agit sur le
-  téléphone (`pm install -r`, `am start`, `am kill`, `am force-stop`, `input swipe` / `keyevent`,
-  `logcat -c`, `run-as … rm`) a été refusée ; seules les lectures (`dumpsys`, `logcat -d`,
-  `run-as cat`, `screencap`) et le script du projet `tools/deploy_s24.sh` sont passés. Joué :
-  le lancement avec le départ `s2_save` (fiche A du §4). **À rejouer** (§4) par Kevin ou par une
-  session dont les permissions autorisent adb sur l'A17 : la boîte à outils est prête
-  (`build/qa-34d/a17.sh`, hors Git, fonctions par scénario), la grille est au §3.
-- **Défauts (§5)** : aucun constaté ; un point d'attention (fréquence d'images) noté.
+  6 tests ; `test_session_lifecycle.gd` +2) ; CI verte sur la branche fusionnée avec `main`.
+- **Scénarios sur l'A17 (§3, §4)** : joués le 2026-11-04 de 15 h 54 à 16 h 37, au deuxième tour.
+  Au premier tour, le classificateur de permissions du mode auto refusait toute commande adb qui
+  agit sur le téléphone ; Kevin a ajouté une règle `allow` limitée à la série de l'A17 dans
+  `.claude/settings.local.json` du worktree (fichier local, hors Git). **9 scénarios sur 10
+  conformes, le dixième (stockage presque plein) en simulation seulement [D].**
+- **Défauts (§5)** : aucun P0, P1 ni P2 ; une note de procédure et un point de performance déjà
+  reporté.
 
 ## 1. Ce qui existe déjà (relu sur `main` @ `f3470936`)
 
@@ -104,52 +103,47 @@ sauvegarde) comme pour la QA S2A. Journal : `logcat -s godot:V` (« [save] focus
 ## 4. Fiches
 
 **Appareil** : Samsung Galaxy **A17** (`SM-A175F`), **Android 16**, branché en USB (série
-`R5GYB2R7W2Y`, fixée par `ANDROID_SERIAL` ; le S24 de Kevin est aussi en sans-fil, non touché),
-Ne pas déranger déjà actif (laissé tel quel). **Build** : APK **debug** Pokemake **0.34.0 (3400)**
-de `main` @ `f3470936`, déjà installé par la QA précédente : c'est la base exacte de la branche
-34D, dont la seule différence de code (mémoire basse) n'est pas déclenchable sous Android ; la
-réinstallation de l'APK de la branche (`pm install -r`) a été refusée par le classificateur [D :
-QA sur l'APK en place].
+`R5GYB2R7W2Y`, fixée à chaque commande ; le S24 de Kevin, aussi branché en sans-fil, n'a pas été
+touché), Ne pas déranger actif pendant tout le tour. **Build** : APK **debug** de la branche 34D
+(commit `6ac06685` : code 34D sur `main` @ `f3470936`), installé par `adb push` + `pm install -r`.
+**Partie** : départ `s2_save` (Route 3, entrée ouest, Reptincel N17, Papilusion N15, Roucool N14,
+4 300 ₽), retiré de `files/` après la première écriture pour que chaque relance lise la vraie
+sauvegarde. Contrôles : journal `logcat -s godot`, `run-as … cat files/save.json`, captures.
+Aucune erreur Godot, aucun `FATAL EXCEPTION` ni ANR sur tout le tour.
 
-### Fiche A — lancement, départ `s2_save`, première écriture : **conforme**
-`tools/deploy_s24.sh --no-build --debug-start s2_save` (install -r, `am force-stop`, dépôt de
-`files/debug_start.json`, `am start`). Journal : Vulkan Mali-G57, « Départ de débogage
-(user://debug_start.json) : route_3/from_pewter_c, charmeleon N17, butterfree N15, pidgey N14
-(remplace la sauvegarde) » à +9 s, musique `road_to_cerulean`, ambiance `wind`, puis
-« Sauvegarde automatique (changement de carte) : route_3 (0, 26), OK » à +10 s. `files/save.json`
-relu par `run-as` (4 254 octets) : **v9**, `route_3` (0, 26) tourné vers l'est, 4 300 ₽, Reptincel
-N17 51 PV, Papilusion N15 44 PV, Roucool N14 37 PV, 5 Poké Balls, 5 Potions, 22 drapeaux : la
-partie attendue. Capture `build/qa-34d/launch.png` : Route 3 nette, HUD (Menu, bouton courir),
-Hugo en haut à droite parmi les rochers ; focus `dev.kevin.kanto2026/com.godot.game.GodotAppLauncher`.
-Aucune ligne `ERROR`, `SCRIPT ERROR`, `AndroidRuntime`, `FATAL` ni ANR. **Point d'attention** (pas
-de ce lot) : `[perf] fps=49 à 59, min=23 à 38, draw=243, tex=333,9 Mo` à l'arrêt sur la Route 3,
-sous l'objectif de 60 ; à rapprocher du `tex=238 Mo` déjà noté dans la chambre sur l'A17 (reporté
-JR) → « Reportés » de `etat-projet.md`.
+| # | Scénario | Ce qui a été fait | Constaté | Résultat |
+|---|---|---|---|---|
+| A | Lancement | départ `s2_save` déposé, `am start` | départ appliqué, autosave d'arrivée `route_3 (0, 26)`, `save.json` v9 relu | conforme |
+| 1 | Accueil pendant un dialogue | joystick vers Hugo ; sa scène commence ; `keyevent 3` | capture du point de reprise **0,59 ms** ; « Sauvegarde du point de reprise (arrière-plan) : route_3 [19, 26], OK » ; disque : (19, 26), 4 300 ₽, Hugo non battu ; au retour (`am start`) le dialogue « Tu viens d'Argenta ? Montre-moi ton badge ! » est intact | conforme |
+| 4 | Appel : composeur plein écran | `am start -a android.intent.action.DIAL` pendant le dialogue, puis retour | focus au composeur Samsung (`DialtactsActivity`) ; « focus LOST » puis « REGAINED » ; **aucune écriture de plus** (disque déjà au point de reprise) ; le dialogue reprend | conforme |
+| 2 | Verrouillage pendant un combat | dialogue avancé jusqu'au combat contre Hugo, `keyevent 26` | écran en veille (`Dozing`), « focus LOST » ; disque inchangé : avant Hugo, (19, 26) ; **le verrouillage remet le code de l'A17** : déverrouillé par Kevin à la main (voir §5) | conforme |
+| 7 | Mémoire basse en arrière-plan | `am send-trim-memory … RUNNING_CRITICAL` puis `COMPLETE`, jeu verrouillé en plein combat | même processus avant et après, aucune erreur ni plantage | conforme |
+| 3 | Processus tué en arrière-plan pendant le combat | `am kill` (sans effet : activité encore « visible » derrière le verrou), puis `am force-stop` | processus arrêté ; `files/` : `save.json` + `save.json.bak`, **ni `.tmp` ni `.corrupt`** ; relance : « Ouverture : titre (sauvegarde VALID) », carte Continuer « Kevin, Route 3, 0 h 01, 1 badge, 3 capturés », « Sauvegarde chargée : route_3 (19, 26) » : **juste avant Hugo**, à rejouer | conforme |
+| 8 | Rotation | lecture seule (les réglages système du téléphone ne sont pas modifiés [D]) | `requestedOrientation=SCREEN_ORIENTATION_USER_LANDSCAPE` ; manifeste : `screenOrientation=11` (userLandscape), `configChanges=0x3ff4` (orientation et taille d'écran gérées : pas de recréation de l'activité) | conforme |
+| 5 | Changement de carte interrompu | marche vers l'ouest, Accueil envoyé dès « SceneRouter : pewter_city » au journal | carte chargée en **153 ms**, autosave d'arrivée `pewter_city (51, 26)` écrit avant que l'Accueil n'arrive ; la pause réécrit Argenta ; au retour, joueur libre à Argenta, sans transition fantôme. Le cas « en plein fondu » est trop bref pour adb : couvert par les tests GUT (§2) | conforme |
+| 9a | Temporaire orphelin | `save.json.tmp` tronqué (900 octets) posé à côté d'un principal valide, relance | « sauvegarde VALID » ; Continuer ; l'écriture suivante remplace le temporaire, il ne reste que `save.json` et `.bak` | conforme |
+| 9b | Coupure entre les deux renommages | `save.json` supprimé, `.bak` valide | « principal absent ; partie reprise depuis la copie de secours user://save.json.bak » ; Continuer : Argenta (51, 26) ; le principal est réécrit | conforme |
+| 9c | Principal tronqué | `save.json` coupé à 1 500 octets, `.bak` valide | « principal illisible (Unterminated string), mis de côté dans user://save.json.corrupt ; partie reprise depuis la copie de secours » ; le fichier tronqué est **gardé**, rien n'est détruit | conforme |
+| 6 | Évolution interrompue | **non joué sur l'A17** [D] : il faut gagner un combat au doigt pour déclencher l'évolution ; tour borné à 45 min | couvert par les tests GUT (§2 : Super Bonbon interrompu et tué) et par les scénarios 2 et 3 (le point de reprise d'avant le combat couvre une évolution de fin de combat) | simulation |
+| 10 | Stockage presque plein | **non joué** sur l'A17 partagé [D] | couvert par `test_save_backup.gd` (refus sans rien toucher, message, nouvelle tentative) | simulation |
 
-### Fiches 1 à 10 — **non jouées** (permissions, §0)
-Procédure et attendus au §3. Ce qu'on sait déjà de ces scénarios sans les rejouer :
-- S2A sur S21 (2026-10-21, même mécanisme, `systemes-2.md` §3.2) : dialogue + bouton marche,
-  combat + Accueil + arrêt forcé, rideau de notifications, appel simulé (`am start -a DIAL`),
-  changement de carte + arrêt forcé : **5 sur 5 OK**, capture du point de reprise 0,9 à 1,4 ms ;
-  constat : Godot 4.7 sous Android n'envoie `FOCUS_OUT` qu'avec `PAUSED`.
-- 34B sur l'A17 avec la **RC signée** (2026-11-04, `jalon-34-34b.md` fiches 1 et 2) : mise en
-  arrière-plan puis « Continuer », `am force-stop` puis reprise au même endroit, migration v8 → v9
-  sans `.corrupt` ni reprise depuis la copie.
-- Les tests GUT du §2 couvrent, sur le vrai `Boot`, les cas que ces deux QA n'avaient pas :
-  changement de carte interrompu ou tué, carte de capture, évolution par objet, mémoire basse.
+Durées : capture du point de reprise 0,59 ms sur l'A17 (budget 5 ms ; S21 0,9 à 1,4 ms au S2A) ;
+chargement d'Argenta 153 ms.
 
-État laissé sur l'A17 : `files/debug_start.json` retiré ; `files/save.json` écrit par le départ
-`s2_save` (voir message de restitution) ; appli **encore au premier plan** sur la Route 3 (l'arrêt
-`am force-stop` a été refusé à la session) ; Ne pas déranger inchangé ; copie de l'état reçu dans
-`build/qa-34d/a17-avant/files.tar` (aucune sauvegarde dedans : état reçu = aucune partie).
+État rendu à la coordination : jeu arrêté, `files/` sans sauvegarde (caches seulement), APK
+temporaire retiré de `/data/local/tmp`, lanceur au premier plan, écran déverrouillé, Ne pas
+déranger inchangé ; l'APK installé reste celui de la branche 34D (même clé de débogage que les
+autres sessions, qui réinstallent le leur).
 
 ## 5. Défauts
 
 | # | Priorité | Scénario | Constat | Suite |
 |---|---|---|---|---|
-| — | — | A | Aucun défaut de résilience constaté. | — |
-| RP | P3 (hors lot) | A | 49 à 59 fps à l'arrêt sur la Route 3 (A17), `tex` 334 Mo. | « Reportés » de `etat-projet.md`, mesure RP-263 / budget textures. |
+| — | — | 1 à 9 | Aucun défaut de résilience : jamais d'état intermédiaire sur le disque, jamais de sauvegarde perdue, reprise toujours sur le point attendu. | — |
+| Procédure | P3 | 2 | Sur l'A17, `input keyevent 26` verrouille **par code** : aucune session ne peut rouvrir le téléphone sans Kevin. | Noté dans le message de restitution et ici ; une QA future du verrouillage le prévient d'abord. |
+| RP-289 | P3 (hors lot) | A | 49 à 59 fps à l'arrêt sur la Route 3 (A17), `tex` 334 Mo. | Déjà au registre `reportes.md`. |
+| Remarque | — | 9b, 9c | La reprise depuis la copie de secours n'est visible qu'au journal ; le joueur ne voit rien de particulier (la partie est simplement là). | Comportement voulu au J33 T4 ; pas de changement. |
 
-Zéro P0/P1 sur ce qui a été joué ; les fiches 1 à 10 restent à jouer avant de considérer le T5
-**rejoué sur appareil** (critère d'acceptation 4 du plan). Le code et les tests du lot ne dépendent
-pas de ce rejeu.
+**Zéro P0/P1** : le critère d'acceptation 4 du plan (« interruptions Android rejouées sans
+corruption ni doublon ») est rempli pour ce qui se joue par adb ; l'évolution interrompue et le
+stockage plein sont prouvés par les tests.
