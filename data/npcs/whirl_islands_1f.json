@@ -1,0 +1,46 @@
+{
+	"sbire_t": {
+		"cell": [
+			26,
+			4
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "whirl_islands_grunt_t_after",
+		"trainer": {
+			"id": "whirl_islands_grunt_t",
+			"sight": 2,
+			"before": "whirl_islands_grunt_t_before",
+			"defeated": "whirl_islands_grunt_t_defeated"
+		}
+	},
+	"sbire_u": {
+		"cell": [
+			22,
+			14
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "whirl_islands_grunt_u_after",
+		"trainer": {
+			"id": "whirl_islands_grunt_u",
+			"sight": 2,
+			"before": "whirl_islands_grunt_u_before",
+			"defeated": "whirl_islands_grunt_u_defeated"
+		}
+	},
+	"whirl_islands_1f_item_1": {
+		"cell": [
+			27,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "whirl_islands_1f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_whirl_islands_1f_item_1"
+		]
+	}
+}

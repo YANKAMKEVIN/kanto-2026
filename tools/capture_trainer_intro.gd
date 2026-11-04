@@ -25,7 +25,7 @@ extends SceneTree
 ## `--surf` : le joueur surfe (`player_mount` = Surf) et la mise en scène « Surf » est activée
 ## pour cette capture seulement (réglage `surf.enabled` de data/battle/decors.json forcé à vrai) :
 ## planche comparative banc de sable / Surf (fiche entree-dresseurs §13). `--look=heroine` : la
-## joueuse.
+## joueuse. `--costume=<id>` (ex. `boulder`) : le costume de ce badge, porté (drapeau du badge levé).
 
 const START_PATH: String = "user://trainer_intro_capture_start.json"
 const SETUPS := {
@@ -100,6 +100,9 @@ func _run() -> void:
 	if _args.has("trainer"):  # Dresseur quelconque : --trainer=<id> --map=<carte> --spawn=<point>
 		setup = {"map": _args["map"], "spawn": _args["spawn"], "facing": "up",
 			"trainer": _args["trainer"]}
+		if _args.has("cell"):  # --cell=14,19 : case du joueur (sur l'eau avec --surf)
+			var xy := String(_args["cell"]).split(",")
+			setup["cell"] = [int(xy[0]), int(xy[1])]
 	else:
 		setup = SETUPS[String(_args.get("battle", "ordinary"))]
 	var file := FileAccess.open(START_PATH, FileAccess.WRITE)
@@ -120,6 +123,11 @@ func _run() -> void:
 		game_state.set(&"rival_name", "Rose")
 	if _args.has("look"):
 		game_state.set(&"player_look", StringName(_args["look"]))
+	if _args.has("costume"):  # --costume=boulder : porte le costume du badge (son drapeau levé)
+		var costume := StringName(_args["costume"])
+		var badge: StringName = CostumeCatalog.shared().badge_of(costume)
+		game_state.get(&"flags").call(&"set_flag", StringName("badge_" + String(badge)))
+		print("[intro] costume %s : %s" % [costume, game_state.call(&"wear_costume", costume)])
 	if _args.has("surf"):
 		game_state.set(&"player_mount", 2)  # Mount.Kind.SURF
 		var decors: RefCounted = load("res://game/battle/battle_decor_catalog.gd").call(&"load_file")

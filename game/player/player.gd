@@ -392,8 +392,8 @@ func _update_jump_and_grass() -> void:
 		_mount_placeholder.set_lift(arc + _react_lift)
 	if _shadow != null:
 		_shadow.position.y = SHADOW_REST_Y
-		# Sur le dos du nageur provisoire, pas d'ombre au sol.
-		_shadow.visible = seat == 0.0
+		# En Surf (nageur provisoire ou peint), pas d'ombre au sol : le nageur a son sillage.
+		_shadow.visible = seat == 0.0 and _mount != Mount.Kind.SURF
 	if _grass_front != null:
 		_grass_front.visible = not jumping and _grid != null \
 			and _grid.is_tall_grass(_mover.get_target_cell())

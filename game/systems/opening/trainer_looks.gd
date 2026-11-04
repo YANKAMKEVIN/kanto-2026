@@ -64,6 +64,13 @@ static func player_sprite(look: StringName, costume: StringName = &"") -> String
 	return worn if not worn.is_empty() else PLAYER_SPRITES.get(look, PLAYER_SPRITES[&"hero"])
 
 
+## Apparence des dos peints de combat (`dos_<apparence>`, [method TrainerIntro.player_path]) :
+## [param look] sans costume, l'apparence du costume porté sinon.
+static func battle_look(look: StringName, costume: StringName = &"") -> StringName:
+	var worn := CostumeCatalog.shared().battle_look(costume, look)
+	return worn if not worn.is_empty() else look
+
+
 static func rival_sprite(look: StringName) -> StringName:
 	return RIVAL_SPRITES.get(look, RIVAL_SPRITES[&"rival"])
 

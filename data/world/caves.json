@@ -55,6 +55,10 @@
 		"mahogany_hideout": {
 			"maps": ["mahogany_hideout_b1f", "mahogany_hideout_b2f", "mahogany_hideout_b3f"],
 			"escape": { "map": "mahogany_town", "spawn": "retour_boutique", "facing": "down" }
+		},
+		"whirl_islands": {
+			"maps": ["whirl_islands_1f", "whirl_islands_b1f", "whirl_islands_b2f"],
+			"escape": { "map": "route_41", "spawn": "from_whirl", "facing": "left" }
 		}
 	}
 }

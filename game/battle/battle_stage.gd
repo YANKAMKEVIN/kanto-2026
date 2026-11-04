@@ -1928,8 +1928,9 @@ func play_trainers_in(intro: TrainerIntro) -> void:
 		return
 	_intro_stage.speed_scale = speed_scale
 	intro.surf = _surf_staged
-	# Dos peint du joueur (`dos_<apparence>`) sauf costume porté : le lancer de dos du costume.
-	var look := GameState.player_look if GameState.worn_costume().is_empty() else &""
+	# Dos peint du joueur (`dos_<apparence>`), ou du costume porté (`dos_costume_<art>_<version>`) ;
+	# sans dos peint, le lancer de dos existant (apparence ou costume).
+	var look := TrainerLooks.battle_look(GameState.player_look, GameState.worn_costume())
 	var back := thrower_texture()
 	_intro_stage.begin(intro, _view_size(), TrainerIntroStage.foe_texture(intro),
 		TrainerIntroStage.player_texture(intro, look, back),

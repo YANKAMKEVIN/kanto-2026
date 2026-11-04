@@ -144,11 +144,11 @@ func test_real_tables_load_without_error() -> void:
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
 		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
 		&"route_2_north_grass", &"route_38_grass_day", &"route_38_grass_night",
-		&"route_39_grass_day", &"route_39_grass_night", &"route_3_grass",
+		&"route_39_grass_day", &"route_39_grass_night", &"route_3_grass", &"route_40_water",
+		&"route_41_water",
 		# JOH6 : Routes 42 (jour / nuit, lac) et 43 (jour / nuit).
 		&"route_42_grass_day", &"route_42_grass_night", &"route_42_water", &"route_43_grass_day",
-		&"route_43_grass_night", &"route_4_grass",
-		&"route_5_grass",
+		&"route_43_grass_night", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
@@ -157,7 +157,10 @@ func test_real_tables_load_without_error() -> void:
 		&"sea_cave_water",
 		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
 		&"seafoam_b4f_floor", &"victory_road_1f_rubble", &"victory_road_2f_rubble",
-		&"victory_road_3f_rubble", &"viridian_forest_grass"] as Array[StringName])
+		&"victory_road_3f_rubble", &"viridian_forest_grass",
+		# Chapitre Johto, JOH7 : la mer et les Îles Tourbillon (dossier JOH-08 §5).
+		&"whirl_islands_1f_rubble_day", &"whirl_islands_1f_rubble_night",
+		&"whirl_islands_b1f_rubble", &"whirl_islands_b1f_water"] as Array[StringName])
 
 
 func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
@@ -238,8 +241,9 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
 	# Chapitre Johto, JOH2 : + 5 tables datées (Routes 39 et 38 jour / nuit, herbe des tours de
 	# Rosalia), hors de la boucle (tables par moment : `test_joh2_data`). JOH6 : + 9 tables (cendres de
-	# la Tour Cendrée, Routes 42 et 43, Lac Colère : par moment, eau ; `test_joh6_data`).
-	assert_eq(lib.size(), 74, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine ; JOH2 : 5 tables datées ; JOH6 : 9 tables")
+	# la Tour Cendrée, Routes 42 et 43, Lac Colère : par moment, eau ; `test_joh6_data`). JOH7 : + 6
+	# tables de la mer et des Îles Tourbillon (`test_joh7_data`).
+	assert_eq(lib.size(), 80, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine ; JOH2 : 5 tables datées ; JOH6 : 9 tables ; JOH7 : 6 tables")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
