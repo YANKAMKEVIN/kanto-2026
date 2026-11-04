@@ -511,6 +511,16 @@
 		"goldenrod_dept_store_roof": "golden_hour",
 		"goldenrod_bond_house": "interior_warm",
 		"goldenrod_house_1": "interior_warm",
-		"goldenrod_house_2": "interior_warm"
+		"goldenrod_house_2": "interior_warm",
+		"route_34": "johto_auto",
+		"ilex_forest": "johto_auto",
+		"azalea_town": "johto_auto",
+		"slowpoke_well_b1f": "cave_1f",
+		"slowpoke_well_b2f": "cave_b1f",
+		"azalea_center": "interior_warm",
+		"azalea_mart": "interior_warm",
+		"azalea_kurt_house": "interior_warm",
+		"azalea_house_1": "interior_warm",
+		"route_34_house": "interior_warm"
 	}
 }

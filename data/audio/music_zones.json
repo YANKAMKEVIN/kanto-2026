@@ -62,7 +62,11 @@
 		"route_36": "road_to_cerulean",
 		"route_35": "road_to_viridian",
 		"goldenrod_city": "celadon_city",
-		"goldenrod_underground": "road_to_viridian"
+		"goldenrod_underground": "road_to_viridian",
+		"route_34": "road_to_cerulean",
+		"ilex_forest": "viridian_forest",
+		"azalea_town": "pewter_city",
+		"slowpoke_well": "mt_moon"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",

@@ -1,0 +1,10 @@
+{
+	"mission_order": {
+		"name": "Ordre de mission", "plural": "Ordres de mission", "feminine": false, "category": "key",
+		"description": "Opération Écorcia : récolte terminée avant la fin du mois.\nFonds pour la phase suivante.\nPréparer l'antenne de Doublonville.\nPersonne ne doit savoir qui donne les ordres. — D."
+	},
+	"radio_card": {
+		"name": "Carte d'accès", "plural": "Cartes d'accès", "feminine": true, "category": "key",
+		"description": "Une carte d'accès laissée par Brace. Il y est écrit : « Tour Radio de Doublonville »."
+	}
+}

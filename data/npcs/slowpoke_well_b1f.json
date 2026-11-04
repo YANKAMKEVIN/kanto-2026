@@ -1,0 +1,76 @@
+{
+	"fargas_b1f": {
+		"cell": [
+			5,
+			4
+		],
+		"facing": "right",
+		"if": [
+			"johto_kurt_told"
+		],
+		"unless": [
+			"johto_slowpoke_well_cleared"
+		],
+		"sprite": "old_man",
+		"dialogue": "slowpoke_well_kurt_fall"
+	},
+	"sbire_e": {
+		"cell": [
+			15,
+			3
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "slowpoke_well_grunt_e_after",
+		"trainer": {
+			"id": "slowpoke_well_grunt_e",
+			"sight": 2,
+			"before": "slowpoke_well_grunt_e_before",
+			"defeated": "slowpoke_well_grunt_e_defeated"
+		}
+	},
+	"sbire_f": {
+		"cell": [
+			21,
+			2
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "slowpoke_well_grunt_f_after",
+		"trainer": {
+			"id": "slowpoke_well_grunt_f",
+			"sight": 2,
+			"before": "slowpoke_well_grunt_f_before",
+			"defeated": "slowpoke_well_grunt_f_defeated"
+		}
+	},
+	"sbire_g": {
+		"cell": [
+			14,
+			21
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "slowpoke_well_grunt_g_after",
+		"trainer": {
+			"id": "slowpoke_well_grunt_g",
+			"sight": 3,
+			"before": "slowpoke_well_grunt_g_before",
+			"defeated": "slowpoke_well_grunt_g_defeated"
+		}
+	},
+	"well_b1f_item_1": {
+		"cell": [
+			26,
+			2
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "well_b1f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_well_b1f_item_1"
+		]
+	}
+}
