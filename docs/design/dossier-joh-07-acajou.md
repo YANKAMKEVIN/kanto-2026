@@ -16,8 +16,9 @@
 
 - JOH5 fait : `johto_team_returned`, `johto_act2`, Multi Exp, Stockage en ligne ; Vol entre régions
   et grotte marine ouverts.
-- Équipe attendue : l'équipe de Ligue (55–65) plus quelques Pokémon de Johto (30–35) que la Multi
-  Exp fait monter.
+- Équipe attendue : l'équipe de Ligue (55–65) et l'équipe de Johto montée par le Réveil (55–62,
+  dossier JOH-11 §13). `johto_act2` est posé à la fin de l'arc des Pierres ; aucun texte ni niveau de
+  ce jalon ne change (JH-63, JH-78).
 - Le joueur a Surf (Kanto, J23) et ses CS ; la Peau Métal est placée ici (JOH-02 §1).
 
 ## 3. Géographie **[D]**

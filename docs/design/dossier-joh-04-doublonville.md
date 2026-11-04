@@ -43,6 +43,8 @@
 
 Points de Vol : Doublonville (utilisable à l'acte 2).
 
+Arc des Pierres (JOH-11 §4.1) : ouverture sud neuve sur la Route 36, vers les Ruines d'Alpha, ≈ (39..41, 19).
+
 **Grilles validées par Kevin le 2026-11-02** : `tools/plans/route_37.txt` (20 × 40),
 `route_36.txt` (56 × 20), `route_35.txt` (24 × 44), `doublonville.txt` (72 × 60) et
 `souterrain.txt` (40 × 14) ; contrôle `tools/art/plan_check_joh3.py`, aperçu
