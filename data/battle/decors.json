@@ -755,6 +755,21 @@
 		"cerulean_cave_b1f": [
 			{ "decor": "cerulean_cave_azuree" }
 		],
+		"route_40": [
+			{ "decor": "sea_open" }
+		],
+		"route_41": [
+			{ "decor": "sea_open" }
+		],
+		"whirl_islands_1f": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"whirl_islands_b1f": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
+		"whirl_islands_b2f": [
+			{ "decor": "cerulean_cave_azuree" }
+		],
 		"sea_cave_1": [
 			{ "decor": "cerulean_cave_azuree" }
 		],

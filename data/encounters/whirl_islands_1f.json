@@ -1,0 +1,115 @@
+{
+	"whirl_islands_1f_rubble_day": {
+		"maps": [
+			"whirl_islands_1f"
+		],
+		"terrain": "rubble",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "golbat",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 30
+			},
+			{
+				"species": "graveler",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 20
+			},
+			{
+				"species": "geodude",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 10
+			},
+			{
+				"species": "kingler",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 20
+			},
+			{
+				"species": "dewgong",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 20
+			}
+		]
+	},
+	"whirl_islands_1f_rubble_night": {
+		"maps": [
+			"whirl_islands_1f"
+		],
+		"terrain": "rubble",
+		"period": [
+			"night"
+		],
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "golbat",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 40
+			},
+			{
+				"species": "graveler",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 20
+			},
+			{
+				"species": "dewgong",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 20
+			},
+			{
+				"species": "wobbuffet",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 5
+			},
+			{
+				"species": "kingler",
+				"levels": [
+					46,
+					50
+				],
+				"weight": 15
+			}
+		]
+	}
+}

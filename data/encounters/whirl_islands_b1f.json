@@ -1,0 +1,96 @@
+{
+	"whirl_islands_b1f_rubble": {
+		"maps": [
+			"whirl_islands_b1f"
+		],
+		"terrain": "rubble",
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "golbat",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 35
+			},
+			{
+				"species": "dewgong",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 25
+			},
+			{
+				"species": "cloyster",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 20
+			},
+			{
+				"species": "kingler",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 15
+			},
+			{
+				"species": "wobbuffet",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 5
+			}
+		]
+	},
+	"whirl_islands_b1f_water": {
+		"maps": [
+			"whirl_islands_b1f"
+		],
+		"terrain": "water",
+		"rate": 8,
+		"slots": [
+			{
+				"species": "tentacruel",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 30
+			},
+			{
+				"species": "dewgong",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 30
+			},
+			{
+				"species": "seadra",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 25
+			},
+			{
+				"species": "seel",
+				"levels": [
+					48,
+					52
+				],
+				"weight": 15
+			}
+		]
+	}
+}

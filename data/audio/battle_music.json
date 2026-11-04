@@ -46,7 +46,9 @@
 		"zapdos",
 		"moltres",
 		"mewtwo",
-		"mew"
+		"mew",
+		"suicune",
+		"lugia"
 	],
 	"encounter_themes": {
 		"boy": "trainer_appears_boy",

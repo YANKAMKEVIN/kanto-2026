@@ -22,8 +22,10 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 20 (T17, jalon-20.md §2.11) : ses quatre objectifs en tête, le plus avancé d'abord.
 	# Jalon 21 (T14, jalon-21.md §2.13) : « rendre visite à M. Fuji. » et « trouver M. Fuji… » en tête.
 	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
-	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord.
-	assert_eq(library.get_ids(), [&"go_route_39", &"choose_johto_partner", &"rest_olivine",
+	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord ;
+	# JOH3 (QA A17) : ses trois objectifs [D] devant eux.
+	assert_eq(library.get_ids(), [&"go_route_34", &"search_underground", &"reach_goldenrod",
+		&"go_route_39", &"choose_johto_partner", &"rest_olivine",
 		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",
 		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
@@ -429,3 +431,21 @@ func test_joh1_objectives_in_order() -> void:
 			assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
 			assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
 
+
+## JOH3 (QA A17 du 2026-11-04 : objectif de la Route 39 périmé à Doublonville) : de Rosalia à la
+## sortie sud de Doublonville ; textes [D].
+func test_joh3_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	assert_true(library.load_file())
+	var flags := StoryFlags.new()
+	flags.set_flag(&"johto_starter_chosen")
+	assert_eq(library.current_id(flags), &"go_route_39", "avant Rosalia")
+	var steps: Array = [
+		[&"johto_rosalia_rockets_seen", &"reach_goldenrod"],
+		[&"johto_goldenrod_arrived", &"search_underground"],
+		[&"johto_azalea_clue", &"go_route_34"],
+	]
+	for step: Array in steps:
+		flags.set_flag(step[0])
+		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
+		assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])

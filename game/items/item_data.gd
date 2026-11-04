@@ -131,6 +131,9 @@ var vitamin_stats: Array[StringName] = []
 ## seule, choisie).
 var pp_amount: int = 0
 var pp_all_moves: bool = false
+## PP Max (JOH7, [constant FIELD_USE_PP_UP] et clé « pp_up_max ») : la capacité monte d'un coup à
+## son plafond (trois PP Plus), au lieu d'un cran.
+var pp_up_max: bool = false
 ## Repousse (lot 32P, [constant FIELD_USE_REPEL]) : nombre de pas (clé « repel_steps »).
 var repel_steps: int = 0
 
