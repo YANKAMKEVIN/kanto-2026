@@ -26,8 +26,13 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var tile := float(Grid.TILE_SIZE)
+	# QA A17 : seuls les tourbillons à l'écran sont dessinés (la Route 41 en compte ~150 : 36 i/s
+	# sans ce tri, 795 appels de dessin).
+	var view := _visible_rect().grow(tile)
 	for cell: Vector2i in cells:
 		var center := (Vector2(cell) + Vector2(0.5, 0.5)) * tile - position
+		if not view.has_point(center):
+			continue
 		draw_circle(center, tile * 0.42, RING_COLOR)
 		# Phase propre à chaque case : les tourbillons voisins ne tournent pas en bloc.
 		var phase := _time * TURN_SPEED + float((cell.x * 7 + cell.y * 13) % 11) * 0.6
@@ -39,3 +44,11 @@ func _draw() -> void:
 				points.append(center + Vector2.from_angle(angle) * (6.0 + t * tile * 0.38))
 			draw_polyline(points, FOAM_COLOR, 4.0)
 		draw_circle(center, 7.0, FOAM_COLOR.darkened(0.4))
+
+
+## Rectangle visible, dans le repère local (tout le champ hors d'un arbre de scène).
+func _visible_rect() -> Rect2:
+	if not is_inside_tree():
+		return Rect2(-1e9, -1e9, 2e9, 2e9)
+	var to_local := get_global_transform_with_canvas().affine_inverse()
+	return to_local * get_viewport_rect()

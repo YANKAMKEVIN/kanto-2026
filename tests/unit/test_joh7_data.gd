@@ -336,8 +336,16 @@ func test_legendaries_are_static_encounters() -> void:
 			if step.static_encounter != null:
 				assert_eq(step.static_encounter.done_flag, expected[scene][2], String(scene))
 				assert_eq(step.static_encounter.caught_flag, expected[scene][3], String(scene))
-			assert_eq(step.flee_flags, [expected[scene][2]] as Array[StringName], "%s : fuite" % scene)
+			assert_eq(step.flee_flags, [expected[scene][2], &"johto_whirl_fled"] as Array[StringName],
+				"%s : fuite" % scene)
 		assert_true(found, String(scene))
+		# QA A17 : après une fuite, l'acteur quitte la carte (despawn) et le drapeau passager est
+		# baissé.
+		var kinds: Array = []
+		for step: CutsceneStep in _cutscenes.get_cutscene(scene).variants[0].steps:
+			if step.if_flags.has(&"johto_whirl_fled"):
+				kinds.append(step.kind)
+		assert_eq(kinds, [CutsceneStep.Kind.DESPAWN, CutsceneStep.Kind.UNSET_FLAGS], String(scene))
 		var listed := false
 		for encounter: StaticEncounter in statics:
 			listed = listed or encounter.done_flag == expected[scene][2]

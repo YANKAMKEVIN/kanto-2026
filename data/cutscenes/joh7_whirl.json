@@ -329,7 +329,22 @@
 							"caught": "johto_suicune_caught"
 						},
 						"flee": [
-							"johto_suicune_resolved"
+							"johto_suicune_resolved",
+							"johto_whirl_fled"
+						]
+					},
+					{
+						"despawn": "suicune",
+						"if": [
+							"johto_whirl_fled"
+						]
+					},
+					{
+						"unset": [
+							"johto_whirl_fled"
+						],
+						"if": [
+							"johto_whirl_fled"
 						]
 					},
 					{
@@ -407,7 +422,22 @@
 							"caught": "johto_lapras_caught"
 						},
 						"flee": [
-							"week_friday_lapras"
+							"week_friday_lapras",
+							"johto_whirl_fled"
+						]
+					},
+					{
+						"despawn": "lokhlass",
+						"if": [
+							"johto_whirl_fled"
+						]
+					},
+					{
+						"unset": [
+							"johto_whirl_fled"
+						],
+						"if": [
+							"johto_whirl_fled"
 						]
 					}
 				]
@@ -505,7 +535,22 @@
 							"caught": "johto_lugia_caught"
 						},
 						"flee": [
-							"johto_lugia_resolved"
+							"johto_lugia_resolved",
+							"johto_whirl_fled"
+						]
+					},
+					{
+						"despawn": "lugia",
+						"if": [
+							"johto_whirl_fled"
+						]
+					},
+					{
+						"unset": [
+							"johto_whirl_fled"
+						],
+						"if": [
+							"johto_whirl_fled"
 						]
 					},
 					{

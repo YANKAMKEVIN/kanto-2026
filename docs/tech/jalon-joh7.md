@@ -204,3 +204,9 @@ légendaires et réapparition, Lokhlass à l'horloge injectée, Écaille Draco �
 Dresseurs, préfixe `joh7_`). Captures Mac (`build/captures/joh7/`) : Route 41 et ses tourbillons,
 B1F (Suicune, arrivée de Cenere), B2F (ombre, halo, Lugia, entrée du combat). Correctif de capture :
 la scène de Lugia fait avancer le joueur de 4 cases (sans quoi l'ombre et Lugia sortaient du cadre).
+
+### T8 — QA A17 (2026-11-04, 21 h 04 – 21 h 11)
+Cenere (M-14, combat lancé), Suicune (M-18, combat, fuite, M-19, courant apaisé), Lokhlass du
+vendredi (M-26), Lugia (émergence dans le cadre), Route 41 : aucun P0 ni P1. Corrigés : acteur
+retiré après une fuite (`johto_whirl_fled`), tourbillons dessinés seulement à l'écran (36 i/s →
+dessin borné à la vue). Captures `build/qa/joh7_a17_2026-11-04/`.

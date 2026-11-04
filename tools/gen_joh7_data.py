@@ -285,7 +285,16 @@ def cenere_scene():
 
 def legendary_battle(species, level, actor, resolved, caught):
 	return {"wild_battle": species, "level": level, "intro": "legendary", "actor": actor,
-		"static": {"done": resolved, "caught": caught}, "flee": [resolved]}
+		"static": {"done": resolved, "caught": caught}, "flee": [resolved, FLED]}
+
+
+# Fuite (QA A17) : la rencontre fixe ne retire son acteur qu'après une capture ou un K.O. ; une
+# fuite lève ce drapeau passager, l'acteur est retiré à la main, puis le drapeau est baissé.
+FLED = "johto_whirl_fled"
+
+
+def flee_cleanup(actor):
+	return [{"despawn": actor, "if": [FLED]}, {"unset": [FLED], "if": [FLED]}]
 
 
 def suicune_scene():
@@ -298,6 +307,7 @@ def suicune_scene():
 			{"lean": "suicune", "to": "player"},
 			{"dialogue": "whirl_suicune_leap_2"},
 			legendary_battle("suicune", 60, "suicune", resolved, "johto_suicune_caught"),
+			*flee_cleanup("suicune"),
 			{"dialogue": "whirl_suicune_after", "if": [resolved]},
 			{"set": ["johto_suicune_done"], "if": [resolved]},
 		]}]}
@@ -329,6 +339,7 @@ def lugia_scene():
 	resolved = "johto_lugia_resolved"
 	return {"variants": [{"unless": [resolved], "steps": [
 		legendary_battle("lugia", 65, "lugia", resolved, "johto_lugia_caught"),
+		*flee_cleanup("lugia"),
 		{"dialogue": "whirl_lugia_gone", "if": [resolved], "unless": ["johto_lugia_caught"]},
 		{"set": ["johto_lugia_done"], "if": [resolved]},
 	]}]}
@@ -340,7 +351,8 @@ def lapras_scene():
 	return {"variants": [{"unless": ["week_friday_lapras", "johto_lapras_caught"], "steps": [
 		{"wild_battle": "lapras", "level": 50, "actor": "lokhlass",
 			"static": {"done": "week_friday_lapras", "caught": "johto_lapras_caught"},
-			"flee": ["week_friday_lapras"]},
+			"flee": ["week_friday_lapras", FLED]},
+		*flee_cleanup("lokhlass"),
 	]}]}
 
 
