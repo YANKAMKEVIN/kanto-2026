@@ -1,0 +1,11 @@
+{
+	"habitant": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "azalea_house_1_habitant"
+	}
+}

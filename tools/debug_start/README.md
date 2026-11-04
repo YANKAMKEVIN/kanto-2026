@@ -430,7 +430,6 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `johto_orme.json` | JOH1 : reprise après coupure **après le vol** : équipe **vide** (clé `party: []`, permise avec `confiscated`), équipe de Ligue et Sac confisqués, `johto_slept` + `johto_team_stolen`, dans la salle de repos (spawn `lit`, tourné vers l'ouest), **matin imposé** : l'infirmière parle d'elle-même (O-10) puis Orme (O-12, O-13) ; choix de Germignon / Héricendre / Kaiminus, O-17, 5 Poké Balls + Potion, O-18, heure réelle de retour |
 | `johto_olivine_day.json` | JOH1 : après le choix (Kaiminus N5 compagnon, 5 Poké Balls, 1 Potion, équipe de Ligue confisquée, point de repos Oliville), devant le Centre, **moment imposé `day`** : garde rangé (Route 39 « à venir »), marin du port, maisons (vieille dame ; enfant le matin et le jour), Boutique, PC « Le réseau ne répond pas. » (O-11), Ball refusée à 6 jamais atteinte ici |
 | `johto_olivine_night_autosave.json` | JOH1 (QA A17 du 2026-11-04) : `johto_olivine_night` avec **`autosave: true`** : ce départ **REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Sert à vérifier la reprise après l'écriture du vol : entrer au Centre, avancer jusqu'à « Sauvegarde automatique (vol de l'équipe…) » dans le journal, tuer l'appli, relancer **sans** départ : chambre le matin, infirmière (O-10) puis Orme |
-
 - `johto_route_39` (JOH2) : Kaiminus N5, 5 Poké Balls, 1 Potion, équipe de Kanto confisquée
   (acte 1, Stockage hors ligne), à l'entrée ouest de la Route 39 (`from_olivine`) : ferme,
   Dresseurs, Potion, Route 38. `johto_route_39_night` : idem, moment forcé `night` ; `johto_route_38` : Kaiminus N10 et Fouinette N9 à l'entrée ouest de la Route 38 (`from_route_39`).
@@ -449,6 +448,20 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
 
 
+### Chapitre Johto, JOH4 (Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss)
+
+Équipe de Johto (Croconaw avec Surf, Furret, Lainergie, Togepi éclos), badges de Kanto, CS03,
+drapeaux des JOH1 à JOH3 (dont `johto_azalea_clue`), équipe de Kanto confisquée.
+
+- `johto_route_34` : entrée nord de la Route 34 (niv. 17–19).
+- `johto_ilex_morning`, `johto_ilex_night` : entrée du Bois aux Chênes, moment imposé.
+- `johto_azalea` : entrée d'Écorcia, avant Fargas (niv. 20–22).
+- `johto_kurt_house` : chez Fargas, avant le récit (scène `azalea_kurt_story` en lui parlant).
+- `johto_slowpoke_well` : B1F, après le récit de Fargas (`johto_kurt_told`).
+- `johto_brace` : B2F, devant le couloir de Brace (niv. 22–24).
+- `johto_azalea_after` : devant le puits, tout le jalon fait (Ramoloss de retour, objets clés).
+- `johto_azalea_friday` : entrée d'Écorcia, jour imposé `friday` (Vincent).
+
 ## Chapitre Johto, JOH9 (Mont Argenté, Route 28, épilogue)
 
 Générés par `tools/gen_joh9_debug_starts.py` : état de fin du JOH8 (drapeaux des dossiers joh-02 à joh-09, `johto_act3`, Dante en fuite), équipe 70–74 (Tortank Surf, Typhlosion, Roucarnage Vol, Mackogneur Force, Raichu Flash, Ho-Oh), CS02 à CS05, Corde Sortie, point de repos `mt_silver_center`, moment `day`. Captures : `tools/capture_joh9.sh`.
@@ -466,3 +479,4 @@ Générés par `tools/gen_joh9_debug_starts.py` : état de fin du JOH8 (drapeaux
 | `johto_kanto_gate.json` | Route 22 ouest (Kanto) devant la porte neuve, sans le rival final : entrer, monter → A-48 et recul |
 | `johto_epilogue.json` | Bourg Palette devant le labo, chapitre presque fini : entrer et monter d'un pas → épilogue (A-49 à A-51), Balle Verte, générique de Johto |
 | `johto_after_chapter.json` | Sommet après le chapitre : vide, écharpe (A-52) en (7, 13) |
+| `johto_celebi.json` | Bois aux Chênes, chapitre fini, Balle Verte au Sac : examiner l'autel depuis (23, 12) → A-53, A-54, Celebi niv. 60 |

@@ -141,6 +141,9 @@ const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 ## Chapitre Johto, JOH2 (T4, `jalon-joh2.md` §2.1) : les cinq intérieurs de Rosalia.
 const ROSALIA := [&"ecruteak_center", &"ecruteak_mart", &"ecruteak_elders_house",
 	&"ecruteak_house_1", &"ecruteak_house_2"]
+## Chapitre Johto, JOH4 (T4, `jalon-joh4.md` §2.1) : Écorcia et la maison de la Route 34.
+const AZALEA := [&"azalea_center", &"azalea_mart", &"azalea_kurt_house", &"azalea_house_1",
+	&"route_34_house"]
 ## Jalon 20 (T15) : postes de Safrania et bâtiments d'entrée du souterrain des Routes 7 et 8.
 const ROUTES_7_8 := [&"route_7_gate", &"route_8_gate", &"route_7_underground_gate",
 	&"route_8_underground_gate"]
@@ -210,6 +213,8 @@ func _init() -> void:
 	rooms.append_array(_olivine_rooms())
 	# Chapitre Johto, JOH2 : Rosalia (fin de liste).
 	rooms.append_array(_rosalia_rooms())
+	# Chapitre Johto, JOH4 : Écorcia et la Route 34 (fin de liste).
+	rooms.append_array(_azalea_rooms())
 	# Chapitre Johto, JOH9 (fin de liste).
 	rooms.append_array(_joh9_rooms())
 	for room: Dictionary in rooms:
@@ -277,6 +282,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ROUTE_12)
 		elif arg == "--rosalia":
 			wanted.append_array(ROSALIA)
+		elif arg == "--azalea":
+			wanted.append_array(AZALEA)
 		elif arg == "--joh9":
 			wanted.append_array(JOH9)
 		elif arg.begins_with("--rooms="):
@@ -2203,10 +2210,6 @@ func _olivine_house_2() -> Dictionary:
 	room["furniture"] = azuria["furniture"]
 	room["rugs"] = azuria["rugs"]
 	return room
-
-
-
-
 # --- Chapitre Johto, JOH2 (T4) : Rosalia --------------------------------------------------------
 
 
@@ -2246,6 +2249,47 @@ func _ecruteak_house(id: StringName, node: String, plan: String, spawn: StringNa
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
 			&"ecruteak_city"),
+	}
+
+
+# --- Chapitre Johto, JOH4 (T4) : Écorcia ------------------------------------------------------
+
+
+## Les cinq intérieurs du JOH4 (`jalon-joh4.md` §2.1) : Centre et Boutique d'Écorcia = définitions
+## communes ; maison de Fargas, maison d'Écorcia et maison de la Route 34 relues sur les grilles
+## des maisons de Lavanville [D] (enveloppe des maisons d'Argenta, comme Rosalia). PNJ dans
+## `data/npcs/` (`tools/gen_joh4_data.py`). Lumière `interior_warm`.
+func _azalea_rooms() -> Array[Dictionary]:
+	var kurt := _johto_house(&"azalea_kurt_house", "AzaleaKurtHouse", "lavanville_maison_1.txt",
+		&"azalea_town", &"retour_fargas", "Écorcia")
+	kurt["furniture"] = _mason_furniture()
+	var house_1 := _johto_house(&"azalea_house_1", "AzaleaHouse1", "lavanville_maison_2.txt",
+		&"azalea_town", &"retour_maison", "Écorcia")
+	var azuria := _cerulean_house()
+	house_1["furniture"] = azuria["furniture"]
+	house_1["rugs"] = azuria["rugs"]
+	var road := _johto_house(&"route_34_house", "Route34House", "lavanville_maison_1.txt",
+		&"route_34", &"retour_maison", "Route 34")
+	road["furniture"] = _mason_furniture()
+	return [
+		_pokemon_center(&"azalea_center", "AzaleaCenter", "Écorcia",
+			[&"azalea_town", &"retour_centre"]),
+		_poke_mart(&"azalea_mart", "AzaleaMart", "Écorcia", [&"azalea_town", &"retour_boutique"]),
+		kurt, house_1, road,
+	]
+
+
+## Maison de Johto relue sur une grille de Lavanville : enveloppe des maisons d'Argenta, sortie
+## PUSH ↓ vers [param target] / [param spawn].
+func _johto_house(id: StringName, node: String, plan: String, target: StringName,
+		spawn: StringName, title: String) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": title, "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": ".Xh",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, target),
 	}
 
 

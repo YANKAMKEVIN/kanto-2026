@@ -1,0 +1,178 @@
+{
+	"ilex_forest_grass_morning": {
+		"maps": [
+			"ilex_forest"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "teddiursa",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 25
+			},
+			{
+				"species": "paras",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 25
+			},
+			{
+				"species": "caterpie",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 15
+			},
+			{
+				"species": "weedle",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 15
+			},
+			{
+				"species": "heracross",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 5
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 15
+			}
+		]
+	},
+	"ilex_forest_grass_day": {
+		"maps": [
+			"ilex_forest"
+		],
+		"terrain": "grass",
+		"period": [
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "paras",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 30
+			},
+			{
+				"species": "caterpie",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 20
+			},
+			{
+				"species": "weedle",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 20
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 20
+			},
+			{
+				"species": "sentret",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 10
+			}
+		]
+	},
+	"ilex_forest_grass_night": {
+		"maps": [
+			"ilex_forest"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "murkrow",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 30
+			},
+			{
+				"species": "noctowl",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 15
+			},
+			{
+				"species": "hoothoot",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 25
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 20
+			},
+			{
+				"species": "paras",
+				"levels": [
+					17,
+					20
+				],
+				"weight": 10
+			}
+		]
+	}
+}

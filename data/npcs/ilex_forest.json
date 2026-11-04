@@ -1,0 +1,64 @@
+{
+	"vieille_femme": {
+		"cell": [
+			20,
+			13
+		],
+		"facing": "right",
+		"sprite": "aoki",
+		"dialogue": "ilex_forest_vieille_femme"
+	},
+	"tom": {
+		"cell": [
+			33,
+			16
+		],
+		"facing": "down",
+		"sprite": "scout",
+		"dialogue": "ilex_forest_scout_tom_after",
+		"trainer": {
+			"id": "ilex_forest_scout_tom",
+			"sight": 2,
+			"before": "ilex_forest_scout_tom_before",
+			"defeated": "ilex_forest_scout_tom_defeated"
+		}
+	},
+	"celine": {
+		"cell": [
+			16,
+			32
+		],
+		"facing": "up",
+		"sprite": "cooltrainer_f",
+		"dialogue": "ilex_forest_lass_celine_after",
+		"trainer": {
+			"id": "ilex_forest_lass_celine",
+			"sight": 2,
+			"before": "ilex_forest_lass_celine_before",
+			"defeated": "ilex_forest_lass_celine_defeated"
+		}
+	},
+	"charbonnier": {
+		"cell": [
+			34,
+			43
+		],
+		"facing": "right",
+		"sprite": "hiker",
+		"dialogue": "ilex_forest_charbonnier"
+	},
+	"ilex_item_1": {
+		"cell": [
+			2,
+			24
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ilex_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ilex_item_1"
+		]
+	}
+}

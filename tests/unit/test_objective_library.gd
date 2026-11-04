@@ -23,7 +23,9 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 21 (T14, jalon-21.md §2.13) : « rendre visite à M. Fuji. » et « trouver M. Fuji… » en tête.
 	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
 	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord.
-	assert_eq(library.get_ids(), [&"go_route_39", &"choose_johto_partner", &"rest_olivine",
+	# JOH4 (QA A17) : ses quatre objectifs [D] devant eux (Écorcia et le Puits Ramoloss).
+	assert_eq(library.get_ids(), [&"talk_to_kurt_in_well", &"take_brace_papers",
+		&"clear_slowpoke_well", &"meet_kurt", &"go_route_39", &"choose_johto_partner", &"rest_olivine",
 		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",
 		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower", &"tower_later", &"visit_tower", &"reach_lavender",
@@ -90,7 +92,9 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush",
 	&"tower_medium_talked", &"game_corner_switch", &"got_rocket_hideout_b4f_silph_scope",
 	# Jalon 23 : Badge Âme posé par la scène de Koga (T19).
-	&"badge_soul"]
+	&"badge_soul",
+	# JOH4 : l'indice vers Écorcia est posé par le chef de bande du souterrain (JOH3).
+	&"johto_azalea_clue"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
@@ -429,3 +433,28 @@ func test_joh1_objectives_in_order() -> void:
 			assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
 			assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
 
+
+
+## JOH4 (QA A17 : à Écorcia, l'objectif disait encore « prendre la Route 39 ») : de l'indice de
+## Doublonville à la Roche Royale ; textes [D] en brouillon.
+func test_joh4_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	assert_true(library.load_file())
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"pokedex_activated", &"badge_soul", &"oak_post_league_gifts_done",
+			&"johto_letter_read", &"johto_arrived", &"johto_slept", &"johto_team_stolen",
+			&"johto_starter_chosen"]:
+		flags.set_flag(flag)
+	assert_eq(library.current_id(flags), &"go_route_39")
+	var steps: Array = [
+		[&"johto_azalea_clue", &"meet_kurt"], [&"johto_kurt_told", &"clear_slowpoke_well"],
+		[&"johto_brace_defeated", &"take_brace_papers"], [&"johto_radio_pass", &"talk_to_kurt_in_well"],
+	]
+	for step: Array in steps:
+		flags.set_flag(step[0])
+		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
+		assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
+	flags.set_flag(&"johto_slowpoke_well_cleared")
+	for id: StringName in [&"meet_kurt", &"clear_slowpoke_well", &"take_brace_papers",
+			&"talk_to_kurt_in_well"]:
+		assert_ne(library.current_id(flags), id, "%s : plus après le puits" % id)

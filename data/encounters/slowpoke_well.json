@@ -1,0 +1,66 @@
+{
+	"slowpoke_well_rubble": {
+		"maps": [
+			"slowpoke_well_b1f",
+			"slowpoke_well_b2f"
+		],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "slowpoke",
+				"levels": [
+					18,
+					22
+				],
+				"weight": 45
+			},
+			{
+				"species": "zubat",
+				"levels": [
+					18,
+					22
+				],
+				"weight": 45
+			},
+			{
+				"species": "geodude",
+				"levels": [
+					18,
+					22
+				],
+				"weight": 10
+			}
+		]
+	},
+	"slowpoke_well_water": {
+		"maps": [
+			"slowpoke_well_b1f",
+			"slowpoke_well_b2f"
+		],
+		"terrain": "water",
+		"rate": 5,
+		"slots": [
+			{
+				"species": "slowpoke",
+				"levels": [
+					18,
+					22
+				],
+				"weight": 70
+			},
+			{
+				"species": "poliwag",
+				"levels": [
+					18,
+					22
+				],
+				"weight": 30
+			}
+		]
+	}
+}

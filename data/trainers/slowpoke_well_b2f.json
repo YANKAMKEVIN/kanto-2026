@@ -1,0 +1,28 @@
+{
+	"slowpoke_well_admin_brace": {
+		"name": "Brace",
+		"class": "sbire_rocket",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 2000,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"team": [
+			{
+				"species": "murkrow",
+				"level": 21
+			},
+			{
+				"species": "koffing",
+				"level": 21
+			},
+			{
+				"species": "houndoom",
+				"level": 23
+			}
+		]
+	}
+}

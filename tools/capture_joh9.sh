@@ -42,6 +42,7 @@ SHOTS=(
 	"epilogue_labo|500|${S}johto_epilogue --cell=24,23 --hold=up --mash=20"
 	"epilogue_orme|1100|${S}johto_epilogue --cell=24,23 --hold=up --mash=48"
 	"sommet_vide|60|${S}johto_after_chapter --cell=7,12 --facing=down"
+	"celebi_autel|500|${S}johto_celebi --cell=23,12 --facing=up --mash=40"
 )
 for shot in "${SHOTS[@]}"; do
 	IFS='|' read -r name frames opts <<< "$shot"

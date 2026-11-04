@@ -160,3 +160,22 @@ Plan écrit ; branche `claude/joh9-mont-argente-f6ee3a`.
 
 Voir §3. Tests `test_joh9_data` (13) et `test_joh9_maps` (9) verts. Scènes jouées sur le Mac
 (captures `build/captures/joh9/`).
+
+### T12 — QA A17 (2026-11-04, 22 h 06 à 22 h 35)
+
+Départs de débogage sur l'APK debug. Vu sans erreur : sentier, relais, 1F, voile du 2F sans CS05
+(A-16, halo) et avec Flash, soin du rival, sommet (Dante, Giovanni, Cenere, entrée du combat du
+rival), poste et porte de la Route 22 dans les deux sens, épilogue, générique Johto, Centre.
+L'erreur « aucun chemin » du rival du 2F vient du départ de débogage : la scène y joue sur la case
+de sortie du rival, pas sur la galerie (14, 10..12).
+
+**P1 corrigé** : le rival restait sur (7, 9), seule case devant la sortie du labo, après le
+générique. Orme et le rival quittent la carte avant le générique ; correctif couvert par un test,
+pas rejoué sur le téléphone.
+
+Non joué sur le téléphone : Dante et le rival final jusqu'au bout, rencontres sauvages, marchand.
+
+### Celebi (2026-11-04)
+
+JOH4 fusionné : variante de `ilex_forest_autel` (`tools/gen_joh4_data.py`) vers `ilex_altar_celebi`,
+départ `johto_celebi`, combat niv. 60 vu sur le Mac (`tools/capture_joh9.sh build/captures/joh9c celebi`).

@@ -1,0 +1,87 @@
+{
+	"sbire_puits": {
+		"cell": [
+			38,
+			8
+		],
+		"facing": "left",
+		"unless": [
+			"johto_kurt_told"
+		],
+		"sprite": "rocket_grunt_m",
+		"dialogue": "azalea_well_block"
+	},
+	"ramoloss_margelle": {
+		"cell": [
+			36,
+			7
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"dialogue": "azalea_town_ramoloss_margelle",
+		"turn_to_player": false,
+		"if": [
+			"johto_slowpoke_well_cleared"
+		]
+	},
+	"habitante": {
+		"cell": [
+			24,
+			16
+		],
+		"facing": "left",
+		"sprite": "beauty",
+		"dialogue": "azalea_town_habitante"
+	},
+	"vincent": {
+		"cell": [
+			8,
+			11
+		],
+		"facing": "down",
+		"if_weekday": [
+			"friday"
+		],
+		"sprite": "docker",
+		"dialogue": "week_friday_vincent"
+	},
+	"ramoloss_1": {
+		"cell": [
+			17,
+			9
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"turn_to_player": false,
+		"if": [
+			"johto_slowpoke_well_cleared"
+		],
+		"dialogue": "azalea_town_ramoloss"
+	},
+	"ramoloss_2": {
+		"cell": [
+			25,
+			27
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"turn_to_player": false,
+		"if": [
+			"johto_slowpoke_well_cleared"
+		],
+		"dialogue": "azalea_town_ramoloss"
+	},
+	"ramoloss_3": {
+		"cell": [
+			36,
+			19
+		],
+		"facing": "down",
+		"sprite": "pokemon/slowpoke",
+		"turn_to_player": false,
+		"if": [
+			"johto_slowpoke_well_cleared"
+		],
+		"dialogue": "azalea_town_ramoloss"
+	}
+}

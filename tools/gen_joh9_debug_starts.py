@@ -73,6 +73,11 @@ STARTS = {
 			"johto_dante_defeated_2", "johto_giovanni_seen", "johto_rival_final_met",
 			"johto_rival_final_done", "johto_route28_open", "johto_chapter_done",
 			"johto_green_ball_received"], "Sommet vide (A-52)"),
+	"johto_celebi": ("ilex_forest", "from_azalea", "up",
+		["johto_rival_relay", "johto_rival_healed", "johto_summit_reached",
+			"johto_dante_defeated_2", "johto_giovanni_seen", "johto_rival_final_met",
+			"johto_rival_final_done", "johto_route28_open", "johto_chapter_done",
+			"johto_green_ball_received"], "Bois aux Chênes : autel et Celebi (A-53, A-54)"),
 }
 
 
@@ -81,7 +86,7 @@ def main():
 		data = {"map": map_id, "spawn": spawn, "facing": facing,
 			"flags": KANTO + JOHTO + extra, "party": PARTY, "bag": BAG, "money": 80000,
 			"rest_point": "mt_silver_center", "period": "day"}
-		if name == "johto_after_chapter":
+		if name in ("johto_after_chapter", "johto_celebi"):
 			data["bag"] = dict(BAG, green_ball=1)
 		path = os.path.join(OUT, name + ".json")
 		with open(path, "w", encoding="utf-8") as handle:

@@ -298,6 +298,15 @@ func test_epilogue_leaves_nobody_in_front_of_the_lab_exit() -> void:
 	assert_gt(credits_at, 0)
 
 
+func test_altar_of_ilex_forest_calls_celebi_once_the_green_ball_is_given() -> void:
+	var library := DialogueLibrary.new()
+	assert_true(library.load_file("res://data/dialogues/joh4_ilex_forest.json"), "dialogues du JOH4")
+	var variant: Variant = library.get_dialogue(&"ilex_forest_autel").variants[0]
+	assert_eq(variant.if_flags, [&"johto_green_ball_received"] as Array[StringName])
+	assert_eq(variant.unless_flags, [&"johto_celebi_done"] as Array[StringName])
+	assert_eq(variant.cutscene, &"ilex_altar_celebi")
+
+
 func test_celebi_scene_is_a_catchable_level_60_encounter() -> void:
 	var steps := _scene_steps(&"ilex_altar_celebi")
 	var battle := steps[-1]

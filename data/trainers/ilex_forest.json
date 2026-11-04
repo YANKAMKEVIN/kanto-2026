@@ -1,0 +1,45 @@
+{
+	"ilex_forest_scout_tom": {
+		"name": "Scout Tom",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "paras",
+				"level": 19
+			},
+			{
+				"species": "caterpie",
+				"level": 18
+			},
+			{
+				"species": "metapod",
+				"level": 19
+			}
+		]
+	},
+	"ilex_forest_lass_celine": {
+		"name": "Dresseuse Céline",
+		"class": "topdresseuse",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "hoothoot",
+				"level": 20
+			},
+			{
+				"species": "teddiursa",
+				"level": 20
+			}
+		]
+	}
+}
