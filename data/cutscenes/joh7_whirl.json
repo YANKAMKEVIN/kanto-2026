@@ -1,0 +1,504 @@
+{
+	"route_40_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_40_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "route_40_item_1"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_40_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_41_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_41_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "route_41_item_1"
+					},
+					{
+						"give": "max_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_41_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"whirl_islands_1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_whirl_islands_1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "whirl_islands_1f_item_1"
+					},
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_whirl_islands_1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"whirl_islands_b1f_dragon_scale": {
+		"variants": [
+			{
+				"unless": [
+					"got_whirl_islands_b1f_dragon_scale"
+				],
+				"steps": [
+					{
+						"despawn": "whirl_islands_b1f_dragon_scale"
+					},
+					{
+						"give": "dragon_scale",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_whirl_islands_b1f_dragon_scale"
+						]
+					},
+					{
+						"dialogue": "whirl_dragon_scale_found"
+					}
+				]
+			}
+		]
+	},
+	"whirl_islands_b1f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_whirl_islands_b1f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "whirl_islands_b1f_item_1"
+					},
+					{
+						"give": "pp_max",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_whirl_islands_b1f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"whirl_islands_b2f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_whirl_islands_b2f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "whirl_islands_b2f_item_1"
+					},
+					{
+						"give": "rare_candy",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_whirl_islands_b2f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"whirl_suicune_seen": {
+		"variants": [
+			{
+				"unless": [
+					"johto_suicune_seen"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_suicune_seen"
+						]
+					},
+					{
+						"face": "player",
+						"to": "suicune"
+					},
+					{
+						"dialogue": "whirl_suicune_seen"
+					}
+				]
+			}
+		]
+	},
+	"whirl_cenere": {
+		"next": "whirl_suicune_battle",
+		"variants": [
+			{
+				"unless": [
+					"johto_cenere_defeated_2"
+				],
+				"steps": [
+					{
+						"spawn": "cenere",
+						"sprite": "rocket_grunt_f",
+						"cell": [
+							14,
+							1
+						],
+						"facing": "down"
+					},
+					{
+						"emote": "cenere",
+						"kind": "exclamation"
+					},
+					{
+						"move": "cenere",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									-1
+								]
+							]
+						}
+					},
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "cenere"
+					},
+					{
+						"dialogue": "whirl_cenere_arrival"
+					},
+					{
+						"dialogue": "whirl_cenere_before"
+					},
+					{
+						"battle": "whirl_islands_cenere",
+						"win": [
+							"johto_cenere_defeated_2"
+						]
+					},
+					{
+						"dialogue": "whirl_cenere_defeated",
+						"if": [
+							"johto_cenere_defeated_2"
+						]
+					},
+					{
+						"dialogue": "whirl_cenere_after",
+						"if": [
+							"johto_cenere_defeated_2"
+						]
+					},
+					{
+						"dialogue": "whirl_cenere_leaves",
+						"if": [
+							"johto_cenere_defeated_2"
+						]
+					},
+					{
+						"move": "cenere",
+						"to": [
+							14,
+							1
+						],
+						"if": [
+							"johto_cenere_defeated_2"
+						]
+					},
+					{
+						"despawn": "cenere",
+						"if": [
+							"johto_cenere_defeated_2"
+						]
+					},
+					{
+						"despawn": "cenere",
+						"unless": [
+							"johto_cenere_defeated_2"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_cenere_defeated_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"whirl_suicune_battle": {
+		"variants": [
+			{
+				"if": [
+					"johto_cenere_defeated_2"
+				],
+				"unless": [
+					"johto_suicune_done"
+				],
+				"steps": [
+					{
+						"dialogue": "whirl_suicune_leap_1"
+					},
+					{
+						"lean": "suicune",
+						"to": "player"
+					},
+					{
+						"dialogue": "whirl_suicune_leap_2"
+					},
+					{
+						"wild_battle": "suicune",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "suicune",
+						"static": {
+							"done": "johto_suicune_resolved",
+							"caught": "johto_suicune_caught"
+						},
+						"flee": [
+							"johto_suicune_resolved"
+						]
+					},
+					{
+						"dialogue": "whirl_suicune_after",
+						"if": [
+							"johto_suicune_resolved"
+						]
+					},
+					{
+						"set": [
+							"johto_suicune_done"
+						],
+						"if": [
+							"johto_suicune_resolved"
+						]
+					}
+				]
+			}
+		]
+	},
+	"whirl_b2f_current": {
+		"variants": [
+			{
+				"unless": [
+					"johto_suicune_done"
+				],
+				"steps": [
+					{
+						"dialogue": "whirl_b2f_current_strong"
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_whirl_current_calm_seen"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_whirl_current_calm_seen"
+						]
+					},
+					{
+						"dialogue": "whirl_b2f_current_calm"
+					}
+				]
+			}
+		]
+	},
+	"whirl_cove": {
+		"variants": [
+			{
+				"steps": [
+					{
+						"dialogue": "whirl_cove"
+					}
+				]
+			}
+		]
+	},
+	"whirl_lapras_battle": {
+		"variants": [
+			{
+				"unless": [
+					"week_friday_lapras",
+					"johto_lapras_caught"
+				],
+				"steps": [
+					{
+						"wild_battle": "lapras",
+						"level": 50,
+						"actor": "lokhlass",
+						"static": {
+							"done": "week_friday_lapras",
+							"caught": "johto_lapras_caught"
+						},
+						"flee": [
+							"week_friday_lapras"
+						]
+					}
+				]
+			}
+		]
+	},
+	"whirl_lugia_rise": {
+		"variants": [
+			{
+				"unless": [
+					"johto_lugia_emerged"
+				],
+				"steps": [
+					{
+						"wait": 0.3
+					},
+					{
+						"react": "player"
+					},
+					{
+						"dialogue": "whirl_lugia_rise_1"
+					},
+					{
+						"set": [
+							"johto_whirl_lugia_passing"
+						]
+					},
+					{
+						"animate": "LugiaShadow",
+						"offset": [
+							10,
+							0
+						],
+						"duration": 4.0,
+						"fade": true
+					},
+					{
+						"unset": [
+							"johto_whirl_lugia_passing"
+						]
+					},
+					{
+						"dialogue": "whirl_lugia_rise_2"
+					},
+					{
+						"flash": 1
+					},
+					{
+						"spawn": "lugia",
+						"sprite": "pokemon/lugia",
+						"cell": [
+							12,
+							9
+						],
+						"facing": "down",
+						"dialogue": "whirl_lugia",
+						"verb": "observe",
+						"turn_to_player": false
+					},
+					{
+						"set": [
+							"johto_lugia_emerged"
+						]
+					},
+					{
+						"dialogue": "whirl_lugia_rise_3"
+					}
+				]
+			}
+		]
+	},
+	"whirl_lugia_battle": {
+		"variants": [
+			{
+				"unless": [
+					"johto_lugia_resolved"
+				],
+				"steps": [
+					{
+						"wild_battle": "lugia",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "lugia",
+						"static": {
+							"done": "johto_lugia_resolved",
+							"caught": "johto_lugia_caught"
+						},
+						"flee": [
+							"johto_lugia_resolved"
+						]
+					},
+					{
+						"dialogue": "whirl_lugia_gone",
+						"if": [
+							"johto_lugia_resolved"
+						],
+						"unless": [
+							"johto_lugia_caught"
+						]
+					},
+					{
+						"set": [
+							"johto_lugia_done"
+						],
+						"if": [
+							"johto_lugia_resolved"
+						]
+					}
+				]
+			}
+		]
+	}
+}

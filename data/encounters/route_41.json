@@ -1,0 +1,51 @@
+{
+	"route_41_water": {
+		"maps": [
+			"route_41"
+		],
+		"terrain": "water",
+		"rate": 5,
+		"slots": [
+			{
+				"species": "tentacool",
+				"levels": [
+					42,
+					48
+				],
+				"weight": 40
+			},
+			{
+				"species": "tentacruel",
+				"levels": [
+					42,
+					48
+				],
+				"weight": 25
+			},
+			{
+				"species": "staryu",
+				"levels": [
+					42,
+					48
+				],
+				"weight": 15
+			},
+			{
+				"species": "shellder",
+				"levels": [
+					42,
+					48
+				],
+				"weight": 10
+			},
+			{
+				"species": "krabby",
+				"levels": [
+					42,
+					48
+				],
+				"weight": 10
+			}
+		]
+	}
+}

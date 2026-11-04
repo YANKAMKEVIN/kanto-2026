@@ -1,0 +1,4 @@
+{
+	"_doc": "Drapeaux de la semaine (JOH7, jalon-joh7.md §2.6) : drapeau → jour où il compte. Boot baisse chaque drapeau à chaque chargement de carte quand le jour de l'horloge n'est pas le sien (WeeklyFlags).",
+	"week_friday_lapras": "friday"
+}

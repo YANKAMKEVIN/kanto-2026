@@ -1,0 +1,186 @@
+{
+	"route_40_swimmer_yanis": {
+		"name": "Nageur Yanis",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 5,
+		"team": [
+			{
+				"species": "tentacruel",
+				"level": 50
+			},
+			{
+				"species": "staryu",
+				"level": 49
+			}
+		]
+	},
+	"route_40_swimmer_elodie": {
+		"name": "Nageuse Élodie",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 5,
+		"team": [
+			{
+				"species": "azumarill",
+				"level": 51
+			}
+		]
+	},
+	"route_40_swimmer_marius": {
+		"name": "Nageur Marius",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 5,
+		"team": [
+			{
+				"species": "kingler",
+				"level": 50
+			},
+			{
+				"species": "seadra",
+				"level": 50
+			}
+		]
+	},
+	"route_41_fisher_noe": {
+		"name": "Pêcheur Noé",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "seadra",
+				"level": 52
+			},
+			{
+				"species": "seaking",
+				"level": 52
+			}
+		]
+	},
+	"route_41_swimmer_lea": {
+		"name": "Nageuse Léa",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 5,
+		"team": [
+			{
+				"species": "dewgong",
+				"level": 52
+			},
+			{
+				"species": "starmie",
+				"level": 52
+			}
+		]
+	},
+	"route_41_swimmer_gabin": {
+		"name": "Nageur Gabin",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 5,
+		"team": [
+			{
+				"species": "tentacruel",
+				"level": 51
+			},
+			{
+				"species": "gyarados",
+				"level": 53
+			}
+		]
+	},
+	"whirl_islands_grunt_t": {
+		"name": "Sbire",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "muk",
+				"level": 58
+			},
+			{
+				"species": "arbok",
+				"level": 58
+			}
+		]
+	},
+	"whirl_islands_grunt_u": {
+		"name": "Sbire",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 59
+			},
+			{
+				"species": "golbat",
+				"level": 58
+			}
+		]
+	},
+	"whirl_islands_cenere": {
+		"name": "Cenere",
+		"class": "sbire_rocket_f",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"start_message": false,
+		"end_message": false,
+		"switch": true,
+		"team": [
+			{
+				"species": "weezing",
+				"level": 62
+			},
+			{
+				"species": "wobbuffet",
+				"level": 62
+			},
+			{
+				"species": "noctowl",
+				"level": 63
+			},
+			{
+				"species": "dewgong",
+				"level": 63
+			},
+			{
+				"species": "sneasel",
+				"level": 64
+			}
+		]
+	}
+}
