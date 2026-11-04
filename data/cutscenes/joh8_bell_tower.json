@@ -281,10 +281,7 @@
 						]
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_lands",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_lands"
 					},
 					{
 						"spawn": "ho_oh",
@@ -294,23 +291,14 @@
 							5
 						],
 						"facing": "down",
-						"turn_to_player": false,
-						"if": [
-							"johto_entei_done"
-						]
+						"turn_to_player": false
 					},
 					{
 						"face": "player",
-						"to": "ho_oh",
-						"if": [
-							"johto_entei_done"
-						]
+						"to": "ho_oh"
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_test",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_test"
 					},
 					{
 						"wild_battle": "ho_oh",
@@ -324,10 +312,7 @@
 						"static": {
 							"done": "johto_ho_oh_done",
 							"caught": "johto_ho_oh_caught"
-						},
-						"if": [
-							"johto_entei_done"
-						]
+						}
 					},
 					{
 						"despawn": "ho_oh",
@@ -530,10 +515,7 @@
 						]
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_lands",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_lands"
 					},
 					{
 						"spawn": "ho_oh",
@@ -543,23 +525,14 @@
 							5
 						],
 						"facing": "down",
-						"turn_to_player": false,
-						"if": [
-							"johto_entei_done"
-						]
+						"turn_to_player": false
 					},
 					{
 						"face": "player",
-						"to": "ho_oh",
-						"if": [
-							"johto_entei_done"
-						]
+						"to": "ho_oh"
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_test",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_test"
 					},
 					{
 						"wild_battle": "ho_oh",
@@ -573,10 +546,7 @@
 						"static": {
 							"done": "johto_ho_oh_done",
 							"caught": "johto_ho_oh_caught"
-						},
-						"if": [
-							"johto_entei_done"
-						]
+						}
 					},
 					{
 						"despawn": "ho_oh",
@@ -720,10 +690,7 @@
 						]
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_lands",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_lands"
 					},
 					{
 						"spawn": "ho_oh",
@@ -733,23 +700,14 @@
 							5
 						],
 						"facing": "down",
-						"turn_to_player": false,
-						"if": [
-							"johto_entei_done"
-						]
+						"turn_to_player": false
 					},
 					{
 						"face": "player",
-						"to": "ho_oh",
-						"if": [
-							"johto_entei_done"
-						]
+						"to": "ho_oh"
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_test",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_test"
 					},
 					{
 						"wild_battle": "ho_oh",
@@ -763,10 +721,7 @@
 						"static": {
 							"done": "johto_ho_oh_done",
 							"caught": "johto_ho_oh_caught"
-						},
-						"if": [
-							"johto_entei_done"
-						]
+						}
 					},
 					{
 						"despawn": "ho_oh",
@@ -1006,10 +961,7 @@
 						]
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_lands",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_lands"
 					},
 					{
 						"spawn": "ho_oh",
@@ -1019,23 +971,14 @@
 							5
 						],
 						"facing": "down",
-						"turn_to_player": false,
-						"if": [
-							"johto_entei_done"
-						]
+						"turn_to_player": false
 					},
 					{
 						"face": "player",
-						"to": "ho_oh",
-						"if": [
-							"johto_entei_done"
-						]
+						"to": "ho_oh"
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_test",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_test"
 					},
 					{
 						"wild_battle": "ho_oh",
@@ -1049,10 +992,7 @@
 						"static": {
 							"done": "johto_ho_oh_done",
 							"caught": "johto_ho_oh_caught"
-						},
-						"if": [
-							"johto_entei_done"
-						]
+						}
 					},
 					{
 						"despawn": "ho_oh",
@@ -1162,10 +1102,7 @@
 						]
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_lands",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_lands"
 					},
 					{
 						"spawn": "ho_oh",
@@ -1175,23 +1112,14 @@
 							5
 						],
 						"facing": "down",
-						"turn_to_player": false,
-						"if": [
-							"johto_entei_done"
-						]
+						"turn_to_player": false
 					},
 					{
 						"face": "player",
-						"to": "ho_oh",
-						"if": [
-							"johto_entei_done"
-						]
+						"to": "ho_oh"
 					},
 					{
-						"dialogue": "bell_tower_ho_oh_test",
-						"if": [
-							"johto_entei_done"
-						]
+						"dialogue": "bell_tower_ho_oh_test"
 					},
 					{
 						"wild_battle": "ho_oh",
@@ -1205,10 +1133,7 @@
 						"static": {
 							"done": "johto_ho_oh_done",
 							"caught": "johto_ho_oh_caught"
-						},
-						"if": [
-							"johto_entei_done"
-						]
+						}
 					},
 					{
 						"despawn": "ho_oh",

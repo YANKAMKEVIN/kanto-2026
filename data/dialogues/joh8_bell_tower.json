@@ -28,16 +28,17 @@
 		]
 	},
 	"bell_tower_2f_hiroshi": {
-		"speaker": "Hiroshi",
+		"narration": true,
 		"heal": true,
 		"pages": [
-			"Tu es le Dresseur de Kanto ?",
-			"Repose tes Pokémon. Ce qui t'attend\nlà-haut n'a pas de pitié."
-		]
-	},
-	"bell_tower_2f_hiroshi_soin": {
-		"narration": true,
-		"pages": [
+			{
+				"text": "Tu es le Dresseur de Kanto ?",
+				"speaker": "Hiroshi"
+			},
+			{
+				"text": "Repose tes Pokémon. Ce qui t'attend\nlà-haut n'a pas de pitié.",
+				"speaker": "Hiroshi"
+			},
 			"L'équipe de {player}\nest soignée."
 		]
 	},
@@ -136,12 +137,6 @@
 			"Le soleil, lui, n'attend pas."
 		]
 	},
-	"bell_tower_dante_silent": {
-		"speaker": "Dante",
-		"pages": [
-			"…"
-		]
-	},
 	"bell_tower_dante_welcome": {
 		"speaker": "Dante",
 		"pages": [
@@ -169,7 +164,7 @@
 			},
 			{
 				"pages": [
-					"Un Pokémon rouge se débat\ndans la cage de flammes."
+					"À ses pieds, une cage de flammes.\nUn Pokémon rouge s'y débat."
 				]
 			}
 		]

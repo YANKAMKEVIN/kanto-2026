@@ -108,7 +108,7 @@ TEXTS = {
 	"bell_tower_1f_autel": (N, ["Un autel ancien.\nL'encens y brûle encore."], True),
 	# 2F
 	"bell_tower_2f_examen_planche": (N, ["Le bois craque sous les pieds."]),
-	"bell_tower_2f_hiroshi_soin": (N, ["L'équipe de {player}\nest soignée."]),
+	"bell_tower_2f_hiroshi_soin": (N, ["L'équipe de {player}\nest soignée."]),  # page d'Hiroshi
 	"bell_tower_climb_1": (N, ["La montée est longue…"]),
 	"bell_tower_climb_2": (N, ["Le ciel pâlit."]),
 	# Sommet
@@ -147,7 +147,7 @@ TEXTS = {
 		"La colère brûle encore\ndans ses yeux !"]),
 	"bell_tower_entei_gone": (N, ["Entei bondit par-dessus\nla rambarde et disparaît."]),
 	"bell_tower_entei_calm": (N, ["Entei s'est calmé."]),
-	"bell_tower_entei_caged": (N, ["Un Pokémon rouge se débat\ndans la cage de flammes."]),
+	"bell_tower_entei_caged": (N, ["À ses pieds, une cage de flammes.\nUn Pokémon rouge s'y débat."]),
 	"bell_tower_ho_oh_lands": (N, ["Ho-Oh redescend.",
 		"Il se pose sous la grande cloche,\nface à {player}.", "Il attend."]),
 	"bell_tower_ho_oh_test": (N, ["Ho-Oh veut éprouver\nle cœur de {player} !"]),
@@ -155,7 +155,6 @@ TEXTS = {
 	"bell_tower_feather_falls": (N, ["Une plume aux mille couleurs\ntombe doucement sur le toit."]),
 	"bell_tower_feather_taken": (N, ["{player} ramasse\nla Plume Arc-en-ciel !",
 		"Elle brille de toutes les couleurs."]),
-	"bell_tower_dante_silent": ("Dante", ["…"]),
 	# Rosalia, après (H-34 à H-38)
 	"joh8_doyen_after": ("Doyen", ["Les cloches ont sonné. Toute la ville\na vu le ciel s'ouvrir.",
 		"Ho-Oh a choisi, {player}.\nEt ce n'est pas cet homme.",
@@ -330,12 +329,13 @@ def ho_oh_steps(actor, inline):
 	steps = []
 	if inline:
 		steps += [
-			{"dialogue": "bell_tower_ho_oh_lands", "if": [ENTEI_DONE]},
+			{"dialogue": "bell_tower_ho_oh_lands"},
 			{"spawn": actor, "sprite": "pokemon/ho_oh", "cell": [9, 5], "facing": "down",
-				"turn_to_player": False, "if": [ENTEI_DONE]},
-			{"face": "player", "to": actor, "if": [ENTEI_DONE]},
+				"turn_to_player": False},
+			{"face": "player", "to": actor},
 		]
-	cond = {"if": [ENTEI_DONE]} if inline else {}
+	# Dans la scène, on n'arrive ici qu'Entei affronté (défaite : réveil, la scène s'arrête).
+	cond = {}
 	steps += [
 		dict({"dialogue": "bell_tower_ho_oh_test"}, **cond),
 		dict({"wild_battle": "ho_oh", "level": 65, "intro": "legendary", "actor": actor,
@@ -434,7 +434,11 @@ def main():
 				entry = {"cell": cell, "facing": attrs.get("facing", "down"), "sprite": "channeler"}
 				if ident == "hiroshi":
 					entry["dialogue"] = "bell_tower_2f_hiroshi"
-					dialogues["bell_tower_2f_hiroshi"] = {"speaker": "Hiroshi", "heal": True, "pages": HIROSHI}
+					# H-10 : soin à chaque passage [D] ; les deux bulles d'Hiroshi puis la ligne
+					# système, le soin à la fin du dialogue.
+					dialogues["bell_tower_2f_hiroshi"] = {"narration": True, "heal": True, "pages":
+						[{"text": page, "speaker": "Hiroshi"} for page in HIROSHI]
+						+ TEXTS["bell_tower_2f_hiroshi_soin"][1]}
 				else:
 					entry["dialogue"] = "%s_%s" % (map_id, ident)
 					dialogues[entry["dialogue"]] = text(entry["dialogue"])
@@ -477,8 +481,8 @@ def main():
 			dialogues["bell_tower_ho_oh_return"] = {"cutscene": "bell_tower_ho_oh_return"}
 		npcs_by_map[map_id] = npcs
 	for ident in TEXTS:
-		if ident.startswith("bell_tower_") and ident not in dialogues and not ident.startswith(
-				"bell_tower_entei_caged"):
+		if ident.startswith("bell_tower_") and ident not in dialogues and ident not in (
+				"bell_tower_entei_caged", "bell_tower_2f_hiroshi_soin"):
 			dialogues[ident] = text(ident)
 	cutscenes.update(roof_scenes())
 	for map_id, npcs in npcs_by_map.items():
