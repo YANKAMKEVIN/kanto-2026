@@ -1,6 +1,6 @@
 {
  "map": "route_17",
- "spawn": "from_route_16_1",
+ "spawn": "from_route_16",
  "facing": "down",
  "seed": 5,
  "flags": [
@@ -62,7 +62,15 @@
   "badge_rainbow",
   "tm21_received",
   "got_bike_voucher",
-  "got_bicycle"
+  "got_bicycle",
+  "beaten_route_17_cueball_1",
+  "beaten_route_17_cueball_2",
+  "beaten_route_17_biker_1",
+  "beaten_route_17_biker_3",
+  "beaten_route_17_biker_2",
+  "beaten_route_17_cueball_3",
+  "beaten_route_17_biker_4",
+  "beaten_route_17_cueball_4"
  ],
  "party": [
   {
