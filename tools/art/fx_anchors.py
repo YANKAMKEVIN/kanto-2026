@@ -131,7 +131,8 @@ def species_ids() -> dict[int, tuple[str, str]]:
 def cmd_squelette(args: argparse.Namespace) -> None:
     data = load()
     known = species_ids()
-    for dex in range(1, 152):
+    # Kanto (1 à 151) et les espèces de Johto des données (art de Johto, 2026-11-04).
+    for dex in sorted(set(range(1, 152)) | set(known)):
         key = f"{dex:03d}"
         entry = data["species"].setdefault(key, {})
         species_id, name = known.get(dex) or EXTRA_IDS.get(dex) or (entry.get("id", ""), entry.get("name", ""))
@@ -361,7 +362,7 @@ def cmd_verifier(args: argparse.Namespace) -> int:
     data = load()
     known = species_ids()
     errors = []
-    for dex in range(1, 152):
+    for dex in sorted(set(range(1, 152)) | set(known)):
         key = f"{dex:03d}"
         entry = data["species"].get(key)
         if entry is None:

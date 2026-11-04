@@ -52,13 +52,28 @@ Questions à Kevin avec la planche (défauts appliqués s'il ne répond pas) :
 - **Compagnons de Johto** [D] : les trois starters seulement (comme A-10 pour Kanto au départ). Leurs
   évolutions et d'autres espèces plus tard, sur demande.
 
+### Résultat de la pilote (2026-11-04)
+
+Planche `serie-johto/planche-pilote.jpg`, captures `serie-johto/pilote-combat.jpg` (vrai combat,
+Route 39) et `serie-johto/pilote-table-orme.jpg` (vraie table d'Orme). Relecture :
+- dos RB de Germignon, Héricendre, Kaiminus, Suicune : fidèles, même main que les artworks ;
+- dos RB de Tyranocif : fidèle mais plus sombre et plus « réaliste » que les autres (à surveiller
+  sur les grandes espèces blindées : Steelix, Ymphect, Donphan) ;
+- planches de marche : Germignon et Kaiminus du premier coup ; Héricendre en r3 (r2 sans ancre
+  ressemblait à une musaraigne, r4 au museau trop court : écartés) ;
+- Suicune d'ambiance (4 images, de face) : fidèle ;
+- icônes : Roche Royale, Peau Métal, Écaille Draco, Améliorator (remplacent les aplats du JOH0).
+Refus de Codex : le filtre n'est pas déterministe (dos de Germignon refusé 3 fois puis accepté au
+4e essai, même prompt) ; le script relance la dernière révision, et `REVISIONS` /
+`MARCHE_REVISIONS` reformulent le sujet.
+
 ## 4. Suivi
 
 | Étape | État |
 |---|---|
 | Artworks 51 + atlas + cadres + orientation | fait |
 | Cris 51 | fait |
-| Planche pilote | en cours |
+| Planche pilote | faite, envoyée à Kevin (2026-11-04) |
 | Dos RB 51 | après validation |
 | Planches du monde (3 starters, 4 légendaires) | après validation |
 | Icônes du Sac (4) | après validation |

@@ -23,7 +23,7 @@ const BOOT_SCENE: String = "res://game/boot.tscn"
 const PLAYER := 0
 const FOE := 1
 const SPAWNS: Dictionary = {&"route_1": &"from_pallet_w", &"oak_lab": &"entrance",
-	&"route_22": &"from_viridian"}
+	&"route_22": &"from_viridian", &"route_39": &"from_olivine"}
 
 var _boot: Node
 var _stage: CanvasLayer
@@ -31,6 +31,7 @@ var _camera: Camera2D
 var _out_dir: String = "build/captures/combat_cb1"
 var _place: StringName = &"route_1"
 var _perf_frames: int = 0
+var _pairs: PackedStringArray = []
 var _zones: CanvasLayer
 
 
@@ -44,6 +45,8 @@ func _init() -> void:
 			_place = StringName(arg.trim_prefix("--place="))
 		elif arg.begins_with("--perf="):
 			_perf_frames = arg.trim_prefix("--perf=").to_int()
+		elif arg.begins_with("--pairs="):
+			_pairs = arg.trim_prefix("--pairs=").split(",")
 	process_frame.connect(_start, CONNECT_ONE_SHOT)
 
 
@@ -62,7 +65,9 @@ func _start() -> void:
 	_camera = (_boot.call(&"get_player") as Node).call(&"get_camera")
 	_build_zones()
 	await _frames(10)
-	if _place == &"route_1":
+	if not _pairs.is_empty():
+		await _pair_shots()
+	elif _place == &"route_1":
 		await _wild_shots()
 	else:
 		await _trainer_shots()
@@ -133,6 +138,16 @@ func _wild_shots() -> void:
 	await _shot("partenaire")
 	await _frames(20)
 	await _exit()
+
+
+## Art des Pokémon de Johto (2026-11-04) : `--pairs=suicune:totodile,tyranitar:chikorita` (adversaire :
+## ton Pokémon) : une image `paire_<adversaire>_<toi>` par paire, au lieu des passes ci-dessus.
+func _pair_shots() -> void:
+	for pair: String in _pairs:
+		var parts := pair.split(":")
+		await _wild(StringName(parts[0]), StringName(parts[1]))
+		await _shot("paire_%s_%s" % [parts[0], parts[1]])
+		await _exit()
 
 
 ## Rencontre posée (intro sauvage puis partenaire), attendue jusqu'au bout.

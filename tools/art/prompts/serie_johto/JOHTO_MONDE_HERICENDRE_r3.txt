@@ -1,0 +1,16 @@
+MONDE_HERICENDRE — planche d'animation d'une créature du monde d'un jeu d'aventure 2D peint (elle suit le héros).
+Images jointes : le héros du jeu (PERSO_P2_PEINT_r1) = ancre de STYLE ; POKE_BULBIZARRE_NE_r1 = une autre créature du jeu déjà validée : même rendu, même finesse, même gabarit de planche, garde ses proportions comme repère de taille (celle-ci est de taille comparable).
+Style : créature peinte simplifiée, même finesse que le héros du jeu, contour fin coloré sans trait noir, volumes peints doux. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+CRÉATURE (identique dans toutes les images) : petite créature POTELÉE en forme de poire qui marche à quatre pattes, DOS BLEU NUIT lisse, ventre, museau et pattes CRÈME, museau court et arrondi pointé vers l'avant, yeux fermés en deux petits traits, et sur le bas du dos quatre petites taches ROUGES d'où sortent de petites FLAMMES orange et jaunes, visibles dans toutes les poses. Allure timide, ronde et douce (pas une musaraigne, pas un fourmilier).
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose de la créature, entière, centrée horizontalement, les pieds posés sur la même ligne horizontale à 60 px du bas de la cellule, à la même taille dans toutes les cellules (environ 170 px de haut). Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (vers le bas de l'écran).
+- Ligne 2 : de profil, vers la gauche.
+- Ligne 3 : de profil, vers la droite.
+- Ligne 4 : de dos (vers le haut de l'écran).
+- Colonnes : marche à quatre pattes en 4 images, petits pas rapides, les flammes du dos qui vacillent.
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus, on voit un peu le dessus de la créature). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres autour des cellules.
+Les couleurs, les proportions et la tête doivent être EXACTEMENT les mêmes dans les 16 poses.
+

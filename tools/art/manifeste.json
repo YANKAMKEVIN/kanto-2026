@@ -3469,6 +3469,30 @@
    "sortie": "assets/sprites/pokemon/painted/osselait_sheet.png",
    "hauteur": 56,
    "note": "série 23 (J21 T7) ; r1 refusée 4 fois par le filtre de Codex, r2 = prompt sans le mot « crâne » ; Maison des Pokémon, comportement static"
+  },
+  {
+   "id": "germignon",
+   "source": "JOHTO_MONDE_GERMIGNON_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/germignon_sheet.png",
+   "hauteur": 60,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "hericendre",
+   "source": "JOHTO_MONDE_HERICENDRE_r3.png",
+   "sortie": "assets/sprites/pokemon/painted/hericendre_sheet.png",
+   "hauteur": 58,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "kaiminus",
+   "source": "JOHTO_MONDE_KAIMINUS_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/kaiminus_sheet.png",
+   "hauteur": 62,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
   }
  ],
  "heros_images": [
@@ -5224,6 +5248,21 @@
     "repos_2"
    ],
    "note": "série 27 : Artikodin r1 (Kevin, 2026-10-19), une direction, 4 images en boucle"
+  },
+  {
+   "id": "suicune",
+   "source": "JOHTO_MONDE_SUICUNE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/suicune_sheet.png",
+   "hauteur": 190,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
   }
  ]
 }

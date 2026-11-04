@@ -27,7 +27,10 @@
 		"raticate": { "sprite": "pokemon/raticate" },
 		"fearow": { "sprite": "pokemon/fearow" },
 		"meowth": { "sprite": "pokemon/meowth" },
-		"eevee": { "sprite": "pokemon/eevee" }
+		"eevee": { "sprite": "pokemon/eevee" },
+		"chikorita": { "sprite": "pokemon/chikorita" },
+		"cyndaquil": { "sprite": "pokemon/cyndaquil" },
+		"totodile": { "sprite": "pokemon/totodile" }
 	},
 	"contexts": {
 		"viridian_forest": "forest",
