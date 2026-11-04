@@ -167,7 +167,8 @@ func test_cry_orders_and_faint_pitch() -> void:
 	assert_true(audio.play_cry(25, true))
 	assert_almost_eq(float(_orders.back()["pitch"]), 0.8, 0.001)
 	assert_false(audio.play_cry(0))
-	assert_false(audio.play_cry(152))
+	assert_true(audio.play_cry(158), "Johto : Kaiminus")
+	assert_false(audio.play_cry(252))
 
 
 func test_ambience_changes_once_and_unknown_is_none() -> void:
