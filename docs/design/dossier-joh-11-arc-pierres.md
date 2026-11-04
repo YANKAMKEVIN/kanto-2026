@@ -551,4 +551,3 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 2. Grilles dans `tools/plans/`, puis vues générales peintes, validées avant tout code.
 3. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5 : JOHP0 (le Réveil),
    JOHP1, JOHP2, JOHP3.
-4. Roadmap : à mettre à jour sur accord de Kevin.
