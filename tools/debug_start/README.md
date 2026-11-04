@@ -437,6 +437,7 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 - `johto_route_37` : Croconaw N16, Fouinette N14, Wattouat N14 à l'entrée nord de la Route 37
   (`from_ecruteak`) : Lise, Super Potion, raccords vers la Route 36. `johto_route_37_night` : idem,
   moment forcé `night` (Sbires A et B, Hoothoot, Malosse).
+- `johto_route_35_night` : Route 35 (`from_route_36`), `night` (étang, Anna).
 - `johto_route_36_wednesday` : Route 36 (`from_route_37`), jour forcé `wednesday` (Mercédès).
 - `johto_goldenrod` : Croconaw N18, Fouinar N17, Lainergie N17 à l'entrée nord de Doublonville
   (`from_route_35`) : titre et haut-parleur, Centre (Orme, l'œuf), Grand Magasin, maisons,

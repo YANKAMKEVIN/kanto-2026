@@ -1,13 +1,13 @@
 {
-	"souterrain_item_1": {
+	"goldenrod_underground_item_1": {
 		"variants": [
 			{
 				"unless": [
-					"got_souterrain_item_1"
+					"got_goldenrod_underground_item_1"
 				],
 				"steps": [
 					{
-						"despawn": "souterrain_item_1"
+						"despawn": "goldenrod_underground_item_1"
 					},
 					{
 						"give": "repel",
@@ -16,18 +16,18 @@
 					},
 					{
 						"set": [
-							"got_souterrain_item_1"
+							"got_goldenrod_underground_item_1"
 						]
 					}
 				]
 			}
 		]
 	},
-	"souterrain_hidden_1": {
+	"goldenrod_underground_hidden_1": {
 		"variants": [
 			{
 				"unless": [
-					"got_souterrain_hidden_1"
+					"got_goldenrod_underground_hidden_1"
 				],
 				"steps": [
 					{
@@ -37,7 +37,7 @@
 					},
 					{
 						"set": [
-							"got_souterrain_hidden_1"
+							"got_goldenrod_underground_hidden_1"
 						]
 					}
 				]

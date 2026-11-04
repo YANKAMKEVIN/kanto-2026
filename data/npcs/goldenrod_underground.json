@@ -44,18 +44,18 @@
 			"defeated": "goldenrod_underground_boss_defeated"
 		}
 	},
-	"souterrain_item_1": {
+	"goldenrod_underground_item_1": {
 		"cell": [
 			9,
 			1
 		],
 		"facing": "down",
 		"sprite": "object/poke_ball_ground",
-		"dialogue": "souterrain_item_1",
+		"dialogue": "goldenrod_underground_item_1",
 		"verb": "take",
 		"turn_to_player": false,
 		"unless": [
-			"got_souterrain_item_1"
+			"got_goldenrod_underground_item_1"
 		]
 	}
 }

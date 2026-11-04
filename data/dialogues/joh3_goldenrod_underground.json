@@ -64,17 +64,17 @@
 			}
 		]
 	},
-	"souterrain_item_1": {
-		"cutscene": "souterrain_item_1"
+	"goldenrod_underground_item_1": {
+		"cutscene": "goldenrod_underground_item_1"
 	},
-	"souterrain_hidden_1": {
-		"cutscene": "souterrain_hidden_1"
+	"goldenrod_underground_hidden_1": {
+		"cutscene": "goldenrod_underground_hidden_1"
 	},
 	"goldenrod_underground_panneau_souterrain": {
 		"narration": true,
 		"pages": [
 			"SOUTERRAIN DE DOUBLONVILLE\nBoutiques ouvertes de 10 h à 20 h",
-			"Un papier collé :\n« Fermé jusqu'à nouvel ordre »"
+			"(un papier collé :\n« Fermé jusqu'à nouvel ordre »)"
 		]
 	}
 }

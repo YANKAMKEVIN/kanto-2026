@@ -1688,7 +1688,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		for file: String in DirAccess.get_files_at(pair[1]):
 			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
 				continue
-			var library: Variant = pair[2] if file.begins_with("j23_") else pair[0]
+			# JOH3 : fichiers générés `joh3_*` (`test_joh3_data.gd`), même traitement.
+			var library: Variant = pair[2] if file.begins_with("j23_") \
+				or file.begins_with("joh3_") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer) + generated_dialogues.get_set_flags() \
@@ -2170,6 +2172,8 @@ const PENDING_DRAFT_32P: Array[StringName] = []
 const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
 ## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
 ## Chapitre Johto (JOH0) : textes [D] des systèmes, à relire par Kevin avec ceux du JOH1.
+## JOH3 : dossier joh-04 (texte D-16 de l'éclosion, système du JOH0).
+const DOSSIER_JOH_04 := "res://docs/design/dossier-joh-04-doublonville.md"
 const PENDING_DRAFT_VARIANTS: Array[String] = ["storage_offline:0",
 	"trade_terminal_item:0", "johto_return_test_before:0", "johto_return_test_after:0"]
 
@@ -2373,7 +2377,11 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1]))
 			# Chantier JR : reformulations du relevé des accords (T1, T2), validé le 2026-10-31.
-			or jr_releve.contains("« %s »" % text),
+			or jr_releve.contains("« %s »" % text)
+			# JOH3 : éclosion de l'œuf (JOH0), texte D-16 du dossier joh-04 §16.
+			or J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER_JOH_04))
+				.contains(J22Ids.flat_text(text.replace("{player}", "{joueur}")
+					.replace("{pokemon}", "Togepi"))),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -2636,9 +2644,11 @@ func test_oak_parcel_lines() -> void:
 			continue # Jalon 30 : {player} / {rival} des textes de la Ligue (plan §3), test_league_texts
 		var tokens := DialogueTokens.tokens_in(row[1])
 		if String(row[0]).begins_with("daycare_") or IDS_JOH0.has(row[0]):
-			# JOH0 : {pokemon} de l'éclosion, {item} du terminal d'échange (jetons de contexte).
+			# JOH0 : {pokemon} de l'éclosion, {item} du terminal d'échange (jetons de contexte) ;
+			# JOH3 : {player} de l'éclosion (D-16).
 			for token: StringName in tokens:
-				assert_true(DialogueTokens.CONTEXT.has(token),
+				assert_true(DialogueTokens.CONTEXT.has(token)
+					or (row[0] == &"egg_hatched" and token == DialogueTokens.PLAYER),
 					"%s : jeton {%s} à sa place" % [row[0], token])
 			continue
 		var expected: Array[StringName] = []

@@ -112,7 +112,6 @@ const EXTRA_SPAWNS: Dictionary = {
 const BUILDINGS: Dictionary = {
 	"goldenrod_city": [
 		["bldg_centre_01", Vector2i(10, 27), "Centre"],
-		["bldg_grand_magasin_01", Vector2i(50, 27), "GrandMagasin"],
 		["bldg_maison_argenta_01", Vector2i(23, 15), "MaisonLien"],
 		["bldg_maison_argenta_01", Vector2i(23, 27), "Maison1"],
 		["bldg_maison_argenta_01", Vector2i(47, 15), "Maison2"],
@@ -124,6 +123,8 @@ const TOWERS: Dictionary = {
 	"route_35": [["PosteGarde", Rect2i(13, 35, 6, 5), Color(0.45, 0.36, 0.28)]],
 	"goldenrod_city": [
 		["TourRadio", Rect2i(6, 4, 10, 12), Color(0.55, 0.2, 0.18)],
+		# Le Grand Magasin peint de Céladopole (14 cases) déborde de l'emprise de 12 : aplat.
+		["GrandMagasin", Rect2i(44, 19, 12, 9), Color(0.62, 0.5, 0.32)],
 		["Gare", Rect2i(52, 38, 14, 8), Color(0.38, 0.33, 0.3)],
 		["HautParleur", Rect2i(43, 24, 1, 1), Color(0.25, 0.25, 0.28)],
 	],
@@ -280,8 +281,11 @@ func _add_positions(spec: Dictionary, plan: Object, root: Node2D,
 					if not blocked.has(cell):
 						blocked.append(cell)
 			"cache":
+				# Identifiants déjà pris par le souterrain de Kanto : préfixe de la carte.
+				var item_id := "goldenrod_underground_" + id.trim_prefix("souterrain_") \
+					if id.begins_with("souterrain_") else id
 				_interact(root, _node_name(id), cells[0], Vector2i.ONE, Vector2i.ZERO,
-					StringName(id), [], [StringName("got_" + id)])
+					StringName(item_id), [], [StringName("got_" + item_id)])
 			"declencheur":
 				if not TRIGGERS.has(key):
 					_fail("%s : déclencheur sans scène" % key)

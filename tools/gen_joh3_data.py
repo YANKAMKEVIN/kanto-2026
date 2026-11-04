@@ -125,7 +125,7 @@ TEXTS = {
 		["DOUBLONVILLE\nLa ville scintillante,\nau carrefour de Johto"]),
 	("goldenrod_underground", "panneau_souterrain"): (NARRATION,
 		["SOUTERRAIN DE DOUBLONVILLE\nBoutiques ouvertes de 10 h à 20 h",
-			"Un papier collé :\n« Fermé jusqu'à nouvel ordre »"]),
+			"(un papier collé :\n« Fermé jusqu'à nouvel ordre »)"]),
 }
 WEEK = {
 	# id : (orateur, drapeau, jour, objet, nombre, pages avant, ligne système, page après)
@@ -172,6 +172,13 @@ ENCOUNTERS = {
 		("route_35_surf", None, 10, "water", [("poliwag", 13, 17, 60), ("marill", 13, 17, 40)]),
 	],
 }
+
+# Identifiants d'objets déjà pris par le souterrain de Kanto (`underground_7_8.json`) : préfixe
+# de la carte.
+def object_id(ident):
+	return "goldenrod_underground_" + ident[len("souterrain_"):] \
+		if ident.startswith("souterrain_") else ident
+
 
 CELL_RE = re.compile(r"^(\d+)(?:\.\.(\d+))?,(\d+)(?:\.\.(\d+))?$")
 
@@ -336,6 +343,7 @@ def main():
 			elif kind == "decor" and ident == "haut_parleur":
 				dialogues["goldenrod_speaker"] = dialogue("Haut-parleur", SPEAKER_TEXT)
 			elif kind == "objet_visible":
+				ident = object_id(ident)
 				flag = "got_" + ident
 				npcs[ident] = {"cell": cell, "facing": "down", "sprite": "object/poke_ball_ground",
 					"dialogue": ident, "verb": "take", "turn_to_player": False, "unless": [flag]}
@@ -343,6 +351,7 @@ def main():
 				cutscenes[ident] = item_scene(ident, attrs["item"], int(attrs.get("count", 1)),
 					flag, True)
 			elif kind == "cache":
+				ident = object_id(ident)
 				flag = "got_" + ident
 				dialogues[ident] = {"cutscene": ident}
 				cutscenes[ident] = item_scene(ident, attrs["item"], int(attrs.get("count", 1)),
