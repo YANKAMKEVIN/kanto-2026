@@ -11,7 +11,8 @@ extends RefCounted
 ## Assets par convention (planches `tools/art/costumes/`, dossier
 ## `assets/sprites/characters/painted/costumes/`) : apparence du monde
 ## `costumes/<art>_<joueur|joueuse>` ([CharacterLook] : `painted/costumes/<…>_frames.tres`),
-## lancer de dos `<…>_lancer.png`, buste du menu `<…>_bust.webp`.
+## lancer de dos `<…>_lancer.png` (repli), buste du menu `<…>_bust.webp` ; dos peints de combat
+## `assets/sprites/trainers/battle/dos_costume_<…>[_surf][_lancer].webp` ([method battle_look]).
 ##
 ## [method shared] : catalogue chargé une fois (costumes et badges du jeu), pour les classes
 ## statiques ([TrainerLooks], [GameState]) ; les tests construisent le leur.
@@ -20,6 +21,9 @@ const DEFAULT_PATH: String = "res://data/costumes.json"
 const DIR: String = "res://assets/sprites/characters/painted/costumes/"
 ## Préfixe des apparences du monde ([CharacterLook.painted_frames_path]).
 const SPRITE_PREFIX: String = "costumes/"
+## Apparence de combat d'un costume : ses dos peints (2026-11-04, Kevin : les costumes « ont encore
+## l'ancienne pose pour le lancer »).
+const BATTLE_LOOK_PREFIX: String = "costume_"
 ## Tenue d'origine (`player_costume` vide, CO-9).
 const ORIGINAL: StringName = &""
 ## Apparence du joueur → suffixe des planches.
@@ -140,6 +144,13 @@ func world_sprite(id: StringName, look: StringName) -> StringName:
 func thrower_path(id: StringName, look: StringName) -> String:
 	var base := _base(id, look)
 	return DIR + base + "_lancer.png" if not base.is_empty() else ""
+
+
+## Apparence de combat du costume (dos peint `dos_costume_<art>_<version>[_surf][_lancer]` de
+## `assets/sprites/trainers/battle/`, [method TrainerIntro.player_path]) ; &"" si inconnu.
+func battle_look(id: StringName, look: StringName) -> StringName:
+	var base := _base(id, look)
+	return StringName(BATTLE_LOOK_PREFIX + base) if not base.is_empty() else &""
 
 
 ## Buste du menu ; "" si inconnu.
