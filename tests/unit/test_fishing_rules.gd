@@ -172,6 +172,8 @@ func test_data_file_loads() -> void:
 	# Jalon 31 (T4) : Super Canne de la Grotte Azurée (groupe 9 de RB).
 	assert_eq(tables.get_ids(), [&"good_rod_any", &"old_rod_any", &"super_rod_cerulean_cave",
 		&"super_rod_default", &"super_rod_fuchsia",
+		# JOH3 : Super Canne de l'étang de la Route 35 (Ptitard, Poissirène).
+		&"super_rod_route_35",
 		# Jalon 32 (N-12) : Super Canne du Parc Safari (groupe 6 de RB, Minidraco).
 		&"super_rod_safari"] as Array[StringName])
 

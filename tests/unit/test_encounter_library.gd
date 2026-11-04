@@ -138,7 +138,11 @@ func test_real_tables_load_without_error() -> void:
 		&"route_16_west_grass", &"route_17_grass", &"route_18_grass", &"route_19_water",
 		&"route_1_grass", &"route_20_water", &"route_21_grass", &"route_21_water",
 		&"route_22_grass", &"route_23_grass", &"route_24_grass", &"route_25_grass", &"route_2_grass",
-		&"route_2_north_grass", &"route_3_grass", &"route_4_grass", &"route_5_grass",
+		&"route_2_north_grass",
+		# Chapitre Johto (JOH3) : herbe par moment des Routes 37, 36, 35 et Surf de l'étang.
+		&"route_35_grass_day", &"route_35_grass_night", &"route_35_surf", &"route_36_grass_day",
+		&"route_36_grass_morning", &"route_36_grass_night", &"route_37_grass_day",
+		&"route_37_grass_night", &"route_3_grass", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
@@ -226,7 +230,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
-	assert_eq(lib.size(), 60, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine")
+	assert_eq(lib.size(), 68, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21) ; JOH1 : l'eau de la grotte marine ; JOH3 : les 8 tables des Routes 37, 36, 35 (test_joh3_data)")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -415,6 +419,10 @@ func test_kanto_tables_ignore_the_period() -> void:
 	var real := _lib()
 	assert_true(real.load_dir(), "les vraies tables se chargent")
 	for id: StringName in real.get_ids():
+		# JOH3 : les Routes 37, 36, 35 sont à Johto (tables par moment, test_joh3_data).
+		if String(id).begins_with("route_35_") or String(id).begins_with("route_36_") \
+				or String(id).begins_with("route_37_"):
+			continue
 		assert_true(real.get_table_by_id(id).is_all_day(), "Kanto sans « period » : %s" % id)
 
 

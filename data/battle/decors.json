@@ -436,6 +436,7 @@
 		"route_36": [{ "decor": "route_1_chemin" }],
 		"route_35": [{ "decor": "route_1_chemin" }],
 		"goldenrod_city": [{ "decor": "route_1_chemin" }],
+		"goldenrod_underground": [{ "decor": "route_7_8_urbaine" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],
