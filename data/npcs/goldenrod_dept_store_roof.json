@@ -1,0 +1,25 @@
+{
+	"old_man": {
+		"cell": [
+			5,
+			6
+		],
+		"facing": "up",
+		"sprite": "old_man",
+		"dialogue": "goldenrod_dept_roof_old_man"
+	},
+	"upgrade_ball": {
+		"cell": [
+			17,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "goldenrod_dept_roof_upgrade",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"goldenrod_upgrade_taken"
+		]
+	}
+}

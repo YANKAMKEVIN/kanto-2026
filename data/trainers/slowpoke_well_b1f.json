@@ -1,0 +1,62 @@
+{
+	"slowpoke_well_grunt_e": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "raticate",
+				"level": 20
+			},
+			{
+				"species": "ekans",
+				"level": 20
+			}
+		]
+	},
+	"slowpoke_well_grunt_f": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "koffing",
+				"level": 21
+			},
+			{
+				"species": "zubat",
+				"level": 20
+			}
+		]
+	},
+	"slowpoke_well_grunt_g": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 21
+			},
+			{
+				"species": "murkrow",
+				"level": 21
+			}
+		]
+	}
+}

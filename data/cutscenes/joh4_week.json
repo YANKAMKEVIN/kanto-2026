@@ -1,0 +1,25 @@
+{
+	"week_friday_gift": {
+		"variants": [
+			{
+				"unless": [
+					"week_friday_gift"
+				],
+				"steps": [
+					{
+						"give": "super_repel",
+						"count": 2
+					},
+					{
+						"dialogue": "week_friday_received"
+					},
+					{
+						"set": [
+							"week_friday_gift"
+						]
+					}
+				]
+			}
+		]
+	}
+}

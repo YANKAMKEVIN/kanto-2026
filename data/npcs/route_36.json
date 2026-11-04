@@ -1,0 +1,58 @@
+{
+	"max": {
+		"cell": [
+			17,
+			8
+		],
+		"facing": "up",
+		"sprite": "scout",
+		"dialogue": "route_36_scout_max_after",
+		"trainer": {
+			"id": "route_36_scout_max",
+			"sight": 3,
+			"before": "route_36_scout_max_before",
+			"defeated": "route_36_scout_max_defeated"
+		}
+	},
+	"ernest": {
+		"cell": [
+			31,
+			13
+		],
+		"facing": "right",
+		"sprite": "youngster",
+		"dialogue": "route_36_medium_ernest_after",
+		"trainer": {
+			"id": "route_36_medium_ernest",
+			"sight": 3,
+			"before": "route_36_medium_ernest_before",
+			"defeated": "route_36_medium_ernest_defeated"
+		}
+	},
+	"mercedes": {
+		"cell": [
+			25,
+			12
+		],
+		"facing": "down",
+		"sprite": "beauty",
+		"if_weekday": [
+			"wednesday"
+		],
+		"dialogue": "week_wednesday_mercedes"
+	},
+	"route_36_item_1": {
+		"cell": [
+			45,
+			10
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_36_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_36_item_1"
+		]
+	}
+}

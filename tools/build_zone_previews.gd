@@ -45,6 +45,7 @@ const AUTO_MAPS: Dictionary[String, String] = {
 	# JOH1 : la grotte marine (salle 2, eau profonde) ; Oliville a sa propre carte.
 	"sea_cave": "sea_cave_2",
 	"burned_tower": "burned_tower_1f", "mahogany_hideout": "mahogany_hideout_b2f",
+	"slowpoke_well": "slowpoke_well_b2f",
 	# JOH7 : les îles par leur B1F (lac et plate-forme de Suicune).
 	"whirl_islands": "whirl_islands_b1f",
 }

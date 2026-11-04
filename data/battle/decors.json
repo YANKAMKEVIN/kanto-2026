@@ -442,6 +442,15 @@
 		"mahogany_hideout_b1f": [{ "decor": "rocket_hideout_repaire" }],
 		"mahogany_hideout_b2f": [{ "decor": "rocket_hideout_repaire" }],
 		"mahogany_hideout_b3f": [{ "decor": "rocket_hideout_repaire" }],
+		"route_37": [{ "decor": "route_1_chemin" }],
+		"route_36": [{ "decor": "route_1_chemin" }],
+		"route_35": [{ "decor": "route_1_chemin" }],
+		"goldenrod_city": [{ "decor": "route_1_chemin" }],
+		"goldenrod_underground": [{ "decor": "route_7_8_urbaine" }],
+		"route_34": [{ "decor": "route_1_chemin" }],
+		"ilex_forest": [{ "decor": "viridian_forest_clairiere" }],
+		"slowpoke_well_b1f": [{ "decor": "mt_moon_galerie" }],
+		"slowpoke_well_b2f": [{ "decor": "mt_moon_galerie" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],

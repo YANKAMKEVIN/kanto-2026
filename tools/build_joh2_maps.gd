@@ -58,7 +58,9 @@ const WARPS: Dictionary = {
 	"route_38/warp_ouest": {"to": &"route_39", "spawn": "from_route_38"},
 	"route_38/warp_est": {"to": &"ecruteak_city", "spawn": "from_route_38"},
 	"ecruteak_city/warp_ouest": {"to": &"route_38", "spawn": "from_ecruteak"},
-	"ecruteak_city/warp_sud": {"to": &"route_37", "spawn": "from_ecruteak", "label": "Route 37"},
+	# JOH3 : « per_cell », une arrivée par case sur la Route 37 (`from_ecruteak`, `_1`, `_2`).
+	"ecruteak_city/warp_sud": {"to": &"route_37", "spawn": "from_ecruteak", "label": "Route 37",
+		"per_cell": true},
 	"ecruteak_city/warp_est": {"to": &"route_42", "spawn": "from_ecruteak", "label": "Route 42"},
 	"ecruteak_city/warp_bois": {"to": &"bell_tower_woods", "spawn": "from_ecruteak",
 		"label": "Bois de la Tour"},
@@ -271,7 +273,7 @@ func _add_warp(root: Node2D, id: String, cells: Array[Vector2i], dest: Dictionar
 				dest.get("label", String(target)), if_flags, unless)
 			continue
 		var arrival := spawn
-		if target_cells.size() == cells.size() and i > 0:
+		if (target_cells.size() == cells.size() or dest.get("per_cell", false)) and i > 0:
 			arrival = "%s_%d" % [spawn, i]
 		_warp(root, name, cells[i], trigger, direction, target, StringName(arrival),
 			_arrival_facing(target, spawn, direction), "", if_flags, unless)

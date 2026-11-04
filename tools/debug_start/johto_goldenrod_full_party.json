@@ -1,0 +1,80 @@
+{
+	"map": "goldenrod_center",
+	"spawn": "entrance",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_squirtle",
+		"taken_bulbasaur",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"pokedex_activated",
+		"league_champion_defeated",
+		"johto_arrived",
+		"johto_act1",
+		"storage_offline",
+		"johto_team_stolen",
+		"johto_starter_chosen",
+		"johto_orme_left",
+		"johto_rosalia_rockets_seen",
+		"johto_tower_legend_heard",
+		"johto_goldenrod_arrived"
+	],
+	"party": [
+		{
+			"species": "croconaw",
+			"level": 18
+		},
+		{
+			"species": "furret",
+			"level": 17
+		},
+		{
+			"species": "flaaffy",
+			"level": 17
+		},
+		{
+			"species": "pidgey",
+			"level": 14
+		},
+		{
+			"species": "hoothoot",
+			"level": 14
+		},
+		{
+			"species": "rattata",
+			"level": 13
+		}
+	],
+	"bag": {
+		"poke_ball": 5,
+		"potion": 4,
+		"antidote": 1,
+		"super_potion": 2
+	},
+	"money": 4000,
+	"companion": 0,
+	"confiscated": {
+		"party": [
+			{
+				"species": "blastoise",
+				"level": 62
+			},
+			{
+				"species": "pidgeot",
+				"level": 58
+			}
+		],
+		"items": {
+			"great_ball": 7,
+			"hyper_potion": 4
+		}
+	}
+}

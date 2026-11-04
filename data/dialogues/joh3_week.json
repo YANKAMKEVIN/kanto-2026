@@ -1,0 +1,60 @@
+{
+	"week_wednesday_mercedes": {
+		"speaker": "Mercédès",
+		"variants": [
+			{
+				"unless": [
+					"week_wednesday_gift"
+				],
+				"cutscene": "week_wednesday_gift",
+				"pages": [
+					"Le mercredi, j'arrose les fleurs\nde la route.",
+					"Tu as l'air pressé…\nTiens, ça pourra servir."
+				]
+			},
+			{
+				"if": [
+					"week_wednesday_gift"
+				],
+				"pages": [
+					"Reviens un mercredi,\nles fleurs seront plus belles."
+				]
+			}
+		]
+	},
+	"week_wednesday_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Super Balls !"
+		]
+	},
+	"week_thursday_jerome": {
+		"speaker": "Jérôme",
+		"variants": [
+			{
+				"unless": [
+					"week_thursday_gift"
+				],
+				"cutscene": "week_thursday_gift",
+				"pages": [
+					"Le jeudi, je livre\nle Grand Magasin.",
+					"Oups, il me reste des bouteilles\nen trop. Prends !"
+				]
+			},
+			{
+				"if": [
+					"week_thursday_gift"
+				],
+				"pages": [
+					"À jeudi prochain !"
+				]
+			}
+		]
+	},
+	"week_thursday_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Eaux Fraîches !"
+		]
+	}
+}

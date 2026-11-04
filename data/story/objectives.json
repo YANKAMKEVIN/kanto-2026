@@ -6,6 +6,48 @@
 	{ "id": "joh6_burned_tower", "text": "explorer la Tour Cendrée, à Rosalia.", "if": ["johto_burned_tower_open"], "unless": ["johto_raikou_taken"], "draft": true },
 	{ "id": "joh6_see_elder", "text": "voir le doyen de Rosalia.", "if": ["johto_act2"], "unless": ["johto_burned_tower_open"], "draft": true },
 	{
+		"id": "talk_to_kurt_in_well",
+		"text": "reparler à Fargas, au fond du Puits Ramoloss.",
+		"if": ["johto_radio_pass"],
+		"unless": ["johto_slowpoke_well_cleared"],
+		"draft": true
+	},
+	{
+		"id": "take_brace_papers",
+		"text": "ramasser les papiers laissés par Brace.",
+		"if": ["johto_brace_defeated"],
+		"unless": ["johto_radio_pass"],
+		"draft": true
+	},
+	{
+		"id": "clear_slowpoke_well",
+		"text": "chasser la Team Rocket du Puits Ramoloss.",
+		"if": ["johto_kurt_told"],
+		"unless": ["johto_brace_defeated"],
+		"draft": true
+	},
+	{
+		"id": "meet_kurt",
+		"text": "trouver Fargas, à Écorcia.",
+		"if": ["johto_azalea_clue"],
+		"unless": ["johto_kurt_told"],
+		"draft": true
+	},
+	{
+		"id": "search_underground",
+		"text": "fouiller le Souterrain de Doublonville.",
+		"if": ["johto_goldenrod_arrived"],
+		"unless": ["johto_azalea_clue"],
+		"draft": true
+	},
+	{
+		"id": "reach_goldenrod",
+		"text": "rejoindre Doublonville par les Routes 37, 36 et 35.",
+		"if": ["johto_rosalia_rockets_seen"],
+		"unless": ["johto_goldenrod_arrived"],
+		"draft": true
+	},
+	{
 		"id": "go_route_39",
 		"text": "prendre la Route 39, à l'est d'Oliville.",
 		"if": ["johto_starter_chosen"],

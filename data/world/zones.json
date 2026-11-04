@@ -395,12 +395,54 @@
 			"description": "Un chemin entre les prés, vers la vieille ville de Rosalia."
 		},
 		"goldenrod_city": {
-			"name": "Doublonville", "kind": "town", "maps": [], "region": "johto", "draft": true,
-			"description": "La plus grande ville de Johto : grand magasin, souterrain et la Tour Radio qui domine tout."
+			"name": "Doublonville", "kind": "town", "region": "johto",
+			"maps": ["goldenrod_city", "goldenrod_center", "goldenrod_dept_store_1f", "goldenrod_dept_store_2f", "goldenrod_dept_store_3f", "goldenrod_dept_store_roof", "goldenrod_bond_house", "goldenrod_house_1", "goldenrod_house_2"],
+			"subtitle": "Route 35 — Route 34",
+			"services": [{"id": "pokemon_center", "found_on": "goldenrod_center"}, {"id": "poke_mart", "found_on": "goldenrod_dept_store_2f"}],
+			"description": "La grande ville de Johto, dominée par sa Tour Radio."
+		},
+		"goldenrod_underground": {
+			"name": "Souterrain", "kind": "place", "region": "johto", "maps": ["goldenrod_underground"],
+			"subtitle": "Doublonville",
+			"description": "Un passage sous la ville, presque désert."
+		},
+		"route_37": {
+			"name": "Route 37", "kind": "route", "region": "johto", "maps": ["route_37"],
+			"subtitle": "Rosalia — Route 36",
+			"description": "Un chemin bordé d'arbres, entre Rosalia et la plaine."
+		},
+		"route_36": {
+			"name": "Route 36", "kind": "route", "region": "johto", "maps": ["route_36"],
+			"subtitle": "Route 37 — Route 35",
+			"description": "Un carrefour de campagne, au cœur de Johto."
+		},
+		"route_35": {
+			"name": "Route 35", "kind": "route", "region": "johto", "maps": ["route_35"],
+			"subtitle": "Doublonville — Route 36",
+			"description": "Une route verte, avec un étang, aux portes de Doublonville."
 		},
 		"azalea_town": {
-			"name": "Écorcia", "kind": "town", "maps": [], "region": "johto", "draft": true,
-			"description": "Un bourg à l'orée du Bois aux Chênes, où l'on vit avec les Ramoloss du puits."
+			"name": "Écorcia", "kind": "town", "region": "johto",
+			"maps": ["azalea_town", "azalea_center", "azalea_mart", "azalea_kurt_house", "azalea_house_1"],
+			"subtitle": "Bois aux Chênes — Puits Ramoloss",
+			"services": [{"id": "pokemon_center", "found_on": "azalea_center"}, {"id": "poke_mart", "found_on": "azalea_mart"}],
+			"description": "Une petite ville paisible, au rythme des Ramoloss."
+		},
+		"route_34": {
+			"name": "Route 34", "kind": "route", "region": "johto", "maps": ["route_34", "route_34_house"],
+			"subtitle": "Doublonville — Bois aux Chênes",
+			"description": "Une route le long de la côte, au sud de Doublonville."
+		},
+		"ilex_forest": {
+			"name": "Bois aux Chênes", "kind": "place", "region": "johto", "maps": ["ilex_forest"],
+			"subtitle": "Route 34 — Écorcia",
+			"description": "Une forêt ancienne, où le temps semble suspendu."
+		},
+		"slowpoke_well": {
+			"name": "Puits Ramoloss", "kind": "place", "region": "johto",
+			"maps": ["slowpoke_well_b1f", "slowpoke_well_b2f"],
+			"subtitle": "Écorcia",
+			"description": "Un vieux puits humide, sous la ville."
 		},
 		"mahogany_town": {
 			"name": "Acajou", "kind": "town", "region": "johto",

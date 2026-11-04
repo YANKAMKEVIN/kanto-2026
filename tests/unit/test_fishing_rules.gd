@@ -176,6 +176,8 @@ func test_data_file_loads() -> void:
 		&"super_rod_default", &"super_rod_fuchsia",
 		# JOH6 : Super Canne du Lac Colère (Magicarpe, Léviator).
 		&"super_rod_lake_of_rage",
+		# JOH3 : Super Canne de l'étang de la Route 35 (Ptitard, Poissirène).
+		&"super_rod_route_35",
 		# Jalon 32 (N-12) : Super Canne du Parc Safari (groupe 6 de RB, Minidraco).
 		&"super_rod_safari"] as Array[StringName])
 

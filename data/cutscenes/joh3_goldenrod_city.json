@@ -1,0 +1,50 @@
+{
+	"goldenrod_arrival": {
+		"variants": [
+			{
+				"unless": [
+					"johto_goldenrod_arrived"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_goldenrod_arrived"
+						]
+					},
+					{
+						"dialogue": "goldenrod_speaker"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_south_guard": {
+		"variants": [
+			{
+				"unless": [
+					"johto_azalea_clue"
+				],
+				"steps": [
+					{
+						"face": "agent_sud",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "agent_sud"
+					},
+					{
+						"dialogue": "goldenrod_city_agent"
+					},
+					{
+						"move": "player",
+						"path": [
+							"up"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	}
+}
