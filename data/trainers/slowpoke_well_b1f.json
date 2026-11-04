@@ -1,6 +1,6 @@
 {
 	"slowpoke_well_grunt_e": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket",
 		"ai": "random",
 		"can_lose": false,
@@ -20,7 +20,7 @@
 		]
 	},
 	"slowpoke_well_grunt_f": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket_f",
 		"ai": "random",
 		"can_lose": false,
@@ -40,7 +40,7 @@
 		]
 	},
 	"slowpoke_well_grunt_g": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket",
 		"ai": "random",
 		"can_lose": false,

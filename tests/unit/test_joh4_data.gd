@@ -20,9 +20,9 @@ const TRAINERS: Dictionary = {
 	&"route_34_juggler_felix": ["Jongleur Félix", [[&"abra", 18], [&"kadabra", 20]]],
 	&"ilex_forest_scout_tom": ["Scout Tom", [[&"paras", 19], [&"caterpie", 18], [&"metapod", 19]]],
 	&"ilex_forest_lass_celine": ["Dresseuse Céline", [[&"hoothoot", 20], [&"teddiursa", 20]]],
-	&"slowpoke_well_grunt_e": ["Sbire", [[&"raticate", 20], [&"ekans", 20]]],
-	&"slowpoke_well_grunt_f": ["Sbire", [[&"koffing", 21], [&"zubat", 20]]],
-	&"slowpoke_well_grunt_g": ["Sbire", [[&"houndour", 21], [&"murkrow", 21]]],
+	&"slowpoke_well_grunt_e": ["Sbire Rocket", [[&"raticate", 20], [&"ekans", 20]]],
+	&"slowpoke_well_grunt_f": ["Sbire Rocket", [[&"koffing", 21], [&"zubat", 20]]],
+	&"slowpoke_well_grunt_g": ["Sbire Rocket", [[&"houndour", 21], [&"murkrow", 21]]],
 }
 const BRACE := &"slowpoke_well_admin_brace"
 ## Dossier §7 et §9 : scène → (objet, nombre, trouvé dans le monde, drapeau).

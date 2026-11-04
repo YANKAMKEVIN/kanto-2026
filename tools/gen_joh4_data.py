@@ -66,15 +66,15 @@ TRAINERS = {
 				"Le matin, de drôles de Pokémon sortent des troncs.")),
 	},
 	"slowpoke_well_b1f": {
-		"slowpoke_well_grunt_e": ("Sbire", "sbire_rocket", "rocket_grunt_m", 30,
+		"slowpoke_well_grunt_e": ("Sbire Rocket", "sbire_rocket", "rocket_grunt_m", 30,
 			[("raticate", 20), ("ekans", 20)],
 			("Tu ne passeras pas, gamin !", "Si, tu passes…",
 				"Le chef est en bas. Il va te réduire en miettes.")),
-		"slowpoke_well_grunt_f": ("Sbire", "sbire_rocket_f", "rocket_grunt_f", 30,
+		"slowpoke_well_grunt_f": ("Sbire Rocket", "sbire_rocket_f", "rocket_grunt_f", 30,
 			[("koffing", 21), ("zubat", 20)],
 			("On fait du commerce, rien de plus !", "Le commerce est fermé.",
 				"Des queues de Ramoloss, ça pousse, tu sais. Enfin, je crois.")),
-		"slowpoke_well_grunt_g": ("Sbire", "sbire_rocket", "rocket_grunt_m", 30,
+		"slowpoke_well_grunt_g": ("Sbire Rocket", "sbire_rocket", "rocket_grunt_m", 30,
 			[("houndour", 21), ("murkrow", 21)],
 			("Brace va te faire regretter d'être venu !", "Brace va me faire regretter d'être venu…",
 				"Va-t'en tant qu'il est encore temps.")),
@@ -386,7 +386,7 @@ def brace_scene():
 		{"battle": BRACE_ID, "win": won, "lose": ["lost_brace"]},
 		{"dialogue": "slowpoke_well_brace_defeated", "if": won},
 		{"dialogue": "slowpoke_well_brace_after", "if": won},
-		{"move": "brace", "to": [24, 16], "run": True, "if": won},
+		{"move": "brace", "to": [24, 16], "if": won}, # à pied : pas de course pour les Sbires
 		{"despawn": "brace", "if": won},
 		{"dialogue": "slowpoke_well_brace_flees", "if": won},
 		# Défaite : réveil au Centre, la scène s'arrête là (les « spawn » n'ont pas de condition).

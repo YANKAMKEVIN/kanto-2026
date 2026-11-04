@@ -275,4 +275,10 @@ queue, habitant) ; don du vendredi une fois pour toutes ; musiques de substituti
 
 | Tâche | Commit | Note |
 |---|---|---|
-| Plan | (ce commit) | Ce document |
+| Plan | `8a43c56d` | Ce document |
+| T1 | `3dee6fa0` | `gen_joh4_data.py` : PNJ, Dresseurs, Brace, textes E-1 à E-36, scènes, rencontres, objets clés |
+| T2–T6, T9 | `31e898a2` | `build_joh4_maps.gd`, `--azalea`, zones, grotte, Boutique, lumière, repos, musiques, aperçus, départs |
+| T7, T10 | `31e898a2` … | `test_joh4_data`, `test_joh4_maps`, `test_joh4_story` ; registres réalignés |
+| T11 | (fin de journée) | `tools/capture_joh4.sh` (23 plans) relus ; défaut corrigé : fleurs de l'autel sur fond noir (tuile transparente posée sur la couche Detail) |
+| Équilibrage | — | Brace 21/21/23 [D] par simulation (§2.3) |
+| `main` | — | JOH1 (`main`) et JOH2 (branche, Lucien posé à Oliville) refusionnés |

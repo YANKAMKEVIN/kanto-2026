@@ -76,7 +76,6 @@
 							24,
 							16
 						],
-						"run": true,
 						"if": [
 							"johto_brace_defeated"
 						]

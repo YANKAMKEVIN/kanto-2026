@@ -1,54 +1,54 @@
 {
 	"slowpoke_well_grunt_e_before": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Tu ne passeras pas, gamin !"
 		]
 	},
 	"slowpoke_well_grunt_e_defeated": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Si, tu passes…"
 		]
 	},
 	"slowpoke_well_grunt_e_after": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Le chef est en bas. Il va te réduire\nen miettes."
 		]
 	},
 	"slowpoke_well_grunt_f_before": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"On fait du commerce, rien de plus !"
 		]
 	},
 	"slowpoke_well_grunt_f_defeated": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Le commerce est fermé."
 		]
 	},
 	"slowpoke_well_grunt_f_after": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Des queues de Ramoloss, ça pousse,\ntu sais. Enfin, je crois."
 		]
 	},
 	"slowpoke_well_grunt_g_before": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Brace va te faire regretter d'être\nvenu !"
 		]
 	},
 	"slowpoke_well_grunt_g_defeated": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Brace va me faire regretter d'être\nvenu…"
 		]
 	},
 	"slowpoke_well_grunt_g_after": {
-		"speaker": "Sbire",
+		"speaker": "Sbire Rocket",
 		"pages": [
 			"Va-t'en tant qu'il est encore temps."
 		]
