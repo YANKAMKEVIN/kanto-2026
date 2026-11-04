@@ -41,8 +41,13 @@ extends RefCounted
 ## Pokémon déposé, XP en attente, niveau au dépôt ; dossier 18 §11, jalon-15.md §2.6) ;
 ## 8 = jalon 23 (visite du Parc Safari « safari ») ; 9 = chantier JR (apparence du rival
 ## « rival_look », costume du joueur « player_costume » ; dossier-joueuse-rivale.md JR-8,
-## dossier-costumes.md CO-9), une seule migration pour les deux chantiers.
-const VERSION: int = 9
+## dossier-costumes.md CO-9), une seule migration pour les deux chantiers ; 10 = Chapitre Johto,
+## JOH0 (`jalon-joh0.md` §2.1 : lien « bond » de chaque Pokémon, œuf « egg_steps », équipe
+## confisquée « confiscated »), une seule version pour tout le Chapitre Johto.
+const VERSION: int = 10
+## Lien donné par la migration 9 → 10 aux Pokémon déjà présents (dossier JOH-01 §8.1 : 50).
+## Figé ici : c'est un fait de la migration, il ne suit pas une future retouche de [BondRules].
+const V10_MIGRATED_BOND: int = 50
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
@@ -271,6 +276,8 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 			2:
 				# Avant la v2 (builds du J5), OBSERVER n'existait pas.
 				_upgrade_2_to_3(content, original < 2)
+			9:
+				_upgrade_9_to_10(content)
 			_:
 				# 0 → 1 : aucune forme n'a changé, les défauts suffisent.
 				# 3 → 4 (J9) : rien à transformer, un Pokémon sans « status » n'a aucun statut
@@ -334,6 +341,28 @@ static func _upgrade_2_to_3(content: Dictionary, from_v1: bool = false) -> void:
 		content["money"] = V3_MIGRATED_MONEY
 	if not content.has("first_wild_encounter"):
 		content["first_wild_encounter"] = recover_first_wild_encounter(content, from_v1)
+
+
+## Chapitre Johto (JOH0, `jalon-joh0.md` §2.1) : chaque Pokémon de l'équipe, du Stockage et
+## de la Pension reçoit « bond » = [constant V10_MIGRATED_BOND] s'il n'en a pas (un champ
+## déjà présent, fichier retouché, n'est pas remplacé). Rien d'autre : « egg_steps » absent =
+## pas un œuf, « confiscated » absent = rien de confisqué (GameState.load_dict). Le numéro
+## protège d'une build v9 qui effacerait le lien et l'équipe confisquée au premier autosave.
+static func _upgrade_9_to_10(content: Dictionary) -> void:
+	for key: String in ["party", "storage"]:
+		var members: Variant = content.get(key)
+		if not members is Array:
+			continue
+		for member: Variant in members:
+			_give_migrated_bond(member)
+	var daycare: Variant = content.get("daycare")
+	if daycare is Dictionary:
+		_give_migrated_bond((daycare as Dictionary).get("pokemon"))
+
+
+static func _give_migrated_bond(member: Variant) -> void:
+	if member is Dictionary and not (member as Dictionary).has("bond"):
+		(member as Dictionary)["bond"] = V10_MIGRATED_BOND
 
 
 ## Retrouve, dans une sauvegarde d'avant la v3, la **première espèce sauvage rencontrée en

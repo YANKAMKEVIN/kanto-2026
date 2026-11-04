@@ -10,6 +10,7 @@ extends GutTest
 ## sauvée sur une dalle du B2F → reprise sur sa case d'arrêt.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const SaveV10 := preload("res://tests/helpers/save_v10.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const PATH := "user://test/save_j20.json"
@@ -44,7 +45,7 @@ func before_all() -> void:
 
 
 func test_version_stays_seven() -> void:
-	assert_eq(SaveSystem.VERSION, 9, "le J20 n'ajoute aucune version (v8 : J23), v9 JR")
+	assert_eq(SaveSystem.VERSION, 10, "le J20 n'ajoute aucune version (v8 : J23), v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
 
 
 func test_gift_origin_round_trip_in_the_party_and_the_storage() -> void:
@@ -131,9 +132,10 @@ func test_a_v7_save_of_the_jalon_15_loads_and_rewrites_unchanged() -> void:
 	var loaded := _new_state()
 	assert_true(loaded.load_dict(content, _data), "chargée sans entrée écartée")
 	assert_eq(save.write(loaded.to_dict()), OK)
+	v7 = SaveV10.with_migrated_bond(v7)
 	v7["version"] = SaveSystem.VERSION
 	assert_eq(JSON.parse_string(fs.files[PATH]), JSON.parse_string(JSON.stringify(v7)),
-		"réécrite à l'identique")
+		"réécrite à l'identique (lien de la v10 à part)")
 	for flag: StringName in J20_FLAGS:
 		assert_false(loaded.flags.has_flag(flag), "%s absent d'une partie du J15" % flag)
 	loaded.free()

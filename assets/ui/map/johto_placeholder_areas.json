@@ -1,0 +1,50 @@
+{
+	"_comment": "Rectangles [x, y, w, h] des zones de Johto sur assets/ui/map/johto_placeholder.webp (1586x992, image PROVISOIRE dessinee par tools/make_johto_map_placeholder.py au JOH0 d'apres la geographie du dossier JOH-00 §3 ; refaite en phase DA). Seule la geometrie vit ici ; l'identite des zones est dans data/world/zones.json.",
+	"image": "res://assets/ui/map/johto_placeholder.webp",
+	"image_size": [
+		1586,
+		992
+	],
+	"zones": {
+		"olivine_city": {
+			"area": [
+				200,
+				485,
+				200,
+				110
+			]
+		},
+		"ecruteak_city": {
+			"area": [
+				460,
+				195,
+				200,
+				110
+			]
+		},
+		"goldenrod_city": {
+			"area": [
+				780,
+				465,
+				200,
+				110
+			]
+		},
+		"azalea_town": {
+			"area": [
+				780,
+				785,
+				200,
+				110
+			]
+		},
+		"mahogany_town": {
+			"area": [
+				1220,
+				195,
+				200,
+				110
+			]
+		}
+	}
+}

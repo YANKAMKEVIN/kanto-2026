@@ -91,10 +91,10 @@ func is_full() -> bool:
 	return _members.size() >= MAX_SIZE
 
 
-## Premier Pokémon non K.O., ou null.
+## Premier Pokémon en état de combattre (ni K.O. ni œuf, JOH0), ou null.
 func first_able() -> Pokemon:
 	for pokemon: Pokemon in _members:
-		if not pokemon.is_fainted():
+		if not pokemon.is_fainted() and not pokemon.is_egg():
 			return pokemon
 	return null
 

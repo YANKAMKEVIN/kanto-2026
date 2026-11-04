@@ -5,6 +5,7 @@ extends GutTest
 ## signalée (jamais perdue en silence), compagnon déposé effacé au chargement.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const SaveV10 := preload("res://tests/helpers/save_v10.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const PATH := "user://test/save.json"
@@ -76,7 +77,7 @@ func _written(state: Node) -> Dictionary:
 # --- Format et version ---------------------------------------------------------------------
 
 func test_the_format_is_v7_and_the_step_6_to_7_changes_nothing_but_the_version() -> void:
-	assert_eq(SaveSystem.VERSION, 9, "v7 : jalon 15 (Pension) ; v8 : jalon 23 (Parc Safari), v9 JR")
+	assert_eq(SaveSystem.VERSION, 10, "v7 : jalon 15 (Pension) ; v8 : jalon 23 (Parc Safari), v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
 	var bare := {"version": 6}
 	assert_eq(SaveSystem.upgrade(bare, 7), OK)
 	assert_eq(bare, {"version": 7}, "aucun champ inventé : Pension vide par défaut")
@@ -145,9 +146,10 @@ func test_the_real_v6_save_of_kevin_migrates_to_v7_without_any_other_change() ->
 	var saved: Dictionary = JSON.parse_string(JSON.stringify(state.to_dict()))
 	assert_eq(saved["daycare"], {}, "Pension vide écrite")
 	saved.erase("daycare")
-	var before: Dictionary = original.duplicate(true)
+	var before: Dictionary = SaveV10.with_migrated_bond(original)
 	before.erase("version")
-	assert_eq(saved, before, "rien d'autre ne change (uid, compagnon, équipe, Sac, drapeaux…)")
+	assert_eq(saved, JSON.parse_string(JSON.stringify(before)),
+		"rien d'autre ne change (uid, compagnon, équipe, Sac, drapeaux… ; lien de la v10 à part)")
 
 
 ## Fusion du J12 dans le J15 : la partie réelle du S21 (2026-10-14) passe en v7 et la seule
@@ -165,10 +167,11 @@ func test_the_real_v6_s21_save_of_kevin_gains_only_an_empty_daycare() -> void:
 		return not original.has(key))
 	assert_eq(added, ["daycare"], "une seule clé nouvelle")
 	assert_eq(written["daycare"], {}, "Pension vide écrite")
-	var expected: Dictionary = original.duplicate(true)
+	var expected: Dictionary = SaveV10.with_migrated_bond(original)
 	expected["version"] = SaveSystem.VERSION
 	expected["daycare"] = {}
-	assert_eq(written, JSON.parse_string(JSON.stringify(expected)), "rien d'autre ne change (équipe, uid, Sac, drapeaux, position…)")
+	assert_eq(written, JSON.parse_string(JSON.stringify(expected)),
+		"rien d'autre ne change (équipe, uid, Sac, drapeaux, position… ; lien de la v10 à part)")
 
 
 func test_the_real_v6_save_keeps_its_uids() -> void:

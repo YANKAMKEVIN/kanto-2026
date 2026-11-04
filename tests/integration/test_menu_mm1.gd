@@ -209,3 +209,30 @@ func test_bag_icons_are_painted_and_targets_live_in_the_item_panel() -> void:
 		var cancel := picker.get_cancel_button().get_global_rect()
 		assert_gte(cancel.size.y, float(UiTokens.TOUCH_MIN) - 0.5)
 		assert_lte(cancel.end.x, float(width - UiTokens.SAFE_MARGIN) + 0.5)
+
+
+## JOH0 (jalon-joh0.md §2.3, JH-8) : la puce de l'heure ne se montre qu'à Johto (Boot pose
+## `clock_shown`) et porte le pictogramme du moment.
+func test_clock_chip_follows_the_region_and_the_period() -> void:
+	var menu := _menu_in(1920)
+	menu.show_dashboard(_dashboard_view())
+	menu.open_animated()
+	await wait_process_frames(2)
+	var clock := WorldClock.new()
+	clock.start(8, 30)
+	menu.set_clock(clock)
+	menu.refresh_status()
+	assert_true(menu.get_clock_chip().visible, "Johto par défaut (clock_shown vrai)")
+	assert_eq(menu.get_clock_text(), "08:30")
+	var icon := menu.get_clock_chip().get_child(0) as TextureRect
+	assert_eq(icon.texture, TrainerMenu.PERIOD_ICONS[WorldClock.Period.MORNING], "matin")
+	clock.set_time(14)
+	menu.refresh_status()
+	assert_eq(icon.texture, TrainerMenu.PERIOD_ICONS[WorldClock.Period.DAY], "jour")
+	clock.set_time(22)
+	menu.refresh_status()
+	assert_eq(icon.texture, TrainerMenu.PERIOD_ICONS[WorldClock.Period.NIGHT], "nuit")
+	menu.clock_shown = false
+	menu.refresh_status()
+	assert_false(menu.get_clock_chip().visible, "à Kanto, l'horloge tourne mais rien ne la montre")
+	assert_eq(menu.get_clock_text(), "")

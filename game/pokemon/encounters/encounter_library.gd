@@ -21,6 +21,12 @@ extends RefCounted
 ## Sans « ramp », le taux reste fixe. Clé facultative « ghost_unless_item » (jalon 19, mode
 ## SPECTRE) : un identifiant d'objet non vide ([member EncounterTable.ghost_unless_item]) ; il
 ## n'est [b]pas[/b] vérifié contre [ItemLibrary] (« silph_scope » n'existe qu'au J20).
+## Clé facultative « period » (Chapitre Johto, JOH0, `jalon-joh0.md` §2.5) : un moment
+## ([constant WorldClock.PERIOD_NAMES]) ou une liste de moments ; la table ne vaut qu'à ces
+## moments, l'index devient (carte, terrain, moment). Une table sans « period » vaut toute la
+## journée ; pour une même carte et un même terrain, une table de toute la journée et une table
+## datée ne peuvent pas coexister, ni deux tables sur le même moment (erreur au chargement).
+## Kanto n'utilise jamais « period » : son tirage est inchangé.
 ## Une entrée invalide est écartée
 ## ([method get_errors], push_error).
 
@@ -28,7 +34,7 @@ const DATA_DIR: String = "res://data/encounters/"
 
 const _KEYS: Array[String] = ["maps", "terrain", "rate", "slots"]
 const _GRASS: StringName = &"grass"
-const _OPTIONAL_KEYS: Array[String] = ["ramp", "ghost_unless_item"]
+const _OPTIONAL_KEYS: Array[String] = ["ramp", "ghost_unless_item", "period"]
 const _RAMP_KEYS: Array[String] = ["from_step", "max_steps"]
 const _SLOT_KEYS: Array[String] = ["species", "levels", "weight"]
 
@@ -98,8 +104,14 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	return ok
 
 
-## Table pour [param map_id] sur [param terrain], ou null.
-func get_table(map_id: StringName, terrain: StringName = &"grass") -> EncounterTable:
+## Table pour [param map_id] sur [param terrain] au moment [param period] (JOH0 : la table de
+## ce moment si elle existe, sinon la table de toute la journée ; &"" = pas d'heure), ou null.
+func get_table(map_id: StringName, terrain: StringName = &"grass",
+		period: StringName = &"") -> EncounterTable:
+	if not period.is_empty():
+		var dated: StringName = _by_map.get(_map_key(map_id, terrain, period), &"")
+		if not dated.is_empty():
+			return _tables.get(dated)
 	var id: StringName = _by_map.get(_map_key(map_id, terrain), &"")
 	return _tables.get(id)
 
@@ -109,8 +121,9 @@ func get_table_by_id(id: StringName) -> EncounterTable:
 	return _tables.get(id)
 
 
-func has_table(map_id: StringName, terrain: StringName = &"grass") -> bool:
-	return _by_map.has(_map_key(map_id, terrain))
+func has_table(map_id: StringName, terrain: StringName = &"grass",
+		period: StringName = &"") -> bool:
+	return get_table(map_id, terrain, period) != null
 
 
 ## Débogage (départ de débogage, clé « wild ») : remplace la table d'herbes de [param map_id]
@@ -192,6 +205,8 @@ func _parse_table(value: Variant, where: String) -> EncounterTable:
 			ok = _fail("%s : « ghost_unless_item » est un identifiant d'objet non vide" % where)
 		else:
 			table.ghost_unless_item = StringName(item)
+	if entry.has("period"):
+		ok = _read_periods(entry["period"], table.periods, where) and ok
 	if entry.has("maps"):
 		ok = _read_maps(entry["maps"], table.maps, where) and ok
 	if entry.has("slots"):
@@ -272,20 +287,58 @@ func _parse_slot(value: Variant, where: String) -> EncounterSlot:
 	return slot if ok else null
 
 
-## Réserve les couples (carte, terrain) de [param table] ; faux si l'un est déjà pris.
-func _register_maps(table: EncounterTable, where: String) -> bool:
-	for map: StringName in table.maps:
-		var key := _map_key(map, table.terrain)
-		if _by_map.has(key):
-			return _fail("%s : « %s » (%s) a déjà la table « %s »" % [where, map, table.terrain,
-				_by_map[key]])
-	for map: StringName in table.maps:
-		_by_map[_map_key(map, table.terrain)] = table.id
+## « period » (JOH0) : un moment ou une liste non vide de moments distincts.
+func _read_periods(value: Variant, into: Array[StringName], where: String) -> bool:
+	var raw: Array = value if value is Array else [value]
+	if raw.is_empty():
+		return _fail("%s : « period » demande au moins un moment" % where)
+	for entry: Variant in raw:
+		if not entry is String or not WorldClock.PERIOD_NAMES.has(entry):
+			return _fail("%s : moment inconnu « %s » dans « period » (%s)" % [where, str(entry),
+				", ".join(PackedStringArray(WorldClock.PERIOD_NAMES.keys()))])
+		if into.has(StringName(entry)):
+			return _fail("%s : moment « %s » en double dans « period »" % [where, entry])
+		into.append(StringName(entry))
 	return true
 
 
-func _map_key(map_id: StringName, terrain: StringName) -> StringName:
-	return StringName("%s|%s" % [map_id, terrain])
+## Réserve les couples (carte, terrain) de [param table], par moment si elle est datée (JOH0) ;
+## faux si l'un est déjà pris, ou si une table datée et une table de toute la journée se
+## croisent sur la même carte et le même terrain.
+func _register_maps(table: EncounterTable, where: String) -> bool:
+	for map: StringName in table.maps:
+		var all_day := _map_key(map, table.terrain)
+		if table.is_all_day():
+			if _by_map.has(all_day):
+				return _fail("%s : « %s » (%s) a déjà la table « %s »" % [where, map,
+					table.terrain, _by_map[all_day]])
+			for period: String in WorldClock.PERIOD_NAMES:
+				var dated := _map_key(map, table.terrain, StringName(period))
+				if _by_map.has(dated):
+					return _fail("%s : « %s » (%s) a déjà une table datée « %s » : une table de toute la journée ne peut pas s'y ajouter"
+						% [where, map, table.terrain, _by_map[dated]])
+		else:
+			if _by_map.has(all_day):
+				return _fail("%s : « %s » (%s) a déjà la table de toute la journée « %s » : une table datée ne peut pas s'y ajouter"
+					% [where, map, table.terrain, _by_map[all_day]])
+			for period: StringName in table.periods:
+				var dated := _map_key(map, table.terrain, period)
+				if _by_map.has(dated):
+					return _fail("%s : « %s » (%s, %s) a déjà la table « %s »" % [where, map,
+						table.terrain, period, _by_map[dated]])
+	for map: StringName in table.maps:
+		if table.is_all_day():
+			_by_map[_map_key(map, table.terrain)] = table.id
+		else:
+			for period: StringName in table.periods:
+				_by_map[_map_key(map, table.terrain, period)] = table.id
+	return true
+
+
+func _map_key(map_id: StringName, terrain: StringName, period: StringName = &"") -> StringName:
+	if period.is_empty():
+		return StringName("%s|%s" % [map_id, terrain])
+	return StringName("%s|%s|%s" % [map_id, terrain, period])
 
 
 func _check_keys(entry: Dictionary, allowed: Array[String], required: Array[String],

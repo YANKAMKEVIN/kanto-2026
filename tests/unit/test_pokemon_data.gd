@@ -63,12 +63,23 @@ func _errors() -> String:
 
 # --- Vraies données ---------------------------------------------------------------------
 
+## Les espèces de Kanto (numéro national de 1 à 151), dans l'ordre de chargement ; celles de
+## Johto (152 à 251, johto.json) ont leur propre fichier de test (test_johto_data.gd).
+func _kanto_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for id: StringName in _data.get_species_ids():
+		if _data.get_species(id).dex <= 151:
+			ids.append(id)
+	return ids
+
+
 func test_real_data_loads_without_error() -> void:
 	assert_true(_data.load_dir())
 	assert_eq(_data.get_errors().size(), 0, _errors())
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
-	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json.
-	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
+	# Ordre du Pokédex ; jalon 20 (T7) : les 11 espèces de kanto_celadon.json. JOH0 (T6) : les 51
+	# espèces de Johto (johto.json) sont vérifiées par test_johto_data.gd, pas ici.
+	assert_eq(_kanto_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
@@ -132,8 +143,8 @@ func test_real_data_loads_without_error() -> void:
 	# Draco, Dracolosse) et Grobisou (j30.json) ; ses reprises et emprunts (Rhinoféros, Kicklee,
 	# Tygnon ; Riposte, Pied Sauté, Pied Voltige, poings, Mawashi Geri, Abîme, Toxik) retirés à
 	# la fusion dans main : ceux des J23, J27 et J28 font foi.
-	assert_eq(_data.get_move_ids().size(), 164,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
+	assert_eq(_data.get_move_ids().size(), 211,
+		"164 de Kanto + 47 de Johto (johto.json, JOH0 T6) dont : 47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
 		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
 		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14) + Jackpot (J15) "
 		+ "+ Coupe et Tonnerre (jalon 16) + 7 du jalon 17 + 8 de la Tour Pokémon (J19 ; "
@@ -266,13 +277,20 @@ func test_real_evolution_chains() -> void:
 		&"dragonair": [&"dragonite", 55],
 	}
 	var eevee := _data.get_species(&"eevee").evolutions
+	# JOH0 (T6) : Évoli garde ses trois pierres et reçoit Mentali et Noctali (lien, par moment).
 	assert_eq(eevee.map(func(r: EvolutionRule) -> Array: return [r.into, r.method, r.item]), [
 		[&"vaporeon", EvolutionRule.Method.ITEM, &"water_stone"],
 		[&"jolteon", EvolutionRule.Method.ITEM, &"thunder_stone"],
-		[&"flareon", EvolutionRule.Method.ITEM, &"fire_stone"]])
-	for id: StringName in _data.get_species_ids():
+		[&"flareon", EvolutionRule.Method.ITEM, &"fire_stone"],
+		[&"espeon", EvolutionRule.Method.BOND, &""],
+		[&"umbreon", EvolutionRule.Method.BOND, &""]])
+	# JOH0 (T6) : les règles de lien et d'échange avec objet ajoutées aux espèces de Kanto (et
+	# toutes les évolutions de Johto) sont vérifiées par test_johto_data.gd.
+	var johto_links: Array[StringName] = [&"golbat", &"onix", &"chansey", &"seadra", &"scyther",
+		&"porygon", &"poliwhirl", &"slowpoke"]
+	for id: StringName in _kanto_ids():
 		var rules := _data.get_species(id).evolutions
-		if id == &"eevee":
+		if id == &"eevee" or johto_links.has(id):
 			continue
 		if not expected.has(id):
 			assert_eq(rules.size(), 0, "%s : forme finale" % id)
@@ -583,8 +601,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		# Jalon 30 (T3, Ligue) : espèces nouvelles (Rhinoféros, Kicklee, Tygnon : J28, J27).
 		&"jynx": 45, &"machamp": 45, &"gengar": 45, &"dragonair": 45, &"dragonite": 45,
 	}
-	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
-	for id: StringName in _data.get_species_ids():
+	assert_eq(_kanto_ids().size(), expected.size(), "toutes les espèces de Kanto")
+	for id: StringName in _kanto_ids():
 		assert_eq(_data.get_species(id).catch_rate, expected.get(id, -1), String(id))
 
 

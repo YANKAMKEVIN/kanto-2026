@@ -136,6 +136,12 @@ var _map_id: StringName = &""
 var _haptic_busy: bool = false
 ## Progression du combat en cours (bilan de fin de combat).
 var _summary: ExpSummary = ExpSummary.new()
+## JOH0 (lien, `jalon-joh0.md` §2.7) : places de l'équipe tombées K.O. pendant le combat (une
+## entrée par K.O.), lues par Boot à la fin ([method get_fainted_indices]).
+var _fainted_indices: Array[int] = []
+## JOH0 (Exp ×1,5 de l'acte 1, §2.10) : `func() -> float`, multiplié aux règles du combat à la
+## création du moteur. Non valide : 1,0.
+var exp_bonus_source: Callable
 var _summary_card: ExpSummaryCard
 ## J23 : moteur de la rencontre Safari en cours (null sinon ; [member _battle] reste null).
 var _safari: SafariBattle
@@ -238,6 +244,7 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		foe.nickname = _texts.get_template(&"ghost_name")
 	_running = true
 	_summary = ExpSummary.new()
+	_fainted_indices.clear()
 	_wild_foe = foe if wild else null
 	_map_id = map.map_id if is_instance_valid(map) else &""
 	_trainer_id = trainer.id if trainer != null else &""
@@ -254,6 +261,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	# Lot 32P : le Multi Exp agit tant qu'il est dans le Sac.
 	if request.rules != null and _state.get(&"bag") is Bag:
 		request.rules.exp_all = (_state.get(&"bag") as Bag).has(ExpCalc.EXP_ALL_ITEM)
+	# JOH0 (JH-13) : bonus d'XP de l'acte 1 du Chapitre Johto, par-dessus les règles.
+	if request.rules != null and exp_bonus_source.is_valid():
+		request.rules.exp_multiplier *= float(exp_bonus_source.call())
 	_battle = Battle.new(player_side, foe_side, _data, rng, request.rules)
 	# Le moteur choisit qui entre (premier Pokémon non K.O., pas forcément le premier de
 	# l'équipe) : l'entrée en scène suit ses événements SENT_OUT, jamais une supposition.
@@ -434,6 +444,11 @@ func get_summary_card() -> ExpSummaryCard:
 
 
 ## Progression notée pendant le combat en cours (ou le dernier), pour les tests.
+## JOH0 : places de l'équipe tombées K.O. pendant le dernier combat (une par K.O.).
+func get_fainted_indices() -> Array[int]:
+	return _fainted_indices.duplicate()
+
+
 func get_exp_summary() -> ExpSummary:
 	return _summary
 
@@ -492,6 +507,15 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 				_show_own_card()
 				return chosen
 			var chosen_item := _items.get_item(chosen.item_id) if _items != null else null
+			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
+					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \
+					and CaptureGate.blocks(_state.party as Party, _state.flags as StoryFlags):
+				# JOH0 (JH-23) : équipe pleine et Stockage hors ligne (acte 1 du Chapitre Johto) :
+				# refusée avant le lancer, rien n'est retiré, aucun tour joué.
+				var text := _texts.get_template(CaptureGate.REFUSED_KEY) if _texts != null else ""
+				await _hud.show_message(text if not text.is_empty() else CaptureGate.REFUSED_TEXT)
+				_show_own_card()
+				continue
 			if chosen.kind == BattleAction.Kind.ITEM and not chosen.is_heal() \
 					and chosen_item != null and chosen_item.category == ItemData.Category.BALL \
 					and _battle.refuses_balls():
@@ -644,6 +668,9 @@ func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 	for index: int in events.size():
 		var event := events[index]
 		_summary.add(event)
+		if event.kind == BattleEvent.Kind.FAINTED and event.side == BattleEvent.SideId.PLAYER \
+				and event.party_index >= 0:
+			_fainted_indices.append(event.party_index)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
 			# « X apprend Y ! » (juste après le K.O. adverse) attend un toucher.
 			beat.wait_touch = event.kind == BattleEvent.Kind.MOVE_LEARNED

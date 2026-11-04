@@ -65,6 +65,12 @@ static func member(pokemon: Pokemon, index: int, data: PokemonData) -> TeamMembe
 	view.hp = clampi(pokemon.hp, 0, view.max_hp)
 	view.status_text = StatusView.text(pokemon)
 	view.favorite = pokemon.favorite
+	if pokemon.is_egg():
+		# JOH0 (`jalon-joh0.md` §2.9) : l'œuf cache son espèce ; sa ligne de statut dit le reste.
+		view.display_name = EggRules.NAME
+		view.gender = BattleCardView.Gender.NONE
+		view.status_text = EggRules.hint_text(pokemon.egg_steps)
+		view.egg = true
 	return view
 
 

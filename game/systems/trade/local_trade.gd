@@ -31,27 +31,43 @@ const RESULT_TEXT: String = "%s a évolué !"
 const REFUSED_REASON: String = "Rien ne se passerait"
 
 
-## Espèce obtenue par échange de [param pokemon] (première règle TRADE vers une espèce
-## connue), ou &"".
-static func trade_target(pokemon: Pokemon, data: PokemonData) -> StringName:
+## Règle TRADE qui s'applique à [param pokemon] (première règle vers une espèce connue ; une
+## règle avec objet, JOH0 `jalon-joh0.md` §2.8, ne compte que si [param bag] contient l'objet),
+## ou null.
+static func trade_rule(pokemon: Pokemon, data: PokemonData, bag: Bag = null) -> EvolutionRule:
 	if pokemon == null or data == null:
-		return &""
+		return null
 	var species := data.get_species(pokemon.species_id)
 	if species == null:
-		return &""
+		return null
 	for rule: EvolutionRule in species.evolutions:
-		if rule.method == EvolutionRule.Method.TRADE and data.has_species(rule.into):
-			return rule.into
-	return &""
+		if rule.method != EvolutionRule.Method.TRADE or not data.has_species(rule.into):
+			continue
+		if not rule.item.is_empty() and (bag == null or not bag.has(rule.item)):
+			continue
+		return rule
+	return null
+
+
+## Espèce obtenue par échange de [param pokemon] ([method trade_rule]), ou &"".
+static func trade_target(pokemon: Pokemon, data: PokemonData, bag: Bag = null) -> StringName:
+	var rule := trade_rule(pokemon, data, bag)
+	return rule.into if rule != null else &""
+
+
+## Objet que l'échange de [param pokemon] consommerait (JOH0 : Peau Métal…), ou &"".
+static func trade_item(pokemon: Pokemon, data: PokemonData, bag: Bag = null) -> StringName:
+	var rule := trade_rule(pokemon, data, bag)
+	return rule.item if rule != null else &""
 
 
 ## Index des Pokémon de [param party] que le terminal accepte, dans l'ordre de l'équipe.
-static func candidates(party: Party, data: PokemonData) -> Array[int]:
+static func candidates(party: Party, data: PokemonData, bag: Bag = null) -> Array[int]:
 	var result: Array[int] = []
 	if party == null:
 		return result
 	for i: int in party.size():
-		if not trade_target(party.get_at(i), data).is_empty():
+		if not trade_target(party.get_at(i), data, bag).is_empty():
 			result.append(i)
 	return result
 
@@ -62,13 +78,15 @@ static func candidates(party: Party, data: PokemonData) -> Array[int]:
 ## ([param companion_uid]), `companion_evolved` est vrai : l'appelant rafraîchit son apparence
 ## (même identifiant, nouvelle espèce). Pokédex : la nouvelle espèce est vue et capturée.
 static func execute(party: Party, index: int, data: PokemonData, pokedex: Pokedex = null,
-		map: StringName = &"", date: String = "", companion_uid: String = "") -> Dictionary:
+		map: StringName = &"", date: String = "", companion_uid: String = "",
+		bag: Bag = null) -> Dictionary:
 	var result := {"status": Status.INVALID, "pokemon": null, "from": &"", "into": &"",
-		"moves": [] as Array[StringName], "companion_evolved": false}
+		"moves": [] as Array[StringName], "companion_evolved": false, "item": &""}
 	if party == null or data == null or index < 0 or index >= party.size():
 		return result
 	var original := party.get_at(index)
-	var into := trade_target(original, data)
+	var rule := trade_rule(original, data, bag)
+	var into := rule.into if rule != null else &""
 	if into.is_empty():
 		result["status"] = Status.INCOMPATIBLE
 		return result
@@ -80,10 +98,14 @@ static func execute(party: Party, index: int, data: PokemonData, pokedex: Pokede
 	var moves := Evolution.evolve(copy, into, data)
 	if copy.species_id != into or copy.uid != original.uid:
 		return result
-	# Bloc synchrone : remplacement au même rang (équipe pleine : retrait puis ajout).
+	# Bloc synchrone : remplacement au même rang (équipe pleine : retrait puis ajout) ; l'objet
+	# de la règle (JOH0) part dans le même bloc : jamais un objet consommé sans évolution.
 	party.remove_at(index)
 	party.add(copy)
 	party.move(party.size() - 1, index)
+	if not rule.item.is_empty() and bag != null:
+		bag.remove(rule.item)
+		result["item"] = rule.item
 	if pokedex != null:
 		pokedex.mark_seen(into, map, date)
 		pokedex.mark_caught(into, map, date)
@@ -98,10 +120,10 @@ static func execute(party: Party, index: int, data: PokemonData, pokedex: Pokede
 
 ## Vue du choix pour le [PartyPicker] : toute l'équipe, les places non compatibles avec leur
 ## raison.
-static func picker_view(party: Party, data: PokemonData) -> PartyPickerView:
+static func picker_view(party: Party, data: PokemonData, bag: Bag = null) -> PartyPickerView:
 	var picker := PartyPickerView.new()
 	picker.title = PICK_TEXT
-	var accepted := candidates(party, data)
+	var accepted := candidates(party, data, bag)
 	var members := party.get_all()
 	for i: int in members.size():
 		var ok := i in accepted

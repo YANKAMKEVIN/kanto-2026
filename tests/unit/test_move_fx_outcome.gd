@@ -125,3 +125,16 @@ func test_metronome_calls_a_move_that_has_its_own_outcome() -> void:
 func test_next_move_of_the_other_side_is_not_a_call() -> void:
 	var events: Array[BattleEvent] = [_used(&"growl"), _used(&"tackle", F)]
 	assert_eq(MoveFxOutcome.read(events, 0).called_move_id, &"")
+
+
+## Vague 2 « Effets fidèles à Rouge » : un Téléport réussi (TELEPORTED du lanceur) le laisse
+## caché ; contre un Dresseur (NOTHING_HAPPENED), rien ne part.
+func test_teleported_user_vanishes() -> void:
+	var fled: Array[BattleEvent] = [_used(&"teleport", F), _ev(K.TELEPORTED, F)]
+	var outcome := MoveFxOutcome.read(fled, 0)
+	assert_eq(outcome.result, MoveFxOutcome.Result.AFFECTED)
+	assert_true(outcome.vanished, "il quitte le combat")
+	var trainer: Array[BattleEvent] = [_used(&"teleport"), _ev(K.NOTHING_HAPPENED, P)]
+	var stays := MoveFxOutcome.read(trainer, 0)
+	assert_eq(stays.result, MoveFxOutcome.Result.FAILED)
+	assert_false(stays.vanished)

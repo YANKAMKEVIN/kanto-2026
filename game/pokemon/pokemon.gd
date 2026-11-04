@@ -14,7 +14,8 @@ extends RefCounted
 enum Gender { NONE, MALE, FEMALE }
 ## Manière dont le Pokémon est arrivé dans l'équipe (jalon 5 §16.3). J20 (`jalon-20.md` §2.5) :
 ## GIFT, Pokémon donné (Évoli), en fin d'enum.
-enum Origin { UNKNOWN, STARTER, CAPTURE, GIFT, TRADE }
+## JOH0 (`jalon-joh0.md` §2.9) : EGG, Pokémon éclos d'un œuf, en fin d'enum.
+enum Origin { UNKNOWN, STARTER, CAPTURE, GIFT, TRADE, EGG }
 ## Résultat de [method learn_move].
 enum LearnResult {
 	LEARNED, ## Appris dans un emplacement libre.
@@ -32,7 +33,11 @@ const ORIGIN_NAMES: Dictionary[String, Origin] = {
 	"unknown": Origin.UNKNOWN, "starter": Origin.STARTER, "capture": Origin.CAPTURE,
 	"gift": Origin.GIFT, # J20
 	"trade": Origin.TRADE, # J25 (échange fixe ; valeur inconnue lue = UNKNOWN)
+	"egg": Origin.EGG, # JOH0 (œuf éclos)
 }
+## Lien (JOH0, JH-11, [BondRules]) : valeur d'un Pokémon dont le fichier ne dit rien
+## (sauvegarde d'avant la v10, champ mal formé) et d'un Pokémon créé sans rencontre.
+const DEFAULT_BOND: int = 50
 
 var species_id: StringName = &""
 ## Surnom ; vide = nom de l'espèce.
@@ -71,6 +76,33 @@ var status_turns: int = 0
 ## Attribué à l'entrée dans l'équipe ou le Stockage ([method ensure_uid]) et gardé à vie (même
 ## objet au Stockage et à l'évolution). Désigne le compagnon (jalon 11), jamais une position.
 var uid: String = ""
+## Lien avec le joueur (JOH0, JH-11, `jalon-joh0.md` §2.7) : 0 à 100, **caché** (JH-21). Posé
+## à l'entrée dans l'équipe selon l'origine ([method GameState.stamp_meeting], [BondRules]) ;
+## monte avec les combats gagnés, les pas et le rôle de compagnon, baisse au K.O. ; lu par les
+## évolutions « bond » ([method Evolution.level_up_target]). Sauvegardé (v10).
+var bond: int = DEFAULT_BOND
+## Œuf (JOH0, `jalon-joh0.md` §2.9) : pas restants avant l'éclosion ; 0 = pas un œuf. Un œuf a
+## déjà son espèce, son niveau, son sexe et ses capacités (tirés à la création) mais ne combat
+## pas ([method is_egg]). Sauvegardé (v10) seulement s'il est > 0.
+var egg_steps: int = 0
+
+
+## Vrai tant que le Pokémon est un œuf (il compte dans l'équipe, ne combat pas).
+func is_egg() -> bool:
+	return egg_steps > 0
+
+
+## Pose le lien, borné à [0, 100] ; rend la valeur retenue.
+func set_bond(value: int) -> int:
+	bond = clampi(value, BondRules.MIN, BondRules.MAX)
+	return bond
+
+
+## Ajoute [param delta] (négatif pour une perte) au lien, borné ; rend la variation réelle.
+func add_bond(delta: int) -> int:
+	var before := bond
+	set_bond(bond + delta)
+	return bond - before
 
 
 ## Donne un identifiant ([PokemonUid]) au Pokémon s'il n'en a pas ; rend l'identifiant.
@@ -232,7 +264,7 @@ func to_dict() -> Dictionary:
 	var move_list: Array[Dictionary] = []
 	for slot: MoveSlot in moves:
 		move_list.append(slot.to_dict())
-	return {
+	var result := {
 		"species": String(species_id), "nickname": nickname, "level": level,
 		"gender": GENDER_NAMES.find_key(gender), "exp": experience, "hp": hp,
 		"ivs": _stats_to_dict(ivs), "evs": _stats_to_dict(evs), "moves": move_list,
@@ -244,7 +276,12 @@ func to_dict() -> Dictionary:
 		"status": String(status),
 		"status_turns": status_turns,
 		"uid": uid,
+		"bond": bond,
 	}
+	# JOH0 (v10) : un œuf seulement (absent = pas un œuf, comme avant la v10).
+	if egg_steps > 0:
+		result["egg_steps"] = egg_steps
+	return result
 
 
 ## Reconstruit un Pokémon écrit par [method to_dict] ; null (push_error) si le contenu est
@@ -309,6 +346,10 @@ static func from_dict(dict: Dictionary, data: PokemonData) -> Pokemon:
 		pokemon.uid = raw_uid
 	elif not (raw_uid is String and (raw_uid as String).is_empty()):
 		push_warning("Pokemon.from_dict : identifiant mal formé « %s » remplacé" % str(raw_uid))
+	# Lien (JOH0, v10) : absent (sauvegarde d'avant la v10) ou mal formé → DEFAULT_BOND ; hors
+	# bornes → borné. Œuf : absent ou mal formé → pas un œuf ; négatif → 0.
+	pokemon.set_bond(JsonFields.get_int(dict, "bond", DEFAULT_BOND))
+	pokemon.egg_steps = maxi(JsonFields.get_int(dict, "egg_steps"), 0)
 	return pokemon
 
 

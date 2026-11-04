@@ -68,6 +68,9 @@ var status_inflicted: StringName = &""
 var charge_released: bool = false
 ## Métronome : attaque lancée ([constant Result.CALLED]).
 var called_move_id: StringName = &""
+## Téléport réussi (TELEPORTED du lanceur) : il quitte le combat, l'effet le laisse caché
+## (vague 2 « Effets fidèles à Rouge »).
+var vanished: bool = false
 
 
 ## Issue de l'attaque dont le MOVE_USED est en [param start] ; null si ce n'en est pas un.
@@ -123,6 +126,9 @@ static func read(events: Array[BattleEvent], start: int) -> MoveFxOutcome:
 				outcome.drained = true
 			BattleEvent.Kind.RECOIL:
 				outcome.recoil = true
+			BattleEvent.Kind.TELEPORTED:
+				outcome.vanished = outcome.vanished or not on_target
+				affected = true
 			BattleEvent.Kind.STATUS_INFLICTED:
 				if on_target:
 					outcome.status_inflicted = event.status

@@ -24,8 +24,14 @@ extends RefCounted
 ## écartée, l'erreur signalée ([method get_errors], push_error).
 
 const DEFAULT_PATH: String = "res://data/pokedex/kanto.json"
+## Chapitre Johto (JOH0, `jalon-joh0.md` §2.12) : un fichier par région dans ce dossier
+## (`kanto.json`, `johto.json`), lus par [method load_dir] ; les « size » s'additionnent (202).
+const DEFAULT_DIR: String = "res://data/pokedex/"
 ## Bornes de « size » (le Pokédex national actuel compte 1025 espèces).
 const MAX_SIZE: int = 1025
+## Plus grand numéro national admis (Celebi, n° 251, JOH0) : le Pokédex est une liste continue
+## des espèces du jeu (JH-22), pas une grille de 1 à « size ».
+const MAX_DEX: int = 251
 
 const _ROOT_KEYS: Array[String] = ["size", "species"]
 const _SPECIES_KEYS: Array[String] = ["height", "weight", "description", "draft", "notes"]
@@ -44,8 +50,23 @@ var _notes: Dictionary[StringName, PokedexNoteData] = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 
+## Charge tous les fichiers `.json` de [param dir] (ordre alphabétique : `johto.json` puis
+## `kanto.json`), JOH0. Faux si une erreur a été signalée (les espèces valides sont gardées).
+func load_dir(dir: String = DEFAULT_DIR) -> bool:
+	if not DirAccess.dir_exists_absolute(dir):
+		return _fail("dossier introuvable : %s" % dir)
+	var sorted: Array[String] = []
+	sorted.assign(DirAccess.get_files_at(dir))
+	sorted.sort()
+	var ok := true
+	for file: String in sorted:
+		if file.get_extension() == "json":
+			ok = load_file(dir.path_join(file)) and ok
+	return ok
+
+
 ## Charge [param path]. Faux si le fichier est illisible ou contient une erreur (les espèces
-## valides sont gardées).
+## valides sont gardées). Les « size » de plusieurs fichiers s'additionnent.
 func load_file(path: String = DEFAULT_PATH) -> bool:
 	if not FileAccess.file_exists(path):
 		return _fail("fichier introuvable : %s" % path)
@@ -68,7 +89,7 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	if not _is_int(size) or int(size) < 1 or int(size) > MAX_SIZE:
 		ok = _fail("%s : « size » est un entier de 1 à %d" % [source, MAX_SIZE])
 	else:
-		_size = int(size)
+		_size += int(size)
 	if not data.get("species") is Dictionary:
 		return _fail("%s : « species » doit être un objet { identifiant: espèce }" % source)
 	var species: Dictionary = data["species"]
@@ -93,16 +114,17 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 
 
 ## Vérifie les références croisées avec [param data] : chaque espèce existe et son numéro
-## tient dans la grille. Les espèces fautives sont écartées. Faux si une erreur a été trouvée.
+## national tient sous [constant MAX_DEX] (JOH0 : plus « ≤ size »). Les espèces fautives sont
+## écartées. Faux si une erreur a été trouvée.
 func check_references(data: PokemonData) -> bool:
 	var ok := true
 	for id: StringName in _species.keys():
 		var where := "%s espèce « %s »" % [_species[id].source, id]
 		if not data.has_species(id):
 			ok = _fail("%s : espèce inconnue de PokemonData" % where)
-		elif data.get_species(id).dex > _size:
-			ok = _fail("%s : numéro %d hors de la grille (1 à %d)" % [where,
-				data.get_species(id).dex, _size])
+		elif data.get_species(id).dex > MAX_DEX:
+			ok = _fail("%s : numéro %d au-delà du dernier numéro connu (%d)" % [where,
+				data.get_species(id).dex, MAX_DEX])
 		else:
 			continue
 		for note: PokedexNoteData in _species[id].notes:
@@ -111,7 +133,7 @@ func check_references(data: PokemonData) -> bool:
 	return ok
 
 
-## Nombre de cases de la grille (151 pour Kanto ; 0 si rien n'a été lu).
+## Nombre d'espèces du Pokédex (151 pour Kanto seul, 202 avec Johto ; 0 si rien n'a été lu).
 func size() -> int:
 	return _size
 

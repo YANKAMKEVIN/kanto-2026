@@ -65,6 +65,16 @@ func _load() -> Node:
 	return state
 
 
+## JOH0 (v10) : la migration donne « bond » = 50 à chaque Pokémon de l'équipe et du Stockage ;
+## c'est le seul champ que la lecture ajoute à cette v6.
+func _with_migrated_bond(content: Dictionary) -> Dictionary:
+	var result := content.duplicate(true)
+	for key: String in ["party", "storage"]:
+		for member: Dictionary in result.get(key, []):
+			member["bond"] = SaveSystem.V10_MIGRATED_BOND
+	return result
+
+
 ## Passage par le JSON (entiers en flottants), pour comparer deux dictionnaires.
 func _json(value: Variant) -> Variant:
 	return JSON.parse_string(JSON.stringify(value))
@@ -91,15 +101,16 @@ func test_the_fixture_is_the_real_save_of_kevin() -> void:
 ## J15 : le J12 n'avait pas de version nouvelle (§2.20) ; la v7 (Pension) ne change que le
 ## numéro à la lecture (aucun champ inventé).
 func test_the_j15_reads_it_with_only_the_v6_to_v7_step() -> void:
-	assert_eq(SaveSystem.VERSION, 9, "v7 : jalon 15 (Pension), v8 : jalon 23, v9 JR")
+	assert_eq(SaveSystem.VERSION, 10, "v7 : jalon 15 (Pension), v8 : jalon 23, v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
 	_fs.files[PATH] = _text()
 	var read := _save.read()
 	assert_eq(_save.last_status, OK)
 	assert_eq(_save.read_version, 6, "lue comme une v6")
 	assert_eq(int(read["version"]), SaveSystem.VERSION, "migrée à la version courante")
-	var expected: Dictionary = _original()
+	var expected: Dictionary = _with_migrated_bond(_original())
 	expected["version"] = SaveSystem.VERSION
-	assert_eq(_json(read), _json(expected), "seul le numéro de version change à la lecture")
+	assert_eq(_json(read), _json(expected),
+		"seuls le numéro de version et le lien de migration (v10) changent à la lecture")
 	assert_eq(_fs.files[PATH], _text(), "la lecture n'écrit rien")
 	assert_false(_fs.files.has(PATH + ".rejected"), "rien d'écarté")
 
@@ -132,9 +143,10 @@ func test_nothing_is_lost_when_loaded_by_the_j12() -> void:
 	assert_eq(state.rival_name, "Régis")
 	# `to_dict()` n'a pas « version » : SaveSystem l'ajoute à l'écriture (test suivant).
 	var saved: Dictionary = _json(state.to_dict())
+	var expected := _with_migrated_bond(original)
 	for key: String in KEYS:
 		if key != "version":
-			assert_eq(saved.get(key), _json(original.get(key)), "inchangé : %s" % key)
+			assert_eq(saved.get(key), _json(expected.get(key)), "inchangé : %s" % key)
 	assert_eq(saved.get("daycare"), {}, "J15 : Pension vide")
 	assert_true(state.daycare.is_empty())
 
@@ -143,11 +155,11 @@ func test_written_then_read_again_it_is_identical() -> void:
 	var state := _load()
 	assert_eq(_save.write(state.to_dict()), OK, "écrite par le J12")
 	var once: String = _fs.files[PATH]
-	var expected: Dictionary = _original()
+	var expected: Dictionary = _with_migrated_bond(_original())
 	expected["version"] = SaveSystem.VERSION
 	expected["daycare"] = {}
 	assert_eq(JSON.parse_string(once), _json(expected),
-		"fichier écrit = l'original en v7, plus la seule Pension vide")
+		"fichier écrit = l'original en v7, plus la seule Pension vide (et le lien de la v10)")
 	var written_keys: Array = (JSON.parse_string(once) as Dictionary).keys()
 	written_keys.sort()
 	var all_keys: Array = KEYS + V7_KEYS

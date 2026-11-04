@@ -9,6 +9,7 @@ extends GutTest
 ## Système de fichiers en mémoire : jamais le vrai `user://`, ni le fichier du téléphone.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const SaveV10 := preload("res://tests/helpers/save_v10.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const FIXTURE := "res://tests/fixtures/save/v6_kevin_s21.json"
@@ -116,6 +117,8 @@ func test_continue_resumes_his_game_and_the_autosave_keeps_everything() -> void:
 	saved.erase("play_time")
 	original.erase("play_time")
 	saved.erase("daycare")
+	# JOH0 (v10) : le lien de migration est le seul autre champ ajouté.
+	original = SaveV10.with_migrated_bond(original)
 	original["version"] = SaveSystem.VERSION
 	assert_eq(_json(saved), _json(original), "même partie, champ pour champ")
 

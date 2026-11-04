@@ -1048,7 +1048,11 @@ func play_vanish(side: BattleEvent.SideId) -> void:
 	if not _active or not sprite.visible:
 		return
 	var tween := _new_tween()
-	if reduce_motion or reduce_flashes:
+	if sprite.modulate.a <= 0.01:
+		# L'effet de Téléport (vague 2 « Effets fidèles à Rouge ») l'a déjà fait filer vers le
+		# haut : il ne revient pas scintiller, seule l'ombre s'efface.
+		tween.tween_property(_shadows[side], ^"modulate:a", 0.0, REDUCED_FADE)
+	elif reduce_motion or reduce_flashes:
 		var duration := REDUCED_FADE if reduce_motion else VANISH_DURATION
 		tween.set_parallel(true)
 		tween.tween_property(sprite, ^"modulate:a", 0.0, duration)

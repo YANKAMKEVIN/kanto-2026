@@ -134,6 +134,12 @@ var volley_wobble: float = 0.0
 var beats: int = 1
 ## Teinte des flipbooks de la famille (`fx.tint` ; blanc : aucune).
 var art_tint: Color = Color.WHITE
+## Brique de la variante d'impact (`impacts.<impact>.brick` : `coin_burst`, `lick`, `toss`…) ;
+## "" sans variante.
+var impact_brick: StringName = &""
+## Téléport réussi (vague 2) : la famille dit `vanish` et le journal dit TELEPORTED ; le lecteur
+## laisse alors le lanceur caché à la fin (la scène finit le travail, [method BattleStage.play_vanish]).
+var vanishes: bool = false
 ## Types de la cible (Éclair : plumes sur un Pokémon Vol) ; rempli par la scène, vide sinon.
 var target_types: Array[StringName] = []
 ## Issue lue dans le journal (null : un coup qui porte) ; le son du coup en dépend (T4).
@@ -157,6 +163,8 @@ static func build(catalog: MoveFxCatalog, entry: MoveFxEntry, move: MoveData,
 	plan._setup(catalog, entry, plan_mode)
 	var result := MoveFxOutcome.Result.HIT if outcome == null else outcome.result
 	var family_data := catalog.family(plan.family)
+	plan.vanishes = JsonFields.get_bool(family_data, "vanish") and outcome != null \
+		and outcome.vanished and outcome.lands()
 	if result == MoveFxOutcome.Result.CHARGING:
 		plan._layout_charge(catalog)
 	else:
@@ -186,9 +194,14 @@ static func band_for(catalog: MoveFxCatalog, entry: MoveFxEntry, move: MoveData,
 	return bands.size() - 1
 
 
-## Durée d'un coup en Complètes (CV-2) : la puissance placée dans sa ligne.
+## Durée d'un coup en Complètes (CV-2) : la puissance placée dans sa ligne. Une famille qui
+## dit `duration` (vague 2 : Trempette, Téléport, Flash… dont l'animation de Rouge dure plus que
+## la première ligne) la garde pour une attaque sans dégâts.
 static func full_hit_duration(catalog: MoveFxCatalog, entry: MoveFxEntry, move: MoveData,
 		legendary: bool = false) -> float:
+	var fixed := JsonFields.get_float(catalog.family(entry.family), "duration")
+	if fixed > 0.0 and not move.is_damaging() and not legendary:
+		return fixed
 	var bands := _bands(catalog)
 	if bands.is_empty():
 		return 0.0
@@ -269,6 +282,9 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	var stamp := JsonFields.get_id(catalog.impact(impact), "art")
 	if not stamp.is_empty():
 		art[&"stamp"] = stamp
+	impact_brick = JsonFields.get_id(catalog.impact(impact), "brick")
+	# Vague 2 : rôles propres de la variante d'impact (pièces de Jackpot, salive, coquille…).
+	_read_art(JsonFields.get_dict(catalog.impact(impact), "roles"))
 	_read_art(JsonFields.get_dict(catalog.signature(signature), "art"))
 	# Modificateurs (CV.1) : leurs rôles propres (`stream`, `trap`, `self_burst`), sans écraser
 	# ceux de la famille ni de la signature.
@@ -314,9 +330,13 @@ func _layout(catalog: MoveFxCatalog, family_data: Dictionary, full_hit: float,
 	var strike := JsonFields.get_float(parts, "impact")
 	var back := JsonFields.get_float(parts, "return")
 	if result == MoveFxOutcome.Result.FAILED:
-		# Rien ne part : le lanceur se prépare, puis revient (première ligne de CV-2).
+		# Rien ne part : le lanceur se prépare, puis revient (première ligne de CV-2, ou la durée
+		# propre de la famille : Trempette saute même quand « rien ne se passe »).
 		var shortest := JsonFields.get_float(_bands(catalog)[0], "min") if not _bands(catalog).is_empty() \
 			else full_hit
+		var fixed := JsonFields.get_float(family_data, "duration")
+		if fixed > 0.0:
+			shortest = fixed
 		duration = _mode_duration(catalog, shortest)
 		hit_duration = duration
 		var total := anticipation + back
@@ -402,6 +422,11 @@ func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutco
 	var data := JsonFields.get_dict(family_data, "world")
 	light_color = Color.from_string(JsonFields.get_string(data, "light", "#FFFFFF"), Color.WHITE)
 	light_peak = JsonFields.get_float(data, "light_peak")
+	# Vague 2 : une variante peut changer la lumière (Poing de Feu orange, Poing-Glace bleu…).
+	var fx := catalog.family_fx(family, variant)
+	light_color = Color.from_string(JsonFields.get_string(fx, "light", light_color.to_html()),
+		light_color)
+	light_peak = JsonFields.get_float(fx, "light_peak", light_peak)
 	var own := catalog.signature(signature)
 	light_peak = JsonFields.get_float(own, "light_peak", light_peak)
 	if palette.is_empty():
@@ -409,12 +434,13 @@ func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutco
 	if reduce_flashes:
 		light_peak = minf(light_peak, JsonFields.get_float(limits, "reduced_flash_peak", 0.35))
 	var lands := result == MoveFxOutcome.Result.HIT or result == MoveFxOutcome.Result.AFFECTED
-	flashes = JsonFields.get_int(own, "flashes", JsonFields.get_int(data, "flashes")) * hits \
+	flashes = JsonFields.get_int(own, "flashes", JsonFields.get_int(fx, "flashes",
+		JsonFields.get_int(data, "flashes"))) * hits \
 		if lands and light_peak > 0.0 else 0
 	var per_second := JsonFields.get_float(limits, "flashes_per_second", 3.0)
 	flashes = mini(flashes, floori(per_second * duration + EPSILON))
 	if mode == Mode.FULL and lands:
-		for flag: StringName in [&"dust", &"droplets", &"foliage", &"darken"]:
+		for flag: StringName in [&"dust", &"droplets", &"foliage", &"darken", &"storm"]:
 			if JsonFields.get_bool(data, String(flag)):
 				world.append(flag)
 

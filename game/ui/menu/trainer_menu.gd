@@ -49,7 +49,8 @@ signal bag_target_chosen(item_id: StringName, index: int)
 signal bag_repeat_requested
 ## Relais de l'écran Pokédex (6C) : filtre, zone, type ou recherche changé ; fiche demandée
 ## (case connue touchée). Le lien Habitat → Carte passe par [signal route_requested].
-signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String,
+	region: StringName)
 signal pokedex_species_opened(species: StringName)
 ## Jalon Son (SonB) : « Cri » d'une espèce capturée au Pokédex (numéro national).
 signal pokedex_cry_requested(number: int)
@@ -58,6 +59,8 @@ signal pokedex_cry_requested(number: int)
 signal map_zone_touched(zone: StringName)
 ## Passe systèmes 2 (§2.8, T24) : « S'ENVOLER » touché sur la Carte.
 signal map_fly_requested(zone: StringName)
+## JOH0 : l'autre page de la Carte demandée.
+signal map_region_requested(region: StringName)
 ## Relais de l'écran Paramètres (6F) : un réglage change (valeur du réglage, jamais un rang) ;
 ## « Sauvegarder maintenant » touché.
 signal setting_changed(key: StringName, value: Variant)
@@ -82,6 +85,13 @@ signal storage_query_changed(text: String, sort: int)
 
 const PIN_ICON: Texture2D = preload("res://assets/ui/icons/menu/map.svg")
 const CLOCK_ICON: Texture2D = preload("res://assets/ui/icons/menu/clock.svg")
+## JOH0 (`jalon-joh0.md` §2.3) : pictogramme du moment à la place de l'horloge (matin, jour,
+## nuit), icônes provisoires [D].
+const PERIOD_ICONS: Dictionary[WorldClock.Period, Texture2D] = {
+	WorldClock.Period.MORNING: preload("res://assets/ui/icons/menu/period_morning.svg"),
+	WorldClock.Period.DAY: preload("res://assets/ui/icons/menu/period_day.svg"),
+	WorldClock.Period.NIGHT: preload("res://assets/ui/icons/menu/period_night.svg"),
+}
 const COIN_ICON: Texture2D = preload("res://assets/ui/icons/shop/coin.svg")
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -141,6 +151,10 @@ var _zone_pill: HBoxContainer
 var _zone_name: Label
 var _clock_chip: HBoxContainer
 var _clock_label: Label
+var _clock_icon: TextureRect
+## JOH0 (JH-8) : la puce de l'heure ne se montre que sur les cartes de Johto ; Boot la pose à
+## chaque changement de carte. Vrai par défaut (l'horloge inactive la cache de toute façon).
+var clock_shown: bool = true
 var _money_chip: HBoxContainer
 var _money_label: Label
 var _dividers: Array[Panel] = []
@@ -275,6 +289,11 @@ func get_clock() -> WorldClock:
 	return _clock
 
 
+## JOH0 : relit le bandeau d'état (heure, pictogramme du moment, lieu) sans changer d'écran.
+func refresh_status() -> void:
+	_refresh_header()
+
+
 ## Écran Équipe (6A) : [param view] et le Pokémon [param selected] sélectionné. Rappelé pendant
 ## que l'Équipe est affichée, il met à jour sans rejouer l'entrée (l'onglet reste ouvert).
 func show_team(view: TeamView, selected: int) -> void:
@@ -359,6 +378,7 @@ func show_map(view: MapView) -> void:
 		_map.route_requested.connect(route_requested.emit)
 		_map.zone_touched.connect(map_zone_touched.emit)
 		_map.fly_requested.connect(map_fly_requested.emit)
+		_map.region_requested.connect(map_region_requested.emit)
 		_host.add_child(_map)
 		_map.hide_now()
 	_map.show_map(view)
@@ -699,7 +719,9 @@ func _refresh_header() -> void:
 	var allowed := _current == null or _current.status_bar
 	_zone_pill.visible = allowed and not _zone_name.text.is_empty()
 	_clock_label.text = _clock.time_text()
-	_clock_chip.visible = allowed and not _clock_label.text.is_empty()
+	_clock_chip.visible = allowed and clock_shown and not _clock_label.text.is_empty()
+	if _clock_icon != null and _clock.is_active():
+		_clock_icon.texture = PERIOD_ICONS.get(_clock.period(), CLOCK_ICON)
 	_money_chip.visible = allowed and _current != null and _current.status_money \
 		and not _money_text.is_empty()
 	var chips: Array[Control] = [_zone_pill, _clock_chip, _money_chip]
@@ -732,6 +754,7 @@ func _build_status() -> void:
 	_zone_name = _zone_pill.get_child(1) as Label
 	_dividers.append(_divider(row))
 	_clock_chip = _chip(row, CLOCK_ICON)
+	_clock_icon = _clock_chip.get_child(0) as TextureRect
 	_clock_label = _clock_chip.get_child(1) as Label
 	_dividers.append(_divider(row))
 	_money_chip = _chip(row, COIN_ICON)

@@ -1,0 +1,8 @@
+{
+	"map": "route_1", "spawn": "from_pallet_w", "facing": "up",
+	"flags": ["mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered", "starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab"],
+	"party": [ { "species": "squirtle", "level": 14 } ],
+	"bag": { "poke_ball": 6, "potion": 2 },
+	"light_profile": "johto_auto",
+	"period": "night"
+}

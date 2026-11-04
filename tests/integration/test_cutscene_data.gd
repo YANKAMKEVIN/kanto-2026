@@ -181,6 +181,9 @@ const FOUND_J29: Array[String] = [
 	"route_23_hidden_3:max_potion",
 ]
 const VARIANT_FLAGS: Dictionary = {
+	# Chapitre Johto (JOH0) : scènes de test, une variante sans condition.
+	&"johto_return_test": [[]],
+	&"johto_confiscate_test": [[]],
 	# Jalon 32 (32N, N-22) : CT obtenables partout, une variante « unless » chacune.
 	&"route_4_tm04": [[]],
 	&"ss_anne_lower_deck_tm08": [[]],
@@ -554,6 +557,11 @@ const VARIANT_FLAGS: Dictionary = {
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
 ## Jalon 8 : les objets visibles de la Route 2, par le dialogue de leur PNJ « objet ».
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
+	# Chapitre Johto (JOH0) : scènes de test du vol et du retour de l'équipe, jouées par la clé
+	# « cutscene » d'un départ de débogage (`johto_return`) ; les vraies scènes arrivent au JOH1
+	# (Oliville) et au JOH5 (Tour Radio).
+	&"johto_return_test": &"viridian_center",
+	&"johto_confiscate_test": &"viridian_center",
 	# Jalon 32 (32N) : CT ramassées, données ou échangées.
 	&"route_4_tm04": &"route_4",
 	&"ss_anne_lower_deck_tm08": &"ss_anne_lower_deck",
@@ -1070,7 +1078,9 @@ func test_library_loads_without_error() -> void:
 		&"power_plant_fausse_ball_1", &"power_plant_fausse_ball_2", &"power_plant_fausse_ball_3", &"power_plant_fausse_ball_4", &"power_plant_fausse_ball_5", &"power_plant_fausse_ball_6", &"power_plant_fausse_ball_7", &"power_plant_fausse_ball_8", &"power_plant_item_1", &"power_plant_item_2", &"power_plant_item_3", &"power_plant_item_4", &"power_plant_item_5", &"power_plant_hidden_1", &"power_plant_hidden_2",
 		&"j32_trade_remi", &"j32_trade_leon", &"j32_trade_aline", &"j32_trade_hugo", &"j32_trade_theo", &"j32_trade_coline"]
 		# Jalon 32 (32A à 32D, 32J).
-		+ [&"mew", &"j32_diploma", &"j32_oak_gifts", &"j32_dojo_gift_hitmonlee", &"j32_dojo_gift_hitmonchan", &"j32_eevee_gift_2", &"j32_eevee_gift_3", &"j32_fossil_give_helix", &"j32_fossil_give_dome"]))
+		+ [&"mew", &"j32_diploma", &"j32_oak_gifts", &"j32_dojo_gift_hitmonlee", &"j32_dojo_gift_hitmonchan", &"j32_eevee_gift_2", &"j32_eevee_gift_3", &"j32_fossil_give_helix", &"j32_fossil_give_dome"]
+		# Chapitre Johto (JOH0) : scènes de test du vol et du retour de l'équipe.
+		+ [&"johto_confiscate_test", &"johto_return_test"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:

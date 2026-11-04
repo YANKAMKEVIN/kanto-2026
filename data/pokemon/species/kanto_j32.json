@@ -15,7 +15,8 @@
 		"learnset": [
 			[1, "tackle"], [1, "sharpen"], [1, "conversion"], [23, "psybeam"], [28, "recover"],
 			[35, "agility"], [42, "tri_attack"]
-		]
+		],
+		"evolutions": [{ "into": "porygon2", "method": "trade", "item": "up_grade" }]
 	},
 	"zapdos": {
 		"dex": 145, "name": "Électhor", "types": ["electric", "flying"],

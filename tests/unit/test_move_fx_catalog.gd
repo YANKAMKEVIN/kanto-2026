@@ -3,10 +3,15 @@ extends GutTest
 ## annexe A) : `data/battle/move_fx/`, une entrée par attaque, repli par type et catégorie.
 
 const ANNEX_COUNT: int = 165
+## JOH0 (T6) : les 47 attaques d'Or/Argent de data/battle/move_fx/johto.json.
+const JOHTO_COUNT: int = 47
 const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", &"plante",
 	&"glace", &"psy", &"poison", &"sol_roche", &"vent", &"spectre", &"dragon", &"energie", &"son",
 	&"statut_plus", &"statut_moins", &"statut_regard", &"statut_sable", &"soin",
-	&"statut_geste", &"fouet", &"bulles", &"statut_fil", &"dard", &"poudre", &"graine"]
+	&"statut_geste", &"fouet", &"bulles", &"statut_fil", &"dard", &"poudre", &"graine",
+	&"chute_pierres", &"teleport", &"trempette", &"explosion", &"fumee", &"gaz", &"flash",
+	&"cuiller", &"etoiles", &"foudre", &"poing", &"os", &"onde_folie", &"brume", &"lancer",
+	&"atlas", &"fissure", &"tunnel"]
 ## Vague 1 « Effets fidèles à Rouge » (2026-11-02) : attaque → [famille, variante, brique de
 ## trajet, brique de lancement].
 const ROUGE_WAVE_1: Dictionary = {
@@ -21,6 +26,43 @@ const ROUGE_WAVE_1: Dictionary = {
 	&"poison_powder": [&"poudre", &"toxik", "powder_fall", "powder_shake"],
 	&"spore": [&"poudre", &"spore", "powder_fall", "powder_shake"],
 	&"leech_seed": [&"graine", &"", "seed_arc", "rear_back"],
+}
+## Vague 2 « Effets fidèles à Rouge » (2026-11-04) : attaque → [famille, variante, variante
+## d'impact, brique de trajet].
+const ROUGE_WAVE_2: Dictionary = {
+	&"twineedle": [&"dard", &"double", &"", "needle"],
+	&"pin_missile": [&"dard", &"nuee", &"", "needle"],
+	&"spike_cannon": [&"dard", &"picanon", &"", "needle"],
+	&"rock_throw": [&"chute_pierres", &"", &"", "rockfall"],
+	&"rock_slide": [&"chute_pierres", &"eboulement", &"", "rockfall"],
+	&"teleport": [&"teleport", &"", &"", ""],
+	&"splash": [&"trempette", &"", &"", ""],
+	&"explosion": [&"explosion", &"", &"", ""],
+	&"self_destruct": [&"explosion", &"destruction", &"", ""],
+	&"pay_day": [&"contact", &"", &"pieces", "dash"],
+	&"smokescreen": [&"fumee", &"", &"", "smoke_ball"],
+	&"poison_gas": [&"gaz", &"", &"", "gas_drift"],
+	&"smog": [&"gaz", &"smog", &"", "gas_drift"],
+	&"flash": [&"flash", &"", &"", ""],
+	&"kinesis": [&"cuiller", &"", &"", ""],
+	&"swift": [&"etoiles", &"", &"", "stars"],
+	&"thunder": [&"foudre", &"", &"", "sky_bolt"],
+	&"fire_punch": [&"poing", &"feu", &"poing", "dash"],
+	&"ice_punch": [&"poing", &"glace", &"poing", "dash"],
+	&"thunder_punch": [&"poing", &"eclair", &"poing", "dash"],
+	&"lick": [&"contact", &"", &"langue", "dash"],
+	&"bone_club": [&"os", &"massue", &"", "bone"],
+	&"bonemerang": [&"os", &"boomerang", &"", "bone"],
+	&"confuse_ray": [&"onde_folie", &"", &"", "strange_orb"],
+	&"haze": [&"brume", &"", &"", ""],
+	&"clamp": [&"contact", &"", &"claquoir", "dash"],
+	&"crabhammer": [&"contact", &"", &"pince_masse", "dash"],
+	&"waterfall": [&"contact", &"", &"cascade", "dash"],
+	&"egg_bomb": [&"lancer", &"oeuf", &"", "lob"],
+	&"barrage": [&"lancer", &"pilonnage", &"", "lob"],
+	&"seismic_toss": [&"atlas", &"", &"atlas", "dash"],
+	&"fissure": [&"fissure", &"", &"", ""],
+	&"dig": [&"tunnel", &"", &"", "underground"],
 }
 
 var _data: PokemonData
@@ -51,7 +93,7 @@ func test_real_catalog_has_no_error() -> void:
 	assert_eq(catalog.get_errors(), PackedStringArray(), "\n".join(catalog.get_errors()))
 
 
-func test_the_26_families_exist() -> void:
+func test_the_44_families_exist() -> void:
 	var catalog := MoveFxCatalog.load_dir()
 	assert_eq(catalog.family_ids().size(), FAMILIES.size())
 	for family: StringName in FAMILIES:
@@ -66,7 +108,7 @@ func test_every_move_of_the_data_has_an_entry() -> void:
 
 
 func test_the_165_moves_of_the_annex_are_listed() -> void:
-	assert_eq(MoveFxCatalog.load_dir().move_ids().size(), ANNEX_COUNT)
+	assert_eq(MoveFxCatalog.load_dir().move_ids().size(), ANNEX_COUNT + JOHTO_COUNT)
 
 
 func test_13_signatures_on_14_moves() -> void:
@@ -176,6 +218,33 @@ func test_variant_overrides_family_fx() -> void:
 	for variant: StringName in [&"dodo", &"para", &"toxik", &"spore"]:
 		colors[String(catalog.family_fx(&"poudre", variant)["palette"][1])] = variant
 	assert_eq(colors.size(), 4, "une couleur par poudre")
+
+
+## Vague 2 « Effets fidèles à Rouge » (2026-11-04) : les 22 lignes de l'audit (33 attaques)
+## dans leur famille, leur variante et leurs briques ; aucune ne garde la famille qui trahissait
+## sa nature (Contact pour des aiguilles tirées, rayon d'énergie pour Météores ou Explosion…).
+func test_rouge_wave_2_moves_have_their_family_and_bricks() -> void:
+	var catalog := MoveFxCatalog.load_dir()
+	for move_id: StringName in ROUGE_WAVE_2:
+		var expected: Array = ROUGE_WAVE_2[move_id]
+		var entry := catalog.entry(move_id)
+		assert_false(entry.fallback, "%s : dans les données" % move_id)
+		assert_eq(entry.family, expected[0], "%s : famille" % move_id)
+		assert_eq(entry.variant, expected[1], "%s : variante" % move_id)
+		assert_eq(entry.impact, expected[2], "%s : variante d'impact" % move_id)
+		var bricks: Dictionary = catalog.family(entry.family).get("bricks", {})
+		assert_eq(String(bricks.get("travel", "")), expected[3], "%s : trajet" % move_id)
+		var art := JsonFields.get_dict(catalog.family_fx(entry.family, entry.variant), "art")
+		assert_false(art.has("travel"), "%s : pas de projectile peint générique" % move_id)
+		assert_false(art.values().has("lueur_douce"), "%s : pas de lueur" % move_id)
+	for move_id: StringName in [&"twineedle", &"pin_missile", &"spike_cannon", &"bonemerang",
+			&"barrage"]:
+		assert_true(catalog.entry(move_id).has_modifier(&"multi"), "%s : coups multiples" % move_id)
+	assert_eq(JsonFields.get_id(catalog.signature(&"fatal_foudre"), "base"), &"foudre",
+		"Fatal-Foudre : la signature tombe du ciel")
+	assert_eq(JsonFields.get_id(catalog.signature(&"explosion"), "base"), &"explosion",
+		"Explosion : sans rayon")
+	assert_true(JsonFields.get_bool(catalog.family(&"teleport"), "vanish"), "Téléport : il part")
 
 
 # --- Repli ------------------------------------------------------------------------------

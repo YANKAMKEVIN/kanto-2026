@@ -30,6 +30,8 @@ const REASON: StringName = &"local_trade"
 const TERMINAL: StringName = &"trade_terminal"
 const NONE: StringName = &"trade_terminal_none"
 const CONFIRM: StringName = &"trade_terminal_confirm"
+## JOH0 (`jalon-joh0.md` §2.8) : « Utiliser {item} ? » quand la règle demande un objet.
+const ITEM_CONFIRM: StringName = &"trade_terminal_item"
 
 ## Choix du Pokémon : `func(view: PartyPickerView) -> int` (coroutine), la place ou −1. Invalide :
 ## le premier Pokémon compatible (tests, outils).
@@ -40,6 +42,8 @@ var _player: Player
 var _runner: DialogueRunner
 var _data: PokemonData
 var _evolutions: EvolutionDirector
+## JOH0 : les objets (nom de l'objet demandé) ; posé par Boot. Null : l'objet n'est pas nommé.
+var items: ItemLibrary
 var _map: GameMap
 var _running: bool = false
 var _last_choice: bool = false
@@ -99,27 +103,35 @@ func run() -> void:
 
 func _flow() -> bool:
 	var party: Party = _state.party
-	var accepted := LocalTrade.candidates(party, _data)
+	var bag: Bag = _state.bag
+	var accepted := LocalTrade.candidates(party, _data, bag)
 	if accepted.is_empty():
 		await _say(NONE)
 		return false
 	var index: int = accepted[0]
 	if pick_handler.is_valid():
-		index = await pick_handler.call(LocalTrade.picker_view(party, _data))
+		index = await pick_handler.call(LocalTrade.picker_view(party, _data, bag))
 	if not index in accepted:
 		return false
 	var pokemon := party.get_at(index)
 	_tokens = {DialogueTokens.POKEMON: pokemon.display_name(_data)}
 	if not await _ask(CONFIRM):
 		return false
+	# JOH0 : la règle demande un objet (Peau Métal…) : il est nommé et consommé avec l'évolution.
+	var item_id := LocalTrade.trade_item(pokemon, _data, bag)
+	if not item_id.is_empty():
+		var item := items.get_item(item_id) if items != null else null
+		_tokens = {DialogueTokens.ITEM: item.name if item != null else String(item_id)}
+		if not await _ask(ITEM_CONFIRM):
+			return false
 	_tokens = {}
-	var into := LocalTrade.trade_target(pokemon, _data)
+	var into := LocalTrade.trade_target(pokemon, _data, bag)
 	var candidate := EvolutionCandidate.new(index, pokemon.species_id, into)
 	var map_id: StringName = _map.map_id if is_instance_valid(_map) else &""
 	# Le compagnon est désigné par son identifiant, gardé par l'échange : Boot rafraîchit son
 	# apparence à la fin. Le Pokédex suit par l'évolution ([method GameState.record_evolved]).
 	var applier := func() -> Dictionary:
-		var result := LocalTrade.execute(party, index, _data, null, map_id)
+		var result := LocalTrade.execute(party, index, _data, null, map_id, "", "", bag)
 		_log(result)
 		return result if result["status"] == LocalTrade.Status.DONE else {}
 	if _evolutions == null:

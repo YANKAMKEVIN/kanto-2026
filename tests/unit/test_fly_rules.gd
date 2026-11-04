@@ -16,9 +16,12 @@ func test_the_eleven_towns_in_red_blue_order() -> void:
 	var zones: Array[StringName] = []
 	for point: FlyRules.Point in _rules.get_points():
 		zones.append(point.zone)
+	# JOH0 : puis les cinq villes de Johto (`jalon-joh0.md` §2.13).
 	assert_eq(zones, [&"pallet_town", &"viridian_city", &"pewter_city", &"cerulean_city",
 		&"lavender_town", &"vermilion_city", &"celadon_city", &"fuchsia_city",
-		&"cinnabar_island", &"indigo_plateau", &"saffron_city"] as Array[StringName])
+		&"cinnabar_island", &"indigo_plateau", &"saffron_city",
+		&"olivine_city", &"ecruteak_city", &"goldenrod_city", &"azalea_town", &"mahogany_town"]
+		as Array[StringName])
 
 
 func test_every_zone_exists() -> void:

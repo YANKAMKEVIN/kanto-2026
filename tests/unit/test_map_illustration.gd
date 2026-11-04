@@ -29,9 +29,18 @@ func test_every_zone_has_an_area_and_every_area_a_zone() -> void:
 	var zones := ZoneLibrary.new()
 	zones.load_file()
 	assert_true(_art.check_references(zones), "\n".join(_art.get_errors()))
-	for id: StringName in zones.get_ids():
+	# JOH0 : l'illustration de Kanto porte les zones de Kanto ; celle de Johto, les siennes.
+	var kanto := zones.zones_of_region(ZoneData.REGION_KANTO)
+	for id: StringName in kanto:
 		assert_true(_art.has_area(id), "%s : rectangle sur l'illustration" % id)
-	assert_eq(_art.get_zone_ids().size(), zones.size())
+	assert_eq(_art.get_zone_ids().size(), kanto.size())
+	var johto_art := MapIllustration.new()
+	assert_true(johto_art.load_file("res://assets/ui/map/johto_placeholder_areas.json"))
+	assert_true(johto_art.check_references(zones), "\n".join(johto_art.get_errors()))
+	var johto := zones.zones_of_region(ZoneData.REGION_JOHTO)
+	for id: StringName in johto:
+		assert_true(johto_art.has_area(id), "%s : rectangle sur l'illustration de Johto" % id)
+	assert_eq(johto_art.get_zone_ids().size(), johto.size())
 
 
 func test_unknown_zone_reference_is_reported() -> void:

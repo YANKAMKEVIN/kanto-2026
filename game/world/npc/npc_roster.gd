@@ -61,6 +61,7 @@ const KEYS: Array[String] = [
 	"hop_style", "shy", "route", "if", "unless", "species", "idle_react", "look",
 	"trainer",
 	"moved", "move_mode", "pose",
+	"if_period", "if_weekday", # Chapitre Johto (JOH0)
 ]
 ## Clés du bloc « trainer » ([method _read_trainer]).
 const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated", "rematch", "leave"]
@@ -134,10 +135,11 @@ func get_all() -> Array[NpcSpec]:
 
 ## PNJ présents avec les drapeaux [param flags] (null = nouvelle partie), dans l'ordre du
 ## fichier.
-func get_present(flags: StoryFlags) -> Array[NpcSpec]:
+func get_present(flags: StoryFlags, period: StringName = &"",
+		weekday: StringName = &"") -> Array[NpcSpec]:
 	var present: Array[NpcSpec] = []
 	for spec: NpcSpec in _specs:
-		if spec.is_present(flags):
+		if spec.is_present(flags, period, weekday):
 			present.append(spec)
 	return present
 
@@ -228,6 +230,12 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 		_read_route(entry["route"], spec, errors)
 	_read_flags(entry, "if", spec.if_flags, errors)
 	_read_flags(entry, "unless", spec.unless_flags, errors)
+	if entry.has("if_period"):
+		_read_moments(entry["if_period"], "if_period", spec.if_periods,
+			WorldClock.PERIOD_NAMES.keys(), errors)
+	if entry.has("if_weekday"):
+		_read_moments(entry["if_weekday"], "if_weekday", spec.if_weekdays,
+			Array(WorldClock.WEEKDAY_NAMES), errors)
 	if entry.has("idle_react"):
 		var every: Variant = entry["idle_react"]
 		if not (every is float or every is int) or float(every) <= 0.0 \
@@ -525,6 +533,25 @@ func _parse(value: Variant, where: String) -> NpcSpec:
 	for message: String in errors:
 		_fail("%s : %s" % [where, message])
 	return spec
+
+
+## « if_period » / « if_weekday » (JOH0) : une valeur de [param allowed] ou une liste non vide
+## de valeurs distinctes.
+static func _read_moments(value: Variant, key: String, into: Array[StringName], allowed: Array,
+		errors: PackedStringArray) -> void:
+	var raw: Array = value if value is Array else [value]
+	if raw.is_empty():
+		errors.append("« %s » demande au moins une valeur" % key)
+		return
+	for entry: Variant in raw:
+		if not entry is String or not (allowed.has(StringName(entry)) or allowed.has(String(entry))):
+			errors.append("valeur inconnue « %s » dans « %s » (attendu : %s)" % [str(entry), key,
+				", ".join(PackedStringArray(allowed))])
+			return
+		if into.has(StringName(entry)):
+			errors.append("« %s » en double dans « %s »" % [entry, key])
+			return
+		into.append(StringName(entry))
 
 
 static func _read_flags(entry: Dictionary, key: String, into: Array[StringName],

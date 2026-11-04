@@ -53,8 +53,21 @@ func test_species_values() -> void:
 
 
 func test_none_of_them_evolves() -> void:
+	# Chapitre Johto (JOH0, `jalon-joh0.md` §2.8) : Leveinard → Leuphorie par le lien, Insécateur →
+	# Cizayox par échange avec la Peau Métal ; les autres restent des formes uniques.
+	var johto := {
+		&"chansey": [EvolutionRule.Method.BOND, &"blissey", &""],
+		&"scyther": [EvolutionRule.Method.TRADE, &"scizor", &"metal_coat"],
+	}
 	for id: StringName in SPECIES:
-		assert_eq(_data.get_species(id).evolutions.size(), 0, "%s : forme unique" % id)
+		var rules := _data.get_species(id).evolutions
+		if johto.has(id):
+			assert_eq(rules.size(), 1, "%s : une évolution de Johto" % id)
+			assert_eq(rules[0].method, johto[id][0], String(id))
+			assert_eq(rules[0].into, johto[id][1], String(id))
+			assert_eq(rules[0].item, johto[id][2], String(id))
+		else:
+			assert_eq(rules.size(), 0, "%s : forme unique" % id)
 
 
 func test_learnsets_follow_red_blue() -> void:
