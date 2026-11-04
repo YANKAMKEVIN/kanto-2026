@@ -1,0 +1,475 @@
+{
+	"route_40_sign": {
+		"narration": true,
+		"pages": [
+			"ROUTE 40",
+			"Oliville — Îles Tourbillon"
+		]
+	},
+	"route_40_swimmer_yanis_before": {
+		"speaker": "Nageur Yanis",
+		"pages": [
+			"La mer est mon terrain !"
+		]
+	},
+	"route_40_swimmer_yanis_defeated": {
+		"speaker": "Nageur Yanis",
+		"pages": [
+			"J'ai bu la tasse."
+		]
+	},
+	"route_40_swimmer_yanis_after": {
+		"speaker": "Nageur Yanis",
+		"pages": [
+			"Les îles sont plus au sud."
+		]
+	},
+	"route_40_swimmer_elodie_before": {
+		"speaker": "Nageuse Élodie",
+		"pages": [
+			"Tu nages jusqu'aux îles ? Moi aussi !"
+		]
+	},
+	"route_40_swimmer_elodie_defeated": {
+		"speaker": "Nageuse Élodie",
+		"pages": [
+			"Bon, vas-y la première. Enfin, le premier."
+		]
+	},
+	"route_40_swimmer_elodie_after": {
+		"speaker": "Nageuse Élodie",
+		"pages": [
+			"Fais attention aux courants."
+		]
+	},
+	"route_40_swimmer_marius_before": {
+		"speaker": "Nageur Marius",
+		"pages": [
+			"Mes Pokémon pincent fort !"
+		]
+	},
+	"route_40_swimmer_marius_defeated": {
+		"speaker": "Nageur Marius",
+		"pages": [
+			"Ils ont lâché prise."
+		]
+	},
+	"route_40_swimmer_marius_after": {
+		"speaker": "Nageur Marius",
+		"pages": [
+			"Suis les chenaux, pas les tourbillons."
+		]
+	},
+	"route_40_item_1": {
+		"cutscene": "route_40_item_1"
+	},
+	"route_41_sign": {
+		"narration": true,
+		"pages": [
+			"ROUTE 41",
+			"Attention : tourbillons. Suivez les chenaux."
+		]
+	},
+	"whirl_islands_sign": {
+		"narration": true,
+		"pages": [
+			"ÎLES TOURBILLON",
+			"Lieu sacré. On dit qu'un gardien dort sous la mer."
+		]
+	},
+	"whirlpool_examine": {
+		"narration": true,
+		"pages": [
+			"L'eau tourne violemment.",
+			"Impossible de passer par là."
+		]
+	},
+	"route_41_fisher_noe_before": {
+		"speaker": "Pêcheur Noé",
+		"pages": [
+			"Ce chenal est à moi. Un combat pour le droit de passage !"
+		]
+	},
+	"route_41_fisher_noe_defeated": {
+		"speaker": "Pêcheur Noé",
+		"pages": [
+			"Passe, passe."
+		]
+	},
+	"route_41_fisher_noe_after": {
+		"speaker": "Pêcheur Noé",
+		"pages": [
+			"Au fond des îles, il y a quelque chose d'immense. Mon grand-père le disait."
+		]
+	},
+	"route_41_swimmer_lea_before": {
+		"speaker": "Nageuse Léa",
+		"pages": [
+			"Si tu veux passer, il faut nager plus vite que moi !"
+		]
+	},
+	"route_41_swimmer_lea_defeated": {
+		"speaker": "Nageuse Léa",
+		"pages": [
+			"Tu nages vraiment vite."
+		]
+	},
+	"route_41_swimmer_lea_after": {
+		"speaker": "Nageuse Léa",
+		"pages": [
+			"J'ai vu un Pokémon bleu courir sur l'eau, ce matin."
+		]
+	},
+	"route_41_swimmer_gabin_before": {
+		"speaker": "Nageur Gabin",
+		"pages": [
+			"Mon Léviator n'a peur de rien !"
+		]
+	},
+	"route_41_swimmer_gabin_defeated": {
+		"speaker": "Nageur Gabin",
+		"pages": [
+			"Si, de toi."
+		]
+	},
+	"route_41_swimmer_gabin_after": {
+		"speaker": "Nageur Gabin",
+		"pages": [
+			"Les îles grondent la nuit."
+		]
+	},
+	"route_41_item_1": {
+		"cutscene": "route_41_item_1"
+	},
+	"whirl_islands_grunt_t_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Cenere a dit : personne ne descend !"
+		]
+	},
+	"whirl_islands_grunt_t_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Elle avait tout calculé, sauf toi."
+		]
+	},
+	"whirl_islands_grunt_t_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Elle est déjà en bas."
+		]
+	},
+	"whirl_islands_grunt_u_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Pour Dante ! Tu ne passes pas !"
+		]
+	},
+	"whirl_islands_grunt_u_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"… Pour Dante…"
+		]
+	},
+	"whirl_islands_grunt_u_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le bleu court plus vite que nous. Mais Cenere a un plan."
+		]
+	},
+	"whirl_islands_1f_item_1": {
+		"cutscene": "whirl_islands_1f_item_1"
+	},
+	"whirl_islands_b1f_dragon_scale": {
+		"cutscene": "whirl_islands_b1f_dragon_scale"
+	},
+	"whirl_islands_b1f_item_1": {
+		"cutscene": "whirl_islands_b1f_item_1"
+	},
+	"whirl_islands_waterfall": {
+		"narration": true,
+		"pages": [
+			"L'eau tombe de très haut.",
+			"Derrière, on devine une petite grotte."
+		]
+	},
+	"whirl_islands_b2f_item_1": {
+		"cutscene": "whirl_islands_b2f_item_1"
+	},
+	"whirl_current": {
+		"narration": true,
+		"pages": [
+			"Le courant emporte {player} !"
+		]
+	},
+	"whirl_suicune_seen": {
+		"narration": true,
+		"pages": [
+			"Un Pokémon bleu se tient sur le rocher.",
+			"Il regarde {player}, sans bouger."
+		]
+	},
+	"whirl_cenere_arrival": {
+		"speaker": "Cenere",
+		"pages": [
+			"Tu es là avant moi. Encore.",
+			"Deux erreurs de calcul. Ça commence à faire beaucoup."
+		]
+	},
+	"whirl_cenere_before": {
+		"speaker": "Cenere",
+		"pages": [
+			"Cette fois, j'ai étudié ton équipe. Chaque Pokémon. Chaque attaque.",
+			"Recule, ou je te range dans mes statistiques."
+		]
+	},
+	"whirl_cenere_defeated": {
+		"speaker": "Cenere",
+		"pages": [
+			"… Je ne comprends pas.",
+			"Mes calculs étaient justes."
+		]
+	},
+	"whirl_cenere_after": {
+		"speaker": "Cenere",
+		"pages": [
+			"Garde ton Suicune. Il ne compte plus.",
+			"Le maître a déjà le troisième. Le rouge.",
+			"Il monte à la Tour Carillon.",
+			"Quand Ho-Oh descendra, tu comprendras que tu as perdu depuis le début."
+		]
+	},
+	"whirl_cenere_leaves": {
+		"narration": true,
+		"pages": [
+			"Cenere s'en va…"
+		]
+	},
+	"whirl_suicune_leap_1": {
+		"narration": true,
+		"pages": [
+			"Suicune saute de son rocher."
+		]
+	},
+	"whirl_suicune_leap_2": {
+		"narration": true,
+		"pages": [
+			"Il s'approche de {player}…",
+			"Il veut se mesurer à {player} !"
+		]
+	},
+	"whirl_suicune_after": {
+		"narration": true,
+		"pages": [
+			"L'eau de la grotte devient plus claire."
+		]
+	},
+	"whirl_lugia_rise_1": {
+		"narration": true,
+		"pages": [
+			"Le bassin est immobile.",
+			"…"
+		]
+	},
+	"whirl_lugia_rise_2": {
+		"narration": true,
+		"pages": [
+			"Une ombre immense passe sous l'eau.",
+			"La même que dans la grotte de Bourg Palette !"
+		]
+	},
+	"whirl_lugia_rise_3": {
+		"narration": true,
+		"pages": [
+			"L'eau se soulève.",
+			"Lugia surgit des profondeurs !"
+		]
+	},
+	"whirl_lugia_gone": {
+		"narration": true,
+		"pages": [
+			"Lugia replonge dans le bassin et disparaît."
+		]
+	},
+	"whirl_b2f_heart": {
+		"narration": true,
+		"pages": [
+			"Le cœur des îles, où la mer tombe en cascade."
+		]
+	},
+	"whirl_dragon_scale_found": {
+		"narration": true,
+		"pages": [
+			"{player} trouve une Écaille Draco !",
+			"Une écaille dure et brillante."
+		]
+	},
+	"whirl_suicune": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_cenere_defeated_2"
+				],
+				"pages": [
+					"Suicune observe {player}.",
+					"On dirait qu'il attend quelque chose."
+				]
+			},
+			{
+				"if": [
+					"johto_cenere_defeated_2"
+				],
+				"cutscene": "whirl_suicune_battle"
+			}
+		]
+	},
+	"whirl_lugia": {
+		"narration": true,
+		"variants": [
+			{
+				"cutscene": "whirl_lugia_battle"
+			}
+		]
+	},
+	"whirl_lapras": {
+		"narration": true,
+		"variants": [
+			{
+				"cutscene": "whirl_lapras_battle"
+			}
+		]
+	},
+	"whirl_b2f_current_strong": {
+		"narration": true,
+		"pages": [
+			"Un courant violent remonte de l'escalier.",
+			"Impossible de descendre."
+		]
+	},
+	"whirl_b2f_current_calm": {
+		"narration": true,
+		"pages": [
+			"Le courant s'est apaisé.",
+			"On entend une cascade, tout en bas."
+		]
+	},
+	"whirl_b2f_current_examine": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_suicune_done"
+				],
+				"pages": [
+					"Un courant violent remonte de l'escalier.",
+					"Impossible de descendre."
+				]
+			},
+			{
+				"pages": [
+					"Le courant s'est apaisé.",
+					"On entend une cascade, tout en bas."
+				]
+			}
+		]
+	},
+	"whirl_cove": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"johto_lapras_caught"
+				],
+				"pages": [
+					"Une petite crique, à l'abri des courants."
+				]
+			},
+			{
+				"if_weekday": [
+					"friday"
+				],
+				"unless": [
+					"week_friday_lapras"
+				],
+				"pages": [
+					"Un Lokhlass nage dans la crique.",
+					"Il chante doucement."
+				]
+			},
+			{
+				"if_weekday": [
+					"monday",
+					"tuesday",
+					"wednesday",
+					"thursday",
+					"saturday",
+					"sunday"
+				],
+				"pages": [
+					"La crique est calme.",
+					"Il paraît qu'un Lokhlass y vient, certains jours."
+				]
+			},
+			{
+				"pages": [
+					"Une petite crique, à l'abri des courants."
+				]
+			}
+		]
+	},
+	"olivine_beach_sailor": {
+		"speaker": "Marin",
+		"variants": [
+			{
+				"if": [
+					"johto_lugia_done"
+				],
+				"pages": [
+					"Les tourbillons se sont calmés d'un coup, cette nuit.",
+					"Comme si quelque chose, au fond, s'était enfin reposé."
+				]
+			},
+			{
+				"pages": [
+					"Au large, il y a des îles entourées de tourbillons.",
+					"Personne n'y va jamais.",
+					"Mais hier, un bateau noir s'est approché."
+				]
+			}
+		]
+	},
+	"olivine_orme_bell_tower": {
+		"speaker": "Prof. Orme",
+		"variants": [
+			{
+				"unless": [
+					"johto_bell_tower_clue"
+				],
+				"set": [
+					"johto_bell_tower_clue"
+				],
+				"pages": [
+					"{player} ! Les sages de Rosalia m'ont appelé.",
+					"Un homme a forcé la porte de la Tour Carillon cette nuit.",
+					"Il avait un Pokémon rouge, enfermé dans une cage de feu.",
+					"Les sages t'attendent. Ils t'ouvriront la tour."
+				]
+			},
+			{
+				"pages": [
+					"Raikou, Suicune… Et maintenant Entei.",
+					"Dante veut les trois pour faire descendre Ho-Oh.",
+					"Il ne lui en manque plus qu'un. Fais vite."
+				]
+			}
+		]
+	},
+	"olivine_kid_sea": {
+		"speaker": "Enfant",
+		"pages": [
+			"Mon papa dit que tu as vu le Pokémon le plus fort de la mer.",
+			"C'est vrai ?"
+		]
+	}
+}
