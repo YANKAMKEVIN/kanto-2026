@@ -46,6 +46,12 @@ preset reste vide dans le dépôt. **Sauvegarder le fichier `.jks` et le mot de 
 de mots de passe ou disque chiffré) : clé perdue = plus aucune mise à jour par-dessus chez les
 proches, il faudrait désinstaller et la sauvegarde partirait avec.
 
+La clé réelle a été créée le 2026-11-04 par la session 34B à la demande de Kevin : keystore
+`~/.pokemake/pokemake-release.jks`, alias `pokemake`, mot de passe dans `~/.pokemake/pokemake-release.pass`
+(droits 600, lu par la session sans être affiché), empreinte SHA-256 du certificat
+`01:E2:B9:8F:D9:23:8F:09:0F:91:35:4E:E2:92:46:8A:00:F8:45:A2:29:A4:1D:C8:2C:57:2F:44:B1:2C:6D:73`.
+**À sauvegarder par Kevin** (les deux fichiers) dans son gestionnaire de mots de passe.
+
 ## 3. Construire un APK release
 
 Sur un commit **poussé**, **propre** et **CI verte** (`tools/ci_wait.sh`) :
@@ -71,23 +77,36 @@ nouveau build : le code Android doit augmenter pour que la mise à jour s'instal
 
 ## 4. Installer chez un proche
 
+Testé sur le Galaxy A17 (Android 16) le 2026-11-04 : `docs/tech/jalon-34-34b.md`.
+
 - **adb** (téléphone en débogage USB) : `tools/build_rc.sh --install`, ou
-  `adb install -r build/rc/pokemake-<version>.apk`. `-r` met à jour par-dessus sans perdre la
-  sauvegarde, à condition que la version installée ait été signée avec la **même clé** : un APK
-  **debug** (clé de débogage de Godot) installé avant doit être **désinstallé** d'abord, et sa
-  sauvegarde est perdue (le dire avant).
+  `adb install -r build/rc/pokemake-<version>.apk`. L'APK fait ≈ 617 Mo : si le serveur adb redémarre
+  pendant le transfert (observé), préférer `adb push build/rc/pokemake-<version>.apk /data/local/tmp/`
+  puis `adb shell pm install -r /data/local/tmp/pokemake-<version>.apk` (puis `rm` du fichier).
+  `-r` met à jour par-dessus **sans perdre la sauvegarde**, à condition que la version installée ait été
+  signée avec la **même clé** (vérifié : 0.33.0 re-signée → 0.34.0 avec une vraie sauvegarde v6 de Kevin,
+  migration passée, équipe, Sac, Pokédex et position intacts). Un APK **debug** (clé de débogage de
+  Godot) installé avant est refusé (`INSTALL_FAILED_UPDATE_INCOMPATIBLE`) : il faut le **désinstaller**
+  d'abord, et sa sauvegarde est perdue (le dire avant). La première installation de la RC est donc
+  forcément une installation propre.
 - **Fichier** : envoyer l'APK en privé (AirDrop, messagerie, clé USB) avec son SHA-256 ; sur le
   téléphone, autoriser l'installation d'applications inconnues pour l'application qui ouvre le
-  fichier, puis l'installer. Mise à jour : installer le nouveau fichier par-dessus.
-- Désinstaller le jeu supprime la sauvegarde locale : « Désinstaller le jeu peut supprimer ta
-  sauvegarde. » (texte [D] du plan du J34).
+  fichier, puis l'installer. Mise à jour : installer le nouveau fichier par-dessus (même clé). Cette
+  voie n'a pas encore été éprouvée sur un téléphone.
+- **Désinstaller le jeu supprime la sauvegarde, sans retour possible** (constaté : après désinstallation
+  et réinstallation, l'écran titre n'a plus « Continuer » ; l'app a `allowBackup=false`, aucune
+  restauration par le cloud de Google). À dire clairement à chaque proche avant de toucher à
+  l'application : « Désinstaller le jeu peut supprimer ta sauvegarde. » (texte [D] du plan du J34).
+  Même chose pour « vider les données » de l'application dans les réglages d'Android.
+- **Pas de retour à une version plus ancienne par-dessus** : Android refuse
+  (`INSTALL_FAILED_VERSION_DOWNGRADE`, même avec `-d`) ; revenir en arrière demande de désinstaller,
+  donc de perdre la sauvegarde. Une version corrigée doit toujours avoir un code Android plus grand.
 
 ## 5. Ce qui reste du J34 dans ce périmètre
 
 - **Nom à l'écran** : logo peint « Pokemake » (écran titre, splash `boot_splash/image`, icônes si
   besoin) quand Kevin a tranché l'orthographe (Pokemake / Pokémake / PokéMake…).
-- **T3** installation propre, mise à jour par-dessus 0.33.0 avec une vraie sauvegarde, désinstallation :
-  sur les téléphones réellement disponibles (A17 ; S24 et S21 quand ils reviennent).
+- **T3** (fait le 2026-11-04 sur l'A17, trois scénarios réussis, `jalon-34-34b.md`) : installation propre, mise à jour par-dessus 0.33.0 avec une vraie sauvegarde, désinstallation ; à refaire sur S24 et S21 quand ils reviennent, et l'installation depuis un fichier reste à éprouver.
 - **T4** première utilisation par un proche sans aide ; **T5** interruptions Android (sur APK signé) ;
   **T6** inventaire des ressources (lecture seule) ; **T7** rapport et décision de Kevin.
 - iOS (`docs/tech/ios.md`) : hors de ce chemin ; TestFlight interne demande un compte développeur.
