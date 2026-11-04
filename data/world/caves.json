@@ -47,6 +47,10 @@
 				"pokemon_mansion_1f", "pokemon_mansion_2f", "pokemon_mansion_3f", "pokemon_mansion_b1f"
 			],
 			"escape": { "map": "cinnabar_island", "spawn": "from_manoir", "facing": "down" }
+		},
+		"bell_tower": {
+			"maps": ["bell_tower_1f", "bell_tower_2f"],
+			"escape": { "map": "bell_tower_woods", "spawn": "retour_tour", "facing": "down" }
 		}
 	}
 }

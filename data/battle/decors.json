@@ -432,6 +432,10 @@
 		}
 	},
 	"places": {
+		"bell_tower_woods": [{ "decor": "route_1_chemin" }],
+		"bell_tower_1f": [{ "decor": "tour_pokemon" }],
+		"bell_tower_2f": [{ "decor": "tour_pokemon" }],
+		"bell_tower_roof": [{ "decor": "route_1_chemin" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],

@@ -1,0 +1,132 @@
+{
+	"bell_tower_grunt_watch": {
+		"name": "Sbire",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "weezing",
+				"level": 60
+			},
+			{
+				"species": "arbok",
+				"level": 60
+			}
+		]
+	},
+	"bell_tower_grunt_v": {
+		"name": "Sbire",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 61
+			},
+			{
+				"species": "golbat",
+				"level": 61
+			}
+		]
+	},
+	"bell_tower_grunt_w": {
+		"name": "Sbire",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "muk",
+				"level": 61
+			},
+			{
+				"species": "noctowl",
+				"level": 61
+			},
+			{
+				"species": "houndour",
+				"level": 60
+			}
+		]
+	},
+	"bell_tower_dante_1": {
+		"name": "Dante",
+		"class": "gentleman",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 120,
+		"start_message": false,
+		"end_message": true,
+		"bag": true,
+		"switch": true,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 64,
+				"moves": [
+					"flamethrower",
+					"crunch",
+					"feint_attack",
+					"smog"
+				]
+			},
+			{
+				"species": "magmar",
+				"level": 65,
+				"moves": [
+					"fire_blast",
+					"thunder_punch",
+					"confuse_ray",
+					"smokescreen"
+				]
+			},
+			{
+				"species": "scizor",
+				"level": 66,
+				"moves": [
+					"metal_claw",
+					"wing_attack",
+					"slash",
+					"swords_dance"
+				]
+			},
+			{
+				"species": "sneasel",
+				"level": 66,
+				"moves": [
+					"ice_beam",
+					"feint_attack",
+					"slash",
+					"quick_attack"
+				]
+			},
+			{
+				"species": "arcanine",
+				"level": 68,
+				"moves": [
+					"flamethrower",
+					"crunch",
+					"take_down",
+					"agility"
+				]
+			}
+		]
+	}
+}

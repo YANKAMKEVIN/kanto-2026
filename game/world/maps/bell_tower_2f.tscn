@@ -1,0 +1,1710 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_2bdko"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_ol5g2"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_scc2q"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_hgc5v"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_sp5e0"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="6_ybfg0"]
+
+[node name="BellTower2f" type="Node2D" unique_id=942308371]
+script = ExtResource("1_2bdko")
+map_id = &"bell_tower_2f"
+display_name = "Tour Carillon"
+region = "Rosalia"
+size = Vector2i(24, 24)
+light_profile = &"tower"
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=994965469]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAACAAMAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAAAAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAABAAcAAAALAAAAAAAAAAcAAAAMAAAAAAABAAcAAAANAAAAAAAAAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAAAAAcAAAASAAAAAAAAAAcAAAATAAAAAAAAAAcAAAAUAAAAAAABAAMAAAAVAAAAAAABAAcAAAAWAAAAAAAAAAcAAAAXAAAAAAABAAcAAAAAAAEAAAAAAAcAAAABAAEAAAABAAUAAAACAAEAAAABAAcAAAADAAEAAAABAAUAAAAEAAEAAAABAAcAAAAFAAEAAAAAAAUAAAAGAAEAAAABAAUAAAAHAAEAAAABAAUAAAAIAAEAAAAAAAUAAAAJAAEAAAAAAAUAAAAKAAEAAAABAAUAAAALAAEAAAAAAAUAAAAMAAEAAAAAAAUAAAANAAEAAAABAAUAAAAOAAEAAAABAAUAAAAPAAEAAAAAAAUAAAAQAAEAAAAAAAUAAAARAAEAAAAAAAUAAAASAAEAAAAAAAUAAAATAAEAAAAAAAUAAAAUAAEAAAAAAAUAAAAVAAEAAAAAAAUAAAAWAAEAAAAAAAUAAAAXAAEAAAAAAAcAAAAAAAIAAAAAAAcAAAABAAIAAAAAAAUAAAACAAIAAAAAAAcAAAADAAIAAAAAAAUAAAAEAAIAAAABAAcAAAAFAAIAAAABAAUAAAAGAAIAAAABAAUAAAAHAAIAAAABAAUAAAAIAAIAAAAAAAUAAAAJAAIAAAABAAUAAAAKAAIAAAABAAUAAAALAAIAAAABAAUAAAAMAAIAAAAAAAUAAAANAAIAAAABAAUAAAAOAAIAAAABAAUAAAAPAAIAAAAAAAUAAAAQAAIAAAAAAAUAAAARAAIAAAAAAAUAAAASAAIAAAABAAUAAAATAAIAAAAAAAUAAAAUAAIAAAABAAUAAAAVAAIAAAABAAUAAAAWAAIAAAAAAAUAAAAXAAIAAAABAAcAAAAAAAMAAAAAAAcAAAABAAMAAAAAAAUAAAACAAMAAAABAAUAAAADAAMAAAAAAAUAAAAEAAMAAAAAAAUAAAAFAAMAAAABAAcAAAAGAAMAAAABAAUAAAAHAAMAAAAAAAUAAAAIAAMAAAABAAUAAAAJAAMAAAAAAAUAAAAKAAMAAAABAAUAAAALAAMAAAABAAUAAAAMAAMAAAABAAUAAAANAAMAAAABAAUAAAAOAAMAAAABAAUAAAAPAAMAAAABAAUAAAAQAAMAAAABAAUAAAARAAMAAAAAAAUAAAASAAMAAAAAAAcAAAATAAMAAAABAAUAAAAUAAMAAAABAAUAAAAVAAMAAAAAAAUAAAAWAAMAAAABAAUAAAAXAAMAAAABAAcAAAAAAAQAAAABAAcAAAABAAQAAAAAAAUAAAACAAQAAAAAAAUAAAADAAQAAAABAAUAAAAEAAQAAAABAAUAAAAFAAQAAAAAAAUAAAAGAAQAAAABAAUAAAAHAAQAAAAAAAUAAAAIAAQAAAABAAUAAAAJAAQAAAABAAUAAAAKAAQAAAAAAAUAAAALAAQAAAAAAAUAAAAMAAQAAAAAAAUAAAANAAQAAAABAAUAAAAOAAQAAAAAAAUAAAAPAAQAAAAAAAUAAAAQAAQAAAABAAUAAAARAAQAAAABAAUAAAASAAQAAAABAAUAAAATAAQAAAABAAUAAAAUAAQAAAAAAAUAAAAVAAQAAAAAAAUAAAAWAAQAAAABAAUAAAAXAAQAAAAAAAcAAAAAAAUAAAAAAAcAAAABAAUAAAAAAAUAAAACAAUAAAABAAUAAAADAAUAAAABAAUAAAAEAAUAAAABAAUAAAAFAAUAAAAAAAUAAAAGAAUAAAAAAAIAAAAHAAUAAAACAAIAAAAIAAUAAAABAAUAAAAJAAUAAAAAAAIAAAAKAAUAAAAAAAIAAAALAAUAAAACAAIAAAAMAAUAAAACAAIAAAANAAUAAAACAAIAAAAOAAUAAAACAAIAAAAPAAUAAAACAAIAAAAQAAUAAAACAAIAAAARAAUAAAABAAIAAAASAAUAAAABAAUAAAATAAUAAAABAAUAAAAUAAUAAAABAAUAAAAVAAUAAAAAAAUAAAAWAAUAAAABAAUAAAAXAAUAAAAAAAcAAAAAAAYAAAABAAcAAAABAAYAAAAAAAUAAAACAAYAAAABAAUAAAADAAYAAAAAAAUAAAAEAAYAAAABAAUAAAAFAAYAAAABAAUAAAAGAAYAAAAAAAIAAAAHAAYAAAAAAAIAAAAIAAYAAAAAAAUAAAAJAAYAAAABAAIAAAAKAAYAAAACAAIAAAALAAYAAAACAAIAAAAMAAYAAAACAAIAAAANAAYAAAAAAAIAAAAOAAYAAAAAAAIAAAAPAAYAAAAAAAIAAAAQAAYAAAAAAAIAAAARAAYAAAABAAIAAAASAAYAAAABAAUAAAATAAYAAAABAAUAAAAUAAYAAAAAAAUAAAAVAAYAAAAAAAUAAAAWAAYAAAABAAUAAAAXAAYAAAAAAAcAAAAAAAcAAAABAAcAAAABAAcAAAABAAUAAAACAAcAAAABAAUAAAADAAcAAAABAAUAAAAEAAcAAAAAAAUAAAAFAAcAAAABAAUAAAAGAAcAAAAAAAUAAAAHAAcAAAABAAUAAAAIAAcAAAAAAAUAAAAJAAcAAAABAAUAAAAKAAcAAAAAAAUAAAALAAcAAAAAAAUAAAAMAAcAAAABAAUAAAANAAcAAAABAAUAAAAOAAcAAAAAAAUAAAAPAAcAAAABAAUAAAAQAAcAAAABAAUAAAARAAcAAAAAAAUAAAASAAcAAAAAAAUAAAATAAcAAAABAAUAAAAUAAcAAAABAAUAAAAVAAcAAAABAAUAAAAWAAcAAAABAAUAAAAXAAcAAAABAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAUAAAACAAgAAAABAAUAAAADAAgAAAABAAUAAAAEAAgAAAAAAAUAAAAFAAgAAAAAAAUAAAAGAAgAAAAAAAUAAAAHAAgAAAAAAAUAAAAIAAgAAAABAAUAAAAJAAgAAAABAAUAAAAKAAgAAAABAAUAAAALAAgAAAABAAUAAAAMAAgAAAABAAIAAAANAAgAAAAAAAUAAAAOAAgAAAABAAUAAAAPAAgAAAABAAUAAAAQAAgAAAABAAUAAAARAAgAAAAAAAUAAAASAAgAAAAAAAUAAAATAAgAAAABAAUAAAAUAAgAAAAAAAUAAAAVAAgAAAABAAUAAAAWAAgAAAAAAAUAAAAXAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAAAAAUAAAACAAkAAAABAAUAAAADAAkAAAABAAUAAAAEAAkAAAABAAUAAAAFAAkAAAAAAAcAAAAGAAkAAAABAAUAAAAHAAkAAAAAAAUAAAAIAAkAAAAAAAUAAAAJAAkAAAAAAAUAAAAKAAkAAAAAAAUAAAALAAkAAAAAAAUAAAAMAAkAAAAAAAUAAAANAAkAAAAAAAUAAAAOAAkAAAABAAUAAAAPAAkAAAABAAUAAAAQAAkAAAAAAAUAAAARAAkAAAAAAAUAAAASAAkAAAAAAAcAAAATAAkAAAAAAAUAAAAUAAkAAAAAAAUAAAAVAAkAAAABAAUAAAAWAAkAAAABAAUAAAAXAAkAAAABAAcAAAAAAAoAAAAAAAcAAAABAAoAAAABAAUAAAACAAoAAAAAAAUAAAADAAoAAAABAAUAAAAEAAoAAAAAAAUAAAAFAAoAAAABAAUAAAAGAAoAAAABAAUAAAAHAAoAAAAAAAUAAAAIAAoAAAABAAUAAAAJAAoAAAABAAUAAAAKAAoAAAABAAUAAAALAAoAAAABAAUAAAAMAAoAAAAAAAUAAAANAAoAAAAAAAUAAAAOAAoAAAAAAAUAAAAPAAoAAAAAAAUAAAAQAAoAAAAAAAUAAAARAAoAAAAAAAUAAAASAAoAAAABAAUAAAATAAoAAAABAAUAAAAUAAoAAAAAAAUAAAAVAAoAAAAAAAUAAAAWAAoAAAAAAAUAAAAXAAoAAAAAAAcAAAAAAAsAAAABAAcAAAABAAsAAAABAAUAAAACAAsAAAAAAAUAAAADAAsAAAAAAAIAAAAEAAsAAAAAAAIAAAAFAAsAAAAAAAIAAAAGAAsAAAABAAIAAAAHAAsAAAACAAIAAAAIAAsAAAACAAIAAAAJAAsAAAABAAIAAAAKAAsAAAABAAIAAAALAAsAAAABAAIAAAAMAAsAAAABAAIAAAANAAsAAAAAAAIAAAAOAAsAAAABAAIAAAAPAAsAAAABAAUAAAAQAAsAAAACAAIAAAARAAsAAAABAAIAAAASAAsAAAABAAIAAAATAAsAAAAAAAIAAAAUAAsAAAAAAAIAAAAVAAsAAAAAAAUAAAAWAAsAAAABAAUAAAAXAAsAAAAAAAcAAAAAAAwAAAAAAAcAAAABAAwAAAAAAAUAAAACAAwAAAAAAAUAAAADAAwAAAABAAIAAAAEAAwAAAAAAAIAAAAFAAwAAAAAAAIAAAAGAAwAAAAAAAIAAAAHAAwAAAACAAIAAAAIAAwAAAACAAIAAAAJAAwAAAAAAAIAAAAKAAwAAAABAAIAAAALAAwAAAACAAIAAAAMAAwAAAACAAIAAAANAAwAAAAAAAIAAAAOAAwAAAACAAIAAAAPAAwAAAABAAUAAAAQAAwAAAABAAIAAAARAAwAAAABAAIAAAASAAwAAAAAAAIAAAATAAwAAAABAAIAAAAUAAwAAAACAAIAAAAVAAwAAAABAAUAAAAWAAwAAAABAAUAAAAXAAwAAAABAAcAAAAAAA0AAAAAAAcAAAABAA0AAAABAAUAAAACAA0AAAABAAUAAAADAA0AAAABAAUAAAAEAA0AAAABAAUAAAAFAA0AAAAAAAUAAAAGAA0AAAABAAUAAAAHAA0AAAAAAAUAAAAIAA0AAAAAAAUAAAAJAA0AAAABAAUAAAAKAA0AAAABAAUAAAALAA0AAAABAAUAAAAMAA0AAAABAAUAAAANAA0AAAABAAUAAAAOAA0AAAAAAAUAAAAPAA0AAAAAAAUAAAAQAA0AAAAAAAUAAAARAA0AAAAAAAUAAAASAA0AAAAAAAUAAAATAA0AAAABAAUAAAAUAA0AAAAAAAUAAAAVAA0AAAAAAAUAAAAWAA0AAAABAAUAAAAXAA0AAAAAAAcAAAAAAA4AAAABAAcAAAABAA4AAAAAAAUAAAACAA4AAAABAAUAAAADAA4AAAABAAUAAAAEAA4AAAABAAUAAAAFAA4AAAABAAUAAAAGAA4AAAABAAUAAAAHAA4AAAAAAAUAAAAIAA4AAAABAAUAAAAJAA4AAAAAAAUAAAAKAA4AAAABAAUAAAALAA4AAAABAAUAAAAMAA4AAAAAAAUAAAANAA4AAAABAAUAAAAOAA4AAAABAAUAAAAPAA4AAAAAAAUAAAAQAA4AAAABAAUAAAARAA4AAAAAAAUAAAASAA4AAAAAAAUAAAATAA4AAAABAAUAAAAUAA4AAAABAAUAAAAVAA4AAAAAAAUAAAAWAA4AAAABAAUAAAAXAA4AAAAAAAcAAAAAAA8AAAAAAAcAAAABAA8AAAABAAUAAAACAA8AAAAAAAUAAAADAA8AAAABAAUAAAAEAA8AAAABAAUAAAAFAA8AAAABAAcAAAAGAA8AAAABAAUAAAAHAA8AAAABAAUAAAAIAA8AAAABAAUAAAAJAA8AAAABAAUAAAAKAA8AAAABAAUAAAALAA8AAAAAAAUAAAAMAA8AAAAAAAUAAAANAA8AAAAAAAUAAAAOAA8AAAAAAAUAAAAPAA8AAAABAAUAAAAQAA8AAAABAAUAAAARAA8AAAABAAUAAAASAA8AAAABAAcAAAATAA8AAAABAAIAAAAUAA8AAAABAAUAAAAVAA8AAAAAAAUAAAAWAA8AAAABAAUAAAAXAA8AAAAAAAcAAAAAABAAAAAAAAcAAAABABAAAAAAAAUAAAACABAAAAAAAAUAAAADABAAAAABAAUAAAAEABAAAAABAAUAAAAFABAAAAAAAAUAAAAGABAAAAABAAUAAAAHABAAAAAAAAUAAAAIABAAAAAAAAUAAAAJABAAAAAAAAUAAAAKABAAAAAAAAUAAAALABAAAAAAAAUAAAAMABAAAAABAAUAAAANABAAAAABAAUAAAAOABAAAAABAAUAAAAPABAAAAABAAUAAAAQABAAAAABAAUAAAARABAAAAABAAUAAAASABAAAAAAAAUAAAATABAAAAAAAAUAAAAUABAAAAAAAAUAAAAVABAAAAABAAUAAAAWABAAAAABAAUAAAAXABAAAAABAAcAAAAAABEAAAABAAcAAAABABEAAAABAAUAAAACABEAAAAAAAUAAAADABEAAAAAAAUAAAAEABEAAAABAAUAAAAFABEAAAAAAAUAAAAGABEAAAABAAIAAAAHABEAAAACAAIAAAAIABEAAAABAAIAAAAJABEAAAACAAIAAAAKABEAAAAAAAUAAAALABEAAAACAAIAAAAMABEAAAABAAIAAAANABEAAAABAAIAAAAOABEAAAACAAIAAAAPABEAAAAAAAIAAAAQABEAAAABAAIAAAARABEAAAACAAIAAAASABEAAAAAAAUAAAATABEAAAAAAAUAAAAUABEAAAABAAUAAAAVABEAAAABAAUAAAAWABEAAAAAAAUAAAAXABEAAAABAAcAAAAAABIAAAAAAAcAAAABABIAAAABAAUAAAACABIAAAABAAUAAAADABIAAAAAAAUAAAAEABIAAAABAAUAAAAFABIAAAAAAAUAAAAGABIAAAAAAAIAAAAHABIAAAAAAAIAAAAIABIAAAACAAIAAAAJABIAAAAAAAIAAAAKABIAAAAAAAUAAAALABIAAAACAAIAAAAMABIAAAABAAIAAAANABIAAAACAAIAAAAOABIAAAAAAAIAAAAPABIAAAABAAIAAAAQABIAAAACAAIAAAARABIAAAAAAAIAAAASABIAAAAAAAUAAAATABIAAAAAAAUAAAAUABIAAAABAAUAAAAVABIAAAAAAAUAAAAWABIAAAABAAUAAAAXABIAAAABAAcAAAAAABMAAAAAAAcAAAABABMAAAAAAAUAAAACABMAAAABAAUAAAADABMAAAAAAAUAAAAEABMAAAAAAAUAAAAFABMAAAAAAAUAAAAGABMAAAABAAUAAAAHABMAAAAAAAUAAAAIABMAAAABAAUAAAAJABMAAAAAAAUAAAAKABMAAAAAAAUAAAALABMAAAAAAAUAAAAMABMAAAABAAUAAAANABMAAAAAAAUAAAAOABMAAAAAAAUAAAAPABMAAAAAAAUAAAAQABMAAAABAAUAAAARABMAAAABAAUAAAASABMAAAABAAUAAAATABMAAAAAAAUAAAAUABMAAAABAAUAAAAVABMAAAABAAUAAAAWABMAAAABAAUAAAAXABMAAAAAAAcAAAAAABQAAAAAAAcAAAABABQAAAAAAAUAAAACABQAAAABAAUAAAADABQAAAABAAIAAAAEABQAAAABAAUAAAAFABQAAAABAAUAAAAGABQAAAAAAAUAAAAHABQAAAABAAUAAAAIABQAAAAAAAUAAAAJABQAAAAAAAUAAAAKABQAAAABAAUAAAALABQAAAAAAAUAAAAMABQAAAAAAAUAAAANABQAAAAAAAUAAAAOABQAAAABAAUAAAAPABQAAAAAAAUAAAAQABQAAAABAAUAAAARABQAAAAAAAUAAAASABQAAAAAAAUAAAATABQAAAABAAUAAAAUABQAAAABAAIAAAAVABQAAAAAAAUAAAAWABQAAAAAAAUAAAAXABQAAAABAAcAAAAAABUAAAABAAcAAAABABUAAAABAAUAAAACABUAAAAAAAUAAAADABUAAAABAAUAAAAEABUAAAAAAAUAAAAFABUAAAABAAUAAAAGABUAAAABAAUAAAAHABUAAAABAAUAAAAIABUAAAABAAUAAAAJABUAAAAAAAUAAAAKABUAAAAAAAUAAAALABUAAAABAAUAAAAMABUAAAAAAAUAAAANABUAAAAAAAUAAAAOABUAAAABAAUAAAAPABUAAAAAAAUAAAAQABUAAAAAAAUAAAARABUAAAAAAAUAAAASABUAAAABAAUAAAATABUAAAAAAAUAAAAUABUAAAABAAUAAAAVABUAAAABAAUAAAAWABUAAAABAAUAAAAXABUAAAABAAcAAAAAABYAAAABAAcAAAABABYAAAAAAAUAAAACABYAAAABAAUAAAADABYAAAAAAAUAAAAEABYAAAABAAUAAAAFABYAAAABAAUAAAAGABYAAAAAAAUAAAAHABYAAAAAAAUAAAAIABYAAAAAAAUAAAAJABYAAAAAAAUAAAAKABYAAAAAAAUAAAALABYAAAABAAUAAAAMABYAAAAAAAUAAAANABYAAAAAAAUAAAAOABYAAAAAAAUAAAAPABYAAAABAAUAAAAQABYAAAABAAUAAAARABYAAAABAAUAAAASABYAAAAAAAUAAAATABYAAAABAAUAAAAUABYAAAAAAAUAAAAVABYAAAAAAAUAAAAWABYAAAABAAUAAAAXABYAAAAAAAcAAAAAABcAAAAAAAcAAAABABcAAAAAAAcAAAACABcAAAAAAAcAAAADABcAAAABAAcAAAAEABcAAAAAAAcAAAAFABcAAAAAAAcAAAAGABcAAAABAAcAAAAHABcAAAABAAcAAAAIABcAAAABAAcAAAAJABcAAAABAAcAAAAKABcAAAABAAcAAAALABcAAAAAAAcAAAAMABcAAAABAAcAAAANABcAAAAAAAcAAAAOABcAAAABAAcAAAAPABcAAAABAAcAAAAQABcAAAAAAAcAAAARABcAAAAAAAcAAAASABcAAAABAAcAAAATABcAAAABAAcAAAAUABcAAAABAAcAAAAVABcAAAAAAAcAAAAWABcAAAAAAAcAAAAXABcAAAAAAAcAAAA=")
+tile_set = ExtResource("2_ol5g2")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=2042093084]
+tile_set = ExtResource("2_ol5g2")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=175966314]
+tile_set = ExtResource("2_ol5g2")
+
+[node name="Decor" type="Node2D" parent="." unique_id=669437005]
+
+[node name="Entities" type="Node2D" parent="." unique_id=1133727659]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Planche_6_5" type="Node2D" parent="Entities" unique_id=736574560]
+position = Vector2(624, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_6_5" unique_id=635566451]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@6" type="Polygon2D" parent="Entities/Planche_6_5" unique_id=1381114646]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_7_5" type="Node2D" parent="Entities" unique_id=256180587]
+position = Vector2(720, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_7_5" unique_id=1752582123]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@7" type="Polygon2D" parent="Entities/Planche_7_5" unique_id=1777519626]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_6_6" type="Node2D" parent="Entities" unique_id=1821439121]
+position = Vector2(624, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_6_6" unique_id=163249416]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@8" type="Polygon2D" parent="Entities/Planche_6_6" unique_id=170316681]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_7_6" type="Node2D" parent="Entities" unique_id=2041045978]
+position = Vector2(720, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_7_6" unique_id=290820514]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@9" type="Polygon2D" parent="Entities/Planche_7_6" unique_id=1173619629]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_9_5" type="Node2D" parent="Entities" unique_id=1934212357]
+position = Vector2(912, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_9_5" unique_id=1342148890]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@10" type="Polygon2D" parent="Entities/Planche_9_5" unique_id=2043910947]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_10_5" type="Node2D" parent="Entities" unique_id=1623821607]
+position = Vector2(1008, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_10_5" unique_id=556948094]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@11" type="Polygon2D" parent="Entities/Planche_10_5" unique_id=812547633]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_11_5" type="Node2D" parent="Entities" unique_id=1070195069]
+position = Vector2(1104, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_11_5" unique_id=501950665]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@12" type="Polygon2D" parent="Entities/Planche_11_5" unique_id=974709203]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_12_5" type="Node2D" parent="Entities" unique_id=397191077]
+position = Vector2(1200, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_12_5" unique_id=879969969]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@13" type="Polygon2D" parent="Entities/Planche_12_5" unique_id=1940910954]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_13_5" type="Node2D" parent="Entities" unique_id=1569190690]
+position = Vector2(1296, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_13_5" unique_id=1719517964]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@14" type="Polygon2D" parent="Entities/Planche_13_5" unique_id=912171786]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_14_5" type="Node2D" parent="Entities" unique_id=140977947]
+position = Vector2(1392, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_14_5" unique_id=1713736682]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@15" type="Polygon2D" parent="Entities/Planche_14_5" unique_id=547316310]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_15_5" type="Node2D" parent="Entities" unique_id=1726093199]
+position = Vector2(1488, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_15_5" unique_id=1485844155]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@16" type="Polygon2D" parent="Entities/Planche_15_5" unique_id=331918241]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_16_5" type="Node2D" parent="Entities" unique_id=1348334124]
+position = Vector2(1584, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_16_5" unique_id=290822243]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@17" type="Polygon2D" parent="Entities/Planche_16_5" unique_id=1661821361]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_17_5" type="Node2D" parent="Entities" unique_id=642351403]
+position = Vector2(1680, 576)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_17_5" unique_id=1484585998]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@18" type="Polygon2D" parent="Entities/Planche_17_5" unique_id=1155194170]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_9_6" type="Node2D" parent="Entities" unique_id=1673343346]
+position = Vector2(912, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_9_6" unique_id=700931730]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@19" type="Polygon2D" parent="Entities/Planche_9_6" unique_id=91734109]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_10_6" type="Node2D" parent="Entities" unique_id=772615910]
+position = Vector2(1008, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_10_6" unique_id=1785516610]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@20" type="Polygon2D" parent="Entities/Planche_10_6" unique_id=1843567720]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_11_6" type="Node2D" parent="Entities" unique_id=526142772]
+position = Vector2(1104, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_11_6" unique_id=1063101763]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@21" type="Polygon2D" parent="Entities/Planche_11_6" unique_id=2000668822]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_12_6" type="Node2D" parent="Entities" unique_id=19706068]
+position = Vector2(1200, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_12_6" unique_id=1889369675]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@22" type="Polygon2D" parent="Entities/Planche_12_6" unique_id=2050699012]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_13_6" type="Node2D" parent="Entities" unique_id=1788298310]
+position = Vector2(1296, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_13_6" unique_id=1191130328]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@23" type="Polygon2D" parent="Entities/Planche_13_6" unique_id=852472292]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_14_6" type="Node2D" parent="Entities" unique_id=1681395556]
+position = Vector2(1392, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_14_6" unique_id=1546176755]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@24" type="Polygon2D" parent="Entities/Planche_14_6" unique_id=1461355669]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_15_6" type="Node2D" parent="Entities" unique_id=706743552]
+position = Vector2(1488, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_15_6" unique_id=1376443663]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@25" type="Polygon2D" parent="Entities/Planche_15_6" unique_id=725594789]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_16_6" type="Node2D" parent="Entities" unique_id=1654735606]
+position = Vector2(1584, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_16_6" unique_id=1661524889]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@26" type="Polygon2D" parent="Entities/Planche_16_6" unique_id=1452522974]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_17_6" type="Node2D" parent="Entities" unique_id=1725177569]
+position = Vector2(1680, 672)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_17_6" unique_id=1831176880]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@27" type="Polygon2D" parent="Entities/Planche_17_6" unique_id=1927708225]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_3_11" type="Node2D" parent="Entities" unique_id=581410965]
+position = Vector2(336, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_3_11" unique_id=2004286024]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@28" type="Polygon2D" parent="Entities/Planche_3_11" unique_id=1881964525]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_4_11" type="Node2D" parent="Entities" unique_id=1126023460]
+position = Vector2(432, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_4_11" unique_id=1130714797]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@29" type="Polygon2D" parent="Entities/Planche_4_11" unique_id=1550081696]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_5_11" type="Node2D" parent="Entities" unique_id=1507672931]
+position = Vector2(528, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_5_11" unique_id=1476538326]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@30" type="Polygon2D" parent="Entities/Planche_5_11" unique_id=1440129405]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_6_11" type="Node2D" parent="Entities" unique_id=86842186]
+position = Vector2(624, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_6_11" unique_id=2057037532]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@31" type="Polygon2D" parent="Entities/Planche_6_11" unique_id=1202793183]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_7_11" type="Node2D" parent="Entities" unique_id=487772787]
+position = Vector2(720, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_7_11" unique_id=38235705]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@32" type="Polygon2D" parent="Entities/Planche_7_11" unique_id=892614487]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_8_11" type="Node2D" parent="Entities" unique_id=892532789]
+position = Vector2(816, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_8_11" unique_id=1999983705]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@33" type="Polygon2D" parent="Entities/Planche_8_11" unique_id=1750886302]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_9_11" type="Node2D" parent="Entities" unique_id=1042407921]
+position = Vector2(912, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_9_11" unique_id=2021773900]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@34" type="Polygon2D" parent="Entities/Planche_9_11" unique_id=760198852]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_10_11" type="Node2D" parent="Entities" unique_id=199479380]
+position = Vector2(1008, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_10_11" unique_id=427626481]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@35" type="Polygon2D" parent="Entities/Planche_10_11" unique_id=1996072194]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_11_11" type="Node2D" parent="Entities" unique_id=39123658]
+position = Vector2(1104, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_11_11" unique_id=1981675330]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@36" type="Polygon2D" parent="Entities/Planche_11_11" unique_id=386293306]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_12_11" type="Node2D" parent="Entities" unique_id=1181785688]
+position = Vector2(1200, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_12_11" unique_id=1835678056]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@37" type="Polygon2D" parent="Entities/Planche_12_11" unique_id=1845340395]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_13_11" type="Node2D" parent="Entities" unique_id=1199882226]
+position = Vector2(1296, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_13_11" unique_id=1530159904]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@38" type="Polygon2D" parent="Entities/Planche_13_11" unique_id=405518329]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_14_11" type="Node2D" parent="Entities" unique_id=1129792397]
+position = Vector2(1392, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_14_11" unique_id=534925199]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@39" type="Polygon2D" parent="Entities/Planche_14_11" unique_id=258745943]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_3_12" type="Node2D" parent="Entities" unique_id=874356452]
+position = Vector2(336, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_3_12" unique_id=1519569767]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@40" type="Polygon2D" parent="Entities/Planche_3_12" unique_id=306474873]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_4_12" type="Node2D" parent="Entities" unique_id=1081658941]
+position = Vector2(432, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_4_12" unique_id=1376158857]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@41" type="Polygon2D" parent="Entities/Planche_4_12" unique_id=1049243680]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_5_12" type="Node2D" parent="Entities" unique_id=1138795593]
+position = Vector2(528, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_5_12" unique_id=1312901550]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@42" type="Polygon2D" parent="Entities/Planche_5_12" unique_id=644301903]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_6_12" type="Node2D" parent="Entities" unique_id=1434328691]
+position = Vector2(624, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_6_12" unique_id=1545077271]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@43" type="Polygon2D" parent="Entities/Planche_6_12" unique_id=702242357]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_7_12" type="Node2D" parent="Entities" unique_id=1705097310]
+position = Vector2(720, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_7_12" unique_id=333912096]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@44" type="Polygon2D" parent="Entities/Planche_7_12" unique_id=360149811]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_8_12" type="Node2D" parent="Entities" unique_id=1577238333]
+position = Vector2(816, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_8_12" unique_id=1709887729]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@45" type="Polygon2D" parent="Entities/Planche_8_12" unique_id=245831415]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_9_12" type="Node2D" parent="Entities" unique_id=818308769]
+position = Vector2(912, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_9_12" unique_id=1013068139]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@46" type="Polygon2D" parent="Entities/Planche_9_12" unique_id=1035991146]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_10_12" type="Node2D" parent="Entities" unique_id=2101241089]
+position = Vector2(1008, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_10_12" unique_id=131436818]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@47" type="Polygon2D" parent="Entities/Planche_10_12" unique_id=6006549]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_11_12" type="Node2D" parent="Entities" unique_id=1976830470]
+position = Vector2(1104, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_11_12" unique_id=1720368574]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@48" type="Polygon2D" parent="Entities/Planche_11_12" unique_id=1637426275]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_12_12" type="Node2D" parent="Entities" unique_id=967930572]
+position = Vector2(1200, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_12_12" unique_id=529086214]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@49" type="Polygon2D" parent="Entities/Planche_12_12" unique_id=1236257150]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_13_12" type="Node2D" parent="Entities" unique_id=1031589712]
+position = Vector2(1296, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_13_12" unique_id=660366272]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@50" type="Polygon2D" parent="Entities/Planche_13_12" unique_id=351590319]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_14_12" type="Node2D" parent="Entities" unique_id=904584778]
+position = Vector2(1392, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_14_12" unique_id=1058293876]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@51" type="Polygon2D" parent="Entities/Planche_14_12" unique_id=1236156242]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_16_11" type="Node2D" parent="Entities" unique_id=1203308782]
+position = Vector2(1584, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_16_11" unique_id=869569828]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@52" type="Polygon2D" parent="Entities/Planche_16_11" unique_id=485527088]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_17_11" type="Node2D" parent="Entities" unique_id=1107344658]
+position = Vector2(1680, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_17_11" unique_id=884044855]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@53" type="Polygon2D" parent="Entities/Planche_17_11" unique_id=1721422522]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_18_11" type="Node2D" parent="Entities" unique_id=298103767]
+position = Vector2(1776, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_18_11" unique_id=1752832425]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@54" type="Polygon2D" parent="Entities/Planche_18_11" unique_id=1250936036]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_19_11" type="Node2D" parent="Entities" unique_id=259666080]
+position = Vector2(1872, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_19_11" unique_id=967168585]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@55" type="Polygon2D" parent="Entities/Planche_19_11" unique_id=151674021]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_20_11" type="Node2D" parent="Entities" unique_id=1174410215]
+position = Vector2(1968, 1152)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_20_11" unique_id=1933213191]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@56" type="Polygon2D" parent="Entities/Planche_20_11" unique_id=1578956574]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_16_12" type="Node2D" parent="Entities" unique_id=933225828]
+position = Vector2(1584, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_16_12" unique_id=540519543]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@57" type="Polygon2D" parent="Entities/Planche_16_12" unique_id=2006197879]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_17_12" type="Node2D" parent="Entities" unique_id=2131991784]
+position = Vector2(1680, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_17_12" unique_id=572868600]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@58" type="Polygon2D" parent="Entities/Planche_17_12" unique_id=1674428568]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_18_12" type="Node2D" parent="Entities" unique_id=742641006]
+position = Vector2(1776, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_18_12" unique_id=555927636]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@59" type="Polygon2D" parent="Entities/Planche_18_12" unique_id=1996792305]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_19_12" type="Node2D" parent="Entities" unique_id=2075803845]
+position = Vector2(1872, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_19_12" unique_id=806381297]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@60" type="Polygon2D" parent="Entities/Planche_19_12" unique_id=2030391287]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_20_12" type="Node2D" parent="Entities" unique_id=207121833]
+position = Vector2(1968, 1248)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_20_12" unique_id=1296844927]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@61" type="Polygon2D" parent="Entities/Planche_20_12" unique_id=1630717496]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_6_17" type="Node2D" parent="Entities" unique_id=1005686178]
+position = Vector2(624, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_6_17" unique_id=495959969]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@62" type="Polygon2D" parent="Entities/Planche_6_17" unique_id=1464141547]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_7_17" type="Node2D" parent="Entities" unique_id=636405199]
+position = Vector2(720, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_7_17" unique_id=323483235]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@63" type="Polygon2D" parent="Entities/Planche_7_17" unique_id=1670904007]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_8_17" type="Node2D" parent="Entities" unique_id=2085135569]
+position = Vector2(816, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_8_17" unique_id=617326986]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@64" type="Polygon2D" parent="Entities/Planche_8_17" unique_id=1423951965]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_9_17" type="Node2D" parent="Entities" unique_id=702558897]
+position = Vector2(912, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_9_17" unique_id=1945802795]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@65" type="Polygon2D" parent="Entities/Planche_9_17" unique_id=1150751860]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_6_18" type="Node2D" parent="Entities" unique_id=1714449672]
+position = Vector2(624, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_6_18" unique_id=1688921198]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@66" type="Polygon2D" parent="Entities/Planche_6_18" unique_id=469708718]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_7_18" type="Node2D" parent="Entities" unique_id=1679602046]
+position = Vector2(720, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_7_18" unique_id=1573709811]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@67" type="Polygon2D" parent="Entities/Planche_7_18" unique_id=206920508]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_8_18" type="Node2D" parent="Entities" unique_id=458252886]
+position = Vector2(816, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_8_18" unique_id=497497923]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@68" type="Polygon2D" parent="Entities/Planche_8_18" unique_id=96549601]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_9_18" type="Node2D" parent="Entities" unique_id=1546520769]
+position = Vector2(912, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_9_18" unique_id=1389456404]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@69" type="Polygon2D" parent="Entities/Planche_9_18" unique_id=1070361145]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_11_17" type="Node2D" parent="Entities" unique_id=368008711]
+position = Vector2(1104, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_11_17" unique_id=265198901]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@70" type="Polygon2D" parent="Entities/Planche_11_17" unique_id=1526869286]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_12_17" type="Node2D" parent="Entities" unique_id=414396922]
+position = Vector2(1200, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_12_17" unique_id=113811587]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@71" type="Polygon2D" parent="Entities/Planche_12_17" unique_id=1392900936]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_13_17" type="Node2D" parent="Entities" unique_id=1976795194]
+position = Vector2(1296, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_13_17" unique_id=977179367]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@72" type="Polygon2D" parent="Entities/Planche_13_17" unique_id=1423771021]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_14_17" type="Node2D" parent="Entities" unique_id=986525227]
+position = Vector2(1392, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_14_17" unique_id=429887547]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@73" type="Polygon2D" parent="Entities/Planche_14_17" unique_id=583457423]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_15_17" type="Node2D" parent="Entities" unique_id=703220741]
+position = Vector2(1488, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_15_17" unique_id=2142110425]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@74" type="Polygon2D" parent="Entities/Planche_15_17" unique_id=1628070745]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_16_17" type="Node2D" parent="Entities" unique_id=624357853]
+position = Vector2(1584, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_16_17" unique_id=639621543]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@75" type="Polygon2D" parent="Entities/Planche_16_17" unique_id=553257691]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_17_17" type="Node2D" parent="Entities" unique_id=111578874]
+position = Vector2(1680, 1728)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_17_17" unique_id=768836555]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@76" type="Polygon2D" parent="Entities/Planche_17_17" unique_id=2119887435]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_11_18" type="Node2D" parent="Entities" unique_id=848545016]
+position = Vector2(1104, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_11_18" unique_id=416362235]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@77" type="Polygon2D" parent="Entities/Planche_11_18" unique_id=639746183]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_12_18" type="Node2D" parent="Entities" unique_id=929798754]
+position = Vector2(1200, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_12_18" unique_id=1217612798]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@78" type="Polygon2D" parent="Entities/Planche_12_18" unique_id=92045108]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_13_18" type="Node2D" parent="Entities" unique_id=555179209]
+position = Vector2(1296, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_13_18" unique_id=862780331]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@79" type="Polygon2D" parent="Entities/Planche_13_18" unique_id=1808508010]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_14_18" type="Node2D" parent="Entities" unique_id=43850213]
+position = Vector2(1392, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_14_18" unique_id=1950840535]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@80" type="Polygon2D" parent="Entities/Planche_14_18" unique_id=1737675409]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_15_18" type="Node2D" parent="Entities" unique_id=1839401091]
+position = Vector2(1488, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_15_18" unique_id=1129104513]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@81" type="Polygon2D" parent="Entities/Planche_15_18" unique_id=125363285]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_16_18" type="Node2D" parent="Entities" unique_id=1109056709]
+position = Vector2(1584, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_16_18" unique_id=1746095478]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@82" type="Polygon2D" parent="Entities/Planche_16_18" unique_id=1904361540]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_17_18" type="Node2D" parent="Entities" unique_id=1911168120]
+position = Vector2(1680, 1824)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_17_18" unique_id=2083424902]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@83" type="Polygon2D" parent="Entities/Planche_17_18" unique_id=521498828]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_12_8" type="Node2D" parent="Entities" unique_id=988127730]
+position = Vector2(1200, 864)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_12_8" unique_id=783551225]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@84" type="Polygon2D" parent="Entities/Planche_12_8" unique_id=1046288747]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_19_15" type="Node2D" parent="Entities" unique_id=1240358329]
+position = Vector2(1872, 1536)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_19_15" unique_id=1872924569]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@85" type="Polygon2D" parent="Entities/Planche_19_15" unique_id=816585319]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_3_20" type="Node2D" parent="Entities" unique_id=561499576]
+position = Vector2(336, 2016)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_3_20" unique_id=1142220714]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@86" type="Polygon2D" parent="Entities/Planche_3_20" unique_id=1594470853]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Planche_20_20" type="Node2D" parent="Entities" unique_id=2030983510]
+position = Vector2(1968, 2016)
+script = ExtResource("3_scc2q")
+
+[node name="Dessin" type="Polygon2D" parent="Entities/Planche_20_20" unique_id=1045159616]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -94, 46, -94, 46, -90, -46, -90)
+
+[node name="@Polygon2D@87" type="Polygon2D" parent="Entities/Planche_20_20" unique_id=2103046960]
+color = Color(0.32, 0.22, 0.14, 0.55)
+polygon = PackedVector2Array(-46, -52, 46, -52, 46, -48, -46, -48)
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1511807204]
+z_index = 10
+tile_set = ExtResource("2_ol5g2")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1241025291]
+
+[node name="Vers1f_0" type="Marker2D" parent="Warps" unique_id=1356734314]
+position = Vector2(1968, 96)
+script = ExtResource("4_hgc5v")
+target_map = &"bell_tower_1f"
+target_spawn = &"from_2f"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_6_5" type="Marker2D" parent="Warps" unique_id=669468365]
+position = Vector2(624, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_7_5" type="Marker2D" parent="Warps" unique_id=41673734]
+position = Vector2(720, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_6_6" type="Marker2D" parent="Warps" unique_id=1858775321]
+position = Vector2(624, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_7_6" type="Marker2D" parent="Warps" unique_id=1100670301]
+position = Vector2(720, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_9_5" type="Marker2D" parent="Warps" unique_id=133088152]
+position = Vector2(912, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_10_5" type="Marker2D" parent="Warps" unique_id=463359577]
+position = Vector2(1008, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_11_5" type="Marker2D" parent="Warps" unique_id=1468799850]
+position = Vector2(1104, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_12_5" type="Marker2D" parent="Warps" unique_id=2083755232]
+position = Vector2(1200, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_13_5" type="Marker2D" parent="Warps" unique_id=707703516]
+position = Vector2(1296, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_14_5" type="Marker2D" parent="Warps" unique_id=880031464]
+position = Vector2(1392, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_15_5" type="Marker2D" parent="Warps" unique_id=1989398757]
+position = Vector2(1488, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_16_5" type="Marker2D" parent="Warps" unique_id=73435642]
+position = Vector2(1584, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_17_5" type="Marker2D" parent="Warps" unique_id=1430433673]
+position = Vector2(1680, 576)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_9_6" type="Marker2D" parent="Warps" unique_id=388866524]
+position = Vector2(912, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_10_6" type="Marker2D" parent="Warps" unique_id=1962187055]
+position = Vector2(1008, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_11_6" type="Marker2D" parent="Warps" unique_id=443322667]
+position = Vector2(1104, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_12_6" type="Marker2D" parent="Warps" unique_id=960840860]
+position = Vector2(1200, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_13_6" type="Marker2D" parent="Warps" unique_id=698643087]
+position = Vector2(1296, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_14_6" type="Marker2D" parent="Warps" unique_id=829579444]
+position = Vector2(1392, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_15_6" type="Marker2D" parent="Warps" unique_id=1503926594]
+position = Vector2(1488, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_16_6" type="Marker2D" parent="Warps" unique_id=1700273199]
+position = Vector2(1584, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_17_6" type="Marker2D" parent="Warps" unique_id=1272214376]
+position = Vector2(1680, 672)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_3_11" type="Marker2D" parent="Warps" unique_id=1142033294]
+position = Vector2(336, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_4_11" type="Marker2D" parent="Warps" unique_id=2060130300]
+position = Vector2(432, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_5_11" type="Marker2D" parent="Warps" unique_id=1350542822]
+position = Vector2(528, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_6_11" type="Marker2D" parent="Warps" unique_id=39755404]
+position = Vector2(624, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_7_11" type="Marker2D" parent="Warps" unique_id=914997358]
+position = Vector2(720, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_8_11" type="Marker2D" parent="Warps" unique_id=31507113]
+position = Vector2(816, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_9_11" type="Marker2D" parent="Warps" unique_id=2129409727]
+position = Vector2(912, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_10_11" type="Marker2D" parent="Warps" unique_id=166543877]
+position = Vector2(1008, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_11_11" type="Marker2D" parent="Warps" unique_id=746359811]
+position = Vector2(1104, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_12_11" type="Marker2D" parent="Warps" unique_id=2027399544]
+position = Vector2(1200, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_13_11" type="Marker2D" parent="Warps" unique_id=6454221]
+position = Vector2(1296, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_14_11" type="Marker2D" parent="Warps" unique_id=298699105]
+position = Vector2(1392, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_3_12" type="Marker2D" parent="Warps" unique_id=86818313]
+position = Vector2(336, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_4_12" type="Marker2D" parent="Warps" unique_id=210192406]
+position = Vector2(432, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_5_12" type="Marker2D" parent="Warps" unique_id=1729875599]
+position = Vector2(528, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_6_12" type="Marker2D" parent="Warps" unique_id=539745721]
+position = Vector2(624, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_7_12" type="Marker2D" parent="Warps" unique_id=1825884622]
+position = Vector2(720, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_8_12" type="Marker2D" parent="Warps" unique_id=98971845]
+position = Vector2(816, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_9_12" type="Marker2D" parent="Warps" unique_id=776623915]
+position = Vector2(912, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_10_12" type="Marker2D" parent="Warps" unique_id=232668786]
+position = Vector2(1008, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_11_12" type="Marker2D" parent="Warps" unique_id=628516489]
+position = Vector2(1104, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_12_12" type="Marker2D" parent="Warps" unique_id=2113662841]
+position = Vector2(1200, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_13_12" type="Marker2D" parent="Warps" unique_id=904374754]
+position = Vector2(1296, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_14_12" type="Marker2D" parent="Warps" unique_id=391894660]
+position = Vector2(1392, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_16_11" type="Marker2D" parent="Warps" unique_id=1464765056]
+position = Vector2(1584, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_17_11" type="Marker2D" parent="Warps" unique_id=1493541606]
+position = Vector2(1680, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_18_11" type="Marker2D" parent="Warps" unique_id=1741325449]
+position = Vector2(1776, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_19_11" type="Marker2D" parent="Warps" unique_id=1115543808]
+position = Vector2(1872, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_20_11" type="Marker2D" parent="Warps" unique_id=1271634237]
+position = Vector2(1968, 1152)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_16_12" type="Marker2D" parent="Warps" unique_id=1167314700]
+position = Vector2(1584, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_17_12" type="Marker2D" parent="Warps" unique_id=1434323232]
+position = Vector2(1680, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_18_12" type="Marker2D" parent="Warps" unique_id=108227765]
+position = Vector2(1776, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_19_12" type="Marker2D" parent="Warps" unique_id=763441497]
+position = Vector2(1872, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_20_12" type="Marker2D" parent="Warps" unique_id=429328201]
+position = Vector2(1968, 1248)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_6_17" type="Marker2D" parent="Warps" unique_id=264996553]
+position = Vector2(624, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_7_17" type="Marker2D" parent="Warps" unique_id=1656941742]
+position = Vector2(720, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_8_17" type="Marker2D" parent="Warps" unique_id=1420341251]
+position = Vector2(816, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_9_17" type="Marker2D" parent="Warps" unique_id=1879552999]
+position = Vector2(912, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_6_18" type="Marker2D" parent="Warps" unique_id=515171778]
+position = Vector2(624, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_7_18" type="Marker2D" parent="Warps" unique_id=422569231]
+position = Vector2(720, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_8_18" type="Marker2D" parent="Warps" unique_id=76905485]
+position = Vector2(816, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_9_18" type="Marker2D" parent="Warps" unique_id=985961728]
+position = Vector2(912, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_11_17" type="Marker2D" parent="Warps" unique_id=434793094]
+position = Vector2(1104, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_12_17" type="Marker2D" parent="Warps" unique_id=1261759688]
+position = Vector2(1200, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_13_17" type="Marker2D" parent="Warps" unique_id=1422999492]
+position = Vector2(1296, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_14_17" type="Marker2D" parent="Warps" unique_id=484019888]
+position = Vector2(1392, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_15_17" type="Marker2D" parent="Warps" unique_id=1601373100]
+position = Vector2(1488, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_16_17" type="Marker2D" parent="Warps" unique_id=71556067]
+position = Vector2(1584, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_17_17" type="Marker2D" parent="Warps" unique_id=429864261]
+position = Vector2(1680, 1728)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_11_18" type="Marker2D" parent="Warps" unique_id=353951022]
+position = Vector2(1104, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_12_18" type="Marker2D" parent="Warps" unique_id=2018551335]
+position = Vector2(1200, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_13_18" type="Marker2D" parent="Warps" unique_id=520238702]
+position = Vector2(1296, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_14_18" type="Marker2D" parent="Warps" unique_id=1010016035]
+position = Vector2(1392, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_15_18" type="Marker2D" parent="Warps" unique_id=1388249149]
+position = Vector2(1488, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_16_18" type="Marker2D" parent="Warps" unique_id=94629479]
+position = Vector2(1584, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_17_18" type="Marker2D" parent="Warps" unique_id=1365822455]
+position = Vector2(1680, 1824)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_12_8" type="Marker2D" parent="Warps" unique_id=1961946266]
+position = Vector2(1200, 864)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_19_15" type="Marker2D" parent="Warps" unique_id=1028182820]
+position = Vector2(1872, 1536)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_3_20" type="Marker2D" parent="Warps" unique_id=1436370782]
+position = Vector2(336, 2016)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Trou_20_20" type="Marker2D" parent="Warps" unique_id=510706118]
+position = Vector2(1968, 2016)
+script = ExtResource("4_hgc5v")
+trigger = 2
+target_map = &"bell_tower_1f"
+target_spawn = &"chute"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1744930888]
+
+[node name="ExamenPlanche" type="Marker2D" parent="Interactables" unique_id=1772058544]
+position = Vector2(912, 576)
+script = ExtResource("5_sp5e0")
+dialogue_id = &"bell_tower_2f_examen_planche"
+facing = Vector2i(0, 1)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1344433083]
+
+[node name="from_1f" type="Marker2D" parent="Spawns" unique_id=2048586233]
+position = Vector2(1968, 192)
+
+[node name="from_sommet" type="Marker2D" parent="Spawns" unique_id=1293789064]
+position = Vector2(336, 192)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=473930650]
+
+[node name="VersSommet" type="Marker2D" parent="Triggers" unique_id=1778014409]
+position = Vector2(336, 96)
+script = ExtResource("6_ybfg0")
+cutscene_id = &"bell_tower_climb"
+
+[node name="NightLights" type="Node2D" parent="." unique_id=1079780201]

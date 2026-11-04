@@ -376,6 +376,17 @@
 		"mahogany_town": {
 			"name": "Acajou", "kind": "town", "maps": [], "region": "johto", "draft": true,
 			"description": "Un village de montagne au bord du Lac Colère, un peu trop calme pour être honnête."
+		},
+		"bell_tower_woods": {
+			"name": "Bois de la Tour", "kind": "place", "region": "johto", "maps": ["bell_tower_woods"],
+			"subtitle": "Rosalia — Tour Carillon",
+			"description": "Un bois d'érables, au pied de la Tour Carillon."
+		},
+		"bell_tower": {
+			"name": "Tour Carillon", "kind": "place", "region": "johto",
+			"maps": ["bell_tower_1f", "bell_tower_2f", "bell_tower_roof"],
+			"subtitle": "Rosalia",
+			"description": "Une tour sacrée, où sonnent les cloches de l'aube."
 		}
 	}
 }

@@ -1531,6 +1531,8 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
 	_flash.on_map_changed(map)
+	# JOH8 : moment imposé par carte (aube du sommet) avant la lumière, pour qu'elle soit immédiate.
+	_apply_story_period(map.map_id)
 	# JOH0 (QA) : profil de lumière imposé par le départ de débogage sur sa carte.
 	if not _debug_light_profile.is_empty() and map.map_id == _debug_light_map:
 		map.light_profile = _debug_light_profile
@@ -1923,10 +1925,17 @@ func _on_johto_starter_chosen(player_species: StringName, _rival_species: String
 ## JOH1 (`jalon-joh1.md` §2.4) : moment du jour imposé par l'histoire ([JohtoPeriodRule]) :
 ## nuit de la lettre au vol, matin du vol au départ d'Orme, heure réelle ensuite ; recalculé à la
 ## mise en place de la partie et à chaque drapeau. Un départ de débogage qui impose `period` gagne.
-func _apply_story_period() -> void:
+func _apply_story_period(map_id: StringName = &"") -> void:
 	if _debug_period_forced:
 		return
 	var period := JohtoPeriodRule.forced_period(GameState.flags)
+	# JOH8 (JH-55) : aube forcée au sommet de la Tour Carillon, relue à chaque carte.
+	if period.is_empty():
+		if map_id.is_empty():
+			map_id = _current_map_id()
+		if map_id.is_empty():
+			map_id = GameState.current_map
+		period = BellTowerDawnRule.forced_period(map_id, GameState.flags)
 	if period.is_empty():
 		if _world_clock.is_period_forced():
 			_world_clock.release_period()

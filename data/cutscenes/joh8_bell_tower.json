@@ -1,0 +1,1432 @@
+{
+	"bell_tower_woods_hyper_potions": {
+		"variants": [
+			{
+				"unless": [
+					"got_bell_tower_woods_hyper_potions"
+				],
+				"steps": [
+					{
+						"despawn": "hyper_potions"
+					},
+					{
+						"give": "hyper_potion",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_bell_tower_woods_hyper_potions"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_1f_rappel_max": {
+		"variants": [
+			{
+				"unless": [
+					"got_bell_tower_1f_rappel_max"
+				],
+				"steps": [
+					{
+						"despawn": "rappel_max"
+					},
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_bell_tower_1f_rappel_max"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_2f_pp_plus": {
+		"variants": [
+			{
+				"unless": [
+					"got_bell_tower_2f_pp_plus"
+				],
+				"steps": [
+					{
+						"despawn": "pp_plus"
+					},
+					{
+						"give": "pp_up",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_bell_tower_2f_pp_plus"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_summit": {
+		"variants": [
+			{
+				"unless": [
+					"johto_dante_defeated_1"
+				],
+				"steps": [
+					{
+						"dialogue": "bell_tower_arrival",
+						"unless": [
+							"johto_dante_met"
+						]
+					},
+					{
+						"move": "player",
+						"to": [
+							9,
+							7
+						]
+					},
+					{
+						"face": "player",
+						"to": "dante"
+					},
+					{
+						"face": "dante",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_dante_welcome",
+						"unless": [
+							"johto_dante_met"
+						]
+					},
+					{
+						"dialogue": "bell_tower_dante_plan",
+						"unless": [
+							"johto_dante_met"
+						]
+					},
+					{
+						"set": [
+							"johto_dante_met"
+						]
+					},
+					{
+						"dialogue": "bell_tower_dante_before",
+						"unless": [
+							"johto_dante_lost_1"
+						]
+					},
+					{
+						"dialogue": "bell_tower_dante_resume",
+						"if": [
+							"johto_dante_lost_1"
+						]
+					},
+					{
+						"battle": "bell_tower_dante_1",
+						"win": [
+							"johto_dante_defeated_1"
+						],
+						"lose": [
+							"johto_dante_lost_1"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_dante_defeated_1"
+						]
+					},
+					{
+						"wait": 0.6
+					},
+					{
+						"dialogue": "bell_tower_dante_defeated"
+					},
+					{
+						"dialogue": "bell_tower_dante_bell"
+					},
+					{
+						"face": "dante",
+						"to": "up"
+					},
+					{
+						"dialogue": "bell_tower_bell_rings"
+					},
+					{
+						"flash": 1
+					},
+					{
+						"face": "dante",
+						"to": "down"
+					},
+					{
+						"dialogue": "bell_tower_descent"
+					},
+					{
+						"spawn": "ho_oh_descente",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							6
+						],
+						"facing": "up",
+						"turn_to_player": false
+					},
+					{
+						"face": "player",
+						"to": "ho_oh_descente"
+					},
+					{
+						"dialogue": "bell_tower_refusal_1"
+					},
+					{
+						"flash": 2
+					},
+					{
+						"set": [
+							"johto_ho_oh_seen"
+						]
+					},
+					{
+						"dialogue": "bell_tower_refusal_2"
+					},
+					{
+						"despawn": "ho_oh_descente"
+					},
+					{
+						"face": "player",
+						"to": "dante"
+					},
+					{
+						"dialogue": "bell_tower_dante_refused"
+					},
+					{
+						"dialogue": "bell_tower_dante_flight"
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_roar"
+					},
+					{
+						"dialogue": "bell_tower_arcanine"
+					},
+					{
+						"dialogue": "bell_tower_dante_promise"
+					},
+					{
+						"move": "dante",
+						"to": [
+							17,
+							5
+						]
+					},
+					{
+						"despawn": "dante"
+					},
+					{
+						"set": [
+							"johto_dante_fled_1"
+						]
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_turns"
+					},
+					{
+						"wild_battle": "entei",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "entei",
+						"flee": [
+							"johto_entei_fled",
+							"johto_entei_done"
+						],
+						"static": {
+							"done": "johto_entei_done",
+							"caught": "johto_entei_caught"
+						}
+					},
+					{
+						"despawn": "entei",
+						"if": [
+							"johto_entei_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_calm",
+						"if": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_gone",
+						"if": [
+							"johto_entei_done"
+						],
+						"unless": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_lands",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"spawn": "ho_oh",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							5
+						],
+						"facing": "down",
+						"turn_to_player": false,
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"face": "player",
+						"to": "ho_oh",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_test",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"wild_battle": "ho_oh",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "ho_oh",
+						"flee": [
+							"johto_ho_oh_fled",
+							"johto_ho_oh_done"
+						],
+						"static": {
+							"done": "johto_ho_oh_done",
+							"caught": "johto_ho_oh_caught"
+						},
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"despawn": "ho_oh",
+						"if": [
+							"johto_ho_oh_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_gone",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"johto_ho_oh_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_falls",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"give": "rainbow_wing",
+						"count": 1,
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_taken",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"set": [
+							"got_rainbow_wing"
+						],
+						"if": [
+							"johto_ho_oh_done"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_dante_resume_bell": {
+		"variants": [
+			{
+				"if": [
+					"johto_dante_defeated_1"
+				],
+				"unless": [
+					"johto_ho_oh_seen"
+				],
+				"steps": [
+					{
+						"face": "dante",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_dante_bell"
+					},
+					{
+						"face": "dante",
+						"to": "up"
+					},
+					{
+						"dialogue": "bell_tower_bell_rings"
+					},
+					{
+						"flash": 1
+					},
+					{
+						"face": "dante",
+						"to": "down"
+					},
+					{
+						"dialogue": "bell_tower_descent"
+					},
+					{
+						"spawn": "ho_oh_descente",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							6
+						],
+						"facing": "up",
+						"turn_to_player": false
+					},
+					{
+						"face": "player",
+						"to": "ho_oh_descente"
+					},
+					{
+						"dialogue": "bell_tower_refusal_1"
+					},
+					{
+						"flash": 2
+					},
+					{
+						"set": [
+							"johto_ho_oh_seen"
+						]
+					},
+					{
+						"dialogue": "bell_tower_refusal_2"
+					},
+					{
+						"despawn": "ho_oh_descente"
+					},
+					{
+						"face": "player",
+						"to": "dante"
+					},
+					{
+						"dialogue": "bell_tower_dante_refused"
+					},
+					{
+						"dialogue": "bell_tower_dante_flight"
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_roar"
+					},
+					{
+						"dialogue": "bell_tower_arcanine"
+					},
+					{
+						"dialogue": "bell_tower_dante_promise"
+					},
+					{
+						"move": "dante",
+						"to": [
+							17,
+							5
+						]
+					},
+					{
+						"despawn": "dante"
+					},
+					{
+						"set": [
+							"johto_dante_fled_1"
+						]
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_turns"
+					},
+					{
+						"wild_battle": "entei",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "entei",
+						"flee": [
+							"johto_entei_fled",
+							"johto_entei_done"
+						],
+						"static": {
+							"done": "johto_entei_done",
+							"caught": "johto_entei_caught"
+						}
+					},
+					{
+						"despawn": "entei",
+						"if": [
+							"johto_entei_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_calm",
+						"if": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_gone",
+						"if": [
+							"johto_entei_done"
+						],
+						"unless": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_lands",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"spawn": "ho_oh",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							5
+						],
+						"facing": "down",
+						"turn_to_player": false,
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"face": "player",
+						"to": "ho_oh",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_test",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"wild_battle": "ho_oh",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "ho_oh",
+						"flee": [
+							"johto_ho_oh_fled",
+							"johto_ho_oh_done"
+						],
+						"static": {
+							"done": "johto_ho_oh_done",
+							"caught": "johto_ho_oh_caught"
+						},
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"despawn": "ho_oh",
+						"if": [
+							"johto_ho_oh_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_gone",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"johto_ho_oh_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_falls",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"give": "rainbow_wing",
+						"count": 1,
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_taken",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"set": [
+							"got_rainbow_wing"
+						],
+						"if": [
+							"johto_ho_oh_done"
+						]
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_ho_oh_seen"
+				],
+				"unless": [
+					"johto_dante_fled_1"
+				],
+				"steps": [
+					{
+						"face": "dante",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_dante_refused"
+					},
+					{
+						"dialogue": "bell_tower_dante_flight"
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_roar"
+					},
+					{
+						"dialogue": "bell_tower_arcanine"
+					},
+					{
+						"dialogue": "bell_tower_dante_promise"
+					},
+					{
+						"move": "dante",
+						"to": [
+							17,
+							5
+						]
+					},
+					{
+						"despawn": "dante"
+					},
+					{
+						"set": [
+							"johto_dante_fled_1"
+						]
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_turns"
+					},
+					{
+						"wild_battle": "entei",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "entei",
+						"flee": [
+							"johto_entei_fled",
+							"johto_entei_done"
+						],
+						"static": {
+							"done": "johto_entei_done",
+							"caught": "johto_entei_caught"
+						}
+					},
+					{
+						"despawn": "entei",
+						"if": [
+							"johto_entei_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_calm",
+						"if": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_gone",
+						"if": [
+							"johto_entei_done"
+						],
+						"unless": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_lands",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"spawn": "ho_oh",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							5
+						],
+						"facing": "down",
+						"turn_to_player": false,
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"face": "player",
+						"to": "ho_oh",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_test",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"wild_battle": "ho_oh",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "ho_oh",
+						"flee": [
+							"johto_ho_oh_fled",
+							"johto_ho_oh_done"
+						],
+						"static": {
+							"done": "johto_ho_oh_done",
+							"caught": "johto_ho_oh_caught"
+						},
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"despawn": "ho_oh",
+						"if": [
+							"johto_ho_oh_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_gone",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"johto_ho_oh_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_falls",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"give": "rainbow_wing",
+						"count": 1,
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_taken",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"set": [
+							"got_rainbow_wing"
+						],
+						"if": [
+							"johto_ho_oh_done"
+						]
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_dante_defeated_1"
+				],
+				"steps": [
+					{
+						"move": "player",
+						"to": [
+							9,
+							7
+						]
+					},
+					{
+						"face": "player",
+						"to": "dante"
+					},
+					{
+						"face": "dante",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_dante_before",
+						"unless": [
+							"johto_dante_lost_1"
+						]
+					},
+					{
+						"dialogue": "bell_tower_dante_resume",
+						"if": [
+							"johto_dante_lost_1"
+						]
+					},
+					{
+						"battle": "bell_tower_dante_1",
+						"win": [
+							"johto_dante_defeated_1"
+						],
+						"lose": [
+							"johto_dante_lost_1"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_dante_defeated_1"
+						]
+					},
+					{
+						"wait": 0.6
+					},
+					{
+						"dialogue": "bell_tower_dante_defeated"
+					},
+					{
+						"dialogue": "bell_tower_dante_bell"
+					},
+					{
+						"face": "dante",
+						"to": "up"
+					},
+					{
+						"dialogue": "bell_tower_bell_rings"
+					},
+					{
+						"flash": 1
+					},
+					{
+						"face": "dante",
+						"to": "down"
+					},
+					{
+						"dialogue": "bell_tower_descent"
+					},
+					{
+						"spawn": "ho_oh_descente",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							6
+						],
+						"facing": "up",
+						"turn_to_player": false
+					},
+					{
+						"face": "player",
+						"to": "ho_oh_descente"
+					},
+					{
+						"dialogue": "bell_tower_refusal_1"
+					},
+					{
+						"flash": 2
+					},
+					{
+						"set": [
+							"johto_ho_oh_seen"
+						]
+					},
+					{
+						"dialogue": "bell_tower_refusal_2"
+					},
+					{
+						"despawn": "ho_oh_descente"
+					},
+					{
+						"face": "player",
+						"to": "dante"
+					},
+					{
+						"dialogue": "bell_tower_dante_refused"
+					},
+					{
+						"dialogue": "bell_tower_dante_flight"
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_roar"
+					},
+					{
+						"dialogue": "bell_tower_arcanine"
+					},
+					{
+						"dialogue": "bell_tower_dante_promise"
+					},
+					{
+						"move": "dante",
+						"to": [
+							17,
+							5
+						]
+					},
+					{
+						"despawn": "dante"
+					},
+					{
+						"set": [
+							"johto_dante_fled_1"
+						]
+					},
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_turns"
+					},
+					{
+						"wild_battle": "entei",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "entei",
+						"flee": [
+							"johto_entei_fled",
+							"johto_entei_done"
+						],
+						"static": {
+							"done": "johto_entei_done",
+							"caught": "johto_entei_caught"
+						}
+					},
+					{
+						"despawn": "entei",
+						"if": [
+							"johto_entei_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_calm",
+						"if": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_gone",
+						"if": [
+							"johto_entei_done"
+						],
+						"unless": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_lands",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"spawn": "ho_oh",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							5
+						],
+						"facing": "down",
+						"turn_to_player": false,
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"face": "player",
+						"to": "ho_oh",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_test",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"wild_battle": "ho_oh",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "ho_oh",
+						"flee": [
+							"johto_ho_oh_fled",
+							"johto_ho_oh_done"
+						],
+						"static": {
+							"done": "johto_ho_oh_done",
+							"caught": "johto_ho_oh_caught"
+						},
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"despawn": "ho_oh",
+						"if": [
+							"johto_ho_oh_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_gone",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"johto_ho_oh_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_falls",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"give": "rainbow_wing",
+						"count": 1,
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_taken",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"set": [
+							"got_rainbow_wing"
+						],
+						"if": [
+							"johto_ho_oh_done"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_entei": {
+		"variants": [
+			{
+				"if": [
+					"johto_dante_fled_1"
+				],
+				"unless": [
+					"johto_entei_done"
+				],
+				"steps": [
+					{
+						"face": "entei",
+						"to": "player"
+					},
+					{
+						"dialogue": "bell_tower_entei_turns"
+					},
+					{
+						"wild_battle": "entei",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "entei",
+						"flee": [
+							"johto_entei_fled",
+							"johto_entei_done"
+						],
+						"static": {
+							"done": "johto_entei_done",
+							"caught": "johto_entei_caught"
+						}
+					},
+					{
+						"despawn": "entei",
+						"if": [
+							"johto_entei_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_calm",
+						"if": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_entei_gone",
+						"if": [
+							"johto_entei_done"
+						],
+						"unless": [
+							"johto_entei_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_lands",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"spawn": "ho_oh",
+						"sprite": "pokemon/ho_oh",
+						"cell": [
+							9,
+							5
+						],
+						"facing": "down",
+						"turn_to_player": false,
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"face": "player",
+						"to": "ho_oh",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_test",
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"wild_battle": "ho_oh",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "ho_oh",
+						"flee": [
+							"johto_ho_oh_fled",
+							"johto_ho_oh_done"
+						],
+						"static": {
+							"done": "johto_ho_oh_done",
+							"caught": "johto_ho_oh_caught"
+						},
+						"if": [
+							"johto_entei_done"
+						]
+					},
+					{
+						"despawn": "ho_oh",
+						"if": [
+							"johto_ho_oh_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_gone",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"johto_ho_oh_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_falls",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"give": "rainbow_wing",
+						"count": 1,
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_taken",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"set": [
+							"got_rainbow_wing"
+						],
+						"if": [
+							"johto_ho_oh_done"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_ho_oh": {
+		"variants": [
+			{
+				"if": [
+					"johto_entei_done"
+				],
+				"unless": [
+					"johto_ho_oh_done"
+				],
+				"steps": [
+					{
+						"dialogue": "bell_tower_ho_oh_test"
+					},
+					{
+						"wild_battle": "ho_oh",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "ho_oh",
+						"flee": [
+							"johto_ho_oh_fled",
+							"johto_ho_oh_done"
+						],
+						"static": {
+							"done": "johto_ho_oh_done",
+							"caught": "johto_ho_oh_caught"
+						}
+					},
+					{
+						"despawn": "ho_oh",
+						"if": [
+							"johto_ho_oh_fled"
+						]
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_gone",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"johto_ho_oh_caught"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_falls",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"give": "rainbow_wing",
+						"count": 1,
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"dialogue": "bell_tower_feather_taken",
+						"if": [
+							"johto_ho_oh_done"
+						],
+						"unless": [
+							"got_rainbow_wing"
+						]
+					},
+					{
+						"set": [
+							"got_rainbow_wing"
+						],
+						"if": [
+							"johto_ho_oh_done"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_ho_oh_return": {
+		"variants": [
+			{
+				"if": [
+					"johto_chapter_done",
+					"johto_ho_oh_done"
+				],
+				"unless": [
+					"johto_ho_oh_caught",
+					"johto_ho_oh_return_done"
+				],
+				"steps": [
+					{
+						"dialogue": "bell_tower_ho_oh_test"
+					},
+					{
+						"wild_battle": "ho_oh",
+						"level": 65,
+						"intro": "legendary",
+						"actor": "ho_oh_retour",
+						"static": {
+							"done": "johto_ho_oh_return_done",
+							"caught": "johto_ho_oh_caught"
+						}
+					},
+					{
+						"dialogue": "bell_tower_ho_oh_gone",
+						"if": [
+							"johto_ho_oh_return_done"
+						],
+						"unless": [
+							"johto_ho_oh_caught"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_wing": {
+		"variants": [
+			{
+				"if": [
+					"johto_ho_oh_done"
+				],
+				"unless": [
+					"got_rainbow_wing"
+				],
+				"steps": [
+					{
+						"despawn": "plume"
+					},
+					{
+						"give": "rainbow_wing",
+						"count": 1
+					},
+					{
+						"dialogue": "bell_tower_feather_taken"
+					},
+					{
+						"set": [
+							"got_rainbow_wing"
+						]
+					}
+				]
+			}
+		]
+	},
+	"bell_tower_climb": {
+		"steps": [
+			{
+				"dialogue": "bell_tower_climb_1"
+			},
+			{
+				"change_map": "bell_tower_roof",
+				"at": "from_2f",
+				"facing": "down"
+			},
+			{
+				"dialogue": "bell_tower_climb_2"
+			}
+		]
+	}
+}
