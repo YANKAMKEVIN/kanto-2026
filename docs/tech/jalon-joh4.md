@@ -281,4 +281,6 @@ queue, habitant) ; don du vendredi une fois pour toutes ; musiques de substituti
 | T7, T10 | `31e898a2` … | `test_joh4_data`, `test_joh4_maps`, `test_joh4_story` ; registres réalignés |
 | T11 | (fin de journée) | `tools/capture_joh4.sh` (23 plans) relus ; défaut corrigé : fleurs de l'autel sur fond noir (tuile transparente posée sur la couche Detail) |
 | Équilibrage | — | Brace 21/21/23 [D] par simulation (§2.3) |
-| `main` | — | JOH1 (`main`) et JOH2 (branche, Lucien posé à Oliville) refusionnés |
+| `main` | `c0ef0d77` | JOH1 et JOH2 refusionnés depuis `main` ; CI verte (run 41887881537) |
+| CI | `fa773a9e` | Corrections : Brace fuit à pied, « Sbire Rocket », 12 Sbires femmes, décors de combat, icônes provisoires |
+| T12 | (ce commit) | QA A17 21 h 14 – 21 h 24 (`build/qa/joh4_a17_2026-11-04/`) sans bloquant ; ajout : objectifs du Menu du JOH4 [D] |

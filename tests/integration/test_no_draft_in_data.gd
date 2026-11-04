@@ -64,6 +64,11 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/2",
 	"story/objectives.json/3",
 	"story/objectives.json/4",
+	# JOH4 : quatre objectifs [D] en tête (indices 0 à 3) ; ceux du JOH1 passent de 0–4 à 4–8.
+	"story/objectives.json/5",
+	"story/objectives.json/6",
+	"story/objectives.json/7",
+	"story/objectives.json/8",
 	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",
