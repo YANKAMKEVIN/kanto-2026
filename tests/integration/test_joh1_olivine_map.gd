@@ -118,10 +118,10 @@ func test_warps() -> void:
 		&"entrance", Vector2i.UP)
 	_check_warp("PorteMaison2", Vector2i(37, 30), 0, Vector2i.UP, &"olivine_house_2",
 		&"entrance", Vector2i.UP)
+	# JOH2 : la Route 39 existe, le passage est réel (arrivées `from_olivine`, `_1`, `_2`).
 	for i: int in 3:
-		_check_warp("WarpEst_%d" % i, Vector2i(49, 20 + i), 1, Vector2i.RIGHT, &"",
-			&"from_route_39" if i == 0 else StringName("from_route_39_%d" % i), Vector2i.LEFT,
-			"Route 39")
+		_check_warp("WarpEst_%d" % i, Vector2i(49, 20 + i), 1, Vector2i.RIGHT, &"route_39",
+			&"from_olivine" if i == 0 else StringName("from_olivine_%d" % i), Vector2i.RIGHT, "")
 	for i: int in 10:
 		_check_warp("WarpSudMer_%d" % i, Vector2i(20 + i, 39), 1, Vector2i.DOWN, &"",
 			&"from_route_40" if i == 0 else StringName("from_route_40_%d" % i), Vector2i.UP,

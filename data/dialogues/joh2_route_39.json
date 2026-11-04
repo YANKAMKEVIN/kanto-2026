@@ -1,0 +1,82 @@
+{
+	"route_39_youngster_hugo_before": {
+		"speaker": "Gamin Hugo",
+		"pages": [
+			"Toi aussi tu viens d'avoir\nton premier Pokémon ?"
+		]
+	},
+	"route_39_youngster_hugo_defeated": {
+		"speaker": "Gamin Hugo",
+		"pages": [
+			"D'accord, tu as plus\nd'expérience que moi !"
+		]
+	},
+	"route_39_youngster_hugo_after": {
+		"speaker": "Gamin Hugo",
+		"pages": [
+			"J'ai l'impression que tu as\ndéjà fait ça…"
+		]
+	},
+	"route_39_schoolgirl_lina_before": {
+		"speaker": "Écolière Lina",
+		"pages": [
+			"Mon Wattouat a une laine\ntoute douce !"
+		]
+	},
+	"route_39_schoolgirl_lina_defeated": {
+		"speaker": "Écolière Lina",
+		"pages": [
+			"Il est tout électrique\nmaintenant…"
+		]
+	},
+	"route_39_schoolgirl_lina_after": {
+		"speaker": "Écolière Lina",
+		"pages": [
+			"On va réviser nos leçons."
+		]
+	},
+	"route_39_fermiere": {
+		"speaker": "Fermière",
+		"pages": [
+			"Les Tauros sont nerveux\ndepuis quelques nuits.",
+			"Des gens passent sur la route\nsans lumière.",
+			"Je n'aime pas ça."
+		]
+	},
+	"route_39_ecremeuh": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Meuuh !\nÉcrémeuh broute, paisible."
+		]
+	},
+	"route_39_tauros": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Tauros gratte le sol du sabot.\nIl n'a pas l'air tranquille."
+		]
+	},
+	"route_39_ponyta": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Ponyta somnole au soleil.\nSa crinière crépite doucement."
+		]
+	},
+	"route_39_item_1": {
+		"cutscene": "route_39_item_1"
+	},
+	"route_39_panneau_route": {
+		"narration": true,
+		"pages": [
+			"ROUTE 39\nOliville — Rosalia"
+		]
+	},
+	"route_39_panneau_ferme": {
+		"narration": true,
+		"pages": [
+			"FERME MEUMEU\nLait frais tous les matins"
+		]
+	}
+}

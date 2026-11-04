@@ -38,6 +38,9 @@ const DATA_DIR := "res://data"
 ## les 51 fiches du Pokédex de Johto (JOH-Q2), à relire par Kevin avec les textes du JOH1.
 ## JOH9 (2026-11-04) : textes [D] hors du dossier joh-10 (Topdresseur Jules, garde du poste de
 ## la Route 28 après l'ouverture, porte verrouillée, gardien) et lignes du petit générique de Johto.
+## JOH2 (2026-11-04) : description de Rosalia validée (R-25, plus « draft ») ; textes [D] hors du
+## dossier joh-03 (garde de la Route 42, Pokémon de la ferme, sages et habitants de Rosalia),
+## JOH2-Q1.
 const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_before",
 	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_defeated",
@@ -56,8 +59,16 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/credits_johto.json/blocks/16",
 	"story/credits_johto.json/blocks/18",
 	"story/credits_johto.json/blocks/21",
+	"dialogues/joh2_ecruteak_city.json/ecruteak_city_garde_route_42",
+	"dialogues/joh2_route_39.json/route_39_ecremeuh",
+	"dialogues/joh2_route_39.json/route_39_tauros",
+	"dialogues/joh2_route_39.json/route_39_ponyta",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_elders_house_sage",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_habitante/variants/0",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_habitante/variants/1",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_received",
+	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_2_habitant",
 	"world/zones.json/zones/saffron_city",
-	"world/zones.json/zones/ecruteak_city",
 	"world/zones.json/zones/goldenrod_city",
 	"world/zones.json/zones/azalea_town",
 	"world/zones.json/zones/mahogany_town",

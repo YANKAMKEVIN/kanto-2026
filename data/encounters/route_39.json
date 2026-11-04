@@ -1,0 +1,99 @@
+{
+	"route_39_grass_day": {
+		"maps": [
+			"route_39"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "sentret",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 30
+			},
+			{
+				"species": "mareep",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 30
+			},
+			{
+				"species": "rattata",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 18
+			},
+			{
+				"species": "pidgey",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 18
+			},
+			{
+				"species": "miltank",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 4
+			}
+		]
+	},
+	"route_39_grass_night": {
+		"maps": [
+			"route_39"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "hoothoot",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 40
+			},
+			{
+				"species": "rattata",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 30
+			},
+			{
+				"species": "oddish",
+				"levels": [
+					4,
+					7
+				],
+				"weight": 30
+			}
+		]
+	}
+}
