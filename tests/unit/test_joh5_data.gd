@@ -14,7 +14,9 @@ const NPC_FILE := "res://data/npcs/goldenrod_radio_tower_%df.json"
 const MAP_POINTS: Array[StringName] = [&"goldenrod_radio_elevator", &"goldenrod_radio_console",
 	&"goldenrod_radio_emergency_stairs", &"goldenrod_radio_loudspeaker",
 	&"goldenrod_radio_reserve_door", &"goldenrod_radio_office_locked",
-	&"radio_3f_hidden_1", &"radio_4f_hidden_1"]
+	&"radio_3f_hidden_1", &"radio_4f_hidden_1",
+	# T-38 : joué par la scène `sea_cave_current_back` du JOH1 (grotte marine).
+	&"sea_cave_calm"]
 const MAP_TRIGGERS: Array[StringName] = [&"goldenrod_radio_impostor", &"goldenrod_radio_exit",
 	&"goldenrod_radio_cenere", &"goldenrod_radio_office"]
 ## Drapeaux venus d'autres jalons ou systèmes (lus, jamais posés ici).

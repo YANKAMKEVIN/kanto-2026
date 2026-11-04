@@ -6,6 +6,14 @@
 		992
 	],
 	"zones": {
+		"sea_cave": {
+			"area": [
+				200,
+				640,
+				200,
+				90
+			]
+		},
 		"olivine_city": {
 			"area": [
 				200,

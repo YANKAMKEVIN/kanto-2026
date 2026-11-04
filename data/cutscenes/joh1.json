@@ -1,0 +1,187 @@
+{
+	"johto_letter": {
+		"unless": ["johto_letter_read"],
+		"steps": [
+			{ "face": "oak", "to": "player" },
+			{ "face": "player", "to": "oak" },
+			{ "dialogue": "johto_letter_1" },
+			{ "lean": "oak", "to": "player" },
+			{ "wait": 0.4 },
+			{ "dialogue": "johto_letter_2" },
+			{ "set": ["johto_letter_read"] },
+			{ "wait": 0.4 },
+			{ "dialogue": "johto_letter_3" }
+		]
+	},
+	"pallet_cave_mouth": {
+		"if": ["johto_letter_read"],
+		"unless": ["johto_cave_mouth_seen"],
+		"steps": [
+			{ "face": "player", "to": "down" },
+			{ "dialogue": "pallet_cave_mouth" },
+			{ "set": ["johto_cave_mouth_seen"] }
+		]
+	},
+	"sea_cave_lugia_shadow": {
+		"unless": ["johto_lugia_shadow"],
+		"steps": [
+			{ "wait": 0.3 },
+			{ "react": "player" },
+			{ "dialogue": "sea_cave_lugia_shadow_1" },
+			{ "set": ["johto_lugia_passing"] },
+			{ "animate": "LugiaShadow", "offset": [11, 0], "duration": 4.0, "fade": true },
+			{ "unset": ["johto_lugia_passing"] },
+			{ "set": ["johto_lugia_shadow"] },
+			{ "dialogue": "sea_cave_lugia_shadow_2" }
+		]
+	},
+	"sea_cave_current_back": {
+		"variants": [
+			{
+				"unless": ["johto_team_returned"],
+				"steps": [
+					{ "dialogue": "sea_cave_current_back" },
+					{ "move": "player", "path": ["down"], "keep_facing": true }
+				]
+			},
+			{
+				"if": ["johto_team_returned"],
+				"unless": ["johto_sea_cave_calm_seen"],
+				"steps": [
+					{ "dialogue": "sea_cave_calm" },
+					{ "set": ["johto_sea_cave_calm_seen"] }
+				]
+			}
+		]
+	},
+	"sea_cave_1_item_1": {
+		"unless": ["got_sea_cave_1_item_1"],
+		"steps": [
+			{ "despawn": "sea_cave_1_item_1" },
+			{ "give": "pearl", "count": 1, "found": true },
+			{ "set": ["got_sea_cave_1_item_1"] }
+		]
+	},
+	"sea_cave_2_item_1": {
+		"unless": ["got_sea_cave_2_item_1"],
+		"steps": [
+			{ "despawn": "sea_cave_2_item_1" },
+			{ "give": "max_repel", "count": 1, "found": true },
+			{ "set": ["got_sea_cave_2_item_1"] }
+		]
+	},
+
+	"olivine_arrival": {
+		"unless": ["johto_arrived"],
+		"steps": [
+			{ "set": ["johto_arrived"] }
+		]
+	},
+	"olivine_guard_block": {
+		"unless": ["johto_starter_chosen"],
+		"steps": [
+			{ "face": "garde_est", "to": "player" },
+			{ "face": "player", "to": "garde_est" },
+			{ "dialogue": "olivine_guard" },
+			{ "move": "player", "path": ["left"], "keep_facing": true }
+		]
+	},
+	"olivine_center_arrival": {
+		"if": ["johto_arrived"],
+		"unless": ["johto_slept"],
+		"steps": [
+			{ "face": "player", "to": "up" },
+			{ "dialogue": "olivine_nurse_arrival_1" },
+			{ "dialogue": "olivine_nurse_arrival_2" },
+			{ "set": ["johto_slept"] },
+			{ "change_map": "olivine_center_room", "at": "lit", "facing": "left" },
+			{ "wait": 1.5 },
+			{ "dialogue": "olivine_night_1" },
+			{ "spawn": "sbire_1", "sprite": "rocket_grunt_m", "cell": [12, 4], "facing": "left" },
+			{ "move": "sbire_1",
+				"to": { "near": "player", "offsets": [[1, 0], [1, 1], [0, 1]] } },
+			{ "dialogue": "olivine_night_2" },
+			{ "spawn": "sbire_2", "sprite": "rocket_grunt_f", "cell": [12, 4], "facing": "left" },
+			{ "move": "sbire_2", "to": [9, 5] },
+			{ "wait": 0.4 },
+			{ "move": "sbire_1", "to": [11, 5], "background": true },
+			{ "dialogue": "olivine_night_3" },
+			{ "move": "sbire_2", "to": [12, 4] },
+			{ "despawn": "sbire_2" },
+			{ "move": "sbire_1", "to": [12, 4] },
+			{ "despawn": "sbire_1" },
+			{ "dialogue": "olivine_night_4" },
+			{ "confiscate_team": true },
+			{ "set": ["johto_team_stolen"] },
+			{ "save": "vol de l'équipe (Centre d'Oliville)" },
+			{ "wait": 0.8 },
+			{ "change_map": "olivine_center_room", "at": "lit", "facing": "left" },
+			{ "wait": 0.8 },
+			{ "move": "infirmiere", "to": { "near": "player", "offsets": [[1, 0], [0, 1], [1, 1]] } },
+			{ "face": "infirmiere", "to": "player" },
+			{ "face": "player", "to": "infirmiere" },
+			{ "dialogue": "olivine_nurse_morning" },
+			{ "move": "infirmiere", "to": [12, 4] },
+			{ "despawn": "infirmiere" },
+			{ "wait": 0.4 },
+			{ "move": "orme", "to": { "near": "player", "offsets": [[1, 0], [0, 1], [1, 1]] } },
+			{ "face": "orme", "to": "player" },
+			{ "face": "player", "to": "orme" },
+			{ "dialogue": "olivine_orme_arrival" },
+			{ "wait": 0.4 },
+			{ "dialogue": "olivine_orme_offer" },
+			{ "face": "orme", "to": "cyndaquil" },
+			{ "set": ["johto_starter_offered"] }
+		]
+	},
+	"olivine_morning": {
+		"if": ["johto_team_stolen"],
+		"unless": ["johto_starter_offered"],
+		"steps": [
+			{ "wait": 0.8 },
+			{ "move": "infirmiere", "to": { "near": "player", "offsets": [[1, 0], [0, 1], [1, 1]] } },
+			{ "face": "infirmiere", "to": "player" },
+			{ "face": "player", "to": "infirmiere" },
+			{ "dialogue": "olivine_nurse_morning" },
+			{ "move": "infirmiere", "to": [12, 4] },
+			{ "despawn": "infirmiere" },
+			{ "wait": 0.4 },
+			{ "move": "orme", "to": { "near": "player", "offsets": [[1, 0], [0, 1], [1, 1]] } },
+			{ "face": "orme", "to": "player" },
+			{ "face": "player", "to": "orme" },
+			{ "dialogue": "olivine_orme_arrival" },
+			{ "wait": 0.4 },
+			{ "dialogue": "olivine_orme_offer" },
+			{ "face": "orme", "to": "cyndaquil" },
+			{ "set": ["johto_starter_offered"] }
+		]
+	},
+	"johto_starter_chosen": {
+		"unless": ["johto_orme_left"],
+		"steps": [
+			{ "move": "player", "to": { "near": "player", "offsets": [[0, 1]] },
+				"keep_facing": true, "optional": true },
+			{ "hop": "$player_starter",
+				"to": { "near": "player",
+					"offsets": [[1, 0], [-1, 0], [1, -1], [-1, -1], [1, 1], [-1, 1]] } },
+			{ "face": "$player_starter", "to": "player" },
+			{ "lean": "$player_starter", "to": "player" },
+			{ "face": "player", "to": "$player_starter" },
+			{ "wait": 0.8 },
+			{ "set": ["johto_starter_chosen"] },
+			{ "face": "orme", "to": "player" },
+			{ "dialogue": "olivine_orme_chosen" },
+			{ "lean": "orme", "to": "player" },
+			{ "give": "poke_ball", "count": 5 },
+			{ "give": "potion", "count": 1 },
+			{ "wait": 0.6 },
+			{ "dialogue": "olivine_orme_leaving" },
+			{ "move": "orme", "to": [12, 4] },
+			{ "despawn": "orme" },
+			{ "face": "player", "to": "$player_starter" },
+			{ "wait": 0.4 },
+			{ "despawn": "$player_starter" },
+			{ "set": ["johto_orme_left"] }
+		]
+	}
+}

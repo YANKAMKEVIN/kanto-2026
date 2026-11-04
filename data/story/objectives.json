@@ -1,5 +1,59 @@
 [
 	{
+		"id": "go_ecruteak_sages",
+		"text": "retourner voir les sages de Rosalia.",
+		"if": ["johto_act2"],
+		"draft": true
+	},
+	{
+		"id": "leave_radio_tower",
+		"text": "redescendre au hall de la Tour Radio.",
+		"if": ["johto_team_returned"],
+		"unless": ["johto_act2"],
+		"draft": true
+	},
+	{
+		"id": "free_radio_tower",
+		"text": "libérer la Tour Radio de Doublonville.",
+		"if": ["johto_radio_pass"],
+		"unless": ["johto_team_returned"],
+		"draft": true
+	},
+	{
+		"id": "go_route_39",
+		"text": "prendre la Route 39, à l'est d'Oliville.",
+		"if": ["johto_starter_chosen"],
+		"draft": true
+	},
+	{
+		"id": "choose_johto_partner",
+		"text": "choisir un partenaire avec le Professeur Orme.",
+		"if": ["johto_team_stolen"],
+		"unless": ["johto_starter_chosen"],
+		"draft": true
+	},
+	{
+		"id": "rest_olivine",
+		"text": "se reposer au Centre d'Oliville.",
+		"if": ["johto_arrived"],
+		"unless": ["johto_slept"],
+		"draft": true
+	},
+	{
+		"id": "reach_olivine",
+		"text": "rejoindre Oliville par la grotte marine.",
+		"if": ["johto_letter_read"],
+		"unless": ["johto_arrived"],
+		"draft": true
+	},
+	{
+		"id": "talk_to_oak",
+		"text": "reparler au Professeur Chen.",
+		"if": ["oak_post_league_gifts_done"],
+		"unless": ["johto_letter_read"],
+		"draft": true
+	},
+	{
 		"id": "return_gold_teeth",
 		"text": "rapporter ses dents au Gardien.",
 		"if": ["got_safari_zone_west_dents_or"],

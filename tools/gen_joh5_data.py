@@ -196,6 +196,9 @@ T = {
 		"« Quand tout sera cendres »… Ça ne me plaît pas.",
 		"Les sages de Rosalia ont appelé ce matin. Ils veulent te voir.",
 		"Je crois que c'est à propos de la Tour Cendrée."]),
+	# T-38 : grotte marine, premier passage après le retour (variante de `sea_cave_current_back`,
+	# scène du JOH1 dans `data/cutscenes/joh1.json`).
+	"sea_cave_calm": (NARRATION, ["Le courant s'est calmé.", "On peut repartir vers Kanto."]),
 }
 # T-28 (écran du choix des 6) : titre et consigne de `TeamReturnOverlay` (JOH0), pas un dialogue.
 

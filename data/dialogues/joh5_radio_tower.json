@@ -480,6 +480,13 @@
 			"Je crois que c'est à propos de la Tour Cendrée."
 		]
 	},
+	"sea_cave_calm": {
+		"narration": true,
+		"pages": [
+			"Le courant s'est calmé.",
+			"On peut repartir vers Kanto."
+		]
+	},
 	"goldenrod_radio_impostor": {
 		"cutscene": "goldenrod_radio_impostor"
 	},
