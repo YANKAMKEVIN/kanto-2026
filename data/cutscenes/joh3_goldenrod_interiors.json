@@ -1,0 +1,49 @@
+{
+	"goldenrod_orme_egg": {
+		"variants": [
+			{
+				"unless": [
+					"johto_egg_received"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_orme_egg_talk"
+					},
+					{
+						"give_egg": "togepi",
+						"steps": 2000,
+						"say": "goldenrod_orme_egg_received",
+						"say_full": "goldenrod_orme_full",
+						"flag": "johto_egg_received"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_dept_roof_upgrade": {
+		"variants": [
+			{
+				"unless": [
+					"goldenrod_upgrade_taken"
+				],
+				"steps": [
+					{
+						"despawn": "upgrade_ball"
+					},
+					{
+						"give": "up_grade",
+						"count": 1
+					},
+					{
+						"dialogue": "goldenrod_dept_roof_upgrade_found"
+					},
+					{
+						"set": [
+							"goldenrod_upgrade_taken"
+						]
+					}
+				]
+			}
+		]
+	}
+}

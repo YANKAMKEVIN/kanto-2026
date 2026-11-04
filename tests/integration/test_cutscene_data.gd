@@ -191,7 +191,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"johto_return_test": [[]],
 	# Chapitre Johto (JOH1) : lettre, grotte marine, Oliville (jalon-joh1.md §2.5, §2.6).
 	&"johto_letter": [[&"oak_met", &"league_champion_defeated", &"oak_post_league_gifts_done"]],
-	&"sea_cave_lugia_shadow": [[]], &"sea_cave_current_back": [[]],
+	&"sea_cave_lugia_shadow": [[]], &"sea_cave_current_back": [[],
+		# JOH5 (T-38) : le courant calmé, une fois, après le retour de l'équipe.
+		[&"johto_team_returned"]],
 	&"pallet_cave_mouth": [[&"johto_letter_read"]],
 	&"sea_cave_1_item_1": [[]], &"sea_cave_2_item_1": [[]], &"olivine_arrival": [[]],
 	&"olivine_guard_block": [[]], &"olivine_center_arrival": [[&"johto_arrived"]],

@@ -38,9 +38,11 @@
 		"variants": [
 			{
 				"pages": [
-					"Oh ?\n… L'œuf a éclos : c'est {pokemon} !"
-				],
-				"draft": true
+					"Hein ?",
+					"…",
+					"L'Œuf éclot !",
+					"{player} obtient un {pokemon} !"
+				]
 			}
 		]
 	},

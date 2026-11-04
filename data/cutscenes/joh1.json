@@ -36,10 +36,22 @@
 		]
 	},
 	"sea_cave_current_back": {
-		"unless": ["johto_team_returned"],
-		"steps": [
-			{ "dialogue": "sea_cave_current_back" },
-			{ "move": "player", "path": ["down"], "keep_facing": true }
+		"variants": [
+			{
+				"unless": ["johto_team_returned"],
+				"steps": [
+					{ "dialogue": "sea_cave_current_back" },
+					{ "move": "player", "path": ["down"], "keep_facing": true }
+				]
+			},
+			{
+				"if": ["johto_team_returned"],
+				"unless": ["johto_sea_cave_calm_seen"],
+				"steps": [
+					{ "dialogue": "sea_cave_calm" },
+					{ "set": ["johto_sea_cave_calm_seen"] }
+				]
+			}
 		]
 	},
 	"sea_cave_1_item_1": {

@@ -1,5 +1,5 @@
 {
-	"_comment": "Rectangles [x, y, w, h] des zones de Johto sur assets/ui/map/johto_placeholder.webp (1586x992, image PROVISOIRE dessinee par tools/make_johto_map_placeholder.py au JOH0 d'apres la geographie du dossier JOH-00 \u00a73 ; refaite en phase DA). Seule la geometrie vit ici ; l'identite des zones est dans data/world/zones.json.",
+	"_comment": "Rectangles [x, y, w, h] des zones de Johto sur assets/ui/map/johto_placeholder.webp (1586x992, image PROVISOIRE dessinee par tools/make_johto_map_placeholder.py au JOH0 d'apres la geographie du dossier JOH-00 §3 ; refaite en phase DA). Seule la geometrie vit ici ; l'identite des zones est dans data/world/zones.json.",
 	"image": "res://assets/ui/map/johto_placeholder.webp",
 	"image_size": [
 		1586,
@@ -94,6 +94,38 @@
 				90
 			]
 		},
+		"route_37": {
+			"area": [
+				500,
+				310,
+				110,
+				80
+			]
+		},
+		"route_36": {
+			"area": [
+				610,
+				330,
+				170,
+				70
+			]
+		},
+		"route_35": {
+			"area": [
+				820,
+				395,
+				110,
+				70
+			]
+		},
+		"goldenrod_underground": {
+			"area": [
+				990,
+				520,
+				90,
+				45
+			]
+		},
 		"route_34": {
 			"area": [
 				835,
@@ -115,6 +147,14 @@
 				985,
 				795,
 				70,
+				60
+			]
+		},
+		"goldenrod_radio_tower": {
+			"area": [
+				780,
+				390,
+				200,
 				60
 			]
 		}

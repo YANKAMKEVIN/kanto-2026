@@ -448,6 +448,20 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 | `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
 
 
+## Chapitre Johto, JOH3 (Routes 37, 36, 35, Doublonville)
+
+- `johto_route_37` : Croconaw N16, Fouinette N14, Wattouat N14 à l'entrée nord de la Route 37
+  (`from_ecruteak`) : Lise, Super Potion, raccords vers la Route 36. `johto_route_37_night` : idem,
+  moment forcé `night` (Sbires A et B, Hoothoot, Malosse).
+- `johto_route_35_night` : Route 35 (`from_route_36`), `night` (étang, Anna).
+- `johto_route_36_wednesday` : Route 36 (`from_route_37`), jour forcé `wednesday` (Mercédès).
+- `johto_goldenrod` : Croconaw N18, Fouinar N17, Lainergie N17 à l'entrée nord de Doublonville
+  (`from_route_35`) : titre et haut-parleur, Centre (Orme, l'œuf), Grand Magasin, maisons,
+  Souterrain, agent de la sortie sud. `johto_goldenrod_night` : idem, `night` (lampes).
+- `johto_goldenrod_thursday` : devant le Grand Magasin, jour forcé `thursday` (Jérôme).
+- `johto_goldenrod_full_party` : au Centre, six Pokémon : Orme garde l'œuf (D-14).
+- `johto_underground` : à l'escalier ouest du Souterrain (Sbires C et D, chef, indice).
+
 ### Chapitre Johto, JOH4 (Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss)
 
 Équipe de Johto (Croconaw avec Surf, Furret, Lainergie, Togepi éclos), badges de Kanto, CS03,
@@ -461,3 +475,17 @@ drapeaux des JOH1 à JOH3 (dont `johto_azalea_clue`), équipe de Kanto confisqu�
 - `johto_brace` : B2F, devant le couloir de Brace (niv. 22–24).
 - `johto_azalea_after` : devant le puits, tout le jalon fait (Ramoloss de retour, objets clés).
 - `johto_azalea_friday` : entrée d'Écorcia, jour imposé `friday` (Vincent).
+
+## Chapitre Johto, JOH5 : la Tour Radio (`docs/tech/jalon-joh5.md` §2.6)
+
+Équipe de Johto (Feurisson N28 compagnon, Lainergie N27, Noarfang N26, Togetic N26), équipe de
+Kanto confisquée (5 Pokémon, Super Bonbons non compris), Carte d'accès et Ordre de mission dans le
+Sac, drapeaux de l'acte 1 jusqu'au JOH4 (`johto_brace_defeated`, `johto_radio_pass`).
+
+| Fichier | Contenu |
+|---|---|
+| `johto_radio_tower.json` | Hall (1F), devant la porte : un pas vers le nord-ouest jusqu'à la niche de l'escalier (3, 2) → T-2, combat du faux employé, fuite ; puis les étages |
+| `johto_radio_tower_3f.json` | 3F (archives), arrivée du 2F, faux employé et Sbire I battus : réserve fermée (T-9 sans la clé : porte fermée), gardien inévitable en (13, 11), Raphaël (T-11) |
+| `johto_radio_tower_5f.json` | 5F, arrivée de l'escalier : Sbires obligatoires des étages battus, réserve ouverte ; descendre vers l'ouverture de la vitre (12..13, 6) → Cenere, Dante, Sbires, départ de Cenere |
+| `johto_radio_tower_office.json` | 5F, Cenere battue, Dante révélé, porte du bureau ouverte (8, 2). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Bureau : T-24 à T-27, écran du choix des 6 (9 Pokémon), T-29, T-30, **écriture**, Multi Exp, T-32. Arrêt de l'appli pendant l'écran → « Continuer » : la scène rejoue ; après → équipe rendue, acte 1 fini |
+| `johto_radio_tower_small.json` | Comme le précédent avec 2 + 3 Pokémon (**pas d'écran**) et une Multi Exp déjà dans le Sac (3 Super Bonbons) ; sans écriture du départ |

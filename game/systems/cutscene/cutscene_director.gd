@@ -502,12 +502,18 @@ func _give_egg(step: CutsceneStep) -> void:
 		return
 	var party: Party = _state.party
 	if party.is_full():
-		_step_error("équipe pleine : l'œuf « %s » n'est pas donné" % step.species)
+		# JOH3 : « say_full » (Orme garde l'œuf, dossier JOH-04 §7) ; sans lui, une erreur.
+		if step.dialogue_stored.is_empty():
+			_step_error("équipe pleine : l'œuf « %s » n'est pas donné" % step.species)
+		else:
+			await _play_dialogue(step.dialogue_stored)
 		return
 	var egg := EggRules.create(_pokemon_data, step.species, step.count, _state.rng as GameRng)
 	if egg == null or not party.add(egg):
 		_step_error("œuf « %s » refusé" % step.species)
 		return
+	if not step.gift_flag.is_empty():
+		_flags.set_flag(step.gift_flag)
 	egg_given.emit(egg)
 	if not step.dialogue_id.is_empty():
 		await _play_dialogue(step.dialogue_id)

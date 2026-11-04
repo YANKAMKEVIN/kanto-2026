@@ -1,0 +1,78 @@
+{
+	"sbire_l": {
+		"cell": [
+			15,
+			2
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "goldenrod_radio_tower_grunt_l_after",
+		"trainer": {
+			"id": "goldenrod_radio_tower_grunt_l",
+			"sight": 3,
+			"before": "goldenrod_radio_tower_grunt_l_before",
+			"defeated": "goldenrod_radio_tower_grunt_l_defeated"
+		}
+	},
+	"gardien": {
+		"cell": [
+			13,
+			11
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "goldenrod_radio_tower_keeper_after",
+		"trainer": {
+			"id": "goldenrod_radio_tower_keeper",
+			"sight": 1,
+			"before": "goldenrod_radio_tower_keeper_before",
+			"defeated": "goldenrod_radio_tower_keeper_defeated"
+		}
+	},
+	"sbire_k": {
+		"cell": [
+			10,
+			5
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "goldenrod_radio_tower_grunt_k_after",
+		"trainer": {
+			"id": "goldenrod_radio_tower_grunt_k",
+			"sight": 3,
+			"before": "goldenrod_radio_tower_grunt_k_before",
+			"defeated": "goldenrod_radio_tower_grunt_k_defeated"
+		}
+	},
+	"employee": {
+		"cell": [
+			19,
+			12
+		],
+		"facing": "left",
+		"sprite": "hostess",
+		"dialogue": "goldenrod_radio_employee"
+	},
+	"raphael": {
+		"cell": [
+			21,
+			11
+		],
+		"facing": "left",
+		"sprite": "engineer",
+		"unless": [
+			"johto_radio_staff_talked",
+			"johto_act2"
+		],
+		"dialogue": "goldenrod_radio_raphael"
+	},
+	"employe_2": {
+		"cell": [
+			20,
+			14
+		],
+		"facing": "up",
+		"sprite": "engineer",
+		"dialogue": "goldenrod_radio_employee_2"
+	}
+}

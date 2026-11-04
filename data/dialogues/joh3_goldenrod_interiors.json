@@ -1,0 +1,288 @@
+{
+	"goldenrod_orme": {
+		"speaker": "Orme",
+		"variants": [
+			{
+				"unless": [
+					"johto_goldenrod_orme_met"
+				],
+				"set": [
+					"johto_goldenrod_orme_met"
+				],
+				"cutscene": "goldenrod_orme_egg",
+				"pages": [
+					"{player} !\nTu es {g:venu|venue} jusqu'ici, bravo.",
+					"Et ton {pokemon}\na bien grandi.",
+					"Ici aussi, la Team Rocket s'agite.",
+					"La Tour Radio diffuse des messages\nbrouillés depuis une semaine.",
+					"Et des hommes en noir traînent\ndans le Souterrain."
+				]
+			},
+			{
+				"unless": [
+					"johto_egg_received"
+				],
+				"cutscene": "goldenrod_orme_egg"
+			},
+			{
+				"pages": [
+					"Fais attention à toi, {player}.",
+					"Ceux qui ont volé tes Pokémon\nne sont pas loin."
+				]
+			}
+		]
+	},
+	"goldenrod_orme_egg_talk": {
+		"speaker": "Orme",
+		"pages": [
+			"J'ai quelque chose pour toi.",
+			"Un ami de Doublonville\nm'a confié cet œuf.",
+			"Je ne sais pas encore\nce qui en sortira.",
+			"Garde-le dans ton équipe :\nles Pokémon nés d'un œuf s'attachent\nvite à qui les a portés."
+		]
+	},
+	"goldenrod_orme_egg_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit un Œuf !"
+		]
+	},
+	"goldenrod_orme_full": {
+		"speaker": "Orme",
+		"pages": [
+			"Ton équipe est pleine…",
+			"Et le réseau de stockage\nest toujours coupé.",
+			"Reviens me voir quand tu auras\nune place."
+		]
+	},
+	"goldenrod_radio_tower_impostor_closed": {
+		"speaker": "Employé",
+		"pages": [
+			"Désolé, la Tour est fermée\nau public.",
+			"Travaux techniques.",
+			"Revenez… plus tard.\nBeaucoup plus tard."
+		]
+	},
+	"goldenrod_radio_tower_elevator_closed": {
+		"narration": true,
+		"pages": [
+			"Un écriteau : « Étages fermés ».",
+			"Des voix étouffées descendent\nde là-haut."
+		]
+	},
+	"goldenrod_dept_hostess": {
+		"speaker": "Hôtesse",
+		"pages": [
+			"Bienvenue au Grand Magasin\nde Doublonville !",
+			"Les soins au 1er,\nles accessoires au 2e,",
+			"et une vue magnifique sur le toit."
+		]
+	},
+	"goldenrod_dept_board": {
+		"narration": true,
+		"variants": [
+			{
+				"if_weekday": "monday",
+				"pages": [
+					"PROMOTION DU JOUR\nAujourd'hui, Poké Ball\nà moitié prix !"
+				]
+			},
+			{
+				"if_weekday": "tuesday",
+				"pages": [
+					"PROMOTION DU JOUR\nAujourd'hui, Potion et Super Potion\nà moitié prix !"
+				]
+			},
+			{
+				"if_weekday": "wednesday",
+				"pages": [
+					"PROMOTION DU JOUR\nAujourd'hui, Super Ball\nà moitié prix !"
+				]
+			},
+			{
+				"if_weekday": "thursday",
+				"pages": [
+					"PROMOTION DU JOUR\nAujourd'hui, Repousse et Super Repousse\nà moitié prix !"
+				]
+			},
+			{
+				"if_weekday": "friday",
+				"pages": [
+					"PROMOTION DU JOUR\nAujourd'hui, Rappel\nà moitié prix !"
+				]
+			},
+			{
+				"if_weekday": "saturday",
+				"pages": [
+					"PROMOTION DU JOUR\nAujourd'hui, Total Soin\nà moitié prix !"
+				]
+			},
+			{
+				"if_weekday": "sunday",
+				"pages": [
+					"PROMOTION DU JOUR\nAujourd'hui, boissons du toit\nà moitié prix !"
+				]
+			},
+			{
+				"pages": [
+					"PROMOTION DU JOUR"
+				]
+			}
+		]
+	},
+	"goldenrod_dept_2f_clerk": {
+		"speaker": "Marchand",
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
+		"action": "open_shop",
+		"shop": "goldenrod_dept_2f"
+	},
+	"goldenrod_dept_3f_clerk": {
+		"speaker": "Marchand",
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
+		"action": "open_shop",
+		"shop": "goldenrod_dept_3f"
+	},
+	"goldenrod_dept_roof_upgrade_found": {
+		"narration": true,
+		"pages": [
+			"{player} trouve un Améliorator !",
+			"Une étrange boîte de la Sylphe SARL."
+		]
+	},
+	"goldenrod_dept_roof_old_man": {
+		"speaker": "Vieil homme",
+		"pages": [
+			"D'ici, on voit toute la ville.",
+			"Et la Tour Radio.",
+			"Depuis une semaine, sa lumière\nclignote toute la nuit."
+		]
+	},
+	"goldenrod_dept_roof_upgrade": {
+		"cutscene": "goldenrod_dept_roof_upgrade"
+	},
+	"goldenrod_bond_house_clemence": {
+		"speaker": "Mme Clémence",
+		"variants": [
+			{
+				"if_lead_bond_tier": "egg",
+				"pages": [
+					"Un œuf !\nJe ne peux pas encore lire son cœur.",
+					"Mais il entend déjà ta voix,\ntu sais."
+				]
+			},
+			{
+				"if_lead_bond_tier": 0,
+				"pages": [
+					"Bonjour, mon petit.\nJe suis Clémence.",
+					"Je sais lire dans le cœur\ndes Pokémon.",
+					"Montre-moi celui qui marche\ndevant toi.",
+					"Hum… Il ne te connaît pas encore\ntrès bien. Laisse-lui du temps.",
+					"Un Pokémon qui t'aime\npeut changer, parfois.",
+					"Prends soin de lui."
+				]
+			},
+			{
+				"if_lead_bond_tier": 1,
+				"pages": [
+					"Bonjour, mon petit.\nJe suis Clémence.",
+					"Je sais lire dans le cœur\ndes Pokémon.",
+					"Montre-moi celui qui marche\ndevant toi.",
+					"Il commence à t'apprécier.\nContinuez ensemble.",
+					"Un Pokémon qui t'aime\npeut changer, parfois.",
+					"Prends soin de lui."
+				]
+			},
+			{
+				"if_lead_bond_tier": 2,
+				"pages": [
+					"Bonjour, mon petit.\nJe suis Clémence.",
+					"Je sais lire dans le cœur\ndes Pokémon.",
+					"Montre-moi celui qui marche\ndevant toi.",
+					"Il t'aime beaucoup.\nÇa se voit dans ses yeux.",
+					"Un Pokémon qui t'aime\npeut changer, parfois.",
+					"Prends soin de lui."
+				]
+			},
+			{
+				"if_lead_bond_tier": 3,
+				"pages": [
+					"Bonjour, mon petit.\nJe suis Clémence.",
+					"Je sais lire dans le cœur\ndes Pokémon.",
+					"Montre-moi celui qui marche\ndevant toi.",
+					"Je n'ai jamais vu un lien pareil.\nIl te suivrait n'importe où.",
+					"Un Pokémon qui t'aime\npeut changer, parfois.",
+					"Prends soin de lui."
+				]
+			},
+			{
+				"pages": [
+					"Bonjour, mon petit.\nJe suis Clémence.",
+					"Je sais lire dans le cœur\ndes Pokémon.",
+					"Montre-moi celui qui marche\ndevant toi."
+				]
+			}
+		]
+	},
+	"goldenrod_house_1_woman": {
+		"speaker": "Femme",
+		"variants": [
+			{
+				"if": [
+					"goldenrod_husband_gift"
+				],
+				"pages": [
+					"Il dort depuis hier soir. Il dit qu'il ne remontera jamais dans le noir."
+				]
+			},
+			{
+				"if": [
+					"johto_act2"
+				],
+				"cutscene": "goldenrod_husband_gift"
+			},
+			{
+				"pages": [
+					"Mon mari travaille à la Tour Radio.",
+					"Il n'est pas rentré\ndepuis trois jours.",
+					"Ils disent qu'il fait\ndes heures en plus…"
+				]
+			}
+		]
+	},
+	"goldenrod_house_2_man": {
+		"speaker": "Habitant",
+		"draft": true,
+		"pages": [
+			"Le soir, on entend la radio\ngrésiller dans toute la rue.",
+			"Avant, elle passait de la musique\ntoute la nuit."
+		]
+	},
+	"goldenrod_dept_roof_water": {
+		"narration": true,
+		"pages": [
+			"Un distributeur de boissons fraîches."
+		],
+		"action": "open_shop",
+		"shop": "goldenrod_dept_roof_water"
+	},
+	"goldenrod_dept_roof_soda": {
+		"narration": true,
+		"pages": [
+			"Un distributeur de boissons fraîches."
+		],
+		"action": "open_shop",
+		"shop": "goldenrod_dept_roof_soda"
+	},
+	"goldenrod_dept_roof_lemonade": {
+		"narration": true,
+		"pages": [
+			"Un distributeur de boissons fraîches."
+		],
+		"action": "open_shop",
+		"shop": "goldenrod_dept_roof_lemonade"
+	}
+}

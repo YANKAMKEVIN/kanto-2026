@@ -1,0 +1,85 @@
+{
+	"map": "goldenrod_radio_tower_1f",
+	"spawn": "from_city",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"viridian_arrived",
+		"pokedex_activated",
+		"johto_letter_read",
+		"johto_lugia_shadow",
+		"johto_arrived",
+		"johto_team_stolen",
+		"johto_starter_chosen",
+		"johto_rosalia_rockets_seen",
+		"johto_tower_legend_heard",
+		"johto_goldenrod_arrived",
+		"johto_egg_received",
+		"johto_radio_tower_closed_seen",
+		"johto_azalea_clue",
+		"johto_shrine_seen",
+		"johto_kurt_told",
+		"johto_slowpoke_well_cleared",
+		"johto_brace_defeated",
+		"johto_radio_pass"
+	],
+	"party": [
+		{
+			"species": "quilava",
+			"level": 28
+		},
+		{
+			"species": "flaaffy",
+			"level": 27
+		},
+		{
+			"species": "noctowl",
+			"level": 26
+		},
+		{
+			"species": "togetic",
+			"level": 26
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"poke_ball": 5,
+		"super_potion": 5,
+		"antidote": 2,
+		"mission_order": 1,
+		"radio_card": 1
+	},
+	"confiscated": {
+		"party": [
+			{
+				"species": "charizard",
+				"level": 62
+			},
+			{
+				"species": "pidgeot",
+				"level": 58
+			},
+			{
+				"species": "nidoking",
+				"level": 57
+			},
+			{
+				"species": "alakazam",
+				"level": 60
+			},
+			{
+				"species": "lapras",
+				"level": 55
+			}
+		],
+		"items": {
+			"great_ball": 7,
+			"super_potion": 4,
+			"full_restore": 2
+		}
+	},
+	"money": 9000
+}

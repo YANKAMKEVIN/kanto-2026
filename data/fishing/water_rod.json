@@ -48,6 +48,13 @@
 			{ "species": "slowpoke", "level": 15, "weight": 1 }
 		]
 	},
+	"super_rod_route_35": {
+		"maps": ["route_35"], "terrain": "water_rod", "rod": "super_rod", "rate": 75,
+		"slots": [
+			{ "species": "poliwag", "level": 15, "weight": 1 },
+			{ "species": "goldeen", "level": 15, "weight": 1 }
+		]
+	},
 	"joh7_old_rod": {
 		"maps": ["route_40", "route_41"], "terrain": "water_rod", "rod": "old_rod", "rate": 100,
 		"slots": [

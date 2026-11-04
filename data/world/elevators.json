@@ -34,6 +34,16 @@
 				{ "id": "10f", "label": "10F", "map": "silph_co_10f", "spawn": "from_elevator" },
 				{ "id": "11f", "label": "11F", "map": "silph_co_11f", "spawn": "from_elevator" }
 			]
+		},
+		"goldenrod_radio_tower": {
+			"car": "goldenrod_radio_tower_elevator", "key": "",
+			"floors": [
+				{ "id": "1f", "label": "1F", "map": "goldenrod_radio_tower_1f", "spawn": "from_elevator" },
+				{ "id": "2f", "label": "2F", "map": "goldenrod_radio_tower_2f", "spawn": "from_elevator" },
+				{ "id": "3f", "label": "3F", "map": "goldenrod_radio_tower_3f", "spawn": "from_elevator" },
+				{ "id": "4f", "label": "4F", "map": "goldenrod_radio_tower_4f", "spawn": "from_elevator" },
+				{ "id": "5f", "label": "5F", "map": "goldenrod_radio_tower_5f", "spawn": "from_elevator" }
+			]
 		}
 	}
 }

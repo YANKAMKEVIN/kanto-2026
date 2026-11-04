@@ -499,6 +499,19 @@
 		"ecruteak_elders_house": "interior_warm",
 		"ecruteak_house_1": "interior_warm",
 		"ecruteak_house_2": "interior_warm",
+		"route_37": "johto_auto",
+		"route_36": "johto_auto",
+		"route_35": "johto_auto",
+		"goldenrod_city": "johto_auto",
+		"goldenrod_underground": "underground",
+		"goldenrod_center": "interior_warm",
+		"goldenrod_dept_store_1f": "interior_warm",
+		"goldenrod_dept_store_2f": "interior_warm",
+		"goldenrod_dept_store_3f": "interior_warm",
+		"goldenrod_dept_store_roof": "golden_hour",
+		"goldenrod_bond_house": "interior_warm",
+		"goldenrod_house_1": "interior_warm",
+		"goldenrod_house_2": "interior_warm",
 		"route_34": "johto_auto",
 		"ilex_forest": "johto_auto",
 		"azalea_town": "johto_auto",
@@ -508,6 +521,12 @@
 		"azalea_mart": "interior_warm",
 		"azalea_kurt_house": "interior_warm",
 		"azalea_house_1": "interior_warm",
-		"route_34_house": "interior_warm"
+		"route_34_house": "interior_warm",
+		"goldenrod_radio_tower_1f": "office",
+		"goldenrod_radio_tower_2f": "office",
+		"goldenrod_radio_tower_3f": "office",
+		"goldenrod_radio_tower_4f": "office",
+		"goldenrod_radio_tower_5f": "office",
+		"goldenrod_radio_tower_elevator": "office"
 	}
 }

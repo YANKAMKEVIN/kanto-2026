@@ -1,0 +1,23 @@
+{
+	"woman": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "right",
+		"sprite": "mom",
+		"dialogue": "goldenrod_house_1_woman"
+	},
+	"raphael": {
+		"cell": [
+			6,
+			5
+		],
+		"facing": "left",
+		"sprite": "engineer",
+		"dialogue": "goldenrod_radio_raphael_home",
+		"if": [
+			"johto_act2"
+		]
+	}
+}

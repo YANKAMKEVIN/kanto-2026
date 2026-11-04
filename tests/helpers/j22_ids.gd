@@ -7,11 +7,11 @@ extends RefCounted
 
 const PREFIX: String = "j22_"
 ## Jalon 23 : mêmes règles pour ses fichiers générés (`tools/gen_j23_data.py`), vérifiés par
-## `test_j23_data.gd`. Chapitre Johto, JOH2 : fichiers `joh2_*` (`tools/gen_joh2_data.py`),
-## vérifiés par `test_joh2_data.gd` ; JOH4 : fichiers `joh4_*` (`tools/gen_joh4_data.py`), vérifiés
-## par `test_joh4_data.gd` ; JOH7 : fichiers `joh7_*` (`tools/gen_joh7_data.py`), vérifiés par
-## `test_joh7_data.gd`.
-const PREFIXES: Array[String] = ["j22_", "j23_", "joh2_", "joh4_", "joh7_"]
+## `test_j23_data.gd`. Chapitre Johto : fichiers `joh2_*` (`tools/gen_joh2_data.py`,
+## `test_joh2_data.gd`), `joh3_*` (`test_joh3_data.gd`), `joh4_*` (`tools/gen_joh4_data.py`,
+## `test_joh4_data.gd`), `joh5_*` (`tools/gen_joh5_data.py`, `test_joh5_data.gd`) et `joh7_*`
+## (`tools/gen_joh7_data.py`, `test_joh7_data.gd`).
+const PREFIXES: Array[String] = ["j22_", "j23_", "joh2_", "joh3_", "joh4_", "joh5_", "joh7_"]
 ## Textes validés du J22 (§16) et recommandés validés d'avance (§16.8).
 const DOSSIER_25: String = "res://docs/design/dossier-25-deux-chemins-parmanie.md"
 
