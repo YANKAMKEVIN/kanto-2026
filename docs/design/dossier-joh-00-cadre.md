@@ -34,6 +34,9 @@
 - Les 8 Arènes de Johto, la Ligue de Johto, le Conseil 4 de Johto.
 - Bourg Geon, Ville Griotte, Mauville, Caves Jumelles, Irisia, Ebènelle, Route de Glace, Antre du
   Dragon, Parc National, Mont Creuset (intérieur), le laboratoire d'Orme.
+  **En attente de Kevin (2026-11-04)** : Irisia, Ébènelle, l'Antre du Dragon et les Ruines d'Alpha
+  entreraient dans le périmètre avec l'arc des Pierres ([`dossier-joh-11-arc-pierres.md`](dossier-joh-11-arc-pierres.md),
+  proposition, arbitrages JH-61 à JH-79). Le reste du cadre ne change qu'après sa validation.
 - Le téléphone Pokématos, les appels de Dresseurs, les revanches.
 - La reproduction et la Pension à œufs (seul l'œuf de Togepi existe, §5.4).
 - Les objets tenus en combat, les Baies, les Noigrumes.
