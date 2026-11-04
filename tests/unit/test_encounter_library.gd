@@ -151,6 +151,8 @@ func test_real_tables_load_without_error() -> void:
 		# Jalon 23 (T13) : Parc Safari.
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
 		&"safari_zone_west_grass",
+		# Chapitre Johto (JOH1) : l'eau de la grotte marine (deux salles).
+		&"sea_cave_water",
 		&"seafoam_1f_floor", &"seafoam_b1f_floor", &"seafoam_b2f_floor", &"seafoam_b3f_floor",
 		&"seafoam_b4f_floor", &"slowpoke_well_rubble", &"slowpoke_well_water",
 		&"victory_road_1f_rubble", &"victory_road_2f_rubble",
@@ -233,10 +235,10 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# autres tables de la Tour (SPECTRES sans le Scope). Jalon 23 (T13) : + 4 du Parc Safari ;
 	# jalon 25 : + 4 du Manoir. Jalon 29 (T4) : + Route 23 et les 3 niveaux de la Route Victoire.
 	# Jalon 31 : + les 3 tables de la Grotte Azurée. Jalon 32 : + la Centrale.
-	# Chapitre Johto, JOH2 : + 5 tables datées (Routes 39 et 38 jour / nuit, herbe des tours de
-	# Rosalia), hors de la boucle (tables par moment : `test_joh2_data`). JOH4 : + 8 (Route 34,
-	# Bois aux Chênes, Puits Ramoloss : `test_joh4_data`).
-	assert_eq(lib.size(), 72, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), les 5 du JOH2 et les 8 du JOH4")
+	# Chapitre Johto, JOH1 : l'eau de la grotte marine ; JOH2 : + 5 tables datées (Routes 39 et 38
+	# jour / nuit, herbe des tours de Rosalia), hors de la boucle (tables par moment :
+	# `test_joh2_data`) ; JOH4 : + 8 (Route 34, Bois aux Chênes, Puits Ramoloss : `test_joh4_data`).
+	assert_eq(lib.size(), 73, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2 et les 8 du JOH4")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],

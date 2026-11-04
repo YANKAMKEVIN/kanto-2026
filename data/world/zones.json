@@ -346,9 +346,20 @@
 			"subtitle": "Lavanville — Route 11",
 			"description": "Une longue route au bord de l'eau, au sud de Lavanville."
 		},
+		"sea_cave": {
+			"name": "Grotte marine", "kind": "place", "maps": ["sea_cave_1", "sea_cave_2"], "region": "johto",
+			"subtitle": "Bourg Palette — Oliville",
+			"description": "Un passage sous la mer, entre Kanto et Johto."
+		},
 		"olivine_city": {
-			"name": "Oliville", "kind": "town", "maps": [], "region": "johto", "draft": true,
-			"description": "Un port ouvert sur la mer de Johto, dominé par son phare. C'est ici que le Chapitre Johto commence."
+			"name": "Oliville", "kind": "town",
+			"maps": ["olivine_city", "olivine_center", "olivine_center_room", "olivine_mart", "olivine_house_1", "olivine_house_2"],
+			"region": "johto", "subtitle": "Grotte marine — Route 39",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "olivine_center" },
+				{ "id": "poke_mart", "found_on": "olivine_mart" }
+			],
+			"description": "Une ville portuaire au pied de son vieux phare."
 		},
 		"ecruteak_city": {
 			"name": "Rosalia", "kind": "town", "region": "johto",

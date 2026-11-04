@@ -88,11 +88,15 @@ static func confiscate(state: Node, items: ItemLibrary) -> bool:
 	return true
 
 
-## Vrai si [param item_id] est un objet clé (gardé au vol). Un objet inconnu de la bibliothèque
-## est traité comme un objet ordinaire **[D]** (confisqué : il n'est pas une clé).
+## Vrai si [param item_id] est gardé au vol : un objet clé, **ou une CS** (JOH1, QA A17 du
+## 2026-11-04 : une CS est un objet permanent ; le rattrapage des objets, `key_item_repairs.json`
+## et `SafariDirector.reconcile_key_items`, la rendait au chargement tant que son drapeau
+## `got_hmXX` était levé, d'où une CS **en double** au retour de l'équipe). Les CT restent des
+## objets du Sac (confisquées). Un objet inconnu de la bibliothèque est traité comme un objet
+## ordinaire **[D]** (confisqué : il n'est pas une clé).
 static func is_key_item(item_id: StringName, items: ItemLibrary) -> bool:
 	var item := items.get_item(item_id) if items != null else null
-	return item != null and item.category == ItemData.Category.KEY
+	return item != null and (item.category == ItemData.Category.KEY or item.is_hm())
 
 
 ## La réserve du retour : l'équipe de Johto puis l'équipe confisquée, dans l'ordre.

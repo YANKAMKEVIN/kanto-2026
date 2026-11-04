@@ -789,14 +789,13 @@ func _set_lean(offset: Vector2) -> void:
 	_apply_offsets()
 
 
-## Apparence du rival choisie (chantier JR, `GameState.rival_look`). L'autoload est résolu à
-## l'exécution, jamais par son identifiant : les outils de construction des cartes (`godot -s`)
-## compilent ce script sans les autoloads (JOH2 : sinon `map.gd` ne compile pas et les tableaux
-## typés des scènes sont enregistrés en `Array[int]`).
-static func _rival_look() -> StringName:
+## Apparence de la rivale ou du rival (`GameState.rival_look`), lue par l'arbre et jamais par
+## l'identifiant de l'autoload : un script d'outil (`godot -s`, sans autoload) doit pouvoir
+## charger une carte, donc compiler ce script (JOH1 : les outils de cartes ne compilaient plus).
+func _rival_look() -> StringName:
 	var tree := Engine.get_main_loop() as SceneTree
 	var state: Node = tree.root.get_node_or_null(^"GameState") if tree != null else null
-	return state.get(&"rival_look") if state != null else &""
+	return state.get(&"rival_look") as StringName if state != null else &""
 
 
 func _apply_spec() -> void:

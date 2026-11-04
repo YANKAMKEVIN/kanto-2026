@@ -165,6 +165,8 @@ const J22 := [&"route_12_rod_house", &"route_16_fly_house", &"fuchsia_center", &
 	&"fuchsia_grandpa_house", &"fuchsia_good_rod_house"]
 ## Jalon 21 (T21) : le poste traversant de la Route 12 et son étage (CT39) ; `--route12`.
 const ROUTE_12 := [&"route_12_gate", &"route_12_gate_2f"]
+const OLIVILLE := [&"olivine_center", &"olivine_center_room", &"olivine_mart", &"olivine_house_1",
+	&"olivine_house_2"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -204,6 +206,8 @@ func _init() -> void:
 	rooms.append_array(_route_12_rooms())
 	# Jalon 29 : le poste de la Ligue (Route 22) et le hall du Plateau Indigo (fin de liste).
 	rooms.append_array(_j29_rooms())
+	# Jalon JOH1 (T6) : Oliville (fin de liste).
+	rooms.append_array(_olivine_rooms())
 	# Chapitre Johto, JOH2 : Rosalia (fin de liste).
 	rooms.append_array(_rosalia_rooms())
 	# Chapitre Johto, JOH4 : Écorcia et la Route 34 (fin de liste).
@@ -265,6 +269,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(J29)
 		elif arg == "--j22":
 			wanted.append_array(J22)
+		elif arg == "--oliville":
+			wanted.append_array(OLIVILLE)
 		elif arg == "--cinnabar":
 			wanted.append_array(CINNABAR)
 		elif arg == "--route12":
@@ -2095,6 +2101,108 @@ func _lavender_house_2() -> Dictionary:
 	return room
 
 
+# --- Oliville (jalon JOH1, T6) ------------------------------------------------------------------
+
+## Intérieurs d'Oliville (`jalon-joh1.md` §2.1 ; dossier JOH 02 §3.3, §8). Titre « Oliville ».
+## Centre (avec escalier vers l'étage) et Boutique = définitions communes ; salle de repos de
+## l'étage relue sur `oliville_centre_etage.txt` ; maisons = grilles de Lavanville. **Sans PNJ**
+## dans les scènes (données `data/npcs/olivine_*.json`).
+func _olivine_rooms() -> Array[Dictionary]:
+	return [_olivine_center(), _olivine_center_room(),
+		_olivine_mart(), _olivine_house_1(), _olivine_house_2()]
+
+
+## Centre d'Oliville : la porte de la ville a deux cases (`from_center` en (27, 20),
+## `from_center_1` en (28, 20)), d'où trois arrivées de sortie. Escalier montant à l'est : sa
+## rangée du haut (12..13, 5) est solide, sa rangée d'accès (12..13, 6) porte les passages ; les
+## cases d'accès du terminal d'échange (12..13, 4) restent libres.
+func _olivine_center() -> Dictionary:
+	var room := _pokemon_center(&"olivine_center", "OlivineCenter", "Oliville",
+		[&"olivine_city", &"from_center"])
+	room["exit_spawns"] = [&"from_center", &"from_center", &"from_center_1"]
+	(room["props"] as Array).append([&"int_escalier_montant_01", Vector2i(13, 6), 7.0,
+		"StairsUpBody"])
+	(room["spawns"] as Dictionary)["from_room"] = Vector2i(13, 7)
+	# JOH1 (`jalon-joh1.md` §2.5) : rangée d'entrée (5..9, 7), traversée en entrant → scène de
+	# l'arrivée (O-8, nuit, vol, matin), qui ne joue que si `johto_arrived` et pas `johto_slept`.
+	# QA A17 : l'infirmière (PNJ, variante « auto ») lance la scène dès l'arrivée ; le
+	# déclencheur couvre en plus tout le sol (hors escalier) pour une reprise sur n'importe quelle
+	# case (sauvegarde du soin écrite au comptoir).
+	room["triggers"] = [["ArrivalTrigger", Vector2i(1, 7), Vector2i(11, 3),
+		&"olivine_center_arrival"], ["ArrivalTriggerEast", Vector2i(12, 7), Vector2i(2, 1),
+		&"olivine_center_arrival"]]
+	room["warps"] = [
+		["StairsUp", Vector2i(13, 6), STEP_ON, Vector2i.UP, &"olivine_center_room",
+			&"from_stairs", Vector2i.UP],
+		["StairsUpW", Vector2i(12, 6), STEP_ON, Vector2i.UP, &"olivine_center_room",
+			&"from_stairs", Vector2i.UP],
+	]
+	return room
+
+
+## Salle de repos (étage du Centre) : lit à l'ouest, table des starters au centre du mur du fond
+## (comme la table du labo de Chen : les trois Pokémon sur sa rangée de devant, `lift` 56),
+## escalier qui descend au nord-est. Lumière `johto_auto` (nuit/matin, §2.4).
+func _olivine_center_room() -> Dictionary:
+	return {
+		"id": &"olivine_center_room", "node": "OlivineCenterRoom", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Oliville", "light": &"johto_auto",
+		"plan": PLANS_DIR + "oliville_centre_etage.txt", "walkable": ".Xh",
+		"furniture": [
+			[&"int_lit_01", Rect2i(1, 3, 2, 3), "Bed"],
+			[&"int_table_starters_01", Rect2i(6, 3, 3, 2), "StarterTable"],
+			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+		],
+		"props": [[&"int_escalier_descendant_01", Vector2i(12, 3), 4.0, "StairsDown"]],
+		"spawns": {"from_stairs": Vector2i(12, 4), "lit": Vector2i(3, 4)},
+		# QA A17 : reprise du matin sur n'importe quelle case (en plus de la variante « auto » de
+		# l'infirmière) ; la scène ne joue qu'entre le vol et l'offre d'Orme.
+		"triggers": [["MorningTrigger", Vector2i(3, 7), Vector2i(10, 4), &"olivine_morning"],
+			["MorningTriggerEast", Vector2i(13, 6), Vector2i(1, 3), &"olivine_morning"]],
+		"warps": [
+			["StairsDown", Vector2i(12, 3), STEP_ON, Vector2i.UP, &"olivine_center", &"from_room",
+				Vector2i.DOWN],
+			["StairsDownW", Vector2i(11, 3), STEP_ON, Vector2i.UP, &"olivine_center",
+				&"from_room", Vector2i.DOWN],
+		],
+	}
+
+
+## Boutique d'Oliville : la porte de la ville a deux cases (`from_mart`, `from_mart_1`).
+func _olivine_mart() -> Dictionary:
+	var room := _poke_mart(&"olivine_mart", "OlivineMart", "Oliville",
+		[&"olivine_city", &"from_mart"])
+	room["exit_spawns"] = [&"from_mart", &"from_mart", &"from_mart_1"]
+	return room
+
+
+## Maison d'Oliville relue sur une grille de Lavanville : sortie PUSH ↓ vers `olivine_city`.
+func _olivine_house(id: StringName, node: String, plan: String, spawn: StringName) -> Dictionary:
+	var room := _lavender_house(id, node, plan, ".Xh", spawn)
+	room["title"] = "Oliville"
+	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+		&"olivine_city")
+	return room
+
+
+## Maison 1 (vieille dame, case `h` (12, 6)) : mobilier de la maison du tailleur d'Argenta.
+func _olivine_house_1() -> Dictionary:
+	var room := _olivine_house(&"olivine_house_1", "OlivineHouse1", "lavanville_maison_1.txt",
+		&"from_house_1")
+	room["furniture"] = _mason_furniture()
+	return room
+
+
+## Maison 2 (enfant, cases `h` (4, 5) et (5, 6)) : mobilier de la maison d'Azuria.
+func _olivine_house_2() -> Dictionary:
+	var room := _olivine_house(&"olivine_house_2", "OlivineHouse2", "lavanville_maison_2.txt",
+		&"from_house_2")
+	var azuria := _cerulean_house()
+	room["furniture"] = azuria["furniture"]
+	room["rugs"] = azuria["rugs"]
+	return room
 # --- Chapitre Johto, JOH2 (T4) : Rosalia --------------------------------------------------------
 
 

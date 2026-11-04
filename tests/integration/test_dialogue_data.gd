@@ -182,6 +182,18 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## relecture de Kevin.
 const IDS_JOH0: Array[StringName] = [&"storage_offline", &"egg_hatched", &"trade_terminal_item",
 	&"johto_return_test_before", &"johto_return_test_after"]
+## Chapitre Johto (JOH1, `jalon-joh1.md`) : la lettre d'Orme, la grotte marine, Oliville, le vol,
+## Orme et le Pokémon de départ de Johto ; textes O-2 à O-25 du dossier JOH-02 §14 validés par Kevin
+## (test_joh1_story), deux répliques [D] en brouillon (garde après le choix, panneau du Phare).
+const IDS_JOH1: Array[StringName] = [&"johto_letter_1", &"johto_letter_2", &"johto_letter_3",
+	&"olivine_nurse_center",
+	&"pallet_cave_mouth", &"sea_cave_lugia_shadow_1", &"sea_cave_lugia_shadow_2", &"sea_cave_current_back",
+	&"sea_cave_1_item_1", &"sea_cave_2_item_1", &"olivine_nurse_arrival_1", &"olivine_nurse_arrival_2",
+	&"olivine_night_1", &"olivine_night_2", &"olivine_night_3", &"olivine_night_4", &"olivine_nurse_morning",
+	&"olivine_nurse_wake", &"olivine_orme_arrival", &"olivine_orme_offer", &"olivine_orme",
+	&"observe_chikorita", &"observe_cyndaquil", &"observe_totodile", &"olivine_orme_chosen",
+	&"olivine_orme_leaving", &"olivine_guard", &"olivine_sailor", &"olivine_old_woman", &"olivine_kid",
+	&"olivine_city_sign", &"olivine_lighthouse_sign"]
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
 	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
 	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice",
@@ -608,6 +620,9 @@ const MAPS: Array[StringName] = [
 	&"silph_co_7f", &"silph_co_11f",
 	# Jalon 27 (T8 à T10) : Arène de Morgane et Dojo de Combat.
 	&"saffron_gym", &"fighting_dojo",
+	# Chapitre Johto (JOH1) : grotte marine, Oliville et ses intérieurs.
+	&"sea_cave_1", &"sea_cave_2", &"olivine_city", &"olivine_center", &"olivine_center_room",
+	&"olivine_mart", &"olivine_house_1", &"olivine_house_2",
 ]
 ## Jalon 21 (T22) : dialogues de Ronflex de la Route 16 (`j21_snorlax_16.json`, dossier 24 §15.6-§15.7).
 ## Les répliques communes (flûte jouée, réveil, calme, rendormi) sont celles de `j21_snorlax.json`.
@@ -1296,6 +1311,7 @@ const IDS_J28: Array[StringName] = [
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
+var _offer_johto: StarterOffer
 ## Dialogue → cartes où il est utilisé (PNJ ou point d'examen).
 var _used_on: Dictionary[StringName, Array] = {}
 ## Carte → identifiants de PNJ.
@@ -1315,6 +1331,10 @@ func before_all() -> void:
 	_offer.load_file()
 	# Scène du choix : jouée par le code (StarterChoice) sur la carte de l'offre.
 	_use_cutscene(_offer.chosen_scene, _offer.map_id)
+	# JOH1 : l'offre d'Orme, second contrôleur sur la salle de repos du Centre d'Oliville.
+	_offer_johto = StarterOffer.new()
+	_offer_johto.load_file(StarterOffer.JOHTO_DATA_PATH)
+	_use_cutscene(_offer_johto.chosen_scene, _offer_johto.map_id)
 	# Mots de réveil après une défaite (dossier 07 §11, dossier 09 §7) : joués par le code sur
 	# la carte du point de repos (data/world/rest_points.json, jalon 7 T6), pas par un PNJ.
 	var rest_points := RestPointLibrary.new()
@@ -1447,7 +1467,7 @@ func test_library_loads_without_error() -> void:
 		+ IDS_J16_SHIP + IDS_J16_RIVAL_CAPTAIN + IDS_J16_T15 + IDS_J17 + IDS_J18 + IDS_J19 + IDS_J20 \
 		+ IDS_J20_T17 + IDS_J20_T21 + IDS_J21 + IDS_J21_T21 + IDS_S2B + S2_FIELD_TRAVEL + IDS_J21_T22 \
 		+ IDS_J24_TRAINERS + IDS_J24 + IDS_J25 + IDS_J28 + IDS_J29 + IDS_J29_MONDE + IDS_J31 + IDS_J30 + IDS_J32 + IDS_J32_CT + IDS_32P \
-		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids() + IDS_JOH0
+		+ _silph_co_ids() + _j26_life_ids() + IDS_J26_STORY + _j27_ids() + IDS_JOH0 + IDS_JOH1
 	expected.append_array(TEXTS_J26_T6.keys())
 	expected.append_array(TEXTS_S2C_FISH.keys())
 	expected.append_array(TEXTS_S2D_STRENGTH.keys())
@@ -1479,6 +1499,12 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(played, _sorted(PLAYED_J29 + PLAYED_J30 + [
 		# Chapitre Johto (JOH0) : scènes de test du vol et du retour de l'équipe.
 		&"johto_return_test_before", &"johto_return_test_after", &"storage_offline",
+		# Chapitre Johto (JOH1) : lettre de Chen, grotte marine, Centre d'Oliville, Orme, garde.
+		&"johto_letter_1", &"johto_letter_2", &"johto_letter_3", &"sea_cave_lugia_shadow_1", &"pallet_cave_mouth",
+		&"sea_cave_lugia_shadow_2", &"sea_cave_current_back", &"olivine_nurse_arrival_1",
+		&"olivine_nurse_arrival_2", &"olivine_night_1", &"olivine_night_2", &"olivine_night_3",
+		&"olivine_night_4", &"olivine_nurse_morning", &"olivine_orme_arrival", &"olivine_orme_offer",
+		&"olivine_guard", &"olivine_orme_chosen", &"olivine_orme_leaving",
 		# Jalon 32 (32N, N-22) : répliques des dons de CT.
 		&"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give",
 		&"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got",
@@ -1694,7 +1720,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 				or file.begins_with("joh2_") or file.begins_with("joh4_") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
-		+ StarterChoice.get_set_flags(_offer) + generated_dialogues.get_set_flags() \
+		+ StarterChoice.get_set_flags(_offer) + StarterChoice.get_set_flags(_offer_johto) \
+		+ generated_dialogues.get_set_flags() \
 		+ generated_cutscenes.get_set_flags()
 	# Jalon 24 (T13) : « fossile prêt », posé par le code à l'arrivée sur Cramois'Île
 	# ([FossilReadyGate]).
@@ -1753,6 +1780,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_eq(cutscenes.get_set_flags(), _sorted(SET_J29 + SET_J30 + [&"got_tm39", &"route_12_visited",
 		# Chapitre Johto (JOH0) : levés par les étapes « confiscate_team » et « return_team ».
 		&"johto_act1", &"storage_offline", &"johto_team_returned",
+		# Chapitre Johto (JOH1) : lettre, grotte marine, arrivée, nuit, vol, offre, choix, départ d'Orme.
+		&"johto_letter_read", &"johto_lugia_passing", &"johto_lugia_shadow", &"got_sea_cave_1_item_1",
+		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_slept", &"johto_team_stolen",
+		&"johto_starter_offered", &"johto_starter_chosen", &"johto_orme_left", &"johto_cave_mouth_seen",
 		# Lot 32P : Cherch'Objet, Max Éther de l'Écume B3F, Max Repousse de la Route 21.
 		&"got_itemfinder", &"got_exp_all", &"got_seafoam_b3f_hidden_1", &"got_route_21_item_2",
 		# Jalon 32 (32N) : CT obtenables partout.
@@ -1966,18 +1997,21 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
 	# 4B : la variante répétée « starter_chosen » du 4A est supprimée (3 variantes) ; J7 (T18) :
 	# la variante du colis passe en tête (test_oak_parcel_lines).
-	assert_eq(oak.variants.size(), 5, "J32 (32A) : le don d'après la Ligue en tête")
+	# JOH1 : la lettre d'Orme après les cadeaux (variante « cutscene »), puis son rappel (O-4).
+	assert_eq(oak.variants.size(), 7, "J32 (32A) : le don d'après la Ligue en tête ; JOH1 : la lettre et son rappel")
 	assert_eq(oak.variants[0].cutscene, &"j32_oak_gifts")
-	assert_eq(oak.variants[1].cutscene, &"oak_parcel")
-	assert_eq(oak.variants[2].if_flags, [&"rival_battle_done"] as Array[StringName])
-	assert_eq(_texts(oak.variants[2]), [
+	assert_eq(oak.variants[1].cutscene, &"johto_letter")
+	assert_eq(oak.variants[2].if_flags, [&"johto_letter_read"] as Array[StringName])
+	assert_eq(oak.variants[3].cutscene, &"oak_parcel")
+	assert_eq(oak.variants[4].if_flags, [&"rival_battle_done"] as Array[StringName])
+	assert_eq(_texts(oak.variants[4]), [
 		"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 		"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.",
 	] as Array[String])
-	assert_eq(oak.variants[3].if_flags, [&"starter_offered"] as Array[StringName])
-	assert_eq(_texts(oak.variants[3]), ["Prends ton temps.",
+	assert_eq(oak.variants[5].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(oak.variants[5]), ["Prends ton temps.",
 		"Choisis celui avec qui tu as envie de partir."] as Array[String])
-	assert_eq(_texts(oak.variants[4]),
+	assert_eq(_texts(oak.variants[6]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
 	var rival := _library.get_dialogue(&"rival_lab_waiting")
 	assert_eq(rival.speaker, "{rival}")
@@ -1999,11 +2033,11 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 		"Vous avez l'air de déjà bien vous entendre."] as Array[String])
 	var flags := StoryFlags.new()
 	flags.set_flag(&"oak_met")
-	assert_eq(oak.pick(flags), oak.variants[4], "avant l'offre : réplique du 3B")
+	assert_eq(oak.pick(flags), oak.variants[6], "avant l'offre : réplique du 3B")
 	assert_eq(rival.pick(flags), rival.variants[1], "avant l'offre : réplique du 3B")
 	assert_eq(maya.pick(flags), maya.variants[2], "réplique du 3B")
 	flags.set_flag(&"starter_offered")
-	assert_eq(oak.pick(flags), oak.variants[3], "pendant le choix")
+	assert_eq(oak.pick(flags), oak.variants[5], "pendant le choix")
 	assert_eq(rival.pick(flags), rival.variants[0], "pendant le choix")
 	assert_eq(maya.pick(flags), maya.variants[2])
 	# L'état « starter choisi, combat pas encore fini » n'est plus atteint par le joueur : la
@@ -2013,7 +2047,7 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	flags.set_flag(&"rival_left_lab")
 	flags.set_flag(&"rival_battle_done")
 	flags.set_flag(&"starter_female")
-	assert_eq(oak.pick(flags), oak.variants[2], "après le combat : « Le monde qui vous attend… »")
+	assert_eq(oak.pick(flags), oak.variants[4], "après le combat : « Le monde qui vous attend… »")
 	assert_eq(maya.pick(flags), maya.variants[0], "starter femelle : « elle »")
 	flags.set_flag(&"starter_female", false)
 	assert_eq(maya.pick(flags), maya.variants[1], "starter mâle ou sans sexe : « lui »")
@@ -2055,7 +2089,9 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			# Maman, et le garde du poste sud à son premier passage (jalon 9, Q-4).
-			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard"]
+			# JOH1 : l'infirmière de la salle de repos d'Oliville (reprise du matin après une coupure).
+			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard", &"olivine_nurse_wake",
+				&"olivine_nurse_center"]
 			assert_eq(variant.auto, first_of.has(id) and variant == \
 				_library.get_dialogue(id).variants[0], "%s : auto" % id)
 
@@ -2113,7 +2149,9 @@ const TEXTS_J32: Dictionary[StringName, Array] = {
 	&"silph_co_porygon_stored": ["Porygon a été envoyé au stockage."],
 	# Jalon 32 (T5, §3 du plan) et 32A à 32D (N-16, textes 8 à 15 ; formules de don).
 	&"trade_terminal_confirm": ["Échanger {pokemon} ?"],
-	&"oak_lab_waiting": ["{player} ! Tu te souviens du Pokémon\nresté sur cette table ?", "C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin.", "Le monde qui vous attend est bien plus vaste que Bourg Palette.", "Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.", "Prends ton temps.", "Choisis celui avec qui tu as envie de partir.", "Un peu de patience. J'ai quelque chose à vous montrer."],
+	&"oak_lab_waiting": ["{player} ! Tu te souviens du Pokémon\nresté sur cette table ?", "C'était mon dernier Pokémon.\nIl t'a attendu. Prends-en soin.", "Le monde qui vous attend est bien plus vaste que Bourg Palette.", "Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.", "Prends ton temps.", "Choisis celui avec qui tu as envie de partir.", "Un peu de patience. J'ai quelque chose à vous montrer.",
+		# JOH1 : rappel du chemin de la grotte marine (O-4, dossier JOH-02 §14).
+		"La grotte est sur la rive sud, à l'est du ponton.", "Prends garde aux courants."],
 	&"j32_oak_second_gift": ["Et ce n'est pas tout : un autre\nest arrivé au labo. Il est pour toi."],
 	&"j32_oak_received_bulbasaur": ["{player} reçoit Bulbizarre !"],
 	&"j32_oak_stored_bulbasaur": ["Bulbizarre a été envoyé au stockage."],
@@ -2173,7 +2211,8 @@ const PENDING_DRAFT_32P: Array[StringName] = []
 const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm08", &"mt_moon_b1f_tm12", &"route_12_tm16", &"route_24_tm45", &"route_9_tm30", &"silph_co_2f_tm36", &"viridian_city_tm42", &"ss_anne_cabin_a_tm44", &"celadon_dept_3f_tm18_give", &"celadon_dept_3f_tm18_got", &"saffron_psychic_tm29_give", &"saffron_psychic_tm29_got", &"celadon_chief_son_tm41_give", &"celadon_chief_son_tm41_got", &"celadon_chief_son"]
 ## Jalon 32 (32N, N-22) : répliques des dons de CT validées par Kevin le 2026-10-28 : liste vide.
 ## Chapitre Johto (JOH0) : textes [D] des systèmes, à relire par Kevin avec ceux du JOH1.
-const PENDING_DRAFT_VARIANTS: Array[String] = ["storage_offline:0", "egg_hatched:0",
+const PENDING_DRAFT_VARIANTS: Array[String] = ["olivine_guard:1", "olivine_lighthouse_sign:0",
+	"egg_hatched:0",
 	"trade_terminal_item:0", "johto_return_test_before:0", "johto_return_test_after:0"]
 
 
@@ -2190,7 +2229,8 @@ func test_no_dialogue_nor_variant_is_draft() -> void:
 
 ## Le soin de Maman (Q22, jalon 5C) : elle soigne l'équipe, seulement après le starter.
 func test_mom_heal_variant() -> void:
-	var heal: DialogueVariant = _library.get_dialogue(&"mom").variants[1]
+	# JOH1 : la variante O-1 (après la Ligue, avant la lettre d'Orme) passe avant le soin.
+	var heal: DialogueVariant = _library.get_dialogue(&"mom").variants[2]
 	assert_eq(heal.action, &"heal", "soigne l'équipe")
 	assert_eq(heal.if_flags, [&"starter_chosen"] as Array[StringName], "après le starter")
 	assert_false(heal.auto, "jamais automatique")
@@ -2242,6 +2282,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var plan_j30 := FileAccess.get_file_as_string(PLAN_J30)
 	var textes_j29 := FileAccess.get_file_as_string(TEXTES_J29)
 	var textes_32p := FileAccess.get_file_as_string(TEXTES_32P)
+	var dossier_joh02 := FileAccess.get_file_as_string("res://docs/design/dossier-joh-02-oliville.md")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
 	var j21_texts := FileAccess.get_file_as_string("res://docs/design/dossier-24-repos-des-esprits.md") \
@@ -2272,7 +2313,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		# test_silph_co_data.
 		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]) or S2_FIELD_TRAVEL.has(row[0]) \
 				or silph_texts.has(row[0]) or life_texts.has(row[0]) or IDS_J26_STORY.has(row[0]) \
-				or _j27_ids().has(row[0]) \
+				or _j27_ids().has(row[0]) or IDS_JOH1.has(row[0]) \
 				or (row[3] as DialogueVariant).draft:
 			continue
 		if TEXTS_J26_T6.has(row[0]):
@@ -2313,6 +2354,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_11.replace(" / ", " ").contains("| %s |" % text)
 		assert_true(dossier.contains(text) or dossier_07.contains(text)
 			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text)
+			# Chapitre Johto (JOH1) : rappel de Chen (O-4) dans `oak_lab_waiting`, dossier JOH-02 §14.
+			or dossier_joh02.contains(text)
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
@@ -2376,7 +2419,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1]))
 			# Chantier JR : reformulations du relevé des accords (T1, T2), validé le 2026-10-31.
-			or jr_releve.contains("« %s »" % text),
+			or jr_releve.contains("« %s »" % text)
+			# Chapitre Johto (JOH1) : dossier JOH-02 §14 (O-1 à O-25, validés le 2026-11-02), bulles « / ».
+			or dossier_joh02.contains(text.replace("{player}", "{joueur}")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -2540,7 +2585,7 @@ func test_maya_after_oak_returns_and_the_lab_reunion() -> void:
 ## réplique de l'espèce porte le jeton, « Observe. Explore. » garde sa phrase.
 func test_oak_parcel_lines() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
-	var first := oak.variants[1]
+	var first := oak.variants[3] # J32 : cadeaux en tête ; JOH1 : la lettre et son rappel avant.
 	assert_eq(first.if_flags, [&"got_oak_parcel"] as Array[StringName])
 	assert_eq(first.unless_flags, [StoryFlags.POKEDEX_ACTIVATED] as Array[StringName])
 	assert_eq(first.cutscene, &"oak_parcel")
@@ -2611,7 +2656,9 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 32 : cinq échanges PNJ de Rouge/Bleu (N-14) et Porygon (N-13) ; 32A à 32D : Chen, le
 	# Maître du Dojo (2), deux Poké Balls d'Évoli, le chercheur (2) ; 32J : le camion, le concepteur. 32N (N-22) : neuf CT
 	# ramassées, le don de la CT18, de la CT29 et de la CT41.
-	assert_eq(launched, 245, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# JOH1 : + la lettre d'Orme (Chen), les deux objets de la grotte marine, le matin (infirmière),
+	# l'arrivée au Centre d'Oliville (infirmière du comptoir, QA A17).
+	assert_eq(launched, 250, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
 		+ "J16 : Major Bob (2), neuf objets du S.S. Anne, le capitaine, le marin (2) ; "
@@ -2638,6 +2685,13 @@ func test_oak_parcel_lines() -> void:
 		if IDS_J30.has(row[0]):
 			continue # Jalon 30 : {player} / {rival} des textes de la Ligue (plan §3), test_league_texts
 		var tokens := DialogueTokens.tokens_in(row[1])
+		if IDS_JOH1.has(row[0]):
+			# JOH1 : {player} (Chen, l'infirmière, Orme) et {pokemon} du starter de Johto (Orme),
+			# vérifiés mot pour mot contre le dossier JOH-02 par test_joh1_story.
+			for token: StringName in tokens:
+				assert_true(token == DialogueTokens.PLAYER or DialogueTokens.CONTEXT.has(token),
+					"%s : jeton {%s} à sa place" % [row[0], token])
+			continue
 		if String(row[0]).begins_with("daycare_") or IDS_JOH0.has(row[0]):
 			# JOH0 : {pokemon} de l'éclosion, {item} du terminal d'échange (jetons de contexte).
 			for token: StringName in tokens:
