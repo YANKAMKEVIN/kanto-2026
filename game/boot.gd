@@ -359,6 +359,7 @@ func _ready() -> void:
 		_offer_johto.check_species(_pokemon)
 	_starter_choice_johto = StarterChoice.new()
 	_starter_choice_johto.name = "StarterChoiceJohto"
+	_starter_choice_johto.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_starter_choice_johto)
 	_starter_choice_johto.setup(_offer_johto, _pokemon, GameState, _player, _sheet, _hud,
 		_cutscenes_node, _interactions)
