@@ -35,7 +35,7 @@
 | Promotion du jour | Aucune : `ShopRules` ne connaît que les drapeaux | **Neuf** : `promotions` (jour → objets à moitié prix) et `if_weekday` d'une ligne de stock ; jour lu à l'ouverture de la Boutique |
 | Paliers du lien | `BondRules.tier` (JOH0) ; aucune condition de dialogue | **Neuf** : variante `if_lead_bond_tier` (0..3, `egg`) lue par `DialogueRunner.lead_bond_source` |
 | Œuf, équipe pleine | `give_egg` refuse avec une erreur | **Neuf** : clés `flag` (posé seulement si l'œuf est donné) et `say_full` (dialogue quand l'équipe est pleine) |
-| Perle | Absente des objets | `data/items/items_joh3.json` : `pearl` (objet de vente, 1 400 ₽) |
+| Perle | Absente des objets | Celle du JOH1 (`items_joh1.json`, grotte marine), reprise à la fusion |
 
 ## 1. Découpage
 
@@ -192,6 +192,9 @@ dossier en `draft` (grille du Parc, habitant de la maison 2, hôtesse du toit…
 | T1–T4 (JOH3A) | `d0e17e7d` | Promotion du jour, `if_lead_bond_tier` et `BondReader`, `give_egg` `flag` / `say_full`, Perle ; D-16 et D-17 du JOH0 réalignés ; `test_joh3_systems` |
 | T5–T11 | `7c2e2565` | `gen_joh3_data.py`, `build_joh3_maps.gd`, `--doublonville`, données de monde, départs de débogage ; `npc.gd` / `player.gd` repris du JOH2 (outils sous `godot -s`) |
 | T12 | `76a4caf3` | `test_joh3_maps` (10), `test_joh3_data` (11), `test_joh3_boot` (4) ; registres réalignés ; objets du Souterrain préfixés `goldenrod_underground_` (collision avec `underground_7_8`) ; Grand Magasin en aplat (le bâtiment peint de Céladopole fait 14 cases pour une emprise de 12 et bloquait Jérôme) |
+
+| T13 | `76a4caf3` et suivants | `tools/capture_joh3.sh` (24 plans, `build/captures/joh3/`) relus : Routes 37 jour et nuit (Sbires), 36 (pont, Parc), 35 (étang, Anna), Doublonville (entrée, haut-parleur, place, Tour Radio, Magasin, sud, nuit), Souterrain, Centre (Orme), Magasin, toit, maison du lien. Corrigé : massifs de fleurs (tuile à fond noir → herbe + fleurs peintes), Grand Magasin peint trop large → aplat |
+| `main` | (fusion) | JOH1 refusionné : la Perle est celle du JOH1 ; Oliville et ses intérieurs gardés |
 
 Écarts [D] relevés pendant le code : D-12 « Tu es venu » écrit `{g:venu|venue}` (accord de la
 joueuse, JR-7) ; `{pokemon}` de D-12 = le compagnon (page omise sans compagnon, règle des jetons) ;
