@@ -249,6 +249,8 @@ def cmd_grilles(args: argparse.Namespace) -> None:
             overlay = json.load(f)
     for dex in range(args.de, args.a + 1):
         key = f"{dex:03d}"
+        if key not in data["species"]:  # numéro sans espèce (Johto : 51 espèces sur 100)
+            continue
         entry = json.loads(json.dumps(data["species"][key]))
         for side, points in (overlay.get(key) or {}).items():
             if entry.get(side) is not None:
