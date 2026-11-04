@@ -432,6 +432,9 @@
 		}
 	},
 	"places": {
+		"route_39": [{ "decor": "route_1_chemin" }],
+		"route_38": [{ "decor": "route_1_chemin" }],
+		"ecruteak_city": [{ "decor": "route_1_chemin" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],

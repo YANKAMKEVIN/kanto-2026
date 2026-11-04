@@ -1,0 +1,11 @@
+{
+	"habitant": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "ecruteak_house_2_habitant"
+	}
+}

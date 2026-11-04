@@ -53,6 +53,8 @@ var _weekday: int = 0
 var _device: DeviceClock
 ## Moment forcé par une scène (−1 : aucun).
 var _forced: int = -1
+## Jour de la semaine imposé (JOH2, départ de débogage `weekday` ; −1 : le jour réel).
+var _forced_weekday: int = -1
 ## Dernier moment annoncé par [signal period_changed] (pour ne l'émettre qu'au changement).
 var _last_period: int = -1
 
@@ -94,6 +96,7 @@ func sync() -> bool:
 ## Arrête l'horloge (la puce se cache) ; le moment forcé est libéré sans signal.
 func stop() -> void:
 	_forced = -1
+	_forced_weekday = -1
 	if _active:
 		_active = false
 		activity_changed.emit(false)
@@ -130,14 +133,33 @@ func get_minute() -> int:
 	return int(_minutes) % 60
 
 
-## Jour de la semaine courant (0 = lundi … 6 = dimanche).
+## Jour de la semaine courant (0 = lundi … 6 = dimanche) : le jour imposé s'il y en a un.
 func weekday() -> int:
+	if _forced_weekday >= 0:
+		return _forced_weekday
 	return _weekday
+
+
+## Impose le jour [param day] (0 = lundi … 6 = dimanche) jusqu'à [method release_weekday] ou
+## [method stop] (JOH2 : départ de débogage « weekday », pour voir un PNJ de la semaine un
+## autre jour que le sien). Sans signal : les PNJ datés sont relus à l'entrée sur une carte.
+func force_weekday(day: int) -> void:
+	_forced_weekday = posmod(day, WEEKDAY_NAMES.size())
+
+
+## Rend le jour réel.
+func release_weekday() -> void:
+	_forced_weekday = -1
+
+
+## Vrai tant qu'un jour est imposé.
+func is_weekday_forced() -> bool:
+	return _forced_weekday >= 0
 
 
 ## Identifiant du jour courant (« monday »…).
 func weekday_name() -> StringName:
-	return WEEKDAY_NAMES[_weekday]
+	return WEEKDAY_NAMES[weekday()]
 
 
 ## Moment courant : le moment forcé s'il y en a un, sinon celui de l'heure. MORNING si
