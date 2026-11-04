@@ -26,11 +26,6 @@
 				],
 				"steps": [
 					{
-						"set": [
-							"johto_beasts_awakened"
-						]
-					},
-					{
 						"face": "player",
 						"to": "entei"
 					},
@@ -53,29 +48,6 @@
 						"dialogue": "joh6_beasts_flee"
 					},
 					{
-						"move": "suicune",
-						"to": [
-							2,
-							9
-						],
-						"background": true
-					},
-					{
-						"move": "entei",
-						"to": [
-							16,
-							13
-						],
-						"background": true
-					},
-					{
-						"move": "raikou",
-						"to": [
-							14,
-							8
-						]
-					},
-					{
 						"despawn": "suicune"
 					},
 					{
@@ -93,7 +65,7 @@
 					{
 						"move": "brace",
 						"to": [
-							16,
+							13,
 							8
 						]
 					},
@@ -124,21 +96,21 @@
 						"dialogue": "joh6_brace_leaves_tower"
 					},
 					{
+						"despawn": "raikou"
+					},
+					{
 						"move": "brace",
 						"to": [
 							18,
 							8
-						],
-						"follower": "raikou"
+						]
 					},
 					{
 						"despawn": "brace"
 					},
 					{
-						"despawn": "raikou"
-					},
-					{
 						"set": [
+							"johto_beasts_awakened",
 							"johto_raikou_taken"
 						]
 					}
@@ -296,21 +268,11 @@
 						"dialogue": "joh6_hideout_alarm"
 					},
 					{
-						"spawn": "sbire_alarme_1_appel",
-						"sprite": "rocket_grunt_m",
-						"cell": [
-							10,
-							1
-						],
-						"facing": "down",
-						"dialogue": "mahogany_hideout_b1f_sbire_alarme_1_after"
-					},
-					{
-						"emote": "sbire_alarme_1_appel",
+						"emote": "sbire_alarme_1",
 						"kind": "exclamation"
 					},
 					{
-						"move": "sbire_alarme_1_appel",
+						"move": "sbire_alarme_1",
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -335,10 +297,10 @@
 					},
 					{
 						"face": "player",
-						"to": "sbire_alarme_1_appel"
+						"to": "sbire_alarme_1"
 					},
 					{
-						"face": "sbire_alarme_1_appel",
+						"face": "sbire_alarme_1",
 						"to": "player"
 					},
 					{
@@ -385,21 +347,11 @@
 						"dialogue": "joh6_hideout_alarm"
 					},
 					{
-						"spawn": "sbire_alarme_2_appel",
-						"sprite": "rocket_grunt_f",
-						"cell": [
-							19,
-							13
-						],
-						"facing": "up",
-						"dialogue": "mahogany_hideout_b1f_sbire_alarme_2_after"
-					},
-					{
-						"emote": "sbire_alarme_2_appel",
+						"emote": "sbire_alarme_2",
 						"kind": "exclamation"
 					},
 					{
-						"move": "sbire_alarme_2_appel",
+						"move": "sbire_alarme_2",
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -424,10 +376,10 @@
 					},
 					{
 						"face": "player",
-						"to": "sbire_alarme_2_appel"
+						"to": "sbire_alarme_2"
 					},
 					{
-						"face": "sbire_alarme_2_appel",
+						"face": "sbire_alarme_2",
 						"to": "player"
 					},
 					{
@@ -474,21 +426,11 @@
 						"dialogue": "joh6_hideout_alarm"
 					},
 					{
-						"spawn": "sbire_alarme_3_appel",
-						"sprite": "rocket_grunt_m",
-						"cell": [
-							24,
-							1
-						],
-						"facing": "down",
-						"dialogue": "mahogany_hideout_b1f_sbire_alarme_3_after"
-					},
-					{
-						"emote": "sbire_alarme_3_appel",
+						"emote": "sbire_alarme_3",
 						"kind": "exclamation"
 					},
 					{
-						"move": "sbire_alarme_3_appel",
+						"move": "sbire_alarme_3",
 						"to": {
 							"near": "player",
 							"offsets": [
@@ -513,10 +455,10 @@
 					},
 					{
 						"face": "player",
-						"to": "sbire_alarme_3_appel"
+						"to": "sbire_alarme_3"
 					},
 					{
-						"face": "sbire_alarme_3_appel",
+						"face": "sbire_alarme_3",
 						"to": "player"
 					},
 					{
@@ -602,19 +544,14 @@
 						"to": "down"
 					},
 					{
-						"move": "persian",
-						"to": [
-							8,
-							8
-						],
-						"background": true
-					},
-					{
 						"move": "giovanni_jeune",
 						"to": [
 							7,
 							8
 						]
+					},
+					{
+						"despawn": "persian"
 					},
 					{
 						"flash": 2
@@ -624,9 +561,6 @@
 					},
 					{
 						"despawn": "giovanni_jeune"
-					},
-					{
-						"despawn": "persian"
 					},
 					{
 						"wait": 0.8
@@ -725,20 +659,19 @@
 					{
 						"battle": "mahogany_hideout_b3f_brace",
 						"win": [
-							"johto_brace_defeated_2",
 							"beaten_mahogany_hideout_b3f_brace"
 						]
 					},
 					{
 						"dialogue": "mahogany_hideout_b3f_brace_defeated",
 						"if": [
-							"johto_brace_defeated_2"
+							"beaten_mahogany_hideout_b3f_brace"
 						]
 					},
 					{
 						"dialogue": "joh6_brace_leaves",
 						"if": [
-							"johto_brace_defeated_2"
+							"beaten_mahogany_hideout_b3f_brace"
 						]
 					},
 					{
@@ -748,25 +681,33 @@
 							12
 						],
 						"if": [
-							"johto_brace_defeated_2"
+							"beaten_mahogany_hideout_b3f_brace"
 						]
 					},
 					{
 						"dialogue": "joh6_brace_escape",
 						"if": [
-							"johto_brace_defeated_2"
+							"beaten_mahogany_hideout_b3f_brace"
 						]
 					},
 					{
 						"despawn": "brace",
 						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"set": [
 							"johto_brace_defeated_2"
+						],
+						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
 						]
 					},
 					{
 						"wake_up": true,
 						"unless": [
-							"johto_brace_defeated_2"
+							"beaten_mahogany_hideout_b3f_brace"
 						]
 					}
 				]

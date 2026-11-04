@@ -161,17 +161,16 @@ def guard_back(guard, dialogue_id, flag, back):
 
 def alarm_scene(number):
 	"""C-30 puis le Sbire appelé sort de sa porte dérobée et vient au joueur (combat obligatoire,
-	une fois par statue ; il vient même si le joueur recule, dossier §13)."""
-	cell, facing, sprite = ALARMS[number]
+	une fois par statue ; il vient même si le joueur recule, dossier §13). Le Sbire est le PNJ de
+	la carte (`sbire_alarme_N`, présent avec `johto_alarm_N`) : le drapeau, posé en tête, le fait
+	paraître à sa porte."""
 	trainer = "%s_sbire_alarme_%d" % (HIDEOUT_B1F, number)
-	actor = "sbire_alarme_%d_appel" % number
+	actor = "sbire_alarme_%d" % number
 	flag = "johto_alarm_%d" % number
 	return {"variants": [{"unless": [flag], "steps": [
 		{"set": [flag]},
 		{"flash": 1},
 		{"dialogue": "joh6_hideout_alarm"},
-		{"spawn": actor, "sprite": sprite, "cell": cell, "facing": facing,
-			"dialogue": trainer + "_after"},
 		{"emote": actor, "kind": "exclamation"},
 		{"move": actor,
 			"to": {"near": "player", "offsets": [[0, -1], [0, 1], [-1, 0], [1, 0]]}},
@@ -190,10 +189,10 @@ CUTSCENES = {
 		{"set": ["johto_burned_floor_seen"]},
 		{"dialogue": "burned_tower_1f_plancher_effondre"},
 	]}]},
-	# C-6 à C-9 : réveil et fuite, Brace et la cage à ondes, départ vers l'est. Drapeau du réveil
-	# en tête (scène interrompue = jouée), drapeau de la capture à la fin.
+	# C-6 à C-9 : réveil et fuite, Brace et la cage à ondes, départ vers l'est. Drapeaux posés à
+	# la fin : un drapeau levé pendant la visite retire aussitôt les PNJ qui en dépendent (les
+	# chiens) ; scène interrompue = rejouée.
 	"burned_tower_beasts": {"variants": [{"unless": ["johto_beasts_awakened"], "steps": [
-		{"set": ["johto_beasts_awakened"]},
 		{"face": "player", "to": "entei"},
 		{"dialogue": "joh6_beasts_sleep"},
 		{"react": "raikou"},
@@ -201,13 +200,12 @@ CUTSCENES = {
 		{"react": "suicune"},
 		{"dialogue": "joh6_beasts_wake"},
 		{"dialogue": "joh6_beasts_flee"},
-		{"move": "suicune", "to": [2, 9], "background": True},
-		{"move": "entei", "to": [16, 13], "background": True},
-		{"move": "raikou", "to": [14, 8]},
+		# Planches provisoires sans marche [D] : Suicune et Entei s'effacent d'un bond ; Raikou
+		# reste pour la cage.
 		{"despawn": "suicune"},
 		{"despawn": "entei"},
 		{"spawn": "brace", "sprite": "rocket_civilian", "cell": [18, 8], "facing": "left"},
-		{"move": "brace", "to": [16, 8]},
+		{"move": "brace", "to": [13, 8]},
 		{"face": "player", "to": "brace"},
 		{"dialogue": "joh6_brace_arrives"},
 		{"dialogue": "joh6_brace_cage_thrown"},
@@ -216,10 +214,10 @@ CUTSCENES = {
 		{"dialogue": "joh6_brace_cage_caught"},
 		{"face": "brace", "to": "player"},
 		{"dialogue": "joh6_brace_leaves_tower"},
-		{"move": "brace", "to": [18, 8], "follower": "raikou"},
-		{"despawn": "brace"},
 		{"despawn": "raikou"},
-		{"set": ["johto_raikou_taken"]},
+		{"move": "brace", "to": [18, 8]},
+		{"despawn": "brace"},
+		{"set": ["johto_beasts_awakened", "johto_raikou_taken"]},
 	]}]},
 	# C-10, C-11 : le doyen attend à la sortie de la tour (Rosalia, plan §2.5).
 	"ecruteak_dante_plan": {"variants": [{"if": ["johto_raikou_taken"],
@@ -268,12 +266,11 @@ CUTSCENES = {
 		{"dialogue": "joh6_flashback_silence"},
 		{"dialogue": "joh6_flashback_giovanni"},
 		{"face": "giovanni_jeune", "to": "down"},
-		{"move": "persian", "to": [8, 8], "background": True},
 		{"move": "giovanni_jeune", "to": [7, 8]},
+		{"despawn": "persian"},
 		{"flash": 2},
 		{"dialogue": "joh6_flashback_leaves"},
 		{"despawn": "giovanni_jeune"},
-		{"despawn": "persian"},
 		{"wait": 0.8},
 		{"change_map": "mahogany_hideout_b2f", "at": "devant_deserteur", "facing": "down"},
 		{"flashback": "end"},
@@ -295,13 +292,15 @@ CUTSCENES = {
 		{"face": "player", "to": "brace"},
 		{"face": "brace", "to": "player"},
 		{"dialogue": BRACE_TRAINER + "_before"},
-		{"battle": BRACE_TRAINER, "win": ["johto_brace_defeated_2", beaten(BRACE_TRAINER)]},
-		{"dialogue": BRACE_TRAINER + "_defeated", "if": ["johto_brace_defeated_2"]},
-		{"dialogue": "joh6_brace_leaves", "if": ["johto_brace_defeated_2"]},
-		{"move": "brace", "to": [22, 12], "if": ["johto_brace_defeated_2"]},
-		{"dialogue": "joh6_brace_escape", "if": ["johto_brace_defeated_2"]},
-		{"despawn": "brace", "if": ["johto_brace_defeated_2"]},
-		{"wake_up": True, "unless": ["johto_brace_defeated_2"]},
+		{"battle": BRACE_TRAINER, "win": [beaten(BRACE_TRAINER)]},
+		{"dialogue": BRACE_TRAINER + "_defeated", "if": [beaten(BRACE_TRAINER)]},
+		{"dialogue": "joh6_brace_leaves", "if": [beaten(BRACE_TRAINER)]},
+		{"move": "brace", "to": [22, 12], "if": [beaten(BRACE_TRAINER)]},
+		{"dialogue": "joh6_brace_escape", "if": [beaten(BRACE_TRAINER)]},
+		{"despawn": "brace", "if": [beaten(BRACE_TRAINER)]},
+		# Posé après le départ (le PNJ de Brace en dépend) ; défaite : Centre, Brace reste.
+		{"set": ["johto_brace_defeated_2"], "if": [beaten(BRACE_TRAINER)]},
+		{"wake_up": True, "unless": [beaten(BRACE_TRAINER)]},
 	]}]},
 	"hideout_generator_off": {"variants": [{"if": ["johto_brace_defeated_2"],
 		"unless": ["johto_generator_off"], "steps": [

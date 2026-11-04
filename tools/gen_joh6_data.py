@@ -423,7 +423,7 @@ def handle_npc(map_id, ident, cell, attrs, npcs, dialogues, cutscenes):
 			{"if": ["johto_hideout_found"], "pages": C29},
 		]}
 	elif key == ("lake_of_rage", "leviator_rouge"):
-		npcs[ident] = {"cell": cell, "facing": "down", "sprite": "pokemon/gyarados",
+		npcs[ident] = {"cell": cell, "facing": "down", "sprite": "pokemon/gyarados_red",
 			"dialogue": "joh6_red_gyarados", "turn_to_player": False, "unless": ["johto_red_gyarados_done"]}
 	elif key == ("lake_of_rage", "pecheur"):
 		npcs[ident] = {"cell": cell, "facing": facing, "sprite": "fisher_fuchsia", "dialogue": did}

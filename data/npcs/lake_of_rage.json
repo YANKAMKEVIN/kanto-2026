@@ -14,7 +14,7 @@
 			22
 		],
 		"facing": "down",
-		"sprite": "pokemon/gyarados",
+		"sprite": "pokemon/gyarados_red",
 		"dialogue": "joh6_red_gyarados",
 		"turn_to_player": false,
 		"unless": [
