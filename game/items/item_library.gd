@@ -47,6 +47,7 @@ const _KEYS: Array[String] = [
 	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
 	"hm", "battle_use", "revive", "key_use", "vitamin_stats", "pp_amount", "pp_all_moves",
 	"repel_steps",
+	"pp_up_max", # JOH7 : PP Max
 ]
 const _BATTLE_USE_KEYS: Array[String] = ["kind", "stat", "stages"]
 ## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
@@ -384,7 +385,7 @@ func _read_field_params(entry: Dictionary, item: ItemData, where: String) -> boo
 	var ok := true
 	var owners := {"vitamin_stats": ItemData.FIELD_USE_VITAMIN,
 		"pp_amount": ItemData.FIELD_USE_PP_RESTORE, "pp_all_moves": ItemData.FIELD_USE_PP_RESTORE,
-		"repel_steps": ItemData.FIELD_USE_REPEL}
+		"repel_steps": ItemData.FIELD_USE_REPEL, "pp_up_max": ItemData.FIELD_USE_PP_UP}
 	for key: String in owners:
 		if entry.has(key) and item.field_use != owners[key]:
 			ok = _fail("%s : « %s » est réservé à « field_use » = %s" % [where, key, owners[key]])
@@ -408,6 +409,11 @@ func _read_field_params(entry: Dictionary, item: ItemData, where: String) -> boo
 				return _fail("%s : « pp_all_moves » vaut true ou false" % where)
 			item.pp_amount = int(amount)
 			item.pp_all_moves = all
+		ItemData.FIELD_USE_PP_UP:
+			var to_cap: Variant = entry.get("pp_up_max", false)
+			if not to_cap is bool:
+				return _fail("%s : « pp_up_max » vaut true ou false" % where)
+			item.pp_up_max = to_cap
 		ItemData.FIELD_USE_REPEL:
 			var steps: Variant = entry.get("repel_steps")
 			if not JsonFields.is_int(steps) or int(steps) <= 0:

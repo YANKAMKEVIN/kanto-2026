@@ -42,5 +42,14 @@
 		"if_weekday": [
 			"monday"
 		]
+	},
+	"marin_plage": {
+		"cell": [
+			18,
+			32
+		],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "olivine_beach_sailor"
 	}
 }

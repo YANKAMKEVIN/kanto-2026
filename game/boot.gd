@@ -1543,6 +1543,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_menu_screen.clock_shown = is_johto_map(map.map_id)
 	var time := _current_time(map.map_id)
 	map.set_time_context(time[0], time[1])
+	# JOH7 : drapeaux de la semaine (Lokhlass du vendredi) baissés un autre jour que le leur.
+	WeeklyFlags.shared().apply(GameState.flags, _world_clock.weekday_name())
 	# JOH0 : évolutions « bond » datées (Évoli) : le moment de l'horloge à Johto, rien ailleurs.
 	Evolution.set_current_period(time[0])
 	map.refresh_npcs(GameState.flags)

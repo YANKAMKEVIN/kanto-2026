@@ -47,5 +47,20 @@
 			{ "species": "psyduck", "level": 15, "weight": 1 },
 			{ "species": "slowpoke", "level": 15, "weight": 1 }
 		]
+	},
+	"joh7_old_rod": {
+		"maps": ["route_40", "route_41"], "terrain": "water_rod", "rod": "old_rod", "rate": 100,
+		"slots": [
+			{ "species": "magikarp", "level": 5, "weight": 1 },
+			{ "species": "tentacool", "level": 5, "weight": 1 }
+		]
+	},
+	"joh7_good_rod": {
+		"maps": ["route_40", "route_41"], "terrain": "water_rod", "rod": "good_rod", "rate": 50,
+		"slots": [
+			{ "species": "krabby", "level": 10, "weight": 1 },
+			{ "species": "horsea", "level": 10, "weight": 1 },
+			{ "species": "staryu", "level": 10, "weight": 1 }
+		]
 	}
 }

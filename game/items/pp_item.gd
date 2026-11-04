@@ -9,6 +9,7 @@ extends RefCounted
 ##   de format.
 ## - **Éther / Élixir** ([constant ItemData.FIELD_USE_PP_RESTORE]) : [member ItemData.pp_amount] PP
 ##   rendus (0 = tous) à une capacité choisie, ou à toutes ([member ItemData.pp_all_moves]).
+## - **PP Max** (JOH7) : un PP Plus à « pp_up_max » ; la capacité monte d'un coup à son plafond.
 ## Un Pokémon K.O. peut les recevoir (Rouge/Bleu) [D]. Rien ici ne touche au Sac.
 
 ## État d'un Pokémon (ou d'une capacité) face à l'objet : OK, ou rien à faire (« Sans effet »).
@@ -66,7 +67,8 @@ static func apply(pokemon: Pokemon, slot: int, item: ItemData, data: PokemonData
 		if check_move(pokemon, slot, item, data) != Check.OK:
 			return 0
 		var move := pokemon.moves[slot]
-		var gain := mini(step(move, data), cap(move, data) - move.max_pp)
+		var gain := cap(move, data) - move.max_pp if item.pp_up_max \
+			else mini(step(move, data), cap(move, data) - move.max_pp)
 		move.max_pp += gain
 		move.pp += gain
 		return gain
