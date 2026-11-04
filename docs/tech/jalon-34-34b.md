@@ -10,7 +10,7 @@
 
 | Préalable | État |
 |---|---|
-| Commit à construire | `99dfa688` = `origin/main`, **CI verte** (run 41711310886). `build_rc.sh` exige un arbre propre (fichiers suivis) et cette CI : on construit **avant** de modifier un fichier suivi, les fiches restent donc dans ce fichier neuf. |
+| Commit à construire | Le HEAD de la branche, qui ne diffère de `99dfa688` (= `origin/main`, **CI verte** run 41711310886) que par la documentation et `tools/build_rc.sh`. **Défaut de procédure trouvé et corrigé ici** : `build_rc.sh` exigeait une CI sur le commit exact, or la CI ne se lance pas pour un commit de documentation seule (`paths-ignore`) ; le script prend maintenant la CI du dernier ancêtre testé si tout ce qui a changé depuis est de la documentation (`release.md` §3). Le commit qui modifie le script déclenche, lui, sa propre CI. |
 | Clé de signature | **Absente** : `~/.pokemake/` n'existe pas, aucune variable `GODOT_ANDROID_KEYSTORE_RELEASE_*`. Kevin la crée (`tools/make_keystore.sh`, `release.md` §2) ; cette session ne la crée jamais. |
 | A17 en adb | **Non connecté** au Mac au moment de l'écriture (`adb devices` vide, aucun service mDNS). Il faut que Kevin le rallume en débogage sans fil. |
 | Tour sur l'A17 | À demander à la session coordinatrice (voir §2.0). |
