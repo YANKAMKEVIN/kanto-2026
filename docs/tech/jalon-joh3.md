@@ -196,6 +196,7 @@ dossier en `draft` (grille du Parc, habitant de la maison 2, hôtesse du toit…
 | T13 | `76a4caf3` et suivants | `tools/capture_joh3.sh` (24 plans, `build/captures/joh3/`) relus : Routes 37 jour et nuit (Sbires), 36 (pont, Parc), 35 (étang, Anna), Doublonville (entrée, haut-parleur, place, Tour Radio, Magasin, sud, nuit), Souterrain, Centre (Orme), Magasin, toit, maison du lien. Corrigé : massifs de fleurs (tuile à fond noir → herbe + fleurs peintes), Grand Magasin peint trop large → aplat |
 | `main` | (fusion) | JOH1 refusionné : la Perle est celle du JOH1 ; Oliville et ses intérieurs gardés |
 | `main` | `cab39b03` et suivants | JOH2, JOH7 puis JOH4 refusionnés : raccords Rosalia ↔ Route 37 et Doublonville ↔ Route 34 réels (`per_cell`), inventaires des jalons réunis |
+| T15 | fusion dans `main` | CI verte run 41919992604 sur `73a70b9a` (8 lots), QA A17 sans P0 ni P1 |
 | T14 | QA A17, 2026-11-04 | Aucun P0 ni P1 (détail dans `etat-projet.md`) ; objectifs [D] `reach_goldenrod`, `search_underground` ajoutés (`meet_kurt` du JOH4 prend la suite) après la QA |
 
 Écarts [D] relevés pendant le code : D-12 « Tu es venu » écrit `{g:venu|venue}` (accord de la
