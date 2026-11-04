@@ -345,7 +345,7 @@
 			"phases": {"anticipation": 0.15, "travel": 0.5, "impact": 0.25, "return": 0.1},
 			"world": {"light": "#FFF4C0", "light_peak": 0.3, "flashes": 0},
 			"camera": {"zoom": 1.02, "shake": 1.5},
-			"fx": {"palette": ["#FFFFFF", "#FFF0A0", "#C8A030"], "particles": 20, "volley": {"count": 6, "stagger": 0.08, "size": 0.1, "wobble": 0.05}, "art": {"charge": "etincelle", "piece": "etoile_filante", "particle": "etoile", "spark": "etincelle_or"}}
+			"fx": {"palette": ["#FFFFFF", "#FFF0A0", "#C8A030"], "particles": 20, "volley": {"count": 6, "stagger": 0.08, "size": 0.13, "wobble": 0.05}, "art": {"charge": "etincelle", "piece": "etoile_filante", "particle": "etoile", "spark": "etincelle_or"}}
 		},
 		"foudre": {
 			"name": "Foudre", "target": "foe",
@@ -366,7 +366,7 @@
 			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 26, "art": {"dust": "poussiere"}},
 			"variants": {
 				"feu": {"palette": ["#FFF1B0", "#FF8A3C", "#8A1E0A"], "light": "#FF9A3C", "light_peak": 0.5, "flashes": 1, "art": {"burst": "gerbe_braises", "particle": "braise", "rise": "flamme", "fallout": "fumee"}},
-				"glace": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "light": "#CFEFFF", "light_peak": 0.35, "flashes": 1, "art": {"particle": "eclat_glace", "rise": "flocon", "fallout": "flocon"}},
+				"glace": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "light": "#CFEFFF", "light_peak": 0.35, "flashes": 1, "particles": 34, "art": {"burst": "eclat_glace", "particle": "eclat_glace", "rise": "flocon", "fallout": "flocon"}},
 				"eclair": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "light": "#FFF3A0", "light_peak": 0.55, "flashes": 2, "art": {"burst": "decharge_etoile", "particle": "etincelle", "rise": "etincelle_bleue"}}
 			}
 		},
@@ -377,7 +377,7 @@
 			"phases": {"anticipation": 0.15, "travel": 0.3, "impact": 0.3, "return": 0.25},
 			"world": {"light": "#F2E2C4", "light_peak": 0.0, "flashes": 0, "dust": true},
 			"camera": {"zoom": 1.03, "shake": 3.5},
-			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 16, "volley": {"count": 1, "size": 0.13}, "art": {"piece": "os", "particle": "eclats_pierre", "star": "etoile_impact", "dust": "poussiere"}},
+			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 16, "volley": {"count": 1, "size": 0.2}, "art": {"piece": "os", "particle": "eclats_pierre", "star": "etoile_impact", "dust": "poussiere"}},
 			"variants": {
 				"massue": {"_doc": "Massd'Os : l'os s'abat d'en haut."},
 				"boomerang": {"_doc": "Osmerang : aller et retour."}
@@ -390,7 +390,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.4, "impact": 0.3, "return": 0.1},
 			"world": {"light": "#FFB8F0", "light_peak": 0.25, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#FFFFFF", "#FFB8F0", "#6A4A9A"], "particles": 14, "volley": {"count": 1, "size": 0.11}, "art": {"piece": "orbe_folie", "ring": "anneau_folie", "particle": "eclat_rose"}}
+			"fx": {"palette": ["#FFFFFF", "#FFB8F0", "#6A4A9A"], "particles": 14, "volley": {"count": 1, "size": 0.16}, "art": {"piece": "orbe_folie", "ring": "anneau_folie", "particle": "eclat_rose"}}
 		},
 		"brume": {
 			"name": "Brume", "target": "foe", "duration": 1.2,
@@ -411,7 +411,7 @@
 			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 16, "volley": {"count": 1, "size": 0.1}, "art": {"piece": "boulet", "star": "etoile_impact", "particle": "eclats_pierre"}},
 			"variants": {
 				"oeuf": {"_doc": "Bomb'Œuf : l'œuf explose.", "palette": ["#FFF4C8", "#FF8A2A", "#7A1A0A"], "light": "#FFB060", "light_peak": 0.5, "flashes": 1, "particles": 26, "volley": {"count": 1, "size": 0.13}, "art": {"piece": "oeuf", "blast": "explosion", "particle": "coquille_oeuf", "rise": "braise_explosion", "fallout": "fumee"}},
-				"pilonnage": {"_doc": "Pilonnage : boules dures, une par coup.", "volley": {"count": 1, "size": 0.08}}
+				"pilonnage": {"_doc": "Pilonnage : boules dures, une par coup.", "volley": {"count": 1, "size": 0.11}}
 			}
 		},
 		"atlas": {
@@ -439,7 +439,7 @@
 			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.35, "return": 0.15},
 			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true},
 			"camera": {"zoom": 1.03, "shake": 5.0},
-			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 30, "volley": {"count": 6, "size": 0.07}, "art": {"piece": "motte_terre", "particle": "motte_terre", "rise": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere", "rock": "rocher"}}
+			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 30, "volley": {"count": 6, "size": 0.09}, "art": {"piece": "motte_terre", "particle": "motte_terre", "rise": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere", "rock": "rocher"}}
 		},
 		"soin": {
 			"name": "Soin", "target": "self",
