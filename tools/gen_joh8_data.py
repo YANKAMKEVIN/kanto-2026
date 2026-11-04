@@ -56,11 +56,11 @@ HO_OH_BACK_DONE = "johto_ho_oh_return_done"  # [D]
 # --- Dresseurs (dossier §6) -------------------------------------------------------------------
 # prize_per_level [D] : Sbires 40, Dante 120 (prize_money fixé par le niveau du dernier Pokémon).
 TRAINERS = {
-	"bell_tower_grunt_watch": {"name": "Sbire", "class": "sbire_rocket", "prize": 40,
+	"bell_tower_grunt_watch": {"name": "Sbire Rocket", "class": "sbire_rocket", "prize": 40,
 		"team": [("weezing", 60), ("arbok", 60)]},
-	"bell_tower_grunt_v": {"name": "Sbire", "class": "sbire_rocket", "prize": 40,
+	"bell_tower_grunt_v": {"name": "Sbire Rocket", "class": "sbire_rocket", "prize": 40,
 		"team": [("houndoom", 61), ("golbat", 61)]},
-	"bell_tower_grunt_w": {"name": "Sbire", "class": "sbire_rocket_f", "prize": 40,
+	"bell_tower_grunt_w": {"name": "Sbire Rocket", "class": "sbire_rocket_f", "prize": 40,
 		"team": [("muk", 61), ("noctowl", 61), ("houndour", 60)]},
 }
 # Dante (1) : 5 Pokémon, sans Tyranocif (JH-54) ; IA « smart », changements permis, attaques

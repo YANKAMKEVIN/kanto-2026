@@ -1,6 +1,6 @@
 {
 	"bell_tower_grunt_watch": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket",
 		"ai": "random",
 		"can_lose": false,
@@ -20,7 +20,7 @@
 		]
 	},
 	"bell_tower_grunt_v": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket",
 		"ai": "random",
 		"can_lose": false,
@@ -40,7 +40,7 @@
 		]
 	},
 	"bell_tower_grunt_w": {
-		"name": "Sbire",
+		"name": "Sbire Rocket",
 		"class": "sbire_rocket_f",
 		"ai": "random",
 		"can_lose": false,

@@ -125,5 +125,6 @@
 		"olivine_city",
 		"ecruteak_city"
 	],
+	"rest_point": "ecruteak_center",
 	"autosave": true
 }

@@ -154,8 +154,13 @@ func test_links_between_the_three_maps_and_the_coming_soon_exits() -> void:
 				labels[warp.coming_soon] = true
 				assert_true(_map(id).has_spawn(warp.target_spawn), "%s : retour sur %s" % [id,
 					warp.target_spawn])
-	for expected: String in ["Route 37", "Route 42", "Bois de la Tour", "Tour Cendrée"]:
+	for expected: String in ["Route 37", "Route 42", "Tour Cendrée"]:
 		assert_true(labels.has(expected), expected)
+	# JOH8 : le Bois de la Tour existe ; le chemin nord y mène.
+	if MapCatalog.has_map(&"bell_tower_woods"):
+		assert_false(labels.has("Bois de la Tour"), "Bois de la Tour construit (JOH8)")
+	else:
+		assert_true(labels.has("Bois de la Tour"), "Bois de la Tour à venir (JOH8)")
 	if not MapCatalog.has_map(&"olivine_city"):
 		assert_true(labels.has("Oliville"), "Oliville à venir (JOH1)")
 	# Point de Vol : `from_center` devant le Centre (fly_points.json).

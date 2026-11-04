@@ -88,9 +88,28 @@ def write(species: str, image: Image.Image) -> None:
 	print(f"{name} : {image.width} × {image.height}")
 
 
+def rainbow_wing_icon() -> None:
+	"""Icône provisoire du Sac de la Plume Arc-en-ciel (256 × 256, `assets/ui/items/`)."""
+	path = RACINE / "assets" / "ui" / "items" / "rainbow_wing.webp"
+	if path.exists():
+		return
+	img = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+	d = ImageDraw.Draw(img)
+	colors = [(230, 60, 50), (240, 140, 40), (245, 210, 60), (90, 190, 90), (70, 140, 230),
+		(150, 90, 200)]
+	for i, color in enumerate(colors):
+		inset = i * 9
+		d.ellipse((70 + inset, 20 + inset * 2, 186 - inset, 220 - inset), fill=color + (255,))
+	d.line((128, 30, 128, 246), fill=(250, 245, 230, 255), width=6)
+	img = img.rotate(-30, resample=Image.BICUBIC)
+	img.save(path, "WEBP", lossless=True)
+	print("rainbow_wing.webp : 256 × 256")
+
+
 def main() -> None:
 	write("entei", entei())
 	write("ho_oh", ho_oh())
+	rainbow_wing_icon()
 
 
 if __name__ == "__main__":
