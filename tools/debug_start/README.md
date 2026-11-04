@@ -407,3 +407,12 @@ n'existe pas encore sur cette base (elle vient du J22).
 
 La victoire contre le Champion pose `league_stage_4_cleared` et **s'arrête là** (Chen paraît dans
 la salle ; la porte nord mène au Panthéon, sans sortie tant que la cérémonie du T17 n'existe pas).
+
+## QA entrée des combats de Dresseur (A17, 2026-11-04)
+
+| Fichier | Partie |
+|---|---|
+| `qa_pierre.json` | Copie de `route_3` (Reptincel N17, Papilusion N15, Roucool N14) dans l'Arène d'Argenta (spawn `entrance`, face au nord), **Liam déjà battu**, Badge Roche non obtenu : monter tout droit, PARLER à Pierre → « VS » puis entrée |
+| `qa_fx_vagues.json` | Galerie d'effets (`fx_gallery`) : 46 attaques des vagues 1 et 2 « Rouge » en Complètes ; le journal écrit `[galerie] <attaque> fps=… min=…` |
+| `qa_fx_vague2.json` | Même galerie, 28 attaques de la vague 2 seulement (de `teleport` à `dig`) |
+

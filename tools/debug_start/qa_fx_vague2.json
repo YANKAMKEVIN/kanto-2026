@@ -1,0 +1,41 @@
+{
+ "party": [
+  {
+   "species": "pikachu",
+   "level": 5
+  }
+ ],
+ "fx_gallery": {
+  "moves": [
+   "teleport",
+   "splash",
+   "explosion",
+   "self_destruct",
+   "pay_day",
+   "smokescreen",
+   "poison_gas",
+   "smog",
+   "flash",
+   "kinesis",
+   "swift",
+   "thunder",
+   "fire_punch",
+   "ice_punch",
+   "thunder_punch",
+   "lick",
+   "bone_club",
+   "bonemerang",
+   "confuse_ray",
+   "haze",
+   "clamp",
+   "crabhammer",
+   "waterfall",
+   "egg_bomb",
+   "barrage",
+   "seismic_toss",
+   "fissure",
+   "dig"
+  ],
+  "mode": "full"
+ }
+}

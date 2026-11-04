@@ -1,0 +1,59 @@
+{
+ "party": [
+  {
+   "species": "pikachu",
+   "level": 5
+  }
+ ],
+ "fx_gallery": {
+  "moves": [
+   "tail_whip",
+   "vine_whip",
+   "bubble",
+   "bubble_beam",
+   "string_shot",
+   "poison_sting",
+   "peck",
+   "drill_peck",
+   "poison_powder",
+   "sleep_powder",
+   "stun_spore",
+   "spore",
+   "leech_seed",
+   "twineedle",
+   "pin_missile",
+   "spike_cannon",
+   "rock_throw",
+   "rock_slide",
+   "teleport",
+   "splash",
+   "explosion",
+   "self_destruct",
+   "pay_day",
+   "smokescreen",
+   "poison_gas",
+   "smog",
+   "flash",
+   "kinesis",
+   "swift",
+   "thunder",
+   "fire_punch",
+   "ice_punch",
+   "thunder_punch",
+   "lick",
+   "bone_club",
+   "bonemerang",
+   "confuse_ray",
+   "haze",
+   "clamp",
+   "crabhammer",
+   "waterfall",
+   "egg_bomb",
+   "barrage",
+   "seismic_toss",
+   "fissure",
+   "dig"
+  ],
+  "mode": "full"
+ }
+}
