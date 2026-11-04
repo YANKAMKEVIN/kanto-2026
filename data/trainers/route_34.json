@@ -1,0 +1,60 @@
+{
+	"route_34_picnicker_sophie": {
+		"name": "Pique-niqueuse Sophie",
+		"class": "fillette",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "marill",
+				"level": 18
+			},
+			{
+				"species": "nidoran_f",
+				"level": 18
+			}
+		]
+	},
+	"route_34_pokemaniac_bruno": {
+		"name": "Pokémaniac Bruno",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "ditto",
+				"level": 19
+			},
+			{
+				"species": "slowpoke",
+				"level": 19
+			}
+		]
+	},
+	"route_34_juggler_felix": {
+		"name": "Jongleur Félix",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 25,
+		"team": [
+			{
+				"species": "abra",
+				"level": 18
+			},
+			{
+				"species": "kadabra",
+				"level": 20
+			}
+		]
+	}
+}

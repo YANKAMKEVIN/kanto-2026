@@ -1,0 +1,89 @@
+{
+	"ilex_forest_scout_tom_before": {
+		"speaker": "Scout Tom",
+		"pages": [
+			"Je connais ce bois par cœur !"
+		]
+	},
+	"ilex_forest_scout_tom_defeated": {
+		"speaker": "Scout Tom",
+		"pages": [
+			"Je me suis perdu dans le combat."
+		]
+	},
+	"ilex_forest_scout_tom_after": {
+		"speaker": "Scout Tom",
+		"pages": [
+			"La sortie est au sud."
+		]
+	},
+	"ilex_forest_lass_celine_before": {
+		"speaker": "Dresseuse Céline",
+		"pages": [
+			"La nuit tombe vite, sous les arbres."
+		]
+	},
+	"ilex_forest_lass_celine_defeated": {
+		"speaker": "Dresseuse Céline",
+		"pages": [
+			"Tu as de bons yeux."
+		]
+	},
+	"ilex_forest_lass_celine_after": {
+		"speaker": "Dresseuse Céline",
+		"pages": [
+			"Le matin, de drôles de Pokémon\nsortent des troncs."
+		]
+	},
+	"ilex_forest_autel": {
+		"narration": true,
+		"variants": [
+			{
+				"set": [
+					"johto_shrine_seen"
+				],
+				"pages": [
+					"Un petit autel de bois, couvert de\nmousse.",
+					"Quelqu'un y a déposé des fleurs\nfraîches.",
+					"On dirait qu'il attend quelque\nchose."
+				]
+			}
+		]
+	},
+	"ilex_forest_vieille_femme": {
+		"speaker": "Vieille femme",
+		"pages": [
+			"On dit que le gardien de la forêt\nvoyage dans le temps.",
+			"Il ne se montre qu'à ceux qui\nrespectent le bois.",
+			"Moi, je ne l'ai jamais vu. Mais je\nlui apporte des fleurs."
+		]
+	},
+	"ilex_forest_charbonnier": {
+		"speaker": "Charbonnier",
+		"pages": [
+			"Mon Canarticho m'aide à couper le\nbois.",
+			"Sans lui, pas de charbon pour\nÉcorcia."
+		]
+	},
+	"ilex_forest_canarticho": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Canarticho serre son poireau.",
+			"Il veille sur les bûches de son\nmaître."
+		]
+	},
+	"ilex_item_1": {
+		"cutscene": "ilex_item_1"
+	},
+	"ilex_hidden_1": {
+		"cutscene": "ilex_hidden_1"
+	},
+	"ilex_forest_panneau_bois": {
+		"narration": true,
+		"pages": [
+			"BOIS AUX CHÊNES",
+			"Forêt protégée. Respectez le gardien\ndu bois."
+		]
+	}
+}

@@ -1,0 +1,70 @@
+{
+	"pecheur": {
+		"cell": [
+			9,
+			18
+		],
+		"facing": "left",
+		"sprite": "fisher_route_12",
+		"dialogue": "route_34_pecheur"
+	},
+	"sophie": {
+		"cell": [
+			16,
+			21
+		],
+		"facing": "down",
+		"sprite": "lass",
+		"dialogue": "route_34_picnicker_sophie_after",
+		"trainer": {
+			"id": "route_34_picnicker_sophie",
+			"sight": 3,
+			"before": "route_34_picnicker_sophie_before",
+			"defeated": "route_34_picnicker_sophie_defeated"
+		}
+	},
+	"bruno": {
+		"cell": [
+			6,
+			37
+		],
+		"facing": "right",
+		"sprite": "pokemaniac",
+		"dialogue": "route_34_pokemaniac_bruno_after",
+		"trainer": {
+			"id": "route_34_pokemaniac_bruno",
+			"sight": 2,
+			"before": "route_34_pokemaniac_bruno_before",
+			"defeated": "route_34_pokemaniac_bruno_defeated"
+		}
+	},
+	"felix": {
+		"cell": [
+			11,
+			40
+		],
+		"facing": "left",
+		"sprite": "gambler",
+		"dialogue": "route_34_juggler_felix_after",
+		"trainer": {
+			"id": "route_34_juggler_felix",
+			"sight": 1,
+			"before": "route_34_juggler_felix_before",
+			"defeated": "route_34_juggler_felix_defeated"
+		}
+	},
+	"route_34_item_1": {
+		"cell": [
+			4,
+			23
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_34_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_34_item_1"
+		]
+	}
+}

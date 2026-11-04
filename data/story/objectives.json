@@ -15,8 +15,36 @@
 	{
 		"id": "free_radio_tower",
 		"text": "libérer la Tour Radio de Doublonville.",
-		"if": ["johto_radio_pass"],
+		"if": ["johto_slowpoke_well_cleared"],
 		"unless": ["johto_team_returned"],
+		"draft": true
+	},
+	{
+		"id": "talk_to_kurt_in_well",
+		"text": "reparler à Fargas, au fond du Puits Ramoloss.",
+		"if": ["johto_radio_pass"],
+		"unless": ["johto_slowpoke_well_cleared"],
+		"draft": true
+	},
+	{
+		"id": "take_brace_papers",
+		"text": "ramasser les papiers laissés par Brace.",
+		"if": ["johto_brace_defeated"],
+		"unless": ["johto_radio_pass"],
+		"draft": true
+	},
+	{
+		"id": "clear_slowpoke_well",
+		"text": "chasser la Team Rocket du Puits Ramoloss.",
+		"if": ["johto_kurt_told"],
+		"unless": ["johto_brace_defeated"],
+		"draft": true
+	},
+	{
+		"id": "meet_kurt",
+		"text": "trouver Fargas, à Écorcia.",
+		"if": ["johto_azalea_clue"],
+		"unless": ["johto_kurt_told"],
 		"draft": true
 	},
 	{

@@ -60,10 +60,10 @@ func test_female_grunts_have_their_own_class() -> void:
 	for id: StringName in _trainers.get_ids():
 		if _trainers.get_trainer(id).battle_class == &"sbire_rocket_f":
 			female += 1
-	# JOH7 : le Sbire U des Îles Tourbillon et Cenere (classe de Sbire femme [D] tant que le JOH5
-	# n'a pas de classe d'admin).
+	# JOH4 : + le Sbire F du Puits Ramoloss (B1F). JOH7 : le Sbire U des Îles Tourbillon et Cenere
+	# (classe de Sbire femme [D] tant que le JOH5 n'a pas de classe d'admin).
 	# JOH5 : + 3 Sbires F de la Tour Radio (J, L, N) et Cenere (apparence rocket_grunt_f [D]).
-	assert_eq(female, 17, "17 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+	assert_eq(female, 18, "18 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
 
 
 func test_every_grand_portrait_is_in_the_catalog() -> void:

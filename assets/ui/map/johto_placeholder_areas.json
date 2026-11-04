@@ -94,6 +94,30 @@
 				90
 			]
 		},
+		"route_34": {
+			"area": [
+				835,
+				580,
+				90,
+				100
+			]
+		},
+		"ilex_forest": {
+			"area": [
+				825,
+				685,
+				110,
+				95
+			]
+		},
+		"slowpoke_well": {
+			"area": [
+				985,
+				795,
+				70,
+				60
+			]
+		},
 		"goldenrod_radio_tower": {
 			"area": [
 				780,

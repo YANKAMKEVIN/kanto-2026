@@ -292,9 +292,11 @@ func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
 	var first := ids.find(OBJECTIVES[0][0])
 	# Jalon 21 (T14) : `visit_fuji` et `find_fuji` en tête (ordre « plus avancé d'abord ») ;
 	# jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
-	# Chapitre Johto (JOH1) : ses cinq objectifs devant tous ceux de Kanto ; JOH5 : la Tour Radio.
+	# Chapitre Johto (JOH1) : ses cinq objectifs devant tous ceux de Kanto ; JOH4 : ses quatre
+	# objectifs devant eux ; JOH5 : la Tour Radio devant.
 	assert_eq(ids.slice(0, first), [&"go_ecruteak_sages", &"leave_radio_tower",
-		&"free_radio_tower", &"go_route_39", &"choose_johto_partner", &"rest_olivine",
+		&"free_radio_tower", &"talk_to_kurt_in_well", &"take_brace_papers",
+		&"clear_slowpoke_well", &"meet_kurt", &"go_route_39", &"choose_johto_partner", &"rest_olivine",
 		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",
 		&"find_fuji", &"back_to_tower", &"search_game_corner", &"explore_celadon",
 		&"go_celadon", &"see_the_ghosts", &"climb_tower"] as Array[StringName])
