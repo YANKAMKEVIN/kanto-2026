@@ -46,4 +46,183 @@
 
 ## 2. Conception technique
 
-(complétée au fil de l'implémentation ; §2.1 à §2.9)
+### 2.1 Cartes (`tools/build_joh8_maps.gd`)
+
+| Carte | Identifiant | Taille | `interior` | Lumière | Zone |
+|---|---|---|---|---|---|
+| Bois de la Tour | `bell_tower_woods` | 24 × 20 | non | `johto_auto` | `bell_tower_woods` (lieu, Johto) |
+| Tour Carillon 1F | `bell_tower_1f` | 24 × 24 | non (grotte) | `tower` | `bell_tower` |
+| Tour Carillon 2F | `bell_tower_2f` | 24 × 24 | non (grotte) | `tower` | `bell_tower` |
+| Sommet | `bell_tower_roof` | 20 × 20 | non | `johto_auto` (aube forcée, §2.6) | `bell_tower` |
+
+- Tuiles provisoires (`OverworldTiles`) [D] : Bois `.` herbe, `p` `D` `L` pavé, `h` hautes herbes
+  (aucune table : aucune rencontre, §5 du dossier), `T` `G` forêt, `K` falaise ; 1F / 2F `.`
+  planches (BOARDWALK), `#` `M` falaise, `A` autel (CROP), `U` `D` `E` pavé, `O` terre (planches
+  qui cèdent) ; sommet `.` `c` `D` pavé, `r` `#` `B` `M` falaise. **La grille fait foi** (test
+  « grille de la scène = grille du plan »).
+- Façade de la Tour Carillon dans le Bois : aplat provisoire (corps, trois toits rouges) [D] ;
+  lanternes : aplats + lampes de nuit (`night_lights`).
+- **Planches qui cèdent** : chaque case `O` du 2F est un warp **FALL** (mécanisme des trous du
+  Manoir, J25) vers l'arrivée `chute` (12, 12) du 1F, avec deux traits sombres de planche [D] ;
+  aucune ne mène au sommet ni hors de la carte (test) ; un chemin sans chute existe (test). H-9
+  est l'examen de la planche (9, 5), lu depuis (9, 4).
+- **Long escalier** (2F (3, 0) → sommet) : pas de warp, un déclencheur qui joue la scène
+  `bell_tower_climb` : « La montée est longue… », `change_map` (fondu), « Le ciel pâlit. » (H-12).
+  Le retour (trappe du sommet) est un escalier ordinaire.
+- **Cage de feu** : `FlagGate` `CageDeFeu` `unless johto_ho_oh_seen`, qui occupe ses barreaux
+  (`c`) ; elle brûle avec H-21 (drapeau posé dans la scène, décor mis à jour aussitôt).
+- Raccords : Bois (10..11, 19) PUSH ↓ → Rosalia `from_bois` (« À venir » tant que la carte du JOH2
+  manque ; relancer `--maps=bell_tower_woods` après la fusion) ; porte (10..11, 5) ↔ 1F `from_woods`
+  / `retour_tour` ; escaliers par paire (`vers=carte:arrivée`).
+- Corde Sortie : `caves.json` `bell_tower` = 1F et 2F, sortie `bell_tower_woods` / `retour_tour`
+  (devant la porte). Le sommet est à ciel ouvert : la Corde Sortie y est **toujours** refusée
+  [D] (le dossier §12 la refuse tant qu'Entei et Ho-Oh n'ont pas été affrontés ; après, il n'y a
+  plus rien à fuir au sommet).
+
+### 2.2 Données générées (`tools/gen_joh8_data.py`)
+
+- `data/npcs/bell_tower_*.json` : Sbires (bloc `trainer`, H-5, H-7, H-8), sages assommés (H-6),
+  Hiroshi (H-10, `heal`), objets visibles (§7), Dante (`gentleman` [D], `unless
+  johto_dante_fled_1`, lui parler reprend la scène), Entei (`pokemon/entei`, `unless
+  johto_entei_done`), Ho-Oh (`if johto_entei_done unless johto_ho_oh_done`), la plume (`if
+  johto_ho_oh_done unless got_rainbow_wing`), Ho-Oh du retour après le chapitre (§2.4).
+- `data/trainers/bell_tower.json` : trois Sbires (§6, `prize_per_level` 40 [D]) et
+  `bell_tower_dante_1` (§2.5).
+- `data/dialogues/joh8_bell_tower.json`, `data/cutscenes/joh8_bell_tower.json` ;
+  `data/dialogues/joh8_ecruteak.json` (sage blessé, Orme, habitante, Diane) ; `data/items/items_joh8.json`
+  (`rainbow_wing`, objet clé sans effet).
+- Rosalia (fichiers du JOH2, complétés **quand ils existent**) : PNJ `sage_blesse` (44, 13) `if
+  johto_bell_tower_clue unless johto_bell_tower_open` ; garde R-20 `unless johto_bell_tower_open`
+  (il s'efface) ; habitante H-37 (30, 18) `if johto_ho_oh_seen` [D] ; Orme (Centre, (11, 6)) `if
+  johto_ho_oh_done` [D] ; deux variantes **en tête** du dialogue du doyen : `if johto_ho_oh_done`
+  → H-34 + `johto_act3` ; `if johto_bell_tower_clue unless johto_bell_tower_open` → H-2 + H-3 +
+  `johto_bell_tower_open`. Relancer le script après `gen_joh2_data.py`.
+- Textes : §15 mot pour mot (test) ; brouillons [D] (`draft`, `PENDING_DRAFTS`) : examen de
+  l'autel, de la cloche, de la rambarde.
+
+### 2.3 Scènes du sommet (`bell_tower_summit`, déclencheur (3, 3), `unless johto_dante_defeated_1`)
+
+1. H-13 (la première fois), le joueur va en (9, 7) face à Dante ; H-14, H-15 (première fois),
+   `johto_dante_met` ;
+2. H-16 (ou **H-17** si `johto_dante_lost_1`), combat `bell_tower_dante_1` (win
+   `johto_dante_defeated_1`, lose `johto_dante_lost_1`) ; défaite → `wake_up` (Centre de Rosalia,
+   la scène s'arrête ; au retour, le déclencheur la rejoue avec H-17) ;
+3. H-18, H-19 (cloche : éclair blanc), H-20, Ho-Oh descend en (9, 6), H-21 (deux éclairs,
+   `johto_ho_oh_seen` : la cage brûle), Ho-Oh s'envole, H-22 ;
+4. H-23 (Entei rugit), H-24, H-25, Dante part vers l'est et quitte la carte, `johto_dante_fled_1` ;
+5. H-26, **Entei** N60 (`wild_battle`, `intro: legendary`, `static` done `johto_entei_done` / caught
+   `johto_entei_caught` ; fuite du joueur → `johto_entei_fled` + `johto_entei_done` [D] : il
+   disparaît aussi, dossier §6) ; H-28 si capturé, sinon H-27 ;
+6. H-29, Ho-Oh se pose sous la cloche, H-30, **Ho-Oh** N65 (mêmes règles) ; H-31 s'il n'est pas
+   capturé ; H-32, Plume Arc-en-ciel au Sac, H-33, `got_rainbow_wing`.
+
+Reprises après une coupure (dossier §12) : parler à Dante rejoue la suite selon les drapeaux
+(`bell_tower_dante_resume_bell`) ; parler à Entei libre (`if johto_dante_fled_1`) lance son combat
+puis Ho-Oh ; parler à Ho-Oh lance le sien ; la plume reste à ramasser si la scène a été coupée.
+Les drapeaux sont écrits par l'écriture forcée des rencontres fixes (passe systèmes 2).
+
+### 2.4 Légendaires après le chapitre
+
+Cadre §4.5, dossier §6 [D] : Ho-Oh K.O. ou fui revient au sommet quand `johto_chapter_done` (JOH9)
+est levé (PNJ `ho_oh_retour`, rencontre `johto_ho_oh_return_done`). Entei revient à la Tour
+Cendrée : carte du JOH6, à poser par la session qui fusionne en second (drapeaux `johto_entei_done`
+sans `johto_entei_caught`, `johto_chapter_done`).
+
+### 2.5 Dante (1) (JH-54, mémoire « Difficulté des combats »)
+
+Démolosse 64 (Lance-Flammes, Mâchouille, Lance-Soleil, Feinte), Magmar 65 (Déflagration,
+Poing-Éclair, Psyko, Onde Folie), Cizayox 66 (Griffe Acier, Cru-Ailes, Tranche, Danse-Lames),
+Farfuret 66 (Laser Glace, Feinte, Tranche, Vive-Attaque), Arcanin 68 (Lance-Flammes, Mâchouille,
+Plaquage, Tunnel) ; IA `smart`, changements permis, sans Tyranocif ; pas de séquence « VS » (aucun
+portrait de Dante : phase DA) [D]. Équilibrage `tools/sim/joh8_dante_scenario.json` (300 parties,
+soin d'Hiroshi avant) :
+
+| Équipe estimée (62–66) | attentif | expert | naïf |
+|---|---|---|---|
+| Aligatueur, Dracaufeu, Florizarre, Pharamp, Roucarnage, Nidoking | 46 % | 51 % | 6 % |
+| Typhlosion, Tortank, Raichu, Roucarnage, Alakazam, Pharamp | 82 % | 89 % | 4 % |
+| Méganium, Dracaufeu, Raichu, Roucarnage, Ectoplasma, Togetic | 10 % | 4 % | 0 % |
+
+La cible 35–60 % est tenue pour l'équipe sans avantage de type ; les deux autres sont l'avantage
+ou le désavantage de type choisi par le joueur (exception déjà validée pour Tortank au J25). Les
+premiers choix (Purédpois, Brouillard, Hâte, Bélier) donnaient 84–89 % : remplacés.
+
+### 2.6 Aube forcée (JH-55)
+
+`BellTowerDawnRule.forced_period(map_id, flags)` (pure) : `morning` sur `bell_tower_roof` tant que
+`johto_ho_oh_done` est bas. `Boot._apply_story_period(map_id)` la lit après `JohtoPeriodRule` (qui
+garde la priorité) et est appelée au début de `_on_map_changed` (avant la lumière : pas de fondu à
+l'arrivée). Le drapeau de Ho-Oh ne relâche pas l'heure au milieu de la scène : l'heure réelle
+reprend au prochain changement de carte (« à la sortie du sommet »).
+
+### 2.7 Données de monde
+
+`zones.json` : `bell_tower_woods` (« Bois de la Tour », sous-titre « Rosalia — Tour Carillon »,
+H-11) et `bell_tower` (« Tour Carillon », H-11), région `johto`, aucun point de Vol ;
+`lighting.json` (§2.1) ; `music_zones.json` : Bois `viridian_forest`, Tour `pokemon_tower` [D]
+(musiques HGSS au lot Son, JH-12) ; `decors.json` : Bois et sommet `route_1_chemin`, 1F / 2F
+`tour_pokemon` [D] ; `caves.json` (§2.1) ; rectangles de la Carte de Johto [D].
+H-38 (Diane, dimanche) : texte prêt (`joh8_diane_after`), variante `if johto_ho_oh_seen` à poser
+en tête du dialogue de Diane quand le JOH6 l'a fusionnée.
+
+### 2.8 Départs de débogage (`tools/gen_joh8_debug_starts.py`)
+
+État de fin du JOH7 (drapeaux des dossiers JOH-02 à JOH-08), équipe 62–66 [D], point de repos
+Rosalia : `johto_bell_tower_rosalia` (devant le Centre : sage blessé, doyen), `_woods` (tour
+ouverte), `_2f`, `_roof` (arrivée au sommet), `_roof_autosave` (**écrit la vraie sauvegarde**,
+reprise après coupure), `_entei` (Dante parti, Entei libre), `_after` (Rosalia après le sommet).
+
+## 3. Tâches
+
+| N° | Tâche | Critère |
+|---|---|---|
+| T1 | `gen_joh8_data.py` | Textes §15 mot pour mot ; Dresseurs §6 ; objets §7 |
+| T2 | `build_joh8_maps.gd` | Grille = plan ; raccords ; planches ; cage ; long escalier |
+| T3 | Données de monde | Inventaires verts (zones, lumière, musique, décors, grottes, Carte) |
+| T4 | Rosalia (après fusion du JOH2) | Sage blessé, doyen, garde, Orme, habitante ; Rosalia reconstruite (raccord nord) |
+| T5 | Scènes du sommet, reprises | `test_joh8_boot` : ordre complet, défaite et H-17, reprise d'Entei |
+| T6 | Aube forcée | `test_bell_tower_dawn_rule` ; heure réelle hors du sommet |
+| T7 | Équilibrage de Dante | 35–60 % pour l'équipe sans avantage de type |
+| T8 | Captures Mac | Sommet à l'aube (Dante, cage), descente de Ho-Oh, 2F (planches) |
+| T9 | QA A17 | Parcours doyen → sommet → Rosalia ; défaite ; reprise après coupure |
+| T10 | CI verte, fusion, état du projet, compte rendu | `main` vert |
+
+## 4. Critères d'acceptation
+
+1. Rosalia : avec `johto_bell_tower_clue`, le sage blessé dit H-1 au pied du chemin ; le doyen dit
+   H-2 et H-3 et ouvre la tour ; le garde s'efface ; le chemin mène au Bois.
+2. Bois : panneau H-4, Sbire de guet évitable (H-5), Hyper Potions ×2, porte de la tour.
+3. 1F : sages H-6, Sbire V inévitable (H-7), Rappel Max ; 2F : planches qui cèdent → 1F, Hiroshi
+   soigne (H-10), Sbire W évitable (H-8), PP Plus, long escalier H-12.
+4. Sommet à l'aube : H-13 à H-33 dans l'ordre, Dante (1), Entei N60 et Ho-Oh N65 capturables, Plume
+   Arc-en-ciel ; défaite contre Dante → Centre de Rosalia, H-17 au retour ; heure réelle hors du
+   sommet.
+5. Rosalia après : doyen H-34 (`johto_act3`), Orme H-35 puis H-36, habitante H-37.
+6. Tests ciblés verts, import sans erreur, CI verte, QA A17 sans bloquant, fusion dans `main`.
+
+## 5. Risques
+
+- Fichiers de Rosalia partagés avec le JOH2 (et le JOH6 : doyen, Diane) : mes entrées sont
+  posées par `gen_joh8_data.py` après `gen_joh2_data.py` ; ancienneté JOH2 / JOH6 > JOH8.
+- Entei de la Tour Cendrée (JOH6) et son sprite de carte : si le JOH6 en pose un, le sien gagne.
+- Registres d'inventaire : préfixe `joh8_` dans `j22_ids.gd`.
+
+## 6. Valeurs par défaut [D] posées par ce plan
+
+Tuiles et aplats provisoires ; planches = traits sombres ; profils `tower` (1F, 2F) ; Dante en
+`gentleman` sans « VS » ; attaques de Dante ; `prize_per_level` (Sbires 40, Dante 120) ; Hiroshi
+soigne à chaque passage ; fuite d'un légendaire = il disparaît ; Corde Sortie refusée au sommet ;
+Orme au Centre de Rosalia ; habitante H-37 en (30, 18) ; doyen H-34 lève `johto_act3` (Orme aussi) ;
+retour de Ho-Oh avec `johto_chapter_done` ; musiques et décors de combat de substitution ;
+textes des examens (autel, cloche, rambarde) en brouillon ; équipe des départs de débogage.
+
+## 7. Questions ouvertes (non bloquantes)
+
+- JOH8-Q1 : textes en brouillon (autel, cloche, rambarde) à relire.
+
+## 8. Fait
+
+| Tâche | Commit | Note |
+|---|---|---|
+| Plan, T1–T3, T5, T6 | `cbdd2335`, `85ae12af` | Cartes, données, aube, tests |
+| T7 | (ce commit) | Équilibrage §2.5 |

@@ -71,11 +71,11 @@ DANTE = {
 	"gives_exp": True, "prize_money": 0, "prize_per_level": 120, "start_message": False,
 	"end_message": True, "bag": True, "switch": True,
 	"team": [
-		{"species": "houndoom", "level": 64, "moves": ["flamethrower", "crunch", "feint_attack", "smog"]},
-		{"species": "magmar", "level": 65, "moves": ["fire_blast", "thunder_punch", "confuse_ray", "smokescreen"]},
+		{"species": "houndoom", "level": 64, "moves": ["flamethrower", "crunch", "solar_beam", "feint_attack"]},
+		{"species": "magmar", "level": 65, "moves": ["fire_blast", "thunder_punch", "psychic", "confuse_ray"]},
 		{"species": "scizor", "level": 66, "moves": ["metal_claw", "wing_attack", "slash", "swords_dance"]},
 		{"species": "sneasel", "level": 66, "moves": ["ice_beam", "feint_attack", "slash", "quick_attack"]},
-		{"species": "arcanine", "level": 68, "moves": ["flamethrower", "crunch", "take_down", "agility"]},
+		{"species": "arcanine", "level": 68, "moves": ["flamethrower", "crunch", "body_slam", "dig"]},
 	],
 }
 TRAINER_OF = {

@@ -83,8 +83,8 @@
 				"moves": [
 					"flamethrower",
 					"crunch",
-					"feint_attack",
-					"smog"
+					"solar_beam",
+					"feint_attack"
 				]
 			},
 			{
@@ -93,8 +93,8 @@
 				"moves": [
 					"fire_blast",
 					"thunder_punch",
-					"confuse_ray",
-					"smokescreen"
+					"psychic",
+					"confuse_ray"
 				]
 			},
 			{
@@ -123,8 +123,8 @@
 				"moves": [
 					"flamethrower",
 					"crunch",
-					"take_down",
-					"agility"
+					"body_slam",
+					"dig"
 				]
 			}
 		]
