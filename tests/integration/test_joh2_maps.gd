@@ -154,8 +154,11 @@ func test_links_between_the_three_maps_and_the_coming_soon_exits() -> void:
 				labels[warp.coming_soon] = true
 				assert_true(_map(id).has_spawn(warp.target_spawn), "%s : retour sur %s" % [id,
 					warp.target_spawn])
-	for expected: String in ["Route 37", "Route 42", "Bois de la Tour", "Tour Cendrée"]:
+	for expected: String in ["Route 37", "Bois de la Tour"]:
 		assert_true(labels.has(expected), expected)
+	# JOH6 : la Route 42 et la Tour Cendrée existent, leurs passages sont réels.
+	for pair: Array in [["Route 42", &"route_42"], ["Tour Cendrée", &"burned_tower_1f"]]:
+		assert_eq(labels.has(pair[0]), not MapCatalog.has_map(pair[1]), pair[0])
 	if not MapCatalog.has_map(&"olivine_city"):
 		assert_true(labels.has("Oliville"), "Oliville à venir (JOH1)")
 	# Point de Vol : `from_center` devant le Centre (fly_points.json).
@@ -205,7 +208,8 @@ func test_triggers_examens_and_barriers() -> void:
 	for point: Node in city.get_node(^"Triggers").get_children():
 		var trigger := point as EventTriggerPoint
 		triggers[trigger.cutscene_id] = trigger
-	assert_eq(triggers.keys().size(), 3)
+	# Sbires, Tour Carillon, Route 42 ; JOH6 : le doyen à la sortie de la Tour Cendrée.
+	assert_eq(triggers.keys().size(), 4)
 	var rockets: EventTriggerPoint = triggers.get(&"ecruteak_rockets")
 	assert_not_null(rockets, "scène des Sbires")
 	if rockets != null:
