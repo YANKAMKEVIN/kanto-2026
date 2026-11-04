@@ -1781,7 +1781,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"johto_act1", &"storage_offline", &"johto_team_returned",
 		# Chapitre Johto (JOH1) : lettre, grotte marine, arrivée, nuit, vol, offre, choix, départ d'Orme.
 		&"johto_letter_read", &"johto_lugia_passing", &"johto_lugia_shadow", &"got_sea_cave_1_item_1",
-		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_slept", &"johto_team_stolen",
+		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_center_dark", &"johto_slept", &"johto_team_stolen",
 		&"johto_starter_offered", &"johto_starter_chosen", &"johto_orme_left", &"johto_cave_mouth_seen",
 		# Lot 32P : Cherch'Objet, Max Éther de l'Écume B3F, Max Repousse de la Route 21.
 		&"got_itemfinder", &"got_exp_all", &"got_seafoam_b3f_hidden_1", &"got_route_21_item_2",

@@ -1342,8 +1342,9 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 		assert_true(map.has_spawn(step.spawn), "%s : point « %s »" % [step.map_id, step.spawn])
 		map.free()
 	# Jalon 21 (T13) : + la téléportation du 7F vers la Maison des Pokémon. JOH1 : + la chambre du
-	# Centre d'Oliville, la nuit puis le matin (scène de l'arrivée).
-	assert_eq(count, 11, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
+	# Centre d'Oliville, la nuit puis le matin (scène de l'arrivée). Remise en scène du vol : + le
+	# plan sur le rez-de-chaussée et le retour au lit.
+	assert_eq(count, 13, "le retour au labo ; le quai de Carmin (départ du S.S. Anne, J16 T15) ; "
 		+ "la Maison des Pokémon (sauvetage de Fuji, J21 T13) ; "
 		+ "la porte de l'Arène de Cramois'Île déverrouillée (J25, deux variantes) ; "
 		+ "la Ligue (J30 T17 : Panthéon, Bourg Palette deux fois ; porte du hall, OUI au garde)")
