@@ -87,7 +87,7 @@ func after_each() -> void:
 
 
 func test_the_jalon_21_adds_no_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 9, "aucune version du J21 : v7 depuis le J15 (Pension), v8 du J23, v9 JR")
+	assert_eq(SaveSystem.VERSION, 10, "aucune version du J21 : v7 depuis le J15 (Pension), v8 du J23, v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
 
 
 func test_every_flag_of_the_jalon_21_survives_a_save() -> void:

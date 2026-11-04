@@ -66,7 +66,9 @@ func _screen_in(width: int, view: PokedexGridView) -> PokedexScreen:
 	menu.open_animated()
 	await wait_frames(3)
 	var screen := menu.get_pokedex()
-	screen.filter_changed.connect(func(f: int, z: StringName, t: StringName, x: String) -> void:
+	# JOH0 : cinquième paramètre, la région (vide ici : rien de Johto n'est vu).
+	screen.filter_changed.connect(func(f: int, z: StringName, t: StringName, x: String,
+			_r: StringName) -> void:
 		_filters.append([f, z, t, x]))
 	screen.species_opened.connect(func(s: StringName) -> void: _opened.append(s))
 	screen.route_requested.connect(func(r: MenuRoute) -> void: _routes.append(r))

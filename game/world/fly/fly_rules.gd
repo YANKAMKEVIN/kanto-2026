@@ -17,6 +17,7 @@ enum Check {
 	INDOORS, ## Intérieur.
 	NO_FLY, ## Carte où le Vol est interdit (Parc Safari, Ligue, grottes [D, RB]).
 	CLOSED, ## Destination inconnue ou pas encore découverte (T24).
+	OTHER_REGION, ## JOH0 (JH-18) : destination dans l'autre région pendant l'acte 1.
 }
 
 const DATA_PATH: String = "res://data/world/fly_points.json"
@@ -30,6 +31,8 @@ class Point:
 	var zone: StringName = &""
 	var map: StringName = &""
 	var spawn: StringName = &""
+	## Région de la zone (JOH0, [method FlyRules.stamp_regions]) ; Kanto par défaut.
+	var region: StringName = ZoneData.REGION_KANTO
 
 	func _init(p_zone: StringName = &"", p_map: StringName = &"", p_spawn: StringName = &"") -> void:
 		zone = p_zone
@@ -61,13 +64,32 @@ static func can_fly(field_state: FieldMoves.State, map: MapTraits, busy: bool = 
 
 ## Peut-on s'envoler d'ici vers la zone [param zone] ? [method can_fly], puis destination ouverte
 ## ([param discovered] : `GameState.discovered_maps`) (T24 : bouton « S'ENVOLER » de la Carte).
+## JOH0 : [param from_region] (région de la carte courante, &"" = sans contrôle) et
+## [param cross_allowed] (faux pendant l'acte 1, JH-18) : une destination de l'autre région est
+## OTHER_REGION.
 func can_fly_to(zone: StringName, field_state: FieldMoves.State, map: MapTraits,
-		discovered: Dictionary, busy: bool = false) -> Check:
+		discovered: Dictionary, busy: bool = false, from_region: StringName = &"",
+		cross_allowed: bool = true) -> Check:
 	var check := can_fly(field_state, map, busy)
 	if check != Check.OK:
 		return check
 	var point := get_point(zone)
-	return Check.OK if point != null and discovered.has(point.map) else Check.CLOSED
+	if point == null or not discovered.has(point.map):
+		return Check.CLOSED
+	if not cross_allowed and not from_region.is_empty() and point.region != from_region:
+		return Check.OTHER_REGION
+	return Check.OK
+
+
+## JOH0 : pose la région de chaque destination d'après sa zone ([method ZoneLibrary.get_zone]) ;
+## une zone inconnue reste à Kanto.
+func stamp_regions(zones: ZoneLibrary) -> void:
+	if zones == null:
+		return
+	for point: Point in _points:
+		var zone := zones.get_zone(point.zone)
+		if zone != null:
+			point.region = zone.region
 
 
 ## Traits de Vol d'une carte (T24) : intérieur, et Vol interdit dans une grotte [D, RB]
@@ -122,12 +144,20 @@ func get_point(zone: StringName) -> Point:
 	return null
 
 
-## Destinations ouvertes (carte découverte), dans l'ordre des données.
-func destinations(discovered: Dictionary) -> Array[Point]:
+## Destinations ouvertes (carte découverte), dans l'ordre des données ; JOH0 : celles de
+## [param region] d'abord (si donnée), puis les autres si [param cross_allowed].
+func destinations(discovered: Dictionary, region: StringName = &"",
+		cross_allowed: bool = true) -> Array[Point]:
 	var open: Array[Point] = []
+	var others: Array[Point] = []
 	for point: Point in _points:
-		if discovered.has(point.map):
+		if not discovered.has(point.map):
+			continue
+		if region.is_empty() or point.region == region:
 			open.append(point)
+		elif cross_allowed:
+			others.append(point)
+	open.append_array(others)
 	return open
 
 

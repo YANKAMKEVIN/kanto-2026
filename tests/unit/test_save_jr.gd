@@ -33,7 +33,7 @@ func _round_trip(state: Node) -> Node:
 
 
 func test_the_format_is_v9_and_the_step_8_to_9_invents_nothing() -> void:
-	assert_eq(SaveSystem.VERSION, 9, "v9 : chantier JR (rival_look) et costumes (player_costume)")
+	assert_eq(SaveSystem.VERSION, 10, "v9 : chantier JR (rival_look) et costumes (player_costume), v10 JOH0 (lien, œuf, équipe confisquée)")
 	var bare := {"version": 8}
 	assert_eq(SaveSystem.upgrade(bare, 9), OK)
 	assert_eq(bare, {"version": 9}, "les défauts viennent de load_dict")

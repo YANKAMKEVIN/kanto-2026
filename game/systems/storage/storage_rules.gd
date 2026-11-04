@@ -30,6 +30,7 @@ enum Status {
 	FAVORITE, ## Libérer un favori.
 	NOT_FOUND, ## Aucune place à cet index.
 	LAST_ABLE, ## Il resterait des Pokémon dans l'équipe, mais tous K.O. (ajouté en fin d'enum).
+	EGG, ## Un œuf (JOH0) : ni libéré, ni favori [D].
 }
 
 
@@ -46,7 +47,7 @@ static func get_pokemon(party: Party, storage: PokemonStorage, place: Place,
 static func keeps_able(party: Party, without_index: int) -> bool:
 	var members := party.get_all()
 	for i: int in members.size():
-		if i != without_index and not members[i].is_fainted():
+		if i != without_index and not members[i].is_fainted() and not members[i].is_egg():
 			return true
 	return false
 
@@ -110,6 +111,8 @@ static func can_release(party: Party, storage: PokemonStorage, place: Place,
 		var keep := keep_status(party, index)
 		if keep != Status.OK:
 			return keep
+	if pokemon.is_egg():
+		return Status.EGG
 	if pokemon.favorite:
 		return Status.FAVORITE
 	return Status.OK
@@ -140,6 +143,8 @@ static func toggle_favorite(party: Party, storage: PokemonStorage, place: Place,
 	var pokemon := get_pokemon(party, storage, place, index)
 	if pokemon == null:
 		return _refused(Status.NOT_FOUND, party, storage, place, index)
+	if pokemon.is_egg():
+		return _refused(Status.EGG, party, storage, place, index)
 	pokemon.favorite = not pokemon.favorite
 	return StorageResult.new(Status.OK, pokemon, StorageSelection.new(place, index),
 		Action.FAVORITE)

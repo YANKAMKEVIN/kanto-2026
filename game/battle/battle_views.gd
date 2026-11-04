@@ -75,6 +75,8 @@ static func party(battle: Battle, data: PokemonData,
 				view.reason = texts.get_template(&"switch_reason_active")
 			Battle.SwitchCheck.FAINTED:
 				view.reason = texts.get_template(&"switch_reason_fainted")
+			Battle.SwitchCheck.EGG: # JOH0
+				view.reason = texts.get_template(&"switch_reason_egg")
 		views.append(view)
 	return views
 

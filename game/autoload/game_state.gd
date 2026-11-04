@@ -143,6 +143,9 @@ var hall_of_fame: HallOfFame = HallOfFame.new()
 ## Pas restants de la Repousse en cours (lot 32P, [RepelRules]) ; 0 = aucune. **Non sauvegardé**
 ## [D] : remis à 0 par [method new_game], donc aussi au chargement.
 var repel_steps: int = 0
+## Équipe et Sac confisqués pendant l'acte 1 du Chapitre Johto (JOH0, sauvegarde v10,
+## `jalon-joh0.md` §2.1) : vide hors de l'acte 1 ([TeamConfiscation]).
+var confiscated: ConfiscatedTeam = ConfiscatedTeam.new()
 
 
 func _init() -> void:
@@ -191,6 +194,7 @@ func new_game(rng_seed: int = -1) -> void:
 	daycare = Daycare.new()
 	safari = SafariVisit.new()
 	repel_steps = 0
+	confiscated = ConfiscatedTeam.new()
 
 
 # --- Faits (§16.3), appelés par la scène (tâche S2) ------------------------------------
@@ -306,6 +310,8 @@ func spend_money(amount: int) -> bool:
 func stamp_meeting(pokemon: Pokemon, kind: Pokemon.Origin, map: StringName) -> void:
 	if pokemon != null:
 		pokemon.record_meeting(kind, map, now(), player_name)
+		# JOH0 (JH-11) : le lien de départ dépend de la manière d'arriver ([BondRules]).
+		pokemon.set_bond(BondRules.start_for(kind))
 
 
 # --- Sauvegarde ----------------------------------------------------------------------
@@ -364,6 +370,10 @@ func to_dict() -> Dictionary:
 	# Jalon 30 (30A, §2.6) : champ facultatif de la v7, absent tant que le Panthéon est vide.
 	if not hall_of_fame.is_empty():
 		result["hall_of_fame"] = hall_of_fame.to_array()
+	# JOH0 (v10, `jalon-joh0.md` §2.1) : champ facultatif, écrit seulement pendant l'acte 1 du
+	# Chapitre Johto (absent = rien de confisqué).
+	if not confiscated.is_empty():
+		result["confiscated"] = confiscated.to_dict()
 	return result
 
 
@@ -401,6 +411,7 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	ok = party.load_array(JsonFields.get_array(dict, "party"), data) and ok
 	ok = storage.load_array(JsonFields.get_array(dict, "storage"), data) and ok
 	ok = _load_daycare(dict, data) and ok
+	ok = _load_confiscated(dict, data) and ok
 	# J23 (v8) : visite absente ou invalide = aucune visite (SafariVisit.from_dict).
 	var safari_entry: Variant = dict.get("safari", {})
 	safari = SafariVisit.from_dict(safari_entry if safari_entry is Dictionary else {})
@@ -494,8 +505,8 @@ func wear_costume(costume: StringName) -> bool:
 
 # --- Identifiants et compagnon (jalon 11) --------------------------------------------
 
-## Donne un identifiant à chaque Pokémon de l'équipe, du Stockage puis de la Pension (J15) qui
-## n'en a pas, et en redonne un neuf au second d'un doublon (dans cet ordre). Ni l'ordre ni le
+## Donne un identifiant à chaque Pokémon de l'équipe, du Stockage, de la Pension (J15) puis de
+## l'équipe confisquée (JOH0) qui n'en a pas, et en redonne un neuf au second d'un doublon (dans cet ordre). Ni l'ordre ni le
 ## contenu ne changent. Rend le nombre d'identifiants attribués.
 func ensure_unique_uids() -> int:
 	var seen: Dictionary[String, bool] = {}
@@ -504,6 +515,7 @@ func ensure_unique_uids() -> int:
 	members.append_array(storage.get_all())
 	if not daycare.is_empty():
 		members.append(daycare.pokemon)
+	members.append_array(confiscated.party)
 	for pokemon: Pokemon in members:
 		if pokemon.uid.is_empty() or seen.has(pokemon.uid):
 			pokemon.uid = ""
@@ -527,12 +539,13 @@ func get_companion() -> Pokemon:
 
 
 ## Choisit [param pokemon] comme compagnon (null = aucun). Faux, sans rien changer, s'il n'est
-## pas dans l'équipe. L'éligibilité de l'espèce (planche validée) est la règle du 11D.
+## pas dans l'équipe ou si c'est un œuf (JOH0 [D]). L'éligibilité de l'espèce (planche validée)
+## est la règle du 11D.
 func set_companion(pokemon: Pokemon) -> bool:
 	if pokemon == null:
 		companion_uid = ""
 		return true
-	if party.index_of(pokemon) < 0:
+	if party.index_of(pokemon) < 0 or pokemon.is_egg():
 		return false
 	companion_uid = pokemon.ensure_uid()
 	return true
@@ -553,6 +566,24 @@ func _load_daycare(dict: Dictionary, data: PokemonData) -> bool:
 	if loaded == null:
 		return false
 	daycare = loaded
+	return true
+
+
+## Équipe confisquée (JOH0, sauvegarde v10) : absente (sauvegarde ≤ v9) ou vide → rien de
+## confisqué. Pokémon invalide ([method ConfiscatedTeam.from_dict] rend null) ou champ qui n'est
+## pas un objet → section vide **et** faux : Boot copie alors l'original en `save.json.rejected`
+## avant tout autosave (rien n'est perdu en silence, même règle que la Pension).
+func _load_confiscated(dict: Dictionary, data: PokemonData) -> bool:
+	var raw: Variant = dict.get("confiscated")
+	if raw == null:
+		return true
+	if not raw is Dictionary:
+		push_error("GameState : équipe confisquée mal formée (pas un objet), section vide")
+		return false
+	var loaded := ConfiscatedTeam.from_dict(raw, data)
+	if loaded == null:
+		return false
+	confiscated = loaded
 	return true
 
 

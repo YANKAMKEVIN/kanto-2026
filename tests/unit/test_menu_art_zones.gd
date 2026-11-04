@@ -13,6 +13,8 @@ func test_painted_previews_exist_for_the_zones_with_maps() -> void:
 	var ids: Array[StringName] = zones.get_ids()
 	assert_gte(ids.size(), 48)
 	for zone: StringName in ids:
+		if zones.get_zone(zone).maps.is_empty():
+			continue # Chapitre Johto (JOH0) : villes déclarées sans carte, aperçu au jalon de contenu.
 		var preview := MenuArt.zone_preview(zone)
 		assert_not_null(preview, String(zone))
 		assert_almost_eq(preview.get_width() / float(preview.get_height()), 16.0 / 9.0, 0.01)

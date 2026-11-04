@@ -39,6 +39,9 @@ const POKEMON: StringName = &"pokemon"
 ## porte). Valeurs fournies par le [DaycareDirector] pendant sa conversation seulement.
 const LEVELS: StringName = &"levels"
 const PRICE: StringName = &"price"
+## JOH0 (`jalon-joh0.md` §2.8) : nom de l'objet demandé par le terminal d'échange (« Utiliser
+## {item} ? »), fourni par [LocalTradeDirector].
+const ITEM: StringName = &"item"
 ## Pokédex (jalon 17, jalon-17.md §2.5 ; dossier 20 §16 T-1 à T-3, notés `{n}` et `{reste}`) :
 ## espèces capturées, et ce qu'il manque pour [constant CAUGHT_GOAL] (pas de valeur une fois
 ## l'objectif atteint : la page « Encore {caught_missing}… » est alors omise). Fournis par Boot
@@ -50,11 +53,11 @@ const CAUGHT_MISSING: StringName = &"caught_missing"
 const CAUGHT_GOAL: int = 10
 ## Jetons permis dans les données.
 const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON, LEVELS, PRICE,
-	CAUGHT, CAUGHT_MISSING]
+	CAUGHT, CAUGHT_MISSING, ITEM]
 ## Jetons « de contexte » : toujours fournis par le directeur qui joue les dialogues où ils
 ## figurent (la Pension). Ce sont les seuls permis dans la question d'un choix (T-7, T-8 : « Ce
 ## sera {price} ₽. »), qui ne doit jamais être omise ([DialogueLibrary]).
-const CONTEXT: Array[StringName] = [POKEMON, LEVELS, PRICE]
+const CONTEXT: Array[StringName] = [POKEMON, LEVELS, PRICE, ITEM]
 ## Accords (JR-7) : préfixe dans le texte et clé dans les valeurs des jetons.
 const AGREE_PLAYER: StringName = &"g"
 const AGREE_RIVAL: StringName = &"gr"

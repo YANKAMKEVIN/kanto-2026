@@ -407,7 +407,8 @@
 		"learnset": [
 			[1, "tackle"], [1, "screech"], [15, "bind"], [19, "rock_throw"], [25, "rage"],
 			[33, "slam"], [43, "harden"]
-		]
+		],
+		"evolutions": [{ "into": "steelix", "method": "trade", "item": "metal_coat" }]
 	},
 	"horsea": {
 		"dex": 116, "name": "Hypotrempe", "types": ["water"],

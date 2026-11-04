@@ -34,7 +34,7 @@ func _new_state() -> Node:
 
 
 func test_the_jalon_22_adds_no_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 9, "v8 : J23 (Parc Safari), v9 JR")
+	assert_eq(SaveSystem.VERSION, 10, "v8 : J23 (Parc Safari), v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
 
 
 func test_riding_on_route_13_and_j22_flags_survive_a_reload() -> void:

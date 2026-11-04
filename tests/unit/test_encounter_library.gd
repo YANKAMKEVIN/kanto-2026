@@ -367,3 +367,74 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		if not (String(id).begins_with("seafoam_") or String(id).begins_with("pokemon_mansion_")
 				or String(id).begins_with("cerulean_cave_") or String(id).begins_with("power_plant")):
 			assert_ne(table.terrain, &"floor", String(id))
+
+
+# --- Chapitre Johto (JOH0, jalon-joh0.md §2.5) : tables par moment -----------------------------
+
+func _dated_dict() -> Dictionary:
+	return {
+		"route_38_day": {
+			"maps": ["route_38"], "terrain": "grass", "rate": 25, "period": ["morning", "day"],
+			"slots": [{ "species": "rattata", "levels": [6, 9], "weight": 10 }],
+		},
+		"route_38_night": {
+			"maps": ["route_38"], "terrain": "grass", "rate": 25, "period": "night",
+			"slots": [{ "species": "zubat", "levels": [6, 9], "weight": 10 }],
+		},
+		"route_38_water": {
+			"maps": ["route_38"], "terrain": "water", "rate": 10,
+			"slots": [{ "species": "tentacool", "levels": [10, 20], "weight": 10 }],
+		},
+	}
+
+
+func test_dated_tables_are_picked_by_period_and_fall_back_to_all_day() -> void:
+	var lib := _lib()
+	assert_true(lib.add_from_dict(_dated_dict(), "test"), str(lib.get_errors()))
+	assert_eq(lib.get_table_by_id(&"route_38_day").periods, [&"morning", &"day"]
+		as Array[StringName])
+	assert_true(lib.get_table_by_id(&"route_38_water").is_all_day())
+	assert_eq(lib.get_table(&"route_38", &"grass", &"morning").id, &"route_38_day")
+	assert_eq(lib.get_table(&"route_38", &"grass", &"day").id, &"route_38_day")
+	assert_eq(lib.get_table(&"route_38", &"grass", &"night").id, &"route_38_night")
+	assert_null(lib.get_table(&"route_38", &"grass"), "sans heure, aucune table datée ne vaut")
+	assert_false(lib.has_table(&"route_38", &"grass", &""))
+	assert_true(lib.has_table(&"route_38", &"grass", &"night"))
+	assert_eq(lib.get_table(&"route_38", &"water", &"night").id, &"route_38_water",
+		"une table de toute la journée vaut à tout moment")
+	assert_eq(lib.get_table(&"route_38", &"water").id, &"route_38_water")
+
+
+func test_kanto_tables_ignore_the_period() -> void:
+	var lib := _lib()
+	assert_true(lib.add_from_dict(_valid_dict(), "test"))
+	for period: StringName in [&"", &"morning", &"day", &"night"]:
+		assert_eq(lib.get_table(&"route_1", &"grass", period).id, &"route_1_grass", period)
+	var real := _lib()
+	assert_true(real.load_dir(), "les vraies tables se chargent")
+	for id: StringName in real.get_ids():
+		assert_true(real.get_table_by_id(id).is_all_day(), "Kanto sans « period » : %s" % id)
+
+
+func test_dated_and_all_day_tables_cannot_share_a_map_and_terrain() -> void:
+	var dict := _dated_dict()
+	dict["route_38_all"] = {"maps": ["route_38"], "terrain": "grass", "rate": 20,
+		"slots": [{ "species": "pidgey", "levels": [3, 4], "weight": 1 }]}
+	var lib := _lib()
+	assert_false(lib.add_from_dict(dict, "test"), "toute la journée après des tables datées")
+	var reversed := {"all": dict["route_38_all"], "night": _dated_dict()["route_38_night"]}
+	var lib2 := _lib()
+	assert_false(lib2.add_from_dict(reversed, "test"), "table datée après toute la journée")
+	var twice := {"a": _dated_dict()["route_38_night"], "b": _dated_dict()["route_38_night"]}
+	var lib3 := _lib()
+	assert_false(lib3.add_from_dict(twice, "test"), "deux tables sur le même moment")
+	assert_push_error_count(3)
+
+
+func test_invalid_periods_are_rejected() -> void:
+	for bad: Variant in ["dusk", [], ["day", "day"], 3, ["night", "noon"]]:
+		var dict := _valid_dict()
+		dict["route_1_grass"]["period"] = bad
+		var lib := _lib()
+		assert_false(lib.add_from_dict(dict, "test"), str(bad))
+	assert_push_error_count(5)

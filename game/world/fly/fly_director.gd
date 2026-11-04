@@ -23,6 +23,11 @@ const ARRIVAL_FACING: Vector2i = Vector2i.DOWN
 
 ## J23 : cartes où ce voyage est refusé (Parc Safari, `SafariConfig.maps`), posées par Boot.
 var no_fly_maps: Dictionary[StringName, bool] = {}
+## JOH0 (JH-18) : `func(map_id: StringName) -> StringName`, la région d'une carte (Boot :
+## `ZoneLibrary.region_of`) ; `func() -> bool`, le Vol entre régions est-il permis (faux pendant
+## l'acte 1). Non valides : aucun contrôle de région.
+var region_source: Callable
+var cross_source: Callable
 var _rules: FlyRules
 ## func() -> Dictionary : cartes découvertes (`GameState.discovered_maps`).
 var _discovered: Callable = Callable()
@@ -73,7 +78,10 @@ func check(zone: StringName) -> FlyRules.Check:
 	var traits := FlyRules.traits_of(map.interior, cave)
 	# Jalon 30 (T8) : carte marquée « no_fly » (salles de la Ligue).
 	traits.no_fly = traits.no_fly or map.no_fly
-	return _rules.can_fly_to(zone, state, traits, discovered, _flying)
+	var from_region: StringName = region_source.call(map.map_id) if region_source.is_valid() \
+		else &""
+	var cross: bool = bool(cross_source.call()) if cross_source.is_valid() else true
+	return _rules.can_fly_to(zone, state, traits, discovered, _flying, from_region, cross)
 
 
 ## Vrai si le bouton « S'ENVOLER » est proposé pour [param zone] (menu).

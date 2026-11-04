@@ -1,0 +1,738 @@
+{
+	"bag": {
+		"acquired": {
+			"full_restore": 1,
+			"great_ball": 3,
+			"potion": 2,
+			"tm28": 4
+		},
+		"favorites": [
+			"potion"
+		],
+		"items": {
+			"full_restore": 10,
+			"great_ball": 7,
+			"potion": 4,
+			"tm28": 1
+		}
+	},
+	"cell": [
+		8,
+		9
+	],
+	"companion": "d209b5b5a4d84ec1",
+	"daycare": {
+		"deposit_level": 60,
+		"pending_exp": 350,
+		"pokemon": {
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 216000,
+			"favorite": false,
+			"gender": "male",
+			"hp": 160,
+			"ivs": {
+				"atk": 1,
+				"def": 8,
+				"hp": 20,
+				"spa": 25,
+				"spd": 9,
+				"spe": 15
+			},
+			"level": 60,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "double_kick",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "agility",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "pin_missile",
+					"max_pp": 20,
+					"pp": 20
+				},
+				{
+					"id": "thunder",
+					"max_pp": 10,
+					"pp": 10
+				}
+			],
+			"nickname": "",
+			"species": "jolteon",
+			"status": "",
+			"status_turns": 0,
+			"uid": "e7b53d321eefbb7c"
+		}
+	},
+	"discovered_maps": {
+		"celadon_city": "2026-11-04T12:48:21",
+		"cerulean_city": "2026-11-04T12:48:21",
+		"cinnabar_island": "2026-11-04T12:48:21",
+		"fuchsia_city": "2026-11-04T12:48:21",
+		"indigo_plateau": "2026-11-04T12:48:21",
+		"lavender_town": "2026-11-04T12:48:21",
+		"pallet_town": "2026-11-04T12:48:21",
+		"pewter_city": "2026-11-04T12:48:21",
+		"route_1": "2026-11-04T12:48:21",
+		"saffron_city": "2026-11-04T12:48:21",
+		"vermilion_city": "2026-11-04T12:48:21",
+		"viridian_city": "2026-11-04T12:48:21"
+	},
+	"facing": [
+		0,
+		1
+	],
+	"first_wild_encounter": {},
+	"flags": [
+		"badge_boulder",
+		"badge_cascade",
+		"badge_earth",
+		"badge_marsh",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_thunder",
+		"badge_volcano",
+		"beaten_league_agatha",
+		"beaten_league_bruno",
+		"beaten_league_lance",
+		"beaten_league_lorelei",
+		"got_oak_parcel",
+		"league_attempt_active",
+		"league_stage_0_cleared",
+		"league_stage_1_cleared",
+		"league_stage_2_cleared",
+		"league_stage_3_cleared",
+		"mom_greeted",
+		"oak_lab_reunion",
+		"oak_met",
+		"poison_unlocked",
+		"pokedex_activated",
+		"rival_battle_done",
+		"rival_challenged",
+		"rival_lab_won",
+		"rival_left_lab",
+		"rival_met",
+		"rival_route22_won",
+		"starter_chosen",
+		"starter_offered",
+		"taken_charmander",
+		"taken_squirtle",
+		"viridian_arrived"
+	],
+	"found_items": [],
+	"heal_map": "indigo_plateau_lobby",
+	"heal_spawn": "heal",
+	"map": "league_champion",
+	"moments": [
+		{
+			"date": "2026-11-04T12:48:21",
+			"details": {
+				"species": "charmander"
+			},
+			"map": "oak_lab",
+			"type": "starter"
+		}
+	],
+	"money": 30000,
+	"party": [
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 211060,
+			"favorite": false,
+			"gender": "male",
+			"hp": 118,
+			"ivs": {
+				"atk": 14,
+				"def": 7,
+				"hp": 3,
+				"spa": 21,
+				"spd": 31,
+				"spe": 20
+			},
+			"level": 60,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "rage",
+					"max_pp": 20,
+					"pp": 20
+				},
+				{
+					"id": "slash",
+					"max_pp": 20,
+					"pp": 20
+				},
+				{
+					"id": "flamethrower",
+					"max_pp": 15,
+					"pp": 15
+				},
+				{
+					"id": "fire_spin",
+					"max_pp": 15,
+					"pp": 15
+				}
+			],
+			"nickname": "",
+			"species": "charmander",
+			"status": "",
+			"status_turns": 0,
+			"uid": "d209b5b5a4d84ec1"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 211060,
+			"favorite": false,
+			"gender": "male",
+			"hp": 172,
+			"ivs": {
+				"atk": 21,
+				"def": 15,
+				"hp": 9,
+				"spa": 20,
+				"spd": 20,
+				"spe": 18
+			},
+			"level": 60,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "tackle",
+					"max_pp": 35,
+					"pp": 35
+				},
+				{
+					"id": "horn_attack",
+					"max_pp": 25,
+					"pp": 25
+				},
+				{
+					"id": "poison_sting",
+					"max_pp": 35,
+					"pp": 35
+				},
+				{
+					"id": "thrash",
+					"max_pp": 10,
+					"pp": 10
+				}
+			],
+			"nickname": "",
+			"species": "nidoking",
+			"status": "",
+			"status_turns": 0,
+			"uid": "a2647a51c0266176"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 270000,
+			"favorite": false,
+			"gender": "female",
+			"hp": 200,
+			"ivs": {
+				"atk": 3,
+				"def": 0,
+				"hp": 27,
+				"spa": 27,
+				"spd": 20,
+				"spe": 0
+			},
+			"level": 60,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "dragon_rage",
+					"max_pp": 10,
+					"pp": 10
+				},
+				{
+					"id": "leer",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "hydro_pump",
+					"max_pp": 5,
+					"pp": 5
+				},
+				{
+					"id": "hyper_beam",
+					"max_pp": 5,
+					"pp": 5
+				}
+			],
+			"nickname": "",
+			"species": "gyarados",
+			"status": "",
+			"status_turns": 0,
+			"uid": "8a838973902b3958"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 270000,
+			"favorite": false,
+			"gender": "none",
+			"hp": 155,
+			"ivs": {
+				"atk": 28,
+				"def": 10,
+				"hp": 23,
+				"spa": 11,
+				"spd": 3,
+				"spe": 13
+			},
+			"level": 60,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "tackle",
+					"max_pp": 35,
+					"pp": 35
+				},
+				{
+					"id": "water_gun",
+					"max_pp": 25,
+					"pp": 25
+				},
+				{
+					"id": "harden",
+					"max_pp": 30,
+					"pp": 30
+				}
+			],
+			"nickname": "",
+			"species": "starmie",
+			"status": "",
+			"status_turns": 0,
+			"uid": "f13a5b433607df6c"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 216000,
+			"favorite": false,
+			"gender": "female",
+			"hp": 205,
+			"ivs": {
+				"atk": 12,
+				"def": 1,
+				"hp": 15,
+				"spa": 12,
+				"spd": 8,
+				"spe": 18
+			},
+			"level": 60,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "tail_whip",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "mega_punch",
+					"max_pp": 20,
+					"pp": 20
+				},
+				{
+					"id": "leer",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "dizzy_punch",
+					"max_pp": 10,
+					"pp": 10
+				}
+			],
+			"nickname": "",
+			"species": "kangaskhan",
+			"status": "",
+			"status_turns": 0,
+			"uid": "b3b5199dc27952b3"
+		}
+	],
+	"play_time": 123456.0,
+	"player_look": "hero",
+	"player_name": "Kevin",
+	"pokedex": {
+		"entries": {
+			"charmander": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			},
+			"gyarados": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			},
+			"jolteon": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			},
+			"kangaskhan": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			},
+			"nidoking": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			},
+			"starmie": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			}
+		}
+	},
+	"rival_name": "Régis",
+	"rng": {
+		"seed": "4293801021",
+		"state": "-5857854765784168156"
+	},
+	"started_at": "2026-11-04T12:48:21",
+	"starter": "charmander",
+	"storage": [
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 29791,
+			"favorite": false,
+			"gender": "male",
+			"hp": 68,
+			"ivs": {
+				"atk": 8,
+				"def": 8,
+				"hp": 29,
+				"spa": 26,
+				"spd": 26,
+				"spe": 22
+			},
+			"level": 31,
+			"met": {
+				"date": "2026-11-04T12:48:21",
+				"level": 31,
+				"map": "route_1",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "tail_whip",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "quick_attack",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "hyper_fang",
+					"max_pp": 15,
+					"pp": 15
+				},
+				{
+					"id": "focus_energy",
+					"max_pp": 30,
+					"pp": 30
+				}
+			],
+			"nickname": "",
+			"species": "rattata",
+			"status": "",
+			"status_turns": 0,
+			"uid": "713bcb3875504691"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 32768,
+			"favorite": false,
+			"gender": "male",
+			"hp": 76,
+			"ivs": {
+				"atk": 12,
+				"def": 5,
+				"hp": 29,
+				"spa": 10,
+				"spd": 16,
+				"spe": 20
+			},
+			"level": 32,
+			"met": {
+				"date": "2026-11-04T12:48:21",
+				"level": 32,
+				"map": "route_1",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "supersonic",
+					"max_pp": 20,
+					"pp": 20
+				},
+				{
+					"id": "bite",
+					"max_pp": 25,
+					"pp": 25
+				},
+				{
+					"id": "confuse_ray",
+					"max_pp": 10,
+					"pp": 10
+				},
+				{
+					"id": "wing_attack",
+					"max_pp": 35,
+					"pp": 35
+				}
+			],
+			"nickname": "",
+			"species": "zubat",
+			"status": "",
+			"status_turns": 0,
+			"uid": "b12d8506f85ee72a"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 29949,
+			"favorite": false,
+			"gender": "male",
+			"hp": 71,
+			"ivs": {
+				"atk": 18,
+				"def": 21,
+				"hp": 7,
+				"spa": 31,
+				"spd": 4,
+				"spe": 16
+			},
+			"level": 33,
+			"met": {
+				"date": "2026-11-04T12:48:21",
+				"level": 33,
+				"map": "route_1",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "rock_throw",
+					"max_pp": 15,
+					"pp": 15
+				},
+				{
+					"id": "self_destruct",
+					"max_pp": 5,
+					"pp": 5
+				},
+				{
+					"id": "harden",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "earthquake",
+					"max_pp": 10,
+					"pp": 10
+				}
+			],
+			"nickname": "",
+			"species": "geodude",
+			"status": "",
+			"status_turns": 0,
+			"uid": "18d06d83176d3378"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 49130,
+			"favorite": false,
+			"gender": "female",
+			"hp": 59,
+			"ivs": {
+				"atk": 24,
+				"def": 6,
+				"hp": 5,
+				"spa": 19,
+				"spd": 23,
+				"spe": 27
+			},
+			"level": 34,
+			"met": {
+				"date": "2026-11-04T12:48:21",
+				"level": 34,
+				"map": "route_1",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "splash",
+					"max_pp": 40,
+					"pp": 40
+				},
+				{
+					"id": "tackle",
+					"max_pp": 35,
+					"pp": 35
+				}
+			],
+			"nickname": "",
+			"species": "magikarp",
+			"status": "",
+			"status_turns": 0,
+			"uid": "c736c2b7ecc109a0"
+		}
+	],
+	"version": 9
+}

@@ -30,9 +30,10 @@ var variants: Array[DialogueVariant] = []
 ## sans [param field], elle est sautée.
 func pick(flags: StoryFlags, rng: GameRng = null, caught: int = 0,
 		field: Callable = Callable(), has_item: Callable = Callable(),
-		zone_playable: Callable = Callable()) -> DialogueVariant:
+		zone_playable: Callable = Callable(), period: StringName = &"",
+		weekday: StringName = &"", caught_johto: int = 0) -> DialogueVariant:
 	for variant: DialogueVariant in variants:
-		if not variant.matches(flags, caught):
+		if not variant.matches(flags, caught, period, weekday, caught_johto):
 			continue
 		if not _items_match(variant, has_item):
 			continue

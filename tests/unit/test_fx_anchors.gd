@@ -29,6 +29,9 @@ func test_each_view_matches_the_image_shown_in_battle() -> void:
 	assert_true(data.load_dir())
 	var species := _species()
 	for id: StringName in data.get_species_ids():
+		# JOH0 (T6) : pas encore de points d'ancrage pour Johto (art hors JOH0, levier 4).
+		if data.get_species(id).dex > 151:
+			continue
 		var key := "%03d" % data.get_species(id).dex
 		var entry: Dictionary = species[key]
 		for back: bool in [false, true]:

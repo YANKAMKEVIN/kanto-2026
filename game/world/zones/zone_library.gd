@@ -30,6 +30,8 @@ extends RefCounted
 ## l'arrivée dans les cartes intérieures de la zone (S.S. Anne : dès le pont principal, J16).
 ## « services » (facultatif) : chaque service vient du catalogue « services » (lu avant les
 ## zones du même objet) et se découvre sur une carte de la zone (« found_on »).
+## « region » (facultatif, JOH0) : [constant ZoneData.REGIONS], « kanto » par défaut ; une carte
+## sans zone est à Kanto ([method region_of]) **[D]**.
 ## Toute clé inconnue est une erreur ; une zone invalide est écartée, l'erreur signalée
 ## ([method get_errors], push_error). Le rectangle d'une zone sur l'illustration n'est pas
 ## ici : il appartient à l'illustration ([MapIllustration]), refaite en phase DA.
@@ -38,7 +40,7 @@ const DEFAULT_PATH: String = "res://data/world/zones.json"
 
 const _ROOT_KEYS: Array[String] = ["services", "zones"]
 const _ZONE_KEYS: Array[String] = ["name", "kind", "maps", "subtitle", "description", "draft",
-	"services", "interior_title"]
+	"services", "interior_title", "region"]
 const _SERVICE_KEYS: Array[String] = ["name"]
 const _ZONE_SERVICE_KEYS: Array[String] = ["id", "found_on"]
 
@@ -104,6 +106,27 @@ func zone_of(map_id: StringName) -> StringName:
 func zone_name_of(map_id: StringName) -> String:
 	var zone := get_zone(zone_of(map_id))
 	return zone.name if zone != null else ""
+
+
+## Région de la carte [param map_id] : celle de sa zone ; [constant ZoneData.REGION_KANTO] si
+## la carte n'a pas de zone (JOH0) [D].
+func region_of(map_id: StringName) -> StringName:
+	var zone: ZoneData = _zones.get(zone_of(map_id))
+	return zone.region if zone != null else ZoneData.REGION_KANTO
+
+
+## Vrai si la carte [param map_id] est à Johto (JH-8 : seules ces cartes lisent l'heure).
+func is_johto(map_id: StringName) -> bool:
+	return region_of(map_id) == ZoneData.REGION_JOHTO
+
+
+## Identifiants des zones de [param region], dans l'ordre du fichier.
+func zones_of_region(region: StringName) -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for id: StringName in _zones:
+		if _zones[id].region == region:
+			ids.append(id)
+	return ids
 
 
 ## Vrai si la carte [param map_id], même intérieure, annonce le titre de sa zone à l'arrivée
@@ -211,6 +234,13 @@ func _parse_zone(value: Variant, where: String) -> ZoneData:
 	if entry.has("interior_title") and not entry["interior_title"] is bool:
 		ok = _fail("%s : « interior_title » vaut true ou false" % where)
 	zone.interior_title = entry.get("interior_title") is bool and bool(entry["interior_title"])
+	if entry.has("region"):
+		var region: Variant = entry["region"]
+		if not region is String or not ZoneData.REGIONS.has(StringName(region)):
+			ok = _fail("%s : « region » vaut %s" % [where,
+				", ".join(PackedStringArray(ZoneData.REGIONS))])
+		else:
+			zone.region = StringName(region)
 	if entry.has("services") and not _parse_zone_services(entry["services"], zone, where):
 		ok = false
 	return zone if ok else null

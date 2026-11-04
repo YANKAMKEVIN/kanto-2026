@@ -32,6 +32,12 @@ var shop: StringName = &""
 var if_items: Array[StringName] = []
 var unless_items: Array[StringName] = []
 var if_zone: StringName = &""
+## Chapitre Johto (JOH0, `jalon-joh0.md` §2.6) : moments (« if_period ») et jours
+## (« if_weekday », [constant WorldClock.WEEKDAY_NAMES]) où la variante s'applique ; vides =
+## toujours. Lus par [member DialogueRunner.time_source] ; sans heure (Kanto), une variante datée
+## ne s'applique pas.
+var if_periods: Array[StringName] = []
+var if_weekdays: Array[StringName] = []
 ## Choix à deux cartes après la dernière page (la question) ; null = aucun.
 var choice: DialogueChoice = null
 ## Scène lancée à la fin du dialogue ([signal DialogueRunner.cutscene_requested]) ; &"" = aucune.
@@ -50,6 +56,11 @@ var caught_at_least: int = 0
 ## … et seulement s'il en a capturé **moins** que ce nombre (clé « unless_caught_at_least ») ;
 ## 0 = sans condition.
 var caught_below: int = 0
+## JOH0 (`jalon-joh0.md` §2.12) : mêmes conditions sur les seules espèces de **Johto**
+## capturées (« if_caught_johto_at_least » / « unless_caught_johto_at_least » ; Diplôme de
+## Johto : 50) ; 0 = sans condition.
+var caught_johto_at_least: int = 0
+var caught_johto_below: int = 0
 ## Capacité de terrain (jalon 16, `jalon-16.md` §2.2) : « cut:ready » (capacité et état de
 ## [constant FieldMoves.STATE_NAMES]) ; la variante ne s'applique que dans cet état, lu par
 ## [member DialogueRunner.field_source] ; "" = toujours. Le jeton `{pokemon}` d'une telle variante
@@ -57,10 +68,13 @@ var caught_below: int = 0
 var field: String = ""
 
 
-## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau) et
-## [param caught] espèces capturées au Pokédex (jalon 17 ; 0 par défaut).
-func matches(flags: StoryFlags, caught: int = 0) -> bool:
-	if not matches_caught(caught):
+## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau),
+## [param caught] espèces capturées au Pokédex (jalon 17 ; 0 par défaut), au moment
+## [param period] et le jour [param weekday] (JOH0 ; &"" = pas d'heure).
+func matches(flags: StoryFlags, caught: int = 0, period: StringName = &"",
+		weekday: StringName = &"", caught_johto: int = 0) -> bool:
+	if not matches_caught(caught) or not matches_time(period, weekday) \
+			or not matches_caught_johto(caught_johto):
 		return false
 	if flags == null:
 		return if_flags.is_empty()
@@ -71,6 +85,23 @@ func matches(flags: StoryFlags, caught: int = 0) -> bool:
 ## [member caught_below].
 func matches_caught(caught: int) -> bool:
 	return caught >= caught_at_least and (caught_below <= 0 or caught < caught_below)
+
+
+## Vrai si [param caught_johto] espèces de Johto capturées satisfont
+## [member caught_johto_at_least] et [member caught_johto_below] (JOH0).
+func matches_caught_johto(caught_johto: int) -> bool:
+	return caught_johto >= caught_johto_at_least \
+		and (caught_johto_below <= 0 or caught_johto < caught_johto_below)
+
+
+## Vrai si [param period] et [param weekday] satisfont [member if_periods] et
+## [member if_weekdays] (JOH0) ; une condition posée exige une heure (&"" : faux).
+func matches_time(period: StringName, weekday: StringName) -> bool:
+	if not if_periods.is_empty() and (period.is_empty() or not if_periods.has(period)):
+		return false
+	if not if_weekdays.is_empty() and (weekday.is_empty() or not if_weekdays.has(weekday)):
+		return false
+	return true
 
 
 ## Vrai si la variante ne dépend d'aucun drapeau.
