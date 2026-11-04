@@ -1,0 +1,61 @@
+{
+	"sbire_m": {
+		"cell": [
+			4,
+			7
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "goldenrod_radio_tower_grunt_m_after",
+		"trainer": {
+			"id": "goldenrod_radio_tower_grunt_m",
+			"sight": 3,
+			"before": "goldenrod_radio_tower_grunt_m_before",
+			"defeated": "goldenrod_radio_tower_grunt_m_defeated"
+		}
+	},
+	"sbire_n": {
+		"cell": [
+			18,
+			12
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "goldenrod_radio_tower_grunt_n_after",
+		"trainer": {
+			"id": "goldenrod_radio_tower_grunt_n",
+			"sight": 3,
+			"before": "goldenrod_radio_tower_grunt_n_before",
+			"defeated": "goldenrod_radio_tower_grunt_n_defeated"
+		}
+	},
+	"sbire_o": {
+		"cell": [
+			21,
+			3
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "goldenrod_radio_tower_grunt_o_after",
+		"trainer": {
+			"id": "goldenrod_radio_tower_grunt_o",
+			"sight": 1,
+			"before": "goldenrod_radio_tower_grunt_o_before",
+			"defeated": "goldenrod_radio_tower_grunt_o_defeated"
+		}
+	},
+	"radio_4f_item_1": {
+		"cell": [
+			1,
+			13
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "radio_4f_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_radio_4f_item_1"
+		]
+	}
+}

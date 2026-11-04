@@ -1,0 +1,827 @@
+{
+	"radio_2f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_radio_2f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "radio_2f_item_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_radio_2f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_raphael": {
+		"variants": [
+			{
+				"unless": [
+					"johto_radio_staff_talked"
+				],
+				"steps": [
+					{
+						"face": "raphael",
+						"to": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_raphael_freed"
+					},
+					{
+						"set": [
+							"johto_radio_staff_talked"
+						]
+					},
+					{
+						"despawn": "raphael"
+					}
+				]
+			}
+		]
+	},
+	"radio_3f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_radio_3f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_radio_3f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"radio_4f_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_radio_4f_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "hyper_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_radio_4f_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"radio_4f_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_radio_4f_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "radio_4f_item_1"
+					},
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_radio_4f_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_impostor": {
+		"variants": [
+			{
+				"if": [
+					"johto_radio_pass"
+				],
+				"unless": [
+					"johto_radio_impostor_defeated"
+				],
+				"steps": [
+					{
+						"face": "faux_employe",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "faux_employe"
+					},
+					{
+						"dialogue": "goldenrod_radio_impostor_intro"
+					},
+					{
+						"battle": "goldenrod_radio_tower_impostor",
+						"win": [
+							"johto_radio_impostor_defeated"
+						]
+					},
+					{
+						"wait": 0.6,
+						"if": [
+							"johto_radio_impostor_defeated"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_impostor_defeated",
+						"if": [
+							"johto_radio_impostor_defeated"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_impostor_after",
+						"if": [
+							"johto_radio_impostor_defeated"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_impostor_flees",
+						"if": [
+							"johto_radio_impostor_defeated"
+						]
+					},
+					{
+						"move": "faux_employe",
+						"to": [
+							3,
+							1
+						],
+						"if": [
+							"johto_radio_impostor_defeated"
+						]
+					},
+					{
+						"despawn": "faux_employe",
+						"if": [
+							"johto_radio_impostor_defeated"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_radio_impostor_defeated"
+						]
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_radio_impostor_defeated"
+				],
+				"steps": [
+					{
+						"face": "faux_employe",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "faux_employe"
+					},
+					{
+						"dialogue": "goldenrod_radio_tower_impostor_closed"
+					},
+					{
+						"set": [
+							"johto_radio_tower_closed_seen"
+						]
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_elevator": {
+		"variants": [
+			{
+				"unless": [
+					"johto_radio_impostor_defeated"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_radio_tower_elevator_closed"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"dialogue": "goldenrod_radio_elevator_broken"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_reserve_door": {
+		"variants": [
+			{
+				"if": [
+					"johto_radio_reserve_key"
+				],
+				"unless": [
+					"johto_radio_staff_freed"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_radio_reserve_opened"
+					},
+					{
+						"set": [
+							"johto_radio_staff_freed"
+						]
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_radio_staff_freed"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_radio_reserve_locked"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_cenere": {
+		"variants": [
+			{
+				"unless": [
+					"johto_cenere_defeated"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_radio_cenere_mic"
+					},
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "cenere"
+					},
+					{
+						"dialogue": "goldenrod_radio_cenere_early"
+					},
+					{
+						"move": "cenere",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									1
+								],
+								[
+									-1,
+									1
+								],
+								[
+									1,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "cenere"
+					},
+					{
+						"dialogue": "goldenrod_radio_cenere_intro"
+					},
+					{
+						"battle": "goldenrod_radio_tower_admin_cenere",
+						"win": [
+							"johto_cenere_defeated"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_cenere_defeated"
+						]
+					},
+					{
+						"wait": 0.6
+					},
+					{
+						"dialogue": "goldenrod_radio_cenere_defeated"
+					},
+					{
+						"dialogue": "goldenrod_radio_cenere_after"
+					},
+					{
+						"wait": 0.8
+					},
+					{
+						"react": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_dante_voice"
+					},
+					{
+						"dialogue": "goldenrod_radio_dante_player"
+					},
+					{
+						"dialogue": "goldenrod_radio_dante_retreat"
+					},
+					{
+						"spawn": "sbire_1",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							4,
+							11
+						],
+						"facing": "right"
+					},
+					{
+						"spawn": "sbire_2",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							18,
+							12
+						],
+						"facing": "left"
+					},
+					{
+						"spawn": "sbire_3",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							7,
+							8
+						],
+						"facing": "down"
+					},
+					{
+						"react": "sbire_1"
+					},
+					{
+						"dialogue": "goldenrod_radio_grunt_1"
+					},
+					{
+						"face": "sbire_2",
+						"to": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_grunt_2"
+					},
+					{
+						"move": "sbire_2",
+						"to": [
+							20,
+							1
+						],
+						"background": true
+					},
+					{
+						"dialogue": "goldenrod_radio_grunt_3"
+					},
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_cenere_leaves"
+					},
+					{
+						"dialogue": "goldenrod_radio_cenere_exit"
+					},
+					{
+						"move": "cenere",
+						"to": [
+							22,
+							10
+						],
+						"background": true
+					},
+					{
+						"move": "sbire_3",
+						"to": [
+							21,
+							10
+						]
+					},
+					{
+						"despawn": "sbire_2"
+					},
+					{
+						"despawn": "cenere"
+					},
+					{
+						"move": "sbire_3",
+						"to": [
+							22,
+							10
+						]
+					},
+					{
+						"despawn": "sbire_3"
+					},
+					{
+						"set": [
+							"johto_dante_revealed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_office": {
+		"variants": [
+			{
+				"if": [
+					"johto_dante_revealed"
+				],
+				"unless": [
+					"johto_team_returned"
+				],
+				"if_items": [
+					"exp_all"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_radio_office_found"
+					},
+					{
+						"move": "player",
+						"to": {
+							"near": "directeur",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "directeur"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_bound"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_untied"
+					},
+					{
+						"face": "directeur",
+						"to": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_freed"
+					},
+					{
+						"dialogue": "goldenrod_radio_reunion"
+					},
+					{
+						"return_team": true
+					},
+					{
+						"dialogue": "goldenrod_radio_storage_back",
+						"if": [
+							"johto_return_stored"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_bags_merged"
+					},
+					{
+						"save": "retour de l'équipe (Tour Radio, JOH5)"
+					},
+					{
+						"unset": [
+							"johto_return_stored"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_director_gift"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_candies"
+					},
+					{
+						"give": "rare_candy",
+						"count": 3
+					},
+					{
+						"dialogue": "goldenrod_radio_rare_candy_received"
+					},
+					{
+						"set": [
+							"radio_exp_share_given"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_director_after"
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_dante_revealed"
+				],
+				"unless": [
+					"johto_team_returned"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_radio_office_found"
+					},
+					{
+						"move": "player",
+						"to": {
+							"near": "directeur",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "directeur"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_bound"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_untied"
+					},
+					{
+						"face": "directeur",
+						"to": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_freed"
+					},
+					{
+						"dialogue": "goldenrod_radio_reunion"
+					},
+					{
+						"return_team": true
+					},
+					{
+						"dialogue": "goldenrod_radio_storage_back",
+						"if": [
+							"johto_return_stored"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_bags_merged"
+					},
+					{
+						"save": "retour de l'équipe (Tour Radio, JOH5)"
+					},
+					{
+						"unset": [
+							"johto_return_stored"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_director_gift"
+					},
+					{
+						"give": "exp_all",
+						"count": 1
+					},
+					{
+						"dialogue": "goldenrod_radio_exp_share_received"
+					},
+					{
+						"set": [
+							"radio_exp_share_given"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_director_after"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_exp_share": {
+		"variants": [
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"unless": [
+					"radio_exp_share_given"
+				],
+				"if_items": [
+					"exp_all"
+				],
+				"steps": [
+					{
+						"face": "directeur",
+						"to": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_gift"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_candies"
+					},
+					{
+						"give": "rare_candy",
+						"count": 3
+					},
+					{
+						"dialogue": "goldenrod_radio_rare_candy_received"
+					},
+					{
+						"set": [
+							"radio_exp_share_given"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_director_after"
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"unless": [
+					"radio_exp_share_given"
+				],
+				"steps": [
+					{
+						"face": "directeur",
+						"to": "player"
+					},
+					{
+						"dialogue": "goldenrod_radio_director_gift"
+					},
+					{
+						"give": "exp_all",
+						"count": 1
+					},
+					{
+						"dialogue": "goldenrod_radio_exp_share_received"
+					},
+					{
+						"set": [
+							"radio_exp_share_given"
+						]
+					},
+					{
+						"dialogue": "goldenrod_radio_director_after"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_radio_exit": {
+		"variants": [
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"unless": [
+					"johto_act2"
+				],
+				"steps": [
+					{
+						"face": "agente",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "agente"
+					},
+					{
+						"dialogue": "goldenrod_radio_agent"
+					},
+					{
+						"take": "mission_order",
+						"count": 1
+					},
+					{
+						"take": "radio_card",
+						"count": 1
+					},
+					{
+						"dialogue": "goldenrod_radio_agent_given"
+					},
+					{
+						"face": "orme",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "orme"
+					},
+					{
+						"dialogue": "goldenrod_radio_elm"
+					},
+					{
+						"set": [
+							"johto_act2"
+						]
+					},
+					{
+						"move": "orme",
+						"to": [
+							12,
+							15
+						],
+						"background": true
+					},
+					{
+						"move": "agente",
+						"to": [
+							11,
+							15
+						]
+					},
+					{
+						"despawn": "orme"
+					},
+					{
+						"despawn": "agente"
+					}
+				]
+			}
+		]
+	},
+	"goldenrod_husband_gift": {
+		"variants": [
+			{
+				"if": [
+					"johto_act2"
+				],
+				"unless": [
+					"goldenrod_husband_gift"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_husband_home"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 3
+					},
+					{
+						"dialogue": "goldenrod_husband_gift_received"
+					},
+					{
+						"set": [
+							"goldenrod_husband_gift"
+						]
+					}
+				]
+			}
+		]
+	}
+}

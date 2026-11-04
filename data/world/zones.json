@@ -447,6 +447,11 @@
 		"mahogany_town": {
 			"name": "Acajou", "kind": "town", "maps": [], "region": "johto", "draft": true,
 			"description": "Un village de montagne au bord du Lac Colère, un peu trop calme pour être honnête."
+		},
+		"goldenrod_radio_tower": {
+			"name": "Tour Radio", "kind": "place", "region": "johto", "subtitle": "Doublonville",
+			"maps": ["goldenrod_radio_tower_1f", "goldenrod_radio_tower_2f", "goldenrod_radio_tower_3f", "goldenrod_radio_tower_4f", "goldenrod_radio_tower_5f", "goldenrod_radio_tower_elevator"],
+			"description": "La Tour Radio de Doublonville, prise par la Team Rocket."
 		}
 	}
 }

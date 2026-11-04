@@ -24,7 +24,9 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
 	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord.
 	# JOH3 (QA A17) : ses deux objectifs [D] devant eux ; JOH4 (QA A17) : ses quatre devant ceux-là.
-	assert_eq(library.get_ids(), [&"talk_to_kurt_in_well", &"take_brace_papers",
+	# JOH5 : la Tour Radio (libérer, redescendre) et l'accroche de l'acte 2, devant.
+	assert_eq(library.get_ids(), [&"go_ecruteak_sages", &"leave_radio_tower", &"free_radio_tower",
+		&"talk_to_kurt_in_well", &"take_brace_papers",
 		&"clear_slowpoke_well", &"meet_kurt", &"search_underground", &"reach_goldenrod",
 		&"go_route_39", &"choose_johto_partner", &"rest_olivine",
 		&"reach_olivine", &"talk_to_oak", &"return_gold_teeth", &"challenge_koga", &"visit_fuji",
@@ -477,3 +479,22 @@ func test_joh4_objectives_in_order() -> void:
 	for id: StringName in [&"meet_kurt", &"clear_slowpoke_well", &"take_brace_papers",
 			&"talk_to_kurt_in_well"]:
 		assert_ne(library.current_id(flags), id, "%s : plus après le puits" % id)
+
+
+## JOH5 : la Tour Radio, du Puits Ramoloss (JOH4) à l'accroche de l'acte 2 ; textes [D].
+func test_joh5_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	assert_true(library.load_file())
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"pokedex_activated", &"badge_soul", &"oak_post_league_gifts_done",
+			&"johto_letter_read", &"johto_arrived", &"johto_slept", &"johto_team_stolen",
+			&"johto_starter_chosen", &"johto_azalea_clue", &"johto_kurt_told",
+			&"johto_brace_defeated", &"johto_radio_pass"]:
+		flags.set_flag(flag)
+	assert_eq(library.current_id(flags), &"talk_to_kurt_in_well", "le JOH4 d'abord")
+	var steps: Array = [[&"johto_slowpoke_well_cleared", &"free_radio_tower"],
+		[&"johto_team_returned", &"leave_radio_tower"], [&"johto_act2", &"go_ecruteak_sages"]]
+	for step: Array in steps:
+		flags.set_flag(step[0])
+		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
+		assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])

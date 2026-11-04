@@ -42,6 +42,10 @@ const PRICE: StringName = &"price"
 ## JOH0 (`jalon-joh0.md` §2.8) : nom de l'objet demandé par le terminal d'échange (« Utiliser
 ## {item} ? »), fourni par [LocalTradeDirector].
 const ITEM: StringName = &"item"
+## Chapitre Johto, JOH5 (`jalon-joh5.md` §2.5, T-27) : le Pokémon qui sort de sa Ball au bureau
+## de la Tour Radio, tant qu'une équipe est confisquée : le compagnon d'avant le vol, sinon le
+## premier de l'équipe confisquée ([method returning_name]). Fourni par Boot.
+const RETURNING_POKEMON: StringName = &"returning_pokemon"
 ## Pokédex (jalon 17, jalon-17.md §2.5 ; dossier 20 §16 T-1 à T-3, notés `{n}` et `{reste}`) :
 ## espèces capturées, et ce qu'il manque pour [constant CAUGHT_GOAL] (pas de valeur une fois
 ## l'objectif atteint : la page « Encore {caught_missing}… » est alors omise). Fournis par Boot
@@ -53,7 +57,7 @@ const CAUGHT_MISSING: StringName = &"caught_missing"
 const CAUGHT_GOAL: int = 10
 ## Jetons permis dans les données.
 const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON, LEVELS, PRICE,
-	CAUGHT, CAUGHT_MISSING, ITEM]
+	CAUGHT, CAUGHT_MISSING, ITEM, RETURNING_POKEMON]
 ## Jetons « de contexte » : toujours fournis par le directeur qui joue les dialogues où ils
 ## figurent (la Pension). Ce sont les seuls permis dans la question d'un choix (T-7, T-8 : « Ce
 ## sera {price} ₽. »), qui ne doit jamais être omise ([DialogueLibrary]).
@@ -206,6 +210,19 @@ static func values_for(first_wild_species: StringName, data: PokemonData,
 	if species != null and not species.name.is_empty():
 		values[FIRST_WILD_SPECIES] = species.name
 	return values
+
+
+## JOH5 : nom affiché du Pokémon qui retrouve le joueur (T-27) : le compagnon d'avant le vol
+## ([member ConfiscatedTeam.companion_uid]) s'il est dans l'équipe confisquée, sinon son premier
+## Pokémon ; "" si rien n'est confisqué.
+static func returning_name(confiscated: ConfiscatedTeam, data: PokemonData) -> String:
+	if confiscated == null or confiscated.party.is_empty():
+		return ""
+	var pokemon := confiscated.find_by_uid(confiscated.companion_uid) \
+		if not confiscated.companion_uid.is_empty() else null
+	if pokemon == null:
+		pokemon = confiscated.party[0]
+	return pokemon.display_name(data)
 
 
 ## Valeurs de [constant CAUGHT] et [constant CAUGHT_MISSING] pour [param caught] espèces

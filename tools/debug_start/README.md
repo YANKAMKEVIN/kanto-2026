@@ -475,3 +475,17 @@ drapeaux des JOH1 à JOH3 (dont `johto_azalea_clue`), équipe de Kanto confisqu�
 - `johto_brace` : B2F, devant le couloir de Brace (niv. 22–24).
 - `johto_azalea_after` : devant le puits, tout le jalon fait (Ramoloss de retour, objets clés).
 - `johto_azalea_friday` : entrée d'Écorcia, jour imposé `friday` (Vincent).
+
+## Chapitre Johto, JOH5 : la Tour Radio (`docs/tech/jalon-joh5.md` §2.6)
+
+Équipe de Johto (Feurisson N28 compagnon, Lainergie N27, Noarfang N26, Togetic N26), équipe de
+Kanto confisquée (5 Pokémon, Super Bonbons non compris), Carte d'accès et Ordre de mission dans le
+Sac, drapeaux de l'acte 1 jusqu'au JOH4 (`johto_brace_defeated`, `johto_radio_pass`).
+
+| Fichier | Contenu |
+|---|---|
+| `johto_radio_tower.json` | Hall (1F), devant la porte : un pas vers le nord-ouest jusqu'à la niche de l'escalier (3, 2) → T-2, combat du faux employé, fuite ; puis les étages |
+| `johto_radio_tower_3f.json` | 3F (archives), arrivée du 2F, faux employé et Sbire I battus : réserve fermée (T-9 sans la clé : porte fermée), gardien inévitable en (13, 11), Raphaël (T-11) |
+| `johto_radio_tower_5f.json` | 5F, arrivée de l'escalier : Sbires obligatoires des étages battus, réserve ouverte ; descendre vers l'ouverture de la vitre (12..13, 6) → Cenere, Dante, Sbires, départ de Cenere |
+| `johto_radio_tower_office.json` | 5F, Cenere battue, Dante révélé, porte du bureau ouverte (8, 2). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Bureau : T-24 à T-27, écran du choix des 6 (9 Pokémon), T-29, T-30, **écriture**, Multi Exp, T-32. Arrêt de l'appli pendant l'écran → « Continuer » : la scène rejoue ; après → équipe rendue, acte 1 fini |
+| `johto_radio_tower_small.json` | Comme le précédent avec 2 + 3 Pokémon (**pas d'écran**) et une Multi Exp déjà dans le Sac (3 Super Bonbons) ; sans écriture du départ |

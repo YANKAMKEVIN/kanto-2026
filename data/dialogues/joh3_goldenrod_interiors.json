@@ -229,10 +229,28 @@
 	},
 	"goldenrod_house_1_woman": {
 		"speaker": "Femme",
-		"pages": [
-			"Mon mari travaille à la Tour Radio.",
-			"Il n'est pas rentré\ndepuis trois jours.",
-			"Ils disent qu'il fait\ndes heures en plus…"
+		"variants": [
+			{
+				"if": [
+					"goldenrod_husband_gift"
+				],
+				"pages": [
+					"Il dort depuis hier soir. Il dit qu'il ne remontera jamais dans le noir."
+				]
+			},
+			{
+				"if": [
+					"johto_act2"
+				],
+				"cutscene": "goldenrod_husband_gift"
+			},
+			{
+				"pages": [
+					"Mon mari travaille à la Tour Radio.",
+					"Il n'est pas rentré\ndepuis trois jours.",
+					"Ils disent qu'il fait\ndes heures en plus…"
+				]
+			}
 		]
 	},
 	"goldenrod_house_2_man": {

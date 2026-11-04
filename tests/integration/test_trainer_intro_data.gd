@@ -62,8 +62,9 @@ func test_female_grunts_have_their_own_class() -> void:
 			female += 1
 	# 11 à Kanto, 2 au JOH3 (Route 37 de nuit, Souterrain de Doublonville). JOH4 : + le Sbire F du
 	# Puits Ramoloss (B1F). JOH7 : le Sbire U des Îles Tourbillon et Cenere (classe de Sbire femme
-	# [D] tant que le JOH5 n'a pas de classe d'admin).
-	assert_eq(female, 16, "16 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+	# [D] tant que le JOH5 n'a pas de classe d'admin). JOH5 : + 3 Sbires F de la Tour Radio (J, L, N)
+	# et Cenere (apparence rocket_grunt_f [D]).
+	assert_eq(female, 20, "20 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
 
 
 func test_every_grand_portrait_is_in_the_catalog() -> void:

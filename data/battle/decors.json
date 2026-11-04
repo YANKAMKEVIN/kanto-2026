@@ -788,6 +788,21 @@
 		],
 		"vermilion_city": [
 			{ "decor": "route_11_coast" }
+		],
+		"goldenrod_radio_tower_1f": [
+			{ "decor": "silph_co_hall" }
+		],
+		"goldenrod_radio_tower_2f": [
+			{ "decor": "silph_co_bureaux" }
+		],
+		"goldenrod_radio_tower_3f": [
+			{ "decor": "silph_co_bureaux" }
+		],
+		"goldenrod_radio_tower_4f": [
+			{ "decor": "silph_co_bureaux" }
+		],
+		"goldenrod_radio_tower_5f": [
+			{ "decor": "silph_co_bureaux" }
 		]
 
 	}
