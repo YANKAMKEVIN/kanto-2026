@@ -68,6 +68,11 @@ func test_every_move_within_its_cv2_line() -> void:
 		var plan := MoveFxPlan.build(_catalog, entry, move, null, MoveFxPlan.Mode.FULL)
 		var band := BANDS[_expected_band(move, entry)]
 		assert_eq(plan.band, _expected_band(move, entry), String(move_id))
+		# Vague 2 « Effets fidèles à Rouge » : une famille sans dégâts peut avoir sa durée propre
+		# (CV-2, « durée selon l'attaque » : Trempette, Téléport, Flash, Buée Noire…).
+		var own := JsonFields.get_float(_catalog.family(entry.family), "duration")
+		if own > 0.0 and not move.is_damaging():
+			band = Vector2(own, own)
 		assert_between(plan.hit_duration, band.x - EPS, band.y + EPS,
 			"%s (puissance %d) : %.2f s" % [move_id, move.power, plan.hit_duration])
 
@@ -266,3 +271,58 @@ func test_mode_from_settings() -> void:
 	assert_eq(MoveFxPlan.mode_for(GameSettings.BattleAnimations.FAST, false), MoveFxPlan.Mode.FAST)
 	assert_eq(MoveFxPlan.mode_for(GameSettings.BattleAnimations.FULL, true),
 		MoveFxPlan.Mode.REDUCED, "Réduire les animations l'emporte")
+
+
+# --- Vague 2 « Effets fidèles à Rouge » --------------------------------------------------
+
+## Une famille sans dégâts garde sa durée propre, même quand « rien ne se passe » (Trempette).
+func test_family_duration_for_status_moves_even_when_nothing_happens() -> void:
+	var splash := _data.get_move(&"splash")
+	var entry := _catalog.entry(&"splash")
+	var own := JsonFields.get_float(_catalog.family(entry.family), "duration")
+	assert_gt(own, 0.8, "Trempette : plus longue que la première ligne de CV-2")
+	var failed := MoveFxOutcome.new()
+	failed.result = MoveFxOutcome.Result.FAILED
+	var plan := MoveFxPlan.build(_catalog, entry, splash, failed, MoveFxPlan.Mode.FULL)
+	assert_almost_eq(plan.duration, own, EPS, "les sauts, même sans effet")
+	assert_not_null(plan.phase(MoveFxPlan.ANTICIPATION), "sauts à l'anticipation")
+
+
+## Une variante change la lumière (Poing de Feu orange, Poing-Glace bleu pâle) ; une variante
+## d'impact ajoute ses rôles d'art (Jackpot : pièces et scintillements).
+func test_variant_light_and_impact_roles() -> void:
+	var fire := MoveFxPlan.build(_catalog, _catalog.entry(&"fire_punch"),
+		_data.get_move(&"fire_punch"), null, MoveFxPlan.Mode.FULL)
+	var ice := MoveFxPlan.build(_catalog, _catalog.entry(&"ice_punch"),
+		_data.get_move(&"ice_punch"), null, MoveFxPlan.Mode.FULL)
+	assert_gt(fire.light_peak, 0.0, "le feu éclaire")
+	assert_gt(fire.light_color.r, fire.light_color.b, "orange")
+	assert_gt(ice.light_color.b, ice.light_color.r, "bleu pâle")
+	assert_eq(fire.impact_brick, &"punch")
+	var pay_day := MoveFxPlan.build(_catalog, _catalog.entry(&"pay_day"),
+		_data.get_move(&"pay_day"), null, MoveFxPlan.Mode.FULL)
+	assert_eq(pay_day.impact_brick, &"coin_burst")
+	assert_eq(pay_day.art.get(&"coin", &""), &"piece_or", "pièces d'or")
+	assert_eq(pay_day.art.get(&"stamp", &""), &"etoile_impact", "et le coup")
+
+
+## Téléport : le plan ne laisse le lanceur caché que si le journal dit TELEPORTED.
+func test_teleport_vanishes_only_when_teleported() -> void:
+	var move := _data.get_move(&"teleport")
+	var entry := _catalog.entry(&"teleport")
+	var gone := MoveFxOutcome.new()
+	gone.result = MoveFxOutcome.Result.AFFECTED
+	gone.vanished = true
+	assert_true(MoveFxPlan.build(_catalog, entry, move, gone, MoveFxPlan.Mode.FULL).vanishes)
+	var stays := MoveFxOutcome.new()
+	stays.result = MoveFxOutcome.Result.AFFECTED
+	assert_false(MoveFxPlan.build(_catalog, entry, move, stays, MoveFxPlan.Mode.FULL).vanishes)
+	assert_false(MoveFxPlan.build(_catalog, entry, move, null, MoveFxPlan.Mode.FULL).vanishes)
+
+
+## Fatal-Foudre : la scène s'assombrit avant la foudre (Complètes seulement).
+func test_thunder_darkens_the_scene_first() -> void:
+	var move := _data.get_move(&"thunder")
+	var entry := _catalog.entry(&"thunder")
+	assert_true(MoveFxPlan.build(_catalog, entry, move, null, MoveFxPlan.Mode.FULL).world.has(&"storm"))
+	assert_false(MoveFxPlan.build(_catalog, entry, move, null, MoveFxPlan.Mode.FAST).world.has(&"storm"))

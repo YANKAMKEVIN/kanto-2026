@@ -77,6 +77,7 @@ class Cue:
 var move_id: StringName = &""
 var family: StringName = &""
 var impact: StringName = &""
+var variant: StringName = &""
 var modifiers: Array[StringName] = []
 var signature: StringName = &""
 var mode: Mode = Mode.FULL
@@ -116,11 +117,29 @@ var bricks: Dictionary = {}
 ## `foliage`, `darken`.
 var world: Array[StringName] = []
 ## Art peint (CV.1, [FxArt]) par rôle : `charge`, `travel`, `bolt`, `impact`, `particle`, `rise`,
-## `fallout`, `dust`, `stamp` (marque d'impact du Contact), `cheeks`, `feathers` (Éclair) ; la
-## famille, puis la variante d'impact, puis la signature. Rôle absent : forme dessinée en code.
+## `fallout`, `dust`, `spray` (grains de Jet de Sable), `stamp` (marque d'impact du Contact),
+## `cheeks`, `feathers` (Éclair) ; vague 1 « Effets fidèles à Rouge » : `piece` (pièce d'une
+## volée : bulle, aiguille, feuille d'une liane), `sprout` (pousse de Vampigraine), `crack`
+## (claquement), `powder` et `sparkle` (poudres) ; la famille (et sa variante), puis la variante
+## d'impact, puis la signature. Rôle absent : forme dessinée en code.
 var art: Dictionary[StringName, StringName] = {}
+## Volée (`fx.volley`, briques `bubbles`, `needle`, `seed_arc`) : nombre de pièces, écart entre
+## deux départs (part de la fenêtre de vol), taille (hauteurs d'écran), ondulation (hauteurs
+## d'écran).
+var volley_count: int = 1
+var volley_stagger: float = 0.0
+var volley_size: float = 0.08
+var volley_wobble: float = 0.0
+## Claquements par impact (fouet, bec) : `beats` de la variante d'impact, sinon de `fx`.
+var beats: int = 1
 ## Teinte des flipbooks de la famille (`fx.tint` ; blanc : aucune).
 var art_tint: Color = Color.WHITE
+## Brique de la variante d'impact (`impacts.<impact>.brick` : `coin_burst`, `lick`, `toss`…) ;
+## "" sans variante.
+var impact_brick: StringName = &""
+## Téléport réussi (vague 2) : la famille dit `vanish` et le journal dit TELEPORTED ; le lecteur
+## laisse alors le lanceur caché à la fin (la scène finit le travail, [method BattleStage.play_vanish]).
+var vanishes: bool = false
 ## Types de la cible (Éclair : plumes sur un Pokémon Vol) ; rempli par la scène, vide sinon.
 var target_types: Array[StringName] = []
 ## Issue lue dans le journal (null : un coup qui porte) ; le son du coup en dépend (T4).
@@ -144,6 +163,8 @@ static func build(catalog: MoveFxCatalog, entry: MoveFxEntry, move: MoveData,
 	plan._setup(catalog, entry, plan_mode)
 	var result := MoveFxOutcome.Result.HIT if outcome == null else outcome.result
 	var family_data := catalog.family(plan.family)
+	plan.vanishes = JsonFields.get_bool(family_data, "vanish") and outcome != null \
+		and outcome.vanished and outcome.lands()
 	if result == MoveFxOutcome.Result.CHARGING:
 		plan._layout_charge(catalog)
 	else:
@@ -173,9 +194,14 @@ static func band_for(catalog: MoveFxCatalog, entry: MoveFxEntry, move: MoveData,
 	return bands.size() - 1
 
 
-## Durée d'un coup en Complètes (CV-2) : la puissance placée dans sa ligne.
+## Durée d'un coup en Complètes (CV-2) : la puissance placée dans sa ligne. Une famille qui
+## dit `duration` (vague 2 : Trempette, Téléport, Flash… dont l'animation de Rouge dure plus que
+## la première ligne) la garde pour une attaque sans dégâts.
 static func full_hit_duration(catalog: MoveFxCatalog, entry: MoveFxEntry, move: MoveData,
 		legendary: bool = false) -> float:
+	var fixed := JsonFields.get_float(catalog.family(entry.family), "duration")
+	if fixed > 0.0 and not move.is_damaging() and not legendary:
+		return fixed
 	var bands := _bands(catalog)
 	if bands.is_empty():
 		return 0.0
@@ -223,6 +249,7 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	move_id = entry.move_id
 	family = entry.family
 	impact = entry.impact
+	variant = entry.variant
 	modifiers = entry.modifiers.duplicate()
 	signature = entry.signature
 	mode = plan_mode
@@ -239,15 +266,25 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 		if mode == Mode.REDUCED else 1.0
 	target_shake = mode != Mode.REDUCED
 	bricks = JsonFields.get_dict(family_data, "bricks")
-	var fx := JsonFields.get_dict(family_data, "fx")
+	var fx := catalog.family_fx(family, variant)
 	particles = roundi(JsonFields.get_int(fx, "particles", DEFAULT_PARTICLES) * particle_scale)
 	for color: Variant in JsonFields.get_array(fx, "palette"):
 		if color is String:
 			palette.append(Color.from_string(color, Color.WHITE))
 	_read_art(JsonFields.get_dict(fx, "art"))
+	var volley := JsonFields.get_dict(fx, "volley")
+	volley_count = maxi(1, JsonFields.get_int(volley, "count", 1))
+	volley_stagger = JsonFields.get_float(volley, "stagger", 0.0)
+	volley_size = JsonFields.get_float(volley, "size", volley_size)
+	volley_wobble = JsonFields.get_float(volley, "wobble", 0.0)
+	beats = maxi(1, JsonFields.get_int(catalog.impact(impact), "beats",
+		JsonFields.get_int(fx, "beats", 1)))
 	var stamp := JsonFields.get_id(catalog.impact(impact), "art")
 	if not stamp.is_empty():
 		art[&"stamp"] = stamp
+	impact_brick = JsonFields.get_id(catalog.impact(impact), "brick")
+	# Vague 2 : rôles propres de la variante d'impact (pièces de Jackpot, salive, coquille…).
+	_read_art(JsonFields.get_dict(catalog.impact(impact), "roles"))
 	_read_art(JsonFields.get_dict(catalog.signature(signature), "art"))
 	# Modificateurs (CV.1) : leurs rôles propres (`stream`, `trap`, `self_burst`), sans écraser
 	# ceux de la famille ni de la signature.
@@ -293,9 +330,13 @@ func _layout(catalog: MoveFxCatalog, family_data: Dictionary, full_hit: float,
 	var strike := JsonFields.get_float(parts, "impact")
 	var back := JsonFields.get_float(parts, "return")
 	if result == MoveFxOutcome.Result.FAILED:
-		# Rien ne part : le lanceur se prépare, puis revient (première ligne de CV-2).
+		# Rien ne part : le lanceur se prépare, puis revient (première ligne de CV-2, ou la durée
+		# propre de la famille : Trempette saute même quand « rien ne se passe »).
 		var shortest := JsonFields.get_float(_bands(catalog)[0], "min") if not _bands(catalog).is_empty() \
 			else full_hit
+		var fixed := JsonFields.get_float(family_data, "duration")
+		if fixed > 0.0:
+			shortest = fixed
 		duration = _mode_duration(catalog, shortest)
 		hit_duration = duration
 		var total := anticipation + back
@@ -381,6 +422,11 @@ func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutco
 	var data := JsonFields.get_dict(family_data, "world")
 	light_color = Color.from_string(JsonFields.get_string(data, "light", "#FFFFFF"), Color.WHITE)
 	light_peak = JsonFields.get_float(data, "light_peak")
+	# Vague 2 : une variante peut changer la lumière (Poing de Feu orange, Poing-Glace bleu…).
+	var fx := catalog.family_fx(family, variant)
+	light_color = Color.from_string(JsonFields.get_string(fx, "light", light_color.to_html()),
+		light_color)
+	light_peak = JsonFields.get_float(fx, "light_peak", light_peak)
 	var own := catalog.signature(signature)
 	light_peak = JsonFields.get_float(own, "light_peak", light_peak)
 	if palette.is_empty():
@@ -388,12 +434,13 @@ func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutco
 	if reduce_flashes:
 		light_peak = minf(light_peak, JsonFields.get_float(limits, "reduced_flash_peak", 0.35))
 	var lands := result == MoveFxOutcome.Result.HIT or result == MoveFxOutcome.Result.AFFECTED
-	flashes = JsonFields.get_int(own, "flashes", JsonFields.get_int(data, "flashes")) * hits \
+	flashes = JsonFields.get_int(own, "flashes", JsonFields.get_int(fx, "flashes",
+		JsonFields.get_int(data, "flashes"))) * hits \
 		if lands and light_peak > 0.0 else 0
 	var per_second := JsonFields.get_float(limits, "flashes_per_second", 3.0)
 	flashes = mini(flashes, floori(per_second * duration + EPSILON))
 	if mode == Mode.FULL and lands:
-		for flag: StringName in [&"dust", &"droplets", &"foliage", &"darken"]:
+		for flag: StringName in [&"dust", &"droplets", &"foliage", &"darken", &"storm"]:
 			if JsonFields.get_bool(data, String(flag)):
 				world.append(flag)
 

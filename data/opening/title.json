@@ -1,5 +1,9 @@
 {
-	"_note": "Textes de l'écran titre (dossier 13 §5.2 et §5.4, validés par Kevin le 2026-10-10). messages.unsaved est un texte par défaut (règle 4) pour un échec d'écriture de la nouvelle partie (disque plein), à relire par Kevin avec le lot de textes d'OUV.1. Le résumé de la carte de confirmation est composé par TitleMenuModel (prénom · temps de jeu · badges, parties vides omises).",
+	"_note": "Textes de l'écran titre (dossier 13 §5.2 et §5.4, validés par Kevin le 2026-10-10). ident : carton de l'ident de démarrage (J34, demande de Kevin du 2026-11-03 ; libellé [D] à relire). messages.unsaved est un texte par défaut (règle 4) pour un échec d'écriture de la nouvelle partie (disque plein), à relire par Kevin avec le lot de textes d'OUV.1. Le résumé de la carte de confirmation est composé par TitleMenuModel (prénom · temps de jeu · badges, parties vides omises).",
+	"ident": {
+		"studio": "Les studios Kevin & Co",
+		"presents": "vous présentent"
+	},
 	"entries": {
 		"continue": "Continuer",
 		"new_game": "Nouvelle partie",

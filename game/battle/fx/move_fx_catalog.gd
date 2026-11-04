@@ -83,6 +83,7 @@ func add_moves(data: Dictionary, source: String = "") -> void:
 		entry.move_id = id
 		entry.family = JsonFields.get_id(raw, "family")
 		entry.impact = JsonFields.get_id(raw, "impact")
+		entry.variant = JsonFields.get_id(raw, "variant")
 		entry.modifiers = JsonFields.get_ids(raw, "modifiers")
 		entry.signature = JsonFields.get_id(raw, "signature")
 		entry.source = source
@@ -100,6 +101,10 @@ func validate() -> bool:
 			ok = false
 		if entry.family == CONTACT_FAMILY and entry.impact.is_empty():
 			_errors.append("%s : une attaque de contact a une variante d'impact" % where)
+			ok = false
+		if not entry.variant.is_empty() and not JsonFields.get_dict(_families.get(entry.family, {}),
+				"variants").has(String(entry.variant)):
+			_errors.append("%s : variante inconnue « %s »" % [where, entry.variant])
 			ok = false
 		if not entry.impact.is_empty() and not _impacts.has(entry.impact):
 			_errors.append("%s : impact inconnu « %s »" % [where, entry.impact])
@@ -170,6 +175,25 @@ func family_ids() -> Array[StringName]:
 ## Réglages de la famille [param id] (vide si inconnue).
 func family(id: StringName) -> Dictionary:
 	return _families.get(id, {})
+
+
+## Réglages `fx` de la famille [param id], remplacés clé par clé par ceux de sa variante
+## [param variant] (`variants`) ; l'art est fusionné rôle par rôle.
+func family_fx(id: StringName, variant: StringName = &"") -> Dictionary:
+	var fx := JsonFields.get_dict(family(id), "fx").duplicate(true)
+	if variant.is_empty():
+		return fx
+	var over := JsonFields.get_dict(JsonFields.get_dict(family(id), "variants"), String(variant))
+	for key: String in over:
+		if key.begins_with("_"):
+			continue
+		if key == "art" and over[key] is Dictionary:
+			var art := JsonFields.get_dict(fx, "art").duplicate()
+			art.merge(over[key], true)
+			fx[key] = art
+		else:
+			fx[key] = over[key]
+	return fx
 
 
 func has_impact(id: StringName) -> bool:

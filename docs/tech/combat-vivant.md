@@ -331,27 +331,74 @@ sur **25 à 35 % de la distance** entre les deux Pokémon (le tien rétrécit en
 grandit en avançant : la profondeur du cadrage B est respectée), impact au point de contact,
 retour en arc. « Bondit » (Morsure, Croc de Mort, Vive-Attaque) : même trajet en arc.
 
-### 3.2 Les 17 familles
+### 3.2 Les 17 familles (19 depuis RP-286, 26 depuis la vague 1 « Effets fidèles à Rouge », 44 depuis la vague 2)
 
 | # | Famille (`id`) | Lancement → trajet → impact | Monde | Attaques |
 |---|---|---|---|---|
-| 1 | Contact (`contact`) | appui → course → impact selon la variante : **coup** (étoile d'impact), **griffe** (3 entailles), **crocs** (deux mâchoires qui se ferment), **perçant** (trait + éclat), **corps** (onde de choc ronde) | poussière au sol | 51 |
-| 2 | Feu (`feu`) | lueur orange → flammèches / boule → gerbe de braises | **lumière orange au sol** (§11) | 5 |
-| 3 | Eau (`eau`) | bulle qui gonfle → jet / bulles → éclaboussure | **gouttelettes ~0,5 s** (§11) | 8 |
-| 4 | Électrique (`electrique`) | étincelles sur le lanceur → arc brisé → décharge en étoile | **scène illuminée 2 images**, arbres éclairés la nuit (§10, §11) | 5 |
-| 5 | Plante (`plante`) | feuilles qui tournent → volée de feuilles / lianes / nuage de spores → feuilles qui retombent | feuillage du premier plan | 10 |
-| 6 | Glace (`glace`) | givre sur le lanceur → rayon bleu pâle / cristaux → éclats de glace, brume | voile froid bref | 5 |
+| 1 | Contact (`contact`) | appui → course → impact selon la variante : **coup** (étoile d'impact), **griffe** (3 entailles), **crocs** (deux mâchoires qui se ferment), **perçant** (trait + éclat), **corps** (onde de choc ronde), **bec** (deux marques rapides à deux endroits : Picpic), **vrille** (marque qui tourne, éclats en spirale : Bec Vrille) ; vague 2 : **pièces** (le coup, puis des pièces d'or jaillissent et retombent : Jackpot), **langue** (la langue peinte balaie la cible de bas en haut, salive : Léchouille), **claquoir** (deux coquilles se referment sur la cible : Claquoir), **pince_masse** (une grosse pince s'abat, éclaboussure : Pince-Masse), **cascade** (une colonne d'eau tombe sur la cible : Cascade) | poussière au sol | 51 |
+| 2 | Feu (`feu`) | lueur orange → flammèches / boule → gerbe de braises | **lumière orange au sol** (§11) | 4 |
+| 3 | Eau (`eau`) | bulle qui gonfle → jet / bulles → éclaboussure | **gouttelettes ~0,5 s** (§11) | 3 |
+| 4 | Électrique (`electrique`) | étincelles sur le lanceur → arc brisé → décharge en étoile | **scène illuminée 2 images**, arbres éclairés la nuit (§10, §11) | 3 |
+| 5 | Plante (`plante`) | feuilles qui tournent → volée de feuilles / lianes / nuage de spores → feuilles qui retombent | feuillage du premier plan | 5 |
+| 6 | Glace (`glace`) | givre sur le lanceur → rayon bleu pâle / cristaux → éclats de glace, brume | voile froid bref | 3 |
 | 7 | Psy (`psy`) | yeux / aura rose → anneaux concentriques → **distorsion** de la cible | — | 6 |
-| 8 | Poison (`poison`) | bulles violettes → giclée / nuage → gouttes et vapeur | — | 7 |
-| 9 | Sol et roche (`sol_roche`) | appui lourd → pierres / os / fissure → débris, poussière, **secousse** | feuillage, poussière | 7 |
-| 10 | Vol et vent (`vent`) | battement → rafale en lignes → **plumes** et tourbillon | feuillage | 8 |
-| 11 | Spectre (`spectre`) | ombre qui s'étire → onde sombre / main → voile noir-violet | décor assombri un instant | 3 |
+| 8 | Poison (`poison`) | bulles violettes → giclée / nuage → gouttes et vapeur | — | 3 |
+| 9 | Sol et roche (`sol_roche`) | appui lourd → pierres / os / fissure → débris, poussière, **secousse** | feuillage, poussière | 1 |
+| 10 | Vol et vent (`vent`) | battement → rafale en lignes → **plumes** et tourbillon | feuillage | 6 |
+| 11 | Spectre (`spectre`) | ombre qui s'étire → onde sombre / main → voile noir-violet | décor assombri un instant | 1 |
 | 12 | Dragon (`dragon`) | aura bleu nuit → flamme bleue → éclat | — | 1 |
-| 13 | Énergie, normal spécial (`energie`) | point lumineux → étoiles (Météores) / trois rayons (Triplattaque) / rayon (Ultralaser) → éclat blanc | lumière blanche | 5 |
+| 13 | Énergie, normal spécial (`energie`) | point lumineux → étoiles (Météores) / trois rayons (Triplattaque) / rayon (Ultralaser) → éclat blanc | lumière blanche | 2 |
 | 14 | Son (`son`) | bouche ouverte → **ondes sonores** en arcs → la cible vibre | — | 6 |
-| 15 | Statut positif (`statut_plus`) | sur le lanceur : aura montante (lames pour Danse-Lames, bouclier pour Protection / Mur Lumière, flou de vitesse pour Hâte) ; la teinte de stat d'aujourd'hui reste | — | 25 |
-| 16 | Statut négatif (`statut_moins`) | regard, sable, fumée, fil… vers la cible → aura descendante sur la cible | — | 10 |
+| 15 | Statut positif (`statut_plus`) | sur le lanceur : aura montante (lames pour Danse-Lames, bouclier pour Protection / Mur Lumière, flou de vitesse pour Hâte) ; la teinte de stat d'aujourd'hui reste | — | 23 |
+| 16 | Statut négatif (`statut_moins`) | fumée… vers la cible → aura descendante sur la cible | — | 1 |
 | 17 | Soin (`soin`) | lumière verte douce, particules qui montent, la barre remonte | — | 3 |
+| 18 | Statut négatif, regard (`statut_regard`, RP-286, décision de Kevin du 2026-11-01) | regard ou geste sur le lanceur, **sans trajet** → aura descendante directement sur la cible (Groz'Yeux, Regard Médusant, Entrave) | — | 3 |
+| 19 | Statut négatif, sable (`statut_sable`, remarque de Kevin du 2026-11-02) | gerbe de grains de sable en éventail vers la cible (brique `sand_spray`, particules) → grains qui retombent, poussière (Jet de Sable) | — | 1 |
+| 20 | Statut négatif, geste (`statut_geste`, vague 1 Rouge, 2026-11-02) | comme Rouge : le lanceur **se dandine de côté** (brique `tail_wag`, 2 balancements), sans œil ni trajet → aura descendante sur la cible (Mimi-Queue) | — | 1 |
+| 21 | Fouet (`fouet`) | recul (`rear_back`) → **liane** qui part du lanceur, ondulation qui court (`whip`, feuilles peintes) → **deux claquements** (`beats` 2 : la liane se relève et retombe, étoile, la cible encaisse deux fois), puis elle se retire (Fouet Lianes) | feuillage | 1 |
+| 22 | Bulles (`bulles`) | bulle qui gonfle → **bulles rondes translucides** (art `bulle` + remplissage léger) qui partent l'une après l'autre, flottent en ondulant (`bubbles`) → elles éclatent sur la cible (flipbook `bulles_eclatent`, gouttes) ; variante `rafale` (Bulles d'O) : 11 bulles au lieu de 4, plus serrées et plus droites | gouttelettes | 2 |
+| 23 | Statut négatif, fil (`statut_fil`) | recul → **trois fils de soie tendus** du lanceur à la cible (`string`) → **trois tours de fil** se dessinent autour d'elle (`wrap`), flèches de baisse (Sécrétion) | — | 1 |
+| 24 | Dard (`dard`) | recul → **aiguille** peinte, pointe en avant, qui accélère avec une traînée violette (`needle`) → **piqûre** : éclat violet bref, gouttes de poison (`sting`) (Dard-Venin) ; vague 2 : variantes `double` (deux aiguilles côte à côte : Double-Dard), `nuee` (trois aiguilles en rafale : Dard-Nuée), `picanon` (une épine : Picanon), une volée par coup, sans course | — | 4 |
+| 25 | Poudre (`poudre`) | le lanceur s'ébroue (`powder_shake`) → **poudre qui tombe d'en haut** sur la cible en rideau, grains et scintillements (`powder_fall`, particules `SIFT`) → la poudre se dépose (`powder_settle`) ; couleur par variante : `dodo` bleue, `para` jaune, `toxik` violette, `spore` vert-beige (grains peints `spore`) | — | 4 |
+| 26 | Graine (`graine`) | recul → **trois graines en arc** (`seed_arc`, ovales bruns en code [phase DA]) → elles se posent sur la cible et **germent** (`sprout` : pousses peintes `liane` qui sortent avec un rebond) (Vampigraine) | — | 1 |
+| 27 | Chute de pierres (`chute_pierres`, vague 2) | Rouge : les pierres **tombent d'en haut** sur la cible. Gravillons et ombres qui grandissent au sol (anticipation) → chaque pierre peinte tombe en tournant (`rockfall`) → elle frappe à son claquement (`beats` = pierres), rebondit, éclats et poussière (`rock_land`) ; variante `eboulement` : quatre rochers plus gros | poussière | 2 |
+| 28 | Téléport (`teleport`, vague 2) | Rouge : le lanceur se resserre en un trait et **file vers le haut**. Il scintille (`teleport_out`) → trait de lumière qui monte, colonne peinte et étincelles (`beam_up`) ; Téléport réussi (TELEPORTED) : il reste caché, `play_vanish` du J14 ne rejoue pas le scintillement ; sinon il redescend | — | 1 |
+| 29 | Trempette (`trempette`, vague 2) | Rouge : Magicarpe **saute sur place**, rien ne part. Deux sauts (`splash_hop`), écrasé à la réception, étiré en l'air, gouttelettes à chaque retombée ; « rien ne se passe » joue les mêmes sauts (durée propre 1 s) | — | 1 |
+| 30 | Explosion (`explosion`, vague 2) | Rouge : des **explosions éclatent l'une après l'autre** sur le terrain adverse, l'écran tremble. Le lanceur gonfle et chauffe à blanc (`swell`) → éclair blanc plafonné → explosions peintes (flipbook `explosion`) tour à tour, une par claquement (`explosions`), braises, fumée ; variante `destruction` : trois au lieu de cinq ; sans rayon | lumière orange, poussière | 2 |
+| 31 | Fumée (`fumee`, vague 2) | Rouge : une **boule de fumée** part vers la cible, puis un nuage noir la couvre. Boule de fumée noire en arc, traînée de bouffées (`smoke_ball`) → volutes sombres sur la cible, qui s'assombrit (`smoke_cloud`) (Brouillard) | — | 1 |
+| 32 | Gaz (`gaz`, vague 2) | Rouge : un **nuage de gaz** glisse vers la cible. Bouffées qui partent l'une après l'autre, ondulent et gonflent (`gas_drift`) → nuage toxique peint sur la cible (`gas_cloud`) ; variante `smog` brun-violet (Gaz Toxik, Purédpois) | — | 2 |
+| 33 | Flash (`flash`, vague 2) | Rouge : **l'écran flashe en blanc**. Lueur sur le lanceur → calque blanc plein écran, deux éclairs (`screen_flash`, plafonnés par « Réduire les flashs » et 3 flashs/s) → flèches de baisse ; la cible ne tremble pas | lumière blanche | 1 |
+| 34 | Cuiller (`cuiller`, vague 2) | Rouge : souvenir incertain. La cuiller de Kadabra apparaît au-dessus du lanceur et se tord, anneaux psy (`spoon`) → la cible ondule sur place, flèches de baisse (`warp_aura`) (Télékinésie) | — | 1 |
+| 35 | Étoiles (`etoiles`, vague 2) | Rouge : des **étoiles filent** vers la cible. Six étoiles peintes à traînée qui serpentent, chacune tournée dans son sens de vol (`stars`) → scintillements (`star_burst`) (Météores) | lumière dorée | 1 |
+| 36 | Foudre (`foudre`, vague 2) | Rouge : l'écran s'assombrit et **la foudre tombe du ciel** sur la cible. Scène assombrie (`world.storm`), étincelles sur le lanceur → foudre peinte (flipbook `foudre`) du haut de l'écran sur la cible (`sky_bolt`), second éclair, éclair plein écran plafonné → décharge en étoile (Fatal-Foudre, signature) | scène assombrie puis illuminée | 1 |
+| 37 | Poing élémentaire (`poing`, vague 2) | Rouge : un **poing** frappe, puis l'élément éclate sur la cible. Course de Contact → poing peint (`poing`) → élément au contact (`element_burst`) : variantes `feu` (gerbe de braises, flammes), `glace` (éclats de glace, flocons), `eclair` (décharge, étincelles), lumière de l'élément | lumière de l'élément | 3 |
+| 38 | Os (`os`, vague 2) | Rouge : un **os** frappe la cible ; Osmerang fait l'**aller-retour**. Os peint qui tournoie (`bone`) ; variante `massue` : lancé haut, il s'abat d'en haut ; variante `boomerang` : il part en courbe, frappe, revient au lanceur par l'autre côté à chaque coup | poussière | 2 |
+| 39 | Onde Folie (`onde_folie`, vague 2) | Rouge : souvenir incertain (une lueur étrange). Sphère irisée dont la couleur tourne, anneau qui pulse, qui ondule jusqu'à la tête de la cible (`strange_orb`) → elle tourne autour en rétrécissant, la cible vacille (`dizzy`) | — | 1 |
+| 40 | Brume (`brume`, vague 2) | Rouge : souvenir incertain (brume sur l'écran). Nappes de brume peintes qui traversent tout le terrain (`field_haze`), décor assombri, puis dissipées ; aucun coup sur la cible (Buée Noire) | décor assombri | 1 |
+| 41 | Lancer (`lancer`, vague 2) | Rouge : un **œuf** (une boule pour Pilonnage) lancé qui éclate. Objet peint en cloche, qui tourne (`lob`) ; variante `oeuf` : il explose (flipbook `explosion`), éclats de coquille, fumée ; variante `pilonnage` : une boule par coup, étoile | poussière | 2 |
+| 42 | Frappe Atlas (`atlas`, vague 2) | Rouge : souvenir incertain. Course de Contact → la cible est **soulevée** en tournoyant puis **projetée au sol** (`toss`) : arrêt sur image, secousse à la chute, anneau de poussière | poussière | 1 |
+| 43 | Fissure (`fissure`, vague 2) | Rouge : souvenir incertain (longue secousse). Le lanceur frappe le sol (`stomp`) → une **fissure** peinte s'ouvre sous la cible (flipbook `fissure`), elle s'y enfonce en tremblant, mottes (`fissure_open`) (Abîme) | poussière, feuillage | 1 |
+| 44 | Tunnel (`tunnel`, vague 2) | Autour des animations du J14 (`play_burrow`, `play_surface`). Tour 1 : il creuse, la terre gicle (charge) ; tour 2 : traînée de mottes **sous le sol** jusqu'à la cible (`underground`) → le sol éclate sous elle, rochers, elle est soulevée (`eruption`) | poussière | 1 |
+
+**Vague 1 « Effets fidèles à Rouge »** (lancée par Kevin le 2026-11-02 : « on améliore l'original,
+on ne le détruit pas ») : chaque attaque reprend l'idée, le trajet et la forme de son animation
+de Rouge. Données : `variant` d'une entrée d'attaque (réglages `fx` de la famille remplacés,
+art fusionné rôle par rôle : `MoveFxCatalog.family_fx`), `fx.volley` (`count`, `stagger`, `size`,
+`wobble` : pièces d'une volée), `beats` (claquements par impact, dans `fx` ou la variante
+d'impact). Vidéo de validation : `docs/design/fiches-assets/fx-rouge-v1.mp4`.
+
+**Vague 2 « Effets fidèles à Rouge »** (demandée par Kevin le 2026-11-03 après la validation de la
+vague 1) : les 22 lignes restantes de l'audit des attaques dont le rendu trahissait la nature
+(33 attaques ; l'audit est recopié en §3.5). Même règle : idée, trajet et forme de Rouge, rendus en
+couches (§2.9). Données neuves : `families.*.duration` (durée propre d'une famille sans dégâts, CV-2
+« durée selon l'attaque » : Brouillard, Gaz Toxik 0,9 s, Trempette, Téléport, Flash, Télékinésie, Onde Folie 1 s, Buée Noire 1,2 s, Frappe
+Atlas 1,3 s [D]), `families.*.vanish` (Téléport : le lanceur reste caché si le journal dit
+TELEPORTED, `MoveFxOutcome.vanished`), `fx.light` / `fx.light_peak` / `fx.flashes` (lumière d'une
+variante), `impacts.*.roles` (art propre d'une variante d'impact), `world.storm` (Fatal-Foudre). Les
+signatures Fatal-Foudre et Explosion ont désormais leur famille (`foudre`, `explosion`). Art Codex :
+`tools/art/serie_cv_fx3.py` (flipbooks explosion, foudre, fissure ; 24 particules, planche
+`docs/design/fiches-assets/cv-fx-3/`). Vidéo de validation :
+`docs/design/fiches-assets/fx-rouge-v2.mp4`.
 
 Les nombres comptent les **165 attaques de Rouge/Bleu** : 159 dans les données (`main` et les
 branches `jalon-23` à `jalon-31`) et 6 absentes à ce jour (Coupe-Vent, Copie, E-Coque, Éboulement,
@@ -364,9 +411,11 @@ lanceur encaisse), `auto_ko` (le lanceur s'effondre), `ko_un_coup` (impact lourd
 `piege` (anneau ou flammes qui restent autour de la cible jusqu'à `TRAP_ENDED`), `recharge` (le
 lanceur halète au tour suivant), `chute` (Pied Sauté raté : le lanceur tombe).
 
-**Attaques à part** : Trempette (petit saut, rien ne part : c'est la blague de Magicarpe) ;
-Morphing (fondu vers l'apparence de la cible, selon ce que code le J31) ; Téléport et Tunnel
-gardent leurs animations du J14 ; Clonage (silhouette translucide, si le J27 l'affiche).
+**Attaques à part** : Trempette (deux sauts, rien ne part : c'est la blague de Magicarpe ; famille
+`trempette` depuis la vague 2) ; Morphing (fondu vers l'apparence de la cible, selon ce que code le
+J31) ; Téléport et Tunnel gardent leurs animations du J14 (`play_vanish`, `play_burrow`,
+`play_surface`), que les familles `teleport` et `tunnel` de la vague 2 encadrent ; Clonage
+(silhouette translucide, si le J27 l'affiche).
 
 ### 3.3 Une animation par attaque, et les signatures
 
@@ -423,6 +472,46 @@ chaîne de la phase DA (fiche de série, `tools/art/generer.sh`, planche à l'é
 de Kevin, DA-6). Le reste (rayons, arcs, ondes, anneaux, lueurs) est **dessiné en code**. Avant
 que l'atlas ne soit validé, CV.0 et CV.1 tournent avec des formes procédurales : le code ne bloque
 jamais sur l'art (levier 4).
+
+### 3.5 Audit des attaques dont le rendu trahissait la nature (2026-11-02) et ce qui a été fait
+
+Audit en lecture seule de la session des reportés FX du J33 (remis au coordinateur, recopié ici).
+« Rouge » est un souvenir de l'animation de Rouge/Bleu ; « ? » : souvenir incertain. Lignes 1 à 8 :
+vague 1 (`fx-rouge-v1.mp4`) ; lignes 9 à 30 : vague 2 (`fx-rouge-v2.mp4`) ; ligne 31 : à confirmer.
+
+| # | Attaque | Rendu d'avant | Rouge | Fait (famille) |
+|---|---|---|---|---|
+| 1 | Mimi-Queue | œil (`statut_regard`) | le lanceur se dandine (?) | vague 1, `statut_geste` |
+| 2 | Fouet Lianes | volée de feuilles | coup de fouet (?) | vague 1, `fouet` |
+| 3 | Écume, Bulles d'O | jet continu | bulles vers la cible | vague 1, `bulles` |
+| 4 | Sécrétion | lueur | fils, cible entourée (?) | vague 1, `statut_fil` |
+| 5 | Dard-Venin | giclée | aiguille vers la cible | vague 1, `dard` |
+| 6 | Picpic, Bec Vrille | rafale de vent | marques sur la cible (?) | vague 1, Contact `bec`, `vrille` |
+| 7 | Poudres et Spore | feuilles ou giclée | poudre qui tombe d'en haut | vague 1, `poudre` |
+| 8 | Vampigraine | feuilles | graines qui germent | vague 1, `graine` |
+| 9 | Double-Dard, Dard-Nuée, Picanon | le lanceur fonce | aiguilles qui volent vers la cible | `dard` (`double`, `nuee`, `picanon`) |
+| 10 | Jet-Pierres | caillou lancé | pierres qui tombent sur la cible (?) | `chute_pierres` |
+| 11 | Téléport | aura | le lanceur file vers le haut (?) | `teleport` |
+| 12 | Trempette | aura | le sprite rebondit (?) | `trempette` |
+| 13 | Explosion, Destruction | rayon puis éclat | explosions, écran qui tremble (?) | `explosion` (`destruction`) |
+| 14 | Jackpot | coup | pièces sur la cible (?) | Contact `pieces` |
+| 15 | Brouillard | lueur | boule de fumée puis nuage (?) | `fumee` |
+| 16 | Gaz Toxik, Purédpois | giclée | nuage sur la cible (?) | `gaz` (`smog`) |
+| 17 | Flash | lueur | l'écran clignote en blanc | `flash` |
+| 18 | Télékinésie | lueur | ? | `cuiller` |
+| 19 | Météores | rayon | étoiles vers la cible | `etoiles` |
+| 20 | Fatal-Foudre (« Tonnerre » dans l'audit, `thunder`) | arc depuis le lanceur | éclair d'en haut sur la cible | `foudre` |
+| 21 | Éboulement | caillou lancé | rochers qui tombent | `chute_pierres` (`eboulement`) |
+| 22 | Poing de Feu, Poing-Glace, Poing-Éclair | projectile ou rayon | poing puis élément (?) | `poing` (`feu`, `glace`, `eclair`) |
+| 23 | Léchouille | onde sombre | ? | Contact `langue` |
+| 24 | Massd'Os, Osmerang | caillou | os, aller-retour (?) | `os` (`massue`, `boomerang`) |
+| 25 | Onde Folie | orbe sombre | ? | `onde_folie` |
+| 26 | Buée Noire | rayon de glace | brume à l'écran (?) | `brume` |
+| 27 | Claquoir, Pince-Masse, Cascade | jet | ? | Contact `claquoir`, `pince_masse`, `cascade` |
+| 28 | Bomb'Œuf, Pilonnage | le lanceur fonce | objet lancé (?) | `lancer` (`oeuf`, `pilonnage`) |
+| 29 | Frappe Atlas | onde de choc | ? | `atlas` |
+| 30 | Abîme, Tunnel | caillou | ? | `fissure`, `tunnel` |
+| 31 | Regard Médusant, Entrave, Groz'Yeux | `statut_regard` | à confirmer | inchangé (RP-286) |
 
 ## 4. Statuts visibles et retours de PV
 
@@ -645,29 +734,29 @@ sans arbitrage.
 | `agility` | Hâte | Psy | statut | statut_plus |  |  |  | main |
 | `amnesia` | Amnésie | Psy | statut | statut_plus |  |  |  | main |
 | `aurora_beam` | Onde Boréale | Glace | spé. | glace |  |  |  | main |
-| `barrage` | Pilonnage | Normal | phys. | contact | corps | multi |  | main |
+| `barrage` | Pilonnage | Normal | phys. | lancer (pilonnage) |  | multi |  | main |
 | `barrier` | Bouclier | Psy | statut | statut_plus |  |  |  | main |
 | `bide` | Patience | Normal | statut | contact | corps |  |  | main |
 | `bind` | Étreinte | Normal | phys. | contact | corps | piege |  | main |
 | `bite` | Morsure | Ténèbres | phys. | contact | crocs |  |  | main |
 | `blizzard` | Blizzard | Glace | spé. | glace |  |  | **oui** | main |
 | `body_slam` | Plaquage | Normal | phys. | contact | corps |  |  | main |
-| `bone_club` | Massd'Os | Sol | phys. | sol_roche |  |  |  | main |
-| `bonemerang` | Osmerang | Sol | phys. | sol_roche |  | multi |  | main |
-| `bubble` | Écume | Eau | spé. | eau |  |  |  | main |
-| `bubble_beam` | Bulles d'O | Eau | spé. | eau |  |  |  | main |
-| `clamp` | Claquoir | Eau | phys. | eau |  | piege |  | main |
+| `bone_club` | Massd'Os | Sol | phys. | os (massue) |  |  |  | main |
+| `bonemerang` | Osmerang | Sol | phys. | os (boomerang) |  | multi |  | main |
+| `bubble` | Écume | Eau | spé. | bulles |  |  |  | main |
+| `bubble_beam` | Bulles d'O | Eau | spé. | bulles (variante `rafale`) |  |  |  | main |
+| `clamp` | Claquoir | Eau | phys. | contact | claquoir | piege |  | main |
 | `comet_punch` | Poing Comète | Normal | phys. | contact | coup | multi |  | main |
-| `confuse_ray` | Onde Folie | Spectre | statut | spectre |  |  |  | main |
+| `confuse_ray` | Onde Folie | Spectre | statut | onde_folie |  |  |  | main |
 | `confusion` | Choc Mental | Psy | spé. | psy |  |  |  | main |
 | `constrict` | Constriction | Normal | phys. | contact | corps |  |  | main |
 | `conversion` | Conversion | Normal | statut | statut_plus |  |  |  | absente |
 | `counter` | Riposte | Combat | statut | contact | corps |  |  | jalon-27 |
-| `crabhammer` | Pince-Masse | Eau | phys. | eau |  |  |  | main |
+| `crabhammer` | Pince-Masse | Eau | phys. | contact | pince_masse |  |  | main |
 | `cut` | Coupe | Normal | phys. | contact | griffe |  |  | main |
 | `defense_curl` | Boul'Armure | Normal | statut | statut_plus |  |  |  | main |
-| `dig` | Tunnel | Sol | phys. | sol_roche |  | charge |  | main |
-| `disable` | Entrave | Normal | statut | statut_moins |  |  |  | main |
+| `dig` | Tunnel | Sol | phys. | tunnel |  | charge |  | main |
+| `disable` | Entrave | Normal | statut | statut_regard |  |  |  | main |
 | `dizzy_punch` | Uppercut | Normal | phys. | contact | coup |  |  | main |
 | `double_edge` | Damoclès | Normal | phys. | contact | corps | contrecoup |  | main |
 | `double_kick` | Double Pied | Combat | phys. | contact | coup | multi |  | main |
@@ -675,28 +764,28 @@ sans arbitrage.
 | `double_team` | Reflet | Normal | statut | statut_plus |  |  |  | jalon-23 |
 | `dragon_rage` | Draco-Rage | Dragon | statut | dragon |  |  |  | main |
 | `dream_eater` | Dévorêve | Psy | spé. | psy |  | drain |  | main |
-| `drill_peck` | Bec Vrille | Vol | phys. | vent |  |  |  | main |
+| `drill_peck` | Bec Vrille | Vol | phys. | contact | vrille |  |  | main |
 | `earthquake` | Séisme | Sol | phys. | sol_roche |  |  | **oui** | main |
-| `egg_bomb` | Bomb'Œuf | Normal | phys. | contact | corps |  |  | jalon-23 |
+| `egg_bomb` | Bomb'Œuf | Normal | phys. | lancer (oeuf) |  |  |  | jalon-23 |
 | `ember` | Flammèche | Feu | spé. | feu |  |  |  | main |
-| `explosion` | Explosion | Normal | phys. | energie |  | auto_ko | **oui** | main |
+| `explosion` | Explosion | Normal | phys. | explosion |  | auto_ko | **oui** | main |
 | `fire_blast` | Déflagration | Feu | spé. | feu |  |  | **oui** | main |
-| `fire_punch` | Poing de Feu | Feu | phys. | feu |  |  |  | main |
+| `fire_punch` | Poing de Feu | Feu | phys. | poing (feu) | poing |  |  | main |
 | `fire_spin` | Danse Flamme | Feu | spé. | feu |  | piege |  | main |
-| `fissure` | Abîme | Sol | statut | sol_roche |  | ko_un_coup |  | jalon-28 |
+| `fissure` | Abîme | Sol | statut | fissure |  | ko_un_coup |  | jalon-28 |
 | `flamethrower` | Lance-Flammes | Feu | spé. | feu |  |  | **oui** | main |
-| `flash` | Flash | Normal | statut | statut_moins |  |  |  | main |
+| `flash` | Flash | Normal | statut | flash |  |  |  | main |
 | `fly` | Vol | Vol | phys. | vent |  | charge |  | main |
 | `focus_energy` | Puissance | Normal | statut | statut_plus |  |  |  | main |
 | `fury_attack` | Furie | Normal | phys. | contact | percant | multi |  | main |
 | `fury_swipes` | Combo-Griffe | Normal | phys. | contact | griffe | multi |  | main |
-| `glare` | Regard Médusant | Normal | statut | statut_moins |  |  |  | main |
+| `glare` | Regard Médusant | Normal | statut | statut_regard |  |  |  | main |
 | `growl` | Rugissement | Normal | statut | son |  |  |  | main |
 | `growth` | Croissance | Normal | statut | statut_plus |  |  |  | main |
 | `guillotine` | Guillotine | Normal | statut | contact | griffe | ko_un_coup |  | main |
 | `gust` | Tornade | Vol | spé. | vent |  |  |  | main |
 | `harden` | Armure | Normal | statut | statut_plus |  |  |  | main |
-| `haze` | Buée Noire | Glace | statut | glace |  |  |  | main |
+| `haze` | Buée Noire | Glace | statut | brume |  |  |  | main |
 | `headbutt` | Coup d'Boule | Normal | phys. | contact | corps |  |  | main |
 | `hi_jump_kick` | Pied Voltige | Combat | phys. | contact | coup | chute |  | jalon-27 |
 | `horn_attack` | Koud'Korne | Normal | phys. | contact | percant |  |  | main |
@@ -706,14 +795,14 @@ sans arbitrage.
 | `hyper_fang` | Croc de Mort | Normal | phys. | contact | crocs |  |  | main |
 | `hypnosis` | Hypnose | Psy | statut | psy |  |  |  | main |
 | `ice_beam` | Laser Glace | Glace | spé. | glace |  |  |  | main |
-| `ice_punch` | Poing-Glace | Glace | phys. | glace |  |  |  | jalon-27 |
+| `ice_punch` | Poing-Glace | Glace | phys. | poing (glace) | poing |  |  | jalon-27 |
 | `jump_kick` | Pied Sauté | Combat | phys. | contact | coup | chute |  | jalon-27 |
 | `karate_chop` | Poing Karaté | Combat | phys. | contact | coup |  |  | main |
-| `kinesis` | Télékinésie | Psy | statut | statut_moins |  |  |  | jalon-27 |
+| `kinesis` | Télékinésie | Psy | statut | cuiller |  |  |  | jalon-27 |
 | `leech_life` | Vampirisme | Insecte | phys. | contact | percant | drain |  | main |
-| `leech_seed` | Vampigraine | Plante | statut | plante |  |  |  | main |
-| `leer` | Groz'Yeux | Normal | statut | statut_moins |  |  |  | main |
-| `lick` | Léchouille | Spectre | phys. | spectre |  |  |  | main |
+| `leech_seed` | Vampigraine | Plante | statut | graine |  |  |  | main |
+| `leer` | Groz'Yeux | Normal | statut | statut_regard |  |  |  | main |
+| `lick` | Léchouille | Spectre | phys. | contact | langue |  |  | main |
 | `light_screen` | Mur Lumière | Psy | statut | statut_plus |  |  |  | main |
 | `lovely_kiss` | Grobisou | Normal | statut | statut_moins |  |  |  | jalon-30 |
 | `low_kick` | Balayage | Combat | phys. | contact | coup |  |  | main |
@@ -727,13 +816,13 @@ sans arbitrage.
 | `mirror_move` | Mimique | Vol | statut | statut_plus |  |  |  | main |
 | `mist` | Brume | Glace | statut | statut_plus |  |  |  | main |
 | `night_shade` | Ténèbres | Spectre | statut | spectre |  |  |  | main |
-| `pay_day` | Jackpot | Normal | phys. | contact | coup |  |  | main |
-| `peck` | Picpic | Vol | phys. | vent |  |  |  | main |
+| `pay_day` | Jackpot | Normal | phys. | contact | pieces |  |  | main |
+| `peck` | Picpic | Vol | phys. | contact | bec |  |  | main |
 | `petal_dance` | Danse Fleur | Plante | spé. | plante |  |  |  | main |
-| `pin_missile` | Dard-Nuée | Insecte | phys. | contact | percant | multi |  | main |
-| `poison_gas` | Gaz Toxik | Poison | statut | poison |  |  |  | main |
-| `poison_powder` | Poudre Toxik | Poison | statut | poison |  |  |  | main |
-| `poison_sting` | Dard-Venin | Poison | phys. | poison |  |  |  | main |
+| `pin_missile` | Dard-Nuée | Insecte | phys. | dard (nuee) |  | multi |  | main |
+| `poison_gas` | Gaz Toxik | Poison | statut | gaz |  |  |  | main |
+| `poison_powder` | Poudre Toxik | Poison | statut | poudre (variante `toxik`) |  |  |  | main |
+| `poison_sting` | Dard-Venin | Poison | phys. | dard |  |  |  | main |
 | `pound` | Écras'Face | Normal | phys. | contact | coup |  |  | main |
 | `psybeam` | Rafale Psy | Psy | spé. | psy |  |  |  | main |
 | `psychic` | Psyko | Psy | spé. | psy |  |  | **oui** | main |
@@ -746,60 +835,60 @@ sans arbitrage.
 | `reflect` | Protection | Psy | statut | statut_plus |  |  |  | main |
 | `rest` | Repos | Psy | statut | soin |  |  |  | main |
 | `roar` | Hurlement | Normal | statut | son |  |  |  | main |
-| `rock_slide` | Éboulement | Roche | phys. | sol_roche |  |  |  | absente |
-| `rock_throw` | Jet-Pierres | Roche | phys. | sol_roche |  |  |  | main |
+| `rock_slide` | Éboulement | Roche | phys. | chute_pierres (eboulement) |  |  |  | absente |
+| `rock_throw` | Jet-Pierres | Roche | phys. | chute_pierres |  |  |  | main |
 | `rolling_kick` | Mawashi Geri | Combat | phys. | contact | coup |  |  | jalon-27 |
-| `sand_attack` | Jet de Sable | Sol | statut | statut_moins |  |  |  | main |
+| `sand_attack` | Jet de Sable | Sol | statut | statut_sable |  |  |  | main |
 | `scratch` | Griffe | Normal | phys. | contact | griffe |  |  | main |
 | `screech` | Grincement | Normal | statut | son |  |  |  | main |
-| `seismic_toss` | Frappe Atlas | Combat | statut | contact | corps |  |  | main |
-| `self_destruct` | Destruction | Normal | phys. | energie |  | auto_ko | **oui** | main |
+| `seismic_toss` | Frappe Atlas | Combat | statut | atlas | atlas |  |  | main |
+| `self_destruct` | Destruction | Normal | phys. | explosion (destruction) |  | auto_ko | **oui** | main |
 | `sharpen` | Affûtage | Normal | statut | statut_plus |  |  |  | absente |
 | `sing` | Berceuse | Normal | statut | son |  |  |  | main |
 | `skull_bash` | Coud'Krâne | Normal | phys. | contact | corps | charge |  | main |
 | `sky_attack` | Piqué | Vol | phys. | vent |  | charge |  | jalon-29 |
 | `slam` | Souplesse | Normal | phys. | contact | corps |  |  | main |
 | `slash` | Tranche | Normal | phys. | contact | griffe |  |  | main |
-| `sleep_powder` | Poudre Dodo | Plante | statut | plante |  |  |  | main |
+| `sleep_powder` | Poudre Dodo | Plante | statut | poudre (variante `dodo`) |  |  |  | main |
 | `sludge` | Détritus | Poison | spé. | poison |  |  |  | main |
-| `smog` | Purédpois | Poison | spé. | poison |  |  |  | main |
-| `smokescreen` | Brouillard | Normal | statut | statut_moins |  |  |  | main |
+| `smog` | Purédpois | Poison | spé. | gaz (smog) |  |  |  | main |
+| `smokescreen` | Brouillard | Normal | statut | fumee |  |  |  | main |
 | `soft_boiled` | E-Coque | Normal | statut | soin |  |  |  | absente |
 | `solar_beam` | Lance-Soleil | Plante | spé. | plante |  | charge | **oui** | main |
 | `sonic_boom` | Sonicboom | Normal | statut | son |  |  |  | main |
-| `spike_cannon` | Picanon | Normal | phys. | contact | percant | multi |  | main |
-| `splash` | Trempette | Normal | statut | statut_plus |  |  |  | main |
-| `spore` | Spore | Plante | statut | plante |  |  |  | main |
+| `spike_cannon` | Picanon | Normal | phys. | dard (picanon) |  | multi |  | main |
+| `splash` | Trempette | Normal | statut | trempette |  |  |  | main |
+| `spore` | Spore | Plante | statut | poudre (variante `spore`) |  |  |  | main |
 | `stomp` | Écrasement | Normal | phys. | contact | coup |  |  | main |
 | `strength` | Force | Normal | phys. | contact | corps |  |  | main |
-| `string_shot` | Sécrétion | Insecte | statut | statut_moins |  |  |  | main |
+| `string_shot` | Sécrétion | Insecte | statut | statut_fil |  |  |  | main |
 | `struggle` | Lutte | Normal | phys. | contact | corps | contrecoup |  | main |
-| `stun_spore` | Para-Spore | Plante | statut | plante |  |  |  | main |
+| `stun_spore` | Para-Spore | Plante | statut | poudre (variante `para`) |  |  |  | main |
 | `submission` | Sacrifice | Combat | phys. | contact | corps | contrecoup |  | main |
 | `substitute` | Clonage | Normal | statut | statut_plus |  |  |  | jalon-27 |
 | `super_fang` | Croc Fatal | Normal | statut | contact | crocs |  |  | main |
 | `supersonic` | Ultrason | Normal | statut | son |  |  |  | main |
 | `surf` | Surf | Eau | spé. | eau |  |  | **oui** | main |
-| `swift` | Météores | Normal | spé. | energie |  |  |  | main |
+| `swift` | Météores | Normal | spé. | etoiles |  |  |  | main |
 | `swords_dance` | Danse-Lames | Normal | statut | statut_plus |  |  |  | main |
 | `tackle` | Charge | Normal | phys. | contact | corps |  |  | main |
-| `tail_whip` | Mimi-Queue | Normal | statut | statut_moins |  |  |  | main |
+| `tail_whip` | Mimi-Queue | Normal | statut | statut_geste |  |  |  | main |
 | `take_down` | Bélier | Normal | phys. | contact | corps | contrecoup |  | main |
-| `teleport` | Téléport | Psy | statut | statut_plus |  |  |  | main |
+| `teleport` | Téléport | Psy | statut | teleport |  |  |  | main |
 | `thrash` | Mania | Normal | phys. | contact | corps |  |  | main |
-| `thunder` | Fatal-Foudre | Électrik | spé. | electrique |  |  | **oui** | main |
-| `thunder_punch` | Poing-Éclair | Électrik | phys. | electrique |  |  |  | jalon-27 |
+| `thunder` | Fatal-Foudre | Électrik | spé. | foudre |  |  | **oui** | main |
+| `thunder_punch` | Poing-Éclair | Électrik | phys. | poing (eclair) | poing |  |  | jalon-27 |
 | `thunder_shock` | Éclair | Électrik | spé. | electrique |  |  | **oui** | main |
 | `thunder_wave` | Cage-Éclair | Électrik | statut | electrique |  |  |  | main |
 | `thunderbolt` | Tonnerre | Électrik | spé. | electrique |  |  | **oui** | main |
 | `toxic` | Toxik | Poison | statut | poison |  |  |  | jalon-23 |
 | `transform` | Morphing | Normal | statut | statut_plus |  |  |  | jalon-31 |
 | `tri_attack` | Triplattaque | Normal | spé. | energie |  |  |  | main |
-| `twineedle` | Double-Dard | Insecte | phys. | contact | percant | multi |  | main |
-| `vine_whip` | Fouet Lianes | Plante | phys. | plante |  |  |  | main |
+| `twineedle` | Double-Dard | Insecte | phys. | dard (double) |  | multi |  | main |
+| `vine_whip` | Fouet Lianes | Plante | phys. | fouet |  |  |  | main |
 | `vise_grip` | Force Poigne | Normal | phys. | contact | griffe |  |  | main |
 | `water_gun` | Pistolet à O | Eau | spé. | eau |  |  |  | main |
-| `waterfall` | Cascade | Eau | phys. | eau |  |  |  | main |
+| `waterfall` | Cascade | Eau | phys. | contact | cascade |  |  | main |
 | `whirlwind` | Cyclone | Normal | statut | vent |  |  |  | main |
 | `wing_attack` | Cru-Ailes | Vol | phys. | vent |  |  |  | main |
 | `withdraw` | Repli | Eau | statut | statut_plus |  |  |  | main |

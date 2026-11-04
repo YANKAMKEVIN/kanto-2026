@@ -277,6 +277,7 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		for event: BattleEvent in opening:
 			if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE:
 				event.revealed = true
+	_warm_up_move_fx([party, request.foe_party] as Array[Party])
 	# Entrée (~1 s, jamais d'écran noir) : intro sauvage dans le décor (herbe, partenaire qui
 	# entre en courant) ou entrée du dresseur (PNJ Pokémon du monde cachés, sprites de combat).
 	var camera := _player.get_camera() if is_instance_valid(_player) else null
@@ -701,6 +702,18 @@ func _move_fx_plan(events: Array[BattleEvent], index: int) -> MoveFxPlan:
 	var entry := _fx_catalog.entry(move.id, move.type, category)
 	return MoveFxPlan.build(_fx_catalog, entry, move, outcome, _stage.move_fx_mode(),
 		_stage.reduce_flashes)
+
+
+## RP-263 : prépare, pendant l'entrée en combat, les effets des attaques connues de
+## [param parties] (catalogue lu, éléments de rendu dessinés une fois, [MoveFxWarmup]).
+## Rend le nombre d'éléments dessinés (tests).
+func _warm_up_move_fx(parties: Array[Party]) -> int:
+	if not is_instance_valid(_stage) or not MoveFxPlayer.warmup_enabled:
+		return 0
+	if _fx_catalog == null:
+		_fx_catalog = MoveFxCatalog.load_dir()
+	return _stage.warm_up_move_fx(MoveFxWarmup.plans_for(_fx_catalog, _data, parties,
+		_stage.move_fx_mode()))
 
 
 ## Journal de QA (builds debug seulement) : chaque gain d'XP et montée de niveau, lisibles

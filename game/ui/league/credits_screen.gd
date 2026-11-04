@@ -12,7 +12,7 @@ extends CanvasLayer
 ## Fin du générique (après son fondu de sortie).
 signal finished
 
-const LOGO: Texture2D = preload("res://assets/ui/opening/logo_kanto_2026.png")
+const LOGO: Texture2D = preload("res://assets/ui/opening/logo_pokemake.png")
 
 var speed_scale: float = 1.0
 ## Libellé du bouton « passer » (`data/story/credits.json`, « skip »).

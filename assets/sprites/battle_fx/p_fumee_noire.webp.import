@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://delwfvgnh21cd"
-path="res://.godot/imported/splash_kanto_2026.png-c207f51c1ca26429796f0b6e62eb83d8.ctex"
+uid="uid://b085mahbqso12"
+path="res://.godot/imported/p_fumee_noire.webp-ec07f071c4ad6036ddeff77765e5005b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/opening/splash_kanto_2026.png"
-dest_files=["res://.godot/imported/splash_kanto_2026.png-c207f51c1ca26429796f0b6e62eb83d8.ctex"]
+source_file="res://assets/sprites/battle_fx/p_fumee_noire.webp"
+dest_files=["res://.godot/imported/p_fumee_noire.webp-ec07f071c4ad6036ddeff77765e5005b.ctex"]
 
 [params]
 
