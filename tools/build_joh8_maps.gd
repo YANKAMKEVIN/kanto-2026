@@ -88,6 +88,12 @@ const EXAMS: Dictionary = {
 const FACADES: Dictionary = {
 	&"bell_tower_woods": [["TourCarillon", Rect2i(8, 1, 8, 5), Color(0.45, 0.22, 0.14)]],
 }
+## Objets de décor en aplat provisoire [D] : (carte) → [nœud, rectangle de cases, couleur, liseré].
+const PIECES: Dictionary = {
+	&"bell_tower_1f": [["Autel", Rect2i(9, 1, 6, 2), Color(0.55, 0.12, 0.1), Color(0.85, 0.7, 0.35)]],
+	&"bell_tower_roof": [["GrandeCloche", Rect2i(8, 1, 4, 3), Color(0.45, 0.33, 0.18),
+		Color(0.75, 0.6, 0.3)]],
+}
 const FACINGS: Dictionary = {"up": Vector2i.UP, "down": Vector2i.DOWN, "left": Vector2i.LEFT,
 	"right": Vector2i.RIGHT}
 const COLOR_LANTERN := Color(0.62, 0.6, 0.55)
@@ -174,6 +180,7 @@ func _build(spec: Dictionary) -> void:
 				blocked.append(cell)
 	_add_positions(map_id, plan, root, blocked)
 	_add_facades(map_id, root)
+	_add_pieces(map_id, root)
 	root.set(&"blocked_cells", blocked)
 	_save(root, MAPS_DIR + "%s.tscn" % map_id)
 
@@ -496,6 +503,33 @@ func _add_facades(map_id: StringName, root: Node) -> void:
 				y + TILE * 0.6)])
 			roof.color = Color(0.62, 0.18, 0.12)
 			_attach(root, root.get_node(^"Decor"), roof)
+
+
+## Autel du 1F, grande cloche du sommet : aplats provisoires sur leur emprise bloquée [D].
+func _add_pieces(map_id: StringName, root: Node) -> void:
+	for entry: Array in PIECES.get(map_id, []):
+		var rect: Rect2i = entry[1]
+		var top_left := Vector2(rect.position) * TILE
+		var size := Vector2(rect.size) * TILE
+		var body := Polygon2D.new()
+		body.name = entry[0]
+		if entry[0] == "GrandeCloche":
+			body.polygon = PackedVector2Array([top_left + Vector2(size.x * 0.3, 0),
+				top_left + Vector2(size.x * 0.7, 0), top_left + Vector2(size.x * 0.95, size.y * 0.9),
+				top_left + Vector2(size.x * 0.05, size.y * 0.9)])
+		else:
+			body.polygon = PackedVector2Array([top_left + Vector2(8, 8),
+				top_left + Vector2(size.x - 8, 8), top_left + size - Vector2(8, 8),
+				top_left + Vector2(8, size.y - 8)])
+		body.color = entry[2]
+		_attach(root, root.get_node(^"Decor"), body)
+		var rim := Line2D.new()
+		rim.name = entry[0] + "Liseré"
+		rim.points = body.polygon
+		rim.closed = true
+		rim.width = 8.0
+		rim.default_color = entry[3]
+		_attach(root, root.get_node(^"Decor"), rim)
 
 
 func _save(root: Node, path: String) -> void:

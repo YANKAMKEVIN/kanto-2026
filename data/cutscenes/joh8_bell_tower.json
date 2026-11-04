@@ -380,6 +380,17 @@
 				],
 				"steps": [
 					{
+						"move": "player",
+						"to": [
+							9,
+							7
+						]
+					},
+					{
+						"face": "player",
+						"to": "dante"
+					},
+					{
 						"face": "dante",
 						"to": "player"
 					},
@@ -609,6 +620,17 @@
 					"johto_dante_fled_1"
 				],
 				"steps": [
+					{
+						"move": "player",
+						"to": [
+							9,
+							7
+						]
+					},
+					{
+						"face": "player",
+						"to": "dante"
+					},
 					{
 						"face": "dante",
 						"to": "player"

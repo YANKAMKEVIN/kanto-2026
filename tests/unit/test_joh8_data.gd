@@ -31,7 +31,7 @@ const FLAGS: Array[StringName] = [&"johto_bell_tower_open", &"johto_dante_met",
 	&"johto_dante_defeated_1", &"johto_ho_oh_seen", &"johto_dante_fled_1", &"johto_entei_done",
 	&"johto_ho_oh_done", &"johto_act3"]
 const DEBUG_STARTS: Array[String] = ["johto_bell_tower_rosalia", "johto_bell_tower_woods",
-	"johto_bell_tower_2f", "johto_bell_tower_roof", "johto_bell_tower_roof_autosave",
+	"johto_bell_tower_1f", "johto_bell_tower_2f", "johto_bell_tower_roof", "johto_bell_tower_roof_autosave",
 	"johto_bell_tower_entei", "johto_bell_tower_after"]
 
 var _dialogues: DialogueLibrary

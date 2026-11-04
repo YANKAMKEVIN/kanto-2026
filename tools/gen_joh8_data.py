@@ -362,13 +362,16 @@ def roof_scenes():
 		{"set": [MET]},
 	]
 	tail = bell_steps() + flight_steps() + entei_steps() + ho_oh_steps("ho_oh", True)
+	# Reprises : le joueur revient d'abord en (9, 7), face à Dante (Ho-Oh descend en (9, 6)).
+	stand = [{"move": "player", "to": STAND}, {"face": "player", "to": "dante"},
+		{"face": "dante", "to": "player"}]
 	return {
 		# Déclencheur (3, 3), seule sortie du palier : H-13 à H-25 et les deux combats fixes.
 		"bell_tower_summit": {"variants": [{"unless": [BEATEN], "steps": arrival + fight_steps() + tail}]},
 		# Reprises (application coupée au milieu) : parler à Dante, Entei, Ho-Oh.
 		"bell_tower_dante_resume_bell": {"variants": [
-			{"if": [BEATEN], "unless": [SEEN], "steps": [{"face": "dante", "to": "player"}] + tail},
-			{"if": [SEEN], "unless": [FLED], "steps": [{"face": "dante", "to": "player"}]
+			{"if": [BEATEN], "unless": [SEEN], "steps": stand + tail},
+			{"if": [SEEN], "unless": [FLED], "steps": stand
 				+ [{"dialogue": "bell_tower_dante_refused"}] + flight_steps() + entei_steps()
 				+ ho_oh_steps("ho_oh", True)},
 			{"unless": [BEATEN], "steps": [{"move": "player", "to": STAND}, {"face": "player", "to": "dante"},

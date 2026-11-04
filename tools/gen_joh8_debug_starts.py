@@ -60,6 +60,9 @@ STARTS = {
 	# Bois de la Tour, tour ouverte : Sbire de guet, objets, porte.
 	"johto_bell_tower_woods": {"map": "bell_tower_woods", "spawn": "from_ecruteak", "facing": "up",
 		"extra": ["johto_bell_tower_open"]},
+	# 1F : sages assommés, Sbire V devant l'escalier.
+	"johto_bell_tower_1f": {"map": "bell_tower_1f", "spawn": "from_woods", "facing": "up",
+		"extra": ["johto_bell_tower_open"]},
 	# 2F : planches qui cèdent, Hiroshi, Sbire W, long escalier.
 	"johto_bell_tower_2f": {"map": "bell_tower_2f", "spawn": "from_1f", "facing": "down",
 		"extra": ["johto_bell_tower_open"]},
@@ -86,7 +89,11 @@ def main():
 		data = {"map": spec["map"], "spawn": spec["spawn"], "facing": spec["facing"],
 			"flags": KANTO + JOHTO + spec["extra"], "party": PARTY, "companion": 0,
 			"bag": dict(BAG, **spec.get("bag", {})), "money": 80000, "discovered": DISCOVERED,
-			"rest_point": "ecruteak_center"}
+}
+		# Point de repos de Rosalia (JOH2) : seulement quand son Centre est un point de repos.
+		with open(os.path.join(ROOT, "data", "world", "rest_points.json"), encoding="utf-8") as handle:
+			if "ecruteak_center" in handle.read():
+				data["rest_point"] = "ecruteak_center"
 		if spec.get("autosave"):
 			data["autosave"] = True
 		path = os.path.join(OUT, name + ".json")
