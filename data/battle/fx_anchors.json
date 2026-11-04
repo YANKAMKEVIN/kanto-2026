@@ -6367,7 +6367,7 @@
   },
   "097": {
    "id": "hypno",
-   "name": "Hypno",
+   "name": "Hypnomade",
    "front": {
     "image": "assets/sprites/pokemon/official/097.png",
     "size": [
@@ -9937,9 +9937,3204 @@
    },
    "back": {
     "image": "assets/sprites/pokemon/placeholder/mew_back.png",
-    "size": [64, 64],
-    "box": [3, 1, 59, 60],
-    "points": {"tete": [0.58, 0.29], "yeux": [[0.49, 0.28], [0.68, 0.32]], "queue": [0.59, 0.02], "centre": [0.494, 0.45]}
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     3,
+     1,
+     59,
+     60
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.29
+     ],
+     "yeux": [
+      [
+       0.49,
+       0.28
+      ],
+      [
+       0.68,
+       0.32
+      ]
+     ],
+     "queue": [
+      0.59,
+      0.02
+     ],
+     "centre": [
+      0.495,
+      0.449
+     ]
+    }
+   }
+  },
+  "152": {
+   "id": "chikorita",
+   "name": "Germignon",
+   "front": {
+    "image": "assets/sprites/pokemon/official/152.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     72,
+     22,
+     330,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.33,
+      0.52
+     ],
+     "bouche": [
+      0.26,
+      0.64
+     ],
+     "yeux": [
+      [
+       0.17,
+       0.57
+      ],
+      [
+       0.38,
+       0.54
+      ]
+     ],
+     "centre": [
+      0.439,
+      0.529
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_152.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     109,
+     24,
+     805,
+     1000
+    ],
+    "points": {
+     "centre": [
+      0.527,
+      0.527
+     ]
+    }
+   }
+  },
+  "153": {
+   "id": "bayleef",
+   "name": "Macronium",
+   "front": {
+    "image": "assets/sprites/pokemon/official/153.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     110,
+     22,
+     254,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.26,
+      0.37
+     ],
+     "bouche": [
+      0.23,
+      0.43
+     ],
+     "queue": [
+      0.93,
+      0.62
+     ],
+     "centre": [
+      0.451,
+      0.608
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/bayleef_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "154": {
+   "id": "meganium",
+   "name": "Méganium",
+   "front": {
+    "image": "assets/sprites/pokemon/official/154.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     117,
+     22,
+     240,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.25
+     ],
+     "bouche": [
+      0.48,
+      0.32
+     ],
+     "cornes": [
+      0.36,
+      0.06
+     ],
+     "centre": [
+      0.532,
+      0.618
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/meganium_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "155": {
+   "id": "cyndaquil",
+   "name": "Héricendre",
+   "front": {
+    "image": "assets/sprites/pokemon/official/155.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     73,
+     431,
+     329
+    ],
+    "points": {
+     "tete": [
+      0.68,
+      0.38
+     ],
+     "bouche": [
+      0.95,
+      0.53
+     ],
+     "queue": [
+      0.25,
+      0.41
+     ],
+     "centre": [
+      0.513,
+      0.507
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_155.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     14,
+     24,
+     995,
+     1000
+    ],
+    "points": {
+     "centre": [
+      0.449,
+      0.573
+     ]
+    }
+   }
+  },
+  "156": {
+   "id": "quilava",
+   "name": "Feurisson",
+   "front": {
+    "image": "assets/sprites/pokemon/official/156.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     107,
+     22,
+     261,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.31
+     ],
+     "bouche": [
+      0.68,
+      0.4
+     ],
+     "queue": [
+      0.85,
+      0.62
+     ],
+     "cornes": [
+      0.47,
+      0.09
+     ],
+     "centre": [
+      0.478,
+      0.582
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/quilava_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "157": {
+   "id": "typhlosion",
+   "name": "Typhlosion",
+   "front": {
+    "image": "assets/sprites/pokemon/official/157.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     92,
+     22,
+     291,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.3,
+      0.1
+     ],
+     "bouche": [
+      0.3,
+      0.17
+     ],
+     "mains": [
+      [
+       0.03,
+       0.49
+      ],
+      [
+       0.84,
+       0.49
+      ]
+     ],
+     "queue": [
+      0.68,
+      0.14
+     ],
+     "centre": [
+      0.467,
+      0.501
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/typhlosion_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "158": {
+   "id": "totodile",
+   "name": "Kaiminus",
+   "front": {
+    "image": "assets/sprites/pokemon/official/158.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     101,
+     22,
+     273,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.14
+     ],
+     "bouche": [
+      0.25,
+      0.26
+     ],
+     "mains": [
+      [
+       0.06,
+       0.34
+      ],
+      [
+       0.81,
+       0.38
+      ]
+     ],
+     "queue": [
+      0.92,
+      0.76
+     ],
+     "centre": [
+      0.439,
+      0.518
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_158.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     99,
+     24,
+     826,
+     1000
+    ],
+    "points": {
+     "centre": [
+      0.55,
+      0.573
+     ]
+    }
+   }
+  },
+  "159": {
+   "id": "croconaw",
+   "name": "Crocrodil",
+   "front": {
+    "image": "assets/sprites/pokemon/official/159.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     40,
+     22,
+     394,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.26,
+      0.32
+     ],
+     "bouche": [
+      0.2,
+      0.43
+     ],
+     "mains": [
+      [
+       0.04,
+       0.59
+      ],
+      [
+       0.66,
+       0.43
+      ]
+     ],
+     "queue": [
+      0.95,
+      0.72
+     ],
+     "cornes": [
+      0.21,
+      0.08
+     ],
+     "centre": [
+      0.417,
+      0.584
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/croconaw_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "160": {
+   "id": "feraligatr",
+   "name": "Aligatueur",
+   "front": {
+    "image": "assets/sprites/pokemon/official/160.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     48,
+     22,
+     378,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.31
+     ],
+     "bouche": [
+      0.41,
+      0.45
+     ],
+     "mains": [
+      [
+       0.04,
+       0.53
+      ],
+      [
+       0.93,
+       0.53
+      ]
+     ],
+     "centre": [
+      0.551,
+      0.511
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/feraligatr_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "161": {
+   "id": "sentret",
+   "name": "Fouinette",
+   "front": {
+    "image": "assets/sprites/pokemon/official/161.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     143,
+     22,
+     189,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.45,
+      0.25
+     ],
+     "queue": [
+      0.28,
+      0.78
+     ],
+     "centre": [
+      0.474,
+      0.511
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/sentret_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "162": {
+   "id": "furret",
+   "name": "Fouinar",
+   "front": {
+    "image": "assets/sprites/pokemon/official/162.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     58,
+     22,
+     359,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.15
+     ],
+     "bouche": [
+      0.52,
+      0.2
+     ],
+     "yeux": [
+      [
+       0.48,
+       0.12
+      ],
+      [
+       0.65,
+       0.15
+      ]
+     ],
+     "mains": [
+      [
+       0.54,
+       0.57
+      ],
+      [
+       0.89,
+       0.64
+      ]
+     ],
+     "queue": [
+      0.13,
+      0.46
+     ],
+     "centre": [
+      0.556,
+      0.555
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/furret_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "163": {
+   "id": "hoothoot",
+   "name": "Hoothoot",
+   "front": {
+    "image": "assets/sprites/pokemon/official/163.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     25,
+     22,
+     425,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.34
+     ],
+     "bouche": [
+      0.53,
+      0.38
+     ],
+     "yeux": [
+      [
+       0.4,
+       0.3
+      ],
+      [
+       0.64,
+       0.32
+      ]
+     ],
+     "mains": [
+      [
+       0.04,
+       0.55
+      ],
+      [
+       0.98,
+       0.59
+      ]
+     ],
+     "centre": [
+      0.491,
+      0.502
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/hoothoot_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "164": {
+   "id": "noctowl",
+   "name": "Noarfang",
+   "front": {
+    "image": "assets/sprites/pokemon/official/164.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     113,
+     22,
+     248,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.29,
+      0.33
+     ],
+     "bouche": [
+      0.28,
+      0.38
+     ],
+     "yeux": [
+      [
+       0.16,
+       0.33
+      ],
+      [
+       0.42,
+       0.33
+      ]
+     ],
+     "queue": [
+      0.95,
+      0.81
+     ],
+     "centre": [
+      0.407,
+      0.526
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/noctowl_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "169": {
+   "id": "crobat",
+   "name": "Nostenfer",
+   "front": {
+    "image": "assets/sprites/pokemon/official/169.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     110,
+     431,
+     255
+    ],
+    "points": {
+     "tete": [
+      0.63,
+      0.4
+     ],
+     "bouche": [
+      0.65,
+      0.45
+     ],
+     "mains": [
+      [
+       0.25,
+       0.15
+      ],
+      [
+       0.87,
+       0.66
+      ]
+     ],
+     "centre": [
+      0.511,
+      0.449
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/crobat_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "175": {
+   "id": "togepi",
+   "name": "Togepi",
+   "front": {
+    "image": "assets/sprites/pokemon/official/175.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     37,
+     22,
+     400,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.25
+     ],
+     "bouche": [
+      0.44,
+      0.31
+     ],
+     "yeux": [
+      [
+       0.39,
+       0.23
+      ],
+      [
+       0.58,
+       0.24
+      ]
+     ],
+     "mains": [
+      [
+       0.04,
+       0.32
+      ],
+      [
+       0.96,
+       0.46
+      ]
+     ],
+     "centre": [
+      0.495,
+      0.505
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/togepi_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "176": {
+   "id": "togetic",
+   "name": "Togetic",
+   "front": {
+    "image": "assets/sprites/pokemon/official/176.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     96,
+     22,
+     282,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.17,
+      0.27
+     ],
+     "bouche": [
+      0.22,
+      0.36
+     ],
+     "mains": [
+      [
+       0.14,
+       0.54
+      ],
+      [
+       0.87,
+       0.37
+      ]
+     ],
+     "centre": [
+      0.438,
+      0.525
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/togetic_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "179": {
+   "id": "mareep",
+   "name": "Wattouat",
+   "front": {
+    "image": "assets/sprites/pokemon/official/179.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     59,
+     22,
+     356,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.52,
+      0.3
+     ],
+     "bouche": [
+      0.49,
+      0.43
+     ],
+     "yeux": [
+      [
+       0.42,
+       0.27
+      ],
+      [
+       0.62,
+       0.3
+      ]
+     ],
+     "queue": [
+      0.17,
+      0.12
+     ],
+     "centre": [
+      0.497,
+      0.493
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/mareep_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "180": {
+   "id": "flaaffy",
+   "name": "Lainergie",
+   "front": {
+    "image": "assets/sprites/pokemon/official/180.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     66,
+     22,
+     342,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.24,
+      0.31
+     ],
+     "bouche": [
+      0.22,
+      0.38
+     ],
+     "yeux": [
+      [
+       0.14,
+       0.28
+      ],
+      [
+       0.32,
+       0.27
+      ]
+     ],
+     "queue": [
+      0.91,
+      0.63
+     ],
+     "centre": [
+      0.391,
+      0.49
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/flaaffy_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "181": {
+   "id": "ampharos",
+   "name": "Pharamp",
+   "front": {
+    "image": "assets/sprites/pokemon/official/181.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     79,
+     22,
+     317,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.46,
+      0.15
+     ],
+     "bouche": [
+      0.36,
+      0.25
+     ],
+     "mains": [
+      [
+       0.22,
+       0.53
+      ],
+      [
+       0.94,
+       0.51
+      ]
+     ],
+     "queue": [
+      0.05,
+      0.49
+     ],
+     "cornes": [
+      0.43,
+      0.1
+     ],
+     "centre": [
+      0.515,
+      0.56
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/ampharos_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "183": {
+   "id": "marill",
+   "name": "Marill",
+   "front": {
+    "image": "assets/sprites/pokemon/official/183.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     69,
+     431,
+     337
+    ],
+    "points": {
+     "tete": [
+      0.7,
+      0.44
+     ],
+     "bouche": [
+      0.69,
+      0.56
+     ],
+     "yeux": [
+      [
+       0.6,
+       0.45
+      ],
+      [
+       0.81,
+       0.45
+      ]
+     ],
+     "mains": [
+      [
+       0.37,
+       0.58
+      ],
+      [
+       0.96,
+       0.64
+      ]
+     ],
+     "queue": [
+      0.12,
+      0.26
+     ],
+     "centre": [
+      0.547,
+      0.463
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/marill_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "184": {
+   "id": "azumarill",
+   "name": "Azumarill",
+   "front": {
+    "image": "assets/sprites/pokemon/official/184.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     29,
+     22,
+     417,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.38
+     ],
+     "bouche": [
+      0.46,
+      0.44
+     ],
+     "yeux": [
+      [
+       0.39,
+       0.36
+      ],
+      [
+       0.56,
+       0.38
+      ]
+     ],
+     "mains": [
+      [
+       0.04,
+       0.56
+      ],
+      [
+       0.83,
+       0.67
+      ]
+     ],
+     "queue": [
+      0.92,
+      0.88
+     ],
+     "centre": [
+      0.493,
+      0.546
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/azumarill_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "186": {
+   "id": "politoed",
+   "name": "Tarpaud",
+   "front": {
+    "image": "assets/sprites/pokemon/official/186.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     90,
+     22,
+     295,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.3
+     ],
+     "yeux": [
+      [
+       0.35,
+       0.22
+      ],
+      [
+       0.65,
+       0.3
+      ]
+     ],
+     "mains": [
+      [
+       0.08,
+       0.37
+      ],
+      [
+       0.92,
+       0.54
+      ]
+     ],
+     "centre": [
+      0.555,
+      0.56
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/politoed_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "196": {
+   "id": "espeon",
+   "name": "Mentali",
+   "front": {
+    "image": "assets/sprites/pokemon/official/196.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     31,
+     431,
+     413
+    ],
+    "points": {
+     "tete": [
+      0.27,
+      0.37
+     ],
+     "bouche": [
+      0.27,
+      0.43
+     ],
+     "yeux": [
+      [
+       0.2,
+       0.34
+      ],
+      [
+       0.33,
+       0.4
+      ]
+     ],
+     "queue": [
+      0.93,
+      0.27
+     ],
+     "cornes": [
+      0.26,
+      0.32
+     ],
+     "centre": [
+      0.447,
+      0.554
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/espeon_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "197": {
+   "id": "umbreon",
+   "name": "Noctali",
+   "front": {
+    "image": "assets/sprites/pokemon/official/197.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     58,
+     22,
+     358,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.82,
+      0.38
+     ],
+     "bouche": [
+      0.93,
+      0.41
+     ],
+     "queue": [
+      0.08,
+      0.33
+     ],
+     "centre": [
+      0.566,
+      0.536
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/umbreon_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "198": {
+   "id": "murkrow",
+   "name": "Cornèbre",
+   "front": {
+    "image": "assets/sprites/pokemon/official/198.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     43,
+     22,
+     388,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.28,
+      0.36
+     ],
+     "bouche": [
+      0.22,
+      0.43
+     ],
+     "yeux": [
+      [
+       0.2,
+       0.34
+      ],
+      [
+       0.35,
+       0.37
+      ]
+     ],
+     "centre": [
+      0.457,
+      0.525
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/murkrow_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "199": {
+   "id": "slowking",
+   "name": "Roigada",
+   "front": {
+    "image": "assets/sprites/pokemon/official/199.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     108,
+     22,
+     258,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.34,
+      0.37
+     ],
+     "bouche": [
+      0.3,
+      0.45
+     ],
+     "yeux": [
+      [
+       0.24,
+       0.36
+      ],
+      [
+       0.44,
+       0.36
+      ]
+     ],
+     "queue": [
+      0.92,
+      0.79
+     ],
+     "cornes": [
+      0.5,
+      0.13
+     ],
+     "centre": [
+      0.429,
+      0.547
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/slowking_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "202": {
+   "id": "wobbuffet",
+   "name": "Qulbutoké",
+   "front": {
+    "image": "assets/sprites/pokemon/official/202.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     97,
+     22,
+     280,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.48,
+      0.24
+     ],
+     "bouche": [
+      0.38,
+      0.38
+     ],
+     "yeux": [
+      [
+       0.34,
+       0.19
+      ],
+      [
+       0.63,
+       0.24
+      ]
+     ],
+     "mains": [
+      [
+       0.25,
+       0.04
+      ],
+      [
+       0.92,
+       0.05
+      ]
+     ],
+     "queue": [
+      0.86,
+      0.71
+     ],
+     "centre": [
+      0.442,
+      0.486
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/wobbuffet_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "208": {
+   "id": "steelix",
+   "name": "Steelix",
+   "front": {
+    "image": "assets/sprites/pokemon/official/208.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     51,
+     431,
+     373
+    ],
+    "points": {
+     "tete": [
+      0.2,
+      0.2
+     ],
+     "bouche": [
+      0.12,
+      0.3
+     ],
+     "queue": [
+      0.58,
+      0.97
+     ],
+     "centre": [
+      0.521,
+      0.416
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/steelix_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "212": {
+   "id": "scizor",
+   "name": "Cizayox",
+   "front": {
+    "image": "assets/sprites/pokemon/official/212.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     63,
+     22,
+     349,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.42,
+      0.3
+     ],
+     "yeux": [
+      [
+       0.36,
+       0.29
+      ],
+      [
+       0.47,
+       0.29
+      ]
+     ],
+     "mains": [
+      [
+       0.22,
+       0.39
+      ],
+      [
+       0.86,
+       0.2
+      ]
+     ],
+     "centre": [
+      0.514,
+      0.427
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/scizor_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "214": {
+   "id": "heracross",
+   "name": "Scarhino",
+   "front": {
+    "image": "assets/sprites/pokemon/official/214.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     24,
+     22,
+     426,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.46,
+      0.46
+     ],
+     "bouche": [
+      0.46,
+      0.52
+     ],
+     "yeux": [
+      [
+       0.38,
+       0.46
+      ],
+      [
+       0.54,
+       0.46
+      ]
+     ],
+     "mains": [
+      [
+       0.05,
+       0.79
+      ],
+      [
+       0.92,
+       0.86
+      ]
+     ],
+     "cornes": [
+      0.5,
+      0.05
+     ],
+     "centre": [
+      0.528,
+      0.6
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/heracross_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "215": {
+   "id": "sneasel",
+   "name": "Farfuret",
+   "front": {
+    "image": "assets/sprites/pokemon/official/215.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     23,
+     22,
+     429,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.36,
+      0.33
+     ],
+     "bouche": [
+      0.37,
+      0.41
+     ],
+     "yeux": [
+      [
+       0.34,
+       0.29
+      ],
+      [
+       0.41,
+       0.35
+      ]
+     ],
+     "mains": [
+      [
+       0.07,
+       0.13
+      ],
+      [
+       0.9,
+       0.3
+      ]
+     ],
+     "centre": [
+      0.481,
+      0.445
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/sneasel_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "216": {
+   "id": "teddiursa",
+   "name": "Teddiursa",
+   "front": {
+    "image": "assets/sprites/pokemon/official/216.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     94,
+     22,
+     287,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.32,
+      0.37
+     ],
+     "bouche": [
+      0.31,
+      0.43
+     ],
+     "yeux": [
+      [
+       0.17,
+       0.37
+      ],
+      [
+       0.47,
+       0.39
+      ]
+     ],
+     "mains": [
+      [
+       0.24,
+       0.6
+      ],
+      [
+       0.96,
+       0.64
+      ]
+     ],
+     "centre": [
+      0.484,
+      0.477
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/teddiursa_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "217": {
+   "id": "ursaring",
+   "name": "Ursaring",
+   "front": {
+    "image": "assets/sprites/pokemon/official/217.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     89,
+     22,
+     296,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.46,
+      0.11
+     ],
+     "bouche": [
+      0.45,
+      0.14
+     ],
+     "mains": [
+      [
+       0.08,
+       0.67
+      ],
+      [
+       0.84,
+       0.58
+      ]
+     ],
+     "centre": [
+      0.516,
+      0.541
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/ursaring_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "227": {
+   "id": "skarmory",
+   "name": "Airmure",
+   "front": {
+    "image": "assets/sprites/pokemon/official/227.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     85,
+     431,
+     304
+    ],
+    "points": {
+     "tete": [
+      0.16,
+      0.34
+     ],
+     "bouche": [
+      0.11,
+      0.43
+     ],
+     "centre": [
+      0.481,
+      0.429
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/skarmory_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "228": {
+   "id": "houndour",
+   "name": "Malosse",
+   "front": {
+    "image": "assets/sprites/pokemon/official/228.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     61,
+     22,
+     353,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.18,
+      0.2
+     ],
+     "bouche": [
+      0.12,
+      0.27
+     ],
+     "queue": [
+      0.98,
+      0.42
+     ],
+     "centre": [
+      0.499,
+      0.543
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/houndour_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "229": {
+   "id": "houndoom",
+   "name": "Démolosse",
+   "front": {
+    "image": "assets/sprites/pokemon/official/229.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     32,
+     22,
+     411,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.33,
+      0.2
+     ],
+     "bouche": [
+      0.34,
+      0.3
+     ],
+     "queue": [
+      0.6,
+      0.25
+     ],
+     "cornes": [
+      0.1,
+      0.13
+     ],
+     "centre": [
+      0.447,
+      0.494
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/houndoom_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "230": {
+   "id": "kingdra",
+   "name": "Hyporoi",
+   "front": {
+    "image": "assets/sprites/pokemon/official/230.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     43,
+     22,
+     389,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.38,
+      0.27
+     ],
+     "bouche": [
+      0.06,
+      0.35
+     ],
+     "queue": [
+      0.83,
+      0.91
+     ],
+     "cornes": [
+      0.49,
+      0.06
+     ],
+     "centre": [
+      0.63,
+      0.492
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/kingdra_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "231": {
+   "id": "phanpy",
+   "name": "Phanpy",
+   "front": {
+    "image": "assets/sprites/pokemon/official/231.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     31,
+     431,
+     413
+    ],
+    "points": {
+     "tete": [
+      0.5,
+      0.33
+     ],
+     "bouche": [
+      0.38,
+      0.52
+     ],
+     "centre": [
+      0.506,
+      0.46
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/phanpy_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "232": {
+   "id": "donphan",
+   "name": "Donphan",
+   "front": {
+    "image": "assets/sprites/pokemon/official/232.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     115,
+     431,
+     245
+    ],
+    "points": {
+     "tete": [
+      0.53,
+      0.52
+     ],
+     "cornes": [
+      0.06,
+      0.56
+     ],
+     "centre": [
+      0.544,
+      0.508
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/donphan_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "233": {
+   "id": "porygon2",
+   "name": "Porygon2",
+   "front": {
+    "image": "assets/sprites/pokemon/official/233.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     27,
+     431,
+     421
+    ],
+    "points": {
+     "tete": [
+      0.58,
+      0.22
+     ],
+     "queue": [
+      0.77,
+      0.92
+     ],
+     "centre": [
+      0.49,
+      0.527
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/porygon2_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "241": {
+   "id": "miltank",
+   "name": "Écrémeuh",
+   "front": {
+    "image": "assets/sprites/pokemon/official/241.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     54,
+     22,
+     367,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.33,
+      0.2
+     ],
+     "bouche": [
+      0.43,
+      0.3
+     ],
+     "mains": [
+      [
+       0.05,
+       0.26
+      ],
+      [
+       0.67,
+       0.24
+      ]
+     ],
+     "queue": [
+      0.06,
+      0.72
+     ],
+     "centre": [
+      0.453,
+      0.516
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/miltank_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "242": {
+   "id": "blissey",
+   "name": "Leuphorie",
+   "front": {
+    "image": "assets/sprites/pokemon/official/242.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     32,
+     22,
+     410,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.6,
+      0.2
+     ],
+     "bouche": [
+      0.6,
+      0.24
+     ],
+     "yeux": [
+      [
+       0.56,
+       0.17
+      ],
+      [
+       0.64,
+       0.17
+      ]
+     ],
+     "mains": [
+      [
+       0.04,
+       0.33
+      ],
+      [
+       0.93,
+       0.46
+      ]
+     ],
+     "centre": [
+      0.493,
+      0.46
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/blissey_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "243": {
+   "id": "raikou",
+   "name": "Raikou",
+   "front": {
+    "image": "assets/sprites/pokemon/official/243.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     61,
+     431,
+     353
+    ],
+    "points": {
+     "tete": [
+      0.22,
+      0.2
+     ],
+     "bouche": [
+      0.15,
+      0.28
+     ],
+     "queue": [
+      0.93,
+      0.38
+     ],
+     "centre": [
+      0.468,
+      0.455
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/raikou_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "244": {
+   "id": "entei",
+   "name": "Entei",
+   "front": {
+    "image": "assets/sprites/pokemon/official/244.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     39,
+     22,
+     397,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.24,
+      0.17
+     ],
+     "bouche": [
+      0.17,
+      0.27
+     ],
+     "queue": [
+      0.93,
+      0.6
+     ],
+     "cornes": [
+      0.2,
+      0.06
+     ],
+     "centre": [
+      0.432,
+      0.526
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/entei_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "245": {
+   "id": "suicune",
+   "name": "Suicune",
+   "front": {
+    "image": "assets/sprites/pokemon/official/245.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     30,
+     431,
+     414
+    ],
+    "points": {
+     "tete": [
+      0.13,
+      0.4
+     ],
+     "bouche": [
+      0.08,
+      0.46
+     ],
+     "queue": [
+      0.96,
+      0.34
+     ],
+     "cornes": [
+      0.19,
+      0.16
+     ],
+     "centre": [
+      0.471,
+      0.476
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_245.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     12,
+     45,
+     1000,
+     979
+    ],
+    "points": {
+     "centre": [
+      0.508,
+      0.6
+     ]
+    }
+   }
+  },
+  "246": {
+   "id": "larvitar",
+   "name": "Embrylex",
+   "front": {
+    "image": "assets/sprites/pokemon/official/246.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     112,
+     22,
+     250,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.32,
+      0.44
+     ],
+     "bouche": [
+      0.33,
+      0.54
+     ],
+     "queue": [
+      0.92,
+      0.79
+     ],
+     "cornes": [
+      0.38,
+      0.08
+     ],
+     "centre": [
+      0.445,
+      0.588
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/larvitar_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "247": {
+   "id": "pupitar",
+   "name": "Ymphect",
+   "front": {
+    "image": "assets/sprites/pokemon/official/247.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     66,
+     22,
+     342,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.55,
+      0.5
+     ],
+     "bouche": [
+      0.5,
+      0.68
+     ],
+     "cornes": [
+      0.36,
+      0.08
+     ],
+     "centre": [
+      0.531,
+      0.515
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/pupitar_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "248": {
+   "id": "tyranitar",
+   "name": "Tyranocif",
+   "front": {
+    "image": "assets/sprites/pokemon/official/248.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     39,
+     22,
+     396,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.3,
+      0.1
+     ],
+     "bouche": [
+      0.22,
+      0.12
+     ],
+     "mains": [
+      [
+       0.04,
+       0.46
+      ],
+      [
+       0.48,
+       0.4
+      ]
+     ],
+     "queue": [
+      0.97,
+      0.83
+     ],
+     "centre": [
+      0.441,
+      0.535
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/dos/dos_rb_248.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "box": [
+     19,
+     24,
+     985,
+     1000
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.611
+     ]
+    }
+   }
+  },
+  "249": {
+   "id": "lugia",
+   "name": "Lugia",
+   "front": {
+    "image": "assets/sprites/pokemon/official/249.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     70,
+     431,
+     335
+    ],
+    "points": {
+     "tete": [
+      0.24,
+      0.3
+     ],
+     "bouche": [
+      0.26,
+      0.37
+     ],
+     "mains": [
+      [
+       0.07,
+       0.62
+      ],
+      [
+       0.82,
+       0.16
+      ]
+     ],
+     "queue": [
+      0.94,
+      0.87
+     ],
+     "centre": [
+      0.552,
+      0.541
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/lugia_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "250": {
+   "id": "ho_oh",
+   "name": "Ho-Oh",
+   "front": {
+    "image": "assets/sprites/pokemon/official/250.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     42,
+     22,
+     391,
+     431
+    ],
+    "points": {
+     "tete": [
+      0.66,
+      0.37
+     ],
+     "bouche": [
+      0.74,
+      0.41
+     ],
+     "mains": [
+      [
+       0.2,
+       0.21
+      ],
+      [
+       0.86,
+       0.45
+      ]
+     ],
+     "queue": [
+      0.22,
+      0.86
+     ],
+     "cornes": [
+      0.63,
+      0.28
+     ],
+     "centre": [
+      0.389,
+      0.539
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/ho_oh_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
+   }
+  },
+  "251": {
+   "id": "celebi",
+   "name": "Celebi",
+   "front": {
+    "image": "assets/sprites/pokemon/official/251.png",
+    "size": [
+     475,
+     475
+    ],
+    "box": [
+     22,
+     50,
+     431,
+     375
+    ],
+    "points": {
+     "tete": [
+      0.28,
+      0.62
+     ],
+     "yeux": [
+      [
+       0.12,
+       0.6
+      ],
+      [
+       0.4,
+       0.69
+      ]
+     ],
+     "mains": [
+      [
+       0.78,
+       0.52
+      ],
+      [
+       0.94,
+       0.75
+      ]
+     ],
+     "cornes": [
+      0.2,
+      0.15
+     ],
+     "centre": [
+      0.46,
+      0.559
+     ]
+    }
+   },
+   "back": {
+    "image": "assets/sprites/pokemon/placeholder/celebi_back.png",
+    "size": [
+     64,
+     64
+    ],
+    "box": [
+     10,
+     4,
+     45,
+     58
+    ],
+    "points": {
+     "centre": [
+      0.5,
+      0.525
+     ]
+    }
    }
   }
  },
