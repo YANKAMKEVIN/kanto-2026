@@ -4,7 +4,8 @@
 > Branche `claude/j34-34b-c7976d`. Appareil : Galaxy A17 (série `R5GYB2R7W2Y`, adb sans fil), le
 > S24 n'étant pas disponible depuis le 2026-10-31. Session : 34B (2026-11-04).
 > **État : T3 joué sur l'A17 le 2026-11-04, trois scénarios réussis, aucun P0/P1** (fiches du §4,
-> bugs du §5). **À valider par Kevin**, rien n'est fusionné dans `main`.
+> bugs du §5). **Validé par Kevin** (« Oui, applique », 2026-11-04, confirmé à la session
+> « Johto vues générales acte 1 ») et **fusionné dans `main`** (CI verte run 41831336489).
 
 ## 1. Préalables (état au 2026-11-04)
 
