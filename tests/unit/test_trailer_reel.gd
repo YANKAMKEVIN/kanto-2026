@@ -1,7 +1,7 @@
 extends GutTest
 ## Bande-annonce de l'ident (J34, v2 en vidéo) : lecture stricte des données (vidéo Theora
 ## existante, durée bornée, bandes noires), tout ou rien ; la partition place la vidéo entre le
-## carton et les lettres ; la bande-annonce livrée, si elle existe, dure 30 à 40 s (Kevin).
+## carton et les lettres ; la bande-annonce livrée, si elle existe, dure 30 à 50 s (Kevin : 30 à 40, puis cartons et scènes ajoutés).
 
 const VIDEO := "res://assets/ui/opening/trailer.ogv"
 
@@ -59,14 +59,14 @@ func test_missing_file_means_no_reel() -> void:
 	assert_almost_eq(reel.total(), 0.0, 0.001)
 
 
-func test_the_shipped_reel_if_present_is_valid_and_lasts_30_to_40_seconds() -> void:
+func test_the_shipped_reel_if_present_is_valid_and_lasts_30_to_50_seconds() -> void:
 	var reel := TrailerReel.new()
 	if not FileAccess.file_exists(TrailerReel.DEFAULT_PATH):
 		pass_test("pas encore de bande-annonce livrée")
 		return
 	assert_true(reel.load_file(), str(reel.get_errors()))
 	assert_true(reel.has_video())
-	assert_between(reel.total(), 30.0, 40.0, "30 à 40 s (demande de Kevin du 2026-11-03)")
+	assert_between(reel.total(), 30.0, 50.0, "30 à 40 s demandées, 50 avec les cartons et les scènes ajoutées le 2026-11-04")
 
 
 func test_timeline_places_the_video_between_card_and_letters() -> void:

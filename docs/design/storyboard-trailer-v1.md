@@ -126,3 +126,26 @@ intégration dans l'ident, vidéo complète envoyée à Kevin, puis fusion sur s
   du combat ; pas de contre-plongée au plan 15 (2D) ; les plans 10 à 16 partagent une nappe (musique
   de la montée vers la Ligue) sous leurs sons propres baissés, le cri de Mewtwo et la banderole VS
   gardés pleins.
+
+## 8. Retouches v2.1 (2026-11-04, retour de Kevin sur la v2 : « à retoucher »)
+
+Kevin a coché les quatre domaines ; valeurs retenues [D], à valider sur la vidéo :
+
+- **Rythme** : acte I resserré (chambre 2 s, maison 2 s, bourg 3 s), capture et combat du rival
+  plus courts (1,6 + 4,2 s ; 2 + 2 s), acte IV plus lent (1,4 à 1,5 s par plan, VS 2 s), deux
+  scènes de plus (Céladopole, Pont Pépite ; Artikodin écarté : pas de chemin à pied depuis le
+  départ de QA). ≈ 46 s avec les cartons.
+- **Textes** (idée de Kevin : « des textes entre les vidéos ») : quatre cartons dorés sur le fond
+  de l'ident, même police que le carton des studios, 1,4 à 1,6 s, fondus : « Une aventure
+  commence. » (après Bourg Palette), « Des rivaux sur ta route. » (après la capture), « Un monde
+  entier à découvrir. » (après l'évolution), « Jusqu'au sommet. » (avant la Ligue). Textes [D].
+- **Son** : une seule musique sous toute la vidéo, le thème de l'écran titre (`title_screen.ogg`,
+  50 s) [D], sons du jeu des scènes par-dessus (combats, capture, VS, évolution, cris) à 0,45–0,9,
+  scènes d'exploration muettes. Niveau : la vidéo passe par le bus Musique, la musique brute joue
+  donc au niveau des musiques du jeu (la v2, enregistrée à travers le bus puis rejouée par le bus,
+  sonnait ≈ 6 dB trop bas).
+- **Lancement** : bande-annonce au **premier lancement seulement** (sans sauvegarde) ; avec une
+  partie en cours, carton et lettres seuls (`OpeningDirector.trailer_plays_for`).
+- **Image** : intérieurs sans zoom (plan large du jeu), pas de bandes noires, vidéo encodée en
+  1920 × 886 (≈ 25 Mo). Couleurs : la vidéo dans l'ident est fidèle au master à 1 % près (mesuré),
+  rien à corriger dans la chaîne.

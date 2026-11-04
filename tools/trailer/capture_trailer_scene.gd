@@ -29,6 +29,10 @@ const STARTS: Dictionary[String, String] = {
 	"mewtwo": "trailer_mewtwo",
 	"ligue": "trailer_ligue",
 	"championne": "league_champion_charmander",
+	# v2.1 (retouches de Kevin du 2026-11-04 : « plus de scènes ») : ville, pont, légendaire de glace.
+	"celadopole": "celadon",
+	"pont_pepite": "nugget_bridge",
+	"artikodin": "trailer_articuno",
 }
 const ABSENT: String = "user://cap_trailer_absent.json"
 const FPS: float = 30.0
@@ -82,6 +86,9 @@ func _run() -> void:
 		"mewtwo": await _mewtwo()
 		"ligue": await _ligue()
 		"championne": await _championne()
+		"celadopole": await _promenade(Vector2i.LEFT, 12)
+		"pont_pepite": await _promenade(Vector2i.UP, 14)
+		"artikodin": await _legendaire()
 	_mark("fin")
 	_finished = true
 	quit()
@@ -269,6 +276,35 @@ func _championne() -> void:
 	await _wait(45)
 
 
+## Plans de réserve (v2.1) : quelques pas dans un lieu, caméra qui suit.
+func _promenade(direction: Vector2i, steps: int) -> void:
+	_state.set(&"repel_steps", 2000)
+	_auto_touch = true
+	_mark("promenade")
+	await _wait(30)
+	await _hold_steps(direction, steps)
+	await _wait(30)
+
+
+## Légendaire (Artikodin, Îles Écume B4F en (6, 1)) : le joueur le rejoint, lui fait face,
+## interaction, cri, entrée légendaire du combat.
+func _legendaire() -> void:
+	_state.set(&"repel_steps", 2000)
+	_auto_touch = true
+	_mark("légendaire")
+	await _wait(30)
+	await _walk_to(Vector2i(6, 2))
+	await _press(Vector2i.UP, 3)
+	await _wait(20)
+	Input.action_press(&"interact")
+	await _wait(3)
+	Input.action_release(&"interact")
+	await _until(_battle_running, 900)
+	_mark("entrée légendaire")
+	await _until(_actions_shown, 1800)
+	await _wait(45)
+
+
 # --- Lancement ---------------------------------------------------------------------------
 
 func _boot_scene(start: String) -> void:
@@ -336,10 +372,12 @@ func _keep_audio_up() -> void:
 	while not _finished:
 		if bool(audio.call(&"is_focus_ducked")):
 			audio.call(&"_set_focus_ducked", false)
-		# Le HUD d'exploration se remontre de lui-même (annonce de zone) : caché à chaque image.
-		var hud: CanvasLayer = _boot.call(&"get_hud")
-		if hud != null and hud.visible and _hud_hidden:
-			hud.visible = false
+		# Le HUD d'exploration se remontre de lui-même (annonce de zone) : caché à chaque image,
+		# et tout autre HUD d'exploration présent dans l'arbre avec lui.
+		if _hud_hidden:
+			for hud: Node in root.find_children("*", "ExplorationHud", true, false):
+				if (hud as CanvasLayer).visible:
+					(hud as CanvasLayer).visible = false
 		await process_frame
 
 
