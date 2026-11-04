@@ -246,7 +246,7 @@ const CRACK_SINK: float = 0.12
 const BURROW_BUMP: float = 0.03
 const ERUPT_LIFT: float = 0.14
 ## Jackpot : taille d'une pièce (hauteurs d'écran), pièces.
-const COIN_SIZE: float = 0.055
+const COIN_SIZE: float = 0.08
 const COINS: int = 16
 ## Flash : le calque plein écran déborde de la vue (caméra qui bouge).
 const SCREEN_MARGIN: float = 0.15
@@ -2715,7 +2715,7 @@ func _pose_spoon(phase: MoveFxPlan.Phase, k: float) -> void:
 	var height := _stage.view_size.y
 	var rect := _stage.user_rect
 	var at := Vector2(rect.get_center().x, maxf(rect.position.y + rect.size.y * 0.1, 0.14 * height))
-	var size := 0.2 * height
+	var size := 0.3 * height
 	match phase.name:
 		MoveFxPlan.ANTICIPATION:
 			var pop := _ease_out(clampf(k * 4.0, 0.0, 1.0))
@@ -2830,7 +2830,7 @@ func _impact_extra(at: Vector2, height: float, life: float) -> void:
 	match String(_plan.impact_brick):
 		"coin_burst":
 			_pool.burst(at, roundi(COINS * _plan.particle_scale), _plan.palette,
-				FxParticlePool.Shape.FALL, COIN_SIZE * height, 0.24 * height, 0.9, false,
+				FxParticlePool.Shape.FALL, COIN_SIZE * height, 0.28 * height, 1.1, false,
 				_art_texture(&"coin"))
 			_pool.burst(at, roundi(10 * _plan.particle_scale), _plan.palette, FxParticlePool.Shape.BURST,
 				0.05 * height, 0.18 * height, 0.6, true, _art_texture(&"glint"))

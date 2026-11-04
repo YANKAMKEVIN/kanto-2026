@@ -228,8 +228,8 @@
 			"camera": {"zoom": 1.02, "shake": 1.5},
 			"fx": {"palette": ["#F4E0FF", "#A85AE0", "#3A1250"], "particles": 14, "volley": {"count": 1, "size": 0.2}, "art": {"piece": "aiguille", "particle": "goutte_poison", "fallout": "vapeur_poison"}},
 			"variants": {
-				"double": {"_doc": "Double-Dard : deux aiguilles côte à côte par coup (Rouge : deux dards qui filent ensemble).", "palette": ["#FFFFFF", "#C8E07A", "#4A5A1A"], "light": "#E8F0C0", "particles": 10, "volley": {"count": 2, "size": 0.17, "stagger": 0.12}, "art": {"particle": "etoile_impact", "fallout": "poussiere"}},
-				"nuee": {"_doc": "Dard-Nuée : trois aiguilles en rafale par coup (Rouge : une nuée d'aiguilles).", "palette": ["#FFFFFF", "#C8E07A", "#4A5A1A"], "light": "#E8F0C0", "particles": 10, "volley": {"count": 3, "size": 0.13, "stagger": 0.16}, "art": {"particle": "etoile_impact", "fallout": "poussiere"}},
+				"double": {"_doc": "Double-Dard : deux aiguilles côte à côte par coup (Rouge : deux dards qui filent ensemble).", "palette": ["#F4FFD8", "#7AA82A", "#2A4010"], "light": "#E8F0C0", "particles": 10, "volley": {"count": 2, "size": 0.22, "stagger": 0.12}, "art": {"particle": "etoile_impact", "fallout": "poussiere"}},
+				"nuee": {"_doc": "Dard-Nuée : trois aiguilles en rafale par coup (Rouge : une nuée d'aiguilles).", "palette": ["#F4FFD8", "#7AA82A", "#2A4010"], "light": "#E8F0C0", "particles": 10, "volley": {"count": 3, "size": 0.18, "stagger": 0.16}, "art": {"particle": "etoile_impact", "fallout": "poussiere"}},
 				"picanon": {"_doc": "Picanon : une épine épaisse par coup (Rouge : des piquants tirés vers la cible).", "palette": ["#FFFFFF", "#D8C8A0", "#5A4A2A"], "light": "#F2E6D0", "particles": 10, "volley": {"count": 1, "size": 0.2}, "art": {"piece": "epine", "particle": "eclats_pierre", "fallout": "poussiere"}}
 			}
 		},
@@ -264,7 +264,7 @@
 			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.4, "return": 0.1},
 			"world": {"light": "#D8B98A", "light_peak": 0.0, "flashes": 0, "dust": true},
 			"camera": {"zoom": 1.03, "shake": 4.0},
-			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 20, "beats": 3, "volley": {"count": 3, "size": 0.09, "stagger": 0.0}, "art": {"piece": "caillou", "particle": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere", "grit": "grain_sable"}},
+			"fx": {"palette": ["#F2E2C4", "#B08A5A", "#4A3420"], "particles": 20, "beats": 3, "volley": {"count": 3, "size": 0.11, "stagger": 0.0}, "art": {"piece": "caillou", "particle": "eclats_pierre", "fallout": "poussiere", "dust": "poussiere", "grit": "grain_sable"}},
 			"variants": {
 				"eboulement": {"_doc": "Éboulement : quatre rochers, plus gros.", "particles": 28, "beats": 4, "volley": {"count": 4, "size": 0.16}, "art": {"piece": "rocher"}}
 			}
@@ -300,7 +300,7 @@
 			}
 		},
 		"fumee": {
-			"name": "Fumée", "target": "foe",
+			"name": "Fumée", "target": "foe", "duration": 0.9,
 			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Brouillard. Rouge : une boule de fumée part vers la cible puis un nuage noir la couvre. Ici : une boule de fumée noire en arc, traînée de bouffées (smoke_ball), puis un nuage de volutes sombres enveloppe la cible (smoke_cloud, flipbook fumee_volutes assombri) qui s'assombrit dessous.",
 			"bricks": {"launch": "rear_back", "travel": "smoke_ball", "impact": "smoke_cloud"},
 			"phases": {"anticipation": 0.15, "travel": 0.3, "impact": 0.4, "return": 0.15},
@@ -309,7 +309,7 @@
 			"fx": {"palette": ["#9A9AA8", "#3A3A44", "#121218"], "particles": 16, "volley": {"count": 1, "size": 0.13}, "art": {"piece": "fumee_noire", "impact": "fumee_volutes", "particle": "fumee_noire", "fallout": "fumee"}, "tint": "#4A4A58"}
 		},
 		"gaz": {
-			"name": "Gaz", "target": "foe",
+			"name": "Gaz", "target": "foe", "duration": 0.9,
 			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Gaz Toxik et Purédpois. Rouge : un nuage de gaz glisse vers la cible et la recouvre. Ici : des bouffées de gaz partent l'une après l'autre en ondulant, gonflent en chemin (gas_drift), puis un nuage toxique peint enveloppe la cible (gas_cloud, flipbook nuage_poison) ; variante smog : bouffées brun-violet, plus lourdes.",
 			"bricks": {"launch": "poison_bubbles", "travel": "gas_drift", "impact": "gas_cloud"},
 			"phases": {"anticipation": 0.15, "travel": 0.45, "impact": 0.3, "return": 0.1},
@@ -324,8 +324,8 @@
 			"name": "Flash", "target": "foe", "duration": 1.0,
 			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : comme Rouge, l'écran entier flashe en blanc (impact screen_flash : calque plein écran, deux éclats, plafonné par « Réduire les flashs » et 3 flashs/s) ; une lueur naît d'abord sur le lanceur, la cible éblouie reçoit ensuite les flèches de baisse de Précision. Aucun tremblement de la cible.",
 			"bricks": {"launch": "light_point", "travel": "", "impact": "screen_flash"},
-			"phases": {"anticipation": 0.35, "travel": 0.0, "impact": 0.45, "return": 0.2},
-			"world": {"light": "#FFFFFF", "light_peak": 0.9, "flashes": 2},
+			"phases": {"anticipation": 0.25, "travel": 0.0, "impact": 0.65, "return": 0.1},
+			"world": {"light": "#FFFFFF", "light_peak": 0.8, "flashes": 2},
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#FFFFFF", "#FFFBE8", "#B8B8C8"], "particles": 14, "art": {"charge": "flash_blanc", "glow": "flash_blanc", "particle": "fleche_bas"}}
 		},
@@ -384,7 +384,7 @@
 			}
 		},
 		"onde_folie": {
-			"name": "Onde Folie", "target": "foe",
+			"name": "Onde Folie", "target": "foe", "duration": 1.0,
 			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Onde Folie. Rouge : souvenir incertain (une lueur étrange vers la cible). Ici : une sphère irisée qui change de couleur (orbe_folie, anneau qui pulse) flotte en ondulant jusqu'à la tête de la cible, tourne autour d'elle en rétrécissant, la cible vacille (dizzy), éclats roses.",
 			"bricks": {"launch": "shadow_stretch", "travel": "strange_orb", "impact": "dizzy"},
 			"phases": {"anticipation": 0.2, "travel": 0.4, "impact": 0.3, "return": 0.1},
