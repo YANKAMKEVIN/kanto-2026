@@ -1,0 +1,36 @@
+{
+	"route_39_youngster_hugo": {
+		"name": "Gamin Hugo",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "rattata",
+				"level": 6
+			},
+			{
+				"species": "sentret",
+				"level": 7
+			}
+		]
+	},
+	"route_39_schoolgirl_lina": {
+		"name": "Écolière Lina",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 20,
+		"team": [
+			{
+				"species": "mareep",
+				"level": 8
+			}
+		]
+	}
+}

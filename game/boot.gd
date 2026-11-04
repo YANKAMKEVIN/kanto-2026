@@ -1416,6 +1416,8 @@ func _apply_debug_start() -> bool:
 	_debug_light_map = start.map if not start.light_profile.is_empty() else &""
 	if not start.period.is_empty():
 		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(start.period)])
+	if not start.weekday.is_empty():
+		_world_clock.force_weekday(WorldClock.WEEKDAY_NAMES.find(start.weekday))
 	_veil_debug = start.veil
 	_veil_debug_map = start.map if not start.veil.is_empty() else &""
 	if not start.wild.is_empty():

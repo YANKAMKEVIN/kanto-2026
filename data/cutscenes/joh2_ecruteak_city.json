@@ -1,0 +1,128 @@
+{
+	"ecruteak_route_42_guard": {
+		"variants": [
+			{
+				"unless": [
+					"johto_act2"
+				],
+				"steps": [
+					{
+						"face": "garde_route_42",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "garde_route_42"
+					},
+					{
+						"dialogue": "ecruteak_city_garde_route_42"
+					},
+					{
+						"move": "player",
+						"path": [
+							"left"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"ecruteak_bell_tower_guard": {
+		"variants": [
+			{
+				"unless": [
+					"johto_bell_tower_open"
+				],
+				"steps": [
+					{
+						"face": "garde_carillon",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "garde_carillon"
+					},
+					{
+						"dialogue": "ecruteak_city_garde_carillon"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"ecruteak_rockets": {
+		"variants": [
+			{
+				"unless": [
+					"johto_rosalia_rockets_seen"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_rosalia_rockets_seen"
+						]
+					},
+					{
+						"face": "sage_tour",
+						"to": "sbire_1"
+					},
+					{
+						"dialogue": "ecruteak_rocket_1"
+					},
+					{
+						"dialogue": "ecruteak_sage_refuses"
+					},
+					{
+						"emote": "sbire_2",
+						"kind": "exclamation"
+					},
+					{
+						"face": "sbire_2",
+						"to": "player"
+					},
+					{
+						"face": "sbire_1",
+						"to": "player"
+					},
+					{
+						"dialogue": "ecruteak_rocket_2"
+					},
+					{
+						"move": "sbire_1",
+						"to": [
+							54,
+							15
+						],
+						"run": true,
+						"background": true
+					},
+					{
+						"move": "sbire_2",
+						"to": [
+							54,
+							16
+						],
+						"run": true
+					},
+					{
+						"despawn": "sbire_1"
+					},
+					{
+						"despawn": "sbire_2"
+					},
+					{
+						"face": "sage_tour",
+						"to": "player"
+					}
+				]
+			}
+		]
+	}
+}
