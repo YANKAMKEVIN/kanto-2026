@@ -375,7 +375,7 @@ Générés le 2026-11-05, un essai chacun, sans refus de Codex. Couleurs du clan
 bannières d'Ébènelle. L'Aïeule fait 104 px (voûtée, plus petite qu'un adulte). Cenere : aucune référence n'existait,
 modèle libre (manteau gris cendre, carré gris, lunettes) ; Brace reste à peindre, à accorder avec elle.
 
-## Personnages de Johto : principaux, secondaires, PNJ de la semaine — **à valider par Kevin**
+## Personnages de Johto : principaux, secondaires, PNJ de la semaine — **validés par Kevin le 2026-11-05**
 
 Planches `johto-persos-principaux-v1.png`, `johto-persos-secondaires-v1.png`, `johto-persos-semaine-v1.png` ; 22 modèles,
 marche et attente, générés le 2026-11-05 sans refus de Codex. Prompts `tools/art/prompts/joh_persos/`. Fargas, l'Agente et
