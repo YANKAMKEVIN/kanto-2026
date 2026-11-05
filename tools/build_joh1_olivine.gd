@@ -6,7 +6,7 @@ extends SceneTree
 ## halos `LightGlow` du groupe `night_lights`, cachés le jour (`WorldLighting.set_night`).
 ## Les PNJ viennent de `data/npcs/olivine_city.json`.
 ## Arc des Pierres (JOHP2, `docs/tech/jalon-joh-pierres.md` §4.2, variante ARC de la grille) : le
-## Goéland, silhouette provisoire amarrée au ponton est, [FlagGate] qui n'existe et ne bloque
+## Goéland peint, amarré au ponton est, [FlagGate] qui ne s'affiche et ne bloque
 ## qu'avec `johto_stones_quest` ; arrivée `from_goeland` ; déclencheur de la mer du sud (A-13). La
 ## grille de base reste celle du sol ; rien ne change à l'écran sans ce drapeau.
 ## **Image** : la passe d'ambiance `tools/build_joh_ambiance.gd` repeint la carte (sol peint, forêt,
@@ -49,6 +49,10 @@ const NIGHT_LIGHTS: Array[Vector2] = [
 const LIGHTHOUSE_FOOT := Vector2i(6, 19)
 ## Variante ARC : le Goéland n'est là que pendant et après l'arc des Pierres.
 const ARC_QUEST_FLAG: StringName = &"johto_stones_quest"
+const GOELAND_TEXTURE: String = "res://assets/world/props/prop_goeland_01.png"
+const GOELAND_MATERIAL: String = "res://game/world/lighting/materials/world_object.tres"
+## Pied gauche du Goéland, en cases : sur son emprise (42..47, 34..37), contre le ponton est.
+const GOELAND_FOOT := Vector2(42.0, 37.7)
 
 var _over: GDScript
 var _rules: GDScript
@@ -285,13 +289,16 @@ func _arc(root: Node) -> void:
 	gate.visible = false
 	var entities := root.get_node(^"Entities")
 	_attach(root, entities, gate)
-	var hull := Polygon2D.new()
+	var hull := Sprite2D.new()
 	hull.name = "Coque"
-	hull.color = Color(0.72, 0.62, 0.45)
-	var top_left := Vector2(boat[0]) * TILE
-	var bottom_right := Vector2(boat[-1] + Vector2i.ONE) * TILE
-	hull.polygon = PackedVector2Array([top_left, Vector2(bottom_right.x, top_left.y), bottom_right,
-		Vector2(top_left.x, bottom_right.y)])
+	hull.texture = load(GOELAND_TEXTURE)
+	if hull.texture == null:
+		_fail("image absente : %s (lancer --import)" % GOELAND_TEXTURE)
+		return
+	hull.material = load(GOELAND_MATERIAL)
+	hull.centered = false
+	hull.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	hull.position = GOELAND_FOOT * TILE - Vector2(0, hull.texture.get_size().y)
 	_attach(root, gate, hull)
 	_spawn(root, "from_goeland", plan.cells_at("from_goeland")[0])
 	_trigger(root, "BarriereMerSud", plan.cells_at("barriere_mer_sud"), Vector2i.ZERO,

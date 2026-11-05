@@ -190,5 +190,9 @@ func test_olivine_keeps_its_sea_until_the_quest() -> void:
 	flags.set_flag(&"johto_stones_quest")
 	assert_true(boat.is_open(flags), "amarré pendant l'arc")
 	assert_eq(boat.blocking_cells.size(), 24, "42..47 × 34..37")
+	var hull := boat.get_node_or_null(^"Coque") as Sprite2D
+	assert_not_null(hull, "Goéland peint")
+	if hull != null:
+		assert_eq(hull.texture.resource_path, "res://assets/world/props/prop_goeland_01.png")
 	assert_not_null(map.get_node_or_null(^"Spawns/from_goeland"))
 	assert_not_null(map.get_node_or_null(^"Triggers/BarriereMerSud"))

@@ -18,6 +18,8 @@ S="--boot --start="
 SHOTS=(
 	"oliville_goeland|60|${S}johto_johp2_olivine --cell=41,33 --facing=left"
 	"oliville_goulven_p12|260|${S}johto_johp2_olivine --cell=40,33 --facing=down --mash=30"
+	"oliville_goeland_large|60|${S}johto_johp2_olivine --cell=38,33 --facing=right"
+	"irisia_bateau_large|60|${S}johto_johp2_cianwood --cell=27,23 --facing=down"
 	"pont_arrivee|60|${S}johto_johp2_deck"
 	"pont_goulven|60|${S}johto_johp2_deck --cell=11,3 --facing=right"
 	"irisia_quai|60|${S}johto_johp2_cianwood"
