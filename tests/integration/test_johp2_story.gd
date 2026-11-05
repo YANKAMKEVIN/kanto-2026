@@ -210,6 +210,19 @@ func test_goulven_sends_the_player_to_rosalia_once() -> void:
 	assert_true(GameState.flags.has_flag(&"johto_goulven_rosalia_told"))
 
 
+func test_corentin_and_his_dragonite_wait_at_rosalia_after_the_setback() -> void:
+	await _launch("johto_johp2_rosalia", &"ecruteak_city")
+	var map := _boot.get_map()
+	assert_not_null(map.get_npc(&"corentin"), "Corentin sur la place")
+	# Sans planche peinte, la carte saute le Pokémon sans erreur (`awaits_painted_look`) : il
+	# apparaît de lui-même avec ses SpriteFrames. Ici, seule sa place dans les données compte.
+	var mount := NpcRoster.load_for_map(&"ecruteak_city").get_spec(&"dracolosse")
+	assert_not_null(mount, "son Dracolosse, dans les données")
+	if mount != null:
+		assert_eq(mount.cell, Vector2i(38, 18))
+		assert_eq(mount.sprite, &"pokemon/dragonite")
+
+
 ## A-13 : le joueur en Surf touche la rangée 38 : P-59 et un pas vers le nord, quel que soit le sens.
 func test_south_sea_is_closed_before_act_2() -> void:
 	await _launch("johto_johp2_south_sea", &"olivine_city")
