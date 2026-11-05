@@ -1290,8 +1290,7 @@ const SET_J29: Array[StringName] = [
 ## scènes depuis leur fusion dans `main`.
 ## JOH8 : drapeau lu par la Tour Carillon et levé par le JOH9 (la fin du chapitre) ; à retirer à sa
 ## fusion.
-## JOHP1 : posé par la bascule du JOHP3 (`jalon-joh-pierres.md` §5.3).
-const FUTURE_FLAGS: Array[StringName] = [&"johto_stones_quest"]
+const FUTURE_FLAGS: Array[StringName] = []
 ## Jalon 28 (T7, T8) : dialogues de l'Arène de Jadielle.
 const IDS_J28: Array[StringName] = [
 	&"viridian_gym_blackbelt_bertrand_after", &"viridian_gym_blackbelt_bertrand_before",

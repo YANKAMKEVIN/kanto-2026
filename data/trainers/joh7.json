@@ -162,29 +162,54 @@
 		"team": [
 			{
 				"species": "weezing",
-				"level": 62
+				"level": 64,
+				"moves": [
+					"sludge",
+					"flamethrower",
+					"thunderbolt",
+					"explosion"
+				]
 			},
 			{
 				"species": "wobbuffet",
-				"level": 62
+				"level": 64
 			},
 			{
-				"species": "noctowl",
-				"level": 63
+				"species": "houndoom",
+				"level": 64,
+				"moves": [
+					"flamethrower",
+					"crunch",
+					"solar_beam",
+					"feint_attack"
+				]
 			},
 			{
 				"species": "dewgong",
-				"level": 63
+				"level": 65,
+				"moves": [
+					"ice_beam",
+					"surf",
+					"rest",
+					"body_slam"
+				]
 			},
 			{
 				"species": "sneasel",
-				"level": 64
+				"level": 66,
+				"moves": [
+					"ice_beam",
+					"feint_attack",
+					"slash",
+					"quick_attack"
+				]
 			}
 		],
 		"card": {
 			"name": "CENERE",
 			"title": "Admin de la Team Rocket",
 			"portrait": "cenere"
-		}
+		},
+		"bag": true
 	}
 }

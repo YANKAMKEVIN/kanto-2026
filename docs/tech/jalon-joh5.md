@@ -23,6 +23,10 @@
 | Grotte marine (T-38) | JOH1 (`CurrentGate` levée par `johto_team_returned`) | T-38 ajouté après la fusion du JOH1 (§2.8) |
 | Sylphe SARL | Étages en modules (`build_silph_co.gd`), cabine, `ElevatorDirector`, `KeyDoor` | Modèle de l'outil de la Tour |
 
+> **Arc des Pierres (2026-11-05)** : le retour de l'équipe a quitté le bureau pour la fin de l'arc. Les
+> scènes `goldenrod_radio_office` et `goldenrod_radio_exit` décrites ici sont réécrites par le JOHP3
+> (`docs/tech/jalon-joh-pierres.md` §5.3) ; ce plan garde l'état du JOH5 à sa fusion.
+
 ## 1. Découpage
 
 | Sous-jalon | Contenu | Validation |

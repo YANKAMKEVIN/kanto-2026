@@ -18,6 +18,7 @@
 		{ "zone": "azalea_town", "map": "azalea_town", "spawn": "from_center" },
 		{ "zone": "mahogany_town", "map": "mahogany_town", "spawn": "from_center" },
 		{ "zone": "mt_silver", "map": "silver_trail", "spawn": "from_center" },
+		{ "zone": "blackthorn_city", "map": "blackthorn_city", "spawn": "from_dragon" },
 		{ "zone": "cianwood_city", "map": "cianwood_city", "spawn": "retour_centre" }
 	]
 }

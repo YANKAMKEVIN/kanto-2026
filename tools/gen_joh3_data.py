@@ -199,7 +199,8 @@ def read_plan(name):
 		for raw in handle:
 			line = raw.rstrip("\n")
 			if line.startswith("POSITIONS"):
-				section = "pos"
+				# POSITIONS_ARC (variante de l'arc des Pierres) : pas la base.
+				section = "pos" if line.strip() == "POSITIONS" else None
 				continue
 			if line.startswith("FIN"):
 				section = None
@@ -483,6 +484,7 @@ def write_interiors():
 		"goldenrod_house_1_woman": {"speaker": "Femme", "variants": [
 			{"if": ["goldenrod_husband_gift"], "pages": [
 				"Il dort depuis hier soir. Il dit qu'il ne remontera jamais dans le noir."]},
+			{"if": ["johto_stones_quest"], "cutscene": "goldenrod_husband_gift"},
 			{"if": ["johto_act2"], "cutscene": "goldenrod_husband_gift"},
 			{"pages": ["Mon mari travaille à la Tour Radio.",
 				"Il n'est pas rentré\ndepuis trois jours.", "Ils disent qu'il fait\ndes heures en plus…"]},
@@ -540,7 +542,11 @@ def write_interiors():
 				"dialogue": "goldenrod_house_1_woman"},
 			# JOH5 (T-36) : Raphaël, de retour après la Tour Radio.
 			"raphael": {"cell": [6, 5], "facing": "left", "sprite": "raphael",
-				"dialogue": "goldenrod_radio_raphael_home", "if": ["johto_act2"]},
+				"dialogue": "goldenrod_radio_raphael_home", "if": ["johto_stones_quest"]},
+			# Parties passées par l'ancien bureau (JH-75) : `johto_act2`, sans la quête.
+			"raphael_old_save": {"cell": [6, 5], "facing": "left", "sprite": "raphael",
+				"dialogue": "goldenrod_radio_raphael_home", "if": ["johto_act2"],
+				"unless": ["johto_stones_quest"]},
 		},
 		"goldenrod_house_2": {
 			"man": {"cell": [12, 6], "facing": "left", "sprite": "old_man",

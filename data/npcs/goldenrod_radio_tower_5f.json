@@ -22,7 +22,7 @@
 			"johto_dante_revealed"
 		],
 		"unless": [
-			"johto_team_returned"
+			"johto_radio_office_done"
 		],
 		"dialogue": "goldenrod_radio_grunt_1"
 	},
@@ -34,16 +34,5 @@
 		"facing": "right",
 		"sprite": "directeur",
 		"dialogue": "goldenrod_radio_director"
-	},
-	"poke_balls": {
-		"cell": [
-			2,
-			2
-		],
-		"facing": "down",
-		"sprite": "object/poke_ball_ground",
-		"unless": [
-			"johto_team_returned"
-		]
 	}
 }

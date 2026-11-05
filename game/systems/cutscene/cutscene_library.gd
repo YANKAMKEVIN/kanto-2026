@@ -157,6 +157,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], # Chapitre Johto (JOH6) : flashback
 	["by"], # JOH1 : carry
 	[], # Arc des Pierres (JOHP0) : stones_awaken
+	[], [], # Arc des Pierres (JOHP3) : dragon_flight, rest_point
 ]
 ## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
 const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]
@@ -661,6 +662,17 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				CutsceneStep.Kind.STONES_AWAKEN: # JOH0, JOHP0
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])
+		CutsceneStep.Kind.REST_POINT: # JOHP3
+			if not main is String or (main as String).is_empty():
+				ok = _fail("%s : « rest_point » doit être une carte" % where)
+			else:
+				step.map_id = StringName(main)
+		CutsceneStep.Kind.DRAGON_FLIGHT: # JOHP3
+			if not main is String or not CutsceneStep.FLIGHT_DIRECTIONS.has(main):
+				ok = _fail("%s : « dragon_flight » vaut %s" % [where,
+					", ".join(PackedStringArray(CutsceneStep.FLIGHT_DIRECTIONS))])
+			else:
+				step.text = main
 		CutsceneStep.Kind.FLASHBACK: # JOH6
 			if not main is String or not CutsceneStep.FLASHBACK_ACTIONS.has(main):
 				ok = _fail("%s : « flashback » vaut %s" % [where,

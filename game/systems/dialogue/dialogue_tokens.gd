@@ -46,6 +46,9 @@ const ITEM: StringName = &"item"
 ## de la Tour Radio, tant qu'une équipe est confisquée : le compagnon d'avant le vol, sinon le
 ## premier de l'équipe confisquée ([method returning_name]). Fourni par Boot.
 const RETURNING_POKEMON: StringName = &"returning_pokemon"
+## Arc des Pierres, JOHP3 (P-28b) : le Pokémon de tête de l'équipe, celui que Farfuret frappe (le
+## jeton « pokemon », compagnon, ne vaut pas s'il n'y en a pas). Fourni par Boot.
+const LEAD_POKEMON: StringName = &"lead_pokemon"
 ## Pokédex (jalon 17, jalon-17.md §2.5 ; dossier 20 §16 T-1 à T-3, notés `{n}` et `{reste}`) :
 ## espèces capturées, et ce qu'il manque pour [constant CAUGHT_GOAL] (pas de valeur une fois
 ## l'objectif atteint : la page « Encore {caught_missing}… » est alors omise). Fournis par Boot
@@ -57,7 +60,7 @@ const CAUGHT_MISSING: StringName = &"caught_missing"
 const CAUGHT_GOAL: int = 10
 ## Jetons permis dans les données.
 const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON, LEVELS, PRICE,
-	CAUGHT, CAUGHT_MISSING, ITEM, RETURNING_POKEMON]
+	CAUGHT, CAUGHT_MISSING, ITEM, RETURNING_POKEMON, LEAD_POKEMON]
 ## Jetons « de contexte » : toujours fournis par le directeur qui joue les dialogues où ils
 ## figurent (la Pension). Ce sont les seuls permis dans la question d'un choix (T-7, T-8 : « Ce
 ## sera {price} ₽. »), qui ne doit jamais être omise ([DialogueLibrary]).

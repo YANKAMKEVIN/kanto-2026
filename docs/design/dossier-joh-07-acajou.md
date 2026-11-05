@@ -103,7 +103,7 @@ est **normal** ; seul le Léviator fixe est rouge.
 | Repaire B2F | Sbire (R) | Smogogo 57, Magnéton 56 | oui |
 | Repaire B2F | Sbire (S) | Démolosse 57, Cornèbre 56 | oui |
 | Repaire B2F | Scientifique Rocket | Électrode 57, Magnéton 57, Porygon 56 | **non** (devant la porte) |
-| Repaire B3F | **Brace**, admin | Rapasdepic 60, Arbok 60, Smogogo 61, **Démolosse 62** | **non** |
+| Repaire B3F | **Brace**, admin | Rapasdepic 63, Arbok 63, Smogogo 64, **Démolosse 65** **[D]** (dossier JOH-11 §10) | **non** |
 | Repaire B3F | **Raikou** | niv. 60, combat sauvage, capturable | (après Brace) |
 | Lac Colère | **Léviator rouge** | niv. 50, combat sauvage, capturable | — |
 

@@ -399,6 +399,8 @@ func test_only_misty_surge_and_the_rivals_switch() -> void:
 		&"fuchsia_gym_koga",
 		# Jalon 29 (T4, plan §2.3) : le rival n° 7 change de Pokémon (IA smart), moment à chaque issue.
 		&"rival_route22_final",
+		# Arc des Pierres (JOHP3, décision de Kevin du 2026-11-05) : Ysolde, Cenere, Brace.
+		&"den_ysolde", &"den_cenere", &"mahogany_hideout_b3f_brace",
 		# Jalon 30 (T3) : Agatha (pokered, AgathaAI : change de Pokémon) et le rival Champion.
 		&"league_agatha", &"rival_champion",
 		# Chapitre Johto, JOH7 : Cenere aux Îles Tourbillon (grand combat, dossier JOH-08 §6).

@@ -74,8 +74,9 @@ TRAINER_LINES = {
 
 # Cenere (§6, §11 ; M-14 à M-17) : grand combat, IA « smart », un changement [D].
 CENERE_ID = "whirl_islands_cenere"
-CENERE_TEAM = [("weezing", 62), ("wobbuffet", 62), ("noctowl", 63), ("dewgong", 63),
-	("sneasel", 64)]
+# Attaques, niveaux et Démolosse : `tools/gen_johp3_data.py` (décisions de Kevin du 2026-11-05).
+CENERE_TEAM = [("weezing", 64), ("wobbuffet", 64), ("houndoom", 64), ("dewgong", 65),
+	("sneasel", 66)]
 CENERE_SPRITE = "cenere"
 
 # Textes des panneaux et examens (carte, position) → (orateur, pages).
@@ -142,7 +143,7 @@ DIALOGUES = {
 	"whirl_suicune_seen": (NARRATION, ["Un Pokémon bleu se tient sur le rocher.",
 		"Il regarde {player}, sans bouger."]),
 	"whirl_cenere_arrival": ("Cenere", ["Tu es là avant moi. Encore.",
-		"Deux erreurs de calcul. Ça commence à faire beaucoup."]),
+		"Trois erreurs de calcul. Ça commence à faire beaucoup."]),
 	"whirl_cenere_before": ("Cenere", ["Cette fois, j'ai étudié ton équipe. Chaque Pokémon. Chaque attaque.",
 		"Recule, ou je te range dans mes statistiques."]),
 	"whirl_cenere_defeated": ("Cenere", ["… Je ne comprends pas.", "Mes calculs étaient justes."]),

@@ -76,7 +76,7 @@ sud) ; contrôle `tools/art/plan_check_joh7.py` (courants simulés) ; aperçu
 | Route 41 | Pêcheur Noé | Hypocéan 52, Poissoroy 52 | **non** (chenal) |
 | Îles 1F | Sbire (T) | Grotadmorv 58, Arbok 58 | oui |
 | Îles 1F | Sbire (U) | Démolosse 59, Nosferalto 58 | **non** |
-| Îles B1F | **Cenere**, admin | Smogogo 62, Qulbutoké 62, Noarfang 63, Lamantine 63, **Farfuret 64** | **non** |
+| Îles B1F | **Cenere**, admin | Smogogo 64, Qulbutoké 64, Démolosse 64, Lamantine 65, **Farfuret 66** **[D]** (dossier JOH-11 §10) | **non** |
 | Îles B1F | **Suicune** | niv. 60, sauvage, capturable | (après Cenere) |
 | Îles B2F | **Lugia** | niv. 65, sauvage, capturable | — |
 | Îles B1F, crique | **Lokhlass** (vendredi) | niv. 50, sauvage, capturable | — |

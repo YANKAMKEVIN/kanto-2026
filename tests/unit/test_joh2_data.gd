@@ -114,7 +114,8 @@ func test_every_validated_line_is_in_dossier_joh_03() -> void:
 	# JOH8 : le doyen dit aussi H-2, H-3 et H-34 (dossier joh-09 §15), en tête de son dialogue.
 	var dossier := J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER) + "\n"
 		+ FileAccess.get_file_as_string(DOSSIER_07) + "\n"
-		+ FileAccess.get_file_as_string("res://docs/design/dossier-joh-09-tour-carillon.md"))
+		+ FileAccess.get_file_as_string("res://docs/design/dossier-joh-09-tour-carillon.md") + "\n"
+		+ FileAccess.get_file_as_string("res://docs/design/dossier-joh-11-arc-pierres.md")) # P-54
 	dossier = dossier.replace("{joueur}", "{player}")
 	var checked := 0
 	for id: StringName in _ids("res://data/dialogues/"):

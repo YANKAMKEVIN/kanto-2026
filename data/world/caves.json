@@ -60,6 +60,10 @@
 			"maps": ["slowpoke_well_b1f", "slowpoke_well_b2f"],
 			"escape": { "map": "azalea_town", "spawn": "from_well", "facing": "down" }
 		},
+		"dragons_den": {
+			"maps": ["dragons_den_1f", "dragons_den_sanctuary"],
+			"escape": { "map": "blackthorn_city", "spawn": "retour_antre", "facing": "left" }
+		},
 		"alph_gallery": {
 			"maps": ["alph_gallery", "alph_chamber"],
 			"escape": { "map": "ruins_of_alph", "spawn": "retour_galerie", "facing": "up" }

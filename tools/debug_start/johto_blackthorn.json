@@ -1,0 +1,109 @@
+{
+	"map": "blackthorn_city",
+	"spawn": "from_dragon",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"viridian_arrived",
+		"pokedex_activated",
+		"johto_letter_read",
+		"johto_lugia_shadow",
+		"johto_arrived",
+		"johto_team_stolen",
+		"johto_starter_chosen",
+		"johto_rosalia_rockets_seen",
+		"johto_tower_legend_heard",
+		"johto_goldenrod_arrived",
+		"johto_egg_received",
+		"johto_radio_tower_closed_seen",
+		"johto_azalea_clue",
+		"johto_shrine_seen",
+		"johto_kurt_told",
+		"johto_slowpoke_well_cleared",
+		"johto_brace_defeated",
+		"johto_radio_pass",
+		"johto_radio_impostor_defeated",
+		"beaten_goldenrod_radio_tower_grunt_i",
+		"beaten_goldenrod_radio_tower_keeper",
+		"johto_radio_reserve_key",
+		"johto_radio_staff_freed",
+		"johto_radio_staff_talked",
+		"beaten_goldenrod_radio_tower_grunt_o",
+		"johto_cenere_defeated",
+		"johto_dante_revealed",
+		"johto_radio_office_done",
+		"radio_exp_share_given",
+		"johto_stones_quest",
+		"johto_alph_met",
+		"johto_alph_tiles_done",
+		"johto_stone_memory",
+		"johto_ferry_open",
+		"johto_cianwood_arrived",
+		"johto_tide_valve_1",
+		"johto_tide_valves_done",
+		"johto_stone_tide_lost",
+		"johto_clan_called",
+		"johto_blackthorn_arrived"
+	],
+	"party": [
+		{
+			"species": "typhlosion",
+			"level": 41
+		},
+		{
+			"species": "ampharos",
+			"level": 40
+		},
+		{
+			"species": "noctowl",
+			"level": 39
+		},
+		{
+			"species": "togetic",
+			"level": 39
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"poke_ball": 5,
+		"super_potion": 5,
+		"hyper_potion": 5,
+		"antidote": 2,
+		"stone_memory": 1,
+		"exp_all": 1
+	},
+	"confiscated": {
+		"party": [
+			{
+				"species": "charizard",
+				"level": 62
+			},
+			{
+				"species": "pidgeot",
+				"level": 58
+			},
+			{
+				"species": "nidoking",
+				"level": 57
+			},
+			{
+				"species": "alakazam",
+				"level": 60
+			},
+			{
+				"species": "lapras",
+				"level": 55
+			}
+		],
+		"items": {
+			"great_ball": 7,
+			"super_potion": 4,
+			"full_restore": 2
+		}
+	},
+	"money": 9000,
+	"autosave": true
+}

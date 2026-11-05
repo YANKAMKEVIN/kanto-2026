@@ -62,7 +62,7 @@
 		"sprite": "raphael",
 		"unless": [
 			"johto_radio_staff_talked",
-			"johto_act2"
+			"johto_stones_quest"
 		],
 		"dialogue": "goldenrod_radio_raphael"
 	},

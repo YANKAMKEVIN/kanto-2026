@@ -155,6 +155,12 @@ extends RefCounted
 ##   « start » (filtre sépia plein écran en fondu, joueur caché : [FlashbackFilter]) ou « end »
 ##   (fondu inverse, filtre retiré, joueur visible). Le changement de carte du souvenir se fait par
 ##   des étapes « change_map » ordinaires entre les deux.
+## - [constant Kind.DRAGON_FLIGHT] (arc des Pierres, JOHP3, `jalon-joh-pierres.md` §5.2) : [member text]
+##   ([constant FLIGHT_DIRECTIONS]) : le survol sur le Dracolosse de Corentin
+##   ([member CutsceneDirector.dragon_flight_handler], [DragonFlightOverlay]) ; la scène attend sa fin.
+## - [constant Kind.REST_POINT] (JOHP3, dossier JOH-11 §15) : [member map_id], un Centre de
+##   `rest_points.json`, devient le point de repos sans y être soigné : une défaite contre Ysolde ou
+##   Cenere ramène au Centre d'Ébènelle même si le joueur n'y est jamais entré.
 ## - [constant Kind.STONES_AWAKEN] (arc des Pierres, JOHP0, `jalon-joh-pierres.md` §2.2) : le
 ##   Réveil ([method StoneAwakening.awaken], d'un seul bloc), la cinématique
 ##   ([member CutsceneDirector.awakening_handler]), **l'écriture**, puis l'écran du Réveil
@@ -186,6 +192,7 @@ enum Kind {
 	FLASHBACK, # Chapitre Johto (JOH6)
 	CARRY, # JOH1, remise en scène du vol
 	STONES_AWAKEN, # Arc des Pierres (JOHP0)
+	DRAGON_FLIGHT, REST_POINT, # Arc des Pierres (JOHP3)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -205,6 +212,7 @@ const TYPE_KEYS: Array[String] = [
 	"flashback", # Chapitre Johto (JOH6)
 	"carry", # JOH1, remise en scène du vol
 	"stones_awaken", # Arc des Pierres (JOHP0)
+	"dragon_flight", "rest_point", # Arc des Pierres (JOHP3)
 ]
 ## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
 const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
@@ -213,6 +221,9 @@ const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
 const POSE_ASLEEP: StringName = &"asleep"
 const POSE_HIDDEN: StringName = &"hidden"
 const POSES: Array[StringName] = [POSE_ASLEEP, POSE_HIDDEN]
+
+## Valeurs d'une étape « dragon_flight » (JOHP3) : l'aller vers Ébènelle, le retour, l'arrivée.
+const FLIGHT_DIRECTIONS: Array[String] = ["out", "back", "land"]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]

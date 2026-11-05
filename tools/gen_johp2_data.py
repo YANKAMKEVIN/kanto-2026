@@ -119,10 +119,6 @@ P19_SYSTEM = ["Cenere remonte sur le bateau noir. Le bateau s'éloigne…"]
 P19B = ["Tu as la tête de quelqu'un qui a perdu.",
 	"Tiens, un drôle de gars t'a cherché ce matin. Il est descendu du ciel sur un Dracolosse.",
 	"Il a dit qu'il t'attendrait à Rosalia."]
-P20 = ["Enfin ! Toi, c'est {player} ? Je te cherche depuis Oliville !",
-	"Corentin, messager du clan des dragons, d'Ébènelle.",
-	"L'Aïeule a entendu une pierre se réveiller. Elle a dit : « amène-moi celui qui la porte. »",
-	"Tu as déjà volé sur un Dracolosse ? Non ? C'est très facile. Tiens-toi bien."]
 P41_CITY = ["IRISIA", "L'île au bout de la mer"]
 P41_CAVE = ["GROTTE DE LA MARÉE", "Entrée interdite à marée haute"]
 P48_VALVE = ["{player} tourne la vanne.", "On entend l'eau bouger, plus bas."]
@@ -497,8 +493,8 @@ def write_olivine():
 
 
 def write_rosalia():
-	"""Corentin et son Dracolosse (variante ARC), présents après le revers. Son vol et la suite de
-	P-20 sont au JOHP3, qui reprend le dialogue `ecruteak_corentin`."""
+	"""Corentin et son Dracolosse (variante ARC), présents après le revers. P-20 et son vol sont au
+	JOHP3 (`tools/gen_johp3_data.py`, scène `johto_corentin_flight`)."""
 	positions = read_plan("rosalia")
 	_kind, cells, attrs = positions["corentin"]
 	_kind, mount_cells, mount_attrs = positions["dracolosse"]
@@ -510,7 +506,7 @@ def write_rosalia():
 			"if": mount_attrs["actif_avec"].split(",")},
 	})
 	write_json(os.path.join(DATA, "dialogues", PREFIX + "ecruteak.json"),
-		{"ecruteak_corentin": dialogue("Corentin", P20)})
+		{"ecruteak_corentin": {"cutscene": "johto_corentin_flight"}})
 
 
 def write_interiors():

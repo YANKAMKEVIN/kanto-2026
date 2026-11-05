@@ -1,0 +1,47 @@
+{
+	"dragons_den_rubble": {
+		"maps": [
+			"dragons_den_1f"
+		],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "dratini",
+				"levels": [
+					34,
+					38
+				],
+				"weight": 45
+			},
+			{
+				"species": "dragonair",
+				"levels": [
+					34,
+					38
+				],
+				"weight": 10
+			},
+			{
+				"species": "magikarp",
+				"levels": [
+					34,
+					38
+				],
+				"weight": 25
+			},
+			{
+				"species": "horsea",
+				"levels": [
+					34,
+					38
+				],
+				"weight": 20
+			}
+		]
+	}
+}

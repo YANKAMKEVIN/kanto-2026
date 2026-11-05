@@ -190,6 +190,8 @@ var _pending_offline_notice: bool = false
 var _awakening_overlay: AwakeningOverlay
 ## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
 var _team_return_overlay: TeamReturnOverlay
+## JOHP3 : le survol sur le Dracolosse de Corentin (étape « dragon_flight »).
+var _dragon_flight_overlay: DragonFlightOverlay
 ## JOH5 (T-29) : des Pokémon sont allés au Stockage au retour de l'équipe (drapeau de travail).
 const JOHTO_RETURN_STORED_FLAG: StringName = &"johto_return_stored"
 ## JOHP0 : P-31 (`data/dialogues/johp0.json`) et l'annonce du Stockage.
@@ -411,6 +413,13 @@ func _ready() -> void:
 	_team_return_overlay.name = "TeamReturnOverlay"
 	_team_return_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_team_return_overlay)
+	_dragon_flight_overlay = DragonFlightOverlay.new()
+	_dragon_flight_overlay.name = "DragonFlightOverlay"
+	_dragon_flight_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_dragon_flight_overlay)
+	_cutscenes_node.dragon_flight_handler = _on_dragon_flight_requested
+	_cutscenes_node.rest_point_handler = func(map: StringName) -> void:
+		RestPointLibrary.register(GameState, _rest_points.get_point(map))
 	_cutscenes_node.team_return_handler = _on_team_return_requested
 	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
 	_cutscenes_node.team_returned.connect(_on_team_returned)
@@ -1890,6 +1899,10 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	values.merge(_johto_starter_tokens, true)
 	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
 	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
+	# JOHP3 (P-28b) : {lead_pokemon}, le premier de l'équipe.
+	var lead := GameState.party.get_lead()
+	if lead != null:
+		values[DialogueTokens.LEAD_POKEMON] = lead.display_name(_pokemon)
 	# JOH5 (T-27) : {returning_pokemon}, tant qu'une équipe est confisquée.
 	var returning := DialogueTokens.returning_name(GameState.confiscated, _pokemon)
 	if not returning.is_empty():
@@ -2084,6 +2097,15 @@ func _on_pokemon_caught() -> void:
 ## J25 (§2.5) : choix du Pokémon d'un échange fixe (places de l'espèce demandée) ; −1 = renonce.
 func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> int:
 	return await _trade_overlay.pick(InGameTrade.picker_view(GameState.party, accepted, _pokemon))
+
+
+## JOHP3 (étape « dragon_flight ») : le survol ; la scène change de carte derrière.
+func _on_dragon_flight_requested(direction: StringName) -> void:
+	if direction == &"land":
+		await _dragon_flight_overlay.finish()
+		return
+	_dragon_flight_overlay.reduce_motion = _settings.reduce_motion
+	await _dragon_flight_overlay.play(direction)
 
 
 ## JOH0 (étape « return_team ») : l'écran du choix des 6 ; rend les identifiants gardés.

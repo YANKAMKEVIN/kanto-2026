@@ -1516,6 +1516,10 @@ const EVOLUTION_SILHOUETTE := Color(1.0, 1.0, 1.0, 1.0)
 const EVOLUTION_AURA_SCALES: Array[float] = [1.02, 1.045, 1.07, 1.1, 1.135]
 const EVOLUTION_AURA_ALPHAS: Array[float] = [0.3, 0.19, 0.12, 0.07, 0.035]
 const EVOLUTION_FLASH_COLOR := Color(1.0, 0.98, 0.92, 1.0)
+## Vol sur le Dracolosse de Corentin (JOHP3) : ciel et nuages provisoires.
+const FLIGHT_SKY_TOP := Color(0.32, 0.55, 0.86)
+const FLIGHT_SKY_BOTTOM := Color(0.93, 0.8, 0.62)
+const FLIGHT_CLOUD_COLOR := Color(1.0, 1.0, 1.0, 0.75)
 const EVOLUTION_RAY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
 const EVOLUTION_RAY_ALPHA_PEAK := 0.26
 const EVOLUTION_RAY_ALPHA_REVEALED := 0.12

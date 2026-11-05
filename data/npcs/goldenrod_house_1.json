@@ -17,7 +17,22 @@
 		"sprite": "raphael",
 		"dialogue": "goldenrod_radio_raphael_home",
 		"if": [
+			"johto_stones_quest"
+		]
+	},
+	"raphael_old_save": {
+		"cell": [
+			6,
+			5
+		],
+		"facing": "left",
+		"sprite": "engineer",
+		"dialogue": "goldenrod_radio_raphael_home",
+		"if": [
 			"johto_act2"
+		],
+		"unless": [
+			"johto_stones_quest"
 		]
 	}
 }

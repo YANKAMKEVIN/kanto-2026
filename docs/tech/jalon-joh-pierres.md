@@ -191,6 +191,50 @@ passées par le bureau : `johto_stones_quest` n'est jamais posé, la barrière d
 - Vol et grotte marine fermés avant, ouverts après ; ×1,5 retiré après.
 - Simulation de JOH6 à JOH8 avec une équipe mixte (JH-78) ; **niveaux inchangés**.
 
+### 5.5 Réalisé (2026-11-05)
+
+- **Scènes** : `data/cutscenes/johp3_blackthorn.json`. `dragons_den_altar` est une seule scène à trois
+  variantes (première fois ; Réveil acquis ; Cenere battue sans équipe rendue) : la grille prévoyait
+  deux déclencheurs sur les mêmes cases, `scene_cenere` est donc ignoré par l'outil. P-31 est dite par
+  `AwakeningOverlay` (avant l'écran du Réveil, §13.2).
+- **Étapes neuves** : `dragon_flight` (écran `DragonFlightOverlay`), `rest_point` (§15 : une défaite contre
+  Ysolde ou Cenere ramène au Centre d'Ébènelle même sans y être entré). Jeton `{lead_pokemon}` (P-28b).
+- **Défauts [D]** : Corentin vole dans les deux sens pendant l'arc (Ébènelle n'a pas de Boutique), sans
+  question ; texte `johp3_corentin_blackthorn` en « draft ». Joueur rentré par son propre Vol : Corentin de
+  Rosalia dit P-38 sans le vol et pose `johto_act2`. L'Aïeule est chez elle jusqu'aux trois Gardiens, au
+  Sanctuaire ensuite, de nouveau chez elle après Ysolde. Farfuret ouvre l'équipe de Cenere (P-32, §13.2).
+  Objectifs de l'arc `stones_*` en « draft ». T-32 garde sa bulle sur le réseau jusqu'au retour de
+  l'équipe. Le don du mari et Raphaël chez lui suivent `johto_stones_quest` (la Tour libérée), avec une
+  variante `johto_act2` pour les parties passées par l'ancien bureau.
+- **Rosalia** : `from_dragon` ajouté **au texte** de `ecruteak_city.tscn` (`tools/build_johp3_maps.gd`), jamais
+  réenregistré : la sauvegarde par l'outil aplatissait les décors peints.
+- **Équilibrage** (`tools/sim/gen_johp3_scenarios.py`, `simulate_mt_moon.gd`, 200 graines, attentif avec 3
+  Hyper Potions / naïf). Décision de Kevin du 2026-11-05 : joueur attentif autour de 80 %, naïf pas
+  impuissant, niveaux permis au-delà de JH-74 et JH-78, pour Cenere et Brace seulement. Niveaux [D] notés au
+  dossier JOH-11 §10 :
+
+| Combat | Niveaux | Équipe | Attentif | Naïf | Lecture |
+|---|---|---|---|---|---|
+| Ysolde | 42–45 (dossier) | 6 Pokémon 37–39 | 46,5 % | 0,5 % | Dans la cible 35–60 % |
+| Ysolde | 42–45 (dossier) | 4 Pokémon 40–42 | 56,5 % | 2,5 % | Dans la cible |
+| Ysolde | 42–45 (dossier) | 3 Pokémon 44 | 89,5 % | 45,5 % | Au-dessus de 80 % : qui ne monte que trois Pokémon |
+| Cenere, autel | **59–61 [D]** (était 54–56) | 6 Pokémon 58 | 100 % | 83,5 % | |
+| Cenere, autel | **59–61 [D]** | 4 Pokémon 55 | 76,5 % | 11,5 % | Autour de 80 % |
+| Brace, mixte | **63–65 [D]** (était 60–62) | N59 | 78 % | 3 % | Autour de 80 % |
+| Brace, mixte | **63–65 [D]** | N61 | 89,5 % | 12 % | |
+| Cenere, Îles Tourbillon, mixte | **64–66 [D]**, Démolosse à la place de Noarfang | N61 / N63 | 85,3 / 98,3 % | 7,7 / 15 % | Cible 85–95 % (Kevin), ≈ 92 % en moyenne |
+| Dante (1), mixte | 64–68, inchangé | N63 / N65 | 63,5 / 82,5 % | 4 / 13 % | |
+
+  Attaques ajoutées à Cenere (autel et Îles Tourbillon) et à Brace, avec changements de Pokémon. Cenere des
+  Îles Tourbillon restait à 100 % en attentif quels que soient niveaux et attaques : seconde décision de Kevin,
+  85–95 %, son équipe peut changer. Essais de sa quatrième place [D] : Tyranocif 58–65, 27–61 % (trop fort) ;
+  Démolosse 65, 75–94 % ; Démolosse 64, retenu ; 63, 89–99 % ; Noctali, Nostenfer, Ectoplasma, 96–100 %.
+  Le naïf perd presque toujours ce combat (8–15 %) : Kevin a fixé la cible sur l'attentif. Essai écarté : des
+  attaques choisies pour Ysolde donnaient 0 à 5 %.
+- **QA A17 du 2026-11-05** (sans bloquant) : autel, film et écran du Réveil, écran des 6, vol et arrivée à Rosalia.
+  Reprise sur vraie sauvegarde, sans perte, tuée sur l'écran du Réveil, sur l'écran des 6, après VALIDER avant
+  l'écriture, après l'écriture. Combat complet contre Cenere non joué sur téléphone (couvert dans le vrai Boot).
+
 ## 6. Risques
 
 | Risque | Parade |

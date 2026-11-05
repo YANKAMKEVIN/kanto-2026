@@ -3,8 +3,10 @@
 
 Lit les positions de `tools/plans/radio_tower_1f.txt` … `radio_tower_5f.txt` (grilles validées
 le 2026-11-02, elles font foi) et écrit, d'après `docs/design/dossier-joh-06-tour-radio.md`
-(textes T-1 à T-38 et JH-40 à JH-43 validés le 2026-11-02 ; Dresseurs §5, objets §6) et le plan
-`docs/tech/jalon-joh5.md` §2.2 à §2.5 :
+(textes T-1 à T-38 et JH-40 à JH-43 validés le 2026-11-02, T-21 à T-34 revus le 2026-11-05 ;
+Dresseurs §5, objets §6), `docs/design/dossier-joh-11-arc-pierres.md` (P-1, le retour de l'équipe
+parti à la fin de l'arc) et les plans `docs/tech/jalon-joh5.md` §2.2 à §2.5 et
+`docs/tech/jalon-joh-pierres.md` §5.3 :
   - `data/npcs/goldenrod_radio_tower_<n>f.json` (Dresseurs, PNJ, objets visibles) ;
   - `data/trainers/goldenrod_radio_tower.json` ;
   - `data/dialogues/joh5_radio_tower.json` ;
@@ -145,41 +147,39 @@ T = {
 		"Tes Pokémon, à Oliville, c'est moi qui les ai fait prendre.",
 		"Un champion n'avait rien à faire sur mon chemin.", "Tu es venu quand même. Bien.",
 		"Ce qui a brûlé une fois peut brûler encore.", "Nous nous reverrons quand tout sera cendres."]),
-	"goldenrod_radio_dante_retreat": ("Dante", ["Cenere. Laisse tout. On part."]),
+	"goldenrod_radio_dante_retreat": ("Dante", ["Cenere. Prends tout. On part."]),
 	"goldenrod_radio_grunt_1": (GRUNT, ["Dante ? C'est qui, ça ?"]),
 	"goldenrod_radio_grunt_2": (GRUNT, ["Moi, je suis entré pour Giovanni… Je m'en vais."]),
 	"goldenrod_radio_grunt_3": (GRUNT, ["Un chef qui gagne, c'est un chef. Je le suis."]),
 	"goldenrod_radio_cenere_leaves": ("Cenere", ["Tu as entendu.",
-		"Tes Pokémon sont dans le bureau. Garde-les bien.",
-		"Ils ne te serviront à rien contre ce qui vient."]),
-	"goldenrod_radio_cenere_exit": (NARRATION, ["Cenere s'en va par l'escalier de secours…"]),
+		"Tes Pokémon étaient dans ce bureau. Étaient.",
+		"Un Maître sans son équipe, c'est une variable de moins dans mes calculs."]),
+	"goldenrod_radio_cenere_exit": (NARRATION,
+		["Cenere s'en va par l'escalier de secours, une mallette à la main…"]),
 	"goldenrod_radio_emergency_stairs": (NARRATION,
 		["La porte de l'escalier de secours est fermée."], True),
 	"goldenrod_radio_office_locked": (NARRATION,
 		["La porte du bureau du directeur est fermée."], True),
-	# T-24 à T-32 : le bureau et le retour de l'équipe.
+	# T-24 à T-32 : le bureau vide (T-27 à T-30 : P-34 à P-37, `tools/gen_johp3_data.py`).
 	"goldenrod_radio_office_found": (NARRATION, ["La porte du bureau est ouverte.",
-		"Sur la table : des Poké Balls. Et un sac.", "Ce sont les tiens !"]),
+		"Sur la table, rien.", "Juste un papier tombé par terre."]),
 	"goldenrod_radio_director_bound": ("Directeur", ["Mmmh ! Mmmh !"]),
 	"goldenrod_radio_director_untied": (NARRATION, ["{player} détache le directeur."]),
 	"goldenrod_radio_director_freed": ("Directeur", [
 		"Merci ! Ils m'ont enfermé dans mon propre bureau.",
-		"Ces Poké Balls… ils les gardaient comme un trésor. Elles sont à toi ?"]),
-	"goldenrod_radio_reunion": (NARRATION, [
-		"{returning_pokemon} sort de sa Poké Ball et bondit vers {player} !",
-		"{player} retrouve son équipe et son sac !"]),
-	"goldenrod_radio_storage_back": (NARRATION, ["Connexion au réseau de Kanto…", "…",
-		"Connexion rétablie ! Les autres Pokémon sont au Stockage."]),
-	"goldenrod_radio_bags_merged": (NARRATION,
-		["Les objets de ton ancien sac ont rejoint les nouveaux."]),
+		"Tes Poké Balls ? Elle les a mises dans une mallette, avec ton sac.",
+		"Et le relais du réseau de Kanto, aussi.", "Elle a laissé tomber ce papier."]),
+	"goldenrod_radio_paper": (NARRATION,
+		["« Ruines d'Alpha. Irisia. Ébènelle. Réunir les trois pierres. »"]),
 	"goldenrod_radio_director_gift": ("Directeur", ["Tu as sauvé la Tour, et toute la radio de Johto.",
 		"La Radio de Doublonville t'offre ceci.",
-		"Avec, tes nouveaux Pokémon apprendront vite auprès des anciens."]),
+		"Avec, toute ton équipe apprendra à chaque combat."]),
 	"goldenrod_radio_exp_share_received": (NARRATION, ["{player} reçoit une Multi Exp !"]),
 	"goldenrod_radio_director_candies": ("Directeur", ["Tu en as déjà une ? Alors prends ces bonbons."]),
 	"goldenrod_radio_rare_candy_received": (NARRATION, ["{player} reçoit 3 Super Bonbons !"]),
 	"goldenrod_radio_director_after": ("Directeur", [
 		"L'ascenseur remarche. Les émissions reprendront dès ce soir.",
+		"Le réseau de Kanto, lui, restera coupé tant que le relais ne sera pas revenu.",
 		"Reviens nous voir quand tu veux."]),
 	# T-33, T-34 : l'Agente et Orme au hall.
 	"goldenrod_radio_agent": ("Agente", ["C'est toi qui as libéré la Tour ? Bravo.",
@@ -189,8 +189,15 @@ T = {
 	"goldenrod_radio_elm": ("Prof. Orme", ["{player} ! J'ai tout entendu à la radio.",
 		"Dante… Chen m'a parlé de lui, un jour. Il le croyait disparu depuis des années.",
 		"« Quand tout sera cendres »… Ça ne me plaît pas.",
-		"Les sages de Rosalia ont appelé ce matin. Ils veulent te voir.",
-		"Je crois que c'est à propos de la Tour Cendrée."]),
+		"Et ils ont emporté ton équipe ? Fais voir ce papier.",
+		"… Trois pierres. Je connais cette histoire."]),
+	# P-1 : la légende (dossier JOH-11 §17).
+	"goldenrod_radio_legend": ("Prof. Orme", ["Trois pierres dorment aux trois bouts de Johto.",
+		"La première se souvient. La deuxième revient. La troisième respire.",
+		"Réunies, elles réveillent ce qui est né sur cette terre.",
+		"Les sages de Rosalia ne lui ouvriront jamais leur tour.",
+		"Mais avec ces pierres, il n'aurait pas besoin d'eux pour réveiller ce qui dort dessous.",
+		"Une amie fouille les Ruines d'Alpha, au sud de la Route 36. Elle s'appelle Héloïse. Va la voir, et vite."]),
 	# T-35, T-36 : chez Raphaël (Doublonville, maison 1 du JOH3 : PNJ dans `tools/gen_joh3_data.py`).
 	"goldenrod_husband_home": ("Femme", ["Mon mari est rentré ! Raphaël m'a tout raconté.",
 		"Merci, merci ! Prends ça, ça vient du fond du cœur."]),
@@ -201,7 +208,6 @@ T = {
 	# scène du JOH1 dans `data/cutscenes/joh1.json`).
 	"sea_cave_calm": (NARRATION, ["Le courant s'est calmé.", "On peut repartir vers Kanto."]),
 }
-# T-28 (écran du choix des 6) : titre et consigne de `TeamReturnOverlay` (JOH0), pas un dialogue.
 
 
 CELL_RE = re.compile(r"^(\d+)(?:\.\.(\d+))?,(\d+)(?:\.\.(\d+))?$")
@@ -354,8 +360,8 @@ def raphael_scene():
 
 def cenere_scene():
 	"""5F, déclencheur (12..13, 6) : T-15, T-16, combat obligatoire contre Cenere seule (JH-41),
-	T-17, T-18, la voix de Dante (T-19 à T-21), les Sbires se divisent (T-22, JH-43), Cenere laisse
-	tout (T-23, JH-42) et s'en va par l'escalier de secours ; `johto_dante_revealed`."""
+	T-17, T-18, la voix de Dante (T-19 à T-21), les Sbires se divisent (T-22, JH-43), Cenere emporte
+	tout (T-23, JH-61) et s'en va par l'escalier de secours ; `johto_dante_revealed`."""
 	won = "johto_cenere_defeated"
 	grunts = [("sbire_1", [4, 11], "right"), ("sbire_2", [18, 12], "left"),
 		("sbire_3", [7, 8], "down")]
@@ -423,9 +429,9 @@ def gift_steps(has_exp_all):
 
 
 def office_scene():
-	"""Bureau du directeur (§7 du dossier, plan §2.5) : T-24 à T-27, `return_team` (choix des 6,
-	T-28 sur l'écran), T-29 si des Pokémon sont allés au Stockage, T-30, **une seule écriture**,
-	puis T-31 (Multi Exp ou 3 Super Bonbons) et T-32."""
+	"""Bureau du directeur (dossier §4 étape 8 ; `jalon-joh-pierres.md` §5.3) : bureau vide (T-24),
+	T-25, T-26 et le papier, puis T-31 (Multi Exp ou 3 Super Bonbons) et T-32. Le retour de
+	l'équipe se joue à la fin de l'arc (`dragons_den_altar`). Aucune écriture ici."""
 	head = [
 		say("goldenrod_radio_office_found"),
 		{"move": "player", "to": {"near": "directeur", "offsets": [[1, 0], [0, 1]]}},
@@ -434,43 +440,36 @@ def office_scene():
 		say("goldenrod_radio_director_untied"),
 		{"face": "directeur", "to": "player"},
 		say("goldenrod_radio_director_freed"),
-		say("goldenrod_radio_reunion"),
-		{"return_team": True},
-		say("goldenrod_radio_storage_back", **{"if": ["johto_return_stored"]}),
-		say("goldenrod_radio_bags_merged"),
-		{"save": "retour de l'équipe (Tour Radio, JOH5)"},
-		{"unset": ["johto_return_stored"]},
+		say("goldenrod_radio_paper"),
 	]
-	cond = {"if": ["johto_dante_revealed"], "unless": ["johto_team_returned"]}
+	tail = [{"set": ["johto_radio_office_done"]}]
+	cond = {"if": ["johto_dante_revealed"], "unless": ["johto_radio_office_done"]}
 	return {"variants": [
-		dict(cond, if_items=["exp_all"], steps=head + gift_steps(True)),
-		dict(cond, steps=head + gift_steps(False)),
-	]}
-
-
-def exp_share_scene():
-	"""Reprise (plan §2.5) : équipe rendue et écrite, Multi Exp pas encore donnée."""
-	cond = {"if": ["johto_team_returned"], "unless": ["radio_exp_share_given"]}
-	return {"variants": [
-		dict(cond, if_items=["exp_all"], steps=[{"face": "directeur", "to": "player"}]
-			+ gift_steps(True)),
-		dict(cond, steps=[{"face": "directeur", "to": "player"}] + gift_steps(False)),
+		dict(cond, if_items=["exp_all"], steps=head + gift_steps(True) + tail),
+		dict(cond, steps=head + gift_steps(False) + tail),
 	]}
 
 
 def husband_scene():
-	"""T-35 : la femme de D-37 (maison 1 de Doublonville) remercie et donne 3 Ultra Balls."""
-	return {"variants": [{"if": ["johto_act2"], "unless": ["goldenrod_husband_gift"], "steps": [
+	"""T-35 : la femme de D-37 (maison 1 de Doublonville) remercie et donne 3 Ultra Balls, dès que
+	la Tour est libérée. Parties passées par l'ancien bureau (JH-75) : `johto_act2`, sans la quête."""
+	steps = [
 		say("goldenrod_husband_home"),
 		{"give": "ultra_ball", "count": 3},
 		say("goldenrod_husband_gift_received"),
 		{"set": ["goldenrod_husband_gift"]},
-	]}]}
+	]
+	return {"variants": [
+		{"if": ["johto_stones_quest"], "unless": ["goldenrod_husband_gift"], "steps": steps},
+		{"if": ["johto_act2"], "unless": ["goldenrod_husband_gift"], "steps": steps},
+	]}
 
 
 def exit_scene():
-	"""1F, rangée y 12 : T-33 (l'Agente garde les preuves) puis T-34 (Orme), `johto_act2`."""
-	return {"variants": [{"if": ["johto_team_returned"], "unless": ["johto_act2"], "steps": [
+	"""1F, rangée y 12 : T-33 (l'Agente garde les preuves), T-34 et P-1 (Orme, la légende),
+	`johto_stones_quest` : la barrière de la Route 36 s'ouvre. Parties passées par l'ancien bureau :
+	jamais jouée, l'arc reste fermé (JH-75)."""
+	return {"variants": [{"if": ["johto_radio_office_done"], "unless": ["johto_stones_quest"], "steps": [
 		{"face": "agente", "to": "player"},
 		{"face": "player", "to": "agente"},
 		say("goldenrod_radio_agent"),
@@ -480,7 +479,8 @@ def exit_scene():
 		{"face": "orme", "to": "player"},
 		{"face": "player", "to": "orme"},
 		say("goldenrod_radio_elm"),
-		{"set": ["johto_act2"]},
+		say("goldenrod_radio_legend"),
+		{"set": ["johto_stones_quest"]},
 		{"move": "orme", "to": [12, 15], "background": True},
 		{"move": "agente", "to": [11, 15]},
 		{"despawn": "orme"},
@@ -554,18 +554,17 @@ def main():
 					entry["dialogue"] = "goldenrod_radio_employee_2"
 				elif role == "raphael":
 					entry["dialogue"] = "goldenrod_radio_raphael"
-					entry["unless"] = entry.get("unless", []) + ["johto_act2"]  # rentré chez lui
+					entry["unless"] = entry.get("unless", []) + ["johto_stones_quest"]  # rentré chez lui
 					dialogues["goldenrod_radio_raphael"] = {"cutscene": "goldenrod_radio_raphael"}
 					cutscenes["goldenrod_radio_raphael"] = raphael_scene()
 				elif role == "directeur":
 					entry["dialogue"] = "goldenrod_radio_director"
+					after = T["goldenrod_radio_director_after"][1]
 					dialogues["goldenrod_radio_director"] = {"speaker": "Directeur", "variants": [
-						{"if": ["johto_dante_revealed"], "unless": ["johto_team_returned"],
-							"cutscene": "goldenrod_radio_office"},
-						{"if": ["johto_team_returned"], "unless": ["radio_exp_share_given"],
-							"cutscene": "goldenrod_radio_exp_share"},
-						{"if": ["johto_team_returned"],
-							"pages": T["goldenrod_radio_director_after"][1]},
+						# Le relais est revenu avec l'équipe : T-32 sans sa bulle sur le réseau.
+						{"if": ["johto_team_returned"], "pages": [after[0], after[2]]},
+						{"if": ["johto_radio_office_done"], "pages": after},
+						{"if": ["johto_dante_revealed"], "cutscene": "goldenrod_radio_office"},
 						{"pages": ["Mmmh ! Mmmh !"]},
 					]}
 				elif role == "agente":
@@ -584,15 +583,11 @@ def main():
 				flag = "got_" + ident
 				dialogues[ident] = {"cutscene": ident}
 				cutscenes[ident] = item_scene(ident, attrs["item"], 1, flag, False)
-			elif kind == "decor" and attrs.get("role") == "poke_balls_et_sac":
-				# Les Poké Balls de l'équipe sur le bureau (T-24), jusqu'au retour.
-				npcs[ident] = {"cell": cell, "facing": "down", "sprite": "object/poke_ball_ground",
-					"unless": ["johto_team_returned"]}
 		write_json(os.path.join(DATA, "npcs", map_id + ".json"), npcs)
 
 	dialogues["goldenrod_radio_exit"] = {"cutscene": "goldenrod_radio_exit"}
 	for ident in ("goldenrod_radio_elevator", "goldenrod_radio_reserve_door",
-			"goldenrod_radio_office", "goldenrod_radio_exp_share"):
+			"goldenrod_radio_office"):
 		dialogues[ident] = {"cutscene": ident}
 	cutscenes.update({
 		"goldenrod_radio_impostor": impostor_scene(),
@@ -600,7 +595,6 @@ def main():
 		"goldenrod_radio_reserve_door": reserve_door_scene(),
 		"goldenrod_radio_cenere": cenere_scene(),
 		"goldenrod_radio_office": office_scene(),
-		"goldenrod_radio_exp_share": exp_share_scene(),
 		"goldenrod_radio_exit": exit_scene(),
 		"goldenrod_husband_gift": husband_scene(),
 	})

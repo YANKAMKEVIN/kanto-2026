@@ -1,0 +1,19 @@
+{
+	"nurse": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"apprenti": {
+		"cell": [
+			11,
+			5
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_m",
+		"dialogue": "blackthorn_center_apprenti"
+	}
+}

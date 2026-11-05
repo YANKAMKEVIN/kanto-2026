@@ -63,14 +63,14 @@ from_4f              spawn          20,1         libre   paire=e4_5 facing=down 
 scene_cenere         declencheur    12..13,6     libre   actif_sans=johto_cenere_defeated  # seul accès au studio : T-15, T-16 puis combat ; ensuite T-18 → T-23, pose johto_dante_revealed
 cenere               dresseur       11,10        bloque  facing=up sight=0 trainer=goldenrod_radio_tower_admin_cenere actif_sans=johto_dante_revealed  # T-15 à T-18, T-23, Smogogo 33 + Qulbutoké 33 + Farfuret 35 ; OBLIGATOIRE (scène) ; part par l'escalier de secours
 haut_parleur         decor          11,9         bloque  role=haut_parleur  # micro et haut-parleur de la table : la voix de Dante (T-19 à T-21), grésillement [D]
-sbire_1              pnj            4,11         bloque  role=sbire facing=right actif_avec=johto_cenere_defeated actif_sans=johto_team_returned  # T-22 « Dante ? C'est qui, ça ? »
-sbire_2              pnj            18,12        bloque  role=sbire facing=left actif_avec=johto_cenere_defeated actif_sans=johto_team_returned  # T-22, s'en va
-sbire_3              pnj            7,8          bloque  role=sbire facing=down actif_avec=johto_cenere_defeated actif_sans=johto_team_returned  # T-22, suit Dante
+sbire_1              pnj            4,11         bloque  role=sbire facing=right actif_avec=johto_cenere_defeated actif_sans=johto_radio_office_done  # T-22 « Dante ? C'est qui, ça ? »
+sbire_2              pnj            18,12        bloque  role=sbire facing=left actif_avec=johto_cenere_defeated actif_sans=johto_radio_office_done  # T-22, s'en va
+sbire_3              pnj            7,8          bloque  role=sbire facing=down actif_avec=johto_cenere_defeated actif_sans=johto_radio_office_done  # T-22, suit Dante
 escalier_secours     examen         23,10        bloque   # porte de l'escalier de secours (fermée), examinée depuis (22, 10) → ; sortie de Cenere (T-23)
 porte_bureau         porte_cle      8,2          libre   cle=johto_dante_revealed  # T-24 ; fermée tant que Cenere n'est pas partie ; ouverte depuis (9, 2) ←
-scene_bureau         declencheur    7,2          libre   actif_avec=johto_dante_revealed actif_sans=johto_team_returned  # T-24 : retour de l'équipe (§7), T-25 à T-32 ; pose johto_team_returned, radio_exp_share_given ; retire johto_act1, storage_offline
+scene_bureau         declencheur    7,2          libre   actif_avec=johto_dante_revealed actif_sans=johto_radio_office_done  # T-24 : bureau vide, T-25, T-26, le papier, T-31, T-32 ; pose johto_radio_office_done, radio_exp_share_given
 directeur            pnj            2,3          bloque  role=directeur facing=right  # T-25, T-26, T-31, T-32 ; ligoté jusqu'à la scène du bureau
-poke_balls           decor          2..3,2       bloque  role=poke_balls_et_sac actif_sans=johto_team_returned  # les Poké Balls et le sac sur le bureau (T-24, T-27)
+poke_balls           decor          2..3,2       bloque  role=bureau  # le bureau, vide (T-24) : l'équipe est partie dans la mallette (JH-61)
 ascenseur            ascenseur      18,0         libre   etage=5F vers=goldenrod_radio_tower_elevator:entrance actif_avec=johto_cenere_defeated  # porte de l'ascenseur ; dessert les 5 étages après Cenere (T-32) [D]
 examen_ascenseur     examen         18,0         libre   actif_sans=johto_cenere_defeated  # T-5 (1F au JOH3 : D-19), examiné depuis (18, 1) ↑ tant que l'ascenseur est en panne
 from_elevator        spawn          18,1         libre   paire=ascenseur etage=5F facing=down  # sortie de la cabine, une case devant la porte

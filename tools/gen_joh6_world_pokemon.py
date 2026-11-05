@@ -21,6 +21,9 @@ SRC = os.path.join(ROOT, "assets", "sprites", "pokemon")
 SHEETS = {
 	"persian": ("official/053.png", 110, 0.0),
 	"gyarados_red": ("official/130.png", 230, 0.42),
+	# Arc des Pierres (JOHP3) : le Dracolosse de Corentin, le Farfuret de Cenere.
+	"dragonite": ("official/149.png", 180, 0.0),
+	"sneasel": ("official/215.png", 100, 0.0),
 }
 DIRECTIONS = ["", "_down", "_left", "_right", "_up"]
 

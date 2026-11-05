@@ -11362,3 +11362,6 @@ z_as_relative = false
 position = Vector2(4886, 2658)
 script = ExtResource("11_wq1nm")
 glow_type = &"night_lamp"
+
+[node name="from_dragon" type="Marker2D" parent="Spawns"]
+position = Vector2(3312, 1920)

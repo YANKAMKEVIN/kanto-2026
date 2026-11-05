@@ -33,17 +33,73 @@
 		"draft": true
 	},
 	{
-		"id": "leave_radio_tower",
-		"text": "redescendre au hall de la Tour Radio.",
+		"id": "stones_back_to_rosalia",
+		"text": "rejoindre les sages de Rosalia avec Corentin.",
 		"if": ["johto_team_returned"],
 		"unless": ["johto_act2"],
+		"draft": true
+	},
+	{
+		"id": "stones_beat_cenere",
+		"text": "battre Cenere, au Sanctuaire de l'Antre du Dragon.",
+		"if": ["johto_stones_awakened"],
+		"unless": ["johto_team_returned"],
+		"draft": true
+	},
+	{
+		"id": "stones_go_altar",
+		"text": "porter les pierres à l'autel du Sanctuaire.",
+		"if": ["johto_stone_breath"],
+		"unless": ["johto_stones_awakened"],
+		"draft": true
+	},
+	{
+		"id": "stones_clan_trial",
+		"text": "passer l'épreuve du clan, dans l'Antre du Dragon.",
+		"if": ["johto_clan_trial_open"],
+		"unless": ["johto_stone_breath"],
+		"draft": true
+	},
+	{
+		"id": "stones_meet_elder",
+		"text": "voir l'Aïeule, à Ébènelle.",
+		"if": ["johto_clan_called"],
+		"unless": ["johto_clan_trial_open"],
+		"draft": true
+	},
+	{
+		"id": "stones_find_messenger",
+		"text": "retrouver le messager du clan, à Rosalia.",
+		"if": ["johto_stone_tide_lost"],
+		"unless": ["johto_clan_called"],
+		"draft": true
+	},
+	{
+		"id": "stones_reach_cianwood",
+		"text": "gagner Irisia avec Goulven, depuis le port d'Oliville.",
+		"if": ["johto_stone_memory"],
+		"unless": ["johto_stone_tide_lost"],
+		"draft": true
+	},
+	{
+		"id": "stones_reach_alph",
+		"text": "trouver Héloïse, aux Ruines d'Alpha, au sud de la Route 36.",
+		"if": ["johto_stones_quest"],
+		"unless": ["johto_stone_memory"],
+		"draft": true
+	},
+	{
+		"id": "leave_radio_tower",
+		"text": "redescendre au hall de la Tour Radio.",
+		"if": ["johto_radio_office_done"],
+		"unless": ["johto_stones_quest"],
 		"draft": true
 	},
 	{
 		"id": "free_radio_tower",
 		"text": "libérer la Tour Radio de Doublonville.",
 		"if": ["johto_slowpoke_well_cleared"],
-		"unless": ["johto_team_returned"],
+		"unless": ["johto_radio_office_done"],
 		"draft": true
 	},
 	{

@@ -1,0 +1,91 @@
+{
+	"blackthorn_city_grass_day": {
+		"maps": [
+			"blackthorn_city"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "machoke",
+				"levels": [
+					33,
+					37
+				],
+				"weight": 25
+			},
+			{
+				"species": "graveler",
+				"levels": [
+					33,
+					37
+				],
+				"weight": 25
+			},
+			{
+				"species": "fearow",
+				"levels": [
+					33,
+					37
+				],
+				"weight": 25
+			},
+			{
+				"species": "marill",
+				"levels": [
+					33,
+					37
+				],
+				"weight": 25
+			}
+		]
+	},
+	"blackthorn_city_grass_night": {
+		"maps": [
+			"blackthorn_city"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "noctowl",
+				"levels": [
+					33,
+					37
+				],
+				"weight": 35
+			},
+			{
+				"species": "graveler",
+				"levels": [
+					33,
+					37
+				],
+				"weight": 30
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					33,
+					37
+				],
+				"weight": 35
+			}
+		]
+	}
+}

@@ -240,6 +240,12 @@
 			},
 			{
 				"if": [
+					"johto_stones_quest"
+				],
+				"cutscene": "goldenrod_husband_gift"
+			},
+			{
+				"if": [
 					"johto_act2"
 				],
 				"cutscene": "goldenrod_husband_gift"

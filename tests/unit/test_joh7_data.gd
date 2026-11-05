@@ -9,8 +9,6 @@ const J22Ids := preload("res://tests/helpers/j22_ids.gd")
 
 const PREFIX := "joh7_"
 const DOSSIER := "res://docs/design/dossier-joh-08-iles-tourbillon.md"
-## Ancien M-14, encore en jeu jusqu'à la bascule du JOHP3 (dossier JOH-11 §20) : à retirer au JOHP3.
-const DOSSIER_ARC := "res://docs/design/dossier-joh-11-arc-pierres.md"
 const MAPS: Array[StringName] = [&"route_40", &"route_41", &"whirl_islands_1f", &"whirl_islands_b1f",
 	&"whirl_islands_b2f"]
 ## N° du dossier → [dialogue, variante] dont les pages, mises bout à bout, font le texte.
@@ -49,8 +47,8 @@ const TRAINERS: Dictionary = {
 	&"whirl_islands_grunt_t": ["Sbire Rocket", [[&"muk", 58], [&"arbok", 58]], &"whirl_islands_1f"],
 	&"whirl_islands_grunt_u": ["Sbire Rocket", [[&"houndoom", 59], [&"golbat", 58]], &"whirl_islands_1f"],
 }
-const CENERE_TEAM: Array = [[&"weezing", 62], [&"wobbuffet", 62], [&"noctowl", 63],
-	[&"dewgong", 63], [&"sneasel", 64]]
+const CENERE_TEAM: Array = [[&"weezing", 64], [&"wobbuffet", 64], [&"houndoom", 64],
+	[&"dewgong", 65], [&"sneasel", 66]]
 ## Dossier §7 : scène → (objet, nombre, drapeau, carte).
 const ITEMS: Dictionary = {
 	&"route_40_item_1": [&"ultra_ball", 2, &"route_40"],
@@ -107,8 +105,7 @@ func before_all() -> void:
 ## `{player}`).
 func _read_dossier() -> Dictionary:
 	var texts: Dictionary = {}
-	var source := FileAccess.get_file_as_string(DOSSIER) + "\n" + FileAccess.get_file_as_string(DOSSIER_ARC)
-	for line: String in source.split("\n"):
+	for line: String in FileAccess.get_file_as_string(DOSSIER).split("\n"):
 		if not line.begins_with("| M-"):
 			continue
 		var cells := line.split("|")

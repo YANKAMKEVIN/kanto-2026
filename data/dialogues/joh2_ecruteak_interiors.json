@@ -55,6 +55,18 @@
 			},
 			{
 				"if": [
+					"johto_stones_quest"
+				],
+				"unless": [
+					"johto_act2"
+				],
+				"pages": [
+					"Les pierres ? Une vieille histoire.",
+					"Ces hommes frappent à ma porte,\net je ne l'ouvre pas.\nAlors ils en cherchent une autre."
+				]
+			},
+			{
+				"if": [
 					"johto_dante_plan_known"
 				],
 				"pages": [

@@ -297,7 +297,9 @@ func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
 	# JOH8 : ses trois en tête.
 	assert_eq(ids.slice(0, first), [&"report_to_ecruteak_elder", &"climb_bell_tower",
 		&"see_ecruteak_elder", &"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
-		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"leave_radio_tower",
+		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"stones_back_to_rosalia", &"stones_beat_cenere",
+		&"stones_go_altar", &"stones_clan_trial", &"stones_meet_elder", &"stones_find_messenger",
+		&"stones_reach_cianwood", &"stones_reach_alph", &"leave_radio_tower",
 		&"free_radio_tower", &"talk_to_kurt_in_well", &"take_brace_papers",
 		&"clear_slowpoke_well", &"meet_kurt", &"search_underground", &"reach_goldenrod",
 		&"go_route_39", &"choose_johto_partner", &"rest_olivine",

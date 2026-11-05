@@ -1,0 +1,144 @@
+{
+	"version": 1,
+	"title": "Cenere après le Réveil (JOHP3)",
+	"description": "Cible 70–80 %, 80 % au plus (JH-74).",
+	"seeds": 300,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "6 Pokémon 58",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 58
+				},
+				{
+					"species": "ampharos",
+					"level": 58
+				},
+				{
+					"species": "noctowl",
+					"level": 58
+				},
+				{
+					"species": "togetic",
+					"level": 58
+				},
+				{
+					"species": "furret",
+					"level": 58
+				},
+				{
+					"species": "heracross",
+					"level": 58
+				}
+			]
+		},
+		{
+			"name": "4 Pokémon 55",
+			"members": [
+				{
+					"species": "feraligatr",
+					"level": 55
+				},
+				{
+					"species": "ampharos",
+					"level": 55
+				},
+				{
+					"species": "noctowl",
+					"level": 55
+				},
+				{
+					"species": "togetic",
+					"level": 55
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"den_cenere": {
+			"name": "Cenere",
+			"class": "sbire_rocket_f",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 60,
+			"start_message": false,
+			"end_message": false,
+			"switch": true,
+			"bag": true,
+			"team": [
+				{
+					"species": "sneasel",
+					"level": 61,
+					"moves": [
+						"ice_beam",
+						"feint_attack",
+						"slash",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "weezing",
+					"level": 59,
+					"moves": [
+						"sludge",
+						"flamethrower",
+						"thunderbolt",
+						"explosion"
+					]
+				},
+				{
+					"species": "wobbuffet",
+					"level": 59
+				},
+				{
+					"species": "noctowl",
+					"level": 60,
+					"moves": [
+						"psychic",
+						"hypnosis",
+						"wing_attack",
+						"confuse_ray"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Soin",
+			"center": true
+		},
+		{
+			"label": "den_cenere",
+			"trainer": "den_cenere"
+		},
+		{
+			"label": "Soin",
+			"center": true
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 3 Hyper Potions",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"hyper_potion": 3
+			},
+			"optional": []
+		},
+		{
+			"name": "naïf",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": []
+		}
+	]
+}
