@@ -131,7 +131,7 @@ func _image(species: StringName, back: bool) -> Dictionary:
 		if not official.is_empty():
 			return _facing_left(official, dex_number(species))
 	if back:
-		var painted_path := best_painted_back_path(dex_number(species))
+		var painted_path := _painted_back_path(species)
 		if not painted_path.is_empty():
 			var painted := load(painted_path) as Texture2D
 			return {"texture": painted, "official": true, "box": visible_box(painted, painted_path)}
@@ -145,6 +145,12 @@ func _image(species: StringName, back: bool) -> Dictionary:
 		return {"texture": null, "official": false, "box": Rect2(Vector2.ZERO, BattleLayout.NATIVE)}
 	var sprite := load(path) as Texture2D
 	return {"texture": sprite, "official": false, "box": visible_box(sprite, path)}
+
+
+## Dos peint de [param species] ; "" sinon. Toutes les espèces en ont un : les tests redéfinissent
+## cette méthode pour couvrir les replis.
+func _painted_back_path(species: StringName) -> String:
+	return best_painted_back_path(dex_number(species))
 
 
 ## Silhouette du SPECTRE (jalon 19, [GhostDisguise]) : peinte (filtre linéaire, comme un
