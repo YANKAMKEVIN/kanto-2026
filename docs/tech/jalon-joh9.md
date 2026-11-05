@@ -186,3 +186,7 @@ Après JOH5, JOH6, JOH8 : Lac Colère ↔ sentier réel, case à case (`build_jo
 `build_joh6_maps.gd` lisent la grille de l'autre carte). Garde forestier et barrière : ceux du JOH6,
 doublons retirés. `johto_chapter_done` retiré de `FUTURE_FLAGS`. Raikou : `raikou_retour` au B1F de
 la Tour Cendrée, niv. 60 [D], comme Entei (JOH8). `johto_act3` : levé par le JOH8.
+
+### T13 — fusion (2026-11-05)
+
+CI verte run 41951949390 sur `2012ed61` ; fusion `--no-ff` dans `main`.
