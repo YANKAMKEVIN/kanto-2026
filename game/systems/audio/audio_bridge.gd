@@ -22,6 +22,8 @@ extends RefCounted
 
 ## Valeur de la clé « music » d'une étape qui arrête la musique de scène.
 const STOP: StringName = &"stop"
+## Valeur de la clé « music » qui coupe tout net (Réveil, JOHP0 : P-29 se joue dans le silence).
+const CUT: StringName = &"cut"
 const L := MusicStack.Layer
 ## Réveil (JOHP0) : le thème à voix basse, en décibels sous son volume ; montées (s).
 const AWAKENING_LOW_DB: float = -16.0
@@ -262,6 +264,8 @@ func on_companion_line(_dialogue_id: StringName = &"") -> void:
 func on_cutscene_step(step: CutsceneStep) -> void:
 	if step.music == STOP:
 		audio.call(&"clear_music", L.SCENE)
+	elif step.music == CUT:
+		on_awakening_silence()
 	elif not step.music.is_empty():
 		# Un identifiant de morceau (« blue_theme ») ou un moment (« rival », « oak »).
 		var track := step.music if _library.has_track(step.music) \

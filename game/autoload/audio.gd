@@ -128,9 +128,10 @@ func play_jingle(track: StringName) -> void:
 ## Coupure nette (Réveil, JOHP0) : plus rien ne joue, sans fondu ; la couche [param layer] porte
 ## le silence jusqu'à ce qu'elle change ou soit retirée.
 func cut_music(layer: MusicStack.Layer) -> void:
-	for i: int in _music.size():
-		_fade_music(i, VolumeMath.MUTED_DB, 0.0, true)
 	set_music(layer, AudioLibrary.SILENCE)
+	for i: int in _music.size():
+		_kill_fade(i)
+		_music[i].stop()
 
 
 ## Amène le morceau en cours à [param offset_db] de son volume normal en [param duration] s

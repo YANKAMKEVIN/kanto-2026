@@ -144,3 +144,74 @@ func test_row_text_says_nothing_about_moves_when_none_remain() -> void:
 	var text := AwakeningOverlay.row_text(report.party[0], _data, 0)
 	assert_false(text.contains("attaque"), text)
 	assert_string_contains(AwakeningOverlay.row_text(report.party[0], _data, 1), "1 attaque à voir")
+
+
+# --- Le son ------------------------------------------------------------------------------------
+
+class AudioSpy:
+	extends Node
+	var calls: Array[String] = []
+	var library: AudioLibrary = Audio.library
+
+	func cut_music(layer: int) -> void:
+		calls.append("cut %d" % layer)
+
+	func set_music(layer: int, track: StringName) -> void:
+		calls.append("set %d %s" % [layer, track])
+
+	func set_music_offset(offset_db: float, _duration: float) -> void:
+		calls.append("offset %d" % roundi(offset_db))
+
+	func set_ambience(id: StringName) -> void:
+		calls.append("ambience %s" % id)
+
+	func play_sfx(id: StringName, _pitch: float = 1.0) -> bool:
+		calls.append("sfx %s" % id)
+		return true
+
+
+func _bridge(spy: AudioSpy) -> AudioBridge:
+	var bridge := AudioBridge.new()
+	var zones := ZoneLibrary.new()
+	bridge.setup(spy, zones)
+	return bridge
+
+
+func test_silence_is_a_hard_cut_and_the_ambience_stops_too() -> void:
+	var spy := AudioSpy.new()
+	autofree(spy)
+	_bridge(spy).on_awakening_silence()
+	assert_eq(spy.calls, ["cut %d" % MusicStack.Layer.SCENE, "ambience "] as Array[String])
+
+
+func test_the_theme_starts_low_and_bursts_at_full_volume() -> void:
+	var spy := AudioSpy.new()
+	autofree(spy)
+	var bridge := _bridge(spy)
+	bridge.on_awakening_theme()
+	bridge.on_awakening_burst()
+	assert_eq(spy.calls.size(), 3)
+	assert_true(spy.calls[0].begins_with("set %d " % MusicStack.Layer.SCENE))
+	assert_false(spy.calls[0].ends_with("silence"), "un vrai morceau")
+	assert_eq(spy.calls[1], "offset %d" % roundi(AudioBridge.AWAKENING_LOW_DB))
+	assert_eq(spy.calls[2], "offset 0")
+
+
+func test_a_step_can_ask_for_the_hard_cut() -> void:
+	var spy := AudioSpy.new()
+	autofree(spy)
+	var step := CutsceneStep.new()
+	step.music = AudioBridge.CUT
+	_bridge(spy).on_cutscene_step(step)
+	assert_true(spy.calls.has("cut %d" % MusicStack.Layer.SCENE))
+
+
+func test_the_real_audio_node_cuts_without_a_fade() -> void:
+	Audio.set_music(MusicStack.Layer.SCENE, &"final_road")
+	Audio.cut_music(MusicStack.Layer.SCENE)
+	await wait_process_frames(1)
+	for player: AudioStreamPlayer in Audio.get_music_players():
+		assert_false(player.playing, "plus rien ne joue")
+	assert_eq(Audio.current_track(), AudioLibrary.SILENCE)
+	Audio.set_music_offset(0.0, 0.0)
+	Audio.clear_music(MusicStack.Layer.SCENE)

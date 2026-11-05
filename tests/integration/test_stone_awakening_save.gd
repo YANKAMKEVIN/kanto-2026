@@ -85,11 +85,10 @@ func _finish_dialogue() -> void:
 	assert_false(runner.is_running(), "le dialogue s'est terminé")
 
 
-## Le départ, écrit une première fois (l'état « avant »), jusqu'à ce que le film tourne.
+## Le départ (la scène de test écrit d'abord l'état « avant »), jusqu'à ce que le film tourne.
 func _start_until_film() -> void:
 	await _launch(START)
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
-	assert_eq(_boot._write_save("avant le Réveil"), OK)
 	await _finish_dialogue()
 	await wait_until(func() -> bool:
 		return _boot._awakening_overlay.get_phase() == AwakeningOverlay.Phase.SILENCE, TIMEOUT)
@@ -129,19 +128,11 @@ func test_killed_during_the_film_the_file_is_before_and_the_scene_replays() -> v
 
 
 func test_killed_during_the_screen_the_awakening_is_kept_and_moves_are_lost() -> void:
-	await _start_until_film()
-	var overlay: AwakeningOverlay = _boot._awakening_overlay
-	overlay.speed_scale = 0.0
-	# Film instantané à partir d'ici : l'écran paraît après l'écriture.
-	_boot._battle_director.speed_scale = 0.0
-	_kill()
-	# Départ neuf, à vitesse nulle dès le début.
-	_fs = MemoryFs.new()
 	await _launch(START)
-	_boot._battle_director.speed_scale = 0.0
+	_boot._battle_director.speed_scale = 0.0 # Film instantané : l'écran paraît après l'écriture.
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
 	await _finish_dialogue()
-	overlay = _boot._awakening_overlay
+	var overlay: AwakeningOverlay = _boot._awakening_overlay
 	await wait_until(func() -> bool:
 		return overlay.get_phase() == AwakeningOverlay.Phase.REVIEW, TIMEOUT)
 	var saved := _saved()

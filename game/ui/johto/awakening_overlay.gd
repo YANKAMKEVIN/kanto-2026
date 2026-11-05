@@ -145,7 +145,6 @@ var _line: Label
 var _flash: ColorRect
 var _panel: PanelContainer
 var _rows: GridContainer
-var _stored_line: Label
 var _continue: Button
 var _row_buttons: Array[Button] = []
 var _row_results: Array[AwakeningResult] = []
@@ -272,10 +271,6 @@ func get_row_buttons() -> Array[Button]:
 
 func get_continue_button() -> Button:
 	return _continue
-
-
-func get_stored_text() -> String:
-	return _stored_line.text if _stored_line.visible else ""
 
 
 ## Silhouettes du plan large (tests).
@@ -790,10 +785,6 @@ func _build_review() -> void:
 	_rows.add_theme_constant_override(&"h_separation", UiTokens.PICKER_GAP)
 	_rows.add_theme_constant_override(&"v_separation", UiTokens.PICKER_GAP)
 	column.add_child(_rows)
-	_stored_line = Label.new()
-	_stored_line.name = "Stored"
-	_stored_line.visible = false
-	column.add_child(_stored_line)
 	_continue = Button.new()
 	_continue.name = "Continue"
 	_continue.theme_type_variation = &"AccentButton"
