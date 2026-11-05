@@ -142,7 +142,7 @@ DIALOGUES = {
 	"whirl_suicune_seen": (NARRATION, ["Un Pokémon bleu se tient sur le rocher.",
 		"Il regarde {player}, sans bouger."]),
 	"whirl_cenere_arrival": ("Cenere", ["Tu es là avant moi. Encore.",
-		"Deux erreurs de calcul. Ça commence à faire beaucoup."]),
+		"Trois erreurs de calcul. Ça commence à faire beaucoup."]),
 	"whirl_cenere_before": ("Cenere", ["Cette fois, j'ai étudié ton équipe. Chaque Pokémon. Chaque attaque.",
 		"Recule, ou je te range dans mes statistiques."]),
 	"whirl_cenere_defeated": ("Cenere", ["… Je ne comprends pas.", "Mes calculs étaient justes."]),

@@ -249,6 +249,8 @@ func _add_positions(spec: Dictionary, plan: Object, root: Node2D,
 			"cache":
 				_interact(root, _node_name(id), cells[0], Vector2i.ONE, Vector2i.ZERO,
 					StringName(id), [], [StringName("got_" + id)])
+				if entry["blocks"]: # l'indice du dossier est un rocher (§12)
+					blocked.append(cells[0])
 			"declencheur":
 				if IGNORED_TRIGGERS.has(key):
 					continue

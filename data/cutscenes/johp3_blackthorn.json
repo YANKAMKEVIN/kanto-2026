@@ -48,6 +48,9 @@
 						"dragon_flight": "out"
 					},
 					{
+						"rest_point": "blackthorn_center"
+					},
+					{
 						"change_map": "blackthorn_city",
 						"at": "from_dragon",
 						"facing": "up"
@@ -65,6 +68,9 @@
 					},
 					{
 						"dragon_flight": "out"
+					},
+					{
+						"rest_point": "blackthorn_center"
 					},
 					{
 						"change_map": "blackthorn_city",
@@ -231,6 +237,9 @@
 					},
 					{
 						"dialogue": "johp3_ysolde_before"
+					},
+					{
+						"rest_point": "blackthorn_center"
 					},
 					{
 						"battle": "den_ysolde",
@@ -463,6 +472,9 @@
 						"dialogue": "johp3_cenere_before"
 					},
 					{
+						"rest_point": "blackthorn_center"
+					},
+					{
 						"battle": "den_cenere",
 						"win": [
 							"johto_cenere_defeated_arc"
@@ -536,6 +548,9 @@
 					},
 					{
 						"dialogue": "johp3_cenere_before"
+					},
+					{
+						"rest_point": "blackthorn_center"
 					},
 					{
 						"battle": "den_cenere",

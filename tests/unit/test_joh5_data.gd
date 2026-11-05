@@ -7,7 +7,7 @@ extends GutTest
 const J22Ids := preload("res://tests/helpers/j22_ids.gd")
 const DOSSIER := "res://docs/design/dossier-joh-06-tour-radio.md"
 const DOSSIER_JOH3 := "res://docs/design/dossier-joh-04-doublonville.md"
-## Anciens T-21 à T-34, encore en jeu jusqu'à la bascule du JOHP3 (dossier JOH-11 §20) : à retirer au JOHP3.
+## P-1, la légende d'Orme (suite de T-34), est écrite au dossier de l'arc (JOH-11 §17).
 const DOSSIER_ARC := "res://docs/design/dossier-joh-11-arc-pierres.md"
 const DIALOGUES := "res://data/dialogues/joh5_radio_tower.json"
 const CUTSCENES := "res://data/cutscenes/joh5_radio_tower.json"
@@ -24,7 +24,8 @@ const MAP_POINTS: Array[StringName] = [&"goldenrod_radio_elevator", &"goldenrod_
 const MAP_TRIGGERS: Array[StringName] = [&"goldenrod_radio_impostor", &"goldenrod_radio_exit",
 	&"goldenrod_radio_cenere", &"goldenrod_radio_office"]
 ## Drapeaux venus d'autres jalons ou systèmes (lus, jamais posés ici).
-const EXTERNAL_FLAGS: Array[StringName] = [&"johto_radio_pass", &"johto_team_returned"]
+const EXTERNAL_FLAGS: Array[StringName] = [&"johto_radio_pass", &"johto_team_returned",
+	&"johto_act2"]
 ## Dossier §5 : équipes.
 const TEAMS: Dictionary = {
 	&"goldenrod_radio_tower_impostor": [[&"arbok", 26], [&"raticate", 26]],
@@ -93,7 +94,8 @@ func test_dossier_flags_are_set() -> void:
 	var set_flags: Array[StringName] = _cutscenes.get_set_flags() + _dialogues.get_set_flags()
 	for flag: StringName in [&"johto_radio_impostor_defeated", &"johto_radio_staff_freed",
 			&"johto_cenere_defeated", &"johto_dante_revealed", &"radio_exp_share_given",
-			&"johto_act2", &"johto_radio_reserve_key", &"johto_radio_staff_talked"]:
+			&"johto_radio_office_done", &"johto_stones_quest", &"johto_radio_reserve_key",
+			&"johto_radio_staff_talked"]:
 		assert_true(set_flags.has(flag), "%s posé par la Tour" % flag)
 
 
@@ -143,32 +145,37 @@ func test_every_scene_and_dialogue_is_used() -> void:
 		assert_true(used.has(id), "scène « %s » lancée" % id)
 
 
-## Plan §2.5 : une seule écriture, juste après le retour ; T-31 après l'écriture.
-func test_office_scene_returns_the_team_then_saves_once() -> void:
+## `jalon-joh-pierres.md` §5.3 : le bureau n'a plus ni retour de l'équipe ni écriture ; le papier
+## et la Multi Exp restent, `johto_radio_office_done` ferme la scène.
+func test_office_scene_gives_the_paper_and_the_exp_share_without_the_team() -> void:
 	var office := _cutscenes.get_cutscene(&"goldenrod_radio_office")
 	assert_eq(office.variants.size(), 2, "Multi Exp déjà possédée ou non")
 	for variant: CutsceneVariant in office.variants:
 		var kinds: Array = []
 		for step: CutsceneStep in variant.steps:
 			kinds.append(step.kind)
-		var back := kinds.find(CutsceneStep.Kind.RETURN_TEAM)
-		var save := kinds.find(CutsceneStep.Kind.SAVE)
-		assert_gt(back, -1, "retour de l'équipe")
-		assert_eq(kinds.count(CutsceneStep.Kind.SAVE), 1, "une seule écriture")
-		assert_gt(save, back, "écriture après le retour")
-		var gift := -1
-		for i: int in variant.steps.size():
-			if variant.steps[i].kind == CutsceneStep.Kind.GIVE:
-				gift = i
-		assert_gt(gift, save, "le cadeau du directeur vient après l'écriture")
+		assert_eq(kinds.find(CutsceneStep.Kind.RETURN_TEAM), -1, "pas de retour de l'équipe")
+		assert_eq(kinds.count(CutsceneStep.Kind.SAVE), 0, "pas d'écriture dédiée")
+		assert_gt(kinds.find(CutsceneStep.Kind.GIVE), -1, "le cadeau du directeur")
 	var flags := StoryFlags.new()
 	flags.set_flag(&"johto_dante_revealed")
 	var bag := Bag.new()
 	assert_same(office.pick(flags, bag), office.variants[1], "sans Multi Exp : la Multi Exp")
 	bag.add(&"exp_all", 1)
 	assert_same(office.pick(flags, bag), office.variants[0], "avec : 3 Super Bonbons")
-	flags.set_flag(&"johto_team_returned")
+	flags.set_flag(&"johto_radio_office_done")
 	assert_null(office.pick(flags, bag), "jouée une seule fois")
+
+
+## JH-75 : une partie passée par l'ancien bureau n'entre jamais dans l'arc.
+func test_saves_past_the_old_office_never_open_the_arc() -> void:
+	var exit := _cutscenes.get_cutscene(&"goldenrod_radio_exit")
+	var flags := StoryFlags.new()
+	flags.set_flag(&"johto_team_returned")
+	flags.set_flag(&"johto_act2")
+	assert_null(exit.pick(flags, Bag.new()), "la scène du hall ne se joue pas")
+	flags.set_flag(&"johto_radio_office_done")
+	assert_not_null(exit.pick(flags, Bag.new()), "elle se joue après le nouveau bureau")
 
 
 func test_returning_pokemon_token() -> void:
@@ -191,7 +198,7 @@ func test_returning_pokemon_token() -> void:
 
 
 ## Raccords de Doublonville (dossier §4, étapes 1 et 10 ; §11) : le haut-parleur passe D-10 (JOH3),
-## T-1 tant que Cenere tient la Tour, T-37 ensuite ; la femme de D-37 remercie à l'acte 2.
+## T-1 tant que Cenere tient la Tour, T-37 ensuite ; la femme de D-37 remercie dès la Tour libérée.
 func test_goldenrod_speaker_and_the_husband_follow_the_story() -> void:
 	var library := DialogueLibrary.new()
 	assert_true(library.load_dir())
@@ -205,12 +212,12 @@ func test_goldenrod_speaker_and_the_husband_follow_the_story() -> void:
 		"Ici Radio Doublonville ! Les programmes reprennent.", "T-37")
 	var woman := library.get_dialogue(&"goldenrod_house_1_woman")
 	assert_eq(woman.pick(flags).pages[0].text, "Mon mari travaille à la Tour Radio.", "D-37")
-	flags.set_flag(&"johto_act2")
+	flags.set_flag(&"johto_stones_quest")
 	assert_eq(woman.pick(flags).cutscene, &"goldenrod_husband_gift", "T-35")
 	flags.set_flag(&"goldenrod_husband_gift")
 	assert_true(woman.pick(flags).pages[0].text.begins_with("Il dort depuis hier soir."))
 	var house := NpcRoster.load_for_map(&"goldenrod_house_1")
-	assert_eq(house.get_spec(&"raphael").if_flags, [&"johto_act2"] as Array[StringName], "T-36")
+	assert_eq(house.get_spec(&"raphael").if_flags, [&"johto_stones_quest"] as Array[StringName], "T-36")
 	var third := NpcRoster.load_for_map(&"goldenrod_radio_tower_3f")
-	assert_true(third.get_spec(&"raphael").unless_flags.has(&"johto_act2"),
-		"il ne reste pas à la réserve à l'acte 2")
+	assert_true(third.get_spec(&"raphael").unless_flags.has(&"johto_stones_quest"),
+		"il ne reste pas à la réserve une fois la Tour libérée")

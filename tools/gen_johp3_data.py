@@ -9,8 +9,8 @@ Lit les positions de `tools/plans/blackthorn_city.txt`, `dragons_den_1f.txt`,
   - `data/npcs/<carte>.json` (cartes et intérieurs d'Ébènelle) ;
   - `data/trainers/johp3.json` ;
   - `data/encounters/blackthorn_city.json`, `dragons_den.json` ;
-  - `data/dialogues/johp3.json` ;
-  - `data/cutscenes/johp3.json`.
+  - `data/dialogues/johp3_blackthorn.json` ;
+  - `data/cutscenes/johp3_blackthorn.json`.
 Les textes absents du dossier sont marqués « draft » et listés dans
 `tests/integration/test_no_draft_in_data.gd` (PENDING_DRAFTS).
 
@@ -200,6 +200,9 @@ ELDER_TRIAL = ["La blanche ne se donne pas.",
 	"Si tu tiens debout à la fin, la pierre est à toi."]
 ELDER_AFTER = ["Ce qui dort sous Rosalia ne dormira plus longtemps.",
 	"Les pierres n'y sont plus pour rien. Les hommes, si."]
+# P-54 : le doyen de Rosalia pendant l'arc.
+ELDER_P54 = ["Les pierres ? Une vieille histoire.",
+	"Ces hommes frappent à ma porte,\net je ne l'ouvre pas.\nAlors ils en cherchent une autre."]
 HEAL_LINE = "Viens, je soigne ton équipe. Une fois. Pas deux."
 HEAL_DONE = "L'équipe de {player} est soignée."
 YSOLDE_AFTER = ["Cette femme a porté sa pierre jusqu'à toi. Elle n'aurait pas dû.",
@@ -340,6 +343,7 @@ def corentin_flight_scene():
 	de retour (le Vol d'un Pokémon de Johto) : P-38 sans le vol, `johto_act2` tout de même."""
 	fly = [
 		{"dragon_flight": "out"},
+		{"rest_point": "blackthorn_center"},
 		{"change_map": "blackthorn_city", "at": "from_dragon", "facing": "up"},
 	]
 	return {"variants": [
@@ -412,6 +416,7 @@ def ysolde_scene():
 			{"face": "ysolde", "to": "player"},
 			{"face": "player", "to": "ysolde"},
 			say("johp3_ysolde_before"),
+			{"rest_point": "blackthorn_center"},
 			{"battle": YSOLDE_ID, "win": won},
 			{"wake_up": True, "unless": won},
 			say("johp3_ysolde_defeated"),
@@ -430,6 +435,7 @@ def cenere_battle_steps():
 		{"face": "cenere", "to": "player"},
 		{"face": "player", "to": "cenere"},
 		say("johp3_cenere_before"),
+		{"rest_point": "blackthorn_center"},
 		{"battle": CENERE_ID, "win": won},
 		{"wake_up": True, "unless": won},
 		say("johp3_cenere_defeated"),
@@ -584,9 +590,10 @@ def main():
 
 	write_interiors(dialogues, cutscenes)
 	write_encounters()
+	patch_elder()
 	write_json(os.path.join(DATA, "trainers", "johp3.json"), trainers)
-	write_json(os.path.join(DATA, "dialogues", "johp3.json"), dialogues)
-	write_json(os.path.join(DATA, "cutscenes", "johp3.json"), cutscenes)
+	write_json(os.path.join(DATA, "dialogues", "johp3_blackthorn.json"), dialogues)
+	write_json(os.path.join(DATA, "cutscenes", "johp3_blackthorn.json"), cutscenes)
 
 
 def write_interiors(dialogues, cutscenes):
@@ -613,6 +620,20 @@ def write_interiors(dialogues, cutscenes):
 	})
 	dialogues[ident] = {"cutscene": ident}
 	cutscenes[ident] = item_scene(ident, "max_repel", 1, flag, True)
+
+
+def patch_elder():
+	"""P-54 : le doyen de Rosalia pendant l'arc, devant ses répliques d'acte 1 (la scène du doyen se
+	complète sur place, comme `tools/gen_joh8_data.py`). Relançable."""
+	path = os.path.join(DATA, "dialogues", "joh2_ecruteak_interiors.json")
+	with open(path, encoding="utf-8") as handle:
+		data = json.load(handle)
+	doyen = data["ecruteak_elders_house_doyen"]
+	variants = [v for v in doyen["variants"] if v.get("pages", [""])[0] != ELDER_P54[0]]
+	at = next(i for i, v in enumerate(variants) if "johto_dante_plan_known" in v.get("if", []))
+	variants.insert(at, {"if": ["johto_stones_quest"], "unless": [ACT2], "pages": ELDER_P54})
+	doyen["variants"] = variants
+	write_json(path, data)
 
 
 def write_encounters():

@@ -211,6 +211,8 @@ var awakening_screen_handler: Callable
 ## `func(direction: StringName) -> void` posée par Boot ([DragonFlightOverlay]). Non valide
 ## (tests) : aucune image, la scène continue.
 var dragon_flight_handler: Callable
+## JOHP3 (étape « rest_point ») : `func(map: StringName) -> void` posée par Boot. Non valide : rien.
+var rest_point_handler: Callable
 ## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
 var credits_handler: Callable
 ## JOH9 : générique demandé par l'étape « credits » en cours (&"" = Kanto), lu par le
@@ -501,6 +503,9 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _return_team()
 		CutsceneStep.Kind.GIVE_EGG: # JOH0
 			await _give_egg(step)
+		CutsceneStep.Kind.REST_POINT: # JOHP3
+			if rest_point_handler.is_valid():
+				rest_point_handler.call(step.map_id)
 		CutsceneStep.Kind.DRAGON_FLIGHT: # JOHP3
 			if dragon_flight_handler.is_valid():
 				await dragon_flight_handler.call(StringName(step.text))

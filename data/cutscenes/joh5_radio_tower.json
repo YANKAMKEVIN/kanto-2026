@@ -471,7 +471,7 @@
 					"johto_dante_revealed"
 				],
 				"unless": [
-					"johto_team_returned"
+					"johto_radio_office_done"
 				],
 				"if_items": [
 					"exp_all"
@@ -514,27 +514,7 @@
 						"dialogue": "goldenrod_radio_director_freed"
 					},
 					{
-						"dialogue": "goldenrod_radio_reunion"
-					},
-					{
-						"return_team": true
-					},
-					{
-						"dialogue": "goldenrod_radio_storage_back",
-						"if": [
-							"johto_return_stored"
-						]
-					},
-					{
-						"dialogue": "goldenrod_radio_bags_merged"
-					},
-					{
-						"save": "retour de l'équipe (Tour Radio, JOH5)"
-					},
-					{
-						"unset": [
-							"johto_return_stored"
-						]
+						"dialogue": "goldenrod_radio_paper"
 					},
 					{
 						"dialogue": "goldenrod_radio_director_gift"
@@ -556,6 +536,11 @@
 					},
 					{
 						"dialogue": "goldenrod_radio_director_after"
+					},
+					{
+						"set": [
+							"johto_radio_office_done"
+						]
 					}
 				]
 			},
@@ -564,7 +549,7 @@
 					"johto_dante_revealed"
 				],
 				"unless": [
-					"johto_team_returned"
+					"johto_radio_office_done"
 				],
 				"steps": [
 					{
@@ -604,27 +589,7 @@
 						"dialogue": "goldenrod_radio_director_freed"
 					},
 					{
-						"dialogue": "goldenrod_radio_reunion"
-					},
-					{
-						"return_team": true
-					},
-					{
-						"dialogue": "goldenrod_radio_storage_back",
-						"if": [
-							"johto_return_stored"
-						]
-					},
-					{
-						"dialogue": "goldenrod_radio_bags_merged"
-					},
-					{
-						"save": "retour de l'équipe (Tour Radio, JOH5)"
-					},
-					{
-						"unset": [
-							"johto_return_stored"
-						]
+						"dialogue": "goldenrod_radio_paper"
 					},
 					{
 						"dialogue": "goldenrod_radio_director_gift"
@@ -643,80 +608,11 @@
 					},
 					{
 						"dialogue": "goldenrod_radio_director_after"
-					}
-				]
-			}
-		]
-	},
-	"goldenrod_radio_exp_share": {
-		"variants": [
-			{
-				"if": [
-					"johto_team_returned"
-				],
-				"unless": [
-					"radio_exp_share_given"
-				],
-				"if_items": [
-					"exp_all"
-				],
-				"steps": [
-					{
-						"face": "directeur",
-						"to": "player"
-					},
-					{
-						"dialogue": "goldenrod_radio_director_gift"
-					},
-					{
-						"dialogue": "goldenrod_radio_director_candies"
-					},
-					{
-						"give": "rare_candy",
-						"count": 3
-					},
-					{
-						"dialogue": "goldenrod_radio_rare_candy_received"
 					},
 					{
 						"set": [
-							"radio_exp_share_given"
+							"johto_radio_office_done"
 						]
-					},
-					{
-						"dialogue": "goldenrod_radio_director_after"
-					}
-				]
-			},
-			{
-				"if": [
-					"johto_team_returned"
-				],
-				"unless": [
-					"radio_exp_share_given"
-				],
-				"steps": [
-					{
-						"face": "directeur",
-						"to": "player"
-					},
-					{
-						"dialogue": "goldenrod_radio_director_gift"
-					},
-					{
-						"give": "exp_all",
-						"count": 1
-					},
-					{
-						"dialogue": "goldenrod_radio_exp_share_received"
-					},
-					{
-						"set": [
-							"radio_exp_share_given"
-						]
-					},
-					{
-						"dialogue": "goldenrod_radio_director_after"
 					}
 				]
 			}
@@ -726,10 +622,10 @@
 		"variants": [
 			{
 				"if": [
-					"johto_team_returned"
+					"johto_radio_office_done"
 				],
 				"unless": [
-					"johto_act2"
+					"johto_stones_quest"
 				],
 				"steps": [
 					{
@@ -766,8 +662,11 @@
 						"dialogue": "goldenrod_radio_elm"
 					},
 					{
+						"dialogue": "goldenrod_radio_legend"
+					},
+					{
 						"set": [
-							"johto_act2"
+							"johto_stones_quest"
 						]
 					},
 					{
@@ -797,6 +696,31 @@
 	},
 	"goldenrod_husband_gift": {
 		"variants": [
+			{
+				"if": [
+					"johto_stones_quest"
+				],
+				"unless": [
+					"goldenrod_husband_gift"
+				],
+				"steps": [
+					{
+						"dialogue": "goldenrod_husband_home"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 3
+					},
+					{
+						"dialogue": "goldenrod_husband_gift_received"
+					},
+					{
+						"set": [
+							"goldenrod_husband_gift"
+						]
+					}
+				]
+			},
 			{
 				"if": [
 					"johto_act2"

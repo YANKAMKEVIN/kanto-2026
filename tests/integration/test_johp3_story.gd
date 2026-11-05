@@ -123,8 +123,6 @@ func test_defeat_against_ysolde_wakes_at_blackthorn_guardians_stay_beaten() -> v
 
 func _weak() -> void:
 	_play.make_weak()
-	GameState.heal_map = &"blackthorn_center"
-	GameState.heal_spawn = &"heal"
 
 
 func test_the_altar_awakens_then_cenere_falls_and_the_team_comes_back() -> void:

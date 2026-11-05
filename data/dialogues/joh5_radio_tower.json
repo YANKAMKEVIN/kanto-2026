@@ -311,7 +311,7 @@
 	"goldenrod_radio_dante_retreat": {
 		"speaker": "Dante",
 		"pages": [
-			"Cenere. Laisse tout. On part."
+			"Cenere. Prends tout. On part."
 		]
 	},
 	"goldenrod_radio_grunt_1": {
@@ -336,14 +336,14 @@
 		"speaker": "Cenere",
 		"pages": [
 			"Tu as entendu.",
-			"Tes Pokémon sont dans le bureau. Garde-les bien.",
-			"Ils ne te serviront à rien contre ce qui vient."
+			"Tes Pokémon étaient dans ce bureau. Étaient.",
+			"Un Maître sans son équipe, c'est une variable de moins dans mes calculs."
 		]
 	},
 	"goldenrod_radio_cenere_exit": {
 		"narration": true,
 		"pages": [
-			"Cenere s'en va par l'escalier de secours…"
+			"Cenere s'en va par l'escalier de secours, une mallette à la main…"
 		]
 	},
 	"goldenrod_radio_emergency_stairs": {
@@ -364,8 +364,8 @@
 		"narration": true,
 		"pages": [
 			"La porte du bureau est ouverte.",
-			"Sur la table : des Poké Balls. Et un sac.",
-			"Ce sont les tiens !"
+			"Sur la table, rien.",
+			"Juste un papier tombé par terre."
 		]
 	},
 	"goldenrod_radio_director_bound": {
@@ -384,28 +384,15 @@
 		"speaker": "Directeur",
 		"pages": [
 			"Merci ! Ils m'ont enfermé dans mon propre bureau.",
-			"Ces Poké Balls… ils les gardaient comme un trésor. Elles sont à toi ?"
+			"Tes Poké Balls ? Elle les a mises dans une mallette, avec ton sac.",
+			"Et le relais du réseau de Kanto, aussi.",
+			"Elle a laissé tomber ce papier."
 		]
 	},
-	"goldenrod_radio_reunion": {
+	"goldenrod_radio_paper": {
 		"narration": true,
 		"pages": [
-			"{returning_pokemon} sort de sa Poké Ball et bondit vers {player} !",
-			"{player} retrouve son équipe et son sac !"
-		]
-	},
-	"goldenrod_radio_storage_back": {
-		"narration": true,
-		"pages": [
-			"Connexion au réseau de Kanto…",
-			"…",
-			"Connexion rétablie ! Les autres Pokémon sont au Stockage."
-		]
-	},
-	"goldenrod_radio_bags_merged": {
-		"narration": true,
-		"pages": [
-			"Les objets de ton ancien sac ont rejoint les nouveaux."
+			"« Ruines d'Alpha. Irisia. Ébènelle. Réunir les trois pierres. »"
 		]
 	},
 	"goldenrod_radio_director_gift": {
@@ -413,7 +400,7 @@
 		"pages": [
 			"Tu as sauvé la Tour, et toute la radio de Johto.",
 			"La Radio de Doublonville t'offre ceci.",
-			"Avec, tes nouveaux Pokémon apprendront vite auprès des anciens."
+			"Avec, toute ton équipe apprendra à chaque combat."
 		]
 	},
 	"goldenrod_radio_exp_share_received": {
@@ -438,6 +425,7 @@
 		"speaker": "Directeur",
 		"pages": [
 			"L'ascenseur remarche. Les émissions reprendront dès ce soir.",
+			"Le réseau de Kanto, lui, restera coupé tant que le relais ne sera pas revenu.",
 			"Reviens nous voir quand tu veux."
 		]
 	},
@@ -461,8 +449,19 @@
 			"{player} ! J'ai tout entendu à la radio.",
 			"Dante… Chen m'a parlé de lui, un jour. Il le croyait disparu depuis des années.",
 			"« Quand tout sera cendres »… Ça ne me plaît pas.",
-			"Les sages de Rosalia ont appelé ce matin. Ils veulent te voir.",
-			"Je crois que c'est à propos de la Tour Cendrée."
+			"Et ils ont emporté ton équipe ? Fais voir ce papier.",
+			"… Trois pierres. Je connais cette histoire."
+		]
+	},
+	"goldenrod_radio_legend": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"Trois pierres dorment aux trois bouts de Johto.",
+			"La première se souvient. La deuxième revient. La troisième respire.",
+			"Réunies, elles réveillent ce qui est né sur cette terre.",
+			"Les sages de Rosalia ne lui ouvriront jamais leur tour.",
+			"Mais avec ces pierres, il n'aurait pas besoin d'eux pour réveiller ce qui dort dessous.",
+			"Une amie fouille les Ruines d'Alpha, au sud de la Route 36. Elle s'appelle Héloïse. Va la voir, et vite."
 		]
 	},
 	"goldenrod_husband_home": {
@@ -518,30 +517,28 @@
 		"variants": [
 			{
 				"if": [
-					"johto_dante_revealed"
-				],
-				"unless": [
-					"johto_team_returned"
-				],
-				"cutscene": "goldenrod_radio_office"
-			},
-			{
-				"if": [
-					"johto_team_returned"
-				],
-				"unless": [
-					"radio_exp_share_given"
-				],
-				"cutscene": "goldenrod_radio_exp_share"
-			},
-			{
-				"if": [
 					"johto_team_returned"
 				],
 				"pages": [
 					"L'ascenseur remarche. Les émissions reprendront dès ce soir.",
 					"Reviens nous voir quand tu veux."
 				]
+			},
+			{
+				"if": [
+					"johto_radio_office_done"
+				],
+				"pages": [
+					"L'ascenseur remarche. Les émissions reprendront dès ce soir.",
+					"Le réseau de Kanto, lui, restera coupé tant que le relais ne sera pas revenu.",
+					"Reviens nous voir quand tu veux."
+				]
+			},
+			{
+				"if": [
+					"johto_dante_revealed"
+				],
+				"cutscene": "goldenrod_radio_office"
 			},
 			{
 				"pages": [
@@ -561,8 +558,5 @@
 	},
 	"goldenrod_radio_office": {
 		"cutscene": "goldenrod_radio_office"
-	},
-	"goldenrod_radio_exp_share": {
-		"cutscene": "goldenrod_radio_exp_share"
 	}
 }

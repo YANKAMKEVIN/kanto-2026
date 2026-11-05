@@ -19,10 +19,10 @@
 		"facing": "up",
 		"sprite": "guard",
 		"if": [
-			"johto_team_returned"
+			"johto_radio_office_done"
 		],
 		"unless": [
-			"johto_act2"
+			"johto_stones_quest"
 		],
 		"dialogue": "goldenrod_radio_exit"
 	},
@@ -34,10 +34,10 @@
 		"facing": "up",
 		"sprite": "researcher",
 		"if": [
-			"johto_team_returned"
+			"johto_radio_office_done"
 		],
 		"unless": [
-			"johto_act2"
+			"johto_stones_quest"
 		],
 		"dialogue": "goldenrod_radio_exit"
 	}

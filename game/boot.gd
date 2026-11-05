@@ -413,6 +413,8 @@ func _ready() -> void:
 	_dragon_flight_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_dragon_flight_overlay)
 	_cutscenes_node.dragon_flight_handler = _on_dragon_flight_requested
+	_cutscenes_node.rest_point_handler = func(map: StringName) -> void:
+		RestPointLibrary.register(GameState, _rest_points.get_point(map))
 	_cutscenes_node.team_return_handler = _on_team_return_requested
 	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
 	_cutscenes_node.team_returned.connect(_on_team_returned)

@@ -158,6 +158,9 @@ extends RefCounted
 ## - [constant Kind.DRAGON_FLIGHT] (arc des Pierres, JOHP3, `jalon-joh-pierres.md` §5.2) : [member text]
 ##   ([constant FLIGHT_DIRECTIONS]) : le survol sur le Dracolosse de Corentin
 ##   ([member CutsceneDirector.dragon_flight_handler], [DragonFlightOverlay]) ; la scène attend sa fin.
+## - [constant Kind.REST_POINT] (JOHP3, dossier JOH-11 §15) : [member map_id], un Centre de
+##   `rest_points.json`, devient le point de repos sans y être soigné : une défaite contre Ysolde ou
+##   Cenere ramène au Centre d'Ébènelle même si le joueur n'y est jamais entré.
 ## - [constant Kind.STONES_AWAKEN] (arc des Pierres, JOHP0, `jalon-joh-pierres.md` §2.2) : le
 ##   Réveil ([method StoneAwakening.awaken], d'un seul bloc), la cinématique
 ##   ([member CutsceneDirector.awakening_handler]), **l'écriture**, puis l'écran du Réveil
@@ -180,7 +183,7 @@ enum Kind {
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
 	FLASHBACK, # Chapitre Johto (JOH6)
 	STONES_AWAKEN, # Arc des Pierres (JOHP0)
-	DRAGON_FLIGHT, # Arc des Pierres (JOHP3)
+	DRAGON_FLIGHT, REST_POINT, # Arc des Pierres (JOHP3)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -199,7 +202,7 @@ const TYPE_KEYS: Array[String] = [
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
 	"flashback", # Chapitre Johto (JOH6)
 	"stones_awaken", # Arc des Pierres (JOHP0)
-	"dragon_flight", # Arc des Pierres (JOHP3)
+	"dragon_flight", "rest_point", # Arc des Pierres (JOHP3)
 ]
 ## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
 const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]

@@ -1723,7 +1723,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 				or file.begins_with("joh4_") or file.begins_with("joh5_") \
 				or file.begins_with("joh6_") \
 				or file.begins_with("joh7_") or file.begins_with("joh8_") \
-				or file.begins_with("joh9_") else pair[0]
+				or file.begins_with("joh9_") or file.begins_with("johp3_") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer) + StarterChoice.get_set_flags(_offer_johto) \
