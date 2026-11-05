@@ -24,6 +24,8 @@ TOWNS = {
 	"mahogany_town": ((1320, 250), "Acajou"),
 	# Arc des Pierres (JH-76) : Irisia, île à l'ouest des Routes 40-41.
 	"cianwood_city": ((100, 440), "Irisia"),
+	# Ébènelle, à l'est d'Acajou, derrière les montagnes (§4.1).
+	"blackthorn_city": ((1484, 470), "Ébènelle"),
 }
 ROADS = [("olivine_city", "ecruteak_city"), ("ecruteak_city", "goldenrod_city"),
 	("goldenrod_city", "azalea_town"), ("ecruteak_city", "mahogany_town")]

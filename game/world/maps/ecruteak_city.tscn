@@ -449,3 +449,6 @@ z_index = 5
 z_as_relative = false
 position = Vector2(1104, 1200)
 script = ExtResource("11_wq1nm")
+
+[node name="from_dragon" type="Marker2D" parent="Spawns"]
+position = Vector2(3312, 1920)

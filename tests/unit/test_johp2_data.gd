@@ -133,7 +133,7 @@ func test_every_scene_is_launched_and_every_dialogue_used() -> void:
 			if not spec.trainer_id.is_empty():
 				used[spec.before_dialogue] = true
 				used[spec.defeated_dialogue] = true
-	used[&"ecruteak_corentin"] = true # Rosalia : hors de MAPS, repris par le JOHP3
+	used[&"ecruteak_corentin"] = true # Rosalia : hors de MAPS, ouvre la scène du JOHP3
 	for id: StringName in _ids("res://data/cutscenes/"):
 		assert_true(launched.has(id), "scène « %s » lancée" % id)
 	for id: StringName in _ids("res://data/dialogues/"):

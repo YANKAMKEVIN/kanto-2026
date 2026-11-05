@@ -252,7 +252,7 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city",
 				&"fuchsia_city", &"cinnabar_island", &"saffron_city",
 				&"indigo_plateau", &"olivine_city", &"ecruteak_city", &"goldenrod_city", &"azalea_town",
-				&"mahogany_town", &"mt_silver", &"cianwood_city"]:
+				&"mahogany_town", &"mt_silver", &"cianwood_city", &"blackthorn_city"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")

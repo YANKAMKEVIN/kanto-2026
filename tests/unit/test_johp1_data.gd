@@ -173,11 +173,6 @@ func test_heloise_follows_the_quest() -> void:
 
 
 ## Rien hors des départs de débogage ne pose `johto_stones_quest` avant la bascule du JOHP3.
-func test_nothing_raises_the_quest_yet() -> void:
-	assert_false(_cutscenes.get_set_flags().has(&"johto_stones_quest"))
-	assert_false(_dialogues.get_set_flags().has(&"johto_stones_quest"))
-
-
 ## JH-71 : la Ball n'est plus refusée à partir de la quête ; le texte P-58 tant que le Stockage est
 ## fermé ; le chemin de JOH0 est inchangé avant la quête et après le retour de l'équipe.
 func test_capture_gate_during_the_arc() -> void:

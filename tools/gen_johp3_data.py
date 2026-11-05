@@ -520,8 +520,7 @@ def main():
 		trainers[trainer_id] = trainer_entry(name, klass, prize, team)
 	for ident, value in T.items():
 		dialogues[ident] = dialogue(*value)
-	# Corentin : les deux PNJ ouvrent chacun leur scène (celui de Rosalia : variante ARC, JOHP2).
-	dialogues["ecruteak_corentin"] = {"cutscene": "johto_corentin_flight"}
+	# Corentin d'Ébènelle ; celui de Rosalia ouvre `johto_corentin_flight` (`tools/gen_johp2_data.py`).
 	dialogues["blackthorn_city_corentin"] = {"cutscene": "blackthorn_corentin_back"}
 	dialogues["blackthorn_city_dracolosse"] = dialogue(NARRATION,
 		["Le Dracolosse de Corentin bâille.", "Il a l'air de bien connaître le chemin."], True)

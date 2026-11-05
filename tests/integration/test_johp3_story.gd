@@ -10,6 +10,7 @@ extends GutTest
 ## Système de fichiers en mémoire : jamais le vrai `user://`.
 
 const HideoutPlay := preload("res://tests/helpers/hideout_play.gd")
+const START_ROSALIA := "res://tools/debug_start/johto_rosalia_corentin.json"
 const START_CITY := "res://tools/debug_start/johto_blackthorn.json"
 const START_DEN := "res://tools/debug_start/johto_den_1f.json"
 const START_SANCTUARY := "res://tools/debug_start/johto_den_sanctuary.json"
@@ -158,6 +159,27 @@ func test_defeat_against_cenere_keeps_the_awakening_and_the_case() -> void:
 	assert_false(GameState.flags.has_flag(&"johto_cenere_defeated_arc"))
 	assert_false(GameState.flags.has_flag(&"johto_team_returned"), "mallette non rendue")
 	assert_false(GameState.confiscated.is_empty())
+
+
+## De Rosalia à Ébènelle et retour (JH-79) : Corentin appelle, puis reste à son poste.
+func test_corentin_calls_at_rosalia_then_the_flight_stays_open() -> void:
+	await _play.start(START_ROSALIA)
+	assert_eq(_play.map_id(), &"ecruteak_city")
+	assert_not_null(_play.boot.get_map().get_npc(&"corentin"), "Corentin attend à Rosalia")
+	await _go(Vector2i(34, 18))
+	await _play.interact(Vector2i.RIGHT)
+	assert_eq(_play.map_id(), &"blackthorn_city", "le vol (P-21)")
+	assert_true(GameState.flags.has_flag(&"johto_clan_called"))
+	assert_true(_play.pages().has("Kevin s'accroche !"), "P-21")
+	assert_eq(GameState.heal_map, &"blackthorn_center", "défaite à Ébènelle : Centre d'Ébènelle")
+	await _go(Vector2i(16, 22))
+	await _play.interact(Vector2i.RIGHT)
+	assert_eq(_play.map_id(), &"ecruteak_city", "retour libre pendant l'arc [D]")
+	assert_false(GameState.flags.has_flag(&"johto_act2"))
+	await _go(Vector2i(34, 18))
+	await _play.interact(Vector2i.RIGHT)
+	assert_eq(_play.map_id(), &"blackthorn_city", "P-56")
+	assert_true(_play.pages().has("Ébènelle ? Monte !"), "P-56")
 
 
 func test_corentin_flies_back_to_rosalia_and_opens_act_2() -> void:

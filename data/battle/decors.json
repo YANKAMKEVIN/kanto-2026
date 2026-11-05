@@ -828,6 +828,9 @@
 		"goeland_deck": [{ "decor": "sea_open" }],
 		"cianwood_city": [{ "decor": "route_1_chemin" }],
 		"tide_cave_1f": [{ "decor": "mt_moon_galerie" }],
-		"tide_cave_b1f": [{ "decor": "mt_moon_galerie" }]
+		"tide_cave_b1f": [{ "decor": "mt_moon_galerie" }],
+		"blackthorn_city": [{ "decor": "route_3_roche" }],
+		"dragons_den_1f": [{ "decor": "mt_moon_galerie" }],
+		"dragons_den_sanctuary": [{ "decor": "mt_moon_galerie" }]
 	}
 }

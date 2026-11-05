@@ -38,8 +38,8 @@ const MAPS: Array[Dictionary] = [
 		"seed": 9301, "light": &"johto_auto", "cave": false},
 	{"plan": "dragons_den_1f", "id": &"dragons_den_1f", "name": "Antre du Dragon",
 		"region": "Ébènelle", "seed": 9302, "light": &"cave_1f", "cave": true},
-	{"plan": "dragons_den_sanctuary", "id": &"dragons_den_sanctuary", "name": "Sanctuaire de l'Antre",
-		"region": "Antre du Dragon", "seed": 9303, "light": &"cave_b1f", "cave": true},
+	{"plan": "dragons_den_sanctuary", "id": &"dragons_den_sanctuary", "name": "Antre du Dragon",
+		"region": "Sanctuaire", "seed": 9303, "light": &"cave_b1f", "cave": true},
 ]
 
 ## Caractère d'une grille → type de tuile (nom de [enum OverworldTiles.Kind]). Les cases non
@@ -133,8 +133,31 @@ func _init() -> void:
 	for spec: Dictionary in MAPS:
 		if wanted.is_empty() or wanted.has(String(spec["id"])):
 			_build(spec)
+	if wanted.is_empty() or wanted.has("ecruteak_city"):
+		_rosalia()
 	print("build_johp3_maps : %s" % ("OK" if _errors == 0 else "%d erreur(s)" % _errors))
 	quit(0 if _errors == 0 else 1)
+
+
+## Variante ARC de Rosalia (JOHP3) : l'arrivée du vol. Corentin et son Dracolosse sont des PNJ. Le
+## nœud est ajouté **au texte** de la scène : la réenregistrer ici la dégraderait (décors peints
+## aplatis, sans les autoloads). Relançable.
+func _rosalia() -> void:
+	var plan := PlanGrid.new()
+	if not plan.load_file(PLANS_DIR + "rosalia.txt", "ARC"):
+		_fail("rosalia (ARC) : %s" % plan.error)
+		return
+	var path := MAPS_DIR + "ecruteak_city.tscn"
+	var text := FileAccess.get_file_as_string(path)
+	if text.contains("[node name=\"from_dragon\""):
+		return
+	var cell: Vector2i = plan.positions["from_dragon"]["cells"][0]
+	var position := _world(cell)
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	file.store_string(text.rstrip("\n") + "\n\n[node name=\"from_dragon\" type=\"Marker2D\" parent=\"Spawns\"]\n"
+		+ "position = Vector2(%d, %d)\n" % [int(position.x), int(position.y)])
+	file.close()
+	print("%s : from_dragon ajouté" % path)
 
 
 func _wanted() -> Array:

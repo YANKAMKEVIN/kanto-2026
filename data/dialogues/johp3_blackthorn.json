@@ -377,9 +377,6 @@
 			"Je lui ai dit de finir sa soupe\nd'abord."
 		]
 	},
-	"ecruteak_corentin": {
-		"cutscene": "johto_corentin_flight"
-	},
 	"blackthorn_city_corentin": {
 		"cutscene": "blackthorn_corentin_back"
 	},
