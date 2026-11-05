@@ -92,6 +92,8 @@ func test_spawns() -> void:
 		"from_center_1": Vector2i(28, 20), "from_mart": Vector2i(37, 20),
 		"from_mart_1": Vector2i(38, 20), "from_house_1": Vector2i(16, 20),
 		"from_house_2": Vector2i(37, 31),
+		# JOHP2 : descente du Goéland (variante ARC de la grille).
+		"from_goeland": Vector2i(41, 34),
 	}
 	for i: int in 10:
 		expected["from_route_40" if i == 0 else "from_route_40_%d" % i] = Vector2i(20 + i, 39)

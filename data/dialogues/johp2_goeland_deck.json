@@ -1,0 +1,48 @@
+{
+	"goeland_sailor_yvon_before": {
+		"speaker": "Marin Yvon",
+		"pages": [
+			"À bord, on se bat pour passer le\ntemps !"
+		]
+	},
+	"goeland_sailor_yvon_defeated": {
+		"speaker": "Marin Yvon",
+		"pages": [
+			"Le temps a passé vite."
+		]
+	},
+	"goeland_sailor_yvon_after": {
+		"speaker": "Marin Yvon",
+		"pages": [
+			"Goulven n'a jamais raté une\ntraversée."
+		]
+	},
+	"goeland_goulven": {
+		"speaker": "Goulven",
+		"variants": [
+			{
+				"if": [
+					"johto_goeland_outbound"
+				],
+				"unless": [
+					"johto_cianwood_arrived"
+				],
+				"pages": [
+					"Tu vois ce bateau, là-bas ? Noir,\nsans pavillon.",
+					"Il fait route vers mon île depuis\nl'aube.",
+					"Je n'aime pas ça."
+				],
+				"cutscene": "goeland_to_cianwood"
+			},
+			{
+				"if": [
+					"johto_goeland_outbound"
+				],
+				"cutscene": "goeland_to_cianwood"
+			},
+			{
+				"cutscene": "goeland_to_olivine"
+			}
+		]
+	}
+}

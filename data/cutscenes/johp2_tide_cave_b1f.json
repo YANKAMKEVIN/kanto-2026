@@ -1,0 +1,78 @@
+{
+	"tide_cave_socle": {
+		"variants": [
+			{
+				"unless": [
+					"johto_stone_tide_lost"
+				],
+				"steps": [
+					{
+						"dialogue": "tide_cave_b1f_socle"
+					},
+					{
+						"emote": "cenere",
+						"kind": "exclamation"
+					},
+					{
+						"face": "player",
+						"to": "cenere"
+					},
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"dialogue": "tide_cave_cenere_late"
+					},
+					{
+						"dialogue": "tide_cave_cenere_leaves"
+					},
+					{
+						"despawn": "cenere"
+					},
+					{
+						"dialogue": "tide_cave_cenere_gone"
+					},
+					{
+						"animate": "Decor/BateauNoir",
+						"offset": [
+							-6,
+							0
+						],
+						"duration": 2.0,
+						"fade": true
+					},
+					{
+						"set": [
+							"johto_stone_tide_lost"
+						]
+					}
+				]
+			}
+		]
+	},
+	"tide_item_2": {
+		"variants": [
+			{
+				"unless": [
+					"got_tide_item_2"
+				],
+				"steps": [
+					{
+						"despawn": "tide_item_2"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_tide_item_2"
+						]
+					}
+				]
+			}
+		]
+	}
+}

@@ -172,7 +172,8 @@ func test_data_file_loads() -> void:
 	# Jalon 31 (T4) : Super Canne de la Grotte Azurée (groupe 9 de RB).
 	# Chapitre Johto, JOH7 : Canne et Super Canne des Routes 40 et 41 (dossier JOH-08 §5).
 	assert_eq(tables.get_ids(), [&"good_rod_any", &"joh7_good_rod", &"joh7_old_rod", &"old_rod_any",
-		&"super_rod_cerulean_cave",
+		# JOHP2 : Super Canne d'Irisia (dossier JOH-11 §11).
+		&"super_rod_cerulean_cave", &"super_rod_cianwood",
 		&"super_rod_default", &"super_rod_fuchsia",
 		# JOH6 : Super Canne du Lac Colère (Magicarpe, Léviator).
 		&"super_rod_lake_of_rage",

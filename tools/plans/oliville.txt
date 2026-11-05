@@ -113,5 +113,6 @@ FIN
 POSITIONS_ARC
 goulven              pnj            40,34        bloque  role=marin facing=up  # P-11, P-12, P-55, parlé depuis (40, 33) ↓
 goeland              decor          42..47,34..37 bloque  # le Goéland, sprite amarré au ponton est, sans repeindre la ville
+from_goeland         spawn          41,34        libre   # descente du Goéland, tournée ↑ [D] (JOHP2)
 barriere_mer_sud     declencheur    20..29,38    libre   actif_sans=johto_act2 surf=1  # P-59 et pas en arrière (A-13, JH-72)
 FIN

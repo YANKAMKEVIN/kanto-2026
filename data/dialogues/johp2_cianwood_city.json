@@ -1,0 +1,95 @@
+{
+	"cianwood_fisher_ronan_before": {
+		"speaker": "Pêcheur Ronan",
+		"pages": [
+			"Sur cette île, le poisson décide."
+		]
+	},
+	"cianwood_fisher_ronan_defeated": {
+		"speaker": "Pêcheur Ronan",
+		"pages": [
+			"Il a décidé."
+		]
+	},
+	"cianwood_fisher_ronan_after": {
+		"speaker": "Pêcheur Ronan",
+		"pages": [
+			"La grotte ne se remplit plus. Les\npoissons ont fui."
+		]
+	},
+	"cianwood_blackbelt_tanguy_before": {
+		"speaker": "Karatéka Tanguy",
+		"pages": [
+			"Je m'entraîne contre les vagues. Tu\nseras plus facile."
+		]
+	},
+	"cianwood_blackbelt_tanguy_defeated": {
+		"speaker": "Karatéka Tanguy",
+		"pages": [
+			"Les vagues frappent moins fort."
+		]
+	},
+	"cianwood_blackbelt_tanguy_after": {
+		"speaker": "Karatéka Tanguy",
+		"pages": [
+			"Ces hommes en noir n'ont pas salué\nl'île. Ça ne se fait pas."
+		]
+	},
+	"cianwood_cooltrainer_maelle_before": {
+		"speaker": "Topdresseuse Maëlle",
+		"pages": [
+			"On vient à Irisia pour une seule\nraison : la mer. Et toi ?"
+		]
+	},
+	"cianwood_cooltrainer_maelle_defeated": {
+		"speaker": "Topdresseuse Maëlle",
+		"pages": [
+			"Tu as une bonne raison."
+		]
+	},
+	"cianwood_cooltrainer_maelle_after": {
+		"speaker": "Topdresseuse Maëlle",
+		"pages": [
+			"Le bateau noir est là depuis hier."
+		]
+	},
+	"cianwood_goulven": {
+		"speaker": "Goulven",
+		"pages": [
+			"Irisia ? Toujours.",
+			"La mer ne change pas d'avis, et moi\nnon plus."
+		],
+		"choice": {
+			"confirm": "MONTER",
+			"cancel": "RESTER",
+			"confirm_cutscene": "goeland_board_return"
+		}
+	},
+	"cianwood_city_panneau_ville": {
+		"narration": true,
+		"pages": [
+			"IRISIA",
+			"L'île au bout de la mer"
+		]
+	},
+	"cianwood_city_panneau_grotte": {
+		"narration": true,
+		"pages": [
+			"GROTTE DE LA MARÉE",
+			"Entrée interdite à marée haute"
+		]
+	},
+	"cianwood_city_habitante": {
+		"speaker": "Habitante",
+		"pages": [
+			"Depuis hier, la grotte fait un bruit\nde machine.",
+			"Et la mer n'y remonte plus."
+		]
+	},
+	"cianwood_city_bateau_noir": {
+		"narration": true,
+		"pages": [
+			"Un bateau noir, sans pavillon, à\nl'ancre devant l'île."
+		]
+	}
+}

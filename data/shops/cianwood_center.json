@@ -1,0 +1,24 @@
+{
+	"cianwood_center": {
+		"stock": [
+			{
+				"item": "poke_ball"
+			},
+			{
+				"item": "great_ball"
+			},
+			{
+				"item": "potion"
+			},
+			{
+				"item": "super_potion"
+			},
+			{
+				"item": "antidote"
+			},
+			{
+				"item": "repel"
+			}
+		]
+	}
+}

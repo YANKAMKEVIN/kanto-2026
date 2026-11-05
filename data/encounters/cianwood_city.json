@@ -1,0 +1,91 @@
+{
+	"cianwood_grass_day": {
+		"maps": [
+			"cianwood_city"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "pidgeotto",
+				"levels": [
+					30,
+					34
+				],
+				"weight": 30
+			},
+			{
+				"species": "raticate",
+				"levels": [
+					30,
+					34
+				],
+				"weight": 25
+			},
+			{
+				"species": "slowpoke",
+				"levels": [
+					30,
+					34
+				],
+				"weight": 25
+			},
+			{
+				"species": "machop",
+				"levels": [
+					30,
+					34
+				],
+				"weight": 20
+			}
+		]
+	},
+	"cianwood_grass_night": {
+		"maps": [
+			"cianwood_city"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "noctowl",
+				"levels": [
+					30,
+					34
+				],
+				"weight": 35
+			},
+			{
+				"species": "raticate",
+				"levels": [
+					30,
+					34
+				],
+				"weight": 30
+			},
+			{
+				"species": "slowpoke",
+				"levels": [
+					30,
+					34
+				],
+				"weight": 35
+			}
+		]
+	}
+}

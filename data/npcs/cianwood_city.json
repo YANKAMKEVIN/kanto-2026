@@ -1,0 +1,65 @@
+{
+	"goulven": {
+		"cell": [
+			29,
+			13
+		],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "cianwood_goulven"
+	},
+	"habitante": {
+		"cell": [
+			17,
+			12
+		],
+		"facing": "right",
+		"sprite": "beauty",
+		"dialogue": "cianwood_city_habitante"
+	},
+	"ronan": {
+		"cell": [
+			12,
+			23
+		],
+		"facing": "right",
+		"sprite": "fisher_route_12",
+		"dialogue": "cianwood_fisher_ronan_after",
+		"trainer": {
+			"id": "cianwood_fisher_ronan",
+			"sight": 3,
+			"before": "cianwood_fisher_ronan_before",
+			"defeated": "cianwood_fisher_ronan_defeated"
+		}
+	},
+	"tanguy": {
+		"cell": [
+			14,
+			7
+		],
+		"facing": "right",
+		"sprite": "blackbelt",
+		"dialogue": "cianwood_blackbelt_tanguy_after",
+		"trainer": {
+			"id": "cianwood_blackbelt_tanguy",
+			"sight": 2,
+			"before": "cianwood_blackbelt_tanguy_before",
+			"defeated": "cianwood_blackbelt_tanguy_defeated"
+		}
+	},
+	"maelle": {
+		"cell": [
+			23,
+			23
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_f",
+		"dialogue": "cianwood_cooltrainer_maelle_after",
+		"trainer": {
+			"id": "cianwood_cooltrainer_maelle",
+			"sight": 3,
+			"before": "cianwood_cooltrainer_maelle_before",
+			"defeated": "cianwood_cooltrainer_maelle_defeated"
+		}
+	}
+}

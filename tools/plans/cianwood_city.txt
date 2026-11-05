@@ -55,6 +55,7 @@ POSITIONS
 from_goeland         spawn          28,14..15    libre   # arrivée du bateau, tournée ←
 goulven              pnj            29,13        bloque  role=marin facing=down  # P-55 ; va-et-vient libre après johto_stone_tide_lost
 panneau_ville        panneau        26,12        bloque  # P-41, lu depuis (26, 13) ↑
+panneau_grotte       panneau        5,13         bloque  # P-41, lu depuis (5, 14) ↑ [D] (JOHP2 : le dossier a le texte, pas la case)
 arrivee_titre        declencheur    27,14..15    libre   drapeau=johto_cianwood_arrived  # P-40, une fois
 porte_centre         warp           21..22,13    libre   # STEP_ON ↑ → cianwood_center
 porte_goulven        warp           10,13        libre   # STEP_ON ↑ → cianwood_goulven_house

@@ -22,7 +22,7 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_library.get_ids(),
 		[&"azalea_mart", &"celadon_dept_2f", &"celadon_dept_2f_tm", &"celadon_dept_4f", &"celadon_dept_4f_stones",
 		&"celadon_dept_5f", &"celadon_dept_roof_lemonade", &"celadon_dept_roof_soda",
-		&"celadon_dept_roof_water", &"cerulean_mart", &"cinnabar_mart", &"ecruteak_mart", &"fuchsia_mart",
+		&"celadon_dept_roof_water", &"cerulean_mart", &"cianwood_center", &"cinnabar_mart", &"ecruteak_mart", &"fuchsia_mart",
 		&"goldenrod_dept_2f", &"goldenrod_dept_3f", &"goldenrod_dept_roof_lemonade",
 		&"goldenrod_dept_roof_soda", &"goldenrod_dept_roof_water", &"indigo_plateau_lobby",
 		&"lavender_mart", &"mahogany_mart", &"mt_silver_center", &"olivine_mart", &"pewter_mart",
@@ -31,7 +31,7 @@ func test_real_data_loads_without_error() -> void:
 		+ " jalon 15 : Carmin (test_vermilion_data) ; jalon 20 : grand magasin"
 		+ " (test_celadon_data) ; jalon 22 : Parmanie ; jalon 24 : Cramois'Île (test_j24_data) ;"
 		+ " jalon 26 : Safrania (test_saffron_city) ;"
-		+ " jalon 29 : Plateau Indigo ; JOH1 : Oliville ; JOH3 : Grand Magasin de Doublonville ; JOH6 : boutique de souvenirs d'Acajou")
+		+ " jalon 29 : Plateau Indigo ; JOH1 : Oliville ; JOH3 : Grand Magasin de Doublonville ; JOH6 : boutique de souvenirs d'Acajou ; JOHP2 : Centre d'Irisia")
 	var mart := _library.get_shop(&"viridian_mart")
 	assert_eq(mart.id, &"viridian_mart")
 	assert_eq(mart.source, "res://data/shops/viridian_mart.json")

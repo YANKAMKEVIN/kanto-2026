@@ -1,0 +1,46 @@
+{
+	"sbire_y": {
+		"cell": [
+			9,
+			4
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "tide_grunt_y_after",
+		"trainer": {
+			"id": "tide_grunt_y",
+			"sight": 1,
+			"before": "tide_grunt_y_before",
+			"defeated": "tide_grunt_y_defeated"
+		}
+	},
+	"sbire_z": {
+		"cell": [
+			15,
+			8
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "tide_grunt_z_after",
+		"trainer": {
+			"id": "tide_grunt_z",
+			"sight": 1,
+			"before": "tide_grunt_z_before",
+			"defeated": "tide_grunt_z_defeated"
+		}
+	},
+	"tide_item_1": {
+		"cell": [
+			3,
+			15
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "tide_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_tide_item_1"
+		]
+	}
+}

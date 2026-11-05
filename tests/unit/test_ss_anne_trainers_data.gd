@@ -63,7 +63,8 @@ func test_names_unique_across_all_trainers() -> void:
 		# Giovanni : le même personnage au repaire (J20) et à la Sylphe SARL (J26). Cenere : la même
 		# à la Tour Radio (JOH5) et aux Îles Tourbillon (JOH7). Brace : au Puits Ramoloss (JOH4) et au
 		# repaire d'Acajou (JOH6). Dante : à la Tour Carillon (JOH8) et au sommet du Mont Argenté (JOH9).
-		# Scientifique Rocket : le repaire d'Acajou (JOH6) et la Galerie des Glyphes (JOHP1), sans prénom.
+		# Scientifique Rocket : le repaire d'Acajou (JOH6), la Galerie des Glyphes (JOHP1) et la Grotte de
+		# la Marée (JOHP2), sans prénom.
 		if name.begins_with("{") or name == "Sbire Rocket" or name == "Giovanni" \
 				or name == "Cenere" or name == "Brace" or name == "Dante" \
 				or name == "Scientifique Rocket":

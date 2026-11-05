@@ -1,0 +1,116 @@
+{
+	"tide_grunt_aa_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Cenere est déjà descendue. Tu perds\nton temps !"
+		]
+	},
+	"tide_grunt_aa_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"C'est moi qui perds."
+		]
+	},
+	"tide_grunt_aa_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Vas-y, cours. Elle a calculé ça\naussi."
+		]
+	},
+	"tide_scientist_before": {
+		"speaker": "Scientifique Rocket",
+		"pages": [
+			"Niveau de l'eau, débit, durée : tout\nest prévu. Sauf toi."
+		]
+	},
+	"tide_scientist_defeated": {
+		"speaker": "Scientifique Rocket",
+		"pages": [
+			"Sauf toi."
+		]
+	},
+	"tide_scientist_after": {
+		"speaker": "Scientifique Rocket",
+		"pages": [
+			"Tourne les vannes si tu veux. Il est\ntrop tard."
+		]
+	},
+	"tide_cave_b1f_vanne_1": {
+		"narration": true,
+		"variants": [
+			{
+				"set": [
+					"johto_tide_valve_1"
+				],
+				"pages": [
+					"{player} tourne la vanne.",
+					"On entend l'eau bouger, plus bas."
+				]
+			}
+		]
+	},
+	"tide_cave_b1f_vanne_2": {
+		"narration": true,
+		"variants": [
+			{
+				"set": [
+					"johto_tide_valves_done"
+				],
+				"pages": [
+					"{player} tourne la vanne.",
+					"On entend l'eau bouger, plus bas."
+				]
+			}
+		]
+	},
+	"tide_hold_chief_before": {
+		"speaker": "Chef de cale",
+		"pages": [
+			"Tu arrives trop tard, le gamin.",
+			"Mais je vais quand même te faire\nregretter le voyage."
+		]
+	},
+	"tide_hold_chief_defeated": {
+		"speaker": "Chef de cale",
+		"pages": [
+			"Vas-y, regarde. Tu verras bien."
+		]
+	},
+	"tide_hold_chief_after": {
+		"speaker": "Chef de cale",
+		"pages": [
+			"Vas-y, regarde. Tu verras bien."
+		]
+	},
+	"tide_cave_cenere_late": {
+		"speaker": "Cenere",
+		"pages": [
+			"Quatorze minutes de retard.",
+			"Tu t'améliores.",
+			"La Pierre Marée est à moi. Tes\nPokémon aussi.",
+			"Il m'en reste une à prendre, et\ncelle que tu as dans ta poche."
+		]
+	},
+	"tide_cave_cenere_leaves": {
+		"speaker": "Cenere",
+		"pages": [
+			"Je ne me fatigue pas à te combattre.\nTu viendras à moi."
+		]
+	},
+	"tide_cave_cenere_gone": {
+		"narration": true,
+		"pages": [
+			"Cenere remonte sur le bateau noir.\nLe bateau s'éloigne…"
+		]
+	},
+	"tide_cave_b1f_socle": {
+		"narration": true,
+		"pages": [
+			"L'eau a baissé. Au fond du bassin,\nun socle de pierre.",
+			"Il est vide."
+		]
+	},
+	"tide_item_2": {
+		"cutscene": "tide_item_2"
+	}
+}

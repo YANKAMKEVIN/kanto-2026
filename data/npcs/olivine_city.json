@@ -51,5 +51,17 @@
 		"facing": "down",
 		"sprite": "sailor",
 		"dialogue": "olivine_beach_sailor"
+	},
+	"goulven": {
+		"cell": [
+			40,
+			34
+		],
+		"facing": "up",
+		"sprite": "sailor",
+		"dialogue": "olivine_goulven",
+		"if": [
+			"johto_stones_quest"
+		]
 	}
 }

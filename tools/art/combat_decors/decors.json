@@ -505,5 +505,23 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"cianwood_plage": {
+		"composition": "COMBAT_DECOR_IRISIA_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_IRISIA_r1_TL.png", "portion": [0, 0, 1000, 862] },
+			{ "image": "COMBAT_DECOR_IRISIA_r1_TR.png", "portion": [825, 0, 1825, 862] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"tide_cave_bassin": {
+		"composition": "COMBAT_DECOR_MAREE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_MAREE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_MAREE_r1_TR.png", "portion": [847, 0, 1847, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

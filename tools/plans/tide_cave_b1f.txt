@@ -50,5 +50,6 @@ chef_cale            dresseur       8,10         bloque  role=sbire facing=down 
 scene_socle          declencheur    7,10..13     libre   actif_sans=johto_stone_tide_lost  # P-17 à P-19
 socle                examen         4..5,11      libre   # P-17
 cenere               pnj            2,11         bloque  role=cenere facing=right actif_sans=johto_stone_tide_lost  # P-18, P-19 ; part par la mer
+rive_sud             spawn          9,11         libre   # départs de débogage du JOHP2, tournée ← [D]
 tide_item_2          objet_visible  6,13         bloque  item=rare_candy  # §12, au pied du socle
 FIN

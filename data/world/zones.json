@@ -527,6 +527,27 @@
 			"maps": ["route_28", "route_28_gate", "route_28_house"],
 			"subtitle": "Mont Argenté — Route 22",
 			"description": "Un col de montagne, vers Kanto."
+		},
+		"goeland_deck": {
+			"name": "Le Goéland", "kind": "place", "region": "johto", "maps": ["goeland_deck"],
+			"subtitle": "Oliville — Irisia",
+			"description": "Le bateau de Goulven, entre Oliville et Irisia.",
+			"draft": true
+		},
+		"cianwood_city": {
+			"name": "Irisia", "kind": "town", "region": "johto",
+			"maps": ["cianwood_city", "cianwood_center", "cianwood_goulven_house", "cianwood_house_1"],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "cianwood_center" },
+				{ "id": "poke_mart", "found_on": "cianwood_center" }
+			],
+			"description": "Une île de pêcheurs, au bout de la mer."
+		},
+		"tide_cave": {
+			"name": "Grotte de la Marée", "kind": "place", "region": "johto",
+			"maps": ["tide_cave_1f", "tide_cave_b1f"],
+			"subtitle": "Irisia",
+			"description": "Une grotte que la mer visite deux fois par jour."
 		}
 	}
 }
