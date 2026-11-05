@@ -9,6 +9,8 @@ var pokemon: Pokemon
 var party_index: int = -1
 ## Vrai pour une capture du Stockage (JH-71) : ni plan ni attaques à choisir.
 var stored: bool = false
+## Titre de sa ligne à l'écran : son nom, ou « Chenipan → Papilusion ».
+var title: String = ""
 var level_before: int = 0
 var level_after: int = 0
 var species_before: StringName = &""

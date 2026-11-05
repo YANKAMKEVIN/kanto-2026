@@ -23,7 +23,7 @@ func before_each() -> void:
 	_events = []
 	_overlay = AwakeningOverlay.new()
 	add_child_autofree(_overlay)
-	_overlay.setup(_data)
+	_overlay.setup()
 	_overlay.speed_scale = 0.0
 	_overlay.silence_requested.connect(func() -> void: _events.append("silence"))
 	_overlay.heartbeat.connect(func(_s: float) -> void: _events.append("beat"))
@@ -141,9 +141,9 @@ func test_review_lists_each_pokemon_and_continue_closes() -> void:
 
 func test_row_text_says_nothing_about_moves_when_none_remain() -> void:
 	var report := _report([&"rattata"], 57)
-	var text := AwakeningOverlay.row_text(report.party[0], _data, 0)
+	var text := AwakeningOverlay.row_text(report.party[0], 0)
 	assert_false(text.contains("attaque"), text)
-	assert_string_contains(AwakeningOverlay.row_text(report.party[0], _data, 1), "1 attaque à voir")
+	assert_string_contains(AwakeningOverlay.row_text(report.party[0], 1), "1 attaque à voir")
 
 
 # --- Le son ------------------------------------------------------------------------------------

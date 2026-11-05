@@ -33,6 +33,8 @@ const LEVEL_MAX: int = 62
 const TOP_LEVELS: int = 3
 ## Attaques proposées par Pokémon à l'écran du Réveil **[D]**.
 const OFFERED_MOVES: int = 3
+## Titre de la ligne d'un Pokémon qui a évolué, à l'écran du Réveil **[D]**.
+const EVOLVED_TITLE: String = "%s → %s"
 ## Garde-fou de la chaîne d'évolutions (les données n'en ont pas de plus longue que 2).
 const MAX_CHAIN: int = 4
 
@@ -103,6 +105,8 @@ static func apply(pokemon: Pokemon, target: int, data: PokemonData) -> Awakening
 		first = at # L'espèce nouvelle apprend aussi au niveau de son évolution.
 	_collect(data.get_species(pokemon.species_id), first, target, offers)
 	result.new_moves = _latest(offers, pokemon)
+	result.title = pokemon.display_name(data) if result.chain.is_empty() else EVOLVED_TITLE % [
+		species.name, data.get_species(pokemon.species_id).name]
 	pokemon.recalc(data)
 	pokemon.heal_full()
 	return result

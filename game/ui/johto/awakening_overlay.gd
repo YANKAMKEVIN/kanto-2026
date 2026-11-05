@@ -44,11 +44,8 @@ enum Phase { IDLE, SILENCE, LIGHT, TEAM, LINE_UP, REVIEW }
 const LIGHT_SHADER: Shader = preload("res://game/ui/johto/awakening_light.gdshader")
 const ART_SHADER: Shader = preload("res://game/ui/johto/awakening_art.gdshader")
 
-## Les trois couleurs des pierres (dossier §13.2) : la terre, la mer, le ciel **[D]**.
-const STONE_COLORS: Array[Color] = [
-	Color(0.72, 0.66, 0.58), Color(0.25, 0.55, 1.0), Color(1.0, 1.0, 1.0),
-]
-const NIGHT := Color(0.03, 0.05, 0.10)
+const STONE_COLORS: Array[Color] = UiTokens.AWAKENING_STONE_COLORS
+const NIGHT := UiTokens.AWAKENING_NIGHT
 
 # Le silence : voile, puis des battements de plus en plus forts et de plus en plus rapprochés.
 const SHADE_ALPHA := 0.62
@@ -108,7 +105,6 @@ const MOTES_HIGH := 90
 const REVIEW_TITLE := "Le Réveil"
 const CONTINUE_TEXT := "CONTINUER"
 const ROW_LEVELS := "Niv. %d → %d"
-const ROW_EVOLVED := "%s → %s"
 const ROW_MOVES_ONE := "1 attaque à voir"
 const ROW_MOVES := "%d attaques à voir"
 const ROW_SEPARATOR := "   ·   "
@@ -122,7 +118,6 @@ var speed_scale: float = 1.0
 ## « Réduire les flashs » (Paramètres).
 var reduce_flashes: bool = false
 
-var _data: PokemonData
 var _battle_art: BattleArt
 var _phase: Phase = Phase.IDLE
 var _base: ColorRect
@@ -177,9 +172,8 @@ func _process(delta: float) -> void:
 			_stones[i].get_child(0).position = wobble * STONE_TREMBLE
 
 
-## Espèces (noms) et images. [param art] : celui de Boot ; null : lecture partagée.
-func setup(data: PokemonData, art: BattleArt = null) -> void:
-	_data = data
+## Les images. [param art] : celui de Boot ; null : lecture partagée.
+func setup(art: BattleArt = null) -> void:
 	_battle_art = art if art != null else BattleArt.new()
 
 
@@ -518,24 +512,18 @@ func _refresh_row(index: int) -> void:
 	var result := _row_results[index]
 	var button := _row_buttons[index]
 	var pending: Array = _pending[result]
-	button.text = row_text(result, _data, pending.size())
+	button.text = row_text(result, pending.size())
 	button.disabled = pending.is_empty()
 
 
 ## Le texte d'une ligne : nom (ou évolution), niveaux, attaques encore à voir.
-static func row_text(result: AwakeningResult, data: PokemonData, moves: int) -> String:
-	var title := result.pokemon.display_name(data)
-	if result.evolved():
-		var from := data.get_species(result.species_before)
-		var into := data.get_species(result.species_after())
-		title = ROW_EVOLVED % [from.name if from != null else String(result.species_before),
-			into.name if into != null else String(result.species_after())]
+static func row_text(result: AwakeningResult, moves: int) -> String:
 	var detail := ROW_LEVELS % [result.level_before, result.level_after]
 	if moves == 1:
 		detail += ROW_SEPARATOR + ROW_MOVES_ONE
 	elif moves > 1:
 		detail += ROW_SEPARATOR + ROW_MOVES % moves
-	return "%s\n%s" % [title, detail]
+	return "%s\n%s" % [result.title, detail]
 
 
 func _on_row_pressed(index: int) -> void:

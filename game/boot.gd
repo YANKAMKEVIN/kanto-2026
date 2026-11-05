@@ -420,7 +420,9 @@ func _ready() -> void:
 	_awakening_overlay.name = "AwakeningOverlay"
 	_awakening_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_awakening_overlay)
-	_awakening_overlay.setup(_pokemon)
+	var awakening_art := BattleArt.new()
+	awakening_art.setup(_pokemon, _dex)
+	_awakening_overlay.setup(awakening_art)
 	_cutscenes_node.set_zones(_zones)
 	_cutscenes_node.awakening_handler = _on_awakening_film_requested
 	_cutscenes_node.awakening_screen_handler = _on_awakening_review_requested

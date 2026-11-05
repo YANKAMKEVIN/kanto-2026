@@ -2028,3 +2028,12 @@ const CREDITS_BLOCK_GAP := 140
 const CREDITS_SKIP_WIDTH := 260
 ## Écran Dresseur : largeur minimale du lien « Panthéon » (J30, Q30-4).
 const TRAINER_HALL_LINK_WIDTH := 240
+
+# --- Le Réveil (JOHP0) --------------------------------------------------------------------------
+
+## Les trois couleurs des pierres (dossier JOH-11 §13.2) : la terre, la mer, le ciel **[D]**.
+const AWAKENING_STONE_COLORS: Array[Color] = [
+	Color(0.72, 0.66, 0.58), Color(0.25, 0.55, 1.0), Color(1.0, 1.0, 1.0),
+]
+## Le fond du film, une fois le Sanctuaire noyé de lumière.
+const AWAKENING_NIGHT := Color(0.03, 0.05, 0.10)
