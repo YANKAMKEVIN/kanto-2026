@@ -316,6 +316,8 @@ const LOOPING_POKEMON: Dictionary = {
 	# RP-132 : Sulfura (Route Victoire) et Électhor (Centrale), même boucle (repos, inspire, effet, repos).
 	"sulfura": "moltres",
 	"electhor": "zapdos",
+	# RP-141 : Mewtwo à la Grotte Azurée.
+	"mewtwo": "mewtwo",
 	# Série Johto : légendaires observés (JOH7 Tourbillon, JOH8 Tour Carillon), 4 images, de face.
 	"suicune": "suicune",
 	"raikou": "raikou",

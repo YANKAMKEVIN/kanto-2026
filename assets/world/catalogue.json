@@ -13723,6 +13723,22 @@
     "repos_2"
    ]
   },
+  "mewtwo": {
+   "fichier": "res://assets/sprites/pokemon/painted/mewtwo_sheet.png",
+   "cellule": [
+    148,
+    160
+   ],
+   "hauteur": 160,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "halo",
+    "repos_2"
+   ]
+  },
   "electhor": {
    "fichier": "res://assets/sprites/pokemon/painted/electhor_sheet.png",
    "cellule": [

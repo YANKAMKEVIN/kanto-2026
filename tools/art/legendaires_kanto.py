@@ -9,12 +9,17 @@ pattes de chaque image au milieu du bas de sa cellule (la queue de flammes dépa
 
 `--electhor` fait de même pour `build/art/POKE_ELECTHOR_MONDE.png` (planche de Kevin, ChatGPT).
 
-Usage : python3 tools/art/legendaires_kanto.py [--sulfura | --electhor]
+`--mewtwo` traite `build/art/POKE_MEWTWO_MONDE.png` (planche de Kevin, ChatGPT), dont le damier est
+dessiné : le gris neutre devient transparent. Le halo de l'image 3, peint par-dessus le
+damier, ne se détoure pas : l'image 3 reprend l'image 2 avec un halo calculé.
+
+Usage : python3 tools/art/legendaires_kanto.py [--sulfura | --electhor | --mewtwo]
 """
 import sys
 from pathlib import Path
 
-from PIL import Image
+import numpy as np
+from PIL import Image, ImageFilter
 
 ICI = Path(__file__).resolve().parent
 SORTIE = ICI / "prompts" / "legendaires_kanto"
@@ -102,7 +107,48 @@ def decouper_electhor() -> None:
 	print(f"cellule {largeur} × {hauteur}")
 
 
+def retirer_damier(image: Image.Image) -> Image.Image:
+	"""Gris neutre → transparent, y compris entre les bras et dans la boucle de la queue (le corps
+	est toujours teinté, son contour sombre est gardé) ; le filtre médian retire les points isolés."""
+	pixels = np.array(image.convert("RGB")).astype(np.int16)
+	saturation = pixels.max(axis=2) - pixels.min(axis=2)
+	fond = (saturation < 7) & (pixels.max(axis=2) >= 95)
+	alpha = Image.fromarray(np.where(fond, 0, 255).astype(np.uint8)).filter(ImageFilter.MedianFilter(5))
+	sortie = image.convert("RGBA")
+	sortie.putalpha(alpha)
+	return sortie
+
+
+def halo(image: Image.Image) -> Image.Image:
+	"""Lueur violette derrière la silhouette, transparente sur les bords."""
+	lueur = image.getchannel("A").filter(ImageFilter.MaxFilter(9)).filter(ImageFilter.GaussianBlur(9))
+	couche = Image.new("RGBA", image.size, (168, 96, 235, 0))
+	couche.putalpha(lueur.point(lambda a: round(a * 0.62)))
+	couche.alpha_composite(image)
+	return couche
+
+
+def decouper_mewtwo() -> None:
+	source = retirer_damier(Image.open("build/art/POKE_MEWTWO_MONDE.png"))
+	pattes_x, pieds_y, haut_y, demi, hauteur = (175, 560, 945, 1328), 742, 278, 214, 160
+	echelle = hauteur / (pieds_y - haut_y)
+	largeur = round(demi * 2 * echelle)
+	images = [source.crop((x - demi, haut_y, x + demi, pieds_y)) for x in pattes_x]
+	for image, x, debut in zip(images, pattes_x, (40, 424, 808, 1192)):
+		# La queue de l'image précédente entre dans la fenêtre : on l'efface.
+		image.paste((0, 0, 0, 0), (0, 0, debut - (x - demi), image.height))
+	images[2] = halo(images[1])
+	planche = Image.new("RGBA", (largeur * 4, hauteur), (0, 0, 0, 0))
+	for colonne, image in enumerate(images):
+		planche.paste(image.resize((largeur, hauteur), Image.LANCZOS), (colonne * largeur, 0))
+	planche.save("assets/sprites/pokemon/painted/mewtwo_sheet.png")
+	print(f"cellule {largeur} × {hauteur}")
+
+
 def main() -> None:
+	if "--mewtwo" in sys.argv:
+		decouper_mewtwo()
+		return
 	if "--sulfura" in sys.argv:
 		decouper_sulfura()
 		return

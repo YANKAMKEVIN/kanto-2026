@@ -5884,6 +5884,21 @@
  ],
  "pokemon_boucles": [
   {
+   "id": "mewtwo",
+   "source": "POKE_MEWTWO_MONDE.png",
+   "sortie": "assets/sprites/pokemon/painted/mewtwo_sheet.png",
+   "hauteur": 160,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "halo",
+    "repos_2"
+   ],
+   "note": "RP-141 ; planche de Kevin (ChatGPT) ; découpe : tools/art/legendaires_kanto.py --mewtwo"
+  },
+  {
    "id": "electhor",
    "source": "POKE_ELECTHOR_MONDE.png",
    "sortie": "assets/sprites/pokemon/painted/electhor_sheet.png",
