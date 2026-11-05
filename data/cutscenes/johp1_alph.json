@@ -1,0 +1,376 @@
+{
+	"ruins_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_ruins_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "ruins_item_1"
+					},
+					{
+						"give": "super_potion",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ruins_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ruins_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_ruins_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_ruins_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"gallery_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_gallery_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "gallery_item_1"
+					},
+					{
+						"give": "hyper_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_gallery_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_36_ruins_gate": {
+		"variants": [
+			{
+				"unless": [
+					"johto_stones_quest"
+				],
+				"steps": [
+					{
+						"face": "ouvrier",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "ouvrier"
+					},
+					{
+						"dialogue": "route_36_ouvrier"
+					},
+					{
+						"move": "player",
+						"path": [
+							"up"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_stones_quest"
+				],
+				"unless": [
+					"johto_alph_gate_passed"
+				],
+				"steps": [
+					{
+						"face": "ouvrier",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "ouvrier"
+					},
+					{
+						"dialogue": "route_36_ouvrier"
+					},
+					{
+						"set": [
+							"johto_alph_gate_passed"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ruins_of_alph_arrival": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alph_arrived"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_alph_arrived"
+						]
+					}
+				]
+			}
+		]
+	},
+	"alph_tile_good_1": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alph_tile_1",
+					"johto_alph_tiles_done"
+				],
+				"steps": [
+					{
+						"dialogue": "alph_tile_lit"
+					},
+					{
+						"set": [
+							"johto_alph_tile_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"alph_tile_good_2": {
+		"variants": [
+			{
+				"if": [
+					"johto_alph_tile_1"
+				],
+				"unless": [
+					"johto_alph_tile_2",
+					"johto_alph_tiles_done"
+				],
+				"steps": [
+					{
+						"dialogue": "alph_tile_lit"
+					},
+					{
+						"set": [
+							"johto_alph_tile_2"
+						]
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_alph_tile_1",
+					"johto_alph_tiles_done"
+				],
+				"steps": [
+					{
+						"dialogue": "alph_tile_wrong"
+					},
+					{
+						"unset": [
+							"johto_alph_tile_1",
+							"johto_alph_tile_2"
+						]
+					},
+					{
+						"change_map": "alph_gallery",
+						"at": "retour_dalles",
+						"facing": "up"
+					}
+				]
+			}
+		]
+	},
+	"alph_tile_good_3": {
+		"variants": [
+			{
+				"if": [
+					"johto_alph_tile_2"
+				],
+				"unless": [
+					"johto_alph_tiles_done"
+				],
+				"steps": [
+					{
+						"dialogue": "alph_tile_lit"
+					},
+					{
+						"flash": 1
+					},
+					{
+						"set": [
+							"johto_alph_tiles_done"
+						]
+					},
+					{
+						"dialogue": "alph_door_opens"
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_alph_tile_2",
+					"johto_alph_tiles_done"
+				],
+				"steps": [
+					{
+						"dialogue": "alph_tile_wrong"
+					},
+					{
+						"unset": [
+							"johto_alph_tile_1",
+							"johto_alph_tile_2"
+						]
+					},
+					{
+						"change_map": "alph_gallery",
+						"at": "retour_dalles",
+						"facing": "up"
+					}
+				]
+			}
+		]
+	},
+	"alph_tile_wrong": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alph_tiles_done"
+				],
+				"steps": [
+					{
+						"dialogue": "alph_tile_wrong"
+					},
+					{
+						"unset": [
+							"johto_alph_tile_1",
+							"johto_alph_tile_2"
+						]
+					},
+					{
+						"change_map": "alph_gallery",
+						"at": "retour_dalles",
+						"facing": "up"
+					}
+				]
+			}
+		]
+	},
+	"alph_gallery_door": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alph_tiles_done"
+				],
+				"steps": [
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"alph_chamber_fake": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alph_fake_defeated",
+					"johto_stone_memory"
+				],
+				"steps": [
+					{
+						"face": "faux_archeologue",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "faux_archeologue"
+					},
+					{
+						"dialogue": "alph_fake_before"
+					},
+					{
+						"battle": "alph_fake_archeologist",
+						"win": [
+							"johto_alph_fake_defeated"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_alph_fake_defeated"
+						]
+					},
+					{
+						"wait": 0.6
+					},
+					{
+						"dialogue": "alph_fake_defeated"
+					},
+					{
+						"dialogue": "alph_fake_after"
+					},
+					{
+						"dialogue": "alph_fake_flees"
+					},
+					{
+						"despawn": "faux_archeologue"
+					}
+				]
+			}
+		]
+	},
+	"alph_chamber_stone": {
+		"variants": [
+			{
+				"unless": [
+					"johto_stone_memory"
+				],
+				"steps": [
+					{
+						"dialogue": "alph_chamber_stone"
+					},
+					{
+						"give": "stone_memory",
+						"count": 1
+					},
+					{
+						"dialogue": "alph_chamber_stone_received"
+					},
+					{
+						"set": [
+							"johto_stone_memory"
+						]
+					}
+				]
+			}
+		]
+	}
+}

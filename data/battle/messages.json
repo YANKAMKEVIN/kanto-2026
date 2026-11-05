@@ -250,6 +250,7 @@
 			"text": "Pas question de lancer une Ball sur… ça. Elle passerait au travers."
 		},
 		"ball_refused_offline": { "text": "Ton équipe est pleine, et le PC ne répond pas." },
+		"sent_to_orme": { "text": "Ton équipe est pleine. {pokemon} part au laboratoire d'Orme, qui s'en occupe en attendant." },
 		"switch_reason_egg": { "text": "Un œuf ne peut pas combattre." },
 		"safari_ball_thrown": { "text": "{player} lance une SAFARI BALL !" },
 		"safari_bait": { "text": "{player} lance un appât." },

@@ -1,0 +1,342 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_8fo2c"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_44x4j"]
+[ext_resource type="Script" path="res://game/world/johto/alph_glyph.gd" id="3_ctt7u"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="4_if2xh"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="5_kk7gm"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="6_jn8si"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="7_0jh0d"]
+
+[node name="AlphGallery" type="Node2D" unique_id=1487715521]
+script = ExtResource("1_8fo2c")
+map_id = &"alph_gallery"
+display_name = "Ruines d'Alpha"
+region = "Galerie des Glyphes"
+size = Vector2i(24, 18)
+light_profile = &"cave_1f"
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1901549030]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAABAAcAAAAEAAAAAAAAAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAAAAAcAAAALAAAAAAAAAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAAAAAcAAAASAAAAAAABAAcAAAATAAAAAAABAAcAAAAUAAAAAAAAAAcAAAAVAAAAAAAAAAcAAAAWAAAAAAABAAcAAAAXAAAAAAAAAAcAAAAAAAEAAAABAAcAAAABAAEAAAAAAAcAAAACAAEAAAABAAcAAAADAAEAAAABAAcAAAAEAAEAAAABAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAAAAAcAAAAIAAEAAAABAAcAAAAJAAEAAAAAAAcAAAAKAAEAAAABAAcAAAALAAEAAAABAAcAAAAMAAEAAAAAAAcAAAANAAEAAAABAAcAAAAOAAEAAAAAAAcAAAAPAAEAAAAAAAcAAAAQAAEAAAABAAcAAAARAAEAAAABAAcAAAASAAEAAAABAAcAAAATAAEAAAAAAAcAAAAUAAEAAAAAAAcAAAAVAAEAAAABAAcAAAAWAAEAAAAAAAcAAAAXAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAABAAcAAAACAAIAAAAAAAcAAAADAAIAAAABAAcAAAAEAAIAAAAAAAcAAAAFAAIAAAAAAAcAAAAGAAIAAAAAAAcAAAAHAAIAAAAAAAcAAAAIAAIAAAAAAAcAAAAJAAIAAAAAAAcAAAAKAAIAAAAAAAcAAAALAAIAAAABAAcAAAAMAAIAAAABAAIAAAANAAIAAAAAAAcAAAAOAAIAAAAAAAcAAAAPAAIAAAABAAcAAAAQAAIAAAAAAAMAAAARAAIAAAACAAMAAAASAAIAAAABAAcAAAATAAIAAAABAAcAAAAUAAIAAAABAAcAAAAVAAIAAAABAAcAAAAWAAIAAAABAAcAAAAXAAIAAAAAAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAcAAAACAAMAAAABAAIAAAADAAMAAAABAAIAAAAEAAMAAAACAAIAAAAFAAMAAAAAAAIAAAAGAAMAAAABAAIAAAAHAAMAAAACAAIAAAAIAAMAAAABAAIAAAAJAAMAAAABAAIAAAAKAAMAAAAAAAcAAAALAAMAAAAAAAIAAAAMAAMAAAACAAIAAAANAAMAAAABAAcAAAAOAAMAAAABAAcAAAAPAAMAAAACAAIAAAAQAAMAAAAAAAIAAAARAAMAAAAAAAIAAAASAAMAAAAAAAIAAAATAAMAAAABAAcAAAAUAAMAAAAAAAcAAAAVAAMAAAABAAcAAAAWAAMAAAABAAcAAAAXAAMAAAABAAcAAAAAAAQAAAAAAAcAAAABAAQAAAAAAAcAAAACAAQAAAABAAIAAAADAAQAAAAAAAIAAAAEAAQAAAACAAIAAAAFAAQAAAABAAIAAAAGAAQAAAABAAIAAAAHAAQAAAAAAAIAAAAIAAQAAAAAAAIAAAAJAAQAAAACAAIAAAAKAAQAAAAAAAcAAAALAAQAAAACAAIAAAAMAAQAAAAAAAIAAAANAAQAAAAAAAcAAAAOAAQAAAABAAcAAAAPAAQAAAAAAAMAAAAQAAQAAAAAAAMAAAARAAQAAAACAAMAAAASAAQAAAACAAMAAAATAAQAAAABAAcAAAAUAAQAAAAAAAcAAAAVAAQAAAAAAAcAAAAWAAQAAAAAAAcAAAAXAAQAAAABAAcAAAAAAAUAAAAAAAcAAAABAAUAAAAAAAcAAAACAAUAAAAAAAIAAAADAAUAAAAAAAIAAAAEAAUAAAAAAAIAAAAFAAUAAAACAAIAAAAGAAUAAAACAAIAAAAHAAUAAAABAAIAAAAIAAUAAAAAAAIAAAAJAAUAAAAAAAIAAAAKAAUAAAAAAAIAAAALAAUAAAACAAIAAAAMAAUAAAACAAIAAAANAAUAAAAAAAcAAAAOAAUAAAABAAcAAAAPAAUAAAABAAIAAAAQAAUAAAACAAIAAAARAAUAAAACAAIAAAASAAUAAAAAAAIAAAATAAUAAAABAAcAAAAUAAUAAAAAAAcAAAAVAAUAAAAAAAcAAAAWAAUAAAABAAcAAAAXAAUAAAABAAcAAAAAAAYAAAABAAcAAAABAAYAAAABAAcAAAACAAYAAAAAAAIAAAADAAYAAAAAAA0AAAAEAAYAAAAAAA0AAAAFAAYAAAABAA0AAAAGAAYAAAABAA0AAAAHAAYAAAAAAA0AAAAIAAYAAAAAAA0AAAAJAAYAAAAAAAIAAAAKAAYAAAABAAcAAAALAAYAAAAAAAIAAAAMAAYAAAACAAIAAAANAAYAAAABAAcAAAAOAAYAAAABAAcAAAAPAAYAAAABAAIAAAAQAAYAAAACAAIAAAARAAYAAAABAAIAAAASAAYAAAABAAIAAAATAAYAAAABAAcAAAAUAAYAAAAAAAcAAAAVAAYAAAABAAcAAAAWAAYAAAABAAcAAAAXAAYAAAAAAAcAAAAAAAcAAAABAAcAAAABAAcAAAAAAAcAAAACAAcAAAACAAIAAAADAAcAAAABAA0AAAAEAAcAAAABAA0AAAAFAAcAAAAAAA0AAAAGAAcAAAABAA0AAAAHAAcAAAAAAA0AAAAIAAcAAAAAAA0AAAAJAAcAAAACAAIAAAAKAAcAAAABAAcAAAALAAcAAAABAAIAAAAMAAcAAAACAAIAAAANAAcAAAAAAAcAAAAOAAcAAAAAAAcAAAAPAAcAAAACAAMAAAAQAAcAAAACAAMAAAARAAcAAAABAAMAAAASAAcAAAACAAMAAAATAAcAAAABAAcAAAAUAAcAAAAAAAcAAAAVAAcAAAAAAAcAAAAWAAcAAAAAAAcAAAAXAAcAAAAAAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAcAAAACAAgAAAACAAIAAAADAAgAAAAAAA0AAAAEAAgAAAABAA0AAAAFAAgAAAAAAA0AAAAGAAgAAAAAAA0AAAAHAAgAAAAAAA0AAAAIAAgAAAABAA0AAAAJAAgAAAAAAAIAAAAKAAgAAAAAAAcAAAALAAgAAAABAAIAAAAMAAgAAAAAAAIAAAANAAgAAAAAAAcAAAAOAAgAAAAAAAcAAAAPAAgAAAACAAIAAAAQAAgAAAAAAAIAAAARAAgAAAACAAIAAAASAAgAAAAAAAIAAAATAAgAAAAAAAcAAAAUAAgAAAABAAcAAAAVAAgAAAABAAcAAAAWAAgAAAAAAAcAAAAXAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAAAAAcAAAACAAkAAAAAAAIAAAADAAkAAAAAAAIAAAAEAAkAAAACAAIAAAAFAAkAAAACAAIAAAAGAAkAAAABAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAACAAIAAAAJAAkAAAACAAIAAAAKAAkAAAABAAcAAAALAAkAAAACAAIAAAAMAAkAAAABAAIAAAANAAkAAAABAAcAAAAOAAkAAAAAAAcAAAAPAAkAAAACAAIAAAAQAAkAAAABAAIAAAARAAkAAAABAAIAAAASAAkAAAAAAAIAAAATAAkAAAAAAAcAAAAUAAkAAAAAAAcAAAAVAAkAAAABAAcAAAAWAAkAAAABAAcAAAAXAAkAAAABAAcAAAAAAAoAAAAAAAcAAAABAAoAAAAAAAcAAAACAAoAAAABAAcAAAADAAoAAAAAAAcAAAAEAAoAAAABAAcAAAAFAAoAAAABAAcAAAAGAAoAAAABAAcAAAAHAAoAAAAAAAcAAAAIAAoAAAAAAAcAAAAJAAoAAAAAAAcAAAAKAAoAAAABAAcAAAALAAoAAAAAAAIAAAAMAAoAAAABAAIAAAANAAoAAAABAAcAAAAOAAoAAAABAAcAAAAPAAoAAAACAAMAAAAQAAoAAAAAAAMAAAARAAoAAAAAAAMAAAASAAoAAAABAAMAAAATAAoAAAABAAcAAAAUAAoAAAABAAcAAAAVAAoAAAAAAAcAAAAWAAoAAAABAAcAAAAXAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAABAAcAAAACAAsAAAABAAcAAAADAAsAAAABAAcAAAAEAAsAAAAAAAcAAAAFAAsAAAABAAcAAAAGAAsAAAABAAcAAAAHAAsAAAABAAcAAAAIAAsAAAABAAcAAAAJAAsAAAABAAcAAAAKAAsAAAABAAcAAAALAAsAAAACAAIAAAAMAAsAAAACAAIAAAANAAsAAAABAAcAAAAOAAsAAAABAAcAAAAPAAsAAAAAAAIAAAAQAAsAAAAAAAIAAAARAAsAAAAAAAIAAAASAAsAAAAAAAIAAAATAAsAAAABAAcAAAAUAAsAAAABAAcAAAAVAAsAAAABAAcAAAAWAAsAAAAAAAcAAAAXAAsAAAAAAAcAAAAAAAwAAAABAAcAAAABAAwAAAABAAcAAAACAAwAAAAAAAIAAAADAAwAAAACAAIAAAAEAAwAAAABAAMAAAAFAAwAAAABAAMAAAAGAAwAAAABAAIAAAAHAAwAAAACAAIAAAAIAAwAAAAAAAIAAAAJAAwAAAAAAAcAAAAKAAwAAAAAAAcAAAALAAwAAAABAAIAAAAMAAwAAAACAAIAAAANAAwAAAABAAcAAAAOAAwAAAABAAcAAAAPAAwAAAACAAIAAAAQAAwAAAACAAIAAAARAAwAAAAAAAIAAAASAAwAAAABAAIAAAATAAwAAAABAAcAAAAUAAwAAAABAAcAAAAVAAwAAAABAAcAAAAWAAwAAAABAAcAAAAXAAwAAAAAAAcAAAAAAA0AAAAAAAcAAAABAA0AAAABAAcAAAACAA0AAAACAAIAAAADAA0AAAAAAAIAAAAEAA0AAAAAAAIAAAAFAA0AAAACAAIAAAAGAA0AAAABAAIAAAAHAA0AAAACAAIAAAAIAA0AAAACAAIAAAAJAA0AAAAAAAcAAAAKAA0AAAAAAAIAAAALAA0AAAABAAIAAAAMAA0AAAAAAAIAAAANAA0AAAABAAIAAAAOAA0AAAACAAIAAAAPAA0AAAABAAIAAAAQAA0AAAACAAIAAAARAA0AAAACAAIAAAASAA0AAAAAAAIAAAATAA0AAAABAAcAAAAUAA0AAAAAAAcAAAAVAA0AAAAAAAcAAAAWAA0AAAABAAcAAAAXAA0AAAABAAcAAAAAAA4AAAAAAAcAAAABAA4AAAAAAAcAAAACAA4AAAAAAAIAAAADAA4AAAAAAA0AAAAEAA4AAAABAA0AAAAFAA4AAAABAA0AAAAGAA4AAAABAA0AAAAHAA4AAAABAA0AAAAIAA4AAAABAAIAAAAJAA4AAAACAAIAAAAKAA4AAAABAAIAAAALAA4AAAAAAAIAAAAMAA4AAAABAAIAAAANAA4AAAABAAIAAAAOAA4AAAAAAAIAAAAPAA4AAAABAAIAAAAQAA4AAAACAAIAAAARAA4AAAACAAIAAAASAA4AAAABAAIAAAATAA4AAAAAAAcAAAAUAA4AAAAAAAcAAAAVAA4AAAABAAcAAAAWAA4AAAABAAcAAAAXAA4AAAAAAAcAAAAAAA8AAAABAAcAAAABAA8AAAABAAcAAAACAA8AAAACAAIAAAADAA8AAAABAA0AAAAEAA8AAAABAA0AAAAFAA8AAAABAA0AAAAGAA8AAAABAA0AAAAHAA8AAAAAAA0AAAAIAA8AAAACAAIAAAAJAA8AAAAAAAcAAAAKAA8AAAABAAcAAAALAA8AAAAAAAcAAAAMAA8AAAABAAcAAAANAA8AAAABAAcAAAAOAA8AAAAAAAcAAAAPAA8AAAABAAcAAAAQAA8AAAAAAAcAAAARAA8AAAABAAcAAAASAA8AAAAAAAcAAAATAA8AAAABAAcAAAAUAA8AAAABAAcAAAAVAA8AAAABAAcAAAAWAA8AAAABAAcAAAAXAA8AAAAAAAcAAAAAABAAAAAAAAcAAAABABAAAAAAAAcAAAACABAAAAACAAIAAAADABAAAAABAAIAAAAEABAAAAABAAIAAAAFABAAAAABAAIAAAAGABAAAAACAAIAAAAHABAAAAABAAIAAAAIABAAAAACAAIAAAAJABAAAAABAAcAAAAKABAAAAABAAcAAAALABAAAAAAAAcAAAAMABAAAAAAAAcAAAANABAAAAABAAcAAAAOABAAAAABAAcAAAAPABAAAAABAAcAAAAQABAAAAAAAAcAAAARABAAAAAAAAcAAAASABAAAAABAAcAAAATABAAAAAAAAcAAAAUABAAAAABAAcAAAAVABAAAAAAAAcAAAAWABAAAAAAAAcAAAAXABAAAAABAAcAAAAAABEAAAAAAAcAAAABABEAAAABAAcAAAACABEAAAABAAcAAAADABEAAAABAAcAAAAEABEAAAAAAAcAAAAFABEAAAAAAAcAAAAGABEAAAAAAAcAAAAHABEAAAABAAcAAAAIABEAAAABAAcAAAAJABEAAAABAAcAAAAKABEAAAABAAcAAAALABEAAAABAAcAAAAMABEAAAABAAcAAAANABEAAAAAAAcAAAAOABEAAAABAAcAAAAPABEAAAABAAcAAAAQABEAAAAAAAcAAAARABEAAAAAAAcAAAASABEAAAABAAcAAAATABEAAAABAAcAAAAUABEAAAABAAcAAAAVABEAAAABAAcAAAAWABEAAAAAAAcAAAAXABEAAAABAAcAAAA=")
+tile_set = ExtResource("2_44x4j")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1051838337]
+tile_set = ExtResource("2_44x4j")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1153275214]
+tile_set = ExtResource("2_44x4j")
+
+[node name="Decor" type="Node2D" parent="." unique_id=1074204098]
+
+[node name="Signe_15_10" type="Node2D" parent="Decor" unique_id=57744477]
+position = Vector2(1488, 1008)
+script = ExtResource("3_ctt7u")
+sign_kind = 3
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Lueur_16_10" type="Node2D" parent="Decor" unique_id=829075203]
+position = Vector2(1584, 1056)
+script = ExtResource("4_if2xh")
+if_flags = Array[StringName]([&"johto_alph_tile_1"])
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Lueur_16_10" unique_id=1987210374]
+color = Color(1, 0.86, 0.4, 0.4)
+polygon = PackedVector2Array(-48, -96, 48, -96, 48, 0, -48, 0)
+
+[node name="Signe_16_10" type="Node2D" parent="Decor" unique_id=1139842211]
+position = Vector2(1584, 1008)
+script = ExtResource("3_ctt7u")
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_17_10" type="Node2D" parent="Decor" unique_id=2126051044]
+position = Vector2(1680, 1008)
+script = ExtResource("3_ctt7u")
+sign_kind = 1
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_18_10" type="Node2D" parent="Decor" unique_id=260526862]
+position = Vector2(1776, 1008)
+script = ExtResource("3_ctt7u")
+sign_kind = 2
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_15_7" type="Node2D" parent="Decor" unique_id=2079881300]
+position = Vector2(1488, 720)
+script = ExtResource("3_ctt7u")
+sign_kind = 2
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_16_7" type="Node2D" parent="Decor" unique_id=1803362541]
+position = Vector2(1584, 720)
+script = ExtResource("3_ctt7u")
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_17_7" type="Node2D" parent="Decor" unique_id=718277481]
+position = Vector2(1680, 720)
+script = ExtResource("3_ctt7u")
+sign_kind = 3
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Lueur_18_7" type="Node2D" parent="Decor" unique_id=1525962772]
+position = Vector2(1776, 768)
+script = ExtResource("4_if2xh")
+if_flags = Array[StringName]([&"johto_alph_tile_2"])
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Lueur_18_7" unique_id=1684562660]
+color = Color(1, 0.86, 0.4, 0.4)
+polygon = PackedVector2Array(-48, -96, 48, -96, 48, 0, -48, 0)
+
+[node name="Signe_18_7" type="Node2D" parent="Decor" unique_id=928332431]
+position = Vector2(1776, 720)
+script = ExtResource("3_ctt7u")
+sign_kind = 1
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Lueur_15_4" type="Node2D" parent="Decor" unique_id=1683577294]
+position = Vector2(1488, 480)
+script = ExtResource("4_if2xh")
+if_flags = Array[StringName]([&"johto_alph_tiles_done"])
+
+[node name="Dessin" type="Polygon2D" parent="Decor/Lueur_15_4" unique_id=1349981055]
+color = Color(1, 0.86, 0.4, 0.4)
+polygon = PackedVector2Array(-48, -96, 48, -96, 48, 0, -48, 0)
+
+[node name="Signe_15_4" type="Node2D" parent="Decor" unique_id=366060328]
+position = Vector2(1488, 432)
+script = ExtResource("3_ctt7u")
+sign_kind = 2
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_16_4" type="Node2D" parent="Decor" unique_id=1247071984]
+position = Vector2(1584, 432)
+script = ExtResource("3_ctt7u")
+sign_kind = 1
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_17_4" type="Node2D" parent="Decor" unique_id=2014030695]
+position = Vector2(1680, 432)
+script = ExtResource("3_ctt7u")
+sign_kind = 3
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Signe_18_4" type="Node2D" parent="Decor" unique_id=1003911948]
+position = Vector2(1776, 432)
+script = ExtResource("3_ctt7u")
+color = Color(0.24, 0.21, 0.18, 1)
+
+[node name="Mur1Signe" type="Node2D" parent="Decor" unique_id=916872573]
+position = Vector2(624, 1104)
+script = ExtResource("3_ctt7u")
+color = Color(0.86, 0.8, 0.6, 1)
+
+[node name="Mur2Signe" type="Node2D" parent="Decor" unique_id=325074026]
+position = Vector2(528, 240)
+script = ExtResource("3_ctt7u")
+sign_kind = 1
+color = Color(0.86, 0.8, 0.6, 1)
+
+[node name="Mur3Signe" type="Node2D" parent="Decor" unique_id=2041908733]
+position = Vector2(1584, 1488)
+script = ExtResource("3_ctt7u")
+sign_kind = 2
+color = Color(0.86, 0.8, 0.6, 1)
+
+[node name="Paroi_3_2" type="Node2D" parent="Decor" unique_id=1032829492]
+position = Vector2(336, 240)
+script = ExtResource("3_ctt7u")
+sign_kind = 3
+color = Color(0.645, 0.6, 0.45000002, 1)
+
+[node name="Paroi_7_2" type="Node2D" parent="Decor" unique_id=227291146]
+position = Vector2(720, 240)
+script = ExtResource("3_ctt7u")
+sign_kind = 2
+color = Color(0.645, 0.6, 0.45000002, 1)
+
+[node name="Paroi_9_2" type="Node2D" parent="Decor" unique_id=1552603493]
+position = Vector2(912, 240)
+script = ExtResource("3_ctt7u")
+sign_kind = 1
+color = Color(0.645, 0.6, 0.45000002, 1)
+
+[node name="Paroi_3_11" type="Node2D" parent="Decor" unique_id=2127204397]
+position = Vector2(336, 1104)
+script = ExtResource("3_ctt7u")
+sign_kind = 1
+color = Color(0.645, 0.6, 0.45000002, 1)
+
+[node name="Paroi_8_11" type="Node2D" parent="Decor" unique_id=135982530]
+position = Vector2(816, 1104)
+script = ExtResource("3_ctt7u")
+sign_kind = 3
+color = Color(0.645, 0.6, 0.45000002, 1)
+
+[node name="Paroi_15_2" type="Node2D" parent="Decor" unique_id=1547214605]
+position = Vector2(1488, 240)
+script = ExtResource("3_ctt7u")
+sign_kind = 3
+color = Color(0.645, 0.6, 0.45000002, 1)
+
+[node name="Paroi_18_2" type="Node2D" parent="Decor" unique_id=537386163]
+position = Vector2(1776, 240)
+script = ExtResource("3_ctt7u")
+color = Color(0.645, 0.6, 0.45000002, 1)
+
+[node name="Entities" type="Node2D" parent="." unique_id=1187089413]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="PorteFond" type="Node2D" parent="Entities" unique_id=656767572]
+position = Vector2(1584, 288)
+script = ExtResource("4_if2xh")
+unless_flags = Array[StringName]([&"johto_alph_tiles_done"])
+blocking_cells = Array[Vector2i]([Vector2i(16, 2), Vector2i(17, 2)])
+
+[node name="Dessin" type="Polygon2D" parent="Entities/PorteFond" unique_id=1983846329]
+color = Color(0.2, 0.19, 0.21, 1)
+polygon = PackedVector2Array(-48, -96, 144, -96, 144, 0, -48, 0)
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=222694993]
+z_index = 10
+tile_set = ExtResource("2_44x4j")
+
+[node name="Warps" type="Node2D" parent="." unique_id=877866351]
+
+[node name="EscalierHaut_0" type="Marker2D" parent="Warps" unique_id=1288748155]
+position = Vector2(432, 1248)
+script = ExtResource("5_kk7gm")
+target_map = &"ruins_of_alph"
+target_spawn = &"retour_galerie"
+arrival_facing = Vector2i(0, -1)
+
+[node name="EscalierHaut_1" type="Marker2D" parent="Warps" unique_id=1319038842]
+position = Vector2(528, 1248)
+script = ExtResource("5_kk7gm")
+target_map = &"ruins_of_alph"
+target_spawn = &"retour_galerie_1"
+arrival_facing = Vector2i(0, -1)
+
+[node name="EscalierBas_0" type="Marker2D" parent="Warps" unique_id=1537161278]
+position = Vector2(1584, 288)
+script = ExtResource("5_kk7gm")
+target_map = &"alph_chamber"
+target_spawn = &"from_gallery"
+arrival_facing = Vector2i(0, -1)
+
+[node name="EscalierBas_1" type="Marker2D" parent="Warps" unique_id=412965753]
+position = Vector2(1680, 288)
+script = ExtResource("5_kk7gm")
+target_map = &"alph_chamber"
+target_spawn = &"from_gallery_1"
+arrival_facing = Vector2i(0, -1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=178154767]
+
+[node name="Mur1" type="Marker2D" parent="Interactables" unique_id=1438784207]
+position = Vector2(624, 1152)
+script = ExtResource("6_jn8si")
+dialogue_id = &"alph_gallery_mur_1"
+facing = Vector2i(0, -1)
+
+[node name="Mur2" type="Marker2D" parent="Interactables" unique_id=1005528895]
+position = Vector2(528, 288)
+script = ExtResource("6_jn8si")
+dialogue_id = &"alph_gallery_mur_2"
+facing = Vector2i(0, -1)
+
+[node name="Mur3" type="Marker2D" parent="Interactables" unique_id=1727757992]
+position = Vector2(1584, 1536)
+script = ExtResource("6_jn8si")
+dialogue_id = &"alph_gallery_mur_3"
+facing = Vector2i(0, 1)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=524050822]
+
+[node name="from_ruins" type="Marker2D" parent="Spawns" unique_id=142188081]
+position = Vector2(432, 1344)
+
+[node name="from_ruins_1" type="Marker2D" parent="Spawns" unique_id=1452481483]
+position = Vector2(528, 1344)
+
+[node name="retour_dalles" type="Marker2D" parent="Spawns" unique_id=237681168]
+position = Vector2(1584, 1248)
+
+[node name="retour_dalles_1" type="Marker2D" parent="Spawns" unique_id=2007285458]
+position = Vector2(1680, 1248)
+
+[node name="from_chamber" type="Marker2D" parent="Spawns" unique_id=1954612396]
+position = Vector2(1584, 384)
+
+[node name="from_chamber_1" type="Marker2D" parent="Spawns" unique_id=872638571]
+position = Vector2(1680, 384)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=83581095]
+
+[node name="Dalle_15_10" type="Marker2D" parent="Triggers" unique_id=198403473]
+position = Vector2(1488, 1056)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_16_10" type="Marker2D" parent="Triggers" unique_id=1168422805]
+position = Vector2(1584, 1056)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_good_1"
+
+[node name="Dalle_17_10" type="Marker2D" parent="Triggers" unique_id=189887044]
+position = Vector2(1680, 1056)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_18_10" type="Marker2D" parent="Triggers" unique_id=1835776885]
+position = Vector2(1776, 1056)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_15_7" type="Marker2D" parent="Triggers" unique_id=106632119]
+position = Vector2(1488, 768)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_16_7" type="Marker2D" parent="Triggers" unique_id=1375302093]
+position = Vector2(1584, 768)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_17_7" type="Marker2D" parent="Triggers" unique_id=1872969108]
+position = Vector2(1680, 768)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_18_7" type="Marker2D" parent="Triggers" unique_id=200098010]
+position = Vector2(1776, 768)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_good_2"
+
+[node name="Dalle_15_4" type="Marker2D" parent="Triggers" unique_id=1748550804]
+position = Vector2(1488, 480)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_good_3"
+
+[node name="Dalle_16_4" type="Marker2D" parent="Triggers" unique_id=560011455]
+position = Vector2(1584, 480)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_17_4" type="Marker2D" parent="Triggers" unique_id=831982513]
+position = Vector2(1680, 480)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="Dalle_18_4" type="Marker2D" parent="Triggers" unique_id=1678861030]
+position = Vector2(1776, 480)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_tile_wrong"
+
+[node name="BarriereFond" type="Marker2D" parent="Triggers" unique_id=129908280]
+position = Vector2(1488, 384)
+script = ExtResource("7_0jh0d")
+cutscene_id = &"alph_gallery_door"
+size = Vector2i(4, 1)
+direction = Vector2i(0, -1)
+
+[node name="NightLights" type="Node2D" parent="." unique_id=893584642]
