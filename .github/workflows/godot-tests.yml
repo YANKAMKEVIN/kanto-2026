@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: ['0', '1', '2', '3', '4', '5', '6', '7']
+        shard: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     env:
       GODOT_VERSION: 4.7.2
       GODOT_SILENCE_ROOT_WARNING: 1
@@ -49,6 +49,12 @@ jobs:
           mv "$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" "$RUNNER_TEMP/godot/godot"
           chmod +x "$RUNNER_TEMP/godot/godot"
           echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+      - name: Restore import cache
+        uses: actions/cache@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('project.godot', 'assets/**') }}
+          restore-keys: godot-import-${{ env.GODOT_VERSION }}-
       - name: Import project
         shell: bash
         run: |
@@ -65,7 +71,7 @@ jobs:
           python3 - <<'PYTEST' 2>&1 | tee tests.log
           import pathlib, re, subprocess, sys
           shard = "${{ matrix.shard }}"
-          paths = subprocess.run(["python3", "tools/ci_shard.py", shard, "8"], check=True,
+          paths = subprocess.run(["python3", "tools/ci_shard.py", shard, "${{ strategy.job-total }}"], check=True,
                                  stdout=subprocess.PIPE, text=True).stdout.split()
           if not paths:
               sys.exit("Empty test shard")

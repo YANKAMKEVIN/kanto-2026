@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Attend le résultat de la CI GitHub (« Godot tests », 8 lots en parallèle) pour un commit déjà poussé.
+# Attend le résultat de la CI GitHub (« Godot tests », 10 lots en parallèle) pour un commit déjà poussé.
 # Remplace la suite complète du Mac avant une fusion tant que le dépôt est public (décision de Kevin,
 # 2026-10-26) : pousser la branche, puis lancer ce script. Code de sortie 0 seulement si la CI est verte.
 # Usage : tools/ci_wait.sh [commit]   (défaut : HEAD)
