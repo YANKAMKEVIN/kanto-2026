@@ -503,13 +503,10 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _give_egg(step)
 		CutsceneStep.Kind.FLASHBACK: # JOH6
 			await _flashback(step.text == "start")
-<<<<<<< HEAD
-		CutsceneStep.Kind.STONES_AWAKEN: # JOHP0
-			return await _stones_awaken()
-=======
 		CutsceneStep.Kind.CARRY: # JOH1
 			_carry(step)
->>>>>>> origin/main
+		CutsceneStep.Kind.STONES_AWAKEN: # JOHP0
+			return await _stones_awaken()
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true

@@ -155,11 +155,8 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["steps", "say", "flag", "say_full"], # Johto (JOH0) : confiscate_team, return_team,
 	# give_egg (JOH3 : « flag », « say_full »)
 	[], # Chapitre Johto (JOH6) : flashback
-<<<<<<< HEAD
-	[], # Arc des Pierres (JOHP0) : stones_awaken
-=======
 	["by"], # JOH1 : carry
->>>>>>> origin/main
+	[], # Arc des Pierres (JOHP0) : stones_awaken
 ]
 ## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
 const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]

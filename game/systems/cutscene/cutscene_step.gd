@@ -184,11 +184,8 @@ enum Kind {
 	HALL_OF_FAME, CREDITS, # Jalon 30
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
 	FLASHBACK, # Chapitre Johto (JOH6)
-<<<<<<< HEAD
-	STONES_AWAKEN, # Arc des Pierres (JOHP0)
-=======
 	CARRY, # JOH1, remise en scène du vol
->>>>>>> origin/main
+	STONES_AWAKEN, # Arc des Pierres (JOHP0)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -206,11 +203,8 @@ const TYPE_KEYS: Array[String] = [
 	"hall_of_fame", "credits", # Jalon 30
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
 	"flashback", # Chapitre Johto (JOH6)
-<<<<<<< HEAD
-	"stones_awaken", # Arc des Pierres (JOHP0)
-=======
 	"carry", # JOH1, remise en scène du vol
->>>>>>> origin/main
+	"stones_awaken", # Arc des Pierres (JOHP0)
 ]
 ## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
 const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
