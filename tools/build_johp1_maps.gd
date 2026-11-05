@@ -111,6 +111,7 @@ const FLATS: Dictionary = {
 	&"alph_chamber": [["Socle", Rect2i(6, 3, 2, 1), Color(0.62, 0.6, 0.54), false]],
 }
 const COLOR_STONE := Color(0.6, 0.6, 0.56)
+const COLOR_MEMORY_STONE := Color(0.42, 0.4, 0.38)
 const COLOR_DOOR := Color(0.2, 0.19, 0.21)
 const COLOR_LIT := Color(1.0, 0.86, 0.4, 0.4)
 const COLOR_FENCE := Color(0.82, 0.62, 0.22)
@@ -199,6 +200,12 @@ func _build(spec: Dictionary) -> void:
 	_add_flats(map_id, root)
 	if map_id == &"alph_gallery":
 		_add_gallery(plan, root)
+	if map_id == &"alph_chamber":
+		# La Pierre Mémoire, posée sur le socle tant qu'on ne l'a pas prise (aplat provisoire [D]).
+		var none: Array[StringName] = []
+		var taken: Array[StringName] = [STONE]
+		var stone := _gate(root, root.get_node(^"Decor"), "PierreMemoire", Vector2i(6, 3), none, taken)
+		_rect(root, stone, Rect2(26, -74, 44, 34), COLOR_MEMORY_STONE)
 	root.set(&"blocked_cells", blocked)
 	_save(root, MAPS_DIR + "%s.tscn" % map_id)
 

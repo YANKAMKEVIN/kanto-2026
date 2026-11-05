@@ -1,13 +1,14 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_75nbt"]
-[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_400ts"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_4p83e"]
-[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_3s3b1"]
-[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="5_w8wve"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_400ts"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_4p83e"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_3s3b1"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_w8wve"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_hijtu"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="6_21ant"]
 
-[node name="AlphChamber" type="Node2D" unique_id=1513427267]
-script = ExtResource("1_75nbt")
+[node name="AlphChamber" type="Node2D" unique_id=867106693]
+script = ExtResource("1_400ts")
 map_id = &"alph_chamber"
 display_name = "Ruines d'Alpha"
 region = "Chambre de la Mémoire"
@@ -15,70 +16,79 @@ size = Vector2i(14, 12)
 blocked_cells = Array[Vector2i]([Vector2i(6, 3), Vector2i(7, 3)])
 light_profile = &"cave_b1f"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=670257791]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1010357010]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAcAAAABAAAAAAAAAAcAAAACAAAAAAAAAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAABAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAABAAcAAAALAAAAAAABAAcAAAAMAAAAAAAAAAcAAAANAAAAAAABAAcAAAAAAAEAAAABAAcAAAABAAEAAAABAAcAAAACAAEAAAABAAcAAAADAAEAAAAAAAcAAAAEAAEAAAABAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAABAAcAAAAIAAEAAAABAAcAAAAJAAEAAAAAAAcAAAAKAAEAAAABAAcAAAALAAEAAAABAAcAAAAMAAEAAAAAAAcAAAANAAEAAAABAAcAAAAAAAIAAAABAAcAAAABAAIAAAABAAcAAAACAAIAAAAAAAcAAAADAAIAAAABAAMAAAAEAAIAAAABAAMAAAAFAAIAAAABAAMAAAAGAAIAAAAAAAMAAAAHAAIAAAABAAMAAAAIAAIAAAABAAMAAAAJAAIAAAACAAMAAAAKAAIAAAACAAMAAAALAAIAAAABAAcAAAAMAAIAAAABAAcAAAANAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAAAAAcAAAACAAMAAAAAAAcAAAADAAMAAAACAAMAAAAEAAMAAAABAAMAAAAFAAMAAAAAAAMAAAAGAAMAAAABAAMAAAAHAAMAAAAAAAMAAAAIAAMAAAABAAMAAAAJAAMAAAABAAMAAAAKAAMAAAABAAMAAAALAAMAAAABAAcAAAAMAAMAAAABAAcAAAANAAMAAAABAAcAAAAAAAQAAAAAAAcAAAABAAQAAAABAAcAAAACAAQAAAAAAAMAAAADAAQAAAAAAAMAAAAEAAQAAAABAAMAAAAFAAQAAAAAAAMAAAAGAAQAAAAAAAMAAAAHAAQAAAAAAAMAAAAIAAQAAAABAAMAAAAJAAQAAAAAAAMAAAAKAAQAAAABAAMAAAALAAQAAAAAAAMAAAAMAAQAAAABAAcAAAANAAQAAAABAAcAAAAAAAUAAAABAAcAAAABAAUAAAAAAAcAAAACAAUAAAABAAMAAAADAAUAAAABAAMAAAAEAAUAAAAAAAMAAAAFAAUAAAABAAMAAAAGAAUAAAABAAMAAAAHAAUAAAABAAMAAAAIAAUAAAACAAMAAAAJAAUAAAACAAMAAAAKAAUAAAACAAMAAAALAAUAAAAAAAMAAAAMAAUAAAABAAcAAAANAAUAAAAAAAcAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAcAAAACAAYAAAACAAMAAAADAAYAAAABAAMAAAAEAAYAAAACAAMAAAAFAAYAAAAAAAMAAAAGAAYAAAAAAAMAAAAHAAYAAAACAAMAAAAIAAYAAAAAAAMAAAAJAAYAAAAAAAMAAAAKAAYAAAAAAAMAAAALAAYAAAABAAMAAAAMAAYAAAAAAAcAAAANAAYAAAABAAcAAAAAAAcAAAAAAAcAAAABAAcAAAABAAcAAAACAAcAAAABAAMAAAADAAcAAAAAAAMAAAAEAAcAAAAAAAMAAAAFAAcAAAAAAAMAAAAGAAcAAAAAAAMAAAAHAAcAAAAAAAMAAAAIAAcAAAABAAMAAAAJAAcAAAACAAMAAAAKAAcAAAACAAMAAAALAAcAAAABAAMAAAAMAAcAAAAAAAcAAAANAAcAAAAAAAcAAAAAAAgAAAAAAAcAAAABAAgAAAAAAAcAAAACAAgAAAAAAAcAAAADAAgAAAAAAAMAAAAEAAgAAAACAAMAAAAFAAgAAAABAAMAAAAGAAgAAAACAAMAAAAHAAgAAAABAAMAAAAIAAgAAAAAAAMAAAAJAAgAAAAAAAMAAAAKAAgAAAACAAMAAAALAAgAAAAAAAcAAAAMAAgAAAABAAcAAAANAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAABAAcAAAACAAkAAAAAAAcAAAADAAkAAAAAAAMAAAAEAAkAAAAAAAMAAAAFAAkAAAABAAMAAAAGAAkAAAAAAAMAAAAHAAkAAAABAAMAAAAIAAkAAAABAAMAAAAJAAkAAAACAAMAAAAKAAkAAAACAAMAAAALAAkAAAABAAcAAAAMAAkAAAABAAcAAAANAAkAAAABAAcAAAAAAAoAAAAAAAcAAAABAAoAAAAAAAcAAAACAAoAAAABAAcAAAADAAoAAAABAAcAAAAEAAoAAAAAAAcAAAAFAAoAAAAAAAcAAAAGAAoAAAABAAIAAAAHAAoAAAAAAAIAAAAIAAoAAAABAAcAAAAJAAoAAAABAAcAAAAKAAoAAAABAAcAAAALAAoAAAABAAcAAAAMAAoAAAABAAcAAAANAAoAAAABAAcAAAAAAAsAAAABAAcAAAABAAsAAAAAAAcAAAACAAsAAAABAAcAAAADAAsAAAAAAAcAAAAEAAsAAAAAAAcAAAAFAAsAAAABAAcAAAAGAAsAAAAAAAcAAAAHAAsAAAABAAcAAAAIAAsAAAABAAcAAAAJAAsAAAABAAcAAAAKAAsAAAAAAAcAAAALAAsAAAAAAAcAAAAMAAsAAAABAAcAAAANAAsAAAAAAAcAAAA=")
-tile_set = ExtResource("2_400ts")
+tile_set = ExtResource("2_4p83e")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1019224132]
-tile_set = ExtResource("2_400ts")
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1813286653]
+tile_set = ExtResource("2_4p83e")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=717927270]
-tile_set = ExtResource("2_400ts")
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=2041714873]
+tile_set = ExtResource("2_4p83e")
 
-[node name="Decor" type="Node2D" parent="." unique_id=1397514940]
+[node name="Decor" type="Node2D" parent="." unique_id=79562611]
 
-[node name="Socle" type="Polygon2D" parent="Decor" unique_id=858509159]
+[node name="Socle" type="Polygon2D" parent="Decor" unique_id=1867827334]
 color = Color(0.62, 0.6, 0.54, 1)
 polygon = PackedVector2Array(576, 288, 768, 288, 768, 384, 576, 384)
 
-[node name="Entities" type="Node2D" parent="." unique_id=1775439294]
+[node name="PierreMemoire" type="Node2D" parent="Decor" unique_id=894186714]
+position = Vector2(624, 384)
+script = ExtResource("3_3s3b1")
+unless_flags = Array[StringName]([&"johto_stone_memory"])
+
+[node name="Dessin" type="Polygon2D" parent="Decor/PierreMemoire" unique_id=1899865359]
+color = Color(0.42, 0.4, 0.38, 1)
+polygon = PackedVector2Array(26, -74, 70, -74, 70, -40, 26, -40)
+
+[node name="Entities" type="Node2D" parent="." unique_id=567574709]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=988534674]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=577565794]
 z_index = 10
-tile_set = ExtResource("2_400ts")
+tile_set = ExtResource("2_4p83e")
 
-[node name="Warps" type="Node2D" parent="." unique_id=962766899]
+[node name="Warps" type="Node2D" parent="." unique_id=1909516535]
 
-[node name="EscalierHaut_0" type="Marker2D" parent="Warps" unique_id=584887107]
+[node name="EscalierHaut_0" type="Marker2D" parent="Warps" unique_id=1586425292]
 position = Vector2(624, 1056)
-script = ExtResource("3_4p83e")
+script = ExtResource("4_w8wve")
 target_map = &"alph_gallery"
 target_spawn = &"from_chamber"
 arrival_facing = Vector2i(0, 1)
 
-[node name="EscalierHaut_1" type="Marker2D" parent="Warps" unique_id=1928547309]
+[node name="EscalierHaut_1" type="Marker2D" parent="Warps" unique_id=1734320391]
 position = Vector2(720, 1056)
-script = ExtResource("3_4p83e")
+script = ExtResource("4_w8wve")
 target_map = &"alph_gallery"
 target_spawn = &"from_chamber_1"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=225306575]
+[node name="Interactables" type="Node2D" parent="." unique_id=1539184334]
 
-[node name="Socle" type="Marker2D" parent="Interactables" unique_id=893552553]
+[node name="Socle" type="Marker2D" parent="Interactables" unique_id=6410691]
 position = Vector2(624, 384)
-script = ExtResource("4_3s3b1")
+script = ExtResource("5_hijtu")
 dialogue_id = &"alph_chamber_socle"
 size = Vector2i(2, 1)
 facing = Vector2i(0, -1)
 unless_flags = Array[StringName]([&"johto_stone_memory"])
 
-[node name="Spawns" type="Node2D" parent="." unique_id=908448435]
+[node name="Spawns" type="Node2D" parent="." unique_id=1057657650]
 
-[node name="from_gallery" type="Marker2D" parent="Spawns" unique_id=563962861]
+[node name="from_gallery" type="Marker2D" parent="Spawns" unique_id=247873463]
 position = Vector2(624, 960)
 
-[node name="from_gallery_1" type="Marker2D" parent="Spawns" unique_id=1559917671]
+[node name="from_gallery_1" type="Marker2D" parent="Spawns" unique_id=1333171997]
 position = Vector2(720, 960)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1375368609]
+[node name="Triggers" type="Node2D" parent="." unique_id=606468339]
 
-[node name="SceneFaux" type="Marker2D" parent="Triggers" unique_id=487391579]
+[node name="SceneFaux" type="Marker2D" parent="Triggers" unique_id=1797304242]
 position = Vector2(240, 768)
-script = ExtResource("5_w8wve")
+script = ExtResource("6_21ant")
 cutscene_id = &"alph_chamber_fake"
 size = Vector2i(10, 1)
 
-[node name="NightLights" type="Node2D" parent="." unique_id=2065843704]
+[node name="NightLights" type="Node2D" parent="." unique_id=1783913263]

@@ -64,6 +64,9 @@ def main():
 			"rest_point": "goldenrod_center"}
 		if name == "johto_alph_after":
 			start["bag"]["stone_memory"] = 1
+		if name == "johto_alph_ruins_full":
+			# QA de la capture à 6 (JH-71, P-58) : herbes de la poche sud-ouest, Rattata faciles.
+			start["wild"] = {"rate": 255, "slots": [{"species": "rattata", "levels": [3, 4], "weight": 1}]}
 		with open(os.path.join(OUT, name + ".json"), "w", encoding="utf-8") as handle:
 			handle.write(json.dumps(start, ensure_ascii=False, indent="\t") + "\n")
 		print("écrit :", name)

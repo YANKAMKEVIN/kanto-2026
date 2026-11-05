@@ -137,5 +137,18 @@
 		"goldenrod_city",
 		"azalea_town"
 	],
-	"rest_point": "goldenrod_center"
+	"rest_point": "goldenrod_center",
+	"wild": {
+		"rate": 255,
+		"slots": [
+			{
+				"species": "rattata",
+				"levels": [
+					3,
+					4
+				],
+				"weight": 1
+			}
+		]
+	}
 }
