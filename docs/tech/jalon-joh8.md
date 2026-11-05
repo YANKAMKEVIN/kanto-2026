@@ -237,3 +237,5 @@ Fusion avec le JOH6 : H-38 posée dans `week_sunday_diane` (variante après le d
 `gen_joh8_data.py`, à relancer après `gen_joh6_data.py`) ; retour d'Entei au B1F de la Tour Cendrée
 (`entei_retour`, `joh8_entei_return`, drapeau [D] `johto_entei_return_done`), inactif tant que le JOH9
 ne lève pas `johto_chapter_done` ; Entei de carte du JOH6 gardé, le provisoire du JOH8 retiré.
+
+**JOH8 terminé** : fusionné dans `main` le 2026-11-05 (CI verte sur `f7c3709f`, run 41945347983).
