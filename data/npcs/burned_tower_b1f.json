@@ -67,5 +67,24 @@
 			"johto_entei_caught",
 			"johto_entei_return_done"
 		]
+	},
+	"raikou_retour": {
+		"cell": [
+			8,
+			8
+		],
+		"facing": "down",
+		"sprite": "pokemon/raikou",
+		"dialogue": "joh9_raikou_return",
+		"verb": "observe",
+		"turn_to_player": false,
+		"if": [
+			"johto_chapter_done",
+			"johto_raikou_done"
+		],
+		"unless": [
+			"johto_raikou_caught",
+			"johto_raikou_return_done"
+		]
 	}
 }

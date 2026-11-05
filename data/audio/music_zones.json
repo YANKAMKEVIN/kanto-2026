@@ -74,7 +74,11 @@
 		"azalea_town": "pewter_city",
 		"slowpoke_well": "mt_moon",
 		"bell_tower_woods": "viridian_forest",
-		"bell_tower": "pokemon_tower"
+		"bell_tower": "pokemon_tower",
+		"silver_trail": "road_to_lavender",
+		"mt_silver": "mt_moon",
+		"mt_silver_summit": "final_road",
+		"route_28": "pokemon_road"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",

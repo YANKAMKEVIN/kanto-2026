@@ -41,7 +41,7 @@ func test_real_data_loads_without_error() -> void:
 	# J25 (items_j31_emprunts.json retiré à la fusion de main) ; l'Hyper Ball est celle du J22.
 	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"bicycle", &"bike_voucher", &"burn_heal", &"calcium", &"carbos", &"card_key",
 		&"dire_hit", &"dome_fossil", &"dragon_scale", &"elixir", &"escape_rope", &"ether", &"exp_all", &"fire_stone", &"fresh_water", &"full_heal",
-		&"full_restore", &"gold_teeth", &"good_rod", &"great_ball", &"guard_spec", &"helix_fossil",
+		&"full_restore", &"gold_teeth", &"good_rod", &"great_ball", &"green_ball", &"guard_spec", &"helix_fossil",
 		&"hm01", &"hm02", &"hm03", &"hm04", &"hm05", &"hp_up", &"hyper_potion", &"ice_heal", &"iron", &"itemfinder", &"kings_rock",
 		&"leaf_stone", &"lemonade", &"lift_key", &"master_ball", &"max_elixir", &"max_ether",
 		&"max_potion", &"max_repel", &"max_revive", &"metal_coat", &"mission_order", &"moon_stone", &"nugget", &"oak_parcel", &"old_amber", &"old_rod",
@@ -97,6 +97,8 @@ func test_real_data_loads_without_error() -> void:
 		&"pp_max",
 		# JOH8 (items_joh8.json) : la Plume Arc-en-ciel.
 		&"rainbow_wing",
+		# JOH9 (items_joh9.json) : la Balle Verte d'Orme (épilogue).
+		&"green_ball",
 		# JOH0 (T6, items_johto.json) : objets d'évolution par échange.
 		&"metal_coat", &"kings_rock", &"dragon_scale", &"up_grade",
 		&"poke_flute", &"bicycle", &"card_key", &"hm02", &"hm03", &"hm04",

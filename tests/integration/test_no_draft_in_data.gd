@@ -36,6 +36,8 @@ const DATA_DIR := "res://data"
 ## Chapitre Johto (JOH0, 2026-11-03) : descriptions [D] des cinq villes de Johto, textes [D] des
 ## systèmes (`johto_systems.json` : PC hors ligne, éclosion, objet du terminal, scènes de test) et
 ## les 51 fiches du Pokédex de Johto (JOH-Q2), à relire par Kevin avec les textes du JOH1.
+## JOH9 (2026-11-04) : textes [D] hors du dossier joh-10 (Topdresseur Jules, garde du poste de
+## la Route 28 après l'ouverture, porte verrouillée, gardien) et lignes du petit générique de Johto.
 ## JOH2 (2026-11-04) : description de Rosalia validée (R-25, plus « draft ») ; textes [D] hors du
 ## dossier joh-03 (garde de la Route 42, Pokémon de la ferme, sages et habitants de Rosalia),
 ## JOH2-Q1.
@@ -52,6 +54,23 @@ const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh4_ilex_forest.json/ilex_forest_canarticho",
 	"dialogues/joh4_slowpoke_well_b2f.json/slowpoke_well_b2f_ramoloss_sans_queue",
 	"dialogues/joh4_azalea_interiors.json/azalea_house_1_habitant",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_before",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_defeated",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_after",
+	"dialogues/joh9_route_28.json/route_28_gate_guard/variants/0",
+	"dialogues/joh9_route_28.json/route_28_gate_locked",
+	"dialogues/joh9_route_28.json/route_28_house_gardien",
+	"story/credits_johto.json/blocks/0",
+	"story/credits_johto.json/blocks/2",
+	"story/credits_johto.json/blocks/4",
+	"story/credits_johto.json/blocks/6",
+	"story/credits_johto.json/blocks/8",
+	"story/credits_johto.json/blocks/10",
+	"story/credits_johto.json/blocks/12",
+	"story/credits_johto.json/blocks/14",
+	"story/credits_johto.json/blocks/16",
+	"story/credits_johto.json/blocks/18",
+	"story/credits_johto.json/blocks/21",
 	"dialogues/joh2_ecruteak_city.json/ecruteak_city_garde_route_42",
 	"dialogues/joh2_route_39.json/route_39_ecremeuh",
 	"dialogues/joh2_route_39.json/route_39_tauros",

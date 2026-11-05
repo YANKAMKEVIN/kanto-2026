@@ -1,0 +1,14 @@
+{
+	"mt_silver_center": {
+		"stock": [
+			{ "item": "ultra_ball" },
+			{ "item": "great_ball" },
+			{ "item": "full_restore" },
+			{ "item": "max_potion" },
+			{ "item": "hyper_potion" },
+			{ "item": "full_heal" },
+			{ "item": "revive" },
+			{ "item": "max_repel" }
+		]
+	}
+}

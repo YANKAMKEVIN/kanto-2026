@@ -409,9 +409,10 @@ func _add_warp(root: Node2D, id: String, cells: Array[Vector2i], dest: Dictionar
 func _target_spawn_cells(target: StringName, spawn: String) -> Array:
 	if _spawns.has(target):
 		return (_spawns[target] as Dictionary).get(spawn, [])
-	if target == &"ecruteak_city":
+	if target == &"ecruteak_city" or target == &"silver_trail":
 		var plan := PlanGrid.new()
-		if plan.load_file(PLANS_DIR + "rosalia.txt"):
+		var file := "rosalia.txt" if target == &"ecruteak_city" else "silver_trail.txt"
+		if plan.load_file(PLANS_DIR + file):
 			var entry: Dictionary = plan.positions.get(spawn, {})
 			return entry.get("cells", [])
 	return []

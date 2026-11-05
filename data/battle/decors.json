@@ -814,7 +814,13 @@
 		],
 		"goldenrod_radio_tower_5f": [
 			{ "decor": "silph_co_bureaux" }
-		]
-
+		],
+		"silver_trail": [{ "decor": "route_3_roche" }],
+		"mt_silver_outside": [{ "decor": "route_3_roche" }],
+		"mt_silver_1f": [{ "decor": "mt_moon_galerie" }],
+		"mt_silver_2f": [{ "decor": "dark_cave_galerie" }],
+		"mt_silver_3f": [{ "decor": "mt_moon_galerie" }],
+		"mt_silver_summit": [{ "decor": "route_3_roche" }],
+		"route_28": [{ "decor": "route_3_roche" }]
 	}
 }

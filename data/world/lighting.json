@@ -545,6 +545,16 @@
 		"bell_tower_woods": "johto_auto",
 		"bell_tower_1f": "tower",
 		"bell_tower_2f": "tower",
-		"bell_tower_roof": "johto_auto"
+		"bell_tower_roof": "johto_auto",
+		"silver_trail": "johto_auto",
+		"mt_silver_outside": "johto_auto",
+		"mt_silver_1f": "cave_1f",
+		"mt_silver_2f": "cave_1f",
+		"mt_silver_3f": "cave_1f",
+		"mt_silver_summit": "johto_auto",
+		"route_28": "johto_auto",
+		"mt_silver_center": "interior_warm",
+		"route_28_gate": "interior_warm",
+		"route_28_house": "interior_warm"
 	}
 }

@@ -201,6 +201,9 @@ var hall_of_fame_handler: Callable
 var team_return_handler: Callable
 ## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
 var credits_handler: Callable
+## JOH9 : générique demandé par l'étape « credits » en cours (&"" = Kanto), lu par le
+## gestionnaire ([member credits_handler]).
+var credits_id: StringName = &""
 ## Raison de l'écriture qui suit l'entrée du Panthéon.
 const HALL_OF_FAME_SAVE_REASON: String = "Panthéon"
 
@@ -469,6 +472,7 @@ func _play_step(source_step: CutsceneStep) -> bool:
 		CutsceneStep.Kind.HALL_OF_FAME: # Jalon 30
 			return await _hall_of_fame()
 		CutsceneStep.Kind.CREDITS: # Jalon 30
+			credits_id = StringName(step.text)
 			await _credits()
 		CutsceneStep.Kind.CONFISCATE_TEAM: # JOH0
 			_confiscate_team()

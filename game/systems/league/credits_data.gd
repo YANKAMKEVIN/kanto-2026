@@ -13,12 +13,16 @@ extends RefCounted
 ##               { "lines": ["…", "…"] },   # lignes ordinaires
 ##               { "team": true } ] }       # le joueur, puis son équipe (lignes « member »)
 ## [/codeblock]
+## Chapitre Johto, JOH9 : bloc « image » (chemin `res://` d'une image : un lieu de Johto, un
+## légendaire) → une rangée [constant RowKind.IMAGE] ; le chemin doit exister.
 ## Un bloc peut porter « draft »: true (texte [D] proposé, à valider par Kevin) : sans effet ici.
 
-enum RowKind { LOGO, TITLE, HEADING, LINE, GAP }
+enum RowKind { LOGO, TITLE, HEADING, LINE, GAP, IMAGE }
 
 const PATH: String = "res://data/story/credits.json"
-const _BLOCK_KEYS: Array[String] = ["logo", "title", "lines", "team"]
+## JOH9 : générique nommé `id` → `data/story/credits_<id>.json`.
+const NAMED_PATH: String = "res://data/story/credits_%s.json"
+const _BLOCK_KEYS: Array[String] = ["logo", "title", "lines", "team", "image"]
 const _EXTRA_KEYS: Array[String] = ["draft"]
 
 ## Gabarit d'une ligne de Pokémon : {pokemon} (surnom ou nom), {level}.
@@ -78,6 +82,9 @@ func load_dict(data: Dictionary, where: String = "credits") -> bool:
 						or not (lines as Array).all(func(v: Variant) -> bool:
 							return v is String and not (v as String).is_empty()):
 					valid = _fail("%s : « lines » doit être une liste de textes non vides" % at)
+			"image":
+				if not block["image"] is String or not ResourceLoader.exists(block["image"]):
+					valid = _fail("%s : « image » doit être une image existante" % at)
 			"team":
 				if block["team"] != true:
 					valid = _fail("%s : « team » vaut true" % at)
@@ -113,6 +120,8 @@ func rows(entry: Dictionary, name_of: Callable) -> Array[Dictionary]:
 			result.append({"kind": RowKind.LOGO, "text": block["logo"]})
 		elif block.has("title"):
 			result.append({"kind": RowKind.TITLE, "text": block["title"]})
+		elif block.has("image"):
+			result.append({"kind": RowKind.IMAGE, "text": block["image"]})
 		elif block.has("lines"):
 			for line: String in block["lines"]:
 				result.append({"kind": RowKind.LINE, "text": line})
