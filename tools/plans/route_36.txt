@@ -68,7 +68,7 @@ herbes_h2            herbes         17,15        libre   role=H2  # poche sud-ou
 herbes_h3            herbes         35,15        libre   role=H3  # poche sud-est (évitable)
 FIN
 
-# Variante ARC (arc des Pierres, docs/design/dossier-joh-11-arc-pierres.md) : chemin neuf au sud de la route (x 40..41, y 12..19), vers les Ruines d'Alpha. **[D] à relire par Kevin.** La grille de base, validée, ne change pas.
+# Variante ARC (arc des Pierres, docs/design/dossier-joh-11-arc-pierres.md) : chemin neuf au sud de la route (x 40..41, y 12..19), vers les Ruines d'Alpha. **Validée par Kevin le 2026-11-05.** La grille de base, validée, ne change pas.
 
 GRILLE_ARC
 12 T......................yy.===...........==WWWWTTTTTTTTTT

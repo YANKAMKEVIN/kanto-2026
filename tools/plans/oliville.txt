@@ -108,7 +108,7 @@ panneau_ville        panneau        23,19        bloque  # O-25, lu depuis (23, 
 panneau_phare        panneau        6,19         bloque  # « PHARE D'OLIVILLE / Fermé pour travaux. » [D], lu depuis (6, 20) ↑
 FIN
 
-# Variante ARC (arc des Pierres, docs/design/dossier-joh-11-arc-pierres.md) : Goulven et le Goéland au ponton est ; mer du sud fermée tant que johto_act2 manque. **[D] à relire par Kevin.** La grille de base, validée, ne change pas.
+# Variante ARC (arc des Pierres, docs/design/dossier-joh-11-arc-pierres.md) : Goulven et le Goéland au ponton est ; mer du sud fermée tant que johto_act2 manque. **Validée par Kevin le 2026-11-05.** La grille de base, validée, ne change pas.
 
 POSITIONS_ARC
 goulven              pnj            40,34        bloque  role=marin facing=up  # P-11, P-12, P-55, parlé depuis (40, 33) ↓

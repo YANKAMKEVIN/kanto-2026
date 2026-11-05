@@ -1,5 +1,5 @@
 # Antre du Dragon 1F (dragons_den_1f) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP3, §6 étape 16, §8.3, §10 à §12, textes P-24, P-50, P-51 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
-# Préparée le 2026-11-05 ; **[D] à relire par Kevin** (nuit du 2026-11-05, coordination déléguée). Source UNIQUE de la
+# Préparée le 2026-11-05 ; **validée par Kevin le 2026-11-05**. Source UNIQUE de la
 # géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
 #
 # 28 × 24 cases ; nord en haut ; x = colonne 0..27, y = rangée 0..23.

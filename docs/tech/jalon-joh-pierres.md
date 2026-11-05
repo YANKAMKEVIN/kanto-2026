@@ -5,9 +5,8 @@
 > 2026-11-04 et 2026-11-05) ; grilles `tools/plans/ruins_of_alph.txt`, `alph_tent.txt`, `alph_gallery.txt`,
 > `alph_chamber.txt`, `goeland_deck.txt`, `cianwood_city.txt`, `tide_cave_1f.txt`, `tide_cave_b1f.txt`,
 > `blackthorn_city.txt`, `dragons_den_1f.txt`, `dragons_den_sanctuary.txt` et variantes `ARC` de
-> `route_36.txt`, `oliville.txt`, `rosalia.txt` (**[D], à relire par Kevin**, elles font foi une fois
-> validées) ; contrôle `tools/art/plan_check_johp.py` ; vues `docs/design/reference/johp*-vues-v1.png`
-> (**[D]**, DA seulement). Écrit le 2026-11-05 sur la branche `claude/dossier-arc-pierres-3e4a45`.
+> `route_36.txt`, `oliville.txt`, `rosalia.txt` (validées par Kevin le 2026-11-05, **elles font foi**) ; contrôle `tools/art/plan_check_johp.py` ; vues `docs/design/reference/johp*-vues-v1.png`
+> (validées le 2026-11-05, DA seulement). Écrit le 2026-11-05 sur la branche `claude/dossier-arc-pierres-3e4a45`.
 
 > Objectif jouable : **de la fin de la Tour Radio au doyen de Rosalia**, par les trois lieux, jusqu'au
 > Réveil et au retour de l'équipe de Kanto, sans changer les niveaux ni les textes de JOH6 à JOH9.
@@ -196,7 +195,7 @@ départ de débogage `johto_awakening`. Validation seule : sauvegarde. Niveaux e
 
 **JOHP1** — « Reprise de l'arc des Pierres, JOHP1 (Ruines d'Alpha). Lis CLAUDE.md, docs/tech/etat-projet.md,
 docs/tech/jalon-joh-pierres.md §0, §1 et §3, docs/design/dossier-joh-11-arc-pierres.md. Grilles `ruins_of_alph`,
-`alph_*`, variante ARC de `route_36` : vérifie qu'elles sont validées par Kevin. Branche depuis `main`. Prochaine
+`alph_*`, variante ARC de `route_36` (validées). Branche depuis `main`. Prochaine
 tâche : cartes, données, dalles, faux archéologue, `CaptureGate`. Rien ne pose `johto_stones_quest` hors des
 départs de débogage : la bascule est au JOHP3. »
 

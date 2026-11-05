@@ -141,7 +141,7 @@ herbes_cendree       herbes         15,7         libre   role=H2  # herbe de la 
 herbes_carillon      herbes         38,10        libre   role=H3  # herbe du bois de la Tour Carillon (nuit)
 FIN
 
-# Variante ARC (arc des Pierres, docs/design/dossier-joh-11-arc-pierres.md) : Corentin et son Dracolosse sur la place libre, à l'est de la grande rue. **[D] à relire par Kevin.** La grille de base, validée, ne change pas.
+# Variante ARC (arc des Pierres, docs/design/dossier-joh-11-arc-pierres.md) : Corentin et son Dracolosse sur la place libre, à l'est de la grande rue. **Validée par Kevin le 2026-11-05.** La grille de base, validée, ne change pas.
 
 POSITIONS_ARC
 corentin             pnj            35,18        bloque  role=messager facing=left  # P-20, P-56 ; actif avec johto_stone_tide_lost

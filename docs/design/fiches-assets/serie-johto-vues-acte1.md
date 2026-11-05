@@ -342,7 +342,7 @@ Route 28 sans neige (versant ouest) ; poste de la Route 28 = une pièce traversa
 **Actes 2 et 3** : 27 vues en 27 essais (JOH6 : 10, JOH7 : 5, JOH8 : 4, JOH9 : 8), aucun refus. **Validées par Kevin le
 2026-11-03** (« Oui, fusionne »). Total du chapitre : **48 vues générales**, 48 essais, toutes validées.
 
-## Arc des Pierres — JOHP1 à JOHP3 (planches `johp1-vues-v1.png` à `johp3-vues-v1.png`) — **[D], à relire par Kevin**
+## Arc des Pierres — JOHP1 à JOHP3 (planches `johp1-vues-v1.png` à `johp3-vues-v1.png`) — **validé par Kevin le 2026-11-05**
 
 Générées la nuit du 2026-11-05 (coordination déléguée), un essai chacune, sans refus de Codex. Prompts
 `tools/art/prompts/CONCEPT_<ZONE>_VUE_GENERALE_r1.txt` ; plans annotés dans `reference/plans-johto/`.

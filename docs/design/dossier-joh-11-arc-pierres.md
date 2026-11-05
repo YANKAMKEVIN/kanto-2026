@@ -7,8 +7,8 @@
 > [`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md)). Écrit par Claude le 2026-11-04.
 >
 > **Statut : arbitrages JH-61 à JH-79 validés par Kevin le 2026-11-04** (recommandations retenues, §18) ;
-> **textes du §17 validés le 2026-11-05.** Valeurs **[D]** = défauts. Grilles et vues peintes à faire, à
-> valider avant tout code. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
+> **textes du §17, grilles et vues générales validés le 2026-11-05.** Valeurs **[D]** = défauts. **Dossier verrouillé** ;
+> code selon `docs/tech/jalon-joh-pierres.md`. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
 > les plans de l'arc sont neufs ; seuls les noms de lieux viennent de la région.
 
 ## 0. Décisions de Kevin (2026-11-04)
@@ -124,10 +124,11 @@ sages l'attendent : **début de l'acte 2**, sans rien changer à la suite.
 | JOHP3 | **Antre du Dragon 1F** | ≈ 28 × 24 | Trois salles des Gardiens, une sur chaque côté ; sol praticable partout (pas de Surf) |
 | JOHP3 | **Sanctuaire de l'Antre** | ≈ 22 × 18 | Ysolde, l'autel, deux bassins en décor |
 
-**Grilles écrites le 2026-11-05, [D] à relire par Kevin** : `tools/plans/ruins_of_alph.txt`, `alph_tent.txt`, `alph_gallery.txt`,
+**Grilles validées par Kevin le 2026-11-05** : `tools/plans/ruins_of_alph.txt`, `alph_tent.txt`, `alph_gallery.txt`,
 `alph_chamber.txt`, `goeland_deck.txt`, `cianwood_city.txt`, `tide_cave_1f.txt`, `tide_cave_b1f.txt`, `blackthorn_city.txt`,
 `dragons_den_1f.txt`, `dragons_den_sanctuary.txt`, variantes ARC de `route_36.txt`, `oliville.txt`, `rosalia.txt` ; contrôle
-`tools/art/plan_check_johp.py` ; plans annotés `reference/plans-johto/`. Une fois validées, elles font foi.
+`tools/art/plan_check_johp.py` ; plans annotés `reference/plans-johto/`. Les grilles font foi pour la géométrie. **Vues générales
+validées le 2026-11-05** : planches `reference/johp1-vues-v1.png` à `johp3-vues-v1.png`, écarts dans `fiches-assets/serie-johto-vues-acte1.md`.
 
 Total : **11 cartes neuves** plus 2 ou 3 intérieurs sur modèles de Johto (Centre d'Irisia, Centre
 d'Ébènelle, maisons). Retouches : Route 36 (ouverture sud), Oliville (bateau posé en objet sur le
@@ -552,9 +553,8 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 ## 19. Prochaines étapes
 
 1. ~~Arbitrages~~ (2026-11-04), ~~propagation au cadre et aux dossiers~~, ~~lot de textes~~ (2026-11-05),
-   ~~roadmap~~, ~~grilles, vues peintes et plan technique~~ (2026-11-05, **[D] à relire par Kevin**).
-2. Kevin relit les grilles et les planches `reference/johp1-vues-v1.png` à `johp3-vues-v1.png`.
-3. Code selon `docs/tech/jalon-joh-pierres.md` : JOHP0 (le Réveil), JOHP1, JOHP2, JOHP3.
+   ~~roadmap~~, ~~grilles, vues peintes et plan technique~~ (2026-11-05, validés par Kevin).
+2. Code selon `docs/tech/jalon-joh-pierres.md` : JOHP0 (le Réveil), JOHP1, JOHP2, JOHP3.
 
 ## 20. Annexe : textes encore en jeu jusqu'au JOHP3
 
