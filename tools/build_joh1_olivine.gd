@@ -9,6 +9,8 @@ extends SceneTree
 ## Goéland, silhouette provisoire amarrée au ponton est, [FlagGate] qui n'existe et ne bloque
 ## qu'avec `johto_stones_quest` ; arrivée `from_goeland` ; déclencheur de la mer du sud (A-13). La
 ## grille de base reste celle du sol ; rien ne change à l'écran sans ce drapeau.
+## **Image** : la passe d'ambiance `tools/build_joh_ambiance.gd` repeint la carte (sol peint, forêt,
+## falaise, mer, quai, phare peint) sans toucher à la logique ; la relancer après cet outil.
 ##
 ##   godot --headless --path . -s res://tools/build_joh1_olivine.gd
 

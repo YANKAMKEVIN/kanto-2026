@@ -17,9 +17,10 @@ extends SceneTree
 ##     quatre cases de la bouche (scène `pallet_cave_mouth` : O-5 au premier pas, une fois ; QA A17
 ##     du 2026-11-04 : un point d'examen sur l'eau n'était jamais proposé, pousser vers le bas
 ##     entrait directement).
-## Aplats provisoires : le décor peint de la bouche vient avec le lot d'art de Johto.
+## Aplats provisoires : la passe d'image `tools/build_joh_ambiance_caves.gd` les remplace.
 ##
 ##   godot --headless --path . -s res://tools/build_joh1_pallet_cave.gd
+##   Puis `tools/build_joh_ambiance_caves.gd`, sans quoi l'art peint est perdu.
 
 const MAP_PATH: String = "res://game/world/maps/pallet_town.tscn"
 const LOGIC_PATH: String = "res://tests/fixtures/maps/pallet_town_logic.txt"

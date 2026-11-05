@@ -26,6 +26,7 @@ extends SceneTree
 ##
 ##   godot --headless --path . -s res://tools/build_joh1_sea_cave.gd
 ##   godot --headless --path . --import
+## Puis la passe d'image, sans quoi l'art peint est perdu : `tools/build_joh_ambiance_caves.gd`.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 

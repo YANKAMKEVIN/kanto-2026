@@ -1790,7 +1790,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"johto_act1", &"storage_offline", &"johto_team_returned",
 		# Chapitre Johto (JOH1) : lettre, grotte marine, arrivée, nuit, vol, offre, choix, départ d'Orme.
 		&"johto_letter_read", &"johto_lugia_passing", &"johto_lugia_shadow", &"got_sea_cave_1_item_1",
-		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_slept", &"johto_team_stolen",
+		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_center_dark", &"johto_slept", &"johto_team_stolen",
 		&"johto_starter_offered", &"johto_starter_chosen", &"johto_orme_left", &"johto_cave_mouth_seen",
 		# Chapitre Johto (JOH5, T-38) : le courant calmé, vu une fois (variante de la grotte marine).
 		&"johto_sea_cave_calm_seen",

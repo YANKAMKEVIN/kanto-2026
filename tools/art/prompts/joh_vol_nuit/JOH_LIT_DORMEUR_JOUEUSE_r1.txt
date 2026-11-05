@@ -1,0 +1,29 @@
+JOH_LIT_DORMEUR_JOUEUSE_r1 — asset de jeu de Kanto 2026.
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+IMAGE 1 : INT_LIT_01_NE_r1, le lit VALIDÉ de la chambre (asset du jeu). C'est le GABARIT : reproduis EXACTEMENT ce lit (bois, montants, tête de lit, couette à grands carreaux bleus et blancs, angle de vue, taille, cadrage, rendu peint, lumière neutre).
+IMAGE 2 et IMAGE 3 : les sprites peints VALIDÉS du personnage (planche d'attente et portrait). C'est l'IDENTITÉ : visage, coiffure, couleurs, même main de peintre.
+
+À FAIRE : le même lit que l'IMAGE 1, avec la JOUEUSE du jeu (fille d'environ 11 ans, cheveux châtain foncé ondulés jusqu'aux épaules, t-shirt blanc à manches courtes) telle qu'elle est sur les sprites joints COUCHÉ DEDANS ET ENDORMI, vu exactement de la même vue de dessus de trois quarts que le lit :
+- couché sur le dos, la tête posée au milieu de l'oreiller (en haut du lit), le visage tourné vers le haut de l'image et légèrement vers nous, yeux fermés (deux petits arcs), bouche paisible, joues roses ; on lit tout de suite « il dort » ;
+- la couette à carreaux est remontée jusqu'à la poitrine et dessine le relief du corps jusqu'au pied du lit ; les deux bras, en t-shirt blanc, reposent sur la couette ;
+- l'oreiller est blanc et UNI : le coussin à motif de Poké Ball de l'IMAGE 1 est retiré (aucune Poké Ball dans l'image) ;
+- sans chapeau (cheveux étalés sur l'oreiller) : son chapeau rouge à bord blanc est accroché au montant gauche de la tête de lit ; pas de sac à dos, pas de chaussures ;
+- même échelle que les sprites : la tête a la même taille que celle des sprites joints posés à côté du lit.
+Fond : PNG avec une vraie transparence (canal alpha), aucun damier dessiné, aucun halo. Même format, même cadrage et même taille d'objet que l'IMAGE 1.
+Interdits : texte, lettres, chiffres, « Zzz », bulle, Poké Ball, Pokémon, autre personnage, décor, sol, ombre portée, pixel art, 3D, contours noirs épais.

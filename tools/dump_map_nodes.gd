@@ -3,8 +3,8 @@ extends SceneTree
 ## ligne, chaque nœud non graphique d'une carte (portes, déclencheurs, apparitions, points d'examen,
 ## [FlagGate], PNJ…) avec sa position globale et ses variables de script enregistrées. Les nœuds
 ## purement graphiques (Polygon2D, Sprite2D, ColorRect, Line2D, lumières, TileMapLayer) et ceux
-## d'une passe d'art (préfixe `Daf`, racine `PaintedGround`) sont ignorés : une seconde passe
-## d'image doit laisser cette sortie identique.
+## d'une passe d'art (préfixe `Daf` ou `JohAmb` — `build_joh_ambiance.gd` —, racine
+## `PaintedGround`) sont ignorés : une seconde passe d'image doit laisser cette sortie identique.
 ##   godot --headless --path . -s res://tools/dump_map_nodes.gd -- <map_id> <sortie res://…>
 
 const VISUAL: Array[String] = ["Polygon2D", "Sprite2D", "AnimatedSprite2D", "ColorRect", "Line2D",
@@ -32,7 +32,7 @@ func _initialize() -> void:
 func _walk(node: Node, root: Node, lines: PackedStringArray) -> void:
 	for child: Node in node.get_children():
 		var n := String(child.name)
-		if n.begins_with("Daf") or (node == root and n in ART_ROOTS):
+		if n.begins_with("Daf") or n.begins_with("JohAmb") or (node == root and n in ART_ROOTS):
 			continue
 		if not child.get_class() in VISUAL:
 			lines.append(_describe(child, root))

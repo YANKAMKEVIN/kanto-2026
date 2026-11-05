@@ -1627,7 +1627,12 @@ func _apply_lighting(map: GameMap, blend: bool = false) -> void:
 	var profile: LightProfile = null
 	var auto := LightingLibrary.is_auto(map.light_profile)
 	var period := _world_clock.period()
-	if not map.light_profile.is_empty():
+	# JOH1 : surcharge par drapeaux (pénombre du Centre d'Oliville pendant le vol).
+	var override := _light_profiles.override_for(map.map_id, GameState.flags)
+	if not override.is_empty():
+		auto = false
+		profile = _light_profiles.get_profile(override)
+	elif not map.light_profile.is_empty():
 		var id := LightingLibrary.resolve(map.light_profile, period)
 		profile = _light_profiles.get_profile(id)
 		if profile == null:
