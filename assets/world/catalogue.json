@@ -14704,6 +14704,966 @@
     "vent",
     "repos_2"
    ]
+  },
+  "heloise": {
+   "fichier": "res://assets/sprites/characters/painted/heloise_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heloise_idle": {
+   "fichier": "res://assets/sprites/characters/painted/heloise_idle_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "goulven": {
+   "fichier": "res://assets/sprites/characters/painted/goulven_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "goulven_idle": {
+   "fichier": "res://assets/sprites/characters/painted/goulven_idle_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ysolde": {
+   "fichier": "res://assets/sprites/characters/painted/ysolde_sheet.png",
+   "cellule": [
+    73,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ysolde_idle": {
+   "fichier": "res://assets/sprites/characters/painted/ysolde_idle_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "corentin": {
+   "fichier": "res://assets/sprites/characters/painted/corentin_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "corentin_idle": {
+   "fichier": "res://assets/sprites/characters/painted/corentin_idle_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "aieule": {
+   "fichier": "res://assets/sprites/characters/painted/aieule_sheet.png",
+   "cellule": [
+    63,
+    106
+   ],
+   "hauteur": 104,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "aieule_idle": {
+   "fichier": "res://assets/sprites/characters/painted/aieule_idle_sheet.png",
+   "cellule": [
+    65,
+    106
+   ],
+   "hauteur": 104,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "cenere": {
+   "fichier": "res://assets/sprites/characters/painted/cenere_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "cenere_idle": {
+   "fichier": "res://assets/sprites/characters/painted/cenere_idle_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "clan_h": {
+   "fichier": "res://assets/sprites/characters/painted/clan_h_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "clan_h_idle": {
+   "fichier": "res://assets/sprites/characters/painted/clan_h_idle_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "clan_f": {
+   "fichier": "res://assets/sprites/characters/painted/clan_f_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "clan_f_idle": {
+   "fichier": "res://assets/sprites/characters/painted/clan_f_idle_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "orme": {
+   "fichier": "res://assets/sprites/characters/painted/orme_sheet.png",
+   "cellule": [
+    73,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "orme_idle": {
+   "fichier": "res://assets/sprites/characters/painted/orme_idle_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "dante": {
+   "fichier": "res://assets/sprites/characters/painted/dante_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "dante_idle": {
+   "fichier": "res://assets/sprites/characters/painted/dante_idle_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "brace": {
+   "fichier": "res://assets/sprites/characters/painted/brace_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "brace_idle": {
+   "fichier": "res://assets/sprites/characters/painted/brace_idle_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "doyen": {
+   "fichier": "res://assets/sprites/characters/painted/doyen_sheet.png",
+   "cellule": [
+    84,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "doyen_idle": {
+   "fichier": "res://assets/sprites/characters/painted/doyen_idle_sheet.png",
+   "cellule": [
+    84,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "fargas": {
+   "fichier": "res://assets/sprites/characters/painted/fargas_sheet.png",
+   "cellule": [
+    69,
+    120
+   ],
+   "hauteur": 118,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "fargas_idle": {
+   "fichier": "res://assets/sprites/characters/painted/fargas_idle_sheet.png",
+   "cellule": [
+    75,
+    120
+   ],
+   "hauteur": 118,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rival_hiver": {
+   "fichier": "res://assets/sprites/characters/painted/rival_hiver_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rival_hiver_idle": {
+   "fichier": "res://assets/sprites/characters/painted/rival_hiver_idle_sheet.png",
+   "cellule": [
+    72,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rivale_hiver": {
+   "fichier": "res://assets/sprites/characters/painted/rivale_hiver_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rivale_hiver_idle": {
+   "fichier": "res://assets/sprites/characters/painted/rivale_hiver_idle_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "deserteur": {
+   "fichier": "res://assets/sprites/characters/painted/deserteur_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "deserteur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/deserteur_idle_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "directeur": {
+   "fichier": "res://assets/sprites/characters/painted/directeur_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "directeur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/directeur_idle_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "raphael": {
+   "fichier": "res://assets/sprites/characters/painted/raphael_sheet.png",
+   "cellule": [
+    71,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "raphael_idle": {
+   "fichier": "res://assets/sprites/characters/painted/raphael_idle_sheet.png",
+   "cellule": [
+    73,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "sage": {
+   "fichier": "res://assets/sprites/characters/painted/sage_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "sage_idle": {
+   "fichier": "res://assets/sprites/characters/painted/sage_idle_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "agente": {
+   "fichier": "res://assets/sprites/characters/painted/agente_sheet.png",
+   "cellule": [
+    68,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "agente_idle": {
+   "fichier": "res://assets/sprites/characters/painted/agente_idle_sheet.png",
+   "cellule": [
+    68,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "dante_jeune": {
+   "fichier": "res://assets/sprites/characters/painted/dante_jeune_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "dante_jeune_idle": {
+   "fichier": "res://assets/sprites/characters/painted/dante_jeune_idle_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "giovanni_jeune": {
+   "fichier": "res://assets/sprites/characters/painted/giovanni_jeune_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "giovanni_jeune_idle": {
+   "fichier": "res://assets/sprites/characters/painted/giovanni_jeune_idle_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "clemence": {
+   "fichier": "res://assets/sprites/characters/painted/clemence_sheet.png",
+   "cellule": [
+    70,
+    122
+   ],
+   "hauteur": 120,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "clemence_idle": {
+   "fichier": "res://assets/sprites/characters/painted/clemence_idle_sheet.png",
+   "cellule": [
+    70,
+    122
+   ],
+   "hauteur": 120,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "lucien": {
+   "fichier": "res://assets/sprites/characters/painted/lucien_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "lucien_idle": {
+   "fichier": "res://assets/sprites/characters/painted/lucien_idle_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "margot": {
+   "fichier": "res://assets/sprites/characters/painted/margot_sheet.png",
+   "cellule": [
+    66,
+    118
+   ],
+   "hauteur": 116,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "margot_idle": {
+   "fichier": "res://assets/sprites/characters/painted/margot_idle_sheet.png",
+   "cellule": [
+    66,
+    118
+   ],
+   "hauteur": 116,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "mercedes": {
+   "fichier": "res://assets/sprites/characters/painted/mercedes_sheet.png",
+   "cellule": [
+    90,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "mercedes_idle": {
+   "fichier": "res://assets/sprites/characters/painted/mercedes_idle_sheet.png",
+   "cellule": [
+    90,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "jerome": {
+   "fichier": "res://assets/sprites/characters/painted/jerome_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "jerome_idle": {
+   "fichier": "res://assets/sprites/characters/painted/jerome_idle_sheet.png",
+   "cellule": [
+    83,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vincent": {
+   "fichier": "res://assets/sprites/characters/painted/vincent_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vincent_idle": {
+   "fichier": "res://assets/sprites/characters/painted/vincent_idle_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "samuel": {
+   "fichier": "res://assets/sprites/characters/painted/samuel_sheet.png",
+   "cellule": [
+    77,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "samuel_idle": {
+   "fichier": "res://assets/sprites/characters/painted/samuel_idle_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "diane": {
+   "fichier": "res://assets/sprites/characters/painted/diane_sheet.png",
+   "cellule": [
+    85,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "diane_idle": {
+   "fichier": "res://assets/sprites/characters/painted/diane_idle_sheet.png",
+   "cellule": [
+    87,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {

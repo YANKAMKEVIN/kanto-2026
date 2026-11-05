@@ -148,7 +148,7 @@
 					},
 					{
 						"spawn": "cenere_sommet",
-						"sprite": "rocket_grunt_f",
+						"sprite": "cenere",
 						"cell": [
 							16,
 							6
@@ -181,7 +181,7 @@
 					},
 					{
 						"spawn": "rival_sommet",
-						"sprite": "rival",
+						"sprite": "rival_hiver",
 						"cell": [
 							16,
 							6
@@ -350,7 +350,7 @@
 					},
 					{
 						"spawn": "cenere_sommet",
-						"sprite": "rocket_grunt_f",
+						"sprite": "cenere",
 						"cell": [
 							16,
 							6
@@ -383,7 +383,7 @@
 					},
 					{
 						"spawn": "rival_sommet",
-						"sprite": "rival",
+						"sprite": "rival_hiver",
 						"cell": [
 							16,
 							6

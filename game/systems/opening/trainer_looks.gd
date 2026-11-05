@@ -46,6 +46,9 @@ const RIVAL_PORTRAITS: Dictionary[StringName, String] = {
 }
 ## Identifiant d'apparence du rival dans les données (PNJ, acteurs de cinématique).
 const RIVAL_DATA_SPRITE: StringName = &"rival"
+## Rival en tenue d'hiver (Mont Argenté) : `rivale_hiver` pour la rivale.
+const RIVAL_WINTER_SPRITE: StringName = &"rival_hiver"
+const RIVALE_WINTER_SPRITE: StringName = &"rivale_hiver"
 
 
 ## Apparences au féminin (accords {g:…|…} et {gr:…|…}, JR-7).
@@ -96,4 +99,6 @@ static func rival_portrait_path(look: StringName) -> String:
 ## Apparence affichée d'un PNJ ou d'un acteur dont les données disent [param sprite] : celle du
 ## rival choisi pour `"rival"`, [param sprite] inchangé sinon.
 static func world_sprite(sprite: StringName, rival_look: StringName) -> StringName:
+	if sprite == RIVAL_WINTER_SPRITE and rival_look == RIVALE:
+		return RIVALE_WINTER_SPRITE
 	return rival_sprite(rival_look) if sprite == RIVAL_DATA_SPRITE else sprite

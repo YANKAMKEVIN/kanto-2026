@@ -6,13 +6,14 @@ extends GutTest
 
 ## Grands combats attendus (Kevin : Champions d'Arène, rival, Conseil 4, Maître, Giovanni).
 const GRAND: Array[StringName] = [
-	&"celadon_gym_erika", &"cerulean_gym_misty", &"cinnabar_gym_blaine", &"fuchsia_gym_koga",
-	&"giovanni_hideout", &"league_agatha", &"league_bruno", &"league_lance", &"league_lorelei",
-	&"mt_silver_rival_final",
-	&"pewter_gym_brock", &"rival_cerulean", &"rival_champion", &"rival_lab", &"rival_route22",
-	&"rival_route22_final", &"rival_silph", &"rival_ss_anne", &"rival_tower",
-	&"saffron_gym_sabrina", &"silph_co_giovanni", &"vermilion_gym_surge",
-	&"viridian_gym_giovanni",
+	&"bell_tower_dante_1", &"celadon_gym_erika", &"cerulean_gym_misty", &"cinnabar_gym_blaine",
+	&"fuchsia_gym_koga", &"giovanni_hideout", &"goldenrod_radio_tower_admin_cenere", &"league_agatha",
+	&"league_bruno", &"league_lance", &"league_lorelei", &"mahogany_hideout_b3f_brace",
+	&"mt_silver_dante_2", &"mt_silver_rival_final", &"pewter_gym_brock", &"rival_cerulean",
+	&"rival_champion", &"rival_lab", &"rival_route22", &"rival_route22_final", &"rival_silph",
+	&"rival_ss_anne", &"rival_tower", &"saffron_gym_sabrina", &"silph_co_giovanni",
+	&"slowpoke_well_admin_brace", &"vermilion_gym_surge", &"viridian_gym_giovanni",
+	&"whirl_islands_cenere",
 ]
 
 var _trainers: TrainerLibrary
@@ -46,7 +47,20 @@ func test_every_rival_battle_is_grand() -> void:
 		var trainer := _trainers.get_trainer(id)
 		if trainer.name == "{rival}":
 			assert_true(trainer.has_card(), "%s : grand combat" % id)
-			assert_eq(trainer.card_portrait, TrainerIntro.RIVAL_ID, String(id))
+			assert_true(trainer.card_portrait in [TrainerIntro.RIVAL_ID, TrainerIntro.RIVAL_WINTER_ID], String(id))
+
+
+## Rival d'hiver (Mont Argenté) : la rivale a sa propre tenue, partout (monde, combat, VS).
+func test_winter_rival_follows_the_rival_look() -> void:
+	assert_eq(TrainerLooks.world_sprite(&"rival_hiver", &"rival"), &"rival_hiver")
+	assert_eq(TrainerLooks.world_sprite(&"rival_hiver", &"rivale"), &"rivale_hiver")
+	var trainer := _trainers.get_trainer(&"mt_silver_rival_final")
+	var party := Party.new()
+	var boy := TrainerIntro.build(trainer, party, _catalog, &"rival")
+	assert_eq([boy.sprite_id, boy.portrait_id, boy.foe_title], [&"rival_hiver", &"rival_hiver", "Rival"])
+	var girl := TrainerIntro.build(trainer, party, _catalog, &"rivale")
+	assert_eq([girl.sprite_id, girl.portrait_id, girl.foe_title], [&"rivale_hiver", &"rivale_hiver", "Rivale"])
+	assert_eq(girl.world_sprite, &"rivale_hiver")
 
 
 func test_rival_titles() -> void:
@@ -66,7 +80,8 @@ func test_female_grunts_have_their_own_class() -> void:
 	# [D] tant que le JOH5 n'a pas de classe d'admin). JOH5 : + 3 Sbires F de la Tour Radio (J, L, N)
 	# et Cenere (apparence rocket_grunt_f [D]). JOH6 : + 3 (péage Q, alarme 2, Sbire S).
 	# JOH8 : + le Sbire W de la Tour Carillon. JOH9 : + le Sbire Y du 1F du Mont Argenté.
-	assert_eq(female, 27, "27 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+	# Cenere a sa propre carte depuis le 2026-11-05 (buste VS et sprites peints) : 2 de moins.
+	assert_eq(female, 25, "25 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
 
 
 func test_every_grand_portrait_is_in_the_catalog() -> void:

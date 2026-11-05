@@ -29,7 +29,7 @@
 			13
 		],
 		"facing": "left",
-		"sprite": "channeler",
+		"sprite": "sage",
 		"dialogue": "ecruteak_city_sage_tour"
 	},
 	"sbire_1": {
@@ -60,7 +60,7 @@
 			29
 		],
 		"facing": "down",
-		"sprite": "aoki",
+		"sprite": "margot",
 		"if_weekday": [
 			"tuesday"
 		],
@@ -72,7 +72,7 @@
 			13
 		],
 		"facing": "down",
-		"sprite": "aoki",
+		"sprite": "diane",
 		"if_weekday": [
 			"sunday"
 		],
@@ -84,7 +84,7 @@
 			13
 		],
 		"facing": "left",
-		"sprite": "channeler",
+		"sprite": "sage",
 		"dialogue": "joh8_sage_blesse",
 		"if": [
 			"johto_bell_tower_clue"

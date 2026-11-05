@@ -40,7 +40,7 @@
 					},
 					{
 						"spawn": "fargas_scene",
-						"sprite": "old_man",
+						"sprite": "fargas",
 						"cell": [
 							36,
 							11

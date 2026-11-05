@@ -29,7 +29,7 @@
 			27
 		],
 		"facing": "left",
-		"sprite": "courier",
+		"sprite": "jerome",
 		"if_weekday": [
 			"thursday"
 		],

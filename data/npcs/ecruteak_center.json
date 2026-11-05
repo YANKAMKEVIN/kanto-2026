@@ -13,7 +13,7 @@
 			6
 		],
 		"facing": "left",
-		"sprite": "researcher",
+		"sprite": "orme",
 		"dialogue": "joh8_orme",
 		"if": [
 			"johto_ho_oh_done"

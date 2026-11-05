@@ -59,7 +59,7 @@
 			11
 		],
 		"facing": "left",
-		"sprite": "engineer",
+		"sprite": "raphael",
 		"unless": [
 			"johto_radio_staff_talked",
 			"johto_act2"

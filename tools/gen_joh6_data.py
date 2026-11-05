@@ -241,7 +241,7 @@ TRAINERS = {
 				"Le mot de passe ? Je ne le dirai jamais. Jamais !")),
 	},
 	"mahogany_hideout_b3f": {
-		"brace": ("Brace", "sbire_rocket", "rocket_grunt_m", 60, "smart",
+		"brace": ("Brace", None, "brace", 60, "smart",
 			[("fearow", 60), ("arbok", 60), ("weezing", 61), ("houndoom", 62)], "Brace",
 			("Encore toi ! Tu me suis partout ! / Tant mieux. Au puits, tu avais des Pokémon de rien du "
 				"tout. / Montre-moi tes vrais Pokémon. Je fonce !", "Non, non, non ! Pas encore !",
@@ -342,6 +342,8 @@ def main():
 				name, cls, sprite, prize, ai, team, speaker, lines = TRAINERS[map_id][ident]
 				tid = "%s_%s" % (map_id, ident)
 				trainers[tid] = trainer_json(name, cls, prize, ai, team)
+				if name == "Brace":
+					trainers[tid]["card"] = {"name": "BRACE", "title": "Admin de la Team Rocket", "portrait": "brace"}
 				dialogues.update(lines_dialogues(tid, speaker, lines))
 				if key in SCENE_TRAINERS:
 					# Brace (B3F) : l'entrée de PNJ n'a pas de bloc « trainer » (scène `hideout_brace`).
@@ -410,7 +412,7 @@ def handle_npc(map_id, ident, cell, attrs, npcs, dialogues, cutscenes):
 		npcs[ident] = {"cell": cell, "facing": "down", "sprite": "pokemon/" + ident,
 			"turn_to_player": False, "unless": ["johto_beasts_awakened"]}
 	elif key == ("mahogany_town", "samuel"):
-		npcs[ident] = {"cell": cell, "facing": facing, "sprite": "mountaineer",
+		npcs[ident] = {"cell": cell, "facing": facing, "sprite": "samuel",
 			"dialogue": "week_saturday_samuel", "if_weekday": ["saturday"]}
 	elif key in (("mahogany_town", "habitant"), ("mahogany_town", "habitante")):
 		npcs[ident] = {"cell": cell, "facing": facing,
@@ -465,7 +467,7 @@ def write_interiors():
 	"""Centre d'Acajou (infirmière, déserteur de C-45 après Raikou) et maisons [D]."""
 	J2.write_json(os.path.join(DATA, "npcs", "mahogany_center.json"), {
 		"nurse": {"cell": [7, 3], "facing": "down", "sprite": "nurse"},
-		"deserteur": {"cell": list(CENTER_DESERTER_CELL), "facing": "left", "sprite": "rocket_grunt_m",
+		"deserteur": {"cell": list(CENTER_DESERTER_CELL), "facing": "left", "sprite": "deserteur",
 			"dialogue": "joh6_deserter_center", "if": ["johto_raikou_done"]},
 	})
 	J2.write_json(os.path.join(DATA, "npcs", "mahogany_house_1.json"), {

@@ -5,7 +5,7 @@
 			10
 		],
 		"facing": "up",
-		"sprite": "rocket_grunt_f",
+		"sprite": "cenere",
 		"unless": [
 			"johto_dante_revealed"
 		],
@@ -32,7 +32,7 @@
 			3
 		],
 		"facing": "right",
-		"sprite": "gentleman",
+		"sprite": "directeur",
 		"dialogue": "goldenrod_radio_director"
 	},
 	"poke_balls": {

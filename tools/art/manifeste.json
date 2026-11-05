@@ -3507,6 +3507,186 @@
    "hauteur": 128,
    "nettoyer": true,
    "note": "finitions de l'entrée des Dresseurs (fiche §13) ; karate_master"
+  },
+  {
+   "id": "heloise",
+   "source": "PNJ_HELOISE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/heloise_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "goulven",
+   "source": "PNJ_GOULVEN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/goulven_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "ysolde",
+   "source": "PNJ_YSOLDE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ysolde_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "corentin",
+   "source": "PNJ_CORENTIN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/corentin_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "aieule",
+   "source": "PNJ_AIEULE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/aieule_sheet.png",
+   "hauteur": 104
+  },
+  {
+   "id": "cenere",
+   "source": "PNJ_CENERE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/cenere_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "clan_h",
+   "source": "PNJ_CLAN_H_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_h_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "clan_f",
+   "source": "PNJ_CLAN_F_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_f_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "orme",
+   "source": "PNJ_ORME_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/orme_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "dante",
+   "source": "PNJ_DANTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/dante_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "brace",
+   "source": "PNJ_BRACE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/brace_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "doyen",
+   "source": "PNJ_DOYEN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/doyen_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "fargas",
+   "source": "PNJ_FARGAS_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/fargas_sheet.png",
+   "hauteur": 118
+  },
+  {
+   "id": "rival_hiver",
+   "source": "PNJ_RIVAL_HIVER_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rival_hiver_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "rivale_hiver",
+   "source": "PNJ_RIVALE_HIVER_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rivale_hiver_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "deserteur",
+   "source": "PNJ_DESERTEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/deserteur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "directeur",
+   "source": "PNJ_DIRECTEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/directeur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "raphael",
+   "source": "PNJ_RAPHAEL_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/raphael_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "sage",
+   "source": "PNJ_SAGE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/sage_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "agente",
+   "source": "PNJ_AGENTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/agente_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "dante_jeune",
+   "source": "PNJ_DANTE_JEUNE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/dante_jeune_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "giovanni_jeune",
+   "source": "PNJ_GIOVANNI_JEUNE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/giovanni_jeune_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "clemence",
+   "source": "PNJ_CLEMENCE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clemence_sheet.png",
+   "hauteur": 120
+  },
+  {
+   "id": "lucien",
+   "source": "PNJ_LUCIEN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/lucien_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "margot",
+   "source": "PNJ_MARGOT_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/margot_sheet.png",
+   "hauteur": 116
+  },
+  {
+   "id": "mercedes",
+   "source": "PNJ_MERCEDES_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/mercedes_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "jerome",
+   "source": "PNJ_JEROME_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/jerome_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "vincent",
+   "source": "PNJ_VINCENT_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/vincent_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "samuel",
+   "source": "PNJ_SAMUEL_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/samuel_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "diane",
+   "source": "PNJ_DIANE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/diane_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -4246,6 +4426,186 @@
    "sortie": "assets/sprites/characters/painted/rivale_idle_sheet.png",
    "marche": "rivale",
    "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "heloise_idle",
+   "source": "HELOISE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/heloise_idle_sheet.png",
+   "marche": "heloise"
+  },
+  {
+   "id": "goulven_idle",
+   "source": "GOULVEN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/goulven_idle_sheet.png",
+   "marche": "goulven"
+  },
+  {
+   "id": "ysolde_idle",
+   "source": "YSOLDE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ysolde_idle_sheet.png",
+   "marche": "ysolde"
+  },
+  {
+   "id": "corentin_idle",
+   "source": "CORENTIN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/corentin_idle_sheet.png",
+   "marche": "corentin"
+  },
+  {
+   "id": "aieule_idle",
+   "source": "AIEULE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/aieule_idle_sheet.png",
+   "marche": "aieule"
+  },
+  {
+   "id": "cenere_idle",
+   "source": "CENERE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/cenere_idle_sheet.png",
+   "marche": "cenere"
+  },
+  {
+   "id": "clan_h_idle",
+   "source": "CLAN_H_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_h_idle_sheet.png",
+   "marche": "clan_h"
+  },
+  {
+   "id": "clan_f_idle",
+   "source": "CLAN_F_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_f_idle_sheet.png",
+   "marche": "clan_f"
+  },
+  {
+   "id": "orme_idle",
+   "source": "ORME_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/orme_idle_sheet.png",
+   "marche": "orme"
+  },
+  {
+   "id": "dante_idle",
+   "source": "DANTE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/dante_idle_sheet.png",
+   "marche": "dante"
+  },
+  {
+   "id": "brace_idle",
+   "source": "BRACE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/brace_idle_sheet.png",
+   "marche": "brace"
+  },
+  {
+   "id": "doyen_idle",
+   "source": "DOYEN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/doyen_idle_sheet.png",
+   "marche": "doyen"
+  },
+  {
+   "id": "fargas_idle",
+   "source": "FARGAS_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/fargas_idle_sheet.png",
+   "marche": "fargas"
+  },
+  {
+   "id": "rival_hiver_idle",
+   "source": "RIVAL_HIVER_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rival_hiver_idle_sheet.png",
+   "marche": "rival_hiver"
+  },
+  {
+   "id": "rivale_hiver_idle",
+   "source": "RIVALE_HIVER_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rivale_hiver_idle_sheet.png",
+   "marche": "rivale_hiver"
+  },
+  {
+   "id": "deserteur_idle",
+   "source": "DESERTEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/deserteur_idle_sheet.png",
+   "marche": "deserteur"
+  },
+  {
+   "id": "directeur_idle",
+   "source": "DIRECTEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/directeur_idle_sheet.png",
+   "marche": "directeur"
+  },
+  {
+   "id": "raphael_idle",
+   "source": "RAPHAEL_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/raphael_idle_sheet.png",
+   "marche": "raphael"
+  },
+  {
+   "id": "sage_idle",
+   "source": "SAGE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/sage_idle_sheet.png",
+   "marche": "sage"
+  },
+  {
+   "id": "agente_idle",
+   "source": "AGENTE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/agente_idle_sheet.png",
+   "marche": "agente"
+  },
+  {
+   "id": "dante_jeune_idle",
+   "source": "DANTE_JEUNE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/dante_jeune_idle_sheet.png",
+   "marche": "dante_jeune"
+  },
+  {
+   "id": "giovanni_jeune_idle",
+   "source": "GIOVANNI_JEUNE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/giovanni_jeune_idle_sheet.png",
+   "marche": "giovanni_jeune"
+  },
+  {
+   "id": "clemence_idle",
+   "source": "CLEMENCE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clemence_idle_sheet.png",
+   "marche": "clemence"
+  },
+  {
+   "id": "lucien_idle",
+   "source": "LUCIEN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/lucien_idle_sheet.png",
+   "marche": "lucien"
+  },
+  {
+   "id": "margot_idle",
+   "source": "MARGOT_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/margot_idle_sheet.png",
+   "marche": "margot"
+  },
+  {
+   "id": "mercedes_idle",
+   "source": "MERCEDES_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/mercedes_idle_sheet.png",
+   "marche": "mercedes"
+  },
+  {
+   "id": "jerome_idle",
+   "source": "JEROME_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/jerome_idle_sheet.png",
+   "marche": "jerome"
+  },
+  {
+   "id": "vincent_idle",
+   "source": "VINCENT_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/vincent_idle_sheet.png",
+   "marche": "vincent"
+  },
+  {
+   "id": "samuel_idle",
+   "source": "SAMUEL_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/samuel_idle_sheet.png",
+   "marche": "samuel"
+  },
+  {
+   "id": "diane_idle",
+   "source": "DIANE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/diane_idle_sheet.png",
+   "marche": "diane"
   }
  ],
  "images_objets": [

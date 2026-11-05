@@ -5,7 +5,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "old_man",
+		"sprite": "fargas",
 		"dialogue": "azalea_kurt_house_fargas",
 		"unless": [
 			"johto_kurt_told"
@@ -17,7 +17,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "old_man",
+		"sprite": "fargas",
 		"dialogue": "azalea_kurt_house_fargas_home",
 		"if": [
 			"johto_slowpoke_well_cleared"

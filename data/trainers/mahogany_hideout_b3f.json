@@ -1,7 +1,6 @@
 {
 	"mahogany_hideout_b3f_brace": {
 		"name": "Brace",
-		"class": "sbire_rocket",
 		"ai": "smart",
 		"can_lose": false,
 		"heal_after": false,
@@ -25,6 +24,11 @@
 				"species": "houndoom",
 				"level": 62
 			}
-		]
+		],
+		"card": {
+			"name": "BRACE",
+			"title": "Admin de la Team Rocket",
+			"portrait": "brace"
+		}
 	}
 }

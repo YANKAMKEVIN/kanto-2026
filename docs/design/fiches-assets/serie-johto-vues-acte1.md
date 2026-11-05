@@ -362,3 +362,35 @@ Générées la nuit du 2026-11-05 (coordination déléguée), un essai chacune, 
 | `dragons-den-sanctuary-vue-generale-v1.png` | Îles Tourbillon B2F | Conforme : autel à trois cuvettes, cadrage prêt pour le Réveil |
 
 La grille fait foi pour la géométrie.
+
+### Personnages de l'arc : Héloïse et Goulven (planche `johp-persos-heloise-goulven-v1.png`) — **validés par Kevin le 2026-11-05**
+
+Générés le 2026-11-05, un essai chacun, sans refus de Codex. Prompts `tools/art/prompts/johp/PNJ_*_NE_r1.txt`,
+`tools/art/attente/prompts/*_ATTENTE.txt` ; ancres : héros, Chercheuse ou Garde, Pêcheur. 128 px, planche d'attente.
+Rendu un peu plus texturé et moins saturé que le marin et le héros, surtout la laine de Goulven.
+
+### Personnages de l'arc : Ysolde, Corentin, l'Aïeule, Cenere, tenue du clan (planche `johp-persos-clan-cenere-v1.png`) — **validés par Kevin le 2026-11-05**
+
+Générés le 2026-11-05, un essai chacun, sans refus de Codex. Couleurs du clan : anthracite, noir, rouge sombre, comme les
+bannières d'Ébènelle. L'Aïeule fait 104 px (voûtée, plus petite qu'un adulte). Cenere : aucune référence n'existait,
+modèle libre (manteau gris cendre, carré gris, lunettes) ; Brace reste à peindre, à accorder avec elle.
+
+## Personnages de Johto : principaux, secondaires, PNJ de la semaine — **validés par Kevin le 2026-11-05**
+
+Planches `johto-persos-principaux-v1.png`, `johto-persos-secondaires-v1.png`, `johto-persos-semaine-v1.png` ; 22 modèles,
+marche et attente, générés le 2026-11-05 sans refus de Codex. Prompts `tools/art/prompts/joh_persos/`. Fargas, l'Agente et
+Lucien refaits une fois (halo autour des poses). Tailles : Fargas 118 px, Margot 116 px, Mme Clémence 120 px, les autres 128 px.
+La cicatrice de Dante est discrète à l'échelle du jeu. Dante jeune et Giovanni jeune ont un contour plus marqué que le reste
+de la série. Pas encore branchés dans les données : les PNJ gardent leurs sprites empruntés.
+
+## Sprites de combat de Johto (planche `johto-sprites-combat-v1.png`) — **validés par Kevin le 2026-11-05**
+
+Dante, Brace, Cenere, Ysolde, Gardien, Gardienne, rival et rivale d'hiver : pose debout et lancer, gabarit des Champions, outil
+`tools/art/entree_johto.py`, prompts et mains mesurées dans `tools/art/entree_dresseurs/johto/`. Un essai chacun, sans refus. Pas
+encore de buste « VS », pas d'entrée dans `data/battle/trainer_intro.json` : à faire au branchement.
+
+## Bustes « VS » de Johto (planche `johto-bustes-vs-v1.png`) — **validés par Kevin le 2026-11-05**
+
+Dante, Brace, Cenere, Ysolde, rival et rivale d'hiver, gabarit des Champions, `tools/art/entree_johto.py buste`, un essai chacun.
+Cicatrice de Dante bien lisible. Non branchés : `vs.busts` et `grand` de `data/battle/trainer_intro.json` au branchement ; aujourd'hui Brace et Cenere n'ont pas d'écran VS.
+

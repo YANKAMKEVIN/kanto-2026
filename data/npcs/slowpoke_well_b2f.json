@@ -11,7 +11,7 @@
 		"unless": [
 			"johto_slowpoke_well_cleared"
 		],
-		"sprite": "old_man",
+		"sprite": "fargas",
 		"dialogue": "slowpoke_well_b2f_fargas_b2f"
 	},
 	"brace": {
@@ -20,7 +20,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "rocket_grunt_m",
+		"sprite": "brace",
 		"unless": [
 			"johto_brace_defeated"
 		]

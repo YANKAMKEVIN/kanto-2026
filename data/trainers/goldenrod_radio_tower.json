@@ -201,7 +201,6 @@
 	},
 	"goldenrod_radio_tower_admin_cenere": {
 		"name": "Cenere",
-		"class": "sbire_rocket_f",
 		"ai": "smart",
 		"can_lose": false,
 		"heal_after": false,
@@ -221,6 +220,11 @@
 				"species": "sneasel",
 				"level": 35
 			}
-		]
+		],
+		"card": {
+			"name": "CENERE",
+			"title": "Admin de la Team Rocket",
+			"portrait": "cenere"
+		}
 	}
 }

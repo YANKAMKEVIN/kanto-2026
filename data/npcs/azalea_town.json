@@ -42,7 +42,7 @@
 		"if_weekday": [
 			"friday"
 		],
-		"sprite": "docker",
+		"sprite": "vincent",
 		"dialogue": "week_friday_vincent"
 	},
 	"ramoloss_1": {

@@ -5,7 +5,7 @@
 			8
 		],
 		"facing": "left",
-		"sprite": "rocket_grunt_m",
+		"sprite": "brace",
 		"unless": [
 			"johto_brace_defeated_2"
 		],

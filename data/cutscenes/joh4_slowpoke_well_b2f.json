@@ -112,7 +112,7 @@
 					},
 					{
 						"spawn": "fargas_b2f",
-						"sprite": "old_man",
+						"sprite": "fargas",
 						"cell": [
 							5,
 							5

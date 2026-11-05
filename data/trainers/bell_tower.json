@@ -65,7 +65,6 @@
 	},
 	"bell_tower_dante_1": {
 		"name": "Dante",
-		"class": "gentleman",
 		"ai": "smart",
 		"can_lose": false,
 		"heal_after": false,
@@ -127,6 +126,11 @@
 					"dig"
 				]
 			}
-		]
+		],
+		"card": {
+			"name": "DANTE",
+			"title": "Fondateur de la Team Rocket",
+			"portrait": "dante"
+		}
 	}
 }

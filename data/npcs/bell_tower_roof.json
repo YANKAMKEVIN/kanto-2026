@@ -5,7 +5,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "gentleman",
+		"sprite": "dante",
 		"dialogue": "bell_tower_roof_dante",
 		"turn_to_player": false,
 		"unless": [

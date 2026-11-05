@@ -30,7 +30,7 @@
 					},
 					{
 						"spawn": "rival_relais",
-						"sprite": "rival",
+						"sprite": "rival_hiver",
 						"cell": [
 							19,
 							22
@@ -118,7 +118,7 @@
 					},
 					{
 						"spawn": "rival_2f",
-						"sprite": "rival",
+						"sprite": "rival_hiver",
 						"cell": [
 							26,
 							11

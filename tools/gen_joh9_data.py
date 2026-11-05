@@ -346,7 +346,7 @@ def relay_scene():
 		{"dialogue": "mt_silver_brace_block"},
 		{"dialogue": "mt_silver_cenere_block"},
 		{"dialogue": "mt_silver_rival_offscreen"},
-		{"spawn": "rival_relais", "sprite": "rival", "cell": [19, 22], "facing": "up"},
+		{"spawn": "rival_relais", "sprite": "rival_hiver", "cell": [19, 22], "facing": "up"},
 		{"dialogue": "mt_silver_rival_arrives"},
 		{"move": "rival_relais", "to": {"near": "player", "offsets": [[1, 0], [-1, 0], [0, 1]]}},
 		{"face": "rival_relais", "to": "player"},
@@ -367,7 +367,7 @@ def heal_scene():
 	return {"variants": [{"unless": [HEALED], "steps": [
 		{"set": [HEALED]},
 		{"dialogue": "mt_silver_2f_footsteps"},
-		{"spawn": "rival_2f", "sprite": "rival", "cell": [26, 11], "facing": "left"},
+		{"spawn": "rival_2f", "sprite": "rival_hiver", "cell": [26, 11], "facing": "left"},
 		{"move": "rival_2f", "to": {"near": "player", "offsets": [[1, 0], [1, -1], [1, 1], [0, 1]]}},
 		{"face": "rival_2f", "to": "player"},
 		{"face": "player", "to": "rival_2f"},
@@ -419,7 +419,7 @@ def giovanni_steps():
 		{"set": [GIOVANNI]},
 		{"move": "player", "path": ["right", "right"], "keep_facing": True},
 		{"dialogue": "mt_silver_cenere_arrives"},
-		{"spawn": "cenere_sommet", "sprite": "rocket_grunt_f", "cell": [16, 6], "facing": "left"},
+		{"spawn": "cenere_sommet", "sprite": "cenere", "cell": [16, 6], "facing": "left"},
 		{"move": "cenere_sommet", "to": [10, 8] },
 		{"face": "cenere_sommet", "to": "dante"},
 		{"dialogue": "mt_silver_cenere_stays"},
@@ -434,7 +434,7 @@ def rival_steps(approach):
 	steps = []
 	if approach == "arrive":
 		steps += [
-			{"spawn": "rival_sommet", "sprite": "rival", "cell": [16, 6], "facing": "left"},
+			{"spawn": "rival_sommet", "sprite": "rival_hiver", "cell": [16, 6], "facing": "left"},
 			{"move": "rival_sommet", "to": [14, 8] },
 		]
 	elif approach == "walk":
@@ -489,7 +489,7 @@ def epilogue_scene():
 	"""JH-60, A-49 à A-51 : à l'entrée du labo de Chen, une fois ; Orme en visite, la Balle Verte,
 	le rival passe la tête à la porte, petit générique de Johto, sauvegarde."""
 	return {"variants": [{"if": [GIOVANNI, RIVAL_DONE], "unless": [CHAPTER], "steps": [
-		{"spawn": "orme", "sprite": "researcher", "cell": [9, 5], "facing": "left"},
+		{"spawn": "orme", "sprite": "orme", "cell": [9, 5], "facing": "left"},
 		{"move": "player", "to": [8, 5]},
 		{"face": "player", "to": "up"},
 		{"face": "oak", "to": "player"},
@@ -557,15 +557,15 @@ def main():
 		trainers[tid] = trainer_entry(name, klass, prize, team)
 
 	# Dante (2) et le rival final : combats de scène (obligatoires, grands combats).
-	# Classe d'entrée de combat [D] : « gentleman » (même apparence que dans le monde) en attendant
-	# l'art de Dante âgé.
-	trainers["mt_silver_dante_2"] = trainer_entry("Dante", "gentleman", 99, DANTE_TEAM,
+	trainers["mt_silver_dante_2"] = trainer_entry("Dante", "", 99, DANTE_TEAM,
 		ai="smart", start_message=False, end_message=False, bag=True, switch=True)
+	trainers["mt_silver_dante_2"].pop("class")
+	trainers["mt_silver_dante_2"]["card"] = {"name": "DANTE", "title": "Fondateur de la Team Rocket", "portrait": "dante"}
 	rival = trainer_entry(RIVAL, "", 99, [], ai="smart", start_message=False, end_message=False,
 		bag=True, switch=True)
 	rival.pop("class")
 	rival.pop("team")
-	rival["card"] = {"name": RIVAL, "title": "Rival", "title_rivale": "Rivale", "portrait": "rival"}
+	rival["card"] = {"name": RIVAL, "title": "Rival", "title_rivale": "Rivale", "portrait": "rival_hiver"}
 	rival["team_by_starter"] = {starter: [{"species": s, "level": l} for s, l in RIVAL_COMMON + rest]
 		for starter, rest in RIVAL_BY_STARTER.items()}
 	trainers["mt_silver_rival_final"] = rival
@@ -584,7 +584,7 @@ def main():
 	dlg, cut = lot("mt_silver")
 	positions = read_plan("mt_silver_outside")
 	npcs["mt_silver_outside"] = {}
-	admin_sprites = {"brace": "rocket_grunt_m", "cenere": "rocket_grunt_f"}
+	admin_sprites = {"brace": "brace", "cenere": "cenere"}
 	for ident, (kind, cells, attrs) in positions.items():
 		if kind == "pnj" and ident != "rival_relais":
 			sprite = admin_sprites.get(ident, "rocket_grunt_m" if ident in ("sbire_1", "sbire_3")
@@ -637,11 +637,11 @@ def main():
 	attrs_of = {ident: attrs for ident, (_k, _c, attrs) in positions.items()}
 	npcs["mt_silver_summit"] = {
 		# Dante : à genoux après sa défaite (JH-58) ; parti après le chapitre (A-52).
-		"dante": {"cell": [9, 8], "facing": "right", "sprite": "gentleman",
+		"dante": {"cell": [9, 8], "facing": "right", "sprite": "dante",
 			"dialogue": "mt_silver_summit_dante_talk", "unless": [CHAPTER]},
-		"cenere_sommet": {"cell": [10, 8], "facing": "left", "sprite": "rocket_grunt_f",
+		"cenere_sommet": {"cell": [10, 8], "facing": "left", "sprite": "cenere",
 			"dialogue": "mt_silver_summit_cenere_talk", "if": [GIOVANNI], "unless": [CHAPTER]},
-		"rival_sommet": {"cell": [14, 8], "facing": "left", "sprite": "rival",
+		"rival_sommet": {"cell": [14, 8], "facing": "left", "sprite": "rival_hiver",
 			"dialogue": "mt_silver_summit_rival_talk", "if": [GIOVANNI], "unless": [RIVAL_DONE]},
 	}
 	dlg["mt_silver_summit_arrival"] = say(NARRATION, "A-23")
