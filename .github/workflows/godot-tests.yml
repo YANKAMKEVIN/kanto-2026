@@ -65,13 +65,14 @@ jobs:
           python3 - <<'PYTEST' 2>&1 | tee tests.log
           import pathlib, re, subprocess, sys
           shard = "${{ matrix.shard }}"
-          paths = sorted(str(p) for p in pathlib.Path("tests").rglob("test_*.gd"))
-          paths = paths[int(shard)::8]
+          paths = subprocess.run(["python3", "tools/ci_shard.py", shard, "8"], check=True,
+                                 stdout=subprocess.PIPE, text=True).stdout.split()
           if not paths:
               sys.exit("Empty test shard")
           print(f"Shard {shard}: {len(paths)} scripts", flush=True)
           command = ["godot", "--headless", "--path", ".", "-s", "addons/gut/gut_cmdln.gd",
                      "-gconfig=", "-gtest=" + ",".join("res://" + p for p in paths),
+                     "-gjunit_xml_file=" + str(pathlib.Path("junit.xml").resolve()),
                      "-gexit", "-glog=1"]
           result = subprocess.run(command, stdout=subprocess.PIPE,
                                   stderr=subprocess.STDOUT, text=True)
@@ -88,3 +89,4 @@ jobs:
           path: |
             import.log
             tests.log
+            junit.xml
