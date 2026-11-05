@@ -363,7 +363,7 @@ Générées la nuit du 2026-11-05 (coordination déléguée), un essai chacune, 
 
 La grille fait foi pour la géométrie.
 
-### Personnages de l'arc : Héloïse et Goulven (planche `johp-persos-heloise-goulven-v1.png`) — **à valider par Kevin**
+### Personnages de l'arc : Héloïse et Goulven (planche `johp-persos-heloise-goulven-v1.png`) — **validés par Kevin le 2026-11-05**
 
 Générés le 2026-11-05, un essai chacun, sans refus de Codex. Prompts `tools/art/prompts/johp/PNJ_*_NE_r1.txt`,
 `tools/art/attente/prompts/*_ATTENTE.txt` ; ancres : héros, Chercheuse ou Garde, Pêcheur. 128 px, planche d'attente.
