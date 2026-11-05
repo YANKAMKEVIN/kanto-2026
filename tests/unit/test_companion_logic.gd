@@ -26,13 +26,14 @@ func _mon(species: StringName, level: int = 10) -> Pokemon:
 
 # --- Catalogue (T19a) --------------------------------------------------------------------------
 
-func test_the_twenty_seven_eligible_species_of_the_dossier() -> void:
-	assert_eq(_catalog.get_species_ids(), [&"bulbasaur", &"butterfree", &"charmander",
-		&"charmeleon", &"clefairy", &"eevee", &"ekans", &"fearow", &"geodude", &"ivysaur", &"jigglypuff",
-		&"mankey", &"meowth", &"nidoran_f", &"nidoran_m", &"nidorina", &"nidorino", &"paras", &"pidgeotto",
-		&"pidgey", &"pikachu", &"raticate", &"rattata", &"spearow", &"squirtle", &"wartortle",
-		&"zubat"] as Array[StringName],
-		"dossier 14 §8.2 : les 9 de départ + les 5 de la série 13 + les 11 de la série 14 (J12 T21) + Miaouss (J15 T10) + Évoli (série 22 bis)")
+func test_the_thirty_six_eligible_species_of_the_dossier() -> void:
+	assert_eq(_catalog.get_species_ids(), [&"bayleef", &"bulbasaur", &"butterfree", &"charmander",
+		&"charmeleon", &"chikorita", &"clefairy", &"croconaw", &"cyndaquil", &"eevee", &"ekans",
+		&"fearow", &"feraligatr", &"geodude", &"ivysaur", &"jigglypuff", &"mankey", &"meganium",
+		&"meowth", &"nidoran_f", &"nidoran_m", &"nidorina", &"nidorino", &"paras", &"pidgeotto",
+		&"pidgey", &"pikachu", &"quilava", &"raticate", &"rattata", &"spearow", &"squirtle",
+		&"totodile", &"typhlosion", &"wartortle", &"zubat"] as Array[StringName],
+		"dossier 14 §8.2 : les 9 de départ + les 5 de la série 13 + les 11 de la série 14 (J12 T21) + Miaouss (J15 T10) + Évoli (série 22 bis) + les 3 de départ de Johto et leurs 6 évolutions (série Johto)")
 	assert_true(_catalog.is_flying(&"zubat"), "Nosferapti en vol (J12 T21)")
 	assert_false(_catalog.is_flying(&"jigglypuff"))
 	assert_eq(_catalog.sprite_of(&"geodude"), &"pokemon/geodude_walk",

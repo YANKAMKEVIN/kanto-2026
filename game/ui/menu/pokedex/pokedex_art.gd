@@ -11,8 +11,10 @@ extends RefCounted
 ## - Halo : [method halo_texture], dégradé radial clair derrière chaque image.
 ## Classe statique ; les ressources partagées sont créées au premier appel puis gardées.
 
-## Nombre d'artworks (001 à 151).
-const COUNT := 151
+## Plus grand numéro national qui peut avoir un artwork (Kanto 001 à 151, Chapitre Johto : les
+## 51 espèces retenues entre 152 et 251). Un numéro sans espèce dans les données n'a ni
+## fichier ni vignette ([method has_portrait] faux, case vide de l'atlas).
+const COUNT := 251
 ## Dossier des artworks et de l'atlas.
 const PORTRAIT_DIR := "res://assets/sprites/pokemon/official/"
 const ATLAS_PATH := PORTRAIT_DIR + "atlas_128.png"
@@ -22,7 +24,7 @@ const SILHOUETTE_SHADER_PATH := "res://game/ui/menu/pokedex/pokedex_silhouette.g
 ## Disposition de l'atlas : cases de [constant THUMB] px au pas de THUMB + [constant THUMB_PAD]
 ## (marge transparente de THUMB_PAD / 2 de chaque côté : le filtre linéaire ne bave pas).
 const ATLAS_COLUMNS := 13
-const ATLAS_ROWS := 12
+const ATLAS_ROWS := 20
 const THUMB := 128
 const THUMB_PAD := 4
 ## Plus grand côté de l'image dans sa case (centrée), après recadrage à l'alpha + marge.
@@ -87,7 +89,7 @@ static func thumb_pitch() -> int:
 	return THUMB + THUMB_PAD
 
 
-## Taille de l'atlas (1716 × 1584).
+## Taille de l'atlas (1716 × 2640 : 13 × 20 cases, une par numéro de 1 à 251).
 static func atlas_size() -> Vector2i:
 	return Vector2i(ATLAS_COLUMNS, ATLAS_ROWS) * thumb_pitch()
 
