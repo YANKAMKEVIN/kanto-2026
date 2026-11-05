@@ -1,0 +1,503 @@
+{
+	"blackthorn_apprentice_nolwenn_before": {
+		"speaker": "Apprentie Nolwenn",
+		"pages": [
+			"Je suis apprentie, mais mon Draco,\nlui, ne l'est pas !"
+		]
+	},
+	"blackthorn_apprentice_nolwenn_defeated": {
+		"speaker": "Apprentie Nolwenn",
+		"pages": [
+			"Il a encore à apprendre. Moi aussi."
+		]
+	},
+	"blackthorn_apprentice_nolwenn_after": {
+		"speaker": "Apprentie Nolwenn",
+		"pages": [
+			"L'Aïeule entend tout. Ne dis pas de\nmal d'elle, même ici."
+		]
+	},
+	"blackthorn_apprentice_malo_before": {
+		"speaker": "Apprenti Malo",
+		"pages": [
+			"Tu es venu sur le Dracolosse de\nCorentin ? Il t'a parlé tout le long\n?"
+		]
+	},
+	"blackthorn_apprentice_malo_defeated": {
+		"speaker": "Apprenti Malo",
+		"pages": [
+			"Il parle mieux qu'il ne se bat. Moi\naussi."
+		]
+	},
+	"blackthorn_apprentice_malo_after": {
+		"speaker": "Apprenti Malo",
+		"pages": [
+			"Il n'y a qu'un moyen de quitter le\nvillage : par les airs."
+		]
+	},
+	"blackthorn_hiker_herve_before": {
+		"speaker": "Montagnard Hervé",
+		"pages": [
+			"Je suis monté à pied. Trois\nsemaines. Montre-moi que ça en\nvalait la peine."
+		]
+	},
+	"blackthorn_hiker_herve_defeated": {
+		"speaker": "Montagnard Hervé",
+		"pages": [
+			"Ça en valait la peine."
+		]
+	},
+	"blackthorn_hiker_herve_after": {
+		"speaker": "Montagnard Hervé",
+		"pages": [
+			"Acajou est juste derrière ces\nmontagnes. Il n'y a pas de chemin."
+		]
+	},
+	"den_grunt_ab_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le clan ne nous a pas vus entrer.\nToi non plus, tu ne nous as pas vus\n!"
+		]
+	},
+	"den_grunt_ab_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Tu nous as vus."
+		]
+	},
+	"den_grunt_ab_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"On prépare le chemin de Cenere."
+		]
+	},
+	"den_grunt_ac_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Ces dragons me font peur. Pas toi."
+		]
+	},
+	"den_grunt_ac_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Si, un peu toi aussi."
+		]
+	},
+	"den_grunt_ac_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Elle arrive, tu sais. Elle arrive\ntoujours."
+		]
+	},
+	"den_guardian_water_before": {
+		"speaker": "Gardienne de l'Eau",
+		"pages": [
+			"L'eau use la pierre, et elle a tout\nle temps."
+		]
+	},
+	"den_guardian_water_defeated": {
+		"speaker": "Gardienne de l'Eau",
+		"pages": [
+			"Tu ne t'es pas laissé user."
+		]
+	},
+	"den_guardian_water_after": {
+		"speaker": "Gardienne de l'Eau",
+		"pages": [
+			"L'Aïeule te soignera quand tu auras\nles trois."
+		]
+	},
+	"den_guardian_stone_before": {
+		"speaker": "Gardien de la Pierre",
+		"pages": [
+			"Tu trembles ? La pierre, non."
+		]
+	},
+	"den_guardian_stone_defeated": {
+		"speaker": "Gardien de la Pierre",
+		"pages": [
+			"Tu ne trembles pas non plus."
+		]
+	},
+	"den_guardian_stone_after": {
+		"speaker": "Gardien de la Pierre",
+		"pages": [
+			"Il reste deux portes. Ou une. Je ne\ncompte pas pour toi."
+		]
+	},
+	"den_guardian_sky_before": {
+		"speaker": "Gardien du Ciel",
+		"pages": [
+			"Regarde en haut. C'est là que tout\ntombe."
+		]
+	},
+	"den_guardian_sky_defeated": {
+		"speaker": "Gardien du Ciel",
+		"pages": [
+			"Tu es resté debout."
+		]
+	},
+	"den_guardian_sky_after": {
+		"speaker": "Gardien du Ciel",
+		"pages": [
+			"Ysolde t'attend au Sanctuaire."
+		]
+	},
+	"johp3_corentin_call": {
+		"speaker": "Corentin",
+		"pages": [
+			"Enfin ! Toi, c'est {player} ? Je te\ncherche depuis Oliville !",
+			"Corentin, messager du clan des\ndragons, d'Ébènelle.",
+			"L'Aïeule a entendu une pierre se\nréveiller. Elle a dit : « amène-moi\ncelui qui la porte. »",
+			"Tu as déjà volé sur un Dracolosse ?\nNon ? C'est très facile. Tiens-toi\nbien."
+		]
+	},
+	"johp3_flight_takeoff": {
+		"narration": true,
+		"pages": [
+			"Le Dracolosse de Corentin déploie\nses ailes !",
+			"{player} s'accroche !"
+		]
+	},
+	"johp3_corentin_rosalia": {
+		"speaker": "Corentin",
+		"pages": [
+			"Ébènelle ? Monte !",
+			"Il paraît que je parle trop. Tu\ntrouves que je parle trop ?"
+		]
+	},
+	"johp3_corentin_blackthorn": {
+		"speaker": "Corentin",
+		"draft": true,
+		"pages": [
+			"Rosalia ? Monte !"
+		]
+	},
+	"johp3_corentin_missed": {
+		"speaker": "Corentin",
+		"pages": [
+			"J'ai tout raté ! J'étais dehors avec\nle Dracolosse !"
+		]
+	},
+	"johp3_corentin_return": {
+		"speaker": "Corentin",
+		"pages": [
+			"Les pierres sont éteintes, l'Aïeule\ndit qu'elles ont fini leur travail.",
+			"Et les sages de Rosalia ont appelé\nle clan. Ils te cherchent.",
+			"Allez, je te dépose devant leur\nporte !"
+		]
+	},
+	"johp3_corentin_return_rosalia": {
+		"speaker": "Corentin",
+		"pages": [
+			"Les pierres sont éteintes, l'Aïeule\ndit qu'elles ont fini leur travail.",
+			"Et les sages de Rosalia ont appelé\nle clan. Ils te cherchent."
+		]
+	},
+	"blackthorn_city_panneau_ville": {
+		"narration": true,
+		"pages": [
+			"ÉBÈNELLE",
+			"Le village du clan des dragons"
+		]
+	},
+	"johp3_den_closed": {
+		"narration": true,
+		"pages": [
+			"ANTRE DU DRAGON",
+			"Réservé au clan"
+		]
+	},
+	"johp3_sanctuary_closed": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Un souffle chaud remonte de\nl'escalier.",
+			"Les trois Gardiens ne t'ont pas\nencore laissé passer."
+		]
+	},
+	"johp3_ysolde_before": {
+		"speaker": "Ysolde",
+		"pages": [
+			"Je suis Ysolde.",
+			"Tu n'as que de jeunes Pokémon, et\nune mission qui n'est pas la tienne.",
+			"Moi, je n'ai rien contre toi. Mes\ndragons non plus. C'est pour ça\nqu'ils ne te feront aucun cadeau."
+		]
+	},
+	"johp3_ysolde_defeated": {
+		"speaker": "Ysolde",
+		"pages": [
+			"… Tu tiens debout."
+		]
+	},
+	"johp3_ysolde_stone": {
+		"speaker": "Ysolde",
+		"pages": [
+			"Le clan garde cette pierre depuis\nsept cents ans.",
+			"Elle est à toi. Porte-la à l'autel."
+		]
+	},
+	"johp3_stone_breath_received": {
+		"narration": true,
+		"pages": [
+			"{player} obtient la Pierre Souffle !"
+		]
+	},
+	"johp3_ysolde_waiting": {
+		"speaker": "Ysolde",
+		"pages": [
+			"Porte-la à l'autel."
+		]
+	},
+	"johp3_cenere_arrives": {
+		"speaker": "Cenere",
+		"pages": [
+			"Merci d'avoir fait le voyage.",
+			"J'ai ma pierre. Tu as les deux\nautres.",
+			"Et moi, j'ai ceci."
+		]
+	},
+	"johp3_cenere_case": {
+		"narration": true,
+		"pages": [
+			"Cenere pose une mallette à ses\npieds."
+		]
+	},
+	"johp3_cenere_deal": {
+		"speaker": "Cenere",
+		"pages": [
+			"Tes six Pokémon contre tes pierres.\nLe calcul est simple."
+		]
+	},
+	"johp3_cenere_hesitate": {
+		"speaker": "Cenere",
+		"pages": [
+			"Tu hésites ? Regarde ce que valent\ntes Pokémon."
+		]
+	},
+	"johp3_sneasel_strike": {
+		"narration": true,
+		"pages": [
+			"Le Farfuret de Cenere bondit !\n{lead_pokemon} est projeté contre\nl'autel !"
+		]
+	},
+	"johp3_cenere_proof": {
+		"speaker": "Cenere",
+		"pages": [
+			"Voilà ce que tu as. Voilà ce que\nj'ai. Les pierres, maintenant."
+		]
+	},
+	"johp3_stones_gather": {
+		"narration": true,
+		"pages": [
+			"Les pierres se mettent à trembler.",
+			"La Pierre Marée s'échappe de la main\nde Cenere !",
+			"Les trois pierres se rejoignent sur\nl'autel !"
+		]
+	},
+	"johp3_ysolde_truth": {
+		"speaker": "Ysolde",
+		"pages": [
+			"Elles ne se donnent qu'à qui a passé\nl'épreuve."
+		]
+	},
+	"johp3_cenere_error": {
+		"speaker": "Cenere",
+		"pages": [
+			"… Ce n'était pas dans les données."
+		]
+	},
+	"johp3_awakening_line": {
+		"narration": true,
+		"pages": [
+			"Une lumière monte de la terre, de la\nmer et du ciel.",
+			"Les Pokémon nés à Johto se\nréveillent !"
+		]
+	},
+	"johp3_cenere_before": {
+		"speaker": "Cenere",
+		"pages": [
+			"… C'est impossible. Recommence,\nFarfuret."
+		]
+	},
+	"johp3_cenere_defeated": {
+		"speaker": "Cenere",
+		"pages": [
+			"… Ils changent tout. Deuxième\nerreur."
+		]
+	},
+	"johp3_cenere_after": {
+		"speaker": "Cenere",
+		"pages": [
+			"La mallette n'est plus utile.\nGarde-la.",
+			"Le maître n'a plus besoin des\npierres. Il a mieux : toi.",
+			"Tu verras."
+		]
+	},
+	"johp3_cenere_exit": {
+		"narration": true,
+		"pages": [
+			"Cenere s'en va…"
+		]
+	},
+	"johp3_reunion": {
+		"narration": true,
+		"pages": [
+			"{returning_pokemon} sort de sa Poké\nBall et bondit vers {player} !",
+			"{player} retrouve son équipe et son\nsac !"
+		]
+	},
+	"johp3_storage_back": {
+		"narration": true,
+		"pages": [
+			"Connexion au réseau de Kanto…",
+			"…",
+			"Connexion rétablie ! Les autres\nPokémon sont au Stockage."
+		]
+	},
+	"johp3_bags_merged": {
+		"narration": true,
+		"pages": [
+			"Les objets de ton ancien sac ont\nrejoint les nouveaux."
+		]
+	},
+	"dragons_den_sanctuary_autel": {
+		"narration": true,
+		"pages": [
+			"Trois pierres ternes, posées sur\nl'autel.",
+			"Elles sont froides, maintenant."
+		]
+	},
+	"blackthorn_center_apprenti": {
+		"speaker": "Apprenti",
+		"draft": true,
+		"pages": [
+			"Le clan n'a pas besoin de Boutique :\non vit de peu, ici.",
+			"Pour le reste, il y a Corentin."
+		]
+	},
+	"blackthorn_house_1_habitante": {
+		"speaker": "Habitante",
+		"draft": true,
+		"pages": [
+			"Mon fils veut devenir Gardien.",
+			"Je lui ai dit de finir sa soupe\nd'abord."
+		]
+	},
+	"ecruteak_city_corentin": {
+		"cutscene": "johto_corentin_flight"
+	},
+	"blackthorn_city_corentin": {
+		"cutscene": "blackthorn_corentin_back"
+	},
+	"blackthorn_city_dracolosse": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Le Dracolosse de Corentin bâille.",
+			"Il a l'air de bien connaître le\nchemin."
+		]
+	},
+	"dragons_den_sanctuary_ysolde": {
+		"speaker": "Ysolde",
+		"variants": [
+			{
+				"if": [
+					"johto_stones_awakened"
+				],
+				"pages": [
+					"Cette femme a porté sa pierre\njusqu'à toi. Elle n'aurait pas dû.",
+					"Le clan te doit la fin de sa garde."
+				]
+			},
+			{
+				"if": [
+					"johto_clan_trial_done"
+				],
+				"pages": [
+					"Porte-la à l'autel."
+				]
+			},
+			{
+				"cutscene": "dragons_den_ysolde"
+			}
+		]
+	},
+	"dragons_den_sanctuary_aieule": {
+		"speaker": "L'Aïeule",
+		"variants": [
+			{
+				"unless": [
+					"johto_clan_healed"
+				],
+				"set": [
+					"johto_clan_healed"
+				],
+				"action": "heal",
+				"pages": [
+					"Viens, je soigne ton équipe. Une\nfois. Pas deux.",
+					{
+						"text": "L'équipe de {player} est soignée.",
+						"speaker": ""
+					}
+				]
+			},
+			{
+				"pages": [
+					"Une fois. Pas deux."
+				]
+			}
+		]
+	},
+	"blackthorn_elder_house_aieule": {
+		"speaker": "L'Aïeule",
+		"variants": [
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"pages": [
+					"Ce qui dort sous Rosalia ne dormira\nplus longtemps.",
+					"Les pierres n'y sont plus pour rien.\nLes hommes, si."
+				]
+			},
+			{
+				"if": [
+					"johto_clan_trial_open"
+				],
+				"pages": [
+					"La blanche ne se donne pas.",
+					"Le dragon ne juge pas la force. Il\njuge ce qui reste quand on n'en a\nplus.",
+					"Va dans l'Antre. Trois Gardiens,\npuis ma petite-fille.",
+					"Si tu tiens debout à la fin, la\npierre est à toi."
+				]
+			},
+			{
+				"set": [
+					"johto_clan_trial_open"
+				],
+				"pages": [
+					"Approche. Non, ne dis rien. Je t'ai\nentendu monter.",
+					"La pierre grise est avec toi. La\nbleue est partie sur l'eau. La\nblanche dort ici, chez nous.",
+					"Mes yeux ne voient plus, mais les\npierres parlent fort.",
+					"La blanche ne se donne pas.",
+					"Le dragon ne juge pas la force. Il\njuge ce qui reste quand on n'en a\nplus.",
+					"Va dans l'Antre. Trois Gardiens,\npuis ma petite-fille.",
+					"Si tu tiens debout à la fin, la\npierre est à toi."
+				]
+			}
+		]
+	},
+	"den_item_1": {
+		"cutscene": "den_item_1"
+	},
+	"den_hidden_1": {
+		"cutscene": "den_hidden_1"
+	},
+	"dragons_den_sanctuary_cenere": {
+		"cutscene": "dragons_den_altar"
+	},
+	"blackthorn_house_item": {
+		"cutscene": "blackthorn_house_item"
+	}
+}

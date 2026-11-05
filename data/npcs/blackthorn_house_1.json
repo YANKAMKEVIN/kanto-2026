@@ -1,0 +1,25 @@
+{
+	"habitante": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "beauty",
+		"dialogue": "blackthorn_house_1_habitante"
+	},
+	"blackthorn_house_item": {
+		"cell": [
+			2,
+			5
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "blackthorn_house_item",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_blackthorn_house_item"
+		]
+	}
+}

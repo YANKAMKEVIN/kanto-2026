@@ -421,6 +421,19 @@
 			"subtitle": "Doublonville — Route 36",
 			"description": "Une route verte, avec un étang, aux portes de Doublonville."
 		},
+		"blackthorn_city": {
+			"name": "Ébènelle", "kind": "town", "region": "johto",
+			"maps": ["blackthorn_city", "blackthorn_center", "blackthorn_elder_house", "blackthorn_house_1"],
+			"subtitle": "Par les airs seulement",
+			"services": [{"id": "pokemon_center", "found_on": "blackthorn_center"}],
+			"description": "Un village perché, au pays des dragons."
+		},
+		"dragons_den": {
+			"name": "Antre du Dragon", "kind": "place", "region": "johto",
+			"maps": ["dragons_den_1f", "dragons_den_sanctuary"],
+			"subtitle": "Ébènelle",
+			"description": "Là où le clan des dragons met ses enfants à l'épreuve."
+		},
 		"azalea_town": {
 			"name": "Écorcia", "kind": "town", "region": "johto",
 			"maps": ["azalea_town", "azalea_center", "azalea_mart", "azalea_kurt_house", "azalea_house_1"],

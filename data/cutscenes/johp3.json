@@ -1,0 +1,643 @@
+{
+	"johto_corentin_flight": {
+		"variants": [
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"unless": [
+					"johto_act2"
+				],
+				"steps": [
+					{
+						"face": "corentin",
+						"to": "player"
+					},
+					{
+						"dialogue": "johp3_corentin_return_rosalia"
+					},
+					{
+						"set": [
+							"johto_act2"
+						]
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_clan_called"
+				],
+				"steps": [
+					{
+						"face": "corentin",
+						"to": "player"
+					},
+					{
+						"dialogue": "johp3_corentin_call"
+					},
+					{
+						"dialogue": "johp3_flight_takeoff"
+					},
+					{
+						"set": [
+							"johto_clan_called",
+							"johto_blackthorn_arrived"
+						]
+					},
+					{
+						"dragon_flight": "out"
+					},
+					{
+						"change_map": "blackthorn_city",
+						"at": "from_dragon",
+						"facing": "up"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"face": "corentin",
+						"to": "player"
+					},
+					{
+						"dialogue": "johp3_corentin_rosalia"
+					},
+					{
+						"dragon_flight": "out"
+					},
+					{
+						"change_map": "blackthorn_city",
+						"at": "from_dragon",
+						"facing": "up"
+					}
+				]
+			}
+		]
+	},
+	"blackthorn_corentin_back": {
+		"variants": [
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"unless": [
+					"johto_act2"
+				],
+				"steps": [
+					{
+						"face": "corentin",
+						"to": "player"
+					},
+					{
+						"dialogue": "johp3_corentin_missed"
+					},
+					{
+						"dialogue": "johp3_corentin_return"
+					},
+					{
+						"set": [
+							"johto_act2"
+						]
+					},
+					{
+						"dragon_flight": "back"
+					},
+					{
+						"change_map": "ecruteak_city",
+						"at": "from_dragon",
+						"facing": "down"
+					}
+				]
+			},
+			{
+				"steps": [
+					{
+						"face": "corentin",
+						"to": "player"
+					},
+					{
+						"dialogue": "johp3_corentin_blackthorn"
+					},
+					{
+						"dragon_flight": "back"
+					},
+					{
+						"change_map": "ecruteak_city",
+						"at": "from_dragon",
+						"facing": "down"
+					}
+				]
+			}
+		]
+	},
+	"blackthorn_den_barrier": {
+		"variants": [
+			{
+				"unless": [
+					"johto_clan_trial_open"
+				],
+				"steps": [
+					{
+						"dialogue": "johp3_den_closed"
+					},
+					{
+						"move": "player",
+						"path": [
+							"left"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"dragons_den_barrier": {
+		"variants": [
+			{
+				"if": [
+					"beaten_den_guardian_water",
+					"beaten_den_guardian_stone",
+					"beaten_den_guardian_sky"
+				],
+				"unless": [
+					"johto_clan_guardians_done"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_clan_guardians_done"
+						]
+					}
+				]
+			},
+			{
+				"unless": [
+					"johto_clan_guardians_done"
+				],
+				"steps": [
+					{
+						"dialogue": "johp3_sanctuary_closed"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"dragons_den_ysolde": {
+		"variants": [
+			{
+				"unless": [
+					"johto_clan_trial_done"
+				],
+				"steps": [
+					{
+						"emote": "ysolde",
+						"kind": "exclamation"
+					},
+					{
+						"move": "ysolde",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									-1,
+									-1
+								],
+								[
+									1,
+									-1
+								]
+							]
+						}
+					},
+					{
+						"face": "ysolde",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "ysolde"
+					},
+					{
+						"dialogue": "johp3_ysolde_before"
+					},
+					{
+						"battle": "den_ysolde",
+						"win": [
+							"johto_clan_trial_done"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_clan_trial_done"
+						]
+					},
+					{
+						"dialogue": "johp3_ysolde_defeated"
+					},
+					{
+						"dialogue": "johp3_ysolde_stone"
+					},
+					{
+						"give": "stone_breath",
+						"count": 1
+					},
+					{
+						"dialogue": "johp3_stone_breath_received"
+					},
+					{
+						"set": [
+							"johto_stone_breath"
+						]
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_clan_trial_done"
+				],
+				"unless": [
+					"johto_stone_breath"
+				],
+				"steps": [
+					{
+						"face": "ysolde",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "ysolde"
+					},
+					{
+						"dialogue": "johp3_ysolde_stone"
+					},
+					{
+						"give": "stone_breath",
+						"count": 1
+					},
+					{
+						"dialogue": "johp3_stone_breath_received"
+					},
+					{
+						"set": [
+							"johto_stone_breath"
+						]
+					}
+				]
+			}
+		]
+	},
+	"dragons_den_altar": {
+		"variants": [
+			{
+				"if": [
+					"johto_stone_breath"
+				],
+				"unless": [
+					"johto_stones_awakened"
+				],
+				"steps": [
+					{
+						"spawn": "cenere",
+						"sprite": "rocket_grunt_f",
+						"cell": [
+							17,
+							5
+						],
+						"facing": "left"
+					},
+					{
+						"emote": "cenere",
+						"kind": "exclamation"
+					},
+					{
+						"move": "cenere",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									1,
+									-1
+								],
+								[
+									-1,
+									0
+								],
+								[
+									-1,
+									-1
+								]
+							]
+						}
+					},
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "cenere"
+					},
+					{
+						"dialogue": "johp3_cenere_arrives"
+					},
+					{
+						"dialogue": "johp3_cenere_case"
+					},
+					{
+						"dialogue": "johp3_cenere_deal"
+					},
+					{
+						"dialogue": "johp3_cenere_hesitate"
+					},
+					{
+						"flash": 1
+					},
+					{
+						"react": "player"
+					},
+					{
+						"dialogue": "johp3_sneasel_strike"
+					},
+					{
+						"dialogue": "johp3_cenere_proof"
+					},
+					{
+						"dialogue": "johp3_stones_gather",
+						"music": "stop"
+					},
+					{
+						"dialogue": "johp3_ysolde_truth"
+					},
+					{
+						"dialogue": "johp3_cenere_error"
+					},
+					{
+						"stones_awaken": true
+					},
+					{
+						"dialogue": "johp3_awakening_line"
+					},
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "cenere"
+					},
+					{
+						"dialogue": "johp3_cenere_before"
+					},
+					{
+						"battle": "den_cenere",
+						"win": [
+							"johto_cenere_defeated_arc"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_cenere_defeated_arc"
+						]
+					},
+					{
+						"dialogue": "johp3_cenere_defeated"
+					},
+					{
+						"dialogue": "johp3_cenere_after"
+					},
+					{
+						"dialogue": "johp3_cenere_exit"
+					},
+					{
+						"move": "cenere",
+						"to": [
+							17,
+							5
+						]
+					},
+					{
+						"despawn": "cenere"
+					},
+					{
+						"dialogue": "johp3_reunion"
+					},
+					{
+						"return_team": true
+					},
+					{
+						"dialogue": "johp3_storage_back",
+						"if": [
+							"johto_return_stored"
+						]
+					},
+					{
+						"dialogue": "johp3_bags_merged"
+					},
+					{
+						"save": "retour de l'équipe (Sanctuaire, JOHP3)"
+					},
+					{
+						"unset": [
+							"johto_return_stored"
+						]
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_stones_awakened"
+				],
+				"unless": [
+					"johto_cenere_defeated_arc"
+				],
+				"steps": [
+					{
+						"face": "cenere",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "cenere"
+					},
+					{
+						"dialogue": "johp3_cenere_before"
+					},
+					{
+						"battle": "den_cenere",
+						"win": [
+							"johto_cenere_defeated_arc"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"johto_cenere_defeated_arc"
+						]
+					},
+					{
+						"dialogue": "johp3_cenere_defeated"
+					},
+					{
+						"dialogue": "johp3_cenere_after"
+					},
+					{
+						"dialogue": "johp3_cenere_exit"
+					},
+					{
+						"move": "cenere",
+						"to": [
+							17,
+							5
+						]
+					},
+					{
+						"despawn": "cenere"
+					},
+					{
+						"dialogue": "johp3_reunion"
+					},
+					{
+						"return_team": true
+					},
+					{
+						"dialogue": "johp3_storage_back",
+						"if": [
+							"johto_return_stored"
+						]
+					},
+					{
+						"dialogue": "johp3_bags_merged"
+					},
+					{
+						"save": "retour de l'équipe (Sanctuaire, JOHP3)"
+					},
+					{
+						"unset": [
+							"johto_return_stored"
+						]
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_cenere_defeated_arc"
+				],
+				"unless": [
+					"johto_team_returned"
+				],
+				"steps": [
+					{
+						"dialogue": "johp3_reunion"
+					},
+					{
+						"return_team": true
+					},
+					{
+						"dialogue": "johp3_storage_back",
+						"if": [
+							"johto_return_stored"
+						]
+					},
+					{
+						"dialogue": "johp3_bags_merged"
+					},
+					{
+						"save": "retour de l'équipe (Sanctuaire, JOHP3)"
+					},
+					{
+						"unset": [
+							"johto_return_stored"
+						]
+					}
+				]
+			}
+		]
+	},
+	"den_item_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_den_item_1"
+				],
+				"steps": [
+					{
+						"despawn": "den_item_1"
+					},
+					{
+						"give": "tm13",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_den_item_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"den_hidden_1": {
+		"variants": [
+			{
+				"unless": [
+					"got_den_hidden_1"
+				],
+				"steps": [
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_den_hidden_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"blackthorn_house_item": {
+		"variants": [
+			{
+				"unless": [
+					"got_blackthorn_house_item"
+				],
+				"steps": [
+					{
+						"despawn": "blackthorn_house_item"
+					},
+					{
+						"give": "max_repel",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_blackthorn_house_item"
+						]
+					}
+				]
+			}
+		]
+	}
+}

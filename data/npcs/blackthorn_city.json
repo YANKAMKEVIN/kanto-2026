@@ -1,0 +1,66 @@
+{
+	"corentin": {
+		"cell": [
+			17,
+			22
+		],
+		"facing": "left",
+		"sprite": "youngster",
+		"dialogue": "blackthorn_city_corentin"
+	},
+	"dracolosse": {
+		"cell": [
+			18,
+			23
+		],
+		"facing": "left",
+		"sprite": "pokemon/dragonite",
+		"dialogue": "blackthorn_city_dracolosse",
+		"turn_to_player": false
+	},
+	"nolwenn": {
+		"cell": [
+			12,
+			15
+		],
+		"facing": "right",
+		"sprite": "cooltrainer_f",
+		"dialogue": "blackthorn_apprentice_nolwenn_after",
+		"trainer": {
+			"id": "blackthorn_apprentice_nolwenn",
+			"sight": 2,
+			"before": "blackthorn_apprentice_nolwenn_before",
+			"defeated": "blackthorn_apprentice_nolwenn_defeated"
+		}
+	},
+	"malo": {
+		"cell": [
+			20,
+			19
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_m",
+		"dialogue": "blackthorn_apprentice_malo_after",
+		"trainer": {
+			"id": "blackthorn_apprentice_malo",
+			"sight": 3,
+			"before": "blackthorn_apprentice_malo_before",
+			"defeated": "blackthorn_apprentice_malo_defeated"
+		}
+	},
+	"herve": {
+		"cell": [
+			26,
+			15
+		],
+		"facing": "left",
+		"sprite": "hiker",
+		"dialogue": "blackthorn_hiker_herve_after",
+		"trainer": {
+			"id": "blackthorn_hiker_herve",
+			"sight": 3,
+			"before": "blackthorn_hiker_herve_before",
+			"defeated": "blackthorn_hiker_herve_defeated"
+		}
+	}
+}

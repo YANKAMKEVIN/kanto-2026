@@ -1,0 +1,91 @@
+{
+	"gardienne_eau": {
+		"cell": [
+			4,
+			12
+		],
+		"facing": "right",
+		"sprite": "cooltrainer_f",
+		"dialogue": "den_guardian_water_after",
+		"trainer": {
+			"id": "den_guardian_water",
+			"sight": 3,
+			"before": "den_guardian_water_before",
+			"defeated": "den_guardian_water_defeated"
+		}
+	},
+	"gardien_pierre": {
+		"cell": [
+			23,
+			12
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_m",
+		"dialogue": "den_guardian_stone_after",
+		"trainer": {
+			"id": "den_guardian_stone",
+			"sight": 3,
+			"before": "den_guardian_stone_before",
+			"defeated": "den_guardian_stone_defeated"
+		}
+	},
+	"gardien_ciel": {
+		"cell": [
+			16,
+			4
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_m",
+		"dialogue": "den_guardian_sky_after",
+		"trainer": {
+			"id": "den_guardian_sky",
+			"sight": 3,
+			"before": "den_guardian_sky_before",
+			"defeated": "den_guardian_sky_defeated"
+		}
+	},
+	"sbire_ab": {
+		"cell": [
+			16,
+			11
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "den_grunt_ab_after",
+		"trainer": {
+			"id": "den_grunt_ab",
+			"sight": 2,
+			"before": "den_grunt_ab_before",
+			"defeated": "den_grunt_ab_defeated"
+		}
+	},
+	"sbire_ac": {
+		"cell": [
+			9,
+			4
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "den_grunt_ac_after",
+		"trainer": {
+			"id": "den_grunt_ac",
+			"sight": 2,
+			"before": "den_grunt_ac_before",
+			"defeated": "den_grunt_ac_defeated"
+		}
+	},
+	"den_item_1": {
+		"cell": [
+			25,
+			16
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "den_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_den_item_1"
+		]
+	}
+}

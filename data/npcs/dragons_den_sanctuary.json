@@ -1,0 +1,41 @@
+{
+	"aieule": {
+		"cell": [
+			8,
+			14
+		],
+		"facing": "right",
+		"sprite": "aoki",
+		"if": [
+			"johto_clan_guardians_done"
+		],
+		"unless": [
+			"johto_clan_trial_done"
+		],
+		"dialogue": "dragons_den_sanctuary_aieule"
+	},
+	"ysolde": {
+		"cell": [
+			10,
+			8
+		],
+		"facing": "down",
+		"sprite": "cooltrainer_f",
+		"dialogue": "dragons_den_sanctuary_ysolde"
+	},
+	"cenere": {
+		"cell": [
+			17,
+			5
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_f",
+		"if": [
+			"johto_stones_awakened"
+		],
+		"unless": [
+			"johto_cenere_defeated_arc"
+		],
+		"dialogue": "dragons_den_sanctuary_cenere"
+	}
+}

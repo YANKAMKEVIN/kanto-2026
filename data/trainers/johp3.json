@@ -1,0 +1,241 @@
+{
+	"den_ysolde": {
+		"name": "Ysolde",
+		"class": "topdresseuse",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 100,
+		"start_message": false,
+		"end_message": false,
+		"bag": true,
+		"switch": true,
+		"team": [
+			{
+				"species": "gyarados",
+				"level": 42
+			},
+			{
+				"species": "dragonair",
+				"level": 42
+			},
+			{
+				"species": "dragonair",
+				"level": 43
+			},
+			{
+				"species": "kingdra",
+				"level": 43
+			},
+			{
+				"species": "dragonite",
+				"level": 45
+			}
+		]
+	},
+	"den_cenere": {
+		"name": "Cenere",
+		"class": "sbire_rocket_f",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"start_message": false,
+		"end_message": false,
+		"switch": true,
+		"team": [
+			{
+				"species": "weezing",
+				"level": 54
+			},
+			{
+				"species": "wobbuffet",
+				"level": 54
+			},
+			{
+				"species": "noctowl",
+				"level": 55
+			},
+			{
+				"species": "sneasel",
+				"level": 56
+			}
+		]
+	},
+	"blackthorn_apprentice_nolwenn": {
+		"name": "Apprentie Nolwenn",
+		"class": "topdresseuse",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "dratini",
+				"level": 36
+			},
+			{
+				"species": "seadra",
+				"level": 36
+			}
+		]
+	},
+	"blackthorn_apprentice_malo": {
+		"name": "Apprenti Malo",
+		"class": "topdresseur",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "dragonair",
+				"level": 37
+			},
+			{
+				"species": "gyarados",
+				"level": 36
+			}
+		]
+	},
+	"blackthorn_hiker_herve": {
+		"name": "Montagnard Hervé",
+		"class": "montagnard",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "graveler",
+				"level": 37
+			},
+			{
+				"species": "onix",
+				"level": 37
+			}
+		]
+	},
+	"den_grunt_ab": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 37
+			},
+			{
+				"species": "weezing",
+				"level": 37
+			}
+		]
+	},
+	"den_grunt_ac": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "raticate",
+				"level": 38
+			},
+			{
+				"species": "noctowl",
+				"level": 38
+			}
+		]
+	},
+	"den_guardian_water": {
+		"name": "Gardienne de l'Eau",
+		"class": "topdresseuse",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 50,
+		"team": [
+			{
+				"species": "seadra",
+				"level": 38
+			},
+			{
+				"species": "dewgong",
+				"level": 38
+			},
+			{
+				"species": "dragonair",
+				"level": 39
+			}
+		]
+	},
+	"den_guardian_stone": {
+		"name": "Gardien de la Pierre",
+		"class": "topdresseur",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 50,
+		"team": [
+			{
+				"species": "golem",
+				"level": 39
+			},
+			{
+				"species": "onix",
+				"level": 39
+			},
+			{
+				"species": "dragonair",
+				"level": 39
+			}
+		]
+	},
+	"den_guardian_sky": {
+		"name": "Gardien du Ciel",
+		"class": "topdresseur",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 50,
+		"team": [
+			{
+				"species": "fearow",
+				"level": 40
+			},
+			{
+				"species": "noctowl",
+				"level": 40
+			},
+			{
+				"species": "dragonair",
+				"level": 40
+			}
+		]
+	}
+}

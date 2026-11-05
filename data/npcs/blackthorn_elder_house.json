@@ -1,0 +1,26 @@
+{
+	"aieule": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"dialogue": "blackthorn_elder_house_aieule",
+		"unless": [
+			"johto_clan_guardians_done"
+		]
+	},
+	"aieule_home": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"dialogue": "blackthorn_elder_house_aieule",
+		"if": [
+			"johto_clan_trial_done"
+		]
+	}
+}
