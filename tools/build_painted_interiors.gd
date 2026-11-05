@@ -1341,6 +1341,18 @@ func _build(room: Dictionary) -> Node2D:
 		if entry.size() > 4:
 			point.set(&"direction", entry[4])
 		_attach(root, root.get_node(^"Triggers"), point)
+	# Remise en scène du vol (JOH1, 2026-11-04) : image d'un meuble remplacée (même cadrage),
+	# lit où dort le joueur, plateau des Poké Balls du comptoir.
+	var retextures: Dictionary = room.get("retextures", {})
+	for node_name: String in retextures:
+		var prop := root.get_node(NodePath("Entities/%s" % node_name))
+		# Enfants modifiables : sinon l'image remplacée n'est pas écrite dans la scène.
+		root.set_editable_instance(prop, true)
+		(prop.get_node(^"Sprite") as Sprite2D).texture = load(retextures[node_name])
+	if room.has("sleeper"):
+		_add_sleeper(root, room["sleeper"])
+	if room.has("night_tray"):
+		_add_night_tray(root, room["night_tray"])
 	# Décor qui suit les drapeaux (jalon 14) : [nœud, if, unless, type de halo, centre en pixels].
 	var gate_script: GDScript = load("res://game/world/flag_gate.gd")
 	var glow_script: GDScript = load("res://game/world/lighting/light_glow.gd")
@@ -1362,6 +1374,39 @@ func _build(room: Dictionary) -> Node2D:
 		glow.position = entry[4]
 		_attach(root, gate, glow)
 	return root
+
+
+## [SleeperBed] (JOH1) : [lit (nœud de Entities), image du héros, image de la joueuse], posé à la
+## racine aux pieds du lit.
+func _add_sleeper(root: Node, entry: Array) -> void:
+	var bed := root.get_node(NodePath("Entities/%s" % entry[0])) as Node2D
+	var sleeper := Node2D.new()
+	sleeper.set_script(load("res://game/world/props/sleeper_bed.gd"))
+	sleeper.name = "Sleeper"
+	sleeper.position = bed.position
+	sleeper.set(&"bed_path", NodePath("../Entities/%s" % entry[0]))
+	sleeper.set(&"hero_texture", load(entry[1]))
+	sleeper.set(&"heroine_texture", load(entry[2]))
+	_attach(root, root, sleeper)
+
+
+## Plateau des Poké Balls (JOH1) : [centre en pixels, drapeaux « if »] ; [FlagGate] « NightTray »
+## dans Entities, au-dessus du comptoir (z 1), emporté par l'étape « carry ».
+func _add_night_tray(root: Node, entry: Array) -> void:
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = "NightTray"
+	gate.position = entry[0]
+	gate.z_index = 1
+	var if_flags: Array[StringName] = []
+	if_flags.assign(entry[1])
+	gate.set(&"if_flags", if_flags)
+	_attach(root, root.get_node(^"Entities"), gate)
+	var sprite := Sprite2D.new()
+	sprite.name = "Sprite"
+	sprite.texture = load("res://assets/world/interiors/int_plateau_pokeballs_01.png")
+	sprite.material = load("res://game/world/lighting/materials/world_object.tres")
+	_attach(root, gate, sprite)
 
 
 ## Pièce relue sur sa grille fonctionnelle (« plan », jalon 10 T13) : les caractères de
@@ -2151,6 +2196,17 @@ func _olivine_center() -> Dictionary:
 	room["triggers"] = [["ArrivalTrigger", Vector2i(1, 7), Vector2i(11, 3),
 		&"olivine_center_arrival"], ["ArrivalTriggerEast", Vector2i(12, 7), Vector2i(2, 1),
 		&"olivine_center_arrival"]]
+	# Remise en scène du vol (2026-11-04, « le joueur dort vraiment ») : plan sur le rez-de-chaussée
+	# pendant qu'il dort. Le joueur, caché, est posé à l'écart du chemin des Sbires
+	# (`night_watch`) ; le plateau des Poké Balls sur la machine du comptoir et la lueur des deux
+	# terminaux n'existent que dans la pénombre (`johto_center_dark`, profil
+	# `interior_night_dark` de `lighting.json`).
+	(room["spawns"] as Dictionary)["night_watch"] = Vector2i(3, 6)
+	room["night_tray"] = [Vector2(867, 358), [&"johto_center_dark"]]
+	room["gates"] = [
+		["NightGlowStorage", [&"johto_center_dark"], [], &"shard", Vector2(192, 250)],
+		["NightGlowTrade", [&"johto_center_dark"], [], &"shard", Vector2(1248, 250)],
+	]
 	room["warps"] = [
 		["StairsUp", Vector2i(13, 6), STEP_ON, Vector2i.UP, &"olivine_center_room",
 			&"from_stairs", Vector2i.UP],
@@ -2176,6 +2232,12 @@ func _olivine_center_room() -> Dictionary:
 			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
 		],
 		"props": [[&"int_escalier_descendant_01", Vector2i(12, 3), 4.0, "StairsDown"]],
+		# Remise en scène du vol (2026-11-04) : aucune Poké Ball dans la chambre (table d'Orme aux
+		# socles vides ; les trois Pokémon du matin sont posés dessus, sortis de leurs Balls) ; le
+		# lit occupé (héros ou joueuse endormi) remplace le lit vide pendant la nuit ([SleeperBed]).
+		"retextures": {"StarterTable": "res://assets/world/interiors/int_table_starters_vide_01.png"},
+		"sleeper": ["Bed", "res://assets/world/interiors/int_lit_dormeur_heros_01.png",
+			"res://assets/world/interiors/int_lit_dormeur_joueuse_01.png"],
 		"spawns": {"from_stairs": Vector2i(12, 4), "lit": Vector2i(3, 4)},
 		# QA A17 : reprise du matin sur n'importe quelle case (en plus de la variante « auto » de
 		# l'infirmière) ; la scène ne joue qu'entre le vol et l'offre d'Orme.

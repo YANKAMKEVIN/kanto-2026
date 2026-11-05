@@ -575,6 +575,42 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# J18 T14) : emprise = largeur de l'image.
 	&"bldg_tour_pokemon_01": {"shadow": true, "width": 12, "depth": 11, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Phare d'Oliville (Chapitre Johto, passe d'ambiance JOH) : emprise `P` 6 × 11 de la grille,
+	# porte décor fermée (« en travaux ») ; la carte pose son emprise sans cases propres.
+	&"bldg_phare_oliville_01": {"shadow": true, "width": 6, "depth": 11, "fade": true},
+	# Rosalia (passe d'ambiance JOH, `rosalia.txt`) : Tour Cendrée `B` 10 × 11 (double porte aux
+	# 5e et 6e colonnes, fermée jusqu'au JOH6), Tour Carillon `K` 8 × 9 (porte décor, derrière le
+	# bois), maison traditionnelle 7 × 6 (Maison des Sages, Maisons 1 et 2 ; porte à la 4e colonne).
+	# La carte pose ces façades sans cases propres (la grille bloque leurs emprises).
+	&"bldg_tour_cendree_01": {"shadow": true, "width": 10, "depth": 11, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_tour_carillon_01": {"shadow": true, "width": 8, "depth": 9, "fade": true},
+	# Lot 2 de l'ambiance de Johto (`tools/art/joh_ambiance_lot2.py`) : posés sans emprise, sur les
+	# cases bloquées de leur grille (`build_joh_ambiance.gd`).
+	&"bldg_tour_radio_01": {"shadow": true, "width": 10, "depth": 12, "fade": true},
+	&"bldg_gare_doublonville_01": {"shadow": true, "width": 14, "depth": 8, "fade": true},
+	&"bldg_grille_parc_01": {"shadow": true, "width": 8, "depth": 1},
+	&"bldg_charbonnerie_01": {"shadow": true, "width": 8, "depth": 6, "fade": true},
+	&"bldg_maison_ecorcia_01": {"shadow": true, "width": 7, "depth": 6, "fade": true},
+	&"prop_puits_ecorcia_01": {"width": 3, "depth": 3},
+	&"prop_autel_bois_01": {"width": 1, "depth": 1},
+	&"relief_ile_tourbillon_01": {"width": 16, "depth": 16},
+	&"prop_haut_parleur_01": {"width": 1, "depth": 1},
+	&"int_comptoir_radio_01": {"width": 8, "depth": 2},
+	&"int_logo_radio_01": {"width": 1, "depth": 1},
+	&"int_porte_entree_radio_01": {"width": 2, "depth": 1},
+	&"int_table_studio_01": {"width": 2, "depth": 1},
+	&"int_vitre_studio_h_01": {"width": 2, "depth": 1},
+	&"int_vitre_studio_v_01": {"width": 1, "depth": 2},
+	&"int_pupitre_orateur_radio_01": {"width": 2, "depth": 3},
+	&"int_rayonnage_archives_01": {"width": 8, "depth": 2},
+	&"int_pupitre_regie_01": {"width": 5, "depth": 2},
+	&"int_mur_ecrans_radio_01": {"width": 10, "depth": 1},
+	&"int_table_diffusion_01": {"width": 2, "depth": 1},
+	&"int_baie_ville_01": {"width": 4, "depth": 1},
+	&"int_boutique_fermee_01": {"width": 4, "depth": 2},
+	&"bldg_maison_rosalia_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
 	&"bldg_maison_pokemon_01": {"shadow": true, "width": 8, "depth": 5, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 	&"bldg_maison_lavanville_01": {"shadow": true, "width": 7, "depth": 5, "fade": true,

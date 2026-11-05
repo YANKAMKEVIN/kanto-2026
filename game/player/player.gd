@@ -72,6 +72,8 @@ var _map_bounds: Rect2i = Rect2i()
 ## Caméra tenue par la vue de combat ([method hold_camera]) : un changement de taille de la vue
 ## (reprise de l'appli sur Android) ne la recadre pas ; les limites sont recalculées à la remise.
 var _camera_held: bool = false
+## JOH1 : cadrage de scène en cours ([method frame_point]).
+var _framed: bool = false
 var _camera_limits_stale: bool = false
 ## Taille affichée de l'apparence (image de repos × échelle).
 var _body_size: Vector2 = BODY_SIZE
@@ -509,6 +511,49 @@ func hold_camera(held: bool) -> void:
 	_camera_limits_stale = false
 	if _mover != null:
 		_set_camera_limits(_map_bounds)
+
+
+## JOH1 (remise en scène du vol, retour de Kevin du 2026-11-04 : « léger zoom sur le lit ») :
+## la caméra cadre le point [param point] (monde) au zoom [param zoom], gardée dans la carte
+## (centrée sur la carte sur un axe où la vue zoomée est plus grande qu'elle). Tenue comme en
+## combat jusqu'à [method release_frame].
+func frame_point(point: Vector2, zoom: float) -> void:
+	var camera := get_camera()
+	hold_camera(true)
+	_framed = true
+	camera.zoom = Vector2(zoom, zoom)
+	var view := (get_viewport_rect().size if is_inside_tree() else Vector2(1920, 1080)) / zoom
+	var bounds := Rect2(_map_bounds)
+	var center := point
+	for axis: int in 2:
+		if view[axis] >= bounds.size[axis]:
+			center[axis] = bounds.get_center()[axis]
+		else:
+			center[axis] = clampf(point[axis], bounds.position[axis] + view[axis] / 2.0,
+				bounds.end[axis] - view[axis] / 2.0)
+	camera.limit_left = -10000000
+	camera.limit_top = -10000000
+	camera.limit_right = 10000000
+	camera.limit_bottom = 10000000
+	camera.offset = center - global_position
+	camera.reset_smoothing()
+
+
+## Vrai pendant un cadrage de [method frame_point].
+func is_framed() -> bool:
+	return _framed
+
+
+## Fin du cadrage de [method frame_point] : suivi, zoom 1 et limites de la carte rendus.
+func release_frame() -> void:
+	if not _framed:
+		return
+	_framed = false
+	get_camera().offset = Vector2.ZERO
+	_camera_held = false
+	_camera_limits_stale = false
+	_set_camera_limits(_map_bounds)
+	get_camera().reset_smoothing()
 
 
 func _on_facing_changed(direction: Vector2i) -> void:

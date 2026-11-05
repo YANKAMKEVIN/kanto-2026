@@ -74,6 +74,9 @@ var _grade: ColorRect
 var _grade_flat: ColorRect
 var _world_modulate: CanvasModulate
 var _battle_active: bool = false
+## Dernier état de [method set_night] (rendu après un combat).
+var _night: bool = false
+var _night_map: Node
 var _blend: Tween
 var _blend_target: LightProfile
 
@@ -161,8 +164,10 @@ func get_blend_target() -> LightProfile:
 ## JOH0 : montre ([param night] vrai) ou cache les lumières de nuit sous [param map] (tout l'arbre
 ## si null).
 func set_night(night: bool, map: Node = null) -> void:
+	_night = night
+	_night_map = map
 	for node: Node in _shadow_nodes(GROUP_NIGHT_LIGHTS, map):
-		(node as CanvasItem).visible = night
+		(node as CanvasItem).visible = night and not _battle_active
 
 
 func _blend_step(from: LightProfile, to: LightProfile, t: float) -> void:
@@ -186,6 +191,10 @@ func _stop_blend() -> void:
 func set_battle_active(active: bool) -> void:
 	_battle_active = active
 	_update_flat()
+	# Les lumières de nuit de Johto sont sur un calque au-dessus de l'étalonnage (et donc de la
+	# vue de combat) : cachées pendant le combat, rendues après.
+	if _night:
+		set_night(true, _night_map if is_instance_valid(_night_map) else null)
 
 
 ## Réglage `economy` (« Lumière d'ambiance » désactivée, moteur commun) : coupe l'étalonnage

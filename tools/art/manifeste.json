@@ -1521,6 +1521,42 @@
    "contact": 0.12
   },
   {
+   "id": "bldg_phare_oliville_01",
+   "source": "BLDG_PHARE_OLIVILLE_r1.png",
+   "sortie": "assets/world/buildings/bldg_phare_oliville_01.png",
+   "axe": "w",
+   "cases": 6,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_tour_cendree_01",
+   "source": "BLDG_TOUR_CENDREE_r1.png",
+   "sortie": "assets/world/buildings/bldg_tour_cendree_01.png",
+   "axe": "w",
+   "cases": 10,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_tour_carillon_01",
+   "source": "BLDG_TOUR_CARILLON_r1.png",
+   "sortie": "assets/world/buildings/bldg_tour_carillon_01.png",
+   "axe": "h",
+   "cases": 9.6,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_rosalia_01",
+   "source": "BLDG_MAISON_ROSALIA_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_rosalia_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
    "id": "bldg_maison_pokemon_01",
    "source": "WORLD_BLDG_MAISON_POKEMON_01_NE_r1.png",
    "sortie": "assets/world/buildings/bldg_maison_pokemon_01.png",
@@ -1712,6 +1748,204 @@
    "cases": 1.6,
    "ombre": false,
    "contact": 0.2
+  },
+  {
+   "id": "bldg_tour_radio_01",
+   "source": "BLDG_TOUR_RADIO_r1.png",
+   "sortie": "assets/world/buildings/bldg_tour_radio_01.png",
+   "axe": "w",
+   "cases": 10,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_gare_doublonville_01",
+   "source": "BLDG_GARE_DOUBLONVILLE_r1.png",
+   "sortie": "assets/world/buildings/bldg_gare_doublonville_01.png",
+   "axe": "w",
+   "cases": 14,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_grille_parc_01",
+   "source": "BLDG_GRILLE_PARC_r1.png",
+   "sortie": "assets/world/buildings/bldg_grille_parc_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_charbonnerie_01",
+   "source": "BLDG_CHARBONNERIE_r1.png",
+   "sortie": "assets/world/buildings/bldg_charbonnerie_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_ecorcia_01",
+   "source": "BLDG_MAISON_ECORCIA_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_ecorcia_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "prop_puits_ecorcia_01",
+   "source": "PROP_PUITS_ECORCIA_r1.png",
+   "sortie": "assets/world/props/prop_puits_ecorcia_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "prop_autel_bois_01",
+   "source": "PROP_AUTEL_BOIS_r1.png",
+   "sortie": "assets/world/props/prop_autel_bois_01.png",
+   "axe": "w",
+   "cases": 2,
+   "ombre": true,
+   "contact": 0.1
+  },
+  {
+   "id": "relief_ile_tourbillon_01",
+   "source": "RELIEF_ILE_TOURBILLON_r1.png",
+   "sortie": "assets/world/relief/relief_ile_tourbillon_01.png",
+   "axe": "w",
+   "cases": 16,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_comptoir_radio_01",
+   "source": "INT_COMPTOIR_RADIO_r1.png",
+   "sortie": "assets/world/interiors/int_comptoir_radio_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_logo_radio_01",
+   "source": "INT_LOGO_RADIO_r1.png",
+   "sortie": "assets/world/interiors/int_logo_radio_01.png",
+   "axe": "w",
+   "cases": 1,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_porte_entree_radio_01",
+   "source": "INT_PORTE_ENTREE_RADIO_r1.png",
+   "sortie": "assets/world/interiors/int_porte_entree_radio_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_table_studio_01",
+   "source": "INT_TABLE_STUDIO_r1.png",
+   "sortie": "assets/world/interiors/int_table_studio_01.png",
+   "axe": "w",
+   "cases": 2.5,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_vitre_studio_h_01",
+   "source": "INT_VITRE_STUDIO_H_r1.png",
+   "sortie": "assets/world/interiors/int_vitre_studio_h_01.png",
+   "axe": "w",
+   "cases": 2,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_pupitre_orateur_radio_01",
+   "source": "INT_PUPITRE_ORATEUR_RADIO_r1.png",
+   "sortie": "assets/world/interiors/int_pupitre_orateur_radio_01.png",
+   "axe": "w",
+   "cases": 2,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_rayonnage_archives_01",
+   "source": "INT_RAYONNAGE_ARCHIVES_r1.png",
+   "sortie": "assets/world/interiors/int_rayonnage_archives_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_pupitre_regie_01",
+   "source": "INT_PUPITRE_REGIE_r1.png",
+   "sortie": "assets/world/interiors/int_pupitre_regie_01.png",
+   "axe": "w",
+   "cases": 5,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_mur_ecrans_radio_01",
+   "source": "INT_MUR_ECRANS_RADIO_r1.png",
+   "sortie": "assets/world/interiors/int_mur_ecrans_radio_01.png",
+   "axe": "w",
+   "cases": 10,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_table_diffusion_01",
+   "source": "INT_TABLE_DIFFUSION_r1.png",
+   "sortie": "assets/world/interiors/int_table_diffusion_01.png",
+   "axe": "w",
+   "cases": 2,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_baie_ville_01",
+   "source": "INT_BAIE_VILLE_r1.png",
+   "sortie": "assets/world/interiors/int_baie_ville_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_boutique_fermee_01",
+   "source": "INT_BOUTIQUE_FERMEE_r1.png",
+   "sortie": "assets/world/interiors/int_boutique_fermee_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "int_vitre_studio_v_01",
+   "source": "INT_VITRE_STUDIO_V_r1.png",
+   "sortie": "assets/world/interiors/int_vitre_studio_v_01.png",
+   "axe": "h",
+   "cases": 2,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "prop_haut_parleur_01",
+   "source": "PROP_HAUT_PARLEUR_r1.png",
+   "sortie": "assets/world/props/prop_haut_parleur_01.png",
+   "axe": "h",
+   "cases": 2.5,
+   "ombre": false,
+   "contact": 0.05
   }
  ],
  "hautes_herbes": {
