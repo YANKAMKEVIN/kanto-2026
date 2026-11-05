@@ -130,7 +130,7 @@ P48_BOAT = ["Un bateau noir, sans pavillon, à l'ancre devant l'île."]
 P55 = ["Irisia ? Toujours.", "La mer ne change pas d'avis, et moi non plus."]
 P59 = ["La mer est mauvaise au sud, en ce moment.", "Le bateau noir rôde. Fais demi-tour."]
 # Ligne de système du don (T-31 : même tournure) [D].
-ULTRA_RECEIVED = ["{player} reçoit 3 Ultra Balls !"]
+ULTRA_RECEIVED = ["{player} reçoit 3 Hyper Balls !"]
 # Choix de monter à bord (§6 étape 9 : le joueur peut refuser) [D].
 BOARD_CHOICE = {"confirm": "MONTER", "cancel": "RESTER"}
 

@@ -12,7 +12,7 @@ const DOSSIER := "res://docs/design/dossier-joh-11-arc-pierres.md"
 const MAPS: Array[StringName] = [&"goeland_deck", &"cianwood_city", &"tide_cave_1f", &"tide_cave_b1f",
 	&"cianwood_center", &"cianwood_goulven_house", &"cianwood_house_1", &"olivine_city"]
 ## Lignes mécaniques, hors du dossier [D] (la tournure du don est celle de T-31).
-const MECHANICAL: Array[String] = ["{player} reçoit 3 Ultra Balls !"]
+const MECHANICAL: Array[String] = ["{player} reçoit 3 Hyper Balls !"]
 ## Dossier §10 : Dresseur → (nom, équipe).
 const TRAINERS: Dictionary = {
 	&"goeland_sailor_yvon": ["Marin Yvon", [[&"machoke", 33], [&"tentacruel", 33]]],
