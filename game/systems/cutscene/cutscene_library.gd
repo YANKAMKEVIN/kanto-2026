@@ -156,6 +156,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	# give_egg (JOH3 : « flag », « say_full »)
 	[], # Chapitre Johto (JOH6) : flashback
 	["by"], # JOH1 : carry
+	[], # Arc des Pierres (JOHP0) : stones_awaken
 ]
 ## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
 const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]
@@ -314,6 +315,8 @@ func get_set_flags() -> Array[StringName]:
 			raised = [TeamConfiscation.STORAGE_OFFLINE, TeamConfiscation.ACT1]
 		elif step.kind == CutsceneStep.Kind.RETURN_TEAM: # JOH0
 			raised = [TeamConfiscation.RETURNED]
+		elif step.kind == CutsceneStep.Kind.STONES_AWAKEN: # JOHP0
+			raised = [StoneAwakening.AWAKENED]
 		for flag: StringName in raised:
 			found[flag] = true
 	return _sorted_keys(found)
@@ -654,7 +657,8 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			elif not main is bool or not main:
 				ok = _fail("%s : « credits » vaut true ou %s" % [where,
 					", ".join(PackedStringArray(CutsceneStep.CREDITS_IDS))])
-		CutsceneStep.Kind.CONFISCATE_TEAM, CutsceneStep.Kind.RETURN_TEAM: # JOH0
+		CutsceneStep.Kind.CONFISCATE_TEAM, CutsceneStep.Kind.RETURN_TEAM, \
+				CutsceneStep.Kind.STONES_AWAKEN: # JOH0, JOHP0
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])
 		CutsceneStep.Kind.FLASHBACK: # JOH6

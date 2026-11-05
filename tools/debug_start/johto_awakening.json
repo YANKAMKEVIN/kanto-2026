@@ -1,0 +1,97 @@
+{
+	"map": "sea_cave_2",
+	"spawn": "from_olivine_city",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_squirtle",
+		"taken_bulbasaur",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"pokedex_activated",
+		"johto_arrived",
+		"johto_act1",
+		"storage_offline",
+		"johto_stone_memory",
+		"johto_stone_tide_lost",
+		"johto_stone_breath",
+		"johto_clan_trial_done"
+	],
+	"party": [
+		{
+			"species": "bayleef",
+			"level": 44
+		},
+		{
+			"species": "noctowl",
+			"level": 42
+		},
+		{
+			"species": "caterpie",
+			"level": 6
+		},
+		{
+			"species": "togepi",
+			"level": 38,
+			"bond": 80
+		},
+		{
+			"species": "pidgeotto",
+			"level": 40
+		},
+		{
+			"species": "rattata",
+			"level": 41,
+			"hp": 1,
+			"status": "poison"
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"poke_ball": 6,
+		"potion": 2
+	},
+	"storage": [
+		{
+			"species": "pidgey",
+			"level": 33,
+			"met_map": "route_40"
+		}
+	],
+	"confiscated": {
+		"party": [
+			{
+				"species": "charizard",
+				"level": 62
+			},
+			{
+				"species": "pidgeot",
+				"level": 58
+			},
+			{
+				"species": "raticate",
+				"level": 55
+			},
+			{
+				"species": "nidoking",
+				"level": 58
+			},
+			{
+				"species": "alakazam",
+				"level": 54
+			}
+		],
+		"items": {
+			"great_ball": 5
+		}
+	},
+	"money": 5000,
+	"cutscene": "johto_awakening_test"
+}

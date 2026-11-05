@@ -180,6 +180,7 @@ var _badges: BadgeLibrary
 var _state: Node
 ## Espèces (jalon 20, étape « gift_pokemon ») : branchées par Boot après setup.
 var _pokemon_data: PokemonData
+var _zones: ZoneLibrary
 ## « Réduire les animations » (jalon 16, étape « animate ») : posé par Boot.
 var reduce_motion: bool = false
 ## Mise en scène d'une capacité de terrain (jalon 16, étape « field_move ») : coroutine
@@ -203,6 +204,13 @@ var hall_of_fame_handler: Callable
 ## `func(selection: TeamReturnSelection) -> Array[String]` posée par Boot ([TeamReturnOverlay]) ;
 ## rend les identifiants gardés. Non valide (tests) : [method TeamReturnSelection.default_selection].
 var team_return_handler: Callable
+## Arc des Pierres, JOHP0 (étape « stones_awaken ») : la cinématique du Réveil, coroutine
+## `func(report: AwakeningReport) -> void` posée par Boot ([AwakeningOverlay]) ; l'état est déjà à
+## jour mais **pas écrit** tant qu'elle joue. Non valide (tests) : aucune image.
+var awakening_handler: Callable
+## JOHP0 : l'écran du Réveil, coroutine `func(report: AwakeningReport) -> bool`, joué **après**
+## l'écriture ; vrai si une attaque a été apprise (une écriture de plus). Non valide : rien.
+var awakening_screen_handler: Callable
 ## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
 var credits_handler: Callable
 ## JOH9 : générique demandé par l'étape « credits » en cours (&"" = Kanto), lu par le
@@ -210,6 +218,9 @@ var credits_handler: Callable
 var credits_id: StringName = &""
 ## Raison de l'écriture qui suit l'entrée du Panthéon.
 const HALL_OF_FAME_SAVE_REASON: String = "Panthéon"
+## JOHP0 : raisons des écritures du Réveil.
+const AWAKENING_SAVE_REASON: String = "Réveil"
+const AWAKENING_MOVES_SAVE_REASON: String = "attaques du Réveil"
 
 
 func _ready() -> void:
@@ -304,6 +315,12 @@ func set_badges(badges: BadgeLibrary, state: Node) -> void:
 ## ou sans l'état de [method set_badges] : push_error, étape sautée (rien n'est donné).
 func set_pokemon_data(data: PokemonData) -> void:
 	_pokemon_data = data
+
+
+## Branche les zones (JOHP0) : le Réveil y lit la région des captures du Stockage. Sans elles :
+## seule l'équipe se réveille.
+func set_zones(zones: ZoneLibrary) -> void:
+	_zones = zones
 
 
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
@@ -488,6 +505,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _flashback(step.text == "start")
 		CutsceneStep.Kind.CARRY: # JOH1
 			_carry(step)
+		CutsceneStep.Kind.STONES_AWAKEN: # JOHP0
+			return await _stones_awaken()
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -577,6 +596,35 @@ func _return_team() -> void:
 			% TeamConfiscation.Check.find_key(result["check"]))
 		return
 	team_returned.emit((result["stored"] as Array).size())
+
+
+## JOHP0 (`jalon-joh-pierres.md` §2.2, dossier JOH-11 §13 et §15) : le Réveil, d'un seul bloc en
+## mémoire ; la cinématique ; **l'écriture** ; l'écran du Réveil. Application tuée pendant la
+## cinématique : rien n'est sur le disque, la scène reprend à l'autel. Après l'écriture : le
+## Réveil est acquis, la scène reprend à Cenere et seules les attaques non choisies sont perdues
+## **[D]** ([constant AWAKENING_MOVES_SAVE_REASON] les écrit dès que l'écran se ferme). Aucune
+## autre écriture ne peut tomber entre les deux : la partie n'est pas stable pendant une scène.
+## Faux : la scène s'arrête (nouvelle scène lancée, écriture abandonnée). Déjà fait : rien.
+func _stones_awaken() -> bool:
+	if _state == null or _pokemon_data == null:
+		_step_error("pas d'état de partie ou d'espèces pour le Réveil")
+		return true
+	var report := StoneAwakening.awaken(_state, _zones, _pokemon_data)
+	if report == null:
+		return true
+	var session := _session
+	if report.has_scene() and awakening_handler.is_valid():
+		await awakening_handler.call(report)
+		if session != _session:
+			return false
+	if not await _save_checkpoint(AWAKENING_SAVE_REASON):
+		return false
+	if not report.has_scene() or not awakening_screen_handler.is_valid():
+		return true
+	var learned: bool = await awakening_screen_handler.call(report)
+	if session != _session:
+		return false
+	return await _save_checkpoint(AWAKENING_MOVES_SAVE_REASON) if learned else true
 
 
 ## Jalon 30 : cérémonie du Panthéon ([member hall_of_fame_handler]) puis, si une entrée vient
