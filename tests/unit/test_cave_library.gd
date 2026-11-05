@@ -32,7 +32,9 @@ func test_real_data_mt_moon() -> void:
 		&"victory_road", &"rocket_hideout", &"silph_co", &"pokemon_mansion",
 		# Chapitre Johto, JOH6 : Tour Cendrée, repaire d'Acajou ; JOH4 : le Puits Ramoloss (Corde
 		# Sortie → devant le puits) ; JOH7 : les Îles Tourbillon (Corde Sortie → Route 41, en Surf) ; JOH8 : la Tour Carillon.
-		&"burned_tower", &"mahogany_hideout", &"slowpoke_well", &"whirl_islands",
+		&"burned_tower", &"mahogany_hideout", &"slowpoke_well",
+		# JOHP1 : la Galerie des Glyphes (Corde Sortie → devant son escalier).
+		&"alph_gallery", &"whirl_islands",
 		&"bell_tower",
 		# JOH9 : le Mont Argenté.
 		&"mt_silver", &"mt_silver_dark",

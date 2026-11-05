@@ -1290,8 +1290,7 @@ const SET_J29: Array[StringName] = [
 ## scènes depuis leur fusion dans `main`.
 ## JOH8 : drapeau lu par la Tour Carillon et levé par le JOH9 (la fin du chapitre) ; à retirer à sa
 ## fusion.
-## JOHP2 : Goulven à Oliville n'est là qu'avec la quête, levée par la bascule du JOHP3 ; à retirer à
-## sa fusion.
+## JOHP1 : posé par la bascule du JOHP3 (`jalon-joh-pierres.md` §5.3).
 const FUTURE_FLAGS: Array[StringName] = [&"johto_stones_quest"]
 ## Jalon 28 (T7, T8) : dialogues de l'Arène de Jadielle.
 const IDS_J28: Array[StringName] = [
@@ -1718,8 +1717,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		for file: String in DirAccess.get_files_at(pair[1]):
 			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
 				continue
-			# JOH2 à JOH9 : fichiers `joh<n>_*` (leurs `test_joh<n>_data.gd`), même
-			# règle que ceux du J23 ; arc des Pierres : `johp<n>_*`.
+			# JOH2 à JOH9, arc des Pierres : fichiers `joh<n>_*`, `johp<n>_*`, même
+			# règle que ceux du J23.
 			var library: Variant = pair[2] if file.begins_with("j23_") \
 				or file.begins_with("joh2_") or file.begins_with("joh3_") \
 				or file.begins_with("joh4_") or file.begins_with("joh5_") \

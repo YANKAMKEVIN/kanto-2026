@@ -1,0 +1,294 @@
+{
+	"alph_chamber_socle": {
+		"cutscene": "alph_chamber_stone"
+	},
+	"alph_chamber_stone": {
+		"narration": true,
+		"pages": [
+			"Au centre de la salle, une pierre\ngrise, tiède sous la main."
+		]
+	},
+	"alph_chamber_stone_received": {
+		"narration": true,
+		"pages": [
+			"{player} obtient la Pierre Mémoire !"
+		]
+	},
+	"alph_door_opens": {
+		"narration": true,
+		"pages": [
+			"La porte du fond s'ouvre."
+		]
+	},
+	"alph_fake_after": {
+		"speaker": "Faux archéologue",
+		"pages": [
+			"Je vais en entendre parler, moi…\nCenere va me faire recalculer."
+		]
+	},
+	"alph_fake_before": {
+		"speaker": "Faux archéologue",
+		"pages": [
+			"Halte ! Je suis un éminent savant !",
+			"… Toi ? {g:Le gamin|La gamine} de la\nTour Radio ?",
+			"Mon déguisement était parfait,\npourtant !"
+		]
+	},
+	"alph_fake_defeated": {
+		"speaker": "Faux archéologue",
+		"pages": [
+			"La science a parlé. Elle a dit non."
+		]
+	},
+	"alph_fake_flees": {
+		"narration": true,
+		"pages": [
+			"Le faux archéologue arrache sa\nfausse barbe et s'enfuit !"
+		]
+	},
+	"alph_gallery_mur_1": {
+		"narration": true,
+		"pages": [
+			"Des signes gravés. Héloïse a noté en\ndessous :",
+			"« celle qui se souvient »."
+		]
+	},
+	"alph_gallery_mur_2": {
+		"narration": true,
+		"pages": [
+			"Des signes gravés. Héloïse a noté en\ndessous :",
+			"« celle qui revient »."
+		]
+	},
+	"alph_gallery_mur_3": {
+		"narration": true,
+		"pages": [
+			"Des signes gravés. Héloïse a noté en\ndessous :",
+			"« celle qui respire »."
+		]
+	},
+	"alph_grunt_v_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"On cherche un caillou. Trois jours\npour un caillou."
+		]
+	},
+	"alph_grunt_v_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"On creuse ! Dégage !"
+		]
+	},
+	"alph_grunt_v_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Ma pelle…"
+		]
+	},
+	"alph_grunt_w_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le patron des fouilles porte une\nfausse barbe. Ne lui dis pas que ça\nse voit."
+		]
+	},
+	"alph_grunt_w_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Pas de visite aujourd'hui !"
+		]
+	},
+	"alph_grunt_w_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"La visite est terminée."
+		]
+	},
+	"alph_grunt_x_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Personne ne comprend ces dalles.\nElles nous renvoient toujours au\ndébut."
+		]
+	},
+	"alph_grunt_x_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Tu ne passeras pas ce couloir !"
+		]
+	},
+	"alph_grunt_x_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Bon, si."
+		]
+	},
+	"alph_medium_solange_after": {
+		"speaker": "Médium Solange",
+		"pages": [
+			"La nuit, les signes bougent sur les\nmurs."
+		]
+	},
+	"alph_medium_solange_before": {
+		"speaker": "Médium Solange",
+		"pages": [
+			"Les ruines murmurent. Écoute-les\navec moi."
+		]
+	},
+	"alph_medium_solange_defeated": {
+		"speaker": "Médium Solange",
+		"pages": [
+			"Elles murmuraient ton nom."
+		]
+	},
+	"alph_nerd_remi_after": {
+		"speaker": "Intello Rémi",
+		"pages": [
+			"Personne n'a jamais compté toutes\nles dalles."
+		]
+	},
+	"alph_nerd_remi_before": {
+		"speaker": "Intello Rémi",
+		"pages": [
+			"J'ai calculé l'âge de ces murs.\nVeux-tu calculer ta défaite ?"
+		]
+	},
+	"alph_nerd_remi_defeated": {
+		"speaker": "Intello Rémi",
+		"pages": [
+			"J'ai oublié une retenue."
+		]
+	},
+	"alph_researcher_agnes_after": {
+		"speaker": "Chercheuse Agnès",
+		"pages": [
+			"Ces signes changent quand on ne les\nregarde pas. Je te jure."
+		]
+	},
+	"alph_researcher_agnes_before": {
+		"speaker": "Chercheuse Agnès",
+		"pages": [
+			"Une chercheuse doit tester ses\nhypothèses. Toi, par exemple."
+		]
+	},
+	"alph_researcher_agnes_defeated": {
+		"speaker": "Chercheuse Agnès",
+		"pages": [
+			"Hypothèse rejetée."
+		]
+	},
+	"alph_scientist_after": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Comment peut-on lire ça ?"
+		]
+	},
+	"alph_scientist_before": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Ces signes sont du bruit. Mes\nmachines le prouveront."
+		]
+	},
+	"alph_scientist_defeated": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Du bruit. Rien que du bruit."
+		]
+	},
+	"alph_tent_heloise": {
+		"speaker": "Héloïse",
+		"variants": [
+			{
+				"if": [
+					"johto_stones_awakened"
+				],
+				"pages": [
+					"Elles sont éteintes, donc.",
+					"Je vais écrire trois cents pages\nlà-dessus, et personne ne les lira."
+				]
+			},
+			{
+				"if": [
+					"johto_stone_memory"
+				],
+				"set": [
+					"johto_alph_met"
+				],
+				"pages": [
+					"Elle est tiède. C'est tout ce que je\npeux en dire.",
+					"La deuxième est à Irisia, dans une\ngrotte qui se noie à chaque marée.",
+					"Il n'y a pas de route. Va voir le\nvieux Goulven, au port d'Oliville.\nDis que c'est moi."
+				]
+			},
+			{
+				"if": [
+					"johto_alph_met"
+				],
+				"pages": [
+					"La Pierre Mémoire est au fond.\nPersonne n'y est jamais entré.",
+					"Lis les murs. Ils disent dans quel\nordre marcher.",
+					"Les anciens n'écrivaient pas pour\ndécorer."
+				]
+			},
+			{
+				"set": [
+					"johto_alph_met"
+				],
+				"pages": [
+					"Orme m'a prévenue. Ne touche à rien.",
+					"Des gens en noir fouillent ma\ngalerie depuis trois jours. Ils\ndisent qu'ils sont archéologues.",
+					"Ils tiennent leurs pelles à\nl'envers.",
+					"La Pierre Mémoire est au fond.\nPersonne n'y est jamais entré.",
+					"Lis les murs. Ils disent dans quel\nordre marcher.",
+					"Les anciens n'écrivaient pas pour\ndécorer."
+				]
+			}
+		]
+	},
+	"alph_tile_lit": {
+		"narration": true,
+		"pages": [
+			"Le signe s'éclaire."
+		]
+	},
+	"alph_tile_wrong": {
+		"narration": true,
+		"pages": [
+			"Le sol gronde. {player} est\n{g:ramené|ramenée} à l'entrée de la\nsalle."
+		]
+	},
+	"gallery_item_1": {
+		"cutscene": "gallery_item_1"
+	},
+	"route_36_ouvrier": {
+		"speaker": "Ouvrier",
+		"variants": [
+			{
+				"if": [
+					"johto_stones_quest"
+				],
+				"pages": [
+					"Le chantier des ruines ? Le\nProfesseur Orme a appelé.",
+					"Passe, c'est ouvert."
+				]
+			},
+			{
+				"pages": [
+					"Chantier de fouilles.",
+					"Entrée réservée au personnel."
+				]
+			}
+		]
+	},
+	"ruins_hidden_1": {
+		"cutscene": "ruins_hidden_1"
+	},
+	"ruins_item_1": {
+		"cutscene": "ruins_item_1"
+	},
+	"ruins_of_alph_panneau_ruines": {
+		"narration": true,
+		"pages": [
+			"RUINES D'ALPHA",
+			"Fouilles en cours. Ne rien emporter."
+		]
+	}
+}

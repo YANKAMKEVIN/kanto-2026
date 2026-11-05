@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Départs de débogage du jalon JOHP2 (`docs/tech/jalon-joh-pierres.md` §4) : l'état de sortie du
-JOHP1 (Tour Radio finie, quête ouverte, Pierre Mémoire en poche), sans passer par les Ruines, qui se
-codent en parallèle. Rien ne pose `johto_stones_quest` dans le jeu avant la bascule du JOHP3 : ces
-départs sont le seul chemin jusqu'ici. Équipe de Johto de l'acte 1 (33–36), équipe de Kanto
-confisquée. L'objet clé `stone_memory` (JOHP1) n'entre au Sac qu'après la fusion du JOHP1.
+JOHP1 (Tour Radio finie, quête ouverte, Pierre Mémoire en poche), sans repasser par les Ruines. Rien
+ne pose `johto_stones_quest` dans le jeu avant la bascule du JOHP3 : ces départs sont le seul chemin
+jusqu'ici. Équipe de Johto de l'acte 1 (33–36), équipe de Kanto confisquée.
 
 Usage : python3 -I tools/gen_johp2_debug_starts.py
 """
@@ -33,6 +32,7 @@ SURF_PARTY = [{"species": "croconaw", "level": 30,
 	"moves": ["surf", "bite", "water_gun", "scary_face"]}]
 BAG = {"poke_ball": 10, "great_ball": 5, "super_potion": 8, "hyper_potion": 3, "antidote": 3,
 	"escape_rope": 2, "exp_all": 1, "mission_order": 1, "radio_card": 1, "super_rod": 1}
+STONE = dict(BAG, stone_memory=1)
 
 STARTS = {
 	"johto_johp2_olivine_stranger": {"map": "olivine_city", "spawn": "from_goeland", "facing": "left",
@@ -68,7 +68,8 @@ STARTS = {
 def main():
 	for name, spec in STARTS.items():
 		start = {"map": spec["map"], "spawn": spec["spawn"], "facing": spec["facing"],
-			"flags": spec["flags"], "party": spec.get("party", PARTY), "companion": 0, "bag": BAG,
+			"flags": spec["flags"], "party": spec.get("party", PARTY), "companion": 0,
+			"bag": STONE if "johto_stone_memory" in spec["flags"] else BAG,
 			"confiscated": OFFICE["confiscated"], "money": 9000}
 		for key in ("rest_point", "period", "autosave"):
 			if key in spec:

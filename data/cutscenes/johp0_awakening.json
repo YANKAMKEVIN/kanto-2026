@@ -1,0 +1,10 @@
+{
+	"johto_awakening_test": {
+		"steps": [
+			{"save": "avant le Réveil (scène de test)"},
+			{"dialogue": "johto_awakening_test_before", "music": "cut"},
+			{"stones_awaken": true},
+			{"dialogue": "johto_awakening_test_after"}
+		]
+	}
+}

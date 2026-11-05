@@ -182,7 +182,12 @@ const PENDING_DRAFTS: Array[String] = [
 	# escalier de secours), textes absents du dossier JOH-06.
 	"dialogues/joh5_radio_tower.json/goldenrod_radio_reserve_locked",
 	"dialogues/joh5_radio_tower.json/goldenrod_radio_emergency_stairs",
-	"dialogues/joh5_radio_tower.json/goldenrod_radio_office_locked"]
+	"dialogues/joh5_radio_tower.json/goldenrod_radio_office_locked",
+	# Arc des Pierres, JOHP0 : annonce du Stockage (texte [D], absent du dossier JOH-11) et scène
+	# de test du Réveil.
+	"dialogues/johp0.json/stones_awakening_stored/variants/0",
+	"dialogues/johp0.json/johto_awakening_test_before/variants/0",
+	"dialogues/johp0.json/johto_awakening_test_after/variants/0"]
 
 
 func test_data_has_json_files() -> void:

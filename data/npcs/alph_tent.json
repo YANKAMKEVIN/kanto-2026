@@ -1,0 +1,11 @@
+{
+	"heloise": {
+		"cell": [
+			4,
+			2
+		],
+		"facing": "down",
+		"sprite": "maya",
+		"dialogue": "alph_tent_heloise"
+	}
+}

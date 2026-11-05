@@ -78,7 +78,8 @@
 		"exp_all": 1,
 		"mission_order": 1,
 		"radio_card": 1,
-		"super_rod": 1
+		"super_rod": 1,
+		"stone_memory": 1
 	},
 	"confiscated": {
 		"party": [

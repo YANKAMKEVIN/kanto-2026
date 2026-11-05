@@ -72,6 +72,7 @@
 		"route_34": "road_to_cerulean",
 		"ilex_forest": "viridian_forest",
 		"azalea_town": "pewter_city",
+		"ruins_of_alph": "road_to_cerulean",
 		"slowpoke_well": "mt_moon",
 		"bell_tower_woods": "viridian_forest",
 		"bell_tower": "pokemon_tower",
@@ -84,6 +85,8 @@
 		"tide_cave": "mt_moon"
 	},
 	"maps": {
+		"alph_gallery": "mt_moon",
+		"alph_chamber": "mt_moon",
 		"celadon_center": "pokemon_center",
 		"celadon_dept_2f": "pokemon_center",
 		"celadon_dept_3f": "pokemon_center",

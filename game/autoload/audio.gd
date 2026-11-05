@@ -125,6 +125,22 @@ func play_jingle(track: StringName) -> void:
 	set_music(MusicStack.Layer.JINGLE, track)
 
 
+## Coupure nette (Réveil, JOHP0) : plus rien ne joue, sans fondu ; la couche [param layer] porte
+## le silence jusqu'à ce qu'elle change ou soit retirée.
+func cut_music(layer: MusicStack.Layer) -> void:
+	set_music(layer, AudioLibrary.SILENCE)
+	for i: int in _music.size():
+		_kill_fade(i)
+		_music[i].stop()
+
+
+## Amène le morceau en cours à [param offset_db] de son volume normal en [param duration] s
+## (Réveil : le thème naît à voix basse, puis éclate à 0).
+func set_music_offset(offset_db: float, duration: float) -> void:
+	var info := library.track(_music_tracks[_active])
+	_fade_music(_active, float(info.get("volume_db", 0.0)) + offset_db, duration)
+
+
 ## Morceau qui joue (selon la pile, même sans fichier).
 func current_track() -> StringName:
 	return _stack.current_track()

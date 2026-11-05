@@ -1,0 +1,134 @@
+{
+	"map": "alph_gallery",
+	"spawn": "retour_dalles",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_squirtle",
+		"taken_bulbasaur",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"cerulean_reached",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"league_champion_defeated",
+		"league_credits_seen",
+		"johto_letter_read",
+		"johto_lugia_shadow",
+		"johto_arrived",
+		"johto_team_stolen",
+		"johto_starter_chosen",
+		"johto_rosalia_rockets_seen",
+		"johto_tower_legend_heard",
+		"johto_goldenrod_arrived",
+		"johto_egg_received",
+		"johto_radio_tower_closed_seen",
+		"johto_azalea_clue",
+		"johto_shrine_seen",
+		"johto_kurt_told",
+		"johto_brace_defeated",
+		"johto_radio_pass",
+		"johto_slowpoke_well_cleared",
+		"johto_radio_impostor_defeated",
+		"johto_radio_staff_freed",
+		"johto_cenere_defeated",
+		"johto_dante_revealed",
+		"johto_radio_office_done",
+		"radio_exp_share_given",
+		"johto_stones_quest",
+		"johto_alph_met"
+	],
+	"party": [
+		{
+			"species": "croconaw",
+			"level": 32,
+			"moves": [
+				"bite",
+				"water_gun",
+				"scary_face",
+				"slash"
+			]
+		},
+		{
+			"species": "noctowl",
+			"level": 31
+		},
+		{
+			"species": "ampharos",
+			"level": 31
+		},
+		{
+			"species": "azumarill",
+			"level": 30
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"great_ball": 15,
+		"super_potion": 8,
+		"hyper_potion": 4,
+		"revive": 3,
+		"escape_rope": 2,
+		"antidote": 3,
+		"exp_all": 1
+	},
+	"money": 30000,
+	"confiscated": {
+		"party": [
+			{
+				"species": "charizard",
+				"level": 62
+			},
+			{
+				"species": "blastoise",
+				"level": 60
+			},
+			{
+				"species": "pidgeot",
+				"level": 58
+			},
+			{
+				"species": "machamp",
+				"level": 56
+			},
+			{
+				"species": "raichu",
+				"level": 55
+			},
+			{
+				"species": "alakazam",
+				"level": 57
+			}
+		],
+		"items": {
+			"ultra_ball": 12,
+			"full_restore": 5
+		}
+	},
+	"discovered": [
+		"pallet_town",
+		"olivine_city",
+		"ecruteak_city",
+		"goldenrod_city",
+		"azalea_town"
+	],
+	"rest_point": "goldenrod_center"
+}

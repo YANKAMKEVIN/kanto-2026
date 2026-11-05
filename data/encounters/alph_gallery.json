@@ -1,0 +1,55 @@
+{
+	"alph_gallery_rubble": {
+		"maps": [
+			"alph_gallery"
+		],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "zubat",
+				"levels": [
+					28,
+					32
+				],
+				"weight": 35
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					28,
+					32
+				],
+				"weight": 15
+			},
+			{
+				"species": "geodude",
+				"levels": [
+					28,
+					32
+				],
+				"weight": 25
+			},
+			{
+				"species": "onix",
+				"levels": [
+					28,
+					32
+				],
+				"weight": 10
+			},
+			{
+				"species": "gastly",
+				"levels": [
+					28,
+					32
+				],
+				"weight": 15
+			}
+		]
+	}
+}

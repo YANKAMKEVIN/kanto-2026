@@ -1,0 +1,61 @@
+{
+	"agnes": {
+		"cell": [
+			21,
+			8
+		],
+		"facing": "left",
+		"sprite": "maya",
+		"dialogue": "alph_researcher_agnes_after",
+		"trainer": {
+			"id": "alph_researcher_agnes",
+			"sight": 2,
+			"before": "alph_researcher_agnes_before",
+			"defeated": "alph_researcher_agnes_defeated"
+		}
+	},
+	"remi": {
+		"cell": [
+			26,
+			16
+		],
+		"facing": "up",
+		"sprite": "nerd",
+		"dialogue": "alph_nerd_remi_after",
+		"trainer": {
+			"id": "alph_nerd_remi",
+			"sight": 2,
+			"before": "alph_nerd_remi_before",
+			"defeated": "alph_nerd_remi_defeated"
+		}
+	},
+	"solange": {
+		"cell": [
+			10,
+			16
+		],
+		"facing": "right",
+		"sprite": "channeler",
+		"dialogue": "alph_medium_solange_after",
+		"trainer": {
+			"id": "alph_medium_solange",
+			"sight": 3,
+			"before": "alph_medium_solange_before",
+			"defeated": "alph_medium_solange_defeated"
+		}
+	},
+	"ruins_item_1": {
+		"cell": [
+			32,
+			6
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "ruins_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_ruins_item_1"
+		]
+	}
+}

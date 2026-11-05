@@ -1,0 +1,160 @@
+{
+	"alph_fake_archeologist": {
+		"name": "Faux archéologue",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"team": [
+			{
+				"species": "arbok",
+				"level": 34
+			},
+			{
+				"species": "raticate",
+				"level": 34
+			},
+			{
+				"species": "houndoom",
+				"level": 35
+			}
+		]
+	},
+	"alph_researcher_agnes": {
+		"name": "Chercheuse Agnès",
+		"class": "topdresseuse",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "kadabra",
+				"level": 31
+			},
+			{
+				"species": "golbat",
+				"level": 30
+			}
+		]
+	},
+	"alph_nerd_remi": {
+		"name": "Intello Rémi",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "magneton",
+				"level": 31
+			},
+			{
+				"species": "porygon",
+				"level": 30
+			}
+		]
+	},
+	"alph_medium_solange": {
+		"name": "Médium Solange",
+		"class": "exorciste",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "haunter",
+				"level": 31
+			},
+			{
+				"species": "kadabra",
+				"level": 31
+			}
+		]
+	},
+	"alph_grunt_v": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "koffing",
+				"level": 31
+			},
+			{
+				"species": "raticate",
+				"level": 31
+			}
+		]
+	},
+	"alph_grunt_w": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "arbok",
+				"level": 32
+			}
+		]
+	},
+	"alph_grunt_x": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 32
+			},
+			{
+				"species": "murkrow",
+				"level": 32
+			}
+		]
+	},
+	"alph_scientist": {
+		"name": "Scientifique Rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "magneton",
+				"level": 33
+			},
+			{
+				"species": "electrode",
+				"level": 33
+			}
+		]
+	}
+}
