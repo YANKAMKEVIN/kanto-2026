@@ -3519,6 +3519,42 @@
    "source": "PNJ_GOULVEN_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/goulven_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "ysolde",
+   "source": "PNJ_YSOLDE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ysolde_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "corentin",
+   "source": "PNJ_CORENTIN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/corentin_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "aieule",
+   "source": "PNJ_AIEULE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/aieule_sheet.png",
+   "hauteur": 104
+  },
+  {
+   "id": "cenere",
+   "source": "PNJ_CENERE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/cenere_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "clan_h",
+   "source": "PNJ_CLAN_H_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_h_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "clan_f",
+   "source": "PNJ_CLAN_F_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_f_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -4270,6 +4306,42 @@
    "source": "GOULVEN_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/goulven_idle_sheet.png",
    "marche": "goulven"
+  },
+  {
+   "id": "ysolde_idle",
+   "source": "YSOLDE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ysolde_idle_sheet.png",
+   "marche": "ysolde"
+  },
+  {
+   "id": "corentin_idle",
+   "source": "CORENTIN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/corentin_idle_sheet.png",
+   "marche": "corentin"
+  },
+  {
+   "id": "aieule_idle",
+   "source": "AIEULE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/aieule_idle_sheet.png",
+   "marche": "aieule"
+  },
+  {
+   "id": "cenere_idle",
+   "source": "CENERE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/cenere_idle_sheet.png",
+   "marche": "cenere"
+  },
+  {
+   "id": "clan_h_idle",
+   "source": "CLAN_H_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_h_idle_sheet.png",
+   "marche": "clan_h"
+  },
+  {
+   "id": "clan_f_idle",
+   "source": "CLAN_F_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/clan_f_idle_sheet.png",
+   "marche": "clan_f"
   }
  ],
  "images_objets": [

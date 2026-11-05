@@ -369,3 +369,9 @@ Générés le 2026-11-05, un essai chacun, sans refus de Codex. Prompts `tools/a
 `tools/art/attente/prompts/*_ATTENTE.txt` ; ancres : héros, Chercheuse ou Garde, Pêcheur. 128 px, planche d'attente.
 Rendu un peu plus texturé et moins saturé que le marin et le héros, surtout la laine de Goulven.
 
+### Personnages de l'arc : Ysolde, Corentin, l'Aïeule, Cenere, tenue du clan (planche `johp-persos-clan-cenere-v1.png`) — **à valider par Kevin**
+
+Générés le 2026-11-05, un essai chacun, sans refus de Codex. Couleurs du clan : anthracite, noir, rouge sombre, comme les
+bannières d'Ébènelle. L'Aïeule fait 104 px (voûtée, plus petite qu'un adulte). Cenere : aucune référence n'existait,
+modèle libre (manteau gris cendre, carré gris, lunettes) ; Brace reste à peindre, à accorder avec elle.
+

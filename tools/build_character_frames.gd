@@ -143,6 +143,12 @@ const LOOKS: Dictionary = {
 	# Arc des Pierres : Héloïse et Goulven, 128 px, avec leur planche d'attente (Kevin, 2026-11-05).
 	"heloise": [CHARACTERS_DIR, "heloise", ""],
 	"goulven": [CHARACTERS_DIR, "goulven", ""],
+	"ysolde": [CHARACTERS_DIR, "ysolde", ""],
+	"corentin": [CHARACTERS_DIR, "corentin", ""],
+	"aieule": [CHARACTERS_DIR, "aieule", ""],
+	"cenere": [CHARACTERS_DIR, "cenere", ""],
+	"clan_h": [CHARACTERS_DIR, "clan_h", ""],
+	"clan_f": [CHARACTERS_DIR, "clan_f", ""],
 	"docker": [CHARACTERS_DIR, "docker", ""],
 	"president_fan_club": [CHARACTERS_DIR, "fan_club_chairman", ""],
 	# J17 T14 (série 19, Route 11 et Cave Taupiqueur) : Joueur (gambler) et Ingénieur (engineer),
