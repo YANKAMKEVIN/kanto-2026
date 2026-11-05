@@ -78,21 +78,47 @@
 			"team": [
 				{
 					"species": "fearow",
-					"level": 60
+					"level": 60,
+					"moves": [
+						"drill_peck",
+						"agility",
+						"double_edge",
+						"mirror_move"
+					]
 				},
 				{
 					"species": "arbok",
-					"level": 60
+					"level": 60,
+					"moves": [
+						"sludge",
+						"earthquake",
+						"glare",
+						"crunch"
+					]
 				},
 				{
 					"species": "weezing",
-					"level": 61
+					"level": 61,
+					"moves": [
+						"sludge",
+						"flamethrower",
+						"thunderbolt",
+						"explosion"
+					]
 				},
 				{
 					"species": "houndoom",
-					"level": 62
+					"level": 62,
+					"moves": [
+						"flamethrower",
+						"crunch",
+						"solar_beam",
+						"feint_attack"
+					]
 				}
-			]
+			],
+			"switch": true,
+			"bag": true
 		}
 	},
 	"steps": [

@@ -29,7 +29,7 @@
 					"level": 58
 				},
 				{
-					"species": "girafarig",
+					"species": "heracross",
 					"level": 58
 				}
 			]
@@ -70,14 +70,27 @@
 			"start_message": false,
 			"end_message": false,
 			"switch": true,
+			"bag": true,
 			"team": [
 				{
 					"species": "sneasel",
-					"level": 56
+					"level": 56,
+					"moves": [
+						"ice_beam",
+						"feint_attack",
+						"slash",
+						"quick_attack"
+					]
 				},
 				{
 					"species": "weezing",
-					"level": 54
+					"level": 54,
+					"moves": [
+						"sludge",
+						"flamethrower",
+						"thunderbolt",
+						"explosion"
+					]
 				},
 				{
 					"species": "wobbuffet",
@@ -85,7 +98,13 @@
 				},
 				{
 					"species": "noctowl",
-					"level": 55
+					"level": 55,
+					"moves": [
+						"psychic",
+						"hypnosis",
+						"wing_attack",
+						"confuse_ray"
+					]
 				}
 			]
 		}

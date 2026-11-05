@@ -122,6 +122,22 @@ func test_trainers_follow_dossier_10() -> void:
 		assert_eq(team, TRAINERS[id][1], "%s : équipe du §10" % id)
 
 
+## JH-78 : niveaux inchangés, l'IA et les attaques corrigent l'équipe mixte (plan §5.4).
+func test_act_2_trainers_keep_their_levels_and_gain_moves() -> void:
+	for id: StringName in [&"mahogany_hideout_b3f_brace", &"whirl_islands_cenere"]:
+		var trainer := _trainers.get_trainer(id)
+		assert_true(trainer.can_switch, String(id))
+		var with_moves := 0
+		for member: Variant in trainer.team:
+			if not member.moves.is_empty():
+				with_moves += 1
+		assert_gte(with_moves, 3, String(id))
+	var levels: Array = []
+	for member: Variant in _trainers.get_trainer(&"whirl_islands_cenere").team:
+		levels.append(member.level)
+	assert_eq(levels, [62, 62, 63, 63, 64], "niveaux du JOH7 inchangés")
+
+
 func test_encounter_tables_follow_dossier_11() -> void:
 	for id: StringName in TABLES:
 		var table := _encounters.get_table_by_id(id)

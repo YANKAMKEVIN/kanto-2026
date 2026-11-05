@@ -30,11 +30,11 @@ def team(name, members):
 
 
 JOHTO_SIX = [("typhlosion", 39), ("ampharos", 38), ("noctowl", 38), ("togetic", 37), ("furret", 37),
-	("girafarig", 37)]
+	("heracross", 37)]
 JOHTO_FOUR = [("feraligatr", 42), ("ampharos", 41), ("noctowl", 41), ("togetic", 40)]
 JOHTO_THREE = [("meganium", 44), ("ampharos", 44), ("noctowl", 44)]
 AWAKE = [("typhlosion", 58), ("ampharos", 58), ("noctowl", 58), ("togetic", 58), ("furret", 58),
-	("girafarig", 58)]
+	("heracross", 58)]
 AWAKE_LOW = [("feraligatr", 55), ("ampharos", 55), ("noctowl", 55), ("togetic", 55)]
 def mixed(level):
 	"""Trois de Johto et trois de Kanto, au niveau atteint à ce moment de l'acte 2 (dossier §9)."""

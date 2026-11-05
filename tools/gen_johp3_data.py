@@ -100,11 +100,23 @@ YSOLDE = {
 		{"species": "dragonair", "level": 43}, {"species": "kingdra", "level": 43},
 		{"species": "dragonite", "level": 45}],
 }
+# Attaques [D] (JH-74, JH-78) : niveaux inchangés, l'IA et les attaques seules corrigent une équipe
+# réveillée ou mixte (`tools/sim/gen_johp3_scenarios.py`, résultats au plan §5.4).
+MOVE_SETS = {
+	"sneasel": ["ice_beam", "feint_attack", "slash", "quick_attack"],
+	"weezing": ["sludge", "flamethrower", "thunderbolt", "explosion"],
+	"noctowl": ["psychic", "hypnosis", "wing_attack", "confuse_ray"],
+	"dewgong": ["ice_beam", "surf", "rest", "body_slam"],
+	"fearow": ["drill_peck", "agility", "double_edge", "mirror_move"],
+	"arbok": ["sludge", "earthquake", "glare", "crunch"],
+	"houndoom": ["flamethrower", "crunch", "solar_beam", "feint_attack"],
+}
 # Farfuret d'abord [D] : « Recommence, Farfuret » (P-32), « Cenere envoie Farfuret, le même » (§13.2).
 CENERE = {
 	"name": "Cenere", "class": "sbire_rocket_f", "ai": "smart",
 	"can_lose": False, "heal_after": False, "gives_exp": True, "prize_money": 0,
 	"prize_per_level": 60, "start_message": False, "end_message": False, "switch": True,
+	"bag": True,
 	"team": [{"species": "sneasel", "level": 56}, {"species": "weezing", "level": 54},
 		{"species": "wobbuffet", "level": 54}, {"species": "noctowl", "level": 55}],
 }
@@ -512,6 +524,7 @@ def main():
 		"dragons_den_ysolde": ysolde_scene(),
 		"dragons_den_altar": altar_scene(),
 	}
+	with_moves(CENERE)
 	trainers = {YSOLDE_ID: YSOLDE, CENERE_ID: CENERE}
 	for trainer_id, (name, klass, _sprite, prize, team, lines) in TRAINERS.items():
 		before, defeated, after = lines
@@ -591,6 +604,7 @@ def main():
 	write_interiors(dialogues, cutscenes)
 	write_encounters()
 	patch_elder()
+	patch_act2_trainers()
 	write_json(os.path.join(DATA, "trainers", "johp3.json"), trainers)
 	write_json(os.path.join(DATA, "dialogues", "johp3_blackthorn.json"), dialogues)
 	write_json(os.path.join(DATA, "cutscenes", "johp3_blackthorn.json"), cutscenes)
@@ -620,6 +634,26 @@ def write_interiors(dialogues, cutscenes):
 	})
 	dialogues[ident] = {"cutscene": ident}
 	cutscenes[ident] = item_scene(ident, "max_repel", 1, flag, True)
+
+
+def with_moves(trainer):
+	for member in trainer["team"]:
+		if member["species"] in MOVE_SETS:
+			member["moves"] = MOVE_SETS[member["species"]]
+	trainer["switch"] = True
+	trainer["bag"] = True
+
+
+def patch_act2_trainers():
+	"""JH-78 : Brace (JOH6) et Cenere des Îles Tourbillon (JOH7) restent au-delà de 80 % contre une
+	équipe mixte : attaques choisies, sac et changements. Niveaux inchangés. Relançable."""
+	for file, ident in (("mahogany_hideout_b3f.json", "mahogany_hideout_b3f_brace"),
+			("joh7.json", "whirl_islands_cenere")):
+		path = os.path.join(DATA, "trainers", file)
+		with open(path, encoding="utf-8") as handle:
+			data = json.load(handle)
+		with_moves(data[ident])
+		write_json(path, data)
 
 
 def patch_elder():
