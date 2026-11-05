@@ -81,7 +81,7 @@ func test_female_grunts_have_their_own_class() -> void:
 	# et Cenere (apparence rocket_grunt_f [D]). JOH6 : + 3 (péage Q, alarme 2, Sbire S).
 	# JOH8 : + le Sbire W de la Tour Carillon. JOH9 : + le Sbire Y du 1F du Mont Argenté.
 	# Cenere a sa propre carte depuis le 2026-11-05 (buste VS et sprites peints) : 2 de moins.
-	assert_eq(female, 25, "25 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+	assert_eq(female, 27, "27 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
 
 
 func test_every_grand_portrait_is_in_the_catalog() -> void:

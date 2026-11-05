@@ -5,7 +5,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "aoki",
+		"sprite": "aieule",
 		"dialogue": "blackthorn_elder_house_aieule",
 		"unless": [
 			"johto_clan_guardians_done"
@@ -17,7 +17,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "aoki",
+		"sprite": "aieule",
 		"dialogue": "blackthorn_elder_house_aieule",
 		"if": [
 			"johto_clan_trial_done"

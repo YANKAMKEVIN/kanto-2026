@@ -5,7 +5,7 @@
 			14
 		],
 		"facing": "right",
-		"sprite": "aoki",
+		"sprite": "aieule",
 		"if": [
 			"johto_clan_guardians_done"
 		],
@@ -20,7 +20,7 @@
 			8
 		],
 		"facing": "down",
-		"sprite": "cooltrainer_f",
+		"sprite": "ysolde",
 		"dialogue": "dragons_den_sanctuary_ysolde"
 	},
 	"cenere": {
@@ -29,7 +29,7 @@
 			5
 		],
 		"facing": "left",
-		"sprite": "rocket_grunt_f",
+		"sprite": "cenere",
 		"if": [
 			"johto_stones_awakened"
 		],

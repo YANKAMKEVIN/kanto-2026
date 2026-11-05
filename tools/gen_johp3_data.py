@@ -123,8 +123,8 @@ CENERE = {
 }
 
 # --- Sprites [D] ------------------------------------------------------------------------------
-ROLE_SPRITES = {"messager": "courier", "aieule": "aoki", "ysolde": "cooltrainer_f",
-	"cenere": "rocket_grunt_f"}
+ROLE_SPRITES = {"messager": "corentin", "aieule": "aieule", "ysolde": "ysolde",
+	"cenere": "cenere"}
 DRAGONITE_SPRITE = "pokemon/dragonite"
 SNEASEL_SPRITE = "pokemon/sneasel"
 

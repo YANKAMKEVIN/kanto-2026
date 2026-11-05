@@ -332,7 +332,7 @@
 				"steps": [
 					{
 						"spawn": "cenere",
-						"sprite": "rocket_grunt_f",
+						"sprite": "cenere",
 						"cell": [
 							17,
 							5
