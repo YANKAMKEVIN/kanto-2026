@@ -10,7 +10,7 @@ extends SceneTree
 ## (une par case, `<id>`, `<id>_1`…), panneaux, examens, déclencheurs, bâtiments du kit peint [D],
 ## aplats provisoires (pompes, socle) [D], eau pêchable d'Irisia, lampes de nuit, et les décors qui
 ## suivent les drapeaux ([FlagGate]) : les deux gués du B1F (eau qui bloque jusqu'à leur vanne, §8.2)
-## et le bateau noir (Irisia et ouverture du B1F, jusqu'à `johto_stone_tide_lost`).
+## et le bateau noir peint (Irisia et ouverture du B1F, jusqu'à `johto_stone_tide_lost`).
 ## PNJ, Dresseurs, objets, textes, scènes : `tools/gen_johp2_data.py`. **Aucun nom d'autoload** dans
 ## ce fichier ni dans ce qu'il charge (mémoire « Outils sans autoload »).
 ##
@@ -103,15 +103,19 @@ const FLATS: Dictionary = {
 	"tide_cave_b1f": [["Socle", Rect2i(4, 11, 2, 1), Color(0.5, 0.5, 0.54), false]],
 }
 ## Bateaux, silhouettes provisoires [D] : (carte) → [nœud, rectangle de cases, couleur, drapeaux
-## « sauf »]. Le bateau noir d'Irisia et celui de l'ouverture du B1F (animé par la scène du socle).
+## « sauf »].
 const BOATS: Dictionary = {
-	"cianwood_city": [
-		["Goeland", Rect2i(31, 13, 3, 4), Color(0.72, 0.62, 0.45), []],
-		["BateauNoir", Rect2i(23, 26, 6, 2), Color(0.08, 0.08, 0.1), [&"johto_stone_tide_lost"]],
-	],
-	"tide_cave_b1f": [
-		["BateauNoir", Rect2i(0, 11, 2, 2), Color(0.08, 0.08, 0.1), [&"johto_stone_tide_lost"]],
-	],
+	"cianwood_city": [["Goeland", Rect2i(31, 13, 3, 4), Color(0.72, 0.62, 0.45), []]],
+}
+## Bateau noir peint (480 px, proue à gauche), jusqu'à son drapeau : (carte) → pied gauche en cases,
+## largeur montée en pixels depuis la poupe (0 = le navire entier). Au large d'Irisia ; à l'ouverture
+## du B1F (2 cases), seule sa poupe se voit : la scène du socle l'anime (`Decor/BateauNoir`).
+const BLACK_BOAT_TEXTURE: String = "res://assets/world/props/prop_bateau_noir_01.png"
+const BLACK_BOAT_MATERIAL: String = "res://game/world/lighting/materials/world_object.tres"
+const BLACK_BOAT_FLAG: StringName = &"johto_stone_tide_lost"
+const BLACK_BOATS: Dictionary = {
+	"cianwood_city": [Vector2(23.5, 27.9), 0],
+	"tide_cave_b1f": [Vector2(0.0, 13.0), 192],
 }
 ## Lampes de nuit [D] : (carte) → cases (centre du halo au milieu de la case).
 const NIGHT_GLOWS: Dictionary = {
@@ -195,6 +199,7 @@ func _build(spec: Dictionary) -> void:
 	_add_flats(spec, root)
 	_add_fords(spec, plan, root)
 	_add_boats(spec, root)
+	_add_black_boat(spec, root)
 	_add_night_glows(spec, root)
 	root.set(&"blocked_cells", blocked)
 	_save(root, MAPS_DIR + "%s.tscn" % spec["id"])
@@ -469,6 +474,32 @@ func _add_boats(spec: Dictionary, root: Node) -> void:
 		var rect: Rect2i = entry[1]
 		_attach(root, gate, _polygon("Coque", Vector2(rect.position) * TILE, Vector2(rect.size) * TILE,
 			entry[2]))
+
+
+## Bateau noir peint, [FlagGate] sous `Decor` : visuel seulement (ses cases sont de l'eau bloquée).
+func _add_black_boat(spec: Dictionary, root: Node) -> void:
+	if not BLACK_BOATS.has(String(spec["id"])):
+		return
+	var entry: Array = BLACK_BOATS[String(spec["id"])]
+	var foot: Vector2 = entry[0]
+	var stern: int = entry[1]
+	var texture := load(BLACK_BOAT_TEXTURE) as Texture2D
+	if texture == null:
+		_fail("image absente : %s (lancer --import)" % BLACK_BOAT_TEXTURE)
+		return
+	var gate := _gate(root, root.get_node(^"Decor"), "BateauNoir", [], [BLACK_BOAT_FLAG])
+	var sprite := Sprite2D.new()
+	sprite.name = "Coque"
+	sprite.texture = texture
+	sprite.material = load(BLACK_BOAT_MATERIAL)
+	sprite.centered = false
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var size := texture.get_size()
+	if stern > 0:
+		sprite.region_enabled = true
+		sprite.region_rect = Rect2(size.x - stern, 0, stern, size.y)
+	sprite.position = foot * TILE - Vector2(0, size.y)
+	_attach(root, gate, sprite)
 
 
 func _gate(root: Node, parent: Node, node_name: String, if_flags: Array[StringName],

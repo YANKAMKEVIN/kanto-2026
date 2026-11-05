@@ -167,6 +167,11 @@ func test_black_boat_follows_the_flag() -> void:
 	assert_true(boat.is_open(flags), "le bateau noir à l'ancre")
 	flags.set_flag(&"johto_stone_tide_lost")
 	assert_false(boat.is_open(flags), "parti après le revers")
+	for id: StringName in [&"cianwood_city", &"tide_cave_b1f"]:
+		var hull := _map(id).get_node(^"Decor/BateauNoir/Coque") as Sprite2D
+		assert_not_null(hull, "%s : bateau peint" % id)
+		if hull != null:
+			assert_eq(hull.texture.resource_path, "res://assets/world/props/prop_bateau_noir_01.png")
 
 
 func test_cianwood_has_fishable_water_on_its_shores() -> void:
