@@ -35,6 +35,15 @@ func _go(goal: Vector2i) -> void:
 	assert_eq(_play.player.get_cell(), goal, "arrivée")
 
 
+## Équipe réduite à un Mewtwo N90 (Surf) : gagne le faux archéologue et son Démolosse.
+func _mighty() -> void:
+	var champion := PokemonFactory.create(_play.boot.get_pokemon_data(), &"mewtwo", 90, GameState.rng)
+	champion.moves.clear()
+	champion.moves.append(MoveSlot.new(&"surf", 25))
+	GameState.party.clear()
+	GameState.party.add(champion)
+
+
 func _step_scene(direction: Vector2i) -> void:
 	await _play.step(direction)
 	await _play.run_scene()
@@ -48,7 +57,7 @@ func _said(text: String) -> bool:
 
 
 func test_from_route_36_to_the_stone_and_back_to_heloise() -> void:
-	await _play.start(STARTS + "johto_alph_route_36.json", _play.make_strong)
+	await _play.start(STARTS + "johto_alph_route_36.json", _mighty)
 	# P-2 : le premier passage de la barrière de chantier, en descendant.
 	await _go(Vector2i(40, 16))
 	await _step_scene(Vector2i.DOWN)
@@ -92,7 +101,7 @@ func test_from_route_36_to_the_stone_and_back_to_heloise() -> void:
 	assert_eq(_play.map_id(), &"alph_chamber")
 	# Le faux archéologue (P-6, P-7), la pierre (P-8).
 	assert_not_null(_play.boot.get_map().get_npc(&"faux_archeologue"))
-	_play.make_strong() # équipe neuve : le chemin l'a usée.
+	_mighty()
 	await _go(Vector2i(6, 8))
 	await _step_scene(Vector2i.UP)
 	assert_true(_play.events.has("battle"))
