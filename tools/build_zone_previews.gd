@@ -49,6 +49,8 @@ const AUTO_MAPS: Dictionary[String, String] = {
 	"slowpoke_well": "slowpoke_well_b2f",
 	# JOH7 : les îles par leur B1F (lac et plate-forme de Suicune).
 	"whirl_islands": "whirl_islands_b1f",
+	# JOH8 : la Tour Carillon par son sommet.
+	"bell_tower": "bell_tower_roof",
 }
 ## Point visé, en fraction du rectangle de la couche Ground (0,5 ; 0,5 = centre), quand le centre
 ## tombe sur un lieu peu parlant [D].

@@ -234,7 +234,9 @@ func test_libraries_load_without_error() -> void:
 ## joh-10 ; « Le lac est fou. » : grille du lac), mot pour mot.
 func test_every_validated_line_is_in_the_dossiers() -> void:
 	var source := _expected(FileAccess.get_file_as_string(DOSSIER_07) + "\n"
-		+ FileAccess.get_file_as_string(DOSSIER_10) + "\n" + FileAccess.get_file_as_string(GRILLE_LAC))
+		+ FileAccess.get_file_as_string(DOSSIER_10) + "\n" + FileAccess.get_file_as_string(GRILLE_LAC)
+		# JOH8 : H-38, la variante de Diane après le sommet.
+		+ "\n" + FileAccess.get_file_as_string("res://docs/design/dossier-joh-09-tour-carillon.md"))
 	var checked := 0
 	for id: StringName in _generated_ids():
 		var dialogue := _dialogues.get_dialogue(id)
@@ -263,7 +265,8 @@ func test_full_texts_follow_the_dossier() -> void:
 		"Hé ! Qui t'a permis de… / … Tant pis. De toute façon, Brace t'attend."), "C-29")
 	assert_eq(_said(&"lake_of_rage_pecheur", 1), "Le lac est fou.", "grille du lac")
 	assert_eq(_said(&"week_saturday_samuel", 1), "À samedi, sur les sentiers !")
-	assert_eq(_said(&"week_sunday_diane", 1), "Reviens un dimanche écouter les cloches.")
+	# JOH8 : H-38 en variante 1, la réplique de fin passe en 2.
+	assert_eq(_said(&"week_sunday_diane", 2), "Reviens un dimanche écouter les cloches.")
 
 
 func test_panels_keep_title_and_text_on_one_page() -> void:

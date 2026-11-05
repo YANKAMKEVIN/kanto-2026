@@ -154,12 +154,10 @@ func test_links_between_the_three_maps_and_the_coming_soon_exits() -> void:
 				labels[warp.coming_soon] = true
 				assert_true(_map(id).has_spawn(warp.target_spawn), "%s : retour sur %s" % [id,
 					warp.target_spawn])
-	for expected: String in ["Bois de la Tour"]:
-		assert_true(labels.has(expected), expected)
 	# JOH6 : la Route 42 et la Tour Cendrée existent, leurs passages sont réels ; JOH3 : la Route 37
-	# aussi (le sud de Rosalia y mène, une arrivée par case).
+	# aussi (le sud de Rosalia y mène, une arrivée par case) ; JOH8 : le Bois de la Tour, au nord.
 	for pair: Array in [["Route 42", &"route_42"], ["Tour Cendrée", &"burned_tower_1f"],
-			["Route 37", &"route_37"]]:
+			["Route 37", &"route_37"], ["Bois de la Tour", &"bell_tower_woods"]]:
 		assert_eq(labels.has(pair[0]), not MapCatalog.has_map(pair[1]), pair[0])
 	if not MapCatalog.has_map(&"olivine_city"):
 		assert_true(labels.has("Oliville"), "Oliville à venir (JOH1)")

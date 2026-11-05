@@ -91,8 +91,16 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/16",
 	"story/objectives.json/17",
 	"story/objectives.json/18",
+	# JOH8 : objectifs du Menu [D] (doyen, Tour Carillon, retour à Rosalia), JOH8-Q1.
+	"story/objectives.json/19",
+	"story/objectives.json/20",
+	"story/objectives.json/21",
 	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
+	# JOH8 : examens de la Tour Carillon (JOH8-Q1).
+	"dialogues/joh8_bell_tower.json/bell_tower_1f_autel",
+	"dialogues/joh8_bell_tower.json/bell_tower_roof_cloche",
+	"dialogues/joh8_bell_tower.json/bell_tower_roof_rambarde",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",
 	"dialogues/johto_systems.json/trade_terminal_item/variants/0",
 	"pokedex/johto.json/species/chikorita",

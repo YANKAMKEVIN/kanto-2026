@@ -24,8 +24,10 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 23 (dossier 26 §8) : Dents d'Or, puis Koga, devant eux.
 	# Chapitre Johto (JOH1, QA A17) : ses cinq objectifs [D] en tête, le plus avancé d'abord.
 	# JOH3 (QA A17) : ses deux objectifs [D] devant eux ; JOH4 (QA A17) : ses quatre devant ceux-là.
-	# JOH5 : la Tour Radio (libérer, redescendre) et l'accroche de l'acte 2, devant ; JOH6 : ses cinq devant.
-	assert_eq(library.get_ids(), [&"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
+	# JOH5 : la Tour Radio (libérer, redescendre) et l'accroche de l'acte 2, devant ; JOH6 : ses cinq devant ;
+	# JOH8 (QA A17) : ses trois objectifs [D] en tête (le doyen, la Tour Carillon, le retour).
+	assert_eq(library.get_ids(), [&"report_to_ecruteak_elder", &"climb_bell_tower",
+		&"see_ecruteak_elder", &"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
 		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"leave_radio_tower", &"free_radio_tower",
 		&"talk_to_kurt_in_well", &"take_brace_papers",
 		&"clear_slowpoke_well", &"meet_kurt", &"search_underground", &"reach_goldenrod",

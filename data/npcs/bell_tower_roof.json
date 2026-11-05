@@ -1,0 +1,82 @@
+{
+	"dante": {
+		"cell": [
+			9,
+			5
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"dialogue": "bell_tower_roof_dante",
+		"turn_to_player": false,
+		"unless": [
+			"johto_dante_fled_1"
+		]
+	},
+	"entei": {
+		"cell": [
+			12,
+			7
+		],
+		"facing": "down",
+		"sprite": "pokemon/entei",
+		"dialogue": "bell_tower_entei",
+		"verb": "observe",
+		"turn_to_player": false,
+		"unless": [
+			"johto_entei_done"
+		]
+	},
+	"ho_oh": {
+		"cell": [
+			9,
+			5
+		],
+		"facing": "down",
+		"sprite": "pokemon/ho_oh",
+		"dialogue": "bell_tower_ho_oh",
+		"verb": "observe",
+		"turn_to_player": false,
+		"if": [
+			"johto_entei_done"
+		],
+		"unless": [
+			"johto_ho_oh_done"
+		]
+	},
+	"plume": {
+		"cell": [
+			9,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "bell_tower_wing",
+		"verb": "take",
+		"turn_to_player": false,
+		"if": [
+			"johto_ho_oh_done"
+		],
+		"unless": [
+			"got_rainbow_wing"
+		]
+	},
+	"ho_oh_retour": {
+		"cell": [
+			9,
+			5
+		],
+		"facing": "down",
+		"sprite": "pokemon/ho_oh",
+		"dialogue": "bell_tower_ho_oh_return",
+		"verb": "observe",
+		"turn_to_player": false,
+		"if": [
+			"johto_chapter_done",
+			"johto_ho_oh_done"
+		],
+		"unless": [
+			"johto_ho_oh_caught",
+			"johto_ho_oh_return_done"
+		]
+	}
+}

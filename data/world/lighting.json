@@ -541,6 +541,10 @@
 		"goldenrod_radio_tower_3f": "office",
 		"goldenrod_radio_tower_4f": "office",
 		"goldenrod_radio_tower_5f": "office",
-		"goldenrod_radio_tower_elevator": "office"
+		"goldenrod_radio_tower_elevator": "office",
+		"bell_tower_woods": "johto_auto",
+		"bell_tower_1f": "tower",
+		"bell_tower_2f": "tower",
+		"bell_tower_roof": "johto_auto"
 	}
 }

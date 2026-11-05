@@ -48,5 +48,24 @@
 		"unless": [
 			"got_burned_tower_b1f_peau_metal"
 		]
+	},
+	"entei_retour": {
+		"cell": [
+			10,
+			8
+		],
+		"facing": "down",
+		"sprite": "pokemon/entei",
+		"dialogue": "joh8_entei_return",
+		"verb": "observe",
+		"turn_to_player": false,
+		"if": [
+			"johto_chapter_done",
+			"johto_entei_done"
+		],
+		"unless": [
+			"johto_entei_caught",
+			"johto_entei_return_done"
+		]
 	}
 }

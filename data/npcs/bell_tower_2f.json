@@ -1,0 +1,40 @@
+{
+	"hiroshi": {
+		"cell": [
+			3,
+			8
+		],
+		"facing": "right",
+		"sprite": "channeler",
+		"dialogue": "bell_tower_2f_hiroshi"
+	},
+	"sbire_w": {
+		"cell": [
+			16,
+			9
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "bell_tower_grunt_w_after",
+		"trainer": {
+			"id": "bell_tower_grunt_w",
+			"sight": 3,
+			"before": "bell_tower_grunt_w_before",
+			"defeated": "bell_tower_grunt_w_defeated"
+		}
+	},
+	"pp_plus": {
+		"cell": [
+			12,
+			9
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "bell_tower_2f_pp_plus",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_bell_tower_2f_pp_plus"
+		]
+	}
+}

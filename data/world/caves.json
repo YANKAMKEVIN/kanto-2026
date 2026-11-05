@@ -63,6 +63,10 @@
 		"whirl_islands": {
 			"maps": ["whirl_islands_1f", "whirl_islands_b1f", "whirl_islands_b2f"],
 			"escape": { "map": "route_41", "spawn": "from_whirl", "facing": "left" }
+		},
+		"bell_tower": {
+			"maps": ["bell_tower_1f", "bell_tower_2f"],
+			"escape": { "map": "bell_tower_woods", "spawn": "retour_tour", "facing": "down" }
 		}
 	}
 }

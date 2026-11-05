@@ -72,7 +72,9 @@
 		"route_34": "road_to_cerulean",
 		"ilex_forest": "viridian_forest",
 		"azalea_town": "pewter_city",
-		"slowpoke_well": "mt_moon"
+		"slowpoke_well": "mt_moon",
+		"bell_tower_woods": "viridian_forest",
+		"bell_tower": "pokemon_tower"
 	},
 	"maps": {
 		"celadon_center": "pokemon_center",

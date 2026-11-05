@@ -43,6 +43,17 @@
 			},
 			{
 				"if": [
+					"week_sunday_gift",
+					"johto_ho_oh_seen"
+				],
+				"pages": [
+					"Ce matin, les cloches\nont sonné toutes seules.",
+					"Je n'y ai même pas touché.",
+					"Reviens un dimanche\nécouter les cloches."
+				]
+			},
+			{
+				"if": [
 					"week_sunday_gift"
 				],
 				"pages": [

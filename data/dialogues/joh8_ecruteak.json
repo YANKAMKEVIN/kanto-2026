@@ -1,0 +1,46 @@
+{
+	"joh8_sage_blesse": {
+		"speaker": "Sage",
+		"pages": [
+			"Il est venu cette nuit,\navec des hommes en noir.",
+			"Un Pokémon rouge hurlait\ndans une cage de feu.",
+			"Va voir le doyen. Vite."
+		]
+	},
+	"joh8_habitante_aube": {
+		"speaker": "Habitante",
+		"pages": [
+			"Ce matin, le ciel était\nplein de couleurs.",
+			"Ma grand-mère pleurait. Elle disait\nqu'elle l'attendait depuis toujours."
+		]
+	},
+	"joh8_entei_return": {
+		"cutscene": "joh8_entei_return"
+	},
+	"joh8_orme": {
+		"speaker": "Orme",
+		"variants": [
+			{
+				"unless": [
+					"johto_orme_silver_told"
+				],
+				"set": [
+					"johto_orme_silver_told",
+					"johto_act3"
+				],
+				"pages": [
+					"{player} ! J'ai vu la lumière\ndepuis Doublonville !",
+					"Le Mont Argenté… C'est la montagne\nla plus dangereuse entre Johto et Kanto.",
+					"Le chemin part d'Acajou, vers le nord.\nPrépare-toi bien."
+				]
+			},
+			{
+				"pages": [
+					"Raikou, Suicune, Entei libres.\nLugia et Ho-Oh sont apparus.",
+					"Il ne reste plus que Dante.",
+					"Je préviens Chen. Lui saura peut-être\nqui t'attend là-haut."
+				]
+			}
+		]
+	}
+}

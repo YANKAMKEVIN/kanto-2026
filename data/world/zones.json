@@ -481,6 +481,17 @@
 			"name": "Tour Radio", "kind": "place", "region": "johto", "subtitle": "Doublonville",
 			"maps": ["goldenrod_radio_tower_1f", "goldenrod_radio_tower_2f", "goldenrod_radio_tower_3f", "goldenrod_radio_tower_4f", "goldenrod_radio_tower_5f", "goldenrod_radio_tower_elevator"],
 			"description": "La Tour Radio de Doublonville, prise par la Team Rocket."
+		},
+		"bell_tower_woods": {
+			"name": "Bois de la Tour", "kind": "place", "region": "johto", "maps": ["bell_tower_woods"],
+			"subtitle": "Rosalia — Tour Carillon",
+			"description": "Un bois d'érables, au pied de la Tour Carillon."
+		},
+		"bell_tower": {
+			"name": "Tour Carillon", "kind": "place", "region": "johto",
+			"maps": ["bell_tower_1f", "bell_tower_2f", "bell_tower_roof"],
+			"subtitle": "Rosalia",
+			"description": "Une tour sacrée, où sonnent les cloches de l'aube."
 		}
 	}
 }
