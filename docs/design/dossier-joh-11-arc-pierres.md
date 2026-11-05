@@ -7,8 +7,8 @@
 > [`dossier-joh-07-acajou.md`](dossier-joh-07-acajou.md)). Écrit par Claude le 2026-11-04.
 >
 > **Statut : arbitrages JH-61 à JH-79 validés par Kevin le 2026-11-04** (recommandations retenues, §18) ;
-> **textes du §17 validés le 2026-11-05.** Valeurs **[D]** = défauts. Grilles et vues peintes à faire, à
-> valider avant tout code. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
+> **textes du §17, grilles et vues générales validés le 2026-11-05.** Valeurs **[D]** = défauts. **Dossier verrouillé** ;
+> code selon `docs/tech/jalon-joh-pierres.md`. Rien n'est repris tel quel d'Or/Argent : l'intrigue, les énigmes, les personnages et
 > les plans de l'arc sont neufs ; seuls les noms de lieux viennent de la région.
 
 ## 0. Décisions de Kevin (2026-11-04)
@@ -103,7 +103,7 @@ sages l'attendent : **début de l'acte 2**, sans rien changer à la suite.
 ```
 
 - **Ruines d'Alpha** : au sud de la Route 36, par une ouverture neuve à l'est de l'embranchement
-  (≈ (39..41, 19)) ; une barrière de chantier la ferme jusqu'à `johto_stones_quest`.
+  ((40..41, 19), variante ARC de `route_36.txt`) ; une barrière de chantier la ferme jusqu'à `johto_stones_quest`.
 - **Irisia** : île à l'ouest des Routes 40-41. Atteinte **seulement** en bateau pendant l'arc ; le Surf
   ne s'y rend pas (dossier JOH-08 §1 inchangé).
 - **Ébènelle** : à l'est d'Acajou, derrière la montagne, **sans lien à pied** avec Acajou ni la Route 42.
@@ -122,7 +122,13 @@ sages l'attendent : **début de l'acte 2**, sans rien changer à la suite.
 | JOHP2 | **Grotte de la Marée B1F** | ≈ 20 × 16 | Deux vannes, le bassin, le socle vide |
 | JOHP3 | **Ébènelle** | ≈ 32 × 30 | Village de montagne ; Centre, maison de l'Aïeule, 1 maison, aire d'atterrissage ; entrée de l'Antre |
 | JOHP3 | **Antre du Dragon 1F** | ≈ 28 × 24 | Trois salles des Gardiens, une sur chaque côté ; sol praticable partout (pas de Surf) |
-| JOHP3 | **Sanctuaire de l'Antre** | ≈ 22 × 18 | Ysolde, l'autel, le grand bassin en décor |
+| JOHP3 | **Sanctuaire de l'Antre** | ≈ 22 × 18 | Ysolde, l'autel, deux bassins en décor |
+
+**Grilles validées par Kevin le 2026-11-05** : `tools/plans/ruins_of_alph.txt`, `alph_tent.txt`, `alph_gallery.txt`,
+`alph_chamber.txt`, `goeland_deck.txt`, `cianwood_city.txt`, `tide_cave_1f.txt`, `tide_cave_b1f.txt`, `blackthorn_city.txt`,
+`dragons_den_1f.txt`, `dragons_den_sanctuary.txt`, variantes ARC de `route_36.txt`, `oliville.txt`, `rosalia.txt` ; contrôle
+`tools/art/plan_check_johp.py` ; plans annotés `reference/plans-johto/`. Les grilles font foi pour la géométrie. **Vues générales
+validées le 2026-11-05** : planches `reference/johp1-vues-v1.png` à `johp3-vues-v1.png`, écarts dans `fiches-assets/serie-johto-vues-acte1.md`.
 
 Total : **11 cartes neuves** plus 2 ou 3 intérieurs sur modèles de Johto (Centre d'Irisia, Centre
 d'Ébènelle, maisons). Retouches : Route 36 (ouverture sud), Oliville (bateau posé en objet sur le
@@ -189,7 +195,7 @@ ponton (40..41, 34..37), sans repeindre), Rosalia (aire d'atterrissage sur une p
 | 12 | Grotte B1F | **Chef de cale** (obligatoire) ; socle vide ; Cenere part (P-17 à P-19) | `johto_stone_tide_lost` |
 | 13 | Irisia, Oliville | Retour avec Goulven, qui envoie le joueur à Rosalia (P-19b) ; va-et-vient libre ensuite | — |
 | 14 | Rosalia | Corentin et son Dracolosse (P-20, P-21) ; le vol | `johto_clan_called` |
-| 15 | Ébènelle | L'Aïeule explique l'épreuve (P-22, P-23) | `johto_blackthorn_arrived` |
+| 15 | Ébènelle | L'Aïeule explique l'épreuve (P-22, P-23) ; l'Antre s'ouvre | `johto_blackthorn_arrived`, `johto_clan_trial_open` |
 | 16 | Antre 1F | Trois Gardiens, dans n'importe quel ordre | `johto_clan_guardians_done` |
 | 17 | Sanctuaire | **Ysolde** (obligatoire) ; Pierre Souffle (P-26, P-27) | `johto_clan_trial_done`, `johto_stone_breath` |
 | 18 | Sanctuaire | Cenere, l'autel, le réveil (§13) | `johto_stones_awakened` |
@@ -203,9 +209,9 @@ imposé par les drapeaux : voir JH-72.
 ## 7. Drapeaux **[D]**
 
 Neufs : `johto_stones_quest`, `johto_radio_office_done`, `johto_alph_met`, `johto_alph_tiles_done`,
-`johto_stone_memory`, `johto_ferry_open`, `johto_cianwood_arrived`, `johto_tide_valves_done`,
+`johto_stone_memory`, `johto_ferry_open`, `johto_cianwood_arrived`, `johto_tide_valve_1`, `johto_tide_valves_done`,
 `johto_stone_tide_lost`, `johto_clan_called`, `johto_blackthorn_arrived`,
-`johto_clan_guardians_done`, `johto_clan_trial_done`, `johto_stone_breath`, `johto_stones_awakened`,
+`johto_clan_trial_open`, `johto_clan_guardians_done`, `johto_clan_trial_done`, `johto_stone_breath`, `johto_stones_awakened`,
 `johto_cenere_defeated_arc`. Plus les gains de Dresseurs et objets habituels.
 
 Déplacés (mêmes noms) : `johto_team_returned`, `johto_act2`.
@@ -224,9 +230,8 @@ Déplacés (mêmes noms) : `johto_team_returned`, `johto_act2`.
 ### 8.2 Irisia (JOHP2)
 
 - **Goulven** : vieux passeur, bourru. Modèle `marin` existant ; le Goéland est un objet peint.
-- **Énigme** : les Sbires ont vidé le 1F avec des pompes. Au B1F, deux vannes changent le niveau de
-  l'eau (porte d'un `FlagGate`, comme les courants du JOH7), ce qui ouvre l'un ou l'autre chemin vers
-  le bassin. **Pas de Surf.**
+- **Énigme** : les Sbires ont vidé le 1F avec des pompes. Au B1F, deux vannes, l'une après l'autre, découvrent
+  chacune un gué (porte d'un `FlagGate`, comme les courants du JOH7) ; aucun blocage possible. **Pas de Surf.**
 - **Revers** (JH-62) : le socle est vide, Cenere s'enfuit. Le joueur gagne quand même un Super Bonbon
   et les objets de la Grotte, et le chef de cale reste un vrai combat.
 
@@ -547,10 +552,9 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 
 ## 19. Prochaines étapes
 
-1. ~~Arbitrages~~ (2026-11-04), ~~propagation au cadre et aux dossiers~~, ~~lot de textes~~ (2026-11-05).
-2. Grilles dans `tools/plans/`, puis vues générales peintes, validées avant tout code.
-3. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5 : JOHP0 (le Réveil),
-   JOHP1, JOHP2, JOHP3.
+1. ~~Arbitrages~~ (2026-11-04), ~~propagation au cadre et aux dossiers~~, ~~lot de textes~~ (2026-11-05),
+   ~~roadmap~~, ~~grilles, vues peintes et plan technique~~ (2026-11-05, validés par Kevin).
+2. Code selon `docs/tech/jalon-joh-pierres.md` : JOHP0 (le Réveil), JOHP1, JOHP2, JOHP3.
 
 ## 20. Annexe : textes encore en jeu jusqu'au JOHP3
 

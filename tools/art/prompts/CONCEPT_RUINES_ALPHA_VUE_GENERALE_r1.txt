@@ -1,0 +1,37 @@
+CONCEPT ART — VUE GÉNÉRALE : LES RUINES D'ALPHA, UN PLATEAU DE VIEILLES PIERRES DANS LA FORÊT (Kanto 2026, Chapitre Johto, arc des Pierres), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Un plateau herbeux entouré de forêt ; on y entre par le NORD (chemin du bord haut, au centre), sans autre sortie.
+Légende du plan :
+- vert très foncé = FORÊT DENSE et serrée, infranchissable (marges) ;
+- vert moyen = PRÉ praticable ;
+- beige = CHEMIN de terre, deux cases de large, du nord vers le centre, puis une croisée horizontale ;
+- vert-jaune = HAUTES HERBES en deux poches (en haut à droite, en bas à gauche) ;
+- rectangle brun à gauche avec une porte = une TENTE D'ARCHÉOLOGUE de toile écrue, grande, tendue sur des piquets, avec une entrée au sud (PAS une maison) ;
+- grand bloc de pierres grises au sud = un TEMPLE ENTERRÉ très ancien : toit de grands blocs moussus au ras du sol, 12 cases sur 6 ;
+- murets de pierre gris (rangée devant le temple, deux autres segments) = MURETS et PILIERS en ruine, couverts de signes gravés abstraits ;
+- deux cases sombres au milieu de la façade du temple = un ESCALIER DE PIERRE qui descend sous terre ;
+- grands disques vert sombre = ARBRES repères isolés ;
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale d'Écorcia, un autre lieu du même chapitre, déjà peint en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, même pelouse, même saturation, même échelle. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le lieu, comme le plan.
+
+AMBIANCE — « un lieu plus vieux que Johto » : silence, herbes hautes, pierres couvertes de signes gravés que personne ne lit plus, une tente de fouilles posée là. Palette : PIERRE grise et moussue, PRÉ vert tendre, TOILE écrue, FORÊT vert profond.
+LUMIÈRE NE (neutre) : lumière diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+NATURE DENSE, OBJETS RARES : les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucune créature, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre est permis), signature, filigrane, cadre, interface ; tout bâtiment non prévu par le plan ; maison ; lettres ou alphabet lisibles sur les pierres (seulement des signes abstraits, ni latins ni de vraies écritures) ; eau ; neige ; arbres orange ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un plateau de ruines très anciennes au milieu de la forêt, une tente d'archéologue à l'ouest, et l'escalier d'un temple enterré au sud.

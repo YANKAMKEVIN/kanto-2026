@@ -1,0 +1,38 @@
+CONCEPT ART — VUE GÉNÉRALE : ÉBÈNELLE, LE VILLAGE DU CLAN DES DRAGONS (Kanto 2026, Chapitre Johto, arc des Pierres), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Un village de montagne adossé à de hautes falaises au nord et à l'est, sans route : une aire pavée au sud sert d'aire d'atterrissage.
+Légende du plan :
+- vert très foncé = SAPINS denses (marges ouest et sud) ;
+- gris-beige = FALAISES de haute montagne (nord et est) ;
+- vert moyen = PELOUSE d'altitude ;
+- damier beige-gris = PAVÉS : une grande AIRE carrée au sud, une rue verticale, une rue horizontale jusqu'à la falaise est ;
+- vert-jaune = HAUTES HERBES en deux poches ;
+- toit brun-rouge au centre = la MAISON DE L'AÏEULE, la plus grande du village, 8 cases sur 6, ancienne, poutres sombres, toit de tuiles noires ;
+- toit ROUGE, façade blanche, emblème rond = le CENTRE POKÉMON ;
+- toit brun-rouge à gauche = une MAISON de pierre sombre et de bois ;
+- trou sombre à droite dans la falaise = la BOUCHE DE L'ANTRE, une grande bouche de grotte encadrée de deux piliers de pierre taillés ;
+- grands disques vert sombre = SAPINS repères ;
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale d'Acajou, un autre lieu du même chapitre, déjà peint en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, même pelouse, même saturation, même échelle ; le CENTRE POKÉMON est EXACTEMENT le même bâtiment. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le lieu, comme le plan.
+
+AMBIANCE — « un village qui n'a jamais eu besoin de route » : pierre sombre, tuiles noires, bannières unies sans motif, grand silence de montagne. Palette : PIERRE sombre, TUILES noires, SAPINS vert profond, touches de rouge sombre.
+LUMIÈRE NE (neutre) : lumière diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, AUCUNE courbe, aucun segment en diagonale.
+NATURE DENSE, OBJETS RARES : les zones praticables restent dégagées ; aucun objet décoratif ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucune créature, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre est permis), signature, filigrane, cadre, interface ; statue, Arène, route vers l'extérieur, neige, créature ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : un village de pierre sombre sous les falaises, une aire pavée au sud, et la bouche de l'Antre à l'est.

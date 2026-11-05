@@ -117,6 +117,24 @@ JALONS: dict[str, list[tuple]] = {
 		("POSTE_ROUTE28", "route_28_gate", PAYSAGE, "interieur", "Poste de la Route 28 (10 × 8)",
 			{"K": "mur", "X": "sortie", "N": "sortie"}),
 	],
+	# Arc des Pierres (dossier JOH-11) : « N » = tente, « K » = temple enterré aux Ruines ; « S » = maison de l'Aïeule.
+	"johp1": [
+		("RUINES_ALPHA", "ruins_of_alph", PAYSAGE, "exterieur", "Ruines d'Alpha (36 × 30)", {"K": "ruine", "E": "escalier"}),
+		("TENTE_HELOISE", "alph_tent", PAYSAGE, "interieur", "Tente d'Héloïse (9 × 7)"),
+		("GALERIE_GLYPHES", "alph_gallery", PAYSAGE, "grotte", "Galerie des Glyphes (24 × 18)"),
+		("CHAMBRE_MEMOIRE", "alph_chamber", PAYSAGE, "grotte", "Chambre de la Mémoire (14 × 12)"),
+	],
+	"johp2": [
+		("GOELAND_PONT", "goeland_deck", PAYSAGE, "interieur", "Le Goéland, pont (16 × 8)"),
+		("IRISIA", "cianwood_city", PAYSAGE, "exterieur", "Irisia (32 × 28)", {"_fond": "mer", "E": "bouche"}),
+		("GROTTE_MAREE_1F", "tide_cave_1f", PAYSAGE, "grotte", "Grotte de la Marée 1F (26 × 20)"),
+		("GROTTE_MAREE_B1F", "tide_cave_b1f", PAYSAGE, "grotte", "Grotte de la Marée B1F (20 × 16)"),
+	],
+	"johp3": [
+		("EBENELLE", "blackthorn_city", PAYSAGE, "exterieur", "Ébènelle (32 × 30)", {"E": "bouche"}),
+		("ANTRE_1F", "dragons_den_1f", PAYSAGE, "grotte", "Antre du Dragon 1F (28 × 24)"),
+		("SANCTUAIRE", "dragons_den_sanctuary", PAYSAGE, "grotte", "Sanctuaire de l'Antre (22 × 18)"),
+	],
 }
 # Styles par défaut des lettres de bâtiment (toit, mur) ; les lettres spéciales ont leur dessin.
 BATIMENTS = {
@@ -199,6 +217,8 @@ COULEURS_GROTTE = {
 	"#": ROCHE, "o": EAU, ".": (150, 150, 158), "g": GALETS, "w": EAU, "d": EAU_PROFONDE, ">": EAU, "<": EAU,
 	"v": EAU, "^": EAU, "E": (200, 186, 150), "e": (200, 186, 150), "U": (150, 150, 158), "V": (150, 150, 158),
 	"R": (150, 150, 158), "F": (200, 226, 240),
+	# Arc des Pierres : t dalle à glyphes, S socle ou autel, a et b gués des vannes
+	"t": (196, 170, 110), "S": (214, 206, 180), "a": (92, 140, 186), "b": (92, 140, 186),
 }
 LEGENDE_EXT = [
 	("T", "forêt, bordure d'arbres"), ("R", "falaise, rochers"), (".", "pelouse"), ("=", "chemin"),
@@ -222,6 +242,7 @@ LEGENDE_GROTTE = [
 	("#", "paroi"), ("o", "rocher isolé"), (".", "îlot, corniche"), ("g", "plage de galets"), ("w", "eau surfable"),
 	("d", "eau profonde"), (">", "courant →"), ("v", "courant ↓"), ("E", "sortie à pied"), ("U", "échelle qui monte"),
 	("V", "échelle qui descend"), ("R", "caisse marquée R"), ("F", "cascade"), ("e", "sortie à pied (ouest)"),
+	("t", "dalle à glyphes"), ("S", "socle, autel"), ("a", "gué, vanne 1"), ("b", "gué, vanne 2"),
 ]
 # Pastilles de légende des caractères dont la couleur de fond n'est pas parlante (dessinés par-dessus).
 SWATCH = {
