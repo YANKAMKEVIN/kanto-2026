@@ -36,8 +36,10 @@ const PAINTED_BACK_DIR: String = "res://assets/sprites/pokemon/dos/"
 ## QA A17 du J30 : Roucarnage du rival tournait le dos) : retournés côté adversaire. Relevé refait
 ## sur les 151 en grand le 2026-10-27 (Kevin : « aucun Pokémon adverse ne doit regarder vers la
 ## droite ») : + 6, 96, 100, 104, 125, 131, 148 ; − 21, 55, 58, 83 (déjà tournés vers la gauche).
+## Johto (art des Pokémon de Johto, 2026-11-04, planche des 51) : Méganium, Héricendre, Wattouat,
+## Porygon2, Ho-Oh.
 const FACING_RIGHT: Array[int] = [2, 6, 9, 10, 18, 28, 30, 38, 53, 78, 96, 100, 104, 106, 118,
-	125, 131, 146, 147, 148]
+	125, 131, 146, 147, 148, 154, 155, 179, 233, 250]
 
 ## Boîtes visibles des images provisoires, par chemin (lues une fois).
 static var _boxes: Dictionary[String, Rect2] = {}
@@ -99,6 +101,13 @@ func height_m(species: StringName) -> float:
 		return BattleLayout.REFERENCE_HEIGHT_M
 	var entry := dex.get_species(species)
 	return entry.height if entry.height > 0.0 else BattleLayout.REFERENCE_HEIGHT_M
+
+
+## Vrai si le combat a une image pour [param species] de ce côté (peinte, officielle ou
+## provisoire) : la vérification à utiliser dans les tests de données des cartes, plutôt que
+## l'existence d'un sprite provisoire (ceux de Johto ont été retirés par la série Johto, 2026-11-04).
+func has_image(species: StringName, back: bool) -> bool:
+	return image(species, back)["texture"] != null
 
 
 ## Image de combat de [param species] : { texture (Texture2D ou null), box (Rect2 : boîte
@@ -205,5 +214,5 @@ func _dex_data() -> PokedexLibrary:
 		return _dex
 	if _shared_dex == null:
 		_shared_dex = PokedexLibrary.new()
-		_shared_dex.load_file()
+		_shared_dex.load_dir()
 	return _shared_dex
