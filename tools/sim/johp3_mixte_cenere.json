@@ -1,0 +1,137 @@
+{
+	"version": 1,
+	"title": "Cenere, Îles Tourbillon, équipe mixte (JH-78)",
+	"description": "Au plus 80 %.",
+	"seeds": 300,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Mixte N61",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 61
+				},
+				{
+					"species": "ampharos",
+					"level": 60
+				},
+				{
+					"species": "noctowl",
+					"level": 59
+				},
+				{
+					"species": "charizard",
+					"level": 62
+				},
+				{
+					"species": "pidgeot",
+					"level": 61
+				},
+				{
+					"species": "alakazam",
+					"level": 61
+				}
+			]
+		},
+		{
+			"name": "Mixte N63",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 63
+				},
+				{
+					"species": "ampharos",
+					"level": 62
+				},
+				{
+					"species": "noctowl",
+					"level": 61
+				},
+				{
+					"species": "charizard",
+					"level": 64
+				},
+				{
+					"species": "pidgeot",
+					"level": 63
+				},
+				{
+					"species": "alakazam",
+					"level": 63
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"whirl_islands_cenere": {
+			"name": "Cenere",
+			"class": "sbire_rocket_f",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 60,
+			"start_message": false,
+			"end_message": false,
+			"switch": true,
+			"team": [
+				{
+					"species": "weezing",
+					"level": 62
+				},
+				{
+					"species": "wobbuffet",
+					"level": 62
+				},
+				{
+					"species": "noctowl",
+					"level": 63
+				},
+				{
+					"species": "dewgong",
+					"level": 63
+				},
+				{
+					"species": "sneasel",
+					"level": 64
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Soin",
+			"center": true
+		},
+		{
+			"label": "whirl_islands_cenere",
+			"trainer": "whirl_islands_cenere"
+		},
+		{
+			"label": "Soin",
+			"center": true
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 3 Hyper Potions",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"hyper_potion": 3
+			},
+			"optional": []
+		},
+		{
+			"name": "naïf",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": []
+		}
+	]
+}

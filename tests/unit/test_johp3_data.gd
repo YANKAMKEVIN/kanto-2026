@@ -23,8 +23,9 @@ const TRAINERS: Dictionary = {
 		[&"dragonair", 40]]],
 	&"den_ysolde": ["Ysolde", [[&"gyarados", 42], [&"dragonair", 42], [&"dragonair", 43],
 		[&"kingdra", 43], [&"dragonite", 45]]],
-	&"den_cenere": ["Cenere", [[&"weezing", 54], [&"wobbuffet", 54], [&"noctowl", 55],
-		[&"sneasel", 56]]],
+	# Farfuret d'abord [D] : « Recommence, Farfuret » (P-32).
+	&"den_cenere": ["Cenere", [[&"sneasel", 56], [&"weezing", 54], [&"wobbuffet", 54],
+		[&"noctowl", 55]]],
 }
 ## Dossier §11 : table → (moments, terrain, niveaux, poids par espèce).
 const TABLES: Dictionary = {

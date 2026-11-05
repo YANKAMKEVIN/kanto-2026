@@ -49,6 +49,10 @@
 		"switch": true,
 		"team": [
 			{
+				"species": "sneasel",
+				"level": 56
+			},
+			{
 				"species": "weezing",
 				"level": 54
 			},
@@ -59,10 +63,6 @@
 			{
 				"species": "noctowl",
 				"level": 55
-			},
-			{
-				"species": "sneasel",
-				"level": 56
 			}
 		]
 	},

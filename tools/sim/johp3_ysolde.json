@@ -1,0 +1,147 @@
+{
+	"version": 1,
+	"title": "Ysolde, Sanctuaire de l'Antre (JOHP3)",
+	"description": "Cible 35–60 % du premier coup.",
+	"seeds": 300,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "6 Pokémon 37–39",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 39
+				},
+				{
+					"species": "ampharos",
+					"level": 38
+				},
+				{
+					"species": "noctowl",
+					"level": 38
+				},
+				{
+					"species": "togetic",
+					"level": 37
+				},
+				{
+					"species": "furret",
+					"level": 37
+				},
+				{
+					"species": "girafarig",
+					"level": 37
+				}
+			]
+		},
+		{
+			"name": "4 Pokémon 40–42",
+			"members": [
+				{
+					"species": "feraligatr",
+					"level": 42
+				},
+				{
+					"species": "ampharos",
+					"level": 41
+				},
+				{
+					"species": "noctowl",
+					"level": 41
+				},
+				{
+					"species": "togetic",
+					"level": 40
+				}
+			]
+		},
+		{
+			"name": "3 Pokémon 44",
+			"members": [
+				{
+					"species": "meganium",
+					"level": 44
+				},
+				{
+					"species": "ampharos",
+					"level": 44
+				},
+				{
+					"species": "noctowl",
+					"level": 44
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"den_ysolde": {
+			"name": "Ysolde",
+			"class": "topdresseuse",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 100,
+			"start_message": false,
+			"end_message": false,
+			"bag": true,
+			"switch": true,
+			"team": [
+				{
+					"species": "gyarados",
+					"level": 42
+				},
+				{
+					"species": "dragonair",
+					"level": 42
+				},
+				{
+					"species": "dragonair",
+					"level": 43
+				},
+				{
+					"species": "kingdra",
+					"level": 43
+				},
+				{
+					"species": "dragonite",
+					"level": 45
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Soin",
+			"center": true
+		},
+		{
+			"label": "den_ysolde",
+			"trainer": "den_ysolde"
+		},
+		{
+			"label": "Soin",
+			"center": true
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 3 Hyper Potions",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"hyper_potion": 3
+			},
+			"optional": []
+		},
+		{
+			"name": "naïf",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": []
+		}
+	]
+}

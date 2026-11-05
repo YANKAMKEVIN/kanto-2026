@@ -5,6 +5,8 @@ extends RefCounted
 
 ## Le Pokémon réveillé (déjà à jour : l'instance de l'équipe ou du Stockage).
 var pokemon: Pokemon
+## Place dans l'équipe ; −1 pour le Stockage.
+var party_index: int = -1
 ## Vrai pour une capture du Stockage (JH-71) : ni plan ni attaques à choisir.
 var stored: bool = false
 var level_before: int = 0

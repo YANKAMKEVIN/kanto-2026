@@ -1,0 +1,130 @@
+{
+	"version": 1,
+	"title": "Brace, repaire d'Acajou, équipe mixte (JH-78)",
+	"description": "Au plus 80 %.",
+	"seeds": 300,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Mixte N59",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 59
+				},
+				{
+					"species": "ampharos",
+					"level": 58
+				},
+				{
+					"species": "noctowl",
+					"level": 57
+				},
+				{
+					"species": "charizard",
+					"level": 60
+				},
+				{
+					"species": "pidgeot",
+					"level": 59
+				},
+				{
+					"species": "alakazam",
+					"level": 59
+				}
+			]
+		},
+		{
+			"name": "Mixte N61",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 61
+				},
+				{
+					"species": "ampharos",
+					"level": 60
+				},
+				{
+					"species": "noctowl",
+					"level": 59
+				},
+				{
+					"species": "charizard",
+					"level": 62
+				},
+				{
+					"species": "pidgeot",
+					"level": 61
+				},
+				{
+					"species": "alakazam",
+					"level": 61
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"mahogany_hideout_b3f_brace": {
+			"name": "Brace",
+			"class": "sbire_rocket",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 60,
+			"team": [
+				{
+					"species": "fearow",
+					"level": 60
+				},
+				{
+					"species": "arbok",
+					"level": 60
+				},
+				{
+					"species": "weezing",
+					"level": 61
+				},
+				{
+					"species": "houndoom",
+					"level": 62
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Soin",
+			"center": true
+		},
+		{
+			"label": "mahogany_hideout_b3f_brace",
+			"trainer": "mahogany_hideout_b3f_brace"
+		},
+		{
+			"label": "Soin",
+			"center": true
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 3 Hyper Potions",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"hyper_potion": 3
+			},
+			"optional": []
+		},
+		{
+			"name": "naïf",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": []
+		}
+	]
+}

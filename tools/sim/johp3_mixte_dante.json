@@ -1,0 +1,168 @@
+{
+	"version": 1,
+	"title": "Dante (1), équipe mixte (JH-78)",
+	"description": "Au plus 80 %.",
+	"seeds": 300,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Mixte N63",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 63
+				},
+				{
+					"species": "ampharos",
+					"level": 62
+				},
+				{
+					"species": "noctowl",
+					"level": 61
+				},
+				{
+					"species": "charizard",
+					"level": 64
+				},
+				{
+					"species": "pidgeot",
+					"level": 63
+				},
+				{
+					"species": "alakazam",
+					"level": 63
+				}
+			]
+		},
+		{
+			"name": "Mixte N65",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 65
+				},
+				{
+					"species": "ampharos",
+					"level": 64
+				},
+				{
+					"species": "noctowl",
+					"level": 63
+				},
+				{
+					"species": "charizard",
+					"level": 66
+				},
+				{
+					"species": "pidgeot",
+					"level": 65
+				},
+				{
+					"species": "alakazam",
+					"level": 65
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"bell_tower_dante_1": {
+			"name": "Dante",
+			"class": "gentleman",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 120,
+			"start_message": false,
+			"end_message": true,
+			"bag": true,
+			"switch": true,
+			"team": [
+				{
+					"species": "houndoom",
+					"level": 64,
+					"moves": [
+						"flamethrower",
+						"crunch",
+						"solar_beam",
+						"feint_attack"
+					]
+				},
+				{
+					"species": "magmar",
+					"level": 65,
+					"moves": [
+						"fire_blast",
+						"thunder_punch",
+						"psychic",
+						"confuse_ray"
+					]
+				},
+				{
+					"species": "scizor",
+					"level": 66,
+					"moves": [
+						"metal_claw",
+						"wing_attack",
+						"slash",
+						"swords_dance"
+					]
+				},
+				{
+					"species": "sneasel",
+					"level": 66,
+					"moves": [
+						"ice_beam",
+						"feint_attack",
+						"slash",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "arcanine",
+					"level": 68,
+					"moves": [
+						"flamethrower",
+						"crunch",
+						"body_slam",
+						"dig"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Soin",
+			"center": true
+		},
+		{
+			"label": "bell_tower_dante_1",
+			"trainer": "bell_tower_dante_1"
+		},
+		{
+			"label": "Soin",
+			"center": true
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 3 Hyper Potions",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"hyper_potion": 3
+			},
+			"optional": []
+		},
+		{
+			"name": "naïf",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": []
+		}
+	]
+}

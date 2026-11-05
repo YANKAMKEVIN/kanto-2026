@@ -100,12 +100,13 @@ YSOLDE = {
 		{"species": "dragonair", "level": 43}, {"species": "kingdra", "level": 43},
 		{"species": "dragonite", "level": 45}],
 }
+# Farfuret d'abord [D] : « Recommence, Farfuret » (P-32), « Cenere envoie Farfuret, le même » (§13.2).
 CENERE = {
 	"name": "Cenere", "class": "sbire_rocket_f", "ai": "smart",
 	"can_lose": False, "heal_after": False, "gives_exp": True, "prize_money": 0,
 	"prize_per_level": 60, "start_message": False, "end_message": False, "switch": True,
-	"team": [{"species": "weezing", "level": 54}, {"species": "wobbuffet", "level": 54},
-		{"species": "noctowl", "level": 55}, {"species": "sneasel", "level": 56}],
+	"team": [{"species": "sneasel", "level": 56}, {"species": "weezing", "level": 54},
+		{"species": "wobbuffet", "level": 54}, {"species": "noctowl", "level": 55}],
 }
 
 # --- Sprites [D] ------------------------------------------------------------------------------

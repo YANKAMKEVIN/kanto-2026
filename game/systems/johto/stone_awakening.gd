@@ -138,6 +138,7 @@ static func awaken(state: Node, zones: ZoneLibrary, data: PokemonData) -> Awaken
 	for pokemon: Pokemon in party:
 		var result := apply(pokemon, report.target, data)
 		if result != null:
+			result.party_index = (state.party as Party).index_of(pokemon)
 			report.party.append(result)
 	for pokemon: Pokemon in stored:
 		var result := apply_stored(pokemon, report.target, data)

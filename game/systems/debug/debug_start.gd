@@ -69,6 +69,8 @@ extends RefCounted
 ## « weekday » (JOH2, PNJ de la semaine) : jour imposé à l'horloge (« monday » … « sunday »).
 ## Passe systèmes 2 (S2E, départ `s2_fly`) : « discovered » : cartes déjà découvertes (villes
 ## ouvertes au Vol), ex. ["pallet_town", "pewter_city"] ; identifiants non vides.
+## Arc des Pierres, JOHP0 : « bond » (lien, évolutions du Réveil) et « met_map » (carte de
+## rencontre : captures du Stockage) sur un membre.
 ## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
 ## Pokémon choisi comme compagnon ; une espèce sans planche est effacée au premier rafraîchissement
 ## (comme en jeu, A-11).
@@ -110,7 +112,7 @@ const _RIVAL_PICK: Dictionary[StringName, StringName] = {
 	&"bulbasaur": &"charmander", &"charmander": &"squirtle", &"squirtle": &"bulbasaur",
 }
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
-	"favorite", "status", "status_turns"]
+	"favorite", "status", "status_turns", "bond", "met_map"]
 
 ## Carte et point d'apparition de départ (&"" = départ par défaut de Boot).
 var map: StringName = &""
@@ -524,6 +526,9 @@ static func _create(member: Dictionary, state: Object, data: PokemonData) -> Pok
 	pokemon.favorite = bool(member.get("favorite", false))
 	pokemon.status = member.get("status", StatusRules.NONE)
 	pokemon.status_turns = member.get("status_turns", 0)
+	if member.get("bond", -1) >= 0:
+		pokemon.set_bond(member["bond"])
+	pokemon.met_map = member.get("met_map", &"")
 	return pokemon
 
 
@@ -624,10 +629,23 @@ func _parse_member(value: Variant, data: PokemonData, where: String) -> Dictiona
 				% [where, Pokemon.MAX_STATUS_TURNS])
 		else:
 			status_turns = int(entry["status_turns"])
+	var bond := -1
+	if entry.has("bond"):
+		if not _is_int(entry["bond"]) or int(entry["bond"]) < 0:
+			ok = _fail("%s : « bond » est un entier positif ou nul" % where)
+		else:
+			bond = int(entry["bond"])
+	var met_map := &""
+	if entry.has("met_map"):
+		if not _is_text(entry["met_map"]):
+			ok = _fail("%s : « met_map » est un identifiant de carte" % where)
+		else:
+			met_map = StringName(entry["met_map"])
 	if not ok:
 		return {}
 	return { "species": species_id, "level": level, "moves": moves, "exp_to_next": to_next,
-		"hp": hp, "favorite": favorite, "status": status, "status_turns": status_turns }
+		"hp": hp, "favorite": favorite, "status": status, "status_turns": status_turns,
+		"bond": bond, "met_map": met_map }
 
 
 ## « daycare » : un membre ([method _parse_member]) plus « pending_exp » ; {} si invalide.
