@@ -16,7 +16,7 @@
 
 ---
 
-Tu m'aides à concevoir le **jalon 22** de *Kanto 2026*, mon remake personnel de Pokémon Rouge/Bleu en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier, après une passe d'alignement avec le code réel. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
+Tu m'aides à concevoir le **jalon 22** de *Kanto 2026*, mon jeu personnel en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier, après une passe d'alignement avec le code réel. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
 
 Le J22 **ouvre Safrania**, la ville fermée depuis le J20, au centre de Kanto. La Team Rocket l'occupe et a pris le siège de la **Sylphe SARL**. Le joueur traverse l'immeuble, retrouve son rival (combat n° 6), affronte **Giovanni une deuxième fois** et libère l'entreprise. La ville contient aussi le **Dojo** et l'**Arène de Morgane** (Psy). C'est le **plus gros jalon depuis Céladopole** : la découpe en sous-jalons compte autant que le contenu.
 

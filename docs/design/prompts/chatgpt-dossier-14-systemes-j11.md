@@ -14,7 +14,7 @@
 
 ---
 
-Tu m'aides à concevoir **la grande passe de systèmes** de *Kanto 2026*, mon remake personnel de Pokémon Rouge/Bleu en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
+Tu m'aides à concevoir **la grande passe de systèmes** de *Kanto 2026*, mon jeu personnel en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
 
 Ce jalon n'ajoute **aucune zone** : il rend complets les systèmes Pokémon avant qu'on étende Kanto (Route 3, Mont Sélénite, Azuria… au jalon 12 et après). Tout ce qu'il pose servira jusqu'à la Ligue : il doit être **général**, pas taillé pour Argenta.
 
