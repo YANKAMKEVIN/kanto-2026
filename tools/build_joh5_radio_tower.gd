@@ -8,11 +8,12 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/build_joh5_radio_tower.gd   (code 2 : masques écrits,
 ##   godot --headless --path . --import                                  importer puis relancer)
 ##
-## Modèle : `tools/build_silph_co.gd` (même légende de grille). Image **provisoire** : modules de
-## la Sylphe (moquette, murs, mobilier `M`) ; les rayonnages `r`, pupitres `p` et le comptoir `c`
-## sont posés comme du mobilier, les vitres `V` et l'escalier de secours `S` comme des murs [D]
-## (vitres transparentes en phase DA) : la grille est relue avec ces caractères remplacés
-## (`user://joh5_plans/`), les cases bloquées restent celles de la vraie grille.
+## Modèle : `tools/build_silph_co.gd` (même légende de grille). Image peinte (passe d'ambiance du
+## lot 2, `tools/art/joh_ambiance_lot2.py`, vues `tour-radio-*-vue-generale-v1.png`) : carrelage et
+## mobilier propres à la Tour ([constant FURNITURE] : comptoir `c`, rayonnages `r`, pupitres `p`,
+## tables), vitres `V` en parois de verre translucides ([method _place_glass]) et baie sur la ville
+## au 5F ; murs, escaliers et plantes de la Sylphe. La grille est relue pour l'image (`S` → mur,
+## `c r p V` → mobilier, `user://joh5_plans/`), les cases bloquées restent celles de la vraie grille.
 ## - `spawn` : Marker2D de `Spawns` (une case de la position = son nom ; plusieurs : `_1`, `_2`).
 ## - `escalier` : [WarpPoint] STEP_ON vers `vers=`, arrivée tournée comme le point cible.
 ## - `warp` (1F) : sortie PUSH ↓ vers `goldenrod_city:retour_tour_radio` (« Doublonville » à venir
@@ -39,18 +40,59 @@ const OUT_DIR: String = "res://game/world/maps/"
 const MASK_PATH: String = "res://assets/world/maps/%s_ground.png"
 const TMP_PLANS: String = "user://joh5_plans/"
 const CAR_SHELL_PATH: String = INTERIORS + "int_silph_co_elevator_coque.png"
-const GROUND_FLOOR: String = "res://assets/world/ground/ground_moquette_sylphe_01.png"
+const GROUND_FLOOR: String = "res://assets/world/ground/ground_carrelage_radio_01.png"
+const STUDIO_FLOOR: String = "res://assets/world/ground/ground_moquette_sylphe_01.png"
 const GROUND_MASS: String = "res://assets/world/ground/ground_masse_batiment_01.png"
 const BORDER_COLOR := Color(0.47, 0.48, 0.51)
 const NO_RUBBLE_MARK: String = "~"
 const WALL_MARK: String = "#"
 const WALL_PREFIX: String = "relief_mur_sylphe"
 ## Caractères de la grille relus pour l'image provisoire : mobilier ou mur.
-const AS_FURNITURE: String = "crp"
-const AS_WALL: String = "VS"
+const AS_FURNITURE: String = "crpV"
+const AS_WALL: String = "S"
 const PLANT: String = "int_plante_sylphe_01"
-const SERVER: String = "int_serveur_sylphe_01"
-const DESK: String = "int_bureau_sylphe_01"
+## Mobilier peint, par étage : [objet, pied (cases), nœud, échelle] ; posé sans emprise sur les
+## cases bloquées de la grille. Les `M` d'une seule case sont des plantes.
+const FURNITURE: Dictionary = {
+	1: [["int_comptoir_radio_01", Vector2(12, 6), "Comptoir", Vector2.ONE],
+		["prop_banc_01", Vector2(7, 10), "Banc0", Vector2.ONE],
+		["prop_banc_01", Vector2(17, 10), "Banc1", Vector2.ONE]],
+	2: [["int_table_studio_01", Vector2(9, 5), "TableStudio0", Vector2(0.9, 0.9)],
+		["int_table_studio_01", Vector2(15, 5), "TableStudio1", Vector2(0.9, 0.9)],
+		["int_pupitre_orateur_radio_01", Vector2(12, 15), "PupitreOrateur", Vector2.ONE]],
+	3: [["int_rayonnage_archives_01", Vector2(6, 5), "Rayonnage0", Vector2.ONE],
+		["int_rayonnage_archives_01", Vector2(18, 4), "Rayonnage1", Vector2(1.0, 0.62)],
+		["int_rayonnage_archives_01", Vector2(17, 7), "Rayonnage2", Vector2(0.75, 0.62)],
+		["int_rayonnage_archives_01", Vector2(8, 9), "Rayonnage3", Vector2.ONE],
+		["int_rayonnage_archives_01", Vector2(6, 13), "Rayonnage4", Vector2.ONE]],
+	4: [["int_mur_ecrans_radio_01", Vector2(12, 2), "MurEcrans", Vector2.ONE],
+		["int_pupitre_regie_01", Vector2(8.5, 6), "Regie0", Vector2.ONE],
+		["int_pupitre_regie_01", Vector2(15.5, 6), "Regie1", Vector2.ONE],
+		["int_pupitre_regie_01", Vector2(8.5, 11), "Regie2", Vector2.ONE],
+		["int_pupitre_regie_01", Vector2(15.5, 11), "Regie3", Vector2.ONE]],
+	5: [["int_bureau_chen_01", Vector2(3, 3), "BureauDirecteur", Vector2(0.72, 0.72)],
+		["int_table_diffusion_01", Vector2(12, 10), "TableDiffusion", Vector2(1.0, 0.9)]],
+}
+## Sols de studio, par étage (cases) ; teinte de la moquette [D].
+const STUDIOS: Dictionary = {2: [Rect2i(7, 2, 4, 9), Rect2i(13, 2, 4, 9)]}
+const STUDIO_TINT := Color(0.62, 0.68, 0.8)
+const GLASS_H: String = "int_vitre_studio_h_01"
+const GLASS_V: String = "int_vitre_studio_v_01"
+const GLASS_ALPHA: float = 0.55
+## Largeur d'affichage de la paroi vue par la tranche.
+const GLASS_V_SCALE: float = 2.0
+## Baie sur la ville du 5F : rangée, module, hauteur étirée à une rangée [D].
+const BAY: String = "int_baie_ville_01"
+const BAY_FLOOR: int = 5
+const BAY_ROW: int = 14
+const BAY_SCALE_Y: float = 1.5
+const LOGO: String = "int_logo_radio_01"
+const LOGO_FOOT := Vector2(1152.0, 97.0)
+const LOGO_SCALE: float = 0.84
+const ENTRANCE: String = "int_porte_entree_radio_01"
+const ENTRANCE_FOOT := Vector2(12.0, 16.0)
+const ENTRANCE_SCALE: float = 0.72
+const LOCKED_DOOR: String = "int_porte_sylphe_v_01"
 const STAIRS_UP: String = "int_escalier_sylphe_monte_01"
 const STAIRS_DOWN: String = "int_escalier_sylphe_descend_01"
 const ELEVATOR_DOOR: String = "int_porte_ascenseur_sylphe_01"
@@ -281,10 +323,18 @@ func _make_floor_root(map_id: StringName, plan: PlanGrid, size: Vector2i) -> Nod
 		var layer := _root.get_node(layer_name)
 		_root.remove_child(layer)
 		layer.free()
+	_place_floor_bands(art_plan)
 	var walls: Vector3i = ModuleWalls.new(_kit, WALL_PREFIX, WALL_MARK, WALL_MARK,
 		seed_base + 3).place()
-	var props := _place_furniture(art_plan)
+	var props := _place_furniture(art_plan, floor_number)
+	props += _place_glass(plan, floor_number)
 	var marks := _place_floor_marks(plan)
+	if floor_number == 1:
+		_place_hall()
+	_place_studio_floors(floor_number)
+	if plan.positions.has("escalier_secours"):
+		_kit.call(&"add_sprite", _kit.get(&"entities"), LOCKED_DOOR,
+			_world(plan.cell_of("escalier_secours")), "PorteSecours")
 	print("%s : murs %d faces / %d côtés / %d couronnes, %d meubles, %d marques au sol" % [
 		map_id, walls.x, walls.y, walls.z, props, marks])
 	return _kit.get(&"entities")
@@ -321,10 +371,16 @@ func _art_plan(name: String) -> String:
 	return path
 
 
-## Mobilier `M` (et `r p c` relus), une case par objet, selon sa tache connexe.
-func _place_furniture(plan: PlanGrid) -> int:
+## Plantes (`M` d'une seule case) et mobilier peint de l'étage.
+func _place_furniture(plan: PlanGrid, floor_number: int) -> int:
 	var entities: Node2D = _kit.get(&"entities")
 	var count := 0
+	for entry: Array in FURNITURE[floor_number]:
+		var prop: Node2D = _kit.call(&"add_prop", entities, entry[0], (entry[1] as Vector2) * TILE,
+			entry[2])
+		prop.set(&"footprint", [] as Array[Vector2i])
+		prop.scale = entry[3]
+		count += 1
 	var seen: Dictionary[Vector2i, bool] = {}
 	for start: Vector2i in plan.cells_of("M"):
 		if seen.has(start):
@@ -341,14 +397,123 @@ func _place_furniture(plan: PlanGrid) -> int:
 						and next.y < plan.height and plan.at(next) == "M":
 					seen[next] = true
 					stack.append(next)
-		var column := true
-		for cell: Vector2i in patch:
-			column = column and cell.x == patch[0].x
-		var id := PLANT if patch.size() == 1 else (SERVER if column else DESK)
-		for cell: Vector2i in patch:
-			_kit.call(&"add_prop_at", entities, id, cell, "Furniture%03d" % count)
+		if patch.size() == 1:
+			_kit.call(&"add_prop_at", entities, PLANT, patch[0], "Furniture%03d" % count)
 			count += 1
 	return count
+
+
+## Vitres `V` : étendues est-ouest en panneaux de verre répétés (un seul sprite par étendue), cases
+## seules du nord au sud en paroi vue par la tranche ; baie sur la ville au 5F. Renvoie leur nombre.
+func _place_glass(plan: PlanGrid, floor_number: int) -> int:
+	var entities: Node2D = _kit.get(&"entities")
+	var count := 0
+	for y: int in plan.height:
+		var x := 0
+		while x < plan.width:
+			if plan.at(Vector2i(x, y)) != "V" or _is_upright_glass(plan, Vector2i(x, y)):
+				x += 1
+				continue
+			var start := x
+			while plan.at(Vector2i(x, y)) == "V" and not _is_upright_glass(plan, Vector2i(x, y)):
+				x += 1
+			var width := x - start
+			var bay := floor_number == BAY_FLOOR and y == BAY_ROW
+			var foot := Vector2((start + width / 2.0) * TILE, (y + 1) * TILE)
+			var sprite: Sprite2D = _kit.call(&"add_sprite", entities, BAY if bay else GLASS_H,
+				foot, "Glass%02d" % count)
+			_repeat(sprite, foot, Vector2(width * TILE, sprite.texture.get_height()))
+			if bay:
+				sprite.scale.y = BAY_SCALE_Y
+			else:
+				sprite.modulate.a = GLASS_ALPHA
+			count += 1
+	for x: int in plan.width:
+		var y := 0
+		while y < plan.height:
+			if not _is_upright_glass(plan, Vector2i(x, y)):
+				y += 1
+				continue
+			var start := y
+			while _is_upright_glass(plan, Vector2i(x, y)):
+				y += 1
+			var foot := Vector2((x + 0.5) * TILE, y * TILE)
+			var sprite: Sprite2D = _kit.call(&"add_sprite", entities, GLASS_V, foot,
+				"GlassSide%02d" % count)
+			_repeat(sprite, foot, Vector2(sprite.texture.get_width(), (y - start) * TILE + 40.0))
+			sprite.scale.x = GLASS_V_SCALE
+			sprite.modulate.a = GLASS_ALPHA + 0.2
+			count += 1
+	return count
+
+
+## Case de verre d'une paroi nord-sud : du verre au nord et au sud.
+func _is_upright_glass(plan: PlanGrid, cell: Vector2i) -> bool:
+	return plan.at(cell) == "V" and plan.at(cell + Vector2i.UP) == "V" \
+		and plan.at(cell + Vector2i.DOWN) == "V"
+
+
+## Image répétée sur [param size] (pixels), pied [param foot] au milieu du bas (le nœud reste au
+## pied : tri des personnages).
+func _repeat(sprite: Sprite2D, foot: Vector2, size: Vector2) -> void:
+	sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	sprite.region_enabled = true
+	sprite.region_rect = Rect2(Vector2.ZERO, size)
+	sprite.centered = true
+	sprite.offset = Vector2(0.0, -size.y / 2.0)
+	sprite.position = foot
+
+
+## Carrelage en bandes aux bords droits (le sol peint du kit, fait pour les grottes, a des bords
+## déchiquetés), sous les murs.
+func _place_floor_bands(plan: PlanGrid) -> void:
+	var texture: Texture2D = load(GROUND_FLOOR)
+	for y: int in plan.height:
+		var x := 0
+		while x < plan.width:
+			if plan.at(Vector2i(x, y)) == WALL_MARK:
+				x += 1
+				continue
+			var start := x
+			while x < plan.width and plan.at(Vector2i(x, y)) != WALL_MARK:
+				x += 1
+			var sprite := Sprite2D.new()
+			sprite.name = "Band%02d_%02d" % [y, start]
+			sprite.texture = texture
+			sprite.centered = false
+			sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+			sprite.region_enabled = true
+			sprite.region_rect = Rect2(start * TILE, y * TILE, (x - start) * TILE, TILE)
+			sprite.position = Vector2(start * TILE, y * TILE)
+			_kit.call(&"attach", _kit.get(&"decals"), sprite)
+
+
+## Hall : logo sur le mur du fond et double porte d'entrée, sous les personnages.
+func _place_hall() -> void:
+	var logo: Node2D = _kit.call(&"add_prop", _kit.get(&"entities"), LOGO, LOGO_FOOT, "Logo")
+	logo.set(&"footprint", [] as Array[Vector2i])
+	logo.scale = Vector2.ONE * LOGO_SCALE
+	var door: Node2D = _kit.call(&"add_prop", _kit.get(&"decals"), ENTRANCE, ENTRANCE_FOOT * TILE,
+		"Entree")
+	door.set(&"footprint", [] as Array[Vector2i])
+	door.scale = Vector2.ONE * ENTRANCE_SCALE
+
+
+## Moquette des studios, en décor au sol.
+func _place_studio_floors(floor_number: int) -> void:
+	var index := 0
+	for rect: Rect2i in STUDIOS.get(floor_number, []):
+		var sprite := Sprite2D.new()
+		sprite.name = "Studio%d" % index
+		sprite.texture = load(STUDIO_FLOOR)
+		sprite.centered = false
+		sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+		sprite.region_enabled = true
+		sprite.region_rect = Rect2(Vector2.ZERO, Vector2(rect.size * TILE))
+		sprite.position = Vector2(rect.position * TILE)
+		sprite.modulate = STUDIO_TINT
+		_kit.call(&"attach", _kit.get(&"decals"), sprite)
+		index += 1
 
 
 ## Au sol : escaliers `U` / `D`, porte d'ascenseur `L`, seuils `K`, paillasson `E`.
@@ -381,7 +546,7 @@ func _add_stairs(plan: PlanGrid, id: String, cell: Vector2i) -> void:
 
 
 ## Porte fermée (réserve, bureau) : [FlagGate] bloquante jusqu'au drapeau d'ouverture
-## (`drapeau=`, sinon `cle=`), panneau sombre provisoire ; point OUVRIR sur la case.
+## (`drapeau=`, sinon `cle=`), porte peinte ; point OUVRIR sur la case.
 func _add_locked_door(entities: Node2D, plan: PlanGrid, id: String, cell: Vector2i) -> void:
 	var open_flag := plan.attr(id, "drapeau")
 	if open_flag.is_empty():
@@ -395,14 +560,10 @@ func _add_locked_door(entities: Node2D, plan: PlanGrid, id: String, cell: Vector
 	var blocking: Array[Vector2i] = [cell]
 	gate.set(&"blocking_cells", blocking)
 	_attach(entities, gate)
-	var panel := Polygon2D.new()
-	panel.name = "Panel"
-	panel.polygon = PackedVector2Array([Vector2(6, 6), Vector2(TILE - 6, 6),
-		Vector2(TILE - 6, TILE), Vector2(6, TILE)])
-	panel.color = Color(0.22, 0.24, 0.28)
 	# Au niveau des personnages (trié par la case) : au-dessus du sol peint et du seuil.
+	var panel: Sprite2D = _kit.call(&"add_sprite", gate, LOCKED_DOOR,
+		Vector2(TILE / 2.0, float(TILE)), "Panel")
 	panel.z_index = 0
-	_attach(gate, panel)
 	# EXAMINER (pas OUVRIR : ce verbe va au KeyDoorDirector des portes à carte).
 	_add_point("Open_%s" % id, cell, Vector2i.ZERO, DOOR_DIALOGUES[id], KIND_EXAMINE, [],
 		[StringName(open_flag)])

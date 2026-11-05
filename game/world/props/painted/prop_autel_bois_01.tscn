@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_ganwl"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_q0h83"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_autel_bois_01.png" id="3_ow0sf"]
+
+[node name="PropAutelBois01" type="Node2D" unique_id=1915449043]
+script = ExtResource("1_ganwl")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1838570176]
+unique_name_in_owner = true
+material = ExtResource("2_q0h83")
+texture = ExtResource("3_ow0sf")
+centered = false
+offset = Vector2(-96, -257)

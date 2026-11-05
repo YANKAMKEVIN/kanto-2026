@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_8ccmi"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_akh0e"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_puits_ecorcia_01.png" id="3_fhrjq"]
+
+[node name="PropPuitsEcorcia01" type="Node2D" unique_id=565747403]
+script = ExtResource("1_8ccmi")
+footprint = Array[Vector2i]([Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=616355747]
+unique_name_in_owner = true
+material = ExtResource("2_akh0e")
+texture = ExtResource("3_fhrjq")
+centered = false
+offset = Vector2(-144, -248)
