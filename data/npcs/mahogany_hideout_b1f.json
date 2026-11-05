@@ -1,0 +1,70 @@
+{
+	"sbire_alarme_1": {
+		"cell": [
+			10,
+			1
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"if": [
+			"johto_alarm_1"
+		],
+		"dialogue": "mahogany_hideout_b1f_sbire_alarme_1_after",
+		"trainer": {
+			"id": "mahogany_hideout_b1f_sbire_alarme_1",
+			"sight": 0,
+			"before": "mahogany_hideout_b1f_sbire_alarme_1_before",
+			"defeated": "mahogany_hideout_b1f_sbire_alarme_1_defeated"
+		}
+	},
+	"sbire_alarme_2": {
+		"cell": [
+			19,
+			13
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_f",
+		"if": [
+			"johto_alarm_2"
+		],
+		"dialogue": "mahogany_hideout_b1f_sbire_alarme_2_after",
+		"trainer": {
+			"id": "mahogany_hideout_b1f_sbire_alarme_2",
+			"sight": 0,
+			"before": "mahogany_hideout_b1f_sbire_alarme_2_before",
+			"defeated": "mahogany_hideout_b1f_sbire_alarme_2_defeated"
+		}
+	},
+	"sbire_alarme_3": {
+		"cell": [
+			24,
+			1
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"if": [
+			"johto_alarm_3"
+		],
+		"dialogue": "mahogany_hideout_b1f_sbire_alarme_3_after",
+		"trainer": {
+			"id": "mahogany_hideout_b1f_sbire_alarme_3",
+			"sight": 0,
+			"before": "mahogany_hideout_b1f_sbire_alarme_3_before",
+			"defeated": "mahogany_hideout_b1f_sbire_alarme_3_defeated"
+		}
+	},
+	"hyper_potion": {
+		"cell": [
+			28,
+			2
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "mahogany_hideout_b1f_hyper_potion",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_mahogany_hideout_b1f_hyper_potion"
+		]
+	}
+}

@@ -1,0 +1,68 @@
+{
+	"brace": {
+		"cell": [
+			17,
+			9
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"unless": [
+			"johto_rival_relay"
+		]
+	},
+	"cenere": {
+		"cell": [
+			21,
+			9
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"unless": [
+			"johto_rival_relay"
+		]
+	},
+	"sbire_1": {
+		"cell": [
+			15,
+			8
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"unless": [
+			"johto_rival_relay"
+		]
+	},
+	"sbire_2": {
+		"cell": [
+			23,
+			8
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"unless": [
+			"johto_rival_relay"
+		]
+	},
+	"sbire_3": {
+		"cell": [
+			16,
+			11
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"unless": [
+			"johto_rival_relay"
+		]
+	},
+	"sbire_4": {
+		"cell": [
+			22,
+			11
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"unless": [
+			"johto_rival_relay"
+		]
+	}
+}

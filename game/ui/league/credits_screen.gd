@@ -143,6 +143,14 @@ func _fill(rows: Array[Dictionary]) -> void:
 				_column.add_child(title)
 			CreditsData.RowKind.HEADING:
 				_column.add_child(_label(text, UiTokens.FONT_BUTTON, UiTokens.ACCENT))
+			CreditsData.RowKind.IMAGE: # JOH9 : un lieu ou un légendaire de Johto
+				var image := TextureRect.new()
+				image.texture = load(text) as Texture2D
+				image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				image.custom_minimum_size = Vector2(0.0, UiTokens.CREDITS_LOGO_HEIGHT * 2.0)
+				image.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				_column.add_child(image)
 			CreditsData.RowKind.GAP:
 				var gap := Control.new()
 				gap.custom_minimum_size = Vector2(0.0, UiTokens.CREDITS_BLOCK_GAP)

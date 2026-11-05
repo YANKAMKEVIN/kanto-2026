@@ -162,6 +162,9 @@ func test_names_follow_the_class_and_first_names_are_unique() -> void:
 	for id: StringName in _trainers.get_ids():
 		if String(id).begins_with("silph_co_") or id == &"rival_silph":
 			continue
+		# Chapitre Johto (JOH6) : Pêcheur Ludovic, nom validé du dossier JOH-07, autre région.
+		if id == &"lake_of_rage_ludovic":
+			continue
 		var parts := _trainers.get_trainer(id).name.split(" ")
 		if parts.size() > 1:
 			first_names[parts[parts.size() - 1]] = id

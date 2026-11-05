@@ -1,0 +1,26 @@
+{
+	"mahogany_hideout_b3f_max_repousse": {
+		"variants": [
+			{
+				"unless": [
+					"got_mahogany_hideout_b3f_max_repousse"
+				],
+				"steps": [
+					{
+						"despawn": "max_repousse"
+					},
+					{
+						"give": "max_repel",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_mahogany_hideout_b3f_max_repousse"
+						]
+					}
+				]
+			}
+		]
+	}
+}

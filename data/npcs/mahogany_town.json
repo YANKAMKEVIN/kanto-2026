@@ -1,0 +1,32 @@
+{
+	"samuel": {
+		"cell": [
+			4,
+			14
+		],
+		"facing": "down",
+		"sprite": "mountaineer",
+		"dialogue": "week_saturday_samuel",
+		"if_weekday": [
+			"saturday"
+		]
+	},
+	"habitant": {
+		"cell": [
+			21,
+			15
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "mahogany_town_habitant"
+	},
+	"habitante": {
+		"cell": [
+			12,
+			20
+		],
+		"facing": "right",
+		"sprite": "beauty",
+		"dialogue": "mahogany_town_habitante"
+	}
+}

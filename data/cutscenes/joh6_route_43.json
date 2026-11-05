@@ -1,0 +1,26 @@
+{
+	"route_43_max_potion": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_43_max_potion"
+				],
+				"steps": [
+					{
+						"despawn": "max_potion"
+					},
+					{
+						"give": "max_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_43_max_potion"
+						]
+					}
+				]
+			}
+		]
+	}
+}

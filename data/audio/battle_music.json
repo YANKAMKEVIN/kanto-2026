@@ -39,7 +39,9 @@
 		"league_bruno": "gym_leader",
 		"league_agatha": "gym_leader",
 		"league_lance": "gym_leader",
-		"rival_champion": "rival_final"
+		"rival_champion": "rival_final",
+		"mt_silver_dante_2": "gym_leader",
+		"mt_silver_rival_final": "rival_final"
 	},
 	"legendary_species": [
 		"articuno",

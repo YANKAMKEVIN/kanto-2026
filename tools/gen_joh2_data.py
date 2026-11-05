@@ -29,9 +29,7 @@ MAPS = [("route_39", "route_39"), ("route_38", "route_38"), ("rosalia", "ecrutea
 
 # Positions des grilles qui appartiennent à d'autres jalons (aucune donnée ici).
 SKIPPED = {
-	("ecruteak_city", "diane"),            # JOH6 : sonneuse du dimanche
 	("ecruteak_city", "sage_blesse"),      # JOH8
-	("ecruteak_city", "panneau_tour_cendree"),  # JOH6 : panneau C-3
 }
 
 # Sprites provisoires [D] par Dresseur et par rôle de PNJ.
@@ -42,7 +40,7 @@ TRAINER_SPRITES = {
 }
 ROLE_SPRITES = {
 	"fermiere": "beauty", "promeneur": "traveler", "garde": "guard", "sage": "channeler",
-	"sbire": "rocket_grunt_m", "conteuse": "aoki",
+	"sbire": "rocket_grunt_m", "conteuse": "aoki", "sonneuse": "aoki",
 }
 WEEKDAYS = {"lundi": "monday", "mardi": "tuesday", "mercredi": "wednesday", "jeudi": "thursday",
 	"vendredi": "friday", "samedi": "saturday", "dimanche": "sunday"}
@@ -97,6 +95,8 @@ TEXTS = {
 	("route_38", "promeneur"): ("Promeneur", ["À Rosalia, il y a deux tours.",
 		"L'une a brûlé il y a longtemps.", "L'autre, personne n'a le droit\nd'y monter."]),
 	("ecruteak_city", "panneau_ville"): (NARRATION, ["ROSALIA\nVille historique, où le passé\nreste vivant"]),
+	# JOH6 (dossier joh-07 C-3) : panneau de la Tour Cendrée, lu depuis (7, 14).
+	("ecruteak_city", "panneau_tour_cendree"): (NARRATION, ["TOUR CENDRÉE\nElle brûla il y a cent cinquante\nans. Ne pas allumer de feu."]),
 	("ecruteak_city", "porte_tour_cendree"): (NARRATION, ["La porte est fermée.",
 		"Une odeur de vieux bois brûlé\nflotte encore."]),
 	("ecruteak_city", "garde_carillon"): ("Garde", ["La Tour Carillon est sacrée.",
@@ -115,6 +115,17 @@ ROCKET_LINES = {
 	"ecruteak_rocket_2": ("Sbire", ["Hé ! On nous regarde.",
 		"On s'en va. Le chef n'aime pas\nqu'on se fasse remarquer."]),
 }
+# JOH6 (dossier joh-07) : le sage devant la Tour Cendrée avant le doyen (C-1), puis la tour ouverte
+# (texte [D], draft) ; le doyen ouvre la tour (C-2), reparle du plan de Dante (fin de C-11) et renvoie
+# vers les chiens (fin de C-2) ; le garde de la Tour Carillon à l'acte 2 (C-12).
+SAGE_C1 = ["Le doyen t'attend,\njeune Dresseur.", "Toute la ville a entendu\nla radio."]
+SAGE_OPEN = ["La Tour Cendrée est ouverte.\nSois prudent, jeune Dresseur."]
+ELDER_C2 = ["Tu es revenu. Et avec tes vrais\ncompagnons, cette fois.",
+	"Cet homme, à la radio…\n« quand tout sera cendres ».", "Je crains qu'il ne parle\nde notre tour.",
+	"Je t'ouvre la Tour Cendrée.", "Va voir si les trois dorment\ntoujours."]
+ELDER_C2_LAST = ["Va voir si les trois dorment\ntoujours."]
+ELDER_C11_LAST = ["L'homme qui a pris Raikou est\nparti vers l'est. Vers Acajou."]
+GUARD_C12 = ["La Tour Carillon reste fermée.", "Le doyen dit que le moment\nn'est pas encore venu."]
 SAGE_AFTER = ["Merci, jeune Dresseur.\nCes hommes reviennent chaque nuit.",
 	"Va voir notre doyen,\ndans la maison au toit rouge."]
 ELDER_LEGEND = ["Il y a cent cinquante ans,\nla Tour Cendrée a brûlé.",
@@ -322,15 +333,27 @@ def main():
 				if "jour" in attrs:
 					entry["if_weekday"] = [WEEKDAYS[attrs["jour"]]]
 				entry.update(flag_lists(attrs))
+				if ident == "garde_route_42":
+					entry["unless"] = ["johto_act2"]  # JOH6 : à l'acte 2, il s'efface [D]
 				if role == "conteuse":
 					entry["dialogue"] = "week_tuesday_margot"
+				elif role == "sonneuse":
+					entry["dialogue"] = "week_sunday_diane"  # JOH6 : joh6_week.json
 				elif role == "sbire":
 					pass  # ils parlent dans la scène seulement
 				elif ident == "sage_tour":
 					entry["dialogue"] = "ecruteak_city_sage_tour"
 					dialogues["ecruteak_city_sage_tour"] = {"speaker": "Sage", "variants": [
+						{"if": ["johto_act2"], "unless": ["johto_burned_tower_open"], "pages": SAGE_C1},
+						{"if": ["johto_burned_tower_open"], "draft": True, "pages": SAGE_OPEN},
 						{"if": ["johto_rosalia_rockets_seen"], "pages": SAGE_AFTER},
 						{"pages": ROCKET_LINES["ecruteak_sage_refuses"][1]},
+					]}
+				elif ident == "garde_carillon":
+					entry["dialogue"] = "ecruteak_city_garde_carillon"
+					dialogues["ecruteak_city_garde_carillon"] = {"speaker": "Garde", "variants": [
+						{"if": ["johto_act2"], "pages": GUARD_C12},
+						{"pages": TEXTS[key][1]},
 					]}
 				else:
 					dialogue_id = "%s_%s" % (map_id, ident)
@@ -390,6 +413,10 @@ def write_interiors():
 	(plan §2.1)."""
 	dialogues = {
 		"ecruteak_elders_house_doyen": {"speaker": "Doyen", "variants": [
+			{"if": ["johto_act2"], "unless": ["johto_burned_tower_open"], "set": ["johto_burned_tower_open"],
+				"pages": ELDER_C2},
+			{"if": ["johto_dante_plan_known"], "pages": ELDER_C11_LAST},
+			{"if": ["johto_burned_tower_open"], "pages": ELDER_C2_LAST},
 			{"unless": ["johto_tower_legend_heard"], "set": ["johto_tower_legend_heard"],
 				"pages": ELDER_LEGEND},
 			{"if": ["johto_tower_legend_heard"], "pages": ELDER_AFTER},

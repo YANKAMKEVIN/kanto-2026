@@ -48,7 +48,11 @@ static func wild(encounter: WildEncounter, data: PokemonData, rng: GameRng,
 	request.trainer = null
 	request.foe_name = ""
 	var party := Party.new()
-	party.add(PokemonFactory.create(data, encounter.species, encounter.level, rng))
+	var wild_pokemon := PokemonFactory.create(data, encounter.species, encounter.level, rng)
+	# JOH6 : variante de couleur d'une rencontre fixe (le Léviator rouge) ; la capture la garde.
+	if wild_pokemon != null:
+		wild_pokemon.variant = encounter.variant
+	party.add(wild_pokemon)
 	request.foe_party = party
 	# Combat SPECTRE (jalon 19) : décidé au tirage ([member WildEncounter.ghost]).
 	request.rules = BattleRules.for_ghost(items) if encounter.ghost \

@@ -1,0 +1,47 @@
+{
+	"hugo": {
+		"cell": [
+			11,
+			24
+		],
+		"facing": "right",
+		"sprite": "blackbelt",
+		"dialogue": "silver_trail_blackbelt_hugo_after",
+		"trainer": {
+			"id": "silver_trail_blackbelt_hugo",
+			"sight": 1,
+			"before": "silver_trail_blackbelt_hugo_before",
+			"defeated": "silver_trail_blackbelt_hugo_defeated"
+		}
+	},
+	"baptiste": {
+		"cell": [
+			6,
+			34
+		],
+		"facing": "right",
+		"sprite": "mountaineer",
+		"dialogue": "silver_trail_hiker_baptiste_after",
+		"trainer": {
+			"id": "silver_trail_hiker_baptiste",
+			"sight": 2,
+			"before": "silver_trail_hiker_baptiste_before",
+			"defeated": "silver_trail_hiker_baptiste_defeated"
+		}
+	},
+	"ines": {
+		"cell": [
+			18,
+			15
+		],
+		"facing": "left",
+		"sprite": "cooltrainer_f",
+		"dialogue": "silver_trail_cooltrainer_ines_after",
+		"trainer": {
+			"id": "silver_trail_cooltrainer_ines",
+			"sight": 2,
+			"before": "silver_trail_cooltrainer_ines_before",
+			"defeated": "silver_trail_cooltrainer_ines_defeated"
+		}
+	}
+}

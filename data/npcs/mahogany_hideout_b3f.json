@@ -1,0 +1,41 @@
+{
+	"brace": {
+		"cell": [
+			12,
+			8
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"unless": [
+			"johto_brace_defeated_2"
+		],
+		"dialogue": "mahogany_hideout_b3f_brace_after"
+	},
+	"raikou": {
+		"cell": [
+			17,
+			9
+		],
+		"facing": "down",
+		"sprite": "pokemon/raikou",
+		"dialogue": "joh6_raikou",
+		"turn_to_player": false,
+		"unless": [
+			"johto_raikou_done"
+		]
+	},
+	"max_repousse": {
+		"cell": [
+			1,
+			16
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "mahogany_hideout_b3f_max_repousse",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_mahogany_hideout_b3f_max_repousse"
+		]
+	}
+}

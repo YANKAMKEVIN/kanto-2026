@@ -1,0 +1,28 @@
+{
+	"joh8_entei_return": {
+		"variants": [
+			{
+				"if": [
+					"johto_chapter_done",
+					"johto_entei_done"
+				],
+				"unless": [
+					"johto_entei_caught",
+					"johto_entei_return_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "entei",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "entei_retour",
+						"static": {
+							"done": "johto_entei_return_done",
+							"caught": "johto_entei_caught"
+						}
+					}
+				]
+			}
+		]
+	}
+}

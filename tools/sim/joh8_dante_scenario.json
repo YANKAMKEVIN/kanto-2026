@@ -1,0 +1,202 @@
+{
+	"version": 1,
+	"title": "Équilibrage de Dante (1), sommet de la Tour Carillon (JOH8)",
+	"description": "JOH8 (jalon-joh8.md §2.5). Information : aucune donnée de jeu changée. Équipes de fin d'acte 2 estimées (cadre §7 : 62–68), soignées par Hiroshi au 2F (= Centre). Cible : victoire du premier coup 35–60 % (mémoire « Difficulté des combats »).",
+	"seeds": 300,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Aligatueur 66, Dracaufeu 65, Florizarre 64, Pharamp 62, Roucarnage 63, Nidoking 63",
+			"members": [
+				{
+					"species": "feraligatr",
+					"level": 66
+				},
+				{
+					"species": "charizard",
+					"level": 65
+				},
+				{
+					"species": "venusaur",
+					"level": 64
+				},
+				{
+					"species": "ampharos",
+					"level": 62
+				},
+				{
+					"species": "pidgeot",
+					"level": 63
+				},
+				{
+					"species": "nidoking",
+					"level": 63
+				}
+			]
+		},
+		{
+			"name": "Typhlosion 66, Tortank 65, Raichu 63, Roucarnage 63, Alakazam 62, Pharamp 62",
+			"members": [
+				{
+					"species": "typhlosion",
+					"level": 66
+				},
+				{
+					"species": "blastoise",
+					"level": 65
+				},
+				{
+					"species": "raichu",
+					"level": 63
+				},
+				{
+					"species": "pidgeot",
+					"level": 63
+				},
+				{
+					"species": "alakazam",
+					"level": 62
+				},
+				{
+					"species": "ampharos",
+					"level": 62
+				}
+			]
+		},
+		{
+			"name": "Méganium 66, Dracaufeu 65, Raichu 63, Roucarnage 63, Ectoplasma 62, Togetic 62",
+			"members": [
+				{
+					"species": "meganium",
+					"level": 66
+				},
+				{
+					"species": "charizard",
+					"level": 65
+				},
+				{
+					"species": "raichu",
+					"level": 63
+				},
+				{
+					"species": "pidgeot",
+					"level": 63
+				},
+				{
+					"species": "gengar",
+					"level": 62
+				},
+				{
+					"species": "togetic",
+					"level": 62
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"bell_tower_dante_1": {
+			"name": "Dante",
+			"class": "gentleman",
+			"ai": "smart",
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 120,
+			"start_message": false,
+			"end_message": true,
+			"bag": true,
+			"switch": true,
+			"team": [
+				{
+					"species": "houndoom",
+					"level": 64,
+					"moves": [
+						"flamethrower",
+						"crunch",
+						"solar_beam",
+						"feint_attack"
+					]
+				},
+				{
+					"species": "magmar",
+					"level": 65,
+					"moves": [
+						"fire_blast",
+						"thunder_punch",
+						"psychic",
+						"confuse_ray"
+					]
+				},
+				{
+					"species": "scizor",
+					"level": 66,
+					"moves": [
+						"metal_claw",
+						"wing_attack",
+						"slash",
+						"swords_dance"
+					]
+				},
+				{
+					"species": "sneasel",
+					"level": 66,
+					"moves": [
+						"ice_beam",
+						"feint_attack",
+						"slash",
+						"quick_attack"
+					]
+				},
+				{
+					"species": "arcanine",
+					"level": 68,
+					"moves": [
+						"flamethrower",
+						"crunch",
+						"body_slam",
+						"dig"
+					]
+				}
+			]
+		}
+	},
+	"steps": [
+		{
+			"label": "Hiroshi (2F, soin)",
+			"center": true
+		},
+		{
+			"label": "Dante (1), sommet",
+			"trainer": "bell_tower_dante_1"
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 5 Hyper Potions",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"hyper_potion": 5
+			},
+			"optional": []
+		},
+		{
+			"name": "expert, 5 Hyper Potions",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"hyper_potion": 5
+			},
+			"optional": []
+		},
+		{
+			"name": "naïf",
+			"player": "naif",
+			"center": true,
+			"items": {},
+			"optional": []
+		}
+	]
+}

@@ -1539,6 +1539,8 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
 	_flash.on_map_changed(map)
+	# JOH8 : moment imposé par carte (aube du sommet) avant la lumière, pour qu'elle soit immédiate.
+	_apply_story_period(map.map_id)
 	# JOH0 (QA) : profil de lumière imposé par le départ de débogage sur sa carte.
 	if not _debug_light_profile.is_empty() and map.map_id == _debug_light_map:
 		map.light_profile = _debug_light_profile
@@ -1937,10 +1939,17 @@ func _on_johto_starter_chosen(player_species: StringName, _rival_species: String
 ## JOH1 (`jalon-joh1.md` §2.4) : moment du jour imposé par l'histoire ([JohtoPeriodRule]) :
 ## nuit de la lettre au vol, matin du vol au départ d'Orme, heure réelle ensuite ; recalculé à la
 ## mise en place de la partie et à chaque drapeau. Un départ de débogage qui impose `period` gagne.
-func _apply_story_period() -> void:
+func _apply_story_period(map_id: StringName = &"") -> void:
 	if _debug_period_forced:
 		return
 	var period := JohtoPeriodRule.forced_period(GameState.flags)
+	# JOH8 (JH-55) : aube forcée au sommet de la Tour Carillon, relue à chaque carte.
+	if period.is_empty():
+		if map_id.is_empty():
+			map_id = _current_map_id()
+		if map_id.is_empty():
+			map_id = GameState.current_map
+		period = BellTowerDawnRule.forced_period(map_id, GameState.flags)
 	if period.is_empty():
 		if _world_clock.is_period_forced():
 			_world_clock.release_period()
@@ -3154,6 +3163,9 @@ func _play_hall_of_fame() -> bool:
 ## Étape « credits » : générique sur la dernière entrée du Panthéon ; passable seulement s'il a
 ## déjà été vu (`league_credits_seen`, posé à la fin).
 func _play_credits() -> void:
+	if not _cutscenes_node.credits_id.is_empty():
+		await _play_named_credits(_cutscenes_node.credits_id)
+		return
 	var hall := GameState.hall_of_fame
 	var entry := hall.get_entry(hall.size() - 1) if not hall.is_empty() else HallOfFame.snapshot(
 		GameState.party.get_all(), GameState.player_name, GameState.starter_species,
@@ -3161,6 +3173,21 @@ func _play_credits() -> void:
 	var skippable := GameState.flags.has_flag(LeagueAttempt.CREDITS_SEEN)
 	await _credits_screen.present(_credits.rows(entry, _hall_member_name), skippable)
 	GameState.flags.set_flag(LeagueAttempt.CREDITS_SEEN)
+
+
+## JOH9 : petit générique de chapitre [param id] (`data/story/credits_<id>.json`) sur l'équipe
+## du moment ; passable s'il a déjà été vu (drapeau `<id>_credits_seen`, posé à la fin).
+func _play_named_credits(id: StringName) -> void:
+	var credits := CreditsData.new()
+	credits.load_file(CreditsData.NAMED_PATH % id)
+	var entry := HallOfFame.snapshot(GameState.party.get_all(), GameState.player_name,
+		GameState.starter_species, GameState.play_time, "")
+	var seen := StringName("%s_credits_seen" % id)
+	_credits_screen.skip_label = credits.skip_label
+	await _credits_screen.present(credits.rows(entry, _hall_member_name),
+		GameState.flags.has_flag(seen))
+	_credits_screen.skip_label = _credits.skip_label
+	GameState.flags.set_flag(seen)
 
 
 ## Vue de l'écran du Panthéon pour [param entry] : en-tête (joueur, date), et pour chaque Pokémon

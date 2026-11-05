@@ -1,0 +1,338 @@
+{
+	"bell_tower_1f_autel": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Un autel ancien.\nL'encens y brûle encore."
+		]
+	},
+	"bell_tower_1f_rappel_max": {
+		"cutscene": "bell_tower_1f_rappel_max"
+	},
+	"bell_tower_1f_sage_1": {
+		"speaker": "Sage",
+		"pages": [
+			"… Il nous a dit de dormir.\nEt nous avons dormi."
+		]
+	},
+	"bell_tower_1f_sage_2": {
+		"speaker": "Sage",
+		"pages": [
+			"Ses yeux… Je n'avais jamais vu\nune telle haine."
+		]
+	},
+	"bell_tower_2f_examen_planche": {
+		"narration": true,
+		"pages": [
+			"Le bois craque sous les pieds."
+		]
+	},
+	"bell_tower_2f_hiroshi": {
+		"narration": true,
+		"heal": true,
+		"pages": [
+			{
+				"text": "Tu es le Dresseur de Kanto ?",
+				"speaker": "Hiroshi"
+			},
+			{
+				"text": "Repose tes Pokémon. Ce qui t'attend\nlà-haut n'a pas de pitié.",
+				"speaker": "Hiroshi"
+			},
+			"L'équipe de {player}\nest soignée."
+		]
+	},
+	"bell_tower_2f_pp_plus": {
+		"cutscene": "bell_tower_2f_pp_plus"
+	},
+	"bell_tower_arcanine": {
+		"narration": true,
+		"pages": [
+			"Dante saute sur le dos\nde son Arcanin !",
+			"Ils bondissent de toit en toit…"
+		]
+	},
+	"bell_tower_arrival": {
+		"narration": true,
+		"pages": [
+			"Un homme se tient\nsous la grande cloche.",
+			"À ses pieds, une cage de flammes.\nUn Pokémon rouge s'y débat."
+		]
+	},
+	"bell_tower_bell_rings": {
+		"narration": true,
+		"pages": [
+			"Dante frappe la grande cloche.",
+			"Le son roule jusqu'à l'horizon."
+		]
+	},
+	"bell_tower_climb_1": {
+		"narration": true,
+		"pages": [
+			"La montée est longue…"
+		]
+	},
+	"bell_tower_climb_2": {
+		"narration": true,
+		"pages": [
+			"Le ciel pâlit."
+		]
+	},
+	"bell_tower_dante_before": {
+		"speaker": "Dante",
+		"pages": [
+			"Tu as libéré les deux autres.\nCourageux. Inutile.",
+			"Je ne te déteste pas, {player}.\nTu es seulement sur mon chemin.",
+			"Comme moi, autrefois, j'étais\nsur celui de Giovanni."
+		]
+	},
+	"bell_tower_dante_bell": {
+		"speaker": "Dante",
+		"pages": [
+			"Mais tu arrives trop tard. Regarde."
+		]
+	},
+	"bell_tower_dante_defeated": {
+		"speaker": "Dante",
+		"pages": [
+			"…",
+			"Bien. Très bien.",
+			"Tu te bats comme moi, quand j'avais\nencore quelque chose à protéger."
+		]
+	},
+	"bell_tower_dante_flight": {
+		"speaker": "Dante",
+		"pages": [
+			"Pas ici. Pas comme ça.",
+			"Entei ! Tu es libre.\nMontre-leur ta colère."
+		]
+	},
+	"bell_tower_dante_plan": {
+		"speaker": "Dante",
+		"pages": [
+			"Les sages croient\nqu'il faut les trois.",
+			"Ils se trompent.\nIl suffit qu'un seul souffre assez.",
+			"Ho-Oh viendra pour lui. Et ce jour-là,\nsa flamme sera à moi."
+		]
+	},
+	"bell_tower_dante_promise": {
+		"speaker": "Dante",
+		"pages": [
+			"Je finirai là où\ntout a commencé.",
+			"Au sommet du monde.",
+			"Viens, si tu l'oses."
+		]
+	},
+	"bell_tower_dante_refused": {
+		"speaker": "Dante",
+		"pages": [
+			"Non…",
+			"Même lui.\nMême lui me tourne le dos."
+		]
+	},
+	"bell_tower_dante_resume": {
+		"speaker": "Dante",
+		"pages": [
+			"Tu reviens déjà ?",
+			"Le soleil, lui, n'attend pas."
+		]
+	},
+	"bell_tower_dante_welcome": {
+		"speaker": "Dante",
+		"pages": [
+			"Te voilà.",
+			"Le déserteur t'a raconté mon histoire,\nje suppose. La porte, le feu.",
+			"Il t'a dit que j'avais survécu.\nIl ne t'a pas dit ce qu'il en reste."
+		]
+	},
+	"bell_tower_descent": {
+		"narration": true,
+		"pages": [
+			"Le soleil se lève.",
+			"Un cri traverse le ciel.",
+			"Un Pokémon aux mille couleurs\ndescend des nuages !"
+		]
+	},
+	"bell_tower_entei": {
+		"narration": true,
+		"variants": [
+			{
+				"if": [
+					"johto_dante_fled_1"
+				],
+				"cutscene": "bell_tower_entei"
+			},
+			{
+				"pages": [
+					"À ses pieds, une cage de flammes.\nUn Pokémon rouge s'y débat."
+				]
+			}
+		]
+	},
+	"bell_tower_entei_calm": {
+		"narration": true,
+		"pages": [
+			"Entei s'est calmé."
+		]
+	},
+	"bell_tower_entei_gone": {
+		"narration": true,
+		"pages": [
+			"Entei bondit par-dessus\nla rambarde et disparaît."
+		]
+	},
+	"bell_tower_entei_roar": {
+		"narration": true,
+		"pages": [
+			"Entei pousse un rugissement !"
+		]
+	},
+	"bell_tower_entei_turns": {
+		"narration": true,
+		"pages": [
+			"Entei se tourne vers {player}.",
+			"La colère brûle encore\ndans ses yeux !"
+		]
+	},
+	"bell_tower_feather_falls": {
+		"narration": true,
+		"pages": [
+			"Une plume aux mille couleurs\ntombe doucement sur le toit."
+		]
+	},
+	"bell_tower_feather_taken": {
+		"narration": true,
+		"pages": [
+			"{player} ramasse\nla Plume Arc-en-ciel !",
+			"Elle brille de toutes les couleurs."
+		]
+	},
+	"bell_tower_grunt_v_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Toi, tu n'as jamais vu\nle patron en colère."
+		]
+	},
+	"bell_tower_grunt_v_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"L'escalier est à nous !"
+		]
+	},
+	"bell_tower_grunt_v_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Bon… monte,\nsi tu veux mourir."
+		]
+	},
+	"bell_tower_grunt_w_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le patron dit qu'un seul suffit.\nJe n'ai pas compris quoi."
+		]
+	},
+	"bell_tower_grunt_w_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"À l'aube, tout le ciel\nsera à nous !"
+		]
+	},
+	"bell_tower_grunt_w_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le ciel attendra."
+		]
+	},
+	"bell_tower_grunt_watch_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Il est en haut.\nIl attend l'aube."
+		]
+	},
+	"bell_tower_grunt_watch_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Personne ne monte !\nOrdre du patron !"
+		]
+	},
+	"bell_tower_grunt_watch_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le patron va me\nbrûler vif…"
+		]
+	},
+	"bell_tower_ho_oh": {
+		"cutscene": "bell_tower_ho_oh"
+	},
+	"bell_tower_ho_oh_gone": {
+		"narration": true,
+		"pages": [
+			"Ho-Oh s'élève dans la lumière\ndu matin et disparaît."
+		]
+	},
+	"bell_tower_ho_oh_lands": {
+		"narration": true,
+		"pages": [
+			"Ho-Oh redescend.",
+			"Il se pose sous la grande cloche,\nface à {player}.",
+			"Il attend."
+		]
+	},
+	"bell_tower_ho_oh_return": {
+		"cutscene": "bell_tower_ho_oh_return"
+	},
+	"bell_tower_ho_oh_test": {
+		"narration": true,
+		"pages": [
+			"Ho-Oh veut éprouver\nle cœur de {player} !"
+		]
+	},
+	"bell_tower_refusal_1": {
+		"narration": true,
+		"pages": [
+			"Ho-Oh se pose devant Dante.",
+			"Il le regarde longtemps.",
+			"…"
+		]
+	},
+	"bell_tower_refusal_2": {
+		"narration": true,
+		"pages": [
+			"Ses ailes s'embrasent !\nLa cage de feu vole en éclats !",
+			"Ho-Oh s'envole et tourne\nau-dessus de la tour."
+		]
+	},
+	"bell_tower_roof_cloche": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"La grande cloche de la tour.\nSon bronze est encore tiède."
+		]
+	},
+	"bell_tower_roof_dante": {
+		"speaker": "Dante",
+		"cutscene": "bell_tower_dante_resume_bell",
+		"pages": [
+			"…"
+		]
+	},
+	"bell_tower_roof_rambarde": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Tout en bas, les toits de Rosalia\nsortent de la brume."
+		]
+	},
+	"bell_tower_wing": {
+		"cutscene": "bell_tower_wing"
+	},
+	"bell_tower_woods_hyper_potions": {
+		"cutscene": "bell_tower_woods_hyper_potions"
+	},
+	"bell_tower_woods_panneau": {
+		"narration": true,
+		"pages": [
+			"TOUR CARILLON\nSes cloches appellent\nle gardien du ciel."
+		]
+	}
+}

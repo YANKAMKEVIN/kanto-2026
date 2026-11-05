@@ -1,0 +1,832 @@
+{
+	"burned_tower_floor": {
+		"variants": [
+			{
+				"unless": [
+					"johto_burned_floor_seen"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_burned_floor_seen"
+						]
+					},
+					{
+						"dialogue": "burned_tower_1f_plancher_effondre"
+					}
+				]
+			}
+		]
+	},
+	"burned_tower_beasts": {
+		"variants": [
+			{
+				"unless": [
+					"johto_beasts_awakened"
+				],
+				"steps": [
+					{
+						"face": "player",
+						"to": "entei"
+					},
+					{
+						"dialogue": "joh6_beasts_sleep"
+					},
+					{
+						"react": "raikou"
+					},
+					{
+						"react": "entei"
+					},
+					{
+						"react": "suicune"
+					},
+					{
+						"dialogue": "joh6_beasts_wake"
+					},
+					{
+						"dialogue": "joh6_beasts_flee"
+					},
+					{
+						"despawn": "suicune"
+					},
+					{
+						"despawn": "entei"
+					},
+					{
+						"spawn": "brace",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							18,
+							8
+						],
+						"facing": "left"
+					},
+					{
+						"move": "brace",
+						"to": [
+							13,
+							8
+						]
+					},
+					{
+						"face": "player",
+						"to": "brace"
+					},
+					{
+						"dialogue": "joh6_brace_arrives"
+					},
+					{
+						"dialogue": "joh6_brace_cage_thrown"
+					},
+					{
+						"flash": 2
+					},
+					{
+						"react": "raikou"
+					},
+					{
+						"dialogue": "joh6_brace_cage_caught"
+					},
+					{
+						"face": "brace",
+						"to": "player"
+					},
+					{
+						"dialogue": "joh6_brace_leaves_tower"
+					},
+					{
+						"despawn": "raikou"
+					},
+					{
+						"move": "brace",
+						"to": [
+							18,
+							8
+						]
+					},
+					{
+						"despawn": "brace"
+					},
+					{
+						"set": [
+							"johto_beasts_awakened",
+							"johto_raikou_taken"
+						]
+					}
+				]
+			}
+		]
+	},
+	"ecruteak_dante_plan": {
+		"variants": [
+			{
+				"if": [
+					"johto_raikou_taken"
+				],
+				"unless": [
+					"johto_dante_plan_known"
+				],
+				"steps": [
+					{
+						"spawn": "doyen_parvis",
+						"sprite": "mr_fuji",
+						"cell": [
+							12,
+							15
+						],
+						"facing": "left"
+					},
+					{
+						"move": "doyen_parvis",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									0,
+									1
+								],
+								[
+									-1,
+									0
+								],
+								[
+									1,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "doyen_parvis"
+					},
+					{
+						"face": "doyen_parvis",
+						"to": "player"
+					},
+					{
+						"dialogue": "joh6_doyen_plan"
+					},
+					{
+						"set": [
+							"johto_dante_plan_known"
+						]
+					},
+					{
+						"move": "doyen_parvis",
+						"to": [
+							21,
+							13
+						]
+					},
+					{
+						"despawn": "doyen_parvis"
+					}
+				]
+			}
+		]
+	},
+	"lake_red_gyarados": {
+		"variants": [
+			{
+				"unless": [
+					"johto_red_gyarados_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "gyarados",
+						"level": 50,
+						"variant": "red",
+						"actor": "leviator_rouge",
+						"static": {
+							"done": "johto_red_gyarados_done",
+							"caught": "johto_red_gyarados_caught"
+						}
+					}
+				]
+			}
+		]
+	},
+	"souvenir_shop_stairs": {
+		"variants": [
+			{
+				"if": [
+					"johto_red_gyarados_done"
+				],
+				"unless": [
+					"johto_hideout_found"
+				],
+				"steps": [
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"dialogue": "joh6_shop_stairs"
+					},
+					{
+						"set": [
+							"johto_hideout_found"
+						]
+					},
+					{
+						"emote": "vendeur",
+						"kind": "exclamation"
+					},
+					{
+						"face": "player",
+						"to": "vendeur"
+					},
+					{
+						"dialogue": "mahogany_souvenir_shop_vendeur"
+					}
+				]
+			}
+		]
+	},
+	"hideout_alarm_1": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alarm_1"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_alarm_1"
+						]
+					},
+					{
+						"flash": 1
+					},
+					{
+						"dialogue": "joh6_hideout_alarm"
+					},
+					{
+						"spawn": "sbire_alarme_1_appel",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							10,
+							1
+						],
+						"facing": "down",
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_1_after"
+					},
+					{
+						"emote": "sbire_alarme_1_appel",
+						"kind": "exclamation"
+					},
+					{
+						"move": "sbire_alarme_1_appel",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									0,
+									1
+								],
+								[
+									-1,
+									0
+								],
+								[
+									1,
+									0
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "sbire_alarme_1_appel"
+					},
+					{
+						"face": "sbire_alarme_1_appel",
+						"to": "player"
+					},
+					{
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_1_before"
+					},
+					{
+						"battle": "mahogany_hideout_b1f_sbire_alarme_1",
+						"win": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_1"
+						]
+					},
+					{
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_1_defeated",
+						"if": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_1"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_1"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_alarm_2": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alarm_2"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_alarm_2"
+						]
+					},
+					{
+						"flash": 1
+					},
+					{
+						"dialogue": "joh6_hideout_alarm"
+					},
+					{
+						"spawn": "sbire_alarme_2_appel",
+						"sprite": "rocket_grunt_f",
+						"cell": [
+							19,
+							13
+						],
+						"facing": "up",
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_2_after"
+					},
+					{
+						"emote": "sbire_alarme_2_appel",
+						"kind": "exclamation"
+					},
+					{
+						"move": "sbire_alarme_2_appel",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									0,
+									1
+								],
+								[
+									-1,
+									0
+								],
+								[
+									1,
+									0
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "sbire_alarme_2_appel"
+					},
+					{
+						"face": "sbire_alarme_2_appel",
+						"to": "player"
+					},
+					{
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_2_before"
+					},
+					{
+						"battle": "mahogany_hideout_b1f_sbire_alarme_2",
+						"win": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_2"
+						]
+					},
+					{
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_2_defeated",
+						"if": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_2"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_2"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_alarm_3": {
+		"variants": [
+			{
+				"unless": [
+					"johto_alarm_3"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_alarm_3"
+						]
+					},
+					{
+						"flash": 1
+					},
+					{
+						"dialogue": "joh6_hideout_alarm"
+					},
+					{
+						"spawn": "sbire_alarme_3_appel",
+						"sprite": "rocket_grunt_m",
+						"cell": [
+							24,
+							1
+						],
+						"facing": "down",
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_3_after"
+					},
+					{
+						"emote": "sbire_alarme_3_appel",
+						"kind": "exclamation"
+					},
+					{
+						"move": "sbire_alarme_3_appel",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									0,
+									1
+								],
+								[
+									-1,
+									0
+								],
+								[
+									1,
+									0
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "sbire_alarme_3_appel"
+					},
+					{
+						"face": "sbire_alarme_3_appel",
+						"to": "player"
+					},
+					{
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_3_before"
+					},
+					{
+						"battle": "mahogany_hideout_b1f_sbire_alarme_3",
+						"win": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_3"
+						]
+					},
+					{
+						"dialogue": "mahogany_hideout_b1f_sbire_alarme_3_defeated",
+						"if": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_3"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_mahogany_hideout_b1f_sbire_alarme_3"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_lever": {
+		"variants": [
+			{
+				"unless": [
+					"johto_cell_opened"
+				],
+				"steps": [
+					{
+						"dialogue": "joh6_lever_pulled"
+					},
+					{
+						"set": [
+							"johto_cell_opened"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_deserter": {
+		"variants": [
+			{
+				"unless": [
+					"johto_dante_flashback_seen"
+				],
+				"steps": [
+					{
+						"dialogue": "joh6_deserter_story"
+					},
+					{
+						"flashback": "start"
+					},
+					{
+						"change_map": "dante_flashback_hq",
+						"at": "vue",
+						"facing": "up"
+					},
+					{
+						"wait": 0.6
+					},
+					{
+						"dialogue": "joh6_flashback_dante"
+					},
+					{
+						"face": "giovanni_jeune",
+						"to": "up"
+					},
+					{
+						"dialogue": "joh6_flashback_silence"
+					},
+					{
+						"dialogue": "joh6_flashback_giovanni"
+					},
+					{
+						"face": "giovanni_jeune",
+						"to": "down"
+					},
+					{
+						"move": "giovanni_jeune",
+						"to": [
+							7,
+							8
+						]
+					},
+					{
+						"despawn": "persian"
+					},
+					{
+						"flash": 2
+					},
+					{
+						"dialogue": "joh6_flashback_leaves"
+					},
+					{
+						"despawn": "giovanni_jeune"
+					},
+					{
+						"wait": 0.8
+					},
+					{
+						"change_map": "mahogany_hideout_b2f",
+						"at": "devant_deserteur",
+						"facing": "down"
+					},
+					{
+						"flashback": "end"
+					},
+					{
+						"face": "deserteur",
+						"to": "player"
+					},
+					{
+						"dialogue": "joh6_deserter_after"
+					},
+					{
+						"dialogue": "joh6_deserter_password"
+					},
+					{
+						"set": [
+							"johto_dante_flashback_seen"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_password": {
+		"variants": [
+			{
+				"if": [
+					"johto_dante_flashback_seen"
+				],
+				"unless": [
+					"johto_password_said"
+				],
+				"steps": [
+					{
+						"dialogue": "joh6_password"
+					},
+					{
+						"set": [
+							"johto_password_said"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_brace": {
+		"variants": [
+			{
+				"unless": [
+					"johto_brace_defeated_2"
+				],
+				"steps": [
+					{
+						"emote": "brace",
+						"kind": "exclamation"
+					},
+					{
+						"move": "brace",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									1,
+									-1
+								],
+								[
+									1,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "player",
+						"to": "brace"
+					},
+					{
+						"face": "brace",
+						"to": "player"
+					},
+					{
+						"dialogue": "mahogany_hideout_b3f_brace_before"
+					},
+					{
+						"battle": "mahogany_hideout_b3f_brace",
+						"win": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"dialogue": "mahogany_hideout_b3f_brace_defeated",
+						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"dialogue": "joh6_brace_leaves",
+						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"move": "brace",
+						"to": [
+							22,
+							12
+						],
+						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"dialogue": "joh6_brace_escape",
+						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"despawn": "brace",
+						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"set": [
+							"johto_brace_defeated_2"
+						],
+						"if": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					},
+					{
+						"wake_up": true,
+						"unless": [
+							"beaten_mahogany_hideout_b3f_brace"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_generator_off": {
+		"variants": [
+			{
+				"if": [
+					"johto_brace_defeated_2"
+				],
+				"unless": [
+					"johto_generator_off"
+				],
+				"steps": [
+					{
+						"flash": 1
+					},
+					{
+						"set": [
+							"johto_generator_off"
+						]
+					}
+				]
+			}
+		]
+	},
+	"hideout_raikou": {
+		"variants": [
+			{
+				"if": [
+					"johto_generator_off"
+				],
+				"unless": [
+					"johto_raikou_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "raikou",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "raikou",
+						"static": {
+							"done": "johto_raikou_done",
+							"caught": "johto_raikou_caught"
+						},
+						"flee": [
+							"johto_raikou_done",
+							"johto_raikou_fled"
+						]
+					},
+					{
+						"despawn": "raikou",
+						"if": [
+							"johto_raikou_fled"
+						]
+					}
+				]
+			}
+		]
+	},
+	"lake_trail_guard": {
+		"variants": [
+			{
+				"unless": [
+					"johto_act3"
+				],
+				"steps": [
+					{
+						"face": "garde_forestier",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "garde_forestier"
+					},
+					{
+						"dialogue": "lake_of_rage_garde_forestier"
+					},
+					{
+						"move": "player",
+						"path": [
+							"left"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	}
+}

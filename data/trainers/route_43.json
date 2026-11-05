@@ -1,0 +1,61 @@
+{
+	"route_43_peager": {
+		"name": "Sbire péager",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 54
+			},
+			{
+				"species": "weezing",
+				"level": 53
+			}
+		]
+	},
+	"route_43_sbire_q": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "arbok",
+				"level": 52
+			},
+			{
+				"species": "golbat",
+				"level": 52
+			}
+		]
+	},
+	"route_43_basile": {
+		"name": "Campeur Basile",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "nidoking",
+				"level": 52
+			},
+			{
+				"species": "fearow",
+				"level": 51
+			}
+		]
+	}
+}

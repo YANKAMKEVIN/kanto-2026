@@ -1,0 +1,86 @@
+{
+	"route_28_gate_check": {
+		"variants": [
+			{
+				"unless": [
+					"johto_route28_open"
+				],
+				"steps": [
+					{
+						"face": "garde",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "garde"
+					},
+					{
+						"dialogue": "route_28_gate_check"
+					},
+					{
+						"move": "player",
+						"path": [
+							"down"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	},
+	"route_28_gate_south": {
+		"variants": [
+			{
+				"unless": [
+					"johto_rival_final_done"
+				],
+				"steps": [
+					{
+						"dialogue": "route_28_gate_locked"
+					},
+					{
+						"move": "player",
+						"path": [
+							"up"
+						],
+						"keep_facing": true
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_rival_final_done"
+				],
+				"unless": [
+					"johto_route28_open"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_route28_open"
+						]
+					},
+					{
+						"dialogue": "route_28_gate_opens"
+					}
+				]
+			}
+		]
+	},
+	"route_22_route_28_door": {
+		"variants": [
+			{
+				"if": [
+					"johto_arrived"
+				],
+				"steps": [
+					{
+						"change_map": "route_28_gate",
+						"at": "from_route_22",
+						"facing": "up"
+					}
+				]
+			}
+		]
+	}
+}

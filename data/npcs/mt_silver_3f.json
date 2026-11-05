@@ -1,0 +1,17 @@
+{
+	"lucas": {
+		"cell": [
+			20,
+			7
+		],
+		"facing": "left",
+		"sprite": "mountaineer",
+		"dialogue": "mt_silver_3f_hiker_lucas_after",
+		"trainer": {
+			"id": "mt_silver_3f_hiker_lucas",
+			"sight": 2,
+			"before": "mt_silver_3f_hiker_lucas_before",
+			"defeated": "mt_silver_3f_hiker_lucas_defeated"
+		}
+	}
+}

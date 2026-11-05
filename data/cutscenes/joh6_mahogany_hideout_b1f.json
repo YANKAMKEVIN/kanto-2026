@@ -1,0 +1,26 @@
+{
+	"mahogany_hideout_b1f_hyper_potion": {
+		"variants": [
+			{
+				"unless": [
+					"got_mahogany_hideout_b1f_hyper_potion"
+				],
+				"steps": [
+					{
+						"despawn": "hyper_potion"
+					},
+					{
+						"give": "hyper_potion",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_mahogany_hideout_b1f_hyper_potion"
+						]
+					}
+				]
+			}
+		]
+	}
+}

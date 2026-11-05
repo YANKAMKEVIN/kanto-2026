@@ -129,6 +129,7 @@ porte_tour_cendree   examen         8..9,12      libre   actif_sans=johto_burned
 entree_tour_cendree  warp           8..9,12      libre   actif_avec=johto_burned_tower_open  # JOH6 : STEP_ON ↑ → burned_tower_1f, from_city (13..14, 22)
 retour_tour_cendree  spawn          8..9,13      libre   # sortie de la Tour Cendrée, tournée ↓
 panneau_tour_cendree panneau        7,13         bloque  # C-3 (JOH6), lu depuis (7, 14) ↑
+scene_doyen_plan     declencheur    8..9,14      libre   actif_avec=johto_raikou_taken actif_sans=johto_dante_plan_known  # JOH6 : C-10, C-11, le doyen attend à la sortie de la Tour Cendrée [D]
 scene_sbires         declencheur    1..2,14..16  libre   actif_sans=johto_rosalia_rockets_seen  # R-12 à R-15, à l'entrée (seul passage depuis la Route 38) ; les Sbires fuient vers l'est par l'avenue
 sage_tour            pnj            10,13        bloque  role=sage facing=left  # R-13, R-15, puis C-1 (JOH6) ; à côté de la porte de la Tour Cendrée (déplacé de (9, 13) pour libérer la sortie) [D]
 sbire_1              pnj            11,13        bloque  role=sbire facing=left  actif_sans=johto_rosalia_rockets_seen  # R-12

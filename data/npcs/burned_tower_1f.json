@@ -1,0 +1,46 @@
+{
+	"odile": {
+		"cell": [
+			4,
+			19
+		],
+		"facing": "right",
+		"sprite": "channeler",
+		"dialogue": "burned_tower_1f_odile_after",
+		"trainer": {
+			"id": "burned_tower_1f_odile",
+			"sight": 2,
+			"before": "burned_tower_1f_odile_before",
+			"defeated": "burned_tower_1f_odile_defeated"
+		}
+	},
+	"sbire_p": {
+		"cell": [
+			23,
+			14
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "burned_tower_1f_sbire_p_after",
+		"trainer": {
+			"id": "burned_tower_1f_sbire_p",
+			"sight": 3,
+			"before": "burned_tower_1f_sbire_p_before",
+			"defeated": "burned_tower_1f_sbire_p_defeated"
+		}
+	},
+	"rappel": {
+		"cell": [
+			25,
+			21
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "burned_tower_1f_rappel",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_burned_tower_1f_rappel"
+		]
+	}
+}

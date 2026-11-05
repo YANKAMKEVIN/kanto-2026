@@ -1,0 +1,140 @@
+{
+	"lake_of_rage_grass_day": {
+		"maps": [
+			"lake_of_rage"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "nidorino",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 25
+			},
+			{
+				"species": "nidorina",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 25
+			},
+			{
+				"species": "furret",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 25
+			},
+			{
+				"species": "pidgeotto",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 25
+			}
+		]
+	},
+	"lake_of_rage_grass_night": {
+		"maps": [
+			"lake_of_rage"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "sneasel",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 20
+			},
+			{
+				"species": "noctowl",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 30
+			},
+			{
+				"species": "houndoom",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 20
+			},
+			{
+				"species": "venomoth",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 30
+			}
+		]
+	},
+	"lake_of_rage_water": {
+		"maps": [
+			"lake_of_rage"
+		],
+		"terrain": "water",
+		"rate": 10,
+		"slots": [
+			{
+				"species": "magikarp",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 50
+			},
+			{
+				"species": "marill",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 20
+			},
+			{
+				"species": "azumarill",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 10
+			},
+			{
+				"species": "gyarados",
+				"levels": [
+					45,
+					50
+				],
+				"weight": 20
+			}
+		]
+	}
+}

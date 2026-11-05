@@ -1,0 +1,38 @@
+{
+	"sbire_x": {
+		"cell": [
+			6,
+			20
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "mt_silver_1f_grunt_x_after",
+		"trainer": {
+			"id": "mt_silver_1f_grunt_x",
+			"sight": 2,
+			"before": "mt_silver_1f_grunt_x_before",
+			"defeated": "mt_silver_1f_grunt_x_defeated"
+		},
+		"unless": [
+			"johto_chapter_done"
+		]
+	},
+	"sbire_y": {
+		"cell": [
+			25,
+			2
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "mt_silver_1f_grunt_y_after",
+		"trainer": {
+			"id": "mt_silver_1f_grunt_y",
+			"sight": 1,
+			"before": "mt_silver_1f_grunt_y_before",
+			"defeated": "mt_silver_1f_grunt_y_defeated"
+		},
+		"unless": [
+			"johto_chapter_done"
+		]
+	}
+}

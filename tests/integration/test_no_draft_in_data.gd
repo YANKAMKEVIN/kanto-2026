@@ -36,9 +36,14 @@ const DATA_DIR := "res://data"
 ## Chapitre Johto (JOH0, 2026-11-03) : descriptions [D] des cinq villes de Johto, textes [D] des
 ## systèmes (`johto_systems.json` : PC hors ligne, éclosion, objet du terminal, scènes de test) et
 ## les 51 fiches du Pokédex de Johto (JOH-Q2), à relire par Kevin avec les textes du JOH1.
+## JOH9 (2026-11-04) : textes [D] hors du dossier joh-10 (Topdresseur Jules, garde du poste de
+## la Route 28 après l'ouverture, porte verrouillée, gardien) et lignes du petit générique de Johto.
 ## JOH2 (2026-11-04) : description de Rosalia validée (R-25, plus « draft ») ; textes [D] hors du
 ## dossier joh-03 (garde de la Route 42, Pokémon de la ferme, sages et habitants de Rosalia),
 ## JOH2-Q1.
+## JOH6 (2026-11-04) : description d'Acajou validée (dossier joh-07 §16, plus « draft ») ; textes [D]
+## hors du dossier : sage après l'ouverture de la tour, étagère de la boutique de souvenirs, habitants
+## des deux maisons d'Acajou.
 ## JOH4 (2026-11-04) : description d'Écorcia validée (E-34, plus « draft ») ; textes [D] hors du
 ## dossier joh-05 (barrière du puits, Canarticho, Ramoloss sans queue, habitant), JOH4-Q1.
 const PENDING_DRAFTS: Array[String] = [
@@ -49,6 +54,23 @@ const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh4_ilex_forest.json/ilex_forest_canarticho",
 	"dialogues/joh4_slowpoke_well_b2f.json/slowpoke_well_b2f_ramoloss_sans_queue",
 	"dialogues/joh4_azalea_interiors.json/azalea_house_1_habitant",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_before",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_defeated",
+	"dialogues/joh9_route_28.json/route_28_topdresseur_jules_after",
+	"dialogues/joh9_route_28.json/route_28_gate_guard/variants/0",
+	"dialogues/joh9_route_28.json/route_28_gate_locked",
+	"dialogues/joh9_route_28.json/route_28_house_gardien",
+	"story/credits_johto.json/blocks/0",
+	"story/credits_johto.json/blocks/2",
+	"story/credits_johto.json/blocks/4",
+	"story/credits_johto.json/blocks/6",
+	"story/credits_johto.json/blocks/8",
+	"story/credits_johto.json/blocks/10",
+	"story/credits_johto.json/blocks/12",
+	"story/credits_johto.json/blocks/14",
+	"story/credits_johto.json/blocks/16",
+	"story/credits_johto.json/blocks/18",
+	"story/credits_johto.json/blocks/21",
 	"dialogues/joh2_ecruteak_city.json/ecruteak_city_garde_route_42",
 	"dialogues/joh2_route_39.json/route_39_ecremeuh",
 	"dialogues/joh2_route_39.json/route_39_tauros",
@@ -58,16 +80,22 @@ const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_habitante/variants/1",
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_received",
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_2_habitant",
+	"dialogues/joh2_ecruteak_city.json/ecruteak_city_sage_tour/variants/1",
+	"dialogues/joh6_mahogany_house_1.json/mahogany_house_1_habitante",
+	"dialogues/joh6_story.json/mahogany_hideout_b2f_levier/variants/0",
+	"dialogues/joh6_story.json/joh6_lever_pulled",
+	"dialogues/joh6_mahogany_house_2.json/mahogany_house_2_habitant_1",
+	"dialogues/joh6_mahogany_house_2.json/mahogany_house_2_habitant_2",
+	"dialogues/joh6_mahogany_souvenir_shop.json/mahogany_souvenir_shop_etagere",
 	"world/zones.json/zones/saffron_city",
-	"world/zones.json/zones/mahogany_town",
 	"dialogues/joh1.json/olivine_guard/variants/1",
 	"story/objectives.json/0",
 	"story/objectives.json/1",
 	"story/objectives.json/2",
 	"story/objectives.json/3",
 	"story/objectives.json/4",
-	# JOH5 : trois objectifs [D] en tête ; JOH4 : quatre derrière eux ; JOH3 : deux (indices 7, 8) ;
-	# ceux du JOH1 passent de 0–4 à 9–13.
+	# JOH6 : cinq objectifs [D] en tête ; JOH5 : trois derrière eux ; JOH4 : quatre ; JOH3 : deux ; ceux
+	# du JOH1 ensuite.
 	"story/objectives.json/5",
 	"story/objectives.json/6",
 	"story/objectives.json/7",
@@ -77,8 +105,21 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/11",
 	"story/objectives.json/12",
 	"story/objectives.json/13",
+	"story/objectives.json/14",
+	"story/objectives.json/15",
+	"story/objectives.json/16",
+	"story/objectives.json/17",
+	"story/objectives.json/18",
+	# JOH8 : objectifs du Menu [D] (doyen, Tour Carillon, retour à Rosalia), JOH8-Q1.
+	"story/objectives.json/19",
+	"story/objectives.json/20",
+	"story/objectives.json/21",
 	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
+	# JOH8 : examens de la Tour Carillon (JOH8-Q1).
+	"dialogues/joh8_bell_tower.json/bell_tower_1f_autel",
+	"dialogues/joh8_bell_tower.json/bell_tower_roof_cloche",
+	"dialogues/joh8_bell_tower.json/bell_tower_roof_rambarde",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",
 	"dialogues/johto_systems.json/trade_terminal_item/variants/0",
 	"pokedex/johto.json/species/chikorita",

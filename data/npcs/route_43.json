@@ -1,0 +1,61 @@
+{
+	"peager": {
+		"cell": [
+			12,
+			25
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "route_43_peager_after",
+		"trainer": {
+			"id": "route_43_peager",
+			"sight": 1,
+			"before": "route_43_peager_before",
+			"defeated": "route_43_peager_defeated"
+		}
+	},
+	"sbire_q": {
+		"cell": [
+			8,
+			21
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "route_43_sbire_q_after",
+		"trainer": {
+			"id": "route_43_sbire_q",
+			"sight": 2,
+			"before": "route_43_sbire_q_before",
+			"defeated": "route_43_sbire_q_defeated"
+		}
+	},
+	"basile": {
+		"cell": [
+			14,
+			10
+		],
+		"facing": "left",
+		"sprite": "camper",
+		"dialogue": "route_43_basile_after",
+		"trainer": {
+			"id": "route_43_basile",
+			"sight": 2,
+			"before": "route_43_basile_before",
+			"defeated": "route_43_basile_defeated"
+		}
+	},
+	"max_potion": {
+		"cell": [
+			20,
+			14
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_43_max_potion",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_43_max_potion"
+		]
+	}
+}

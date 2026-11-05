@@ -8,9 +8,9 @@
 
 | Élément | Où | Valeur |
 |---|---|---|
-| Nom du jeu | `project.godot` `config/name`, preset Android `package/name` | **Pokemake** (orthographe à l'écran à confirmer avant le logo) |
+| Nom du jeu | `project.godot` `config/name`, preset Android `package/name` | **Pokemake** (orthographe tranchée le 2026-11-03) |
 | Identifiant d'application | preset Android `package/unique_name`, iOS `bundle_identifier` | `dev.kevin.kanto2026` — **ne change jamais** (sauvegarde et mises à jour par-dessus) |
-| Version | `project.godot` `config/version` (**source unique**) | `MAJEUR.MINEUR.CORRECTIF`, ex. `0.34.0` |
+| Version | `project.godot` `config/version` (**source unique**) | `MAJEUR.MINEUR.CORRECTIF`, ex. `0.34.1` |
 | Code Android | dérivé : `MAJEUR × 10000 + MINEUR × 100 + CORRECTIF` | `0.34.0` → **3400** (> 33, code de la référence 0.33.0 du J33) |
 | Clé de signature | fichier hors dépôt, variables d'environnement | une seule, pour toujours |
 
@@ -104,9 +104,14 @@ Testé sur le Galaxy A17 (Android 16) le 2026-11-04 : `docs/tech/jalon-34-34b.md
 
 ## 5. Ce qui reste du J34 dans ce périmètre
 
-- **Nom à l'écran** : logo peint « Pokemake » (écran titre, splash `boot_splash/image`, icônes si
-  besoin) quand Kevin a tranché l'orthographe (Pokemake / Pokémake / PokéMake…).
-- **T3** (fait le 2026-11-04 sur l'A17, trois scénarios réussis, `jalon-34-34b.md`) : installation propre, mise à jour par-dessus 0.33.0 avec une vraie sauvegarde, désinstallation ; à refaire sur S24 et S21 quand ils reviennent, et l'installation depuis un fichier reste à éprouver.
-- **T4** première utilisation par un proche sans aide ; **T5** interruptions Android (sur APK signé) ;
-  **T6** inventaire des ressources (lecture seule) ; **T7** rapport et décision de Kevin.
+- **RC 0.34.1 (3401) construite** le 2026-11-04 sur `release/0.34` @ `012bdc8c`, **Kanto seul** (décision
+  de Kevin) ; paquet dans `~/.pokemake/rc/0.34.1/` ; rapport et limitations : `jalon-34-rapport.md`.
+- **T4** première utilisation par un proche sans aide : à Kevin, consignes `jalon-34-t4-consignes.md`.
+- **Encore à éprouver** : installation depuis un fichier ; RC sur le S24 et le S21, seulement avec l'accord
+  de Kevin, car il faut y retirer l'app debug et donc risquer la sauvegarde.
+- **Version suivante pour les proches** : `main` contient Johto et, après fusion de `release/0.34`, porte
+  aussi le numéro 0.34.1. Toute nouvelle RC prend **0.34.2 ou plus**, et la sauvegarde migre de v9 en v10.
+- **Envoi au téléphone** : si `adb push` de ≈ 650 Mo fait tomber le serveur adb, envoyer par morceaux de
+  100 Mo (`split`, `adb push -Z`, `cat` sur le téléphone) et comparer le SHA-256. L'activité à lancer est
+  `dev.kevin.kanto2026/com.godot.game.GodotAppLauncher`.
 - iOS (`docs/tech/ios.md`) : hors de ce chemin ; TestFlight interne demande un compte développeur.

@@ -201,6 +201,9 @@ var hall_of_fame_handler: Callable
 var team_return_handler: Callable
 ## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
 var credits_handler: Callable
+## JOH9 : générique demandé par l'étape « credits » en cours (&"" = Kanto), lu par le
+## gestionnaire ([member credits_handler]).
+var credits_id: StringName = &""
 ## Raison de l'écriture qui suit l'entrée du Panthéon.
 const HALL_OF_FAME_SAVE_REASON: String = "Panthéon"
 
@@ -469,6 +472,7 @@ func _play_step(source_step: CutsceneStep) -> bool:
 		CutsceneStep.Kind.HALL_OF_FAME: # Jalon 30
 			return await _hall_of_fame()
 		CutsceneStep.Kind.CREDITS: # Jalon 30
+			credits_id = StringName(step.text)
 			await _credits()
 		CutsceneStep.Kind.CONFISCATE_TEAM: # JOH0
 			_confiscate_team()
@@ -476,9 +480,31 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _return_team()
 		CutsceneStep.Kind.GIVE_EGG: # JOH0
 			await _give_egg(step)
+		CutsceneStep.Kind.FLASHBACK: # JOH6
+			await _flashback(step.text == "start")
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
+
+
+## JOH6 (`jalon-joh6.md` §2.7) : ouverture du souvenir ([param opening]) : filtre sépia en fondu,
+## joueur caché ; fermeture : fondu inverse, filtre retiré, joueur de nouveau visible. Le filtre
+## est un enfant du directeur (il survit aux changements de carte du souvenir).
+func _flashback(opening: bool) -> void:
+	var filter := get_node_or_null(^"FlashbackFilter") as FlashbackFilter
+	if opening:
+		if filter == null:
+			filter = FlashbackFilter.new()
+			add_child(filter)
+		if is_instance_valid(_player):
+			_player.visible = false
+		await filter.fade_to(1.0)
+		return
+	if filter != null:
+		await filter.fade_to(0.0)
+		filter.queue_free()
+	if is_instance_valid(_player):
+		_player.visible = true
 
 
 ## JOH0 (`jalon-joh0.md` §2.2) : le vol, d'un seul bloc ([method TeamConfiscation.confiscate]).
@@ -770,6 +796,7 @@ func _wild_battle(step: CutsceneStep) -> bool:
 	# Jalon 21 : « reveal » ignorée si le combat est un SPECTRE ; « uncatchable » indépendante.
 	encounter.reveal = step.reveal and not encounter.ghost
 	encounter.uncatchable = step.uncatchable
+	encounter.variant = step.variant
 	var origin := _wild_origin()
 	var outcome: int = await _battle_runner.run_wild(encounter, _map, origin)
 	if outcome == Battle.Outcome.NONE:
@@ -1379,6 +1406,12 @@ func _finish() -> void:
 	_cutscene_id = &""
 	_step_index = -1
 	_aliases = {}
+	# JOH6 : un souvenir resté ouvert (scène arrêtée avant « flashback: end ») se referme.
+	var filter := get_node_or_null(^"FlashbackFilter")
+	if filter != null:
+		filter.queue_free()
+		if is_instance_valid(_player):
+			_player.visible = true
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
 	set_process(false)
