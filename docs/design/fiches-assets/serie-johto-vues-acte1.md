@@ -375,3 +375,11 @@ Générés le 2026-11-05, un essai chacun, sans refus de Codex. Couleurs du clan
 bannières d'Ébènelle. L'Aïeule fait 104 px (voûtée, plus petite qu'un adulte). Cenere : aucune référence n'existait,
 modèle libre (manteau gris cendre, carré gris, lunettes) ; Brace reste à peindre, à accorder avec elle.
 
+## Personnages de Johto : principaux, secondaires, PNJ de la semaine — **à valider par Kevin**
+
+Planches `johto-persos-principaux-v1.png`, `johto-persos-secondaires-v1.png`, `johto-persos-semaine-v1.png` ; 22 modèles,
+marche et attente, générés le 2026-11-05 sans refus de Codex. Prompts `tools/art/prompts/joh_persos/`. Fargas, l'Agente et
+Lucien refaits une fois (halo autour des poses). Tailles : Fargas 118 px, Margot 116 px, Mme Clémence 120 px, les autres 128 px.
+La cicatrice de Dante est discrète à l'échelle du jeu. Dante jeune et Giovanni jeune ont un contour plus marqué que le reste
+de la série. Pas encore branchés dans les données : les PNJ gardent leurs sprites empruntés.
+
