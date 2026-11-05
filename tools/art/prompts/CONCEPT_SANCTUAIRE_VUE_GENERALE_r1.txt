@@ -1,0 +1,32 @@
+CONCEPT ART — VUE GÉNÉRALE : LE SANCTUAIRE DE L'ANTRE, L'AUTEL DES PIERRES (Kanto 2026, Chapitre Johto, arc des Pierres), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Une grande salle souterraine solennelle : une allée centrale de bas en haut entre deux bassins, un autel en haut au centre, un escalier en bas au centre.
+Légende du plan :
+- gris ardoise foncé = ROCHE PLEINE et parois infranchissables (marges et masses entre les salles) ;
+- gris clair = SOL de pierre praticable ;
+- bleu profond = EAU sombre, infranchissable à pied, deux grands BASSINS de part et d'autre de l'allée, très calmes ;
+- grand rectangle beige en haut au centre = l'AUTEL : une table de pierre claire à trois petites cuvettes vides, sur deux marches basses ;
+- échelles brunes en bas = un ESCALIER de pierre qui monte ;
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale de la salle de Lugia, aux Îles Tourbillon, un autre lieu du même chapitre, déjà peint en lumière neutre. Respecte EXACTEMENT son style de rendu : même eau, même roche, même lumière d'en haut, même saturation. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le lieu, comme le plan.
+
+AMBIANCE — « le lieu le plus important du clan » : une grande faille au plafond laisse tomber une lumière blanche sur l'autel ; l'eau reflète la voûte ; aucune décoration. C'est ici que se joue le moment fort du chapitre. Palette : ROCHE bleu-nuit, EAU noire et turquoise, PIERRE de l'autel presque blanche.
+LUMIÈRE NE (neutre) : lumière diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case ; parois, couloirs et salles suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, aucune diagonale. Les passages restent dégagés ; aucun objet ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucune créature, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre est permis), signature, filigrane, cadre, interface ; objet ou pierre sur l'autel ; statue de dragon ; torche ; cascade ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : une salle immense et silencieuse, deux bassins, et au bout de l'allée un autel de pierre sous la lumière.

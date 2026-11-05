@@ -1,0 +1,30 @@
+CONCEPT ART — VUE GÉNÉRALE : LE PONT DU GOÉLAND, BATEAU DE PÊCHE DE GOULVEN (Kanto 2026, Chapitre Johto, arc des Pierres), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Format PAYSAGE. Le pont d'un petit bateau de pêche en bois, vu du dessus, la proue à droite. Le bateau remplit l'image ; autour, un bandeau de mer.
+Légende du plan :
+- brun foncé = le BASTINGAGE de bois et les marges, peints comme la coque du bateau, avec de la MER bleue au-delà ;
+- beige clair = le PONT en planches, dégagé ;
+- bloc à droite en haut = la petite CABINE de bois avec sa barre ;
+Respecte ce plan À LA LETTRE. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+IMAGE 2 : la vue générale d'Oliville, un autre lieu du même chapitre, déjà peint en lumière neutre. Respecte EXACTEMENT son style de rendu : même pinceau, même bois, même mer, même saturation. Ne reprends PAS sa composition.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur tout le lieu, comme le plan.
+
+AMBIANCE — « un vieux bateau bien tenu » : planches usées, cordages lovés, filets pliés contre le bastingage. Palette : BOIS miel, CORDE écrue, MER bleu franc.
+LUMIÈRE NE (neutre) : lumière diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées. Le jeu ajoute lui-même l'éclairage.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case ; parois, couloirs et salles suivent une grille : uniquement des segments horizontaux et verticaux à ANGLES DROITS, aucune diagonale. Les passages restent dégagés ; aucun objet ajouté hors de ceux du plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus orthogonale, axes de l'image alignés sur la grille, projection oblique frontale, sans point de fuite et SANS ISOMÉTRIE. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres propres colorées, légèrement bleutées, jamais grises ni noires. Aucune ombre portée allongée.
+
+PERSONNE : aucun personnage, aucune créature, aucun animal. Le lieu est VIDE.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond sans texte du Centre est permis), signature, filigrane, cadre, interface ; voile immense, moteur moderne, canon, navire de luxe ; brouillard, flou de profondeur, vignettage ; pixel art, 3D.
+
+L'image doit raconter, sans texte : le pont d'un petit bateau de pêche, simple et usé, en pleine mer.

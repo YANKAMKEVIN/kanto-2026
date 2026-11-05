@@ -1,0 +1,32 @@
+# Tente d'Héloïse (alph_tent) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP1, §8.1, textes P-3, P-4, P-10, P-57 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **validée par Kevin le 2026-11-05**. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 9 × 7 cases ; nord en haut ; x = colonne 0..8, y = rangée 0..6.
+#
+# Composition :
+#   Intérieur de toile : caisses et carnets (M) au fond, table de moulages (c), sortie au sud (4, 6).
+#
+# Légende :
+#   X toile (bloquée)   . tapis   M caisses, carnets   c table (bloqués)   E sortie (PUSH ↓)
+# Défauts [D] : coque neuve 9 × 7.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 9 caractères), puis POSITIONS.
+
+PRATICABLES .E
+
+GRILLE 9 7
+00 XXXXXXXXX
+01 XMMMMMMMX
+02 X.......X
+03 X.cc....X
+04 X.......X
+05 X.......X
+06 XXXXEXXXX
+FIN
+
+POSITIONS
+sortie               warp           4,6          libre   # PUSH ↓ → ruins_of_alph, retour_tente (8, 14)
+from_ruins           spawn          4,5          libre   # arrivée, tournée ↑
+heloise              pnj            4,2          bloque  role=chercheuse facing=down  # P-3, P-4, P-10, P-57
+FIN

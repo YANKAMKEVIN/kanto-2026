@@ -3703,6 +3703,78 @@
    "sortie": "assets/sprites/pokemon/painted/osselait_sheet.png",
    "hauteur": 56,
    "note": "série 23 (J21 T7) ; r1 refusée 4 fois par le filtre de Codex, r2 = prompt sans le mot « crâne » ; Maison des Pokémon, comportement static"
+  },
+  {
+   "id": "germignon",
+   "source": "JOHTO_MONDE_GERMIGNON_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/germignon_sheet.png",
+   "hauteur": 60,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "hericendre",
+   "source": "JOHTO_MONDE_HERICENDRE_r3.png",
+   "sortie": "assets/sprites/pokemon/painted/hericendre_sheet.png",
+   "hauteur": 58,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "kaiminus",
+   "source": "JOHTO_MONDE_KAIMINUS_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/kaiminus_sheet.png",
+   "hauteur": 62,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "macronium",
+   "source": "JOHTO_MONDE_MACRONIUM_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/macronium_sheet.png",
+   "hauteur": 72,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "meganium",
+   "source": "JOHTO_MONDE_MEGANIUM_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/meganium_sheet.png",
+   "hauteur": 86,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "feurisson",
+   "source": "JOHTO_MONDE_FEURISSON_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/feurisson_sheet.png",
+   "hauteur": 72,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "typhlosion",
+   "source": "JOHTO_MONDE_TYPHLOSION_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/typhlosion_sheet.png",
+   "hauteur": 88,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "crocrodil",
+   "source": "JOHTO_MONDE_CROCRODIL_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/crocrodil_sheet.png",
+   "hauteur": 74,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
+  },
+  {
+   "id": "aligueur",
+   "source": "JOHTO_MONDE_ALIGUEUR_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/aligueur_sheet.png",
+   "hauteur": 90,
+   "nettoyer": true,
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04)"
   }
  ],
  "heros_images": [
@@ -5458,6 +5530,81 @@
     "repos_2"
    ],
    "note": "série 27 : Artikodin r1 (Kevin, 2026-10-19), une direction, 4 images en boucle"
+  },
+  {
+   "id": "suicune",
+   "source": "JOHTO_MONDE_SUICUNE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/suicune_sheet.png",
+   "hauteur": 190,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
+   "id": "entei",
+   "source": "JOHTO_MONDE_ENTEI_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/entei_sheet.png",
+   "hauteur": 190,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
+   "id": "raikou",
+   "source": "JOHTO_MONDE_RAIKOU_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/raikou_sheet.png",
+   "hauteur": 190,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
+   "id": "lugia",
+   "source": "JOHTO_MONDE_LUGIA_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/lugia_sheet.png",
+   "hauteur": 260,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
+   "id": "ho_oh",
+   "source": "JOHTO_MONDE_HO_OH_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/ho_oh_sheet.png",
+   "hauteur": 240,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
   }
  ]
 }

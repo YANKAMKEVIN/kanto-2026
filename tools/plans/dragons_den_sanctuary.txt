@@ -1,0 +1,52 @@
+# Sanctuaire de l'Antre (dragons_den_sanctuary) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP3, §6 étapes 17 à 20, §13, §14, textes P-25 à P-37, P-52, P-53 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **validée par Kevin le 2026-11-05**. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 22 × 18 cases ; nord en haut ; x = colonne 0..21, y = rangée 0..17.
+#
+# Composition :
+#   GRANDE SALLE (x 3..18, y 2..15) ; deux BASSINS (d, décor, x 3..7 et x 14..18, y 8..13) laissent une ALLÉE (x 8..13).
+#   Au sud, l'escalier (U, (10..11, 16)), l'AÏEULE (8, 14) qui soigne une fois (P-25).
+#   YSOLDE (10, 8) dans l'allée : scène en rangée y 11. L'AUTEL (S, (10..11, 3..4)) au nord : scène du Réveil en rangée y 6, sur toute la largeur.
+#   CENERE entre par l'est (17, 5). La salle reçoit le Réveil, plans larges et plan final (§13.2).
+#
+# Légende :
+#   # paroi (bloquée)   . sol ancien (aucune rencontre)   d bassin (bloqué)   S autel (bloqué, examen)   U escalier qui monte
+# Défauts [D] : le grand bassin du dossier est partagé en deux pour dégager l'allée ; Cenere apparaît par une galerie en décor.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 22 caractères), puis POSITIONS.
+
+PRATICABLES .U
+
+GRILLE 22 18
+00 ######################
+01 ######################
+02 ###................###
+03 ###.......SS.......###
+04 ###.......SS.......###
+05 ###................###
+06 ###................###
+07 ###................###
+08 ###ddddd......ddddd###
+09 ###ddddd......ddddd###
+10 ###ddddd......ddddd###
+11 ###ddddd......ddddd###
+12 ###ddddd......ddddd###
+13 ###ddddd......ddddd###
+14 ###................###
+15 ###................###
+16 ##########UU##########
+17 ######################
+FIN
+
+POSITIONS
+escalier_haut        warp           10..11,16    libre   # → dragons_den_1f, from_sanctuary (13..14, 3)
+from_1f              spawn          10..11,15    libre   # arrivée, tournée ↑
+aieule               pnj            8,14         bloque  role=aieule facing=right actif_sans=johto_clan_trial_done  # P-25, soin une fois
+ysolde               dresseur       10,8         bloque  role=ysolde facing=down sight=0 trainer=den_ysolde  # P-26, Léviator 42, Draco 42, Draco 43, Hyporoi 43, Dracolosse 45
+scene_ysolde         declencheur    8..13,11     libre   actif_sans=johto_clan_trial_done  # P-26, combat, P-27, Pierre Souffle
+scene_autel          declencheur    3..18,6      libre   actif_sans=johto_stones_awakened  # P-28 à P-31, le Réveil (§13)
+scene_cenere         declencheur    3..18,6      libre   actif_avec=johto_stones_awakened  # reprise après une défaite : P-32, combat, P-33, retour de l'équipe
+cenere               pnj            17,5         bloque  role=cenere facing=left actif_sans=johto_cenere_defeated_arc  # P-28, combat Smogogo 54, Qulbutoké 54, Noarfang 55, Farfuret 56
+autel                examen         10..11,3..4  libre   # P-53 après le Réveil
+FIN

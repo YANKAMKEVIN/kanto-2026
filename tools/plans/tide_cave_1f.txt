@@ -1,0 +1,57 @@
+# Grotte de la Marée 1F (tide_cave_1f) — grille fonctionnelle v1 (Chapitre Johto, arc des Pierres, jalon JOHP2, §6 étape 11, §8.2, textes P-15, P-47 ; dossier docs/design/dossier-joh-11-arc-pierres.md).
+# Préparée le 2026-11-05 ; **validée par Kevin le 2026-11-05**. Source UNIQUE de la
+# géométrie ; un changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check_johp.py.
+#
+# 26 × 20 cases ; nord en haut ; x = colonne 0..25, y = rangée 0..19.
+#
+# Composition :
+#   Cave à demi vidée. HALL (x 17..23, y 7..12) depuis la sortie est (E, (24, 9..10)).
+#   GOULET (x 13..16, y 9) sous la niche du SBIRE Z (15, 8) : INÉVITABLE.
+#   GRANDE SALLE (x 3..12, y 4..15) : deux POMPES Rocket (R), flaque résiduelle (d, bloquée, pas de Surf), Sbire Y évitable,
+#   Hyper Potion ; échelle vers le B1F (V, (5, 16)).
+#
+# Légende :
+#   # paroi (bloquée)   . sol calme (aucune rencontre)   g gravats humides (rencontres)   d eau résiduelle (bloquée)
+#   R pompe Rocket (bloquée, examen)   E sortie vers Irisia   V échelle qui descend
+# Défauts [D] : pompes en décor fixe, retirées à la phase de rendu si besoin ; flaque non surfable (A-6).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 26 caractères), puis POSITIONS.
+
+PRATICABLES .gEV
+
+GRILLE 26 20
+00 ##########################
+01 ##########################
+02 ##########################
+03 ##########################
+04 ###..........#############
+05 ###..........#############
+06 ###...RR..RR.#############
+07 ###...RR..RR.####.......##
+08 ###..........##.#.ggggg.##
+09 ###...............ggggg.E#
+10 ###.gggggggg.####.ggggg.E#
+11 ###.gggggggg.####.ggggg.##
+12 ###.ggggdddg.####.......##
+13 ###.ggggdddg.#############
+14 ###.ggggdddg.#############
+15 ###..........#############
+16 #####V####################
+17 ##########################
+18 ##########################
+19 ##########################
+FIN
+
+POSITIONS
+sortie               warp           24,9..10     libre   # PUSH → → cianwood_city, retour_grotte (5, 14..15)
+from_city            spawn          23,9..10     libre   # arrivée, tournée ←
+sbire_y              dresseur       9,4          bloque  role=sbire facing=down sight=1 trainer=tide_grunt_y  # P-47, Nosferalto 34, Smogogo 34
+sbire_z              dresseur       15,8         bloque  role=sbire facing=down sight=1 trainer=tide_grunt_z  # P-47, Rattatac 35, Arbok 35 ; inévitable
+pompe_1              examen         6..7,6..7    libre   # P-15
+pompe_2              examen         10..11,6..7  libre   # P-15
+tide_item_1          objet_visible  3,15         bloque  item=hyper_potion  # §12
+gravats_g1           gravats        18,8         libre   role=G1  # hall
+gravats_g2           gravats        4,10         libre   role=G2  # grande salle
+echelle_bas          warp           5,16         libre   # → tide_cave_b1f, from_1f (3, 3)
+from_b1f             spawn          5,15         libre   # retour du B1F, tournée ↑
+FIN
