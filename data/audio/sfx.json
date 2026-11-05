@@ -537,7 +537,7 @@
 			"files": ["res://assets/audio/sfx/awakening_heartbeat.ogg"],
 			"bus": "Sfx",
 			"volume_db": 0.0,
-			"max_polyphony": 1,
+			"max_polyphony": 2,
 			"expected": true
 		},
 		"send_out": {
