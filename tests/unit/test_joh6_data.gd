@@ -400,7 +400,7 @@ func test_encounter_tables_by_period() -> void:
 			seen[slot.species] = true
 			assert_true(_pokemon.has_species(slot.species), String(slot.species))
 			for back: bool in [false, true]:
-				assert_true(ResourceLoader.exists(BattleArt.placeholder_path(slot.species, back)),
+				assert_true(BattleArt.new().has_image(slot.species, back),
 					"%s : sprite %s" % [slot.species, "dos" if back else "face"])
 		assert_eq(seen.size(), weights.size(), String(id))
 	# La table du moment (JOH0 §2.5).

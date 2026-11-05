@@ -90,9 +90,9 @@ func test_every_move_has_a_sound() -> void:
 		assert_true(sfx.has(id), String(move_id))
 
 
-func test_151_cries_by_national_number() -> void:
+func test_cries_by_national_number() -> void:
 	var cries := CryCatalog.new(_library)
-	assert_eq(cries.count(), 151)
+	assert_eq(cries.count(), 251, "Kanto 1 à 151, Johto jusqu'à 251")
 	var paths: Dictionary = {}
 	for dex: int in range(1, 152):
 		var path := cries.path_for(dex)
@@ -100,7 +100,8 @@ func test_151_cries_by_national_number() -> void:
 		paths[path] = true
 	assert_eq(paths.size(), 151, "un fichier par espèce")
 	assert_eq(cries.path_for(0), "")
-	assert_eq(cries.path_for(152), "")
+	assert_eq(cries.path_for(158), "res://assets/audio/cries/158.ogg", "Kaiminus (Johto)")
+	assert_eq(cries.path_for(252), "")
 	assert_false(cries.is_expected(), "SonB : fichiers présents")
 	for dex: int in range(1, 152):
 		assert_true(ResourceLoader.exists(cries.path_for(dex)), "cri %d" % dex)
@@ -111,10 +112,10 @@ func test_every_species_has_a_cry() -> void:
 	var data := PokemonData.new()
 	data.load_dir()
 	for species_id: StringName in data.get_species_ids():
-		# JOH0 (T6) : les cris de Johto (152 à 251) sont un lot de sons à part (jalon Son).
-		if data.get_species(species_id).dex > 151:
-			continue
-		assert_ne(cries.path_for_species(data.get_species(species_id)), "", String(species_id))
+		# Johto compris (art des Pokémon de Johto, 2026-11-04 : cris PokeAPI 152 à 251).
+		var path := cries.path_for_species(data.get_species(species_id))
+		assert_ne(path, "", String(species_id))
+		assert_true(ResourceLoader.exists(path), "cri de %s : %s" % [species_id, path])
 	assert_eq(cries.path_for_species(null), "")
 
 
