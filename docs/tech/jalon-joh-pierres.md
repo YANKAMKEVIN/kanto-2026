@@ -74,6 +74,18 @@ shader additif, couches de la famille d'effets existante), plans par Pokémon (a
 en tween, palier d'évolution, flash), plan large final, ligne P-31, écran du Réveil (liste, panneau d'attaques,
 « Continuer »). Compagnon rafraîchi à la fin. Pokédex : marquer chaque espèce de la chaîne comme capturée.
 
+### 2.3 bis Ce qui a été fait, écarts et contrat pour JOHP3 (2026-11-05)
+
+- **Ordre réel de l'étape** : `StoneAwakening.awaken` (niveaux, évolutions, Pokédex, pierres et `johto_stones_awakened` d'un seul bloc en mémoire), film, **écriture**, écran du Réveil, puis une seconde écriture seulement si une attaque a été apprise. Écart [D] avec le §2.2 et le point 6 du §13.2 : le §15 du dossier veut l'écran **après** l'écriture (« les attaques non choisies sont perdues ») ; lever le drapeau dans le bloc garde la mémoire cohérente. Aucune écriture différée ne tombe pendant la scène (`Boot.is_stable` faux).
+- **Scène** : `{"stones_awaken": true}`, sans étape `save` derrière. P-31 est dans le film (`data/dialogues/johp0.json`) : ne pas la rejouer. Étape sautée si le Réveil est fait. Plans dans l'ordre de l'équipe : P-28b frappe le Pokémon de tête.
+- **Silence** : `"music": "cut"` sur l'étape de P-29 coupe net musique et ambiance. Le film recoupe de toute façon à son début.
+- **Thème** : événement `awakening` de `data/audio/tracks.json`, **provisoire** (`final_road`), à choisir avec Kevin (dossier §16).
+- **Annonce du Stockage** (texte [D], `stones_awakening_stored`, brouillon) : « Au laboratoire d'Orme aussi, des Pokémon se réveillent. »
+- Écran : textes de système [D] « Le Réveil », « CONTINUER », « N attaques à voir ». Toucher une ligne enchaîne ses attaques dans `MoveLearnPrompt.teach`.
+- Les objets `stone_*` restent au JOHP1 : le Réveil les retire s'ils sont là, sans les exiger.
+- Départs : `johto_awakening`, `johto_awakening_autosave` (Grotte marine en attendant le Sanctuaire ; clés neuves `bond` et `met_map` des membres).
+- Les fichiers `johp*` de `data/dialogues` et `data/cutscenes` sortent du test central (`j22_ids.gd`, `test_dialogue_data.gd`), comme ceux des `joh<n>_`.
+
 ### 2.4 Tests
 
 - `test_stone_awakening.gd` : cible (équipe de 6, 2 faibles, moins de 3, bornes), jamais de baisse, chaîne

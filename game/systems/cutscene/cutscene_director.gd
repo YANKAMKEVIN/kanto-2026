@@ -124,8 +124,12 @@ var _trades: InGameTrade
 const _JOINING_KINDS: Array[CutsceneStep.Kind] = [
 	CutsceneStep.Kind.MOVE, CutsceneStep.Kind.HOP, CutsceneStep.Kind.LEAN,
 	CutsceneStep.Kind.DESPAWN, CutsceneStep.Kind.SCARE, CutsceneStep.Kind.REACT,
-	CutsceneStep.Kind.EMOTE,
+	CutsceneStep.Kind.EMOTE, CutsceneStep.Kind.CARRY,
 ]
+## JOH1 (« carry ») : l'objet porté, relatif aux pieds du porteur (devant sa poitrine) [D].
+const CARRY_OFFSET := Vector2(0.0, -44.0)
+## JOH1 (retour de Kevin du 2026-11-04) : léger zoom de la caméra sur le lit du joueur endormi [D].
+const SLEEP_ZOOM: float = 1.8
 
 var _library: CutsceneLibrary
 var _flags: StoryFlags
@@ -176,6 +180,7 @@ var _badges: BadgeLibrary
 var _state: Node
 ## Espèces (jalon 20, étape « gift_pokemon ») : branchées par Boot après setup.
 var _pokemon_data: PokemonData
+var _zones: ZoneLibrary
 ## « Réduire les animations » (jalon 16, étape « animate ») : posé par Boot.
 var reduce_motion: bool = false
 ## Mise en scène d'une capacité de terrain (jalon 16, étape « field_move ») : coroutine
@@ -199,6 +204,13 @@ var hall_of_fame_handler: Callable
 ## `func(selection: TeamReturnSelection) -> Array[String]` posée par Boot ([TeamReturnOverlay]) ;
 ## rend les identifiants gardés. Non valide (tests) : [method TeamReturnSelection.default_selection].
 var team_return_handler: Callable
+## Arc des Pierres, JOHP0 (étape « stones_awaken ») : la cinématique du Réveil, coroutine
+## `func(report: AwakeningReport) -> void` posée par Boot ([AwakeningOverlay]) ; l'état est déjà à
+## jour mais **pas écrit** tant qu'elle joue. Non valide (tests) : aucune image.
+var awakening_handler: Callable
+## JOHP0 : l'écran du Réveil, coroutine `func(report: AwakeningReport) -> bool`, joué **après**
+## l'écriture ; vrai si une attaque a été apprise (une écriture de plus). Non valide : rien.
+var awakening_screen_handler: Callable
 ## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
 var credits_handler: Callable
 ## JOH9 : générique demandé par l'étape « credits » en cours (&"" = Kanto), lu par le
@@ -206,6 +218,9 @@ var credits_handler: Callable
 var credits_id: StringName = &""
 ## Raison de l'écriture qui suit l'entrée du Panthéon.
 const HALL_OF_FAME_SAVE_REASON: String = "Panthéon"
+## JOHP0 : raisons des écritures du Réveil.
+const AWAKENING_SAVE_REASON: String = "Réveil"
+const AWAKENING_MOVES_SAVE_REASON: String = "attaques du Réveil"
 
 
 func _ready() -> void:
@@ -300,6 +315,12 @@ func set_badges(badges: BadgeLibrary, state: Node) -> void:
 ## ou sans l'état de [method set_badges] : push_error, étape sautée (rien n'est donné).
 func set_pokemon_data(data: PokemonData) -> void:
 	_pokemon_data = data
+
+
+## Branche les zones (JOHP0) : le Réveil y lit la région des captures du Stockage. Sans elles :
+## seule l'équipe se réveille.
+func set_zones(zones: ZoneLibrary) -> void:
+	_zones = zones
 
 
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
@@ -482,6 +503,10 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _give_egg(step)
 		CutsceneStep.Kind.FLASHBACK: # JOH6
 			await _flashback(step.text == "start")
+		CutsceneStep.Kind.CARRY: # JOH1
+			_carry(step)
+		CutsceneStep.Kind.STONES_AWAKEN: # JOHP0
+			return await _stones_awaken()
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -571,6 +596,35 @@ func _return_team() -> void:
 			% TeamConfiscation.Check.find_key(result["check"]))
 		return
 	team_returned.emit((result["stored"] as Array).size())
+
+
+## JOHP0 (`jalon-joh-pierres.md` §2.2, dossier JOH-11 §13 et §15) : le Réveil, d'un seul bloc en
+## mémoire ; la cinématique ; **l'écriture** ; l'écran du Réveil. Application tuée pendant la
+## cinématique : rien n'est sur le disque, la scène reprend à l'autel. Après l'écriture : le
+## Réveil est acquis, la scène reprend à Cenere et seules les attaques non choisies sont perdues
+## **[D]** ([constant AWAKENING_MOVES_SAVE_REASON] les écrit dès que l'écran se ferme). Aucune
+## autre écriture ne peut tomber entre les deux : la partie n'est pas stable pendant une scène.
+## Faux : la scène s'arrête (nouvelle scène lancée, écriture abandonnée). Déjà fait : rien.
+func _stones_awaken() -> bool:
+	if _state == null or _pokemon_data == null:
+		_step_error("pas d'état de partie ou d'espèces pour le Réveil")
+		return true
+	var report := StoneAwakening.awaken(_state, _zones, _pokemon_data)
+	if report == null:
+		return true
+	var session := _session
+	if report.has_scene() and awakening_handler.is_valid():
+		await awakening_handler.call(report)
+		if session != _session:
+			return false
+	if not await _save_checkpoint(AWAKENING_SAVE_REASON):
+		return false
+	if not report.has_scene() or not awakening_screen_handler.is_valid():
+		return true
+	var learned: bool = await awakening_screen_handler.call(report)
+	if session != _session:
+		return false
+	return await _save_checkpoint(AWAKENING_MOVES_SAVE_REASON) if learned else true
 
 
 ## Jalon 30 : cérémonie du Panthéon ([member hall_of_fame_handler]) puis, si une entrée vient
@@ -1046,7 +1100,12 @@ func _change_map(step: CutsceneStep) -> bool:
 	if _router == null:
 		_step_error("pas de routeur pour aller sur « %s »" % step.map_id)
 		return false
+	# JOH1 : la pose du joueur est posée pendant l'écran noir, sur la carte neuve.
+	var on_changed := func(map: GameMap) -> void: _apply_pose(map, step)
+	_router.map_changed.connect(on_changed, CONNECT_ONE_SHOT)
 	await _router.change_map(step.map_id, step.spawn, step.facing)
+	if _router.map_changed.is_connected(on_changed):
+		_router.map_changed.disconnect(on_changed)
 	var map := _router.get_current_map()
 	if not is_instance_valid(map) or map.map_id != step.map_id:
 		_step_error("changement de carte vers « %s » (%s) manqué" % [step.map_id, step.spawn])
@@ -1054,6 +1113,39 @@ func _change_map(step: CutsceneStep) -> bool:
 	# Normalement déjà fait par le relais de map_changed ; sans relais, la carte suit quand même.
 	_map = map
 	return true
+
+
+## JOH1 : pose [member CutsceneStep.pose] du joueur sur [param map] : endormi (lit
+## [SleeperBed] [member CutsceneStep.target], apparence [member GameState.player_look]), caché, ou
+## visible (sans pose). Lit introuvable : erreur, le joueur reste visible.
+func _apply_pose(map: GameMap, step: CutsceneStep) -> void:
+	if not is_instance_valid(_player):
+		return
+	_player.visible = step.pose.is_empty()
+	_player.release_frame()
+	if step.pose != CutsceneStep.POSE_ASLEEP:
+		return
+	var bed := map.get_node_or_null(NodePath(String(step.target))) as SleeperBed
+	var look: StringName = _state.get(&"player_look") if _state != null else &""
+	if bed == null or not bed.tuck_in(look, reduce_motion):
+		_step_error("lit « %s » introuvable sur %s" % [step.target, map.map_id])
+		_player.visible = true
+		return
+	_player.frame_point(bed.get_focus_point(), SLEEP_ZOOM)
+
+
+## Étape « carry » (JOH1) : le nœud [member CutsceneStep.target] de la carte passe dans les mains
+## du PNJ [member CutsceneStep.actor] ([constant CARRY_OFFSET]) et le suit (il part avec lui).
+func _carry(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	var node := _map.get_node_or_null(NodePath(String(step.target))) as Node2D \
+		if is_instance_valid(_map) else null
+	if npc == null or node == null:
+		_step_error("« %s » ou son porteur « %s » introuvable (carry)" % [step.target, step.actor])
+		return
+	node.reparent(npc, false)
+	node.position = CARRY_OFFSET
+	node.z_index = 1
 
 
 func _play_dialogue(dialogue_id: StringName) -> void:
@@ -1414,6 +1506,8 @@ func _finish() -> void:
 			_player.visible = true
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
+		_player.visible = true # JOH1 : une pose ne survit pas à la scène
+		_player.release_frame()
 	set_process(false)
 	cutscene_finished.emit(cutscene_id)
 

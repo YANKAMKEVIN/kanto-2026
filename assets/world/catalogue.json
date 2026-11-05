@@ -10789,6 +10789,620 @@
      18
     ]
    }
+  },
+  "bldg_phare_oliville_01": {
+   "fichier": "res://assets/world/buildings/bldg_phare_oliville_01.png",
+   "taille": [
+    576,
+    1276
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_phare_oliville_01_shadow.png",
+    "decalage": [
+     -313,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     431,
+     122
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_phare_oliville_01_contact.png",
+    "decalage": [
+     -296,
+     -135
+    ],
+    "echelle": 2,
+    "taille": [
+     296,
+     87
+    ]
+   }
+  },
+  "bldg_tour_cendree_01": {
+   "fichier": "res://assets/world/buildings/bldg_tour_cendree_01.png",
+   "taille": [
+    960,
+    1058
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_tour_cendree_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     603,
+     102
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_tour_cendree_01_contact.png",
+    "decalage": [
+     -488,
+     -109
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     74
+    ]
+   }
+  },
+  "bldg_tour_carillon_01": {
+   "fichier": "res://assets/world/buildings/bldg_tour_carillon_01.png",
+   "taille": [
+    622,
+    922
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_tour_carillon_01_shadow.png",
+    "decalage": [
+     -336,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     421,
+     89
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_tour_carillon_01_contact.png",
+    "decalage": [
+     -319,
+     -93
+    ],
+    "echelle": 2,
+    "taille": [
+     319,
+     66
+    ]
+   }
+  },
+  "bldg_maison_rosalia_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_rosalia_01.png",
+   "taille": [
+    672,
+    533
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_rosalia_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     410,
+     53
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_rosalia_01_contact.png",
+    "decalage": [
+     -344,
+     -46
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     42
+    ]
+   }
+  },
+  "bldg_tour_radio_01": {
+   "fichier": "res://assets/world/buildings/bldg_tour_radio_01.png",
+   "taille": [
+    960,
+    1452
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_tour_radio_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     639,
+     138
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_tour_radio_01_contact.png",
+    "decalage": [
+     -488,
+     -156
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     97
+    ]
+   }
+  },
+  "bldg_gare_doublonville_01": {
+   "fichier": "res://assets/world/buildings/bldg_gare_doublonville_01.png",
+   "taille": [
+    1344,
+    744
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_gare_doublonville_01_shadow.png",
+    "decalage": [
+     -697,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     766,
+     73
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_gare_doublonville_01_contact.png",
+    "decalage": [
+     -680,
+     -71
+    ],
+    "echelle": 2,
+    "taille": [
+     680,
+     55
+    ]
+   }
+  },
+  "bldg_grille_parc_01": {
+   "fichier": "res://assets/world/buildings/bldg_grille_parc_01.png",
+   "taille": [
+    768,
+    332
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_grille_parc_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     440,
+     35
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_grille_parc_01_contact.png",
+    "decalage": [
+     -392,
+     -22
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     30
+    ]
+   }
+  },
+  "bldg_charbonnerie_01": {
+   "fichier": "res://assets/world/buildings/bldg_charbonnerie_01.png",
+   "taille": [
+    768,
+    615
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_charbonnerie_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     466,
+     61
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_charbonnerie_01_contact.png",
+    "decalage": [
+     -392,
+     -56
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     47
+    ]
+   }
+  },
+  "bldg_maison_ecorcia_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_ecorcia_01.png",
+   "taille": [
+    672,
+    547
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_ecorcia_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     412,
+     55
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_ecorcia_01_contact.png",
+    "decalage": [
+     -344,
+     -48
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     43
+    ]
+   }
+  },
+  "prop_puits_ecorcia_01": {
+   "fichier": "res://assets/world/props/prop_puits_ecorcia_01.png",
+   "taille": [
+    288,
+    248
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_puits_ecorcia_01_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "prop_autel_bois_01": {
+   "fichier": "res://assets/world/props/prop_autel_bois_01.png",
+   "taille": [
+    192,
+    257
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_autel_bois_01_shadow.png",
+    "decalage": [
+     -121,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     145,
+     28
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_autel_bois_01_contact.png",
+    "decalage": [
+     -104,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     23
+    ]
+   }
+  },
+  "relief_ile_tourbillon_01": {
+   "fichier": "res://assets/world/relief/relief_ile_tourbillon_01.png",
+   "taille": [
+    1536,
+    1535
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_ile_tourbillon_01_contact.png",
+    "decalage": [
+     -776,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     776,
+     11
+    ]
+   }
+  },
+  "int_comptoir_radio_01": {
+   "fichier": "res://assets/world/interiors/int_comptoir_radio_01.png",
+   "taille": [
+    768,
+    233
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_comptoir_radio_01_contact.png",
+    "decalage": [
+     -392,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     11
+    ]
+   }
+  },
+  "int_logo_radio_01": {
+   "fichier": "res://assets/world/interiors/int_logo_radio_01.png",
+   "taille": [
+    96,
+    97
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_logo_radio_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "int_porte_entree_radio_01": {
+   "fichier": "res://assets/world/interiors/int_porte_entree_radio_01.png",
+   "taille": [
+    288,
+    265
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_porte_entree_radio_01_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "int_table_studio_01": {
+   "fichier": "res://assets/world/interiors/int_table_studio_01.png",
+   "taille": [
+    240,
+    219
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_studio_01_contact.png",
+    "decalage": [
+     -128,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     128,
+     11
+    ]
+   }
+  },
+  "int_vitre_studio_h_01": {
+   "fichier": "res://assets/world/interiors/int_vitre_studio_h_01.png",
+   "taille": [
+    192,
+    131
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_vitre_studio_h_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "int_pupitre_orateur_radio_01": {
+   "fichier": "res://assets/world/interiors/int_pupitre_orateur_radio_01.png",
+   "taille": [
+    192,
+    252
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_pupitre_orateur_radio_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "int_rayonnage_archives_01": {
+   "fichier": "res://assets/world/interiors/int_rayonnage_archives_01.png",
+   "taille": [
+    768,
+    200
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_rayonnage_archives_01_contact.png",
+    "decalage": [
+     -392,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     11
+    ]
+   }
+  },
+  "int_pupitre_regie_01": {
+   "fichier": "res://assets/world/interiors/int_pupitre_regie_01.png",
+   "taille": [
+    480,
+    174
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_pupitre_regie_01_contact.png",
+    "decalage": [
+     -248,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     11
+    ]
+   }
+  },
+  "int_mur_ecrans_radio_01": {
+   "fichier": "res://assets/world/interiors/int_mur_ecrans_radio_01.png",
+   "taille": [
+    960,
+    174
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_mur_ecrans_radio_01_contact.png",
+    "decalage": [
+     -488,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     11
+    ]
+   }
+  },
+  "int_table_diffusion_01": {
+   "fichier": "res://assets/world/interiors/int_table_diffusion_01.png",
+   "taille": [
+    192,
+    139
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_diffusion_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "int_baie_ville_01": {
+   "fichier": "res://assets/world/interiors/int_baie_ville_01.png",
+   "taille": [
+    384,
+    63
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_baie_ville_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "int_boutique_fermee_01": {
+   "fichier": "res://assets/world/interiors/int_boutique_fermee_01.png",
+   "taille": [
+    384,
+    223
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_boutique_fermee_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "int_vitre_studio_v_01": {
+   "fichier": "res://assets/world/interiors/int_vitre_studio_v_01.png",
+   "taille": [
+    15,
+    192
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_vitre_studio_v_01_contact.png",
+    "decalage": [
+     -15,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     16,
+     11
+    ]
+   }
+  },
+  "prop_haut_parleur_01": {
+   "fichier": "res://assets/world/props/prop_haut_parleur_01.png",
+   "taille": [
+    101,
+    240
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_haut_parleur_01_contact.png",
+    "decalage": [
+     -58,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     59,
+     16
+    ]
+   }
   }
  },
  "personnages": {

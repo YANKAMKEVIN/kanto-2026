@@ -38,7 +38,8 @@ func test_every_music_key_of_the_data_is_known() -> void:
 	for id: StringName in cutscenes.get_ids():
 		for variant: CutsceneVariant in cutscenes.get_cutscene(id).variants:
 			for step: CutsceneStep in variant.steps:
-				if step.music.is_empty() or step.music == AudioBridge.STOP:
+				if step.music.is_empty() or step.music == AudioBridge.STOP \
+						or step.music == AudioBridge.CUT:
 					continue
 				count += 1
 				assert_true(audio.has_track(step.music) or not audio.event_track(step.music)

@@ -186,10 +186,15 @@ var _pending_local_trade: bool = false
 ## JOH0 : le Stockage ou le terminal d'échange ont été demandés pendant l'acte 1 du Chapitre
 ## Johto (réseau de Kanto coupé) : le refus se dit à la fin du dialogue, à la place de l'écran.
 var _pending_offline_notice: bool = false
+## JOHP0 : le film et l'écran du Réveil (étape « stones_awaken »).
+var _awakening_overlay: AwakeningOverlay
 ## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
 var _team_return_overlay: TeamReturnOverlay
 ## JOH5 (T-29) : des Pokémon sont allés au Stockage au retour de l'équipe (drapeau de travail).
 const JOHTO_RETURN_STORED_FLAG: StringName = &"johto_return_stored"
+## JOHP0 : P-31 (`data/dialogues/johp0.json`) et l'annonce du Stockage.
+const AWAKENING_LINES: StringName = &"stones_awakening_line"
+const AWAKENING_STORED: StringName = &"stones_awakening_stored"
 ## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
 var _debug_cutscene: StringName = &""
 ## JOH0 (QA de la lumière) : profil imposé à la carte de départ (clé « light_profile »).
@@ -410,6 +415,17 @@ func _ready() -> void:
 	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
 	_cutscenes_node.team_returned.connect(_on_team_returned)
 	_cutscenes_node.egg_given.connect(_on_egg_given)
+	# JOHP0 (`jalon-joh-pierres.md` §2) : le Réveil (étape « stones_awaken ») et son écran.
+	_awakening_overlay = AwakeningOverlay.new()
+	_awakening_overlay.name = "AwakeningOverlay"
+	_awakening_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_awakening_overlay)
+	var awakening_art := BattleArt.new()
+	awakening_art.setup(_pokemon, _dex)
+	_awakening_overlay.setup(awakening_art)
+	_cutscenes_node.set_zones(_zones)
+	_cutscenes_node.awakening_handler = _on_awakening_film_requested
+	_cutscenes_node.awakening_screen_handler = _on_awakening_review_requested
 	# JOH0 : lien et œufs à chaque pas libre du joueur.
 	_player.moved.connect(_on_player_moved_for_bond)
 	_evolutions = EvolutionDirector.new()
@@ -1071,6 +1087,9 @@ func _on_go_back() -> void:
 	# JOH0 : le choix des 6 est obligatoire : retour avalé.
 	if _team_return_overlay != null and _team_return_overlay.handle_back():
 		return
+	# JOHP0 : le Réveil ne se passe pas : retour avalé.
+	if _awakening_overlay != null and _awakening_overlay.handle_back():
+		return
 	# J32 (T5) : le reste de la conversation du terminal d'échange avale le geste.
 	if _local_trade != null and _local_trade.handle_back():
 		return
@@ -1627,7 +1646,12 @@ func _apply_lighting(map: GameMap, blend: bool = false) -> void:
 	var profile: LightProfile = null
 	var auto := LightingLibrary.is_auto(map.light_profile)
 	var period := _world_clock.period()
-	if not map.light_profile.is_empty():
+	# JOH1 : surcharge par drapeaux (pénombre du Centre d'Oliville pendant le vol).
+	var override := _light_profiles.override_for(map.map_id, GameState.flags)
+	if not override.is_empty():
+		auto = false
+		profile = _light_profiles.get_profile(override)
+	elif not map.light_profile.is_empty():
 		var id := LightingLibrary.resolve(map.light_profile, period)
 		profile = _light_profiles.get_profile(id)
 		if profile == null:
@@ -2073,6 +2097,38 @@ func _on_team_return_requested(selection: TeamReturnSelection) -> Array[String]:
 	return await _team_return_overlay.pick(selection, labels)
 
 
+## JOHP0 : le film du Réveil. P-31 et l'annonce des captures viennent des dialogues
+## ([constant AWAKENING_LINES], [constant AWAKENING_STORED]).
+func _on_awakening_film_requested(report: AwakeningReport) -> void:
+	_awakening_overlay.speed_scale = _battle_director.speed_scale
+	_awakening_overlay.reduce_flashes = _evolution_screen.reduce_flashes
+	var stored := ""
+	if not report.stored.is_empty():
+		stored = "\n".join(PackedStringArray(_dialogue_pages(AWAKENING_STORED)))
+	await _awakening_overlay.film(report, _dialogue_pages(AWAKENING_LINES), stored)
+
+
+## JOHP0 : l'écran du Réveil, après l'écriture ; vrai si une attaque a été apprise.
+func _on_awakening_review_requested(report: AwakeningReport) -> bool:
+	var learned := await _awakening_overlay.review(report,
+		_battle_director.get_move_learn_prompt())
+	_audio_bridge.on_awakening_finished()
+	_companion.refresh()
+	return learned
+
+
+## Textes de la première variante du dialogue [param id].
+func _dialogue_pages(id: StringName) -> Array[String]:
+	var result: Array[String] = []
+	var dialogue := _library.get_dialogue(id)
+	if dialogue == null or dialogue.variants.is_empty():
+		push_error("Boot : dialogue « %s » absent" % id)
+		return result
+	for page: DialoguePage in dialogue.variants[0].pages:
+		result.append(page.text)
+	return result
+
+
 ## JOH0 : l'équipe vient d'être confisquée d'un seul bloc : le compagnon rentre (plus d'équipe) ;
 ## la scène écrit par son étape « save » (l'autosave demandé ici est une ceinture de plus).
 func _on_team_confiscated() -> void:
@@ -2509,6 +2565,14 @@ func _setup_audio() -> void:
 	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
 	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
 	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
+	# JOHP0 : le son du Réveil.
+	_awakening_overlay.silence_requested.connect(_audio_bridge.on_awakening_silence)
+	_awakening_overlay.theme_started.connect(_audio_bridge.on_awakening_theme)
+	_awakening_overlay.theme_burst.connect(_audio_bridge.on_awakening_burst)
+	_awakening_overlay.heartbeat.connect(_audio_bridge.on_awakening_heartbeat)
+	_awakening_overlay.ball_opened.connect(_audio_bridge.on_awakening_ball)
+	_awakening_overlay.level_ticked.connect(_audio_bridge.on_awakening_tick)
+	_awakening_overlay.cry_requested.connect(_audio_bridge.play_species_cry)
 	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
 	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
 	_encounters.cry_requested.connect(_audio_bridge.on_encounter_cry)

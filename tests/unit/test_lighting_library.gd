@@ -38,8 +38,9 @@ func test_real_file_loads_without_error() -> void:
 	# Sélénite (`moon_*`, pierre chaude), les `cave_*` restant aux Îles Écume ; J26 (T7) : les
 	# bureaux de la Sylphe (`office`).
 	# JOH0 : les trois profils de Johto, après le golden hour de Kanto.
+	# JOH1 (scène du vol) : la chambre du Centre d'Oliville dans le noir, après la nuit de Johto.
 	assert_eq(_library.get_ids(), [&"golden_hour", &"johto_morning", &"johto_day",
-		&"johto_night", &"interior_warm", &"forest", &"cave_1f",
+		&"johto_night", &"interior_night_dark", &"interior_warm", &"forest", &"cave_1f",
 		# JOH1 : la grotte marine (cave_1f plus bleu), avant cave_b2f dans le fichier.
 		# JOH7 : le B2F des Îles Tourbillon (lumière bleue venue d'en haut).
 		&"cave_b1f", &"sea_cave", &"whirl_islands_b2f", &"cave_b2f", &"moon_1f", &"moon_b1f", &"moon_b2f", &"underground", &"dark_cave_1f", &"dark_cave_b1f", &"cave_sand",
@@ -363,7 +364,8 @@ func test_the_three_johto_profiles_exist_and_differ() -> void:
 	assert_false(night.has_rim(), "nuit : pas de liseré de soleil")
 	assert_gt(morning.cast_shadow_length, day.cast_shadow_length, "ombres longues le matin")
 	assert_lt(night.grade_midtones.x, 0.8, "nuit : étalonnage bleu (rouge baissé)")
-	assert_gt(night.grade_midtones.z, 0.95)
+	# Passe d'ambiance JOH (2026-11-04) : nuit plus marquée, tout baisse mais le bleu domine.
+	assert_gt(night.grade_midtones.z, night.grade_midtones.x + 0.25, "nuit : bleu dominant")
 	assert_true(night.has_cast_shadow(), "nuit : ombres très douces, pas absentes")
 	assert_lt(night.cast_shadow_color.a, morning.cast_shadow_color.a)
 	assert_false(_library.has_profile(LightingLibrary.AUTO_PROFILE),

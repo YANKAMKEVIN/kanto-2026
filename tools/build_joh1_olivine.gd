@@ -5,6 +5,8 @@ extends SceneTree
 ## (Centre, Boutique, maisons) ; Phare = tour provisoire en `Polygon2D` ; lampes de nuit =
 ## halos `LightGlow` du groupe `night_lights`, cachés le jour (`WorldLighting.set_night`).
 ## Les PNJ viennent de `data/npcs/olivine_city.json`.
+## **Image** : la passe d'ambiance `tools/build_joh_ambiance.gd` repeint la carte (sol peint, forêt,
+## falaise, mer, quai, phare peint) sans toucher à la logique ; la relancer après cet outil.
 ##
 ##   godot --headless --path . -s res://tools/build_joh1_olivine.gd
 

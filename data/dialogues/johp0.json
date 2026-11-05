@@ -1,0 +1,46 @@
+{
+	"stones_awakening_line": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Une lumière monte de la terre, de la mer et du ciel.",
+					"Les Pokémon nés à Johto se réveillent !"
+				]
+			}
+		]
+	},
+	"stones_awakening_stored": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Au laboratoire d'Orme aussi, des Pokémon se réveillent."
+				],
+				"draft": true
+			}
+		]
+	},
+	"johto_awakening_test_before": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"(Scène de test du JOHP0.)\nLes trois pierres se rejoignent sur l'autel."
+				],
+				"draft": true
+			}
+		]
+	},
+	"johto_awakening_test_after": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"(Scène de test du JOHP0.)\nLa scène de Cenere commencerait ici."
+				],
+				"draft": true
+			}
+		]
+	}
+}

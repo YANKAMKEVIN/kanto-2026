@@ -140,7 +140,7 @@ const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps", "if_items", "unle
 const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["to"], [], [],
 	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
-	["at", "facing"], ["to"],
+	["at", "facing", "pose", "bed"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found", "set"],
 	[], ["count"], [], [], [], ["kind"], [], ["details"],
 	[],
@@ -155,6 +155,8 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["steps", "say", "flag", "say_full"], # Johto (JOH0) : confiscate_team, return_team,
 	# give_egg (JOH3 : « flag », « say_full »)
 	[], # Chapitre Johto (JOH6) : flashback
+	["by"], # JOH1 : carry
+	[], # Arc des Pierres (JOHP0) : stones_awaken
 ]
 ## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
 const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]
@@ -313,6 +315,8 @@ func get_set_flags() -> Array[StringName]:
 			raised = [TeamConfiscation.STORAGE_OFFLINE, TeamConfiscation.ACT1]
 		elif step.kind == CutsceneStep.Kind.RETURN_TEAM: # JOH0
 			raised = [TeamConfiscation.RETURNED]
+		elif step.kind == CutsceneStep.Kind.STONES_AWAKEN: # JOHP0
+			raised = [StoneAwakening.AWAKENED]
 		for flag: StringName in raised:
 			found[flag] = true
 	return _sorted_keys(found)
@@ -546,6 +550,7 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			if entry.has("facing"):
 				ok = _read_direction(entry["facing"], where + " facing",
 					func(v: Vector2i) -> void: step.facing = v) and ok
+			ok = _parse_pose(entry, step, where) and ok
 		CutsceneStep.Kind.HOP:
 			ok = _read_npc_actor(main, where + " hop", step) and ok
 			if not entry.has("to"):
@@ -652,7 +657,8 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			elif not main is bool or not main:
 				ok = _fail("%s : « credits » vaut true ou %s" % [where,
 					", ".join(PackedStringArray(CutsceneStep.CREDITS_IDS))])
-		CutsceneStep.Kind.CONFISCATE_TEAM, CutsceneStep.Kind.RETURN_TEAM: # JOH0
+		CutsceneStep.Kind.CONFISCATE_TEAM, CutsceneStep.Kind.RETURN_TEAM, \
+				CutsceneStep.Kind.STONES_AWAKEN: # JOH0, JOHP0
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])
 		CutsceneStep.Kind.FLASHBACK: # JOH6
@@ -681,7 +687,28 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			if entry.has("say_full"):
 				ok = _read_id(entry["say_full"], where + " say_full", func(v: StringName) -> void:
 					step.dialogue_stored = v) and ok
+		CutsceneStep.Kind.CARRY: # JOH1
+			ok = _read_id(main, where + " carry", func(v: StringName) -> void:
+				step.target = v) and ok
+			ok = _read_npc_actor(entry.get("by"), where + " by", step) and ok
 	return step if ok else null
+
+
+## change_map (JOH1) : « pose » ([constant CutsceneStep.POSES]) ; « bed » (chemin du
+## [SleeperBed] depuis la carte) obligatoire avec « asleep », interdit sinon.
+func _parse_pose(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	if entry.has("pose"):
+		var pose: Variant = entry["pose"]
+		if not pose is String or not CutsceneStep.POSES.has(StringName(pose)):
+			return _fail("%s : « pose » vaut %s" % [where, ", ".join(PackedStringArray(
+				CutsceneStep.POSES))])
+		step.pose = StringName(pose)
+	if step.pose == CutsceneStep.POSE_ASLEEP:
+		return _read_id(entry.get("bed"), where + " bed", func(v: StringName) -> void:
+			step.target = v)
+	if entry.has("bed"):
+		return _fail("%s : « bed » va avec « pose »: « asleep »" % where)
+	return true
 
 
 ## trade (jalon 25, §2.5) : identifiant d'échange, dialogues « wrong », « refuse », « say » (liste).

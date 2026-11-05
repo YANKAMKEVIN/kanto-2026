@@ -1290,8 +1290,8 @@ const SET_J29: Array[StringName] = [
 ## scènes depuis leur fusion dans `main`.
 ## JOH8 : drapeau lu par la Tour Carillon et levé par le JOH9 (la fin du chapitre) ; à retirer à sa
 ## fusion.
-## JOHP1 : posés par la bascule du JOHP3 (`jalon-joh-pierres.md` §5.3) et par le Réveil (JOHP0, JOHP3).
-const FUTURE_FLAGS: Array[StringName] = [&"johto_stones_quest", &"johto_stones_awakened"]
+## JOHP1 : posé par la bascule du JOHP3 (`jalon-joh-pierres.md` §5.3).
+const FUTURE_FLAGS: Array[StringName] = [&"johto_stones_quest"]
 ## Jalon 28 (T7, T8) : dialogues de l'Arène de Jadielle.
 const IDS_J28: Array[StringName] = [
 	&"viridian_gym_blackbelt_bertrand_after", &"viridian_gym_blackbelt_bertrand_before",
@@ -1717,14 +1717,14 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		for file: String in DirAccess.get_files_at(pair[1]):
 			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
 				continue
-			# JOH2 à JOH9 : fichiers `joh<n>_*` (leurs `test_joh<n>_data.gd`), même
+			# JOH2 à JOH9, arc des Pierres : fichiers `joh<n>_*`, `johp<n>_*`, même
 			# règle que ceux du J23.
 			var library: Variant = pair[2] if file.begins_with("j23_") \
 				or file.begins_with("joh2_") or file.begins_with("joh3_") \
 				or file.begins_with("joh4_") or file.begins_with("joh5_") \
 				or file.begins_with("joh6_") \
 				or file.begins_with("joh7_") or file.begins_with("joh8_") \
-				or file.begins_with("joh9_") or file.begins_with("johp1_") else pair[0]
+				or file.begins_with("joh9_") or file.begins_with("johp") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer) + StarterChoice.get_set_flags(_offer_johto) \
@@ -1789,7 +1789,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"johto_act1", &"storage_offline", &"johto_team_returned",
 		# Chapitre Johto (JOH1) : lettre, grotte marine, arrivée, nuit, vol, offre, choix, départ d'Orme.
 		&"johto_letter_read", &"johto_lugia_passing", &"johto_lugia_shadow", &"got_sea_cave_1_item_1",
-		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_slept", &"johto_team_stolen",
+		&"got_sea_cave_2_item_1", &"johto_arrived", &"johto_center_dark", &"johto_slept", &"johto_team_stolen",
 		&"johto_starter_offered", &"johto_starter_chosen", &"johto_orme_left", &"johto_cave_mouth_seen",
 		# Chapitre Johto (JOH5, T-38) : le courant calmé, vu une fois (variante de la grotte marine).
 		&"johto_sea_cave_calm_seen",

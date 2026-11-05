@@ -155,6 +155,19 @@ extends RefCounted
 ##   « start » (filtre sépia plein écran en fondu, joueur caché : [FlashbackFilter]) ou « end »
 ##   (fondu inverse, filtre retiré, joueur visible). Le changement de carte du souvenir se fait par
 ##   des étapes « change_map » ordinaires entre les deux.
+## - [constant Kind.STONES_AWAKEN] (arc des Pierres, JOHP0, `jalon-joh-pierres.md` §2.2) : le
+##   Réveil ([method StoneAwakening.awaken], d'un seul bloc), la cinématique
+##   ([member CutsceneDirector.awakening_handler]), **l'écriture**, puis l'écran du Réveil
+##   ([member CutsceneDirector.awakening_screen_handler]). Valeur : true. Ne pas faire suivre
+##   d'une étape « save » : l'étape écrit elle-même. Déjà fait : étape sautée.
+
+## JOH1 (remise en scène du vol, demande de Kevin du 2026-11-04) :
+## - « change_map » : [member pose] (clé « pose », [constant POSES]) appliquée pendant l'écran
+##   noir : [constant POSE_ASLEEP] cache le joueur et couche son apparence dans le [SleeperBed]
+##   [member target] (clé « bed », chemin depuis la carte) ; [constant POSE_HIDDEN] cache le
+##   joueur ; sans pose, le joueur est visible ;
+## - [constant Kind.CARRY] : le nœud [member target] de la carte (chemin depuis la carte, clé
+##   « carry ») passe dans les mains du PNJ [member actor] (clé « by ») et part avec lui.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -171,6 +184,8 @@ enum Kind {
 	HALL_OF_FAME, CREDITS, # Jalon 30
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
 	FLASHBACK, # Chapitre Johto (JOH6)
+	CARRY, # JOH1, remise en scène du vol
+	STONES_AWAKEN, # Arc des Pierres (JOHP0)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -188,9 +203,16 @@ const TYPE_KEYS: Array[String] = [
 	"hall_of_fame", "credits", # Jalon 30
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
 	"flashback", # Chapitre Johto (JOH6)
+	"carry", # JOH1, remise en scène du vol
+	"stones_awaken", # Arc des Pierres (JOHP0)
 ]
 ## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
 const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
+## Poses du joueur d'une étape « change_map » (clé « pose », JOH1) : endormi dans le lit
+## [SleeperBed] nommé par « bed », ou caché (plan sur une autre pièce pendant qu'il dort).
+const POSE_ASLEEP: StringName = &"asleep"
+const POSE_HIDDEN: StringName = &"hidden"
+const POSES: Array[StringName] = [POSE_ASLEEP, POSE_HIDDEN]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]
@@ -228,6 +250,8 @@ var background: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
+## JOH1 : pose du joueur d'un « change_map » ([constant POSES], &"" = visible).
+var pose: StringName = &""
 ## Étape « battle » : dresseur, PNJ Pokémon qui
 ## combattent, drapeaux selon l'issue.
 var trainer_id: StringName = &""
@@ -379,6 +403,7 @@ func copy() -> CutsceneStep:
 	other.map_id = map_id
 	other.spawn = spawn
 	other.facing = facing
+	other.pose = pose
 	other.trainer_id = trainer_id
 	other.player_pokemon = player_pokemon
 	other.foe_pokemon = foe_pokemon
