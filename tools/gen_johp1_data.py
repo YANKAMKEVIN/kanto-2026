@@ -328,7 +328,7 @@ def main():
 					"dialogue": tid + "_after", "trainer": {"id": tid, "sight": int(attrs["sight"]),
 						"before": tid + "_before", "defeated": tid + "_defeated"}}
 			elif kind == "pnj":
-				npcs[ident] = {"cell": cell, "facing": attrs["facing"], "sprite": "maya",
+				npcs[ident] = {"cell": cell, "facing": attrs["facing"], "sprite": "heloise",
 					"dialogue": "alph_tent_heloise"}
 			elif kind == "objet_visible":
 				flag = "got_" + ident

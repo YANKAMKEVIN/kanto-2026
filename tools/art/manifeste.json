@@ -3507,6 +3507,18 @@
    "hauteur": 128,
    "nettoyer": true,
    "note": "finitions de l'entrée des Dresseurs (fiche §13) ; karate_master"
+  },
+  {
+   "id": "heloise",
+   "source": "PNJ_HELOISE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/heloise_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "goulven",
+   "source": "PNJ_GOULVEN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/goulven_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -4246,6 +4258,18 @@
    "sortie": "assets/sprites/characters/painted/rivale_idle_sheet.png",
    "marche": "rivale",
    "note": "chantier JR (dossier-joueuse-rivale.md)"
+  },
+  {
+   "id": "heloise_idle",
+   "source": "HELOISE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/heloise_idle_sheet.png",
+   "marche": "heloise"
+  },
+  {
+   "id": "goulven_idle",
+   "source": "GOULVEN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/goulven_idle_sheet.png",
+   "marche": "goulven"
   }
  ],
  "images_objets": [

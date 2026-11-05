@@ -14704,6 +14704,70 @@
     "vent",
     "repos_2"
    ]
+  },
+  "heloise": {
+   "fichier": "res://assets/sprites/characters/painted/heloise_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heloise_idle": {
+   "fichier": "res://assets/sprites/characters/painted/heloise_idle_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "goulven": {
+   "fichier": "res://assets/sprites/characters/painted/goulven_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "goulven_idle": {
+   "fichier": "res://assets/sprites/characters/painted/goulven_idle_sheet.png",
+   "cellule": [
+    82,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {

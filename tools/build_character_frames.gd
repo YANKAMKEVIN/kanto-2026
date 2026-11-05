@@ -140,6 +140,9 @@ const LOOKS: Dictionary = {
 	# J15 T11 (série 17, Carmin-sur-Mer) : marin, docker, président du Fan Club, 128 px, avec leur
 	# planche d'attente. Le gardien de la Pension est `old_man` (décision du 2026-10-14).
 	"marin": [CHARACTERS_DIR, "sailor", ""],
+	# Arc des Pierres : Héloïse et Goulven, 128 px, avec leur planche d'attente (Kevin, 2026-11-05).
+	"heloise": [CHARACTERS_DIR, "heloise", ""],
+	"goulven": [CHARACTERS_DIR, "goulven", ""],
 	"docker": [CHARACTERS_DIR, "docker", ""],
 	"president_fan_club": [CHARACTERS_DIR, "fan_club_chairman", ""],
 	# J17 T14 (série 19, Route 11 et Cave Taupiqueur) : Joueur (gambler) et Ingénieur (engineer),
