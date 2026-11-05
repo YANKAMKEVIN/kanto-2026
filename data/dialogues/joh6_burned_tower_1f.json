@@ -1,0 +1,51 @@
+{
+	"burned_tower_1f_plancher_effondre": {
+		"narration": true,
+		"pages": [
+			"Le plancher a brûlé.",
+			"On voit une salle, en dessous."
+		]
+	},
+	"burned_tower_1f_odile_before": {
+		"speaker": "Médium Odile",
+		"pages": [
+			"Les esprits de la tour n'aiment\npas les visiteurs."
+		]
+	},
+	"burned_tower_1f_odile_defeated": {
+		"speaker": "Médium Odile",
+		"pages": [
+			"Ils t'acceptent, finalement."
+		]
+	},
+	"burned_tower_1f_odile_after": {
+		"speaker": "Médium Odile",
+		"pages": [
+			"En bas, quelque chose respire."
+		]
+	},
+	"burned_tower_1f_sbire_p_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le patron veut ce qui dort en\nbas. Dégage !"
+		]
+	},
+	"burned_tower_1f_sbire_p_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Le patron va être furieux."
+		]
+	},
+	"burned_tower_1f_sbire_p_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"De toute façon, Brace\nest déjà en route."
+		]
+	},
+	"burned_tower_1f_rappel": {
+		"cutscene": "burned_tower_1f_rappel"
+	},
+	"burned_tower_1f_hyper_potion": {
+		"cutscene": "burned_tower_1f_hyper_potion"
+	}
+}

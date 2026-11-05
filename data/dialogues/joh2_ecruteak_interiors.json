@@ -36,6 +36,40 @@
 				]
 			},
 			{
+				"if": [
+					"johto_act2"
+				],
+				"unless": [
+					"johto_burned_tower_open"
+				],
+				"set": [
+					"johto_burned_tower_open"
+				],
+				"pages": [
+					"Tu es revenu. Et avec tes vrais\ncompagnons, cette fois.",
+					"Cet homme, à la radio…\n« quand tout sera cendres ».",
+					"Je crains qu'il ne parle\nde notre tour.",
+					"Je t'ouvre la Tour Cendrée.",
+					"Va voir si les trois dorment\ntoujours."
+				]
+			},
+			{
+				"if": [
+					"johto_dante_plan_known"
+				],
+				"pages": [
+					"L'homme qui a pris Raikou est\nparti vers l'est. Vers Acajou."
+				]
+			},
+			{
+				"if": [
+					"johto_burned_tower_open"
+				],
+				"pages": [
+					"Va voir si les trois dorment\ntoujours."
+				]
+			},
+			{
 				"unless": [
 					"johto_tower_legend_heard"
 				],

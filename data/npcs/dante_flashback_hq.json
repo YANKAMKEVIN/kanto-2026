@@ -1,0 +1,29 @@
+{
+	"dante_jeune": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "gentleman",
+		"turn_to_player": false
+	},
+	"giovanni_jeune": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "up",
+		"sprite": "giovanni",
+		"turn_to_player": false
+	},
+	"persian": {
+		"cell": [
+			8,
+			5
+		],
+		"facing": "up",
+		"sprite": "pokemon/persian",
+		"turn_to_player": false
+	}
+}

@@ -85,6 +85,10 @@ var bond: int = DEFAULT_BOND
 ## déjà son espèce, son niveau, son sexe et ses capacités (tirés à la création) mais ne combat
 ## pas ([method is_egg]). Sauvegardé (v10) seulement s'il est > 0.
 var egg_steps: int = 0
+## Variante de couleur unique (JOH6, JH-46 : le Léviator rouge ; [PokemonVariant]) ; &"" = forme
+## normale. Sauvegardée seulement si non vide (clé « variant », absente avant le JOH6 : aucune
+## migration, pas de changement de version).
+var variant: StringName = &""
 
 
 ## Vrai tant que le Pokémon est un œuf (il compte dans l'équipe, ne combat pas).
@@ -281,6 +285,9 @@ func to_dict() -> Dictionary:
 	# JOH0 (v10) : un œuf seulement (absent = pas un œuf, comme avant la v10).
 	if egg_steps > 0:
 		result["egg_steps"] = egg_steps
+	# JOH6 : une variante seulement (absente = forme normale).
+	if not variant.is_empty():
+		result["variant"] = String(variant)
 	return result
 
 
@@ -350,6 +357,13 @@ static func from_dict(dict: Dictionary, data: PokemonData) -> Pokemon:
 	# bornes → borné. Œuf : absent ou mal formé → pas un œuf ; négatif → 0.
 	pokemon.set_bond(JsonFields.get_int(dict, "bond", DEFAULT_BOND))
 	pokemon.egg_steps = maxi(JsonFields.get_int(dict, "egg_steps"), 0)
+	# Variante (JOH6) : absente → forme normale ; inconnue de cette build → forme normale, avec un
+	# avertissement (jamais un refus).
+	var raw_variant: Variant = dict.get("variant", "")
+	if raw_variant is String and PokemonVariant.is_known(StringName(raw_variant)):
+		pokemon.variant = StringName(raw_variant)
+	elif not (raw_variant is String and (raw_variant as String).is_empty()):
+		push_warning("Pokemon.from_dict : variante inconnue « %s » ignorée" % str(raw_variant))
 	return pokemon
 
 

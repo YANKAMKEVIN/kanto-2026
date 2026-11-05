@@ -1,0 +1,62 @@
+{
+	"garde_forestier": {
+		"cell": [
+			53,
+			6
+		],
+		"facing": "up",
+		"sprite": "guard",
+		"dialogue": "lake_of_rage_garde_forestier"
+	},
+	"leviator_rouge": {
+		"cell": [
+			27,
+			22
+		],
+		"facing": "down",
+		"sprite": "pokemon/gyarados_red",
+		"dialogue": "joh6_red_gyarados",
+		"turn_to_player": false,
+		"unless": [
+			"johto_red_gyarados_done"
+		]
+	},
+	"pecheur": {
+		"cell": [
+			30,
+			39
+		],
+		"facing": "up",
+		"sprite": "fisher_fuchsia",
+		"dialogue": "lake_of_rage_pecheur"
+	},
+	"ludovic": {
+		"cell": [
+			20,
+			39
+		],
+		"facing": "up",
+		"sprite": "fisher_route_12",
+		"dialogue": "lake_of_rage_ludovic_after",
+		"trainer": {
+			"id": "lake_of_rage_ludovic",
+			"sight": 1,
+			"before": "lake_of_rage_ludovic_before",
+			"defeated": "lake_of_rage_ludovic_defeated"
+		}
+	},
+	"rappel_max": {
+		"cell": [
+			12,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "lake_of_rage_rappel_max",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_lake_of_rage_rappel_max"
+		]
+	}
+}

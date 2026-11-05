@@ -174,6 +174,8 @@ func test_data_file_loads() -> void:
 	assert_eq(tables.get_ids(), [&"good_rod_any", &"joh7_good_rod", &"joh7_old_rod", &"old_rod_any",
 		&"super_rod_cerulean_cave",
 		&"super_rod_default", &"super_rod_fuchsia",
+		# JOH6 : Super Canne du Lac Colère (Magicarpe, Léviator).
+		&"super_rod_lake_of_rage",
 		# JOH3 : Super Canne de l'étang de la Route 35 (Ptitard, Poissirène).
 		&"super_rod_route_35",
 		# Jalon 32 (N-12) : Super Canne du Parc Safari (groupe 6 de RB, Minidraco).

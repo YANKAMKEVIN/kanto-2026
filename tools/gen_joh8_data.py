@@ -52,6 +52,7 @@ ACT3 = "johto_act3"
 ORME_TOLD = "johto_orme_silver_told"  # [D]
 CHAPTER_DONE = "johto_chapter_done"   # JOH9 : fin du chapitre (retour de Ho-Oh, cadre §4.5)
 HO_OH_BACK_DONE = "johto_ho_oh_return_done"  # [D]
+ENTEI_BACK_DONE = "johto_entei_return_done"  # [D]
 
 # --- Dresseurs (dossier §6) -------------------------------------------------------------------
 # prize_per_level [D] : Sbires 40, Dante 120 (prize_money fixé par le niveau du dernier Pokémon).
@@ -513,6 +514,10 @@ ROSALIA_NPCS = {
 		"dialogue": "joh8_habitante_aube", "if": [SEEN]},
 	# H-35, H-36 : Orme au Centre de Rosalia après le sommet [D] : (9, 6), à l'écart du passage et de
 	# la banquette est (l'ancienne case (11, 6) le cachait derrière elle, QA A17).
+	# Cadre §4.5 : Entei K.O. ou fui revient à la Tour Cendrée après le chapitre [D] (salle du JOH6).
+	("burned_tower_b1f", "entei_retour"): {"cell": [10, 8], "facing": "down", "sprite": "pokemon/entei",
+		"dialogue": "joh8_entei_return", "verb": "observe", "turn_to_player": False,
+		"if": [CHAPTER_DONE, ENTEI_DONE], "unless": [ENTEI_CAUGHT, ENTEI_BACK_DONE]},
 	("ecruteak_center", "orme"): {"cell": [9, 6], "facing": "left", "sprite": "researcher",
 		"dialogue": "joh8_orme", "if": [HO_OH_DONE]},
 }
@@ -531,13 +536,20 @@ def write_rosalia():
 	dialogues = {
 		"joh8_sage_blesse": text("joh8_sage_blesse"),
 		"joh8_habitante_aube": text("joh8_habitante_aube"),
-		"joh8_diane_after": text("joh8_diane_after"),
+		"joh8_entei_return": {"cutscene": "joh8_entei_return"},
 		"joh8_orme": {"speaker": "Orme", "variants": [
 			{"unless": [ORME_TOLD], "set": [ORME_TOLD, ACT3], "pages": TEXTS["joh8_orme_silver"][1]},
 			{"pages": TEXTS["joh8_orme_after"][1]},
 		]},
 	}
 	write_json(os.path.join(DATA, "dialogues", "joh8_ecruteak.json"), dialogues)
+	write_json(os.path.join(DATA, "cutscenes", "joh8_ecruteak.json"), {
+		"joh8_entei_return": {"variants": [{"if": [CHAPTER_DONE, ENTEI_DONE],
+			"unless": [ENTEI_CAUGHT, ENTEI_BACK_DONE], "steps": [
+				{"wild_battle": "entei", "level": 60, "intro": "legendary", "actor": "entei_retour",
+					"static": {"done": ENTEI_BACK_DONE, "caught": ENTEI_CAUGHT}},
+			]}]},
+	})
 	for (map_id, ident), entry in ROSALIA_NPCS.items():
 		path = os.path.join(DATA, "npcs", map_id + ".json")
 		if not os.path.exists(path):
@@ -565,6 +577,24 @@ def write_rosalia():
 				v.pop("joh8")
 			doyen["variants"] = fresh + variants
 			write_json(path, data)
+	write_diane()
+
+
+def write_diane():
+	"""H-38 (« en plus de C-46 ») : variante du JOH8 devant la réplique de fin de Diane (JOH6)."""
+	path = os.path.join(DATA, "dialogues", "joh6_week.json")
+	if not os.path.exists(path):
+		return
+	data = load_json(path)
+	diane = data.get("week_sunday_diane")
+	if diane is None:
+		return
+	variants = [v for v in diane["variants"] if SEEN not in v.get("if", [])]
+	last = variants[-1]
+	variants.insert(len(variants) - 1, {"if": last["if"] + [SEEN],
+		"pages": TEXTS["joh8_diane_after"][1] + last["pages"]})
+	diane["variants"] = variants
+	write_json(path, data)
 
 
 def is_joh8_variant(variant):

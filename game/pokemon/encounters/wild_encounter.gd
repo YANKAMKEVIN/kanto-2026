@@ -23,6 +23,9 @@ var legendary_intro: bool = false
 ## avant le lancer. Faux par défaut.
 var reveal: bool = false
 var uncatchable: bool = false
+## Variante de couleur du sauvage (JOH6, clé « variant » de l'étape « wild_battle » : le Léviator
+## rouge) ; &"" = forme normale.
+var variant: StringName = &""
 
 
 func _init(encounter_species: StringName = &"", encounter_level: int = 1,

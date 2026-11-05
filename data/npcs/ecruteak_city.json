@@ -6,6 +6,9 @@
 		],
 		"facing": "down",
 		"sprite": "guard",
+		"unless": [
+			"johto_act2"
+		],
 		"dialogue": "ecruteak_city_garde_route_42"
 	},
 	"garde_carillon": {
@@ -62,6 +65,18 @@
 			"tuesday"
 		],
 		"dialogue": "week_tuesday_margot"
+	},
+	"diane": {
+		"cell": [
+			23,
+			13
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"if_weekday": [
+			"sunday"
+		],
+		"dialogue": "week_sunday_diane"
 	},
 	"sage_blesse": {
 		"cell": [

@@ -232,3 +232,8 @@ raccord nord, Bois, 1F, planches du 2F, escalier, sommet, Dante lancé, cloche, 
 et Ho-Oh en fuite, plume, reprise après arrêt forcé. Pas vu sur téléphone (tests GUT seulement) : victoire
 complète contre Dante, défaite, captures, Orme et doyen H-34. Corrigé ensuite : Orme déplacé en (9, 6)
 [D] ; trois objectifs du Menu [D] en brouillon.
+
+Fusion avec le JOH6 : H-38 posée dans `week_sunday_diane` (variante après le don, `write_diane()` de
+`gen_joh8_data.py`, à relancer après `gen_joh6_data.py`) ; retour d'Entei au B1F de la Tour Cendrée
+(`entei_retour`, `joh8_entei_return`, drapeau [D] `johto_entei_return_done`), inactif tant que le JOH9
+ne lève pas `johto_chapter_done` ; Entei de carte du JOH6 gardé, le provisoire du JOH8 retiré.

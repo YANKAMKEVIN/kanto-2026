@@ -107,7 +107,7 @@ func test_every_validated_line_is_in_dossier_joh_09() -> void:
 				checked += 1
 				assert_true(dossier.contains(J22Ids.flat_text(page.text)),
 					"%s : « %s » (dossier joh-09 §15)" % [id, page.text])
-	assert_gt(checked, 80)
+	assert_gt(checked, 75)
 
 
 ## Le doyen ouvre la tour (H-2, H-3) puis, après le sommet, annonce le Mont Argenté (H-34) ;
@@ -166,7 +166,7 @@ func test_every_scene_is_launched_and_every_dialogue_used() -> void:
 				used[spec.defeated_dialogue] = true
 	# Rosalia (fichiers du JOH2) et Diane (JOH6) : voir test_elder_variants_… et le plan §2.7.
 	for id: StringName in [&"joh8_sage_blesse", &"joh8_habitante_aube", &"joh8_orme",
-			&"joh8_diane_after"]:
+			&"joh8_entei_return"]:
 		used[id] = true
 	for id: StringName in _ids("res://data/cutscenes/"):
 		assert_true(launched.has(id), "scène « %s » lancée" % id)
@@ -314,3 +314,26 @@ func test_objectives_follow_the_tower() -> void:
 		assert_eq(library.current_id(flags), step[1], String(step[0]))
 	flags.set_flag(&"johto_act3")
 	assert_ne(library.current_id(flags), &"report_to_ecruteak_elder", "le doyen a parlé (H-34)")
+
+
+## H-38 (« en plus de C-46 ») : Diane, après le sommet, une fois son don fait (JOH6).
+func test_diane_after_the_summit() -> void:
+	var text := FileAccess.get_file_as_string("res://data/dialogues/joh6_week.json")
+	var diane: Dictionary = JSON.parse_string(text)["week_sunday_diane"]
+	var variants: Array = diane["variants"]
+	assert_eq(variants[0]["unless"], ["week_sunday_gift"], "le don d'abord")
+	assert_eq(variants[1]["if"], ["week_sunday_gift", "johto_ho_oh_seen"])
+	assert_eq(variants[1]["pages"][1], "Je n'y ai même pas touché.")
+	assert_eq(variants[-1]["if"], ["week_sunday_gift"], "la réplique de fin reste la dernière")
+
+
+## Cadre §4.5 : Entei non capturé revient à la Tour Cendrée après le chapitre.
+func test_entei_returns_to_the_burned_tower() -> void:
+	var entei := NpcRoster.load_for_map(&"burned_tower_b1f").get_spec(&"entei_retour")
+	assert_not_null(entei, "Entei à la Tour Cendrée")
+	var scenes: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://data/cutscenes/joh8_ecruteak.json"))
+	var step: Dictionary = scenes["joh8_entei_return"]["variants"][0]["steps"][0]
+	assert_eq(step["wild_battle"], "entei")
+	assert_eq(step["actor"], "entei_retour")
+	assert_eq(step["static"]["caught"], "johto_entei_caught")

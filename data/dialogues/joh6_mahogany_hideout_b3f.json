@@ -1,0 +1,33 @@
+{
+	"mahogany_hideout_b3f_brace_before": {
+		"speaker": "Brace",
+		"pages": [
+			"Encore toi ! Tu\nme suis partout !",
+			"Tant mieux. Au puits, tu avais\ndes Pokémon de rien du tout.",
+			"Montre-moi tes vrais\nPokémon. Je fonce !"
+		]
+	},
+	"mahogany_hideout_b3f_brace_defeated": {
+		"speaker": "Brace",
+		"pages": [
+			"Non, non, non ! Pas encore !"
+		]
+	},
+	"mahogany_hideout_b3f_brace_after": {
+		"speaker": "Brace",
+		"pages": [
+			"Ta victoire ne change rien."
+		]
+	},
+	"mahogany_hideout_b3f_generateur": {
+		"narration": true,
+		"pages": [
+			"Une énorme machine bourdonne.",
+			"Des câbles partent de\nla cage de Raikou.",
+			"Raikou sert de pile\nà la machine !"
+		]
+	},
+	"mahogany_hideout_b3f_max_repousse": {
+		"cutscene": "mahogany_hideout_b3f_max_repousse"
+	}
+}

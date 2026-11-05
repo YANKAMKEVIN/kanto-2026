@@ -445,8 +445,42 @@
 			"description": "Un vieux puits humide, sous la ville."
 		},
 		"mahogany_town": {
-			"name": "Acajou", "kind": "town", "maps": [], "region": "johto", "draft": true,
-			"description": "Un village de montagne au bord du Lac Colère, un peu trop calme pour être honnête."
+			"name": "Acajou", "kind": "town", "region": "johto",
+			"maps": ["mahogany_town", "mahogany_souvenir_shop", "mahogany_center", "mahogany_house_1", "mahogany_house_2"],
+			"subtitle": "Route 42 — Route 43",
+			"services": [{"id": "pokemon_center", "found_on": "mahogany_center"}, {"id": "poke_mart", "found_on": "mahogany_souvenir_shop"}],
+			"description": "Une petite ville de montagne, plus secrète qu'elle n'en a l'air."
+		},
+		"burned_tower": {
+			"name": "Tour Cendrée", "kind": "place", "region": "johto", "maps": ["burned_tower_1f", "burned_tower_b1f"],
+			"subtitle": "Rosalia",
+			"description": "Une tour noircie, où dorment les légendes."
+		},
+		"route_42": {
+			"name": "Route 42", "kind": "route", "region": "johto", "maps": ["route_42"],
+			"subtitle": "Rosalia — Acajou",
+			"description": "Une route entre lac et montagne, vers Acajou."
+		},
+		"route_43": {
+			"name": "Route 43", "kind": "route", "region": "johto", "maps": ["route_43"],
+			"subtitle": "Acajou — Lac Colère",
+			"description": "Une route boisée, vers le Lac Colère."
+		},
+		"lake_of_rage": {
+			"name": "Lac Colère", "kind": "place", "region": "johto", "maps": ["lake_of_rage"],
+			"subtitle": "Route 43",
+			"description": "Un grand lac de montagne, troublé par d'étranges ondes."
+		},
+		"mahogany_hideout": {
+			"name": "Repaire Rocket", "kind": "place", "region": "johto",
+			"maps": ["mahogany_hideout_b1f", "mahogany_hideout_b2f", "mahogany_hideout_b3f", "dante_flashback_hq"],
+			"subtitle": "Acajou",
+			"description": "Le repaire de la Team Rocket, sous Acajou."
+		},
+		"goldenrod_radio_tower": {
+			"name": "Tour Radio", "kind": "place", "region": "johto", "subtitle": "Doublonville",
+			"maps": ["goldenrod_radio_tower_1f", "goldenrod_radio_tower_2f", "goldenrod_radio_tower_3f", "goldenrod_radio_tower_4f", "goldenrod_radio_tower_5f", "goldenrod_radio_tower_elevator"],
+			"description": "La Tour Radio de Doublonville, prise par la Team Rocket."
 		},
 		"bell_tower_woods": {
 			"name": "Bois de la Tour", "kind": "place", "region": "johto", "maps": ["bell_tower_woods"],

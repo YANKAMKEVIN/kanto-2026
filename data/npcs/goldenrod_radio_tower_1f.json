@@ -1,0 +1,44 @@
+{
+	"faux_employe": {
+		"cell": [
+			4,
+			2
+		],
+		"facing": "left",
+		"sprite": "engineer",
+		"unless": [
+			"johto_radio_impostor_defeated"
+		],
+		"dialogue": "goldenrod_radio_impostor"
+	},
+	"agente": {
+		"cell": [
+			10,
+			13
+		],
+		"facing": "up",
+		"sprite": "guard",
+		"if": [
+			"johto_team_returned"
+		],
+		"unless": [
+			"johto_act2"
+		],
+		"dialogue": "goldenrod_radio_exit"
+	},
+	"orme": {
+		"cell": [
+			13,
+			13
+		],
+		"facing": "up",
+		"sprite": "researcher",
+		"if": [
+			"johto_team_returned"
+		],
+		"unless": [
+			"johto_act2"
+		],
+		"dialogue": "goldenrod_radio_exit"
+	}
+}

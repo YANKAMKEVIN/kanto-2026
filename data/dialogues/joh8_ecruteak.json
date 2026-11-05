@@ -14,12 +14,8 @@
 			"Ma grand-mère pleurait. Elle disait\nqu'elle l'attendait depuis toujours."
 		]
 	},
-	"joh8_diane_after": {
-		"speaker": "Diane",
-		"pages": [
-			"Ce matin, les cloches\nont sonné toutes seules.",
-			"Je n'y ai même pas touché."
-		]
+	"joh8_entei_return": {
+		"cutscene": "joh8_entei_return"
 	},
 	"joh8_orme": {
 		"speaker": "Orme",

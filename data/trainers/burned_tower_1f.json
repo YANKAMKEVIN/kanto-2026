@@ -1,0 +1,42 @@
+{
+	"burned_tower_1f_odile": {
+		"name": "Médium Odile",
+		"class": "exorciste",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "haunter",
+				"level": 46
+			},
+			{
+				"species": "gengar",
+				"level": 48
+			}
+		]
+	},
+	"burned_tower_1f_sbire_p": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "weezing",
+				"level": 48
+			},
+			{
+				"species": "raticate",
+				"level": 48
+			}
+		]
+	}
+}

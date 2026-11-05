@@ -139,6 +139,7 @@ Cadre général (géographie, scénario, systèmes, jalons JOH0 à JOH9, arbitra
 [`dossier-joh-08-iles-tourbillon.md`](dossier-joh-08-iles-tourbillon.md), textes M-1 à M-34 et JH-48 à JH-51 validés (Suicune, Lugia). JOH8 :
 [`dossier-joh-09-tour-carillon.md`](dossier-joh-09-tour-carillon.md), textes H-1 à H-38 et JH-52 à JH-55 validés (Dante 1, Entei, Ho-Oh). JOH9 :
 [`dossier-joh-10-mont-argente.md`](dossier-joh-10-mont-argente.md), textes A-1 à A-54 et JH-56 à JH-60 validés (Dante 2, Giovanni, rival final, épilogue, Celebi) : **conception du chapitre complète** (JOH0 à JOH9).
+**Arc des Pierres** (décision de Kevin, 2026-11-04) : [`dossier-joh-11-arc-pierres.md`](dossier-joh-11-arc-pierres.md), entre le JOH5 et le JOH6 : Ruines d'Alpha, Irisia, Ébènelle et Antre du Dragon, trois pierres, le Réveil qui monte l'équipe de Johto au niveau de celle de Kanto, retour de l'équipe à la fin. Jalons **JOHP0 à JOHP3** ; arbitrages JH-61 à JH-79 et textes validés (2026-11-05), grilles et vues peintes à faire.
 Pas de code avant la fin de Kanto et la validation d'un dossier. Jalons numérotés **JOH1, JOH2…**.
 
 ## Jalons narratifs à ne pas oublier
