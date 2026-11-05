@@ -298,7 +298,7 @@ func test_encounter_and_fishing_tables() -> void:
 			assert_eq([slot.min_level, slot.max_level], spec[2], "%s : %s" % [id, slot.species])
 			seen[slot.species] = true
 			for back: bool in [false, true]:
-				assert_true(ResourceLoader.exists(BattleArt.placeholder_path(slot.species, back)),
+				assert_true(BattleArt.new().has_image(slot.species, back),
 					"%s : sprite de combat" % slot.species)
 		assert_eq(seen.size(), weights.size(), String(id))
 	assert_eq(_encounters.get_table(&"whirl_islands_1f", &"rubble", &"night").id,

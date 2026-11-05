@@ -205,6 +205,18 @@ const LOOKS: Dictionary = {
 	"joueuse": [CHARACTERS_DIR, "player_heroine", "joueuse_run"],
 	"joueuse_surf": [CHARACTERS_DIR, "player_heroine_surf", ""],
 	"rivale": [CHARACTERS_DIR, "rival_heroine", ""],
+	# Série Johto (art des Pokémon de Johto, 2026-11-04) : les trois Pokémon de départ de Johto
+	# (table d'Orme, compagnon), sans planche d'attente (colonne 0 de la marche, vérifiée à l'œil).
+	"germignon": [POKEMON_DIR, "chikorita", ""],
+	"hericendre": [POKEMON_DIR, "cyndaquil", ""],
+	"kaiminus": [POKEMON_DIR, "totodile", ""],
+	# Leurs évolutions (compagnons, Kevin 2026-11-04 : le compagnon reste après une évolution).
+	"macronium": [POKEMON_DIR, "bayleef", ""],
+	"meganium": [POKEMON_DIR, "meganium", ""],
+	"feurisson": [POKEMON_DIR, "quilava", ""],
+	"typhlosion": [POKEMON_DIR, "typhlosion", ""],
+	"crocrodil": [POKEMON_DIR, "croconaw", ""],
+	"aligueur": [POKEMON_DIR, "feraligatr", ""],
 }
 ## DAF.5 (série 25) : animations en selle d'une apparence (planche de marche → [pédalage, arrêt]) :
 ## `bike_walk_<dir>` (cycle de 4 images sur 2 cases, au pas du vélo) et `bike_idle_<dir>` (arrêt en
@@ -268,6 +280,12 @@ const FIXED_POKEMON: Dictionary = {
 ## identifiant de données. J24 (série 27) : Artikodin, 4 images (repos, inspire, souffle, repos).
 const LOOPING_POKEMON: Dictionary = {
 	"artikodin": "articuno",
+	# Série Johto : légendaires observés (JOH7 Tourbillon, JOH8 Tour Carillon), 4 images, de face.
+	"suicune": "suicune",
+	"raikou": "raikou",
+	"entei": "entei",
+	"lugia": "lugia",
+	"ho_oh": "ho_oh",
 }
 ## Durées relatives de chaque image de la boucle (vitesse 1 : secondes) : une respiration lente,
 ## le souffle de givre (image 3) plus bref. Défauts [D] du J24.
