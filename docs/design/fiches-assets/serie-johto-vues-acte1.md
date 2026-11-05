@@ -383,3 +383,9 @@ Lucien refaits une fois (halo autour des poses). Tailles : Fargas 118 px, Margot
 La cicatrice de Dante est discrète à l'échelle du jeu. Dante jeune et Giovanni jeune ont un contour plus marqué que le reste
 de la série. Pas encore branchés dans les données : les PNJ gardent leurs sprites empruntés.
 
+## Sprites de combat de Johto (planche `johto-sprites-combat-v1.png`) — **à valider par Kevin**
+
+Dante, Brace, Cenere, Ysolde, Gardien, Gardienne, rival et rivale d'hiver : pose debout et lancer, gabarit des Champions, outil
+`tools/art/entree_johto.py`, prompts et mains mesurées dans `tools/art/entree_dresseurs/johto/`. Un essai chacun, sans refus. Pas
+encore de buste « VS », pas d'entrée dans `data/battle/trainer_intro.json` : à faire au branchement.
+
