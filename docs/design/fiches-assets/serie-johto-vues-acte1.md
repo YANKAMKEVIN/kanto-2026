@@ -389,7 +389,7 @@ Dante, Brace, Cenere, Ysolde, Gardien, Gardienne, rival et rivale d'hiver : pose
 `tools/art/entree_johto.py`, prompts et mains mesurées dans `tools/art/entree_dresseurs/johto/`. Un essai chacun, sans refus. Pas
 encore de buste « VS », pas d'entrée dans `data/battle/trainer_intro.json` : à faire au branchement.
 
-## Bustes « VS » de Johto (planche `johto-bustes-vs-v1.png`) — **à valider par Kevin**
+## Bustes « VS » de Johto (planche `johto-bustes-vs-v1.png`) — **validés par Kevin le 2026-11-05**
 
 Dante, Brace, Cenere, Ysolde, rival et rivale d'hiver, gabarit des Champions, `tools/art/entree_johto.py buste`, un essai chacun.
 Cicatrice de Dante bien lisible. Non branchés : `vs.busts` et `grand` de `data/battle/trainer_intro.json` au branchement ; aujourd'hui Brace et Cenere n'ont pas d'écran VS.
