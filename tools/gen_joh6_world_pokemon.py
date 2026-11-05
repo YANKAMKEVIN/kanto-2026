@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Planches provisoires des Pokémon du monde du JOH6 (`docs/tech/jalon-joh6.md` §2.3) : Raikou,
-Entei et Suicune (silhouettes de combat provisoires agrandies), Persian (artwork officiel) et le
-**Léviator rouge** (artwork officiel, teinte tournée comme en combat : `PokemonVariant`, 0,42 tour).
+"""Planches provisoires des Pokémon du monde du JOH6 (`docs/tech/jalon-joh6.md` §2.3) : Persian
+(artwork officiel) et le **Léviator rouge** (Raikou, Entei et Suicune sont peints depuis la série
+Johto, `tools/art/serie_johto_pokemon.py`) : artwork officiel, teinte tournée comme en combat : `PokemonVariant`, 0,42 tour.
 Une image fixe par planche, animations « idle » et « idle_<direction> » (comme Artikodin) : ces
 Pokémon ne marchent pas (ils disparaissent en fondu). Sans planche, la carte saute un Pokémon du
 décor (`GameMap.awaits_painted_look`). À remplacer par l'art (Reportés).
@@ -19,9 +19,6 @@ OUT = os.path.join(ROOT, "assets", "sprites", "pokemon", "painted")
 SRC = os.path.join(ROOT, "assets", "sprites", "pokemon")
 # nom de la planche (`pokemon/<nom>`) → (source, hauteur affichée en px, rotation de teinte)
 SHEETS = {
-	"raikou": ("placeholder/raikou_front.png", 150, 0.0),
-	"entei": ("placeholder/entei_front.png", 150, 0.0),
-	"suicune": ("placeholder/suicune_front.png", 150, 0.0),
 	"persian": ("official/053.png", 110, 0.0),
 	"gyarados_red": ("official/130.png", 230, 0.42),
 	# Arc des Pierres (JOHP3) : le Dracolosse de Corentin, le Farfuret de Cenere.

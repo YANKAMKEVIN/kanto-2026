@@ -1,11 +1,13 @@
 extends SceneTree
 ## Construit l'atlas des vignettes du Pokédex (docs/tech/pokedex-refonte.md §2.2, §2.5) :
-## assets/sprites/pokemon/official/atlas_128.png, depuis les 151 artworks NNN.png.
+## assets/sprites/pokemon/official/atlas_128.png, depuis les artworks NNN.png de **chaque espèce
+## des données** (`data/pokemon/species/*.json` : Kanto 1 à 151 et les 51 espèces de Johto) ; la
+## case d'un numéro sans espèce reste vide.
 ## Disposition lue dans PokedexArt (une seule source). Pour chaque artwork : recadrage à
 ## l'alpha + marge, réduction au grand côté THUMB_ART (Lanczos), centré dans sa case.
 ## Écrit aussi le cadre utile de chaque artwork (boîte de l'alpha + marge, en pixels de la
 ## source) dans `crops.json` (PokedexArt.CROPS_PATH) : le grand portrait est resserré dessus.
-## Refuse un numéro manquant. Usage :
+## Refuse l'artwork manquant d'une espèce des données. Usage :
 ##   godot --headless --path . -s res://tools/build_pokedex_atlas.gd
 ## puis `godot --headless --path . --import`.
 
@@ -17,7 +19,12 @@ func _init() -> void:
 	var size: Vector2i = art.atlas_size()
 	var atlas := Image.create_empty(size.x, size.y, false, Image.FORMAT_RGBA8)
 	var crops: Dictionary = {}
-	for number: int in range(1, count + 1):
+	var numbers := _species_numbers()
+	for number: int in numbers:
+		if number < 1 or number > count:
+			push_error("Atlas du Pokédex : numéro %d hors de 1..%d" % [number, count])
+			quit(1)
+			return
 		var path: String = art.portrait_path(number)
 		var source := Image.load_from_file(ProjectSettings.globalize_path(path))
 		if source == null or source.is_empty():
@@ -54,5 +61,24 @@ func _init() -> void:
 		+ "(boîte de l'alpha + marge), généré par tools/build_pokedex_atlas.gd.",
 		"crops": crops}, "\t", true) + "\n")
 	file.close()
-	print("Atlas du Pokédex : %s (%d × %d, %d vignettes)" % [out, size.x, size.y, count])
+	print("Atlas du Pokédex : %s (%d × %d, %d vignettes)" % [out, size.x, size.y, numbers.size()])
 	quit()
+
+
+## Numéros nationaux des espèces des données, triés, sans doublon.
+func _species_numbers() -> Array[int]:
+	var numbers: Array[int] = []
+	var dir := "res://data/pokemon/species/"
+	for file: String in DirAccess.get_files_at(dir):
+		if not file.ends_with(".json"):
+			continue
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(dir + file))
+		if not parsed is Dictionary:
+			continue
+		for entry: Variant in (parsed as Dictionary).values():
+			if entry is Dictionary and (entry as Dictionary).has("dex"):
+				var number := int((entry as Dictionary)["dex"])
+				if not numbers.has(number):
+					numbers.append(number)
+	numbers.sort()
+	return numbers

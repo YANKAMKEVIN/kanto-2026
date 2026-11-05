@@ -1,0 +1,15 @@
+MONDE_RAIKOU — planche d'animation d'une créature du monde d'un jeu d'aventure 2D peint : une créature légendaire POSÉE, que le joueur découvre.
+Images jointes : l'illustration officielle de la créature (anatomie, couleurs et proportions seulement, PAS son rendu ni sa pose) ; artikodin_sheet et evoli_sheet = créatures déjà peintes pour le monde du jeu : même rendu peint simplifié, même contour fin coloré, même finesse, même angle de vue.
+Style : créature peinte simplifiée comme les planches du jeu, formes rondes et douces, peu de détails, contour fin coloré sans trait noir, volumes doux. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ; ombres propres neutres.
+
+CRÉATURE (identique dans toutes les images) : un grand quadrupède légendaire félin et élancé, au pelage JAUNE vif marqué de RAYURES NOIRES en éclair, une crinière de nuage VIOLET sur le dos, un masque facial noir et blanc à crocs, une queue en éclair bleu pâle, yeux rouges.
+POSE : DEBOUT sur ses quatre pattes, de FACE (tourné vers le bas de l'écran), la tête haute, alerte. Strictement de face et presque symétrique. Vue de dessus de trois quarts comme le jeu (caméra un peu au-dessus).
+
+PLANCHE D'ANIMATION : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 images, de gauche à droite, chacune dans une colonne invisible de 384 px, à la MÊME échelle (environ 330 px de haut), les pattes de toutes les images sur une même ligne horizontale à 170 px du bas de l'image :
+- Image 1 : au repos.
+- Image 2 : elle INSPIRE (la poitrine se gonfle un peu, la tête monte légèrement).
+- Image 3 : un léger souffle de VENT fait onduler le nuage violet de la crinière.
+- Image 4 : retour au repos.
+Aucune ombre portée, aucun sol, aucun décor, aucune lueur, aucun texte, aucun chiffre.
+
