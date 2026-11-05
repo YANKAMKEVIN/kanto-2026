@@ -824,11 +824,12 @@ func test_every_species_met_in_battle_has_its_sprites() -> void:
 			species.append(starter)
 			for slot: TrainerSlot in trainers.get_trainer(trainer_id).team_for(starter):
 				species.append(slot.species)
+	# Johto : plus de sprite provisoire, l'artwork et le dos peint (BattleArt.has_image).
+	var art := BattleArt.new()
 	for id: StringName in species:
 		assert_true(data.has_species(id), String(id))
 		for back: bool in [false, true]:
-			var path := BattleStage.sprite_path(id, back)
-			assert_true(ResourceLoader.exists(path), path)
+			assert_true(art.has_image(id, back), "%s (%s)" % [id, "dos" if back else "face"])
 
 
 ## Jalon 13 : un Dresseur rappelle son Pokémon (même mouvement que le joueur), puis le suivant

@@ -1,0 +1,12 @@
+UI_OBJETS_JOHTO_EVOLUTION — NOUVELLE image : une planche de icônes d'objets pour le Sac du jeu Pokemake, pas une scène.
+Images jointes : moon_stone, nugget = icônes déjà peintes du jeu, ANCRES de style dans le style EXACT des icônes jointes (même rendu peint, même contour fin et coloré, même angle de trois quarts, même lumière, même finesse, même taille d'environ 240 px) ; n'en reproduis pas les objets.
+
+RENDU : icône 2D peinte numériquement pour l'interface d'un RPG Pokémon moderne « HD-2D peint » : formes simples et lisibles, contour fin et doux plus sombre que la couleur (aucun trait noir), volumes doux à trois valeurs, reflets nets, pinceau propre. Ni pixel art, ni 3D, ni photo. Lumière douce et neutre venant du haut à gauche.
+
+PLANCHE de 4 icônes peintes, dans une image 1536 × 1024 divisée en quatre colonnes invisibles de 384 px : une icône CENTRÉE dans chacune des 4 PREMIÈRES colonnes (de gauche à droite), de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge vide de chaque côté.
+1 (colonne 1) : la ROCHE ROYALE : une petite pierre GRIS-ARGENT taillée en forme de COURONNE à trois pointes arrondies, un anneau doré sombre à la base, surface minérale facettée.
+2 (colonne 2) : la PEAU MÉTAL : une fine pellicule de MÉTAL ARGENTÉ souple, repliée en un petit coussin carré ondulé aux plis doux, reflets froids bleutés.
+3 (colonne 3) : l'ÉCAILLE DRACO : une grande ÉCAILLE ovale et épaisse, BLEU-VERT irisé, à nervures concentriques, bord plus clair, brillante.
+4 (colonne 4) : l'AMÉLIORATOR : un petit APPAREIL électronique arrondi, coque translucide ROUGE et BLEUE laissant voir un circuit, deux petites diodes vertes.
+AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : chaque objet est net, avec seulement son contour fin, sur un fond entièrement transparent (canal alpha, aucun damier dessiné, aucune ombre). Interdit : texte, lettres, chiffres, logo, la lettre R, personnage, Pokémon.
+

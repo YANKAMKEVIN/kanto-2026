@@ -17,10 +17,12 @@ func _species() -> Dictionary:
 	return (parsed as Dictionary).get("species", {})
 
 
-func test_all_151_species_are_listed() -> void:
+func test_all_species_of_the_data_are_listed() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
 	var species := _species()
-	for dex: int in range(1, 152):
-		assert_true(species.has("%03d" % dex), "%03d" % dex)
+	for id: StringName in data.get_species_ids():
+		assert_true(species.has("%03d" % data.get_species(id).dex), String(id))
 
 
 ## Une vue décrit l'image affichée : si un dos est remplacé (lots DAF), ses points sont à refaire.
@@ -29,9 +31,6 @@ func test_each_view_matches_the_image_shown_in_battle() -> void:
 	assert_true(data.load_dir())
 	var species := _species()
 	for id: StringName in data.get_species_ids():
-		# JOH0 (T6) : pas encore de points d'ancrage pour Johto (art hors JOH0, levier 4).
-		if data.get_species(id).dex > 151:
-			continue
 		var key := "%03d" % data.get_species(id).dex
 		var entry: Dictionary = species[key]
 		for back: bool in [false, true]:
