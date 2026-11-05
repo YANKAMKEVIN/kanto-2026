@@ -155,6 +155,11 @@ extends RefCounted
 ##   « start » (filtre sépia plein écran en fondu, joueur caché : [FlashbackFilter]) ou « end »
 ##   (fondu inverse, filtre retiré, joueur visible). Le changement de carte du souvenir se fait par
 ##   des étapes « change_map » ordinaires entre les deux.
+## - [constant Kind.STONES_AWAKEN] (arc des Pierres, JOHP0, `jalon-joh-pierres.md` §2.2) : le
+##   Réveil ([method StoneAwakening.awaken], d'un seul bloc), la cinématique
+##   ([member CutsceneDirector.awakening_handler]), **l'écriture**, puis l'écran du Réveil
+##   ([member CutsceneDirector.awakening_screen_handler]). Valeur : true. Ne pas faire suivre
+##   d'une étape « save » : l'étape écrit elle-même. Déjà fait : étape sautée.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -171,6 +176,7 @@ enum Kind {
 	HALL_OF_FAME, CREDITS, # Jalon 30
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
 	FLASHBACK, # Chapitre Johto (JOH6)
+	STONES_AWAKEN, # Arc des Pierres (JOHP0)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -188,6 +194,7 @@ const TYPE_KEYS: Array[String] = [
 	"hall_of_fame", "credits", # Jalon 30
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
 	"flashback", # Chapitre Johto (JOH6)
+	"stones_awaken", # Arc des Pierres (JOHP0)
 ]
 ## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
 const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
