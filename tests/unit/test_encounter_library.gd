@@ -127,7 +127,7 @@ func test_real_tables_load_without_error() -> void:
 	# des trois étages de la Grotte Azurée.
 	assert_eq(lib.get_ids(), [
 		# Arc des Pierres, JOHP3 : Ébènelle (jour / nuit), gravats de l'Antre.
-		&"blackthorn_city_grass_day", &"blackthorn_city_grass_night",
+		&"alph_gallery_rubble", &"blackthorn_city_grass_day", &"blackthorn_city_grass_night",
 		&"burned_tower_1f_floor", &"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
 		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble", &"dragons_den_rubble",
@@ -165,6 +165,8 @@ func test_real_tables_load_without_error() -> void:
 		&"route_43_grass_night", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
+		# JOHP1 : Ruines d'Alpha (herbes, jour et nuit).
+		&"ruins_of_alph_grass_day", &"ruins_of_alph_grass_night",
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
 		&"safari_zone_west_grass",
 		# Chapitre Johto (JOH1) : l'eau de la grotte marine (deux salles).
@@ -263,7 +265,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# JOH6 : + 9 (`test_joh6_data`) ; JOH7 : + 6 tables de la mer et des Îles Tourbillon (`test_joh7_data`) ;
 	# JOH9 : + 9 tables du Mont Argenté, du sentier et de la Route 28 (`test_joh9_data`).
 	# Arc des Pierres, JOHP3 : + 3 tables d'Ébènelle et de l'Antre (`test_johp3_data`).
-	assert_eq(lib.size(), 108, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH3, les 8 du JOH4, les 9 du JOH6, les 6 du JOH7 et les 9 du JOH9")
+	assert_eq(lib.size(), 111, "les 3 du JOHP1, une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH3, les 8 du JOH4, les 9 du JOH6, les 6 du JOH7 et les 9 du JOH9")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -273,7 +275,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 			[&"route_11", &"grass"], [&"digletts_cave", &"rubble"],
 			# Jalon 18 (T16) : Route 9, Route 10, Grotte Sombre.
 			[&"route_9", &"grass"], [&"route_10", &"grass"], [&"dark_cave_1f", &"rubble"],
-			[&"dark_cave_b1f", &"rubble"],
+			[&"dark_cave_b1f", &"rubble"], [&"alph_gallery", &"rubble"],
 			# Jalon 20 (T7) : Routes 8 et 7.
 			[&"route_8", &"grass"], [&"route_7", &"grass"],
 			# Jalon 22 : Routes 12 sud à 18.

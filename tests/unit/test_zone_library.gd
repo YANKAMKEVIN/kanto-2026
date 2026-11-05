@@ -67,7 +67,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 78, "JOH9 : + sentier, Mont Argenté, sommet, Route 28 ; JOH8 : + Bois de la Tour et Tour Carillon ; JOH6 : + Tour Cendrée, Routes 42 et 43, Lac Colère, repaire d'Acajou ; JOH5 : + la Tour Radio ; JOH7 : + Routes 40, 41, Îles Tourbillon ; JOH3 : + Routes 37, 36, 35 et Souterrain ; JOH4 : + Route 34, Bois aux Chênes, Puits Ramoloss ; JOH2 : + Routes 39 et 38 ; JOH1 : + la grotte marine ; JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 79, "JOHP1 : + Ruines d'Alpha ; JOH9 : + sentier, Mont Argenté, sommet, Route 28 ; JOH8 : + Bois de la Tour et Tour Carillon ; JOH6 : + Tour Cendrée, Routes 42 et 43, Lac Colère, repaire d'Acajou ; JOH5 : + la Tour Radio ; JOH7 : + Routes 40, 41, Îles Tourbillon ; JOH3 : + Routes 37, 36, 35 et Souterrain ; JOH4 : + Route 34, Bois aux Chênes, Puits Ramoloss ; JOH2 : + Routes 39 et 38 ; JOH1 : + la grotte marine ; JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
@@ -472,11 +472,11 @@ func test_real_zones_declare_the_five_johto_towns() -> void:
 		&"route_40", &"route_41", &"whirl_islands",
 		&"ecruteak_city", &"route_39", &"route_38", &"goldenrod_city", &"goldenrod_underground",
 		&"route_37", &"route_36", &"route_35", &"azalea_town",
-		&"route_34", &"ilex_forest", &"slowpoke_well", &"mahogany_town", &"burned_tower", &"route_42",
+		&"route_34", &"ilex_forest", &"slowpoke_well", &"ruins_of_alph", &"mahogany_town", &"burned_tower", &"route_42",
 		&"route_43", &"lake_of_rage", &"mahogany_hideout", &"goldenrod_radio_tower",
 		&"bell_tower_woods", &"bell_tower"]
 		as Array[StringName] + joh9,
-		"les cinq villes de Johto (points de Vol), la grotte marine, les routes du JOH2 et du JOH3, les lieux du JOH4, les zones du JOH6, la mer du JOH7, la Tour Radio, la Tour Carillon, le JOH9")
+		"les cinq villes de Johto (points de Vol), la grotte marine, les routes du JOH2 et du JOH3, les lieux du JOH4, les zones du JOH6, la mer du JOH7, la Tour Radio, la Tour Carillon, le JOH9, les Ruines d'Alpha (JOHP1)")
 	for id: StringName in joh9:
 		assert_false(_zones.get_zone(id).maps.is_empty(), "%s : cartes du JOH9" % id)
 		assert_false(_zones.get_zone(id).draft, "%s : description validée (A-7)" % id)
@@ -493,4 +493,4 @@ func test_real_zones_declare_the_five_johto_towns() -> void:
 		assert_true(_zones.get_zone(id).maps.is_empty(), "%s : pas encore de carte" % id)
 		assert_true(_zones.get_zone(id).draft, "%s : description [D]" % id)
 	assert_eq(_zones.zones_of_region(ZoneData.REGION_KANTO).size(),
-		_zones.size() - JOHTO_ZONES.size() - 14 - JOH6_ZONES.size() - joh9.size())
+		_zones.size() - JOHTO_ZONES.size() - 15 - JOH6_ZONES.size() - joh9.size())

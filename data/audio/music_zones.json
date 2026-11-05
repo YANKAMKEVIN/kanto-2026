@@ -74,6 +74,7 @@
 		"azalea_town": "pewter_city",
 		"blackthorn_city": "lavender_town",
 		"dragons_den": "mt_moon",
+		"ruins_of_alph": "road_to_cerulean",
 		"slowpoke_well": "mt_moon",
 		"bell_tower_woods": "viridian_forest",
 		"bell_tower": "pokemon_tower",
@@ -83,6 +84,8 @@
 		"route_28": "pokemon_road"
 	},
 	"maps": {
+		"alph_gallery": "mt_moon",
+		"alph_chamber": "mt_moon",
 		"celadon_center": "pokemon_center",
 		"celadon_dept_2f": "pokemon_center",
 		"celadon_dept_3f": "pokemon_center",

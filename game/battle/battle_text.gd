@@ -132,7 +132,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"move_learned", &"move_forget_prompt", &"move_forgot", &"move_not_learned",
 	&"seeded", &"drained",
 	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
-	&"sent_to_storage",
+	&"sent_to_storage", &"sent_to_orme",
 	&"item_used", &"hp_restored", &"prize_won",
 	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
 	&"forget_confirm_no",

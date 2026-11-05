@@ -1,0 +1,107 @@
+{
+	"ruins_of_alph_grass_day": {
+		"maps": [
+			"ruins_of_alph"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "abra",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 25
+			},
+			{
+				"species": "kadabra",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 15
+			},
+			{
+				"species": "psyduck",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 20
+			},
+			{
+				"species": "geodude",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 20
+			},
+			{
+				"species": "furret",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 20
+			}
+		]
+	},
+	"ruins_of_alph_grass_night": {
+		"maps": [
+			"ruins_of_alph"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 25,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "hoothoot",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 30
+			},
+			{
+				"species": "noctowl",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 15
+			},
+			{
+				"species": "gastly",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 25
+			},
+			{
+				"species": "zubat",
+				"levels": [
+					27,
+					31
+				],
+				"weight": 30
+			}
+		]
+	}
+}

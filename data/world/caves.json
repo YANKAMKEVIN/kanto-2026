@@ -64,6 +64,10 @@
 			"maps": ["dragons_den_1f", "dragons_den_sanctuary"],
 			"escape": { "map": "blackthorn_city", "spawn": "retour_antre", "facing": "left" }
 		},
+		"alph_gallery": {
+			"maps": ["alph_gallery", "alph_chamber"],
+			"escape": { "map": "ruins_of_alph", "spawn": "retour_galerie", "facing": "up" }
+		},
 		"whirl_islands": {
 			"maps": ["whirl_islands_1f", "whirl_islands_b1f", "whirl_islands_b2f"],
 			"escape": { "map": "route_41", "spawn": "from_whirl", "facing": "left" }

@@ -1,0 +1,15 @@
+{
+	"faux_archeologue": {
+		"cell": [
+			7,
+			5
+		],
+		"facing": "down",
+		"sprite": "fossil_researcher",
+		"turn_to_player": false,
+		"unless": [
+			"johto_alph_fake_defeated",
+			"johto_stone_memory"
+		]
+	}
+}
