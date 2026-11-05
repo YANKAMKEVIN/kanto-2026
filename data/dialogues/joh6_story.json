@@ -1,0 +1,301 @@
+{
+	"joh6_beasts_sleep": {
+		"narration": true,
+		"pages": [
+			"Trois Pokémon dorment au milieu des cendres.",
+			"…"
+		]
+	},
+	"joh6_beasts_wake": {
+		"narration": true,
+		"pages": [
+			"Ils ouvrent les yeux !"
+		]
+	},
+	"joh6_beasts_flee": {
+		"narration": true,
+		"pages": [
+			"Ils bondissent hors de la tour, chacun dans une direction !"
+		]
+	},
+	"joh6_brace_arrives": {
+		"speaker": "Brace",
+		"pages": [
+			"Ha ! Je savais que tu les réveillerais pour moi !",
+			"Merci du coup de main, le gamin !"
+		]
+	},
+	"joh6_brace_cage_thrown": {
+		"narration": true,
+		"pages": [
+			"Brace lance une cage métallique !"
+		]
+	},
+	"joh6_brace_cage_caught": {
+		"narration": true,
+		"pages": [
+			"Raikou est pris dans un filet d'éclairs !"
+		]
+	},
+	"joh6_brace_leaves_tower": {
+		"speaker": "Brace",
+		"pages": [
+			"Un sur trois, c'est déjà pas mal.",
+			"Le patron s'occupera des deux autres.",
+			"À plus, le gamin !"
+		]
+	},
+	"joh6_doyen_plan": {
+		"speaker": "Doyen",
+		"pages": [
+			"Ils sont réveillés… et l'un d'eux est captif.",
+			"Écoute. La légende dit que Ho-Oh veille sur ces trois-là.",
+			"Si un homme les tient tous les trois, Ho-Oh descendra à la Tour Carillon pour les sauver.",
+			"C'est donc ça, son plan : forcer Ho-Oh à descendre.",
+			"Et s'emparer de sa flamme. La flamme qui a fait renaître la tour…",
+			"Entre de mauvaises mains, elle peut tout réduire en cendres.",
+			"L'homme qui a pris Raikou est parti vers l'est. Vers Acajou."
+		]
+	},
+	"joh6_red_gyarados": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_red_gyarados_done"
+				],
+				"cutscene": "lake_red_gyarados",
+				"pages": [
+					"Un Léviator rouge surgit des eaux !",
+					"Il est furieux !"
+				]
+			}
+		]
+	},
+	"joh6_shop_stairs": {
+		"narration": true,
+		"pages": [
+			"Un courant d'air froid sort de sous une étagère.",
+			"…",
+			"Un escalier !"
+		]
+	},
+	"joh6_hideout_alarm": {
+		"narration": true,
+		"pages": [
+			"Les yeux de la statue s'allument !",
+			"Une alarme retentit !"
+		]
+	},
+	"mahogany_hideout_b2f_levier": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_cell_opened"
+				],
+				"cutscene": "hideout_lever",
+				"pages": [
+					"Un levier. Il commande les grilles des cellules."
+				],
+				"draft": true
+			}
+		]
+	},
+	"joh6_lever_pulled": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Le levier bascule.",
+			"La grille de la cellule du milieu s'ouvre !"
+		]
+	},
+	"joh6_deserter": {
+		"speaker": "Déserteur",
+		"variants": [
+			{
+				"unless": [
+					"johto_cell_opened"
+				],
+				"pages": [
+					"Hé, toi ! Le gamin de la radio ! Sors-moi de là.",
+					"Je ne suis pas avec eux. Plus maintenant."
+				]
+			},
+			{
+				"unless": [
+					"johto_dante_flashback_seen"
+				],
+				"cutscene": "hideout_deserter",
+				"pages": [
+					"Merci.",
+					"Après la Tour Radio, j'ai dit non. Je suis venu pour Giovanni, pas pour lui.",
+					"Brace m'a jeté ici.",
+					"Tu veux savoir qui est Dante ? J'étais là, moi. Il y a vingt ans."
+				]
+			},
+			{
+				"pages": [
+					"La porte du fond a un mot de passe.",
+					"Avant, c'était « Vive Giovanni ». Maintenant, c'est « Gloire à Dante ».",
+					"Ça me brûle la langue de le dire."
+				]
+			}
+		]
+	},
+	"joh6_deserter_story": {
+		"speaker": "Déserteur",
+		"pages": [
+			"Dante était notre chef. Le premier.",
+			"Giovanni était son bras droit. Son élève. Presque son fils.",
+			"Et puis il y a eu l'incendie…"
+		]
+	},
+	"joh6_flashback_dante": {
+		"speaker": "Dante",
+		"pages": [
+			"Giovanni ! La porte est bloquée ! Ouvre !"
+		]
+	},
+	"joh6_flashback_silence": {
+		"narration": true,
+		"pages": [
+			"…"
+		]
+	},
+	"joh6_flashback_giovanni": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Tu m'as tout appris, Dante.",
+			"Même ça. Surtout ça."
+		]
+	},
+	"joh6_flashback_leaves": {
+		"narration": true,
+		"pages": [
+			"(Giovanni s'éloigne avec Persian. Les flammes montent.)"
+		]
+	},
+	"joh6_deserter_after": {
+		"speaker": "Déserteur",
+		"pages": [
+			"Tout le monde l'a cru mort. Giovanni a pris la Team Rocket.",
+			"Mais Dante a survécu. Brûlé, défiguré.",
+			"Il a attendu vingt ans. Et maintenant, il veut tout brûler à son tour."
+		]
+	},
+	"joh6_deserter_password": {
+		"speaker": "Déserteur",
+		"pages": [
+			"La porte du fond a un mot de passe.",
+			"Avant, c'était « Vive Giovanni ». Maintenant, c'est « Gloire à Dante ».",
+			"Ça me brûle la langue de le dire."
+		]
+	},
+	"mahogany_hideout_b2f_porte_mdp": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_dante_flashback_seen"
+				],
+				"pages": [
+					"« Mot de passe ? »"
+				]
+			},
+			{
+				"unless": [
+					"johto_password_said"
+				],
+				"cutscene": "hideout_password",
+				"pages": [
+					"« Mot de passe ? »"
+				]
+			}
+		]
+	},
+	"joh6_password": {
+		"narration": true,
+		"pages": [
+			"{player} : Gloire à Dante.",
+			"La porte s'ouvre."
+		]
+	},
+	"joh6_brace_leaves": {
+		"speaker": "Brace",
+		"pages": [
+			"Ta victoire ne change rien.",
+			"Cenere est déjà partie chercher le deuxième.",
+			"Et le patron ira chercher le troisième lui-même.",
+			"On se reverra au sommet, le gamin !"
+		]
+	},
+	"joh6_brace_escape": {
+		"narration": true,
+		"pages": [
+			"Brace s'enfuit par un passage secret !"
+		]
+	},
+	"mahogany_hideout_b3f_arret_generateur": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_generator_off"
+				],
+				"cutscene": "hideout_generator_off",
+				"pages": [
+					"{player} coupe le générateur.",
+					"…",
+					"Le bourdonnement s'arrête. La cage s'ouvre !"
+				]
+			}
+		]
+	},
+	"joh6_raikou": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"johto_generator_off"
+				],
+				"pages": [
+					"Raikou sert de pile à la machine !"
+				]
+			},
+			{
+				"unless": [
+					"johto_raikou_done"
+				],
+				"cutscene": "hideout_raikou",
+				"pages": [
+					"Raikou rugit !"
+				]
+			}
+		]
+	},
+	"joh6_deserter_center": {
+		"speaker": "Déserteur",
+		"variants": [
+			{
+				"unless": [
+					"johto_whirl_clue"
+				],
+				"set": [
+					"johto_whirl_clue"
+				],
+				"pages": [
+					"Le lac est calme, la machine est morte. Merci.",
+					"Écoute : Cenere est partie vers la mer, à l'ouest.",
+					"Le Pokémon bleu, celui qui court sur l'eau…",
+					"Elle le cherche aux Îles Tourbillon. Les Sbires en parlaient."
+				]
+			},
+			{
+				"pages": [
+					"Elle le cherche aux Îles Tourbillon. Les Sbires en parlaient."
+				]
+			}
+		]
+	}
+}

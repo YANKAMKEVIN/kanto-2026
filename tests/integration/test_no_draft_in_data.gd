@@ -39,6 +39,9 @@ const DATA_DIR := "res://data"
 ## JOH2 (2026-11-04) : description de Rosalia validée (R-25, plus « draft ») ; textes [D] hors du
 ## dossier joh-03 (garde de la Route 42, Pokémon de la ferme, sages et habitants de Rosalia),
 ## JOH2-Q1.
+## JOH6 (2026-11-04) : description d'Acajou validée (dossier joh-07 §16, plus « draft ») ; textes [D]
+## hors du dossier : sage après l'ouverture de la tour, étagère de la boutique de souvenirs, habitants
+## des deux maisons d'Acajou.
 ## JOH4 (2026-11-04) : description d'Écorcia validée (E-34, plus « draft ») ; textes [D] hors du
 ## dossier joh-05 (barrière du puits, Canarticho, Ramoloss sans queue, habitant), JOH4-Q1.
 const PENDING_DRAFTS: Array[String] = [
@@ -58,16 +61,22 @@ const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_habitante/variants/1",
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_1_received",
 	"dialogues/joh2_ecruteak_interiors.json/ecruteak_house_2_habitant",
+	"dialogues/joh2_ecruteak_city.json/ecruteak_city_sage_tour/variants/1",
+	"dialogues/joh6_mahogany_house_1.json/mahogany_house_1_habitante",
+	"dialogues/joh6_story.json/mahogany_hideout_b2f_levier/variants/0",
+	"dialogues/joh6_story.json/joh6_lever_pulled",
+	"dialogues/joh6_mahogany_house_2.json/mahogany_house_2_habitant_1",
+	"dialogues/joh6_mahogany_house_2.json/mahogany_house_2_habitant_2",
+	"dialogues/joh6_mahogany_souvenir_shop.json/mahogany_souvenir_shop_etagere",
 	"world/zones.json/zones/saffron_city",
-	"world/zones.json/zones/mahogany_town",
 	"dialogues/joh1.json/olivine_guard/variants/1",
 	"story/objectives.json/0",
 	"story/objectives.json/1",
 	"story/objectives.json/2",
 	"story/objectives.json/3",
 	"story/objectives.json/4",
-	# JOH5 : trois objectifs [D] en tête ; JOH4 : quatre derrière eux ; JOH3 : deux (indices 7, 8) ;
-	# ceux du JOH1 passent de 0–4 à 9–13.
+	# JOH6 : cinq objectifs [D] en tête ; JOH5 : trois derrière eux ; JOH4 : quatre ; JOH3 : deux ; ceux
+	# du JOH1 ensuite.
 	"story/objectives.json/5",
 	"story/objectives.json/6",
 	"story/objectives.json/7",
@@ -77,6 +86,11 @@ const PENDING_DRAFTS: Array[String] = [
 	"story/objectives.json/11",
 	"story/objectives.json/12",
 	"story/objectives.json/13",
+	"story/objectives.json/14",
+	"story/objectives.json/15",
+	"story/objectives.json/16",
+	"story/objectives.json/17",
+	"story/objectives.json/18",
 	"dialogues/joh1.json/olivine_lighthouse_sign/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_before/variants/0",
 	"dialogues/johto_systems.json/johto_return_test_after/variants/0",

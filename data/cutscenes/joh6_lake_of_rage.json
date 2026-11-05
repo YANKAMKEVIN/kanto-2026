@@ -1,0 +1,26 @@
+{
+	"lake_of_rage_rappel_max": {
+		"variants": [
+			{
+				"unless": [
+					"got_lake_of_rage_rappel_max"
+				],
+				"steps": [
+					{
+						"despawn": "rappel_max"
+					},
+					{
+						"give": "max_revive",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_lake_of_rage_rappel_max"
+						]
+					}
+				]
+			}
+		]
+	}
+}

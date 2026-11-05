@@ -1,0 +1,65 @@
+{
+	"mahogany_hideout_b2f_sbire_r": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "weezing",
+				"level": 57
+			},
+			{
+				"species": "magneton",
+				"level": 56
+			}
+		]
+	},
+	"mahogany_hideout_b2f_sbire_s": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 57
+			},
+			{
+				"species": "murkrow",
+				"level": 56
+			}
+		]
+	},
+	"mahogany_hideout_b2f_scientifique": {
+		"name": "Scientifique Rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "electrode",
+				"level": 57
+			},
+			{
+				"species": "magneton",
+				"level": 57
+			},
+			{
+				"species": "porygon",
+				"level": 56
+			}
+		]
+	}
+}

@@ -9,6 +9,9 @@ const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 
 const PREFIX := "joh2_"
 const DOSSIER := "res://docs/design/dossier-joh-03-rosalia.md"
+## JOH6 : les retouches de Rosalia (sage C-1, doyen C-2 et C-11, panneau C-3, garde C-12) viennent du
+## dossier joh-07 (`test_joh6_data.gd` les vérifie aussi).
+const DOSSIER_07 := "res://docs/design/dossier-joh-07-acajou.md"
 const MAPS: Array[StringName] = [&"route_39", &"route_38", &"ecruteak_city", &"ecruteak_center",
 	&"ecruteak_mart", &"ecruteak_elders_house", &"ecruteak_house_1", &"ecruteak_house_2"]
 const OLIVINE_NPCS := "res://data/npcs/olivine_city.json"
@@ -105,9 +108,11 @@ func test_libraries_load_without_error() -> void:
 	assert_eq(_ids("res://data/cutscenes/").size(), 9)
 
 
-## Chaque réplique non marquée « draft » est dans le dossier joh-03 §13, mot pour mot.
+## Chaque réplique non marquée « draft » est dans le dossier joh-03 §13 (ou, pour les retouches du
+## JOH6 à Rosalia, dans le dossier joh-07 §16), mot pour mot.
 func test_every_validated_line_is_in_dossier_joh_03() -> void:
-	var dossier := J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER))
+	var dossier := J22Ids.flat_text(FileAccess.get_file_as_string(DOSSIER) + "\n"
+		+ FileAccess.get_file_as_string(DOSSIER_07))
 	dossier = dossier.replace("{joueur}", "{player}")
 	var checked := 0
 	for id: StringName in _ids("res://data/dialogues/"):
@@ -159,6 +164,8 @@ func test_every_scene_is_launched_and_every_dialogue_used() -> void:
 				assert_eq(spec.if_weekdays, [&"monday"] as Array[StringName], "Lucien le lundi")
 		assert_true(found, "Lucien, marin du lundi, posé à Oliville (JOH1)")
 	used[&"week_monday_lucien"] = true
+	# JOH6 : panneau de la Tour Cendrée (C-3) et Diane (dimanche), posés par la retouche de Rosalia.
+	used[&"ecruteak_city_panneau_tour_cendree"] = true
 	for id: StringName in _ids("res://data/cutscenes/"):
 		assert_true(launched.has(id), "scène « %s » lancée" % id)
 	for id: StringName in _ids("res://data/dialogues/"):

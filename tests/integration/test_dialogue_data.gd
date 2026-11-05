@@ -1714,11 +1714,12 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		for file: String in DirAccess.get_files_at(pair[1]):
 			if file.get_extension() != "json" or MapCatalog.is_qa_map(StringName(file)):
 				continue
-			# JOH2, JOH3, JOH4, JOH5, JOH7 : fichiers `joh<n>_*` (leurs `test_joh<n>_data.gd`), même
+			# JOH2, JOH3, JOH4, JOH5, JOH6, JOH7 : fichiers `joh<n>_*` (leurs `test_joh<n>_data.gd`), même
 			# règle que ceux du J23.
 			var library: Variant = pair[2] if file.begins_with("j23_") \
 				or file.begins_with("joh2_") or file.begins_with("joh3_") \
 				or file.begins_with("joh4_") or file.begins_with("joh5_") \
+				or file.begins_with("joh6_") \
 				or file.begins_with("joh7_") else pair[0]
 			assert_true(library.load_file((pair[1] as String).path_join(file)), file)
 	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \

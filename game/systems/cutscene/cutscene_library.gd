@@ -146,7 +146,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[],
 	["on"], [], ["offset", "duration", "fade", "skip_reduced"],
 	["level", "ghost", "ghost_unless_item", "win", "lose", "catch", "static", "actor", "intro",
-		"flee", "clear", "reveal", "uncatchable"],
+		"flee", "clear", "reveal", "uncatchable", "variant"],
 	["level", "flag", "say", "say_stored"],
 	[], # Jalon 21 : flute
 	[], [], ["wrong", "refuse", "say"],
@@ -154,6 +154,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], [], # Jalon 30 : hall_of_fame, credits
 	[], [], ["steps", "say", "flag", "say_full"], # Johto (JOH0) : confiscate_team, return_team,
 	# give_egg (JOH3 : « flag », « say_full »)
+	[], # Chapitre Johto (JOH6) : flashback
 ]
 ## Conditions permises sur toute étape sauf spawn ; « music » (jalon Son, T6) aussi.
 const _CONDITION_KEYS: Array[String] = ["if", "unless", "music"]
@@ -648,6 +649,12 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.CONFISCATE_TEAM, CutsceneStep.Kind.RETURN_TEAM: # JOH0
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])
+		CutsceneStep.Kind.FLASHBACK: # JOH6
+			if not main is String or not CutsceneStep.FLASHBACK_ACTIONS.has(main):
+				ok = _fail("%s : « flashback » vaut %s" % [where,
+					", ".join(PackedStringArray(CutsceneStep.FLASHBACK_ACTIONS))])
+			else:
+				step.text = main
 		CutsceneStep.Kind.GIVE_EGG: # JOH0
 			ok = _read_id(main, where + " give_egg", func(v: StringName) -> void:
 				step.species = v) and ok
@@ -755,6 +762,14 @@ func _parse_wild_battle_j21(entry: Dictionary, step: CutsceneStep, where: String
 	if step.reveal and step.ghost_mode == GhostRule.ALWAYS:
 		ok = _fail("%s : « reveal » est interdit avec « ghost »: « %s »" % [where,
 			GhostRule.ALWAYS])
+	# JOH6 (JH-46) : variante de couleur du sauvage (« red » : le Léviator rouge).
+	if entry.has("variant"):
+		var variant: Variant = entry["variant"]
+		if not variant is String or not PokemonVariant.is_known(StringName(variant)):
+			ok = _fail("%s : « variant » vaut une de %s" % [where,
+				PokemonVariant.HUE_SHIFTS.keys()])
+		else:
+			step.variant = StringName(variant)
 	return ok
 
 

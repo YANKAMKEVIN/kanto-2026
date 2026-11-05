@@ -1,8 +1,14 @@
 [
+	{ "id": "joh6_talk_deserter", "text": "parler au déserteur, au Centre d'Acajou.", "if": ["johto_raikou_done"], "unless": ["johto_whirl_clue"], "draft": true },
+	{ "id": "joh6_free_raikou", "text": "libérer Raikou, au fond du repaire d'Acajou.", "if": ["johto_hideout_found"], "unless": ["johto_raikou_done"], "draft": true },
+	{ "id": "joh6_search_shop", "text": "fouiller la boutique de souvenirs d'Acajou.", "if": ["johto_red_gyarados_done"], "unless": ["johto_hideout_found"], "draft": true },
+	{ "id": "joh6_lake_of_rage", "text": "rejoindre le Lac Colère, au nord d'Acajou.", "if": ["johto_dante_plan_known"], "unless": ["johto_red_gyarados_done"], "draft": true },
+	{ "id": "joh6_burned_tower", "text": "explorer la Tour Cendrée, à Rosalia.", "if": ["johto_burned_tower_open"], "unless": ["johto_raikou_taken"], "draft": true },
 	{
 		"id": "go_ecruteak_sages",
 		"text": "retourner voir les sages de Rosalia.",
 		"if": ["johto_act2"],
+		"unless": ["johto_burned_tower_open"],
 		"draft": true
 	},
 	{
@@ -65,6 +71,7 @@
 		"id": "go_route_39",
 		"text": "prendre la Route 39, à l'est d'Oliville.",
 		"if": ["johto_starter_chosen"],
+		"unless": ["johto_act2"],
 		"draft": true
 	},
 	{

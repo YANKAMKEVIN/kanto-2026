@@ -1,0 +1,58 @@
+{
+	"mahogany_hideout_b1f_sbire_alarme_1": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "raticate",
+				"level": 55
+			},
+			{
+				"species": "arbok",
+				"level": 55
+			}
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_2": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "muk",
+				"level": 56
+			}
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_3": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 45,
+		"team": [
+			{
+				"species": "houndour",
+				"level": 55
+			},
+			{
+				"species": "golbat",
+				"level": 56
+			}
+		]
+	}
+}

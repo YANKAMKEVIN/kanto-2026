@@ -1,0 +1,93 @@
+{
+	"route_42_panneau": {
+		"narration": true,
+		"pages": [
+			"ROUTE 42\nRosalia — Acajou"
+		]
+	},
+	"route_42_porte_mont_creuset": {
+		"narration": true,
+		"pages": [
+			"Un éboulement bloque l'entrée.",
+			"Le passage est fermé."
+		]
+	},
+	"route_42_hector_before": {
+		"speaker": "Montagnard Hector",
+		"pages": [
+			"Les montagnes forgent\nles Pokémon !"
+		]
+	},
+	"route_42_hector_defeated": {
+		"speaker": "Montagnard Hector",
+		"pages": [
+			"Ils étaient mal forgés."
+		]
+	},
+	"route_42_hector_after": {
+		"speaker": "Montagnard Hector",
+		"pages": [
+			"Le Mont Creuset est fermé depuis\nl'éboulement."
+		]
+	},
+	"route_42_marcel_before": {
+		"speaker": "Pêcheur Marcel",
+		"pages": [
+			"Le lac est à moi aujourd'hui !"
+		]
+	},
+	"route_42_marcel_defeated": {
+		"speaker": "Pêcheur Marcel",
+		"pages": [
+			"Bon, partageons."
+		]
+	},
+	"route_42_marcel_after": {
+		"speaker": "Pêcheur Marcel",
+		"pages": [
+			"À Acajou, les poissons\ndeviennent bizarres."
+		]
+	},
+	"route_42_coralie_before": {
+		"speaker": "Nageuse Coralie",
+		"pages": [
+			"Tu nages bien ? Voyons ça !"
+		]
+	},
+	"route_42_coralie_defeated": {
+		"speaker": "Nageuse Coralie",
+		"pages": [
+			"Tu nages mieux que moi."
+		]
+	},
+	"route_42_coralie_after": {
+		"speaker": "Nageuse Coralie",
+		"pages": [
+			"Acajou est juste après le lac."
+		]
+	},
+	"route_42_louis_before": {
+		"speaker": "Super Nerd Louis",
+		"pages": [
+			"Mes Pokémon captent des ondes\nétranges depuis une semaine !"
+		]
+	},
+	"route_42_louis_defeated": {
+		"speaker": "Super Nerd Louis",
+		"pages": [
+			"Les ondes m'ont déconcentré."
+		]
+	},
+	"route_42_louis_after": {
+		"speaker": "Super Nerd Louis",
+		"pages": [
+			"Elles viennent de l'est.\nD'Acajou, peut-être."
+		]
+	},
+	"route_42_super_bonbon": {
+		"cutscene": "route_42_super_bonbon"
+	},
+	"route_42_ultra_balls": {
+		"cutscene": "route_42_ultra_balls"
+	}
+}

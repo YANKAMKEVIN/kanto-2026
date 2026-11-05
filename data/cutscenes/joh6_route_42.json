@@ -1,0 +1,50 @@
+{
+	"route_42_super_bonbon": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_42_super_bonbon"
+				],
+				"steps": [
+					{
+						"despawn": "super_bonbon"
+					},
+					{
+						"give": "rare_candy",
+						"count": 1,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_42_super_bonbon"
+						]
+					}
+				]
+			}
+		]
+	},
+	"route_42_ultra_balls": {
+		"variants": [
+			{
+				"unless": [
+					"got_route_42_ultra_balls"
+				],
+				"steps": [
+					{
+						"despawn": "ultra_balls"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 2,
+						"found": true
+					},
+					{
+						"set": [
+							"got_route_42_ultra_balls"
+						]
+					}
+				]
+			}
+		]
+	}
+}

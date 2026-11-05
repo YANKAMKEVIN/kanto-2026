@@ -1,0 +1,90 @@
+{
+	"hector": {
+		"cell": [
+			20,
+			7
+		],
+		"facing": "left",
+		"sprite": "mountaineer",
+		"dialogue": "route_42_hector_after",
+		"trainer": {
+			"id": "route_42_hector",
+			"sight": 2,
+			"before": "route_42_hector_before",
+			"defeated": "route_42_hector_defeated"
+		}
+	},
+	"marcel": {
+		"cell": [
+			29,
+			13
+		],
+		"facing": "right",
+		"sprite": "fisher_route_12",
+		"dialogue": "route_42_marcel_after",
+		"trainer": {
+			"id": "route_42_marcel",
+			"sight": 1,
+			"before": "route_42_marcel_before",
+			"defeated": "route_42_marcel_defeated"
+		}
+	},
+	"coralie": {
+		"cell": [
+			40,
+			5
+		],
+		"facing": "down",
+		"sprite": "swimmer_f_water",
+		"dialogue": "route_42_coralie_after",
+		"trainer": {
+			"id": "route_42_coralie",
+			"sight": 3,
+			"before": "route_42_coralie_before",
+			"defeated": "route_42_coralie_defeated"
+		}
+	},
+	"louis": {
+		"cell": [
+			53,
+			9
+		],
+		"facing": "down",
+		"sprite": "nerd",
+		"dialogue": "route_42_louis_after",
+		"trainer": {
+			"id": "route_42_louis",
+			"sight": 1,
+			"before": "route_42_louis_before",
+			"defeated": "route_42_louis_defeated"
+		}
+	},
+	"super_bonbon": {
+		"cell": [
+			36,
+			6
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_42_super_bonbon",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_42_super_bonbon"
+		]
+	},
+	"ultra_balls": {
+		"cell": [
+			66,
+			16
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_42_ultra_balls",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_route_42_ultra_balls"
+		]
+	}
+}

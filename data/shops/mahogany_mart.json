@@ -1,0 +1,27 @@
+{
+	"mahogany_mart": {
+		"stock": [
+			{
+				"item": "ultra_ball"
+			},
+			{
+				"item": "hyper_potion"
+			},
+			{
+				"item": "max_potion"
+			},
+			{
+				"item": "full_heal"
+			},
+			{
+				"item": "revive"
+			},
+			{
+				"item": "max_repel"
+			},
+			{
+				"item": "escape_rope"
+			}
+		]
+	}
+}
