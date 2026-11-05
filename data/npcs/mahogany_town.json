@@ -5,7 +5,7 @@
 			14
 		],
 		"facing": "down",
-		"sprite": "mountaineer",
+		"sprite": "samuel",
 		"dialogue": "week_saturday_samuel",
 		"if_weekday": [
 			"saturday"

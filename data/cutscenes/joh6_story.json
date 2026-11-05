@@ -55,7 +55,7 @@
 					},
 					{
 						"spawn": "brace",
-						"sprite": "rocket_grunt_m",
+						"sprite": "brace",
 						"cell": [
 							18,
 							8
@@ -130,7 +130,7 @@
 				"steps": [
 					{
 						"spawn": "doyen_parvis",
-						"sprite": "mr_fuji",
+						"sprite": "doyen",
 						"cell": [
 							12,
 							15

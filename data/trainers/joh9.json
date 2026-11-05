@@ -153,7 +153,6 @@
 	},
 	"mt_silver_dante_2": {
 		"name": "Dante",
-		"class": "gentleman",
 		"ai": "smart",
 		"can_lose": false,
 		"heal_after": false,
@@ -189,7 +188,12 @@
 		"start_message": false,
 		"end_message": false,
 		"bag": true,
-		"switch": true
+		"switch": true,
+		"card": {
+			"name": "DANTE",
+			"title": "Fondateur de la Team Rocket",
+			"portrait": "dante"
+		}
 	},
 	"mt_silver_rival_final": {
 		"name": "{rival}",
@@ -207,7 +211,7 @@
 			"name": "{rival}",
 			"title": "Rival",
 			"title_rivale": "Rivale",
-			"portrait": "rival"
+			"portrait": "rival_hiver"
 		},
 		"team_by_starter": {
 			"bulbasaur": [

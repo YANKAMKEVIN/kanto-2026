@@ -206,7 +206,7 @@ CUTSCENES = {
 		# reste pour la cage.
 		{"despawn": "suicune"},
 		{"despawn": "entei"},
-		{"spawn": "brace", "sprite": "rocket_grunt_m", "cell": [18, 8], "facing": "left"},
+		{"spawn": "brace", "sprite": "brace", "cell": [18, 8], "facing": "left"},
 		{"move": "brace", "to": [13, 8]},
 		{"face": "player", "to": "brace"},
 		{"dialogue": "joh6_brace_arrives"},
@@ -224,7 +224,7 @@ CUTSCENES = {
 	# C-10, C-11 : le doyen attend à la sortie de la tour (Rosalia, plan §2.5).
 	"ecruteak_dante_plan": {"variants": [{"if": ["johto_raikou_taken"],
 		"unless": ["johto_dante_plan_known"], "steps": [
-			{"spawn": "doyen_parvis", "sprite": "mr_fuji", "cell": [12, 15], "facing": "left"},
+			{"spawn": "doyen_parvis", "sprite": "doyen", "cell": [12, 15], "facing": "left"},
 			{"move": "doyen_parvis",
 				"to": {"near": "player", "offsets": [[1, 0], [0, 1], [-1, 0], [1, 1]]}},
 			{"face": "player", "to": "doyen_parvis"},
@@ -326,9 +326,9 @@ CUTSCENES = {
 
 # Décor du souvenir (plan §2.7) : Dante jeune derrière la porte en feu, Giovanni jeune et Persian.
 FLASHBACK_NPCS = {
-	"dante_jeune": {"cell": [7, 3], "facing": "down", "sprite": "gentleman",
+	"dante_jeune": {"cell": [7, 3], "facing": "down", "sprite": "dante_jeune",
 		"turn_to_player": False},
-	"giovanni_jeune": {"cell": [7, 5], "facing": "up", "sprite": "giovanni",
+	"giovanni_jeune": {"cell": [7, 5], "facing": "up", "sprite": "giovanni_jeune",
 		"turn_to_player": False},
 	"persian": {"cell": [8, 5], "facing": "up", "sprite": "pokemon/persian",
 		"turn_to_player": False},

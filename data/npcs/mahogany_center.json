@@ -13,7 +13,7 @@
 			5
 		],
 		"facing": "left",
-		"sprite": "rocket_grunt_m",
+		"sprite": "deserteur",
 		"dialogue": "joh6_deserter_center",
 		"if": [
 			"johto_raikou_done"

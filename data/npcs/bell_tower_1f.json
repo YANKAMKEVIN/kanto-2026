@@ -5,7 +5,7 @@
 			7
 		],
 		"facing": "down",
-		"sprite": "channeler",
+		"sprite": "sage",
 		"dialogue": "bell_tower_1f_sage_1"
 	},
 	"sage_2": {
@@ -14,7 +14,7 @@
 			13
 		],
 		"facing": "down",
-		"sprite": "channeler",
+		"sprite": "sage",
 		"dialogue": "bell_tower_1f_sage_2"
 	},
 	"sbire_v": {

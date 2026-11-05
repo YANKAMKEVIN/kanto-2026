@@ -76,7 +76,7 @@ TRAINER_LINES = {
 CENERE_ID = "whirl_islands_cenere"
 CENERE_TEAM = [("weezing", 62), ("wobbuffet", 62), ("noctowl", 63), ("dewgong", 63),
 	("sneasel", 64)]
-CENERE_SPRITE = "rocket_grunt_f"  # [D] : sprite de Cenere (JOH5) repris à sa fusion
+CENERE_SPRITE = "cenere"
 
 # Textes des panneaux et examens (carte, position) → (orateur, pages).
 TEXTS = {
@@ -429,7 +429,7 @@ def main():
 			write_json(os.path.join(DATA, "encounters", map_id + ".json"), tables)
 
 	# Cenere.
-	trainers[CENERE_ID] = {"name": "Cenere", "class": "sbire_rocket_f", "ai": "smart",
+	trainers[CENERE_ID] = {"name": "Cenere", "ai": "smart", "card": {"name": "CENERE", "title": "Admin de la Team Rocket", "portrait": "cenere"},
 		"can_lose": False, "heal_after": False, "gives_exp": True, "prize_money": 0,
 		"prize_per_level": 60, "start_message": False, "end_message": False, "switch": True,
 		"team": [{"species": s, "level": lv} for s, lv in CENERE_TEAM]}
@@ -538,7 +538,7 @@ def write_olivine():
 		"olivine_city": ("marin_plage", {"cell": sailor_cell, "facing": "down", "sprite": "sailor",
 			"dialogue": "olivine_beach_sailor"}),
 		"olivine_center": ("orme_joh7", {"cell": ORME_CENTER_CELL, "facing": "down",
-			"sprite": "researcher", "dialogue": "olivine_orme_bell_tower", "if": ["johto_lugia_done"]}),
+			"sprite": "orme", "dialogue": "olivine_orme_bell_tower", "if": ["johto_lugia_done"]}),
 	}
 	for map_id, (ident, entry) in updates.items():
 		path = os.path.join(DATA, "npcs", map_id + ".json")

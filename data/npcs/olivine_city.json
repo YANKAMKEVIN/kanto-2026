@@ -37,7 +37,7 @@
 			33
 		],
 		"facing": "down",
-		"sprite": "sailor",
+		"sprite": "lucien",
 		"dialogue": "week_monday_lucien",
 		"if_weekday": [
 			"monday"

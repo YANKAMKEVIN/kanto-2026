@@ -39,8 +39,8 @@ TRAINER_SPRITES = {
 	"route_38_picnicker_theo": "camper",
 }
 ROLE_SPRITES = {
-	"fermiere": "beauty", "promeneur": "traveler", "garde": "guard", "sage": "channeler",
-	"sbire": "rocket_grunt_m", "conteuse": "aoki", "sonneuse": "aoki",
+	"fermiere": "beauty", "promeneur": "traveler", "garde": "guard", "sage": "sage",
+	"sbire": "rocket_grunt_m", "conteuse": "margot", "sonneuse": "diane",
 }
 WEEKDAYS = {"lundi": "monday", "mardi": "tuesday", "mercredi": "wednesday", "jeudi": "thursday",
 	"vendredi": "friday", "samedi": "saturday", "dimanche": "sunday"}
@@ -442,11 +442,11 @@ def write_interiors():
 			{"set": ["got_ecruteak_house_1_antidote"]},
 		]}]}}
 	write_json(os.path.join(DATA, "npcs", "ecruteak_elders_house.json"), {
-		"doyen": {"cell": [7, 5], "facing": "down", "sprite": "mr_fuji",
+		"doyen": {"cell": [7, 5], "facing": "down", "sprite": "doyen",
 			"dialogue": "ecruteak_elders_house_doyen"},
-		"sage_1": {"cell": [1, 5], "facing": "right", "sprite": "channeler",
+		"sage_1": {"cell": [1, 5], "facing": "right", "sprite": "sage",
 			"dialogue": "ecruteak_elders_house_sage"},
-		"sage_2": {"cell": [12, 6], "facing": "left", "sprite": "channeler",
+		"sage_2": {"cell": [12, 6], "facing": "left", "sprite": "sage",
 			"dialogue": "ecruteak_elders_house_sage"},
 	})
 	# Centre et Boutique : l'infirmière et le vendeur derrière leur comptoir, comme à Kanto

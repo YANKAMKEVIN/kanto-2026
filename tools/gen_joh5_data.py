@@ -56,7 +56,7 @@ TRAINERS = {
 		[("magneton", 29), ("weezing", 29)]),
 	"goldenrod_radio_tower_grunt_o": ("Sbire Rocket", "sbire_rocket", 40, "rocket_grunt_m",
 		[("houndour", 30), ("golbat", 30)]),
-	"goldenrod_radio_tower_admin_cenere": ("Cenere", "sbire_rocket_f", 60, "rocket_grunt_f",
+	"goldenrod_radio_tower_admin_cenere": ("Cenere", None, 60, "cenere",
 		[("weezing", 33), ("wobbuffet", 33), ("sneasel", 35)]),
 }
 # Dresseurs combattus par une scène (pas de bloc « trainer » sur le PNJ).
@@ -88,8 +88,8 @@ TRAINER_LINES = {
 
 # Sprites provisoires [D] des PNJ par rôle.
 ROLE_SPRITES = {
-	"agente": "guard", "orme": "researcher", "employee": "hostess", "employe": "engineer",
-	"raphael": "engineer", "directeur": "gentleman", "sbire": "rocket_grunt_m",
+	"agente": "agente", "orme": "orme", "employee": "hostess", "employe": "engineer",
+	"raphael": "raphael", "directeur": "directeur", "sbire": "rocket_grunt_m",
 }
 
 # Dialogues : id → (locuteur, pages[, brouillon]). « / » du dossier = page.
@@ -500,8 +500,10 @@ def main():
 			"heal_after": False, "gives_exp": True, "prize_money": 0, "prize_per_level": prize,
 			"team": [{"species": s, "level": lv} for s, lv in team]}
 		if trainer_id == "goldenrod_radio_tower_admin_cenere":
-			# Comme Brace (JOH4) : IA « smart », ni séquence « VS » ni changement de Pokémon [D].
+			# Comme Brace (JOH4) : IA « smart », séquence « VS » depuis le buste peint (2026-11-05).
 			entry["ai"] = "smart"
+			entry.pop("class")
+			entry["card"] = {"name": "CENERE", "title": "Admin de la Team Rocket", "portrait": "cenere"}
 		trainers[trainer_id] = entry
 		if trainer_id in TRAINER_LINES:
 			before, defeated, after = TRAINER_LINES[trainer_id]

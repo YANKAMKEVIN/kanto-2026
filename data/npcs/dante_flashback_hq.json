@@ -5,7 +5,7 @@
 			3
 		],
 		"facing": "down",
-		"sprite": "gentleman",
+		"sprite": "dante_jeune",
 		"turn_to_player": false
 	},
 	"giovanni_jeune": {
@@ -14,7 +14,7 @@
 			5
 		],
 		"facing": "up",
-		"sprite": "giovanni",
+		"sprite": "giovanni_jeune",
 		"turn_to_player": false
 	},
 	"persian": {

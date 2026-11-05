@@ -5,7 +5,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "mr_fuji",
+		"sprite": "doyen",
 		"dialogue": "ecruteak_elders_house_doyen"
 	},
 	"sage_1": {
@@ -14,7 +14,7 @@
 			5
 		],
 		"facing": "right",
-		"sprite": "channeler",
+		"sprite": "sage",
 		"dialogue": "ecruteak_elders_house_sage"
 	},
 	"sage_2": {
@@ -23,7 +23,7 @@
 			6
 		],
 		"facing": "left",
-		"sprite": "channeler",
+		"sprite": "sage",
 		"dialogue": "ecruteak_elders_house_sage"
 	}
 }

@@ -66,9 +66,9 @@ TRAINERS = {
 }
 # Dante (1) : 5 Pokémon, sans Tyranocif (JH-54) ; IA « smart », changements permis, attaques
 # choisies [D] (feu et ténèbres ; Cizayox contre les Psy et les Plante, Farfuret contre les Dragon
-# et les Vol, dossier §6). Pas de bloc « card » : aucun portrait de Dante (phase DA, Reportés).
+# et les Vol, dossier §6). Bloc « card » : buste et sprites peints (2026-11-05).
 DANTE = {
-	"name": "Dante", "class": "gentleman", "ai": "smart", "can_lose": False, "heal_after": False,
+	"name": "Dante", "ai": "smart", "card": {"name": "DANTE", "title": "Fondateur de la Team Rocket", "portrait": "dante"}, "can_lose": False, "heal_after": False,
 	"gives_exp": True, "prize_money": 0, "prize_per_level": 120, "start_message": False,
 	"end_message": True, "bag": True, "switch": True,
 	"team": [
@@ -430,12 +430,12 @@ def main():
 			elif kind == "dresseur" and ident == "dante":
 				# Dante : jamais de vue ; la scène du palier le fait parler. Lui parler reprend la
 				# scène si l'application a été coupée (dossier §12).
-				npcs[ident] = {"cell": cell, "facing": "down", "sprite": "gentleman",
+				npcs[ident] = {"cell": cell, "facing": "down", "sprite": "dante",
 					"dialogue": "bell_tower_roof_dante", "turn_to_player": False, "unless": [FLED]}
 				dialogues["bell_tower_roof_dante"] = {"speaker": "Dante",
 					"cutscene": "bell_tower_dante_resume_bell", "pages": ["…"]}
 			elif kind == "pnj":
-				entry = {"cell": cell, "facing": attrs.get("facing", "down"), "sprite": "channeler"}
+				entry = {"cell": cell, "facing": attrs.get("facing", "down"), "sprite": "sage"}
 				if ident == "hiroshi":
 					entry["dialogue"] = "bell_tower_2f_hiroshi"
 					# H-10 : soin à chaque passage [D] ; les deux bulles d'Hiroshi puis la ligne
@@ -507,7 +507,7 @@ def main():
 # --- Rosalia (fichiers du JOH2) -----------------------------------------------------------------
 # PNJ posés par le JOH8 dans Rosalia [D] : (fichier de PNJ, identifiant) → entrée.
 ROSALIA_NPCS = {
-	("ecruteak_city", "sage_blesse"): {"cell": [44, 13], "facing": "left", "sprite": "channeler",
+	("ecruteak_city", "sage_blesse"): {"cell": [44, 13], "facing": "left", "sprite": "sage",
 		"dialogue": "joh8_sage_blesse", "if": [CLUE], "unless": [OPEN]},
 	# H-37 : habitante sur la pelouse à l'est de l'avenue (case libre hors grille) [D].
 	("ecruteak_city", "habitante_aube"): {"cell": [30, 18], "facing": "down", "sprite": "aoki",
@@ -518,7 +518,7 @@ ROSALIA_NPCS = {
 	("burned_tower_b1f", "entei_retour"): {"cell": [10, 8], "facing": "down", "sprite": "pokemon/entei",
 		"dialogue": "joh8_entei_return", "verb": "observe", "turn_to_player": False,
 		"if": [CHAPTER_DONE, ENTEI_DONE], "unless": [ENTEI_CAUGHT, ENTEI_BACK_DONE]},
-	("ecruteak_center", "orme"): {"cell": [9, 6], "facing": "left", "sprite": "researcher",
+	("ecruteak_center", "orme"): {"cell": [9, 6], "facing": "left", "sprite": "orme",
 		"dialogue": "joh8_orme", "if": [HO_OH_DONE]},
 }
 

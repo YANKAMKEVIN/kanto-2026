@@ -84,7 +84,7 @@ TRAINERS = {
 BRACE_ID = "slowpoke_well_admin_brace"
 PAPERS_DIALOGUE = "slowpoke_well_b2f_papiers"
 BRACE = {
-	"name": "Brace", "class": "sbire_rocket", "ai": "smart",
+	"name": "Brace", "ai": "smart", "card": {"name": "BRACE", "title": "Admin de la Team Rocket", "portrait": "brace"},
 	"can_lose": False, "heal_after": False, "gives_exp": True, "prize_money": 2000,
 	"start_message": False, "end_message": True, "bag": True,
 	# Niveaux [D] réglés par simulation (dossier §6 : 24, 24, 26 donnait 0,5 à 14,5 % de victoire
@@ -183,9 +183,9 @@ WEEK = {
 # --- Sprites [D] -----------------------------------------------------------------------------
 ROLE_SPRITES = {
 	"pecheur": "fisher_route_12", "vieille_femme": "aoki", "charbonnier": "hiker",
-	"habitante": "beauty", "sbire": "rocket_grunt_m", "fargas": "old_man",
+	"habitante": "beauty", "sbire": "rocket_grunt_m", "fargas": "fargas",
 }
-VINCENT_SPRITE = "docker"
+VINCENT_SPRITE = "vincent"
 SLOWPOKE_SPRITE = "pokemon/slowpoke"
 
 # --- Rencontres (dossier §5, plan §2.4) : (identifiant, terrain, moments, taux, créneaux) -------
@@ -342,7 +342,7 @@ def kurt_story_scene():
 		{"set": ["johto_kurt_told"]},
 		{"change_map": "azalea_town", "at": "kurt_scene", "facing": "up"},
 		{"spawn": "sbire_scene", "sprite": "rocket_grunt_m", "cell": [38, 8], "facing": "left"},
-		{"spawn": "fargas_scene", "sprite": "old_man", "cell": [36, 11], "facing": "up"},
+		{"spawn": "fargas_scene", "sprite": "fargas", "cell": [36, 11], "facing": "up"},
 		{"move": "fargas_scene", "to": [36, 8]},
 		{"face": "fargas_scene", "to": "sbire_scene"},
 		{"emote": "sbire_scene", "kind": "exclamation"},
@@ -393,7 +393,7 @@ def brace_scene():
 		{"wake_up": True, "unless": won},
 		{"spawn": "papiers", "sprite": "object/poke_ball_ground", "cell": [25, 5], "facing": "down",
 			"dialogue": PAPERS_DIALOGUE, "verb": "take", "turn_to_player": False},
-		{"spawn": "fargas_b2f", "sprite": "old_man", "cell": [5, 5], "facing": "down",
+		{"spawn": "fargas_b2f", "sprite": "fargas", "cell": [5, 5], "facing": "down",
 			"dialogue": "slowpoke_well_b2f_fargas_b2f"},
 	]}]}
 
@@ -460,7 +460,7 @@ def main():
 			if kind == "dresseur":
 				trainer_id = attrs["trainer"]
 				if trainer_id == BRACE_ID:
-					npcs[ident] = {"cell": cell, "facing": attrs["facing"], "sprite": "rocket_grunt_m"}
+					npcs[ident] = {"cell": cell, "facing": attrs["facing"], "sprite": "brace"}
 					npcs[ident].update(flag_lists(attrs))
 					trainers[trainer_id] = BRACE
 					continue
@@ -621,9 +621,9 @@ def write_interiors():
 		dialogues[did] = dialogue(*spec)
 	cutscenes = {"azalea_kurt_story": kurt_story_scene()}
 	write_json(os.path.join(DATA, "npcs", "azalea_kurt_house.json"), {
-		"fargas": {"cell": [7, 5], "facing": "down", "sprite": "old_man",
+		"fargas": {"cell": [7, 5], "facing": "down", "sprite": "fargas",
 			"dialogue": "azalea_kurt_house_fargas", "unless": ["johto_kurt_told"]},
-		"fargas_home": {"cell": [7, 5], "facing": "down", "sprite": "old_man",
+		"fargas_home": {"cell": [7, 5], "facing": "down", "sprite": "fargas",
 			"dialogue": "azalea_kurt_house_fargas_home", "if": ["johto_slowpoke_well_cleared"]},
 	})
 	write_json(os.path.join(DATA, "npcs", "azalea_center.json"), {

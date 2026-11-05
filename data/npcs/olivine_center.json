@@ -17,7 +17,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "researcher",
+		"sprite": "orme",
 		"dialogue": "olivine_orme_bell_tower",
 		"if": [
 			"johto_lugia_done"

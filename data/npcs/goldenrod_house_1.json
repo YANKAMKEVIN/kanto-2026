@@ -14,7 +14,7 @@
 			5
 		],
 		"facing": "left",
-		"sprite": "engineer",
+		"sprite": "raphael",
 		"dialogue": "goldenrod_radio_raphael_home",
 		"if": [
 			"johto_act2"

@@ -50,7 +50,7 @@
 			18
 		],
 		"facing": "up",
-		"sprite": "rocket_grunt_m",
+		"sprite": "deserteur",
 		"dialogue": "joh6_deserter",
 		"unless": [
 			"johto_raikou_done"

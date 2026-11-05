@@ -442,7 +442,7 @@ func test_week_npcs_with_an_injected_clock() -> void:
 	assert_eq(clock.weekday_name(), &"saturday")
 	var samuel := _spec(&"mahogany_town", &"samuel")
 	assert_eq([samuel.cell, samuel.dialogue, samuel.sprite], [Vector2i(4, 14), &"week_saturday_samuel",
-		&"mountaineer"])
+		&"samuel"])
 	assert_eq(samuel.if_weekdays, [&"saturday"] as Array[StringName])
 	assert_true(samuel.is_present(_flags(), clock.period_name(), clock.weekday_name()), "samedi")
 	var diane := _spec(&"ecruteak_city", &"diane")
@@ -551,7 +551,7 @@ func test_story_actors_follow_the_contract() -> void:
 		[&"pokemon/gyarados_red", &"joh6_red_gyarados", false])
 	assert_eq(gyarados.unless_flags, [&"johto_red_gyarados_done"] as Array[StringName])
 	var deserter := _spec(&"mahogany_hideout_b2f", &"deserteur")
-	assert_eq([deserter.sprite, deserter.dialogue, deserter.cell], [&"rocket_grunt_m", &"joh6_deserter",
+	assert_eq([deserter.sprite, deserter.dialogue, deserter.cell], [&"deserteur", &"joh6_deserter",
 		Vector2i(7, 18)])
 	assert_eq(deserter.unless_flags, [&"johto_raikou_done"] as Array[StringName])
 	var raikou := _spec(&"mahogany_hideout_b3f", &"raikou")

@@ -39,7 +39,7 @@ TRAINER_SPRITES = {
 	"goldenrod_underground_grunt_d": "rocket_grunt_f",
 	"goldenrod_underground_boss": "rocket_grunt_m",
 }
-ROLE_SPRITES = {"agent": "guard", "livreur": "courier", "jardiniere": "beauty"}
+ROLE_SPRITES = {"agent": "guard", "livreur": "jerome", "jardiniere": "mercedes"}
 WEEKDAYS = {"lundi": "monday", "mardi": "tuesday", "mercredi": "wednesday", "jeudi": "thursday",
 	"vendredi": "friday", "samedi": "saturday", "dimanche": "sunday"}
 PERIODS = {"nuit": ["night"], "jour": ["morning", "day"]}
@@ -511,7 +511,7 @@ def write_interiors():
 	npcs = {
 		"goldenrod_center": {
 			"nurse": {"cell": [7, 3], "facing": "down", "sprite": "nurse"},
-			"orme": {"cell": [10, 5], "facing": "left", "sprite": "researcher",
+			"orme": {"cell": [10, 5], "facing": "left", "sprite": "orme",
 				"dialogue": "goldenrod_orme"},
 		},
 		"goldenrod_dept_store_1f": {
@@ -532,14 +532,14 @@ def write_interiors():
 				"turn_to_player": False, "unless": ["goldenrod_upgrade_taken"]},
 		},
 		"goldenrod_bond_house": {
-			"clemence": {"cell": [7, 5], "facing": "down", "sprite": "aoki",
+			"clemence": {"cell": [7, 5], "facing": "down", "sprite": "clemence",
 				"dialogue": "goldenrod_bond_house_clemence"},
 		},
 		"goldenrod_house_1": {
 			"woman": {"cell": [4, 5], "facing": "right", "sprite": "mom",
 				"dialogue": "goldenrod_house_1_woman"},
 			# JOH5 (T-36) : Raphaël, de retour après la Tour Radio.
-			"raphael": {"cell": [6, 5], "facing": "left", "sprite": "engineer",
+			"raphael": {"cell": [6, 5], "facing": "left", "sprite": "raphael",
 				"dialogue": "goldenrod_radio_raphael_home", "if": ["johto_act2"]},
 		},
 		"goldenrod_house_2": {

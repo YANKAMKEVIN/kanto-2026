@@ -15,7 +15,7 @@
 		"hop_style": "playful", "if": ["johto_team_stolen"], "unless": ["taken_totodile"]
 	},
 	"orme": {
-		"cell": [11, 5], "facing": "left", "sprite": "researcher", "dialogue": "olivine_orme",
+		"cell": [11, 5], "facing": "left", "sprite": "orme", "dialogue": "olivine_orme",
 		"if": ["johto_team_stolen"], "unless": ["johto_orme_left"]
 	},
 	"infirmiere": {

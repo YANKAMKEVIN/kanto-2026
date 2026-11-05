@@ -72,6 +72,12 @@
 			"giovanni": [-0.005, 0.023, 1.2],
 			"rival": [-0.005, 0.023, 1.2],
 			"rivale": [-0.005, 0.023, 1.2],
+			"dante": [-0.005, 0.023, 1.2],
+			"brace": [-0.005, 0.023, 1.2],
+			"cenere": [-0.005, 0.023, 1.2],
+			"ysolde": [-0.005, 0.023, 1.2],
+			"rival_hiver": [-0.005, 0.023, 1.2],
+			"rivale_hiver": [-0.005, 0.023, 1.2],
 			"olga": [-0.005, 0.023, 1.2],
 			"aldo": [-0.005, 0.023, 1.2],
 			"agatha": [-0.005, 0.023, 1.2],
@@ -128,6 +134,12 @@
 		"aldo": { "world_sprite": "aldo", "scale": 1.32, "hand": [-0.081, -0.607] },
 		"agatha": { "world_sprite": "agatha", "scale": 0.95, "hand": [-0.15, -0.561] },
 		"peter": { "world_sprite": "peter", "scale": 1.24, "hand": [-0.03, -0.585] },
-		"rival": { "world_sprite": "rival", "scale": 1.05, "hand": [-0.091, -0.591] }
+		"rival": { "world_sprite": "rival", "scale": 1.05, "hand": [-0.091, -0.591] },
+		"dante": { "world_sprite": "dante", "scale": 1.28, "hand": [-0.369, -0.626] },
+		"brace": { "world_sprite": "brace", "scale": 1.24, "hand": [-0.37, -0.611] },
+		"cenere": { "world_sprite": "cenere", "scale": 1.16, "hand": [-0.339, -0.63] },
+		"ysolde": { "world_sprite": "ysolde", "scale": 1.22, "hand": [-0.396, -0.635] },
+		"rival_hiver": { "world_sprite": "rival_hiver", "scale": 1.05, "hand": [-0.376, -0.575] },
+		"rivale_hiver": { "world_sprite": "rivale_hiver", "scale": 1.05, "hand": [-0.039, -0.555] }
 	}
 }

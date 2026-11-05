@@ -5,7 +5,7 @@
 			9
 		],
 		"facing": "down",
-		"sprite": "rocket_grunt_m",
+		"sprite": "brace",
 		"unless": [
 			"johto_rival_relay"
 		]
@@ -16,7 +16,7 @@
 			9
 		],
 		"facing": "down",
-		"sprite": "rocket_grunt_f",
+		"sprite": "cenere",
 		"unless": [
 			"johto_rival_relay"
 		]
