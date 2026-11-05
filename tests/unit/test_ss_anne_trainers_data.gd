@@ -61,17 +61,19 @@ func test_names_unique_across_all_trainers() -> void:
 	for id: StringName in _trainers.get_ids():
 		var name := _trainers.get_trainer(id).name
 		# Giovanni : le même personnage au repaire (J20) et à la Sylphe SARL (J26). Cenere : la même
-		# à la Tour Radio (JOH5) et aux Îles Tourbillon (JOH7).
+		# à la Tour Radio (JOH5) et aux Îles Tourbillon (JOH7). Brace : au Puits Ramoloss (JOH4) et au
+		# repaire d'Acajou (JOH6).
 		if name.begins_with("{") or name == "Sbire Rocket" or name == "Giovanni" \
-				or name == "Cenere":
+				or name == "Cenere" or name == "Brace":
 			continue
 		# JOH2 : le dossier joh-03 (§6, R-4) nomme « Gamin Hugo » un Dresseur de la Route 39 ;
 		# celui de la Route 3 (Kanto) garde le sien (identifiants distincts).
 		if id == &"route_39_youngster_hugo":
 			continue
-		# JOH3 : le dossier joh-04 (§5) nomme « Gentleman Armand » un Dresseur de la Route 35 ;
-		# celui du S.S. Anne garde le sien (identifiants distincts).
-		if id == &"route_35_gentleman_armand":
+		# JOH6 : le dossier joh-07 (§6, C-15) nomme « Pêcheur Marcel » un Dresseur de la Route 42 ; JOH3 :
+		# le dossier joh-04 (§5) nomme « Gentleman Armand » un Dresseur de la Route 35 ; ceux du S.S. Anne
+		# gardent le leur (identifiants distincts).
+		if id == &"route_42_marcel" or id == &"route_35_gentleman_armand":
 			continue
 		assert_false(seen.has(name), "%s : nom déjà pris par %s" % [name, seen.get(name, "")])
 		seen[name] = id

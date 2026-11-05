@@ -6,5 +6,17 @@
 		],
 		"facing": "down",
 		"sprite": "nurse"
+	},
+	"orme": {
+		"cell": [
+			9,
+			6
+		],
+		"facing": "left",
+		"sprite": "researcher",
+		"dialogue": "joh8_orme",
+		"if": [
+			"johto_ho_oh_done"
+		]
 	}
 }

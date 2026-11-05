@@ -81,6 +81,8 @@ const TRIGGERS: Dictionary = {
 	"ecruteak_city/scene_sbires": {"scene": &"ecruteak_rockets", "dir": Vector2i.ZERO},
 	"ecruteak_city/barriere_carillon": {"scene": &"ecruteak_bell_tower_guard", "dir": Vector2i.UP},
 	"ecruteak_city/barriere_route_42": {"scene": &"ecruteak_route_42_guard", "dir": Vector2i.RIGHT},
+	# JOH6 : le doyen à la sortie de la Tour Cendrée (C-10, C-11).
+	"ecruteak_city/scene_doyen_plan": {"scene": &"ecruteak_dante_plan", "dir": Vector2i.ZERO},
 }
 ## Arrivées supplémentaires (alias) : (carte) → nom → case.
 const EXTRA_SPAWNS: Dictionary = {
@@ -214,9 +216,6 @@ func _add_positions(spec: Dictionary, plan: Object, root: Node2D,
 					continue
 				_add_warp(root, id, cells, WARPS[key], size, if_flags, unless)
 			"panneau":
-				if key == "ecruteak_city/panneau_tour_cendree":
-					blocked.append(cells[0]) # JOH6 (C-3) : pas de texte au JOH2, la case reste bloquée.
-					continue
 				_interact(root, _node_name(id), cells[0], Vector2i.ONE, Vector2i.UP,
 					StringName("%s_%s" % [map_id, id]), [], [])
 				_add_sign(root, cells[0], _node_name(id))

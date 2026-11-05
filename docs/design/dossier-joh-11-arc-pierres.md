@@ -551,3 +551,25 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 2. Grilles dans `tools/plans/`, puis vues générales peintes, validées avant tout code.
 3. Plan technique `docs/tech/jalon-johp.md`, puis code, après la fusion du JOH5 : JOHP0 (le Réveil),
    JOHP1, JOHP2, JOHP3.
+
+## 20. Annexe : textes encore en jeu jusqu'au JOHP3
+
+Le code du JOH5 et du JOH7 garde l'ancienne version jusqu'à la bascule du JOHP3
+(`docs/tech/jalon-joh-pierres.md` §5.3). Les tests « mot pour mot » de ces jalons
+(`tests/unit/test_joh5_data.gd`, `test_joh7_data.gd`) comparent les dialogues à ce corpus en plus des
+dossiers JOH-06 et JOH-08. **Cette annexe disparaît au JOHP3**, avec ces lignes des tests.
+
+| N° | Où | Ancien texte |
+|---|---|---|
+| T-21 | **Dante**, l'ordre de retraite | *Cenere. Laisse tout. On part.* |
+| T-23 | Cenere, départ | Tu as entendu. / Tes Pokémon sont dans le bureau. Garde-les bien. / Ils ne te serviront à rien contre ce qui vient. · *(système)* Cenere s'en va par l'escalier de secours… |
+| T-24 | Système, le bureau | La porte du bureau est ouverte. / Sur la table : des Poké Balls. Et un sac. / Ce sont les tiens ! |
+| T-26 | Directeur, libéré | Merci ! Ils m'ont enfermé dans mon propre bureau. / Ces Poké Balls… ils les gardaient comme un trésor. Elles sont à toi ? |
+| T-27 | Système, retrouvailles | {pokemon} sort de sa Poké Ball et bondit vers {joueur} ! / {joueur} retrouve son équipe et son sac ! |
+| T-28 | Écran de sélection (JH-24) | Choisis les six Pokémon qui t'accompagnent. / Les autres iront au Stockage. |
+| T-29 | Système, Stockage | Connexion au réseau de Kanto… / … / Connexion rétablie ! Les autres Pokémon sont au Stockage. |
+| T-30 | Système, sac | Les objets de ton ancien sac ont rejoint les nouveaux. |
+| T-31 | Directeur, la Multi Exp | Tu as sauvé la Tour, et toute la radio de Johto. / La Radio de Doublonville t'offre ceci. / Avec, tes nouveaux Pokémon apprendront vite auprès des anciens. · *(système)* {joueur} reçoit une Multi Exp ! · *(déjà possédée)* Tu en as déjà une ? Alors prends ces bonbons. · *(système)* {joueur} reçoit 3 Super Bonbons ! |
+| T-32 | Directeur, après | L'ascenseur remarche. Les émissions reprendront dès ce soir. / Reviens nous voir quand tu veux. |
+| T-34 | Orme, 1F (accroche de l'acte 2) | {joueur} ! J'ai tout entendu à la radio. / Dante… Chen m'a parlé de lui, un jour. Il le croyait disparu depuis des années. / « Quand tout sera cendres »… Ça ne me plaît pas. / Les sages de Rosalia ont appelé ce matin. Ils veulent te voir. / Je crois que c'est à propos de la Tour Cendrée. |
+| M-14 | Cenere, arrivée | Tu es là avant moi. Encore. / Deux erreurs de calcul. Ça commence à faire beaucoup. |

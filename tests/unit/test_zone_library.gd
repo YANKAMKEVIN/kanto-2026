@@ -7,13 +7,18 @@ const JOHTO_AREAS_PATH := "res://assets/ui/map/johto_placeholder_areas.json"
 const JOHTO_ZONES: Array[StringName] = [&"sea_cave", &"olivine_city", &"ecruteak_city", &"goldenrod_city",
 	&"azalea_town", &"mahogany_town", &"goldenrod_radio_tower"]
 ## Lieux de Johto construits par leur jalon de contenu (JOH1 : grotte marine et Oliville ; JOH2 :
-## Rosalia ; JOH3 : Doublonville, Souterrain, Routes 37, 36, 35 ; JOH4 : Écorcia).
+## Rosalia ; JOH3 : Doublonville, Souterrain, Routes 37, 36, 35 ; JOH4 : Écorcia ; JOH6 : Acajou).
 const JOHTO_BUILT: Array[StringName] = [&"sea_cave", &"olivine_city", &"ecruteak_city", &"goldenrod_city",
-	&"goldenrod_underground", &"route_37", &"route_36", &"route_35", &"azalea_town"]
+	&"goldenrod_underground", &"route_37", &"route_36", &"route_35", &"azalea_town", &"mahogany_town"]
+## JOH6 : cinq zones sans ville (Tour Cendrée, Routes 42 et 43, Lac Colère, repaire d'Acajou).
+const JOH6_ZONES: Array[StringName] = [&"burned_tower", &"route_42", &"route_43", &"lake_of_rage",
+	&"mahogany_hideout"]
 ## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
 ## 2 nord et Argenta (T11) et les intérieurs (T13) sont construits : liste vide. À retirer
 ## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
 ## Jalon 26 : Safrania (T6) et la Sylphe (T7) sont construites et fusionnées : liste vide.
+## Cartes rangées dans leur zone avant d'être construites (aucune aujourd'hui : le JOH6 a construit
+## les siennes).
 const AWAITING_MAPS: Array[StringName] = []
 ## Étages de la Tour (titre « Tour Pokémon », dans la zone de Lavanville : aucune zone propre).
 const TOWER_FLOORS: Array[StringName] = [&"pokemon_tower_1f", &"pokemon_tower_2f",
@@ -62,7 +67,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 67, "JOH5 : + la Tour Radio ; JOH7 : + Routes 40, 41, Îles Tourbillon ; JOH3 : + Routes 37, 36, 35 et Souterrain ; JOH4 : + Route 34, Bois aux Chênes, Puits Ramoloss ; JOH2 : + Routes 39 et 38 ; JOH1 : + la grotte marine ; JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+	assert_eq(_zones.size(), 74, "JOH8 : + Bois de la Tour et Tour Carillon ; JOH6 : + Tour Cendrée, Routes 42 et 43, Lac Colère, repaire d'Acajou ; JOH5 : + la Tour Radio ; JOH7 : + Routes 40, 41, Îles Tourbillon ; JOH3 : + Routes 37, 36, 35 et Souterrain ; JOH4 : + Route 34, Bois aux Chênes, Puits Ramoloss ; JOH2 : + Routes 39 et 38 ; JOH1 : + la grotte marine ; JOH0 : + les cinq villes de Johto ; Parc Safari (jalon 23), Routes 12 et 16 (jalon 21), Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
 		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
 		+ "S.S. Anne (jalon 16 T11), Cave Taupiqueur (jalon 17 T15), Route 11 (jalon 17 T16), "
 		+ "Routes 9 et 10 (jalon 18 T12), Grotte Sombre (jalon 18 T13), souterrain des Routes 7 "
@@ -246,7 +251,8 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city",
 				&"vermilion_city", &"route_5", &"route_10", &"lavender_town", &"celadon_city",
 				&"fuchsia_city", &"cinnabar_island", &"saffron_city",
-				&"indigo_plateau", &"olivine_city", &"ecruteak_city", &"goldenrod_city", &"azalea_town"]:
+				&"indigo_plateau", &"olivine_city", &"ecruteak_city", &"goldenrod_city", &"azalea_town",
+				&"mahogany_town"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
@@ -464,8 +470,11 @@ func test_real_zones_declare_the_five_johto_towns() -> void:
 		&"route_40", &"route_41", &"whirl_islands",
 		&"ecruteak_city", &"route_39", &"route_38", &"goldenrod_city", &"goldenrod_underground",
 		&"route_37", &"route_36", &"route_35", &"azalea_town",
-		&"route_34", &"ilex_forest", &"slowpoke_well", &"mahogany_town", &"goldenrod_radio_tower"] as Array[StringName],
-		"les cinq villes de Johto (points de Vol), la grotte marine, les routes du JOH2 et du JOH3, les lieux du JOH4 la mer du JOH7, la Tour Radio")
+		&"route_34", &"ilex_forest", &"slowpoke_well", &"mahogany_town", &"burned_tower", &"route_42",
+		&"route_43", &"lake_of_rage", &"mahogany_hideout", &"goldenrod_radio_tower",
+		&"bell_tower_woods", &"bell_tower"]
+		as Array[StringName],
+		"les cinq villes de Johto (points de Vol), la grotte marine, les routes du JOH2 et du JOH3, les lieux du JOH4, les zones du JOH6, la mer du JOH7, la Tour Radio, la Tour Carillon")
 	for id: StringName in JOHTO_ZONES:
 		if JOHTO_BUILT.has(id):
 			assert_false(_zones.get_zone(id).maps.is_empty(), "%s : cartes du jalon" % id)
@@ -479,4 +488,4 @@ func test_real_zones_declare_the_five_johto_towns() -> void:
 		assert_true(_zones.get_zone(id).maps.is_empty(), "%s : pas encore de carte" % id)
 		assert_true(_zones.get_zone(id).draft, "%s : description [D]" % id)
 	assert_eq(_zones.zones_of_region(ZoneData.REGION_KANTO).size(),
-		_zones.size() - JOHTO_ZONES.size() - 12)
+		_zones.size() - JOHTO_ZONES.size() - 14 - JOH6_ZONES.size())

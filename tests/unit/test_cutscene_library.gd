@@ -853,13 +853,13 @@ func test_gift_pokemon_kind_is_last_in_the_enum() -> void:
 	# Jalon 21 : FLUTE vient après ; puis J25 : « unset », « toggle », « trade » ; puis J23 :
 	# « safari », en fin d'enum.
 	assert_eq(CutsceneStep.Kind.GIFT_POKEMON, CutsceneStep.Kind.FLUTE - 1, "en fin d'enum")
-	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.size() - 11,
+	assert_eq(CutsceneStep.Kind.FLUTE, CutsceneStep.Kind.UNSET_FLAGS - 1,
 		"flute avant le J25, le J23, le J30 et le JOH0")
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 8, "trade avant safari")
-	assert_eq(CutsceneStep.Kind.SAFARI, CutsceneStep.Kind.size() - 7, "J23 avant le J30")
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.SAFARI - 1, "trade avant safari")
+	assert_eq(CutsceneStep.Kind.SAFARI, CutsceneStep.Kind.HALL_OF_FAME - 1, "J23 avant le J30")
 	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.HALL_OF_FAME - 2, "trade, safari, puis le J30")
-	assert_eq(CutsceneStep.Kind.CREDITS, CutsceneStep.Kind.size() - 5, "J30 avant le JOH0")
-	assert_eq(CutsceneStep.Kind.GIVE_EGG, CutsceneStep.Kind.size() - 2, "JOH0 puis « carry » (JOH1) en fin d'enum")
+	assert_eq(CutsceneStep.Kind.CREDITS, CutsceneStep.Kind.CONFISCATE_TEAM - 1, "J30 avant le JOH0")
+	assert_eq(CutsceneStep.Kind.GIVE_EGG, CutsceneStep.Kind.FLASHBACK - 1, "JOH0 avant le JOH6")
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.GIFT_POKEMON], "gift_pokemon")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
@@ -923,10 +923,11 @@ func test_real_eevee_gift_scene() -> void:
 func test_j25_kinds_are_last_in_the_enum() -> void:
 	# Fusion de main dans jalon-23 : « safari » (J23) vient après ; puis « hall_of_fame » et
 	# « credits » (J30).
-	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.size() - 8,
+	assert_eq(CutsceneStep.Kind.TRADE, CutsceneStep.Kind.SAFARI - 1,
 		"avant « safari », le J30 et le JOH0")
-	assert_eq(CutsceneStep.TYPE_KEYS.slice(-10), ["unset", "toggle", "trade", "safari",
-		"hall_of_fame", "credits", "confiscate_team", "return_team", "give_egg", "carry"])
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(CutsceneStep.Kind.UNSET_FLAGS,
+		CutsceneStep.Kind.GIVE_EGG + 1), ["unset", "toggle", "trade", "safari",
+		"hall_of_fame", "credits", "confiscate_team", "return_team", "give_egg"])
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
 
@@ -977,9 +978,10 @@ func test_invalid_j25_steps_are_refused() -> void:
 # --- Jalon 30 : étapes « hall_of_fame » et « credits » ------------------------------------------
 
 func test_j30_kinds_are_last_in_the_enum() -> void:
-	assert_eq(CutsceneStep.Kind.CREDITS, CutsceneStep.Kind.size() - 5, "avant le JOH0")
-	assert_eq(CutsceneStep.TYPE_KEYS.slice(-6), ["hall_of_fame", "credits", "confiscate_team",
-		"return_team", "give_egg", "carry"])
+	assert_eq(CutsceneStep.Kind.CREDITS, CutsceneStep.Kind.CONFISCATE_TEAM - 1, "avant le JOH0")
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(CutsceneStep.Kind.HALL_OF_FAME,
+		CutsceneStep.Kind.GIVE_EGG + 1), ["hall_of_fame", "credits", "confiscate_team",
+		"return_team", "give_egg"])
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 
 

@@ -1,0 +1,71 @@
+{
+	"raikou": {
+		"cell": [
+			8,
+			8
+		],
+		"facing": "down",
+		"sprite": "pokemon/raikou",
+		"turn_to_player": false,
+		"unless": [
+			"johto_beasts_awakened"
+		]
+	},
+	"entei": {
+		"cell": [
+			10,
+			8
+		],
+		"facing": "down",
+		"sprite": "pokemon/entei",
+		"turn_to_player": false,
+		"unless": [
+			"johto_beasts_awakened"
+		]
+	},
+	"suicune": {
+		"cell": [
+			12,
+			8
+		],
+		"facing": "down",
+		"sprite": "pokemon/suicune",
+		"turn_to_player": false,
+		"unless": [
+			"johto_beasts_awakened"
+		]
+	},
+	"peau_metal": {
+		"cell": [
+			1,
+			14
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "burned_tower_b1f_peau_metal",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_burned_tower_b1f_peau_metal"
+		]
+	},
+	"entei_retour": {
+		"cell": [
+			10,
+			8
+		],
+		"facing": "down",
+		"sprite": "pokemon/entei",
+		"dialogue": "joh8_entei_return",
+		"verb": "observe",
+		"turn_to_player": false,
+		"if": [
+			"johto_chapter_done",
+			"johto_entei_done"
+		],
+		"unless": [
+			"johto_entei_caught",
+			"johto_entei_return_done"
+		]
+	}
+}

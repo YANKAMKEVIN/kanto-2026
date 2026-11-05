@@ -125,13 +125,15 @@ func test_real_tables_load_without_error() -> void:
 	# Jalon 21 (T5) : sommet de la Tour (7F) ; jalon 24 (T4) : eau des Routes 19 à 21 et de
 	# Cramois'Île, herbe de la Route 21, sol des Îles Écume (test_j24_data) ; jalon 31 (T4) : sol
 	# des trois étages de la Grotte Azurée.
-	assert_eq(lib.get_ids(), [&"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
+	assert_eq(lib.get_ids(), [&"burned_tower_1f_floor", &"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
 		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble",
 		# Chapitre Johto, JOH2 : herbe des tours de Rosalia (nuit), Routes 38 et 39 (jour / nuit).
 		&"ecruteak_towers_night",
 		# Chapitre Johto, JOH4 : Bois aux Chênes (matin / jour / nuit), Route 34, Puits Ramoloss.
 		&"ilex_forest_grass_day", &"ilex_forest_grass_morning", &"ilex_forest_grass_night",
+		# JOH6 : Lac Colère (rives jour / nuit, eau).
+		&"lake_of_rage_grass_day", &"lake_of_rage_grass_night", &"lake_of_rage_water",
 		&"mt_moon_1f_rubble",
 		&"mt_moon_b1f_rubble", &"mt_moon_b2f_rubble", &"pokemon_mansion_1f_floor",
 		&"pokemon_mansion_2f_floor", &"pokemon_mansion_3f_floor", &"pokemon_mansion_b1f_floor",
@@ -149,7 +151,10 @@ func test_real_tables_load_without_error() -> void:
 		&"route_36_grass_morning", &"route_36_grass_night", &"route_37_grass_day",
 		&"route_37_grass_night", &"route_38_grass_day", &"route_38_grass_night",
 		&"route_39_grass_day", &"route_39_grass_night", &"route_3_grass", &"route_40_water",
-		&"route_41_water", &"route_4_grass", &"route_5_grass",
+		&"route_41_water",
+		# JOH6 : Routes 42 (jour / nuit, lac) et 43 (jour / nuit).
+		&"route_42_grass_day", &"route_42_grass_night", &"route_42_water", &"route_43_grass_day",
+		&"route_43_grass_night", &"route_4_grass", &"route_5_grass",
 		&"route_6_grass", &"route_7_grass", &"route_8_grass", &"route_9_grass",
 		# Jalon 23 (T13) : Parc Safari.
 		&"safari_zone_center_grass", &"safari_zone_east_grass", &"safari_zone_north_grass",
@@ -244,8 +249,8 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# Chapitre Johto, JOH1 : l'eau de la grotte marine ; JOH2 : + 5 tables datées (Routes 39 et 38
 	# jour / nuit, herbe des tours de Rosalia), hors de la boucle (tables par moment :
 	# `test_joh2_data`) ; JOH3 : + 8 (`test_joh3_data`) ; JOH4 : + 8 (Route 34, Bois aux Chênes, Puits Ramoloss : `test_joh4_data`) ;
-	# JOH7 : + 6 tables de la mer et des Îles Tourbillon (`test_joh7_data`).
-	assert_eq(lib.size(), 87, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH3, les 8 du JOH4 et les 6 du JOH7")
+	# JOH6 : + 9 (`test_joh6_data`) ; JOH7 : + 6 tables de la mer et des Îles Tourbillon (`test_joh7_data`).
+	assert_eq(lib.size(), 96, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH3, les 8 du JOH4, les 9 du JOH6 et les 6 du JOH7")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],
@@ -386,7 +391,8 @@ func test_real_tables_carry_no_ghost_item_outside_the_tower() -> void:
 		# Jalon 24 (T4) : le sol des Îles Écume est aussi un terrain « floor », sans SPECTRE ; J25 : Manoir ;
 		# jalon 31 : celui de la Grotte Azurée aussi.
 		if not (String(id).begins_with("seafoam_") or String(id).begins_with("pokemon_mansion_")
-				or String(id).begins_with("cerulean_cave_") or String(id).begins_with("power_plant")):
+				or String(id).begins_with("cerulean_cave_") or String(id).begins_with("power_plant")
+				or String(id).begins_with("burned_tower_")):
 			assert_ne(table.terrain, &"floor", String(id))
 
 
