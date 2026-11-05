@@ -104,7 +104,7 @@
 		"loubard": { "prefix": "Loubard", "world_sprite": "cue_ball", "scale": 1.24, "hand": [-0.452, -0.56] },
 		"maitre_dojo": { "prefix": "Maître du Dojo", "world_sprite": "karate_master", "scale": 1.24, "hand": [-0.369, -0.546] },
 		"marin": { "prefix": "Marin", "world_sprite": "sailor", "scale": 1.2, "hand": [-0.34, -0.59] },
-		"medium": { "prefix": "Médium", "world_sprite": "youngster", "scale": 1.14, "hand": [-0.319, -0.592] },
+		"medium": { "prefix": "Médium", "world_sprite": "psychic", "scale": 1.14, "hand": [-0.319, -0.592] },
 		"montagnard": { "prefix": "Montagnard", "world_sprite": "mountaineer", "scale": 1.26, "hand": [-0.358, -0.646] },
 		"motard": { "prefix": "Motard", "world_sprite": "biker", "scale": 1.2, "hand": [-0.459, -0.544] },
 		"nageur": { "prefix": "Nageur", "world_sprite": "swimmer", "scale": 1.16, "hand": [-0.361, -0.574] },

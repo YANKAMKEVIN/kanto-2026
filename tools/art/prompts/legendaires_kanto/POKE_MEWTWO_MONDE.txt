@@ -1,0 +1,14 @@
+POKE_MEWTWO_MONDE — planche d'animation d'un Pokémon du monde de Kanto 2026 : une créature légendaire DEBOUT, immobile, au fond d'une grotte, qui attend le joueur.
+Images jointes : l'artwork officiel (anatomie, couleurs et proportions seulement, pas son rendu ni sa pose) ; artikodin_sheet et rapasdepic_sheet = Pokémon déjà peints pour le monde du jeu : même rendu peint simplifié, même contour fin coloré, même finesse, même angle de vue.
+Style : Pokémon peint simplifié comme les planches du jeu, contour fin coloré sans trait noir, volumes doux. Ni pixel art, ni 3D, ni anime aux contours noirs.
+Lumière neutre et douce, venue du haut à gauche.
+
+POKÉMON (identique dans toutes les images) : MEWTWO (n° 150), fidèle à son design officiel : silhouette humanoïde mince au corps gris-mauve pâle, ventre et longue queue épaisse VIOLETS, tête aux deux courtes cornes, tube reliant la nuque au dos, mains à trois doigts ronds, yeux violets graves. Calme, menaçant.
+POSE : DEBOUT, de FACE, les bras le long du corps, légèrement écartés, la queue qui passe derrière et ressort sur le côté, la tête droite. Vue de dessus de trois quarts comme le jeu (caméra un peu au-dessus).
+
+PLANCHE D'ANIMATION : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 images, de gauche à droite, chacune dans une colonne invisible de 384 px, à la MÊME échelle (environ 300 px de haut), les pieds de toutes les images sur la même ligne.
+- Image 1 : au repos.
+- Image 2 : il INSPIRE (la poitrine se gonfle un peu, la tête monte légèrement).
+- Image 3 : une très légère LUEUR VIOLETTE l'entoure et la pointe de sa queue se soulève (discret, transparent sur les bords, jamais un rayon).
+- Image 4 : retour au repos, l'effet se dissipe.
+Aucune ombre portée, aucun sol, aucun décor, aucun texte, aucun chiffre, aucun logo.
