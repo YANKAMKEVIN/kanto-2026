@@ -140,6 +140,15 @@ const MAPS: Dictionary = {
 		"panes": false, "legend": {"@": "w", "o": "w", ".": "="},
 		"cells": [[Rect2i(22, 16, 16, 16), "w"]], "foam": Vector2(30.0, 24.0),
 		"buildings": [["relief_ile_tourbillon_01", Vector2i(30, 31), "IleTourbillon"]]},
+	# Arc des Pierres (JOHP2, demande de Kevin du 2026-11-05) : Irisia d'après sa vue générale.
+	# « mouth » : [colonne, rangée, bord droit gardé] de la bouche de grotte.
+	&"cianwood_city": {"plan": "cianwood_city", "seed": 71201, "rock": Rock.SHORE,
+		"path": PEBBLES, "panes": true, "mouth": [4, 15, 5.12],
+		"buildings": [["bldg_maison_pecheur_01", Vector2i(10, 13), "MaisonGoulven"],
+			["bldg_maison_pecheur_01", Vector2i(21, 21), "Maison1"]],
+		"hide": ["Bat_MaisonGoulven", "Bat_Maison1"],
+		"lamps": [Vector2(7.1, 14), Vector2(13.9, 14), Vector2(18.1, 14), Vector2(25.9, 14),
+			Vector2(18.1, 22), Vector2(24.9, 22)]},
 }
 ## Traduction des grilles du JOH1 et du JOH2 vers la légende du kit : `T` forêt, `.` herbe, `p`
 ## pavés, `=` chemin (galets à Oliville, terre ailleurs), `h` hautes herbes, `z` platelage (herbe
@@ -526,14 +535,15 @@ func _quay_edge_row(source: Object) -> int:
 
 ## Bouche de la grotte marine : ouverture sur la colonne de la bouche `E`, pied au bas de la
 ## dernière rangée de la bouche, image rognée à droite au bord de la plage.
-func _place_mouth(kit: Object, decals: Node2D) -> void:
+func _place_mouth(kit: Object, decals: Node2D, column: int = OLI_MOUTH_COLUMN,
+		row: int = OLI_MOUTH_ROW, right: float = OLI_MOUTH_RIGHT) -> void:
 	var mouth: Node2D = kit.call(&"add_prop", decals, OLI_MOUTH_ID,
-		Vector2((OLI_MOUTH_COLUMN + 0.5) * TILE, (OLI_MOUTH_ROW + 1) * TILE), "SeaCaveMouth")
+		Vector2((column + 0.5) * TILE, (row + 1) * TILE), "SeaCaveMouth")
 	kit.call(&"clear_footprint", mouth)
 	var sprite := mouth.get_node(^"Sprite") as Sprite2D
 	var size := sprite.texture.get_size()
 	var left := mouth.position.x - size.x / 2.0
-	var keep := clampf(OLI_MOUTH_RIGHT * TILE - left, TILE, size.x)
+	var keep := clampf(right * TILE - left, TILE, size.x)
 	sprite.region_enabled = true
 	sprite.region_rect = Rect2(0.0, 0.0, keep, size.y)
 	# Pierre grise de la bouche réchauffée vers le beige de la paroi de la série 12 [D].
@@ -698,6 +708,10 @@ func _johto(kit: Object, source: Object, decals: Node2D, entities: Node2D,
 		kit.call(&"clear_footprint", stone)
 		stone.scale = Vector2.ONE * decor.randf_range(0.62, 0.78)
 		kit.call(&"flip", stone, decor.randf() < 0.5)
+		count += 1
+	if spec.has("mouth"):
+		var mouth: Array = spec["mouth"]
+		_place_mouth(kit, decals, mouth[0], mouth[1], mouth[2])
 		count += 1
 	if spec.has("foam"):
 		var foam := Sprite2D.new()

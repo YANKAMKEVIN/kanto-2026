@@ -16,6 +16,8 @@ extends SceneTree
 ##
 ##   godot --headless --path . -s res://tools/build_johp2_maps.gd [-- --maps=cianwood_city]
 ##   godot --headless --path . --import
+## **Image d'Irisia** : `tools/build_joh_ambiance.gd -- --maps=cianwood_city` repeint la carte sans
+## toucher à la logique ; la relancer après cet outil.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 
