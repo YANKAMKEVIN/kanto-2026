@@ -167,8 +167,6 @@ T = {
 		"Les trois pierres se rejoignent sur l'autel !"]),
 	"johp3_ysolde_truth": ("Ysolde", ["Elles ne se donnent qu'à qui a passé l'épreuve."]),
 	"johp3_cenere_error": ("Cenere", ["… Ce n'était pas dans les données."]),
-	"johp3_awakening_line": (NARRATION, ["Une lumière monte de la terre, de la mer et du ciel.",
-		"Les Pokémon nés à Johto se réveillent !"]),
 	"johp3_cenere_before": ("Cenere", ["… C'est impossible. Recommence, Farfuret."]),
 	"johp3_cenere_defeated": ("Cenere", ["… Ils changent tout. Deuxième erreur."]),
 	"johp3_cenere_after": ("Cenere", ["La mallette n'est plus utile. Garde-la.",
@@ -470,15 +468,21 @@ def altar_scene():
 		say("johp3_cenere_case"),
 		say("johp3_cenere_deal"),
 		say("johp3_cenere_hesitate"),
+		{"spawn": "farfuret", "sprite": SNEASEL_SPRITE, "cell": [17, 4], "facing": "left"},
+		{"move": "farfuret", "to": {"near": "player", "offsets": [[0, -1], [-1, -1], [1, -1], [0, 1]]},
+			"run": True, "optional": True},
 		{"flash": 1},
 		{"react": "player"},
 		say("johp3_sneasel_strike"),
+		{"move": "farfuret", "to": {"near": "cenere", "offsets": [[0, -1], [1, 0], [0, 1]]},
+			"run": True, "optional": True},
 		say("johp3_cenere_proof"),
 		say("johp3_stones_gather", music="stop"),
 		say("johp3_ysolde_truth"),
 		say("johp3_cenere_error"),
+		{"despawn": "farfuret"},
+		# P-31 est dite par `AwakeningOverlay` (dossier §13.2 : avant l'écran du Réveil).
 		{"stones_awaken": True},
-		say("johp3_awakening_line"),
 	]
 	return {"variants": [
 		{"if": [STONE_BREATH], "unless": [AWAKENED], "steps": first + cenere_battle_steps()
@@ -511,7 +515,7 @@ def main():
 	for ident, value in T.items():
 		dialogues[ident] = dialogue(*value)
 	# Corentin : les deux PNJ ouvrent chacun leur scène (celui de Rosalia : variante ARC, JOHP2).
-	dialogues["ecruteak_city_corentin"] = {"cutscene": "johto_corentin_flight"}
+	dialogues["ecruteak_corentin"] = {"cutscene": "johto_corentin_flight"}
 	dialogues["blackthorn_city_corentin"] = {"cutscene": "blackthorn_corentin_back"}
 	dialogues["blackthorn_city_dracolosse"] = dialogue(NARRATION,
 		["Le Dracolosse de Corentin bâille.", "Il a l'air de bien connaître le chemin."], True)

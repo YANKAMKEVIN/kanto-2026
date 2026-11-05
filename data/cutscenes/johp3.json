@@ -367,6 +367,41 @@
 						"dialogue": "johp3_cenere_hesitate"
 					},
 					{
+						"spawn": "farfuret",
+						"sprite": "pokemon/sneasel",
+						"cell": [
+							17,
+							4
+						],
+						"facing": "left"
+					},
+					{
+						"move": "farfuret",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									-1,
+									-1
+								],
+								[
+									1,
+									-1
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"run": true,
+						"optional": true
+					},
+					{
 						"flash": 1
 					},
 					{
@@ -374,6 +409,28 @@
 					},
 					{
 						"dialogue": "johp3_sneasel_strike"
+					},
+					{
+						"move": "farfuret",
+						"to": {
+							"near": "cenere",
+							"offsets": [
+								[
+									0,
+									-1
+								],
+								[
+									1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						},
+						"run": true,
+						"optional": true
 					},
 					{
 						"dialogue": "johp3_cenere_proof"
@@ -389,10 +446,10 @@
 						"dialogue": "johp3_cenere_error"
 					},
 					{
-						"stones_awaken": true
+						"despawn": "farfuret"
 					},
 					{
-						"dialogue": "johp3_awakening_line"
+						"stones_awaken": true
 					},
 					{
 						"face": "cenere",

@@ -155,6 +155,9 @@ extends RefCounted
 ##   « start » (filtre sépia plein écran en fondu, joueur caché : [FlashbackFilter]) ou « end »
 ##   (fondu inverse, filtre retiré, joueur visible). Le changement de carte du souvenir se fait par
 ##   des étapes « change_map » ordinaires entre les deux.
+## - [constant Kind.DRAGON_FLIGHT] (arc des Pierres, JOHP3, `jalon-joh-pierres.md` §5.2) : [member text]
+##   ([constant FLIGHT_DIRECTIONS]) : le survol sur le Dracolosse de Corentin
+##   ([member CutsceneDirector.dragon_flight_handler], [DragonFlightOverlay]) ; la scène attend sa fin.
 ## - [constant Kind.STONES_AWAKEN] (arc des Pierres, JOHP0, `jalon-joh-pierres.md` §2.2) : le
 ##   Réveil ([method StoneAwakening.awaken], d'un seul bloc), la cinématique
 ##   ([member CutsceneDirector.awakening_handler]), **l'écriture**, puis l'écran du Réveil
@@ -177,6 +180,7 @@ enum Kind {
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
 	FLASHBACK, # Chapitre Johto (JOH6)
 	STONES_AWAKEN, # Arc des Pierres (JOHP0)
+	DRAGON_FLIGHT, # Arc des Pierres (JOHP3)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -195,9 +199,12 @@ const TYPE_KEYS: Array[String] = [
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
 	"flashback", # Chapitre Johto (JOH6)
 	"stones_awaken", # Arc des Pierres (JOHP0)
+	"dragon_flight", # Arc des Pierres (JOHP3)
 ]
 ## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
 const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
+## Valeurs d'une étape « dragon_flight » (JOHP3) : l'aller vers Ébènelle, le retour.
+const FLIGHT_DIRECTIONS: Array[String] = ["out", "back"]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]

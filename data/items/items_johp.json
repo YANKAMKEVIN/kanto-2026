@@ -1,0 +1,23 @@
+{
+	"stone_memory": {
+		"name": "Pierre Mémoire",
+		"plural": "Pierres Mémoire",
+		"feminine": true,
+		"category": "key",
+		"description": "Une pierre grise, tiède, couverte de signes."
+	},
+	"stone_tide": {
+		"name": "Pierre Marée",
+		"plural": "Pierres Marée",
+		"feminine": true,
+		"category": "key",
+		"description": "Une pierre bleue, toujours humide."
+	},
+	"stone_breath": {
+		"name": "Pierre Souffle",
+		"plural": "Pierres Souffle",
+		"feminine": true,
+		"category": "key",
+		"description": "Une pierre blanche qui semble se soulever, très lentement."
+	}
+}

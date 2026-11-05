@@ -207,6 +207,10 @@ var awakening_handler: Callable
 ## JOHP0 : l'écran du Réveil, coroutine `func(report: AwakeningReport) -> bool`, joué **après**
 ## l'écriture ; vrai si une attaque a été apprise (une écriture de plus). Non valide : rien.
 var awakening_screen_handler: Callable
+## Arc des Pierres, JOHP3 (étape « dragon_flight ») : le survol, coroutine
+## `func(direction: StringName) -> void` posée par Boot ([DragonFlightOverlay]). Non valide
+## (tests) : aucune image, la scène continue.
+var dragon_flight_handler: Callable
 ## Jalon 30 (étape « credits ») : générique, coroutine `func() -> void` posée par Boot.
 var credits_handler: Callable
 ## JOH9 : générique demandé par l'étape « credits » en cours (&"" = Kanto), lu par le
@@ -497,6 +501,9 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _return_team()
 		CutsceneStep.Kind.GIVE_EGG: # JOH0
 			await _give_egg(step)
+		CutsceneStep.Kind.DRAGON_FLIGHT: # JOHP3
+			if dragon_flight_handler.is_valid():
+				await dragon_flight_handler.call(StringName(step.text))
 		CutsceneStep.Kind.FLASHBACK: # JOH6
 			await _flashback(step.text == "start")
 		CutsceneStep.Kind.STONES_AWAKEN: # JOHP0

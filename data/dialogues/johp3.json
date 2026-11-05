@@ -307,13 +307,6 @@
 			"… Ce n'était pas dans les données."
 		]
 	},
-	"johp3_awakening_line": {
-		"narration": true,
-		"pages": [
-			"Une lumière monte de la terre, de la\nmer et du ciel.",
-			"Les Pokémon nés à Johto se\nréveillent !"
-		]
-	},
 	"johp3_cenere_before": {
 		"speaker": "Cenere",
 		"pages": [
@@ -384,7 +377,7 @@
 			"Je lui ai dit de finir sa soupe\nd'abord."
 		]
 	},
-	"ecruteak_city_corentin": {
+	"ecruteak_corentin": {
 		"cutscene": "johto_corentin_flight"
 	},
 	"blackthorn_city_corentin": {
