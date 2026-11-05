@@ -177,6 +177,8 @@ const OLIVILLE := [&"olivine_center", &"olivine_center_room", &"olivine_mart", &
 ## Chapitre Johto, JOH9 : Centre du Mont Argenté (Centre + comptoir de Boutique), poste de la
 ## Route 28, maison du gardien ; `--joh9`.
 const JOH9 := [&"mt_silver_center", &"route_28_gate", &"route_28_house"]
+## Arc des Pierres, JOHP2 (`jalon-joh-pierres.md` §4.1) : les intérieurs d'Irisia.
+const CIANWOOD := [&"cianwood_center", &"cianwood_goulven_house", &"cianwood_house_1"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -229,6 +231,8 @@ func _init() -> void:
 	rooms.append_array(_azalea_rooms())
 	# Chapitre Johto, JOH9 (fin de liste).
 	rooms.append_array(_joh9_rooms())
+	# Arc des Pierres, JOHP2.
+	rooms.append_array(_cianwood_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -304,6 +308,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(AZALEA)
 		elif arg == "--joh9":
 			wanted.append_array(JOH9)
+		elif arg == "--cianwood":
+			wanted.append_array(CIANWOOD)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -3167,6 +3173,28 @@ func _blackthorn_rooms() -> Array[Dictionary]:
 		_pokemon_center(&"blackthorn_center", "BlackthornCenter", "Ébènelle",
 			[&"blackthorn_city", &"retour_centre"]),
 		elder, house_1,
+	]
+
+
+# --- Arc des Pierres, JOHP2 : Irisia (`docs/tech/jalon-joh-pierres.md` §4.1) ------------------
+
+
+## Centre d'Irisia = définition commune, le marchand en (13, 5) comme au Mont Argenté (grille : pas
+## de Boutique, le Centre vend le minimum) ; maison de Goulven et maison relues sur les grilles
+## des maisons de Lavanville, comme à Écorcia. PNJ dans `data/npcs/` (`tools/gen_johp2_data.py`).
+func _cianwood_rooms() -> Array[Dictionary]:
+	var goulven := _johto_house(&"cianwood_goulven_house", "CianwoodGoulvenHouse",
+		"lavanville_maison_1.txt", &"cianwood_city", &"retour_goulven", "Irisia")
+	goulven["furniture"] = _mason_furniture()
+	var house_1 := _johto_house(&"cianwood_house_1", "CianwoodHouse1", "lavanville_maison_2.txt",
+		&"cianwood_city", &"retour_maison", "Irisia")
+	var azuria := _cerulean_house()
+	house_1["furniture"] = azuria["furniture"]
+	house_1["rugs"] = azuria["rugs"]
+	return [
+		_pokemon_center(&"cianwood_center", "CianwoodCenter", "Irisia",
+			[&"cianwood_city", &"retour_centre"]),
+		goulven, house_1,
 	]
 
 

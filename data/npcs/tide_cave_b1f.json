@@ -1,0 +1,73 @@
+{
+	"sbire_aa": {
+		"cell": [
+			14,
+			2
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "tide_grunt_aa_after",
+		"trainer": {
+			"id": "tide_grunt_aa",
+			"sight": 2,
+			"before": "tide_grunt_aa_before",
+			"defeated": "tide_grunt_aa_defeated"
+		}
+	},
+	"scientifique": {
+		"cell": [
+			17,
+			6
+		],
+		"facing": "up",
+		"sprite": "researcher",
+		"dialogue": "tide_scientist_after",
+		"trainer": {
+			"id": "tide_scientist",
+			"sight": 2,
+			"before": "tide_scientist_before",
+			"defeated": "tide_scientist_defeated"
+		}
+	},
+	"chef_cale": {
+		"cell": [
+			8,
+			10
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "tide_hold_chief_after",
+		"trainer": {
+			"id": "tide_hold_chief",
+			"sight": 1,
+			"before": "tide_hold_chief_before",
+			"defeated": "tide_hold_chief_defeated"
+		}
+	},
+	"cenere": {
+		"cell": [
+			2,
+			11
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_f",
+		"unless": [
+			"johto_stone_tide_lost"
+		],
+		"dialogue": "tide_cave_cenere_leaves"
+	},
+	"tide_item_2": {
+		"cell": [
+			6,
+			13
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "tide_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_tide_item_2"
+		]
+	}
+}

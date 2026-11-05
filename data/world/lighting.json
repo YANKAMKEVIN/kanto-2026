@@ -565,6 +565,13 @@
 		"route_28": "johto_auto",
 		"mt_silver_center": "interior_warm",
 		"route_28_gate": "interior_warm",
-		"route_28_house": "interior_warm"
+		"route_28_house": "interior_warm",
+		"goeland_deck": "johto_auto",
+		"cianwood_city": "johto_auto",
+		"cianwood_center": "interior_warm",
+		"cianwood_goulven_house": "interior_warm",
+		"cianwood_house_1": "interior_warm",
+		"tide_cave_1f": "sea_cave",
+		"tide_cave_b1f": "sea_cave"
 	}
 }

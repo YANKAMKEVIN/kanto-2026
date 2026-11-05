@@ -1,0 +1,69 @@
+{
+	"tide_grunt_aa": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 36
+			},
+			{
+				"species": "murkrow",
+				"level": 36
+			}
+		]
+	},
+	"tide_scientist": {
+		"name": "Scientifique Rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "electrode",
+				"level": 36
+			},
+			{
+				"species": "magneton",
+				"level": 36
+			},
+			{
+				"species": "porygon",
+				"level": 35
+			}
+		]
+	},
+	"tide_hold_chief": {
+		"name": "Chef de cale",
+		"class": "sbire_rocket",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"team": [
+			{
+				"species": "muk",
+				"level": 37
+			},
+			{
+				"species": "noctowl",
+				"level": 37
+			},
+			{
+				"species": "houndoom",
+				"level": 38
+			}
+		]
+	}
+}

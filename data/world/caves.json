@@ -86,6 +86,10 @@
 			"dark": true,
 			"warn_dialogue": "mt_silver_2f_dark",
 			"flash_cue": "{pokemon} éclaire la grotte avec Flash !"
+		},
+		"tide_cave": {
+			"maps": ["tide_cave_1f", "tide_cave_b1f"],
+			"escape": { "map": "cianwood_city", "spawn": "retour_grotte", "facing": "right" }
 		}
 	}
 }

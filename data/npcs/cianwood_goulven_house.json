@@ -1,0 +1,11 @@
+{
+	"habitante": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "beauty",
+		"dialogue": "cianwood_goulven_house_habitante"
+	}
+}

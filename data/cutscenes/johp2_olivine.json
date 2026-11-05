@@ -1,0 +1,77 @@
+{
+	"olivine_goulven_depart": {
+		"variants": [
+			{
+				"if": [
+					"johto_stone_memory"
+				],
+				"unless": [
+					"johto_ferry_open"
+				],
+				"steps": [
+					{
+						"dialogue": "olivine_goulven_send"
+					},
+					{
+						"give": "ultra_ball",
+						"count": 3
+					},
+					{
+						"dialogue": "olivine_goulven_ultra"
+					},
+					{
+						"set": [
+							"johto_ferry_open"
+						]
+					},
+					{
+						"dialogue": "olivine_goulven_board"
+					},
+					{
+						"change_map": "goeland_deck",
+						"at": "from_quai",
+						"facing": "right",
+						"if": [
+							"johto_goeland_outbound"
+						]
+					}
+				]
+			}
+		]
+	},
+	"goeland_board_outbound": {
+		"steps": [
+			{
+				"set": [
+					"johto_goeland_outbound"
+				]
+			},
+			{
+				"change_map": "goeland_deck",
+				"at": "from_quai",
+				"facing": "right"
+			}
+		]
+	},
+	"olivine_south_sea_block": {
+		"variants": [
+			{
+				"unless": [
+					"johto_act2"
+				],
+				"steps": [
+					{
+						"dialogue": "olivine_south_sea_block"
+					},
+					{
+						"move": "player",
+						"path": [
+							"up"
+						],
+						"keep_facing": true
+					}
+				]
+			}
+		]
+	}
+}

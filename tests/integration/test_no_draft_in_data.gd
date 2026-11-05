@@ -47,6 +47,10 @@ const DATA_DIR := "res://data"
 ## JOH4 (2026-11-04) : description d'Écorcia validée (E-34, plus « draft ») ; textes [D] hors du
 ## dossier joh-05 (barrière du puits, Canarticho, Ramoloss sans queue, habitant), JOH4-Q1.
 const PENDING_DRAFTS: Array[String] = [
+	# JOHP2 : habitants des deux maisons d'Irisia, aucun texte au dossier JOH-11 ; zone du Goéland
+	# (`zones.json`, AWAITING_TEXTS de `test_zone_library.gd`).
+	"dialogues/johp2_cianwood_interiors.json/cianwood_goulven_house_habitante",
+	"dialogues/johp2_cianwood_interiors.json/cianwood_house_1_habitant",
 	# JOH3 : textes [D] absents du dossier joh-04 (grille du Parc, habitant de la maison 2).
 	"dialogues/joh3_route_36.json/route_36_grille_parc",
 	"dialogues/joh3_goldenrod_interiors.json/goldenrod_house_2_man",
@@ -93,6 +97,7 @@ const PENDING_DRAFTS: Array[String] = [
 	"dialogues/joh6_mahogany_house_2.json/mahogany_house_2_habitant_2",
 	"dialogues/joh6_mahogany_souvenir_shop.json/mahogany_souvenir_shop_etagere",
 	"world/zones.json/zones/saffron_city",
+	"world/zones.json/zones/goeland_deck",
 	"dialogues/joh1.json/olivine_guard/variants/1",
 	"story/objectives.json/0",
 	"story/objectives.json/1",

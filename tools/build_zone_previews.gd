@@ -39,6 +39,7 @@ const SHOTS: Array[Dictionary] = [
 ## Chantier « Menu Dresseur peint » (2026-11-01) : carte de la zone quand elle n'a pas de carte du
 ## même nom (ou quand la première est un Centre). [D] Cap d'Azuria = bout est de la Route 25.
 const AUTO_MAPS: Dictionary[String, String] = {
+	"tide_cave": "tide_cave_1f",
 	"mt_moon": "mt_moon_1f", "safari_zone": "safari_zone_center", "cerulean_cape": "route_25",
 	"ss_anne": "ss_anne_outer_deck", "seafoam_islands": "seafoam_1f",
 	"cerulean_cave": "cerulean_cave_1f", "dark_cave": "dark_cave_1f",

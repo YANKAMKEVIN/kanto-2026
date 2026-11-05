@@ -104,5 +104,29 @@
 		"if": [
 			"johto_ho_oh_seen"
 		]
+	},
+	"corentin": {
+		"cell": [
+			35,
+			18
+		],
+		"facing": "left",
+		"sprite": "courier",
+		"dialogue": "ecruteak_corentin",
+		"if": [
+			"johto_stone_tide_lost"
+		]
+	},
+	"dracolosse": {
+		"cell": [
+			38,
+			18
+		],
+		"facing": "left",
+		"sprite": "pokemon/dragonite",
+		"turn_to_player": false,
+		"if": [
+			"johto_stone_tide_lost"
+		]
 	}
 }

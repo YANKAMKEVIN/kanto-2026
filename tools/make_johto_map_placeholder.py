@@ -22,6 +22,8 @@ TOWNS = {
 	"goldenrod_city": ((880, 520), "Doublonville"),
 	"azalea_town": ((880, 840), "Écorcia"),
 	"mahogany_town": ((1320, 250), "Acajou"),
+	# Arc des Pierres (JH-76) : Irisia, île à l'ouest des Routes 40-41.
+	"cianwood_city": ((100, 440), "Irisia"),
 }
 ROADS = [("olivine_city", "ecruteak_city"), ("ecruteak_city", "goldenrod_city"),
 	("goldenrod_city", "azalea_town"), ("ecruteak_city", "mahogany_town")]
@@ -40,7 +42,10 @@ def main() -> None:
 		font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 34)
 	except OSError:
 		font = ImageFont.load_default()
-	areas = {}
+	# Les rectangles sans ville (routes, grottes) sont tenus à la main dans le fichier : on les garde.
+	areas_path = os.path.join(OUT, "johto_placeholder_areas.json")
+	with open(areas_path, encoding="utf-8") as f:
+		areas = json.load(f)["zones"]
 	for zone_id, ((x, y), name) in TOWNS.items():
 		w, h = 200, 110
 		x0, y0 = x - w // 2, y - h // 2
@@ -58,7 +63,7 @@ def main() -> None:
 			"l'identite des zones est dans data/world/zones.json.",
 		"image": "res://assets/ui/map/johto_placeholder.webp", "image_size": [W, H], "zones": areas,
 	}
-	with open(os.path.join(OUT, "johto_placeholder_areas.json"), "w", encoding="utf-8") as f:
+	with open(areas_path, "w", encoding="utf-8") as f:
 		f.write(json.dumps(doc, ensure_ascii=False, indent="\t") + "\n")
 
 

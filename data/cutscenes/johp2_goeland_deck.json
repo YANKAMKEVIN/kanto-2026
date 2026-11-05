@@ -1,0 +1,47 @@
+{
+	"goeland_to_cianwood": {
+		"steps": [
+			{
+				"change_map": "cianwood_city",
+				"at": "from_goeland",
+				"facing": "left"
+			}
+		]
+	},
+	"goeland_to_olivine": {
+		"steps": [
+			{
+				"change_map": "olivine_city",
+				"at": "from_goeland",
+				"facing": "left"
+			},
+			{
+				"face": "goulven",
+				"to": "player",
+				"if": [
+					"johto_stone_tide_lost"
+				],
+				"unless": [
+					"johto_goulven_rosalia_told"
+				]
+			},
+			{
+				"dialogue": "olivine_goulven_rosalia",
+				"if": [
+					"johto_stone_tide_lost"
+				],
+				"unless": [
+					"johto_goulven_rosalia_told"
+				]
+			},
+			{
+				"set": [
+					"johto_goulven_rosalia_told"
+				],
+				"if": [
+					"johto_stone_tide_lost"
+				]
+			}
+		]
+	}
+}

@@ -81,7 +81,10 @@
 		"silver_trail": "road_to_lavender",
 		"mt_silver": "mt_moon",
 		"mt_silver_summit": "final_road",
-		"route_28": "pokemon_road"
+		"route_28": "pokemon_road",
+		"goeland_deck": "road_to_cerulean",
+		"cianwood_city": "pewter_city",
+		"tide_cave": "mt_moon"
 	},
 	"maps": {
 		"alph_gallery": "mt_moon",
