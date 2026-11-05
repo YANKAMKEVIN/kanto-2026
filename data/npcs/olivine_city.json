@@ -58,7 +58,7 @@
 			34
 		],
 		"facing": "up",
-		"sprite": "sailor",
+		"sprite": "goulven",
 		"dialogue": "olivine_goulven",
 		"if": [
 			"johto_stones_quest"

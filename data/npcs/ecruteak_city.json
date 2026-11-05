@@ -111,7 +111,7 @@
 			18
 		],
 		"facing": "left",
-		"sprite": "courier",
+		"sprite": "corentin",
 		"dialogue": "ecruteak_corentin",
 		"if": [
 			"johto_stone_tide_lost"

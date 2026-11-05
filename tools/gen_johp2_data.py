@@ -141,8 +141,8 @@ INTERIOR_TEXTS = {
 }
 
 # --- Sprites [D] -----------------------------------------------------------------------------
-ROLE_SPRITES = {"marin": "sailor", "habitante": "beauty", "cenere": "rocket_grunt_f",
-	"messager": "courier"}
+ROLE_SPRITES = {"marin": "goulven", "habitante": "beauty", "cenere": "cenere",
+	"messager": "corentin"}
 
 # --- Rencontres (dossier §11) : (identifiant, carte(s), terrain, moments, taux, créneaux) --------
 ENCOUNTERS = {
