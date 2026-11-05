@@ -51,6 +51,8 @@ const AUTO_MAPS: Dictionary[String, String] = {
 	"whirl_islands": "whirl_islands_b1f",
 	# JOH8 : la Tour Carillon par son sommet.
 	"bell_tower": "bell_tower_roof",
+	# JOH9 : l'extérieur enneigé du Mont Argenté.
+	"mt_silver": "mt_silver_outside",
 }
 ## Point visé, en fraction du rectangle de la couche Ground (0,5 ; 0,5 = centre), quand le centre
 ## tombe sur un lieu peu parlant [D].

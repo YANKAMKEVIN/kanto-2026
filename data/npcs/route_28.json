@@ -1,0 +1,17 @@
+{
+	"jules": {
+		"cell": [
+			30,
+			14
+		],
+		"facing": "up",
+		"sprite": "cooltrainer_m",
+		"dialogue": "route_28_topdresseur_jules_after",
+		"trainer": {
+			"id": "route_28_topdresseur_jules",
+			"sight": 2,
+			"before": "route_28_topdresseur_jules_before",
+			"defeated": "route_28_topdresseur_jules_defeated"
+		}
+	}
+}

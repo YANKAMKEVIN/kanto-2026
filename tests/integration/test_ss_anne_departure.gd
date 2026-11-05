@@ -586,7 +586,9 @@ func test_save_step_only_in_the_departure() -> void:
 		&"goldenrod_radio_office",
 		# Chapitre Johto (JOH0, `jalon-joh0.md` §2.2) : le vol et le retour de l'équipe s'écrivent
 		# d'un seul bloc (scènes de test ; les vraies scènes des JOH1 et JOH5 feront de même).
-		&"johto_confiscate_test", &"johto_return_test",
+		# Chapitre Johto (JOH9) : la fin du chapitre au labo, et la reprise entre Giovanni et le
+		# rival au sommet (dossier joh-10 §13).
+		&"johto_confiscate_test", &"johto_epilogue", &"johto_return_test", &"mt_silver_summit",
 		# Chapitre Johto (JOH1) : le vol au Centre d'Oliville (`confiscate_team` puis `save`).
 		&"olivine_center_arrival",
 		&"ss_anne_departure"] as Array[StringName])

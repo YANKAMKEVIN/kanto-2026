@@ -198,9 +198,8 @@ func test_every_warp_reaches_a_free_spawn_or_is_coming_soon() -> void:
 				warp.target_map, warp.target_spawn])
 			assert_false(target.get_grid().is_solid(target.get_spawn_cell(warp.target_spawn)),
 				"%s → %s / %s : arrivée bloquée" % [id, warp.target_map, warp.target_spawn])
-	# Seul le sentier du Mont Argenté (JOH9) attend, sur ses trois cases (Rosalia : Route 37 et
-	# Bois de la Tour, hors jalon).
-	assert_gte(coming_soon, 3)
+	# Tous les raccords sont réels depuis la fusion du JOH9 (sentier du Mont Argenté).
+	assert_eq(coming_soon, 0)
 
 
 func test_links_both_ways_between_the_new_maps() -> void:

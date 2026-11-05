@@ -645,9 +645,15 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 					", ".join(PackedStringArray(CutsceneStep.SAFARI_ACTIONS))])
 			else:
 				step.text = main
-		CutsceneStep.Kind.HALL_OF_FAME, CutsceneStep.Kind.CREDITS: # Jalon 30
+		CutsceneStep.Kind.HALL_OF_FAME: # Jalon 30
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])
+		CutsceneStep.Kind.CREDITS: # Jalon 30 ; JOH9 : un générique nommé (« johto »)
+			if main is String and CutsceneStep.CREDITS_IDS.has(main):
+				step.text = main
+			elif not main is bool or not main:
+				ok = _fail("%s : « credits » vaut true ou %s" % [where,
+					", ".join(PackedStringArray(CutsceneStep.CREDITS_IDS))])
 		CutsceneStep.Kind.CONFISCATE_TEAM, CutsceneStep.Kind.RETURN_TEAM: # JOH0
 			if not main is bool or not main:
 				ok = _fail("%s : « %s » vaut true" % [where, type_key])

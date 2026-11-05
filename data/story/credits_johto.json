@@ -1,0 +1,29 @@
+{
+	"_doc": "Petit générique du Chapitre Johto (JOH9, dossier joh-10 §10 [D] : 60 à 90 s, lieux de Johto, équipe ; joué par la scène johto_epilogue, étape « credits »: \"johto\"). Lignes [D] à relire par Kevin ; images = vues générales peintes validées, réduites (assets/ui/credits/). Les légendaires capturés ou vus ne sont pas montrés un à un [D].",
+	"member": "{pokemon} — N{level}",
+	"skip": "Passer",
+	"blocks": [
+		{ "title": "Chapitre Johto", "draft": true },
+		{ "image": "res://assets/ui/credits/johto_oliville.webp" },
+		{ "lines": ["Oliville"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_rosalia.webp" },
+		{ "lines": ["Rosalia"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_doublonville.webp" },
+		{ "lines": ["Doublonville"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_bois-aux-chenes.webp" },
+		{ "lines": ["Le Bois aux Chênes"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_ecorcia.webp" },
+		{ "lines": ["Écorcia"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_lac-colere.webp" },
+		{ "lines": ["Le Lac Colère"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_iles-tourbillon-b2f.webp" },
+		{ "lines": ["Les Îles Tourbillon"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_tour-carillon-sommet.webp" },
+		{ "lines": ["La Tour Carillon"], "draft": true },
+		{ "image": "res://assets/ui/credits/johto_mont-argente-sommet.webp" },
+		{ "lines": ["Le sommet du Mont Argenté"], "draft": true },
+		{ "team": true },
+		{ "lines": ["Pokémon © Nintendo, Creatures, Game Freak", "Projet personnel, non officiel, jamais diffusé"] },
+		{ "title": "Fin du Chapitre Johto", "draft": true }
+	]
+}

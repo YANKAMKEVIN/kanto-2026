@@ -508,7 +508,10 @@ def main():
 				dialogues["%s_%s" % (map_id, ident)] = dialogue(*TEXTS[key])
 			elif kind == "examen":
 				if ident == "autel":
+					# JOH9 : la Balle Verte posée sur l'autel fait venir Celebi (dossier JOH-10 §11).
 					dialogues["ilex_forest_autel"] = {"narration": True, "variants": [
+						{"if": ["johto_green_ball_received"], "unless": ["johto_celebi_done"],
+							"cutscene": "ilex_altar_celebi"},
 						{"set": [attrs["drapeau"]], "pages": [wrap(p) for p in SHRINE]}]}
 				elif ident == "ramoloss_margelle":
 					# Un Ramoloss peint sur la margelle (PNJ, examen E-31) après le puits.

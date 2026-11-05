@@ -1,0 +1,115 @@
+{
+	"silver_trail_grass_day": {
+		"maps": [
+			"silver_trail"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "teddiursa",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 25
+			},
+			{
+				"species": "phanpy",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 20
+			},
+			{
+				"species": "skarmory",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 15
+			},
+			{
+				"species": "golem",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 20
+			},
+			{
+				"species": "machoke",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 20
+			}
+		]
+	},
+	"silver_trail_grass_night": {
+		"maps": [
+			"silver_trail"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "houndoom",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 25
+			},
+			{
+				"species": "sneasel",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 20
+			},
+			{
+				"species": "noctowl",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 25
+			},
+			{
+				"species": "golem",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 15
+			},
+			{
+				"species": "machoke",
+				"levels": [
+					52,
+					56
+				],
+				"weight": 15
+			}
+		]
+	}
+}

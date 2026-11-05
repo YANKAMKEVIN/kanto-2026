@@ -25,7 +25,7 @@ func test_real_data_loads_without_error() -> void:
 		&"celadon_dept_roof_water", &"cerulean_mart", &"cinnabar_mart", &"ecruteak_mart", &"fuchsia_mart",
 		&"goldenrod_dept_2f", &"goldenrod_dept_3f", &"goldenrod_dept_roof_lemonade",
 		&"goldenrod_dept_roof_soda", &"goldenrod_dept_roof_water", &"indigo_plateau_lobby",
-		&"lavender_mart", &"mahogany_mart", &"olivine_mart", &"pewter_mart",
+		&"lavender_mart", &"mahogany_mart", &"mt_silver_center", &"olivine_mart", &"pewter_mart",
 		&"saffron_mart", &"vermilion_mart", &"viridian_mart"]
 		as Array[StringName], "jalon 10 : Argenta (test_pewter_data) ; jalon 13 : Azuria ;"
 		+ " jalon 15 : Carmin (test_vermilion_data) ; jalon 20 : grand magasin"

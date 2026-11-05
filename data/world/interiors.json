@@ -153,6 +153,9 @@
 		"goldenrod_radio_tower_3f",
 		"goldenrod_radio_tower_4f",
 		"goldenrod_radio_tower_5f",
-		"goldenrod_radio_tower_elevator"
+		"goldenrod_radio_tower_elevator",
+		"mt_silver_center",
+		"route_28_gate",
+		"route_28_house"
 	]
 }

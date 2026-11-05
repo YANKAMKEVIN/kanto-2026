@@ -155,8 +155,9 @@ func _run(action: FlashRules.Entry) -> void:
 		FlashRules.Entry.AUTO:
 			_play_cue()
 		FlashRules.Entry.WARN:
-			if _runner != null and _library != null and _library.has_dialogue(WARN_DIALOGUE):
-				_runner.play(WARN_DIALOGUE, null, _map)
+			var warn := _warn_dialogue()
+			if _runner != null and _library != null and _library.has_dialogue(warn):
+				_runner.play(warn, null, _map)
 
 
 func _play_cue() -> void:
@@ -219,8 +220,20 @@ func _cameo_cell() -> Vector2i:
 	return CompanionTrail.NONE
 
 
+## JOH9 : dialogue sans Flash de la grotte ([method CaveLibrary.warn_dialogue]), sinon
+## [constant WARN_DIALOGUE].
+func _warn_dialogue() -> StringName:
+	var own := _caves.warn_dialogue(_map.map_id) if _caves != null and is_instance_valid(_map) \
+		else &""
+	return own if not own.is_empty() else WARN_DIALOGUE
+
+
 func _show_banner(pokemon_name: String) -> void:
 	var text := _field_moves.cue_text(MOVE, pokemon_name) if _field_moves != null else ""
+	# JOH9 (A-17) : bandeau propre à la grotte ([method CaveLibrary.flash_cue]).
+	var own := _caves.flash_cue(_map.map_id) if _caves != null and is_instance_valid(_map) else ""
+	if not own.is_empty():
+		text = own.replace("{pokemon}", pokemon_name)
 	if _hud != null and not text.is_empty():
 		# Phrase avec un nom propre : casse d'origine (les titres seuls vont en MAJUSCULES).
 		_hud.show_caption(text, BANNER_HOLD, false, false)

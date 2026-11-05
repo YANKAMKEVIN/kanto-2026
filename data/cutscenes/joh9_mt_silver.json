@@ -1,0 +1,205 @@
+{
+	"mt_silver_relay": {
+		"variants": [
+			{
+				"unless": [
+					"johto_rival_relay"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_rival_relay"
+						]
+					},
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"emote": "brace",
+						"kind": "exclamation"
+					},
+					{
+						"dialogue": "mt_silver_brace_block"
+					},
+					{
+						"dialogue": "mt_silver_cenere_block"
+					},
+					{
+						"dialogue": "mt_silver_rival_offscreen"
+					},
+					{
+						"spawn": "rival_relais",
+						"sprite": "rival",
+						"cell": [
+							19,
+							22
+						],
+						"facing": "up"
+					},
+					{
+						"dialogue": "mt_silver_rival_arrives"
+					},
+					{
+						"move": "rival_relais",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									-1,
+									0
+								],
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "rival_relais",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "rival_relais"
+					},
+					{
+						"dialogue": "mt_silver_rival_relay"
+					},
+					{
+						"face": "rival_relais",
+						"to": "up"
+					},
+					{
+						"dialogue": "mt_silver_rival_to_admins"
+					},
+					{
+						"move": "player",
+						"to": [
+							19,
+							7
+						]
+					},
+					{
+						"face": "player",
+						"to": "up"
+					},
+					{
+						"dialogue": "mt_silver_enter_cave"
+					},
+					{
+						"change_map": "mt_silver_1f",
+						"at": "from_outside",
+						"facing": "up"
+					}
+				]
+			}
+		]
+	},
+	"mt_silver_2f_rival": {
+		"variants": [
+			{
+				"unless": [
+					"johto_rival_healed"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_rival_healed"
+						]
+					},
+					{
+						"dialogue": "mt_silver_2f_footsteps"
+					},
+					{
+						"spawn": "rival_2f",
+						"sprite": "rival",
+						"cell": [
+							26,
+							11
+						],
+						"facing": "left"
+					},
+					{
+						"move": "rival_2f",
+						"to": {
+							"near": "player",
+							"offsets": [
+								[
+									1,
+									0
+								],
+								[
+									1,
+									-1
+								],
+								[
+									1,
+									1
+								],
+								[
+									0,
+									1
+								]
+							]
+						}
+					},
+					{
+						"face": "rival_2f",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "rival_2f"
+					},
+					{
+						"dialogue": "mt_silver_2f_rival_news"
+					},
+					{
+						"dialogue": "mt_silver_2f_rival_heal"
+					},
+					{
+						"dialogue": "mt_silver_2f_healed"
+					},
+					{
+						"dialogue": "mt_silver_2f_rival_leaves"
+					},
+					{
+						"move": "rival_2f",
+						"to": [
+							28,
+							3
+						]
+					},
+					{
+						"despawn": "rival_2f"
+					}
+				]
+			}
+		]
+	},
+	"mt_silver_3f_wind": {
+		"variants": [
+			{
+				"unless": [
+					"johto_mt_silver_wind_seen"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_mt_silver_wind_seen"
+						]
+					},
+					{
+						"dialogue": "mt_silver_3f_wind"
+					}
+				]
+			}
+		]
+	}
+}

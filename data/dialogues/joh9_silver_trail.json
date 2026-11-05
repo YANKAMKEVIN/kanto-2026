@@ -1,0 +1,63 @@
+{
+	"silver_trail_hiker_baptiste_before": {
+		"speaker": "Montagnard Baptiste",
+		"pages": [
+			"Personne ne monte ici sans se\nmesurer à moi !"
+		]
+	},
+	"silver_trail_hiker_baptiste_defeated": {
+		"speaker": "Montagnard Baptiste",
+		"pages": [
+			"Tu as le pied montagnard."
+		]
+	},
+	"silver_trail_hiker_baptiste_after": {
+		"speaker": "Montagnard Baptiste",
+		"pages": [
+			"Au-dessus du Centre, la neige\ncommence."
+		]
+	},
+	"silver_trail_cooltrainer_ines_before": {
+		"speaker": "Topdresseuse Inès",
+		"pages": [
+			"Le Maître de Kanto ? J'attendais ce\ncombat."
+		]
+	},
+	"silver_trail_cooltrainer_ines_defeated": {
+		"speaker": "Topdresseuse Inès",
+		"pages": [
+			"On m'avait prévenue…"
+		]
+	},
+	"silver_trail_cooltrainer_ines_after": {
+		"speaker": "Topdresseuse Inès",
+		"pages": [
+			"Il paraît qu'un homme s'entraîne\nseul, tout en haut, depuis des mois."
+		]
+	},
+	"silver_trail_blackbelt_hugo_before": {
+		"speaker": "Karatéka Hugo",
+		"pages": [
+			"Mes poings ont brisé la glace du\nsentier !"
+		]
+	},
+	"silver_trail_blackbelt_hugo_defeated": {
+		"speaker": "Karatéka Hugo",
+		"pages": [
+			"Et toi, tu m'as brisé."
+		]
+	},
+	"silver_trail_blackbelt_hugo_after": {
+		"speaker": "Karatéka Hugo",
+		"pages": [
+			"Des hommes en noir m'ont bousculé,\ncette nuit. Ils allaient vers la\ngrotte."
+		]
+	},
+	"silver_trail_panneau": {
+		"narration": true,
+		"pages": [
+			"MONT ARGENTÉ",
+			"Réservé aux Dresseurs confirmés."
+		]
+	}
+}

@@ -1,0 +1,100 @@
+{
+	"mt_silver_1f_rubble": {
+		"maps": [
+			"mt_silver_1f"
+		],
+		"terrain": "rubble",
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "ursaring",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 25
+			},
+			{
+				"species": "donphan",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 20
+			},
+			{
+				"species": "onix",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 20
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 25
+			},
+			{
+				"species": "machoke",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 10
+			}
+		]
+	},
+	"mt_silver_1f_water": {
+		"maps": [
+			"mt_silver_1f"
+		],
+		"terrain": "water",
+		"rate": 5,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "tentacruel",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 30
+			},
+			{
+				"species": "gyarados",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 20
+			},
+			{
+				"species": "dewgong",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 30
+			},
+			{
+				"species": "seel",
+				"levels": [
+					58,
+					62
+				],
+				"weight": 20
+			}
+		]
+	}
+}

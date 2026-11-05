@@ -1,0 +1,44 @@
+{
+	"dante": {
+		"cell": [
+			9,
+			8
+		],
+		"facing": "right",
+		"sprite": "gentleman",
+		"dialogue": "mt_silver_summit_dante_talk",
+		"unless": [
+			"johto_chapter_done"
+		]
+	},
+	"cenere_sommet": {
+		"cell": [
+			10,
+			8
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "mt_silver_summit_cenere_talk",
+		"if": [
+			"johto_giovanni_seen"
+		],
+		"unless": [
+			"johto_chapter_done"
+		]
+	},
+	"rival_sommet": {
+		"cell": [
+			14,
+			8
+		],
+		"facing": "left",
+		"sprite": "rival",
+		"dialogue": "mt_silver_summit_rival_talk",
+		"if": [
+			"johto_giovanni_seen"
+		],
+		"unless": [
+			"johto_rival_final_done"
+		]
+	}
+}

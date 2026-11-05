@@ -24,6 +24,10 @@ extends RefCounted
 ## Clé facultative « dark » (booléen, faux par défaut ; J17 T9 / J18, dossier 21 §5.2) : grotte
 ## **obscure**, couverte par le voile d'obscurité ([DarknessController]) ; seule source de
 ## « carte obscure » ([method is_dark]). Le Mont Sélénite n'en a pas.
+## Chapitre Johto, JOH9 (dossier joh-10 A-16, A-17) : clés facultatives d'une grotte obscure,
+## « warn_dialogue » (identifiant du dialogue sans Flash, à la place de `dark_cave_too_dark`) et
+## « flash_cue » (bandeau de Flash, `{pokemon}` = le lanceur, à la place de celui de
+## `field_moves.json`) ; textes non vides ([method warn_dialogue], [method flash_cue]).
 ## **Plusieurs bouches** (jalon 17, jalon-17.md §2.3, dossier 20 §12) : à la place de « escape »
 ## (exclusives), « escapes » est une liste non vide de sorties qui portent chacune « rows »
 ## ([première, dernière] rangée, entiers ≥ 0, comprises) ; les plages ne se chevauchent pas. La
@@ -38,7 +42,8 @@ extends RefCounted
 
 const DATA_PATH: String = "res://data/world/caves.json"
 const _ROOT_KEYS: Array[String] = ["_doc", "caves"]
-const _CAVE_KEYS: Array[String] = ["maps", "escape", "escapes", "dark"]
+const _CAVE_KEYS: Array[String] = ["maps", "escape", "escapes", "dark", "warn_dialogue",
+	"flash_cue"]
 const _ESCAPE_KEYS: Array[String] = ["map", "spawn", "facing"]
 const _ESCAPES_KEYS: Array[String] = ["map", "spawn", "facing", "rows"]
 ## Case du joueur inconnue ([method escape_target]).
@@ -50,6 +55,9 @@ var _cave_of: Dictionary[StringName, StringName] = {}
 var _maps: Dictionary[StringName, Array] = {}
 ## Grottes obscures (clé « dark » vraie).
 var _dark: Dictionary[StringName, bool] = {}
+## JOH9 : grotte → dialogue sans Flash, bandeau de Flash (facultatifs).
+var _warn: Dictionary[StringName, StringName] = {}
+var _cue: Dictionary[StringName, String] = {}
 ## Grotte → sorties (Array[CaveExit], ordre du fichier ; une seule avec « escape »).
 var _exits: Dictionary[StringName, Array] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -113,6 +121,16 @@ func cave_of(map_id: StringName) -> StringName:
 ## Vrai si [param map_id] est une carte d'une grotte obscure (« dark » : voile d'obscurité).
 func is_dark(map_id: StringName) -> bool:
 	return _dark.has(cave_of(map_id))
+
+
+## JOH9 : dialogue sans Flash propre à la grotte de [param map_id] (&"" : celui par défaut).
+func warn_dialogue(map_id: StringName) -> StringName:
+	return _warn.get(cave_of(map_id), &"")
+
+
+## JOH9 : bandeau de Flash propre à la grotte de [param map_id] ("" : celui de la capacité).
+func flash_cue(map_id: StringName) -> String:
+	return _cue.get(cave_of(map_id), "")
 
 
 ## Sortie de la grotte de [param map_id] (où mène la Corde Sortie) ; null hors grotte.
@@ -206,6 +224,13 @@ func _add_cave(cave: StringName, raw: Variant, where: String) -> bool:
 		return _fail("%s : « dark » doit être un booléen" % where)
 	if dark:
 		_dark[cave] = true
+	for key: String in ["warn_dialogue", "flash_cue"]:
+		if entry.has(key) and (not entry[key] is String or (entry[key] as String).strip_edges().is_empty()):
+			return _fail("%s : « %s » doit être un texte non vide" % [where, key])
+	if entry.has("warn_dialogue"):
+		_warn[cave] = StringName(entry["warn_dialogue"])
+	if entry.has("flash_cue"):
+		_cue[cave] = entry["flash_cue"]
 	_maps[cave] = maps
 	_exits[cave] = exits
 	for map: StringName in maps:

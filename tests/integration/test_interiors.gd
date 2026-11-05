@@ -398,13 +398,14 @@ func test_lab_starter_table_and_blocked_stairs() -> void:
 
 
 ## Jalon 4 (§13.6) : déclencheur LabExit sur le tapis de sortie, de tous côtés, scène
-## oak_lab_exit ; seul déclencheur des intérieurs.
+## oak_lab_exit ; seul déclencheur des intérieurs. Chapitre Johto, JOH9 : plus celui de l'épilogue
+## (7, 8), en montant (`johto_epilogue`, test_joh9_maps).
 func test_lab_exit_trigger_on_the_mat() -> void:
 	var map: GameMap = _maps[&"oak_lab"]
 	var point := map.get_node_or_null(^"Triggers/LabExit") as EventTriggerPoint
 	assert_not_null(point, "Triggers/LabExit")
-	assert_eq(map.get_node(^"Triggers").get_child_count(), 1)
-	assert_eq(map.get_triggers().size(), 1)
+	assert_eq(map.get_node(^"Triggers").get_child_count(), 2)
+	assert_eq(map.get_triggers().size(), 2)
 	for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
 		var trigger := map.get_triggers().find_on_step(Vector2i(7, 9), direction)
 		assert_not_null(trigger, "pas vers %s" % direction)
