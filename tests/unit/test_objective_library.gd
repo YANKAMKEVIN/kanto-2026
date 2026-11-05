@@ -28,7 +28,9 @@ func test_real_data_loads_without_error() -> void:
 	# JOH8 (QA A17) : ses trois objectifs [D] en tête (le doyen, la Tour Carillon, le retour).
 	assert_eq(library.get_ids(), [&"report_to_ecruteak_elder", &"climb_bell_tower",
 		&"see_ecruteak_elder", &"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
-		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"leave_radio_tower", &"free_radio_tower",
+		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"stones_back_to_rosalia", &"stones_beat_cenere",
+		&"stones_go_altar", &"stones_clan_trial", &"stones_meet_elder", &"stones_find_messenger",
+		&"stones_reach_cianwood", &"stones_reach_alph", &"leave_radio_tower", &"free_radio_tower",
 		&"talk_to_kurt_in_well", &"take_brace_papers",
 		&"clear_slowpoke_well", &"meet_kurt", &"search_underground", &"reach_goldenrod",
 		&"go_route_39", &"choose_johto_partner", &"rest_olivine",
@@ -496,7 +498,11 @@ func test_joh5_objectives_in_order() -> void:
 		flags.set_flag(flag)
 	assert_eq(library.current_id(flags), &"talk_to_kurt_in_well", "le JOH4 d'abord")
 	var steps: Array = [[&"johto_slowpoke_well_cleared", &"free_radio_tower"],
-		[&"johto_team_returned", &"leave_radio_tower"], [&"johto_act2", &"go_ecruteak_sages"]]
+		[&"johto_radio_office_done", &"leave_radio_tower"], [&"johto_stones_quest", &"stones_reach_alph"],
+		[&"johto_stone_memory", &"stones_reach_cianwood"], [&"johto_stone_tide_lost", &"stones_find_messenger"],
+		[&"johto_clan_called", &"stones_meet_elder"], [&"johto_clan_trial_open", &"stones_clan_trial"],
+		[&"johto_stone_breath", &"stones_go_altar"], [&"johto_stones_awakened", &"stones_beat_cenere"],
+		[&"johto_team_returned", &"stones_back_to_rosalia"], [&"johto_act2", &"go_ecruteak_sages"]]
 	for step: Array in steps:
 		flags.set_flag(step[0])
 		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])

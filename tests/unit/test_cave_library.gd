@@ -33,6 +33,8 @@ func test_real_data_mt_moon() -> void:
 		# Chapitre Johto, JOH6 : Tour Cendrée, repaire d'Acajou ; JOH4 : le Puits Ramoloss (Corde
 		# Sortie → devant le puits) ; JOH7 : les Îles Tourbillon (Corde Sortie → Route 41, en Surf) ; JOH8 : la Tour Carillon.
 		&"burned_tower", &"mahogany_hideout", &"slowpoke_well",
+		# JOHP3 : l'Antre du Dragon (Corde Sortie → devant sa bouche, à Ébènelle).
+		&"dragons_den",
 		# JOHP1 : la Galerie des Glyphes (Corde Sortie → devant son escalier).
 		&"alph_gallery", &"whirl_islands",
 		&"bell_tower",

@@ -69,7 +69,7 @@ const TRAINERS: Dictionary = {
 		["Mes ondes sont parfaites ! Tu ne toucheras pas à la porte !", "Erreur de mesure.",
 			"Le mot de passe ? Je ne le dirai jamais. Jamais !"]],
 	&"mahogany_hideout_b3f_brace": ["Brace", [[&"fearow", 63], [&"arbok", 63], [&"weezing", 64],
-		[&"houndoom", 62]], BRACE_LINES],
+		[&"houndoom", 65]], BRACE_LINES],
 }
 ## Dresseurs de la vue : [carte, position, case, regard, portée] (grilles) ; Dresseurs déclenchés par
 ## une scène (alarmes, Brace) à part.

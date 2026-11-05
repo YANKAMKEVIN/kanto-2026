@@ -54,7 +54,7 @@
 			15
 		],
 		"facing": "left",
-		"sprite": "hiker",
+		"sprite": "mountaineer",
 		"dialogue": "blackthorn_hiker_herve_after",
 		"trainer": {
 			"id": "blackthorn_hiker_herve",

@@ -10,9 +10,6 @@ extends CanvasLayer
 
 ## Artwork officiel de Dracolosse (mémoire « Pokémon art source »).
 const DRAGON_TEXTURE: Texture2D = preload("res://assets/sprites/pokemon/official/149.png")
-const SKY_TOP := Color(0.32, 0.55, 0.86)
-const SKY_BOTTOM := Color(0.93, 0.8, 0.62)
-const CLOUD_COLOR := Color(1.0, 1.0, 1.0, 0.75)
 const CLOUDS: int = 7
 ## Hauteur de l'artwork à l'écran (référence 1080) [D].
 const DRAGON_HEIGHT: float = 460.0
@@ -44,8 +41,8 @@ func _ready() -> void:
 	sky.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	sky.stretch_mode = TextureRect.STRETCH_SCALE
 	var gradient := Gradient.new()
-	gradient.set_color(0, SKY_TOP)
-	gradient.set_color(1, SKY_BOTTOM)
+	gradient.set_color(0, UiTokens.FLIGHT_SKY_TOP)
+	gradient.set_color(1, UiTokens.FLIGHT_SKY_BOTTOM)
 	var texture := GradientTexture2D.new()
 	texture.gradient = gradient
 	texture.fill_from = Vector2(0.5, 0.0)
@@ -55,7 +52,7 @@ func _ready() -> void:
 	for i: int in CLOUDS:
 		var cloud := ColorRect.new()
 		cloud.name = "Cloud%d" % i
-		cloud.color = CLOUD_COLOR
+		cloud.color = UiTokens.FLIGHT_CLOUD_COLOR
 		cloud.size = Vector2(260.0 + 60.0 * (i % 3), 34.0 + 10.0 * (i % 2))
 		_root.add_child(cloud)
 		_clouds.append(cloud)
