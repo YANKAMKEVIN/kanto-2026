@@ -99,13 +99,14 @@ const BUILDINGS: Dictionary = {
 		["bldg_maison_argenta_01", Vector2i(21, 21), "Maison1"],
 	],
 }
-## Pont du Goéland : le bateau découpé dans sa vue générale validée, calé sur la grille (pixels de
-## la carte ; les personnages de la rangée 3 ont les pieds au pied de la cabine), sur une mer animée
+## Pont du Goéland : le bateau peint par Codex d'après sa vue générale et sa silhouette d'Oliville,
+## calé sur la grille par `tools/art/johp2_pont.py` (pixels de la carte ; les personnages de la
+## rangée 3 ont les pieds au pied de la cabine), sur une mer animée
 ## qui déborde de la carte (pas de bandes noires) et file vers l'ouest : le bateau fait route à l'est.
 const DECK_BOAT: String = "res://assets/world/props/prop_goeland_pont_01.png"
-const DECK_BOAT_AT := Vector2(11, 85)
+const DECK_BOAT_AT := Vector2(-20, 29)
 const DECK_MATERIAL: String = "res://game/world/lighting/materials/world_object.tres"
-## Mer tirée de la vue générale, rendue raccordable par miroir.
+## Mer composée à partir de celle de la vue générale, raccordable (même outil).
 const SEA_TEXTURE: String = "res://assets/world/ground/ground_mer_goeland_01.png"
 const SEA_SHADER: String = "res://game/world/ground/water_flow.gdshader"
 const SEA_RECT := Rect2(-960, -768, 3456, 2304)

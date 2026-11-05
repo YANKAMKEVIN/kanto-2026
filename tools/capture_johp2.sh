@@ -24,6 +24,8 @@ SHOTS=(
 	"irisia_ouest|60|${S}johto_johp2_cianwood --cell=9,16 --facing=up"
 	"irisia_nord_ouest|60|${S}johto_johp2_cianwood --cell=9,7 --facing=left"
 	"irisia_sud_ouest|60|${S}johto_johp2_cianwood --cell=9,23 --facing=left"
+	"pont_bas_droite|60|${S}johto_johp2_deck --cell=13,5 --facing=right"
+	"pont_droite|60|${S}johto_johp2_deck --cell=14,4 --facing=right"
 	"pont_arrivee|60|${S}johto_johp2_deck"
 	"pont_goulven|60|${S}johto_johp2_deck --cell=11,3 --facing=right"
 	"irisia_quai|60|${S}johto_johp2_cianwood"
