@@ -10,7 +10,7 @@
 
 ## Philosophie
 
-> « Kanto 2026 n'est pas un remake modernisé de Rouge/Bleu. C'est une réinterprétation : conserver l'ADN qui rend l'expérience Pokémon reconnaissable, supprimer les frictions héritées des anciennes contraintes techniques et repenser chaque interaction comme si elle était conçue aujourd'hui pour une expérience mobile moderne, tactile, fluide, accessible et immersive. » (inscrite dans `vision.md`)
+> « Kanto 2026 n'est pas une version modernisée de Rouge/Bleu. C'est une réinterprétation : conserver l'ADN qui rend l'expérience Pokémon reconnaissable, supprimer les frictions héritées des anciennes contraintes techniques et repenser chaque interaction comme si elle était conçue aujourd'hui pour une expérience mobile moderne, tactile, fluide, accessible et immersive. » (inscrite dans `vision.md`)
 
 Pour chaque écran, la question n'est pas « comment Pokémon faisait ça ? » mais : **pourquoi Pokémon faisait ça, qu'est-ce qui mérite d'être conservé, et comment le ferait-on mieux aujourd'hui ?**
 

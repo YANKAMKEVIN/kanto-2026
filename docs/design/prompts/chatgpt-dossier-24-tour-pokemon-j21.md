@@ -10,7 +10,7 @@
 
 ---
 
-Tu m'aides à concevoir le **jalon 21** de *Kanto 2026*, mon remake personnel de Pokémon Rouge/Bleu en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier, après une passe d'alignement avec le code réel. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
+Tu m'aides à concevoir le **jalon 21** de *Kanto 2026*, mon jeu personnel en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier, après une passe d'alignement avec le code réel. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
 
 Le J21 **résout l'intrigue de la Tour Pokémon** ouverte au J19 : le joueur revient à Lavanville avec le Scope Sylphe obtenu au J20, voit enfin les spectres pour ce qu'ils sont, apaise l'âme de la mère d'Osselait, chasse la Team Rocket du sommet de la Tour, libère M. Fuji et reçoit la Poké Flûte. C'est un jalon **court en surface, fort en émotion** : pas de nouvelle ville, pas d'Arène.
 

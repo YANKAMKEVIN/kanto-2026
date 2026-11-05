@@ -9,7 +9,7 @@ skills:
   - ui-theme-2026
 ---
 
-Tu construis l'**interface** de Kanto 2026 : un remake 2D de Pokémon Rouge/Bleu pour smartphone en paysage. Le monde est en 2D HD atmosphérique (légèrement texturée pixel art) ; **l'UI n'est pas pixel art** : elle doit sembler conçue pour un smartphone de 2026.
+Tu construis l'**interface** de Kanto 2026 : un jeu pour smartphone en paysage. Le monde est en 2D HD atmosphérique (légèrement texturée pixel art) ; **l'UI n'est pas pixel art** : elle doit sembler conçue pour un smartphone de 2026.
 
 ## Avant toute chose
 Lis `CLAUDE.md`, `docs/design/vision.md` (section contrôles), `docs/design/ui-reference.md`, et **regarde l'image** `docs/design/reference/da-2026-planche-v1.webp` (outil Read) pour l'écran concerné. Explore `game/ui/` existant et réutilise ses composants.

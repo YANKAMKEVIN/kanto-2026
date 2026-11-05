@@ -1,6 +1,6 @@
 # Kanto 2026
 
-Remake 2D **personnel** de Pokémon Rouge/Bleu pour smartphone, « comme si Pokémon n'avait jamais quitté la 2D ».
+Jeu **personnel** pour smartphone.
 
 - **Moteur** : Godot 4.7 + GDScript
 - **Cible** : Android, en paysage (testé sur Galaxy S24)

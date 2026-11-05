@@ -10,7 +10,7 @@
 
 ---
 
-Tu m'aides à concevoir **Argenta et sa première Arène** pour *Kanto 2026*, mon remake personnel de Pokémon Rouge/Bleu en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
+Tu m'aides à concevoir **Argenta et sa première Arène** pour *Kanto 2026*, mon jeu personnel en 2D HD peinte, sur smartphone (Android, paysage, déplacement case par case). Je suis le directeur du jeu ; un autre assistant (Claude) implémente à partir de ton dossier. Il a besoin d'un dossier **complet, précis et sans ambiguïté** : tout ce que tu ne tranches pas, il devra me le redemander.
 
 ## Ce qui est déjà décidé dans le projet (à respecter, ne pas remettre en cause)
 

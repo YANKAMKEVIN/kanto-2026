@@ -225,6 +225,6 @@ critiques traités, décision explicite prise.
 ## Note de la session de coordination (2026-10-19)
 
 Le J35 dépend entièrement du **Go juridique** du J34 (§7 du dossier J34) : sans lui, la bêta reste à
-l'état de protocole, et le jeu reste ce que `CLAUDE.md` décrit, un remake **personnel**. Cette
+l'état de protocole, et le jeu reste ce que `CLAUDE.md` décrit, un projet **personnel**. Cette
 décision appartient à Kevin, éclairé par un avis compétent ; les sessions de développement ne la
 prennent pas.

@@ -130,7 +130,7 @@ concrétise cette intrigue environnementale. Aucune cinématique explicative obl
 - **Navigation** : tous les chemins accessibles avec les capacités déjà obtenues, sans nouvelle CS
   ni nouveau Badge.
 - **Référence historique** : plans, rencontres et objets relevés dans Rouge/Bleu ; ne pas mélanger
-  silencieusement Jaune et les remakes.
+  silencieusement Jaune et Rouge Feu/Vert Feuille.
 
 ## 8. États persistants proposés
 

@@ -2,17 +2,17 @@
 
 > « Construire le Kanto que notre imagination voyait derrière les pixels de la Game Boy. »
 
-Source : conception menée par Kevin avec ChatGPT (fil « Pokémon en 2D »). Ce document en est la synthèse de référence. **Kevin est le directeur du jeu** : toute décision de design non couverte ici lui revient.
+Source : conception menée par Kevin avec ChatGPT. Ce document en est la synthèse de référence. **Kevin est le directeur du jeu** : toute décision de design non couverte ici lui revient.
 
 ## Cadre
 
-- Remake **personnel** de Pokémon Rouge/Bleu (pas de publication, installation APK directe).
+- Jeu **personnel** (pas de publication, installation APK directe).
 - Plateforme : Android (Galaxy S24, 2340×1080), iOS éventuellement plus tard.
 - Moteur : Godot 4.7 + GDScript.
 
 ## Principe directeur
 
-> **Philosophie officielle (Kevin, 2026-10-02)** : « Kanto 2026 n'est pas un remake modernisé de Rouge/Bleu. C'est une réinterprétation : conserver l'ADN qui rend l'expérience Pokémon reconnaissable, supprimer les frictions héritées des anciennes contraintes techniques et repenser chaque interaction comme si elle était conçue aujourd'hui pour une expérience mobile moderne, tactile, fluide, accessible et immersive. »
+> **Philosophie officielle (Kevin, 2026-10-02)** : « Kanto 2026 n'est pas une version modernisée de Rouge/Bleu. C'est une réinterprétation : conserver l'ADN qui rend l'expérience Pokémon reconnaissable, supprimer les frictions héritées des anciennes contraintes techniques et repenser chaque interaction comme si elle était conçue aujourd'hui pour une expérience mobile moderne, tactile, fluide, accessible et immersive. »
 
 Pour chaque système, la question n'est jamais « comment Pokémon faisait ça ? » mais : **pourquoi Pokémon faisait ça, qu'est-ce qui mérite d'être conservé, et comment le ferait-on mieux aujourd'hui ?** On garde l'ADN (exploration, capture, équipe de 6, quatre capacités, types, évolutions, rival, Pokédex, Arènes, Ligue, découverte de Kanto) ; on ne sacralise pas les anciennes contraintes (menus lourds, navigation répétitive, interfaces pensées pour deux boutons, monde figé).
 
@@ -69,7 +69,7 @@ Références visuelles :
 - [`reference/chambre-joueur-v1.webp`](reference/chambre-joueur-v1.webp) : **référence de la chambre du joueur** (fournie par Kevin, 2026-09-25) : agencement de la pièce et rendu cible des intérieurs (lumière chaude du soir par la fenêtre, parquet, décor riche, murs visibles).
 - [`reference/ouverture-storyboard-v1.webp`](reference/ouverture-storyboard-v1.webp), [`reference/maison-rival-v1.webp`](reference/maison-rival-v1.webp), [`reference/labo-chen-v1.png`](reference/labo-chen-v1.png) : **références des intérieurs** et de l'ouverture (Kevin, 2026-09-25/26). L'Évoli de la maison du rival est une erreur, à ignorer.
 
-Historique : d'abord « C : Pokémon 2D 2026 » en pixel art HD, puis évolution validée vers la 2D HD atmosphérique hybride, puis (2026-10-03) personnages et Pokémon peints comme le décor.
+Historique : d'abord l'option C en pixel art HD, puis évolution validée vers la 2D HD atmosphérique hybride, puis (2026-10-03) personnages et Pokémon peints comme le décor.
 
 ## Contrôles mobiles
 

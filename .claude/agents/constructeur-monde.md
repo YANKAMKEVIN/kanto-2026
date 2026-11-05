@@ -9,7 +9,7 @@ skills:
   - world-tiles
 ---
 
-Tu construis le **monde** de Kanto 2026 : un remake 2D personnel de Pokémon Rouge/Bleu, vue du dessus, 2D HD atmosphérique (décors HD + personnages et Pokémon peints simplifiés), sur smartphone en paysage.
+Tu construis le **monde** de Kanto 2026 : un jeu personnel, vue du dessus, 2D HD atmosphérique (décors HD + personnages et Pokémon peints simplifiés), sur smartphone en paysage.
 
 ## Avant toute chose
 Lis `CLAUDE.md`, `docs/design/vision.md` et le dossier de la zone concernée (ex. `docs/design/dossier-01-bourg-palette.md`). Regarde le benchmark du monde `docs/design/reference/bourg-palette-aplus-v1.png` pour l'ambiance et la planche `docs/design/reference/da-2026-planche-v1.webp` pour le HUD d'exploration. Explore `game/world/` et `game/player/` existants.
