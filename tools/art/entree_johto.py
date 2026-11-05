@@ -7,6 +7,8 @@ prêt, à droite lancer, dans la main de Pierre.
   tools/art/entree_johto.py prompts         # prompts → tools/art/entree_dresseurs/johto/
   tools/art/entree_johto.py generer <id> [r]
   tools/art/entree_johto.py exporter [id …] # détourage, toiles, WebP, mains → johto/mains.json
+  tools/art/entree_johto.py buste <id> [r]  # buste « VS » via Codex (gabarit des Champions)
+  tools/art/entree_johto.py bustes [id …]   # bustes → assets/ui/battle/vs/
 
 Le branchement dans `trainer_intro.json` et les données de Dresseurs vient après : voir `mains.json`.
 """
@@ -20,6 +22,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import entree_champions as ec  # noqa: E402
 import entree_dresseurs as ed  # noqa: E402
 import entree_ordinaires as eo  # noqa: E402
 
@@ -83,6 +86,12 @@ FOND : TRANSPARENT (vrai canal alpha), aucun damier dessiné, aucun décor, aucu
 """
 
 
+BUSTES = ["dante", "brace", "cenere", "ysolde", "rival_hiver", "rivale_hiver"]
+# Détail à soigner dans le buste, en plus de la description.
+BUSTE_NOTES = {"dante": " La CICATRICE DE BRÛLURE doit bien se lire ici : peau plus claire, rosée et marbrée sur la moitié gauche du "
+	"visage, de la tempe à la mâchoire, sobre et sans gore. Expression : calme absolu, aucune colère."}
+
+
 def _duo(a: Path, b: Path, sortie: Path) -> None:
 	i, j = Image.open(a).convert("RGBA"), Image.open(b).convert("RGBA")
 	t = Image.new("RGBA", (i.width + j.width + 40, max(i.height, j.height)), (0, 0, 0, 0))
@@ -114,6 +123,28 @@ def prompts() -> None:
 	PROMPTS.mkdir(parents=True, exist_ok=True)
 	for ident, (_, desc, debout, lancer) in PERSOS.items():
 		(PROMPTS / f"{ident}_sprites.txt").write_text(GABARIT.format(ident="EJ_" + ident.upper(), desc=desc, debout=debout, lancer=lancer))
+
+
+def prompts_bustes() -> None:
+	for ident in BUSTES:
+		desc = PERSOS[ident][1] + "." + BUSTE_NOTES.get(ident, "")
+		(PROMPTS / f"{ident}_buste.txt").write_text(ec.BUSTE.format(ident="EJ_" + ident.upper(), desc=desc))
+
+
+def generer_buste(ident: str, rev: str = "1") -> int:
+	ref = JC / "ref_pierre_buste.png"
+	Image.open(ed.VS / "pierre.webp").convert("RGBA").save(ref)
+	debout = JC / f"ref_debout_{ident}.png"
+	Image.open(ed.SPR / f"{ident}.webp").convert("RGBA").save(debout)
+	return subprocess.call([str(RACINE / "tools" / "art" / "generer.sh"), f"EJ_{ident}_buste_r{rev}",
+		str(PROMPTS / f"{ident}_buste.txt"), str(ref), str(debout)], cwd=RACINE)
+
+
+def exporter_bustes(idents: list[str]) -> None:
+	for ident in idents or BUSTES:
+		p = ed.ART / f"EJ_{ident}_buste_r1.png"
+		if p.exists():
+			ed._webp(ec._buste(Image.open(p).convert("RGBA")), ed.VS / f"{ident}.webp")
 
 
 def generer(ident: str, rev: str = "1") -> int:
@@ -156,3 +187,8 @@ if __name__ == "__main__":
 		sys.exit(generer(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "1"))
 	elif act == "exporter":
 		exporter(sys.argv[2:])
+	elif act == "buste":
+		prompts_bustes()
+		sys.exit(generer_buste(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "1"))
+	elif act == "bustes":
+		exporter_bustes(sys.argv[2:])
