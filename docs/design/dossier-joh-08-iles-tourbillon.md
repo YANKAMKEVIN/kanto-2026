@@ -17,6 +17,8 @@
 
 - JOH6 fait : `johto_raikou_done`, `johto_whirl_clue` ; équipe 60–66 attendue.
 - Le joueur a Surf et Force (Kanto) ; aucune CS neuve (JH-48).
+- Arc des Pierres (JOH-11) : Cenere a déjà été battue à l'Antre du Dragon ; **M-14** dit désormais « Trois erreurs »
+  (validé le 2026-11-05, le code du JOH7 change avec le JOHP3) ; la mer au sud d'Oliville est fermée tant que `johto_act2` manque (JH-72).
 
 ## 3. Géographie **[D]**
 
@@ -168,7 +170,7 @@ Format : bulles séparées par « / ». `{joueur}` = nom.
 | M-11 | Examen, courant | Le courant emporte {joueur} ! |
 | M-12 | Système, Suicune | Un Pokémon bleu se tient sur le rocher. / Il regarde {joueur}, sans bouger. |
 | M-13 | Examen, Suicune (avant Cenere) | Suicune observe {joueur}. / On dirait qu'il attend quelque chose. |
-| M-14 | Cenere, arrivée | Tu es là avant moi. Encore. / Deux erreurs de calcul. Ça commence à faire beaucoup. |
+| M-14 | Cenere, arrivée | Tu es là avant moi. Encore. / Trois erreurs de calcul. Ça commence à faire beaucoup. |
 | M-15 | Cenere, avant | Cette fois, j'ai étudié ton équipe. Chaque Pokémon. Chaque attaque. / Recule, ou je te range dans mes statistiques. |
 | M-16 | Cenere, défaite | … Je ne comprends pas. / Mes calculs étaient justes. |
 | M-17 | Cenere, après | Garde ton Suicune. Il ne compte plus. / Le maître a déjà le troisième. Le rouge. / Il monte à la Tour Carillon. / Quand Ho-Oh descendra, tu comprendras que tu as perdu depuis le début. · *(système)* Cenere s'en va… |

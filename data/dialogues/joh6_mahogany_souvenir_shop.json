@@ -1,0 +1,34 @@
+{
+	"mahogany_souvenir_shop_vendeur": {
+		"speaker": "Vendeur",
+		"variants": [
+			{
+				"unless": [
+					"johto_hideout_found"
+				],
+				"pages": [
+					"Bienvenue ! Des\nsouvenirs d'Acajou ?",
+					"… Non ? Alors ne traîne pas, je\nferme bientôt."
+				],
+				"action": "open_shop",
+				"shop": "mahogany_mart"
+			},
+			{
+				"if": [
+					"johto_hideout_found"
+				],
+				"pages": [
+					"Hé ! Qui t'a permis de…",
+					"… Tant pis. De toute façon,\nBrace t'attend."
+				]
+			}
+		]
+	},
+	"mahogany_souvenir_shop_etagere": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"Des cartes postales et des\nporte-clés d'Acajou."
+		]
+	}
+}

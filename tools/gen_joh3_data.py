@@ -111,6 +111,12 @@ CLUE = ["Tu crois qu'on est seulement ici ?",
 	"Et les ordres viennent d'en haut.\nDe très haut."]
 
 NARRATION = None
+# JOH5 (T-1, T-37) : les messages du haut-parleur pendant et après la prise de la Tour Radio.
+SPEAKER_ROCKET_TEXT = ["Ici Radio Rocket.", "À tous les membres de la Team Rocket, où que vous soyez :",
+	"Giovanni, reviens ! La Team Rocket t'attend à Johto.",
+	"Rassemblez-vous. Le grand retour approche."]
+SPEAKER_AFTER_TEXT = ["Ici Radio Doublonville ! Les programmes reprennent.",
+	"Et un grand merci à un jeune Dresseur venu de Kanto !"]
 SPEAKER_TEXT = ["Ici Radio Doublonville…\nbonne jour…", "…crrr… R… reviens… crrr…",
 	"…nous nous excusons\npour cette interruption."]
 # Textes des panneaux, PNJ et examens : (carte, position) → (orateur, pages[, brouillon]).
@@ -349,7 +355,12 @@ def main():
 			elif kind in ("panneau", "examen"):
 				dialogues["%s_%s" % (map_id, ident)] = dialogue(*TEXTS[key])
 			elif kind == "decor" and ident == "haut_parleur":
-				dialogues["goldenrod_speaker"] = dialogue("Haut-parleur", SPEAKER_TEXT)
+				# JOH5 : T-1 au retour du Bois aux Chênes, T-37 après Cenere (dossier JOH-06 §4, §14).
+				dialogues["goldenrod_speaker"] = {"speaker": "Haut-parleur", "variants": [
+					{"if": ["johto_cenere_defeated"], "pages": SPEAKER_AFTER_TEXT},
+					{"if": ["johto_slowpoke_well_cleared"], "pages": SPEAKER_ROCKET_TEXT},
+					{"pages": SPEAKER_TEXT},
+				]}
 			elif kind == "objet_visible":
 				ident = object_id(ident)
 				flag = "got_" + ident
@@ -468,8 +479,14 @@ def write_interiors():
 			for tier, line in enumerate(BOND_TIERS)] + [
 			# Équipe vide (ne devrait pas arriver) : l'accueil seul.
 			{"pages": BOND_INTRO}]},
-		"goldenrod_house_1_woman": dialogue("Femme", ["Mon mari travaille à la Tour Radio.",
-			"Il n'est pas rentré\ndepuis trois jours.", "Ils disent qu'il fait\ndes heures en plus…"]),
+		# JOH5 (T-35) : son mari est rentré ; don et textes dans `data/*/joh5_radio_tower.json`.
+		"goldenrod_house_1_woman": {"speaker": "Femme", "variants": [
+			{"if": ["goldenrod_husband_gift"], "pages": [
+				"Il dort depuis hier soir. Il dit qu'il ne remontera jamais dans le noir."]},
+			{"if": ["johto_act2"], "cutscene": "goldenrod_husband_gift"},
+			{"pages": ["Mon mari travaille à la Tour Radio.",
+				"Il n'est pas rentré\ndepuis trois jours.", "Ils disent qu'il fait\ndes heures en plus…"]},
+		]},
 		# Maison 2 : aucun texte au dossier [D].
 		"goldenrod_house_2_man": dialogue("Habitant", ["Le soir, on entend la radio\ngrésiller dans toute la rue.",
 			"Avant, elle passait de la musique\ntoute la nuit."], True),
@@ -521,6 +538,9 @@ def write_interiors():
 		"goldenrod_house_1": {
 			"woman": {"cell": [4, 5], "facing": "right", "sprite": "mom",
 				"dialogue": "goldenrod_house_1_woman"},
+			# JOH5 (T-36) : Raphaël, de retour après la Tour Radio.
+			"raphael": {"cell": [6, 5], "facing": "left", "sprite": "engineer",
+				"dialogue": "goldenrod_radio_raphael_home", "if": ["johto_act2"]},
 		},
 		"goldenrod_house_2": {
 			"man": {"cell": [12, 6], "facing": "left", "sprite": "old_man",

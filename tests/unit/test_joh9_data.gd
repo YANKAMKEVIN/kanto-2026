@@ -307,6 +307,15 @@ func test_altar_of_ilex_forest_calls_celebi_once_the_green_ball_is_given() -> vo
 	assert_eq(variant.cutscene, &"ilex_altar_celebi")
 
 
+func test_raikou_returns_to_the_burned_tower_after_the_chapter() -> void:
+	var spec := NpcRoster.load_for_map(&"burned_tower_b1f").get_spec(&"raikou_retour")
+	assert_not_null(spec)
+	assert_eq(spec.dialogue, &"joh9_raikou_return")
+	var steps := _scene_steps(&"joh9_raikou_return")
+	assert_eq(steps[0].kind, CutsceneStep.Kind.WILD_BATTLE)
+	assert_eq(steps[0].species, &"raikou")
+
+
 func test_celebi_scene_is_a_catchable_level_60_encounter() -> void:
 	var steps := _scene_steps(&"ilex_altar_celebi")
 	var battle := steps[-1]

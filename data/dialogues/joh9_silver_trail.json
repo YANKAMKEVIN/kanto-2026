@@ -59,35 +59,5 @@
 			"MONT ARGENTÉ",
 			"Réservé aux Dresseurs confirmés."
 		]
-	},
-	"lake_of_rage_forest_ranger": {
-		"speaker": "Garde forestier",
-		"variants": [
-			{
-				"unless": [
-					"johto_act3"
-				],
-				"pages": [
-					"La montagne est fermée.",
-					"Là-haut, la neige ne pardonne pas."
-				]
-			},
-			{
-				"if": [
-					"johto_act3"
-				],
-				"pages": [
-					"Le Mont Argenté ? Des hommes en noir\ny sont montés cette nuit.",
-					"Je n'ai pas pu les arrêter. Toi,\npeut-être. Passe."
-				]
-			}
-		]
-	},
-	"lake_of_rage_trail_closed": {
-		"speaker": "Garde forestier",
-		"pages": [
-			"La montagne est fermée.",
-			"Là-haut, la neige ne pardonne pas."
-		]
 	}
 }

@@ -1,0 +1,49 @@
+{
+	"cenere": {
+		"cell": [
+			11,
+			10
+		],
+		"facing": "up",
+		"sprite": "rocket_grunt_f",
+		"unless": [
+			"johto_dante_revealed"
+		],
+		"dialogue": "goldenrod_radio_cenere"
+	},
+	"sbire_1": {
+		"cell": [
+			4,
+			11
+		],
+		"facing": "right",
+		"sprite": "rocket_grunt_m",
+		"if": [
+			"johto_dante_revealed"
+		],
+		"unless": [
+			"johto_team_returned"
+		],
+		"dialogue": "goldenrod_radio_grunt_1"
+	},
+	"directeur": {
+		"cell": [
+			2,
+			3
+		],
+		"facing": "right",
+		"sprite": "gentleman",
+		"dialogue": "goldenrod_radio_director"
+	},
+	"poke_balls": {
+		"cell": [
+			2,
+			2
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"unless": [
+			"johto_team_returned"
+		]
+	}
+}

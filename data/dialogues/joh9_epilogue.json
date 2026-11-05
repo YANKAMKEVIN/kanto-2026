@@ -48,5 +48,8 @@
 			"Un petit Pokémon vert apparaît\nau-dessus de l'autel !",
 			"Celebi veut jouer avec {player} !"
 		]
+	},
+	"joh9_raikou_return": {
+		"cutscene": "joh9_raikou_return"
 	}
 }

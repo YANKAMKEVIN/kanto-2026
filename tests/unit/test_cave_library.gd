@@ -30,11 +30,13 @@ func test_real_data_mt_moon() -> void:
 	# J29 : Route Victoire. JOH9 : Mont Argenté (1F, 3F ; le 2F obscur à part).
 	assert_eq(caves.get_caves(), [&"mt_moon", &"digletts_cave", &"dark_cave", &"pokemon_tower",
 		&"victory_road", &"rocket_hideout", &"silph_co", &"pokemon_mansion",
-		# Chapitre Johto, JOH4 : le Puits Ramoloss (Corde Sortie → devant le puits) ; JOH7 : les Îles
-		# Tourbillon (Corde Sortie → Route 41, en Surf).
-		&"slowpoke_well", &"whirl_islands",
+		# Chapitre Johto, JOH6 : Tour Cendrée, repaire d'Acajou ; JOH4 : le Puits Ramoloss (Corde
+		# Sortie → devant le puits) ; JOH7 : les Îles Tourbillon (Corde Sortie → Route 41, en Surf) ; JOH8 : la Tour Carillon.
+		&"burned_tower", &"mahogany_hideout", &"slowpoke_well", &"whirl_islands",
+		&"bell_tower",
 		# JOH9 : le Mont Argenté.
-		&"mt_silver", &"mt_silver_dark"] as Array[StringName])
+		&"mt_silver", &"mt_silver_dark"]
+		as Array[StringName])
 	assert_eq(caves.get_maps(&"mt_moon"),
 		[&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"] as Array[StringName])
 	for map_id: StringName in [&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"]:

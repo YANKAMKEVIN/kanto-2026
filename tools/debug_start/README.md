@@ -439,6 +439,23 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 - `johto_rosalia_tuesday` : idem, jour forcé `tuesday` (Margot, conteuse du mardi). Clé `weekday`
   de `DebugStart` (JOH2).
 
+### JOH6 — les cendres (`docs/tech/jalon-joh6.md` §2.9)
+
+État de fin d'acte 1 posé à la main (drapeaux des dossiers JOH-02 à JOH-06, `johto_act2`, équipe
+rendue, Stockage en ligne) ; équipe : Tortank N64 (Surf), Dracaufeu N62, Alakazam N60, Nidoking
+N59, Roucarnage N58, Crocrodil N32 ; CS03, Super Canne, Multi Exp, 20 Hyper Balls, 30 000 ₽.
+- `johto_joh6_rosalia` : devant la maison des sages (le doyen ouvre la tour, C-2).
+- `johto_joh6_tower_b1f` : tour ouverte, arrivée de la chute au B1F (scène des chiens, C-6 à C-9).
+- `johto_joh6_tower_1f` : tour ouverte, à l'entrée du 1F (Dresseurs, C-5, trous).
+- `johto_joh6_route_42`, `johto_joh6_mahogany` : chiens réveillés, plan du doyen connu.
+- `johto_joh6_route_43` : idem, à l'entrée sud de la Route 43 (péage).
+- `johto_joh6_lake` : péage franchi, à l'entrée du Lac Colère (Léviator rouge) ; 1 Master Ball.
+- `johto_joh6_lake_autosave` : idem, mais le départ **devient la partie sauvegardée** (`autosave`) : capturer le Léviator rouge (sauvegarde forcée), puis reprise par « Continuer » (clé « variant » dans la vraie sauvegarde).
+- `johto_joh6_hideout` : lac fait, escalier trouvé, au B1F du repaire (alarmes).
+- `johto_joh6_hideout_b2f` : idem, au B2F (dalles, levier, déserteur, souvenir, mot de passe).
+- `johto_joh6_hideout_b3f` : mot de passe dit, au B3F (Brace, générateur, Raikou) ; 1 Master Ball.
+- `johto_joh6_saturday` (Samuel, Acajou), `johto_joh6_sunday` (Diane, Rosalia) : jour forcé.
+
 ## QA entrée des combats de Dresseur (A17, 2026-11-04)
 
 | Fichier | Partie |
@@ -475,6 +492,20 @@ drapeaux des JOH1 à JOH3 (dont `johto_azalea_clue`), équipe de Kanto confisqu�
 - `johto_brace` : B2F, devant le couloir de Brace (niv. 22–24).
 - `johto_azalea_after` : devant le puits, tout le jalon fait (Ramoloss de retour, objets clés).
 - `johto_azalea_friday` : entrée d'Écorcia, jour imposé `friday` (Vincent).
+
+## Chapitre Johto, JOH5 : la Tour Radio (`docs/tech/jalon-joh5.md` §2.6)
+
+Équipe de Johto (Feurisson N28 compagnon, Lainergie N27, Noarfang N26, Togetic N26), équipe de
+Kanto confisquée (5 Pokémon, Super Bonbons non compris), Carte d'accès et Ordre de mission dans le
+Sac, drapeaux de l'acte 1 jusqu'au JOH4 (`johto_brace_defeated`, `johto_radio_pass`).
+
+| Fichier | Contenu |
+|---|---|
+| `johto_radio_tower.json` | Hall (1F), devant la porte : un pas vers le nord-ouest jusqu'à la niche de l'escalier (3, 2) → T-2, combat du faux employé, fuite ; puis les étages |
+| `johto_radio_tower_3f.json` | 3F (archives), arrivée du 2F, faux employé et Sbire I battus : réserve fermée (T-9 sans la clé : porte fermée), gardien inévitable en (13, 11), Raphaël (T-11) |
+| `johto_radio_tower_5f.json` | 5F, arrivée de l'escalier : Sbires obligatoires des étages battus, réserve ouverte ; descendre vers l'ouverture de la vitre (12..13, 6) → Cenere, Dante, Sbires, départ de Cenere |
+| `johto_radio_tower_office.json` | 5F, Cenere battue, Dante révélé, porte du bureau ouverte (8, 2). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Bureau : T-24 à T-27, écran du choix des 6 (9 Pokémon), T-29, T-30, **écriture**, Multi Exp, T-32. Arrêt de l'appli pendant l'écran → « Continuer » : la scène rejoue ; après → équipe rendue, acte 1 fini |
+| `johto_radio_tower_small.json` | Comme le précédent avec 2 + 3 Pokémon (**pas d'écran**) et une Multi Exp déjà dans le Sac (3 Super Bonbons) ; sans écriture du départ |
 
 ## Chapitre Johto, JOH9 (Mont Argenté, Route 28, épilogue)
 

@@ -16,7 +16,7 @@ const INTERIORS: Array[StringName] = [&"mt_silver_center", &"route_28_gate", &"r
 ## Positions de la grille qui ne sont pas dans la grille logique de la scène (PNJ entrent au
 ## chargement ; rochers posés par `Boulders`).
 const NPC_KINDS: Array[String] = ["dresseur", "pnj", "rocher"]
-## Destinations d'autres jalons (« À venir » tant que leur carte manque).
+## Destinations d'autres jalons : le Lac Colère (JOH6), raccordé depuis sa fusion.
 const OTHER_JALONS: Array[StringName] = [&"lake_of_rage"]
 const DIRS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
@@ -136,8 +136,7 @@ func _first_spawn(id: StringName) -> Vector2i:
 	return Vector2i.ZERO
 
 
-## Chaque passage mène à une carte et une arrivée existantes, praticables (sauf le Lac Colère,
-## carte du JOH6 : « À venir »).
+## Chaque passage mène à une carte et une arrivée existantes, praticables.
 func test_every_warp_reaches_an_existing_spawn() -> void:
 	for id: StringName in MAPS.keys() + INTERIORS:
 		for warp: Warp in _map(id).get_warps().get_all():

@@ -1,0 +1,568 @@
+{
+	"goldenrod_radio_tower_grunt_h_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Les studios sont à nous !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_h_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Coupez ! Coupez !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_h_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Écoute bien la radio, gamin. Notre chef revient."
+		]
+	},
+	"goldenrod_radio_tower_grunt_i_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Tu entends ? C'est l'appel de Giovanni !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_i_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Giovanni ne sera pas content…"
+		]
+	},
+	"goldenrod_radio_tower_grunt_i_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Bientôt, toute la Team Rocket sera réunie."
+		]
+	},
+	"goldenrod_radio_tower_grunt_j_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Mon Magnéton brouille tout, même tes ordres !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_j_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Plus de signal."
+		]
+	},
+	"goldenrod_radio_tower_grunt_j_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Les ordres arrivent par la radio. On ne voit jamais qui les donne."
+		]
+	},
+	"goldenrod_radio_tower_grunt_k_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Les archives, c'est interdit !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_k_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Bon, lis ce que tu veux."
+		]
+	},
+	"goldenrod_radio_tower_grunt_k_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Il paraît que les vrais ordres viennent de très loin."
+		]
+	},
+	"goldenrod_radio_tower_grunt_l_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Tu es le Maître de Kanto ? Sans tes Pokémon, tu n'es rien !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_l_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"… Tu n'en avais pas besoin, on dirait."
+		]
+	},
+	"goldenrod_radio_tower_grunt_l_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Ils sont là-haut, tes Pokémon. Mais tu n'iras pas si loin."
+		]
+	},
+	"goldenrod_radio_tower_keeper_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Personne ne touche à la réserve. Les employés restent dedans !"
+		]
+	},
+	"goldenrod_radio_tower_keeper_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"D'accord, d'accord, je donne la clé !"
+		],
+		"set": [
+			"johto_radio_reserve_key"
+		]
+	},
+	"goldenrod_radio_tower_keeper_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Cenere va me congeler sur place."
+		]
+	},
+	"goldenrod_radio_tower_grunt_m_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"La régie, c'est le cœur de la Tour. Tu ne passeras pas !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_m_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le cœur a lâché."
+		]
+	},
+	"goldenrod_radio_tower_grunt_m_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Cenere règle tout à la seconde près. Toi, tu n'étais pas prévu."
+		]
+	},
+	"goldenrod_radio_tower_grunt_n_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le message passe sur toutes les ondes de Johto !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_n_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Interférences…"
+		]
+	},
+	"goldenrod_radio_tower_grunt_n_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Si Giovanni l'entend, il viendra. Forcément."
+		]
+	},
+	"goldenrod_radio_tower_grunt_o_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Dernier étage avant Cenere. Fais demi-tour !"
+		]
+	},
+	"goldenrod_radio_tower_grunt_o_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Tu es vraiment têtu."
+		]
+	},
+	"goldenrod_radio_tower_grunt_o_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Vas-y. Elle t'attend, je crois."
+		]
+	},
+	"goldenrod_radio_loudspeaker": {
+		"speaker": "Haut-parleur",
+		"pages": [
+			"Ici Radio Rocket.",
+			"À tous les membres de la Team Rocket, où que vous soyez :",
+			"Giovanni, reviens ! La Team Rocket t'attend à Johto.",
+			"Rassemblez-vous. Le grand retour approche."
+		]
+	},
+	"goldenrod_radio_impostor_intro": {
+		"speaker": "Employé",
+		"pages": [
+			"Désolé, la Tour est fermée au…",
+			"Une Carte d'accès ? Fais voir.",
+			"…",
+			"C'est la carte de Brace ! Comment tu l'as eue ?",
+			"… Oups. Bon, tant pis. Tu ne monteras pas !"
+		]
+	},
+	"goldenrod_radio_impostor_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Mon déguisement était parfait, pourtant…"
+		]
+	},
+	"goldenrod_radio_impostor_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Le vrai personnel ? Enfermé là-haut. Bonne chance !"
+		]
+	},
+	"goldenrod_radio_impostor_flees": {
+		"narration": true,
+		"pages": [
+			"Le faux employé arrache son uniforme et file dans l'escalier !"
+		]
+	},
+	"goldenrod_radio_elevator_broken": {
+		"narration": true,
+		"pages": [
+			"L'ascenseur est en panne.",
+			"Quelqu'un a coupé le courant."
+		]
+	},
+	"goldenrod_radio_reserve_opened": {
+		"narration": true,
+		"pages": [
+			"{player} ouvre la porte de la réserve."
+		]
+	},
+	"goldenrod_radio_reserve_locked": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"La porte de la réserve est fermée à clé.",
+			"Des voix étouffées appellent à l'aide."
+		]
+	},
+	"goldenrod_radio_employee": {
+		"speaker": "Employée",
+		"pages": [
+			"Enfin ! Ils nous ont enfermés ici depuis des jours.",
+			"Le directeur est resté là-haut, avec leur chef."
+		]
+	},
+	"goldenrod_radio_employee_2": {
+		"speaker": "Employé",
+		"pages": [
+			"Enfin ! Ils nous ont enfermés ici depuis des jours.",
+			"Le directeur est resté là-haut, avec leur chef."
+		]
+	},
+	"goldenrod_radio_raphael_freed": {
+		"speaker": "Raphaël",
+		"pages": [
+			"Merci ! Je m'appelle Raphaël, je suis technicien.",
+			"Trois jours dans le noir…",
+			"Ma femme doit être morte d'inquiétude. Je rentre tout de suite !"
+		]
+	},
+	"goldenrod_radio_console": {
+		"narration": true,
+		"pages": [
+			"Un écran affiche : « DIFFUSION EN COURS — TOUT JOHTO »."
+		]
+	},
+	"goldenrod_radio_cenere_mic": {
+		"speaker": "Cenere",
+		"pages": [
+			"… Giovanni, reviens. La Team Rocket t'attend.",
+			"…"
+		]
+	},
+	"goldenrod_radio_cenere_early": {
+		"speaker": "Cenere",
+		"pages": [
+			"Tu es en avance.",
+			"D'après mes calculs, tu ne devais pas arriver avant demain."
+		]
+	},
+	"goldenrod_radio_cenere_intro": {
+		"speaker": "Cenere",
+		"pages": [
+			"Je suis Cenere.",
+			"Brace fonce. Moi, je calcule.",
+			"Et dans mes calculs, tu perds."
+		]
+	},
+	"goldenrod_radio_cenere_defeated": {
+		"speaker": "Cenere",
+		"pages": [
+			"… Une erreur de calcul.",
+			"Je n'aime pas les erreurs."
+		]
+	},
+	"goldenrod_radio_cenere_after": {
+		"speaker": "Cenere",
+		"pages": [
+			"Tu crois que ce message était pour Giovanni ?",
+			"Écoute. Quelqu'un veut te parler."
+		]
+	},
+	"goldenrod_radio_dante_voice": {
+		"speaker": "Voix",
+		"pages": [
+			"Cenere. Coupe ce message, il a fait son travail.",
+			"Membres de la Team Rocket, écoutez-moi.",
+			"Vous attendez Giovanni. Giovanni ne viendra pas.",
+			"Il vous a abandonnés, comme il a abandonné celui qui lui a tout appris.",
+			"Je m'appelle Dante. Je dirigeais la Team Rocket bien avant lui.",
+			"C'est moi qui vous ai réunis. C'est moi qui donne les ordres, depuis le début."
+		]
+	},
+	"goldenrod_radio_dante_player": {
+		"speaker": "Dante",
+		"pages": [
+			"Et toi, le Maître de Kanto…",
+			"Tes Pokémon, à Oliville, c'est moi qui les ai fait prendre.",
+			"Un champion n'avait rien à faire sur mon chemin.",
+			"Tu es venu quand même. Bien.",
+			"Ce qui a brûlé une fois peut brûler encore.",
+			"Nous nous reverrons quand tout sera cendres."
+		]
+	},
+	"goldenrod_radio_dante_retreat": {
+		"speaker": "Dante",
+		"pages": [
+			"Cenere. Laisse tout. On part."
+		]
+	},
+	"goldenrod_radio_grunt_1": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Dante ? C'est qui, ça ?"
+		]
+	},
+	"goldenrod_radio_grunt_2": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Moi, je suis entré pour Giovanni… Je m'en vais."
+		]
+	},
+	"goldenrod_radio_grunt_3": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Un chef qui gagne, c'est un chef. Je le suis."
+		]
+	},
+	"goldenrod_radio_cenere_leaves": {
+		"speaker": "Cenere",
+		"pages": [
+			"Tu as entendu.",
+			"Tes Pokémon sont dans le bureau. Garde-les bien.",
+			"Ils ne te serviront à rien contre ce qui vient."
+		]
+	},
+	"goldenrod_radio_cenere_exit": {
+		"narration": true,
+		"pages": [
+			"Cenere s'en va par l'escalier de secours…"
+		]
+	},
+	"goldenrod_radio_emergency_stairs": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"La porte de l'escalier de secours est fermée."
+		]
+	},
+	"goldenrod_radio_office_locked": {
+		"narration": true,
+		"draft": true,
+		"pages": [
+			"La porte du bureau du directeur est fermée."
+		]
+	},
+	"goldenrod_radio_office_found": {
+		"narration": true,
+		"pages": [
+			"La porte du bureau est ouverte.",
+			"Sur la table : des Poké Balls. Et un sac.",
+			"Ce sont les tiens !"
+		]
+	},
+	"goldenrod_radio_director_bound": {
+		"speaker": "Directeur",
+		"pages": [
+			"Mmmh ! Mmmh !"
+		]
+	},
+	"goldenrod_radio_director_untied": {
+		"narration": true,
+		"pages": [
+			"{player} détache le directeur."
+		]
+	},
+	"goldenrod_radio_director_freed": {
+		"speaker": "Directeur",
+		"pages": [
+			"Merci ! Ils m'ont enfermé dans mon propre bureau.",
+			"Ces Poké Balls… ils les gardaient comme un trésor. Elles sont à toi ?"
+		]
+	},
+	"goldenrod_radio_reunion": {
+		"narration": true,
+		"pages": [
+			"{returning_pokemon} sort de sa Poké Ball et bondit vers {player} !",
+			"{player} retrouve son équipe et son sac !"
+		]
+	},
+	"goldenrod_radio_storage_back": {
+		"narration": true,
+		"pages": [
+			"Connexion au réseau de Kanto…",
+			"…",
+			"Connexion rétablie ! Les autres Pokémon sont au Stockage."
+		]
+	},
+	"goldenrod_radio_bags_merged": {
+		"narration": true,
+		"pages": [
+			"Les objets de ton ancien sac ont rejoint les nouveaux."
+		]
+	},
+	"goldenrod_radio_director_gift": {
+		"speaker": "Directeur",
+		"pages": [
+			"Tu as sauvé la Tour, et toute la radio de Johto.",
+			"La Radio de Doublonville t'offre ceci.",
+			"Avec, tes nouveaux Pokémon apprendront vite auprès des anciens."
+		]
+	},
+	"goldenrod_radio_exp_share_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit une Multi Exp !"
+		]
+	},
+	"goldenrod_radio_director_candies": {
+		"speaker": "Directeur",
+		"pages": [
+			"Tu en as déjà une ? Alors prends ces bonbons."
+		]
+	},
+	"goldenrod_radio_rare_candy_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Super Bonbons !"
+		]
+	},
+	"goldenrod_radio_director_after": {
+		"speaker": "Directeur",
+		"pages": [
+			"L'ascenseur remarche. Les émissions reprendront dès ce soir.",
+			"Reviens nous voir quand tu veux."
+		]
+	},
+	"goldenrod_radio_agent": {
+		"speaker": "Agente",
+		"pages": [
+			"C'est toi qui as libéré la Tour ? Bravo.",
+			"Ces papiers… un ordre signé « D. ».",
+			"D comme Dante, sans doute. Je les garde comme preuves."
+		]
+	},
+	"goldenrod_radio_agent_given": {
+		"narration": true,
+		"pages": [
+			"{player} remet l'Ordre de mission et la Carte d'accès."
+		]
+	},
+	"goldenrod_radio_elm": {
+		"speaker": "Prof. Orme",
+		"pages": [
+			"{player} ! J'ai tout entendu à la radio.",
+			"Dante… Chen m'a parlé de lui, un jour. Il le croyait disparu depuis des années.",
+			"« Quand tout sera cendres »… Ça ne me plaît pas.",
+			"Les sages de Rosalia ont appelé ce matin. Ils veulent te voir.",
+			"Je crois que c'est à propos de la Tour Cendrée."
+		]
+	},
+	"goldenrod_husband_home": {
+		"speaker": "Femme",
+		"pages": [
+			"Mon mari est rentré ! Raphaël m'a tout raconté.",
+			"Merci, merci ! Prends ça, ça vient du fond du cœur."
+		]
+	},
+	"goldenrod_husband_gift_received": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Ultra Balls !"
+		]
+	},
+	"goldenrod_radio_raphael_home": {
+		"speaker": "Raphaël",
+		"pages": [
+			"La Tour est de nouveau à nous.",
+			"Grâce à toi, la radio chante de nouveau."
+		]
+	},
+	"sea_cave_calm": {
+		"narration": true,
+		"pages": [
+			"Le courant s'est calmé.",
+			"On peut repartir vers Kanto."
+		]
+	},
+	"goldenrod_radio_impostor": {
+		"cutscene": "goldenrod_radio_impostor"
+	},
+	"radio_2f_item_1": {
+		"cutscene": "radio_2f_item_1"
+	},
+	"goldenrod_radio_raphael": {
+		"cutscene": "goldenrod_radio_raphael"
+	},
+	"radio_3f_hidden_1": {
+		"cutscene": "radio_3f_hidden_1"
+	},
+	"radio_4f_hidden_1": {
+		"cutscene": "radio_4f_hidden_1"
+	},
+	"radio_4f_item_1": {
+		"cutscene": "radio_4f_item_1"
+	},
+	"goldenrod_radio_cenere": {
+		"cutscene": "goldenrod_radio_cenere"
+	},
+	"goldenrod_radio_director": {
+		"speaker": "Directeur",
+		"variants": [
+			{
+				"if": [
+					"johto_dante_revealed"
+				],
+				"unless": [
+					"johto_team_returned"
+				],
+				"cutscene": "goldenrod_radio_office"
+			},
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"unless": [
+					"radio_exp_share_given"
+				],
+				"cutscene": "goldenrod_radio_exp_share"
+			},
+			{
+				"if": [
+					"johto_team_returned"
+				],
+				"pages": [
+					"L'ascenseur remarche. Les émissions reprendront dès ce soir.",
+					"Reviens nous voir quand tu veux."
+				]
+			},
+			{
+				"pages": [
+					"Mmmh ! Mmmh !"
+				]
+			}
+		]
+	},
+	"goldenrod_radio_exit": {
+		"cutscene": "goldenrod_radio_exit"
+	},
+	"goldenrod_radio_elevator": {
+		"cutscene": "goldenrod_radio_elevator"
+	},
+	"goldenrod_radio_reserve_door": {
+		"cutscene": "goldenrod_radio_reserve_door"
+	},
+	"goldenrod_radio_office": {
+		"cutscene": "goldenrod_radio_office"
+	},
+	"goldenrod_radio_exp_share": {
+		"cutscene": "goldenrod_radio_exp_share"
+	}
+}

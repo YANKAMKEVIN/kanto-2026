@@ -44,9 +44,13 @@ const AUTO_MAPS: Dictionary[String, String] = {
 	"cerulean_cave": "cerulean_cave_1f", "dark_cave": "dark_cave_1f",
 	# JOH1 : la grotte marine (salle 2, eau profonde) ; Oliville a sa propre carte.
 	"sea_cave": "sea_cave_2",
+	"burned_tower": "burned_tower_1f", "mahogany_hideout": "mahogany_hideout_b2f",
+	"goldenrod_radio_tower": "goldenrod_radio_tower_5f",
 	"slowpoke_well": "slowpoke_well_b2f",
 	# JOH7 : les îles par leur B1F (lac et plate-forme de Suicune).
 	"whirl_islands": "whirl_islands_b1f",
+	# JOH8 : la Tour Carillon par son sommet.
+	"bell_tower": "bell_tower_roof",
 	# JOH9 : l'extérieur enneigé du Mont Argenté.
 	"mt_silver": "mt_silver_outside",
 }

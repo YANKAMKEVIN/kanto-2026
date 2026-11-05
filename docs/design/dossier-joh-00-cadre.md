@@ -9,6 +9,9 @@
 > Claude (règle 4 de `CLAUDE.md`) ; les vraies questions de game design sont numérotées **JH-11
 > et suivantes** (§11). Chaque jalon aura ensuite son propre dossier (cartes, textes, valeurs),
 > comme pour Kanto. **Pas de code avant la fin de Kanto.**
+>
+> **Arc des Pierres** (Kevin, 2026-11-04, JH-61 à JH-79) : un arc s'ajoute entre JOH5 et JOH6, le retour
+> de l'équipe passe à sa fin. Dossier [`dossier-joh-11-arc-pierres.md`](dossier-joh-11-arc-pierres.md) ; il prévaut sur ce cadre.
 
 ## 0. Rappel des décisions (esquisse, 2026-10-30 → 2026-11-02)
 
@@ -18,7 +21,7 @@
 | Longueur | Histoire courte, **pas 8 badges** |
 | Structure | 3 actes : menace Rocket sur quelques villes → quête de légendaires → Mont Argenté |
 | Arrivée | Bourg Palette, passage secret par l'eau |
-| Équipe | Volée la nuit au Centre d'Oliville (JH-1) ; rendue d'un coup avec le sac à la fin de l'acte 1, à la Tour Radio (JH-2, JH-3) |
+| Équipe | Volée la nuit au Centre d'Oliville (JH-1) ; rendue d'un coup avec le sac à la fin de l'arc des Pierres, à l'Antre du Dragon (JH-2, JH-3, JH-61) |
 | Types | Table actuelle (18 types modernes, déjà dans le jeu) (JH-4) |
 | Espèces | 50, liste de l'esquisse §8 (JH-5) |
 | Jour et nuit | Comme Or/Argent, heure et jour du téléphone (JH-6) |
@@ -32,8 +35,10 @@
 ## 1. Hors périmètre
 
 - Les 8 Arènes de Johto, la Ligue de Johto, le Conseil 4 de Johto.
-- Bourg Geon, Ville Griotte, Mauville, Caves Jumelles, Irisia, Ebènelle, Route de Glace, Antre du
-  Dragon, Parc National, Mont Creuset (intérieur), le laboratoire d'Orme.
+- Bourg Geon, Ville Griotte, Mauville, Caves Jumelles, Route de Glace, Parc National, Mont Creuset
+  (intérieur), le laboratoire d'Orme.
+- Entrés dans le périmètre avec l'arc des Pierres (2026-11-04) : Ruines d'Alpha, Irisia, Ébènelle,
+  Antre du Dragon, sans leurs Arènes.
 - Le téléphone Pokématos, les appels de Dresseurs, les revanches.
 - La reproduction et la Pension à œufs (seul l'œuf de Togepi existe, §5.4).
 - Les objets tenus en combat, les Baies, les Noigrumes.
@@ -69,6 +74,9 @@ moitié de la région d'Or/Argent, dans le même ordre que l'original pour garde
                        Grotte marine ── (Kanto, Bourg Palette)
 ```
 
+Arc des Pierres (dossier JOH-11 §4) : **Ruines d'Alpha** au sud de la Route 36 ; **Irisia** en bateau
+depuis Oliville ; **Ébènelle** et l'**Antre du Dragon** à l'est d'Acajou, par les airs seulement.
+
 ### 3.1 Liste des cartes **[D]**
 
 | Acte | Carte | Rôle | Taille indicative |
@@ -81,14 +89,15 @@ moitié de la région d'Or/Argent, dans le même ordre que l'original pour garde
 | 1 | Doublonville (grande ville, Grand Magasin, Souterrain) | Cœur de la menace | grande ville |
 | 1 | Route 34, Bois aux Chênes, Écorcia | Détour sud | route, forêt, petite ville |
 | 1 | Puits Ramoloss (2 niveaux) | Première base Rocket | petit donjon |
-| 1 | Tour Radio de Doublonville (5 étages) | Fin de l'acte 1 | donjon vertical |
+| 1 | Tour Radio de Doublonville (5 étages) | Dante à l'antenne | donjon vertical |
+| Arc | Ruines d'Alpha, Irisia, Ébènelle, Antre du Dragon | Trois pierres, Réveil, retour de l'équipe | 11 cartes (JOH-11 §4.2) |
 | 2 | Tour Cendrée (2 niveaux), Tour Carillon (sommet seul jouable + 2 étages) | Légendaires | 2 donjons |
 | 2 | Route 42, Acajou, Route 43, Lac Colère | Repaire Rocket | 2 routes, petite ville, lac |
 | 2 | Repaire Rocket d'Acajou (3 niveaux) | Un chien légendaire captif | donjon |
 | 2 | Routes 40-41 (mer), Îles Tourbillon (3 niveaux) | Suicune, Lugia | mer, grotte |
 | 3 | Mont Argenté (extérieur + 3 niveaux + sommet), Route 28 | Final | grand donjon |
 
-Total ≈ **35 cartes**, contre une centaine pour Kanto. Chaque carte aura sa grille dans
+Total ≈ **46 cartes** avec l'arc, contre une centaine pour Kanto. Chaque carte aura sa grille dans
 `tools/plans/` et sa vue générale peinte, comme à Kanto.
 
 ### 3.2 Raccords avec Kanto
@@ -117,7 +126,7 @@ Total ≈ **35 cartes**, contre une centaine pour Kanto. Chaque carte aura sa gr
 - **Arrivée** : le joueur ressort sur la plage d'Oliville à la tombée de la nuit (scène forcée en
   nuit, quelle que soit l'heure réelle **[D]**).
 
-### 4.2 Acte 1 — La menace (JOH1 à JOH5)
+### 4.2 Acte 1 — La menace (JOH1 à JOH5, puis arc des Pierres JOHP1 à JOHP3)
 
 **Oliville (JOH1).** Le joueur, épuisé, confie son équipe à l'infirmière du Centre et dort au
 Centre. **Nuit** : bruit de verre, des silhouettes en noir. **Matin** : le Centre est cambriolé,
@@ -148,8 +157,14 @@ puits donne une **Roche Royale** (évolution de Ramoloss et Têtarte, §5.5).
 sommet, l'admin diffuse un message : « Giovanni, reviens ! ». Puis la vraie voix prend l'antenne :
 **Dante**. Il se présente comme le chef d'avant Giovanni, celui que Giovanni a trahi, et révèle
 que c'est lui qui a fait voler l'équipe du Maître, « pour qu'aucun champion ne se mette en
-travers ». Il ne se montre pas en personne **[D]**. Dans la salle de l'admin : les Poké Balls de
-l'équipe et le sac. **L'équipe et le sac sont rendus**, le PC se reconnecte. Fin de l'acte 1.
+travers ». Il ne se montre pas en personne **[D]**. Il ordonne à Cenere de tout emporter (JH-61) :
+l'équipe, le sac et le relais du réseau partent avec elle. Le joueur garde sa Multi Exp et un papier :
+trois lieux, trois pierres.
+
+**Arc des Pierres (JOHP1 à JOHP3).** Orme raconte la légende. Ruines d'Alpha (Pierre Mémoire), Irisia
+(Cenere prend la Pierre Marée), Ébènelle et l'Antre du Dragon (épreuve du clan, Pierre Souffle). À
+l'autel, le **Réveil** monte l'équipe de Johto au niveau de celle de Kanto ; Cenere battue, **l'équipe
+et le sac sont rendus**, le PC se reconnecte. Fin de l'acte 1. Détail : dossier JOH-11.
 
 ### 4.3 Acte 2 — Les légendaires (JOH6 à JOH8)
 
@@ -243,7 +258,7 @@ mais pas complète). Ho-Oh descend, refuse Dante et s'envole ; Dante relâche En
   sauvegarde, intouchable.
 - Le **Stockage** est verrouillé (« réseau de Kanto coupé ») jusqu'à la fin de l'acte 1.
 - **Pendant l'acte 1**, le joueur se constitue une nouvelle équipe et un nouveau sac. À la Tour
-  Radio, l'équipe confisquée revient : si l'équipe active a 6 Pokémon, les Pokémon en trop vont au
+  Antre du Dragon (fin de l'arc des Pierres), l'équipe confisquée revient : si l'équipe active a 6 Pokémon, les Pokémon en trop vont au
   Stockage (reconnecté au même moment) **[D]** ; les deux sacs **fusionnent** (quantités
   additionnées, plafond habituel) **[D]**.
 - **Sécurité** : si le joueur quitte l'application pendant la scène du vol, la sauvegarde ne doit
@@ -340,8 +355,12 @@ dépasser 51 espèces neuves.
 | JOH2 Routes 39-38, Rosalia | 8–14 | 6–12 | 9–13 |
 | JOH3 Routes 37-35, Doublonville | 14–20 | 12–17 | 14–19 |
 | JOH4 Écorcia, Puits Ramoloss | 20–26 | 16–22 | 20–25 |
-| JOH5 Tour Radio | 26–32 | — | 26–33, admin 34–36 |
-| **Retour de l'équipe** | équipe de Ligue 55–65 + nouveaux | | |
+| JOH5 Tour Radio | 26–32 | — | 26–33, admin 33–35 |
+| JOHP1 Ruines d'Alpha | 30–34 | 27–31 | 30–33, boss 34–35 |
+| JOHP2 Irisia | 33–37 | 30–34 | 33–36, boss 37–38 |
+| JOHP3 Ébènelle, Antre | 36–40 | 33–37 | 36–40, Ysolde 42–45 |
+| **Le Réveil** | Johto 55–62 (JH-66) | | Cenere 54–56 |
+| **Retour de l'équipe** | équipe de Ligue 55–65 + équipe de Johto 55–62 | | |
 | JOH6 Tour Cendrée, Acajou, repaire | 58–64 | 40–50 | 55–60, admin 60–62, Raikou 60 |
 | JOH7 Îles Tourbillon | 60–66 | 42–52 | admin 62–64, Suicune 60, Lugia 65 |
 | JOH8 Tour Carillon | 62–68 | — | Dante (1) 64–68, Entei 60, Ho-Oh 65 |
@@ -349,8 +368,8 @@ dépasser 51 espèces neuves.
 
 - **Acte 1 plus rapide que Kanto** : environ 4 h de jeu pour monter de 5 à 30 ; expérience
   multipliée par **1,5** pendant l'acte 1 (JH-13, validé).
-- **Les nouveaux Pokémon après l'acte 1** : niv. 30 face à une équipe de 60, ils risquent de rester
-  au Stockage. **Multi Exp** offerte à la Tour Radio (JH-14, validé).
+- **Les Pokémon de Johto après l'acte 1** : le Réveil les met au niveau de l'équipe de Kanto (JOH-11 §13).
+  **Multi Exp** offerte à la Tour Radio (JH-14, validé). Exp ×1,5 jusqu'au retour de l'équipe (JH-70).
 - **Difficulté** (mémoire « Difficulté des combats ») : victoire du premier coup ≤ 80 % par
   défaut, 35–60 % pour les grands combats (Dante 1 et 2, rival final).
 
@@ -361,7 +380,8 @@ dépasser 51 espèces neuves.
 | Professeur Orme | Donne le Pokémon de départ, envoie l'œuf, épilogue | Peint dans la même main que Chen |
 | L'infirmière d'Oliville | Témoin du vol | Même modèle que les infirmières de Kanto |
 | Les sages de Rosalia | Gardent les tours | 1 modèle |
-| **Brace** et **Cenere**, admins de Dante | Brace : Puits Ramoloss puis Acajou ; Cenere : Tour Radio puis Îles Tourbillon **[D]** | JH-15 |
+| **Brace** et **Cenere**, admins de Dante | Brace : Puits Ramoloss puis Acajou ; Cenere : Tour Radio, arc des Pierres, Îles Tourbillon **[D]** | JH-15 |
+| Héloïse, Goulven, l'Aïeule, Ysolde, Corentin | Arc des Pierres | Dossier JOH-11 §8 |
 | Dante | Adversaire final | Âgé, élégant, cicatrice de brûlure **[D]** ; DA à valider |
 | Giovanni | Apparition finale | Modèle de Kanto |
 | Le rival | Relais, dernier combat | Modèle de Kanto, tenue d'hiver au Mont Argenté **[D]** |
@@ -392,7 +412,11 @@ Arcanin (Kanto). Thème feu et ténèbres, cohérent avec « feu et cendres ».
 | **JOH2** | Routes 39 et 38, Rosalia (premier passage) | Sous-jalon |
 | **JOH3** | Routes 37 à 35, Doublonville, œuf | Sous-jalon |
 | **JOH4** | Route 34, Bois aux Chênes, Écorcia, Puits Ramoloss | Sous-jalon |
-| **JOH5** | Tour Radio, Dante à l'antenne, retour de l'équipe | Sous-jalon (le retour de l'équipe touche la sauvegarde : test dédié) |
+| **JOH5** | Tour Radio, Dante à l'antenne | Sous-jalon |
+| **JOHP0** | Le Réveil (cible, évolutions groupées, écran) | Seul, tests de sauvegarde |
+| **JOHP1** | Ruines d'Alpha, Pierre Mémoire | Sous-jalon |
+| **JOHP2** | Irisia, Grotte de la Marée, revers | Sous-jalon |
+| **JOHP3** | Ébènelle, Antre du Dragon, Réveil, retour de l'équipe | Seul (le retour touche la sauvegarde : test dédié) |
 | **JOH6** | Tour Cendrée, Route 42, Acajou, Route 43, Lac Colère, repaire, Raikou | Sous-jalon |
 | **JOH7** | Routes 40-41, Îles Tourbillon, Suicune, Lugia, Lokhlass du vendredi | Sous-jalon |
 | **JOH8** | Tour Carillon, Dante (1), Entei, Ho-Oh | Sous-jalon |

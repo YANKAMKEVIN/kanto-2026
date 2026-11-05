@@ -6,6 +6,9 @@
 		],
 		"facing": "down",
 		"sprite": "guard",
+		"unless": [
+			"johto_act2"
+		],
 		"dialogue": "ecruteak_city_garde_route_42"
 	},
 	"garde_carillon": {
@@ -15,7 +18,10 @@
 		],
 		"facing": "right",
 		"sprite": "guard",
-		"dialogue": "ecruteak_city_garde_carillon"
+		"dialogue": "ecruteak_city_garde_carillon",
+		"unless": [
+			"johto_bell_tower_open"
+		]
 	},
 	"sage_tour": {
 		"cell": [
@@ -59,5 +65,44 @@
 			"tuesday"
 		],
 		"dialogue": "week_tuesday_margot"
+	},
+	"diane": {
+		"cell": [
+			23,
+			13
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"if_weekday": [
+			"sunday"
+		],
+		"dialogue": "week_sunday_diane"
+	},
+	"sage_blesse": {
+		"cell": [
+			44,
+			13
+		],
+		"facing": "left",
+		"sprite": "channeler",
+		"dialogue": "joh8_sage_blesse",
+		"if": [
+			"johto_bell_tower_clue"
+		],
+		"unless": [
+			"johto_bell_tower_open"
+		]
+	},
+	"habitante_aube": {
+		"cell": [
+			30,
+			18
+		],
+		"facing": "down",
+		"sprite": "aoki",
+		"dialogue": "joh8_habitante_aube",
+		"if": [
+			"johto_ho_oh_seen"
+		]
 	}
 }

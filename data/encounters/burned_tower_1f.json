@@ -1,0 +1,51 @@
+{
+	"burned_tower_1f_floor": {
+		"maps": [
+			"burned_tower_1f"
+		],
+		"terrain": "floor",
+		"rate": 15,
+		"slots": [
+			{
+				"species": "raticate",
+				"levels": [
+					40,
+					44
+				],
+				"weight": 30
+			},
+			{
+				"species": "golbat",
+				"levels": [
+					40,
+					44
+				],
+				"weight": 25
+			},
+			{
+				"species": "weezing",
+				"levels": [
+					40,
+					44
+				],
+				"weight": 20
+			},
+			{
+				"species": "haunter",
+				"levels": [
+					40,
+					44
+				],
+				"weight": 15
+			},
+			{
+				"species": "magmar",
+				"levels": [
+					40,
+					44
+				],
+				"weight": 10
+			}
+		]
+	}
+}

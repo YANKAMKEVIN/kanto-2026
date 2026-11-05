@@ -1,0 +1,59 @@
+{
+	"mahogany_hideout_b1f_sbire_alarme_1_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Intrus ! Pas un pas de plus !"
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_1_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Coupez l'alarme…"
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_1_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Tu ne sortiras pas d'ici."
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_2_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Intrus ! Pas un pas de plus !"
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_2_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Coupez l'alarme…"
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_2_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Tu ne sortiras pas d'ici."
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_3_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Intrus ! Pas un pas de plus !"
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_3_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Coupez l'alarme…"
+		]
+	},
+	"mahogany_hideout_b1f_sbire_alarme_3_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Tu ne sortiras pas d'ici."
+		]
+	},
+	"mahogany_hideout_b1f_hyper_potion": {
+		"cutscene": "mahogany_hideout_b1f_hyper_potion"
+	}
+}

@@ -322,6 +322,10 @@ func _add_warp(root: Node2D, id: String, cells: Array[Vector2i], dest: Dictionar
 	var spawn: String = dest["spawn"]
 	var exists := _spawns.has(target) or ResourceLoader.exists(MAPS_DIR + "%s.tscn" % target)
 	var target_cells: Array = (_spawns.get(target, {}) as Dictionary).get(spawn, [])
+	if target == &"lake_of_rage":  # grille du JOH6 : raccord case à case
+		var lake := PlanGrid.new()
+		if lake.load_file(PLANS_DIR + "lake_of_rage.txt"):
+			target_cells = (lake.positions.get(spawn, {}) as Dictionary).get("cells", [])
 	for i: int in cells.size():
 		var name := "%s_%d" % [_node_name(id), i]
 		if not exists:

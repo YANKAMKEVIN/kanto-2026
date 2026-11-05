@@ -1,0 +1,11 @@
+{
+	"habitante": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "beauty",
+		"dialogue": "mahogany_house_1_habitante"
+	}
+}

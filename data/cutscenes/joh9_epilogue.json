@@ -121,5 +121,31 @@
 				]
 			}
 		]
+	},
+	"joh9_raikou_return": {
+		"variants": [
+			{
+				"if": [
+					"johto_chapter_done",
+					"johto_raikou_done"
+				],
+				"unless": [
+					"johto_raikou_caught",
+					"johto_raikou_return_done"
+				],
+				"steps": [
+					{
+						"wild_battle": "raikou",
+						"level": 60,
+						"intro": "legendary",
+						"actor": "raikou_retour",
+						"static": {
+							"done": "johto_raikou_return_done",
+							"caught": "johto_raikou_caught"
+						}
+					}
+				]
+			}
+		]
 	}
 }

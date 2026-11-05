@@ -285,6 +285,12 @@ def parse_cells(text):
 	return cells
 
 
+def read_npcs(map_id):
+	"""PNJ déjà écrits pour une carte d'un autre jalon (on y ajoute, sans rien retirer)."""
+	with open(os.path.join(DATA, "npcs", map_id + ".json"), encoding="utf-8") as handle:
+		return json.load(handle)
+
+
 def write_json(path, data):
 	text = json.dumps(data, ensure_ascii=False, indent="\t") + "\n"
 	with open(path, "w", encoding="utf-8") as handle:
@@ -573,14 +579,6 @@ def main():
 			tid, _n, _k, sprite, _p, _t = TRAINERS[("silver_trail", ident)]
 			npcs["silver_trail"][ident] = trainer_npc(ident, cells[0], attrs, tid, sprite)
 	dlg["silver_trail_panneau"] = dialogue(NARRATION, player_text(A["A-3"]))
-	# Garde forestier du Lac Colère (carte du JOH6) : A-1 avant l'acte 3, A-2 ensuite.
-	dlg["lake_of_rage_forest_ranger"] = {"speaker": "Garde forestier", "variants": [
-		{"unless": ["johto_act3"], "pages": pages(A["A-1"])},
-		{"if": ["johto_act3"], "pages": pages(A["A-2"])},
-	]}
-	dlg["lake_of_rage_trail_closed"] = dialogue("Garde forestier", A["A-1"])
-	cut["lake_of_rage_trail_guard"] = guard_back_scene("garde_forestier",
-		"lake_of_rage_trail_closed", "left", ["johto_act3"])
 
 	# --- Extérieur, grotte ---
 	dlg, cut = lot("mt_silver")
@@ -728,6 +726,20 @@ def main():
 	dlg["ilex_altar_celebi"] = say(NARRATION, "A-54")
 	cut["johto_epilogue"] = epilogue_scene()
 	cut["ilex_altar_celebi"] = celebi_scene()
+	# Retour de Raikou à la Tour Cendrée après le chapitre, sur le modèle d'Entei (JOH8) [D].
+	dlg["joh9_raikou_return"] = {"cutscene": "joh9_raikou_return"}
+	cut["joh9_raikou_return"] = {"variants": [{
+		"if": [CHAPTER, "johto_raikou_done"],
+		"unless": ["johto_raikou_caught", "johto_raikou_return_done"],
+		"steps": [{"wild_battle": "raikou", "level": 60, "intro": "legendary",
+			"actor": "raikou_retour",
+			"static": {"done": "johto_raikou_return_done", "caught": "johto_raikou_caught"}}],
+	}]}
+	npcs["burned_tower_b1f"] = {**read_npcs("burned_tower_b1f"), "raikou_retour": {
+		"cell": [8, 8], "facing": "down", "sprite": "pokemon/raikou",
+		"dialogue": "joh9_raikou_return", "verb": "observe", "turn_to_player": False,
+		"if": [CHAPTER, "johto_raikou_done"],
+		"unless": ["johto_raikou_caught", "johto_raikou_return_done"]}}
 
 	for map_id, entries in npcs.items():
 		write_json(os.path.join(DATA, "npcs", map_id + ".json"), entries)

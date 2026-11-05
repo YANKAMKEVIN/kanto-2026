@@ -151,6 +151,10 @@ extends RefCounted
 ##   ([member CutsceneDirector.team_return_handler], sinon la sélection par défaut), puis
 ##   [method TeamConfiscation.restore] d'un seul bloc. Valeur : true. La scène fait suivre d'une
 ##   étape « save ».
+## - [constant Kind.FLASHBACK] (JOH6, `jalon-joh6.md` §2.7, le souvenir de Dante) : [member text]
+##   « start » (filtre sépia plein écran en fondu, joueur caché : [FlashbackFilter]) ou « end »
+##   (fondu inverse, filtre retiré, joueur visible). Le changement de carte du souvenir se fait par
+##   des étapes « change_map » ordinaires entre les deux.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -166,6 +170,7 @@ enum Kind {
 	SAFARI,
 	HALL_OF_FAME, CREDITS, # Jalon 30
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
+	FLASHBACK, # Chapitre Johto (JOH6)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -182,7 +187,10 @@ const TYPE_KEYS: Array[String] = [
 	"safari",
 	"hall_of_fame", "credits", # Jalon 30
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
+	"flashback", # Chapitre Johto (JOH6)
 ]
+## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
+const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]
@@ -272,6 +280,9 @@ var flee_flags: Array[StringName] = []
 var clear_flags: Array[StringName] = []
 var reveal: bool = false
 var uncatchable: bool = false
+## Étape « wild_battle », JOH6 (JH-46) : variante de couleur du sauvage (clé « variant »,
+## [PokemonVariant]) ; &"" = forme normale.
+var variant: StringName = &""
 ## Étape « animate », jalon 21 : sautée si « Réduire les animations » est actif.
 var skip_reduced: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
@@ -396,6 +407,7 @@ func copy() -> CutsceneStep:
 	other.clear_flags = clear_flags.duplicate()
 	other.reveal = reveal
 	other.uncatchable = uncatchable
+	other.variant = variant
 	other.skip_reduced = skip_reduced
 	other.badge_id = badge_id
 	other.moment_type = moment_type

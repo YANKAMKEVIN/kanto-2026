@@ -9,9 +9,22 @@
 	},
 	"ecruteak_city_garde_carillon": {
 		"speaker": "Garde",
-		"pages": [
-			"La Tour Carillon est sacrée.",
-			"Seuls ceux que les sages autorisent\npeuvent y entrer."
+		"variants": [
+			{
+				"if": [
+					"johto_act2"
+				],
+				"pages": [
+					"La Tour Carillon reste fermée.",
+					"Le doyen dit que le moment\nn'est pas encore venu."
+				]
+			},
+			{
+				"pages": [
+					"La Tour Carillon est sacrée.",
+					"Seuls ceux que les sages autorisent\npeuvent y entrer."
+				]
+			}
 		]
 	},
 	"ecruteak_city_porte_tour_cendree": {
@@ -19,6 +32,12 @@
 		"pages": [
 			"La porte est fermée.",
 			"Une odeur de vieux bois brûlé\nflotte encore."
+		]
+	},
+	"ecruteak_city_panneau_tour_cendree": {
+		"narration": true,
+		"pages": [
+			"TOUR CENDRÉE\nElle brûla il y a cent cinquante\nans. Ne pas allumer de feu."
 		]
 	},
 	"ecruteak_rocket_1": {
@@ -45,6 +64,27 @@
 	"ecruteak_city_sage_tour": {
 		"speaker": "Sage",
 		"variants": [
+			{
+				"if": [
+					"johto_act2"
+				],
+				"unless": [
+					"johto_burned_tower_open"
+				],
+				"pages": [
+					"Le doyen t'attend,\njeune Dresseur.",
+					"Toute la ville a entendu\nla radio."
+				]
+			},
+			{
+				"if": [
+					"johto_burned_tower_open"
+				],
+				"draft": true,
+				"pages": [
+					"La Tour Cendrée est ouverte.\nSois prudent, jeune Dresseur."
+				]
+			},
 			{
 				"if": [
 					"johto_rosalia_rockets_seen"

@@ -9,6 +9,8 @@ const J22Ids := preload("res://tests/helpers/j22_ids.gd")
 
 const PREFIX := "joh7_"
 const DOSSIER := "res://docs/design/dossier-joh-08-iles-tourbillon.md"
+## Ancien M-14, encore en jeu jusqu'à la bascule du JOHP3 (dossier JOH-11 §20) : à retirer au JOHP3.
+const DOSSIER_ARC := "res://docs/design/dossier-joh-11-arc-pierres.md"
 const MAPS: Array[StringName] = [&"route_40", &"route_41", &"whirl_islands_1f", &"whirl_islands_b1f",
 	&"whirl_islands_b2f"]
 ## N° du dossier → [dialogue, variante] dont les pages, mises bout à bout, font le texte.
@@ -105,7 +107,8 @@ func before_all() -> void:
 ## `{player}`).
 func _read_dossier() -> Dictionary:
 	var texts: Dictionary = {}
-	for line: String in FileAccess.get_file_as_string(DOSSIER).split("\n"):
+	var source := FileAccess.get_file_as_string(DOSSIER) + "\n" + FileAccess.get_file_as_string(DOSSIER_ARC)
+	for line: String in source.split("\n"):
 		if not line.begins_with("| M-"):
 			continue
 		var cells := line.split("|")

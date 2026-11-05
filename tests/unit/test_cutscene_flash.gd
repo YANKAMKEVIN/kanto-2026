@@ -42,7 +42,8 @@ func test_flash_comes_before_the_j16_kinds() -> void:
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
 	assert_eq(CutsceneStep.TYPE_KEYS[CutsceneStep.Kind.FLASH], "flash")
 	assert_eq(CutsceneStep.Kind.FIELD_MOVE, CutsceneStep.Kind.FLASH + 1)
-	assert_eq(CutsceneStep.TYPE_KEYS.slice(CutsceneStep.Kind.FLASH + 1),
+	assert_eq(CutsceneStep.TYPE_KEYS.slice(CutsceneStep.Kind.FLASH + 1,
+		CutsceneStep.Kind.GIVE_EGG + 1),
 		["field_move", "save", "animate", "wild_battle", "gift_pokemon", "flute", "unset",
 			"toggle", "trade", "safari", "hall_of_fame", "credits",
 			"confiscate_team", "return_team", "give_egg"] as Array[String],
