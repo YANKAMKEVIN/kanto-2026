@@ -140,6 +140,8 @@ const LAVANVILLE := [&"lavender_center", &"lavender_mart", &"pokemon_house",
 	&"lavender_house_1", &"lavender_house_2"]
 ## Chapitre Johto, JOH2 (T4, `jalon-joh2.md` §2.1) : les cinq intérieurs de Rosalia.
 const ACAJOU := [&"mahogany_center", &"mahogany_house_1", &"mahogany_house_2"]
+## Arc des Pierres, JOHP3 (`jalon-joh-pierres.md` §5.1) : les trois intérieurs d'Ébènelle.
+const BLACKTHORN := [&"blackthorn_center", &"blackthorn_elder_house", &"blackthorn_house_1"]
 const ROSALIA := [&"ecruteak_center", &"ecruteak_mart", &"ecruteak_elders_house",
 	&"ecruteak_house_1", &"ecruteak_house_2"]
 ## Chapitre Johto, JOH3 (T7, `jalon-joh3.md` §2.1) : les neuf intérieurs de Doublonville.
@@ -220,6 +222,7 @@ func _init() -> void:
 	rooms.append_array(_rosalia_rooms())
 	# Chapitre Johto, JOH6 : Acajou (fin de liste).
 	rooms.append_array(_acajou_rooms())
+	rooms.append_array(_blackthorn_rooms())
 	# Chapitre Johto, JOH3 : Doublonville (fin de liste).
 	rooms.append_array(_goldenrod_rooms())
 	# Chapitre Johto, JOH4 : Écorcia et la Route 34 (fin de liste).
@@ -293,6 +296,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(ROSALIA)
 		elif arg == "--acajou":
 			wanted.append_array(ACAJOU)
+		elif arg == "--blackthorn":
+			wanted.append_array(BLACKTHORN)
 		elif arg == "--doublonville":
 			wanted.append_array(DOUBLONVILLE)
 		elif arg == "--azalea":
@@ -2236,6 +2241,35 @@ func _rosalia_rooms() -> Array[Dictionary]:
 		"lavanville_maison_1.txt", &"retour_sages")
 	elders["furniture"] = _mason_furniture()
 	var house_1 := _ecruteak_house(&"ecruteak_house_1", "EcruteakHouse1",
+		"lavanville_maison_2.txt", &"retour_maison_1")
+	var azuria := _cerulean_house()
+	house_1["furniture"] = azuria["furniture"]
+	house_1["rugs"] = azuria["rugs"]
+	var house_2 := _ecruteak_house(&"ecruteak_house_2", "EcruteakHouse2",
+		"lavanville_maison_1.txt", &"retour_maison_2")
+	house_2["furniture"] = _mason_furniture()
+	return [
+		_pokemon_center(&"ecruteak_center", "EcruteakCenter", "Rosalia",
+			[&"ecruteak_city", &"retour_centre"]),
+		_poke_mart(&"ecruteak_mart", "EcruteakMart", "Rosalia", [&"ecruteak_city", &"retour_boutique"]),
+		elders, house_1, house_2,
+	]
+
+
+## Pièce de Rosalia relue sur une grille de Lavanville : enveloppe des maisons d'Argenta, sortie
+## PUSH ↓ vers `ecruteak_city` / [param spawn].
+func _ecruteak_house(id: StringName, node: String, plan: String, spawn: StringName) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Rosalia", "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": ".Xh",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+			&"ecruteak_city"),
+	}
+
+
 # --- Chapitre Johto, JOH3 (T7) : Doublonville ---------------------------------------------------
 
 const GOLDENROD_TITLE := "Doublonville"
@@ -2285,28 +2319,6 @@ func _goldenrod_rooms() -> Array[Dictionary]:
 	var azuria := _cerulean_house()
 	house_1["furniture"] = azuria["furniture"]
 	house_1["rugs"] = azuria["rugs"]
-	var house_2 := _ecruteak_house(&"ecruteak_house_2", "EcruteakHouse2",
-		"lavanville_maison_1.txt", &"retour_maison_2")
-	house_2["furniture"] = _mason_furniture()
-	return [
-		_pokemon_center(&"ecruteak_center", "EcruteakCenter", "Rosalia",
-			[&"ecruteak_city", &"retour_centre"]),
-		_poke_mart(&"ecruteak_mart", "EcruteakMart", "Rosalia", [&"ecruteak_city", &"retour_boutique"]),
-		elders, house_1, house_2,
-	]
-
-
-## Pièce de Rosalia relue sur une grille de Lavanville : enveloppe des maisons d'Argenta, sortie
-## PUSH ↓ vers `ecruteak_city` / [param spawn].
-func _ecruteak_house(id: StringName, node: String, plan: String, spawn: StringName) -> Dictionary:
-	return {
-		"id": id, "node": node, "size": Vector2i(15, 10),
-		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
-		"title": "Rosalia", "light": &"interior_warm",
-		"plan": PLANS_DIR + plan, "walkable": ".Xh",
-		"spawns": {"entrance": Vector2i(7, 8)},
-		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
-			&"ecruteak_city"),
 	var house_2 := _goldenrod_house(&"goldenrod_house_2", "GoldenrodHouse2",
 		"lavanville_maison_1.txt", &"retour_maison_2")
 	house_2["furniture"] = _mason_furniture()
@@ -3125,10 +3137,10 @@ func _indigo_plateau_lobby() -> Dictionary:
 ## `data/npcs/mahogany_*.json` (`tools/gen_joh6_data.py`).
 func _acajou_rooms() -> Array[Dictionary]:
 	var house_1 := _johto_house(&"mahogany_house_1", "MahoganyHouse1", "lavanville_maison_1.txt",
-		&"retour_maison_1", &"mahogany_town", "Acajou")
+		&"mahogany_town", &"retour_maison_1", "Acajou")
 	house_1["furniture"] = _mason_furniture()
 	var house_2 := _johto_house(&"mahogany_house_2", "MahoganyHouse2", "lavanville_maison_2.txt",
-		&"retour_maison_2", &"mahogany_town", "Acajou")
+		&"mahogany_town", &"retour_maison_2", "Acajou")
 	var azuria := _cerulean_house()
 	house_2["furniture"] = azuria["furniture"]
 	house_2["rugs"] = azuria["rugs"]
@@ -3139,14 +3151,23 @@ func _acajou_rooms() -> Array[Dictionary]:
 	]
 
 
-## Maison de Johto relue sur une grille de Lavanville (modèle de `_ecruteak_house`), sortie PUSH ↓
-## vers [param town] / [param spawn].
-func _johto_house(id: StringName, node: String, plan: String, spawn: StringName,
-		town: StringName, title: String) -> Dictionary:
-	var room := _ecruteak_house(id, node, plan, spawn)
-	room["title"] = title
-	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, town)
-	return room
+## Intérieurs d'Ébènelle (`jalon-joh-pierres.md` §5.1) : Centre (définition commune, sortie vers
+## `blackthorn_city`) ; maison de l'Aïeule et maison, relues sur les grilles des maisons de
+## Lavanville [D]. PNJ dans `data/npcs/blackthorn_*.json` (`tools/gen_johp3_data.py`).
+func _blackthorn_rooms() -> Array[Dictionary]:
+	var elder := _johto_house(&"blackthorn_elder_house", "BlackthornElderHouse",
+		"lavanville_maison_1.txt", &"blackthorn_city", &"retour_aieule", "Ébènelle")
+	elder["furniture"] = _mason_furniture()
+	var house_1 := _johto_house(&"blackthorn_house_1", "BlackthornHouse1",
+		"lavanville_maison_2.txt", &"blackthorn_city", &"retour_maison", "Ébènelle")
+	var azuria := _cerulean_house()
+	house_1["furniture"] = azuria["furniture"]
+	house_1["rugs"] = azuria["rugs"]
+	return [
+		_pokemon_center(&"blackthorn_center", "BlackthornCenter", "Ébènelle",
+			[&"blackthorn_city", &"retour_centre"]),
+		elder, house_1,
+	]
 
 
 # --- Chapitre Johto, JOH9 : Mont Argenté, Route 28 (`docs/tech/jalon-joh9.md` §2.1) -----------
