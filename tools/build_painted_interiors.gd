@@ -3137,11 +3137,11 @@ func _indigo_plateau_lobby() -> Dictionary:
 ## boutique de souvenirs a sa propre grille (escalier caché) : `build_joh6_maps.gd`. PNJ dans
 ## `data/npcs/mahogany_*.json` (`tools/gen_joh6_data.py`).
 func _acajou_rooms() -> Array[Dictionary]:
-	var house_1 := _acajou_house(&"mahogany_house_1", "MahoganyHouse1", "lavanville_maison_1.txt",
-		&"retour_maison_1", &"mahogany_town", "Acajou")
+	var house_1 := _johto_house(&"mahogany_house_1", "MahoganyHouse1", "lavanville_maison_1.txt",
+		&"mahogany_town", &"retour_maison_1", "Acajou")
 	house_1["furniture"] = _mason_furniture()
-	var house_2 := _acajou_house(&"mahogany_house_2", "MahoganyHouse2", "lavanville_maison_2.txt",
-		&"retour_maison_2", &"mahogany_town", "Acajou")
+	var house_2 := _johto_house(&"mahogany_house_2", "MahoganyHouse2", "lavanville_maison_2.txt",
+		&"mahogany_town", &"retour_maison_2", "Acajou")
 	var azuria := _cerulean_house()
 	house_2["furniture"] = azuria["furniture"]
 	house_2["rugs"] = azuria["rugs"]
@@ -3150,16 +3150,6 @@ func _acajou_rooms() -> Array[Dictionary]:
 			[&"mahogany_town", &"retour_centre"]),
 		house_1, house_2,
 	]
-
-
-## Maison de Johto relue sur une grille de Lavanville (modèle de `_ecruteak_house`), sortie PUSH ↓
-## vers [param town] / [param spawn].
-func _acajou_house(id: StringName, node: String, plan: String, spawn: StringName,
-		town: StringName, title: String) -> Dictionary:
-	var room := _ecruteak_house(id, node, plan, spawn)
-	room["title"] = title
-	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, town)
-	return room
 
 
 # --- Arc des Pierres, JOHP2 : Irisia (`docs/tech/jalon-joh-pierres.md` §4.1) ------------------
