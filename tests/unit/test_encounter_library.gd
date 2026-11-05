@@ -126,7 +126,10 @@ func test_real_tables_load_without_error() -> void:
 	# Cramois'Île, herbe de la Route 21, sol des Îles Écume (test_j24_data) ; jalon 31 (T4) : sol
 	# des trois étages de la Grotte Azurée.
 	assert_eq(lib.get_ids(), [&"burned_tower_1f_floor", &"cerulean_cave_1f_floor", &"cerulean_cave_2f_floor",
-		&"cerulean_cave_b1f_floor", &"cinnabar_island_water", &"dark_cave_1f_rubble",
+		&"cerulean_cave_b1f_floor",
+		# JOHP2 : Irisia, jour et nuit.
+		&"cianwood_grass_day", &"cianwood_grass_night",
+		&"cinnabar_island_water", &"dark_cave_1f_rubble",
 		&"dark_cave_b1f_rubble", &"digletts_cave_rubble",
 		# Chapitre Johto, JOH2 : herbe des tours de Rosalia (nuit), Routes 38 et 39 (jour / nuit).
 		&"ecruteak_towers_night",
@@ -171,6 +174,8 @@ func test_real_tables_load_without_error() -> void:
 		# JOH9 : Sentier du Mont Argenté (jour, nuit).
 		&"silver_trail_grass_day", &"silver_trail_grass_night",
 		&"slowpoke_well_rubble", &"slowpoke_well_water",
+		# JOHP2 : la Grotte de la Marée.
+		&"tide_cave_1f_rubble", &"tide_cave_b1f_rubble",
 		&"victory_road_1f_rubble", &"victory_road_2f_rubble",
 		&"victory_road_3f_rubble", &"viridian_forest_grass",
 		# Chapitre Johto, JOH7 : la mer et les Îles Tourbillon (dossier JOH-08 §5).
@@ -259,7 +264,7 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# `test_joh2_data`) ; JOH3 : + 8 (`test_joh3_data`) ; JOH4 : + 8 (Route 34, Bois aux Chênes, Puits Ramoloss : `test_joh4_data`) ;
 	# JOH6 : + 9 (`test_joh6_data`) ; JOH7 : + 6 tables de la mer et des Îles Tourbillon (`test_joh7_data`) ;
 	# JOH9 : + 9 tables du Mont Argenté, du sentier et de la Route 28 (`test_joh9_data`).
-	assert_eq(lib.size(), 105, "une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH3, les 8 du JOH4, les 9 du JOH6, les 6 du JOH7 et les 9 du JOH9")
+	assert_eq(lib.size(), 109, "JOHP2 : les 4 d'Irisia et de la Grotte de la Marée ; une table par couple ci-dessous, plus les 4 de la Tour (J19, J21), l'eau de la grotte marine (JOH1), les 5 du JOH2, les 8 du JOH3, les 8 du JOH4, les 9 du JOH6, les 6 du JOH7 et les 9 du JOH9")
 	for pair: Array in [[&"route_1", &"grass"], [&"route_2", &"grass"],
 			[&"route_22", &"grass"], [&"viridian_forest", &"grass"], [&"route_2_north", &"grass"],
 			[&"route_3", &"grass"], [&"mt_moon_1f", &"rubble"], [&"mt_moon_b1f", &"rubble"],

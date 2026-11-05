@@ -66,7 +66,7 @@ func test_female_grunts_have_their_own_class() -> void:
 	# [D] tant que le JOH5 n'a pas de classe d'admin). JOH5 : + 3 Sbires F de la Tour Radio (J, L, N)
 	# et Cenere (apparence rocket_grunt_f [D]). JOH6 : + 3 (péage Q, alarme 2, Sbire S).
 	# JOH8 : + le Sbire W de la Tour Carillon. JOH9 : + le Sbire Y du 1F du Mont Argenté.
-	assert_eq(female, 25, "25 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
+	assert_eq(female, 26, "26 Sbires Rocket femmes (apparence du monde rocket_grunt_f)")
 
 
 func test_every_grand_portrait_is_in_the_catalog() -> void:

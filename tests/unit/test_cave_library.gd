@@ -35,7 +35,9 @@ func test_real_data_mt_moon() -> void:
 		&"burned_tower", &"mahogany_hideout", &"slowpoke_well", &"whirl_islands",
 		&"bell_tower",
 		# JOH9 : le Mont Argenté.
-		&"mt_silver", &"mt_silver_dark"]
+		&"mt_silver", &"mt_silver_dark",
+		# JOHP2 : la Grotte de la Marée (Corde Sortie → devant sa bouche, à Irisia).
+		&"tide_cave"]
 		as Array[StringName])
 	assert_eq(caves.get_maps(&"mt_moon"),
 		[&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"] as Array[StringName])
