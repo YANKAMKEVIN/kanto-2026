@@ -100,8 +100,9 @@ YSOLDE = {
 		{"species": "dragonair", "level": 43}, {"species": "kingdra", "level": 43},
 		{"species": "dragonite", "level": 45}],
 }
-# Attaques [D] (JH-74, JH-78) : niveaux inchangés, l'IA et les attaques seules corrigent une équipe
-# réveillée ou mixte (`tools/sim/gen_johp3_scenarios.py`, résultats au plan §5.4).
+# Attaques [D] et niveaux [D] (décision de Kevin du 2026-11-05, au-delà de JH-74 et JH-78 : joueur
+# attentif autour de 80 % du premier coup, naïf pas impuissant ; `tools/sim/gen_johp3_scenarios.py`,
+# résultats au plan §5.5).
 MOVE_SETS = {
 	"sneasel": ["ice_beam", "feint_attack", "slash", "quick_attack"],
 	"weezing": ["sludge", "flamethrower", "thunderbolt", "explosion"],
@@ -117,12 +118,12 @@ CENERE = {
 	"can_lose": False, "heal_after": False, "gives_exp": True, "prize_money": 0,
 	"prize_per_level": 60, "start_message": False, "end_message": False, "switch": True,
 	"bag": True,
-	"team": [{"species": "sneasel", "level": 56}, {"species": "weezing", "level": 54},
-		{"species": "wobbuffet", "level": 54}, {"species": "noctowl", "level": 55}],
+	"team": [{"species": "sneasel", "level": 61}, {"species": "weezing", "level": 59},
+		{"species": "wobbuffet", "level": 59}, {"species": "noctowl", "level": 60}],
 }
 
 # --- Sprites [D] ------------------------------------------------------------------------------
-ROLE_SPRITES = {"messager": "youngster", "aieule": "aoki", "ysolde": "cooltrainer_f",
+ROLE_SPRITES = {"messager": "courier", "aieule": "aoki", "ysolde": "cooltrainer_f",
 	"cenere": "rocket_grunt_f"}
 DRAGONITE_SPRITE = "pokemon/dragonite"
 SNEASEL_SPRITE = "pokemon/sneasel"
@@ -358,6 +359,7 @@ def corentin_flight_scene():
 		{"dragon_flight": "out"},
 		{"rest_point": "blackthorn_center"},
 		{"change_map": "blackthorn_city", "at": "from_dragon", "facing": "up"},
+		{"dragon_flight": "land"},
 	]
 	return {"variants": [
 		{"if": [RETURNED], "unless": [ACT2], "steps": [
@@ -380,6 +382,7 @@ def corentin_back_scene():
 	fly = [
 		{"dragon_flight": "back"},
 		{"change_map": "ecruteak_city", "at": "from_dragon", "facing": "down"},
+		{"dragon_flight": "land"},
 	]
 	return {"variants": [
 		{"if": [RETURNED], "unless": [ACT2], "steps": [
@@ -641,18 +644,21 @@ def with_moves(trainer):
 		if member["species"] in MOVE_SETS:
 			member["moves"] = MOVE_SETS[member["species"]]
 	trainer["switch"] = True
-	trainer["bag"] = True
 
 
 def patch_act2_trainers():
-	"""JH-78 : Brace (JOH6) et Cenere des Îles Tourbillon (JOH7) restent au-delà de 80 % contre une
-	équipe mixte : attaques choisies, sac et changements. Niveaux inchangés. Relançable."""
-	for file, ident in (("mahogany_hideout_b3f.json", "mahogany_hideout_b3f_brace"),
-			("joh7.json", "whirl_islands_cenere")):
+	"""Décision de Kevin du 2026-11-05 : Brace (JOH6) et Cenere des Îles Tourbillon (JOH7), au-delà de
+	80 % contre une équipe mixte, reçoivent attaques choisies, changements et niveaux [D] ; Cenere
+	s'arrête à 66, en dessous de Dante (1). Seuls ces deux adversaires changent. Relançable."""
+	for file, ident, levels in (
+			("mahogany_hideout_b3f.json", "mahogany_hideout_b3f_brace", [63, 63, 64, 65]),
+			("joh7.json", "whirl_islands_cenere", [64, 64, 65, 65, 66])):
 		path = os.path.join(DATA, "trainers", file)
 		with open(path, encoding="utf-8") as handle:
 			data = json.load(handle)
 		with_moves(data[ident])
+		for member, level in zip(data[ident]["team"], levels):
+			member["level"] = level
 		write_json(path, data)
 
 

@@ -40,6 +40,9 @@ STARTS = {
 		ARC + CLAN + TRIAL + GUARDIANS + YSOLDE, TEAM_40, {"stone_breath": 1}),
 	"johto_den_cenere": ("dragons_den_sanctuary", "altar_front", "up",
 		ARC + CLAN + TRIAL + GUARDIANS + YSOLDE + AWAKENED, TEAM_58, {}),
+	# QA du retour de l'équipe : Cenere battue, mallette pas encore rendue (écran des 6, reprise).
+	"johto_den_return": ("dragons_den_sanctuary", "altar_front", "up",
+		ARC + CLAN + TRIAL + GUARDIANS + YSOLDE + AWAKENED + ["johto_cenere_defeated_arc"], TEAM_58, {}),
 }
 
 

@@ -2094,6 +2094,9 @@ func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> in
 
 ## JOHP3 (étape « dragon_flight ») : le survol ; la scène change de carte derrière.
 func _on_dragon_flight_requested(direction: StringName) -> void:
+	if direction == &"land":
+		await _dragon_flight_overlay.finish()
+		return
 	_dragon_flight_overlay.reduce_motion = _settings.reduce_motion
 	await _dragon_flight_overlay.play(direction)
 

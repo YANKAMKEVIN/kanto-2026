@@ -207,22 +207,29 @@ passées par le bureau : `johto_stones_quest` n'est jamais posé, la barrière d
 - **Rosalia** : `from_dragon` ajouté **au texte** de `ecruteak_city.tscn` (`tools/build_johp3_maps.gd`), jamais
   réenregistré : la sauvegarde par l'outil aplatissait les décors peints.
 - **Équilibrage** (`tools/sim/gen_johp3_scenarios.py`, `simulate_mt_moon.gd`, 200 graines, attentif avec 3
-  Hyper Potions / naïf) :
+  Hyper Potions / naïf). Décision de Kevin du 2026-11-05 : joueur attentif autour de 80 %, naïf pas
+  impuissant, niveaux permis au-delà de JH-74 et JH-78, pour Cenere et Brace seulement. Niveaux [D] notés au
+  dossier JOH-11 §10 :
 
-| Combat | Équipe | Attentif | Naïf | Lecture |
-|---|---|---|---|---|
-| Ysolde | 6 Pokémon 37–39 | 46,5 % | 0,5 % | Dans la cible 35–60 % |
-| Ysolde | 4 Pokémon 40–42 | 56,5 % | 2,5 % | Dans la cible |
-| Ysolde | 3 Pokémon 44 | 89,5 % | 45,5 % | **Au-dessus de 80 %** : le joueur qui ne monte que trois Pokémon |
-| Cenere, après le Réveil | 6 Pokémon 58 | 100 % | 96 % | **Au-dessus de 70–80 %** |
-| Cenere, après le Réveil | 4 Pokémon 55 | 95 % | 40,5 % | **Au-dessus de 80 %** en attentif |
-| Dante (1), mixte | N63 / N65 | 63,5 / 82,5 % | 4 / 13 % | Attaques déjà choisies au JOH8, rien changé |
+| Combat | Niveaux | Équipe | Attentif | Naïf | Lecture |
+|---|---|---|---|---|---|
+| Ysolde | 42–45 (dossier) | 6 Pokémon 37–39 | 46,5 % | 0,5 % | Dans la cible 35–60 % |
+| Ysolde | 42–45 (dossier) | 4 Pokémon 40–42 | 56,5 % | 2,5 % | Dans la cible |
+| Ysolde | 42–45 (dossier) | 3 Pokémon 44 | 89,5 % | 45,5 % | Au-dessus de 80 % : qui ne monte que trois Pokémon |
+| Cenere, autel | **59–61 [D]** (était 54–56) | 6 Pokémon 58 | 100 % | 83,5 % | |
+| Cenere, autel | **59–61 [D]** | 4 Pokémon 55 | 76,5 % | 11,5 % | Autour de 80 % |
+| Brace, mixte | **63–65 [D]** (était 60–62) | N59 | 78 % | 3 % | Autour de 80 % |
+| Brace, mixte | **63–65 [D]** | N61 | 89,5 % | 12 % | |
+| Cenere, Îles Tourbillon, mixte | **64–66 [D]** (était 62–64) | N61 / N63 | **100 %** | 29,5 / 49 % | **Cible non atteinte** |
+| Dante (1), mixte | 64–68, inchangé | N63 / N65 | 63,5 / 82,5 % | 4 / 13 % | |
 
-  Attaques ajoutées à Cenere, Brace et Cenere des Îles Tourbillon, avec sac et changements (JH-78, niveaux
-  inchangés) : Brace mixte passe de 53–83 % à 17–45 % en naïf, 97–99 % en attentif ; Cenere des Îles
-  Tourbillon de 84–93 % à 45–51 % en naïf, 100 % en attentif. **Reste au-delà de 80 % en attentif** : les
-  niveaux sont fixés par JH-74 et JH-78, seule une décision de Kevin peut aller plus loin. Essai écarté : des
-  attaques choisies pour Ysolde donnaient 0 à 5 %.
+  Attaques ajoutées à Cenere (autel et Îles Tourbillon) et à Brace, avec changements de Pokémon. Cenere des
+  Îles Tourbillon reste à 100 % en attentif : ni +6 niveaux ni des attaques plus fortes (Déflagration,
+  Fatal-Foudre, Blizzard) n'y changent rien, seul le naïf baisse ; arrêtée à 66, sous Dante (1). Il faudrait
+  changer son équipe, hors de la décision. Essai écarté : des attaques choisies pour Ysolde donnaient 0 à 5 %.
+- **QA A17 du 2026-11-05** (sans bloquant) : autel, film et écran du Réveil, écran des 6, vol et arrivée à Rosalia.
+  Reprise sur vraie sauvegarde, sans perte, tuée sur l'écran du Réveil, sur l'écran des 6, après VALIDER avant
+  l'écriture, après l'écriture. Combat complet contre Cenere non joué sur téléphone (couvert dans le vrai Boot).
 
 ## 6. Risques
 

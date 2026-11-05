@@ -81,7 +81,7 @@
 			"team": [
 				{
 					"species": "weezing",
-					"level": 62,
+					"level": 64,
 					"moves": [
 						"sludge",
 						"flamethrower",
@@ -91,11 +91,11 @@
 				},
 				{
 					"species": "wobbuffet",
-					"level": 62
+					"level": 64
 				},
 				{
 					"species": "noctowl",
-					"level": 63,
+					"level": 65,
 					"moves": [
 						"psychic",
 						"hypnosis",
@@ -105,7 +105,7 @@
 				},
 				{
 					"species": "dewgong",
-					"level": 63,
+					"level": 65,
 					"moves": [
 						"ice_beam",
 						"surf",
@@ -115,7 +115,7 @@
 				},
 				{
 					"species": "sneasel",
-					"level": 64,
+					"level": 66,
 					"moves": [
 						"ice_beam",
 						"feint_attack",

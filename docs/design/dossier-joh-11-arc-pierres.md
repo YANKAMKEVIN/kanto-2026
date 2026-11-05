@@ -268,9 +268,9 @@ trois Pokémon. Les adversaires sont réglés sur ces valeurs, avec l'avance hab
 | JOHP1 Ruines | 30–34 | 27–31 | 30–33 | Faux archéologue 34–35 |
 | JOHP2 Irisia | 33–37 | 30–34 | 33–36 | Chef de cale 37–38 |
 | JOHP3 Ébènelle, Antre | 36–40 | 33–37 | 36–40 | Ysolde 42–45 |
-| **Le Réveil** | **≈ 40 → 55–62 (§13)** | | | Cenere 54–56 |
+| **Le Réveil** | **≈ 40 → 55–62 (§13)** | | | Cenere 59–61 **[D]** |
 | **Retour de l'équipe** | Johto 55–62 + Kanto 55–65 | | | |
-| JOH6 (inchangé) | 58–64 | 40–50 | 46–60 | Brace 60–62 |
+| JOH6 | 58–64 | 40–50 | 46–60 | Brace 63–65 **[D]** |
 
 ## 10. Dresseurs **[D]**
 
@@ -302,12 +302,16 @@ trois Pokémon. Les adversaires sont réglés sur ces valeurs, avec l'avance hab
 | Antre 1F | Gardien de la Pierre | Grolem 39, Onix 39, Draco 39 | **non** |
 | Antre 1F | Gardien du Ciel | Rapasdepic 40, Noarfang 40, Draco 40 | **non** |
 | Sanctuaire | **Ysolde** | Léviator 42, Draco 42, Draco 43, Hyporoi 43, Dracolosse 45 | **non** |
-| Sanctuaire | **Cenere** (après le réveil) | Smogogo 54, Qulbutoké 54, Noarfang 55, Farfuret 56 | **non** |
+| Sanctuaire | **Cenere** (après le réveil) | Farfuret 61, Smogogo 59, Qulbutoké 59, Noarfang 60 **[D]** | **non** |
 
 - **Ysolde** est un grand combat (35–60 % du premier coup, mémoire « Difficulté des combats ») ; c'est
   le mur de l'arc. Dracolosse niveau 45 : exception d'histoire **[D]**, comme le Pokémon d'un maître.
 - **Cenere** après le réveil doit faire **sentir la puissance** : recherche ≈ 70–80 % du premier coup,
-  sans dépasser les 80 % de la règle (JH-74).
+  sans dépasser les 80 % de la règle (JH-74). **Niveaux relevés de 54–56 à 59–61 [D]** (décision de Kevin
+  du 2026-11-05, au-delà de JH-74 : joueur attentif autour de 80 %), Farfuret en tête (P-32).
+- **Décision de Kevin du 2026-11-05, au-delà de JH-78** : Brace (repaire d'Acajou) passe de 60–62 à
+  **63–65 [D]**, Cenere des Îles Tourbillon de 62–64 à **64–66 [D]**, tous deux avec attaques choisies.
+  Seuls ces deux adversaires changent. Simulations : `docs/tech/jalon-joh-pierres.md` §5.5.
 - 27 lignes : les 26 comptées au §9, plus Cenere. Le JOH4 compte 9 Dresseurs pour une taille comparable à **un** de ces lieux.
 
 ## 11. Rencontres **[D]**

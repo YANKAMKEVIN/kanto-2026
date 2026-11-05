@@ -24,8 +24,8 @@ const TRAINERS: Dictionary = {
 	&"den_ysolde": ["Ysolde", [[&"gyarados", 42], [&"dragonair", 42], [&"dragonair", 43],
 		[&"kingdra", 43], [&"dragonite", 45]]],
 	# Farfuret d'abord [D] : « Recommence, Farfuret » (P-32).
-	&"den_cenere": ["Cenere", [[&"sneasel", 56], [&"weezing", 54], [&"wobbuffet", 54],
-		[&"noctowl", 55]]],
+	&"den_cenere": ["Cenere", [[&"sneasel", 61], [&"weezing", 59], [&"wobbuffet", 59],
+		[&"noctowl", 60]]],
 }
 ## Dossier §11 : table → (moments, terrain, niveaux, poids par espèce).
 const TABLES: Dictionary = {
@@ -122,8 +122,8 @@ func test_trainers_follow_dossier_10() -> void:
 		assert_eq(team, TRAINERS[id][1], "%s : équipe du §10" % id)
 
 
-## JH-78 : niveaux inchangés, l'IA et les attaques corrigent l'équipe mixte (plan §5.4).
-func test_act_2_trainers_keep_their_levels_and_gain_moves() -> void:
+## Décision de Kevin du 2026-11-05 : attaques et niveaux [D] contre l'équipe mixte (plan §5.5).
+func test_act_2_bosses_gain_moves_and_levels() -> void:
 	for id: StringName in [&"mahogany_hideout_b3f_brace", &"whirl_islands_cenere"]:
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer.can_switch, String(id))
@@ -135,7 +135,11 @@ func test_act_2_trainers_keep_their_levels_and_gain_moves() -> void:
 	var levels: Array = []
 	for member: Variant in _trainers.get_trainer(&"whirl_islands_cenere").team:
 		levels.append(member.level)
-	assert_eq(levels, [62, 62, 63, 63, 64], "niveaux du JOH7 inchangés")
+	assert_eq(levels, [64, 64, 65, 65, 66], "en dessous de Dante (1)")
+	levels.clear()
+	for member: Variant in _trainers.get_trainer(&"mahogany_hideout_b3f_brace").team:
+		levels.append(member.level)
+	assert_eq(levels, [63, 63, 64, 65])
 
 
 func test_encounter_tables_follow_dossier_11() -> void:

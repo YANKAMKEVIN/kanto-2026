@@ -96,6 +96,13 @@ func test_blackthorn_has_no_way_out_on_foot() -> void:
 		assert_true(allowed.has(warp.get(&"target_map")), String(warp.name))
 
 
+## Les rangées des deux barrières sont ouvertes : prises de côté, elles tiennent aussi.
+func test_barriers_hold_from_every_side() -> void:
+	for pair: Array in [[&"blackthorn_city", "BarriereAntre"], [&"dragons_den_1f", "BarriereSanctuaire"]]:
+		var trigger := _map(pair[0]).get_node("Triggers/%s" % pair[1])
+		assert_eq(trigger.get(&"direction"), Vector2i.ZERO, String(pair[0]))
+
+
 func _warp_to(from: StringName, target: StringName) -> bool:
 	for warp: Node in _map(from).get_node(^"Warps").get_children():
 		if warp.get(&"target_map") == target:

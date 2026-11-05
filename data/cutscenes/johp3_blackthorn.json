@@ -54,6 +54,9 @@
 						"change_map": "blackthorn_city",
 						"at": "from_dragon",
 						"facing": "up"
+					},
+					{
+						"dragon_flight": "land"
 					}
 				]
 			},
@@ -76,6 +79,9 @@
 						"change_map": "blackthorn_city",
 						"at": "from_dragon",
 						"facing": "up"
+					},
+					{
+						"dragon_flight": "land"
 					}
 				]
 			}
@@ -113,6 +119,9 @@
 						"change_map": "ecruteak_city",
 						"at": "from_dragon",
 						"facing": "down"
+					},
+					{
+						"dragon_flight": "land"
 					}
 				]
 			},
@@ -132,6 +141,9 @@
 						"change_map": "ecruteak_city",
 						"at": "from_dragon",
 						"facing": "down"
+					},
+					{
+						"dragon_flight": "land"
 					}
 				]
 			}

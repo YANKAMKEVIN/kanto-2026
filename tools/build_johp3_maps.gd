@@ -76,8 +76,9 @@ const WARPS: Dictionary = {
 ## Déclencheurs de la grille : (carte, position) → scène, sens du pas (ZERO = toutes directions).
 ## Absent de la table : ignoré si dans [constant IGNORED_TRIGGERS].
 const TRIGGERS: Dictionary = {
-	"blackthorn_city/barriere_antre": {"scene": &"blackthorn_den_barrier", "dir": Vector2i.RIGHT},
-	"dragons_den_1f/barriere_sanctuaire": {"scene": &"dragons_den_barrier", "dir": Vector2i.UP},
+	# Toutes directions : les deux barrières se prennent aussi de côté (rangées ouvertes).
+	"blackthorn_city/barriere_antre": {"scene": &"blackthorn_den_barrier", "dir": Vector2i.ZERO},
+	"dragons_den_1f/barriere_sanctuaire": {"scene": &"dragons_den_barrier", "dir": Vector2i.ZERO},
 	"dragons_den_sanctuary/scene_ysolde": {"scene": &"dragons_den_ysolde", "dir": Vector2i.UP},
 	"dragons_den_sanctuary/scene_autel": {"scene": &"dragons_den_altar", "dir": Vector2i.ZERO},
 }

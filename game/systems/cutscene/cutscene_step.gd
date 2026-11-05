@@ -206,8 +206,8 @@ const TYPE_KEYS: Array[String] = [
 ]
 ## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
 const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
-## Valeurs d'une étape « dragon_flight » (JOHP3) : l'aller vers Ébènelle, le retour.
-const FLIGHT_DIRECTIONS: Array[String] = ["out", "back"]
+## Valeurs d'une étape « dragon_flight » (JOHP3) : l'aller vers Ébènelle, le retour, l'arrivée.
+const FLIGHT_DIRECTIONS: Array[String] = ["out", "back", "land"]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]

@@ -3,7 +3,8 @@ extends CanvasLayer
 ## Le vol sur le Dracolosse de Corentin (arc des Pierres, JOHP3, `jalon-joh-pierres.md` §5.2) :
 ## plein écran au-dessus du monde, un ciel en dégradé, des nuages qui défilent et l'artwork de
 ## Dracolosse qui traverse l'écran, dans un sens à l'aller et dans l'autre au retour. Purement
-## visuel, sans texte ni entrée : la scène attend [method play], puis change de carte derrière.
+## visuel, sans texte ni entrée : la scène attend [method play], change de carte derrière, et
+## l'écran se retire par [method finish] à l'arrivée (étape « dragon_flight »: « land »).
 ## [member reduce_motion] (« Réduire les animations ») : image fixe, tenue courte. Visuels
 ## provisoires (règle 3) ; DA en phase DA.
 
@@ -89,6 +90,12 @@ func play(direction: StringName) -> void:
 			var cloud := _clouds[i]
 			var shift := view.x * (0.5 + 0.1 * (i % 3)) * (-1.0 if rightward else 1.0)
 			tween.parallel().tween_property(cloud, ^"position:x", cloud.position.x + shift, CROSSING)
+	await tween.finished
+
+
+## Retire le ciel, une fois la carte d'arrivée en place (l'écran reste opaque jusque-là).
+func finish() -> void:
+	var tween := create_tween()
 	tween.tween_property(_root, ^"modulate:a", 0.0, FADE)
 	await tween.finished
 	_root.visible = false

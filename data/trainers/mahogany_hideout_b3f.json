@@ -11,7 +11,7 @@
 		"team": [
 			{
 				"species": "fearow",
-				"level": 60,
+				"level": 63,
 				"moves": [
 					"drill_peck",
 					"agility",
@@ -21,7 +21,7 @@
 			},
 			{
 				"species": "arbok",
-				"level": 60,
+				"level": 63,
 				"moves": [
 					"sludge",
 					"earthquake",
@@ -31,7 +31,7 @@
 			},
 			{
 				"species": "weezing",
-				"level": 61,
+				"level": 64,
 				"moves": [
 					"sludge",
 					"flamethrower",
@@ -41,7 +41,7 @@
 			},
 			{
 				"species": "houndoom",
-				"level": 62,
+				"level": 65,
 				"moves": [
 					"flamethrower",
 					"crunch",

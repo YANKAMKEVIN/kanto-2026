@@ -51,7 +51,7 @@
 		"team": [
 			{
 				"species": "sneasel",
-				"level": 56,
+				"level": 61,
 				"moves": [
 					"ice_beam",
 					"feint_attack",
@@ -61,7 +61,7 @@
 			},
 			{
 				"species": "weezing",
-				"level": 54,
+				"level": 59,
 				"moves": [
 					"sludge",
 					"flamethrower",
@@ -71,11 +71,11 @@
 			},
 			{
 				"species": "wobbuffet",
-				"level": 54
+				"level": 59
 			},
 			{
 				"species": "noctowl",
-				"level": 55,
+				"level": 60,
 				"moves": [
 					"psychic",
 					"hypnosis",
