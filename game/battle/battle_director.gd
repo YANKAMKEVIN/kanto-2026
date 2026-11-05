@@ -992,7 +992,8 @@ func _finish_capture(event: BattleEvent) -> void:
 	var portrait: Texture2D = PokedexArt.portrait(_data.get_species(species).dex)
 	var view := CaptureCardView.new(_texts.line_for(&"caught_title", event, _data), portrait,
 		show_entry, _texts.line_for(&"pokedex_new", event, _data),
-		_texts.line_for(&"joined_party" if joined else &"sent_to_storage", event, _data))
+		_texts.line_for(&"joined_party" if joined \
+			else CaptureGate.stored_key(_state.flags as StoryFlags), event, _data))
 	await _ensure_capture_card().show_capture(view)
 
 

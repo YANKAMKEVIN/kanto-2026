@@ -44,7 +44,9 @@ func _map(id: StringName) -> GameMap:
 func _plan(id: StringName) -> PlanGrid:
 	if not _plans.has(id):
 		var plan := PlanGrid.new()
-		assert_true(plan.load_file("res://tools/plans/%s.txt" % EXTERIORS[id]), plan.error)
+		# Route 36 : la variante ARC (chemin des Ruines d'Alpha, JOHP1) est posée sur la carte.
+		var variant := "ARC" if id == &"route_36" else ""
+		assert_true(plan.load_file("res://tools/plans/%s.txt" % EXTERIORS[id], variant), plan.error)
 		_plans[id] = plan
 	return _plans[id]
 

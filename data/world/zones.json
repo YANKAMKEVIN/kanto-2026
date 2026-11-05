@@ -444,6 +444,12 @@
 			"subtitle": "Écorcia",
 			"description": "Un vieux puits humide, sous la ville."
 		},
+		"ruins_of_alph": {
+			"name": "Ruines d'Alpha", "kind": "place", "region": "johto",
+			"maps": ["ruins_of_alph", "alph_tent", "alph_gallery", "alph_chamber"],
+			"subtitle": "Route 36",
+			"description": "Des ruines plus vieilles que Johto, et qui se souviennent."
+		},
 		"mahogany_town": {
 			"name": "Acajou", "kind": "town", "region": "johto",
 			"maps": ["mahogany_town", "mahogany_souvenir_shop", "mahogany_center", "mahogany_house_1", "mahogany_house_2"],

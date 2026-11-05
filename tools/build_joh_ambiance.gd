@@ -90,7 +90,8 @@ const MAPS: Dictionary = {
 	# pied (cases), nœud, échelle, teinte], « glows » [type, position (cases)], « stairs » (cases).
 	&"route_37": {"plan": "route_37", "seed": 37201, "rock": Rock.SHORE, "path": EARTH,
 		"panes": true},
-	&"route_36": {"plan": "route_36", "seed": 36201, "rock": Rock.SHORE, "path": EARTH,
+	# « variant » : variante de la grille (ARC : chemin des Ruines d'Alpha, JOHP1).
+	&"route_36": {"plan": "route_36", "variant": "ARC", "seed": 36201, "rock": Rock.SHORE, "path": EARTH,
 		"panes": true, "deck": "b", "legend": {"b": "z", "X": "c", "P": "c"},
 		"cells": [[Rect2i(30, 1, 8, 3), "T"]],
 		"buildings": [["bldg_grille_parc_01", Vector2i(34, 6), "GrilleParc"]],
@@ -309,7 +310,7 @@ func _init() -> void:
 func _build(map_id: StringName) -> void:
 	var spec: Dictionary = MAPS[map_id]
 	var source := PlanGrid.new()
-	if not source.load_file("res://tools/plans/%s.txt" % spec["plan"]):
+	if not source.load_file("res://tools/plans/%s.txt" % spec["plan"], spec.get("variant", "")):
 		push_error("%s : %s" % [map_id, source.error])
 		_errors += 1
 		return

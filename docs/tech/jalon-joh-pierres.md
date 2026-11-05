@@ -126,6 +126,8 @@ présent au retour de l'équipe.
 **Critères** : du hall de la Tour (départ de débogage) à la Pierre Mémoire ; mauvaises dalles ; Corde Sortie vers
 `retour_galerie` ; aucune CS requise.
 
+**État : fait, fusionné dans `main` le 2026-11-05** (CI verte run 41999662979, QA A17 sans bloquant). Écarts [D] : lumière `cave_1f` et `cave_b1f` (le profil `cave` n'existe pas) ; Route 36 retouchée dès le JOHP1 (`build_johp1_maps.gd`, puis `build_joh_ambiance.gd` avec la clé `variant`), fermée par l'ouvrier tant que `johto_stones_quest` manque ; signes de la Galerie dessinés (`AlphGlyph`), le signe de chaque mur marquant la bonne dalle de son rang.
+
 ## 4. JOHP2 — Irisia
 
 ### 4.1 Cartes

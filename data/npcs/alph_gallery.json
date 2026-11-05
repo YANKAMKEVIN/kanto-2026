@@ -1,0 +1,76 @@
+{
+	"sbire_v": {
+		"cell": [
+			6,
+			4
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "alph_grunt_v_after",
+		"trainer": {
+			"id": "alph_grunt_v",
+			"sight": 2,
+			"before": "alph_grunt_v_before",
+			"defeated": "alph_grunt_v_defeated"
+		}
+	},
+	"sbire_w": {
+		"cell": [
+			12,
+			2
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_f",
+		"dialogue": "alph_grunt_w_after",
+		"trainer": {
+			"id": "alph_grunt_w",
+			"sight": 2,
+			"before": "alph_grunt_w_before",
+			"defeated": "alph_grunt_w_defeated"
+		}
+	},
+	"sbire_x": {
+		"cell": [
+			10,
+			13
+		],
+		"facing": "down",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "alph_grunt_x_after",
+		"trainer": {
+			"id": "alph_grunt_x",
+			"sight": 1,
+			"before": "alph_grunt_x_before",
+			"defeated": "alph_grunt_x_defeated"
+		}
+	},
+	"scientifique": {
+		"cell": [
+			3,
+			8
+		],
+		"facing": "right",
+		"sprite": "researcher",
+		"dialogue": "alph_scientist_after",
+		"trainer": {
+			"id": "alph_scientist",
+			"sight": 2,
+			"before": "alph_scientist_before",
+			"defeated": "alph_scientist_defeated"
+		}
+	},
+	"gallery_item_1": {
+		"cell": [
+			2,
+			3
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "gallery_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_gallery_item_1"
+		]
+	}
+}

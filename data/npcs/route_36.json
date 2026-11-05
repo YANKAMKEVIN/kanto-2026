@@ -54,5 +54,14 @@
 		"unless": [
 			"got_route_36_item_1"
 		]
+	},
+	"ouvrier": {
+		"cell": [
+			39,
+			18
+		],
+		"facing": "right",
+		"sprite": "engineer",
+		"dialogue": "route_36_ouvrier"
 	}
 }

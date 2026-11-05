@@ -1,0 +1,65 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_kfrqa"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_c5lt5"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_a06sf"]
+
+[node name="AlphTent" type="Node2D" unique_id=542621791]
+script = ExtResource("1_kfrqa")
+map_id = &"alph_tent"
+display_name = "Ruines d'Alpha"
+region = "Tente d'Héloïse"
+size = Vector2i(9, 7)
+blocked_cells = Array[Vector2i]([Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(2, 3), Vector2i(3, 3)])
+interior = true
+light_profile = &"interior_warm"
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1606758102]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAAAAEAAAABAAcAAAABAAEAAAABAAUAAAACAAEAAAAAAAUAAAADAAEAAAABAAUAAAAEAAEAAAABAAUAAAAFAAEAAAABAAUAAAAGAAEAAAABAAUAAAAHAAEAAAAAAAUAAAAIAAEAAAAAAAcAAAAAAAIAAAAAAAcAAAABAAIAAAABAAUAAAACAAIAAAAAAAUAAAADAAIAAAABAAUAAAAEAAIAAAAAAAUAAAAFAAIAAAAAAAUAAAAGAAIAAAAAAAUAAAAHAAIAAAAAAAUAAAAIAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAABAAUAAAACAAMAAAABAAUAAAADAAMAAAABAAUAAAAEAAMAAAABAAUAAAAFAAMAAAAAAAUAAAAGAAMAAAABAAUAAAAHAAMAAAAAAAUAAAAIAAMAAAAAAAcAAAAAAAQAAAABAAcAAAABAAQAAAAAAAUAAAACAAQAAAABAAUAAAADAAQAAAAAAAUAAAAEAAQAAAAAAAUAAAAFAAQAAAABAAUAAAAGAAQAAAAAAAUAAAAHAAQAAAAAAAUAAAAIAAQAAAABAAcAAAAAAAUAAAAAAAcAAAABAAUAAAABAAUAAAACAAUAAAABAAUAAAADAAUAAAABAAUAAAAEAAUAAAABAAUAAAAFAAUAAAAAAAUAAAAGAAUAAAAAAAUAAAAHAAUAAAAAAAUAAAAIAAUAAAABAAcAAAAAAAYAAAABAAcAAAABAAYAAAABAAcAAAACAAYAAAAAAAcAAAADAAYAAAAAAAcAAAAEAAYAAAACAAMAAAAFAAYAAAAAAAcAAAAGAAYAAAABAAcAAAAHAAYAAAABAAcAAAAIAAYAAAAAAAcAAAA=")
+tile_set = ExtResource("2_c5lt5")
+
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1232002154]
+tile_set = ExtResource("2_c5lt5")
+
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1169318818]
+tile_set = ExtResource("2_c5lt5")
+
+[node name="Decor" type="Node2D" parent="." unique_id=714646418]
+
+[node name="Caisses" type="Polygon2D" parent="Decor" unique_id=1491626465]
+color = Color(0.42, 0.29, 0.17, 1)
+polygon = PackedVector2Array(96, 96, 768, 96, 768, 192, 96, 192)
+
+[node name="Table" type="Polygon2D" parent="Decor" unique_id=1151549131]
+color = Color(0.5, 0.35, 0.2, 1)
+polygon = PackedVector2Array(192, 288, 384, 288, 384, 384, 192, 384)
+
+[node name="Entities" type="Node2D" parent="." unique_id=2027784515]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=974885581]
+z_index = 10
+tile_set = ExtResource("2_c5lt5")
+
+[node name="Warps" type="Node2D" parent="." unique_id=1026435105]
+
+[node name="Sortie_0" type="Marker2D" parent="Warps" unique_id=190099833]
+position = Vector2(432, 672)
+script = ExtResource("3_a06sf")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"ruins_of_alph"
+target_spawn = &"retour_tente"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=1826210023]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1587311725]
+
+[node name="from_ruins" type="Marker2D" parent="Spawns" unique_id=1421007334]
+position = Vector2(432, 576)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=677624266]
+
+[node name="NightLights" type="Node2D" parent="." unique_id=1862195016]
