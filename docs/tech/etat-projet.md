@@ -1,6 +1,6 @@
 # État du projet
 
-Mis à jour : 2026-11-05 (`main` @ `edc684c4`).
+Mis à jour : 2026-11-06.
 
 > **Ce fichier reste court (quelques Ko).** On y **remplace** ce qui change, on n'empile pas une ligne par tâche : le détail d'une tâche va dans le plan du jalon (`docs/tech/jalon-*.md`) et dans le message de commit.
 > Historique complet jusqu'au 2026-11-05 : [`etat-projet-archive.md`](etat-projet-archive.md) (6,5 Mo, à chercher avec `grep`, pas à lire) et [`etat-projet-historique.md`](etat-projet-historique.md).
@@ -10,6 +10,7 @@ Mis à jour : 2026-11-05 (`main` @ `edc684c4`).
 - **Kanto :** jalons fusionnés dans `main` jusqu'au J34 en cours. RC **0.34.1** (Kanto seul, sauvegarde v9) sur la branche `release/0.34`, qui ne passe pas par `main`.
 - **Johto :** JOH0 à JOH9 et l'arc des Pierres (JOHP0 à JOHP3) sont dans `main`, ainsi que les personnages peints. L'arc est jouable de la Tour Radio à l'acte 2, retour de l'équipe compris.
 - **Personne n'a encore joué Johto d'un bout à l'autre.**
+- **CI :** 10 lots équilibrés par durée (`tools/ci_shard.py`, `tools/ci_test_times.json`) et cache de l'import Godot : environ 14 min au lieu de 24. Quand les lots se déséquilibrent, refaire le fichier de durées avec `tools/ci_shard.py --update <dossier des artefacts>`.
 
 ## Prochaines étapes
 
