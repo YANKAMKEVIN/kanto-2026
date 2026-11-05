@@ -644,18 +644,20 @@ def with_moves(trainer):
 
 
 def patch_act2_trainers():
-	"""Décision de Kevin du 2026-11-05 : Brace (JOH6) et Cenere des Îles Tourbillon (JOH7), au-delà de
-	80 % contre une équipe mixte, reçoivent attaques choisies, changements et niveaux [D] ; Cenere
-	s'arrête à 66, en dessous de Dante (1). Seuls ces deux adversaires changent. Relançable."""
-	for file, ident, levels in (
-			("mahogany_hideout_b3f.json", "mahogany_hideout_b3f_brace", [63, 63, 64, 65]),
-			("joh7.json", "whirl_islands_cenere", [64, 64, 65, 65, 66])):
+	"""Décisions de Kevin du 2026-11-05 : Brace (JOH6) reçoit attaques choisies, changements et
+	niveaux [D] (attentif autour de 80 %) ; Cenere des Îles Tourbillon (JOH7), 100 % quels que soient
+	ses niveaux, change aussi d'équipe [D] (attentif à 85–95 %) : Démolosse remplace Noarfang, et
+	elle reste sous Dante (1). Seuls ces deux adversaires changent. Relançable."""
+	for file, ident, team in (
+			("mahogany_hideout_b3f.json", "mahogany_hideout_b3f_brace", [("fearow", 63), ("arbok", 63),
+				("weezing", 64), ("houndoom", 65)]),
+			("joh7.json", "whirl_islands_cenere", [("weezing", 64), ("wobbuffet", 64), ("houndoom", 64),
+				("dewgong", 65), ("sneasel", 66)])):
 		path = os.path.join(DATA, "trainers", file)
 		with open(path, encoding="utf-8") as handle:
 			data = json.load(handle)
+		data[ident]["team"] = [{"species": species, "level": level} for species, level in team]
 		with_moves(data[ident])
-		for member, level in zip(data[ident]["team"], levels):
-			member["level"] = level
 		write_json(path, data)
 
 

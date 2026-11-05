@@ -47,7 +47,7 @@ const TRAINERS: Dictionary = {
 	&"whirl_islands_grunt_t": ["Sbire Rocket", [[&"muk", 58], [&"arbok", 58]], &"whirl_islands_1f"],
 	&"whirl_islands_grunt_u": ["Sbire Rocket", [[&"houndoom", 59], [&"golbat", 58]], &"whirl_islands_1f"],
 }
-const CENERE_TEAM: Array = [[&"weezing", 64], [&"wobbuffet", 64], [&"noctowl", 65],
+const CENERE_TEAM: Array = [[&"weezing", 64], [&"wobbuffet", 64], [&"houndoom", 64],
 	[&"dewgong", 65], [&"sneasel", 66]]
 ## Dossier §7 : scène → (objet, nombre, drapeau, carte).
 const ITEMS: Dictionary = {

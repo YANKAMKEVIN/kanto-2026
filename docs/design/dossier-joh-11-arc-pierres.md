@@ -311,7 +311,9 @@ trois Pokémon. Les adversaires sont réglés sur ces valeurs, avec l'avance hab
   du 2026-11-05, au-delà de JH-74 : joueur attentif autour de 80 %), Farfuret en tête (P-32).
 - **Décision de Kevin du 2026-11-05, au-delà de JH-78** : Brace (repaire d'Acajou) passe de 60–62 à
   **63–65 [D]**, Cenere des Îles Tourbillon de 62–64 à **64–66 [D]**, tous deux avec attaques choisies.
-  Seuls ces deux adversaires changent. Simulations : `docs/tech/jalon-joh-pierres.md` §5.5.
+  Cenere y change aussi d'équipe **[D]** (décision de Kevin, attentif visé à 85–95 %) : Smogogo 64, Qulbutoké 64,
+  **Démolosse 64** à la place de Noarfang, Lamantine 65, Farfuret 66 ; le feu va à son nom, et elle reste sous
+  Dante (1). Seuls ces deux adversaires changent. Simulations : `docs/tech/jalon-joh-pierres.md` §5.5.
 - 27 lignes : les 26 comptées au §9, plus Cenere. Le JOH4 compte 9 Dresseurs pour une taille comparable à **un** de ces lieux.
 
 ## 11. Rencontres **[D]**

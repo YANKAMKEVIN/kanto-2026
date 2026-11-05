@@ -135,7 +135,7 @@ func test_act_2_bosses_gain_moves_and_levels() -> void:
 	var levels: Array = []
 	for member: Variant in _trainers.get_trainer(&"whirl_islands_cenere").team:
 		levels.append(member.level)
-	assert_eq(levels, [64, 64, 65, 65, 66], "en dessous de Dante (1)")
+	assert_eq(levels, [64, 64, 64, 65, 66], "en dessous de Dante (1)")
 	levels.clear()
 	for member: Variant in _trainers.get_trainer(&"mahogany_hideout_b3f_brace").team:
 		levels.append(member.level)

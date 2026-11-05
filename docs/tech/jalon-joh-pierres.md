@@ -220,13 +220,15 @@ passées par le bureau : `johto_stones_quest` n'est jamais posé, la barrière d
 | Cenere, autel | **59–61 [D]** | 4 Pokémon 55 | 76,5 % | 11,5 % | Autour de 80 % |
 | Brace, mixte | **63–65 [D]** (était 60–62) | N59 | 78 % | 3 % | Autour de 80 % |
 | Brace, mixte | **63–65 [D]** | N61 | 89,5 % | 12 % | |
-| Cenere, Îles Tourbillon, mixte | **64–66 [D]** (était 62–64) | N61 / N63 | **100 %** | 29,5 / 49 % | **Cible non atteinte** |
+| Cenere, Îles Tourbillon, mixte | **64–66 [D]**, Démolosse à la place de Noarfang | N61 / N63 | 85,3 / 98,3 % | 7,7 / 15 % | Cible 85–95 % (Kevin), ≈ 92 % en moyenne |
 | Dante (1), mixte | 64–68, inchangé | N63 / N65 | 63,5 / 82,5 % | 4 / 13 % | |
 
   Attaques ajoutées à Cenere (autel et Îles Tourbillon) et à Brace, avec changements de Pokémon. Cenere des
-  Îles Tourbillon reste à 100 % en attentif : ni +6 niveaux ni des attaques plus fortes (Déflagration,
-  Fatal-Foudre, Blizzard) n'y changent rien, seul le naïf baisse ; arrêtée à 66, sous Dante (1). Il faudrait
-  changer son équipe, hors de la décision. Essai écarté : des attaques choisies pour Ysolde donnaient 0 à 5 %.
+  Îles Tourbillon restait à 100 % en attentif quels que soient niveaux et attaques : seconde décision de Kevin,
+  85–95 %, son équipe peut changer. Essais de sa quatrième place [D] : Tyranocif 58–65, 27–61 % (trop fort) ;
+  Démolosse 65, 75–94 % ; Démolosse 64, retenu ; 63, 89–99 % ; Noctali, Nostenfer, Ectoplasma, 96–100 %.
+  Le naïf perd presque toujours ce combat (8–15 %) : Kevin a fixé la cible sur l'attentif. Essai écarté : des
+  attaques choisies pour Ysolde donnaient 0 à 5 %.
 - **QA A17 du 2026-11-05** (sans bloquant) : autel, film et écran du Réveil, écran des 6, vol et arrivée à Rosalia.
   Reprise sur vraie sauvegarde, sans perte, tuée sur l'écran du Réveil, sur l'écran des 6, après VALIDER avant
   l'écriture, après l'écriture. Combat complet contre Cenere non joué sur téléphone (couvert dans le vrai Boot).

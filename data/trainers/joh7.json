@@ -176,13 +176,13 @@
 				"level": 64
 			},
 			{
-				"species": "noctowl",
-				"level": 65,
+				"species": "houndoom",
+				"level": 64,
 				"moves": [
-					"psychic",
-					"hypnosis",
-					"wing_attack",
-					"confuse_ray"
+					"flamethrower",
+					"crunch",
+					"solar_beam",
+					"feint_attack"
 				]
 			},
 			{
