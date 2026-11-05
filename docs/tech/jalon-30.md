@@ -307,7 +307,7 @@ victoire et de défaite des quatre membres suivent le même modèle (avant / vai
 ## 9. Points ouverts pour Kevin
 
 - **Q30-1 — Générique** : quels noms et quels rôles ? (toi, outils, mentions « fan-made, non
-  officiel » ?) Défaut : « Kanto 2026 — un remake personnel de Kevin », puis l'équipe Pokémon du
+  officiel » ?) Défaut : « Kanto 2026 — un projet personnel de Kevin », puis l'équipe Pokémon du
   joueur, puis « Merci d'avoir joué ».
 - **Q30-2 — Textes** : propositions [D]. Couverts par ta validation d'avance, ou à relire ?
 - **Q30-3 — Capacités sans effet** : Frénésie (Onix d'Aldo), Mania, Mimique… restent non codées
@@ -326,7 +326,7 @@ Textes et prénoms : propositions du plan, **validés par Kevin le 2026-10-21, v
 (proposition du plan)**.
 
 **Décisions de Kevin du 2026-10-22** (relayées par la coordination, appliquées ici) :
-- **Q30-1** générique : défaut du plan (« Kanto 2026 — un remake personnel de Kevin », l'équipe du
+- **Q30-1** générique : défaut du plan (« Kanto 2026 — un projet personnel de Kevin », l'équipe du
   joueur, « Merci d'avoir joué ») — à coder au T16 ;
 - **Q30-2** textes du plan : validés ;
 - **Q30-3** capacités de la Ligue sans effet : **les coder** (pas de remplacement) — Frénésie,

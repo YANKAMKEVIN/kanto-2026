@@ -93,7 +93,7 @@ rôle de Champion. Départ persistant. Aucun déclenchement automatique de la Ro
 ## 7. Dépendances et compatibilité
 
 Références Rouge/Bleu vérifiées par la passe : équipe de Giovanni, Badge Terre, CT27 Abîme. **Ne
-pas reprendre la CT26 Séisme des remakes Rouge Feu/Vert Feuille.**
+pas reprendre la CT26 Séisme de Rouge Feu/Vert Feuille.**
 
 | Dépendance | Origine | Vérification nécessaire |
 |---|---|---|

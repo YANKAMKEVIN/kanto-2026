@@ -127,7 +127,7 @@ Clé de signature perdue (plus de mise à jour) ; clé exposée ; liste d'appare
 optimisation qui change les coordonnées ; diffusion présumée autorisée parce que gratuite.
 
 ## 7. Points ouverts pour Kevin
-1. **Go juridique** : le projet est « un remake personnel » (`CLAUDE.md`). Toute diffusion, même
+1. **Go juridique** : le projet est « un projet personnel » (`CLAUDE.md`). Toute diffusion, même
    privée, relève de toi et d'un avis compétent. La bêta (J35) en dépend.
 2. Où garder le keystore et sa sauvegarde ? (gestionnaire de mots de passe, disque chiffré)
 3. Appareils réellement disponibles en plus du S24 ?

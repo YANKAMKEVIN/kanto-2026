@@ -225,7 +225,7 @@ au **même build identifié**.
 
 ## Notes de la session de coordination (2026-10-19), pour l'audit 34.0
 
-- **Cadre du projet** : `CLAUDE.md` définit Kanto 2026 comme un remake **personnel**. Toute
+- **Cadre du projet** : `CLAUDE.md` définit Kanto 2026 comme un projet **personnel**. Toute
   distribution au-delà (même privée, même gratuite) relève du **Go juridique** du §7 : c'est une
   décision de Kevin, à éclairer par un avis compétent, pas par les sessions de développement.
 - **Export Android aujourd'hui** (`export_presets.cfg`) : un seul preset **debug**

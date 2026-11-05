@@ -43,7 +43,7 @@ Les dos des Pokémon du joueur en combat sont **rendus** à partir des modèles 
   argument de `tools/art/blender/rendre_lot.py`. Seuls les **rendus** (`assets/sprites/pokemon/battle_proto/dos3d_*.png`)
   et les **réglages** entrent dans le dépôt.
 - Les rendus restent des **œuvres dérivées** de modèles sous copyright ; ils ont le même statut
-  que les artworks officiels (PokeAPI) et que tout le reste du remake.
+  que les artworks officiels (PokeAPI) et que tout le reste du jeu.
 
 ## 3. Ce que cela implique
 
