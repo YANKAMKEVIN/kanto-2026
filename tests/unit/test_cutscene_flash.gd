@@ -46,5 +46,5 @@ func test_flash_comes_before_the_j16_kinds() -> void:
 		CutsceneStep.Kind.GIVE_EGG + 1),
 		["field_move", "save", "animate", "wild_battle", "gift_pokemon", "flute", "unset",
 			"toggle", "trade", "safari", "hall_of_fame", "credits",
-			"confiscate_team", "return_team", "give_egg", "carry"] as Array[String],
+			"confiscate_team", "return_team", "give_egg"] as Array[String],
 		"J19, J20 (T12), J21 (flute), J25 (unset, toggle, trade), J23 (safari) puis J30 en fin d'enum")
