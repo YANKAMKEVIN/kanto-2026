@@ -107,6 +107,8 @@ func test_choice_screen_survives_a_kill_then_writes_once() -> void:
 		_strong()
 		GameState.flags.set_flag(&"johto_cenere_defeated_arc"))
 	assert_eq(GameState.party.size() + GameState.confiscated.party.size(), 8)
+	assert_eq(TeamConfiscation.exp_bonus(GameState.flags), TeamConfiscation.ACT1_EXP_BONUS, "×1,5 garde")
+	assert_false(_play.boot._fly.cross_source.call(), "pas de Vol vers Kanto pendant l'arc")
 	var stored_before := GameState.storage.size()
 	await _play.step(Vector2i.DOWN)
 	await _play.step(Vector2i.UP)
@@ -138,6 +140,8 @@ func test_choice_screen_survives_a_kill_then_writes_once() -> void:
 	assert_false(GameState.flags.has_flag(&"johto_act1"))
 	assert_false(GameState.flags.has_flag(&"storage_offline"))
 	assert_eq(TeamConfiscation.exp_bonus(GameState.flags), 1.0, "×1,5 retiré")
+	assert_false(TeamConfiscation.is_act1(GameState.flags), "Vol entre régions ouvert")
+	assert_true(_play.boot._fly.cross_source.call(), "le Vol vers Kanto est permis")
 	assert_eq(GameState.party.size(), 6)
 	assert_eq(GameState.bag.count_of(&"great_ball"), 7, "sacs fusionnés (P-37)")
 

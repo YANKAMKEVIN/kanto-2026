@@ -189,6 +189,41 @@ passées par le bureau : `johto_stones_quest` n'est jamais posé, la barrière d
 - Vol et grotte marine fermés avant, ouverts après ; ×1,5 retiré après.
 - Simulation de JOH6 à JOH8 avec une équipe mixte (JH-78) ; **niveaux inchangés**.
 
+### 5.5 Réalisé (2026-11-05)
+
+- **Scènes** : `data/cutscenes/johp3_blackthorn.json`. `dragons_den_altar` est une seule scène à trois
+  variantes (première fois ; Réveil acquis ; Cenere battue sans équipe rendue) : la grille prévoyait
+  deux déclencheurs sur les mêmes cases, `scene_cenere` est donc ignoré par l'outil. P-31 est dite par
+  `AwakeningOverlay` (avant l'écran du Réveil, §13.2).
+- **Étapes neuves** : `dragon_flight` (écran `DragonFlightOverlay`), `rest_point` (§15 : une défaite contre
+  Ysolde ou Cenere ramène au Centre d'Ébènelle même sans y être entré). Jeton `{lead_pokemon}` (P-28b).
+- **Défauts [D]** : Corentin vole dans les deux sens pendant l'arc (Ébènelle n'a pas de Boutique), sans
+  question ; texte `johp3_corentin_blackthorn` en « draft ». Joueur rentré par son propre Vol : Corentin de
+  Rosalia dit P-38 sans le vol et pose `johto_act2`. L'Aïeule est chez elle jusqu'aux trois Gardiens, au
+  Sanctuaire ensuite, de nouveau chez elle après Ysolde. Farfuret ouvre l'équipe de Cenere (P-32, §13.2).
+  Objectifs de l'arc `stones_*` en « draft ». T-32 garde sa bulle sur le réseau jusqu'au retour de
+  l'équipe. Le don du mari et Raphaël chez lui suivent `johto_stones_quest` (la Tour libérée), avec une
+  variante `johto_act2` pour les parties passées par l'ancien bureau.
+- **Rosalia** : `from_dragon` ajouté **au texte** de `ecruteak_city.tscn` (`tools/build_johp3_maps.gd`), jamais
+  réenregistré : la sauvegarde par l'outil aplatissait les décors peints.
+- **Équilibrage** (`tools/sim/gen_johp3_scenarios.py`, `simulate_mt_moon.gd`, 200 graines, attentif avec 3
+  Hyper Potions / naïf) :
+
+| Combat | Équipe | Attentif | Naïf | Lecture |
+|---|---|---|---|---|
+| Ysolde | 6 Pokémon 37–39 | 46,5 % | 0,5 % | Dans la cible 35–60 % |
+| Ysolde | 4 Pokémon 40–42 | 56,5 % | 2,5 % | Dans la cible |
+| Ysolde | 3 Pokémon 44 | 89,5 % | 45,5 % | **Au-dessus de 80 %** : le joueur qui ne monte que trois Pokémon |
+| Cenere, après le Réveil | 6 Pokémon 58 | 100 % | 96 % | **Au-dessus de 70–80 %** |
+| Cenere, après le Réveil | 4 Pokémon 55 | 95 % | 40,5 % | **Au-dessus de 80 %** en attentif |
+| Dante (1), mixte | N63 / N65 | 63,5 / 82,5 % | 4 / 13 % | Attaques déjà choisies au JOH8, rien changé |
+
+  Attaques ajoutées à Cenere, Brace et Cenere des Îles Tourbillon, avec sac et changements (JH-78, niveaux
+  inchangés) : Brace mixte passe de 53–83 % à 17–45 % en naïf, 97–99 % en attentif ; Cenere des Îles
+  Tourbillon de 84–93 % à 45–51 % en naïf, 100 % en attentif. **Reste au-delà de 80 % en attentif** : les
+  niveaux sont fixés par JH-74 et JH-78, seule une décision de Kevin peut aller plus loin. Essai écarté : des
+  attaques choisies pour Ysolde donnaient 0 à 5 %.
+
 ## 6. Risques
 
 | Risque | Parade |
