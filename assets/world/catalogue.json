@@ -13723,6 +13723,22 @@
     "repos_2"
    ]
   },
+  "electhor": {
+   "fichier": "res://assets/sprites/pokemon/painted/electhor_sheet.png",
+   "cellule": [
+    154,
+    150
+   ],
+   "hauteur": 150,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "eclairs",
+    "repos_2"
+   ]
+  },
   "erika": {
    "fichier": "res://assets/sprites/characters/painted/erika_sheet.png",
    "cellule": [

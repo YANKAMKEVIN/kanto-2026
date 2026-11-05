@@ -5884,6 +5884,21 @@
  ],
  "pokemon_boucles": [
   {
+   "id": "electhor",
+   "source": "POKE_ELECTHOR_MONDE.png",
+   "sortie": "assets/sprites/pokemon/painted/electhor_sheet.png",
+   "hauteur": 150,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "eclairs",
+    "repos_2"
+   ],
+   "note": "RP-132 ; planche de Kevin (ChatGPT) ; découpe : tools/art/legendaires_kanto.py --electhor"
+  },
+  {
    "id": "sulfura",
    "source": "POKE_SULFURA_MONDE.png",
    "sortie": "assets/sprites/pokemon/painted/sulfura_sheet.png",

@@ -7,7 +7,9 @@
 `--sulfura` découpe `build/art/POKE_SULFURA_MONDE.png` en `sulfura_sheet.png` : le milieu des
 pattes de chaque image au milieu du bas de sa cellule (la queue de flammes dépasse à droite).
 
-Usage : python3 tools/art/legendaires_kanto.py [--sulfura]
+`--electhor` fait de même pour `build/art/POKE_ELECTHOR_MONDE.png` (planche de Kevin, ChatGPT).
+
+Usage : python3 tools/art/legendaires_kanto.py [--sulfura | --electhor]
 """
 import sys
 from pathlib import Path
@@ -83,9 +85,29 @@ def decouper_sulfura() -> None:
 	print(f"cellule {largeur} × {hauteur}")
 
 
+def decouper_electhor() -> None:
+	source = Image.open("build/art/POKE_ELECTHOR_MONDE.png").convert("RGBA")
+	source.putalpha(source.getchannel("A").point(lambda a: 0 if a < 24 else a))
+	pattes_x, pieds_y, haut_y, demi, hauteur = (178, 562, 947, 1330), 700, 290, 210, 150
+	debuts_x = (20, 405, 788, 1172)
+	echelle = hauteur / (pieds_y - haut_y)
+	largeur = round(demi * 2 * echelle)
+	planche = Image.new("RGBA", (largeur * 4, hauteur), (0, 0, 0, 0))
+	for colonne, x in enumerate(pattes_x):
+		image = source.crop((x - demi, haut_y, x + demi, pieds_y))
+		# L'aile droite de l'image précédente entre dans la fenêtre : on l'efface.
+		image.paste((0, 0, 0, 0), (0, 0, debuts_x[colonne] - (x - demi), image.height))
+		planche.paste(image.resize((largeur, hauteur), Image.LANCZOS), (colonne * largeur, 0))
+	planche.save("assets/sprites/pokemon/painted/electhor_sheet.png")
+	print(f"cellule {largeur} × {hauteur}")
+
+
 def main() -> None:
 	if "--sulfura" in sys.argv:
 		decouper_sulfura()
+		return
+	if "--electhor" in sys.argv:
+		decouper_electhor()
 		return
 	SORTIE.mkdir(parents=True, exist_ok=True)
 	for identifiant, fiche in FICHES.items():

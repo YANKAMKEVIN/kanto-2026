@@ -313,8 +313,9 @@ const FIXED_POKEMON: Dictionary = {
 ## identifiant de données. J24 (série 27) : Artikodin, 4 images (repos, inspire, souffle, repos).
 const LOOPING_POKEMON: Dictionary = {
 	"artikodin": "articuno",
-	# RP-132 : Sulfura à la Route Victoire, même boucle (repos, inspire, flammes, repos).
+	# RP-132 : Sulfura (Route Victoire) et Électhor (Centrale), même boucle (repos, inspire, effet, repos).
 	"sulfura": "moltres",
+	"electhor": "zapdos",
 	# Série Johto : légendaires observés (JOH7 Tourbillon, JOH8 Tour Carillon), 4 images, de face.
 	"suicune": "suicune",
 	"raikou": "raikou",

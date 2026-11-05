@@ -5,7 +5,7 @@
 			9
 		],
 		"facing": "up",
-		"sprite": "pokemon/fearow",
+		"sprite": "pokemon/zapdos",
 		"dialogue": "zapdos",
 		"verb": "observe",
 		"turn_to_player": false,
