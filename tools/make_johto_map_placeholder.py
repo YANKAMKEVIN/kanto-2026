@@ -11,7 +11,7 @@ Usage : python3 -I tools/make_johto_map_placeholder.py
 import json
 import os
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "assets", "ui", "map")
@@ -22,11 +22,44 @@ TOWNS = {
 	"goldenrod_city": ((880, 520), "Doublonville"),
 	"azalea_town": ((880, 840), "Écorcia"),
 	"mahogany_town": ((1320, 250), "Acajou"),
-	# Arc des Pierres (JH-76) : Irisia, île à l'ouest des Routes 40-41.
-	"cianwood_city": ((100, 440), "Irisia"),
 }
+# Arc des Pierres (JH-76) : Irisia, île à l'ouest des Routes 40-41 : une vignette peinte, découpée
+# dans la vue générale validée (sa mer retirée), posée sur la mer de la carte.
+ISLANDS = {"cianwood_city": ((100, 440), "Irisia", "docs/design/reference/cianwood-city-vue-generale-v1.png")}
+ISLAND_WIDTH = 190
 ROADS = [("olivine_city", "ecruteak_city"), ("ecruteak_city", "goldenrod_city"),
 	("goldenrod_city", "azalea_town"), ("ecruteak_city", "mahogany_town")]
+
+
+def cut_island(path: str) -> Image.Image:
+	"""La vue générale sans sa mer : tout pixel bleu relié au bord de l'image devient transparent."""
+	view = Image.open(path).convert("RGB")
+	view.thumbnail((640, 640))
+	width, height = view.size
+	pixels = view.load()
+	seen = set()
+	stack = [(x, y) for x in range(width) for y in (0, height - 1)] \
+		+ [(x, y) for y in range(height) for x in (0, width - 1)]
+	while stack:
+		x, y = stack.pop()
+		if (x, y) in seen or not (0 <= x < width and 0 <= y < height):
+			continue
+		r, g, b = pixels[x, y]
+		foam = min(r, g, b) > 150 and b >= r
+		if not (b > r * 1.2 or foam):
+			continue
+		seen.add((x, y))
+		stack += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+	alpha = Image.new("L", view.size, 255)
+	cut = alpha.load()
+	for x, y in seen:
+		cut[x, y] = 0
+	alpha = alpha.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8))
+	island = view.convert("RGBA")
+	island.putalpha(alpha)
+	island = island.crop(alpha.point(lambda v: 255 if v > 16 else 0).getbbox())
+	return island.resize((ISLAND_WIDTH, round(island.height * ISLAND_WIDTH / island.width)),
+		Image.LANCZOS)
 
 
 def main() -> None:
@@ -54,6 +87,14 @@ def main() -> None:
 		tw = d.textlength(name, font=font)
 		d.text((x - tw / 2, y - 20), name, fill=(255, 255, 255), font=font)
 		areas[zone_id] = {"area": [x0, y0, w, h]}
+	for zone_id, ((x, y), name, view) in ISLANDS.items():
+		island = cut_island(os.path.join(ROOT, view))
+		img.paste(island, (x - island.width // 2, y - island.height // 2 - 14), island)
+		small = font.font_variant(size=26) if hasattr(font, "font_variant") else font
+		tw = d.textlength(name, font=small)
+		d.text((x - tw / 2, y + island.height // 2 - 26), name, fill=(255, 255, 255), font=small,
+			stroke_width=3, stroke_fill=(30, 50, 80))
+		areas[zone_id] = {"area": [x - 100, y - 55, 200, 110]}
 	d.text((40, 40), "JOHTO — carte provisoire (JOH0)", fill=(40, 40, 40), font=font)
 	img.save(os.path.join(OUT, "johto_placeholder.webp"), quality=80, method=6)
 	doc = {

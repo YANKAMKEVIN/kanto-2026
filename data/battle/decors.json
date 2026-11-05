@@ -6,6 +6,16 @@
 		"decors": { "sea_open": "sea_surf" }
 	},
 	"decors": {
+		"cianwood_plage": {
+			"zone": "cianwood_city", "variant": "plage",
+			"back": "res://assets/battle/decors/cianwood_plage_back.webp",
+			"size": [2340, 1080], "foe_feet": [1559, 540], "player_feet": [716, 972], "horizon": 360
+		},
+		"tide_cave_bassin": {
+			"zone": "tide_cave", "variant": "bassin",
+			"back": "res://assets/battle/decors/tide_cave_bassin_back.webp",
+			"size": [2340, 1080], "foe_feet": [1559, 540], "player_feet": [716, 972], "horizon": 400
+		},
 		"route_23_roche": {
 			"zone": "route_23",
 			"variant": "roche",
@@ -826,8 +836,8 @@
 		"mt_silver_summit": [{ "decor": "route_3_roche" }],
 		"route_28": [{ "decor": "route_3_roche" }],
 		"goeland_deck": [{ "decor": "sea_open" }],
-		"cianwood_city": [{ "decor": "route_1_chemin" }],
-		"tide_cave_1f": [{ "decor": "mt_moon_galerie" }],
-		"tide_cave_b1f": [{ "decor": "mt_moon_galerie" }]
+		"cianwood_city": [{ "decor": "cianwood_plage" }],
+		"tide_cave_1f": [{ "decor": "tide_cave_bassin" }],
+		"tide_cave_b1f": [{ "decor": "tide_cave_bassin" }]
 	}
 }

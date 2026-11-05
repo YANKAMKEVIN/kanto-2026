@@ -26,6 +26,8 @@ SHOTS=(
 	"irisia_sud_ouest|60|${S}johto_johp2_cianwood --cell=9,23 --facing=left"
 	"pont_bas_droite|60|${S}johto_johp2_deck --cell=13,5 --facing=right"
 	"pont_droite|60|${S}johto_johp2_deck --cell=14,4 --facing=right"
+	"combat_irisia|700|${S}johto_johp2_cianwood --cell=15,23 --hold=left --mash=40"
+	"combat_grotte|700|${S}johto_johp2_chief --hold=left --mash=40"
 	"pont_arrivee|60|${S}johto_johp2_deck"
 	"pont_goulven|60|${S}johto_johp2_deck --cell=11,3 --facing=right"
 	"irisia_quai|60|${S}johto_johp2_cianwood"
