@@ -1,53 +1,76 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_pmlge"]
-[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_jk1iq"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_d5thv"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_rjcj0"]
+[ext_resource type="Shader" path="res://game/world/ground/water_flow.gdshader" id="3_o2ww5"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_mer_goeland_01.png" id="4_kfvkn"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="5_0cs87"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_goeland_pont_01.png" id="6_ysvf4"]
 
-[node name="GoelandDeck" type="Node2D" unique_id=1133301126]
-script = ExtResource("1_pmlge")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_roios"]
+shader = ExtResource("3_o2ww5")
+shader_parameter/flow = Vector2(0.04, 0)
+shader_parameter/extent = Vector2(2.25, 6.193548)
+shader_parameter/fade = Vector4(0, 0, 0, 0)
+shader_parameter/strength = 1.0
+
+[node name="GoelandDeck" type="Node2D" unique_id=661060425]
+script = ExtResource("1_d5thv")
 map_id = &"goeland_deck"
 display_name = "Le Goéland"
 region = "Oliville — Irisia"
 size = Vector2i(16, 8)
 light_profile = &"johto_auto"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1537790166]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1266007680]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAACAAkAAAABAAAAAAABAAkAAAACAAAAAAAAAAkAAAADAAAAAAABAAkAAAAEAAAAAAACAAkAAAAFAAAAAAABAAkAAAAGAAAAAAABAAkAAAAHAAAAAAACAAkAAAAIAAAAAAABAAkAAAAJAAAAAAABAAkAAAAKAAAAAAACAAkAAAALAAAAAAABAAkAAAAMAAAAAAACAAkAAAANAAAAAAACAAkAAAAOAAAAAAABAAkAAAAPAAAAAAAAAAkAAAAAAAEAAAABAAkAAAABAAEAAAABAAkAAAACAAEAAAAAAAkAAAADAAEAAAABAAkAAAAEAAEAAAACAAkAAAAFAAEAAAACAAkAAAAGAAEAAAAAAAkAAAAHAAEAAAACAAkAAAAIAAEAAAAAAAkAAAAJAAEAAAAAAAkAAAAKAAEAAAAAAAkAAAALAAEAAAABAAkAAAAMAAEAAAACAAkAAAANAAEAAAACAAkAAAAOAAEAAAACAAkAAAAPAAEAAAABAAkAAAAAAAIAAAACAAkAAAABAAIAAAAAAAUAAAACAAIAAAAAAAUAAAADAAIAAAAAAAUAAAAEAAIAAAABAAUAAAAFAAIAAAAAAAUAAAAGAAIAAAAAAAUAAAAHAAIAAAABAAUAAAAIAAIAAAABAAUAAAAJAAIAAAABAAUAAAAKAAIAAAAAAAUAAAALAAIAAAABAAcAAAAMAAIAAAAAAAcAAAANAAIAAAAAAAcAAAAOAAIAAAABAAkAAAAPAAIAAAACAAkAAAAAAAMAAAACAAkAAAABAAMAAAABAAUAAAACAAMAAAABAAUAAAADAAMAAAAAAAUAAAAEAAMAAAAAAAUAAAAFAAMAAAABAAUAAAAGAAMAAAABAAUAAAAHAAMAAAAAAAUAAAAIAAMAAAABAAUAAAAJAAMAAAAAAAUAAAAKAAMAAAABAAUAAAALAAMAAAABAAUAAAAMAAMAAAAAAAUAAAANAAMAAAAAAAUAAAAOAAMAAAAAAAUAAAAPAAMAAAACAAkAAAAAAAQAAAAAAAkAAAABAAQAAAAAAAUAAAACAAQAAAAAAAUAAAADAAQAAAABAAUAAAAEAAQAAAABAAUAAAAFAAQAAAAAAAUAAAAGAAQAAAABAAUAAAAHAAQAAAABAAUAAAAIAAQAAAABAAUAAAAJAAQAAAABAAUAAAAKAAQAAAABAAUAAAALAAQAAAAAAAUAAAAMAAQAAAAAAAUAAAANAAQAAAAAAAUAAAAOAAQAAAAAAAUAAAAPAAQAAAAAAAkAAAAAAAUAAAABAAkAAAABAAUAAAABAAUAAAACAAUAAAAAAAUAAAADAAUAAAAAAAUAAAAEAAUAAAABAAUAAAAFAAUAAAABAAUAAAAGAAUAAAABAAUAAAAHAAUAAAAAAAUAAAAIAAUAAAAAAAUAAAAJAAUAAAAAAAUAAAAKAAUAAAABAAUAAAALAAUAAAAAAAUAAAAMAAUAAAABAAUAAAANAAUAAAAAAAUAAAAOAAUAAAABAAkAAAAPAAUAAAACAAkAAAAAAAYAAAACAAkAAAABAAYAAAAAAAkAAAACAAYAAAAAAAkAAAADAAYAAAAAAAkAAAAEAAYAAAABAAkAAAAFAAYAAAABAAkAAAAGAAYAAAAAAAkAAAAHAAYAAAACAAkAAAAIAAYAAAAAAAkAAAAJAAYAAAABAAkAAAAKAAYAAAAAAAkAAAALAAYAAAAAAAkAAAAMAAYAAAAAAAkAAAANAAYAAAABAAkAAAAOAAYAAAABAAkAAAAPAAYAAAAAAAkAAAAAAAcAAAACAAkAAAABAAcAAAABAAkAAAACAAcAAAABAAkAAAADAAcAAAABAAkAAAAEAAcAAAABAAkAAAAFAAcAAAAAAAkAAAAGAAcAAAACAAkAAAAHAAcAAAAAAAkAAAAIAAcAAAABAAkAAAAJAAcAAAAAAAkAAAAKAAcAAAAAAAkAAAALAAcAAAABAAkAAAAMAAcAAAACAAkAAAANAAcAAAAAAAkAAAAOAAcAAAABAAkAAAAPAAcAAAACAAkAAAA=")
-tile_set = ExtResource("2_jk1iq")
+tile_set = ExtResource("2_rjcj0")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1504737735]
-tile_set = ExtResource("2_jk1iq")
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1027231395]
+visible = false
+tile_set = ExtResource("2_rjcj0")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=852146915]
-tile_set = ExtResource("2_jk1iq")
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=876156289]
+visible = false
+tile_set = ExtResource("2_rjcj0")
 
-[node name="Decor" type="Node2D" parent="." unique_id=1333702290]
+[node name="Decor" type="Node2D" parent="." unique_id=296932734]
 
-[node name="Cabine" type="Polygon2D" parent="Decor" unique_id=2134692881]
-color = Color(0.46, 0.3, 0.2, 1)
-polygon = PackedVector2Array(1056, 192, 1344, 192, 1344, 288, 1056, 288)
+[node name="Mer" type="Sprite2D" parent="Decor" unique_id=2028201095]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_roios")
+position = Vector2(-960, -768)
+texture = ExtResource("4_kfvkn")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 3456, 2304)
 
-[node name="CabineToit" type="Polygon2D" parent="Decor" unique_id=972427841]
-color = Color(0.622, 0.51, 0.44, 1)
-polygon = PackedVector2Array(1036.8, 220.8, 1200, 192, 1363.2, 220.8)
+[node name="Pont" type="Sprite2D" parent="Decor" unique_id=1036935382]
+texture_filter = 2
+material = ExtResource("5_0cs87")
+position = Vector2(11, 85)
+texture = ExtResource("6_ysvf4")
+centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=668273718]
+[node name="Entities" type="Node2D" parent="." unique_id=1183475204]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1309611335]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=595659615]
+visible = false
 z_index = 10
-tile_set = ExtResource("2_jk1iq")
+tile_set = ExtResource("2_rjcj0")
 
-[node name="Warps" type="Node2D" parent="." unique_id=480584396]
+[node name="Warps" type="Node2D" parent="." unique_id=126179658]
 
-[node name="Interactables" type="Node2D" parent="." unique_id=1425165844]
+[node name="Interactables" type="Node2D" parent="." unique_id=30764552]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1579430138]
+[node name="Spawns" type="Node2D" parent="." unique_id=373692875]
 
-[node name="from_quai" type="Marker2D" parent="Spawns" unique_id=1093276698]
+[node name="from_quai" type="Marker2D" parent="Spawns" unique_id=1449940765]
 position = Vector2(240, 480)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1131382843]
+[node name="Triggers" type="Node2D" parent="." unique_id=147077522]
 
-[node name="NightLights" type="Node2D" parent="." unique_id=2108324270]
+[node name="NightLights" type="Node2D" parent="." unique_id=568867408]

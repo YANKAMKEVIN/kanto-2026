@@ -8,7 +8,7 @@ extends SceneTree
 ##
 ## Ici : sol et cases bloquées, passages (bord = PUSH, porte = STEP_ON ↑, échelle = STEP_ON), arrivées
 ## (une par case, `<id>`, `<id>_1`…), panneaux, examens, déclencheurs, bâtiments du kit peint [D],
-## aplat provisoire de la cabine du pont [D], eau pêchable d'Irisia, lampes de nuit, et les décors qui
+## pont du Goéland peint sur une mer animée, eau pêchable d'Irisia, lampes de nuit, et les décors qui
 ## suivent les drapeaux ([FlagGate]) : les deux gués du B1F (eau qui bloque jusqu'à leur vanne, §8.2)
 ## et le bateau noir peint (Irisia et ouverture du B1F, jusqu'à `johto_stone_tide_lost`).
 ## PNJ, Dresseurs, objets, textes, scènes : `tools/gen_johp2_data.py`. **Aucun nom d'autoload** dans
@@ -99,10 +99,17 @@ const BUILDINGS: Dictionary = {
 		["bldg_maison_argenta_01", Vector2i(21, 21), "Maison1"],
 	],
 }
-## Aplats provisoires [D] : (carte) → [nœud, rectangle de cases, couleur, toit].
-const FLATS: Dictionary = {
-	"goeland_deck": [["Cabine", Rect2i(11, 2, 3, 1), Color(0.46, 0.3, 0.2), true]],
-}
+## Pont du Goéland : le bateau découpé dans sa vue générale validée, calé sur la grille (pixels de
+## la carte ; les personnages de la rangée 3 ont les pieds au pied de la cabine), sur une mer animée
+## qui déborde de la carte (pas de bandes noires) et file vers l'ouest : le bateau fait route à l'est.
+const DECK_BOAT: String = "res://assets/world/props/prop_goeland_pont_01.png"
+const DECK_BOAT_AT := Vector2(11, 85)
+const DECK_MATERIAL: String = "res://game/world/lighting/materials/world_object.tres"
+## Mer tirée de la vue générale, rendue raccordable par miroir.
+const SEA_TEXTURE: String = "res://assets/world/ground/ground_mer_goeland_01.png"
+const SEA_SHADER: String = "res://game/world/ground/water_flow.gdshader"
+const SEA_RECT := Rect2(-960, -768, 3456, 2304)
+const SEA_SPEED: float = 0.04
 ## Bateaux peints (proue noire à gauche, proue du Goéland à droite) : (carte) → [nœud, image, pied
 ## gauche en cases, échelle, largeur montée en pixels depuis la poupe (0 = le navire entier), drapeau
 ## qui le retire]. Le bateau noir est au large d'Irisia, sa cabine au-dessus de la mer ; à l'ouverture
@@ -198,7 +205,7 @@ func _build(spec: Dictionary) -> void:
 	_add_positions(spec, plan, root, blocked)
 	_add_fishing(spec, plan, root)
 	_add_buildings(spec, root)
-	_add_flats(spec, root)
+	_add_deck(spec, root)
 	_add_fords(spec, plan, root)
 	_add_boats(spec, root)
 	_add_night_glows(spec, root)
@@ -415,24 +422,42 @@ func _add_prop(root: Node, id: String, anchor: Vector2i, node_name: String) -> v
 	_attach(root, root.get_node(^"Entities"), prop)
 
 
-## Aplats provisoires (corps sombre, toit plus clair) sur l'emprise bloquée de la grille [D] ;
-## l'art du lot suivant les remplace.
-func _add_flats(spec: Dictionary, root: Node) -> void:
-	for entry: Array in FLATS.get(String(spec["id"]), []):
-		var rect: Rect2i = entry[1]
-		var color: Color = entry[2]
-		var top_left := Vector2(rect.position) * TILE
-		var size := Vector2(rect.size) * TILE
-		var body := _polygon(entry[0], top_left, size, color)
-		_attach(root, root.get_node(^"Decor"), body)
-		if entry[3]:
-			var roof := Polygon2D.new()
-			roof.name = String(entry[0]) + "Toit"
-			roof.polygon = PackedVector2Array([
-				top_left + Vector2(-TILE * 0.2, size.y * 0.3), top_left + Vector2(size.x * 0.5, 0),
-				top_left + Vector2(size.x + TILE * 0.2, size.y * 0.3)])
-			roof.color = color.lightened(0.3)
-			_attach(root, root.get_node(^"Decor"), roof)
+## Pont du Goéland peint : mer animée puis bateau, sous `Decor` ; les couches de tuiles, source
+## logique, sont masquées comme dans les passes d'ambiance.
+func _add_deck(spec: Dictionary, root: Node) -> void:
+	if spec["id"] != &"goeland_deck":
+		return
+	for layer: Node in root.get_children():
+		if layer is TileMapLayer:
+			(layer as TileMapLayer).visible = false
+	var texture := load(SEA_TEXTURE) as Texture2D
+	var material := ShaderMaterial.new()
+	material.shader = load(SEA_SHADER)
+	material.set_shader_parameter(&"flow", Vector2(SEA_SPEED, 0.0))
+	material.set_shader_parameter(&"extent", SEA_RECT.size / texture.get_size())
+	material.set_shader_parameter(&"fade", Vector4.ZERO)
+	material.set_shader_parameter(&"strength", 1.0)
+	var sea := Sprite2D.new()
+	sea.name = "Mer"
+	sea.texture = texture
+	sea.centered = false
+	sea.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	sea.region_enabled = true
+	sea.region_rect = Rect2(Vector2.ZERO, SEA_RECT.size)
+	sea.position = SEA_RECT.position
+	sea.material = material
+	_attach(root, root.get_node(^"Decor"), sea)
+	var boat := Sprite2D.new()
+	boat.name = "Pont"
+	boat.texture = load(DECK_BOAT)
+	if boat.texture == null:
+		_fail("image absente : %s (lancer --import)" % DECK_BOAT)
+		return
+	boat.material = load(DECK_MATERIAL)
+	boat.centered = false
+	boat.position = DECK_BOAT_AT
+	boat.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_attach(root, root.get_node(^"Decor"), boat)
 
 
 func _polygon(node_name: String, top_left: Vector2, size: Vector2, color: Color) -> Polygon2D:

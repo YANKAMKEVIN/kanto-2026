@@ -187,6 +187,16 @@ func test_tide_cave_is_painted_with_its_pumps_and_socle() -> void:
 	assert_not_null(two.get_node_or_null(^"Entities/JohAmbCaveSocle"))
 
 
+func test_deck_is_painted_over_a_sea_wider_than_the_map() -> void:
+	var map := _map(&"goeland_deck")
+	assert_not_null(map.get_node_or_null(^"Decor/Pont"), "le bateau découpé dans sa vue")
+	var sea := map.get_node_or_null(^"Decor/Mer") as Sprite2D
+	assert_not_null(sea, "mer animée")
+	if sea != null:
+		assert_lt(sea.position.x, 0.0, "elle déborde à gauche")
+		assert_gt(sea.position.x + sea.region_rect.size.x, 2340.0, "et à droite de l'écran")
+
+
 func test_black_boat_follows_the_flag() -> void:
 	var flags := StoryFlags.new()
 	var boat := _gate(_map(&"cianwood_city"), ^"Decor/BateauNoir")
