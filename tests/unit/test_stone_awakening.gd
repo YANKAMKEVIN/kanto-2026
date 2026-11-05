@@ -282,6 +282,26 @@ func test_a_team_with_nobody_under_the_target_has_no_scene() -> void:
 	assert_false(_state.bag.has(&"stone_breath"))
 
 
+# --- Les données -------------------------------------------------------------------------------
+
+func test_the_line_is_p31_word_for_word() -> void:
+	var library := DialogueLibrary.new()
+	assert_true(library.load_file("res://data/dialogues/johp0.json"), str(library.get_errors()))
+	var dossier := FileAccess.get_file_as_string(
+		"res://docs/design/dossier-joh-11-arc-pierres.md")
+	var pages := library.get_dialogue(&"stones_awakening_line").variants[0].pages
+	assert_eq(pages.size(), 2)
+	assert_true(dossier.contains("| P-31 | Système, le réveil | %s / %s |"
+		% [pages[0].text, pages[1].text]))
+
+
+func test_the_data_of_the_step_load() -> void:
+	var scenes := CutsceneLibrary.new()
+	assert_true(scenes.load_file("res://data/cutscenes/johp0_awakening.json"),
+		str(scenes.get_errors()))
+	assert_true(scenes.get_set_flags().has(StoneAwakening.AWAKENED))
+
+
 # --- L'étape de scène --------------------------------------------------------------------------
 
 func _director(saves: Array[String]) -> CutsceneDirector:

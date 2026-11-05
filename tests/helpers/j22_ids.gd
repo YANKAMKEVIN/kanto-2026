@@ -13,7 +13,8 @@ const PREFIX: String = "j22_"
 ## (`tools/gen_joh6_data.py`, `tools/gen_joh6_story.py`, `test_joh6_data.gd`) `joh7_*`
 ## (`tools/gen_joh7_data.py`, `test_joh7_data.gd`), `joh8_*` (`test_joh8_data.gd`) et `joh9_*`
 ## (`tools/gen_joh9_data.py`, `test_joh9_data.gd`).
-const PREFIXES: Array[String] = ["j22_", "j23_", "joh2_", "joh3_", "joh4_", "joh5_", "joh6_", "joh7_", "joh8_", "joh9_"]
+## Arc des Pierres : fichiers `johp<n>_*` (leurs `test_johp<n>_data.gd`, `test_stone_awakening.gd`).
+const PREFIXES: Array[String] = ["j22_", "j23_", "joh2_", "joh3_", "joh4_", "joh5_", "joh6_", "joh7_", "joh8_", "joh9_", "johp"]
 ## Textes validés du J22 (§16) et recommandés validés d'avance (§16.8).
 const DOSSIER_25: String = "res://docs/design/dossier-25-deux-chemins-parmanie.md"
 

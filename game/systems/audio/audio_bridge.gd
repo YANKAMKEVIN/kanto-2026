@@ -23,6 +23,10 @@ extends RefCounted
 ## Valeur de la clé « music » d'une étape qui arrête la musique de scène.
 const STOP: StringName = &"stop"
 const L := MusicStack.Layer
+## Réveil (JOHP0) : le thème à voix basse, en décibels sous son volume ; montées (s).
+const AWAKENING_LOW_DB: float = -16.0
+const AWAKENING_RISE: float = 3.0
+const AWAKENING_BURST: float = 0.25
 
 ## Autoload « Audio » (ou un double de test) : set_music, clear_music, play_jingle,
 ## set_ambience, library.
@@ -189,6 +193,44 @@ func on_evolution_finished(_party_index: int = 0, into: StringName = &"",
 	else:
 		audio.call(&"set_music", L.JINGLE, selector.event_track(&"evolved"))
 		play_species_cry(into)
+
+
+## Réveil (JOHP0, dossier JOH-11 §13.2) : plus rien, sans fondu ; l'ambiance se tait aussi.
+func on_awakening_silence() -> void:
+	audio.call(&"cut_music", L.SCENE)
+	audio.call(&"set_ambience", &"")
+
+
+## La lumière sort : le thème du Réveil, à voix basse.
+func on_awakening_theme() -> void:
+	audio.call(&"set_music", L.SCENE, selector.event_track(&"awakening"))
+	audio.call(&"set_music_offset", AWAKENING_LOW_DB, AWAKENING_RISE)
+
+
+## Le plan large : le thème éclate.
+func on_awakening_burst() -> void:
+	audio.call(&"set_music_offset", 0.0, AWAKENING_BURST)
+
+
+## Un battement sourd, de plus en plus fort ([param strength] 0 à 1) : le ton monte à peine.
+func on_awakening_heartbeat(strength: float) -> void:
+	audio.call(&"play_sfx", &"awakening_heartbeat", lerpf(0.9, 1.05, strength))
+
+
+## Une Ball s'ouvre seule.
+func on_awakening_ball() -> void:
+	audio.call(&"play_sfx", &"send_out")
+
+
+## Le compteur de niveau monte : un petit coup, de plus en plus aigu.
+func on_awakening_tick(level: int) -> void:
+	audio.call(&"play_sfx", &"ui_move", lerpf(0.8, 1.5, clampf(float(level) / 62.0, 0.0, 1.0)))
+
+
+## L'écran du Réveil se ferme : l'ambiance de la carte revient ; le thème reste jusqu'à la fin
+## de la scène (Cenere attaque dessus, §13.2).
+func on_awakening_finished() -> void:
+	audio.call(&"set_ambience", _library.ambience_for(_map_id, _zones.zone_of(_map_id)))
 
 
 ## Cri d'une espèce (rencontre, Pokémon d'ambiance : `EncounterDirector.cry_requested`).

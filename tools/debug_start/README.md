@@ -525,3 +525,5 @@ Générés par `tools/gen_joh9_debug_starts.py` : état de fin du JOH8 (drapeaux
 | `johto_epilogue.json` | Bourg Palette devant le labo, chapitre presque fini : entrer et monter d'un pas → épilogue (A-49 à A-51), Balle Verte, générique de Johto |
 | `johto_after_chapter.json` | Sommet après le chapitre : vide, écharpe (A-52) en (7, 13) |
 | `johto_celebi.json` | Bois aux Chênes, chapitre fini, Balle Verte au Sac : examiner l'autel depuis (23, 12) → A-53, A-54, Celebi niv. 60 |
+- `johto_awakening` (JOHP0) : le Réveil sur la scène de test `johto_awakening_test`, dans la Grotte marine en attendant le Sanctuaire du JOHP3. Six Pokémon de Johto (38–44, plus un Chenipan niv. 6 et un Togepi au lien de 80), un Roucool au Stockage, équipe de Kanto confisquée : cible 59.
+- `johto_awakening_autosave` : le même, qui **remplace la sauvegarde** : à utiliser pour tester l'arrêt de l'appli et « Continuer ».

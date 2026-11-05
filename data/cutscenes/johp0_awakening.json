@@ -1,0 +1,9 @@
+{
+	"johto_awakening_test": {
+		"steps": [
+			{"dialogue": "johto_awakening_test_before"},
+			{"stones_awaken": true},
+			{"dialogue": "johto_awakening_test_after"}
+		]
+	}
+}
