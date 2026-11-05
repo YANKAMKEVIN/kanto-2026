@@ -1,0 +1,74 @@
+{
+	"olivine_goulven": {
+		"speaker": "Goulven",
+		"variants": [
+			{
+				"unless": [
+					"johto_stone_memory"
+				],
+				"pages": [
+					"Le Goéland reste à quai.",
+					"Je ne fais pas la traversée pour un\ninconnu."
+				]
+			},
+			{
+				"unless": [
+					"johto_ferry_open"
+				],
+				"cutscene": "olivine_goulven_depart"
+			},
+			{
+				"pages": [
+					"Irisia ? Toujours.",
+					"La mer ne change pas d'avis, et moi\nnon plus."
+				],
+				"choice": {
+					"confirm": "MONTER",
+					"cancel": "RESTER",
+					"confirm_cutscene": "goeland_board_outbound"
+				}
+			}
+		]
+	},
+	"olivine_goulven_send": {
+		"speaker": "Goulven",
+		"pages": [
+			"Héloïse t'envoie ? Elle me doit\nencore deux filets.",
+			"Irisia, c'est ça ? Tiens, pour la\nroute."
+		]
+	},
+	"olivine_goulven_ultra": {
+		"narration": true,
+		"pages": [
+			"{player} reçoit 3 Ultra Balls !"
+		]
+	},
+	"olivine_goulven_board": {
+		"speaker": "Goulven",
+		"pages": [
+			"Monte. La mer est bonne,\naujourd'hui."
+		],
+		"choice": {
+			"confirm": "MONTER",
+			"cancel": "RESTER",
+			"confirm_set": [
+				"johto_goeland_outbound"
+			]
+		}
+	},
+	"olivine_goulven_rosalia": {
+		"speaker": "Goulven",
+		"pages": [
+			"Tu as la tête de quelqu'un qui a\nperdu.",
+			"Tiens, un drôle de gars t'a cherché\nce matin. Il est descendu du ciel\nsur un Dracolosse.",
+			"Il a dit qu'il t'attendrait à\nRosalia."
+		]
+	},
+	"olivine_south_sea_block": {
+		"speaker": "Marin",
+		"pages": [
+			"La mer est mauvaise au sud, en ce\nmoment.",
+			"Le bateau noir rôde. Fais demi-tour."
+		]
+	}
+}

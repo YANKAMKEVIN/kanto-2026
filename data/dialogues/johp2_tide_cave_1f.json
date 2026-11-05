@@ -1,0 +1,55 @@
+{
+	"tide_grunt_y_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Les pompes tournent, personne\nn'entre !"
+		]
+	},
+	"tide_grunt_y_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Ça tourne sans moi."
+		]
+	},
+	"tide_grunt_y_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Une grotte qu'on vide, c'est long."
+		]
+	},
+	"tide_grunt_z_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Encore toi ? On t'a vu aux ruines !"
+		]
+	},
+	"tide_grunt_z_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Et on te reverra, c'est ça le\nproblème."
+		]
+	},
+	"tide_grunt_z_after": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Cenere a dit qu'on aurait fini à\nl'heure. Elle a toujours raison."
+		]
+	},
+	"tide_cave_1f_pompe_1": {
+		"narration": true,
+		"pages": [
+			"Une pompe énorme aspire l'eau de la\ngrotte.",
+			"Une étiquette dit : « Team Rocket,\npropriété de Dante »."
+		]
+	},
+	"tide_cave_1f_pompe_2": {
+		"narration": true,
+		"pages": [
+			"Une pompe énorme aspire l'eau de la\ngrotte.",
+			"Une étiquette dit : « Team Rocket,\npropriété de Dante »."
+		]
+	},
+	"tide_item_1": {
+		"cutscene": "tide_item_1"
+	}
+}

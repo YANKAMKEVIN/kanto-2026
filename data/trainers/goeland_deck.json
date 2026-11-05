@@ -1,0 +1,21 @@
+{
+	"goeland_sailor_yvon": {
+		"name": "Marin Yvon",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "machoke",
+				"level": 33
+			},
+			{
+				"species": "tentacruel",
+				"level": 33
+			}
+		]
+	}
+}

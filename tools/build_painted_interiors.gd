@@ -175,6 +175,8 @@ const OLIVILLE := [&"olivine_center", &"olivine_center_room", &"olivine_mart", &
 ## Chapitre Johto, JOH9 : Centre du Mont Argenté (Centre + comptoir de Boutique), poste de la
 ## Route 28, maison du gardien ; `--joh9`.
 const JOH9 := [&"mt_silver_center", &"route_28_gate", &"route_28_house"]
+## Arc des Pierres, JOHP2 (`jalon-joh-pierres.md` §4.1) : les intérieurs d'Irisia.
+const CIANWOOD := [&"cianwood_center", &"cianwood_goulven_house", &"cianwood_house_1"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -226,6 +228,8 @@ func _init() -> void:
 	rooms.append_array(_azalea_rooms())
 	# Chapitre Johto, JOH9 (fin de liste).
 	rooms.append_array(_joh9_rooms())
+	# Arc des Pierres, JOHP2.
+	rooms.append_array(_cianwood_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -299,6 +303,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(AZALEA)
 		elif arg == "--joh9":
 			wanted.append_array(JOH9)
+		elif arg == "--cianwood":
+			wanted.append_array(CIANWOOD)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -2236,6 +2242,35 @@ func _rosalia_rooms() -> Array[Dictionary]:
 		"lavanville_maison_1.txt", &"retour_sages")
 	elders["furniture"] = _mason_furniture()
 	var house_1 := _ecruteak_house(&"ecruteak_house_1", "EcruteakHouse1",
+		"lavanville_maison_2.txt", &"retour_maison_1")
+	var azuria := _cerulean_house()
+	house_1["furniture"] = azuria["furniture"]
+	house_1["rugs"] = azuria["rugs"]
+	var house_2 := _ecruteak_house(&"ecruteak_house_2", "EcruteakHouse2",
+		"lavanville_maison_1.txt", &"retour_maison_2")
+	house_2["furniture"] = _mason_furniture()
+	return [
+		_pokemon_center(&"ecruteak_center", "EcruteakCenter", "Rosalia",
+			[&"ecruteak_city", &"retour_centre"]),
+		_poke_mart(&"ecruteak_mart", "EcruteakMart", "Rosalia", [&"ecruteak_city", &"retour_boutique"]),
+		elders, house_1, house_2,
+	]
+
+
+## Pièce de Rosalia relue sur une grille de Lavanville : enveloppe des maisons d'Argenta, sortie
+## PUSH ↓ vers `ecruteak_city` / [param spawn].
+func _ecruteak_house(id: StringName, node: String, plan: String, spawn: StringName) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Rosalia", "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": ".Xh",
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
+			&"ecruteak_city"),
+	}
+
+
 # --- Chapitre Johto, JOH3 (T7) : Doublonville ---------------------------------------------------
 
 const GOLDENROD_TITLE := "Doublonville"
@@ -2285,28 +2320,6 @@ func _goldenrod_rooms() -> Array[Dictionary]:
 	var azuria := _cerulean_house()
 	house_1["furniture"] = azuria["furniture"]
 	house_1["rugs"] = azuria["rugs"]
-	var house_2 := _ecruteak_house(&"ecruteak_house_2", "EcruteakHouse2",
-		"lavanville_maison_1.txt", &"retour_maison_2")
-	house_2["furniture"] = _mason_furniture()
-	return [
-		_pokemon_center(&"ecruteak_center", "EcruteakCenter", "Rosalia",
-			[&"ecruteak_city", &"retour_centre"]),
-		_poke_mart(&"ecruteak_mart", "EcruteakMart", "Rosalia", [&"ecruteak_city", &"retour_boutique"]),
-		elders, house_1, house_2,
-	]
-
-
-## Pièce de Rosalia relue sur une grille de Lavanville : enveloppe des maisons d'Argenta, sortie
-## PUSH ↓ vers `ecruteak_city` / [param spawn].
-func _ecruteak_house(id: StringName, node: String, plan: String, spawn: StringName) -> Dictionary:
-	return {
-		"id": id, "node": node, "size": Vector2i(15, 10),
-		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
-		"title": "Rosalia", "light": &"interior_warm",
-		"plan": PLANS_DIR + plan, "walkable": ".Xh",
-		"spawns": {"entrance": Vector2i(7, 8)},
-		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn,
-			&"ecruteak_city"),
 	var house_2 := _goldenrod_house(&"goldenrod_house_2", "GoldenrodHouse2",
 		"lavanville_maison_1.txt", &"retour_maison_2")
 	house_2["furniture"] = _mason_furniture()
@@ -3124,10 +3137,10 @@ func _indigo_plateau_lobby() -> Dictionary:
 ## boutique de souvenirs a sa propre grille (escalier caché) : `build_joh6_maps.gd`. PNJ dans
 ## `data/npcs/mahogany_*.json` (`tools/gen_joh6_data.py`).
 func _acajou_rooms() -> Array[Dictionary]:
-	var house_1 := _johto_house(&"mahogany_house_1", "MahoganyHouse1", "lavanville_maison_1.txt",
+	var house_1 := _acajou_house(&"mahogany_house_1", "MahoganyHouse1", "lavanville_maison_1.txt",
 		&"retour_maison_1", &"mahogany_town", "Acajou")
 	house_1["furniture"] = _mason_furniture()
-	var house_2 := _johto_house(&"mahogany_house_2", "MahoganyHouse2", "lavanville_maison_2.txt",
+	var house_2 := _acajou_house(&"mahogany_house_2", "MahoganyHouse2", "lavanville_maison_2.txt",
 		&"retour_maison_2", &"mahogany_town", "Acajou")
 	var azuria := _cerulean_house()
 	house_2["furniture"] = azuria["furniture"]
@@ -3141,12 +3154,34 @@ func _acajou_rooms() -> Array[Dictionary]:
 
 ## Maison de Johto relue sur une grille de Lavanville (modèle de `_ecruteak_house`), sortie PUSH ↓
 ## vers [param town] / [param spawn].
-func _johto_house(id: StringName, node: String, plan: String, spawn: StringName,
+func _acajou_house(id: StringName, node: String, plan: String, spawn: StringName,
 		town: StringName, title: String) -> Dictionary:
 	var room := _ecruteak_house(id, node, plan, spawn)
 	room["title"] = title
 	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], spawn, town)
 	return room
+
+
+# --- Arc des Pierres, JOHP2 : Irisia (`docs/tech/jalon-joh-pierres.md` §4.1) ------------------
+
+
+## Centre d'Irisia = définition commune, le marchand en (13, 5) comme au Mont Argenté (grille : pas
+## de Boutique, le Centre vend le minimum) ; maison de Goulven et maison relues sur les grilles
+## des maisons de Lavanville, comme à Écorcia. PNJ dans `data/npcs/` (`tools/gen_johp2_data.py`).
+func _cianwood_rooms() -> Array[Dictionary]:
+	var goulven := _johto_house(&"cianwood_goulven_house", "CianwoodGoulvenHouse",
+		"lavanville_maison_1.txt", &"cianwood_city", &"retour_goulven", "Irisia")
+	goulven["furniture"] = _mason_furniture()
+	var house_1 := _johto_house(&"cianwood_house_1", "CianwoodHouse1", "lavanville_maison_2.txt",
+		&"cianwood_city", &"retour_maison", "Irisia")
+	var azuria := _cerulean_house()
+	house_1["furniture"] = azuria["furniture"]
+	house_1["rugs"] = azuria["rugs"]
+	return [
+		_pokemon_center(&"cianwood_center", "CianwoodCenter", "Irisia",
+			[&"cianwood_city", &"retour_centre"]),
+		goulven, house_1,
+	]
 
 
 # --- Chapitre Johto, JOH9 : Mont Argenté, Route 28 (`docs/tech/jalon-joh9.md` §2.1) -----------

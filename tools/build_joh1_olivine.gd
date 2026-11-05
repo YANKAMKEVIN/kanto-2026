@@ -5,6 +5,10 @@ extends SceneTree
 ## (Centre, Boutique, maisons) ; Phare = tour provisoire en `Polygon2D` ; lampes de nuit =
 ## halos `LightGlow` du groupe `night_lights`, cachés le jour (`WorldLighting.set_night`).
 ## Les PNJ viennent de `data/npcs/olivine_city.json`.
+## Arc des Pierres (JOHP2, `docs/tech/jalon-joh-pierres.md` §4.2, variante ARC de la grille) : le
+## Goéland, silhouette provisoire amarrée au ponton est, [FlagGate] qui n'existe et ne bloque
+## qu'avec `johto_stones_quest` ; arrivée `from_goeland` ; déclencheur de la mer du sud (A-13). La
+## grille de base reste celle du sol ; rien ne change à l'écran sans ce drapeau.
 ##
 ##   godot --headless --path . -s res://tools/build_joh1_olivine.gd
 
@@ -41,6 +45,8 @@ const NIGHT_LIGHTS: Array[Vector2] = [
 	Vector2(44, 18.3), Vector2(27.5, 18.6), Vector2(37.5, 18.6), Vector2(33, 32.6),
 ]
 const LIGHTHOUSE_FOOT := Vector2i(6, 19)
+## Variante ARC : le Goéland n'est là que pendant et après l'arc des Pierres.
+const ARC_QUEST_FLAG: StringName = &"johto_stones_quest"
 
 var _over: GDScript
 var _rules: GDScript
@@ -90,6 +96,7 @@ func _build() -> void:
 	_spawns(root, plan)
 	_warps(root, plan)
 	_points(root)
+	_arc(root)
 	_save(root)
 
 
@@ -256,6 +263,37 @@ func _points(root: Node) -> void:
 	_trigger(root, "OlivineArrival2", [Vector2i(11, 33)], Vector2i.ZERO, &"olivine_arrival")
 	_trigger(root, "GuardBarrier", [Vector2i(48, 20), Vector2i(48, 22)], Vector2i.RIGHT,
 		&"olivine_guard_block")
+
+
+## Variante ARC (JOHP2) : le Goéland, `from_goeland`, la barrière de la mer du sud.
+func _arc(root: Node) -> void:
+	var plan := PlanGrid.new()
+	if not plan.load_file(PLAN, "ARC"):
+		_fail(plan.error)
+		return
+	var boat: Array[Vector2i] = plan.cells_at("goeland")
+	var gate := Node2D.new()
+	gate.set_script(load("res://game/world/flag_gate.gd"))
+	gate.name = "Goeland"
+	var if_flags: Array[StringName] = [ARC_QUEST_FLAG]
+	gate.set(&"if_flags", if_flags)
+	var none: Array[StringName] = []
+	gate.set(&"unless_flags", none)
+	gate.set(&"blocking_cells", boat)
+	gate.visible = false
+	var entities := root.get_node(^"Entities")
+	_attach(root, entities, gate)
+	var hull := Polygon2D.new()
+	hull.name = "Coque"
+	hull.color = Color(0.72, 0.62, 0.45)
+	var top_left := Vector2(boat[0]) * TILE
+	var bottom_right := Vector2(boat[-1] + Vector2i.ONE) * TILE
+	hull.polygon = PackedVector2Array([top_left, Vector2(bottom_right.x, top_left.y), bottom_right,
+		Vector2(top_left.x, bottom_right.y)])
+	_attach(root, gate, hull)
+	_spawn(root, "from_goeland", plan.cells_at("from_goeland")[0])
+	_trigger(root, "BarriereMerSud", plan.cells_at("barriere_mer_sud"), Vector2i.ZERO,
+		&"olivine_south_sea_block")
 
 
 func _new_map(size: Vector2i) -> Node2D:

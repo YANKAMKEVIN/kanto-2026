@@ -1,0 +1,18 @@
+{
+	"cianwood_goulven_house_habitante": {
+		"speaker": "Habitante",
+		"draft": true,
+		"pages": [
+			"Mon oncle dit que la maison tangue\nmoins que le Goéland.",
+			"Il n'y dort presque jamais."
+		]
+	},
+	"cianwood_house_1_habitant": {
+		"speaker": "Vieux pêcheur",
+		"draft": true,
+		"pages": [
+			"La mer entrait dans cette grotte\ndeux fois par jour, depuis toujours.",
+			"Elle n'avait jamais manqué un\nrendez-vous."
+		]
+	}
+}

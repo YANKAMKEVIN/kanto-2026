@@ -1,0 +1,32 @@
+{
+	"goeland_board_return": {
+		"steps": [
+			{
+				"unset": [
+					"johto_goeland_outbound"
+				]
+			},
+			{
+				"change_map": "goeland_deck",
+				"at": "from_quai",
+				"facing": "right"
+			}
+		]
+	},
+	"cianwood_arrival": {
+		"variants": [
+			{
+				"unless": [
+					"johto_cianwood_arrived"
+				],
+				"steps": [
+					{
+						"set": [
+							"johto_cianwood_arrived"
+						]
+					}
+				]
+			}
+		]
+	}
+}

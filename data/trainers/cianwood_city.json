@@ -1,0 +1,59 @@
+{
+	"cianwood_fisher_ronan": {
+		"name": "Pêcheur Ronan",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "seadra",
+				"level": 34
+			},
+			{
+				"species": "tentacruel",
+				"level": 34
+			}
+		]
+	},
+	"cianwood_blackbelt_tanguy": {
+		"name": "Karatéka Tanguy",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 30,
+		"team": [
+			{
+				"species": "machoke",
+				"level": 34
+			},
+			{
+				"species": "hitmonlee",
+				"level": 34
+			}
+		]
+	},
+	"cianwood_cooltrainer_maelle": {
+		"name": "Topdresseuse Maëlle",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "starmie",
+				"level": 35
+			},
+			{
+				"species": "goldeen",
+				"level": 34
+			}
+		]
+	}
+}

@@ -1,0 +1,42 @@
+{
+	"tide_grunt_y": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "golbat",
+				"level": 34
+			},
+			{
+				"species": "weezing",
+				"level": 34
+			}
+		]
+	},
+	"tide_grunt_z": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 35,
+		"team": [
+			{
+				"species": "raticate",
+				"level": 35
+			},
+			{
+				"species": "arbok",
+				"level": 35
+			}
+		]
+	}
+}

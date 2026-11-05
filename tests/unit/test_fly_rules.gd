@@ -21,8 +21,8 @@ func test_the_eleven_towns_in_red_blue_order() -> void:
 		&"lavender_town", &"vermilion_city", &"celadon_city", &"fuchsia_city",
 		&"cinnabar_island", &"indigo_plateau", &"saffron_city",
 		&"olivine_city", &"ecruteak_city", &"goldenrod_city", &"azalea_town", &"mahogany_town",
-		# JOH9 : le Centre du Mont Argenté.
-		&"mt_silver"]
+		# JOH9 : le Centre du Mont Argenté ; arc des Pierres (JH-76) : Irisia.
+		&"mt_silver", &"cianwood_city"]
 		as Array[StringName])
 
 

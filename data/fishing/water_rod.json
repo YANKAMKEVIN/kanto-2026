@@ -19,6 +19,14 @@
 			{ "species": "magikarp", "level": 15, "weight": 1 }
 		]
 	},
+	"super_rod_cianwood": {
+		"maps": ["cianwood_city"], "terrain": "water_rod", "rod": "super_rod", "rate": 75,
+		"slots": [
+			{ "species": "krabby", "level": 15, "weight": 1 },
+			{ "species": "horsea", "level": 15, "weight": 1 },
+			{ "species": "goldeen", "level": 15, "weight": 1 }
+		]
+	},
 	"super_rod_fuchsia": {
 		"maps": ["fuchsia_city"], "terrain": "water_rod", "rod": "super_rod", "rate": 75,
 		"slots": [

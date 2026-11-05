@@ -1,0 +1,26 @@
+{
+	"goulven": {
+		"cell": [
+			12,
+			3
+		],
+		"facing": "left",
+		"sprite": "sailor",
+		"dialogue": "goeland_goulven"
+	},
+	"yvon": {
+		"cell": [
+			6,
+			2
+		],
+		"facing": "down",
+		"sprite": "sailor",
+		"dialogue": "goeland_sailor_yvon_after",
+		"trainer": {
+			"id": "goeland_sailor_yvon",
+			"sight": 2,
+			"before": "goeland_sailor_yvon_before",
+			"defeated": "goeland_sailor_yvon_defeated"
+		}
+	}
+}
