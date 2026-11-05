@@ -1,0 +1,11 @@
+{
+	"gardien": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "route_28_house_gardien"
+	}
+}

@@ -1,0 +1,107 @@
+{
+	"mt_silver_outside_grass_day": {
+		"maps": [
+			"mt_silver_outside"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "ursaring",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 25
+			},
+			{
+				"species": "donphan",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 25
+			},
+			{
+				"species": "skarmory",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 20
+			},
+			{
+				"species": "sneasel",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 15
+			}
+		]
+	},
+	"mt_silver_outside_grass_night": {
+		"maps": [
+			"mt_silver_outside"
+		],
+		"terrain": "grass",
+		"period": [
+			"night"
+		],
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "ursaring",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 25
+			},
+			{
+				"species": "donphan",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 25
+			},
+			{
+				"species": "skarmory",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 20
+			},
+			{
+				"species": "sneasel",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 30
+			},
+			{
+				"species": "houndoom",
+				"levels": [
+					56,
+					60
+				],
+				"weight": 15
+			}
+		]
+	}
+}

@@ -1,0 +1,103 @@
+{
+	"map": "route_43",
+	"spawn": "from_mahogany",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_squirtle",
+		"taken_bulbasaur",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"pokedex_activated",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"league_champion_defeated",
+		"johto_letter_read",
+		"johto_lugia_shadow",
+		"johto_arrived",
+		"johto_team_stolen",
+		"johto_starter_chosen",
+		"johto_orme_left",
+		"johto_rosalia_rockets_seen",
+		"johto_tower_legend_heard",
+		"johto_goldenrod_arrived",
+		"johto_egg_received",
+		"johto_radio_tower_closed_seen",
+		"johto_azalea_clue",
+		"johto_shrine_seen",
+		"johto_kurt_told",
+		"johto_brace_defeated",
+		"johto_radio_pass",
+		"johto_slowpoke_well_cleared",
+		"johto_radio_impostor_defeated",
+		"johto_radio_staff_freed",
+		"johto_cenere_defeated",
+		"johto_dante_revealed",
+		"johto_team_returned",
+		"radio_exp_share_given",
+		"johto_act2",
+		"johto_burned_tower_open",
+		"johto_burned_floor_seen",
+		"johto_beasts_awakened",
+		"johto_raikou_taken",
+		"johto_dante_plan_known"
+	],
+	"party": [
+		{
+			"species": "blastoise",
+			"level": 64,
+			"moves": [
+				"surf",
+				"hydro_pump",
+				"bite",
+				"ice_beam"
+			]
+		},
+		{
+			"species": "charizard",
+			"level": 62
+		},
+		{
+			"species": "alakazam",
+			"level": 60
+		},
+		{
+			"species": "nidoking",
+			"level": 59
+		},
+		{
+			"species": "pidgeot",
+			"level": 58
+		},
+		{
+			"species": "croconaw",
+			"level": 32
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"hm03": 1,
+		"ultra_ball": 20,
+		"full_restore": 5,
+		"max_revive": 3,
+		"hyper_potion": 5,
+		"super_rod": 1,
+		"old_rod": 1,
+		"escape_rope": 2,
+		"exp_all": 1
+	},
+	"money": 30000
+}

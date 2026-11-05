@@ -1,0 +1,59 @@
+{
+	"route_28_grass_day": {
+		"maps": [
+			"route_28"
+		],
+		"terrain": "grass",
+		"period": [
+			"morning",
+			"day"
+		],
+		"rate": 20,
+		"ramp": {
+			"from_step": 15,
+			"max_steps": 20
+		},
+		"slots": [
+			{
+				"species": "phanpy",
+				"levels": [
+					55,
+					60
+				],
+				"weight": 30
+			},
+			{
+				"species": "donphan",
+				"levels": [
+					55,
+					60
+				],
+				"weight": 20
+			},
+			{
+				"species": "skarmory",
+				"levels": [
+					55,
+					60
+				],
+				"weight": 20
+			},
+			{
+				"species": "ponyta",
+				"levels": [
+					55,
+					60
+				],
+				"weight": 15
+			},
+			{
+				"species": "rapidash",
+				"levels": [
+					55,
+					60
+				],
+				"weight": 15
+			}
+		]
+	}
+}

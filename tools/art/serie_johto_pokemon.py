@@ -339,6 +339,12 @@ BOUCLE: dict[str, tuple[int, str, str]] = {
 		"fumante comme un nuage de cendre sur le dos, un masque facial BLANC à pointes et un plastron doré "
 		"sur le front, des MANCHETTES grises aux pattes, des pointes jaunes sur les flancs, yeux rouges",
 		"DEBOUT sur ses quatre pattes, de FACE (tourné vers le bas de l'écran), la tête haute, imposant"),
+	# Raikou : observé par JOH6 (Tour Cendrée, repaire d'Acajou).
+	"RAIKOU": (190,
+		"un grand quadrupède légendaire félin et élancé, au pelage JAUNE vif marqué de RAYURES NOIRES en éclair, "
+		"une crinière de nuage VIOLET sur le dos, un masque facial noir et blanc à crocs, une queue en éclair "
+		"bleu pâle, yeux rouges",
+		"DEBOUT sur ses quatre pattes, de FACE (tourné vers le bas de l'écran), la tête haute, alerte"),
 	"LUGIA": (260,
 		"un très grand oiseau-dragon légendaire au corps BLANC ARGENTÉ lisse, grandes ailes dont les plumes du "
 		"bout sont comme des MAINS, des plaques BLEU MARINE sur le dos, sous les yeux et au bout de la queue, "
@@ -353,7 +359,7 @@ BOUCLE: dict[str, tuple[int, str, str]] = {
 }
 
 ## Ce que le vent fait onduler (image 3 de la boucle) ; défaut : celui de Suicune.
-VENT: dict[str, str] = {"ENTEI": "la crinière de fumée grise", "LUGIA": "le bout des ailes et la queue",
+VENT: dict[str, str] = {"RAIKOU": "le nuage violet de la crinière", "ENTEI": "la crinière de fumée grise", "LUGIA": "le bout des ailes et la queue",
 	"HO_OH": "les plumes de la queue et de la crête"}
 
 ## Icônes du Sac (une planche, gabarit de menu_peint).

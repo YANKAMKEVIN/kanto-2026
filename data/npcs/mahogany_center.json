@@ -1,0 +1,22 @@
+{
+	"nurse": {
+		"cell": [
+			7,
+			3
+		],
+		"facing": "down",
+		"sprite": "nurse"
+	},
+	"deserteur": {
+		"cell": [
+			11,
+			5
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "joh6_deserter_center",
+		"if": [
+			"johto_raikou_done"
+		]
+	}
+}

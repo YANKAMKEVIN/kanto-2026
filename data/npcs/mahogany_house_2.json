@@ -1,0 +1,20 @@
+{
+	"habitant_1": {
+		"cell": [
+			4,
+			5
+		],
+		"facing": "right",
+		"sprite": "old_man",
+		"dialogue": "mahogany_house_2_habitant_1"
+	},
+	"habitant_2": {
+		"cell": [
+			5,
+			6
+		],
+		"facing": "left",
+		"sprite": "old_man",
+		"dialogue": "mahogany_house_2_habitant_2"
+	}
+}

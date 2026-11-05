@@ -1,0 +1,79 @@
+{
+	"route_42_hector": {
+		"name": "Montagnard Hector",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "golem",
+				"level": 48
+			},
+			{
+				"species": "onix",
+				"level": 47
+			}
+		]
+	},
+	"route_42_marcel": {
+		"name": "Pêcheur Marcel",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "gyarados",
+				"level": 47
+			},
+			{
+				"species": "tentacruel",
+				"level": 46
+			}
+		]
+	},
+	"route_42_coralie": {
+		"name": "Nageuse Coralie",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "azumarill",
+				"level": 48
+			},
+			{
+				"species": "staryu",
+				"level": 46
+			}
+		]
+	},
+	"route_42_louis": {
+		"name": "Super Nerd Louis",
+		"class": "intello",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 40,
+		"team": [
+			{
+				"species": "magneton",
+				"level": 47
+			},
+			{
+				"species": "electrode",
+				"level": 47
+			}
+		]
+	}
+}

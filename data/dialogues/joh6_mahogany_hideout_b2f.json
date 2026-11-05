@@ -1,0 +1,62 @@
+{
+	"mahogany_hideout_b2f_sbire_r_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"Dante a dit : personne ne passe."
+		]
+	},
+	"mahogany_hideout_b2f_sbire_r_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Dante ne va pas aimer ça."
+		]
+	},
+	"mahogany_hideout_b2f_sbire_r_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Moi, j'ai choisi Dante. Les\nautres sont partis, les lâches."
+		]
+	},
+	"mahogany_hideout_b2f_sbire_s_before": {
+		"speaker": "Sbire",
+		"pages": [
+			"On n'est plus pour Giovanni. On\nest pour Dante !"
+		]
+	},
+	"mahogany_hideout_b2f_sbire_s_defeated": {
+		"speaker": "Sbire",
+		"pages": [
+			"Pour Dante… aïe."
+		]
+	},
+	"mahogany_hideout_b2f_sbire_s_after": {
+		"speaker": "Sbire",
+		"pages": [
+			"Il a un plan. Un vrai."
+		]
+	},
+	"mahogany_hideout_b2f_scientifique_before": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Mes ondes sont parfaites ! Tu ne\ntoucheras pas à la porte !"
+		]
+	},
+	"mahogany_hideout_b2f_scientifique_defeated": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Erreur de mesure."
+		]
+	},
+	"mahogany_hideout_b2f_scientifique_after": {
+		"speaker": "Scientifique",
+		"pages": [
+			"Le mot de passe ? Je ne le dirai\njamais. Jamais !"
+		]
+	},
+	"mahogany_hideout_b2f_ultra_balls": {
+		"cutscene": "mahogany_hideout_b2f_ultra_balls"
+	},
+	"mahogany_hideout_b2f_pp_plus": {
+		"cutscene": "mahogany_hideout_b2f_pp_plus"
+	}
+}

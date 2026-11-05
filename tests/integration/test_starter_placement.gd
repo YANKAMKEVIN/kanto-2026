@@ -91,7 +91,9 @@ func _step(kind: CutsceneStep.Kind, actor: StringName) -> CutsceneStep:
 
 
 func test_forbidden_cells_are_only_the_mat() -> void:
-	assert_eq(_forbidden, [ENTRANCE, ENTRANCE] as Array[Vector2i], "warp PUSH + LabExit")
+	# JOH9 : + le déclencheur de l'épilogue (7, 8), en montant depuis le tapis.
+	assert_eq(_forbidden, [ENTRANCE, ENTRANCE, Vector2i(7, 8)] as Array[Vector2i],
+		"warp PUSH + LabExit + épilogue de Johto")
 
 
 ## Les cases candidates des deux sauts (données) : voisines de l'ancre (côtés ou diagonale),

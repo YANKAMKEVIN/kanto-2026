@@ -5328,6 +5328,21 @@
    "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
   },
   {
+   "id": "raikou",
+   "source": "JOHTO_MONDE_RAIKOU_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/raikou_sheet.png",
+   "hauteur": 190,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ],
+   "note": "série Johto (art des Pokémon de Johto, 2026-11-04), une direction, 4 images en boucle"
+  },
+  {
    "id": "lugia",
    "source": "JOHTO_MONDE_LUGIA_r1.png",
    "sortie": "assets/sprites/pokemon/painted/lugia_sheet.png",

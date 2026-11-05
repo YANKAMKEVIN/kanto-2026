@@ -3,6 +3,73 @@
 		"speaker": "Doyen",
 		"variants": [
 			{
+				"if": [
+					"johto_ho_oh_done"
+				],
+				"set": [
+					"johto_act3"
+				],
+				"pages": [
+					"Les cloches ont sonné. Toute la ville\na vu le ciel s'ouvrir.",
+					"Ho-Oh a choisi, {player}.\nEt ce n'est pas cet homme.",
+					"« Le sommet du monde »… Il n'y a qu'un\nlieu qu'on appelle ainsi : le Mont Argenté.",
+					"Les anciens disent que la Team Rocket\ny est née, il y a bien longtemps."
+				]
+			},
+			{
+				"if": [
+					"johto_bell_tower_clue"
+				],
+				"unless": [
+					"johto_bell_tower_open"
+				],
+				"set": [
+					"johto_bell_tower_open"
+				],
+				"pages": [
+					"Te voilà enfin.",
+					"L'homme de la radio est monté dans\nla Tour Carillon. Avec le troisième.",
+					"Mes sages ont voulu l'arrêter. Il a suffi\nd'un regard de son Pokémon.",
+					"La tour attend un cœur pur\ndepuis trois cents ans.",
+					"Ce n'est pas lui.",
+					"C'est peut-être toi.\nMonte, {player}. Avant l'aube."
+				]
+			},
+			{
+				"if": [
+					"johto_act2"
+				],
+				"unless": [
+					"johto_burned_tower_open"
+				],
+				"set": [
+					"johto_burned_tower_open"
+				],
+				"pages": [
+					"Tu es revenu. Et avec tes vrais\ncompagnons, cette fois.",
+					"Cet homme, à la radio…\n« quand tout sera cendres ».",
+					"Je crains qu'il ne parle\nde notre tour.",
+					"Je t'ouvre la Tour Cendrée.",
+					"Va voir si les trois dorment\ntoujours."
+				]
+			},
+			{
+				"if": [
+					"johto_dante_plan_known"
+				],
+				"pages": [
+					"L'homme qui a pris Raikou est\nparti vers l'est. Vers Acajou."
+				]
+			},
+			{
+				"if": [
+					"johto_burned_tower_open"
+				],
+				"pages": [
+					"Va voir si les trois dorment\ntoujours."
+				]
+			},
+			{
 				"unless": [
 					"johto_tower_legend_heard"
 				],

@@ -6,9 +6,9 @@ extends GutTest
 
 const JOHTO_FIRST_DEX: int = 152
 ## Pokémon de Johto posés dans le monde (`"sprite": "pokemon/<espèce>"`) : table d'Orme (JOH1),
-## légendaires observés (JOH7, JOH8).
+## légendaires observés (JOH6, JOH7, JOH8).
 const WORLD_SPECIES: Array[StringName] = [&"chikorita", &"cyndaquil", &"totodile", &"suicune",
-	&"lugia", &"entei", &"ho_oh"]
+	&"raikou", &"lugia", &"entei", &"ho_oh"]
 ## Compagnons de Johto : les trois de départ et leurs évolutions (Kevin, 2026-11-04).
 const STARTERS: Array[StringName] = [&"chikorita", &"bayleef", &"meganium", &"cyndaquil", &"quilava",
 	&"typhlosion", &"totodile", &"croconaw", &"feraligatr"]

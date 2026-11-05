@@ -77,7 +77,8 @@ reste après une évolution.
   sobres, Celebi plus jaune que son artwork, Hyporoi aux nageoires plus larges.
 - **9 planches de marche** (starters et évolutions). Aligatueur et Typhlosion viennent de l'essai
   sans ancre (r2) : un peu plus texturés que les autres.
-- **4 feuilles d'ambiance** : Suicune, Entei, Lugia, Ho-Oh, face au joueur, en boucle.
+- **5 feuilles d'ambiance** : Suicune, Raikou, Entei, Lugia, Ho-Oh, face au joueur, en boucle ; elles
+  remplacent les planches provisoires de JOH6 et JOH8 (mêmes animations d'attente).
 - **Quota** : la production de masse a épuisé le quota Codex de l'abonnement à mi-parcours
   (2026-11-04, 21 h 32) ; Kevin l'a rechargé le soir même.
 - **Silhouettes de combat de Johto retirées** (204 fichiers, avec `gen_placeholder_battlers_johto.py`).

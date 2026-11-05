@@ -282,6 +282,7 @@ const LOOPING_POKEMON: Dictionary = {
 	"artikodin": "articuno",
 	# Série Johto : légendaires observés (JOH7 Tourbillon, JOH8 Tour Carillon), 4 images, de face.
 	"suicune": "suicune",
+	"raikou": "raikou",
 	"entei": "entei",
 	"lugia": "lugia",
 	"ho_oh": "ho_oh",

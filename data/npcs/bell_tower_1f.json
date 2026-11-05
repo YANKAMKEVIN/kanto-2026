@@ -1,0 +1,49 @@
+{
+	"sage_1": {
+		"cell": [
+			6,
+			7
+		],
+		"facing": "down",
+		"sprite": "channeler",
+		"dialogue": "bell_tower_1f_sage_1"
+	},
+	"sage_2": {
+		"cell": [
+			17,
+			13
+		],
+		"facing": "down",
+		"sprite": "channeler",
+		"dialogue": "bell_tower_1f_sage_2"
+	},
+	"sbire_v": {
+		"cell": [
+			21,
+			4
+		],
+		"facing": "left",
+		"sprite": "rocket_grunt_m",
+		"dialogue": "bell_tower_grunt_v_after",
+		"trainer": {
+			"id": "bell_tower_grunt_v",
+			"sight": 1,
+			"before": "bell_tower_grunt_v_before",
+			"defeated": "bell_tower_grunt_v_defeated"
+		}
+	},
+	"rappel_max": {
+		"cell": [
+			2,
+			10
+		],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "bell_tower_1f_rappel_max",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": [
+			"got_bell_tower_1f_rappel_max"
+		]
+	}
+}

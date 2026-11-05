@@ -1,0 +1,293 @@
+{
+	"silver_trail_hiker_baptiste": {
+		"name": "Montagnard Baptiste",
+		"class": "montagnard",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 36,
+		"team": [
+			{
+				"species": "golem",
+				"level": 64
+			},
+			{
+				"species": "donphan",
+				"level": 64
+			}
+		]
+	},
+	"silver_trail_cooltrainer_ines": {
+		"name": "Topdresseuse Inès",
+		"class": "topdresseuse",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"team": [
+			{
+				"species": "skarmory",
+				"level": 64
+			},
+			{
+				"species": "ampharos",
+				"level": 64
+			},
+			{
+				"species": "espeon",
+				"level": 65
+			}
+		]
+	},
+	"silver_trail_blackbelt_hugo": {
+		"name": "Karatéka Hugo",
+		"class": "karateka",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 36,
+		"team": [
+			{
+				"species": "machamp",
+				"level": 65
+			},
+			{
+				"species": "ursaring",
+				"level": 65
+			}
+		]
+	},
+	"mt_silver_1f_grunt_x": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 32,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 66
+			},
+			{
+				"species": "muk",
+				"level": 66
+			}
+		]
+	},
+	"mt_silver_1f_grunt_y": {
+		"name": "Sbire Rocket",
+		"class": "sbire_rocket_f",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 32,
+		"team": [
+			{
+				"species": "sneasel",
+				"level": 66
+			},
+			{
+				"species": "weezing",
+				"level": 66
+			},
+			{
+				"species": "arbok",
+				"level": 66
+			}
+		]
+	},
+	"mt_silver_3f_hiker_lucas": {
+		"name": "Montagnard Lucas",
+		"class": "montagnard",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 36,
+		"team": [
+			{
+				"species": "steelix",
+				"level": 67
+			},
+			{
+				"species": "ursaring",
+				"level": 67
+			}
+		]
+	},
+	"route_28_topdresseur_jules": {
+		"name": "Topdresseur Jules",
+		"class": "topdresseur",
+		"ai": "random",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 60,
+		"team": [
+			{
+				"species": "tyranitar",
+				"level": 68
+			},
+			{
+				"species": "skarmory",
+				"level": 66
+			},
+			{
+				"species": "arcanine",
+				"level": 66
+			}
+		]
+	},
+	"mt_silver_dante_2": {
+		"name": "Dante",
+		"class": "gentleman",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 99,
+		"team": [
+			{
+				"species": "houndoom",
+				"level": 72
+			},
+			{
+				"species": "sneasel",
+				"level": 73
+			},
+			{
+				"species": "magmar",
+				"level": 74
+			},
+			{
+				"species": "scizor",
+				"level": 74
+			},
+			{
+				"species": "arcanine",
+				"level": 76
+			},
+			{
+				"species": "tyranitar",
+				"level": 78
+			}
+		],
+		"start_message": false,
+		"end_message": false,
+		"bag": true,
+		"switch": true
+	},
+	"mt_silver_rival_final": {
+		"name": "{rival}",
+		"ai": "smart",
+		"can_lose": false,
+		"heal_after": false,
+		"gives_exp": true,
+		"prize_money": 0,
+		"prize_per_level": 99,
+		"start_message": false,
+		"end_message": false,
+		"bag": true,
+		"switch": true,
+		"card": {
+			"name": "{rival}",
+			"title": "Rival",
+			"title_rivale": "Rivale",
+			"portrait": "rival"
+		},
+		"team_by_starter": {
+			"bulbasaur": [
+				{
+					"species": "pidgeot",
+					"level": 75
+				},
+				{
+					"species": "alakazam",
+					"level": 76
+				},
+				{
+					"species": "steelix",
+					"level": 76
+				},
+				{
+					"species": "exeggutor",
+					"level": 77
+				},
+				{
+					"species": "gyarados",
+					"level": 77
+				},
+				{
+					"species": "charizard",
+					"level": 80
+				}
+			],
+			"charmander": [
+				{
+					"species": "pidgeot",
+					"level": 75
+				},
+				{
+					"species": "alakazam",
+					"level": 76
+				},
+				{
+					"species": "steelix",
+					"level": 76
+				},
+				{
+					"species": "arcanine",
+					"level": 77
+				},
+				{
+					"species": "exeggutor",
+					"level": 77
+				},
+				{
+					"species": "blastoise",
+					"level": 80
+				}
+			],
+			"squirtle": [
+				{
+					"species": "pidgeot",
+					"level": 75
+				},
+				{
+					"species": "alakazam",
+					"level": 76
+				},
+				{
+					"species": "steelix",
+					"level": 76
+				},
+				{
+					"species": "gyarados",
+					"level": 77
+				},
+				{
+					"species": "arcanine",
+					"level": 77
+				},
+				{
+					"species": "venusaur",
+					"level": 80
+				}
+			]
+		}
+	}
+}

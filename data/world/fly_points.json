@@ -16,6 +16,7 @@
 		{ "zone": "ecruteak_city", "map": "ecruteak_city", "spawn": "from_center" },
 		{ "zone": "goldenrod_city", "map": "goldenrod_city", "spawn": "from_center" },
 		{ "zone": "azalea_town", "map": "azalea_town", "spawn": "from_center" },
-		{ "zone": "mahogany_town", "map": "mahogany_town", "spawn": "from_center" }
+		{ "zone": "mahogany_town", "map": "mahogany_town", "spawn": "from_center" },
+		{ "zone": "mt_silver", "map": "silver_trail", "spawn": "from_center" }
 	]
 }

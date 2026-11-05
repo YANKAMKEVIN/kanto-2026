@@ -1,0 +1,216 @@
+{
+	"mt_silver_summit_arrival": {
+		"narration": true,
+		"pages": [
+			"Le ciel est immense.",
+			"Les nuages s'étendent sous les pieds\nde {player}.",
+			"Un homme attend au milieu des\nruines."
+		]
+	},
+	"mt_silver_summit_ruines": {
+		"narration": true,
+		"pages": [
+			"De vieilles pierres noircies, à\nmoitié enterrées sous la neige.",
+			"Un « R » est gravé sur l'une\nd'elles."
+		]
+	},
+	"mt_silver_summit_echarpe": {
+		"narration": true,
+		"pages": [
+			"Il n'y a plus personne.",
+			"Sur une pierre, une écharpe à moitié\nbrûlée."
+		]
+	},
+	"mt_silver_dante_return": {
+		"speaker": "Dante",
+		"pages": [
+			"Encore toi.",
+			"Ici, on ne redescend qu'une fois."
+		]
+	},
+	"mt_silver_dante_welcome": {
+		"speaker": "Dante",
+		"pages": [
+			"Ici, il y a quarante ans, j'ai\nplanté la première tente de la Team\nRocket.",
+			"Trois hommes, une idée, et la neige.",
+			"C'est ici que tout a commencé. C'est\nici que tout finira."
+		]
+	},
+	"mt_silver_dante_ho_oh": {
+		"speaker": "Dante",
+		"pages": [
+			"Ho-Oh m'a regardé, et il t'a choisi.",
+			"J'ai compris ce matin-là. Je n'ai\nplus de flamme à prendre.",
+			"Il ne me reste que la mienne."
+		]
+	},
+	"mt_silver_dante_before": {
+		"speaker": "Dante",
+		"pages": [
+			"Tu as tout ce que j'ai perdu,\n{player}. Des Pokémon qui te\nsuivent. Un nom. Un avenir.",
+			"Alors montre-moi.",
+			"Montre-moi ce que vaut un cœur que\npersonne n'a trahi."
+		]
+	},
+	"mt_silver_dante_defeated": {
+		"speaker": "Dante",
+		"pages": [
+			"…",
+			"Je vois.",
+			"Il n'y avait pas de feu assez grand\npour toi."
+		]
+	},
+	"mt_silver_dante_after": {
+		"speaker": "Dante",
+		"pages": [
+			"Vingt ans à attendre ce jour. Vingt\nans à brûler de l'intérieur.",
+			"Et c'est un enfant qui éteint tout.",
+			"… C'est peut-être mieux ainsi."
+		]
+	},
+	"mt_silver_giovanni_steps": {
+		"narration": true,
+		"pages": [
+			"Des pas crissent dans la neige.",
+			"Un homme apparaît derrière les\nruines."
+		]
+	},
+	"mt_silver_giovanni_hello": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Dante.",
+			"Je savais que tu reviendrais ici.\nTout le monde finit par revenir ici."
+		]
+	},
+	"mt_silver_dante_to_giovanni": {
+		"speaker": "Dante",
+		"pages": [
+			"… Giovanni.",
+			"Tu viens voir ton œuvre ?\nRegarde-moi bien. Tu as fait ça."
+		]
+	},
+	"mt_silver_giovanni_learned": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Oui.",
+			"Tu m'as appris que rien ne doit se\nmettre en travers. Pas même un\nmaître.",
+			"J'ai bien appris. Je l'ai payé, moi\naussi."
+		]
+	},
+	"mt_silver_giovanni_rocket_dead": {
+		"speaker": "Giovanni",
+		"pages": [
+			"La Team Rocket est morte, Dante.\nCelle d'hier, et celle que tu as\nvoulu ranimer.",
+			"Un enfant l'a battue deux fois. Il\nn'y en aura pas de troisième.",
+			"Je ne suis pas venu la reprendre. Ni\nte demander pardon."
+		]
+	},
+	"mt_silver_giovanni_to_player": {
+		"speaker": "Giovanni",
+		"pages": [
+			"Toi.",
+			"À Jadielle, je t'ai dit que nos\nchemins se croiseraient peut-être.",
+			"Je m'entraîne ici depuis. Seul. Un\njour, je serai de nouveau digne d'un\ncombat contre toi. Pas aujourd'hui."
+		]
+	},
+	"mt_silver_giovanni_leaves": {
+		"narration": true,
+		"pages": [
+			"Giovanni s'éloigne dans la neige,\nsans se retourner."
+		]
+	},
+	"mt_silver_cenere_arrives": {
+		"narration": true,
+		"pages": [
+			"Cenere arrive en courant."
+		]
+	},
+	"mt_silver_cenere_stays": {
+		"speaker": "Cenere",
+		"pages": [
+			"Maître…",
+			"… Je reste. Les calculs, c'est fini.\nJe reste."
+		]
+	},
+	"mt_silver_dante_silent": {
+		"narration": true,
+		"pages": [
+			"Dante ne répond pas. Il regarde les\nnuages.",
+			"Cenere s'agenouille à côté de lui."
+		]
+	},
+	"mt_silver_summit_dante_talk": {
+		"narration": true,
+		"pages": [
+			"Dante ne répond pas. Il regarde les\nnuages."
+		]
+	},
+	"mt_silver_summit_cenere_talk": {
+		"narration": true,
+		"pages": [
+			"Cenere s'agenouille à côté de lui."
+		]
+	},
+	"mt_silver_summit_rival_talk": {
+		"cutscene": "mt_silver_rival_talk"
+	},
+	"mt_silver_rival_arrives_summit": {
+		"speaker": "{rival}",
+		"pages": [
+			"Ouf. J'ai cru que je n'arriverais\njamais.",
+			"Alors ? C'est fini ?",
+			"… Bien."
+		]
+	},
+	"mt_silver_rival_why": {
+		"speaker": "{rival}",
+		"pages": [
+			"Tu sais pourquoi je suis monté\njusqu'ici ?",
+			"Pas pour lui. Pour toi.",
+			"Depuis la Ligue, je m'entraîne. Et\nj'ai trouvé de quoi faire évoluer\nmon Onix, à Johto.",
+			"Toi et moi, ce n'est pas fini."
+		]
+	},
+	"mt_silver_rival_return": {
+		"speaker": "{rival}",
+		"pages": [
+			"Te revoilà.",
+			"On reprend. Et cette fois, pas\nd'excuse."
+		]
+	},
+	"mt_silver_rival_defeated": {
+		"speaker": "{rival}",
+		"pages": [
+			"… Encore.",
+			"Bon. Je crois que je commence à m'y\nfaire."
+		]
+	},
+	"mt_silver_rival_after": {
+		"speaker": "{rival}",
+		"pages": [
+			"Tu sais, à la Ligue, je t'en ai\nvoulu.",
+			"Mais là, en bas, quand je retenais\nces deux-là…",
+			"J'étais content que ce soit toi,\nlà-haut. Ne le répète à personne."
+		]
+	},
+	"mt_silver_rival_agente": {
+		"speaker": "{rival}",
+		"pages": [
+			"L'Agente a embarqué l'impétueux, en\nbas.",
+			"Pour ces deux-là… Laissons-les. Ils\nn'iront plus nulle part."
+		]
+	},
+	"mt_silver_rival_race": {
+		"speaker": "{rival}",
+		"pages": [
+			"On rentre ? Par l'ouest, la Route 28\nmène tout droit chez nous.",
+			"Dernier arrivé à Bourg Palette paie\nle dîner !"
+		]
+	},
+	"mt_silver_rival_runs": {
+		"narration": true,
+		"pages": [
+			"{rival} s'en va en courant."
+		]
+	}
+}

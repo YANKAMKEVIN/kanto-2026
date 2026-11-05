@@ -14074,6 +14074,22 @@
     "vent",
     "repos_2"
    ]
+  },
+  "raikou": {
+   "fichier": "res://assets/sprites/pokemon/painted/raikou_sheet.png",
+   "cellule": [
+    136,
+    192
+   ],
+   "hauteur": 190,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "vent",
+    "repos_2"
+   ]
   }
  },
  "images": {

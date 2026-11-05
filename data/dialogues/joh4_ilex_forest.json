@@ -39,6 +39,15 @@
 		"narration": true,
 		"variants": [
 			{
+				"if": [
+					"johto_green_ball_received"
+				],
+				"unless": [
+					"johto_celebi_done"
+				],
+				"cutscene": "ilex_altar_celebi"
+			},
+			{
 				"set": [
 					"johto_shrine_seen"
 				],

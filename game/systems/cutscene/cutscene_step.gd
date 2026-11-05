@@ -138,6 +138,8 @@ extends RefCounted
 ##   Panthéon montre l'équipe, puis le titre et l'entrée du Panthéon sont posés et la partie est
 ##   **écrite** (une seule écriture, comme l'étape « save ») ; sinon (déjà faite) : rien ;
 ## - [constant Kind.CREDITS] : le générique (`data/story/credits.json`) ; la scène attend sa fin.
+##   Chapitre Johto, JOH9 : valeur texte [constant CREDITS_IDS] (« johto ») = le petit générique de
+##   chapitre (`data/story/credits_johto.json`), dans [member text] ; true = celui de Kanto.
 ## - [constant Kind.CONFISCATE_TEAM] (Chapitre Johto, JOH0, `jalon-joh0.md` §2.2) : le vol de
 ##   l'équipe et du Sac ([method TeamConfiscation.confiscate]), d'un seul bloc ; refusé (erreur,
 ##   étape sautée) sur une équipe vide ou si une équipe est déjà confisquée. Valeur : true.
@@ -149,6 +151,10 @@ extends RefCounted
 ##   ([member CutsceneDirector.team_return_handler], sinon la sélection par défaut), puis
 ##   [method TeamConfiscation.restore] d'un seul bloc. Valeur : true. La scène fait suivre d'une
 ##   étape « save ».
+## - [constant Kind.FLASHBACK] (JOH6, `jalon-joh6.md` §2.7, le souvenir de Dante) : [member text]
+##   « start » (filtre sépia plein écran en fondu, joueur caché : [FlashbackFilter]) ou « end »
+##   (fondu inverse, filtre retiré, joueur visible). Le changement de carte du souvenir se fait par
+##   des étapes « change_map » ordinaires entre les deux.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
@@ -164,6 +170,7 @@ enum Kind {
 	SAFARI,
 	HALL_OF_FAME, CREDITS, # Jalon 30
 	CONFISCATE_TEAM, RETURN_TEAM, GIVE_EGG, # Chapitre Johto (JOH0)
+	FLASHBACK, # Chapitre Johto (JOH6)
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -180,10 +187,15 @@ const TYPE_KEYS: Array[String] = [
 	"safari",
 	"hall_of_fame", "credits", # Jalon 30
 	"confiscate_team", "return_team", "give_egg", # Chapitre Johto (JOH0)
+	"flashback", # Chapitre Johto (JOH6)
 ]
+## Valeurs d'une étape « flashback » (JOH6) : ouverture et fermeture du souvenir.
+const FLASHBACK_ACTIONS: Array[String] = ["start", "end"]
 ## Actions d'une étape « safari » (J23) : péage et début de visite, sortie volontaire, remise à
 ## zéro des drapeaux de passage du comptoir.
 const SAFARI_ACTIONS: Array[String] = ["enter", "leave", "clear"]
+## JOH9 : génériques nommés d'une étape « credits » (`data/story/credits_<id>.json`).
+const CREDITS_IDS: Array[String] = ["johto"]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
 ## Entrées en scène d'une étape « wild_battle » (clé « intro », T30) ; &"" = l'entrée sauvage
@@ -268,6 +280,9 @@ var flee_flags: Array[StringName] = []
 var clear_flags: Array[StringName] = []
 var reveal: bool = false
 var uncatchable: bool = false
+## Étape « wild_battle », JOH6 (JH-46) : variante de couleur du sauvage (clé « variant »,
+## [PokemonVariant]) ; &"" = forme normale.
+var variant: StringName = &""
 ## Étape « animate », jalon 21 : sautée si « Réduire les animations » est actif.
 var skip_reduced: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
@@ -392,6 +407,7 @@ func copy() -> CutsceneStep:
 	other.clear_flags = clear_flags.duplicate()
 	other.reveal = reveal
 	other.uncatchable = uncatchable
+	other.variant = variant
 	other.skip_reduced = skip_reduced
 	other.badge_id = badge_id
 	other.moment_type = moment_type

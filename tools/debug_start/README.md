@@ -439,6 +439,23 @@ Clé **`confiscated`** : l'équipe et le Sac confisqués pendant l'acte 1 (`{ "p
 - `johto_rosalia_tuesday` : idem, jour forcé `tuesday` (Margot, conteuse du mardi). Clé `weekday`
   de `DebugStart` (JOH2).
 
+### JOH6 — les cendres (`docs/tech/jalon-joh6.md` §2.9)
+
+État de fin d'acte 1 posé à la main (drapeaux des dossiers JOH-02 à JOH-06, `johto_act2`, équipe
+rendue, Stockage en ligne) ; équipe : Tortank N64 (Surf), Dracaufeu N62, Alakazam N60, Nidoking
+N59, Roucarnage N58, Crocrodil N32 ; CS03, Super Canne, Multi Exp, 20 Hyper Balls, 30 000 ₽.
+- `johto_joh6_rosalia` : devant la maison des sages (le doyen ouvre la tour, C-2).
+- `johto_joh6_tower_b1f` : tour ouverte, arrivée de la chute au B1F (scène des chiens, C-6 à C-9).
+- `johto_joh6_tower_1f` : tour ouverte, à l'entrée du 1F (Dresseurs, C-5, trous).
+- `johto_joh6_route_42`, `johto_joh6_mahogany` : chiens réveillés, plan du doyen connu.
+- `johto_joh6_route_43` : idem, à l'entrée sud de la Route 43 (péage).
+- `johto_joh6_lake` : péage franchi, à l'entrée du Lac Colère (Léviator rouge) ; 1 Master Ball.
+- `johto_joh6_lake_autosave` : idem, mais le départ **devient la partie sauvegardée** (`autosave`) : capturer le Léviator rouge (sauvegarde forcée), puis reprise par « Continuer » (clé « variant » dans la vraie sauvegarde).
+- `johto_joh6_hideout` : lac fait, escalier trouvé, au B1F du repaire (alarmes).
+- `johto_joh6_hideout_b2f` : idem, au B2F (dalles, levier, déserteur, souvenir, mot de passe).
+- `johto_joh6_hideout_b3f` : mot de passe dit, au B3F (Brace, générateur, Raikou) ; 1 Master Ball.
+- `johto_joh6_saturday` (Samuel, Acajou), `johto_joh6_sunday` (Diane, Rosalia) : jour forcé.
+
 ## QA entrée des combats de Dresseur (A17, 2026-11-04)
 
 | Fichier | Partie |
@@ -489,3 +506,22 @@ Sac, drapeaux de l'acte 1 jusqu'au JOH4 (`johto_brace_defeated`, `johto_radio_pa
 | `johto_radio_tower_5f.json` | 5F, arrivée de l'escalier : Sbires obligatoires des étages battus, réserve ouverte ; descendre vers l'ouverture de la vitre (12..13, 6) → Cenere, Dante, Sbires, départ de Cenere |
 | `johto_radio_tower_office.json` | 5F, Cenere battue, Dante révélé, porte du bureau ouverte (8, 2). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier d'abord la vraie sauvegarde). Bureau : T-24 à T-27, écran du choix des 6 (9 Pokémon), T-29, T-30, **écriture**, Multi Exp, T-32. Arrêt de l'appli pendant l'écran → « Continuer » : la scène rejoue ; après → équipe rendue, acte 1 fini |
 | `johto_radio_tower_small.json` | Comme le précédent avec 2 + 3 Pokémon (**pas d'écran**) et une Multi Exp déjà dans le Sac (3 Super Bonbons) ; sans écriture du départ |
+
+## Chapitre Johto, JOH9 (Mont Argenté, Route 28, épilogue)
+
+Générés par `tools/gen_joh9_debug_starts.py` : état de fin du JOH8 (drapeaux des dossiers joh-02 à joh-09, `johto_act3`, Dante en fuite), équipe 70–74 (Tortank Surf, Typhlosion, Roucarnage Vol, Mackogneur Force, Raichu Flash, Ho-Oh), CS02 à CS05, Corde Sortie, point de repos `mt_silver_center`, moment `day`. Captures : `tools/capture_joh9.sh`.
+
+| Fichier | Partie |
+|---|---|
+| `johto_mt_silver.json` | Sentier, entrée ouest (`from_lake`) : Hugo inévitable au passage de la muraille, Baptiste, Inès, Centre et Boutique (point de Vol) |
+| `johto_mt_silver_outside.json` | Extérieur (`from_trail`) : monter le chemin, la rangée y 14 joue le relais (A-8 à A-13) puis la grotte |
+| `johto_mt_silver_1f.json` | Grotte 1F après le relais : Sbire X, lac (Surf), deux rochers de Force, Sbire Y inévitable, échelle du 2F |
+| `johto_mt_silver_2f.json` | Grotte 2F (noir) : Flash automatique (A-17) ; la galerie (14, 10..12) joue le rival et le soin (A-19 à A-21) |
+| `johto_mt_silver_summit.json` | Sommet sous la trappe : un pas vers le sud joue Dante (A-23, A-26 à A-30), Giovanni, Cenere, sauvegarde, le rival final |
+| `johto_mt_silver_rival.json` | Sommet après Giovanni, rival non battu : un pas vers le sud joue A-45 et le combat |
+| `johto_route_28.json` | Grotte 1F après le rival final : descente libre par la sortie ouest (0, 23) vers la Route 28 |
+| `johto_route_28_gate.json` | Poste de la Route 28, côté Johto : descendre → A-47, porte vers la Route 22 de Kanto |
+| `johto_kanto_gate.json` | Route 22 ouest (Kanto) devant la porte neuve, sans le rival final : entrer, monter → A-48 et recul |
+| `johto_epilogue.json` | Bourg Palette devant le labo, chapitre presque fini : entrer et monter d'un pas → épilogue (A-49 à A-51), Balle Verte, générique de Johto |
+| `johto_after_chapter.json` | Sommet après le chapitre : vide, écharpe (A-52) en (7, 13) |
+| `johto_celebi.json` | Bois aux Chênes, chapitre fini, Balle Verte au Sac : examiner l'autel depuis (23, 12) → A-53, A-54, Celebi niv. 60 |
