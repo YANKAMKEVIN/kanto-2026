@@ -101,7 +101,25 @@ const MAPS: Dictionary = {
 		"wall": Color(0.5, 0.62, 1.0), "rock": Color(0.5, 0.6, 0.9), "land": ".",
 		"water": "wdF", "deep": Color(0.01, 0.05, 0.22, 0.62),
 		"falls": [Rect2i(9, 1, 4, 3), Rect2i(14, 1, 4, 3)]},
+	# Arc des Pierres (JOHP2, demande de Kevin du 2026-11-05) : Grotte de la Marée, d'après ses vues
+	# générales. « crates » faux : ici `R` n'est pas une caisse. « sprites » [image, pied (cases),
+	# nœud] : pompes et socle, sans emprise (leurs cases sont bloquées par la grille). Au B1F, les
+	# gués `a` et `b` sont peints en eau : leurs [FlagGate] montrent les gravats avec leur vanne.
+	&"tide_cave_1f": {"plan": "tide_cave_1f", "seed": 7171, "floor": "ground_grotte_01",
+		"bands": [[".EVR", "ground_grotte_01", Color(0.8, 0.83, 0.9), "Floor"],
+			["g", "ground_gravats_01", Color(0.8, 0.84, 0.82), "Rubble"]],
+		"wall": Color(0.5, 0.56, 0.76), "rock": Color(0.56, 0.62, 0.78), "land": ".g",
+		"water": "d", "deep": Color(0.01, 0.13, 0.26, 0.7), "crates": false,
+		"sprites": [[TIDE_PUMP, Vector2(7.0, 8.0), "Pompe1"], [TIDE_PUMP, Vector2(11.0, 8.0), "Pompe2"]]},
+	&"tide_cave_b1f": {"plan": "tide_cave_b1f", "seed": 7181, "floor": "ground_grotte_01",
+		"bands": [[".US", "ground_grotte_01", Color(0.8, 0.83, 0.9), "Floor"]],
+		"wall": Color(0.5, 0.56, 0.76), "rock": Color(0.56, 0.62, 0.78), "land": ".",
+		"water": "dab", "deep": Color(0.0, 0.2, 0.2, 0.68), "crates": false,
+		"sprites": [[TIDE_SOCLE, Vector2(5.0, 12.0), "Socle"]]},
 }
+const TIDE_PUMP: String = "res://assets/world/props/prop_pompe_rocket_01.png"
+const TIDE_SOCLE: String = "res://assets/world/props/prop_socle_maree_01.png"
+const PROP_MATERIAL: String = "res://game/world/lighting/materials/world_object.tres"
 const FLOOR: String = "ground_azuree_bas_01"
 const MASS: String = "ground_masse_roche_01"
 const WATER: String = "ground_eau_grotte_01"
@@ -175,6 +193,7 @@ const SHAFTS: Dictionary = {
 ## Flaques de lumière seules : jour de la sortie vers Oliville (salle 2), halo chaud [D] ; jour de
 ## l'entrée des Îles Tourbillon.
 const POOLS: Dictionary = {&"sea_cave_2": [Vector2(4.0, 39.2)],
+	&"tide_cave_1f": [Vector2(24.0, 10.0)], &"tide_cave_b1f": [Vector2(1.5, 12.0)],
 	&"whirl_islands_1f": [Vector2(1.0, 13.0)],
 	&"goldenrod_underground": [Vector2(2.5, 6.5), Vector2(37.5, 8.5)]}
 
@@ -287,7 +306,7 @@ func _build_cave(map_id: StringName) -> void:
 	_tint_walls(decals)
 	var edges := _island_edges(kit, decals, plan, spec.get("land", LAND_MARKS))
 	var rocks := _rocks(kit, entities, plan, seed_value + 3)
-	rocks += _fixtures(kit, entities, decals, plan)
+	rocks += _fixtures(kit, entities, decals, plan, spec)
 	_flows(kit, decals, entities, plan, map_id)
 	_lot2_flows(kit, decals, entities, spec)
 	_lights(kit, map_id)
@@ -570,8 +589,21 @@ func _shop_fronts(kit: Object, entities: Node2D, plan: Object) -> int:
 
 ## Échelles `U` (qui montent, debout) et `V` (trappe, au sol), caisses `R` et `k`, escaliers `E` du
 ## Souterrain (par paire, tournés vers le bord) : images seules sur leurs cases. Renvoie leur nombre.
-func _fixtures(kit: Object, entities: Node2D, decals: Node2D, plan: Object) -> int:
+func _fixtures(kit: Object, entities: Node2D, decals: Node2D, plan: Object,
+		spec: Dictionary) -> int:
 	var count := 0
+	for entry: Array in spec.get("sprites", []):
+		var sprite := Sprite2D.new()
+		sprite.name = entry[2]
+		sprite.texture = load(entry[0])
+		sprite.material = load(PROP_MATERIAL)
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		var size := sprite.texture.get_size()
+		sprite.centered = false
+		sprite.offset = Vector2(-size.x / 2.0, -size.y)
+		sprite.position = (entry[1] as Vector2) * TILE
+		kit.call(&"attach", entities, sprite)
+		count += 1
 	if plan.width == STAIRS_MAP_WIDTH:
 		for cell: Vector2i in plan.cells_of("k"):
 			kit.call(&"add_sprite", entities, "prop_caisses_01",
@@ -591,10 +623,11 @@ func _fixtures(kit: Object, entities: Node2D, decals: Node2D, plan: Object) -> i
 		kit.call(&"add_sprite", decals, LADDER_DOWN,
 			(Vector2(cell) + Vector2(0.5, 1.0)) * TILE, "Ladder%02d" % count)
 		count += 1
-	for cell: Vector2i in plan.cells_of("R"):
-		kit.call(&"add_sprite", entities, CRATE, (Vector2(cell) + Vector2(0.5, 1.0)) * TILE,
-			"Crate%02d" % count)
-		count += 1
+	if spec.get("crates", true):
+		for cell: Vector2i in plan.cells_of("R"):
+			kit.call(&"add_sprite", entities, CRATE, (Vector2(cell) + Vector2(0.5, 1.0)) * TILE,
+				"Crate%02d" % count)
+			count += 1
 	return count
 
 

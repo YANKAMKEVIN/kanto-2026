@@ -8,7 +8,7 @@ extends SceneTree
 ##
 ## Ici : sol et cases bloquées, passages (bord = PUSH, porte = STEP_ON ↑, échelle = STEP_ON), arrivées
 ## (une par case, `<id>`, `<id>_1`…), panneaux, examens, déclencheurs, bâtiments du kit peint [D],
-## aplats provisoires (pompes, socle) [D], eau pêchable d'Irisia, lampes de nuit, et les décors qui
+## aplat provisoire de la cabine du pont [D], eau pêchable d'Irisia, lampes de nuit, et les décors qui
 ## suivent les drapeaux ([FlagGate]) : les deux gués du B1F (eau qui bloque jusqu'à leur vanne, §8.2)
 ## et le bateau noir peint (Irisia et ouverture du B1F, jusqu'à `johto_stone_tide_lost`).
 ## PNJ, Dresseurs, objets, textes, scènes : `tools/gen_johp2_data.py`. **Aucun nom d'autoload** dans
@@ -16,8 +16,9 @@ extends SceneTree
 ##
 ##   godot --headless --path . -s res://tools/build_johp2_maps.gd [-- --maps=cianwood_city]
 ##   godot --headless --path . --import
-## **Image d'Irisia** : `tools/build_joh_ambiance.gd -- --maps=cianwood_city` repeint la carte sans
-## toucher à la logique ; la relancer après cet outil.
+## **Image** : `tools/build_joh_ambiance.gd -- --maps=cianwood_city` (Irisia) et
+## `tools/build_joh_ambiance_caves.gd -- --maps=tide_cave_1f,tide_cave_b1f` (grotte) repeignent les
+## cartes sans toucher à la logique ; les relancer après cet outil.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 
@@ -86,6 +87,9 @@ const EXAM_FACINGS: Dictionary = {
 const FORDS: Dictionary = {
 	"tide_cave_b1f": {"a": &"johto_tide_valve_1", "b": &"johto_tide_valves_done"},
 }
+## Sol découvert d'un gué : gravats mouillés, un peu bleutés [D].
+const FORD_TEXTURE: String = "res://assets/world/ground/ground_gravats_01.png"
+const FORD_TINT := Color(0.72, 0.8, 0.84)
 ## Bâtiments du kit peint [D] : (carte) → [objet, case d'ancrage (porte ; porte est d'une porte de
 ## deux cases), nœud].
 const BUILDINGS: Dictionary = {
@@ -98,11 +102,6 @@ const BUILDINGS: Dictionary = {
 ## Aplats provisoires [D] : (carte) → [nœud, rectangle de cases, couleur, toit].
 const FLATS: Dictionary = {
 	"goeland_deck": [["Cabine", Rect2i(11, 2, 3, 1), Color(0.46, 0.3, 0.2), true]],
-	"tide_cave_1f": [
-		["Pompe1", Rect2i(6, 6, 2, 2), Color(0.2, 0.2, 0.24), false],
-		["Pompe2", Rect2i(10, 6, 2, 2), Color(0.2, 0.2, 0.24), false],
-	],
-	"tide_cave_b1f": [["Socle", Rect2i(4, 11, 2, 1), Color(0.5, 0.5, 0.54), false]],
 }
 ## Bateaux peints (proue noire à gauche, proue du Goéland à droite) : (carte) → [nœud, image, pied
 ## gauche en cases, échelle, largeur montée en pixels depuis la poupe (0 = le navire entier), drapeau
@@ -445,10 +444,11 @@ func _polygon(node_name: String, top_left: Vector2, size: Vector2, color: Color)
 	return body
 
 
-## Gués du B1F : une [FlagGate] par gué, de l'eau peinte en aplat qui bloque ses cases tant que le
-## drapeau de sa vanne manque (§8.2). Sous `Entities` (seules les portes de `_PROP_LAYERS` bloquent
-## à la construction de la grille) ; [method GameMap.apply_flag_gates] la règle à l'arrivée, Boot à
-## chaque drapeau changé.
+## Gués du B1F (§8.2) : par gué, une [FlagGate] sans dessin qui bloque ses cases tant que le drapeau
+## de sa vanne manque, et une [FlagGate] de gravats mouillés qui apparaît avec lui, sur l'eau peinte
+## par `build_joh_ambiance_caves.gd`. Sous `Entities` (seules les portes de `_PROP_LAYERS` bloquent
+## à la construction de la grille) ; [method GameMap.apply_flag_gates] les règle à l'arrivée, Boot
+## à chaque drapeau changé.
 func _add_fords(spec: Dictionary, plan: Object, root: Node) -> void:
 	var fords: Dictionary = FORDS.get(String(spec["id"]), {})
 	for mark: String in fords:
@@ -460,10 +460,20 @@ func _add_fords(spec: Dictionary, plan: Object, root: Node) -> void:
 					cells.append(Vector2i(x, y))
 		var gate := _gate(root, root.get_node(^"Entities"), "Gue" + mark.to_upper(), [], [flag])
 		gate.set(&"blocking_cells", cells)
-		for cell: Vector2i in cells:
-			var water := _polygon("Eau%d_%d" % [cell.x, cell.y], Vector2(cell) * TILE,
-				Vector2.ONE * TILE, Color(0.18, 0.4, 0.55))
-			_attach(root, gate, water)
+		var dry := _gate(root, root.get_node(^"Entities"), "Gue%sDecouvert" % mark.to_upper(),
+			[flag], [])
+		var top_left: Vector2i = cells[0]
+		var span: Vector2i = cells[-1] - top_left + Vector2i.ONE
+		var sprite := Sprite2D.new()
+		sprite.name = "Gravats"
+		sprite.texture = load(FORD_TEXTURE)
+		sprite.centered = false
+		sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+		sprite.region_enabled = true
+		sprite.region_rect = Rect2(Vector2(top_left) * TILE, Vector2(span) * TILE)
+		sprite.position = Vector2(top_left) * TILE
+		sprite.modulate = FORD_TINT
+		_attach(root, dry, sprite)
 
 
 ## Bateaux peints, [FlagGate] sous `Decor` : visuels seulement (leurs cases sont de l'eau bloquée).
@@ -493,6 +503,9 @@ func _add_boats(spec: Dictionary, root: Node) -> void:
 		sprite.scale = Vector2.ONE * scale
 		var foot: Vector2 = entry[2]
 		sprite.position = foot * TILE - Vector2(0, size.y * scale)
+		# Dans la grotte, au-dessus des parois peintes de `Entities` qui bordent l'ouverture.
+		if stern > 0:
+			sprite.z_index = 1
 		_attach(root, gate, sprite)
 
 

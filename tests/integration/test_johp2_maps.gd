@@ -161,6 +161,32 @@ func test_valves_open_the_fords_in_order() -> void:
 		ford.apply_to_grid(map.get_grid())
 
 
+## Gués peints : l'eau est dans le sol, les gravats n'apparaissent qu'avec la vanne.
+func test_uncovered_fords_follow_their_valves() -> void:
+	var map := _map(&"tide_cave_b1f")
+	var flags := StoryFlags.new()
+	var ford_a := _gate(map, ^"Entities/GueADecouvert")
+	var ford_b := _gate(map, ^"Entities/GueBDecouvert")
+	assert_false(ford_a.is_open(flags), "gué a sous l'eau")
+	assert_false(ford_b.is_open(flags), "gué b sous l'eau")
+	flags.set_flag(&"johto_tide_valve_1")
+	assert_true(ford_a.is_open(flags), "gué a découvert")
+	assert_false(ford_b.is_open(flags))
+	flags.set_flag(&"johto_tide_valves_done")
+	assert_true(ford_b.is_open(flags), "gué b découvert")
+	assert_eq(ford_a.blocking_cells.size(), 0, "le dessin ne bloque rien")
+
+
+func test_tide_cave_is_painted_with_its_pumps_and_socle() -> void:
+	var one := _map(&"tide_cave_1f")
+	assert_not_null(one.get_node_or_null(^"PaintedGround"))
+	assert_not_null(one.get_node_or_null(^"Entities/JohAmbCavePompe1"))
+	assert_not_null(one.get_node_or_null(^"Entities/JohAmbCavePompe2"))
+	var two := _map(&"tide_cave_b1f")
+	assert_not_null(two.get_node_or_null(^"PaintedGround"))
+	assert_not_null(two.get_node_or_null(^"Entities/JohAmbCaveSocle"))
+
+
 func test_black_boat_follows_the_flag() -> void:
 	var flags := StoryFlags.new()
 	var boat := _gate(_map(&"cianwood_city"), ^"Decor/BateauNoir")
