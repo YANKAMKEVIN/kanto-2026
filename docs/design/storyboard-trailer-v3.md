@@ -141,3 +141,14 @@ les lignes du jeu). `tools/trailer/cuts_v5.json`, 65,8 s, `--tag v5 --raw raw_v3
 
 [D] : noms des villes et des costumes aussi en cartons (0,8 s) ; carton « La nuit tombe sur
 Rosalia. » retiré ; plans resserrés pour limiter la durée ; thème du titre rebouclé (50 s).
+
+## 9. Version 6 (2026-11-06, retour de Kevin sur la v5)
+
+`tools/trailer/cuts_v6.json`, 74,5 s, `--tag v6 --raw raw_v3`.
+
+- **Pokédex remplacé par un mur** (« on ne voit rien ») : `tools/trailer/pokemon_wall.py` part de
+  quelques Pokémon en grand et recule jusqu'aux 202, sur les illustrations de `official/`.
+- **Vraie fin** (« on ne conclut sur rien ») [D] : carton « Ton aventure commence ici. », retour au
+  duo de Bourg Palette, logo POKEMAKE, musique en fondu.
+- **Le logo de fin est pour le `.mp4`** : dans le jeu, les lettres de l'ident prennent cette place ;
+  à retirer du montage du jeu.

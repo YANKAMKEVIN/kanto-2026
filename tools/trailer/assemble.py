@@ -27,6 +27,7 @@ Format d'un plan de cuts.json :
 `gain` : gain global avant le limiteur (v2.1 : la vidéo jouait ≈ 6 dB sous le jeu).
 Un plan `{ "card": "Texte du carton", "dur": 1.5 }` est un carton doré sur le fond de l'ident.
 `tail_black` : secondes de noir (silence) ajoutées à la fin.
+Un plan `{ "logo": "assets/…png", "dur": 3 }` : le logo sur le fond de l'ident, en fondu.
 Un plan `{ "black": 0.5 }` est un noir muet au milieu du montage.
 Un plan `{ "id", "split": [{ "src", "in" }, …], "dur" }` montre plusieurs scènes en colonnes.
 `"title": { "text", "pos": "top|mid|low", "size", "dur", "align": "right" }` sur un plan : texte posé sur l'image,
@@ -175,6 +176,25 @@ def apply_titles(assembled: Path, titles: list[dict], tmp: Path) -> Path:
     out = tmp / "titled.mkv"
     run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(chains), "-map", prev,
          "-map", "0:a", "-c:v", "libx264", "-preset", "fast", "-crf", "14", "-c:a", "copy", str(out)])
+    return out
+
+
+def logo_clip(index: int, cut: dict, tmp: Path) -> Path:
+    """Le logo sur le fond de l'ident, en fondu, légère poussée : le point final de la vidéo."""
+    logo = Image.open(ROOT / cut["logo"]).convert("RGBA")
+    logo.thumbnail((int(W * 0.5), int(H * 0.62)), Image.LANCZOS)
+    image = Image.new("RGB", (W, H), CARD_BG)
+    image.paste(logo, ((W - logo.width) // 2, (H - logo.height) // 2), logo)
+    png = tmp / f"logo_{index:02d}.png"
+    image.save(png)
+    seconds = float(cut["dur"])
+    out = tmp / f"cut_{index:02d}.mkv"
+    z = f"(1+0.05*t/{seconds})"
+    run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-framerate", str(FPS), "-i", str(png),
+         "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", f"{seconds:.3f}", "-vf",
+         f"scale=w='trunc(iw*{z}/2)*2':h='trunc(ih*{z}/2)*2':eval=frame:flags=bicubic,"
+         f"crop={W}:{H},fade=t=in:d=0.6,fade=t=out:st={seconds - 0.6:.3f}:d=0.6,format=yuv420p",
+         "-c:v", "libx264", "-preset", "fast", "-crf", "12", "-c:a", "pcm_s16le", "-shortest", str(out)])
     return out
 
 
@@ -360,6 +380,9 @@ def main() -> None:
                 at = sum(d for _p, d, _x in clips) - sum(max(x, 1.0 / FPS) for _p, _d, x in clips[1:]) \
                     - (1.0 / FPS if clips else 0.0)
                 titles.append({"dur": float(cut.get("dur", cut.get("black", 1.0))), **cut["title"], "at": at})
+            if "logo" in cut:
+                clips.append((logo_clip(i, cut, tmp), float(cut["dur"]), 0.0))
+                continue
             if "split" in cut:
                 clips.append((split_clip(i, cut, tmp), float(cut["dur"]), 0.0))
                 continue
