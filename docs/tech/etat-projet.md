@@ -17,7 +17,7 @@ Mis à jour : 2026-11-06.
 
 ## Prochaines étapes
 
-1. **RC 0.35.0 (Kevin) :** partie complète et écoute des musiques avec les APK de `~/.pokemake/test-main-748e82de/`, puis Go juridique pour Johto (`jalon-34-34e.md` §15.5) ; étapes dans `rc-0.35.0.md` §6. Le T4 reste à faire ; consignes de la 0.34.1 dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`.
+1. **RC 0.35.0 (Kevin) :** partie complète et écoute des musiques avec les APK de `~/.pokemake/test-main-748e82de/` ; étapes dans `rc-0.35.0.md` §6. Le T4 reste à faire ; consignes de la 0.34.1 dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`.
 2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto) ; RP-292.
 3. **Johto, vérifié sur l'A17 le 2026-11-06 (`docs/tech/qa-johto-a17-2.md`) :** onze jonctions passées par morceaux, Raikou, Entei, Ho-Oh, rival du sommet, remontée et descente du Mont Argenté. Un blocage trouvé et corrigé : sortie de la chambre du Centre d'Oliville. Reste : une partie complète et l'écoute des musiques par Kevin, relecture de deux objectifs ajoutés (JOH9).
 4. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
@@ -25,7 +25,6 @@ Mis à jour : 2026-11-06.
 ## Questions ouvertes
 
 - Remise du dépôt en privé : encore public au 2026-11-06, alors que le Go juridique du 2026-11-04 suppose que rien n'est publié (`jalon-34-34e.md` §15.4).
-- Go juridique pour Johto : le §14 de la fiche 34E couvrait la RC Kanto seul.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
 
@@ -34,6 +33,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 - **Ordre de l'acte 2 (2026-11-06) :** JOH6 avant JOH7. La mer au sud d'Oliville reste fermée jusqu'au déserteur d'Acajou (`johto_whirl_clue`).
 - **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
+- **Go juridique (2026-11-06) :** étendu à la RC 0.35.0 et à Johto, pour le seul cercle de la maison, aux mêmes conditions (`jalon-34-34e.md` §14, §15.5).
 - **Diffusion (2026-10-24) :** jeu privé, pour Kevin et un cercle restreint de proches. Jamais de store, de lien ouvert ni de page publique.
 - **Retours des testeurs (2026-11-06) :** groupe WhatsApp.
 - **RC (2026-11-06) :** jeu complet depuis `main`, en version 0.35.0, après la partie complète de Kevin. Remplace « Kanto seul depuis `release/0.34` » du 2026-11-04. `release/0.34` reste telle quelle.

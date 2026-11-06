@@ -338,6 +338,8 @@ Le §8.4 reste exact pour Johto.
 
 **Q1 — Go.** Le Go du §14, sans avis juridique et pour le seul cercle de la maison, s'étend-il à la RC 0.35.0 avec tout le §15.1 ? Les conditions du §14 restent les mêmes.
 
+> **Décision de Kevin du 2026-11-06 (« Oui, je l'étends ») : Go étendu à la RC 0.35.0 et à tout le §15.1, pour le seul cercle de la maison.** Ce n'est pas un avis juridique ; les conditions du §14 restent les mêmes, dont celle sur le dépôt (Q2, toujours ouverte).
+
 **Q2 — Dépôt.** Quand repasse-t-il en privé, et que faire de l'historique ? Le retour en privé est une action de Kevin ; ensuite, `push.branches` revient à `[main]` et le verrou de suite du Mac reprend (mémoire `depot-public-ci`). Tant que ce n'est pas réglé, aucune session ne doit ajouter de nouveau type de contenu protégé au dépôt.
 
 Rien de cela n'a été tranché ici, et aucune ressource n'a été retirée.
