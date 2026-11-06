@@ -21,7 +21,7 @@ Mis à jour : 2026-11-06.
 2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto) ; RP-292.
 3. **Johto, vérifié sur l'A17 le 2026-11-06 (`docs/tech/qa-johto-a17-2.md`) :** onze jonctions passées par morceaux, Raikou, Entei, Ho-Oh, rival du sommet, remontée et descente du Mont Argenté. Un blocage trouvé et corrigé : sortie de la chambre du Centre d'Oliville. Reste : une partie complète et l'écoute des musiques par Kevin, relecture de deux objectifs ajoutés (JOH9).
 4. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
-5. **Bande-annonce :** v7 validée par Kevin le 2026-11-06, dans le jeu sur `main` (`docs/design/storyboard-trailer-v3.md` §10). Reste : la lire sur téléphone. La RC 0.34 garde l'ancienne vidéo.
+5. **Bande-annonce :** v7 validée par Kevin le 2026-11-06, dans le jeu sur `main` (`docs/design/storyboard-trailer-v3.md` §10). Reste : la lire sur téléphone. La RC 0.35.0, déjà construite, garde l'ancienne vidéo : la nouvelle arrive avec la RC suivante.
 
 ## Questions ouvertes
 

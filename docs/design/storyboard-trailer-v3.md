@@ -162,7 +162,7 @@ Rosalia. » retiré ; plans resserrés pour limiter la durée ; thème du titre 
 - **Dans le jeu :** `--tag v7 --raw raw_v3 --game` → `assets/ui/opening/trailer.ogv`, 64,3 s, sans le
   logo : les lettres de l'ident le remplacent. Remplace la v2.1, récupérable dans l'historique git
   (montage `tools/trailer/cuts.json`, gardé).
-- **Pas sur `release/0.34` :** la RC des proches garde son ancienne vidéo.
+- **RC :** la 0.35.0 (jeu complet), construite le même jour avant cette fusion, garde l'ancienne vidéo ; la nouvelle arrive avec la RC suivante.
 - **Encodage du jeu :** fondus enchaînés vers les cartons et image clé toutes les 15 images : une coupe
   franche vers un aplat laissait des taches de couleur à l'encodage Theora. Il en reste de très
   légères sur le carton « Capture-les tous. ».
