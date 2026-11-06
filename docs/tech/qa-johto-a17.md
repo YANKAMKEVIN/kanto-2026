@@ -49,6 +49,14 @@ difficulté.
 **Décision de Kevin (2026-11-06) :** le rival attend. Il dit A-40, A-41, A-41b, le joueur se soigne avec son Sac
 et lui parle pour lancer le combat, après confirmation (`docs/tech/jalon-joh9.md` §2.3).
 
+Vu sur l'A17 le 2026-11-06 (APK de `1c4a6f70`) : arrivée sans combat, contrôle rendu, parler au rival, PAS ENCORE,
+descente au 3F par le palier, retour au sommet, rival toujours là, EN AVANT, défaite (Centre), A-45 au retour,
+victoire (N95 pour y arriver), `johto_rival_final_done` sauvegardé.
+
+**M2, mineur, antérieur à ce changement :** dans la reprise où Dante est battu et Giovanni pas encore vu, le recul
+du joueur (`move player`, `right right`, `giovanni_steps`) part de (16, 5) au lieu de (10, 8) : erreur « Player
+bloqué en (16, 5) » dans le journal, la scène continue. Cause probable : déplacement à marquer `optional`.
+
 ## Méthode
 
 - Départs de débogage `johto_mt_silver_summit`, `johto_den_cenere`, `johto_epilogue`, `johto_celebi`,
