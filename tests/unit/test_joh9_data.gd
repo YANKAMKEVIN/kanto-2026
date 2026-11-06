@@ -219,17 +219,18 @@ func test_second_floor_rival_heals_the_team() -> void:
 	assert_eq(_dialogues.get_dialogue(&"mt_silver_2f_rival_heal").variants[0].action, &"heal")
 
 
-## Sommet : Dante (A-23, A-26 à A-28 ou A-25), Giovanni, Cenere, sauvegarde, puis le rival ; une
-## variante pour la reprise après Dante, une pour le retour après une défaite contre le rival.
+## Sommet : Dante (A-23, A-26 à A-28 ou A-25), Giovanni, Cenere, sauvegarde, puis le rival arrive
+## et attend sans combat (décision de Kevin du 2026-11-06) ; une variante pour la reprise après
+## Dante. Le combat du rival se lance en lui parlant, après confirmation.
 func test_summit_scene_order_and_resumes() -> void:
 	var cutscene := _cutscenes.get_cutscene(&"mt_silver_summit")
-	assert_eq(cutscene.variants.size(), 3)
+	assert_eq(cutscene.variants.size(), 2)
 	var first := _scene_steps(&"mt_silver_summit", 0)
 	var dialogues := _dialogues_of(first)
 	var order: Array[StringName] = [&"mt_silver_summit_arrival", &"mt_silver_dante_welcome",
 		&"mt_silver_dante_before", &"mt_silver_dante_defeated", &"mt_silver_giovanni_hello",
 		&"mt_silver_giovanni_to_player", &"mt_silver_cenere_stays",
-		&"mt_silver_rival_arrives_summit", &"mt_silver_rival_defeated", &"mt_silver_rival_race"]
+		&"mt_silver_rival_arrives_summit", &"mt_silver_rival_why", &"mt_silver_rival_wait"]
 	var last := -1
 	for id: StringName in order:
 		var at := dialogues.find(id)
@@ -242,11 +243,38 @@ func test_summit_scene_order_and_resumes() -> void:
 			battles.append(step.trainer_id)
 		elif step.kind == CutsceneStep.Kind.SAVE:
 			saves += 1
-	assert_eq(battles, [&"mt_silver_dante_2", &"mt_silver_rival_final"] as Array[StringName])
+	assert_eq(battles, [&"mt_silver_dante_2"] as Array[StringName], "aucun combat du rival ici")
 	assert_eq(saves, 1, "sauvegarde entre Giovanni et le rival (dossier §13)")
-	var back := _scene_steps(&"mt_silver_summit", 2)
-	assert_has(_dialogues_of(back), &"mt_silver_rival_return")
-	assert_does_not_have(_dialogues_of(back), &"mt_silver_dante_welcome")
+	var spawn: CutsceneStep = first.filter(func(s: CutsceneStep) -> bool:
+		return s.kind == CutsceneStep.Kind.SPAWN and s.actor == &"rival_sommet")[0]
+	assert_eq(spawn.spec.dialogue, &"mt_silver_summit_rival_talk", "le rival créé répond au talk")
+
+
+## Parler au rival : ses répliques si la partie a été reprise avant elles, sinon la confirmation ;
+## le combat et ce qui suit sont tous gardés. Une partie où le combat a déjà eu lieu (sans le
+## drapeau d'arrivée, sauvegardes antérieures) va directement à la confirmation.
+func test_summit_rival_talk_needs_confirmation() -> void:
+	var talk := _cutscenes.get_cutscene(&"mt_silver_rival_talk")
+	assert_eq(talk.variants.size(), 2)
+	assert_has(talk.variants[0].unless_flags, &"johto_rival_final_arrived")
+	assert_has(talk.variants[0].unless_flags, &"johto_rival_final_met")
+	assert_has(_dialogues_of(talk.variants[0].steps), &"mt_silver_rival_wait")
+	var steps := talk.variants[1].steps
+	assert_has(_dialogues_of(steps), &"mt_silver_rival_return")
+	assert_has(_dialogues_of(steps), &"mt_silver_rival_ready")
+	var ready := _dialogues.get_dialogue(&"mt_silver_rival_ready").variants[0]
+	assert_not_null(ready.choice, "« On y va ? » demande confirmation")
+	var battle_seen := false
+	for step: CutsceneStep in steps:
+		if step.kind == CutsceneStep.Kind.BATTLE:
+			battle_seen = true
+			assert_eq(step.trainer_id, &"mt_silver_rival_final")
+			assert_has(step.if_flags, &"johto_rival_final_ready")
+		elif step.kind == CutsceneStep.Kind.WAKE_UP:
+			assert_has(step.if_flags, &"johto_rival_final_ready", "refuser ne réveille pas au Centre")
+		elif step.kind == CutsceneStep.Kind.DESPAWN:
+			assert_has(step.if_flags, &"johto_rival_final_done")
+	assert_true(battle_seen)
 
 
 func test_route_28_gate_scenes() -> void:

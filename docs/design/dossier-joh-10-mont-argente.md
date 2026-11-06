@@ -176,6 +176,10 @@ foi), **validées par Kevin le 2026-11-03** (« Oui, fusionne »).
   (aucune scène rejouée en double).
 - Le joueur quitte l'application entre Giovanni et le rival : à la reprise, il est au sommet, le
   rival devant lui.
+- Entre Dante et le rival (décision de Kevin du 2026-11-06) : pas de soin offert. Le rival arrive, dit
+  A-40, A-41, A-41b et attend ; le joueur se soigne avec son Sac, peut redescendre, et lui parle pour
+  lancer le combat, après confirmation **[D]** (« On y va ? », EN AVANT / PAS ENCORE, « Prends ton temps.
+  Je ne bouge pas. »).
 - Vol ou Corde Sortie pendant la montée : possible avant le sommet ; interdits au sommet entre
   Dante et le rival **[D]**.
 - Le joueur revient au Mont Argenté après le chapitre : plus de Sbires ni d'admins ; sommet vide
@@ -248,6 +252,9 @@ Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = nom
 | A-39 | Système, Dante et Cenere | Dante ne répond pas. Il regarde les nuages. / Cenere s'agenouille à côté de lui. |
 | A-40 | **{rival}**, arrivée au sommet | Ouf. J'ai cru que je n'arriverais jamais. / Alors ? C'est fini ? / … Bien. |
 | A-41 | {rival}, avant | Tu sais pourquoi je suis monté jusqu'ici ? / Pas pour lui. Pour toi. / Depuis la Ligue, je m'entraîne. Et j'ai trouvé de quoi faire évoluer mon Onix, à Johto. / Toi et moi, ce n'est pas fini. |
+| A-41b | {rival}, il laisse le joueur se soigner (Kevin, 2026-11-06) | Je ne veux pas que tu aies une excuse quand je te battrai. / Soigne ton équipe. Je t'attends. |
+| A-41c | {rival}, quand on lui parle ensuite **[D]** | On y va ? *(choix : EN AVANT, PAS ENCORE)* |
+| A-41d | {rival}, si le joueur répond PAS ENCORE **[D]** | Prends ton temps. Je ne bouge pas. |
 | A-42 | {rival}, défaite | … Encore. / Bon. Je crois que je commence à m'y faire. |
 | A-43 | {rival}, après | Tu sais, à la Ligue, je t'en ai voulu. / Mais là, en bas, quand je retenais ces deux-là… / J'étais content que ce soit toi, là-haut. Ne le répète à personne. |
 | A-44 | {rival}, Agente | L'Agente a embarqué l'impétueux, en bas. / Pour ces deux-là… Laissons-les. Ils n'iront plus nulle part. |
