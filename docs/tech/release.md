@@ -109,8 +109,8 @@ Testé sur le Galaxy A17 (Android 16) le 2026-11-04 : `docs/tech/jalon-34-34b.md
 - **T4** première utilisation par un proche sans aide : à Kevin, consignes `jalon-34-t4-consignes.md`.
 - **Encore à éprouver** : installation depuis un fichier ; RC sur le S24 et le S21, seulement avec l'accord
   de Kevin, car il faut y retirer l'app debug et donc risquer la sauvegarde.
-- **Version suivante pour les proches** : `main` contient Johto et, après fusion de `release/0.34`, porte
-  aussi le numéro 0.34.1. Toute nouvelle RC prend **0.34.2 ou plus**, et la sauvegarde migre de v9 en v10.
+- **Version suivante pour les proches** : **RC 0.35.0 (3500), jeu complet, depuis `main`** (décision de Kevin du
+  2026-11-06, remplace « RC Kanto seul »). La sauvegarde migre de v9 en v10. État et étapes : `rc-0.35.0.md`.
 - **Envoi au téléphone** : si `adb push` de ≈ 650 Mo fait tomber le serveur adb, envoyer par morceaux de
   100 Mo (`split`, `adb push -Z`, `cat` sur le téléphone) et comparer le SHA-256. L'activité à lancer est
   `dev.kevin.kanto2026/com.godot.game.GodotAppLauncher`.
