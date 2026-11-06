@@ -3225,9 +3225,13 @@ func _acajou_rooms() -> Array[Dictionary]:
 func _blackthorn_rooms() -> Array[Dictionary]:
 	var elder := _johto_house(&"blackthorn_elder_house", "BlackthornElderHouse",
 		"lavanville_maison_1.txt", &"blackthorn_city", &"retour_aieule", "Ébènelle")
-	elder["furniture"] = _mason_furniture()
+	elder["shell"] = "res://assets/world/interiors/int_maison_aieule_coque.png"
+	elder["furniture"] = _elder_furniture()
+	# Tapis du clan sous l'Aïeule [D] : sa robe se perd sur le parquet sombre (QA A17).
+	elder["rugs"] = [[&"int_tapis_rouge_01", Vector2(7.5, 5.5), "RugElder"]]
 	var house_1 := _johto_house(&"blackthorn_house_1", "BlackthornHouse1",
 		"lavanville_maison_2.txt", &"blackthorn_city", &"retour_maison", "Ébènelle")
+	house_1["shell"] = "res://assets/world/interiors/int_maison_ebenelle_coque.png"
 	var azuria := _cerulean_house()
 	house_1["furniture"] = azuria["furniture"]
 	house_1["rugs"] = azuria["rugs"]
@@ -3235,6 +3239,23 @@ func _blackthorn_rooms() -> Array[Dictionary]:
 		_pokemon_center(&"blackthorn_center", "BlackthornCenter", "Ébènelle",
 			[&"blackthorn_city", &"retour_centre"]),
 		elder, house_1,
+	]
+
+
+## Maison de l'Aïeule : les emprises de [method _mason_furniture], meubles du clan
+## (`tools/art/johp3_ebenelle.py`).
+func _elder_furniture() -> Array:
+	return [
+		[&"int_armoire_clan_01", Rect2i(1, 3, 1, 1), "Fridge"],
+		[&"int_buffet_clan_01", Rect2i(2, 3, 3, 1), "Kitchen"],
+		[&"int_brasero_clan_01", Rect2i(5, 3, 1, 1), "Stove"],
+		[&"int_table_basse_clan_01", Rect2i(2, 5, 3, 2), "DiningTable"],
+		[&"int_banquette_clan_01", Rect2i(10, 3, 3, 1), "Sofa"],
+		[&"int_lanterne_clan_01", Rect2i(13, 3, 1, 1), "Lamp"],
+		[&"int_table_the_01", Rect2i(10, 5, 2, 1), "CoffeeTable"],
+		[&"int_porte_manteau_01", Rect2i(5, 7, 1, 1), "CoatRack"],
+		[&"int_bonsai_01", Rect2i(1, 7, 1, 1), "PlantWest"],
+		[&"int_bonsai_01", Rect2i(13, 7, 1, 1), "PlantEast"],
 	]
 
 
