@@ -23,6 +23,7 @@ SHOTS=(
 	"ros_panneau_tour|50|${S}_rosalia --cell=7,14 --facing=up"
 	"t1f_entree|50|${S}_tower_1f --cell=13,20 --facing=up"
 	"t1f_bande|50|${S}_tower_1f --cell=13,14 --facing=up"
+	"t1f_mur|50|--map=burned_tower_1f --aim=14,4 --zoom=0.75 --noplayer"
 	"tb1f_chiens|50|${S}_tower_b1f --cell=10,4 --facing=down"
 	"tb1f_scene_brace|520|${S}_tower_b1f --hold=down --mash=6"
 	"r42_ouest|50|${S}_route_42 --cell=3,10 --facing=right"

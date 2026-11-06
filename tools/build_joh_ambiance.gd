@@ -189,14 +189,34 @@ const MAPS: Dictionary = {
 	# JOH6 (demande de Kevin du 2026-11-06), d'après leurs vues générales. `R` : paroi, rivage au bord
 	# de l'eau. Porte du Mont Creuset, boutique d'Acajou : lot 3 (`tools/art/joh_ambiance_lot3.py`).
 	&"route_42": {"plan": "route_42", "seed": 42201, "rock": Rock.SHORE_THEN_PAROI, "path": EARTH,
-		"panes": false, "legend": {"Q": "c"},
+		"panes": false, "legend": {"Q": "c"}, "banks": true,
+		"cells": [[Rect2i(36, 6, 2, 2), "w"]],
+		"props": [["prop_roseaux_01", Vector2(30.5, 4.0), "Roseaux0", 1.0],
+			["prop_roseaux_01", Vector2(30.5, 7.0), "Roseaux1", 1.0],
+			["prop_roseaux_01", Vector2(30.5, 14.0), "Roseaux2", 1.0],
+			["prop_roseaux_01", Vector2(43.5, 5.0), "Roseaux3", 1.0],
+			["prop_roseaux_01", Vector2(43.5, 13.0), "Roseaux4", 1.0],
+			["prop_roseaux_01", Vector2(43.5, 16.0), "Roseaux5", 1.0],
+			["prop_nenuphars_01", Vector2(31.5, 16.0), "Nenuphars0", 1.0],
+			["prop_nenuphars_02", Vector2(42.0, 3.5), "Nenuphars1", 1.0]],
 		"buildings": [["relief_porte_creuset_01", Vector2i(18, 5), "PorteCreuset"]],
 		"floors": [["relief_ilot_lac_01", Vector2(37.0, 8.5), "IlotLac"]]},
 	&"route_43": {"plan": "route_43", "seed": 43201, "rock": Rock.SHORE, "path": EARTH,
 		"panes": true, "x": "fence",
 		"buildings": [["bldg_maison_toit_01", Vector2i(15, 24), "PostePeage", Vector2(1.2, 1.2)]]},
 	&"lake_of_rage": {"plan": "lake_of_rage", "seed": 44201, "rock": Rock.SHORE, "path": EARTH,
-		"panes": false, "legend": {"o": "w"}},
+		"panes": false, "legend": {"o": "w"}, "banks": true,
+		"props": [["prop_roseaux_01", Vector2(12.5, 39.0), "Roseaux0", 1.0],
+			["prop_roseaux_01", Vector2(17.5, 39.0), "Roseaux1", 1.0],
+			["prop_roseaux_01", Vector2(23.5, 39.0), "Roseaux2", 1.0],
+			["prop_roseaux_01", Vector2(32.5, 39.0), "Roseaux3", 1.0],
+			["prop_roseaux_01", Vector2(38.5, 39.0), "Roseaux4", 1.0],
+			["prop_roseaux_01", Vector2(43.5, 39.0), "Roseaux5", 1.0],
+			["prop_roseaux_01", Vector2(15.5, 8.6), "Roseaux6", 1.0],
+			["prop_roseaux_01", Vector2(31.5, 8.6), "Roseaux7", 1.0],
+			["prop_nenuphars_01", Vector2(14.0, 37.5), "Nenuphars0", 1.0],
+			["prop_nenuphars_02", Vector2(41.0, 37.5), "Nenuphars1", 1.0],
+			["prop_nenuphars_03", Vector2(42.0, 10.5), "Nenuphars2", 1.0]]},
 	&"mahogany_town": {"plan": "mahogany_town", "seed": 45201, "rock": Rock.SHORE_THEN_PAROI,
 		"path": "", "panes": true, "x": "hedge", "hide": ["Bat_BoutiqueSouvenirs", "Antenne"],
 		"buildings": [["bldg_boutique_acajou_01", Vector2i(26, 13), "BoutiqueSouvenirs"]]},
@@ -418,6 +438,19 @@ const LAMP_HEAD: Dictionary = {
 	"prop_lampadaire_01": Vector2(0, -222), "prop_lampadaire_quai_01": Vector2(0, -160),
 	"prop_lanterne_ebenelle_01": Vector2(0, -104), "prop_lanterne_pierre_01": Vector2(0, -80),
 }
+## Berges des lacs de JOH6 (modèle : `build_daf4_exterieurs.gd`).
+const BANK_MARKS: Array[String] = [".", "h", "=", "T", "R"]
+const BANK_WALKABLE: String = ".h=TR"
+const BANKS: Dictionary = {
+	&"n": {"ids": ["relief_berge_01", "relief_berge_02"], "flip_h": false, "flip_v": false},
+	&"s": {"ids": ["relief_berge_03"], "flip_h": false, "flip_v": false},
+	&"w": {"ids": ["relief_berge_04"], "flip_h": false, "flip_v": false},
+	&"e": {"ids": ["relief_berge_04"], "flip_h": true, "flip_v": false},
+	&"nw": {"ids": ["relief_berge_05"], "flip_h": false, "flip_v": false},
+	&"ne": {"ids": ["relief_berge_05"], "flip_h": true, "flip_v": false},
+	&"sw": {"ids": ["relief_berge_05"], "flip_h": false, "flip_v": true},
+	&"se": {"ids": ["relief_berge_05"], "flip_h": true, "flip_v": true},
+}
 const SIDES: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _errors: int = 0
@@ -494,6 +527,8 @@ func _build(map_id: StringName) -> void:
 	kit.call(&"set_marks", KIT_WALKABLE, "#", "")
 	var cropped := _crop_paroi(decals, source)
 	var shore: int = kit.call(&"place_shore")
+	if spec.get("banks", false):
+		_place_banks(kit)
 	var quays := 0 if source.cells_of(deck).is_empty() else _place_wood_quays(kit, source, deck)
 	var counts := {}
 	match map_id:
@@ -509,7 +544,12 @@ func _build(map_id: StringName) -> void:
 			counts = _johto(kit, source, decals, entities, spec)
 	var feet: Array[Vector2] = []
 	feet.assign(counts.get("feet", []))
+	# Forêt au bord d'un lac : vue depuis l'eau en Surf, `cull_hidden` ne doit pas la retirer.
+	if spec.get("banks", false):
+		kit.call(&"set_marks", PAROI_WALKABLE, "#", "")
 	var forest: Vector2i = kit.call(&"place_forest", seed_value + 5, feet, {})
+	if spec.get("banks", false):
+		kit.call(&"set_marks", KIT_WALKABLE, "#", "")
 	if spec.has("snow"):
 		Neige.dress(kit, source, decals, entities, spec)
 	var errors: PackedStringArray = kit.get(&"errors")
@@ -806,6 +846,18 @@ func _rosalia(kit: Object, source: Object, entities: Node2D) -> Dictionary:
 
 ## Décor commun du lot 2 : arbres repères `G`, fruitiers `a`, haies ou clôtures `x`, massifs `y`,
 ## bancs `n`, rochers `r` et rochers de mer `o`, bâtiments, objets posés, escaliers, lampadaires.
+## Berges naturelles de la Route 6 (`relief_berge_*`) sur toute frontière entre le lac et le sol :
+## posées dans l'eau, sans emprise.
+func _place_banks(kit: Object) -> void:
+	var sets: Dictionary = {}
+	for mark: String in BANK_MARKS:
+		sets[mark] = BANKS
+	kit.set(&"quay_sets", sets)
+	(kit.get(&"plan") as Object).set(&"walkable", BANK_WALKABLE)
+	kit.call(&"place_quays")
+	(kit.get(&"plan") as Object).set(&"walkable", KIT_WALKABLE)
+
+
 func _johto(kit: Object, source: Object, decals: Node2D, entities: Node2D,
 		spec: Dictionary) -> Dictionary:
 	var feet: Array[Vector2] = []

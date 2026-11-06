@@ -34,6 +34,8 @@ PROMPTS = Path(__file__).parent / "prompts" / "joh_ambiance_lot3"
 REFS = {
 	"REF_ACAJOU_BOUTIQUE": ("acajou-vue-generale-v1.png", (0.56, 0.20, 0.82, 0.52)),
 	"REF_R42_PORTE": ("route-42-vue-generale-v1.png", (0.17, 0.26, 0.34, 0.45)),
+	"REF_CENDREE_MUR": ("tour-cendree-1f-vue-generale-v1.png", (0.12, 0.0, 0.88, 0.10)),
+	"REF_CENDREE_COTE": ("tour-cendree-1f-vue-generale-v1.png", (0.11, 0.0, 0.15, 0.50)),
 	"REF_R42_LAC": ("route-42-vue-generale-v1.png", (0.44, 0.15, 0.60, 0.55)),
 	"REF_CENDREE_SOL": ("tour-cendree-1f-vue-generale-v1.png", (0.20, 0.60, 0.45, 0.85)),
 	"REF_CENDREE_POUTRE": ("tour-cendree-1f-vue-generale-v1.png", (0.15, 0.25, 0.40, 0.36)),
@@ -109,6 +111,20 @@ ASSETS = {
 		"de DEUX cases de large. La tour continue au-delà du haut de l'image : le haut est coupé net "
 		"par un toit, aucun ciel."), [BAT / "bldg_tour_carillon_01.png", ART / "REF_BOIS_TOUR.png"]),
 	# Reliefs et décors de la montagne.
+	"RELIEF_MUR_CENDREE_FACE": meuble(RELIEF / "relief_mur_tour_01.png", "REF_CENDREE_MUR",
+		"un module de MUR INTÉRIEUR de tour incendiée, vu de face : planches verticales de bois carbonisé "
+		"noir et gris, écailles de charbon, bas des planches rongé et déchiqueté par le feu, un gros "
+		"poteau calciné à chaque extrémité, poutre noircie en haut. Deux cases de large (192 px en jeu), "
+		"175 px de haut, plein cadre : le module remplit toute l'image et ses bords gauche et droit se "
+		"raccordent à eux-mêmes. Aucune flamme, aucune braise rouge."),
+	"RELIEF_MUR_CENDREE_CAP": meuble(RELIEF / "relief_mur_tour_03.png", "REF_CENDREE_MUR",
+		"le COURONNEMENT d'un mur de tour incendiée, vu de dessus : une longue poutre de bois carbonisé "
+		"noir et gris, horizontale, écailles de charbon, plein cadre. Deux cases de large (192 px en jeu), "
+		"34 px de haut : les bords gauche et droit se raccordent à eux-mêmes."),
+	"RELIEF_MUR_CENDREE_COTE": meuble(RELIEF / "relief_mur_tour_04.png", "REF_CENDREE_COTE",
+		"le BORD LATÉRAL d'un mur de tour incendiée, vu de dessus : une poutre verticale de bois carbonisé "
+		"noir et gris, écailles de charbon, plein cadre. 34 px de large, 168 px de haut : les bords haut "
+		"et bas se raccordent à eux-mêmes."),
 	"RELIEF_ILOT_LAC": meuble(RELIEF / "relief_ile_tourbillon_01.png", "REF_R42_LAC",
 		"un tout petit ÎLOT de lac, vu de dessus : un sommet plat d'herbe courte, parfaitement dégagé "
 		"et de forme presque carrée, de deux cases sur deux au centre de l'image, ceinturé de tous "
@@ -246,6 +262,31 @@ def preparer_retenus() -> None:
 		image = preparer._silhouette(Image.open(ART / source).convert("RGBA"))
 		image = preparer._mettre_a_taille(image, "w", cases, p.case)
 		p._objet(ident, str((dossier / f"{ident}.png").relative_to(RACINE)), image, ombre, contact)
+	# Murs de la Tour Cendrée : modules aux tailles de `relief_mur_tour_*` (`tools/module_walls.gd`).
+	from PIL import ImageChops
+
+	def module(source: str, taille: tuple[int, int]) -> Image.Image:
+		image = Image.open(ART / source).convert("RGBA")
+		# Rognage sur les colonnes et rangées pleines : quelques pixels isolés fausseraient la boîte.
+		alpha = image.getchannel("A").point(lambda v: 255 if v > 128 else 0)
+		colonnes = alpha.resize((image.width, 1), Image.BOX)
+		rangees = alpha.resize((1, image.height), Image.BOX)
+		gauche, _, droite, _ = colonnes.point(
+			lambda v, m=colonnes.getextrema()[1]: 255 if v > m * 0.4 else 0).getbbox()
+		_, haut, _, bas = rangees.point(
+			lambda v, m=rangees.getextrema()[1]: 255 if v > m * 0.4 else 0).getbbox()
+		return image.crop((gauche, haut, droite, bas)).resize(taille, Image.LANCZOS)
+
+	if (ART / "RELIEF_MUR_CENDREE_FACE_r1.png").exists():
+		face = module("RELIEF_MUR_CENDREE_FACE_r1.png", (192, 175))
+		cote = module("RELIEF_MUR_CENDREE_COTE_r1.png", (34, 168))
+		modules = {"relief_mur_cendree_01": face,
+			"relief_mur_cendree_02": ImageChops.offset(face, 96, 0),
+			"relief_mur_cendree_03": module("RELIEF_MUR_CENDREE_CAP_r1.png", (192, 34)),
+			"relief_mur_cendree_04": cote,
+			"relief_mur_cendree_05": cote.crop((0, 0, 34, 43))}
+		for ident, image in modules.items():
+			p._objet(ident, str((RELIEF / f"{ident}.png").relative_to(RACINE)), image, False, 0.0)
 	p.ecrire_catalogue()
 
 
