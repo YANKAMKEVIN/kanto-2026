@@ -27,7 +27,7 @@ SHOTS=(
 	"antre_croisee|50|$DEN --cell=13,15 --facing=up"
 	"antre_eau|50|$DEN --cell=5,13 --facing=left"
 	"antre_ciel|50|$DEN --cell=14,5 --facing=up"
-	"sanctuaire_entree|50|$SANCTUARY --cell=10,14 --facing=up"
+	"sanctuaire_entree|50|$SANCTUARY --cell=10,14 --facing=down"
 	"sanctuaire_autel|50|$ALTAR --cell=10,7 --facing=up"
 	"sanctuaire_cenere|200|$ALTAR --hold=up"
 	"rosalia_corentin|50|$ROSALIA --cell=34,18 --facing=right"
