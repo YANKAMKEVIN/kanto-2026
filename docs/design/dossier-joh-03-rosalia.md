@@ -156,3 +156,18 @@ sages, 2 maisons. Personnages : doyen et sages (neufs), Lucien, Margot (neufs), 
 | JH-28 | ✅ **Écrémeuh ajoutée** (51e espèce) : à la Ferme Meumeu et, rare, sur les Routes 38 et 39 (Kevin, 2026-11-02) | — |
 | JH-29 | ✅ Les PNJ de la semaine donnent des consommables (Kevin) | — |
 | JH-30 | ✅ Le doyen nomme Ho-Oh dès le JOH2 (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `ecruteak_city_garde_route_42` (Garde) : La Route 42 est fermée. / Des éboulements, du côté d'Acajou. Reviens plus tard.
+- `ecruteak_city_sage_tour/variants/1` : La Tour Cendrée est ouverte. Sois prudent, jeune Dresseur.
+- `ecruteak_elders_house_sage` (Sage) : Le doyen veille sur la Tour Cendrée depuis plus de soixante ans.
+- `ecruteak_house_1_habitante/variants/0` : L'herbe des tours est pleine de Pokémon la nuit. / Tiens, prends ça. On ne sait jamais.
+- `ecruteak_house_1_habitante/variants/1` : Fais attention la nuit, autour des tours.
+- `ecruteak_house_1_received` : {player} reçoit 2 Antidotes !
+- `ecruteak_house_2_habitant` (Habitant) : Les cloches de la Tour Carillon n'ont pas sonné depuis des années. / Mon grand-père disait qu'elles sonnent pour Ho-Oh.
+- `route_39_ecremeuh` : Meuuh ! Écrémeuh broute, paisible.
+- `route_39_tauros` : Tauros gratte le sol du sabot. Il n'a pas l'air tranquille.
+- `route_39_ponyta` : Ponyta somnole au soleil. Sa crinière crépite doucement.

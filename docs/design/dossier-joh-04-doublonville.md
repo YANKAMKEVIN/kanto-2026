@@ -249,3 +249,10 @@ Format : bulles séparées par « / ». `{joueur}`, `{pokemon}` = noms.
 | JH-34 | ✅ La Tour Radio est gardée par un **faux employé**, Sbire déguisé démasqué au JOH5 (Kevin) | — |
 | JH-35 | ✅ L'est de la Route 36 est fermé par un **pont en travaux** (Kevin) | — |
 | JH-36 | ✅ **Surf autorisé** pendant l'acte 1 avec un Pokémon de Johto ; le courant de la grotte marine bloque toujours Kanto (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `goldenrod_house_2_man` (Habitant) : Le soir, on entend la radio grésiller dans toute la rue. / Avant, elle passait de la musique toute la nuit.
+- `route_36_grille_parc` : La grille du Parc National est fermée. / Un écriteau : « Fermé pour entretien. »

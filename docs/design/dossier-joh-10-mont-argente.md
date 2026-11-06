@@ -271,3 +271,14 @@ Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = nom
 | JH-58 | ✅ Dante **reste au sommet**, brisé, avec Cenere ; après le chapitre, le sommet est vide (Kevin) | — |
 | JH-59 | ✅ Le rival ajoute **Steelix** à la place de Rhinoféros (Kevin) | — |
 | JH-60 | ✅ Épilogue **en entrant au labo de Chen**, après une descente libre par la Route 28 (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `route_28_topdresseur_jules_before` (Topdresseur Jules) : Le col de la Route 28 ne laisse passer que les meilleurs.
+- `route_28_topdresseur_jules_defeated` (Topdresseur Jules) : Tu es des meilleurs, alors.
+- `route_28_topdresseur_jules_after` (Topdresseur Jules) : Kanto est tout près, à l'ouest. On ne dirait pas, hein ?
+- `route_28_gate_guard/variants/0` : Le col est rouvert. / Bonne route, de part et d'autre.
+- `route_28_gate_locked` : La porte est verrouillée.
+- `route_28_house_gardien` (Gardien) : Je garde ce col depuis trente ans. / Les Dresseurs qui en reviennent ne sont jamais tout à fait les mêmes.

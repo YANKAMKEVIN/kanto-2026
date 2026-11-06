@@ -36,7 +36,6 @@
 	},
 	"slowpoke_well_b2f_ramoloss_sans_queue": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"Ramoloss n'a plus de queue.",
 			"Il n'a pas l'air de s'en rendre\ncompte."

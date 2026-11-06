@@ -1,8 +1,6 @@
 # Textes de Johto à valider
 
-143 textes marqués `draft` dans `data/` (relevé du 2026-11-06). Ils sont déjà en jeu : aucun ne manque, ils attendent la validation de Kevin.
-
-Pour chaque texte : rien à dire = validé tel quel ; sinon, noter le numéro et la correction.
+143 textes marqués `draft` dans `data/` (relevé du 2026-11-06). **Validés par Kevin le 2026-11-06, tels quels** ; marqueurs `draft` retirés.
 
 ## `data/dialogues/joh1.json`
 

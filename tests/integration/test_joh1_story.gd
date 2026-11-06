@@ -99,7 +99,7 @@ func test_dialogue_texts_are_the_dossier_texts_word_for_word() -> void:
 	var guard := _dialogues.get_dialogue(&"olivine_guard")
 	assert_eq(guard.variants[0].unless_flags, [&"johto_starter_chosen"] as Array[StringName])
 	assert_eq(_pages(&"olivine_guard", 0), _dossier["O-19"])
-	assert_true(guard.variants[1].draft, "réplique après le choix : [D] à relire")
+	assert_false(guard.variants[1].draft, "réplique après le choix : validée le 2026-11-06")
 	# O-23, O-24 : descriptions des zones.
 	var zones := ZoneLibrary.new()
 	zones.load_file()

@@ -97,14 +97,12 @@
 				"cutscene": "hideout_lever",
 				"pages": [
 					"Un levier. Il commande les grilles des cellules."
-				],
-				"draft": true
+				]
 			}
 		]
 	},
 	"joh6_lever_pulled": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"Le levier bascule.",
 			"La grille de la cellule du milieu s'ouvre !"
