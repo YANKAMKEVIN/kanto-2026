@@ -100,6 +100,94 @@ func test_battle_music_by_category() -> void:
 	assert_eq(_selector.battle_track(&"rival_champion"), &"final_battle_rival")
 
 
+func test_johto_battles_by_region_species_and_trainer() -> void:
+	var johto := ZoneData.REGION_JOHTO
+	assert_eq(_selector.battle_track(&"", &"pidgey", johto), &"johto_battle_wild")
+	assert_eq(_selector.battle_track(&"", &"celebi", johto), &"johto_battle_wild", "JM-5")
+	assert_eq(_selector.battle_track(&"route_40_swimmer_yanis", &"", johto),
+		&"johto_battle_trainer")
+	assert_eq(_selector.battle_track(&"mt_silver_1f_grunt_x", &"", johto),
+		&"johto_battle_trainer", "JM-4 : Sbires en Trainer")
+	assert_eq(_selector.battle_track(&"mahogany_hideout_b2f_scientifique", &"", johto),
+		&"johto_battle_trainer", "JM-4 : Scientifiques en Trainer")
+	for rocket: StringName in [&"slowpoke_well_admin_brace", &"mahogany_hideout_b3f_brace",
+			&"goldenrod_radio_tower_admin_cenere", &"whirl_islands_cenere", &"den_cenere",
+			&"bell_tower_dante_1", &"goldenrod_underground_boss", &"tide_hold_chief"]:
+		assert_eq(_selector.battle_track(rocket, &"", johto), &"johto_battle_rocket", rocket)
+	assert_eq(_selector.battle_track(&"mt_silver_dante_2", &"", johto),
+		&"johto_battle_gym_leader")
+	assert_eq(_selector.battle_track(&"mt_silver_rival_final", &"", johto),
+		&"johto_battle_champion")
+	for beast: StringName in [&"suicune", &"entei", &"raikou"]:
+		assert_true(_library.is_legendary(beast), beast)
+		assert_eq(_selector.battle_track(&"", beast, johto), &"johto_battle_suicune")
+	assert_eq(_selector.battle_track(&"", &"lugia", johto), &"johto_battle_lugia")
+	assert_eq(_selector.battle_track(&"", &"ho_oh", johto), &"johto_battle_ho_oh")
+	assert_true(_library.is_legendary(&"ho_oh"))
+
+
+func test_johto_keeps_the_lets_go_victories() -> void:
+	var johto := ZoneData.REGION_JOHTO
+	assert_eq(_selector.victory_track(&"", &"pidgey", johto), &"victory_wild", "JM-7")
+	assert_eq(_selector.victory_track(&"", &"lugia", johto), &"victory_wild")
+	assert_eq(_selector.victory_track(&"route_40_swimmer_yanis", &"", johto), &"victory_trainer")
+	assert_eq(_selector.victory_track(&"bell_tower_dante_1", &"", johto), &"victory_trainer")
+	assert_eq(_selector.victory_track(&"mt_silver_dante_2", &"", johto), &"victory_gym_leader")
+	assert_eq(_selector.victory_track(&"mt_silver_rival_final", &"", johto),
+		&"victory_gym_leader")
+
+
+func test_kanto_battles_are_unchanged_by_the_johto_rules() -> void:
+	var kanto := ZoneData.REGION_KANTO
+	assert_eq(_selector.battle_track(&"", &"pidgey", kanto), &"battle_wild")
+	assert_eq(_selector.battle_track(&"route_3_youngster_ben", &"", kanto), &"battle_trainer")
+	assert_eq(_selector.battle_track(&"", &"mewtwo", kanto), &"battle_wild", "SON-13 A")
+	assert_eq(_selector.battle_track(&"rival_champion", &"", kanto), &"final_battle_rival")
+
+
+func test_johto_maps_play_hgss_and_centers_and_marts_have_their_track() -> void:
+	assert_eq(_selector.track_for(&"olivine_city"), &"johto_olivine_lighthouse")
+	assert_eq(_selector.track_for(&"olivine_house_1"), &"johto_olivine_lighthouse")
+	assert_eq(_selector.track_for(&"route_36"), &"johto_route_29")
+	assert_eq(_selector.track_for(&"lake_of_rage"), &"johto_route_38", "repli §8")
+	assert_eq(_selector.track_for(&"mt_silver_summit"), &"johto_ice_path", "JM-10")
+	assert_eq(_selector.track_for(&"alph_chamber"), &"johto_ruins_of_alph", "JM-8")
+	assert_eq(_selector.track_for(&"goldenrod_radio_tower_elevator"), &"johto_radio_tower")
+	assert_eq(_selector.track_for(&"dante_flashback_hq"), &"johto_rocket_hq")
+	for shop: StringName in [&"azalea_center", &"azalea_mart", &"blackthorn_center",
+			&"cianwood_center", &"ecruteak_center", &"ecruteak_mart", &"goldenrod_center",
+			&"goldenrod_dept_store_1f", &"goldenrod_dept_store_roof", &"mahogany_center",
+			&"mahogany_souvenir_shop", &"mt_silver_center", &"olivine_center",
+			&"olivine_center_room", &"olivine_mart"]:
+		assert_eq(_selector.track_for(shop), &"johto_pokemon_center", shop)
+
+
+func test_no_johto_map_keeps_a_kanto_track() -> void:
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	for zone_id: StringName in zones.zones_of_region(ZoneData.REGION_JOHTO):
+		for map_id: StringName in zones.get_zone(zone_id).maps:
+			assert_true(String(_selector.track_for(map_id)).begins_with("johto_"), map_id)
+
+
+func test_surf_and_bike_follow_the_region() -> void:
+	var surf := { MusicSelector.STATE_MOVEMENT: AudioLibrary.MOVEMENT_SURF }
+	var bike := { MusicSelector.STATE_MOVEMENT: AudioLibrary.MOVEMENT_BIKE }
+	assert_eq(_selector.track_for(&"route_40", surf), &"johto_surf")
+	assert_eq(_selector.track_for(&"route_38", bike), &"johto_bicycle")
+	assert_eq(_selector.track_for(&"route_19", surf), &"the_sea")
+	assert_eq(_selector.track_for(&"route_16", bike), &"pokemon_road")
+
+
+func test_johto_events_and_encounter_themes() -> void:
+	assert_eq(_selector.event_track(&"awakening"), &"johto_dragons_den")
+	assert_eq(_selector.event_track(&"heal"), &"pokemon_healed", "JM-7 : jingles de Let's Go")
+	for rocket: StringName in [&"slowpoke_well_admin_brace", &"whirl_islands_cenere",
+			&"bell_tower_dante_1", &"mt_silver_dante_2"]:
+		assert_eq(_selector.encounter_track(rocket), &"trainer_appears_bad_guy", rocket)
+	assert_eq(_selector.encounter_track(&"mt_silver_rival_final"), &"johto_rival", "JM-6")
+
+
 func test_trainer_encounter_theme_by_trainer_then_name_prefix() -> void:
 	assert_eq(_selector.encounter_track(&"x", "Gamin Ben"), &"trainer_appears_boy")
 	assert_eq(_selector.encounter_track(&"x", "Fillette Lila"), &"trainer_appears_girl")

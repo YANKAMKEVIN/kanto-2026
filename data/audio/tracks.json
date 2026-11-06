@@ -497,6 +497,294 @@
 			"loop_offset": 0.0,
 			"volume_db": 0.0,
 			"expected": false
+		},
+		"johto_pokemon_center": {
+			"title": "Pokémon Center",
+			"file": "res://assets/audio/music/johto_pokemon_center.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 2.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_route_29": {
+			"title": "Route 29",
+			"file": "res://assets/audio/music/johto_route_29.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 8.5,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_union_cave": {
+			"title": "Union Cave",
+			"file": "res://assets/audio/music/johto_union_cave.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 2.75,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_ruins_of_alph": {
+			"title": "Ruins of Alph",
+			"file": "res://assets/audio/music/johto_ruins_of_alph.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 8.5,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_azalea_town": {
+			"title": "Azalea Town",
+			"file": "res://assets/audio/music/johto_azalea_town.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 5.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_goldenrod_city": {
+			"title": "Goldenrod City",
+			"file": "res://assets/audio/music/johto_goldenrod_city.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 1.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_wild": {
+			"title": "Battle! (Wild Pokémon - Johto Version)",
+			"file": "res://assets/audio/music/johto_battle_wild.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 16.5,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_trainer": {
+			"title": "Battle! (Trainer - Johto Version)",
+			"file": "res://assets/audio/music/johto_battle_trainer.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 24.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_rocket": {
+			"title": "Battle! (Team Rocket)",
+			"file": "res://assets/audio/music/johto_battle_rocket.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 18.75,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_rival": {
+			"title": "Battle! (Rival)",
+			"file": "res://assets/audio/music/johto_rival.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 16.75,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_gym_leader": {
+			"title": "Battle! (Gym Leader - Johto Version)",
+			"file": "res://assets/audio/music/johto_battle_gym_leader.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 14.25,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_bicycle": {
+			"title": "Bicycle",
+			"file": "res://assets/audio/music/johto_bicycle.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 4.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_ecruteak_city": {
+			"title": "Ecruteak City",
+			"file": "res://assets/audio/music/johto_ecruteak_city.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 1.5,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_burned_tower": {
+			"title": "Burned Tower",
+			"file": "res://assets/audio/music/johto_burned_tower.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 14.75,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_route_38": {
+			"title": "Route 38",
+			"file": "res://assets/audio/music/johto_route_38.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 5.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_olivine_lighthouse": {
+			"title": "Olivine Lighthouse",
+			"file": "res://assets/audio/music/johto_olivine_lighthouse.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 6.25,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_surf": {
+			"title": "Surf",
+			"file": "res://assets/audio/music/johto_surf.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 2.25,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_cianwood_city": {
+			"title": "Cianwood City",
+			"file": "res://assets/audio/music/johto_cianwood_city.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 0.5,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_route_42": {
+			"title": "Route 42",
+			"file": "res://assets/audio/music/johto_route_42.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 20.25,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_rocket_hq": {
+			"title": "Team Rocket HQ",
+			"file": "res://assets/audio/music/johto_rocket_hq.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 4.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_radio_tower": {
+			"title": "Radio Tower Occupied!",
+			"file": "res://assets/audio/music/johto_radio_tower.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 1.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_ice_path": {
+			"title": "Ice Path",
+			"file": "res://assets/audio/music/johto_ice_path.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 17.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_dragons_den": {
+			"title": "Dragon's Den",
+			"file": "res://assets/audio/music/johto_dragons_den.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 2.25,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_bell_tower": {
+			"title": "Bell Tower",
+			"file": "res://assets/audio/music/johto_bell_tower.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 11.25,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_ho_oh": {
+			"title": "Battle! (Ho-Oh)",
+			"file": "res://assets/audio/music/johto_battle_ho_oh.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 41.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_route_26": {
+			"title": "Route 26",
+			"file": "res://assets/audio/music/johto_route_26.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 5.5,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_ss_aqua": {
+			"title": "S.S. Aqua",
+			"file": "res://assets/audio/music/johto_ss_aqua.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 4.25,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_suicune": {
+			"title": "Battle! (Suicune)",
+			"file": "res://assets/audio/music/johto_battle_suicune.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 14.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_viridian_forest": {
+			"title": "Viridian Forest",
+			"file": "res://assets/audio/music/johto_viridian_forest.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 16.75,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_lugia": {
+			"title": "Battle! (Lugia)",
+			"file": "res://assets/audio/music/johto_battle_lugia.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 22.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_battle_champion": {
+			"title": "Battle! (Champion)",
+			"file": "res://assets/audio/music/johto_battle_champion.ogg",
+			"kind": "music",
+			"loop": true,
+			"loop_offset": 24.0,
+			"volume_db": 0.0,
+			"expected": false
+		},
+		"johto_ending": {
+			"title": "Ending",
+			"file": "res://assets/audio/music/johto_ending.ogg",
+			"kind": "music",
+			"loop": false,
+			"loop_offset": 0.0,
+			"volume_db": 0.0,
+			"expected": false
 		}
 	},
 	"events": {
@@ -521,6 +809,6 @@
 		"evolved": "evolved",
 		"cubone_mother": "cubone_mother",
 		"poke_flute": "poke_flute",
-		"awakening": "final_road"
+		"awakening": "johto_dragons_den"
 	}
 }

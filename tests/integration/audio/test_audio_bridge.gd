@@ -126,6 +126,25 @@ func test_wild_battle_and_loss_without_victory() -> void:
 	assert_eq(_audio.current_track(), &"road_to_viridian")
 
 
+func test_johto_wild_legendary_and_trainer_battles_use_the_map_region() -> void:
+	_bridge.on_map_changed(_map(&"route_38"))
+	_bridge.on_battle_started(&"")
+	assert_eq(_audio.current_track(), &"johto_battle_wild")
+	_bridge.on_battle_event(_event(BattleEvent.Kind.BATTLE_ENDED, Battle.Outcome.WIN))
+	assert_eq(_audio.current_track(), &"victory_wild", "JM-7")
+	_bridge.on_battle_finished(&"", Battle.Outcome.WIN)
+	assert_eq(_audio.current_track(), &"johto_route_38")
+	_bridge.wild_species = func() -> StringName: return &"lugia"
+	_bridge.on_map_changed(_map(&"whirl_islands_b2f"))
+	_bridge.on_battle_started(&"")
+	assert_eq(_audio.current_track(), &"johto_battle_lugia")
+	_bridge.on_battle_finished(&"", Battle.Outcome.LOSS)
+	_bridge.wild_species = Callable()
+	_bridge.on_battle_started(&"bell_tower_dante_1")
+	assert_eq(_audio.current_track(), &"johto_battle_rocket")
+	_bridge.on_battle_finished(&"bell_tower_dante_1", Battle.Outcome.LOSS)
+
+
 func test_gym_leader_music() -> void:
 	_bridge.on_map_changed(_map(&"pewter_gym"))
 	_bridge.on_battle_started(&"pewter_gym_brock")
@@ -427,6 +446,8 @@ func test_real_boot_wires_every_game_signal_to_the_bridge() -> void:
 	var bridge := boot.get_audio_bridge()
 	var battle := boot.get_battle_director()
 	var cutscenes := boot.get_cutscene_director()
+	assert_true(bridge.wild_species.is_valid(), "l'espèce sauvage arrive au son (légendaires)")
+	assert_eq(bridge.wild_species.call(), &"", "hors combat : aucune")
 	var links: Array = [
 		[boot.get_player().mount_changed, bridge.on_mount_changed],
 		[boot.get_player().step_started, bridge.on_player_step],
