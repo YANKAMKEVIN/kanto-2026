@@ -28,6 +28,9 @@ Format d'un plan de cuts.json :
 Un plan `{ "card": "Texte du carton", "dur": 1.5 }` est un carton doré sur le fond de l'ident.
 `tail_black` : secondes de noir (silence) ajoutées à la fin.
 Un plan `{ "black": 0.5 }` est un noir muet au milieu du montage.
+Un plan `{ "id", "split": [{ "src", "in" }, …], "dur" }` montre plusieurs scènes en colonnes.
+`"title": { "text", "pos": "top|mid|low", "size", "dur", "align": "right" }` sur un plan : texte posé sur l'image,
+en fondu, à partir du début de ce plan (`dur` : défaut, la durée du plan ; il peut en couvrir plusieurs).
 """
 from __future__ import annotations
 
@@ -64,6 +67,7 @@ CARD_TEXT = (0xF3, 0xD3, 0x7C)
 CARD_FONT = ROOT / "assets/fonts/cinzel/Cinzel.ttf"
 CARD_FONT_SIZE = 88
 CARD_FADE = 0.4
+TITLE_STROKE = 7
 
 
 def run(cmd: list[str], **kw) -> None:
@@ -105,6 +109,72 @@ def render_cut(index: int, cut: dict, tmp: Path) -> Path:
     run(["ffmpeg", "-v", "error", "-y", "-ss", f"{float(cut['in']):.3f}", "-t", f"{dur:.3f}",
          "-i", str(src), "-vf", vf, "-af", af, "-c:v", "libx264", "-preset", "fast", "-crf", "12",
          "-c:a", "pcm_s16le", "-ar", "48000", "-ac", "2", str(out)])
+    return out
+
+
+def split_clip(index: int, cut: dict, tmp: Path) -> Path:
+    """Plusieurs scènes côte à côte : la bande centrale de chacune, séparée par un filet noir."""
+    parts = cut["split"]
+    dur = float(cut["dur"])
+    width = W // len(parts)
+    inputs: list[str] = []
+    chains: list[str] = []
+    for i, part in enumerate(parts):
+        inputs += ["-ss", f"{float(part['in']):.3f}", "-t", f"{dur:.3f}", "-i", str(RAW / f"{part['src']}.avi")]
+        chains.append(f"[{i}:v]crop={width - 6}:{H}:{(W - width) // 2 + 3}:0,pad={width}:{H}:3:0:black,"
+                      f"fps={FPS},setpts=PTS-STARTPTS[c{i}]")
+    labels = "".join(f"[c{i}]" for i in range(len(parts)))
+    # `mask` : [y, h] : bande recouverte (phrases du jeu trop longues pour une colonne).
+    mask = ""
+    if cut.get("mask"):
+        mask = f"drawbox=x=0:y={cut['mask'][0]}:w={W}:h={cut['mask'][1]}:color=0x070A16:t=fill,"
+    chains.append(f"{labels}hstack=inputs={len(parts)},scale={W}:{H},{mask}format=yuv420p[v]")
+    gain = float(cut.get("audio", 1.0))
+    chains.append(f"[0:a]volume={gain},asetpts=PTS-STARTPTS[a]")
+    out = tmp / f"cut_{index:02d}.mkv"
+    run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(chains), "-map", "[v]",
+         "-map", "[a]", "-c:v", "libx264", "-preset", "fast", "-crf", "12", "-c:a", "pcm_s16le",
+         "-ar", "48000", "-ac", "2", str(out)])
+    return out
+
+
+def title_image(index: int, text: str, size: int, tmp: Path) -> tuple[Path, int, int]:
+    """Texte doré, contour sombre : reste lisible sur tout décor, à la taille d'un téléphone."""
+    font = ImageFont.truetype(str(CARD_FONT), size)
+    font.set_variation_by_axes([700])
+    probe = ImageDraw.Draw(Image.new("RGBA", (8, 8)))
+    box = probe.textbbox((0, 0), text, font=font, stroke_width=TITLE_STROKE)
+    w, h = box[2] - box[0] + 40, box[3] - box[1] + 40
+    image = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    ImageDraw.Draw(image).text((20 - box[0], 20 - box[1]), text, font=font, fill=CARD_TEXT + (255,),
+                               stroke_width=TITLE_STROKE, stroke_fill=(0x14, 0x0F, 0x0B, 255))
+    png = tmp / f"title_{index:02d}.png"
+    image.save(png)
+    return png, w, h
+
+
+def apply_titles(assembled: Path, titles: list[dict], tmp: Path) -> Path:
+    """Pose les textes sur le montage, chacun en fondu, sans toucher au son."""
+    if not titles:
+        return assembled
+    inputs: list[str] = ["-i", str(assembled)]
+    chains: list[str] = []
+    prev = "[0:v]"
+    total = probe_duration(assembled)
+    for i, title in enumerate(titles):
+        png, w, h = title_image(i, title["text"], int(title.get("size", 92)), tmp)
+        at, dur = float(title["at"]), float(title["dur"])
+        y = {"top": 70, "mid": (H - h) // 2, "low": H - h - 90}[title.get("pos", "low")]
+        fade = min(0.25, dur / 3)
+        inputs += ["-loop", "1", "-framerate", str(FPS), "-t", f"{total:.3f}", "-i", str(png)]
+        chains.append(f"[{i + 1}:v]format=rgba,fade=t=in:st={at:.3f}:d={fade}:alpha=1,"
+                      f"fade=t=out:st={at + dur - fade:.3f}:d={fade}:alpha=1[t{i}]")
+        x = W - w - 110 if title.get("align") == "right" else (W - w) // 2
+        chains.append(f"{prev}[t{i}]overlay=x={x}:y={y}:enable='between(t,{at:.3f},{at + dur:.3f})'[o{i}]")
+        prev = f"[o{i}]"
+    out = tmp / "titled.mkv"
+    run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(chains), "-map", prev,
+         "-map", "0:a", "-c:v", "libx264", "-preset", "fast", "-crf", "14", "-c:a", "copy", str(out)])
     return out
 
 
@@ -256,10 +326,11 @@ def main() -> None:
                         help="ne refait que la vidéo du jeu (Theora + données) depuis le master")
     parser.add_argument("--cuts", type=Path, default=CUTS, help="fichier de montage")
     parser.add_argument("--tag", default="", help="version à part : jamais de vidéo du jeu")
+    parser.add_argument("--raw", default="", help="dossier des scènes (défaut : raw_<tag>)")
     args = parser.parse_args()
     if args.tag:
         args.only_master = True
-        RAW = OUT / f"raw_{args.tag}"
+        RAW = OUT / (args.raw or f"raw_{args.tag}")
         MASTER = OUT / f"pokemake-trailer-{args.tag}.mp4"
         SHARE = OUT / f"pokemake-trailer-{args.tag}-720p.mp4"
     spec = json.loads(args.cuts.read_text())
@@ -275,12 +346,21 @@ def main() -> None:
                 ensure_ascii=False, indent=1) + "\n")
             return
         clips: list[tuple[Path, float, float]] = []
+        titles: list[dict] = []
         default_audio = float(spec.get("default_audio", 1.0))
         for i, cut in enumerate(cuts):
             if "card" in cut:
                 print(f"[{i + 1}/{len(cuts)}] carton « {cut['card']} » ({cut['dur']} s)")
                 clips.append((card_clip(i, cut["card"], float(cut["dur"]), tmp), float(cut["dur"]),
                               float(cut.get("xfade", 0.0))))
+                continue
+            if "title" in cut:
+                # Chaque raccord recouvre au moins une image (voir `assemble`).
+                at = sum(d for _p, d, _x in clips) - sum(max(x, 1.0 / FPS) for _p, _d, x in clips[1:]) \
+                    - (1.0 / FPS if clips else 0.0)
+                titles.append({"dur": float(cut.get("dur", cut.get("black", 1.0))), **cut["title"], "at": at})
+            if "split" in cut:
+                clips.append((split_clip(i, cut, tmp), float(cut["dur"]), 0.0))
                 continue
             if "black" in cut:
                 clips.append((black_clip(float(cut["black"]), tmp, f"black_{i:02d}"),
@@ -294,6 +374,7 @@ def main() -> None:
             clips.append((black_clip(tail, tmp), tail, 0.0))
         assembled = assemble(clips, spec.get("beds", []), tmp, spec.get("music"),
                              float(spec.get("gain", 1.0)))
+        assembled = apply_titles(assembled, titles, tmp)
         total = probe_duration(assembled)
         print(f"durée montée : {total:.2f} s")
         encode_master(assembled)

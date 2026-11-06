@@ -1,0 +1,116 @@
+{
+ "map": "whirl_islands_b2f",
+ "spawn": "debug_lugia_water",
+ "facing": "right",
+ "flags": [
+  "badge_boulder",
+  "badge_cascade",
+  "badge_earth",
+  "badge_marsh",
+  "badge_rainbow",
+  "badge_soul",
+  "badge_thunder",
+  "badge_volcano",
+  "cerulean_reached",
+  "got_oak_parcel",
+  "johto_act2",
+  "johto_arrived",
+  "johto_cenere_defeated",
+  "johto_cenere_defeated_2",
+  "johto_dante_revealed",
+  "johto_letter_read",
+  "johto_lugia_emerged",
+  "johto_lugia_shadow",
+  "johto_orme_left",
+  "johto_raikou_done",
+  "johto_slept",
+  "johto_starter_chosen",
+  "johto_starter_offered",
+  "johto_suicune_done",
+  "johto_suicune_resolved",
+  "johto_suicune_seen",
+  "johto_team_returned",
+  "johto_team_stolen",
+  "johto_whirl_clue",
+  "league_champion_defeated",
+  "league_credits_seen",
+  "mom_greeted",
+  "oak_lab_reunion",
+  "oak_met",
+  "oak_post_league_gifts_done",
+  "pewter_arrived",
+  "poison_unlocked",
+  "pokedex_activated",
+  "rival_battle_done",
+  "rival_challenged",
+  "rival_lab_won",
+  "rival_left_lab",
+  "rival_met",
+  "rival_route22_final_won",
+  "starter_chosen",
+  "starter_offered",
+  "taken_charmander",
+  "taken_squirtle",
+  "taken_totodile",
+  "viridian_arrived"
+ ],
+ "party": [
+  {
+   "species": "blastoise",
+   "level": 66,
+   "moves": [
+    "surf",
+    "hydro_pump",
+    "bite",
+    "ice_beam"
+   ]
+  },
+  {
+   "species": "venusaur",
+   "level": 63
+  },
+  {
+   "species": "charizard",
+   "level": 64
+  },
+  {
+   "species": "nidoking",
+   "level": 62,
+   "moves": [
+    "strength",
+    "earthquake",
+    "thunderbolt",
+    "horn_drill"
+   ]
+  },
+  {
+   "species": "raichu",
+   "level": 60
+  },
+  {
+   "species": "pidgeot",
+   "level": 61
+  }
+ ],
+ "companion": 0,
+ "bag": {
+  "hm03": 1,
+  "hm04": 1,
+  "old_rod": 1,
+  "good_rod": 1,
+  "super_rod": 1,
+  "ultra_ball": 30,
+  "master_ball": 1,
+  "full_restore": 10,
+  "max_revive": 5,
+  "escape_rope": 3,
+  "max_repel": 5
+ },
+ "money": 80000,
+ "rest_point": "olivine_center",
+ "discovered": [
+  "pallet_town",
+  "olivine_city"
+ ],
+ "cutscene": "whirl_lugia_battle"
+}

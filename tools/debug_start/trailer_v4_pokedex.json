@@ -1,0 +1,74 @@
+{
+ "map": "celadon_city",
+ "spawn": "from_route_7_c",
+ "facing": "left",
+ "flags": [
+  "badge_boulder",
+  "badge_cascade",
+  "badge_thunder",
+  "beaten_pewter_gym_liam",
+  "brock_met",
+  "celadon_reached",
+  "cerulean_reached",
+  "dark_cave_crossed",
+  "got_hm01",
+  "got_oak_parcel",
+  "got_ss_ticket",
+  "lavender_reached",
+  "mom_greeted",
+  "oak_lab_reunion",
+  "oak_met",
+  "pewter_arrived",
+  "poison_unlocked",
+  "pokedex_activated",
+  "rival_battle_done",
+  "rival_cerulean_won",
+  "rival_challenged",
+  "rival_lab_won",
+  "rival_left_lab",
+  "rival_met",
+  "rival_ss_anne_won",
+  "route_10_reached",
+  "route_8_reached",
+  "route_9_entered",
+  "ss_anne_departed",
+  "starter_chosen",
+  "starter_offered",
+  "surge_met",
+  "taken_charmander",
+  "taken_squirtle",
+  "tm24_received",
+  "tm34_received",
+  "tower_stairs_open",
+  "viridian_arrived"
+ ],
+ "party": [
+  {
+   "species": "charmeleon",
+   "level": 28
+  },
+  {
+   "species": "pidgeotto",
+   "level": 24
+  },
+  {
+   "species": "butterfree",
+   "level": 22
+  },
+  {
+   "species": "sandshrew",
+   "level": 22
+  }
+ ],
+ "bag": {
+  "poke_ball": 10,
+  "potion": 5,
+  "super_potion": 3,
+  "antidote": 2,
+  "escape_rope": 2,
+  "hm01": 1
+ },
+ "money": 6000,
+ "rest_point": "lavender_center",
+ "caught_except": []
+}

@@ -109,3 +109,26 @@ la trame [D], même en contre-jour), le Réveil de l'arc des Pierres.
 
 Kevin compare la v2.1 et la v3. Seulement alors, si la v3 gagne, la vidéo du jeu change. Sur
 `release/0.34`, ce serait une nouvelle RC (≥ 0.34.2) : à décider à ce moment.
+
+## 7. Version 4 (2026-11-06, retours de Kevin sur la v3)
+
+Remplace le §2 et le §3 pour le montage courant : `tools/trailer/cuts_v4.json`, ≈ 51 s, rendu par
+`python3 tools/trailer/assemble.py --cuts tools/trailer/cuts_v4.json --tag v4 --raw raw_v3`.
+
+**Décisions de Kevin (2026-11-06) :**
+- **Johto dans la vidéo** et « plus de 200 Pokémon » : le jeu ne se résume pas à Kanto. **Annule la
+  TR-1** (deux montages) : un seul montage.
+- Textes qui accompagnent toute la vidéo, posés sur l'image (**annule la TR-6**).
+- Villes à vélo avec leur nom ; Pokédex qui défile ; trois évolutions côte à côte.
+- Retrait du combat contre le SPECTRE.
+
+**Valeurs [D] :**
+- Ombre de Lugia retirée ; Lugia et Ho-Oh en combat à la place.
+- Surf retiré, en attendant la réponse de Kevin sur ce qui ne va pas.
+- Costumes en grand : Iron Man et Son Goku à l'entrée du combat de Régis, avec leur nom.
+- Textes : « Pars à l'aventure. », « Capture-les tous. », « Plus de 200 Pokémon à découvrir. »,
+  « Fais-les évoluer. », « Des rivaux à battre. », « Parcours les villes. », Argenta, Azuria,
+  Céladopole, Carmin-sur-Mer, « Deviens qui tu veux. », « Un costume à chaque badge. », « Affronte
+  les légendes. », « Jusqu'au sommet. », « Et ce n'est que la moitié du voyage. », « Johto », « La
+  nuit tombe sur Rosalia. », « Deux régions. Un seul voyage. »
+- Ho-Oh est lancé par une rencontre directe : pas son entrée légendaire du jeu.

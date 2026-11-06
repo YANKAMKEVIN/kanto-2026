@@ -1,0 +1,403 @@
+{
+ "_note": "Montage v4 (retours de Kevin du 2026-11-06, docs/design/storyboard-trailer-v3.md §7). Scènes dans build/trailer/raw_v3/ ; assemble.py --cuts tools/trailer/cuts_v4.json --tag v4 --raw raw_v3. N'écrit jamais la vidéo du jeu.",
+ "letterbox": 0.0,
+ "tail_black": 0.5,
+ "gain": 1.0,
+ "default_audio": 0.0,
+ "music": {
+  "track": "res://assets/audio/music/title_screen.ogg",
+  "start": 0.0,
+  "gain": 0.9,
+  "fade_in": 0.6,
+  "fade_out": 1.5
+ },
+ "cuts": [
+  {
+   "id": "01_duo",
+   "src": "duo",
+   "in": 5.0,
+   "dur": 4.5,
+   "zoom": [
+    1.65,
+    1.5
+   ],
+   "focus": [
+    0.5,
+    0.95
+   ]
+  },
+  {
+   "id": "02_route_1",
+   "src": "duo",
+   "in": 18.1,
+   "dur": 3.0,
+   "zoom": 1.3,
+   "audio": 0.6,
+   "title": {
+    "text": "Pars à l'aventure.",
+    "pos": "low",
+    "size": 100
+   }
+  },
+  {
+   "id": "03_capture",
+   "src": "duo",
+   "in": 35.6,
+   "dur": 3.6,
+   "audio": 0.6,
+   "title": {
+    "text": "Capture-les tous.",
+    "pos": "top",
+    "size": 100
+   }
+  },
+  {
+   "id": "04_pokedex",
+   "src": "pokedex",
+   "in": 4.0,
+   "dur": 3.0,
+   "zoom": 1.35,
+   "focus": [
+    0,
+    0.5
+   ],
+   "title": {
+    "text": "Plus de 200 Pokémon à découvrir.",
+    "pos": "low",
+    "size": 100
+   }
+  },
+  {
+   "id": "05_evolutions",
+   "split": [
+    {
+     "src": "evolution",
+     "in": 7.6
+    },
+    {
+     "src": "evo_bulbizarre",
+     "in": 7.6
+    },
+    {
+     "src": "evo_carapuce",
+     "in": 7.6
+    }
+   ],
+   "dur": 3.5,
+   "audio": 0.7,
+   "title": {
+    "text": "Fais-les évoluer.",
+    "pos": "top",
+    "size": 100
+   },
+   "mask": [
+    812,
+    140
+   ]
+  },
+  {
+   "id": "06_regis",
+   "src": "rival",
+   "in": 10.9,
+   "dur": 1.2,
+   "audio": 0.45,
+   "zoom": 1.4,
+   "focus": [
+    0.4,
+    1.0
+   ]
+  },
+  {
+   "id": "07_vs",
+   "src": "rival",
+   "in": 22.5,
+   "dur": 1.8,
+   "audio": 0.8
+  },
+  {
+   "id": "08a_2_pv",
+   "src": "rival",
+   "in": 33.3,
+   "dur": 1.6,
+   "audio": 0.6,
+   "title": {
+    "text": "Des rivaux à battre.",
+    "pos": "top",
+    "dur": 3.2,
+    "size": 100
+   }
+  },
+  {
+   "id": "08b_ko",
+   "src": "rival",
+   "in": 37.9,
+   "dur": 1.6,
+   "audio": 0.6
+  },
+  {
+   "id": "09a_velo",
+   "src": "velo_joueuse",
+   "in": 6.0,
+   "dur": 1.2,
+   "zoom": 1.6,
+   "title": {
+    "text": "Parcours les villes.",
+    "pos": "mid",
+    "size": 100
+   }
+  },
+  {
+   "id": "09b_argenta",
+   "src": "ville_argenta",
+   "in": 4.5,
+   "dur": 1.4,
+   "title": {
+    "text": "Argenta",
+    "pos": "mid",
+    "size": 130
+   }
+  },
+  {
+   "id": "09c_velo",
+   "src": "velo_joueuse",
+   "in": 8.0,
+   "dur": 0.7,
+   "zoom": 1.6
+  },
+  {
+   "id": "09d_azuria",
+   "src": "ville_azuria",
+   "in": 4.5,
+   "dur": 1.4,
+   "title": {
+    "text": "Azuria",
+    "pos": "mid",
+    "size": 130
+   }
+  },
+  {
+   "id": "09e_velo",
+   "src": "velo_joueuse",
+   "in": 10.0,
+   "dur": 0.7,
+   "zoom": 1.6
+  },
+  {
+   "id": "09f_celadopole",
+   "src": "ville_celadopole",
+   "in": 6.0,
+   "dur": 1.4,
+   "title": {
+    "text": "Céladopole",
+    "pos": "mid",
+    "size": 130
+   }
+  },
+  {
+   "id": "09g_velo",
+   "src": "velo_joueuse",
+   "in": 12.0,
+   "dur": 0.7,
+   "zoom": 1.6
+  },
+  {
+   "id": "09h_carmin",
+   "src": "ville_carmin",
+   "in": 4.5,
+   "dur": 1.4,
+   "title": {
+    "text": "Carmin-sur-Mer",
+    "pos": "mid",
+    "size": 130
+   }
+  },
+  {
+   "id": "10a_origine",
+   "src": "marche_origine",
+   "in": 7.0,
+   "dur": 0.65,
+   "zoom": 1.7,
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "title": {
+    "text": "Deviens qui tu veux.",
+    "pos": "top",
+    "dur": 2.6,
+    "size": 100
+   }
+  },
+  {
+   "id": "10b_luffy",
+   "src": "marche_luffy",
+   "in": 7.65,
+   "dur": 0.65,
+   "zoom": 1.7,
+   "focus": [
+    0.5,
+    0.45
+   ]
+  },
+  {
+   "id": "10c_naruto",
+   "src": "marche_naruto",
+   "in": 8.3,
+   "dur": 0.65,
+   "zoom": 1.7,
+   "focus": [
+    0.5,
+    0.45
+   ]
+  },
+  {
+   "id": "10d_goku",
+   "src": "marche_goku",
+   "in": 8.95,
+   "dur": 0.65,
+   "zoom": 1.7,
+   "focus": [
+    0.5,
+    0.45
+   ]
+  },
+  {
+   "id": "11a_iron_man",
+   "src": "vs_ironman",
+   "in": 22.6,
+   "dur": 1.3,
+   "audio": 0.6,
+   "title": {
+    "text": "Iron Man",
+    "pos": "low",
+    "size": 120,
+    "align": "right"
+   }
+  },
+  {
+   "id": "11b_goku",
+   "src": "vs_goku",
+   "in": 22.7,
+   "dur": 1.2,
+   "audio": 0.6,
+   "title": {
+    "text": "Son Goku",
+    "pos": "low",
+    "size": 120,
+    "align": "right"
+   }
+  },
+  {
+   "id": "12a_silhouette",
+   "src": "silhouette",
+   "in": 3.6,
+   "dur": 2.0,
+   "zoom": 2.4,
+   "focus": [
+    1.0,
+    0.55
+   ],
+   "title": {
+    "text": "Un costume à chaque badge.",
+    "pos": "top",
+    "size": 100
+   }
+  },
+  {
+   "id": "13_mewtwo",
+   "src": "mewtwo",
+   "in": 8.35,
+   "dur": 1.2,
+   "zoom": [
+    1.25,
+    1.35
+   ],
+   "audio": 0.9,
+   "title": {
+    "text": "Affronte les légendes.",
+    "pos": "top",
+    "size": 100
+   }
+  },
+  {
+   "id": "14a_ligue",
+   "src": "ligue",
+   "in": 7.5,
+   "dur": 1.4,
+   "zoom": 1.3,
+   "title": {
+    "text": "Jusqu'au sommet.",
+    "pos": "top",
+    "dur": 2.9,
+    "size": 100
+   }
+  },
+  {
+   "id": "14b_championne",
+   "src": "championne",
+   "in": 9.45,
+   "dur": 1.5,
+   "audio": 0.9
+  },
+  {
+   "black": 1.8,
+   "title": {
+    "text": "Et ce n'est que la moitié du voyage.",
+    "pos": "mid",
+    "size": 100
+   }
+  },
+  {
+   "id": "15_johto_doublonville",
+   "src": "joh_doublon",
+   "in": 3.0,
+   "dur": 1.6,
+   "zoom": 1.4,
+   "focus": [
+    0.5,
+    0
+   ],
+   "title": {
+    "text": "Johto",
+    "pos": "mid",
+    "size": 170
+   }
+  },
+  {
+   "id": "16_johto_rosalia",
+   "src": "joh_rosalia",
+   "in": 3.0,
+   "dur": 1.4,
+   "zoom": 1.4,
+   "focus": [
+    0.5,
+    0
+   ],
+   "title": {
+    "text": "La nuit tombe sur Rosalia.",
+    "pos": "top",
+    "size": 100
+   }
+  },
+  {
+   "id": "17_ho_oh",
+   "src": "joh_ho_oh",
+   "in": 5.0,
+   "dur": 1.5,
+   "audio": 0.9,
+   "title": {
+    "text": "Deux régions. Un seul voyage.",
+    "pos": "top",
+    "dur": 3.0,
+    "size": 100
+   }
+  },
+  {
+   "id": "18_lugia",
+   "src": "joh_lugia",
+   "in": 2.2,
+   "dur": 1.5,
+   "audio": 0.9
+  }
+ ]
+}

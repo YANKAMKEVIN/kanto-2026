@@ -43,6 +43,37 @@ const STARTS: Dictionary[String, String] = {
 	"surf_ironman": "trailer_surf",
 	"silhouette": "trailer_v3_marche",
 	"ombre": "trailer_v3_ombre",
+	# v4 (retours de Kevin du 2026-11-06) : costumes en grand, villes, Pokédex, évolutions, Johto.
+	"vs_ironman": "trailer_rival",
+	"vs_goku": "trailer_rival",
+	"vs_luffy": "league_champion_charmander",
+	"evo_bulbizarre": "trailer_v4_evo_bulbizarre",
+	"evo_carapuce": "trailer_v4_evo_carapuce",
+	"ville_argenta": "pewter",
+	"ville_azuria": "cerulean_city",
+	"ville_carmin": "vermilion",
+	"ville_lavanville": "lavender",
+	"ville_celadopole": "trailer_v3_marche",
+	"joh_rosalia": "johto_rosalia_night",
+	"joh_doublon": "johto_goldenrod_night",
+	"joh_oliville": "johto_olivine_night",
+	"joh_ho_oh": "trailer_v4_ho_oh",
+	"joh_lugia": "trailer_v4_lugia",
+	"pokedex": "trailer_v4_pokedex",
+}
+## v4 : direction du trajet à vélo dans chaque ville.
+const VILLES: Dictionary[String, Vector2i] = {
+	"ville_argenta": Vector2i.UP,
+	"ville_azuria": Vector2i.RIGHT,
+	"ville_carmin": Vector2i.DOWN,
+	"ville_lavanville": Vector2i.DOWN,
+	"ville_celadopole": Vector2i.LEFT,
+}
+## v4 : évolutions des colonnes de droite (Salamèche : scène `evolution`).
+const EVOLUTIONS: Dictionary[String, Array] = {
+	"evolution": [&"charmander", &"charmeleon"],
+	"evo_bulbizarre": [&"bulbasaur", &"ivysaur"],
+	"evo_carapuce": [&"squirtle", &"wartortle"],
 }
 ## v3 : tenue portée par scène (identifiants de `data/costumes.json`).
 const COSTUMES: Dictionary[String, StringName] = {
@@ -51,6 +82,9 @@ const COSTUMES: Dictionary[String, StringName] = {
 	"marche_goku": &"volcano",
 	"velo_joueuse": &"cascade",
 	"surf_ironman": &"thunder",
+	"vs_ironman": &"thunder",
+	"vs_goku": &"volcano",
+	"vs_luffy": &"cascade",
 }
 ## v3 : scènes jouées par la joueuse.
 const HEROINE_SCENES: Array[String] = ["velo_joueuse"]
@@ -119,6 +153,16 @@ func _run() -> void:
 		"surf_ironman": await _surf()
 		"silhouette": await _silhouette()
 		"ombre": await _ombre()
+		"vs_ironman", "vs_goku": await _rival()
+		"vs_luffy": await _championne()
+		"evo_bulbizarre", "evo_carapuce": await _evolution()
+		"ville_argenta", "ville_azuria", "ville_carmin", "ville_lavanville", "ville_celadopole":
+			await _ville(VILLES[_scene])
+		"joh_rosalia": await _promenade(Vector2i.RIGHT, 12)
+		"joh_doublon": await _promenade(Vector2i.DOWN, 12)
+		"joh_oliville": await _promenade(Vector2i.UP, 8)
+		"joh_ho_oh", "joh_lugia": await _legendaire_scene()
+		"pokedex": await _pokedex()
 	_mark("fin")
 	_finished = true
 	quit()
@@ -238,7 +282,7 @@ func _evolution() -> void:
 	_auto_touch = true
 	await _wait(30)
 	var party: RefCounted = _state.get(&"party")
-	var candidate := EvolutionCandidate.new(0, &"charmander", &"charmeleon")
+	var candidate := EvolutionCandidate.new(0, EVOLUTIONS[_scene][0], EVOLUTIONS[_scene][1])
 	candidate.cancellable = false
 	var director: Node = _boot.call(&"get_evolution_director")
 	director.call(&"play", [candidate] as Array[EvolutionCandidate], party)
@@ -368,8 +412,48 @@ func _dress() -> void:
 	if HEROINE_SCENES.has(_scene):
 		_state.set(&"player_look", &"heroine")
 	if COSTUMES.has(_scene):
+		(_state.get(&"flags") as Object).call(&"set_flag", StringName("badge_%s" % COSTUMES[_scene]))
 		_state.call(&"wear_costume", COSTUMES[_scene])
 	_player.call(&"refresh_look")
+
+
+## v4 : à vélo dans une ville, tout droit.
+func _ville(direction: Vector2i) -> void:
+	_state.set(&"repel_steps", 2000)
+	_auto_touch = true
+	_player.call(&"set_mount", 1)  # Mount.Kind.BIKE
+	await _wait(20)
+	_mark("ville")
+	await _press(direction, 200)
+	await _wait(10)
+
+
+## v4 : la scène du légendaire (clé « cutscene » du départ) : entrée légendaire du combat.
+func _legendaire_scene() -> void:
+	_auto_touch = true
+	_mark("légendaire")
+	if _scene == "joh_ho_oh":
+		await _wait(20)
+		var encounter := WildEncounter.new(&"ho_oh", 65)
+		(_boot.call(&"get_encounter_director") as Node).call(&"start_encounter", encounter)
+	await _until(_battle_running, 1800)
+	_mark("entrée légendaire")
+	await _until(_actions_shown, 1800)
+	await _wait(45)
+
+
+## v4 : le Pokédex complet qui défile.
+func _pokedex() -> void:
+	var menu: Node = _boot.call(&"get_menu_director")
+	var trainer_menu: Node = _boot.call(&"get_trainer_menu")
+	trainer_menu.set(&"speed_scale", 0.0)
+	menu.call(&"open", (load("res://game/systems/menu/menu_route.gd") as GDScript).call(&"pokedex"))
+	await _wait(60)
+	_mark("pokédex")
+	var scroll: ScrollContainer = trainer_menu.call(&"get_pokedex").call(&"get_scroll")
+	var tween: Tween = scroll.create_tween()
+	tween.tween_property(scroll, ^"scroll_vertical", 9000, 6.0)
+	await _wait(190)
 
 
 ## v3, plan 10 : écran Dresseur, la silhouette du costume Foudre s'allume et le portrait la porte.
