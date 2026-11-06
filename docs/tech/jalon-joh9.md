@@ -204,3 +204,6 @@ Défauts [D] : neige `n` en canal des pavés sur le sentier, en sol de base aill
 de l'extérieur peint sur les cases (14..24, 7..13), sans effet sur les déplacements ; rangée sud `R`
 de l'extérieur en blocs ; versant de la Route 28 en ardoise ; gravats en galets gris ; givre du 3F en
 26 traînées, vent de la vue non animé ; nuit de `johto_auto` sans lampe propre au Mont Argenté.
+
+QA A17 du 2026-11-06 (10 h 12 à 10 h 17, APK debug) : sentier, extérieur, 1F, 2F, 3F, sommet, Route 28 et
+poste, de jour, sentier et sommet de nuit, sans `SCRIPT ERROR`. 52 i/s, creux à 32, 275 Mo de textures.
