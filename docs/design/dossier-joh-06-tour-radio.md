@@ -201,3 +201,11 @@ haut-parleurs.
 | JH-41 | ✅ **Cenere seule** à la Tour ; Brace gardé pour Acajou (Kevin) | — |
 | JH-42 | ~~Cenere abandonne l'équipe et le sac dans le bureau~~ : **rouvert et remplacé par JH-61** (Kevin, 2026-11-04) : Dante dit « Prends tout », Cenere emporte tout | — |
 | JH-43 | ✅ Les Sbires **se divisent** après la révélation : certains partent, d'autres suivent Dante (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `goldenrod_radio_reserve_locked` : La porte de la réserve est fermée à clé. / Des voix étouffées appellent à l'aide.
+- `goldenrod_radio_emergency_stairs` : La porte de l'escalier de secours est fermée.
+- `goldenrod_radio_office_locked` : La porte du bureau du directeur est fermée.

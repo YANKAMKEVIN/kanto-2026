@@ -279,3 +279,14 @@ Colère. » · Lac Colère « Un grand lac de montagne, troublé par d'étranges
 | JH-45 | ✅ Le souvenir montre **l'incendie de l'ancien QG** : Giovanni laisse Dante derrière la porte ; Dante survit, brûlé (Kevin) | — |
 | JH-46 | ✅ **Léviator rouge** = variante unique, combat et capture, pas de système de chromatiques (Kevin) | — |
 | JH-47 | ✅ **Joueur seul** au repaire, pas de Peter (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `mahogany_house_1_habitante` (Habitante) : Depuis une semaine, la radio grésille toute la journée. / Ça vient de quelque part en ville, je crois.
+- `mahogany_house_2_habitant_1` (Habitant) : Acajou était un village bien tranquille. / Jusqu'à cette semaine.
+- `mahogany_house_2_habitant_2` (Habitant) : Mon petit-fils dit que les Magicarpe sont furieux.
+- `mahogany_souvenir_shop_etagere` : Des cartes postales et des porte-clés d'Acajou.
+- `mahogany_hideout_b2f_levier/variants/0` : Un levier. Il commande les grilles des cellules.
+- `joh6_lever_pulled` : Le levier bascule. / La grille de la cellule du milieu s'ouvre !

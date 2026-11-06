@@ -206,3 +206,11 @@ Format : bulles séparées par « / ». `{joueur}` = nom ; *italique* = voix int
 | JH-53 | ✅ Dante **ouvre la cage d'Entei** pour couvrir sa fuite et descend par les toits sur son **Arcanin** (Kevin) | — |
 | JH-54 | ✅ Dante (1) : **5 Pokémon (64–68), sans Tyranocif**, gardé pour le Mont Argenté (Kevin) | — |
 | JH-55 | ✅ Scène du sommet à l'**aube forcée**, puis l'heure réelle reprend (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `bell_tower_1f_autel` : Un autel ancien. L'encens y brûle encore.
+- `bell_tower_roof_cloche` : La grande cloche de la tour. Son bronze est encore tiède.
+- `bell_tower_roof_rambarde` : Tout en bas, les toits de Rosalia sortent de la brume.

@@ -112,7 +112,6 @@
 	},
 	"ecruteak_elders_house_sage": {
 		"speaker": "Sage",
-		"draft": true,
 		"pages": [
 			"Le doyen veille sur la Tour Cendrée\ndepuis plus de soixante ans."
 		]
@@ -125,7 +124,6 @@
 					"got_ecruteak_house_1_antidote"
 				],
 				"cutscene": "ecruteak_house_1_antidote",
-				"draft": true,
 				"pages": [
 					"L'herbe des tours est pleine\nde Pokémon la nuit.",
 					"Tiens, prends ça.\nOn ne sait jamais."
@@ -135,7 +133,6 @@
 				"if": [
 					"got_ecruteak_house_1_antidote"
 				],
-				"draft": true,
 				"pages": [
 					"Fais attention la nuit,\nautour des tours."
 				]
@@ -144,14 +141,12 @@
 	},
 	"ecruteak_house_1_received": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"{player} reçoit 2 Antidotes !"
 		]
 	},
 	"ecruteak_house_2_habitant": {
 		"speaker": "Habitant",
-		"draft": true,
 		"pages": [
 			"Les cloches de la Tour Carillon\nn'ont pas sonné depuis des années.",
 			"Mon grand-père disait\nqu'elles sonnent pour Ho-Oh."

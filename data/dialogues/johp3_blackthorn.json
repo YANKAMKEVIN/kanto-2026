@@ -168,7 +168,6 @@
 	},
 	"johp3_corentin_blackthorn": {
 		"speaker": "Corentin",
-		"draft": true,
 		"pages": [
 			"Rosalia ? Monte !"
 		]
@@ -210,7 +209,6 @@
 	},
 	"johp3_sanctuary_closed": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"Un souffle chaud remonte de\nl'escalier.",
 			"Les trois Gardiens ne t'ont pas\nencore laissé passer."
@@ -363,7 +361,6 @@
 	},
 	"blackthorn_center_apprenti": {
 		"speaker": "Apprenti",
-		"draft": true,
 		"pages": [
 			"Le clan n'a pas besoin de Boutique :\non vit de peu, ici.",
 			"Pour le reste, il y a Corentin."
@@ -371,7 +368,6 @@
 	},
 	"blackthorn_house_1_habitante": {
 		"speaker": "Habitante",
-		"draft": true,
 		"pages": [
 			"Mon fils veut devenir Gardien.",
 			"Je lui ai dit de finir sa soupe\nd'abord."
@@ -382,7 +378,6 @@
 	},
 	"blackthorn_city_dracolosse": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"Le Dracolosse de Corentin bâille.",
 			"Il a l'air de bien connaître le\nchemin."

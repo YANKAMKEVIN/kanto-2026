@@ -1,7 +1,6 @@
 {
 	"ecruteak_city_garde_route_42": {
 		"speaker": "Garde",
-		"draft": true,
 		"pages": [
 			"La Route 42 est fermée.",
 			"Des éboulements, du côté d'Acajou.\nReviens plus tard."
@@ -80,7 +79,6 @@
 				"if": [
 					"johto_burned_tower_open"
 				],
-				"draft": true,
 				"pages": [
 					"La Tour Cendrée est ouverte.\nSois prudent, jeune Dresseur."
 				]

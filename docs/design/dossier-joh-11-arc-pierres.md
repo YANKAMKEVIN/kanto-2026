@@ -561,3 +561,18 @@ M-14' (JOH7) : Tu es là avant moi. Encore. / **Trois** erreurs de calcul. Ça c
 1. ~~Arbitrages~~ (2026-11-04), ~~propagation au cadre et aux dossiers~~, ~~lot de textes~~ (2026-11-05),
    ~~roadmap~~, ~~grilles, vues peintes et plan technique~~ (2026-11-05, validés par Kevin).
 2. Code selon `docs/tech/jalon-joh-pierres.md` : JOHP0 (le Réveil), JOHP1, JOHP2, JOHP3.
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `stones_awakening_stored/variants/0` : Au laboratoire d'Orme aussi, des Pokémon se réveillent.
+- `johto_awakening_test_before/variants/0` : (Scène de test du JOHP0.) Les trois pierres se rejoignent sur l'autel.
+- `johto_awakening_test_after/variants/0` : (Scène de test du JOHP0.) La scène de Cenere commencerait ici.
+- `cianwood_goulven_house_habitante` (Habitante) : Mon oncle dit que la maison tangue moins que le Goéland. / Il n'y dort presque jamais.
+- `cianwood_house_1_habitant` (Vieux pêcheur) : La mer entrait dans cette grotte deux fois par jour, depuis toujours. / Elle n'avait jamais manqué un rendez-vous.
+- `johp3_corentin_blackthorn` (Corentin) : Rosalia ? Monte !
+- `johp3_sanctuary_closed` : Un souffle chaud remonte de l'escalier. / Les trois Gardiens ne t'ont pas encore laissé passer.
+- `blackthorn_center_apprenti` (Apprenti) : Le clan n'a pas besoin de Boutique : on vit de peu, ici. / Pour le reste, il y a Corentin.
+- `blackthorn_house_1_habitante` (Habitante) : Mon fils veut devenir Gardien. / Je lui ai dit de finir sa soupe d'abord.
+- `blackthorn_city_dracolosse` : Le Dracolosse de Corentin bâille. / Il a l'air de bien connaître le chemin.
