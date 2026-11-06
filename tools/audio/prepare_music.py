@@ -11,13 +11,14 @@ Pour chaque morceau de `data/audio/tracks.json` :
    A + P (intro + un tour) et `loop_offset` = A. P est affiné à l'échantillon près par
    corrélation ; l'écart résiduel à la jointure est mesuré (contrôle des clics) ;
 3. jingle ou morceau sans boucle : silence final retiré ;
-4. volume perçu ramené à −16 LUFS intégrés (gain simple, crête vraie ≤ −1 dBTP), mesuré par le
-   filtre `ebur128` de ffmpeg ;
+4. volume perçu ramené à −16 LUFS intégrés, mesuré par le filtre `ebur128` de ffmpeg : gain
+   simple, et limiteur doux si la crête vraie dépasserait −1 dBTP ;
 5. écrit un WAV 16 bits par identifiant et un rapport JSON (`loop_offset`, durées, LUFS, gain,
    qualité de la jointure).
 
 Usage : python3 tools/audio/prepare_music.py [--src DOSSIER] [--out DOSSIER] [--only id,id]
   (défauts : ~/Music/kanto-lets-go, build/audio/music_wav ; rapport : <out>/report.json)
+  Johto : --src ~/Music/johto-hgss --only johto_ (docs/tech/johto-musiques.md §9).
 Rien n'est téléchargé : les fichiers sont ceux de Kevin (KHInsider, décision du 2026-10-25).
 """
 import argparse
@@ -34,6 +35,9 @@ RACINE = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
 RATE = 44100
 TARGET_LUFS = -16.0
 MAX_TRUE_PEAK = -1.0
+## Limiteur doux : genou et plafond linéaires (plafond ≈ −1,5 dBFS, marge pour la crête vraie).
+SOFT_KNEE = 0.6
+SOFT_CEILING = 0.84
 HOP = 512
 WIN = 2048
 BANDS = 32
@@ -223,6 +227,16 @@ def measure(stereo):
 	return lufs, peak
 
 
+def soft_limit(stereo):
+	"""Arrondit les crêtes au-dessus de SOFT_KNEE, sous SOFT_CEILING. Sans mémoire : un échantillon
+	ne dépend que de lui-même, la jointure d'une boucle reste continue. Sert aux morceaux dont
+	quelques crêtes isolées empêcheraient d'atteindre TARGET_LUFS par un simple gain."""
+	room = SOFT_CEILING - SOFT_KNEE
+	level = np.abs(stereo)
+	over = SOFT_KNEE + room * np.tanh((level - SOFT_KNEE) / room)
+	return np.where(level > SOFT_KNEE, np.sign(stereo) * over, stereo)
+
+
 def write_wav(path, stereo):
 	import wave
 	pcm = (np.clip(stereo, -1, 1) * 32767).round().astype("<i2")
@@ -241,7 +255,11 @@ def main():
 	args = parser.parse_args()
 	with open(os.path.join(RACINE, "data", "audio", "tracks.json"), encoding="utf-8") as f:
 		tracks = json.load(f)["tracks"]
-	matches = match_files(tracks, args.src)
+	only = [x for x in args.only.split(",") if x]
+	# --only johto_ (fin en « _ ») : tous les morceaux de ce préfixe (album de Johto).
+	only = [tid for tid in tracks for x in only if tid == x or (x[-1] == "_" and tid.startswith(x))]
+	wanted = {tid: t for tid, t in tracks.items() if not only or tid in only}
+	matches = match_files(wanted, args.src)
 	missing = [tid for tid, f in matches.items() if f is None]
 	if missing:
 		print("Pistes introuvables :", ", ".join(missing))
@@ -252,11 +270,8 @@ def main():
 	if os.path.isfile(report_path):
 		with open(report_path, encoding="utf-8") as f:
 			report = json.load(f)
-	only = [x for x in args.only.split(",") if x]
 	done = {}
-	for tid, t in tracks.items():
-		if only and tid not in only:
-			continue
+	for tid, t in wanted.items():
 		name = os.path.basename(t["file"])[: -len(".ogg")]
 		if name in done:
 			report[tid] = dict(report[done[name]], shared_with=done[name])
@@ -280,10 +295,10 @@ def main():
 		lufs, peak = measure(cut if not t.get("loop") or "loop_s" not in entry
 			else cut[int(entry["loop_offset"] * RATE):])
 		gain = TARGET_LUFS - lufs
-		if peak + gain > MAX_TRUE_PEAK:
-			gain = MAX_TRUE_PEAK - peak
-			entry["peak_limited"] = True
 		cut = cut * (10 ** (gain / 20))
+		if peak + gain > MAX_TRUE_PEAK:
+			cut = soft_limit(cut)
+			entry["peak_limited"] = True
 		write_wav(os.path.join(args.out, name + ".wav"), cut)
 		entry.update(duration_s=round(len(cut) / RATE, 3), lufs_before=lufs,
 			gain_db=round(gain, 2), peak_before=peak)

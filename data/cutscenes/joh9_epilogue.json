@@ -85,7 +85,8 @@
 						"despawn": "orme"
 					},
 					{
-						"credits": "johto"
+						"credits": "johto",
+						"music": "johto_ending"
 					},
 					{
 						"save": "johto_chapter_done"
