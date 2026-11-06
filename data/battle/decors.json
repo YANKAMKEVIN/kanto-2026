@@ -11,6 +11,11 @@
 			"back": "res://assets/battle/decors/cianwood_plage_back.webp",
 			"size": [2340, 1080], "foe_feet": [1559, 540], "player_feet": [716, 972], "horizon": 360
 		},
+		"bell_tower_sommet": {
+			"zone": "bell_tower_roof", "variant": "sommet",
+			"back": "res://assets/battle/decors/bell_tower_sommet_back.webp",
+			"size": [2340, 1080], "foe_feet": [1559, 540], "player_feet": [716, 972], "horizon": 360
+		},
 		"tide_cave_bassin": {
 			"zone": "tide_cave", "variant": "bassin",
 			"back": "res://assets/battle/decors/tide_cave_bassin_back.webp",
@@ -467,7 +472,7 @@
 		"bell_tower_woods": [{ "decor": "route_1_chemin" }],
 		"bell_tower_1f": [{ "decor": "tour_pokemon" }],
 		"bell_tower_2f": [{ "decor": "tour_pokemon" }],
-		"bell_tower_roof": [{ "decor": "route_1_chemin" }],
+		"bell_tower_roof": [{ "decor": "bell_tower_sommet" }],
 		"oak_lab": [
 			{ "decor": "oak_lab_labo" }
 		],

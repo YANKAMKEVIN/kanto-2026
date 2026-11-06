@@ -2,8 +2,8 @@ extends SceneTree
 ## Construit les quatre cartes du jalon JOH8 (Chapitre Johto, `docs/tech/jalon-joh8.md` §2.1 à
 ## §2.3) d'après leurs grilles fonctionnelles (`tools/plans/bell_tower_woods.txt`,
 ## `bell_tower_1f.txt`, `bell_tower_2f.txt`, `bell_tower_roof.txt` : **la grille fait foi**), en
-## **tuiles provisoires** (`OverworldTiles`, modèle du JOH2 ; vues peintes validées pour le lot
-## d'art suivant) :
+## **tuiles provisoires** (`OverworldTiles`, modèle du JOH2), logique seule : l'image vient des
+## passes d'ambiance :
 ##   bell_tower_woods (Bois de la Tour), bell_tower_1f, bell_tower_2f, bell_tower_roof.
 ##
 ##   godot --headless --path . -s res://tools/build_joh8_maps.gd [-- --maps=bell_tower_2f]
@@ -19,6 +19,8 @@ extends SceneTree
 ## Relancer `--maps=bell_tower_woods` quand `ecruteak_city.tscn` (JOH2) existe : le raccord sud
 ## cesse d'être « À venir » ; et relancer `build_joh2_maps.gd --maps=ecruteak_city` pour le
 ## raccord nord de Rosalia.
+## **À relancer ensuite**, sinon la peinture est perdue (`tools/build_joh_ambiance_carillon.gd` donne
+## l'ordre des trois passes) : ces cartes sont peintes depuis le 2026-11-06.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 

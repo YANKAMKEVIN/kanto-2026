@@ -239,3 +239,24 @@ Fusion avec le JOH6 : H-38 posée dans `week_sunday_diane` (variante après le d
 ne lève pas `johto_chapter_done` ; Entei de carte du JOH6 gardé, le provisoire du JOH8 retiré.
 
 **JOH8 terminé** : fusionné dans `main` le 2026-11-05 (CI verte sur `f7c3709f`, run 41945347983).
+
+## 9. Peinture (2026-11-06)
+
+Bois de la Tour, 1F, 2F et sommet peints d'après leurs vues générales : art Codex
+(`tools/art/joh8_carillon.py`, éléments Tour Carillon de `joh_ambiance_lot3.py`), passes
+`build_joh_ambiance.gd`, `build_joh_ambiance_caves.gd` et `build_joh_ambiance_carillon.gd` (ordre
+en tête de ce dernier, à relancer après `build_joh8_maps.gd`). Décor de combat du sommet :
+`bell_tower_sommet`. Logique identique avant et après (`dump_map_logic`, `dump_map_nodes` : seul
+`NightLights` devient calque). Planche : `docs/design/reference/joh8-peinture-avant-apres-v1.jpg`.
+Départs `johto_bell_tower_woods_night`, `johto_bell_tower_roof_night` pour relire la nuit.
+
+Défauts [D] : érable peint exprès pour le Bois, plancher réchauffé contre le profil `tower`, 2F
+plus gris, escalier qui descend assombri, lueurs des brûle-parfums la nuit ; rambarde sud fermée
+(la grille fait foi : la vue générale la montre ouverte). Le Bois et le 1F gardent leurs décors de
+combat de substitution (`route_1_chemin`, `tour_pokemon`).
+
+QA A17 (2026-11-06, 10 h 24 – 10 h 35, APK de `1ea78e9c`) : aucun bloquant. Vus sur téléphone : Bois de
+jour et de nuit (lanternes allumées), 2F, chute d'une planche vers le 1F, sommet à l'aube, scène de
+Dante jusqu'au combat, décor `bell_tower_sommet`, sommet de nuit. Environ 50 images/s, creux à 31
+au chargement. Pas vus sur téléphone : cage brûlée, Entei et Ho-Oh après la peinture (logique
+inchangée, tests GUT).

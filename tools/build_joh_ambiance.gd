@@ -246,6 +246,17 @@ const MAPS: Dictionary = {
 			["prop_lanterne_ebenelle_01", Vector2(27.6, 13.02), "Lanterne5", 1.0],
 			["prop_lanterne_ebenelle_01", Vector2(11.7, 22.1), "Lanterne6", 1.0],
 			["prop_lanterne_ebenelle_01", Vector2(20.3, 22.1), "Lanterne7", 1.0]]},
+	# Bois de la Tour (JOH8), d'après sa vue générale : pied de la tour peint, lanternes de pierre
+	# sur leurs cases, érables peints pour le Bois. Le pied décale l'image : la porte peinte, à gauche du
+	# milieu, tombe sur les cases `D`. Dessins provisoires des lanternes retirés par
+	# `tools/build_joh_ambiance_carillon.gd`, à relancer après cette passe.
+	&"bell_tower_woods": {"plan": "bell_tower_woods", "seed": 48201, "rock": Rock.SHORE, "path": "",
+		"panes": false, "trees": BOIS_TREES, "legend": {"L": "c"},
+		"props": [["bldg_tour_carillon_base_01", Vector2(12.3, 6.0), "TourCarillon", 1.0],
+			["prop_lanterne_pierre_01", Vector2(9.5, 9.0), "Lanterne0", 1.0],
+			["prop_lanterne_pierre_01", Vector2(12.5, 9.0), "Lanterne1", 1.0],
+			["prop_lanterne_pierre_01", Vector2(9.5, 15.0), "Lanterne2", 1.0],
+			["prop_lanterne_pierre_01", Vector2(12.5, 15.0), "Lanterne3", 1.0]]},
 	# JOH9 : Mont Argenté et Route 28, d'après leurs vues générales. « snow » : réglages de
 	# `tools/joh_ambiance_neige.gd` (neige `n` en pavés ou en sol de base, forêt et herbes sous la
 	# neige au-dessus de la rangée « row », plantes, muraille, blocs, nuages).
@@ -369,6 +380,11 @@ const ROS_LAMPS: Array[Vector2] = [
 	Vector2(13.5, 13), Vector2(24.9, 13), Vector2(41.5, 13), Vector2(12.9, 30), Vector2(22.9, 30),
 	Vector2(32.1, 30), Vector2(50.9, 30),
 ]
+## Bois de la Tour : érables verts et rouges de sa vue générale [D].
+const BOIS_TREES: Array = [
+	["tree_erable_bois_01", 1.0, false], ["tree_erable_bois_01", 0.92, true],
+	["tree_erable_bois_01", 0.96, true], ["tree_erable_bois_01", 0.94, false],
+]
 ## Massifs : part d'hortensias et teinte (roses, comme la vue générale) [D].
 const ROS_HYDRANGEA_SHARE: float = 0.4
 const ROS_HYDRANGEA_TINT := Color(1.25, 0.82, 0.85)
@@ -406,6 +422,7 @@ const WINDOWS: Dictionary = {
 	"bldg_maison_toit_01": [Vector2(-125, -105), Vector2(125, -105)],
 	"bldg_maison_aieule_01": [Vector2(-260, -180), Vector2(258, -180)],
 	"bldg_maison_ebenelle_01": [Vector2(-188, -233), Vector2(188, -233)],
+	"bldg_tour_carillon_base_01": [Vector2(-40, -480), Vector2(-40, -260), Vector2(180, -90)],
 	"bldg_centre_neige_01": [Vector2(-250, -193), Vector2(255, -191), Vector2(-4, -120)],
 	"bldg_maison_gardien_01": [Vector2(-176, -165), Vector2(174, -164)],
 	"bldg_poste_route_28_01": [Vector2(0, -110)],
@@ -419,7 +436,7 @@ const PANES: Dictionary = {
 }
 const LAMP_HEAD: Dictionary = {
 	"prop_lampadaire_01": Vector2(0, -222), "prop_lampadaire_quai_01": Vector2(0, -160),
-	"prop_lanterne_ebenelle_01": Vector2(0, -104),
+	"prop_lanterne_ebenelle_01": Vector2(0, -104), "prop_lanterne_pierre_01": Vector2(0, -80),
 }
 ## Berges des lacs de JOH6 (modèle : `build_daf4_exterieurs.gd`).
 const BANK_MARKS: Array[String] = [".", "h", "=", "T", "R"]

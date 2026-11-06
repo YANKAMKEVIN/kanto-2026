@@ -12461,6 +12461,215 @@
     672
    ]
   },
+  "bldg_tour_carillon_base_01": {
+   "fichier": "res://assets/world/buildings/bldg_tour_carillon_base_01.png",
+   "taille": [
+    931,
+    616
+   ],
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_tour_carillon_base_01_contact.png",
+    "decalage": [
+     -473,
+     -56
+    ],
+    "echelle": 2,
+    "taille": [
+     474,
+     47
+    ]
+   }
+  },
+  "prop_lanterne_pierre_01": {
+   "fichier": "res://assets/world/props/prop_lanterne_pierre_01.png",
+   "taille": [
+    77,
+    121
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_lanterne_pierre_01_contact.png",
+    "decalage": [
+     -46,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     47,
+     16
+    ]
+   }
+  },
+  "int_colonne_rouge_01": {
+   "fichier": "res://assets/world/interiors/int_colonne_rouge_01.png",
+   "taille": [
+    96,
+    250
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_colonne_rouge_01_contact.png",
+    "decalage": [
+     -56,
+     -7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "int_autel_carillon_01": {
+   "fichier": "res://assets/world/interiors/int_autel_carillon_01.png",
+   "taille": [
+    576,
+    232
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_autel_carillon_01_contact.png",
+    "decalage": [
+     -296,
+     -5
+    ],
+    "echelle": 2,
+    "taille": [
+     296,
+     22
+    ]
+   }
+  },
+  "int_brule_parfum_01": {
+   "fichier": "res://assets/world/interiors/int_brule_parfum_01.png",
+   "taille": [
+    96,
+    126
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_brule_parfum_01_contact.png",
+    "decalage": [
+     -56,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
+  },
+  "int_grande_cloche_01": {
+   "fichier": "res://assets/world/interiors/int_grande_cloche_01.png",
+   "taille": [
+    384,
+    332
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_grande_cloche_01_contact.png",
+    "decalage": [
+     -200,
+     -15
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     27
+    ]
+   }
+  },
+  "relief_mur_carillon_01": {
+   "fichier": "res://assets/world/relief/relief_mur_carillon_01.png",
+   "taille": [
+    192,
+    120
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_carillon_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_carillon_02": {
+   "fichier": "res://assets/world/relief/relief_mur_carillon_02.png",
+   "taille": [
+    192,
+    120
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_carillon_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_carillon_03": {
+   "fichier": "res://assets/world/relief/relief_mur_carillon_03.png",
+   "taille": [
+    192,
+    33
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_carillon_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_carillon_04": {
+   "fichier": "res://assets/world/relief/relief_mur_carillon_04.png",
+   "taille": [
+    34,
+    146
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_carillon_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "tree_erable_bois_01": {
+   "fichier": "res://assets/world/props/tree_erable_bois_01.png",
+   "taille": [
+    240,
+    211
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_erable_bois_01_contact.png",
+    "decalage": [
+     -128,
+     -3
+    ],
+    "echelle": 2,
+    "taille": [
+     128,
+     21
+    ]
+   }
+  },
   "relief_mur_cendree_01": {
    "fichier": "res://assets/world/relief/relief_mur_cendree_01.png",
    "taille": [
