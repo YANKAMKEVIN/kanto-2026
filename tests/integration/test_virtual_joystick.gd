@@ -18,6 +18,9 @@ func before_each() -> void:
 	var rect := _joystick.get_viewport_rect()
 	_width = rect.size.x
 	_origin = rect.position + Vector2(rect.size.x * 0.25, rect.size.y * 0.5)
+	# Laisse passer une image : en CI, des glissements se perdaient par intermittence juste après
+	# un test précédent (cause non établie, seuls les glissements synchrones étaient touchés).
+	await wait_process_frames(2)
 
 
 func after_each() -> void:
@@ -53,6 +56,7 @@ func _pressed_moves() -> Array[StringName]:
 ## Pose le doigt 0 et le fait glisser de [param offset].
 func _swipe(offset: Vector2) -> void:
 	_touch(0, _origin, true)
+	assert_true(_joystick.is_active(), "le toucher arrive au joystick")
 	_drag(0, _origin + offset)
 
 
