@@ -80,8 +80,13 @@ Ordre du dossier §4 : `johto_rival_relay` (extérieur) → `johto_rival_healed`
 - Dresseurs du §6 (`data/trainers/joh9.json`), textes A-4 à A-6, A-14, A-18 mot pour mot.
 - **Dante (2)** `dante_2` et **rival final** `rival_johto_final` : combats de scène, `can_lose`
   selon le moteur (défaite = retour au Centre du Mont Argenté, point de repos posé à la visite).
-- Reprise après défaite : la scène du sommet lit les drapeaux (A-25 si Dante n'est pas battu ;
-  A-45 si Giovanni est vu et le rival pas battu) ; aucune scène rejouée en double.
+- Reprise après défaite : la scène du sommet lit les drapeaux (A-25 si Dante n'est pas battu) ; aucune
+  scène rejouée en double. Le rival ne se déclenche plus seul (décision de Kevin du 2026-11-06) : il
+  arrive, dit A-40, A-41, A-41b et attend ; on lui parle (A-45 après une défaite), on confirme, le
+  combat part. Le palier (16, 5) ne joue plus rien après Giovanni : l'échelle reste libre.
+  Simulation (100 graines, attentif, 6 Hyper Potions pour les deux combats, équipe mixte, sans objets entre les
+  deux) : Dante 57 % (N70), 81 % (N73). Rival sans soin 0 % et 5 % ; rival après soin complet 51 % et 69 %. Le
+  soin par le Sac tombe entre ces bornes selon les réserves du joueur.
 
 ### 2.4 Épilogue
 
@@ -128,7 +133,8 @@ Ordre du dossier §4 : `johto_rival_relay` (extérieur) → `johto_rival_healed`
 - IA `smart` + changement de Pokémon pour Dante et le rival ; rival final sans attaques imposées
   (attaques de niveau).
 - Drapeaux de travail : `johto_summit_reached` (A-23/A-26 à A-28 une fois, A-25 ensuite),
-  `johto_rival_final_met` (A-40/A-41 une fois, A-45 ensuite), `johto_green_ball_received`,
+  `johto_rival_final_met` (combat engagé, A-45 ensuite), `johto_rival_final_arrived` (A-40, A-41, A-41b
+  dits), `johto_rival_final_ready` (réponse à la confirmation, remis à zéro à chaque talk), `johto_green_ball_received`,
   `johto_mt_silver_wind_seen` (A-22 une fois, déclencheur (12, 12..13) vers l'ouest).
 - Vol et Téléport interdits au sommet **en permanence** (le dossier : entre Dante et le rival ;
   la scène enchaîne tout, on redescend par l'échelle).
