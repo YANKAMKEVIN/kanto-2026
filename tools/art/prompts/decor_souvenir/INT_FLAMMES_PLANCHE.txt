@@ -1,0 +1,7 @@
+INT_FLAMMES_PLANCHE — planche d'objets de décor pour un intérieur peint d'un jeu d'aventure 2D en vue de dessus de trois quarts : des flammes d'incendie.
+Image jointe : un objet déjà peint pour le jeu : même rendu peint simplifié, même contour fin coloré, même finesse.
+Style : peint, volumes doux, contour fin coloré sans trait noir. Ni pixel art, ni 3D, ni photo.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 3 colonnes × 2 lignes, cellules de 512 × 512 px. Un seul groupe de flammes par cellule, entier, posé sur le bas de sa cellule, sans rien qui déborde.
+Six groupes de flammes différents, orange et jaune avec un cœur clair, de hauteurs variées, quelques braises qui montent, bords nets.
+Aucun personnage, aucune créature, aucune ombre portée, aucun sol, aucun mur, aucune fumée opaque. INTERDITS : texte, lettres, chiffres, logo.
