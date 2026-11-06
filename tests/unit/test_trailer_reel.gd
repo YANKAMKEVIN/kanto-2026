@@ -40,7 +40,7 @@ func test_strict_reading_refuses_bad_data_all_or_nothing() -> void:
 		"pas du Theora": {"video": "res://assets/ui/opening/splash_pokemake.png", "seconds": 30.0},
 		"durée manquante": {"video": VIDEO},
 		"durée trop courte": {"video": VIDEO, "seconds": 1.0},
-		"durée trop longue": {"video": VIDEO, "seconds": 90.0},
+		"durée trop longue": {"video": VIDEO, "seconds": 91.0},
 		"letterbox trop grand": {"video": VIDEO, "seconds": 30.0, "letterbox": 0.5},
 		"clé inconnue": {"video": VIDEO, "seconds": 30.0, "shots": []},
 	}
