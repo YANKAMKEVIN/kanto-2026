@@ -120,7 +120,7 @@ Code : **HG-xx** = piste HGSS à obtenir (numérotation de la §4). Les noms de 
 | Générique | 38 | 1 |
 | **Total** | | **38** |
 
-**Noyau minimal (30 pistes)** : villes, Centre, 4 routes, 11 lieux, 6 combats (sauvage, Dresseur, Rocket, Gym, Champion, légendaires / Bêtes), sans Vélo, S.S. Aqua, victoires ni générique ; les manques retombent sur Let's Go (déjà dans le jeu). Les jingles, les « ! » des Dresseurs et les bruitages restent ceux de Let's Go.
+**Noyau minimal (29 pistes)** : villes, Centre, 4 routes, 11 lieux, 6 combats (sauvage, Dresseur, Rocket, Gym, Champion, une piste de légendaires), sans Surf, Vélo, S.S. Aqua, victoires ni générique ; les manques retombent sur Let's Go (déjà dans le jeu). Les jingles, les « ! » des Dresseurs et les bruitages restent ceux de Let's Go.
 
 ## 5. Ce que le code devra faire (pour mémoire, pas fait ici)
 
