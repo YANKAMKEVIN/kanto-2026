@@ -694,7 +694,7 @@ def main():
 	dlg["mt_silver_rival_arrives_summit"] = say(RIVAL, "A-40")
 	dlg["mt_silver_rival_why"] = say(RIVAL, "A-41")
 	dlg["mt_silver_rival_wait"] = say(RIVAL, "A-41b")
-	dlg["mt_silver_rival_ready"] = say(RIVAL, "A-41c", draft=True, choice={
+	dlg["mt_silver_rival_ready"] = say(RIVAL, "A-41c", choice={
 		"confirm": "EN AVANT", "cancel": "PAS ENCORE", "confirm_set": [RIVAL_READY],
 		"cancel_pages": [wrap(A["A-41d"])]})
 	dlg["mt_silver_rival_return"] = say(RIVAL, "A-45")

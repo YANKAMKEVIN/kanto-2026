@@ -180,7 +180,6 @@
 	},
 	"mt_silver_rival_ready": {
 		"speaker": "{rival}",
-		"draft": true,
 		"choice": {
 			"confirm": "EN AVANT",
 			"cancel": "PAS ENCORE",
