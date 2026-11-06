@@ -3289,6 +3289,13 @@
    "hauteur": 128
   },
   {
+   "id": "medium",
+   "source": "PNJ_MEDIUM_NE.png",
+   "sortie": "assets/sprites/characters/painted/medium_sheet.png",
+   "hauteur": 128,
+   "note": "RP-147 ; Médiums masculins, look psychic, d'après medium.webp"
+  },
+  {
    "id": "topdresseur",
    "source": "PNJ_TOPDRESSEUR_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/topdresseur_sheet.png",
@@ -5876,6 +5883,51 @@
   }
  ],
  "pokemon_boucles": [
+  {
+   "id": "mewtwo",
+   "source": "POKE_MEWTWO_MONDE.png",
+   "sortie": "assets/sprites/pokemon/painted/mewtwo_sheet.png",
+   "hauteur": 160,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "halo",
+    "repos_2"
+   ],
+   "note": "RP-141 ; planche de Kevin (ChatGPT) ; découpe : tools/art/legendaires_kanto.py --mewtwo"
+  },
+  {
+   "id": "electhor",
+   "source": "POKE_ELECTHOR_MONDE.png",
+   "sortie": "assets/sprites/pokemon/painted/electhor_sheet.png",
+   "hauteur": 150,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "eclairs",
+    "repos_2"
+   ],
+   "note": "RP-132 ; planche de Kevin (ChatGPT) ; découpe : tools/art/legendaires_kanto.py --electhor"
+  },
+  {
+   "id": "sulfura",
+   "source": "POKE_SULFURA_MONDE.png",
+   "sortie": "assets/sprites/pokemon/painted/sulfura_sheet.png",
+   "hauteur": 165,
+   "colonnes": 4,
+   "seuil_alpha": 24,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "flammes",
+    "repos_2"
+   ],
+   "note": "RP-132 ; découpe : tools/art/legendaires_kanto.py --sulfura"
+  },
   {
    "id": "artikodin",
    "source": "POKE_ARTIKODIN_MONDE_NE_r1.png",

@@ -140,6 +140,8 @@ const REDUCED_FADE: float = 0.15
 ## dresseur = le héros **peint** de dos (pose de lancer, `heros_lancer.png`, 384 px affichés à
 ## 1:1, LINEAR ; correctif QA S24). Tout en Tween ; durées (s) à speed_scale = 1.
 const BALL_TEXTURE: Texture2D = preload("res://assets/ui/items/poke_ball.webp")
+## Icône peinte de la Ball lancée : `<id>.webp` ; absente → [constant BALL_TEXTURE].
+const BALL_ICON_PATH: String = "res://assets/ui/items/%s.webp"
 ## Les échelles de la Ball restent en multiples de l'ancienne Ball de 32 px : l'image peinte en
 ## fait 256.
 const BALL_ART: float = 32.0 / 256.0
@@ -1088,10 +1090,11 @@ func play_vanish(side: BattleEvent.SideId) -> void:
 ## absorbé dans un éclat rouge, puis la Ball tombe dans l'herbe, où elle reste (ombre au sol)
 ## jusqu'à [method play_catch_burst], [method play_break_free] ou [method exit]. Sans effet hors
 ## combat.
-func play_throw() -> void:
+func play_throw(ball_id: StringName = &"") -> void:
 	if not _active:
 		return
 	_build_capture_props()
+	_ball.texture = ball_texture(ball_id)
 	var view := _view_size()
 	var foe := BattleEvent.SideId.FOE
 	var scale := THROWER_SCALE
@@ -1239,6 +1242,12 @@ func play_break_free() -> void:
 ## Les accessoires de la capture (Ball, ombre, dresseur) sont affichés.
 func is_capture_shown() -> bool:
 	return _ball != null and (_ball.visible or _thrower.visible)
+
+
+## Image de la Ball [param ball_id], [constant BALL_TEXTURE] si elle n'a pas d'icône.
+static func ball_texture(ball_id: StringName) -> Texture2D:
+	var path := BALL_ICON_PATH % ball_id
+	return load(path) as Texture2D if ResourceLoader.exists(path) else BALL_TEXTURE
 
 
 ## Ball posée dans l'herbe, visible (tests, captures) ; null avant le premier lancer.

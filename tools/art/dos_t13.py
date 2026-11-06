@@ -137,7 +137,7 @@ def notebook() -> None:
 		for suffixe in ("", "_profondeur"):
 			if not (passes / f"dos3d_{n}{suffixe}.png").exists():
 				sys.exit(f"Passe manquante : {passes}/dos3d_{n}{suffixe}.png (lancer « rendre » d'abord)")
-	sortie = TRAVAIL / "kanto_dos_t13.ipynb"
+	sortie = TRAVAIL / ZIP_COLAB.replace(".zip", ".ipynb")
 	subprocess.run([sys.executable, ICI / "ia/creer_notebook_colab_v2.py", passes, OFFICIEL, sortie,
 		"--nums", ",".join(LOT), "--sans-ipa", SANS_IPA, "--zip", ZIP_COLAB], check=True)
 	print("Notebook :", sortie)

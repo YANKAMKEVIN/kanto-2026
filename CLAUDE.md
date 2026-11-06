@@ -59,7 +59,7 @@ docs/design/   conception (ignoré par Godot)
 tools/test.sh                  # suite complète, avant une fusion (verrou : 2 suites complètes max sur le Mac ; affiche les 10 scripts les plus lents)
 tools/test.sh --changed [base] # pendant une tâche : seulement les tests liés aux fichiers modifiés depuis base (défaut origin/main)
 tools/test.sh -f surf,safari   # pendant une tâche : les fichiers de test dont le nom contient un des motifs
-tools/ci_wait.sh [commit]      # dépôt public : après push, attend la CI GitHub (10 lots) ; remplace la suite du Mac avant une fusion
+tools/ci_wait.sh [commit]      # dépôt public : après push, attend la CI GitHub (14 lots) ; remplace la suite du Mac avant une fusion
 tools/build_android.sh         # APK debug → build/kanto2026-debug.apk
 tools/build_rc.sh [--install]  # APK release signé → build/rc/pokemake-<version>.apk + manifeste (clé hors dépôt : docs/tech/release.md)
 tools/version.py show|set X.Y.Z|check   # version unique (project.godot) recopiée dans les presets ; code Android dérivé

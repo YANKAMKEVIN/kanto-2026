@@ -815,7 +815,7 @@ func _play_beat(beat: BattleBeat) -> void:
 		BattleBeat.Kind.FORGET:
 			await _offer_forget(beat.event)
 		BattleBeat.Kind.THROW:
-			await _play_throw()
+			await _play_throw(beat.event)
 		BattleBeat.Kind.SHAKE:
 			_vibrate()
 			if is_instance_valid(_stage):
@@ -936,13 +936,13 @@ func _ensure_summary_card() -> ExpSummaryCard:
 
 ## Coroutine : le lancer. Les cartes et le bandeau sortent, le dresseur lance la Ball sur le
 ## Pokémon sauvage, qui est absorbé ; la Ball tombe dans l'herbe.
-func _play_throw() -> void:
+func _play_throw(event: BattleEvent) -> void:
 	if is_instance_valid(_hud):
 		_hud.hide_card(BattleHud.Side.FOE)
 		_hud.hide_card(BattleHud.Side.PLAYER)
 		await _hud.hide_zone()
 	if is_instance_valid(_stage):
-		await _stage.play_throw()
+		await _stage.play_throw(event.item_id)
 
 
 ## Coroutine : la capture réussit. Éclat doré avec le motif de vibration, puis le Pokémon est

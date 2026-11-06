@@ -80,7 +80,7 @@
 			5
 		],
 		"facing": "down",
-		"sprite": "pokemon/fearow",
+		"sprite": "pokemon/moltres",
 		"dialogue": "moltres",
 		"verb": "observe",
 		"turn_to_player": false,

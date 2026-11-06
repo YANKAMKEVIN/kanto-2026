@@ -13579,6 +13579,22 @@
     "haut"
    ]
   },
+  "medium": {
+   "fichier": "res://assets/sprites/characters/painted/medium_sheet.png",
+   "cellule": [
+    69,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
   "topdresseur": {
    "fichier": "res://assets/sprites/characters/painted/topdresseur_sheet.png",
    "cellule": [
@@ -13688,6 +13704,54 @@
     "repos",
     "inspire",
     "souffle",
+    "repos_2"
+   ]
+  },
+  "sulfura": {
+   "fichier": "res://assets/sprites/pokemon/painted/sulfura_sheet.png",
+   "cellule": [
+    150,
+    171
+   ],
+   "hauteur": 165,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "flammes",
+    "repos_2"
+   ]
+  },
+  "mewtwo": {
+   "fichier": "res://assets/sprites/pokemon/painted/mewtwo_sheet.png",
+   "cellule": [
+    148,
+    160
+   ],
+   "hauteur": 160,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "halo",
+    "repos_2"
+   ]
+  },
+  "electhor": {
+   "fichier": "res://assets/sprites/pokemon/painted/electhor_sheet.png",
+   "cellule": [
+    154,
+    150
+   ],
+   "hauteur": 150,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "repos",
+    "inspire",
+    "eclairs",
     "repos_2"
    ]
   },

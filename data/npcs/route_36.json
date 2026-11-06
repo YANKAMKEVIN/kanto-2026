@@ -20,7 +20,7 @@
 			13
 		],
 		"facing": "right",
-		"sprite": "youngster",
+		"sprite": "psychic",
 		"dialogue": "route_36_medium_ernest_after",
 		"trainer": {
 			"id": "route_36_medium_ernest",
