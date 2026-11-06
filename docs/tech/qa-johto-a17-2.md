@@ -1,12 +1,14 @@
 # QA de Johto sur l'A17, deuxième passe — 2026-11-06
 
-Téléphone : Galaxy A17 (`R5GYB2R7W2Y`), Ne pas déranger actif. APK debug construit depuis `main` `137a2c5b`
-(version 0.34.1). Séance de 14 h 09 à 15 h 10, soit environ 60 min, avec des départs de débogage.
+Téléphone : Galaxy A17 (`R5GYB2R7W2Y`), Ne pas déranger actif. Deux séances, avec des départs de débogage :
+- 14 h 09 à 15 h 10, APK de `main` `137a2c5b` ;
+- 16 h 57 à 18 h 20, APK de cette branche, avec les correctifs ci-dessous.
 
 ## Résultat
 
-**Aucun blocage, aucun plantage, aucune perte de sauvegarde** sur ce qui a été joué.
-Trois jonctions ont été jouées sur onze. Les huit autres sont seulement relues dans les données.
+**Un vrai blocage trouvé et corrigé : le joueur ne pouvait pas quitter la chambre du Centre d'Oliville** (B1 ci-dessous).
+Aucun plantage, aucune perte de sauvegarde. Les onze jonctions ont été passées sur téléphone, mais par morceaux :
+chaque jonction part d'un départ de débogage, personne n'a enchaîné Johto d'un bout à l'autre.
 
 | Priorité | Point | Résultat | Constat |
 |---|---|---|---|
@@ -16,12 +18,19 @@ Trois jonctions ont été jouées sur onze. Les huit autres sont seulement relue
 | 1 | Acte 2 vers Tour Cendrée | OK | Doyen, `johto_burned_tower_open`, entrée de la tour |
 | 1 | Retour à Kanto par la Route 28 | OK | 1F (2 rochers de Force, Surf), Route 28, poste, `johto_route28_open`, Route 22 ouest puis Route 22 |
 | 1 | Kanto libre après le chapitre | OK | Vol de Bourg Palette à Jadielle, puis de Jadielle à Rosalia |
-| 1 | JOH1 à JOH5, JOH6 à JOH9 | Non testé | Lecture statique seulement, voir plus bas |
+| 1 | JOH1 vers JOH2 | **Bloquant, corrigé** | B1 ; puis réveil, Germignon, départ d'Orme, Oliville, Route 39 |
+| 1 | JOH2 vers JOH3 | OK | Scène des Sbires à Rosalia, sortie vers la Route 37 |
+| 1 | JOH3 vers JOH4 | OK | Garde sud de Doublonville : refuse sans `johto_azalea_clue`, laisse passer avec, Route 34 |
+| 1 | JOH4 vers JOH5 | OK | Brace, papiers, `johto_radio_pass`, Fargas, `johto_slowpoke_well_cleared`, faux employé |
+| 1 | Arc des Pierres | OK | Route 36, Alpha, Goulven, Goéland, Irisia, Corentin, vol vers Ébènelle, Aïeule, Antre, Ysolde. Non joué : voir « Non testé » |
+| 1 | JOH6 vers JOH7 | OK depuis Q2 | Brace, générateur, Raikou, déserteur, `johto_whirl_clue` ; mer fermée puis ouverte, Route 40 |
+| 1 | JOH7 vers JOH8 | OK | Orme, `johto_bell_tower_clue`, Vol, Doyen, garde refuse puis laisse passer, Bois de la Tour |
+| 1 | JOH8 vers JOH9 | OK | Doyen, `johto_act3` ; Lac Colère refuse sans le drapeau, Sentier Argenté avec |
 | 2 | Capture de Raikou | OK | Master Ball ; sprite disparu ; `johto_raikou_caught` et `johto_raikou_return_done` |
 | 2 | Hurlement retenu | OK | 1 Hurlement sur 18 tours de Raikou ; cohérent avec 1 sur 16, échantillon petit |
 | 2 | Retour après Hurlement ou fuite | OK | Raikou reste après Hurlement, Entei et Ho-Oh restent après une fuite ; on les réaffronte |
 | 2 | Retour d'Entei et de Ho-Oh | OK | Capture à la Master Ball, sprite disparu, drapeaux posés |
-| 2 | Fuite au repaire d'Acajou | Non joué | État équivalent joué : `johto_raikou_done` sans capture, Raikou présent à la Tour Cendrée après le chapitre |
+| 2 | Fuite au repaire d'Acajou | OK | Raikou disparaît, `johto_raikou_done` et `johto_raikou_fled` posés : même état que son retour joué après le chapitre. Hurlement n'y est pas sorti : il suit le même chemin dans le code |
 | 2 | Capture aux Hyper Balls | Non abouti | 18 lancers sur Raikou à pleine vie, sans capture, puis Master Ball |
 | 3 | Rival du sommet | OK | Contrôle rendu, Hyper Potion par le Sac (40 à 223 PV, sauvegardée), parler, EN AVANT, combat lancé. Combat non joué jusqu'au bout (fait en première passe) |
 | 3 | Défaite contre Dante | OK | Centre du Mont Argenté, équipe soignée, `johto_summit_reached` |
@@ -31,53 +40,41 @@ Trois jonctions ont été jouées sur onze. Les huit autres sont seulement relue
 | 5 | Défaite contre Dante à la Tour | OK | Vue en plus : Centre de Rosalia, `johto_dante_lost_1` |
 | 5 | Entrée de l'Antre | OK | Traversée dans le sens de la sortie, vers Ébènelle |
 | 5 | Lanternes d'Ébènelle | Vu | Présentes sur la place de jour, de nuit non vues |
-| 5 | Tapis du clan | Non testé | |
-| 6 | Remontée à pied depuis le Centre | Non testé | A-25 vu en repartant du sommet, pas en marchant |
-| 6 | Descente du sommet | Partiel | Jouée du 1F à la Route 22 ; 3F et 2F non joués |
+| 5 | Tapis du clan | Vu | Maison de l'Aïeule, aucune gêne de déplacement |
+| 6 | Remontée à pied depuis le Centre | OK | Centre, Sentier, extérieur, 1F (Surf, 2 rochers), 2F, 3F, sommet, équipe niv. 95 |
+| 6 | Descente du sommet | OK | 3F, 2F, 1F, puis Route 28 et Route 22 (première séance) |
 
 ## Anomalies
 
-Aucun bloquant.
+**B1, bloquant, corrigé : impossible de quitter la chambre du Centre d'Oliville.** L'escalier arrivait en (13, 7) dans
+le Centre. Cette case a des murs à gauche, à droite et en bas, et le pas vers le haut déclenche l'escalier : le joueur
+remontait sans fin. Personne n'avait vu le cas, les départs de JOH2 commençant dehors.
+- Correctif : arrivée sur le palier (13, 6), `game/world/maps/olivine_center.tscn` et `tools/build_painted_interiors.gd`.
+- Nouveau test `tests/integration/test_spawn_pockets.gd` : sur toutes les cartes, aucune arrivée n'ouvre sur une poche.
+  Ce cas était le seul.
 
-**M3, mineur : libellé « Exploration de Kanto » sur l'onglet Johto.** Sur la carte, onglet Johto, le bloc en bas à
-gauche garde ce titre et le décompte de Kanto. Cause probable : le bloc n'est pas relié à la région affichée. Capture :
-[`carte-johto-libelle-kanto.jpg`](qa-johto-a17-2/carte-johto-libelle-kanto.jpg).
+**M3, mineur, corrigé : libellé de la carte.** Le bloc affiche maintenant « Exploration de Johto » sur l'onglet Johto.
 
-**M4, mineur (lu, pas joué) : aucun objectif après le Doyen de fin de JOH8.** `data/story/objectives.json` s'arrête à
-l'entrée `unless johto_act3`. Rien n'indique ensuite le Mont Argenté ni l'épilogue. Guidage seulement : le passage du
-Lac Colère s'ouvre bien.
+**M4, mineur, corrigé : objectifs de JOH9.** Deux objectifs ajoutés, textes [D] à relire par Kevin : « atteindre le
+sommet du Mont Argenté. », vu dans le menu, et « rentrer à Bourg Palette, par la Route 28. ».
 
-**M5, mineur : pièges dans les départs de débogage, pas dans le jeu.**
-- Les départs de fin de Johto n'ont pas `rival_route22_final_won` : le rival de Kanto apparaît devant le poste de la
-  Route 22 ouest. Dans une vraie partie il est déjà battu, puisque la Ligue est finie.
-- `johto_blackthorn.json` n'a pas `johto_team_returned` : Corentin n'y pose pas `johto_act2`. Partir de
-  `johto_den_return.json`.
-- Aucun départ n'a `johto_radio_office_done` sans `johto_stones_quest` : la sortie de la Tour Radio ne se rejoue que
-  depuis `johto_radio_tower_office.json`, en repassant par le bureau.
+**M5, mineur, corrigé : pièges des départs de débogage.** 88 départs de Johto reçoivent `rival_route22_final_won`.
+Nouveau départ `johto_radio_tower_exit`, joué. Le README signale `johto_blackthorn` et décrit le bureau actuel.
 
-**Q2, ordre JOH6 puis JOH7 : décidé et corrigé.** L'accès à la mer dépendait de `johto_act2` seul : le joueur pouvait
-aller aux Îles Tourbillon et à la Tour Carillon avant le repaire d'Acajou. Décision de Kevin du 2026-11-06 : JOH6
-d'abord. La barrière `olivine_south_sea_block`, seul accès à la Route 40, s'efface maintenant avec `johto_whirl_clue`,
-posé par le déserteur d'Acajou. Le marin garde son texte.
+**M6, mineur, non corrigé : pas d'objectif pendant JOH7.** Entre le déserteur et Orme, aucun objectif ne s'affiche
+(lu dans `objectives.json`). Le déserteur annonce les Îles Tourbillon dans son dialogue.
+
+**Q2, ordre JOH6 puis JOH7 : décidé et corrigé.** L'accès à la mer dépendait de `johto_act2` seul. Décision de Kevin
+du 2026-11-06 : JOH6 d'abord. La barrière `olivine_south_sea_block`, seul accès à la Route 40, s'efface maintenant
+avec `johto_whirl_clue`, posé par le déserteur d'Acajou. Le marin garde son texte. Vu sur téléphone dans les deux sens.
 
 Hors périmètre, pour mémoire : le combat au sommet utilise le décor `route_3_roche` (`data/battle/decors.json:841`).
 
-## Jonctions relues dans les données
+## Lecture statique
 
 Lecture des 120 départs `johto_*` et de leurs 135 drapeaux : chacun a un endroit qui le pose dans le jeu, hors
 `tools/` et `tests/`. Aucune condition Johto ne lit un drapeau jamais posé, aucun raccord ne mène à une carte absente.
-Ce contrôle a été fait par un sous-agent, en lecture seule, et rien de cela n'a été joué.
-
-| Jonction | Lecture | Condition principale |
-|---|---|---|
-| JOH1 vers JOH2 | OK | Garde d'Oliville : `johto_starter_chosen`, `johto_orme_left` |
-| JOH2 vers JOH3 | OK | Pas de barrage au sud de Rosalia |
-| JOH3 vers JOH4 | OK | Garde sud de Doublonville : `johto_azalea_clue` |
-| JOH4 vers JOH5 | OK | Puits, Brace, `johto_radio_pass` |
-| Arc, chaîne interne | OK | Route 36 à l'autel, de `johto_stones_quest` à `johto_stone_breath` |
-| JOH6 vers JOH7 | OK depuis Q2 | Marin du sud d'Oliville : `johto_whirl_clue` |
-| JOH7 vers JOH8 | OK | `johto_lugia_done`, Orme, `johto_bell_tower_clue`, Doyen |
-| JOH8 vers JOH9 | OK | Doyen pose `johto_act3`, garde du Lac Colère |
+Ce contrôle n'a pas vu B1 : il suit les drapeaux, pas la marche.
 
 Objets clés et CS : `team_confiscation.gd` laisse les objets clés et toutes les CS au Sac pendant l'acte 1. Risque
 restant, non vérifié : au choix des 6, aucun membre compatible Surf ou Force.
@@ -116,9 +113,11 @@ rival (`johto_rival`), Lugia, Route 29, Écorcia, Oliville, Irisia, Acajou, gén
   - fin de chapitre à Bourg Palette, avec villes découvertes.
 - Drapeaux relus dans `save.json`, les scènes de jonction étant enchaînées dans une même partie.
 - Combats joués par une boucle naïve sur `adb` : **ce n'est pas une mesure de difficulté**.
-- Filtre `SCRIPT ERROR`, `FATAL`, `ERROR` lu en fin de séquence : Ho-Oh, Tour Radio, descente, Kanto, Tour Carillon,
-  rival, A-25. Résultat : rien. **Non filtré en fin de séquence** (journal vidé au départ suivant) : Raikou et Entei,
-  Antre, défaite contre Dante au sommet. Aucun arrêt de l'appli n'y a été vu.
+- Séance 2 : équipes relevées au niv. 70 ou 95 pour les combats lourds, sinon la boucle perdait (Brace au repaire,
+  Dante à la Tour).
+- Filtre `SCRIPT ERROR`, `FATAL`, `ERROR` lu en fin de la plupart des séquences, rien trouvé. **Pas lu** pour Raikou
+  et Entei, Antre, défaite contre Dante au sommet, et plusieurs séquences de la séance 2, le journal étant vidé à
+  chaque départ. Aucun arrêt de l'appli n'a été vu.
 
 ## Incident de séance
 
@@ -129,16 +128,19 @@ sont écartés de ce rapport. La partie écrasée (« Uk », 50 s de jeu) a ét�
 
 ## Non testé
 
-- Jonctions JOH1 à JOH5, JOH6 à JOH9 et chaîne interne de l'arc : pas jouées.
-- Fuite ou Hurlement au repaire d'Acajou, en jeu.
+- Une partie complète : chaque jonction part d'un départ, avec drapeaux et équipe préparés.
+- Routes 38, 35, 34, Bois aux Chênes, Puits B1F, Tour Radio 2F à 4F, Route 42, Acajou, Route 43, Îles Tourbillon,
+  Tour Carillon 1F et 2F : pas traversés dans cette QA.
+- Énigmes d'Alpha, Grotte des Marées et socle, combats des Gardiens.
+- Hurlement au repaire d'Acajou, en jeu.
 - Capture d'un légendaire aux Balls ordinaires jusqu'au bout.
-- Remontée à pied du Centre au sommet ; 2F et 3F en descente.
-- Rival final jusqu'au bout sur cet APK (joué sur l'APK de `1c4a6f70`, avant les musiques).
-- Tapis du clan, lanternes d'Ébènelle de nuit.
+- Rival final jusqu'au bout sur ces APK (joué sur l'APK de `1c4a6f70`, avant les musiques).
+- Lanternes d'Ébènelle de nuit.
 
 ## À faire par Kevin
 
 - **Écouter** : toutes les pistes, surtout les jointures de boucle ; les replis (Ice Path à Ébènelle et au Mont Argenté,
   Route 26 à la Route 28) ; le thème du rival aux trois arrivées du Mont Argenté.
-- **Jouer** : une vraie partie de Johto d'un bout à l'autre, seule façon de valider les jonctions restantes et la
+- **Jouer** : une vraie partie de Johto d'un bout à l'autre, seule façon de valider l'enchaînement complet et la
   difficulté.
+- **Relire** : les deux objectifs ajoutés (M4).

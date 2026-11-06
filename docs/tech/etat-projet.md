@@ -18,7 +18,7 @@ Mis à jour : 2026-11-06.
 
 1. **J34 T4 (Kevin) :** première utilisation de la RC par un proche ; consignes dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`. Go technique donné le 2026-11-05.
 2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto) ; RP-292.
-3. **Johto, reste à vérifier sur téléphone :** deuxième passe sur l'A17 faite le 2026-11-06, sans blocage (`docs/tech/qa-johto-a17-2.md`) : Tour Radio vers l'arc, retour à Rosalia et acte 2, Route 28 et Kanto libre, Raikou, Entei et Ho-Oh, rival du sommet. Restent à jouer les autres jonctions (lues sans trou), la remontée à pied depuis le Centre et l'écoute des musiques par Kevin.
+3. **Johto, vérifié sur l'A17 le 2026-11-06 (`docs/tech/qa-johto-a17-2.md`) :** onze jonctions passées par morceaux, Raikou, Entei, Ho-Oh, rival du sommet, remontée et descente du Mont Argenté. Un blocage trouvé et corrigé : sortie de la chambre du Centre d'Oliville. Reste : une partie complète et l'écoute des musiques par Kevin, relecture de deux objectifs [D] (JOH9).
 4. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
 
 ## Questions ouvertes
