@@ -11586,6 +11586,208 @@
      11
     ]
    }
+  },
+  "bldg_boutique_acajou_01": {
+   "fichier": "res://assets/world/buildings/bldg_boutique_acajou_01.png",
+   "taille": [
+    768,
+    794
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_boutique_acajou_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     482,
+     77
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_boutique_acajou_01_contact.png",
+    "decalage": [
+     -392,
+     -77
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     58
+    ]
+   }
+  },
+  "relief_porte_creuset_01": {
+   "fichier": "res://assets/world/relief/relief_porte_creuset_01.png",
+   "taille": [
+    384,
+    268
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_porte_creuset_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "prop_poutre_calcinee_h_01": {
+   "fichier": "res://assets/world/props/prop_poutre_calcinee_h_01.png",
+   "taille": [
+    480,
+    69
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_poutre_calcinee_h_01_contact.png",
+    "decalage": [
+     -248,
+     11
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     14
+    ]
+   }
+  },
+  "prop_poutre_calcinee_v_01": {
+   "fichier": "res://assets/world/props/prop_poutre_calcinee_v_01.png",
+   "taille": [
+    96,
+    770
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_poutre_calcinee_v_01_contact.png",
+    "decalage": [
+     -56,
+     -59
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     49
+    ]
+   }
+  },
+  "prop_colonne_calcinee_01": {
+   "fichier": "res://assets/world/props/prop_colonne_calcinee_01.png",
+   "taille": [
+    96,
+    166
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_colonne_calcinee_01_contact.png",
+    "decalage": [
+     -56,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_statue_persian_01": {
+   "fichier": "res://assets/world/interiors/int_statue_persian_01.png",
+   "taille": [
+    96,
+    161
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_statue_persian_01_contact.png",
+    "decalage": [
+     -56,
+     2
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     18
+    ]
+   }
+  },
+  "int_cage_ondes_01": {
+   "fichier": "res://assets/world/interiors/int_cage_ondes_01.png",
+   "taille": [
+    288,
+    287
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_cage_ondes_01_contact.png",
+    "decalage": [
+     -152,
+     -11
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     25
+    ]
+   }
+  },
+  "int_rayon_souvenirs_01": {
+   "fichier": "res://assets/world/interiors/int_rayon_souvenirs_01.png",
+   "taille": [
+    192,
+    144
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_rayon_souvenirs_01_contact.png",
+    "decalage": [
+     -104,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     17
+    ]
+   }
+  },
+  "int_presentoir_souvenirs_01": {
+   "fichier": "res://assets/world/interiors/int_presentoir_souvenirs_01.png",
+   "taille": [
+    192,
+    212
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_presentoir_souvenirs_01_contact.png",
+    "decalage": [
+     -104,
+     -3
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     21
+    ]
+   }
+  },
+  "int_generateur_ondes_01": {
+   "fichier": "res://assets/world/interiors/int_generateur_ondes_01.png",
+   "taille": [
+    576,
+    380
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_generateur_ondes_01_contact.png",
+    "decalage": [
+     -296,
+     -20
+    ],
+    "echelle": 2,
+    "taille": [
+     296,
+     29
+    ]
+   }
   }
  },
  "personnages": {

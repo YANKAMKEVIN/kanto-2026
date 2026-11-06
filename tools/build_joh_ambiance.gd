@@ -164,6 +164,19 @@ const MAPS: Dictionary = {
 		"panes": false, "legend": {"@": "w", "o": "w", ".": "="},
 		"cells": [[Rect2i(22, 16, 16, 16), "w"]], "foam": Vector2(30.0, 24.0),
 		"buildings": [["relief_ile_tourbillon_01", Vector2i(30, 31), "IleTourbillon"]]},
+	# JOH6 (demande de Kevin du 2026-11-06), d'après leurs vues générales. `R` : paroi, rivage au bord
+	# de l'eau. Porte du Mont Creuset, boutique d'Acajou : lot 3 (`tools/art/joh_ambiance_lot3.py`).
+	&"route_42": {"plan": "route_42", "seed": 42201, "rock": Rock.SHORE_THEN_PAROI, "path": EARTH,
+		"panes": false, "legend": {"Q": "c"},
+		"buildings": [["relief_porte_creuset_01", Vector2i(18, 5), "PorteCreuset"]]},
+	&"route_43": {"plan": "route_43", "seed": 43201, "rock": Rock.SHORE, "path": EARTH,
+		"panes": true, "x": "fence",
+		"buildings": [["bldg_maison_toit_01", Vector2i(15, 24), "PostePeage", Vector2(1.2, 1.2)]]},
+	&"lake_of_rage": {"plan": "lake_of_rage", "seed": 44201, "rock": Rock.SHORE, "path": EARTH,
+		"panes": false, "legend": {"o": "w"}},
+	&"mahogany_town": {"plan": "mahogany_town", "seed": 45201, "rock": Rock.SHORE_THEN_PAROI,
+		"path": "", "panes": true, "x": "hedge", "hide": ["Bat_BoutiqueSouvenirs", "Antenne"],
+		"buildings": [["bldg_boutique_acajou_01", Vector2i(26, 13), "BoutiqueSouvenirs"]]},
 	# Arc des Pierres (JOHP2, demande de Kevin du 2026-11-05) : Irisia d'après sa vue générale.
 	# « mouth » : [colonne, rangée, bord droit gardé] de la bouche de grotte.
 	&"cianwood_city": {"plan": "cianwood_city", "seed": 71201, "rock": Rock.SHORE,

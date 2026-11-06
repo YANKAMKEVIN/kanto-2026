@@ -204,6 +204,42 @@ Format : PNG paysage 1536 × 1024, OPAQUE, aucun bord ; pas de texte.""",
 }
 
 
+# Images retenues (JOH6) : identifiant → (image, dossier, largeur en cases, ombre, contact).
+RETENUS = {
+	"bldg_boutique_acajou_01": ("BLDG_BOUTIQUE_ACAJOU_r1.png", BAT, 8, True, 0.12),
+	"relief_porte_creuset_01": ("RELIEF_PORTE_CREUSET_r1.png", RELIEF, 4, False, 0.0),
+	"prop_poutre_calcinee_h_01": ("PROP_POUTRE_CALCINEE_H_r1.png", PROPS, 5, False, 0.1),
+	"prop_poutre_calcinee_v_01": ("PROP_POUTRE_CALCINEE_V_r1.png", PROPS, 1, False, 0.1),
+	"prop_colonne_calcinee_01": ("PROP_COLONNE_CALCINEE_r1.png", PROPS, 1, False, 0.1),
+	"int_statue_persian_01": ("INT_STATUE_PERSIAN_r1.png", INT, 1, False, 0.1),
+	"int_generateur_ondes_01": ("INT_GENERATEUR_ONDES_r2.png", INT, 6, False, 0.1),
+	"int_cage_ondes_01": ("INT_CAGE_ONDES_r1.png", INT, 3, False, 0.1),
+	"int_rayon_souvenirs_01": ("INT_RAYON_SOUVENIRS_r1.png", INT, 2, False, 0.1),
+	"int_presentoir_souvenirs_01": ("INT_PRESENTOIR_SOUVENIRS_r1.png", INT, 2, False, 0.1),
+}
+
+
+def preparer_retenus() -> None:
+	"""Images retenues → `assets/` et catalogue existant complété."""
+	import json
+	import preparer
+	from PIL import Image
+	Image.open(ART / "GROUND_CENDRES_r1.png").convert("RGB").resize((384, 384), Image.LANCZOS).save(
+		GROUND / "ground_cendres_01.png")
+	manifeste = json.loads((Path(__file__).parent / "manifeste.json").read_text())
+	catalogue_path = RACINE / "assets" / "world" / "catalogue.json"
+	p = preparer.Preparateur(manifeste, ART)
+	p.catalogue = json.loads(catalogue_path.read_text())
+	for ident, (source, dossier, cases, ombre, contact) in RETENUS.items():
+		if not (ART / source).exists():
+			print(f"absent : {source}")
+			continue
+		image = preparer._silhouette(Image.open(ART / source).convert("RGBA"))
+		image = preparer._mettre_a_taille(image, "w", cases, p.case)
+		p._objet(ident, str((dossier / f"{ident}.png").relative_to(RACINE)), image, ombre, contact)
+	p.ecrire_catalogue()
+
+
 def generer(ident: str, tour: int) -> str:
 	texte, jointes = ASSETS[ident]
 	nom = f"{ident}_r{tour}"
@@ -228,6 +264,9 @@ if __name__ == "__main__":
 	args = sys.argv[1:]
 	if args[:1] == ["--refs"]:
 		recadrer_references()
+		sys.exit(0)
+	if args[:1] == ["--preparer"]:
+		preparer_retenus()
 		sys.exit(0)
 	tour = 1
 	if args[:1] == ["--tour"]:
