@@ -3,7 +3,8 @@
 > 2026-11-06, à la demande de Kevin : la vidéo de lancement ne parle que de Kanto, ne montre pas les
 > costumes, et Johto existe maintenant. Ce document relève ce qui donne envie de jouer dans les
 > teasers officiels (Game Boy, DS, téléphone), mesure la vidéo actuelle et propose une trame.
-> **Rien n'est décidé :** les arbitrages TR-1 à TR-7 (§6) vont à Kevin avant tout storyboard.
+> **Arbitrages TR-1 à TR-7 (§6) : recommandations retenues par Kevin le 2026-11-06** ; suite dans
+> [`storyboard-trailer-v3.md`](storyboard-trailer-v3.md).
 > Vidéo actuelle : [`storyboard-trailer-v1.md`](storyboard-trailer-v1.md), montage v2.1.
 
 ## 1. Méthode et limites
