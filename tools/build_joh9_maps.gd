@@ -13,6 +13,10 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/build_joh9_maps.gd [-- --maps=silver_trail,route_28]
 ##   godot --headless --path . --import
 ##
+## **Image** : `tools/build_joh_ambiance.gd -- --maps=silver_trail,mt_silver_outside,mt_silver_summit,route_28`
+## et `tools/build_joh_ambiance_caves.gd -- --maps=mt_silver_1f,mt_silver_2f,mt_silver_3f` repeignent
+## ces cartes sans toucher à la logique (les aplats y sont retirés) ; les relancer après cet outil.
+##
 ## Données lues ailleurs (`tools/gen_joh9_data.py`) : PNJ et Dresseurs (`data/npcs/<carte>.json`),
 ## textes (`data/dialogues/joh9_*.json`), scènes (`data/cutscenes/joh9_*.json`). Ici : sol et cases
 ## bloquées, eau surfable (lac du 1F), rochers de Force (1F), échelles, passages (bord = PUSH, porte

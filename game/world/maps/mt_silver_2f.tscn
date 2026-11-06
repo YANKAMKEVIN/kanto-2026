@@ -3,7 +3,40 @@
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_j2g43"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_wbf0q"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_bfcbt"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_t0vgy"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_grotte_01.png" id="4_hfq7o"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="4_nqinx"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/mt_silver_2f_ground.png" id="5_mkl4f"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_roche_01.png" id="6_k3c34"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_gravats_01.png" id="7_dix6f"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_j4kc0"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="9_g8pco"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_roche_01.png" id="9_hfq7o"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_02.png" id="10_5ushg"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_01.png" id="11_lehe6"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_06.png" id="12_sip8t"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_echelle_descend_01.png" id="13_ihr76"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_grotte_05.png" id="14_tusa2"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_rocher_grotte_01.png" id="15_gk3ec"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_echelle_monte_01.png" id="16_pnbfa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mkl4f"]
+shader = ExtResource("3_t0vgy")
+shader_parameter/grass_texture = ExtResource("4_hfq7o")
+shader_parameter/paving_texture = ExtResource("7_dix6f")
+shader_parameter/path_texture = ExtResource("6_k3c34")
+shader_parameter/ground_mask = ExtResource("5_mkl4f")
+shader_parameter/tile_size = 96.0
+shader_parameter/texture_size = 384.0
+shader_parameter/paving_scale = 1.0
+shader_parameter/path_scale = 1.0
+shader_parameter/earth_color = Color(0.1, 0.13, 0.2, 1)
+shader_parameter/has_shore = false
+shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = null
+shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
 
 [node name="MtSilver2f" type="Node2D" unique_id=1843185940]
 script = ExtResource("1_j2g43")
@@ -14,56 +47,2423 @@ size = Vector2i(32, 28)
 light_profile = &"cave_1f"
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=2003172743]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAABAAcAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAABAAcAAAAHAAAAAAABAAcAAAAIAAAAAAABAAcAAAAJAAAAAAAAAAcAAAAKAAAAAAABAAcAAAALAAAAAAABAAcAAAAMAAAAAAAAAAcAAAANAAAAAAABAAcAAAAOAAAAAAABAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAAAAAcAAAASAAAAAAABAAcAAAATAAAAAAAAAAcAAAAUAAAAAAAAAAcAAAAVAAAAAAAAAAcAAAAWAAAAAAAAAAcAAAAXAAAAAAABAAcAAAAYAAAAAAAAAAcAAAAZAAAAAAAAAAcAAAAaAAAAAAABAAcAAAAbAAAAAAABAAcAAAAcAAAAAAAAAAcAAAAdAAAAAAABAAcAAAAeAAAAAAAAAAcAAAAfAAAAAAABAAcAAAAAAAEAAAAAAAcAAAABAAEAAAAAAAcAAAACAAEAAAABAAcAAAADAAEAAAAAAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAABAAcAAAAGAAEAAAABAAcAAAAHAAEAAAAAAAcAAAAIAAEAAAAAAAcAAAAJAAEAAAAAAAcAAAAKAAEAAAAAAAcAAAALAAEAAAAAAAcAAAAMAAEAAAAAAAcAAAANAAEAAAAAAAcAAAAOAAEAAAABAAcAAAAPAAEAAAAAAAcAAAAQAAEAAAAAAAcAAAARAAEAAAAAAAcAAAASAAEAAAAAAAcAAAATAAEAAAABAAcAAAAUAAEAAAAAAAcAAAAVAAEAAAABAAcAAAAWAAEAAAABAAcAAAAXAAEAAAAAAAcAAAAYAAEAAAAAAAcAAAAZAAEAAAABAAcAAAAaAAEAAAABAAcAAAAbAAEAAAAAAAcAAAAcAAEAAAAAAAcAAAAdAAEAAAAAAAcAAAAeAAEAAAAAAAcAAAAfAAEAAAABAAcAAAAAAAIAAAAAAAcAAAABAAIAAAAAAAcAAAACAAIAAAAAAAcAAAADAAIAAAABAAcAAAAEAAIAAAABAAcAAAAFAAIAAAAAAAcAAAAGAAIAAAABAAcAAAAHAAIAAAAAAAcAAAAIAAIAAAABAAcAAAAJAAIAAAABAAcAAAAKAAIAAAAAAAcAAAALAAIAAAABAAcAAAAMAAIAAAAAAAcAAAANAAIAAAAAAAcAAAAOAAIAAAABAAcAAAAPAAIAAAAAAAcAAAAQAAIAAAABAAcAAAARAAIAAAABAAcAAAASAAIAAAABAAcAAAATAAIAAAAAAAcAAAAUAAIAAAAAAAcAAAAVAAIAAAAAAAcAAAAWAAIAAAAAAAcAAAAXAAIAAAAAAAcAAAAYAAIAAAAAAAcAAAAZAAIAAAAAAAcAAAAaAAIAAAAAAAcAAAAbAAIAAAABAAcAAAAcAAIAAAACAAIAAAAdAAIAAAABAAcAAAAeAAIAAAABAAcAAAAfAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAABAAcAAAACAAMAAAAAAAcAAAADAAMAAAAAAAcAAAAEAAMAAAAAAAcAAAAFAAMAAAAAAAcAAAAGAAMAAAABAAcAAAAHAAMAAAABAAcAAAAIAAMAAAABAAcAAAAJAAMAAAABAAcAAAAKAAMAAAABAAcAAAALAAMAAAABAAcAAAAMAAMAAAABAAcAAAANAAMAAAAAAAcAAAAOAAMAAAABAAcAAAAPAAMAAAABAAcAAAAQAAMAAAABAAcAAAARAAMAAAABAAcAAAASAAMAAAABAAcAAAATAAMAAAAAAAcAAAAUAAMAAAABAAcAAAAVAAMAAAAAAAcAAAAWAAMAAAABAAcAAAAXAAMAAAAAAAcAAAAYAAMAAAAAAAcAAAAZAAMAAAABAAcAAAAaAAMAAAACAAIAAAAbAAMAAAACAAIAAAAcAAMAAAABAAIAAAAdAAMAAAAAAAIAAAAeAAMAAAAAAAcAAAAfAAMAAAAAAAcAAAAAAAQAAAAAAAcAAAABAAQAAAAAAAcAAAACAAQAAAAAAAcAAAADAAQAAAABAAcAAAAEAAQAAAABAAcAAAAFAAQAAAABAAcAAAAGAAQAAAABAAcAAAAHAAQAAAAAAAcAAAAIAAQAAAABAAcAAAAJAAQAAAAAAAcAAAAKAAQAAAABAAcAAAALAAQAAAABAAcAAAAMAAQAAAABAAcAAAANAAQAAAAAAAcAAAAOAAQAAAABAAcAAAAPAAQAAAAAAAcAAAAQAAQAAAAAAAcAAAARAAQAAAAAAAcAAAASAAQAAAABAAcAAAATAAQAAAABAAcAAAAUAAQAAAABAAIAAAAVAAQAAAABAAIAAAAWAAQAAAABAAIAAAAXAAQAAAAAAAIAAAAYAAQAAAABAAIAAAAZAAQAAAABAAcAAAAaAAQAAAACAAIAAAAbAAQAAAAAAAIAAAAcAAQAAAABAAIAAAAdAAQAAAABAAIAAAAeAAQAAAAAAAcAAAAfAAQAAAAAAAcAAAAAAAUAAAABAAcAAAABAAUAAAAAAAcAAAACAAUAAAABAAcAAAADAAUAAAABAAcAAAAEAAUAAAAAAAcAAAAFAAUAAAABAAcAAAAGAAUAAAAAAAcAAAAHAAUAAAAAAAcAAAAIAAUAAAABAAcAAAAJAAUAAAAAAAcAAAAKAAUAAAAAAAcAAAALAAUAAAAAAAcAAAAMAAUAAAAAAAcAAAANAAUAAAABAAcAAAAOAAUAAAAAAAcAAAAPAAUAAAABAAcAAAAQAAUAAAABAAcAAAARAAUAAAAAAAcAAAASAAUAAAABAAcAAAATAAUAAAABAAcAAAAUAAUAAAAAAAIAAAAVAAUAAAAAAA0AAAAWAAUAAAAAAA0AAAAXAAUAAAABAA0AAAAYAAUAAAAAAAIAAAAZAAUAAAABAAcAAAAaAAUAAAACAAIAAAAbAAUAAAACAAIAAAAcAAUAAAABAAIAAAAdAAUAAAABAAIAAAAeAAUAAAAAAAcAAAAfAAUAAAABAAcAAAAAAAYAAAABAAcAAAABAAYAAAAAAAcAAAACAAYAAAABAAcAAAADAAYAAAABAAcAAAAEAAYAAAAAAAcAAAAFAAYAAAABAAcAAAAGAAYAAAAAAAcAAAAHAAYAAAAAAAcAAAAIAAYAAAABAAcAAAAJAAYAAAAAAAcAAAAKAAYAAAAAAAcAAAALAAYAAAAAAAcAAAAMAAYAAAABAAcAAAANAAYAAAABAAcAAAAOAAYAAAABAAcAAAAPAAYAAAABAAcAAAAQAAYAAAABAAcAAAARAAYAAAABAAcAAAASAAYAAAAAAAcAAAATAAYAAAAAAAcAAAAUAAYAAAABAAIAAAAVAAYAAAAAAA0AAAAWAAYAAAAAAAcAAAAXAAYAAAAAAA0AAAAYAAYAAAACAAIAAAAZAAYAAAABAAcAAAAaAAYAAAACAAIAAAAbAAYAAAABAAIAAAAcAAYAAAACAAIAAAAdAAYAAAAAAAIAAAAeAAYAAAAAAAcAAAAfAAYAAAABAAcAAAAAAAcAAAABAAcAAAABAAcAAAABAAcAAAACAAcAAAABAAcAAAADAAcAAAABAAcAAAAEAAcAAAABAAcAAAAFAAcAAAABAAcAAAAGAAcAAAAAAAcAAAAHAAcAAAAAAAcAAAAIAAcAAAABAAcAAAAJAAcAAAABAAcAAAAKAAcAAAABAAcAAAALAAcAAAABAAcAAAAMAAcAAAAAAAcAAAANAAcAAAAAAAcAAAAOAAcAAAAAAAcAAAAPAAcAAAAAAAcAAAAQAAcAAAAAAAcAAAARAAcAAAABAAcAAAASAAcAAAABAAcAAAATAAcAAAAAAAcAAAAUAAcAAAACAAIAAAAVAAcAAAAAAA0AAAAWAAcAAAAAAA0AAAAXAAcAAAAAAA0AAAAYAAcAAAAAAAIAAAAZAAcAAAABAAcAAAAaAAcAAAACAAIAAAAbAAcAAAABAAIAAAAcAAcAAAABAAIAAAAdAAcAAAABAAIAAAAeAAcAAAAAAAcAAAAfAAcAAAABAAcAAAAAAAgAAAABAAcAAAABAAgAAAABAAcAAAACAAgAAAABAAcAAAADAAgAAAABAAcAAAAEAAgAAAAAAAcAAAAFAAgAAAAAAAcAAAAGAAgAAAABAAcAAAAHAAgAAAABAAcAAAAIAAgAAAABAAcAAAAJAAgAAAAAAAcAAAAKAAgAAAAAAAcAAAALAAgAAAABAAcAAAAMAAgAAAABAAcAAAANAAgAAAABAAcAAAAOAAgAAAABAAcAAAAPAAgAAAAAAAcAAAAQAAgAAAABAAcAAAARAAgAAAAAAAcAAAASAAgAAAABAAcAAAATAAgAAAAAAAcAAAAUAAgAAAACAAIAAAAVAAgAAAAAAAIAAAAWAAgAAAAAAAIAAAAXAAgAAAABAAIAAAAYAAgAAAAAAAIAAAAZAAgAAAAAAAcAAAAaAAgAAAACAAIAAAAbAAgAAAACAAIAAAAcAAgAAAABAAIAAAAdAAgAAAABAAIAAAAeAAgAAAABAAcAAAAfAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAAAAAcAAAACAAkAAAAAAAcAAAADAAkAAAAAAAcAAAAEAAkAAAABAAcAAAAFAAkAAAABAAcAAAAGAAkAAAABAAcAAAAHAAkAAAABAAcAAAAIAAkAAAABAAcAAAAJAAkAAAABAAcAAAAKAAkAAAAAAAcAAAALAAkAAAAAAAcAAAAMAAkAAAABAAcAAAANAAkAAAAAAAcAAAAOAAkAAAAAAAcAAAAPAAkAAAAAAAcAAAAQAAkAAAAAAAcAAAARAAkAAAABAAcAAAASAAkAAAABAAcAAAATAAkAAAAAAAcAAAAUAAkAAAABAAcAAAAVAAkAAAACAAIAAAAWAAkAAAAAAAIAAAAXAAkAAAABAAIAAAAYAAkAAAABAAcAAAAZAAkAAAABAAcAAAAaAAkAAAAAAAIAAAAbAAkAAAACAAIAAAAcAAkAAAACAAIAAAAdAAkAAAABAAIAAAAeAAkAAAABAAcAAAAfAAkAAAAAAAcAAAAAAAoAAAABAAcAAAABAAoAAAAAAAcAAAACAAoAAAABAAcAAAADAAoAAAABAAcAAAAEAAoAAAAAAAIAAAAFAAoAAAACAAIAAAAGAAoAAAAAAAIAAAAHAAoAAAACAAIAAAAIAAoAAAAAAAIAAAAJAAoAAAABAAIAAAAKAAoAAAABAAIAAAALAAoAAAABAAIAAAAMAAoAAAAAAAIAAAANAAoAAAABAAIAAAAOAAoAAAABAAIAAAAPAAoAAAABAAIAAAAQAAoAAAAAAAIAAAARAAoAAAAAAAIAAAASAAoAAAABAAIAAAATAAoAAAACAAIAAAAUAAoAAAAAAAIAAAAVAAoAAAAAAAIAAAAWAAoAAAACAAIAAAAXAAoAAAAAAAIAAAAYAAoAAAABAAIAAAAZAAoAAAAAAAIAAAAaAAoAAAABAAIAAAAbAAoAAAABAAIAAAAcAAoAAAABAAIAAAAdAAoAAAAAAAIAAAAeAAoAAAABAAcAAAAfAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAAAAAcAAAACAAsAAAAAAAcAAAADAAsAAAABAAcAAAAEAAsAAAACAAIAAAAFAAsAAAAAAAIAAAAGAAsAAAAAAAIAAAAHAAsAAAAAAAIAAAAIAAsAAAABAAcAAAAJAAsAAAAAAAIAAAAKAAsAAAABAAIAAAALAAsAAAACAAIAAAAMAAsAAAABAAIAAAANAAsAAAACAAIAAAAOAAsAAAABAAIAAAAPAAsAAAAAAAIAAAAQAAsAAAAAAAcAAAARAAsAAAAAAAIAAAASAAsAAAABAAIAAAATAAsAAAABAAIAAAAUAAsAAAACAAIAAAAVAAsAAAABAAIAAAAWAAsAAAABAAIAAAAXAAsAAAAAAAIAAAAYAAsAAAACAAIAAAAZAAsAAAAAAAIAAAAaAAsAAAABAAIAAAAbAAsAAAABAAIAAAAcAAsAAAACAAIAAAAdAAsAAAACAAIAAAAeAAsAAAABAAcAAAAfAAsAAAABAAcAAAAAAAwAAAABAAcAAAABAAwAAAAAAAcAAAACAAwAAAAAAAcAAAADAAwAAAAAAAcAAAAEAAwAAAABAAIAAAAFAAwAAAACAAIAAAAGAAwAAAAAAAIAAAAHAAwAAAAAAAIAAAAIAAwAAAAAAAIAAAAJAAwAAAAAAAIAAAAKAAwAAAAAAAIAAAALAAwAAAACAAIAAAAMAAwAAAACAAIAAAANAAwAAAABAAIAAAAOAAwAAAACAAIAAAAPAAwAAAACAAIAAAAQAAwAAAABAAIAAAARAAwAAAACAAIAAAASAAwAAAABAAIAAAATAAwAAAABAAIAAAAUAAwAAAACAAIAAAAVAAwAAAACAAIAAAAWAAwAAAABAAIAAAAXAAwAAAACAAIAAAAYAAwAAAACAAIAAAAZAAwAAAAAAAIAAAAaAAwAAAACAAIAAAAbAAwAAAACAAIAAAAcAAwAAAAAAAIAAAAdAAwAAAABAAIAAAAeAAwAAAAAAAcAAAAfAAwAAAABAAcAAAAAAA0AAAABAAcAAAABAA0AAAABAAcAAAACAA0AAAABAAcAAAADAA0AAAAAAAIAAAAEAA0AAAACAAIAAAAFAA0AAAABAAIAAAAGAA0AAAAAAAcAAAAHAA0AAAABAAcAAAAIAA0AAAAAAAcAAAAJAA0AAAABAAcAAAAKAA0AAAABAAcAAAALAA0AAAABAAcAAAAMAA0AAAAAAAcAAAANAA0AAAAAAAcAAAAOAA0AAAABAAcAAAAPAA0AAAAAAAcAAAAQAA0AAAAAAAcAAAARAA0AAAAAAAcAAAASAA0AAAAAAAcAAAATAA0AAAABAAcAAAAUAA0AAAABAAcAAAAVAA0AAAAAAAcAAAAWAA0AAAAAAAcAAAAXAA0AAAABAAcAAAAYAA0AAAABAAcAAAAZAA0AAAAAAAcAAAAaAA0AAAAAAAcAAAAbAA0AAAABAAcAAAAcAA0AAAAAAAcAAAAdAA0AAAABAAcAAAAeAA0AAAABAAcAAAAfAA0AAAAAAAcAAAAAAA4AAAABAAcAAAABAA4AAAABAAcAAAACAA4AAAABAAcAAAADAA4AAAABAAIAAAAEAA4AAAAAAAIAAAAFAA4AAAACAAIAAAAGAA4AAAAAAAcAAAAHAA4AAAABAAcAAAAIAA4AAAAAAAcAAAAJAA4AAAAAAAcAAAAKAA4AAAAAAAcAAAALAA4AAAABAAcAAAAMAA4AAAAAAAcAAAANAA4AAAAAAAcAAAAOAA4AAAABAAcAAAAPAA4AAAAAAAcAAAAQAA4AAAAAAAcAAAARAA4AAAABAAcAAAASAA4AAAAAAAcAAAATAA4AAAABAAcAAAAUAA4AAAABAAcAAAAVAA4AAAABAAcAAAAWAA4AAAAAAAcAAAAXAA4AAAABAAcAAAAYAA4AAAAAAAcAAAAZAA4AAAABAAcAAAAaAA4AAAABAAcAAAAbAA4AAAABAAcAAAAcAA4AAAABAAcAAAAdAA4AAAABAAcAAAAeAA4AAAAAAAcAAAAfAA4AAAABAAcAAAAAAA8AAAABAAcAAAABAA8AAAABAAcAAAACAA8AAAAAAAcAAAADAA8AAAAAAAIAAAAEAA8AAAACAAIAAAAFAA8AAAABAAIAAAAGAA8AAAAAAAcAAAAHAA8AAAABAAcAAAAIAA8AAAAAAAcAAAAJAA8AAAAAAAcAAAAKAA8AAAABAAcAAAALAA8AAAAAAAcAAAAMAA8AAAABAAcAAAANAA8AAAABAAcAAAAOAA8AAAABAAcAAAAPAA8AAAABAAcAAAAQAA8AAAABAAcAAAARAA8AAAAAAAcAAAASAA8AAAAAAAcAAAATAA8AAAAAAAcAAAAUAA8AAAAAAAcAAAAVAA8AAAABAAcAAAAWAA8AAAABAAcAAAAXAA8AAAAAAAcAAAAYAA8AAAABAAcAAAAZAA8AAAABAAcAAAAaAA8AAAABAAcAAAAbAA8AAAAAAAcAAAAcAA8AAAAAAAcAAAAdAA8AAAAAAAcAAAAeAA8AAAABAAcAAAAfAA8AAAAAAAcAAAAAABAAAAABAAcAAAABABAAAAABAAcAAAACABAAAAABAAcAAAADABAAAAAAAAIAAAAEABAAAAAAAAIAAAAFABAAAAAAAAIAAAAGABAAAAAAAAcAAAAHABAAAAABAAcAAAAIABAAAAAAAAcAAAAJABAAAAABAAcAAAAKABAAAAAAAAIAAAALABAAAAACAAIAAAAMABAAAAABAAIAAAANABAAAAAAAAIAAAAOABAAAAAAAAIAAAAPABAAAAACAAIAAAAQABAAAAACAAIAAAARABAAAAAAAAIAAAASABAAAAAAAAIAAAATABAAAAAAAAIAAAAUABAAAAABAAIAAAAVABAAAAABAAcAAAAWABAAAAABAAcAAAAXABAAAAABAAcAAAAYABAAAAABAAcAAAAZABAAAAAAAAcAAAAaABAAAAABAAcAAAAbABAAAAAAAAcAAAAcABAAAAABAAcAAAAdABAAAAABAAcAAAAeABAAAAABAAcAAAAfABAAAAABAAcAAAAAABEAAAAAAAcAAAABABEAAAAAAAcAAAACABEAAAABAAcAAAADABEAAAACAAIAAAAEABEAAAACAAIAAAAFABEAAAABAAIAAAAGABEAAAAAAAcAAAAHABEAAAAAAAcAAAAIABEAAAABAAcAAAAJABEAAAAAAAcAAAAKABEAAAAAAAIAAAALABEAAAABAA0AAAAMABEAAAABAA0AAAANABEAAAAAAA0AAAAOABEAAAAAAA0AAAAPABEAAAABAA0AAAAQABEAAAABAA0AAAARABEAAAAAAA0AAAASABEAAAABAA0AAAATABEAAAAAAA0AAAAUABEAAAACAAIAAAAVABEAAAABAAcAAAAWABEAAAAAAAcAAAAXABEAAAAAAAcAAAAYABEAAAAAAAcAAAAZABEAAAABAAcAAAAaABEAAAAAAAcAAAAbABEAAAAAAAcAAAAcABEAAAAAAAcAAAAdABEAAAABAAcAAAAeABEAAAABAAcAAAAfABEAAAAAAAcAAAAAABIAAAABAAcAAAABABIAAAABAAcAAAACABIAAAAAAAcAAAADABIAAAABAAIAAAAEABIAAAAAAAIAAAAFABIAAAAAAAIAAAAGABIAAAAAAAIAAAAHABIAAAACAAIAAAAIABIAAAACAAIAAAAJABIAAAABAAIAAAAKABIAAAAAAAIAAAALABIAAAABAA0AAAAMABIAAAABAA0AAAANABIAAAAAAA0AAAAOABIAAAAAAA0AAAAPABIAAAABAA0AAAAQABIAAAABAA0AAAARABIAAAAAAA0AAAASABIAAAAAAA0AAAATABIAAAABAA0AAAAUABIAAAAAAAIAAAAVABIAAAABAAcAAAAWABIAAAABAAcAAAAXABIAAAAAAAcAAAAYABIAAAAAAAcAAAAZABIAAAABAAcAAAAaABIAAAABAAcAAAAbABIAAAAAAAcAAAAcABIAAAAAAAcAAAAdABIAAAAAAAcAAAAeABIAAAAAAAcAAAAfABIAAAAAAAcAAAAAABMAAAAAAAcAAAABABMAAAAAAAcAAAACABMAAAABAAcAAAADABMAAAACAAIAAAAEABMAAAAAAAIAAAAFABMAAAACAAIAAAAGABMAAAACAAIAAAAHABMAAAAAAAIAAAAIABMAAAAAAAIAAAAJABMAAAACAAIAAAAKABMAAAABAAIAAAALABMAAAAAAA0AAAAMABMAAAAAAA0AAAANABMAAAABAA0AAAAOABMAAAABAA0AAAAPABMAAAABAAcAAAAQABMAAAABAA0AAAARABMAAAAAAA0AAAASABMAAAABAA0AAAATABMAAAABAA0AAAAUABMAAAACAAIAAAAVABMAAAAAAAcAAAAWABMAAAABAAcAAAAXABMAAAABAAcAAAAYABMAAAAAAAcAAAAZABMAAAAAAAcAAAAaABMAAAABAAcAAAAbABMAAAAAAAcAAAAcABMAAAABAAcAAAAdABMAAAABAAcAAAAeABMAAAAAAAcAAAAfABMAAAABAAcAAAAAABQAAAABAAcAAAABABQAAAAAAAcAAAACABQAAAAAAAIAAAADABQAAAACAAIAAAAEABQAAAABAAIAAAAFABQAAAABAAIAAAAGABQAAAABAAIAAAAHABQAAAACAAIAAAAIABQAAAACAAIAAAAJABQAAAAAAAIAAAAKABQAAAAAAAIAAAALABQAAAAAAA0AAAAMABQAAAAAAA0AAAANABQAAAABAA0AAAAOABQAAAAAAA0AAAAPABQAAAABAA0AAAAQABQAAAABAA0AAAARABQAAAAAAA0AAAASABQAAAAAAA0AAAATABQAAAABAA0AAAAUABQAAAACAAIAAAAVABQAAAABAAcAAAAWABQAAAABAAcAAAAXABQAAAABAAcAAAAYABQAAAABAAcAAAAZABQAAAAAAAcAAAAaABQAAAAAAAcAAAAbABQAAAAAAAcAAAAcABQAAAABAAcAAAAdABQAAAABAAcAAAAeABQAAAABAAcAAAAfABQAAAABAAcAAAAAABUAAAABAAcAAAABABUAAAAAAAcAAAACABUAAAAAAAIAAAADABUAAAAAAAIAAAAEABUAAAABAAIAAAAFABUAAAABAAIAAAAGABUAAAABAAIAAAAHABUAAAACAAIAAAAIABUAAAAAAAIAAAAJABUAAAACAAIAAAAKABUAAAACAAIAAAALABUAAAAAAA0AAAAMABUAAAAAAA0AAAANABUAAAABAA0AAAAOABUAAAABAA0AAAAPABUAAAABAA0AAAAQABUAAAABAA0AAAARABUAAAABAA0AAAASABUAAAABAA0AAAATABUAAAABAA0AAAAUABUAAAAAAAIAAAAVABUAAAABAAcAAAAWABUAAAABAAcAAAAXABUAAAAAAAcAAAAYABUAAAABAAcAAAAZABUAAAAAAAcAAAAaABUAAAAAAAcAAAAbABUAAAAAAAcAAAAcABUAAAAAAAcAAAAdABUAAAABAAcAAAAeABUAAAAAAAcAAAAfABUAAAABAAcAAAAAABYAAAABAAcAAAABABYAAAABAAcAAAACABYAAAABAAIAAAADABYAAAABAAIAAAAEABYAAAABAAIAAAAFABYAAAAAAAIAAAAGABYAAAABAAIAAAAHABYAAAABAAIAAAAIABYAAAAAAAIAAAAJABYAAAACAAIAAAAKABYAAAABAAIAAAALABYAAAACAAIAAAAMABYAAAABAAIAAAANABYAAAAAAAIAAAAOABYAAAAAAAIAAAAPABYAAAACAAIAAAAQABYAAAAAAAIAAAARABYAAAABAAIAAAASABYAAAAAAAIAAAATABYAAAACAAIAAAAUABYAAAABAAIAAAAVABYAAAAAAAcAAAAWABYAAAAAAAcAAAAXABYAAAABAAcAAAAYABYAAAAAAAcAAAAZABYAAAABAAcAAAAaABYAAAAAAAcAAAAbABYAAAAAAAcAAAAcABYAAAABAAcAAAAdABYAAAABAAcAAAAeABYAAAAAAAcAAAAfABYAAAABAAcAAAAAABcAAAAAAAcAAAABABcAAAABAAcAAAACABcAAAAAAAIAAAADABcAAAAAAAIAAAAEABcAAAABAAIAAAAFABcAAAACAAIAAAAGABcAAAACAAIAAAAHABcAAAACAAIAAAAIABcAAAABAAIAAAAJABcAAAACAAIAAAAKABcAAAABAAcAAAALABcAAAABAAcAAAAMABcAAAAAAAcAAAANABcAAAAAAAcAAAAOABcAAAAAAAcAAAAPABcAAAAAAAcAAAAQABcAAAABAAcAAAARABcAAAABAAcAAAASABcAAAAAAAcAAAATABcAAAAAAAcAAAAUABcAAAAAAAcAAAAVABcAAAABAAcAAAAWABcAAAAAAAcAAAAXABcAAAAAAAcAAAAYABcAAAABAAcAAAAZABcAAAABAAcAAAAaABcAAAAAAAcAAAAbABcAAAAAAAcAAAAcABcAAAAAAAcAAAAdABcAAAAAAAcAAAAeABcAAAAAAAcAAAAfABcAAAABAAcAAAAAABgAAAAAAAcAAAABABgAAAAAAAcAAAACABgAAAAAAAIAAAADABgAAAAAAAIAAAAEABgAAAACAAIAAAAFABgAAAACAAIAAAAGABgAAAABAAIAAAAHABgAAAACAAIAAAAIABgAAAABAAIAAAAJABgAAAAAAAIAAAAKABgAAAAAAAcAAAALABgAAAABAAcAAAAMABgAAAABAAcAAAANABgAAAABAAcAAAAOABgAAAABAAcAAAAPABgAAAABAAcAAAAQABgAAAAAAAcAAAARABgAAAAAAAcAAAASABgAAAABAAcAAAATABgAAAABAAcAAAAUABgAAAABAAcAAAAVABgAAAABAAcAAAAWABgAAAABAAcAAAAXABgAAAABAAcAAAAYABgAAAAAAAcAAAAZABgAAAAAAAcAAAAaABgAAAAAAAcAAAAbABgAAAABAAcAAAAcABgAAAAAAAcAAAAdABgAAAABAAcAAAAeABgAAAAAAAcAAAAfABgAAAABAAcAAAAAABkAAAABAAcAAAABABkAAAAAAAcAAAACABkAAAABAAcAAAADABkAAAAAAAcAAAAEABkAAAAAAAcAAAAFABkAAAAAAAcAAAAGABkAAAABAAcAAAAHABkAAAAAAAcAAAAIABkAAAAAAAcAAAAJABkAAAABAAcAAAAKABkAAAAAAAcAAAALABkAAAABAAcAAAAMABkAAAABAAcAAAANABkAAAABAAcAAAAOABkAAAABAAcAAAAPABkAAAABAAcAAAAQABkAAAABAAcAAAARABkAAAABAAcAAAASABkAAAABAAcAAAATABkAAAABAAcAAAAUABkAAAAAAAcAAAAVABkAAAAAAAcAAAAWABkAAAAAAAcAAAAXABkAAAAAAAcAAAAYABkAAAAAAAcAAAAZABkAAAAAAAcAAAAaABkAAAABAAcAAAAbABkAAAAAAAcAAAAcABkAAAABAAcAAAAdABkAAAAAAAcAAAAeABkAAAABAAcAAAAfABkAAAABAAcAAAAAABoAAAABAAcAAAABABoAAAAAAAcAAAACABoAAAABAAcAAAADABoAAAABAAcAAAAEABoAAAAAAAcAAAAFABoAAAAAAAcAAAAGABoAAAABAAcAAAAHABoAAAAAAAcAAAAIABoAAAAAAAcAAAAJABoAAAAAAAcAAAAKABoAAAABAAcAAAALABoAAAABAAcAAAAMABoAAAAAAAcAAAANABoAAAABAAcAAAAOABoAAAAAAAcAAAAPABoAAAABAAcAAAAQABoAAAAAAAcAAAARABoAAAABAAcAAAASABoAAAABAAcAAAATABoAAAAAAAcAAAAUABoAAAABAAcAAAAVABoAAAAAAAcAAAAWABoAAAABAAcAAAAXABoAAAABAAcAAAAYABoAAAABAAcAAAAZABoAAAABAAcAAAAaABoAAAAAAAcAAAAbABoAAAABAAcAAAAcABoAAAAAAAcAAAAdABoAAAABAAcAAAAeABoAAAABAAcAAAAfABoAAAABAAcAAAAAABsAAAAAAAcAAAABABsAAAAAAAcAAAACABsAAAAAAAcAAAADABsAAAAAAAcAAAAEABsAAAAAAAcAAAAFABsAAAABAAcAAAAGABsAAAAAAAcAAAAHABsAAAAAAAcAAAAIABsAAAAAAAcAAAAJABsAAAAAAAcAAAAKABsAAAAAAAcAAAALABsAAAABAAcAAAAMABsAAAAAAAcAAAANABsAAAAAAAcAAAAOABsAAAABAAcAAAAPABsAAAAAAAcAAAAQABsAAAABAAcAAAARABsAAAAAAAcAAAASABsAAAABAAcAAAATABsAAAAAAAcAAAAUABsAAAAAAAcAAAAVABsAAAABAAcAAAAWABsAAAABAAcAAAAXABsAAAAAAAcAAAAYABsAAAABAAcAAAAZABsAAAABAAcAAAAaABsAAAAAAAcAAAAbABsAAAABAAcAAAAcABsAAAAAAAcAAAAdABsAAAABAAcAAAAeABsAAAAAAAcAAAAfABsAAAABAAcAAAA=")
 tile_set = ExtResource("2_wbf0q")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=838685553]
+visible = false
 tile_set = ExtResource("2_wbf0q")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=1826238640]
+visible = false
 tile_set = ExtResource("2_wbf0q")
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=2025408980]
+z_index = -3
+material = SubResource("ShaderMaterial_mkl4f")
+script = ExtResource("8_j4kc0")
+size = Vector2i(32, 28)
+mask = ExtResource("5_mkl4f")
+base_texture = ExtResource("4_hfq7o")
+r_texture = ExtResource("7_dix6f")
+g_texture = ExtResource("6_k3c34")
+
+[node name="JohAmbCaveSol" type="Node2D" parent="." unique_id=298844919]
+z_index = -1
+
+[node name="Floor00" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1157958236]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2688, 192)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2688, 192, 96, 96)
+
+[node name="Floor01" type="Sprite2D" parent="JohAmbCaveSol" unique_id=731572724]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2496, 288)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2496, 288, 384, 96)
+
+[node name="Floor02" type="Sprite2D" parent="JohAmbCaveSol" unique_id=522939840]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 384)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 384, 480, 96)
+
+[node name="Floor03" type="Sprite2D" parent="JohAmbCaveSol" unique_id=423795545]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2496, 384)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2496, 384, 384, 96)
+
+[node name="Floor04" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1349284479]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 480)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 480, 96, 96)
+
+[node name="Floor05" type="Sprite2D" parent="JohAmbCaveSol" unique_id=405569151]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2304, 480)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2304, 480, 96, 96)
+
+[node name="Floor06" type="Sprite2D" parent="JohAmbCaveSol" unique_id=989992298]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2496, 480)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2496, 480, 384, 96)
+
+[node name="Floor07" type="Sprite2D" parent="JohAmbCaveSol" unique_id=832177539]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 576)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 576, 96, 96)
+
+[node name="Floor08" type="Sprite2D" parent="JohAmbCaveSol" unique_id=691335092]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2304, 576)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2304, 576, 96, 96)
+
+[node name="Floor09" type="Sprite2D" parent="JohAmbCaveSol" unique_id=23156092]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2496, 576)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2496, 576, 384, 96)
+
+[node name="Floor10" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1436170086]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 672)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 672, 96, 96)
+
+[node name="Floor11" type="Sprite2D" parent="JohAmbCaveSol" unique_id=751560642]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2304, 672)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2304, 672, 96, 96)
+
+[node name="Floor12" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2130790040]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2496, 672)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2496, 672, 384, 96)
+
+[node name="Floor13" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1855635970]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 768)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 768, 480, 96)
+
+[node name="Floor14" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2014346338]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2496, 768)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2496, 768, 384, 96)
+
+[node name="Floor15" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1477547706]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2016, 864)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2016, 864, 288, 96)
+
+[node name="Floor16" type="Sprite2D" parent="JohAmbCaveSol" unique_id=373070716]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(2496, 864)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2496, 864, 384, 96)
+
+[node name="Floor17" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1012875719]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(384, 960)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(384, 960, 2496, 96)
+
+[node name="Floor18" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1139086061]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(384, 1056)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(384, 1056, 384, 96)
+
+[node name="Floor19" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1981547100]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(864, 1056)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(864, 1056, 672, 96)
+
+[node name="Floor20" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2044116640]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1632, 1056)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1632, 1056, 1248, 96)
+
+[node name="Floor21" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1653732640]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(384, 1152)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(384, 1152, 2496, 96)
+
+[node name="Floor22" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1275925096]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(288, 1248)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 1248, 288, 96)
+
+[node name="Floor23" type="Sprite2D" parent="JohAmbCaveSol" unique_id=459201843]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(288, 1344)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 1344, 288, 96)
+
+[node name="Floor24" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1823121963]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(288, 1440)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 1440, 288, 96)
+
+[node name="Floor25" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1837129675]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(288, 1536)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 1536, 288, 96)
+
+[node name="Floor26" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1887116350]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(960, 1536)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(960, 1536, 1056, 96)
+
+[node name="Floor27" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2056685152]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(288, 1632)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 1632, 288, 96)
+
+[node name="Floor28" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1830466202]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(960, 1632)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(960, 1632, 96, 96)
+
+[node name="Floor29" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1552774278]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 1632)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 1632, 96, 96)
+
+[node name="Floor30" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1507474817]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(288, 1728)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 1728, 768, 96)
+
+[node name="Floor31" type="Sprite2D" parent="JohAmbCaveSol" unique_id=994901394]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 1728)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 1728, 96, 96)
+
+[node name="Floor32" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1331073051]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(288, 1824)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(288, 1824, 768, 96)
+
+[node name="Floor33" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1998967482]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 1824)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 1824, 96, 96)
+
+[node name="Floor34" type="Sprite2D" parent="JohAmbCaveSol" unique_id=811341604]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(192, 1920)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 1920, 864, 96)
+
+[node name="Floor35" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1207566550]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 1920)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 1920, 96, 96)
+
+[node name="Floor36" type="Sprite2D" parent="JohAmbCaveSol" unique_id=239515057]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(192, 2016)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 2016, 864, 96)
+
+[node name="Floor37" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2050030621]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(1920, 2016)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1920, 2016, 96, 96)
+
+[node name="Floor38" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1437973560]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(192, 2112)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 2112, 1824, 96)
+
+[node name="Floor39" type="Sprite2D" parent="JohAmbCaveSol" unique_id=235297361]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(192, 2208)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 2208, 768, 96)
+
+[node name="Floor40" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1721142979]
+modulate = Color(0.62, 0.66, 0.8, 1)
+texture_repeat = 2
+position = Vector2(192, 2304)
+texture = ExtResource("4_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 2304, 768, 96)
+
+[node name="Rubble00" type="Sprite2D" parent="JohAmbCaveSol" unique_id=936652867]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(2016, 480)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2016, 480, 288, 96)
+
+[node name="Rubble01" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1359007141]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(2016, 576)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2016, 576, 96, 96)
+
+[node name="Rubble02" type="Sprite2D" parent="JohAmbCaveSol" unique_id=184696274]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(2208, 576)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2208, 576, 96, 96)
+
+[node name="Rubble03" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2002278815]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(2016, 672)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(2016, 672, 288, 96)
+
+[node name="Rubble04" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1236126867]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(1056, 1632)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1056, 1632, 864, 96)
+
+[node name="Rubble05" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1339048215]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(1056, 1728)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1056, 1728, 864, 96)
+
+[node name="Rubble06" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2061922462]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(1056, 1824)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1056, 1824, 384, 96)
+
+[node name="Rubble07" type="Sprite2D" parent="JohAmbCaveSol" unique_id=447137472]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(1536, 1824)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1536, 1824, 384, 96)
+
+[node name="Rubble08" type="Sprite2D" parent="JohAmbCaveSol" unique_id=750750676]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(1056, 1920)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1056, 1920, 864, 96)
+
+[node name="Rubble09" type="Sprite2D" parent="JohAmbCaveSol" unique_id=815750610]
+modulate = Color(0.76, 0.78, 0.86, 1)
+texture_repeat = 2
+position = Vector2(1056, 2016)
+texture = ExtResource("9_hfq7o")
+centered = false
+region_enabled = true
+region_rect = Rect2(1056, 2016, 864, 96)
+
+[node name="Fill000" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2124650506]
+modulate = Color(0.22763342, 0.28454176, 0.48941183, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 189)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill001" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1404085755]
+modulate = Color(0.23702961, 0.29628703, 0.5096137, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(432, 187)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill002" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1610901583]
+modulate = Color(0.2347292, 0.2934115, 0.50466776, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(720, 192)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill003" type="Sprite2D" parent="JohAmbCaveSol" unique_id=794974697]
+modulate = Color(0.23169708, 0.28962135, 0.49814874, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1008, 188)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill004" type="Sprite2D" parent="JohAmbCaveSol" unique_id=615672087]
+modulate = Color(0.23337984, 0.2917248, 0.5017666, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1296, 185)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill005" type="Sprite2D" parent="JohAmbCaveSol" unique_id=529122252]
+modulate = Color(0.26230806, 0.32788506, 0.5639623, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1584, 180)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill006" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1421560926]
+modulate = Color(0.2895097, 0.3618871, 0.6224458, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 183)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill007" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1696306261]
+modulate = Color(0.29746768, 0.37183458, 0.63955545, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2160, 180)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill008" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1001418481]
+modulate = Color(0.32501724, 0.40627155, 0.6987871, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 190)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill009" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1822003967]
+modulate = Color(0.36972973, 0.46216217, 0.79491895, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2736, 180)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill010" type="Sprite2D" parent="JohAmbCaveSol" unique_id=692756236]
+modulate = Color(0.34192988, 0.42741236, 0.73514926, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 190)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill011" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1801376242]
+modulate = Color(0.23932043, 0.29915056, 0.51453894, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(48, 384)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-48, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Fill012" type="Sprite2D" parent="JohAmbCaveSol" unique_id=734247488]
+modulate = Color(0.22418673, 0.2802334, 0.48200148, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 374)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill013" type="Sprite2D" parent="JohAmbCaveSol" unique_id=378702343]
+modulate = Color(0.2318842, 0.28985524, 0.498551, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(528, 370)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill014" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1815353084]
+modulate = Color(0.230402, 0.2880025, 0.49536428, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 380)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill015" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1930083855]
+modulate = Color(0.22373627, 0.27967033, 0.48103297, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 373)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill016" type="Sprite2D" parent="JohAmbCaveSol" unique_id=945714165]
+modulate = Color(0.22767638, 0.28459546, 0.4895042, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 376)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill017" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1085841513]
+modulate = Color(0.30847242, 0.3855905, 0.66321564, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 381)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill018" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1932009571]
+modulate = Color(0.35207355, 0.44009194, 0.7569581, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1968, 381)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill019" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1589168220]
+modulate = Color(0.37053436, 0.46316797, 0.7966489, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2256, 371)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill020" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1624536206]
+modulate = Color(0.36982045, 0.46227556, 0.795114, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2352, 380)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill021" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1977986343]
+modulate = Color(0.37089851, 0.46362314, 0.7974318, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 377)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill022" type="Sprite2D" parent="JohAmbCaveSol" unique_id=701741321]
+modulate = Color(0.32478043, 0.40597555, 0.69827795, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(3024, 373)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill023" type="Sprite2D" parent="JohAmbCaveSol" unique_id=358085702]
+modulate = Color(0.22888589, 0.28610736, 0.49210465, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 565)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill024" type="Sprite2D" parent="JohAmbCaveSol" unique_id=932695824]
+modulate = Color(0.24035847, 0.3004481, 0.5167707, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(432, 563)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill025" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1265313452]
+modulate = Color(0.2311643, 0.2889554, 0.49700326, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(720, 575)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill026" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1677617539]
+modulate = Color(0.23055635, 0.28819543, 0.49569616, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1008, 567)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill027" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1833938517]
+modulate = Color(0.22660461, 0.28325576, 0.4871999, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1296, 573)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill028" type="Sprite2D" parent="JohAmbCaveSol" unique_id=195711401]
+modulate = Color(0.26980266, 0.3372533, 0.5800757, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1584, 563)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill029" type="Sprite2D" parent="JohAmbCaveSol" unique_id=740392556]
+modulate = Color(0.3210816, 0.40135202, 0.6903255, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1776, 572)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill030" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1102450872]
+modulate = Color(0.37949684, 0.47437108, 0.81591827, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 566)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-48, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Fill031" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1419103137]
+modulate = Color(0.33694333, 0.42117915, 0.7244282, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2976, 566)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-96, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 186)
+
+[node name="Fill032" type="Sprite2D" parent="JohAmbCaveSol" unique_id=959608428]
+modulate = Color(0.26947108, 0.33683884, 0.5793628, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(48, 768)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-48, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Fill033" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1210058571]
+modulate = Color(0.28796723, 0.359959, 0.61912954, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 755)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill034" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1693059060]
+modulate = Color(0.3053767, 0.38172084, 0.6565599, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(528, 755)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill035" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1770219669]
+modulate = Color(0.31104383, 0.38880476, 0.6687442, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 760)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill036" type="Sprite2D" parent="JohAmbCaveSol" unique_id=70034625]
+modulate = Color(0.3096403, 0.38705033, 0.66572654, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 757)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill037" type="Sprite2D" parent="JohAmbCaveSol" unique_id=139934013]
+modulate = Color(0.29921475, 0.37401843, 0.6433117, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 755)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill038" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2131652468]
+modulate = Color(0.3073613, 0.38420162, 0.6608268, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 768)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill039" type="Sprite2D" parent="JohAmbCaveSol" unique_id=506219636]
+modulate = Color(0.34462103, 0.4307763, 0.74093527, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1776, 756)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill040" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2040857543]
+modulate = Color(0.37431616, 0.4678952, 0.80477977, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 757)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill041" type="Sprite2D" parent="JohAmbCaveSol" unique_id=658227429]
+modulate = Color(0.3684921, 0.46061513, 0.792258, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 760)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill042" type="Sprite2D" parent="JohAmbCaveSol" unique_id=882303428]
+modulate = Color(0.32013658, 0.4001707, 0.68829364, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(3024, 755)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill043" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1286307945]
+modulate = Color(0.2985341, 0.37316757, 0.64184827, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 949)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill044" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1326108789]
+modulate = Color(0.35574594, 0.44468242, 0.7648538, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(432, 948)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill045" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1188495275]
+modulate = Color(0.35502154, 0.44377694, 0.76329637, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(720, 956)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill046" type="Sprite2D" parent="JohAmbCaveSol" unique_id=235687955]
+modulate = Color(0.3709444, 0.46368054, 0.79753053, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1008, 948)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill047" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1663266727]
+modulate = Color(0.35859248, 0.4482406, 0.77097386, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1296, 957)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill048" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1859488991]
+modulate = Color(0.36708757, 0.45885947, 0.78923833, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1584, 953)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill049" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1884961698]
+modulate = Color(0.36161363, 0.45201704, 0.77746934, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1776, 949)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill050" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1961203832]
+modulate = Color(0.35610345, 0.4451293, 0.7656224, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 956)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-48, -195)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Fill051" type="Sprite2D" parent="JohAmbCaveSol" unique_id=487703727]
+modulate = Color(0.33352172, 0.41690215, 0.7170717, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2976, 949)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-96, -186)
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 186)
+
+[node name="Fill052" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1468465697]
+modulate = Color(0.29011485, 0.36264354, 0.62374693, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(48, 1140)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill053" type="Sprite2D" parent="JohAmbCaveSol" unique_id=654625081]
+modulate = Color(0.32464644, 0.4058081, 0.6979899, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1146)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill054" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1127371233]
+modulate = Color(0.3667257, 0.45840713, 0.7884603, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 1142)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill055" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1154084656]
+modulate = Color(0.3428751, 0.42859384, 0.7371814, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(3024, 1143)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill056" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1167208443]
+modulate = Color(0.3410527, 0.4263159, 0.7332634, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 1333)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill057" type="Sprite2D" parent="JohAmbCaveSol" unique_id=833602473]
+modulate = Color(0.3306322, 0.4132903, 0.7108593, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2976, 1331)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-96, -186)
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 186)
+
+[node name="Fill058" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1847256800]
+modulate = Color(0.29068735, 0.36335918, 0.62497777, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(48, 1525)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-48, -195)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="Fill059" type="Sprite2D" parent="JohAmbCaveSol" unique_id=124234741]
+modulate = Color(0.36800417, 0.46000522, 0.791209, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(192, 1528)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 195)
+
+[node name="Fill060" type="Sprite2D" parent="JohAmbCaveSol" unique_id=431094024]
+modulate = Color(0.36118338, 0.45147923, 0.7765443, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(624, 1529)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill061" type="Sprite2D" parent="JohAmbCaveSol" unique_id=935373741]
+modulate = Color(0.34170192, 0.4271274, 0.73465914, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 1524)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill062" type="Sprite2D" parent="JohAmbCaveSol" unique_id=67559711]
+modulate = Color(0.37593913, 0.4699239, 0.80826914, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 1525)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill063" type="Sprite2D" parent="JohAmbCaveSol" unique_id=448402116]
+modulate = Color(0.3596973, 0.44962165, 0.7733492, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 1531)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill064" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1652301841]
+modulate = Color(0.37525937, 0.4690742, 0.80680764, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 1533)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill065" type="Sprite2D" parent="JohAmbCaveSol" unique_id=260646036]
+modulate = Color(0.3752534, 0.46906677, 0.8067949, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1968, 1534)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill066" type="Sprite2D" parent="JohAmbCaveSol" unique_id=219482305]
+modulate = Color(0.3080377, 0.3850471, 0.66228104, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2256, 1525)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill067" type="Sprite2D" parent="JohAmbCaveSol" unique_id=268336152]
+modulate = Color(0.2987002, 0.37337524, 0.6422054, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2544, 1529)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill068" type="Sprite2D" parent="JohAmbCaveSol" unique_id=731470135]
+modulate = Color(0.29214686, 0.36518356, 0.6281157, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2832, 1534)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill069" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1143132810]
+modulate = Color(0.3035541, 0.3794426, 0.6526413, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 1524)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill070" type="Sprite2D" parent="JohAmbCaveSol" unique_id=708097387]
+modulate = Color(0.32290572, 0.40363216, 0.69424736, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 1716)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill071" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1899640501]
+modulate = Color(0.36463833, 0.4557979, 0.78397244, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(720, 1717)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill072" type="Sprite2D" parent="JohAmbCaveSol" unique_id=919992303]
+modulate = Color(0.35523322, 0.44404152, 0.76375145, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 1722)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill073" type="Sprite2D" parent="JohAmbCaveSol" unique_id=417649541]
+modulate = Color(0.31966436, 0.39958045, 0.6872784, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2160, 1726)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill074" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1780174378]
+modulate = Color(0.23137017, 0.2892127, 0.49744585, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 1714)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill075" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1058701780]
+modulate = Color(0.23070693, 0.28838366, 0.49601987, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2736, 1718)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill076" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1836048027]
+modulate = Color(0.22453517, 0.28066897, 0.48275062, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 1726)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill077" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1339702355]
+modulate = Color(0.3226985, 0.40337312, 0.6938018, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(48, 1918)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill078" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1302524054]
+modulate = Color(0.36710754, 0.45888445, 0.78928125, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(192, 1912)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-96, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 195)
+
+[node name="Fill079" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2090073895]
+modulate = Color(0.37686402, 0.47108, 0.8102576, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 1916)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill080" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1268492099]
+modulate = Color(0.2967059, 0.37088236, 0.6379177, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2256, 1910)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill081" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1250072608]
+modulate = Color(0.22474965, 0.28093708, 0.48321176, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2544, 1908)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill082" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1823220113]
+modulate = Color(0.23960991, 0.2995124, 0.51516134, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2832, 1907)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill083" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2056736393]
+modulate = Color(0.23500831, 0.2937604, 0.50526786, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 1908)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill084" type="Sprite2D" parent="JohAmbCaveSol" unique_id=475828856]
+modulate = Color(0.37099645, 0.46374556, 0.79764235, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(96, 2109)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 195)
+
+[node name="Fill085" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1735621546]
+modulate = Color(0.32198647, 0.4024831, 0.69227093, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2160, 2112)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill086" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2087010603]
+modulate = Color(0.23123242, 0.2890405, 0.49714968, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 2107)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill087" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1996439504]
+modulate = Color(0.23552798, 0.29440996, 0.50638515, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2736, 2102)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill088" type="Sprite2D" parent="JohAmbCaveSol" unique_id=393388467]
+modulate = Color(0.23028846, 0.28786057, 0.4951202, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 2112)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill089" type="Sprite2D" parent="JohAmbCaveSol" unique_id=305599345]
+modulate = Color(0.34554446, 0.4319306, 0.74292064, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(48, 2299)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill090" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1202693256]
+modulate = Color(0.37408617, 0.4676077, 0.8042852, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 2302)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill091" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1388440596]
+modulate = Color(0.38101003, 0.47626254, 0.8191716, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 2297)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill092" type="Sprite2D" parent="JohAmbCaveSol" unique_id=568621367]
+modulate = Color(0.30275756, 0.37844694, 0.65092874, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2256, 2299)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill093" type="Sprite2D" parent="JohAmbCaveSol" unique_id=734364829]
+modulate = Color(0.22331403, 0.27914256, 0.4801252, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2544, 2292)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill094" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1678414969]
+modulate = Color(0.22501008, 0.2812626, 0.48377165, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2832, 2293)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill095" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1198642113]
+modulate = Color(0.23332609, 0.29165763, 0.5016511, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 2292)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill096" type="Sprite2D" parent="JohAmbCaveSol" unique_id=655440993]
+modulate = Color(0.35736144, 0.4467018, 0.7683271, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(96, 2484)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-96, -195)
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 195)
+
+[node name="Fill097" type="Sprite2D" parent="JohAmbCaveSol" unique_id=773773508]
+modulate = Color(0.32178602, 0.40223253, 0.69184, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 2485)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill098" type="Sprite2D" parent="JohAmbCaveSol" unique_id=415714889]
+modulate = Color(0.29821366, 0.37276706, 0.64115936, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 2488)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill099" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1140811256]
+modulate = Color(0.30671743, 0.38339677, 0.6594425, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 2489)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill100" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1559207831]
+modulate = Color(0.29507768, 0.3688471, 0.634417, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1968, 2493)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill101" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2139977488]
+modulate = Color(0.3079258, 0.3849072, 0.6620404, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2256, 2487)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill102" type="Sprite2D" parent="JohAmbCaveSol" unique_id=471085758]
+modulate = Color(0.22969143, 0.2871143, 0.49383658, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2544, 2492)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill103" type="Sprite2D" parent="JohAmbCaveSol" unique_id=547538941]
+modulate = Color(0.23934571, 0.29918215, 0.5145933, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2832, 2490)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill104" type="Sprite2D" parent="JohAmbCaveSol" unique_id=885327152]
+modulate = Color(0.2361562, 0.29519525, 0.5077358, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 2487)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill105" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1960665612]
+modulate = Color(0.2979403, 0.37242538, 0.64057165, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(48, 2678)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="Fill106" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1902650233]
+modulate = Color(0.30177376, 0.37721717, 0.64881355, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 2681)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill107" type="Sprite2D" parent="JohAmbCaveSol" unique_id=766779640]
+modulate = Color(0.28802678, 0.36003345, 0.61925757, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(528, 2676)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="Fill108" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1411432393]
+modulate = Color(0.2933241, 0.36665514, 0.6306468, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 2688)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill109" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1518617800]
+modulate = Color(0.3054823, 0.38185287, 0.6567869, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 2687)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill110" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1347320226]
+modulate = Color(0.22815876, 0.28519845, 0.49054134, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 2682)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill111" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1863852479]
+modulate = Color(0.23745835, 0.29682294, 0.5105354, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 2684)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill112" type="Sprite2D" parent="JohAmbCaveSol" unique_id=471476079]
+modulate = Color(0.23238406, 0.29048008, 0.4996257, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1968, 2681)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill113" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1191115156]
+modulate = Color(0.23951212, 0.29939017, 0.51495105, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2256, 2679)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Fill114" type="Sprite2D" parent="JohAmbCaveSol" unique_id=769039659]
+modulate = Color(0.24082337, 0.3010292, 0.51777023, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2544, 2682)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="Fill115" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1648268519]
+modulate = Color(0.23610047, 0.29512557, 0.507616, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2832, 2682)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="Fill116" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2146877219]
+modulate = Color(0.22347887, 0.27934858, 0.48047957, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 2685)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="Lip000" type="Sprite2D" parent="JohAmbCaveSol" unique_id=729641035]
+modulate = Color(0.39452067, 0.49315083, 0.84821945, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(720, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip001" type="Sprite2D" parent="JohAmbCaveSol" unique_id=202394409]
+modulate = Color(0.4086499, 0.51081234, 0.87859726, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1008, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Lip002" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1235011035]
+modulate = Color(0.4036757, 0.5045946, 0.86790276, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1296, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip003" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1582058266]
+modulate = Color(0.41101733, 0.51377165, 0.88368726, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1584, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Lip004" type="Sprite2D" parent="JohAmbCaveSol" unique_id=455783014]
+modulate = Color(0.3970805, 0.49635062, 0.85372305, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip005" type="Sprite2D" parent="JohAmbCaveSol" unique_id=505216649]
+modulate = Color(0.3954612, 0.4943265, 0.8502416, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2160, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Lip006" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1733677171]
+modulate = Color(0.41171628, 0.51464534, 0.88519, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip007" type="Sprite2D" parent="JohAmbCaveSol" unique_id=929643678]
+modulate = Color(0.38616857, 0.48271072, 0.8302624, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2736, 1329)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip008" type="Sprite2D" parent="JohAmbCaveSol" unique_id=992078802]
+modulate = Color(0.41380462, 0.5172558, 0.88967997, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 2289)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Lip009" type="Sprite2D" parent="JohAmbCaveSol" unique_id=795726816]
+modulate = Color(0.40488988, 0.50611234, 0.87051326, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 2289)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Lip010" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2027423310]
+modulate = Color(0.38893798, 0.48617247, 0.8362166, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 2289)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip011" type="Sprite2D" parent="JohAmbCaveSol" unique_id=341727037]
+modulate = Color(0.40339518, 0.50424397, 0.8672996, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 2289)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip012" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1287712785]
+modulate = Color(0.38499233, 0.48124042, 0.8277335, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(336, 2481)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip013" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1240281600]
+modulate = Color(0.38553944, 0.4819243, 0.8289098, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(624, 2481)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+flip_h = true
+
+[node name="Lip014" type="Sprite2D" parent="JohAmbCaveSol" unique_id=359601648]
+modulate = Color(0.41510352, 0.5188794, 0.8924726, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 2481)
+texture = ExtResource("12_sip8t")
+centered = false
+offset = Vector2(-144, -81)
+
+[node name="Ladder01" type="Sprite2D" parent="JohAmbCaveSol" unique_id=428399640]
+material = ExtResource("9_g8pco")
+position = Vector2(2736, 288)
+texture = ExtResource("13_ihr76")
+centered = false
+offset = Vector2(-48, -105)
 
 [node name="Decor" type="Node2D" parent="." unique_id=376971413]
 
 [node name="Echelle28_2" type="Node2D" parent="Decor" unique_id=507975743]
 position = Vector2(2736, 288)
 
-[node name="Dessin" type="Polygon2D" parent="Decor/Echelle28_2" unique_id=580608853]
-color = Color(0.08, 0.06, 0.05, 1)
-polygon = PackedVector2Array(-36, -84, 36, -84, 36, -12, -36, -12)
-
-[node name="@Polygon2D@1134" type="Polygon2D" parent="Decor/Echelle28_2" unique_id=894737456]
-color = Color(0.55, 0.38, 0.2, 1)
-polygon = PackedVector2Array(-24, -70, 24, -70, 24, -62, -24, -62)
-
-[node name="@Polygon2D@1135" type="Polygon2D" parent="Decor/Echelle28_2" unique_id=376892734]
-color = Color(0.55, 0.38, 0.2, 1)
-polygon = PackedVector2Array(-24, -44, 24, -44, 24, -36, -24, -36)
-
 [node name="Echelle2_21" type="Node2D" parent="Decor" unique_id=1580815111]
 position = Vector2(240, 2112)
-
-[node name="Dessin" type="Polygon2D" parent="Decor/Echelle2_21" unique_id=947959449]
-color = Color(0.55, 0.38, 0.2, 1)
-polygon = PackedVector2Array(-30, -88, 30, -88, 30, -8, -30, -8)
-
-[node name="@Polygon2D@1136" type="Polygon2D" parent="Decor/Echelle2_21" unique_id=220566939]
-color = Color(0.3, 0.2, 0.1, 1)
-polygon = PackedVector2Array(-22, -80, 22, -80, 22, -72, -22, -72)
-
-[node name="@Polygon2D@1137" type="Polygon2D" parent="Decor/Echelle2_21" unique_id=1616126372]
-color = Color(0.3, 0.2, 0.1, 1)
-polygon = PackedVector2Array(-22, -56, 22, -56, 22, -48, -22, -48)
-
-[node name="@Polygon2D@1138" type="Polygon2D" parent="Decor/Echelle2_21" unique_id=1743680310]
-color = Color(0.3, 0.2, 0.1, 1)
-polygon = PackedVector2Array(-22, -32, 22, -32, 22, -24, -22, -24)
 
 [node name="Entities" type="Node2D" parent="." unique_id=542546254]
 unique_name_in_owner = true
 y_sort_enabled = true
 
+[node name="JohAmbCaveFace000" type="Sprite2D" parent="Entities" unique_id=2003163745]
+modulate = Color(0.41099048, 0.5137381, 0.88362956, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2736, 192)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="JohAmbCaveFace001" type="Sprite2D" parent="Entities" unique_id=130643192]
+modulate = Color(0.39017802, 0.48772252, 0.83888274, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2592, 288)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-96, -195)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 0, 192, 195)
+
+[node name="JohAmbCaveFace002" type="Sprite2D" parent="Entities" unique_id=653602434]
+modulate = Color(0.40963554, 0.5120444, 0.88071644, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2832, 288)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="JohAmbCaveFace003" type="Sprite2D" parent="Entities" unique_id=1563762124]
+modulate = Color(0.41269967, 0.51587456, 0.88730425, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 384)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="JohAmbCaveFace004" type="Sprite2D" parent="Entities" unique_id=1920088147]
+modulate = Color(0.41354308, 0.51692885, 0.88911766, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2256, 384)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="JohAmbCaveFace005" type="Sprite2D" parent="Entities" unique_id=736592271]
+modulate = Color(0.38462216, 0.48077768, 0.8269376, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(528, 960)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="JohAmbCaveFace006" type="Sprite2D" parent="Entities" unique_id=971819002]
+modulate = Color(0.4039227, 0.5049034, 0.86843383, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 960)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="JohAmbCaveFace007" type="Sprite2D" parent="Entities" unique_id=396566857]
+modulate = Color(0.39095864, 0.48869827, 0.84056103, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 960)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="JohAmbCaveFace008" type="Sprite2D" parent="Entities" unique_id=752510067]
+modulate = Color(0.39927968, 0.4990996, 0.85845137, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 960)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="JohAmbCaveFace009" type="Sprite2D" parent="Entities" unique_id=357773028]
+modulate = Color(0.40079466, 0.5009933, 0.8617085, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 960)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="JohAmbCaveFace010" type="Sprite2D" parent="Entities" unique_id=1527497235]
+modulate = Color(0.41169629, 0.51462036, 0.88514704, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 960)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 91, 288, 104)
+
+[node name="JohAmbCaveFace011" type="Sprite2D" parent="Entities" unique_id=1545505394]
+modulate = Color(0.39444482, 0.49305603, 0.8480564, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2400, 960)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-96, -104)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(48, 82, 192, 104)
+
+[node name="JohAmbCaveFace012" type="Sprite2D" parent="Entities" unique_id=266307573]
+modulate = Color(0.39095956, 0.48869944, 0.84056306, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(336, 1248)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-48, -186)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 186)
+
+[node name="JohAmbCaveFace013" type="Sprite2D" parent="Entities" unique_id=11696625]
+modulate = Color(0.39886054, 0.49857566, 0.85755014, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1104, 1536)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="JohAmbCaveFace014" type="Sprite2D" parent="Entities" unique_id=952435524]
+modulate = Color(0.4105414, 0.51317674, 0.882664, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1392, 1536)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="JohAmbCaveFace015" type="Sprite2D" parent="Entities" unique_id=1862562624]
+modulate = Color(0.409854, 0.5123175, 0.88118607, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1680, 1536)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+
+[node name="JohAmbCaveFace016" type="Sprite2D" parent="Entities" unique_id=741324]
+modulate = Color(0.40355307, 0.5044413, 0.86763906, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 1536)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+
+[node name="JohAmbCaveFace017" type="Sprite2D" parent="Entities" unique_id=1193524238]
+modulate = Color(0.38554797, 0.48193496, 0.8289282, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(720, 1728)
+texture = ExtResource("11_lehe6")
+centered = false
+offset = Vector2(-144, -186)
+flip_h = true
+
+[node name="JohAmbCaveFace018" type="Sprite2D" parent="Entities" unique_id=1592136437]
+modulate = Color(0.3843504, 0.480438, 0.8263534, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(816, 1728)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-144, -195)
+flip_h = true
+
+[node name="JohAmbCaveFace019" type="Sprite2D" parent="Entities" unique_id=154050984]
+modulate = Color(0.39816675, 0.49770844, 0.85605854, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1920)
+texture = ExtResource("10_5ushg")
+centered = false
+offset = Vector2(-48, -195)
+region_enabled = true
+region_rect = Rect2(96, 0, 96, 195)
+
+[node name="JohAmbCaveSide000" type="Sprite2D" parent="Entities" unique_id=1797647484]
+modulate = Color(0.39486778, 0.49358472, 0.84896576, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 2016)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide001" type="Sprite2D" parent="Entities" unique_id=791761572]
+modulate = Color(0.3851047, 0.48138085, 0.8279751, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 2112)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide002" type="Sprite2D" parent="Entities" unique_id=1230055311]
+modulate = Color(0.40144798, 0.50180995, 0.86311316, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 2208)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide003" type="Sprite2D" parent="Entities" unique_id=732605267]
+modulate = Color(0.40847668, 0.51059586, 0.8782249, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 2304)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide004" type="Sprite2D" parent="Entities" unique_id=328365206]
+modulate = Color(0.4028732, 0.5035915, 0.8661774, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(144, 2400)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide005" type="Sprite2D" parent="Entities" unique_id=731043771]
+modulate = Color(0.40026274, 0.5003284, 0.8605649, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1344)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide006" type="Sprite2D" parent="Entities" unique_id=1677628853]
+modulate = Color(0.39730284, 0.49662852, 0.8542011, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1440)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide007" type="Sprite2D" parent="Entities" unique_id=1269994737]
+modulate = Color(0.4056734, 0.50709176, 0.87219787, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1536)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide008" type="Sprite2D" parent="Entities" unique_id=1877846363]
+modulate = Color(0.40232491, 0.50290614, 0.8649986, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1632)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide009" type="Sprite2D" parent="Entities" unique_id=718112216]
+modulate = Color(0.40709373, 0.50886714, 0.87525153, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1728)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide010" type="Sprite2D" parent="Entities" unique_id=123164403]
+modulate = Color(0.41522342, 0.51902926, 0.89273036, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(240, 1824)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide011" type="Sprite2D" parent="Entities" unique_id=1917806037]
+modulate = Color(0.40329438, 0.50411797, 0.8670829, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(336, 1056)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide012" type="Sprite2D" parent="Entities" unique_id=288000601]
+modulate = Color(0.41173998, 0.51467496, 0.885241, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(336, 1152)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide013" type="Sprite2D" parent="Entities" unique_id=1822467500]
+modulate = Color(0.39019522, 0.487744, 0.8389197, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(624, 1344)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide014" type="Sprite2D" parent="Entities" unique_id=889504562]
+modulate = Color(0.40078664, 0.5009833, 0.8616913, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(624, 1440)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide015" type="Sprite2D" parent="Entities" unique_id=1228753478]
+modulate = Color(0.4079468, 0.5099335, 0.87708557, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(624, 1536)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide016" type="Sprite2D" parent="Entities" unique_id=1688628934]
+modulate = Color(0.3918185, 0.4897731, 0.84240973, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(624, 1632)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide017" type="Sprite2D" parent="Entities" unique_id=781879908]
+modulate = Color(0.4031685, 0.5039606, 0.8668123, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(912, 1632)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide018" type="Sprite2D" parent="Entities" unique_id=385469076]
+modulate = Color(0.388881, 0.48610124, 0.83609414, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1008, 2304)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide019" type="Sprite2D" parent="Entities" unique_id=1588247978]
+modulate = Color(0.3911079, 0.48888484, 0.84088194, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1008, 2400)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide020" type="Sprite2D" parent="Entities" unique_id=1061733698]
+modulate = Color(0.3984346, 0.49804327, 0.85663444, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 480)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide021" type="Sprite2D" parent="Entities" unique_id=1968250142]
+modulate = Color(0.3963467, 0.49543336, 0.8521454, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 576)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide022" type="Sprite2D" parent="Entities" unique_id=578407177]
+modulate = Color(0.390411, 0.4880137, 0.8393836, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 672)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide023" type="Sprite2D" parent="Entities" unique_id=566325489]
+modulate = Color(0.40960035, 0.51200044, 0.88064075, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 768)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide024" type="Sprite2D" parent="Entities" unique_id=1521662146]
+modulate = Color(0.38695207, 0.48369008, 0.83194697, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1872, 864)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide025" type="Sprite2D" parent="Entities" unique_id=80084991]
+modulate = Color(0.4067668, 0.5084585, 0.8745486, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 1632)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide026" type="Sprite2D" parent="Entities" unique_id=887893780]
+modulate = Color(0.39339516, 0.49174392, 0.84579957, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 1728)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide027" type="Sprite2D" parent="Entities" unique_id=651890905]
+modulate = Color(0.3876392, 0.484549, 0.83342427, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 1824)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide028" type="Sprite2D" parent="Entities" unique_id=1864978838]
+modulate = Color(0.4115958, 0.5144947, 0.8849309, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 1920)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide029" type="Sprite2D" parent="Entities" unique_id=723039747]
+modulate = Color(0.4110837, 0.5138546, 0.88382995, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 2016)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide030" type="Sprite2D" parent="Entities" unique_id=1624797658]
+modulate = Color(0.41198954, 0.51498693, 0.88577753, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 2112)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide031" type="Sprite2D" parent="Entities" unique_id=665105481]
+modulate = Color(0.3938995, 0.49237436, 0.8468839, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2064, 2208)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide032" type="Sprite2D" parent="Entities" unique_id=284509216]
+modulate = Color(0.40655348, 0.5081918, 0.87408996, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 384)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide033" type="Sprite2D" parent="Entities" unique_id=1867037196]
+modulate = Color(0.39983603, 0.49979505, 0.8596475, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 480)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide034" type="Sprite2D" parent="Entities" unique_id=443673324]
+modulate = Color(0.39715925, 0.49644905, 0.8538924, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 576)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide035" type="Sprite2D" parent="Entities" unique_id=1421629537]
+modulate = Color(0.41139516, 0.51424396, 0.8844996, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 672)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide036" type="Sprite2D" parent="Entities" unique_id=1730174563]
+modulate = Color(0.39113685, 0.48892105, 0.84094423, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 768)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide037" type="Sprite2D" parent="Entities" unique_id=1865448260]
+modulate = Color(0.38889495, 0.48611867, 0.8361241, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2448, 864)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveSide038" type="Sprite2D" parent="Entities" unique_id=867148595]
+modulate = Color(0.38541028, 0.48176283, 0.82863206, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 384)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+
+[node name="JohAmbCaveSide039" type="Sprite2D" parent="Entities" unique_id=1013496388]
+modulate = Color(0.4101304, 0.512663, 0.8817804, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 480)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide040" type="Sprite2D" parent="Entities" unique_id=1259490756]
+modulate = Color(0.4073657, 0.5092071, 0.87583625, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 576)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide041" type="Sprite2D" parent="Entities" unique_id=435096507]
+modulate = Color(0.41376287, 0.51720357, 0.88959014, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 672)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide042" type="Sprite2D" parent="Entities" unique_id=401065202]
+modulate = Color(0.39491987, 0.49364984, 0.84907776, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 768)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide043" type="Sprite2D" parent="Entities" unique_id=504135641]
+modulate = Color(0.39619827, 0.49524784, 0.8518263, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 864)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide044" type="Sprite2D" parent="Entities" unique_id=609039532]
+modulate = Color(0.3903546, 0.48794326, 0.8392624, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 960)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide045" type="Sprite2D" parent="Entities" unique_id=441114695]
+modulate = Color(0.40424117, 0.5053015, 0.8691186, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 1056)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide046" type="Sprite2D" parent="Entities" unique_id=1713096075]
+modulate = Color(0.41561696, 0.5195212, 0.89357644, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 1152)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 103, 96, 96)
+
+[node name="JohAmbCaveSide047" type="Sprite2D" parent="Entities" unique_id=1007518309]
+modulate = Color(0.40189824, 0.5023728, 0.8640812, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2928, 1248)
+texture = ExtResource("14_tusa2")
+centered = false
+offset = Vector2(-48, -96)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 207, 96, 96)
+
+[node name="JohAmbCaveRock00" type="Sprite2D" parent="Entities" unique_id=1337460808]
+modulate = Color(0.47982368, 0.55659544, 0.78691083, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(2152, 670)
+scale = Vector2(1.2978355, 1.2978355)
+texture = ExtResource("15_gk3ec")
+centered = false
+offset = Vector2(-48, -76)
+flip_h = true
+
+[node name="JohAmbCaveRock01" type="Sprite2D" parent="Entities" unique_id=2138547525]
+modulate = Color(0.4718593, 0.5473568, 0.77384925, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(810, 1147)
+scale = Vector2(1.3834535, 1.3834535)
+texture = ExtResource("15_gk3ec")
+centered = false
+offset = Vector2(-48, -76)
+flip_h = true
+
+[node name="JohAmbCaveRock02" type="Sprite2D" parent="Entities" unique_id=1434971664]
+modulate = Color(0.51003337, 0.5916387, 0.8364547, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1590, 1150)
+scale = Vector2(1.286372, 1.286372)
+texture = ExtResource("15_gk3ec")
+centered = false
+offset = Vector2(-48, -76)
+
+[node name="JohAmbCaveRock03" type="Sprite2D" parent="Entities" unique_id=1185899767]
+modulate = Color(0.46218926, 0.53613955, 0.75799036, 1)
+material = ExtResource("9_g8pco")
+position = Vector2(1481, 1912)
+scale = Vector2(1.260781, 1.260781)
+texture = ExtResource("15_gk3ec")
+centered = false
+offset = Vector2(-48, -76)
+
+[node name="JohAmbCaveLadder00" type="Sprite2D" parent="Entities" unique_id=1504510735]
+material = ExtResource("9_g8pco")
+position = Vector2(240, 2112)
+texture = ExtResource("16_pnbfa")
+centered = false
+offset = Vector2(-48, -191)
+
+[node name="JohAmbCaveGlows" type="Node2D" parent="." unique_id=1464390413]
+
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=1659870668]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_wbf0q")
 

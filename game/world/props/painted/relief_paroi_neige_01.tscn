@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_l0yk2"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_obag1"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_paroi_neige_01.png" id="3_01x1g"]
+
+[node name="ReliefParoiNeige01" type="Node2D" unique_id=206922249]
+script = ExtResource("1_l0yk2")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2109279548]
+unique_name_in_owner = true
+material = ExtResource("2_obag1")
+texture = ExtResource("3_01x1g")
+centered = false
+offset = Vector2(-239.5, -288)

@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_r6wyg"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_8uc8x"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_marches_neige_01.png" id="3_bfj56"]
+
+[node name="ReliefMarchesNeige01" type="Node2D" unique_id=1043859805]
+script = ExtResource("1_r6wyg")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1008608729]
+unique_name_in_owner = true
+material = ExtResource("2_8uc8x")
+texture = ExtResource("3_bfj56")
+centered = false
+offset = Vector2(-528, -672)

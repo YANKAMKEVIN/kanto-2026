@@ -212,6 +212,23 @@ const MAPS: Dictionary = {
 		"bands": [[".UDM", "ground_plancher_carillon_01", Color(0.86, 0.8, 0.7), "Floor"],
 			["O", "ground_planches_cedent_01", Color.WHITE, "Planks"]],
 		"land": "", "water": "", "wall": Color(0.9, 0.88, 0.88), "crates": false, "stairs": []},
+	# JOH9 : grotte du Mont Argenté, d'après ses vues générales. « down » : caractère de l'échelle
+	# qui descend ; « frost » : nombre de traînées de givre au pied des parois (3F, ouvert au vent).
+	&"mt_silver_1f": {"plan": "mt_silver_1f", "seed": 9171, "floor": "ground_grotte_01",
+		"bands": [[".UEe", "ground_grotte_01", Color(0.78, 0.82, 0.94), "Floor"],
+			["g", "ground_roche_01", Color(0.92, 0.92, 0.96), "Rubble"]],
+		"wall": Color(0.5, 0.6, 0.92), "rock": Color(0.58, 0.66, 0.88), "land": ".g",
+		"water": "w", "crates": false},
+	&"mt_silver_2f": {"plan": "mt_silver_2f", "seed": 9181, "floor": "ground_grotte_01",
+		"bands": [[".UD", "ground_grotte_01", Color(0.62, 0.66, 0.8), "Floor"],
+			["g", "ground_roche_01", Color(0.76, 0.78, 0.86), "Rubble"]],
+		"wall": Color(0.4, 0.5, 0.86), "rock": Color(0.5, 0.58, 0.82), "land": "", "water": "",
+		"crates": false, "down": "D"},
+	&"mt_silver_3f": {"plan": "mt_silver_3f", "seed": 9191, "floor": "ground_grotte_01",
+		"bands": [[".UD", "ground_grotte_01", Color(0.84, 0.86, 0.94), "Floor"],
+			["g", "ground_roche_01", Color(1.0, 1.0, 1.04), "Rubble"]],
+		"wall": Color(1.15, 1.2, 1.35), "rock": Color(0.76, 0.82, 0.96), "land": "", "water": "",
+		"crates": false, "down": "D", "frost": 26},
 }
 ## Escaliers de l'Antre : pierre refroidie, comme le sol [D].
 const STAIRS_TINT := Color(0.66, 0.74, 0.92)
@@ -237,6 +254,7 @@ const STAIRS: Array = [[Vector2(1.5, 6.0), -PI / 2.0], [Vector2(38.5, 8.0), PI /
 const LADDER_UP: String = "prop_echelle_monte_01"
 const LADDER_DOWN: String = "prop_echelle_descend_01"
 const CRATE: String = "prop_caisse_r_01"
+const FROST: String = "relief_givre_%02d"
 ## Sens d'un courant → rotation de la texture (son flux va vers le bas de l'image).
 const FLOW_ROTATIONS: Dictionary = {Vector2i.DOWN: 0.0, Vector2i.UP: PI,
 	Vector2i.RIGHT: -PI / 2.0, Vector2i.LEFT: PI / 2.0}
@@ -294,6 +312,8 @@ const SHAFTS: Dictionary = {
 	&"burned_tower_1f": [Vector2(8.5, 5.0), Vector2(17.5, 4.0)],
 	&"burned_tower_b1f": [Vector2(10.0, 7.0)],
 	&"dragons_den_sanctuary": [Vector2(11.0, 6.0)],
+	&"mt_silver_1f": [Vector2(11.0, 13.0), Vector2(23.0, 13.0)],
+	&"mt_silver_3f": [Vector2(16.0, 3.0)],
 }
 ## Flaques de lumière seules : jour de la sortie vers Oliville (salle 2), halo chaud [D] ; jour de
 ## l'entrée des Îles Tourbillon.
@@ -306,6 +326,7 @@ const POOLS: Dictionary = {&"sea_cave_2": [Vector2(4.0, 39.2)],
 		Vector2(22.0, 1.6)],
 	&"tide_cave_1f": [Vector2(24.0, 10.0)], &"tide_cave_b1f": [Vector2(1.5, 12.0)],
 	&"dragons_den_1f": [Vector2(14.0, 22.5)],
+	&"mt_silver_1f": [Vector2(1.0, 23.5), Vector2(16.0, 27.0)],
 	&"whirl_islands_1f": [Vector2(1.0, 13.0)],
 	&"goldenrod_underground": [Vector2(2.5, 6.5), Vector2(37.5, 8.5)]}
 
@@ -760,16 +781,38 @@ func _fixtures(kit: Object, entities: Node2D, decals: Node2D, plan: Object,
 		kit.call(&"add_sprite", entities, LADDER_UP,
 			(Vector2(cell) + Vector2(0.5, 1.0)) * TILE, "Ladder%02d" % count)
 		count += 1
-	for cell: Vector2i in plan.cells_of("V"):
+	for cell: Vector2i in plan.cells_of(spec.get("down", "V")):
 		kit.call(&"add_sprite", decals, LADDER_DOWN,
 			(Vector2(cell) + Vector2(0.5, 1.0)) * TILE, "Ladder%02d" % count)
 		count += 1
+	count += _frost(kit, decals, plan, spec)
 	if spec.get("crates", true):
 		for cell: Vector2i in plan.cells_of("R"):
 			kit.call(&"add_sprite", entities, CRATE, (Vector2(cell) + Vector2(0.5, 1.0)) * TILE,
 				"Crate%02d" % count)
 			count += 1
 	return count
+
+
+## Traînées de givre au pied des parois (clé « frost » : leur nombre), couche du sol. Renvoie leur
+## nombre.
+func _frost(kit: Object, decals: Node2D, plan: Object, spec: Dictionary) -> int:
+	var wanted: int = spec.get("frost", 0)
+	if wanted == 0:
+		return 0
+	var edge: Array[Vector2i] = []
+	for cell: Vector2i in plan.cells_of(".") + plan.cells_of("g"):
+		if plan.at(cell + Vector2i.UP) == "#" or plan.at(cell + Vector2i.DOWN) == "#":
+			edge.append(cell)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(spec["seed"]) + 9
+	for index: int in wanted:
+		var cell: Vector2i = edge[rng.randi_range(0, edge.size() - 1)]
+		var drift: Sprite2D = kit.call(&"add_sprite", decals, FROST % rng.randi_range(1, 4),
+			(Vector2(cell) + Vector2(0.5, 0.5)) * TILE, "Frost%02d" % index)
+		drift.position = (Vector2(cell) + Vector2(0.5, rng.randf_range(0.2, 0.8))) * TILE
+		drift.flip_h = rng.randf() < 0.5
+	return wanted
 
 
 ## JOH6 : un objet peint (image seule, sans emprise) sur chaque case des caractères de la clé
@@ -1085,6 +1128,10 @@ func _clear_placeholders(root: Node, joh6: bool = false) -> void:
 	for child: Node in root.get_node(^"Entities").get_children():
 		if String(child.name).begins_with("Echelle"):
 			parents.append(child)
+	if decor != null:
+		for child: Node in decor.get_children():
+			if String(child.name).begins_with("Echelle"):
+				parents.append(child)
 	for parent: Node in parents:
 		for child: Node in parent.get_children():
 			if child is Polygon2D:

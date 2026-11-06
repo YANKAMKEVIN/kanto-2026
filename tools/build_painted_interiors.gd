@@ -3305,7 +3305,7 @@ func _mt_silver_center() -> Dictionary:
 func _route_28_gate() -> Dictionary:
 	return {
 		"id": &"route_28_gate", "node": "Route28Gate", "size": Vector2i(10, 8),
-		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"shell": "res://assets/world/interiors/int_poste_route_28_coque.png",
 		"title": "Route 28", "light": &"interior_warm",
 		"floor": Rect2i(1, 2, 8, 5),
 		"doors": [Vector2i(4, 1), Vector2i(5, 1), Vector2i(4, 7), Vector2i(5, 7)],

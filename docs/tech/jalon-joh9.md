@@ -190,3 +190,20 @@ la Tour Cendrée, niv. 60 [D], comme Entei (JOH8). `johto_act3` : levé par le J
 ### T13 — fusion (2026-11-05)
 
 CI verte run 41951949390 sur `2012ed61` ; fusion `--no-ff` dans `main`.
+
+### Peinture (2026-11-06)
+
+Sentier, extérieur, grotte 1F, 2F, 3F, sommet, Route 28 et poste peints d'après leurs vues
+(`tools/art/joh9_argente.py`, `tools/joh_ambiance_neige.gd`, passes `build_joh_ambiance.gd` et
+`build_joh_ambiance_caves.gd`). Centre et maison du gardien : intérieurs communs déjà peints, sans
+vue propre, gardés. Route 22 ouest exclue (carte de Kanto, peinte au DAF.4). Logique identique avant
+et après (`tools/joh_ambiance_dump.sh`) ; seuls les aplats `Neige`, `Nuages` et l'échelle du sommet
+partent de `Decor`, et `NightLights` devient un calque.
+
+Défauts [D] : neige `n` en canal des pavés sur le sentier, en sol de base ailleurs ; escalier de la vue
+de l'extérieur peint sur les cases (14..24, 7..13), sans effet sur les déplacements ; rangée sud `R`
+de l'extérieur en blocs ; versant de la Route 28 en ardoise ; gravats en galets gris ; givre du 3F en
+26 traînées, vent de la vue non animé ; nuit de `johto_auto` sans lampe propre au Mont Argenté.
+
+QA A17 du 2026-11-06 (10 h 12 à 10 h 17, APK debug) : sentier, extérieur, 1F, 2F, 3F, sommet, Route 28 et
+poste, de jour, sentier et sommet de nuit, sans `SCRIPT ERROR`. 52 i/s, creux à 32, 275 Mo de textures.

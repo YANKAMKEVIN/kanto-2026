@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_6xs7u"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_ln50s"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_givre_03.png" id="3_imw3u"]
+
+[node name="ReliefGivre03" type="Node2D" unique_id=1611070922]
+script = ExtResource("1_6xs7u")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=432305219]
+unique_name_in_owner = true
+material = ExtResource("2_ln50s")
+texture = ExtResource("3_imw3u")
+centered = false
+offset = Vector2(-144, -31)
