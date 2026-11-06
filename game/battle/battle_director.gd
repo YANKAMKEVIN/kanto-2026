@@ -414,6 +414,11 @@ func is_running() -> bool:
 	return _running
 
 
+## Espèce du sauvage du combat en cours ; "" contre un Dresseur ou hors combat.
+func get_wild_species() -> StringName:
+	return _wild_foe.species_id if _wild_foe != null else &""
+
+
 ## Combat en cours (null hors combat), pour les tests.
 func get_battle() -> Battle:
 	return _battle

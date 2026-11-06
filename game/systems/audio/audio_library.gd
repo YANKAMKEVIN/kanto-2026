@@ -5,8 +5,10 @@ extends RefCounted
 ## Classe pure : ni nœud, ni lecteur. Cinq fichiers :
 ## - `tracks.json` : morceaux (`file`, `kind` music | jingle, `loop`, `loop_offset`,
 ##   `volume_db`, `expected`, `confirm`, `fade_out_after`) et `events` (moment du jeu → morceau) ;
-## - `music_zones.json` : `zones`, `maps`, `movement` (surf, bike), `flags`, `areas` ;
-## - `battle_music.json` : catégories de combat, Dresseurs, thèmes du « ! » ;
+## - `music_zones.json` : `zones`, `maps`, `movement` (surf, bike), `movement_regions` (les mêmes,
+##   par région), `flags`, `areas` ;
+## - `battle_music.json` : catégories de combat, Dresseurs, espèces (`species_categories`),
+##   catégories par région (`region_categories`), thèmes du « ! » ;
 ## - `sfx.json` : bruitages, familles d'attaques (`move_sounds`), cris (`cries`) ;
 ## - `ambiences.json` : boucles d'ambiance par zone, carte ou météo.
 ##
@@ -42,6 +44,8 @@ var _events: Dictionary[StringName, StringName] = {}
 var _zone_music: Dictionary[StringName, StringName] = {}
 var _map_music: Dictionary[StringName, StringName] = {}
 var _movement: Dictionary[StringName, StringName] = {}
+## Région → mode de déplacement → morceau (Johto, docs/tech/johto-musiques.md §5).
+var _movement_regions: Dictionary[StringName, Dictionary] = {}
 ## Règles de drapeau, dans l'ordre : { flag, maps: Array[StringName], track }.
 var _flag_rules: Array[Dictionary] = []
 var _area_volume: Dictionary[StringName, float] = {}
@@ -50,6 +54,10 @@ var _battle_categories: Dictionary[StringName, Dictionary] = {}
 var _default_battle: StringName = &""
 var _trainer_battle: Dictionary[StringName, StringName] = {}
 var _legendary_species: Array[StringName] = []
+## Espèce sauvage → catégorie propre (Bêtes, Lugia, Ho-Oh).
+var _species_battle: Dictionary[StringName, StringName] = {}
+## Région → catégorie → catégorie de la région (« wild » → « johto_wild »).
+var _region_battle: Dictionary[StringName, Dictionary] = {}
 var _encounter_themes: Dictionary[StringName, StringName] = {}
 var _default_encounter: StringName = &""
 var _encounter_trainers: Dictionary[StringName, StringName] = {}
@@ -139,6 +147,13 @@ func add_music_zones(data: Dictionary, source: String = "") -> bool:
 		source + " maps") and ok
 	ok = _add_track_table(JsonFields.get_dict(data, "movement"), _movement,
 		source + " movement") and ok
+	var regions := JsonFields.get_dict(data, "movement_regions")
+	for raw_region: Variant in regions:
+		var region_table: Dictionary[StringName, StringName] = {}
+		var region_entry: Variant = regions[raw_region]
+		ok = _add_track_table(region_entry if region_entry is Dictionary else {}, region_table,
+			"%s movement_regions.%s" % [source, raw_region]) and ok
+		_movement_regions[StringName(str(raw_region))] = region_table
 	var rules := JsonFields.get_array(data, "flags")
 	for i: int in rules.size():
 		var rule: Variant = rules[i]
@@ -186,6 +201,28 @@ func add_battle_music(data: Dictionary, source: String = "") -> bool:
 		else:
 			ok = _fail("%s trainers.%s : catégorie inconnue « %s »" % [source, raw, category])
 	_legendary_species = JsonFields.get_ids(data, "legendary_species")
+	var species := JsonFields.get_dict(data, "species_categories")
+	for raw: Variant in species:
+		var category := StringName(str(species[raw]))
+		if _battle_categories.has(category):
+			_species_battle[StringName(str(raw))] = category
+		else:
+			ok = _fail("%s species_categories.%s : catégorie inconnue « %s »" % [source, raw,
+				category])
+	var by_region := JsonFields.get_dict(data, "region_categories")
+	for raw_region: Variant in by_region:
+		var table: Dictionary[StringName, StringName] = {}
+		var region_entry: Variant = by_region[raw_region]
+		var entries: Dictionary = region_entry if region_entry is Dictionary else {}
+		for raw: Variant in entries:
+			var category := StringName(str(entries[raw]))
+			if _battle_categories.has(StringName(str(raw))) \
+					and _battle_categories.has(category):
+				table[StringName(str(raw))] = category
+			else:
+				ok = _fail("%s region_categories.%s.%s : catégorie inconnue" % [source,
+					raw_region, raw])
+		_region_battle[StringName(str(raw_region))] = table
 	ok = _add_track_table(JsonFields.get_dict(data, "encounter_themes"), _encounter_themes,
 		source + " encounter_themes") and ok
 	_default_encounter = JsonFields.get_id(data, "default_encounter")
@@ -343,9 +380,11 @@ func map_ids() -> Array[StringName]:
 
 
 ## Morceau d'un mode de déplacement ([constant MOVEMENT_SURF], [constant MOVEMENT_BIKE]) ;
-## "" = la musique de la carte continue.
-func movement_track(movement: StringName) -> StringName:
-	return _movement.get(movement, &"")
+## "" = la musique de la carte continue. Une entrée de [param region] (`movement_regions`) passe
+## avant la règle commune.
+func movement_track(movement: StringName, region: StringName = &"") -> StringName:
+	var regional: Dictionary = _movement_regions.get(region, {})
+	return regional.get(movement, _movement.get(movement, &""))
 
 
 ## Règles de drapeau ({ flag, maps, track }), dans l'ordre du fichier.
@@ -374,6 +413,16 @@ func trainer_category(trainer_id: StringName) -> StringName:
 
 func is_legendary(species_id: StringName) -> bool:
 	return _legendary_species.has(species_id)
+
+
+## Catégorie propre à une espèce sauvage (`species_categories`) ; "" si elle n'en a pas.
+func species_category(species_id: StringName) -> StringName:
+	return _species_battle.get(species_id, &"")
+
+
+## [param category] telle que [param region] la joue (`region_categories`) ; inchangée sinon.
+func regional_category(category: StringName, region: StringName) -> StringName:
+	return (_region_battle.get(region, {}) as Dictionary).get(category, category)
 
 
 ## Thème du « ! » d'un Dresseur : par Dresseur, puis par le plus long préfixe du nom

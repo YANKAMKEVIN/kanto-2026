@@ -1,8 +1,7 @@
 # Johto — table des musiques (HeartGold / SoulSilver)
 
-> Claude, 2026-11-06. **Document de validation pour Kevin. Aucun fichier téléchargé, aucun audio ajouté, ni `game/` ni `data/` modifiés.**
+> Claude, 2026-11-06. **Branché dans le jeu le 2026-11-06 : voir la §10.** Les §1 à §9 gardent la préparation (la §1 décrit l'état d'avant).
 > Modèle : `docs/tech/jalon-son.md` §2 (carte → piste). Décision de Kevin du 2026-10-24 : Kanto = Let's Go ; Johto = HeartGold / SoulSilver (JOH9, JH-12). Jeu privé, cercle restreint.
-> **Titres de pistes** : écrits de mémoire d'après la bande-son HGSS ; ils sont **à confirmer à l'écoute** (comme la tâche T1 du jalon Son) avant tout téléchargement. Le choix de la source et des droits viendra après la validation de cette liste.
 
 ## 1. Ce qui joue aujourd'hui à Johto
 
@@ -222,3 +221,21 @@ Format **FLAC**, dossier `~/Music/johto-hgss/`. Numéros = colonnes « CD » et 
 | 4.26 | Ending | générique de Johto |
 
 **32 fichiers.** Facultatifs (pistes propres aux autres Bêtes) : 2.29 Battle! (Raikou), 2.49 Battle! (Entei).
+
+## 10. Branchement (fait le 2026-11-06)
+
+**Fichiers.** 32 OGG q3 `assets/audio/music/johto_*.ogg`, **27,3 Mo** (musique : 34,4 → 61,6 Mo ; APK debug 737 Mio). Versionnés comme ceux de Kanto. Refaire : `python3 tools/audio/prepare_music.py --src ~/Music/johto-hgss --out build/audio/johto_wav --only johto_`, puis `oggenc -q 3`. Les `loop_offset` du rapport vont dans `tracks.json`.
+
+**Boucles.** 31 boucles exactes (fidélité ≥ 0,98), chacune couvrant le morceau entier (intro + 2 tours + fondu d'environ 10 s). Générique sans boucle. Tout passe `measure_audio.py` : −16 LUFS ± 1, aucune jointure qui claque. Team Rocket HQ et Bell Tower ont des crêtes isolées : limiteur doux sans mémoire (`soft_limit`), la jointure reste continue.
+
+**Données ajoutées.**
+- `music_zones.json` : `movement_regions` (Surf, Vélo par région) ; toutes les zones de Johto ; 8 Centres, chambre du Centre d'Oliville, 3 Boutiques, boutique de souvenirs d'Acajou, grand magasin.
+- `battle_music.json` : catégories `johto_*`, `region_categories` (sauvage, légendaire, Dresseur), `species_categories` (Bêtes, Lugia, Ho-Oh), `legendary_species` + Ho-Oh, Entei, Raikou.
+- Le combat connaît maintenant l'espèce sauvage (`BattleDirector.get_wild_species`) et la région de la carte. **Avant, `legendary` ne s'appliquait jamais** : `AudioBridge` n'envoyait pas l'espèce.
+
+**Valeurs par défaut prises.**
+- Routes 40 et 41 à pied : Route 29 (§2.1 ; la §9 disait Surf).
+- Suicune, Entei, Raikou : Battle! (Suicune), selon la §9.
+- Lugia et Ho-Oh : une piste chacun (§9).
+- Thème du rival (`johto_rival`) : trois arrivées au Mont Argenté (relais, 2F, sommet). Pas à l'épilogue, qui garde le ton calme avant le générique.
+- « ! » Rocket : Dante, Cenere, Brace, selon JM-7. Chefs : « ! » inchangé.

@@ -38,7 +38,8 @@
 						"facing": "up"
 					},
 					{
-						"dialogue": "mt_silver_rival_arrives"
+						"dialogue": "mt_silver_rival_arrives",
+						"music": "johto_rival"
 					},
 					{
 						"move": "rival_relais",
@@ -126,6 +127,7 @@
 						"facing": "left"
 					},
 					{
+						"music": "johto_rival",
 						"move": "rival_2f",
 						"to": {
 							"near": "player",
