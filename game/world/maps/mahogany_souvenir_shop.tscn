@@ -1,11 +1,19 @@
 [gd_scene format=4]
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_cxhvh"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_argenta_coque.png" id="2_17csn"]
 [ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_o57db"]
 [ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_l3dsk"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_c7h5l"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="5_1qtfp"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_smf8t"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="6_3gnfs"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_escalier_repaire_descend_01.png" id="6_kqtef"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_tapis_rouge_01.png" id="7_j5k32"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_rayon_souvenirs_01.png" id="8_r3fc3"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_comptoir_pension_01.png" id="9_rpkyw"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_presentoir_souvenirs_01.png" id="10_c0ibh"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_plante.png" id="11_gst7w"]
 
 [node name="MahoganySouvenirShop" type="Node2D" unique_id=706343304]
 script = ExtResource("1_cxhvh")
@@ -17,86 +25,44 @@ blocked_cells = Array[Vector2i]([Vector2i(2, 3), Vector2i(5, 3), Vector2i(6, 3),
 interior = true
 light_profile = &"interior_warm"
 
+[node name="JohAmbShopShell" type="Sprite2D" parent="." unique_id=1643525954]
+z_index = -3
+texture = ExtResource("2_17csn")
+centered = false
+
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1639943171]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAAAAAAAAAAIAAAACAAAAAAABAAIAAAADAAAAAAABAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAABAAIAAAAHAAAAAAABAAIAAAAIAAAAAAABAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAAAAAIAAAALAAAAAAABAAIAAAAMAAAAAAAAAAIAAAANAAAAAAAAAAIAAAAOAAAAAAABAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAAAAAIAAAADAAEAAAAAAAIAAAAEAAEAAAAAAAIAAAAFAAEAAAABAAIAAAAGAAEAAAAAAAIAAAAHAAEAAAABAAIAAAAIAAEAAAAAAAIAAAAJAAEAAAABAAIAAAAKAAEAAAABAAIAAAALAAEAAAAAAAIAAAAMAAEAAAAAAAIAAAANAAEAAAABAAIAAAAOAAEAAAABAAIAAAAAAAIAAAABAAIAAAABAAIAAAAAAAIAAAACAAIAAAAAAAIAAAADAAIAAAAAAAIAAAAEAAIAAAABAAIAAAAFAAIAAAABAAIAAAAGAAIAAAAAAAIAAAAHAAIAAAAAAAIAAAAIAAIAAAAAAAIAAAAJAAIAAAABAAIAAAAKAAIAAAABAAIAAAALAAIAAAABAAIAAAAMAAIAAAABAAIAAAANAAIAAAABAAIAAAAOAAIAAAAAAAIAAAAAAAMAAAAAAAIAAAABAAMAAAAAAAAAAAACAAMAAAAAAAcAAAADAAMAAAABAAAAAAAEAAMAAAABAAAAAAAFAAMAAAABAAcAAAAGAAMAAAABAAcAAAAHAAMAAAABAAAAAAAIAAMAAAABAAcAAAAJAAMAAAABAAcAAAAKAAMAAAABAAAAAAALAAMAAAABAAAAAAAMAAMAAAAAAAAAAAANAAMAAAACAAAAAAAOAAMAAAABAAIAAAAAAAQAAAABAAIAAAABAAQAAAACAAAAAAACAAQAAAAAAAAAAAADAAQAAAABAAAAAAAEAAQAAAABAAAAAAAFAAQAAAABAAAAAAAGAAQAAAAAAAcAAAAHAAQAAAABAAcAAAAIAAQAAAAAAAcAAAAJAAQAAAACAAAAAAAKAAQAAAACAAAAAAALAAQAAAAAAAAAAAAMAAQAAAACAAAAAAANAAQAAAABAAAAAAAOAAQAAAABAAIAAAAAAAUAAAAAAAIAAAABAAUAAAABAAAAAAACAAUAAAAAAAAAAAADAAUAAAABAAAAAAAEAAUAAAAAAAAAAAAFAAUAAAACAAAAAAAGAAUAAAAAAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAACAAAAAAAJAAUAAAAAAAAAAAAKAAUAAAACAAAAAAALAAUAAAAAAAAAAAAMAAUAAAABAAAAAAANAAUAAAABAAAAAAAOAAUAAAAAAAIAAAAAAAYAAAABAAIAAAABAAYAAAABAAAAAAACAAYAAAACAAAAAAADAAYAAAABAAAAAAAEAAYAAAABAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAABAAAAAAAHAAYAAAACAAAAAAAIAAYAAAACAAAAAAAJAAYAAAAAAAAAAAAKAAYAAAABAAAAAAALAAYAAAABAAAAAAAMAAYAAAACAAAAAAANAAYAAAABAAAAAAAOAAYAAAAAAAIAAAAAAAcAAAABAAIAAAABAAcAAAACAAAAAAACAAcAAAACAAAAAAADAAcAAAABAAcAAAAEAAcAAAACAAAAAAAFAAcAAAACAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAABAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAACAAAAAAAKAAcAAAACAAAAAAALAAcAAAAAAAcAAAAMAAcAAAAAAAAAAAANAAcAAAABAAAAAAAOAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAABAAgAAAABAAAAAAACAAgAAAAAAAAAAAADAAgAAAABAAAAAAAEAAgAAAABAAAAAAAFAAgAAAACAAAAAAAGAAgAAAAAAAYAAAAHAAgAAAAAAAYAAAAIAAgAAAAAAAYAAAAJAAgAAAACAAAAAAAKAAgAAAAAAAAAAAALAAgAAAAAAAAAAAAMAAgAAAAAAAAAAAANAAgAAAABAAcAAAAOAAgAAAAAAAIAAAAAAAkAAAAAAAIAAAABAAkAAAABAAIAAAACAAkAAAABAAIAAAADAAkAAAAAAAIAAAAEAAkAAAAAAAIAAAAFAAkAAAABAAIAAAAGAAkAAAAAAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAAAAAIAAAAKAAkAAAABAAIAAAALAAkAAAAAAAIAAAAMAAkAAAABAAIAAAANAAkAAAABAAIAAAAOAAkAAAAAAAIAAAA=")
 tile_set = ExtResource("2_o57db")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=313513233]
+visible = false
 tile_set = ExtResource("2_o57db")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=976157447]
+visible = false
 tile_set = ExtResource("2_o57db")
 
 [node name="Decor" type="Node2D" parent="." unique_id=381396819]
-
-[node name="Rayon_2_3" type="Polygon2D" parent="Decor" unique_id=1739764189]
-color = Color(0.46, 0.32, 0.22, 1)
-polygon = PackedVector2Array(196, 292, 284, 292, 284, 380, 196, 380)
-
-[node name="Rayon_5_3" type="Polygon2D" parent="Decor" unique_id=323382189]
-color = Color(0.46, 0.32, 0.22, 1)
-polygon = PackedVector2Array(484, 292, 572, 292, 572, 380, 484, 380)
-
-[node name="Rayon_6_3" type="Polygon2D" parent="Decor" unique_id=610500254]
-color = Color(0.46, 0.32, 0.22, 1)
-polygon = PackedVector2Array(580, 292, 668, 292, 668, 380, 580, 380)
-
-[node name="Rayon_8_3" type="Polygon2D" parent="Decor" unique_id=107532237]
-color = Color(0.46, 0.32, 0.22, 1)
-polygon = PackedVector2Array(772, 292, 860, 292, 860, 380, 772, 380)
-
-[node name="Rayon_9_3" type="Polygon2D" parent="Decor" unique_id=481674769]
-color = Color(0.46, 0.32, 0.22, 1)
-polygon = PackedVector2Array(868, 292, 956, 292, 956, 380, 868, 380)
-
-[node name="Caisse_6_4" type="Polygon2D" parent="Decor" unique_id=1838847823]
-color = Color(0.62, 0.44, 0.28, 1)
-polygon = PackedVector2Array(576, 408, 672, 408, 672, 474, 576, 474)
-
-[node name="Caisse_7_4" type="Polygon2D" parent="Decor" unique_id=208951704]
-color = Color(0.62, 0.44, 0.28, 1)
-polygon = PackedVector2Array(672, 408, 768, 408, 768, 474, 672, 474)
-
-[node name="Caisse_8_4" type="Polygon2D" parent="Decor" unique_id=1844578986]
-color = Color(0.62, 0.44, 0.28, 1)
-polygon = PackedVector2Array(768, 408, 864, 408, 864, 474, 768, 474)
-
-[node name="Presentoir_3_7" type="Polygon2D" parent="Decor" unique_id=217775680]
-color = Color(0.7, 0.52, 0.3, 1)
-polygon = PackedVector2Array(298, 682, 374, 682, 374, 762, 298, 762)
-
-[node name="Presentoir_11_7" type="Polygon2D" parent="Decor" unique_id=460093136]
-color = Color(0.7, 0.52, 0.3, 1)
-polygon = PackedVector2Array(1066, 682, 1142, 682, 1142, 762, 1066, 762)
-
-[node name="Plante_13_8" type="Polygon2D" parent="Decor" unique_id=2046756084]
-color = Color(0.26, 0.46, 0.24, 1)
-polygon = PackedVector2Array(1268, 778, 1324, 778, 1324, 858, 1268, 858)
 
 [node name="EscalierVersB1f" type="Node2D" parent="Decor" unique_id=719062354]
 position = Vector2(1200, 384)
 script = ExtResource("3_l3dsk")
 if_flags = Array[StringName]([&"johto_hideout_found"])
 
-[node name="Dessin" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=547445548]
-color = Color(0.3, 0.29, 0.28, 1)
-polygon = PackedVector2Array(-40, -88, 40, -88, 40, -8, -40, -8)
+[node name="JohAmbShopArt" type="Sprite2D" parent="Decor/EscalierVersB1f" unique_id=874075070]
+material = ExtResource("5_1qtfp")
+texture = ExtResource("6_kqtef")
+centered = false
+offset = Vector2(-48, -126)
 
-[node name="@Polygon2D@5" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=730586730]
-color = Color(0.75, 0.75, 0.7125, 1)
-polygon = PackedVector2Array(-36, -84, 36, -84, 36, -72, -36, -72)
-
-[node name="@Polygon2D@6" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1151536189]
-color = Color(0.65, 0.65, 0.6175, 1)
-polygon = PackedVector2Array(-36, -64, 36, -64, 36, -52, -36, -52)
-
-[node name="@Polygon2D@7" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=1620246851]
-color = Color(0.55, 0.55, 0.5225, 1)
-polygon = PackedVector2Array(-36, -44, 36, -44, 36, -32, -36, -32)
-
-[node name="@Polygon2D@8" type="Polygon2D" parent="Decor/EscalierVersB1f" unique_id=2080596420]
-color = Color(0.45, 0.45, 0.4275, 1)
-polygon = PackedVector2Array(-36, -24, 36, -24, 36, -12, -36, -12)
+[node name="JohAmbShopRug" type="Sprite2D" parent="Decor" unique_id=139052514]
+material = ExtResource("5_1qtfp")
+position = Vector2(720, 870)
+scale = Vector2(0.75, 0.45)
+texture = ExtResource("7_j5k32")
+centered = false
+offset = Vector2(-192, -267)
 
 [node name="Entities" type="Node2D" parent="." unique_id=1618067998]
 unique_name_in_owner = true
@@ -108,23 +74,68 @@ script = ExtResource("3_l3dsk")
 unless_flags = Array[StringName]([&"johto_hideout_found"])
 blocking_cells = Array[Vector2i]([Vector2i(12, 3)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=269926249]
-color = Color(0.46, 0.32, 0.22, 1)
-polygon = PackedVector2Array(-46, -120, 46, -120, 46, -4, -46, -4)
+[node name="JohAmbShopArt" type="Sprite2D" parent="Entities/EtagereCachee" unique_id=1384461614]
+material = ExtResource("5_1qtfp")
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("8_r3fc3")
+centered = false
+offset = Vector2(-96, -144)
 
-[node name="@Polygon2D@2" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=1909980428]
-color = Color(0.3, 0.2, 0.14, 1)
-polygon = PackedVector2Array(-40, -110, 40, -110, 40, -104, -40, -104)
+[node name="JohAmbShopShelf0" type="Sprite2D" parent="Entities" unique_id=381039424]
+material = ExtResource("5_1qtfp")
+position = Vector2(240, 384)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("8_r3fc3")
+centered = false
+offset = Vector2(-96, -144)
 
-[node name="@Polygon2D@3" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=1928825723]
-color = Color(0.3, 0.2, 0.14, 1)
-polygon = PackedVector2Array(-40, -76, 40, -76, 40, -70, -40, -70)
+[node name="JohAmbShopShelf1" type="Sprite2D" parent="Entities" unique_id=674711973]
+material = ExtResource("5_1qtfp")
+position = Vector2(576, 384)
+texture = ExtResource("8_r3fc3")
+centered = false
+offset = Vector2(-96, -144)
 
-[node name="@Polygon2D@4" type="Polygon2D" parent="Entities/EtagereCachee" unique_id=1929806868]
-color = Color(0.3, 0.2, 0.14, 1)
-polygon = PackedVector2Array(-40, -42, 40, -42, 40, -36, -40, -36)
+[node name="JohAmbShopShelf2" type="Sprite2D" parent="Entities" unique_id=245807312]
+material = ExtResource("5_1qtfp")
+position = Vector2(864, 384)
+texture = ExtResource("8_r3fc3")
+centered = false
+offset = Vector2(-96, -144)
+
+[node name="JohAmbShopCounter" type="Sprite2D" parent="Entities" unique_id=54400789]
+material = ExtResource("5_1qtfp")
+position = Vector2(720, 480)
+texture = ExtResource("9_rpkyw")
+centered = false
+offset = Vector2(-144, -171)
+
+[node name="JohAmbShopStand3" type="Sprite2D" parent="Entities" unique_id=1418406018]
+material = ExtResource("5_1qtfp")
+position = Vector2(336, 768)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("10_c0ibh")
+centered = false
+offset = Vector2(-96, -212)
+
+[node name="JohAmbShopStand11" type="Sprite2D" parent="Entities" unique_id=1370144812]
+material = ExtResource("5_1qtfp")
+position = Vector2(1104, 768)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("10_c0ibh")
+centered = false
+offset = Vector2(-96, -212)
+
+[node name="JohAmbShopPlant13" type="Sprite2D" parent="Entities" unique_id=1600108141]
+material = ExtResource("5_1qtfp")
+position = Vector2(1296, 864)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("11_gst7w")
+centered = false
+offset = Vector2(-77.5, -230)
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=1008403426]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_o57db")
 

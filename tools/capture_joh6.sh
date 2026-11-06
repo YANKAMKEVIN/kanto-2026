@@ -34,6 +34,7 @@ SHOTS=(
 	"r43_peage|50|${S}_route_43 --cell=11,28 --facing=up"
 	"lac_rive_sud|50|${S}_lake --cell=27,39 --facing=up"
 	"lac_vue|50|--map=lake_of_rage --aim=27,24 --zoom=0.55 --noplayer"
+	"r42_ilot|50|--map=route_42 --aim=37,8 --zoom=0.8 --noplayer"
 	"rep_b1f_statue|50|${S}_hideout --cell=5,3 --facing=right"
 	"rep_b2f_dalles|50|--map=mahogany_hideout_b2f --aim=12,9 --zoom=0.6 --noplayer"
 	"rep_b2f_cellules|50|${S}_hideout_b2f --cell=13,15 --facing=down"
