@@ -8,6 +8,11 @@ fondu enchaîné, niveau du son) et produit :
   - data/opening/trailer.json : la durée exacte, pour la partition de l'ident.
 
     python3 tools/trailer/assemble.py [--only-master] [--width 1560]
+    python3 tools/trailer/assemble.py --cuts tools/trailer/cuts_v3_kanto.json --tag v3
+
+`--tag` (bande-annonce v3) : le montage garde son propre fichier
+(build/trailer/pokemake-trailer-<tag>.mp4), ne touche ni à la vidéo du jeu ni à ses données, et
+lit ses scènes dans build/trailer/raw_<tag>/ : deux versions se comparent sans s'écraser.
 
 Format d'un plan de cuts.json :
   { "id": "01_chambre", "src": "depart", "in": 4.2, "dur": 4.5,
@@ -22,6 +27,7 @@ Format d'un plan de cuts.json :
 `gain` : gain global avant le limiteur (v2.1 : la vidéo jouait ≈ 6 dB sous le jeu).
 Un plan `{ "card": "Texte du carton", "dur": 1.5 }` est un carton doré sur le fond de l'ident.
 `tail_black` : secondes de noir (silence) ajoutées à la fin.
+Un plan `{ "black": 0.5 }` est un noir muet au milieu du montage.
 """
 from __future__ import annotations
 
@@ -132,8 +138,8 @@ def music_path(track: str) -> Path:
     return ROOT / track.removeprefix("res://")
 
 
-def black_clip(seconds: float, tmp: Path) -> Path:
-    out = tmp / "black.mkv"
+def black_clip(seconds: float, tmp: Path, name: str = "black") -> Path:
+    out = tmp / f"{name}.mkv"
     run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", f"color=c=black:s={W}x{H}:r={FPS}",
          "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", f"{seconds:.3f}",
          "-c:v", "libx264", "-preset", "fast", "-crf", "12", "-c:a", "pcm_s16le", str(out)])
@@ -241,15 +247,24 @@ def encode_theora(assembled: Path, width: int, quality: int, tmp: Path) -> None:
 
 
 def main() -> None:
+    global RAW, MASTER, SHARE
     parser = argparse.ArgumentParser()
     parser.add_argument("--only-master", action="store_true", help="pas de Theora ni de données")
     parser.add_argument("--width", type=int, default=1920, help="largeur de la vidéo du jeu [D] (v2.1 : plus nette)")
     parser.add_argument("--quality", type=int, default=4, help="qualité Theora (0 à 10) [D] : 4 ≈ 24 Mo à 1920 × 886 (5 : 34 Mo, sans différence visible)")
     parser.add_argument("--from-master", action="store_true",
                         help="ne refait que la vidéo du jeu (Theora + données) depuis le master")
+    parser.add_argument("--cuts", type=Path, default=CUTS, help="fichier de montage")
+    parser.add_argument("--tag", default="", help="version à part : jamais de vidéo du jeu")
     args = parser.parse_args()
-    spec = json.loads(CUTS.read_text())
+    if args.tag:
+        args.only_master = True
+        RAW = OUT / f"raw_{args.tag}"
+        MASTER = OUT / f"pokemake-trailer-{args.tag}.mp4"
+        SHARE = OUT / f"pokemake-trailer-{args.tag}-720p.mp4"
+    spec = json.loads(args.cuts.read_text())
     cuts = spec["cuts"]
+    OUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="trailer_", dir=OUT) as tmpdir:
         tmp = Path(tmpdir)
         if args.from_master:
@@ -266,6 +281,10 @@ def main() -> None:
                 print(f"[{i + 1}/{len(cuts)}] carton « {cut['card']} » ({cut['dur']} s)")
                 clips.append((card_clip(i, cut["card"], float(cut["dur"]), tmp), float(cut["dur"]),
                               float(cut.get("xfade", 0.0))))
+                continue
+            if "black" in cut:
+                clips.append((black_clip(float(cut["black"]), tmp, f"black_{i:02d}"),
+                              float(cut["black"]), 0.0))
                 continue
             cut.setdefault("audio", default_audio)
             print(f"[{i + 1}/{len(cuts)}] {cut['id']} ({cut['src']} @ {cut['in']} s, {cut['dur']} s)")

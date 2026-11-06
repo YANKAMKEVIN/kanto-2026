@@ -33,7 +33,29 @@ const STARTS: Dictionary[String, String] = {
 	"celadopole": "celadon",
 	"pont_pepite": "nugget_bridge",
 	"artikodin": "trailer_articuno",
+	# v3 (`docs/design/storyboard-trailer-v3.md`) : le duo, les costumes, l'ombre.
+	"duo": "trailer_v3_duo",
+	"marche_origine": "trailer_v3_marche",
+	"marche_luffy": "trailer_v3_marche",
+	"marche_naruto": "trailer_v3_marche",
+	"marche_goku": "trailer_v3_marche",
+	"velo_joueuse": "trailer_velo",
+	"surf_ironman": "trailer_surf",
+	"silhouette": "trailer_v3_marche",
+	"ombre": "trailer_v3_ombre",
 }
+## v3 : tenue portée par scène (identifiants de `data/costumes.json`).
+const COSTUMES: Dictionary[String, StringName] = {
+	"marche_luffy": &"cascade",
+	"marche_naruto": &"soul",
+	"marche_goku": &"volcano",
+	"velo_joueuse": &"cascade",
+	"surf_ironman": &"thunder",
+}
+## v3 : scènes jouées par la joueuse.
+const HEROINE_SCENES: Array[String] = ["velo_joueuse"]
+## Place du costume Foudre dans la bande de l'écran Dresseur (tenue d'origine en 0).
+const SLOT_THUNDER: int = 3
 const ABSENT: String = "user://cap_trailer_absent.json"
 const FPS: float = 30.0
 ## Garde-fou : une scène ne dure jamais plus de 4 minutes.
@@ -75,6 +97,7 @@ func _init() -> void:
 func _run() -> void:
 	_guard()
 	await _boot_scene(STARTS[_scene])
+	_dress()
 	match _scene:
 		"depart": await _depart()
 		"rival": await _rival()
@@ -89,6 +112,13 @@ func _run() -> void:
 		"celadopole": await _promenade(Vector2i.LEFT, 12)
 		"pont_pepite": await _promenade(Vector2i.UP, 14)
 		"artikodin": await _legendaire()
+		"duo": await _duo()
+		"marche_origine", "marche_luffy", "marche_naruto", "marche_goku":
+			await _promenade(Vector2i.LEFT, 20)
+		"velo_joueuse": await _velo()
+		"surf_ironman": await _surf()
+		"silhouette": await _silhouette()
+		"ombre": await _ombre()
 	_mark("fin")
 	_finished = true
 	quit()
@@ -111,8 +141,36 @@ func _depart() -> void:
 	_mark("perron")
 	await _wait(70)
 	# Un pas pour quitter le seuil (un chemin qui partirait vers le haut rentrerait).
+	await _route_1_capture()
+
+
+## v3, plans 1 à 3 : le duo devant la maison, la phrase du compagnon, puis la Route 1 et la capture.
+func _duo() -> void:
+	_state.set(&"repel_steps", 2000)
+	_mark("duo")
+	await _wait(10)
+	# Quitter le seuil, puis marcher de côté : le compagnon se place à côté du joueur, pas derrière.
+	await _walk_to(Vector2i(33, 13))
+	await _wait(25)
+	_mark("côte à côte")
+	_boot.call(&"_on_companion_line", &"companion_happy")
+	_mark("phrase")
+	await _wait(100)
+	_touch()
+	await _wait(25)
+	_mark("en route")
+	await _walk_to(Vector2i(23, 2))
+	await _route_1_suite()
+
+
+## Du perron de Bourg Palette à la capture du Roucool (v2 : plans 2 à 5 ; v3 : plans 2 et 3).
+func _route_1_capture() -> void:
 	await _hold_steps(Vector2i.DOWN, 1)
 	await _walk_to(Vector2i(23, 2))
+	await _route_1_suite()
+
+
+func _route_1_suite() -> void:
 	await _step_until_map(Vector2i.UP, &"route_1")
 	_mark("route 1")
 	await _wait(10)
@@ -303,6 +361,65 @@ func _legendaire() -> void:
 	_mark("entrée légendaire")
 	await _until(_actions_shown, 1800)
 	await _wait(45)
+
+
+## v3 : apparence de la scène, posée après le départ de débogage (qui n'en a pas la clé).
+func _dress() -> void:
+	if HEROINE_SCENES.has(_scene):
+		_state.set(&"player_look", &"heroine")
+	if COSTUMES.has(_scene):
+		_state.call(&"wear_costume", COSTUMES[_scene])
+	_player.call(&"refresh_look")
+
+
+## v3, plan 10 : écran Dresseur, la silhouette du costume Foudre s'allume et le portrait la porte.
+func _silhouette() -> void:
+	var menu: Node = _boot.call(&"get_menu_director")
+	var trainer_menu: Node = _boot.call(&"get_trainer_menu")
+	trainer_menu.set(&"speed_scale", 0.0)
+	var flags: Object = _state.get(&"flags")
+	flags.call(&"set_flag", &"badge_thunder", false)
+	flags.call(&"set_flag", &"badge_boulder", false)
+	menu.call(&"open", (load("res://game/systems/menu/menu_route.gd") as GDScript).call(&"trainer"))
+	await _wait(60)
+	_mark("silhouettes")
+	var screen: Node = trainer_menu.call(&"get_trainer")
+	var slots: Array = screen.call(&"get_costume_slots")
+	var art: Control = slots[SLOT_THUNDER].call(&"get_art")
+	var tween: Tween = screen.create_tween()
+	tween.tween_property(art, ^"modulate", Color.WHITE, 0.5)
+	await _wait(10)
+	_mark("allumage")
+	await _wait(10)
+	var portrait: TextureRect = screen.call(&"get_portrait")
+	portrait.texture = (load("res://game/ui/menu/menu_art.gd") as GDScript).call(&"bust_for",
+		&"hero", &"thunder")
+	(screen.get(&"_costume_caption") as Label).text = "Nouveau costume : Iron Man"
+	(screen.get(&"_costume_caption") as Label).visible = true
+	await _wait(90)
+
+
+## v3, plan 19 : grotte marine, l'ombre passe sous l'eau, personne à l'écran. Même déplacement que
+## la scène du jeu `sea_cave_lugia_shadow` (11 cases en 4 s, en fondu), sans ses dialogues.
+func _ombre() -> void:
+	var shadow: Node2D = _boot.find_child("LugiaShadow", true, false)
+	_player.visible = false
+	# La caméra suit le joueur : détachée ici, elle cadre l'eau, joueur caché.
+	var camera: Camera2D = _player.call(&"get_camera")
+	camera.top_level = true
+	camera.position_smoothing_enabled = false
+	camera.global_position = shadow.global_position + Vector2(528.0, 48.0)
+	await _wait(45)
+	_mark("eau calme")
+	# Plus grande que dans le jeu (×2,5), elle traverse toute l'eau à l'image.
+	shadow.visible = true
+	shadow.scale = Vector2(2.5, 2.5)
+	shadow.position.x -= 1000.0
+	shadow.modulate = Color(0.0, 0.0, 0.0, 1.0)
+	var tween: Tween = shadow.create_tween()
+	tween.tween_property(shadow, ^"position:x", shadow.position.x + 3000.0, 4.0)
+	_mark("ombre")
+	await _wait(150)
 
 
 # --- Lancement ---------------------------------------------------------------------------

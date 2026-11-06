@@ -89,9 +89,23 @@ la trame [D], même en contre-jour), le Réveil de l'arc des Pierres.
 | Ombre de Lugia | Scène du jeu `sea_cave_lugia_shadow`. **Son image est encore un provisoire** (`assets/world/props/placeholder/lugia_shadow.png`) : à relire à l'image |
 | Deux vidéos | `assemble.py` lit un `cuts.json` fixe et écrit sur `trailer.ogv` : à paramétrer avant tout rendu, sinon il écraserait la v2.1. Fichiers prévus : `cuts_v3_kanto.json`, `build/trailer/pokemake-trailer-v3.mp4` |
 
-## 5. Réalisation, après validation
+## 5. Réalisation (2026-11-06, montage A rendu)
 
-1. Rendu des scènes neuves, relecture plan par plan.
-2. Montage A : `pokemake-trailer-v3.mp4`, envoyé à Kevin avec la v2.1 pour comparer.
-3. Kevin choisit. Seulement alors, si la v3 gagne, la vidéo du jeu change. Sur `release/0.34`, ce
-   serait une nouvelle RC (≥ 0.34.2) : à décider à ce moment.
+- **Rendu :** `TRAILER_RAW=raw_v3 tools/trailer/render.sh <scènes>` puis
+  `python3 tools/trailer/assemble.py --cuts tools/trailer/cuts_v3_kanto.json --tag v3` →
+  `build/trailer/pokemake-trailer-v3.mp4` et `-720p.mp4`. Avec `--tag`, l'outil n'écrit jamais la
+  vidéo du jeu ni `data/opening/trailer.json`. Scènes neuves dans `capture_trailer_scene.gd`, départs
+  `tools/debug_start/trailer_v3_*.json`.
+- **Écarts avec le §2 :**
+  - Plan 4 : « Tu hésites trop. » (ligne de Régis) remplace « Ça tombe bien. », qui ne ressort pas
+    lisiblement dans ce rendu.
+  - Plan 1 : le duo marche d'abord de côté, pour que Salamèche soit à côté du héros et pas derrière.
+  - Plan 8 : 0,65 s par tenue au lieu de 0,8 s.
+  - Plan 19 : ombre agrandie ×2,5 et assombrie par rapport au jeu ; elle reste une image provisoire,
+    sur un bassin aux carrés sombres.
+- **Pas fait :** montage B (Johto) ; intégration dans le jeu, qui garde la v2.1.
+
+## 6. Suite
+
+Kevin compare la v2.1 et la v3. Seulement alors, si la v3 gagne, la vidéo du jeu change. Sur
+`release/0.34`, ce serait une nouvelle RC (≥ 0.34.2) : à décider à ce moment.

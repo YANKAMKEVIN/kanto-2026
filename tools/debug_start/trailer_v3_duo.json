@@ -1,0 +1,37 @@
+{
+ "map": "pallet_town",
+ "spawn": "player_house_door",
+ "facing": "down",
+ "seed": 11,
+ "flags": [
+  "mom_greeted",
+  "rival_met",
+  "oak_met",
+  "oak_lab_reunion",
+  "starter_offered",
+  "starter_chosen",
+  "taken_charmander",
+  "taken_squirtle",
+  "rival_lab_won",
+  "rival_challenged",
+  "rival_battle_done",
+  "rival_left_lab"
+ ],
+ "party": [
+  {
+   "species": "charmander",
+   "level": 6,
+   "moves": [
+    "ember",
+    "scratch",
+    "growl"
+   ]
+  }
+ ],
+ "bag": {
+  "poke_ball": 5,
+  "potion": 2
+ },
+ "money": 3000,
+ "companion": 0
+}
