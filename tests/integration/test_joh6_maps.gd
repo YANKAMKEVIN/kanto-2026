@@ -312,3 +312,70 @@ func test_unavoidable_trainers_hold_the_only_passage() -> void:
 			row[3]])
 		var open := _reachable(_map(row[0]), _cells(row[0], row[1]))
 		assert_true(open.has(target), "%s : %s atteignable" % [row[0], row[3]])
+
+
+## Passe de peinture (`build_joh_ambiance_caves.gd`, `build_joh6_paint_shop.gd`) : plus d'aplat
+## provisoire, sol peint ou enveloppe, portes à drapeau habillées sans changer leurs cases.
+func test_interiors_are_painted() -> void:
+	for id: StringName in [&"burned_tower_1f", &"burned_tower_b1f", &"mahogany_hideout_b1f",
+			&"mahogany_hideout_b2f", &"mahogany_hideout_b3f"]:
+		var map := _map(id)
+		assert_not_null(map.get_node_or_null(^"PaintedGround"), "%s : sol peint" % id)
+		assert_false(map.get_node(^"Ground").visible, "%s : tuiles masquées" % id)
+		assert_true(_polygons(map).is_empty(), "%s : aplats provisoires restants" % id)
+	var shop := _map(&"mahogany_souvenir_shop")
+	assert_not_null(shop.get_node_or_null(^"JohAmbShopShell"), "enveloppe de la boutique")
+	assert_true(_polygons(shop).is_empty(), "boutique : aplats provisoires restants")
+
+
+func test_painted_gates_keep_their_logic() -> void:
+	var art: Dictionary = {
+		[&"mahogany_souvenir_shop", "Entities/EtagereCachee"]: "JohAmbShopArt",
+		[&"mahogany_souvenir_shop", "Decor/EscalierVersB1f"]: "JohAmbShopArt",
+		[&"mahogany_hideout_b2f", "Entities/PortePorteMdp"]: "JohAmbCaveDoor",
+		[&"mahogany_hideout_b2f", "Entities/PortePorteCellule"]: "JohAmbCaveBars",
+		[&"mahogany_hideout_b3f", "Entities/CageAOndes"]: "JohAmbCaveCageOn",
+		[&"mahogany_hideout_b1f", "Decor/EscalierVersB2f"]: "JohAmbCaveStairs",
+	}
+	for key: Array in art:
+		var gate := _map(key[0]).get_node_or_null(NodePath(key[1]))
+		assert_not_null(gate, "%s / %s" % key)
+		if gate == null:
+			continue
+		assert_not_null(gate.get_node_or_null(NodePath(art[key])), "%s / %s : image" % key)
+	# Un drapeau change l'affichage, pas les cases : le rayon se cache avec johto_hideout_found,
+	# l'escalier de la boutique n'apparaît qu'avec lui.
+	var shop := _map(&"mahogany_souvenir_shop")
+	var flags := StoryFlags.new()
+	assert_true((shop.get_node(^"Entities/EtagereCachee") as FlagGate).is_open(flags))
+	assert_false((shop.get_node(^"Decor/EscalierVersB1f") as FlagGate).is_open(flags))
+	flags.set_flag(&"johto_hideout_found")
+	assert_false((shop.get_node(^"Entities/EtagereCachee") as FlagGate).is_open(flags))
+	assert_true((shop.get_node(^"Decor/EscalierVersB1f") as FlagGate).is_open(flags))
+
+
+func test_tower_and_hideout_marks_are_images_without_footprint() -> void:
+	var tower := _map(&"burned_tower_1f")
+	assert_not_null(tower.get_node_or_null(^"JohAmbCaveSol"), "décor du sol")
+	assert_gt(_names_with(tower.get_node(^"Entities"), "JohAmbCaveBeam"), 0, "poutres")
+	var hideout := _map(&"mahogany_hideout_b1f")
+	assert_eq(_names_with(hideout.get_node(^"Entities"), "JohAmbCavePersian"), 3, "statues")
+	assert_eq(_names_with(_map(&"mahogany_hideout_b3f").get_node(^"Entities"),
+		"JohAmbCaveGenerator"), 1)
+
+
+func _names_with(parent: Node, prefix: String) -> int:
+	var count := 0
+	for child: Node in parent.get_children():
+		if String(child.name).begins_with(prefix):
+			count += 1
+	return count
+
+
+func _polygons(node: Node) -> Array[Node]:
+	var found: Array[Node] = []
+	for child: Node in node.get_children():
+		if child is Polygon2D and child.owner == node.owner:
+			found.append(child)
+		found.append_array(_polygons(child))
+	return found
