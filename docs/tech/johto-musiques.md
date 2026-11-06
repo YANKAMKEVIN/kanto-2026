@@ -181,3 +181,44 @@ Page lue sans rien télécharger : 6 disques, 281 fichiers, 648 Mo en MP3 ou 2,4
 | HG-25 Mt. Silver | Ice Path |
 
 Si Kevin veut les vrais thèmes manquants, ils sont peut-être dans le gamerip « Pokémon HeartGold and SoulSilver » de KHInsider (à vérifier plus tard).
+
+## 9. Liste à télécharger piste par piste (album Looped, disques DS 1 à 4)
+
+Format **FLAC**, dossier `~/Music/johto-hgss/`. Numéros = colonnes « CD » et « # » de la page de l'album.
+
+| CD.# | Titre | Sert à |
+|---|---|---|
+| 1.15 | Pokémon Center | Centres et Boutiques |
+| 1.9 | Route 29 | Routes 34 à 37 |
+| 1.28 | Union Cave | Puits Ramoloss, grottes, Îles Tourbillon |
+| 1.30 | Ruins of Alph | Ruines d'Alpha |
+| 1.33 | Azalea Town | Écorcia |
+| 1.41 | Goldenrod City | Doublonville |
+| 1.10 | Battle! (Wild Pokémon - Johto Version) | sauvages, Celebi |
+| 1.18 | Battle! (Trainer - Johto Version) | Dresseurs, Sbires |
+| 1.35 | Battle! (Team Rocket) | Brace, Cenere, Dante 1, Chefs |
+| 1.38 | Battle! (Rival) | scènes du rival |
+| 1.43 | Battle! (Gym Leader - Johto Version) | Dante 2 |
+| 2.1 | Bicycle | Vélo |
+| 2.21 | Ecruteak City | Rosalia |
+| 2.23 | Burned Tower | Tour Cendrée |
+| 2.27 | Route 38 | Routes 38, 39, 43, Lac Colère |
+| 2.30 | Olivine Lighthouse | Oliville (repli) |
+| 2.31 | Surf | Surf, Routes 40 et 41 |
+| 2.32 | Cianwood City | Irisia |
+| 2.38 | Route 42 | Route 42, Sentier Argenté, Acajou (repli) |
+| 2.40 | Team Rocket HQ | Repaire d'Acajou |
+| 2.43 | Radio Tower Occupied! | Tour Radio |
+| 2.44 | Ice Path | Ébènelle, Mont Argenté (replis) |
+| 2.46 | Dragon's Den | Antre, Réveil des pierres |
+| 2.50 | Bell Tower | Tour Carillon |
+| 2.53 | Battle! (Ho-Oh) | Ho-Oh |
+| 3.1 | Route 26 | Route 28 (repli) |
+| 3.2 | S.S. Aqua | Le Goéland |
+| 3.15 | Battle! (Suicune) | Suicune, Entei, Raikou |
+| 3.20 | Viridian Forest | Bois aux Chênes, Bois de la Tour (repli) |
+| 4.20 | Battle! (Lugia) | Lugia |
+| 4.24 | Battle! (Champion) | rival final |
+| 4.26 | Ending | générique de Johto |
+
+**32 fichiers.** Facultatifs (pistes propres aux autres Bêtes) : 2.29 Battle! (Raikou), 2.49 Battle! (Entei).
