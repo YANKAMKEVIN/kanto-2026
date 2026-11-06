@@ -246,10 +246,26 @@ func test_south_sea_is_closed_before_act_2() -> void:
 	assert_eq(player.get_cell(), Vector2i(23, 37))
 
 
-## JOH7 inchangé : avec l'acte 2, la mer reste ouverte.
-func test_south_sea_is_open_with_act_2() -> void:
+## Décision de Kevin du 2026-11-06 : JOH6 d'abord. L'acte 2 seul n'ouvre pas la mer.
+func test_south_sea_stays_closed_with_act_2_before_deserter() -> void:
 	await _launch("johto_johp2_south_sea", &"olivine_city")
 	GameState.flags.set_flag(&"johto_act2")
+	var said := _said()
+	var player := _boot.get_player()
+	var director := _boot.get_cutscene_director()
+	Input.action_press(&"move_up")
+	await wait_until(func() -> bool: return director.is_running(), TIMEOUT)
+	Input.action_release(&"move_up")
+	await _drive()
+	assert_eq(said, [&"olivine_south_sea_block"] as Array[StringName], "toujours fermée")
+	assert_eq(player.get_cell(), Vector2i(23, 37), "repoussé au nord de la rangée")
+
+
+## JOH7 : le déserteur d'Acajou a parlé, la mer s'ouvre.
+func test_south_sea_is_open_after_deserter() -> void:
+	await _launch("johto_johp2_south_sea", &"olivine_city")
+	GameState.flags.set_flag(&"johto_act2")
+	GameState.flags.set_flag(&"johto_whirl_clue")
 	var said := _said()
 	var player := _boot.get_player()
 	Input.action_press(&"move_up")

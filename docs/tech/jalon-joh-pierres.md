@@ -144,7 +144,7 @@ présent au retour de l'équipe.
   fondu, `goeland_deck`, P-13, fondu.
 - Vannes : `FlagGate` sur `a` et `b` (eau, puis gué), `johto_tide_valve_1`, `johto_tide_valves_done`.
 - Revers : `scene_socle`, P-16 à P-19, `johto_stone_tide_lost`. P-19b au retour à Oliville.
-- **A-13** : `barriere_mer_sud` (`actif_sans=johto_act2`, en Surf), P-59. Vaut aussi pour le JOH7, déjà dans `main`.
+- **A-13** : `barriere_mer_sud` (en Surf), P-59. Le plan la liait à `johto_act2` ; depuis la décision de Kevin du 2026-11-06 (JOH6 avant JOH7), la scène `olivine_south_sea_block` s'efface avec `johto_whirl_clue`.
 - Rosalia (variante ARC) : Corentin et Dracolosse, actifs avec `johto_stone_tide_lost`.
 
 **Critères** : aller-retour libre ; vannes dans l'ordre ; pas de Surf ; bateau noir absent après le revers.

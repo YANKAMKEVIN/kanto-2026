@@ -55,10 +55,10 @@ Lac Colère s'ouvre bien.
 - Aucun départ n'a `johto_radio_office_done` sans `johto_stones_quest` : la sortie de la Tour Radio ne se rejoue que
   depuis `johto_radio_tower_office.json`, en repassant par le bureau.
 
-**Q2, question de game design (lu, pas joué) : l'ordre JOH6 puis JOH7 n'est pas imposé.** L'accès à la mer dépend de
-`johto_act2` seul, et `johto_whirl_clue`, posé par le déserteur d'Acajou, n'est lu par rien dans JOH7. Le joueur peut
-donc aller aux Îles Tourbillon et à la Tour Carillon avant le repaire d'Acajou. Rien ne bloque d'après la lecture, mais
-les dossiers présentent les deux dans cet ordre. Reste à décider si c'est voulu.
+**Q2, ordre JOH6 puis JOH7 : décidé et corrigé.** L'accès à la mer dépendait de `johto_act2` seul : le joueur pouvait
+aller aux Îles Tourbillon et à la Tour Carillon avant le repaire d'Acajou. Décision de Kevin du 2026-11-06 : JOH6
+d'abord. La barrière `olivine_south_sea_block`, seul accès à la Route 40, s'efface maintenant avec `johto_whirl_clue`,
+posé par le déserteur d'Acajou. Le marin garde son texte.
 
 Hors périmètre, pour mémoire : le combat au sommet utilise le décor `route_3_roche` (`data/battle/decors.json:841`).
 
@@ -75,7 +75,7 @@ Ce contrôle a été fait par un sous-agent, en lecture seule, et rien de cela n
 | JOH3 vers JOH4 | OK | Garde sud de Doublonville : `johto_azalea_clue` |
 | JOH4 vers JOH5 | OK | Puits, Brace, `johto_radio_pass` |
 | Arc, chaîne interne | OK | Route 36 à l'autel, de `johto_stones_quest` à `johto_stone_breath` |
-| JOH6 vers JOH7 | Ordre libre | Voir Q2 |
+| JOH6 vers JOH7 | OK depuis Q2 | Marin du sud d'Oliville : `johto_whirl_clue` |
 | JOH7 vers JOH8 | OK | `johto_lugia_done`, Orme, `johto_bell_tower_clue`, Doyen |
 | JOH8 vers JOH9 | OK | Doyen pose `johto_act3`, garde du Lac Colère |
 
@@ -142,4 +142,3 @@ sont écartés de ce rapport. La partie écrasée (« Uk », 50 s de jeu) a ét�
   Route 26 à la Route 28) ; le thème du rival aux trois arrivées du Mont Argenté.
 - **Jouer** : une vraie partie de Johto d'un bout à l'autre, seule façon de valider les jonctions restantes et la
   difficulté.
-- **Décider** : Q2, l'ordre entre JOH6 et JOH7.

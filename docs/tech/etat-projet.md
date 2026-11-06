@@ -17,10 +17,9 @@ Mis à jour : 2026-11-06.
 ## Prochaines étapes
 
 1. **J34 T4 (Kevin) :** première utilisation de la RC par un proche ; consignes dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`. Go technique donné le 2026-11-05.
-2. **Johto, reste à peindre :** ce que la branche d'Ébènelle n'a pas encore livré. JOH6, JOH8 et JOH9 peints et fusionnés.
+2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto) ; RP-292.
 3. **Johto, reste à vérifier sur téléphone :** deuxième passe sur l'A17 faite le 2026-11-06, sans blocage (`docs/tech/qa-johto-a17-2.md`) : Tour Radio vers l'arc, retour à Rosalia et acte 2, Route 28 et Kanto libre, Raikou, Entei et Ho-Oh, rival du sommet. Restent à jouer les autres jonctions (lues sans trou), la remontée à pied depuis le Centre et l'écoute des musiques par Kevin.
-4. **Johto, textes :** textes [D] encore en `draft` (voir `docs/tech/jalon-joh9.md`).
-5. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
+4. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
 
 ## Questions ouvertes
 
@@ -30,6 +29,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 ## Décisions de Kevin en vigueur
 
+- **Ordre de l'acte 2 (2026-11-06) :** JOH6 avant JOH7. La mer au sud d'Oliville reste fermée jusqu'au déserteur d'Acajou (`johto_whirl_clue`).
 - **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
 - **Diffusion (2026-10-24) :** jeu privé, pour Kevin et un cercle restreint de proches. Jamais de store, de lien ouvert ni de page publique.

@@ -57,7 +57,7 @@
 		"variants": [
 			{
 				"unless": [
-					"johto_act2"
+					"johto_whirl_clue"
 				],
 				"steps": [
 					{
