@@ -143,3 +143,20 @@ Rien n'est touché dans ce document. Au branchement : (1) une règle **par régi
 | JM-11 | Les titres exacts se fixent à l'écoute avant tout téléchargement ; la liste peut perdre ou gagner une ou deux pistes. |
 
 **Liste finale à obtenir : 35 pistes** (38 moins les 3 victoires). Aucun téléchargement tant que Kevin n'a pas relu cette liste et choisi la source (droits). Les lieux inventés de la §3 prennent la piste proche proposée.
+
+## 7. Source : choix A (Kevin, 2026-11-06)
+
+Comme pour Kanto : **Kevin télécharge lui-même** l'album HeartGold / SoulSilver sur KHInsider (FLAC, sinon le meilleur MP3), noms d'origine, dans `~/Music/johto-hgss/`. Claude ne télécharge rien ; il découpe les boucles et intègre ensuite. Jeu privé, aucune diffusion.
+
+**Les 35 pistes à garder** (titres à confirmer sur la liste de l'album) :
+
+| Groupe | Pistes |
+|---|---|
+| Villes (7) | 01 Olivine City · 02 Ecruteak City · 03 Goldenrod City · 04 Azalea Town · 05 Cianwood City · 06 Mahogany Town · 07 Blackthorn City |
+| Centre (1) | 08 Pokémon Center |
+| Routes (6) | 09 Route 29 · 10 Route 38 · 11 Route 42 · 12 Route 28 · 13 Surf · 14 Bicycle |
+| Lieux (12) | 15 Ilex Forest · 16 Union Cave · 17 Ruins of Alph · 18 Burned Tower · 19 Bell Tower · 20 Radio Tower · 21 Team Rocket HQ · 22 Lake of Rage · 23 Dragon's Den · 24 Whirl Islands · 25 Mt. Silver · 26 S.S. Aqua |
+| Combats (8) | 27 Wild · 28 Trainer · 29 Team Rocket · 30 Gym Leader · 31 Champion · 32 Rival · 33 Legendary Beasts · 34 Lugia / Ho-Oh |
+| Générique (1) | 38 Ending / Credits |
+
+Si un titre manque ou diffère dans l'album, Kevin garde le plus proche et le signale ; on ajuste la table.
