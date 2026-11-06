@@ -2,14 +2,12 @@
 	{
 		"id": "joh9_go_home",
 		"text": "rentrer à Bourg Palette, par la Route 28.",
-		"draft": true,
 		"if": ["johto_rival_final_done"],
 		"unless": ["johto_chapter_done"]
 	},
 	{
 		"id": "joh9_climb_mt_silver",
 		"text": "atteindre le sommet du Mont Argenté.",
-		"draft": true,
 		"if": ["johto_act3"],
 		"unless": ["johto_rival_final_done"]
 	},

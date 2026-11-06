@@ -55,7 +55,7 @@ remontait sans fin. Personne n'avait vu le cas, les départs de JOH2 commençant
 
 **M3, mineur, corrigé : libellé de la carte.** Le bloc affiche maintenant « Exploration de Johto » sur l'onglet Johto.
 
-**M4, mineur, corrigé : objectifs de JOH9.** Deux objectifs ajoutés, textes [D] à relire par Kevin : « atteindre le
+**M4, mineur, corrigé : objectifs de JOH9.** Deux objectifs ajoutés, sans marque `draft` (la donnée n'en admet plus), à relire par Kevin : « atteindre le
 sommet du Mont Argenté. », vu dans le menu, et « rentrer à Bourg Palette, par la Route 28. ».
 
 **M5, mineur, corrigé : pièges des départs de débogage.** 88 départs de Johto reçoivent `rival_route22_final_won`.
