@@ -26,7 +26,9 @@ func test_real_data_loads_without_error() -> void:
 	# JOH3 (QA A17) : ses deux objectifs [D] devant eux ; JOH4 (QA A17) : ses quatre devant ceux-là.
 	# JOH5 : la Tour Radio (libérer, redescendre) et l'accroche de l'acte 2, devant ; JOH6 : ses cinq devant ;
 	# JOH8 (QA A17) : ses trois objectifs [D] en tête (le doyen, la Tour Carillon, le retour).
-	assert_eq(library.get_ids(), [&"report_to_ecruteak_elder", &"climb_bell_tower",
+	# JOH9 (QA A17, 2026-11-06) : le Mont Argenté et le retour, en tête.
+	assert_eq(library.get_ids(), [&"joh9_go_home", &"joh9_climb_mt_silver",
+		&"report_to_ecruteak_elder", &"climb_bell_tower",
 		&"see_ecruteak_elder", &"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
 		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"stones_back_to_rosalia", &"stones_beat_cenere",
 		&"stones_go_altar", &"stones_clan_trial", &"stones_meet_elder", &"stones_find_messenger",

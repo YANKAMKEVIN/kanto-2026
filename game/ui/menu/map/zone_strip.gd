@@ -1,7 +1,7 @@
 class_name ZoneStrip
 extends HBoxContainer
 ## Bandeau du bas de l'écran Carte (MM.2, maquette menu-carte-v1.jpg pour la DA seulement) : la
-## carte « Exploration de Kanto » (« N zones découvertes », **jamais de total** : dossier 08
+## carte « Exploration de <région> » (« N zones découvertes », **jamais de total** : dossier 08
 ## règle 2) et la frise des zones **découvertes**, dans l'ordre du voyage (vignette de leur carte
 ## peinte, nom ; lieu courant marqué d'une épingle, zone du panneau cerclée d'ACCENT).
 ##
@@ -13,11 +13,13 @@ extends HBoxContainer
 signal zone_chosen(zone: StringName)
 
 ## Textes (MM.2, à relire par Kevin).
-const EXPLORE_TITLE := "Exploration de Kanto"
+const EXPLORE_FORMAT := "Exploration de %s"
+const DEFAULT_REGION := "Kanto"
 const ZONES_ONE := "%d zone découverte"
 const ZONES_MANY := "%d zones découvertes"
 const PIN_ICON: Texture2D = preload("res://assets/ui/icons/menu/map.svg")
 
+var _explore_title: Label
 var _explore_text: Label
 var _scroll: ScrollContainer
 var _row: HBoxContainer
@@ -51,6 +53,8 @@ func _init() -> void:
 ## Pose [param view] : compteur et vignettes (refaites). [param illustration] : l'illustration
 ## de Kanto, recadrée pour une zone sans aperçu peint.
 func setup(view: MapView, illustration: Texture2D) -> void:
+	_explore_title.text = EXPLORE_FORMAT % (view.region_name if not view.region_name.is_empty() \
+		else DEFAULT_REGION)
 	var count := view.zones.size()
 	_explore_text.text = (ZONES_ONE if count == 1 else ZONES_MANY) % count
 	for child: Node in _row.get_children():
@@ -122,12 +126,12 @@ func _build_explore() -> void:
 	texts.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	texts.add_theme_constant_override(&"separation", 2)
 	row.add_child(texts)
-	var title := Label.new()
-	title.theme_type_variation = &"MapExploreTitle"
-	title.text = EXPLORE_TITLE
-	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	texts.add_child(title)
+	_explore_title = Label.new()
+	_explore_title.theme_type_variation = &"MapExploreTitle"
+	_explore_title.text = EXPLORE_FORMAT % DEFAULT_REGION
+	_explore_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_explore_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	texts.add_child(_explore_title)
 	_explore_text = Label.new()
 	_explore_text.theme_type_variation = &"MapExploreText"
 	_explore_text.mouse_filter = Control.MOUSE_FILTER_IGNORE

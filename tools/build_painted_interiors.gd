@@ -2198,7 +2198,7 @@ func _olivine_center() -> Dictionary:
 	room["exit_spawns"] = [&"from_center", &"from_center", &"from_center_1"]
 	(room["props"] as Array).append([&"int_escalier_montant_01", Vector2i(13, 6), 7.0,
 		"StairsUpBody"])
-	(room["spawns"] as Dictionary)["from_room"] = Vector2i(13, 7)
+	(room["spawns"] as Dictionary)["from_room"] = Vector2i(13, 6)
 	# JOH1 (`jalon-joh1.md` §2.5) : rangée d'entrée (5..9, 7), traversée en entrant → scène de
 	# l'arrivée (O-8, nuit, vol, matin), qui ne joue que si `johto_arrived` et pas `johto_slept`.
 	# QA A17 : l'infirmière (PNJ, variante « auto ») lance la scène dès l'arrivée ; le

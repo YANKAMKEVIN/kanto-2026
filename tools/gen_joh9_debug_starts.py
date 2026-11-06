@@ -14,7 +14,7 @@ KANTO = ["mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offe
 	"rival_battle_done", "rival_left_lab", "viridian_arrived", "got_oak_parcel",
 	"pokedex_activated", "poison_unlocked", "pewter_arrived", "cerulean_reached",
 	"badge_boulder", "badge_cascade", "badge_thunder", "badge_rainbow", "badge_soul",
-	"badge_marsh", "badge_volcano", "badge_earth", "league_champion_defeated",
+	"badge_marsh", "badge_volcano", "badge_earth", "league_champion_defeated", "rival_route22_final_won",
 	"league_credits_seen"]
 # Fin du JOH8 (acte 1 et ses drapeaux retirés au JOH5 : `johto_act1`, `storage_offline`).
 JOHTO = ["johto_letter_read", "johto_lugia_shadow", "johto_arrived", "johto_team_stolen",

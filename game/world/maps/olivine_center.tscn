@@ -159,7 +159,7 @@ position = Vector2(144, 480)
 position = Vector2(1200, 480)
 
 [node name="from_room" type="Marker2D" parent="Spawns" unique_id=194347901]
-position = Vector2(1296, 768)
+position = Vector2(1296, 672)
 
 [node name="night_watch" type="Marker2D" parent="Spawns" unique_id=342251097]
 position = Vector2(336, 672)

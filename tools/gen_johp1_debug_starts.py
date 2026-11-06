@@ -14,7 +14,7 @@ KANTO = ["mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offe
 	"rival_battle_done", "rival_left_lab", "viridian_arrived", "got_oak_parcel",
 	"pokedex_activated", "poison_unlocked", "pewter_arrived", "cerulean_reached",
 	"badge_boulder", "badge_cascade", "badge_thunder", "badge_rainbow", "badge_soul",
-	"badge_marsh", "badge_volcano", "badge_earth", "league_champion_defeated",
+	"badge_marsh", "badge_volcano", "badge_earth", "league_champion_defeated", "rival_route22_final_won",
 	"league_credits_seen"]
 # Sortie de la Tour Radio dans l'arc : `johto_act1` et `storage_offline` encore levés (par la clé
 # « confiscated »), pas de `johto_team_returned` ni de `johto_act2`.

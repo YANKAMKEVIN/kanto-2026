@@ -88,7 +88,8 @@ func test_center_arrivals_and_stairs_up() -> void:
 	var map: GameMap = _maps[&"olivine_center"]
 	assert_eq(map.get_spawn_cell(&"entrance"), Vector2i(7, 8))
 	assert_eq(map.get_spawn_cell(&"heal"), Vector2i(7, 5))
-	assert_eq(map.get_spawn_cell(&"from_room"), Vector2i(13, 7))
+	# QA A17 du 2026-11-06 : l'arrivée est sur le palier, pas dans la case fermée (13, 7) sous lui.
+	assert_eq(map.get_spawn_cell(&"from_room"), Vector2i(13, 6))
 	for cell: Vector2i in [Vector2i(13, 6), Vector2i(12, 6)]:
 		assert_false(map.get_grid().is_solid(cell), "accès de l'escalier %s" % cell)
 		var warp := map.get_warps().find_on_step(cell, Vector2i.UP)
