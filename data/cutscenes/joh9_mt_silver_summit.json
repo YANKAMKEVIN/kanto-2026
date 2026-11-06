@@ -194,7 +194,8 @@
 						"to": [
 							14,
 							8
-						]
+						],
+						"music": "johto_rival"
 					},
 					{
 						"face": "rival_sommet",
@@ -351,7 +352,8 @@
 						"to": [
 							14,
 							8
-						]
+						],
+						"music": "johto_rival"
 					},
 					{
 						"face": "rival_sommet",

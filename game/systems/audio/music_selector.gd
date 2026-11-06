@@ -3,7 +3,8 @@ extends RefCounted
 ## Quel morceau pour une carte, un état, un combat (docs/tech/jalon-son.md §1.4, §2). Pur.
 ##
 ## Ordre pour une carte : surcharge de la carte (`GameMap.music`, [constant STATE_OVERRIDE]) →
-## mode de déplacement (Surf, Vélo : `music_zones.json` « movement ») → règle de drapeau
+## mode de déplacement (Surf, Vélo : `music_zones.json` « movement », puis « movement_regions »
+## pour la région de la carte) → règle de drapeau
 ## (Tour délivrée, SON-10) → exception de carte → morceau de la zone → silence.
 ##
 ## [param state] (dictionnaire, toutes les clés facultatives) :
@@ -33,7 +34,7 @@ func track_for(map_id: StringName, state: Dictionary = {}) -> StringName:
 	if _library.has_track(override):
 		return override
 	var movement: StringName = _library.movement_track(StringName(str(state.get(STATE_MOVEMENT,
-		""))))
+		""))), _zones.region_of(map_id))
 	if not movement.is_empty():
 		return movement
 	var has_flag: Variant = state.get(STATE_HAS_FLAG)
@@ -53,26 +54,34 @@ func volume_db_for(state: Dictionary = {}) -> float:
 	return _library.area_volume_db(StringName(str(state.get(STATE_AREA, ""))))
 
 
-## Catégorie de combat : Dresseur (par sa fiche) ; sinon sauvage ou légendaire.
-func battle_category(trainer_id: StringName, species_id: StringName = &"") -> StringName:
+## Catégorie de combat : Dresseur (par sa fiche) ; sinon espèce à thème propre, légendaire ou
+## sauvage. [param region] (celle de la carte) remplace ensuite la catégorie par la sienne
+## (`region_categories`).
+func battle_category(trainer_id: StringName, species_id: StringName = &"",
+		region: StringName = &"") -> StringName:
 	if not trainer_id.is_empty():
-		return _library.trainer_category(trainer_id)
+		return _library.regional_category(_library.trainer_category(trainer_id), region)
+	var by_species := _library.species_category(species_id)
+	if not by_species.is_empty():
+		return by_species
 	if _library.is_legendary(species_id) \
 			and _library.has_battle_category(AudioLibrary.BATTLE_LEGENDARY):
-		return AudioLibrary.BATTLE_LEGENDARY
-	return AudioLibrary.BATTLE_WILD
+		return _library.regional_category(AudioLibrary.BATTLE_LEGENDARY, region)
+	return _library.regional_category(AudioLibrary.BATTLE_WILD, region)
 
 
 ## Musique du combat ([param trainer_id] vide = sauvage).
-func battle_track(trainer_id: StringName, species_id: StringName = &"") -> StringName:
-	return _library.battle_category(battle_category(trainer_id, species_id)).get("battle",
+func battle_track(trainer_id: StringName, species_id: StringName = &"",
+		region: StringName = &"") -> StringName:
+	return _library.battle_category(battle_category(trainer_id, species_id, region)).get("battle",
 		AudioLibrary.SILENCE)
 
 
 ## Musique de victoire (SON-14 : la victoire contre un sauvage est raccourcie par les données).
-func victory_track(trainer_id: StringName, species_id: StringName = &"") -> StringName:
-	return _library.battle_category(battle_category(trainer_id, species_id)).get("victory",
-		AudioLibrary.SILENCE)
+func victory_track(trainer_id: StringName, species_id: StringName = &"",
+		region: StringName = &"") -> StringName:
+	return _library.battle_category(battle_category(trainer_id, species_id, region)).get(
+		"victory", AudioLibrary.SILENCE)
 
 
 ## Thème du « ! » d'un Dresseur qui repère le joueur.

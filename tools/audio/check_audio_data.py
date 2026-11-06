@@ -89,6 +89,9 @@ for m, tid in zones_musique["maps"].items():
 	morceau(f"music_zones.json maps.{m}", tid)
 for mode, tid in zones_musique.get("movement", {}).items():
 	morceau(f"music_zones.json movement.{mode}", tid)
+for region, table in zones_musique.get("movement_regions", {}).items():
+	for mode, tid in table.items():
+		morceau(f"music_zones.json movement_regions.{region}.{mode}", tid)
 for i, regle in enumerate(zones_musique.get("flags", [])):
 	morceau(f"music_zones.json flags[{i}]", regle["track"])
 for cat, c in combats["categories"].items():
@@ -102,6 +105,13 @@ if combats["default_category"] not in categories:
 for tr, cat in combats["trainers"].items():
 	if cat not in categories:
 		erreurs.append(f"battle_music.json trainers.{tr} : catégorie inconnue « {cat} »")
+for espece, cat in combats.get("species_categories", {}).items():
+	if cat not in categories:
+		erreurs.append(f"battle_music.json species_categories.{espece} : « {cat} » inconnue")
+for region, table in combats.get("region_categories", {}).items():
+	for cat, autre in table.items():
+		if cat not in categories or autre not in categories:
+			erreurs.append(f"battle_music.json region_categories.{region}.{cat} : inconnue")
 themes = combats["encounter_themes"]
 for origine, table in (("encounter_trainers", combats["encounter_trainers"]),
 		("encounter_prefixes", combats["encounter_prefixes"])):

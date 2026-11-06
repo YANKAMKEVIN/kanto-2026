@@ -44,6 +44,8 @@ var trainer_name: Callable = Callable()
 var caught_count: Callable = Callable()
 ## Objets (catégorie objet clé / CT pour le jingle « Obtained a Key Item! »).
 var items: ItemLibrary
+## () -> StringName : espèce du sauvage du combat en cours ("" contre un Dresseur).
+var wild_species: Callable = Callable()
 ## (species_id: StringName) -> int : numéro national (0 si inconnu), pour les cris.
 var species_dex: Callable = Callable()
 ## (party_index: int) -> StringName : espèce d'un membre de l'équipe (évolution).
@@ -59,6 +61,8 @@ var _library: AudioLibrary
 var _zones: ZoneLibrary
 var _map_id: StringName = &""
 var _map_override: StringName = &""
+## Espèce du sauvage du combat en cours (thème propre, victoire).
+var _wild_species: StringName = &""
 ## Vrai tant que la couche SCENE porte le thème du « ! » (retiré à la fin du combat).
 var _encounter_theme: bool = false
 var _trainer_id: StringName = &""
@@ -129,7 +133,9 @@ func on_battle_started(trainer_id: StringName) -> void:
 	_trainer_id = trainer_id
 	_cued_moves = 0
 	_cued_hits = 0
-	audio.call(&"set_music", L.BATTLE, selector.battle_track(trainer_id))
+	_wild_species = StringName(str(wild_species.call())) if wild_species.is_valid() else &""
+	audio.call(&"set_music", L.BATTLE, selector.battle_track(trainer_id, _wild_species,
+		_zones.region_of(_map_id)))
 
 
 ## Événement de combat : victoire (`BATTLE_ENDED` gagné) → musique de victoire ; montée de
@@ -146,7 +152,8 @@ func on_battle_event(event: BattleEvent) -> void:
 			play_species_cry(event.species_id, true)
 		BattleEvent.Kind.BATTLE_ENDED:
 			if event.outcome == Battle.Outcome.WIN:
-				audio.call(&"set_music", L.BATTLE, selector.victory_track(_trainer_id))
+				audio.call(&"set_music", L.BATTLE, selector.victory_track(_trainer_id,
+					_wild_species, _zones.region_of(_map_id)))
 		BattleEvent.Kind.LEVEL_UP:
 			_jingle(&"level_up")
 
@@ -154,6 +161,7 @@ func on_battle_event(event: BattleEvent) -> void:
 ## Fin du combat : la zone (ou la scène) reprend là où elle était (SON-6).
 func on_battle_finished(_trainer_id_end: StringName, _outcome: int) -> void:
 	_trainer_id = &""
+	_wild_species = &""
 	_cued_moves = 0
 	_cued_hits = 0
 	_encounter_cry = &""
