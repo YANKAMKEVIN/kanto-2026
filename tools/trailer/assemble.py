@@ -13,6 +13,7 @@ fondu enchaîné, niveau du son) et produit :
 `--tag` (bande-annonce v3) : le montage garde son propre fichier
 (build/trailer/pokemake-trailer-<tag>.mp4), ne touche ni à la vidéo du jeu ni à ses données, et
 lit ses scènes dans build/trailer/raw_<tag>/ : deux versions se comparent sans s'écraser.
+`--game` avec `--tag` : écrit au contraire la vidéo du jeu et ses données, sans le logo de fin.
 
 Format d'un plan de cuts.json :
   { "id": "01_chambre", "src": "depart", "in": 4.2, "dur": 4.5,
@@ -346,15 +347,20 @@ def main() -> None:
                         help="ne refait que la vidéo du jeu (Theora + données) depuis le master")
     parser.add_argument("--cuts", type=Path, default=CUTS, help="fichier de montage")
     parser.add_argument("--tag", default="", help="version à part : jamais de vidéo du jeu")
+    parser.add_argument("--game", action="store_true",
+                        help="avec --tag : vidéo du jeu, sans le logo de fin (les lettres de l'ident prennent sa place)")
     parser.add_argument("--raw", default="", help="dossier des scènes (défaut : raw_<tag>)")
     args = parser.parse_args()
     if args.tag:
-        args.only_master = True
+        args.only_master = not args.game
         RAW = OUT / (args.raw or f"raw_{args.tag}")
         MASTER = OUT / f"pokemake-trailer-{args.tag}.mp4"
         SHARE = OUT / f"pokemake-trailer-{args.tag}-720p.mp4"
+        if args.game:
+            MASTER = OUT / f"pokemake-trailer-{args.tag}-jeu.mp4"
+            SHARE = OUT / f"pokemake-trailer-{args.tag}-jeu-720p.mp4"
     spec = json.loads(args.cuts.read_text())
-    cuts = spec["cuts"]
+    cuts = [c for c in spec["cuts"] if not (args.game and "logo" in c)]
     OUT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="trailer_", dir=OUT) as tmpdir:
         tmp = Path(tmpdir)

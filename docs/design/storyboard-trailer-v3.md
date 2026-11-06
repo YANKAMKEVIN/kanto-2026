@@ -1,4 +1,4 @@
-# Bande-annonce de Pokemake — storyboard v3 (à valider par Kevin)
+# Bande-annonce de Pokemake — storyboard v3 à v7 (v7 validée par Kevin le 2026-11-06)
 
 > 2026-11-06. Suite de [`analyse-teasers-pokemon.md`](analyse-teasers-pokemon.md), dont Kevin a retenu
 > toutes les recommandations (TR-1 à TR-7, « Oui, toutes »). TR-3 n'avait pas de valeur par défaut :
@@ -152,3 +152,15 @@ Rosalia. » retiré ; plans resserrés pour limiter la durée ; thème du titre 
   duo de Bourg Palette, logo POKEMAKE, musique en fondu.
 - **Le logo de fin est pour le `.mp4`** : dans le jeu, les lettres de l'ident prennent cette place ;
   à retirer du montage du jeu.
+
+## 10. Version 7, finale (2026-11-06, validée par Kevin : « pour moi, tout est bon »)
+
+`tools/trailer/cuts_v7.json`. Retirés de la v6 : l'ouverture avec Salamèche (la vidéo commence sur
+« Pars à l'aventure. ») et les retours à vélo entre les villes (la joueuse à vélo une seule fois).
+
+- **À partager :** `--tag v7 --raw raw_v3` → 68,8 s, avec le logo de fin.
+- **Dans le jeu :** `--tag v7 --raw raw_v3 --game` → `assets/ui/opening/trailer.ogv`, 65,4 s, sans le
+  logo : les lettres de l'ident le remplacent. Remplace la v2.1, récupérable dans l'historique git
+  (montage `tools/trailer/cuts.json`, gardé).
+- **Pas sur `release/0.34` :** la RC des proches garde son ancienne vidéo.
+- **Non vérifié :** lecture de cette vidéo sur téléphone (29,5 Mo, 65 s), son.
