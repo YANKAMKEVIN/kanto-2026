@@ -289,3 +289,55 @@ git log --diff-filter=A --format='%ad' --date=short -- assets/audio/music | tail
 
 Conditions que cette décision suppose (à tenir par les sessions) : message d'installation du §8.4 transmis aux proches ; aucun fichier de l'APK ni du dépôt n'est publié ; `debuggable` faux dans l'APK release (T7).
 
+
+## 15. Complément Johto pour la RC 0.35.0 (2026-11-06)
+
+> **Inventaire factuel, ce n'est pas un avis juridique.** Mesuré sur l'APK release signé de `main` @ `748e82de`
+> (778 695 547 octets) et comparé à `release/0.34` (RC 0.34.1, Kanto seul). Mêmes limites qu'au §1 : pas de réseau,
+> aucune licence relue en ligne, provenance reprise des dossiers et des scripts du dépôt. Le §14 ne parle pas de
+> Johto : il a été écrit pour la RC Kanto seul. **L'étendre est une décision de Kevin** (§15.5).
+
+### 15.1 Ce que Johto ajoute
+
+| Famille | RC 0.34.1 | `main` | Source | Statut |
+|---|---|---|---|---|
+| **Musique** | 54 pistes *Let's Go* | + **32 pistes `johto_*.ogg`** (27 Mo), soit 86 pistes, 64,6 Mo dans l'APK | Bande-son de **Pokémon HeartGold / SoulSilver**, album « Super Music Collection (Looped) », disques DS 1 à 4, téléchargée par Kevin sur **KHInsider** dans `~/Music/johto-hgss/`, découpée, bouclée, normalisée, réencodée (`docs/tech/johto-musiques.md` §7 à §10). Originaux hors dépôt | **Enregistrements officiels reproduits, aucune licence.** Suivis par Git depuis le 2026-11-06 (`12927416`). Titres officiels dans `data/audio/tracks.json` |
+| **Cris** | 151 | + **51**, soit 202, 2,3 Mo dans l'APK | PokeAPI (`b492a95c`, 2026-11-04) | **© The Pokémon Company**, aucune licence, comme au §5 |
+| **Artworks officiels** | 152 PNG et atlas | + **51** PNG, atlas étendu à 251 cases (203 fichiers importés, 9 Mo dans l'APK) | PokeAPI (`b492a95c`) | **Reproduits tels quels, aucune licence**, comme au §3 |
+| **Dos de combat** | `dos_rb` 62, `dos_ia` 77, `dos3d` 16 | `dos_rb` **114**, `dos_ia` **84**, `dos3d` 16 (93,6 Mo dans l'APK, toutes régions) | Codex, sujet décrit sans nommer l'espèce, première tentative avec **l'artwork officiel joint**, seconde sans image (`tools/art/serie_johto_pokemon.py`, `docs/design/fiches-assets/serie-johto-pokemon.md`) | Imitation de créatures protégées (B2). Fichier par fichier, la présence de l'artwork joint n'est pas tracée (D5) |
+| **Pokémon du monde** | 86 planches | + Pokémon de Johto, dont Raikou, Entei, Suicune, Ho-Oh | Codex, planches 4 × 4, pilote validé par Kevin (même fiche) | Imitation de créatures protégées (B2) |
+| **Personnages, décors, bâtiments, intérieurs, combats** | Kanto | + cartes et personnages de Johto, dont 98 fichiers de personnages et 16 de Dresseurs (`assets/sprites`), et les dossiers `assets/world/*` | Codex (`tools/art/joh*.py`, `entree_johto.py`, prompts `tools/art/prompts/joh*`), hors licence tierce nommée | Lieux et personnages d'Or / Argent repris (dossiers `dossier-joh-*`) : même nature que B3 |
+| **Carte de Johto** | — | `assets/ui/map/johto_placeholder.webp` | Image provisoire dessinée par `tools/make_map_placeholder.py` (`jalon-joh0.md`) | Produite par code ; disposition inspirée de la région d'Or / Argent |
+| **Données** | 151 espèces, 164 capacités | **202 espèces, 211 capacités** (+ 51, + 47), noms français officiels | `data/pokemon/species/johto.json`, moves ; les dossiers parlent d'Or / Argent. Aucun désassemblage de Cristal ni d'Or / Argent trouvé dans `tools/` (recherche par motifs, non exhaustive) | Même nature que B3 |
+| **Histoire** | Rouge / Bleu | Johto réécrit : Orme, Team Rocket, légendaires, Arc des Pierres ; textes validés par Kevin | `docs/design/dossier-joh-*`, `data/dialogues`, `data/story` | Textes du projet, univers et noms protégés (B3) |
+
+Bruitages (Kenney, CC0), ambiances (OpenGameArt, CC0), polices (OFL), Godot et GUT : **rien de nouveau de source tierce**.
+Jingles, victoires et « ! » restent ceux de *Let's Go*.
+
+### 15.2 Effet sur le poids
+
+APK release : **646 055 267 → 778 695 547 octets** (+ 132,6 Mo, + 20 %). Plus gros postes de l'APK de `main`, en Mo compressés :
+décors de combat 160,4 ; dos 93,6 ; intérieurs 78,9 ; musique 64,6 ; personnages peints 58,6 ; bâtiments 49,3 ; Dresseurs 46,1 ; effets 33,1.
+
+### 15.3 Confidentialité, relue sur l'APK release de `main`
+
+Permission **`VIBRATE` seule**, pas d'`INTERNET` ; `allowBackup=false` ; **`debuggable` absent** ; certificat `01:E2:B9:8F…6D:73`,
+le même que la RC 0.34.1 ; 0 entrée `addons/`, `tests/`, `tools/`, `docs/`, `proto/`, `battle_proto` dans `assets/`.
+Le §8.4 reste exact pour Johto.
+
+### 15.4 Écarts avec les conditions du §14
+
+| Condition du §14 | Constat du 2026-11-06 |
+|---|---|
+| « Aucun fichier de l'APK ni du dépôt n'est publié » ; « Kevin le repasse lui-même en privé » | **Non tenue.** `gh repo view` répond `PUBLIC`. Le dépôt contient la musique *Let's Go*, et depuis le 2026-11-04 et le 2026-11-06 les artworks, les cris et les 32 pistes HeartGold / SoulSilver, historique compris. **Ces derniers fichiers sont arrivés après le Go** |
+| Message d'installation du §8.4 transmis aux proches | À refaire pour la RC 0.35.0 : le texte ne change pas, l'empreinte SHA-256 si |
+| `debuggable` faux | Vérifié sur l'APK de test, à revérifier sur la RC finale |
+| Générique | Dit encore « jamais diffusé » et garde le bloc `KANTO 2026` (D4, décision ouverte) |
+
+### 15.5 Point à confirmer par Kevin
+
+**Q1 — Go.** Le Go du §14, sans avis juridique et pour le seul cercle de la maison, s'étend-il à la RC 0.35.0 avec tout le §15.1 ? Les conditions du §14 restent les mêmes.
+
+**Q2 — Dépôt.** Quand repasse-t-il en privé, et que faire de l'historique ? Le retour en privé est une action de Kevin ; ensuite, `push.branches` revient à `[main]` et le verrou de suite du Mac reprend (mémoire `depot-public-ci`). Tant que ce n'est pas réglé, aucune session ne doit ajouter de nouveau type de contenu protégé au dépôt.
+
+Rien de cela n'a été tranché ici, et aucune ressource n'a été retirée.
