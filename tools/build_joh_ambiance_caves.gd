@@ -101,6 +101,19 @@ const MAPS: Dictionary = {
 		"wall": Color(0.5, 0.62, 1.0), "rock": Color(0.5, 0.6, 0.9), "land": ".",
 		"water": "wdF", "deep": Color(0.01, 0.05, 0.22, 0.62),
 		"falls": [Rect2i(9, 1, 4, 3), Rect2i(14, 1, 4, 3)]},
+	# Ruines d'Alpha (JOHP1, demande de Kevin du 2026-11-06) : temple creusé dans la roche, d'après
+	# ses vues générales. Murs en modules, roche sombre autour (« fill » : sa teinte) ; le reste de l'image
+	# (dalles, escaliers, frise, socle, portes) : `tools/build_joh_ambiance_alpha.gd`, à relancer
+	# après cette passe.
+	&"alph_gallery": {"plan": "alph_gallery", "seed": 5171, "floor": "ground_sol_alpha_01",
+		"modules": "relief_mur_alpha", "walls": "#", "fill": Color(0.62, 0.68, 0.86),
+		"bands": [[".tUV", "ground_sol_alpha_01", Color(0.78, 0.76, 0.74), "Floor"],
+			["g", "ground_gravats_01", Color(0.6, 0.64, 0.76), "Rubble"]],
+		"land": "", "water": "", "wall": Color(1.0, 0.98, 1.0)},
+	&"alph_chamber": {"plan": "alph_chamber", "seed": 5181, "floor": "ground_sol_chambre_01",
+		"modules": "relief_mur_alpha", "walls": "#", "fill": Color(0.62, 0.68, 0.86),
+		"bands": [[".SU", "ground_sol_chambre_01", Color(0.74, 0.72, 0.7), "Floor"]],
+		"land": "", "water": "", "wall": Color(1.0, 0.98, 1.0)},
 	# Arc des Pierres (JOHP2, demande de Kevin du 2026-11-05) : Grotte de la Marée, d'après ses vues
 	# générales. « crates » faux : ici `R` n'est pas une caisse. « sprites » [image, pied (cases),
 	# nœud] : pompes et socle, sans emprise (leurs cases sont bloquées par la grille). Au B1F, les
@@ -116,7 +129,26 @@ const MAPS: Dictionary = {
 		"wall": Color(0.5, 0.56, 0.76), "rock": Color(0.56, 0.62, 0.78), "land": ".",
 		"water": "dab", "deep": Color(0.0, 0.2, 0.2, 0.68), "crates": false,
 		"sprites": [[TIDE_SOCLE, Vector2(5.0, 12.0), "Socle"]]},
+	# Arc des Pierres (JOHP3, demande de Kevin du 2026-11-06) : Antre du Dragon, d'après ses vues
+	# générales. « stairs » [centre (cases), rotation] : escalier de deux cases à la place des
+	# échelles `U` et `V` ; la chute d'eau de la vue du 1F n'est pas reprise (absente de la grille).
+	&"dragons_den_1f": {"plan": "dragons_den_1f", "seed": 7371, "floor": "ground_grotte_01",
+		"bands": [[".EVo", "ground_grotte_01", Color(0.78, 0.84, 0.96), "Floor"],
+			["g", "ground_gravats_01", Color(0.74, 0.78, 0.9), "Rubble"]],
+		"wall": Color(0.5, 0.6, 0.92), "rock": Color(0.56, 0.64, 0.86), "land": ".g",
+		"water": "d", "deep": Color(0.0, 0.2, 0.34, 0.5), "crates": false,
+		"stairs": [[Vector2(14.0, 3.0), 0.0]]},
+	&"dragons_den_sanctuary": {"plan": "dragons_den_sanctuary", "seed": 7381,
+		"floor": "ground_grotte_01",
+		"bands": [[".SU", "ground_grotte_01", Color(0.8, 0.86, 1.0), "Floor"]],
+		"wall": Color(0.46, 0.58, 0.98), "rock": Color(0.56, 0.64, 0.86), "land": ".",
+		"water": "d", "deep": Color(0.0, 0.08, 0.26, 0.72), "crates": false,
+		"stairs": [[Vector2(11.0, 16.0), PI]],
+		"sprites": [[DEN_ALTAR, Vector2(11.0, 5.0), "AutelPeint"]]},
 }
+## Escaliers de l'Antre : pierre refroidie, comme le sol [D].
+const STAIRS_TINT := Color(0.66, 0.74, 0.92)
+const DEN_ALTAR: String = "res://assets/world/props/prop_autel_antre_01.png"
 const TIDE_PUMP: String = "res://assets/world/props/prop_pompe_rocket_01.png"
 const TIDE_SOCLE: String = "res://assets/world/props/prop_socle_maree_01.png"
 const PROP_MATERIAL: String = "res://game/world/lighting/materials/world_object.tres"
@@ -182,6 +214,7 @@ const SPILLS: Dictionary = {&"sea_cave_2": Rect2i(6, 35, 3, 1)}
 const SPILL_STRENGTH: float = 0.55
 ## Puits de lumière, par carte : [cases du pied de la colonne (x, y, décimaux)].
 const SHAFTS: Dictionary = {
+	&"alph_gallery": [Vector2(3.5, 4.5)],
 	&"sea_cave_1": [Vector2(14.0, 6.5), Vector2(21.0, 22.0), Vector2(13.5, 32.5)],
 	&"sea_cave_2": [Vector2(21.0, 11.0), Vector2(12.0, 11.5), Vector2(13.0, 26.5)],
 	&"slowpoke_well_b1f": [Vector2(4.0, 4.0)],
@@ -189,11 +222,14 @@ const SHAFTS: Dictionary = {
 	&"whirl_islands_1f": [Vector2(10.0, 6.0), Vector2(26.0, 4.0)],
 	&"whirl_islands_b1f": [Vector2(11.0, 5.0), Vector2(26.0, 7.0), Vector2(10.5, 15.0)],
 	&"whirl_islands_b2f": [Vector2(10.0, 8.0), Vector2(15.0, 8.0), Vector2(12.5, 11.0)],
+	&"dragons_den_1f": [Vector2(11.0, 5.0)],
+	&"dragons_den_sanctuary": [Vector2(11.0, 6.0)],
 }
 ## Flaques de lumière seules : jour de la sortie vers Oliville (salle 2), halo chaud [D] ; jour de
 ## l'entrée des Îles Tourbillon.
 const POOLS: Dictionary = {&"sea_cave_2": [Vector2(4.0, 39.2)],
 	&"tide_cave_1f": [Vector2(24.0, 10.0)], &"tide_cave_b1f": [Vector2(1.5, 12.0)],
+	&"dragons_den_1f": [Vector2(14.0, 22.5)],
 	&"whirl_islands_1f": [Vector2(1.0, 13.0)],
 	&"goldenrod_underground": [Vector2(2.5, 6.5), Vector2(37.5, 8.5)]}
 
@@ -223,6 +259,8 @@ var _wall_tint := WALL_TINT
 var _rock_tint := ROCK_TINT
 var _deep_tint := DEEP_TINT
 var _wet: Dictionary = {}
+## Côtés des rebords un peu étirés : pas de trou entre deux cases (bassins droits de l'Antre).
+var _seamless_sides: bool = false
 
 
 func _init() -> void:
@@ -266,6 +304,7 @@ func _build_cave(map_id: StringName) -> void:
 	_rock_tint = spec.get("rock", ROCK_TINT)
 	_deep_tint = spec.get("deep", DEEP_TINT)
 	_wet = _wet_cells(plan, spec)
+	_seamless_sides = spec.has("stairs")
 	var kit: Object = Kit.new(plan_path, size, seed_value, seed_value + 1, plan.walkable)
 	kit.set(&"floor_texture_path", GROUND % String(spec.get("floor", FLOOR)))
 	kit.set(&"mass_texture_path", GROUND % String(spec.get("mass", MASS)))
@@ -296,6 +335,11 @@ func _build_cave(map_id: StringName) -> void:
 	var filled := 0
 	var walls: Vector3i
 	if spec.has("modules"):
+		if spec.has("fill"):
+			var wall_tint := _wall_tint
+			_wall_tint = spec["fill"]
+			_fill_mass(kit, decals, plan, seed_value + 4)
+			_wall_tint = wall_tint
 		walls = ModuleWalls.new(kit, spec["modules"], spec["walls"], spec["walls"],
 			seed_value + 2).place()
 		filled = _shop_fronts(kit, entities, plan)
@@ -531,6 +575,8 @@ func _island_edges(kit: Object, decals: Node2D, plan: Object, land: String) -> i
 			if _is_wet(plan, cell + Vector2i(dx, 0)):
 				var side: Node2D = kit.call(&"add_floor_prop", SIDE, cell, "Side%03d" % count)
 				side.position.x += dx * (TILE / 2.0 - 12.0)
+				if _seamless_sides:
+					side.scale.y = 1.2
 				side.modulate = ISLAND_TINT
 				count += 1
 	return count
@@ -615,6 +661,15 @@ func _fixtures(kit: Object, entities: Node2D, decals: Node2D, plan: Object,
 			stairs.position = (entry[0] as Vector2) * TILE
 			stairs.rotation = entry[1]
 			count += 1
+	for entry: Array in spec.get("stairs", []):
+		var flight: Sprite2D = kit.call(&"add_sprite", decals, STAIRS_ID,
+			(entry[0] as Vector2) * TILE, "Stairs%02d" % count)
+		flight.position = (entry[0] as Vector2) * TILE
+		flight.rotation = entry[1]
+		flight.modulate = STAIRS_TINT
+		count += 1
+	if spec.has("stairs"):
+		return count
 	for cell: Vector2i in plan.cells_of("U"):
 		kit.call(&"add_sprite", entities, LADDER_UP,
 			(Vector2(cell) + Vector2(0.5, 1.0)) * TILE, "Ladder%02d" % count)

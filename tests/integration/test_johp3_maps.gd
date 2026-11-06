@@ -122,6 +122,16 @@ func test_barriers_hold_from_every_side() -> void:
 		assert_eq(trigger.get(&"direction"), Vector2i.ZERO, String(pair[0]))
 
 
+func test_den_is_painted_with_its_altar_and_stairs() -> void:
+	var one := _map(&"dragons_den_1f")
+	assert_not_null(one.get_node_or_null(^"PaintedGround"))
+	assert_false(one.get_node(^"Ground").visible, "tuiles masquées")
+	var two := _map(&"dragons_den_sanctuary")
+	assert_not_null(two.get_node_or_null(^"PaintedGround"))
+	assert_not_null(two.get_node_or_null(^"Entities/JohAmbCaveAutelPeint"))
+	assert_eq(two.get_node(^"Decor").get_child_count(), 0, "plus d'aplat provisoire")
+
+
 func _warp_to(from: StringName, target: StringName) -> bool:
 	for warp: Node in _map(from).get_node(^"Warps").get_children():
 		if warp.get(&"target_map") == target:

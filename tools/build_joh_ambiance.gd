@@ -44,6 +44,8 @@ extends SceneTree
 ## **Ébènelle** (JOHP3, `blackthorn_city`) : paroi d'ardoise, sapins repères, façades du clan et
 ## porche de l'Antre peints par Codex (`tools/art/johp3_ebenelle.py`), lanternes de pierre pour la
 ## nuit. Les cases `T` du nord et de l'est deviennent de la paroi **à l'image seulement**.
+## **Ruines d'Alpha** (JOHP1) : mêmes briques ; tente, murets, piliers et façade du temple peints
+## (`tools/art/johp1_alpha.py`), dallage en clé « slabs », escalier en clé « floors ».
 ## Nœuds posés : racine `PaintedGround`, `JohAmbForestFloor`, `JohAmbDecals` (hors des couches
 ## d'emprise de `GameMap`) ; enfants préfixés `JohAmb` dans `Entities` (sans emprise propre : les
 ## cases sont celles de la grille) ; halos de `NightLights`.
@@ -112,6 +114,28 @@ const MAPS: Dictionary = {
 			["prop_lampe_chantier_01", Vector2(46.5, 9.1), "ChantierLampe0", 0.6],
 			["prop_lampe_chantier_01", Vector2(46.5, 12.1), "ChantierLampe1", 0.6]],
 		"glows": [[&"night_lamp", Vector2(46.5, 8.6)], [&"night_lamp", Vector2(46.5, 11.6)]]},
+	# Ruines d'Alpha (JOHP1, demande de Kevin du 2026-11-06), d'après leur vue générale. Murets et
+	# piliers `R` en objets peints (« cells » : ni rivage ni paroi). « slabs » [cases, texture] :
+	# dallage du temple ; « floors » [objet, pied (cases), nœud] : couche du sol. Lanternes de
+	# chantier à la porte de la tente [D] : les Ruines ne sont pas noires la nuit.
+	&"ruins_of_alph": {"plan": "ruins_of_alph", "seed": 51201, "rock": Rock.SHORE, "path": EARTH,
+		"panes": false,
+		"cells": [[Rect2i(6, 5, 5, 1), "c"], [Rect2i(22, 11, 6, 1), "c"], [Rect2i(13, 17, 1, 1), "c"],
+			[Rect2i(22, 17, 1, 1), "c"], [Rect2i(12, 19, 5, 1), "c"], [Rect2i(19, 19, 5, 1), "c"]],
+		"buildings": [["bldg_tente_alpha_01", Vector2i(8, 13), "Tente"]],
+		"slabs": [[Rect2i(12, 20, 12, 6), "res://assets/world/ground/ground_dalles_alpha_01.png"]],
+		"floors": [["relief_escalier_temple_01", Vector2(18.0, 20.2), "TempleEscalier"]],
+		"props": [["prop_muret_alpha_01", Vector2(8.5, 6.0), "Muret0", 1.0],
+			["prop_muret_alpha_01", Vector2(25.0, 12.0), "Muret1", 1.2],
+			["prop_muret_temple_01", Vector2(14.5, 20.0), "TempleOuest", 1.0],
+			["prop_muret_temple_01", Vector2(21.5, 20.0), "TempleEst", 1.0],
+			["prop_pilier_alpha_01", Vector2(13.5, 18.0), "Pilier0", 1.0],
+			["prop_pilier_alpha_01", Vector2(22.5, 18.0), "Pilier1", 1.0],
+			["prop_pilier_alpha_01", Vector2(4.5, 27.0), "PilierCache", 1.0],
+			["prop_lampe_chantier_01", Vector2(7.4, 14.0), "LampeTente0", 0.6],
+			["prop_lampe_chantier_01", Vector2(9.6, 14.0), "LampeTente1", 0.6]],
+		"glows": [[&"night_lamp", Vector2(7.4, 13.5)], [&"night_lamp", Vector2(9.6, 13.5)],
+			[&"night_window", Vector2(8.5, 13.2)]]},
 	&"route_35": {"plan": "route_35", "seed": 35201, "rock": Rock.SHORE, "path": EARTH,
 		"panes": true, "x": "fence", "legend": {"P": "c", "w": "w"},
 		"buildings": [["bldg_maison_toit_01", Vector2i(16, 39), "PosteGarde", Vector2(1.2, 1.2)]]},
@@ -757,6 +781,23 @@ func _johto(kit: Object, source: Object, decals: Node2D, entities: Node2D,
 		foam.position = (spec["foam"] as Vector2) * TILE
 		foam.scale = Vector2.ONE * JOH_FOAM_SCALE
 		kit.call(&"attach", decals, foam)
+	for entry: Array in spec.get("slabs", []):
+		var rect: Rect2i = entry[0]
+		var slab := Sprite2D.new()
+		slab.name = "Dallage%02d" % count
+		slab.texture = load(entry[1])
+		slab.centered = false
+		slab.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+		slab.region_enabled = true
+		slab.region_rect = Rect2(Vector2.ZERO, Vector2(rect.size * TILE))
+		slab.position = Vector2(rect.position * TILE)
+		kit.call(&"attach", decals, slab)
+		count += 1
+	for entry: Array in spec.get("floors", []):
+		var flat: Node2D = kit.call(&"add_prop", decals, entry[0], (entry[1] as Vector2) * TILE,
+			entry[2])
+		kit.call(&"clear_footprint", flat)
+		count += 1
 	for entry: Array in spec.get("buildings", []):
 		var foot: Vector2 = rules.call(&"foot_position", StringName(entry[0]), entry[1])
 		var building: Node2D = kit.call(&"add_prop", entities, entry[0], foot, entry[2])

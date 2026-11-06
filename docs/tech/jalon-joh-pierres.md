@@ -128,6 +128,8 @@ présent au retour de l'équipe.
 
 **État : fait, fusionné dans `main` le 2026-11-05** (CI verte run 41999662979, QA A17 sans bloquant). Écarts [D] : lumière `cave_1f` et `cave_b1f` (le profil `cave` n'existe pas) ; Route 36 retouchée dès le JOHP1 (`build_johp1_maps.gd`, puis `build_joh_ambiance.gd` avec la clé `variant`), fermée par l'ouvrier tant que `johto_stones_quest` manque ; signes de la Galerie dessinés (`AlphGlyph`), le signe de chaque mur marquant la bonne dalle de son rang.
 
+**Peinture (2026-11-06)** : les quatre cartes sont peintes (`tools/art/johp1_alpha.py`, puis `build_joh_ambiance.gd`, `build_joh_ambiance_caves.gd`, `build_joh_ambiance_alpha.gd` ; ordre en tête de ce dernier ; planche `docs/design/reference/johp1-peinture-avant-apres-v1.jpg`). Logique identique avant et après ; CI verte (run 42141424363) ; relue sur A17 aux quatre cartes (départs de débogage, 49 à 59 images/s, aucune erreur de script). Défauts [D] : lanternes de chantier à la porte de la tente pour la nuit ; signes `AlphGlyph` gardés sur dalles peintes ; plaque de pierre sous le signe du mur sud ; bâche sur le mur nord de la salle des fouilles (pas sur une case praticable) ; pas de stalactites ni de panneaux gravés de la vue. Rendu à reprendre : petits éclats de roche aux angles rentrants de la Chambre.
+
 ## 4. JOHP2 — Irisia
 
 ### 4.1 Cartes

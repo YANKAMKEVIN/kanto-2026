@@ -11404,6 +11404,189 @@
     ]
    }
   },
+  "bldg_tente_alpha_01": {
+   "fichier": "res://assets/world/buildings/bldg_tente_alpha_01.png",
+   "taille": [
+    672,
+    515
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_tente_alpha_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     409,
+     52
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_tente_alpha_01_contact.png",
+    "decalage": [
+     -344,
+     -44
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     41
+    ]
+   }
+  },
+  "prop_muret_alpha_01": {
+   "fichier": "res://assets/world/props/prop_muret_alpha_01.png",
+   "taille": [
+    480,
+    119
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_muret_alpha_01_contact.png",
+    "decalage": [
+     -248,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     16
+    ]
+   }
+  },
+  "prop_muret_temple_01": {
+   "fichier": "res://assets/world/props/prop_muret_temple_01.png",
+   "taille": [
+    480,
+    100
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_muret_temple_01_contact.png",
+    "decalage": [
+     -248,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     15
+    ]
+   }
+  },
+  "prop_pilier_alpha_01": {
+   "fichier": "res://assets/world/props/prop_pilier_alpha_01.png",
+   "taille": [
+    96,
+    97
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_pilier_alpha_01_contact.png",
+    "decalage": [
+     -56,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "relief_escalier_temple_01": {
+   "fichier": "res://assets/world/relief/relief_escalier_temple_01.png",
+   "taille": [
+    192,
+    142
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_escalier_temple_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_alpha_01": {
+   "fichier": "res://assets/world/relief/relief_mur_alpha_01.png",
+   "taille": [
+    192,
+    120
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_alpha_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_alpha_02": {
+   "fichier": "res://assets/world/relief/relief_mur_alpha_02.png",
+   "taille": [
+    192,
+    120
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_alpha_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_alpha_03": {
+   "fichier": "res://assets/world/relief/relief_mur_alpha_03.png",
+   "taille": [
+    192,
+    33
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_alpha_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_alpha_04": {
+   "fichier": "res://assets/world/relief/relief_mur_alpha_04.png",
+   "taille": [
+    34,
+    146
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_alpha_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
   "bldg_maison_aieule_01": {
    "fichier": "res://assets/world/buildings/bldg_maison_aieule_01.png",
    "taille": [
