@@ -446,6 +446,8 @@ func test_real_boot_wires_every_game_signal_to_the_bridge() -> void:
 	var bridge := boot.get_audio_bridge()
 	var battle := boot.get_battle_director()
 	var cutscenes := boot.get_cutscene_director()
+	assert_true(bridge.wild_species.is_valid(), "l'espèce sauvage arrive au son (légendaires)")
+	assert_eq(bridge.wild_species.call(), &"", "hors combat : aucune")
 	var links: Array = [
 		[boot.get_player().mount_changed, bridge.on_mount_changed],
 		[boot.get_player().step_started, bridge.on_player_step],
