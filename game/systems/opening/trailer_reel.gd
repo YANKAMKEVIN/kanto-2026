@@ -24,7 +24,7 @@ const DEFAULT_LETTERBOX: float = 0.07
 const MAX_LETTERBOX: float = 0.2
 ## Bornes de la durée (demande de Kevin : 30 à 40 s, avec de la marge pour le montage).
 const MIN_SECONDS: float = 5.0
-const MAX_SECONDS: float = 60.0
+const MAX_SECONDS: float = 90.0
 const EXTENSION: String = "ogv"
 
 var letterbox: float = DEFAULT_LETTERBOX

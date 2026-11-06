@@ -216,7 +216,7 @@ def card_clip(index: int, text: str, seconds: float, tmp: Path, fade_max: float 
         y += box[3] - box[1] + gap
     image.save(png)
     out = tmp / f"card_{index:02d}.mkv"
-    fade = min(fade_max, seconds / 2)
+    fade = max(min(fade_max, seconds / 2), 0.001)
     run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-framerate", str(FPS), "-i", str(png),
          "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", f"{seconds:.3f}",
          "-vf", f"fade=t=in:d={fade},fade=t=out:st={seconds - fade:.3f}:d={fade},format=yuv420p",
@@ -333,7 +333,9 @@ def encode_theora(assembled: Path, width: int, quality: int, tmp: Path) -> None:
          "-rf64", "never", str(wav)])
     OGV.parent.mkdir(parents=True, exist_ok=True)
     encoder = shutil.which(THEORA_ENCODER) or THEORA_ENCODER
-    run([encoder, "-v", str(quality), "-a", "3", "-o", str(OGV), str(wav), str(y4m)])
+    # Images clés fréquentes : sans elles, l'encodeur laisse des traces du plan précédent sur les
+    # cartons unis qui suivent une coupe franche.
+    run([encoder, "-v", str(quality), "-a", "3", "-k", "15", "-o", str(OGV), str(wav), str(y4m)])
     print(f"  {OGV.relative_to(ROOT)} : {OGV.stat().st_size / 1e6:.1f} Mo, {width} × {height}")
 
 

@@ -158,9 +158,13 @@ Rosalia. » retiré ; plans resserrés pour limiter la durée ; thème du titre 
 `tools/trailer/cuts_v7.json`. Retirés de la v6 : l'ouverture avec Salamèche (la vidéo commence sur
 « Pars à l'aventure. ») et les retours à vélo entre les villes (la joueuse à vélo une seule fois).
 
-- **À partager :** `--tag v7 --raw raw_v3` → 68,8 s, avec le logo de fin.
-- **Dans le jeu :** `--tag v7 --raw raw_v3 --game` → `assets/ui/opening/trailer.ogv`, 65,4 s, sans le
+- **À partager :** `--tag v7 --raw raw_v3`, avec le logo de fin.
+- **Dans le jeu :** `--tag v7 --raw raw_v3 --game` → `assets/ui/opening/trailer.ogv`, 64,3 s, sans le
   logo : les lettres de l'ident le remplacent. Remplace la v2.1, récupérable dans l'historique git
   (montage `tools/trailer/cuts.json`, gardé).
 - **Pas sur `release/0.34` :** la RC des proches garde son ancienne vidéo.
-- **Non vérifié :** lecture de cette vidéo sur téléphone (29,5 Mo, 65 s), son.
+- **Encodage du jeu :** fondus enchaînés vers les cartons et image clé toutes les 15 images : une coupe
+  franche vers un aplat laissait des taches de couleur à l'encodage Theora. Il en reste de très
+  légères sur le carton « Capture-les tous. ».
+- **Limite de durée du jeu :** `TrailerReel.MAX_SECONDS` passe de 60 à 90 s.
+- **Non vérifié :** lecture de cette vidéo sur téléphone, son.
