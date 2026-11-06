@@ -1,9 +1,14 @@
 # RC 0.35.0 — jeu complet (Kanto et Johto)
 
-> Préparée le 2026-11-06 depuis `main` @ `748e82de`. **La RC finale n'est pas construite et `project.godot` reste en 0.34.1.**
+> Préparée le 2026-11-06 depuis `main` @ `748e82de`. **RC construite, voir §0.**
 > Décision de Kevin du 2026-11-06 : jeu complet depuis `main`, qui remplace « RC Kanto seul depuis `release/0.34` ».
 > Ordre retenu : partie complète de Kevin et vérifications d'abord, RC finale ensuite. Diffusion inchangée : moins de dix
 > proches de sa maison, par adb ou fichier signé, jamais de store.
+
+## 0. RC construite (2026-11-06)
+
+**Pokemake 0.35.0 (code 3500)**, commit `74d58557`, CI verte (run 42277532720), `~/.pokemake/rc/0.35.0/pokemake-0.35.0.apk`, 778 695 547 octets,
+SHA-256 `6d9e3adc628256221350c3dc1fddfa904982bab9e7b4b4692af48497a1f8cf71`. Vérifiée sur l'A17 : installée par adb par-dessus la RC 0.34.1, sans `DEBUGGABLE`, écran titre « v0.35.0 (3500) », aucune `SCRIPT ERROR` ni `FATAL` au démarrage. Partie non rejouée sur cette RC ; installation depuis un fichier non essayée. L'A17 est revenu à l'APK debug de `748e82de` avec ses fichiers.
 
 ## 1. Ce qui est prêt
 
