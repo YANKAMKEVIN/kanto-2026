@@ -165,7 +165,7 @@ DAF.6 (fusionné le 2026-10-26, `da861440`) a traité la Forêt de Jade, les int
 | RP-061 | [systemes-2.md](systemes-2.md) | Pas de mise en scène d'envol (Vol) hors combat | idée | P3 | DAF.8 | ouvert |
 | RP-062 | [pokedex-refonte.md](pokedex-refonte.md) | Portrait du Pokédex : lisibilité du texte sur le verre, décor flouté (essai réversible, pas de décor par habitat), silhouette « ??? » peu contrastée, Pokémon derrière le nom à 1920 | rendu | P3 | DAF.8 | ouvert |
 | RP-063 | Reportés ; DAF.6 | Intérieurs « vraie DA » : la lumière chaude est faite, le décor riche des références reste à peindre ; bas de la douche du rival sous le bouton Courir | rendu | P2 (BAT-5) | DAF.8 ; J33 T2 | ouvert |
-| RP-064 | [integration-da-bourg-route1.md](integration-da-bourg-route1.md) | Télés de remplacement et meubles de côté (option A, géométrie gardée, « réversible en phase DA ») | rendu | P3 | DAF.8 | ouvert (défaut gardé) |
+| RP-064 | [integration-da-bourg-route1.md](integration-da-bourg-route1.md) | Télés de remplacement et meubles de côté (option A, géométrie gardée, « réversible en phase DA ») | rendu | P3 | DAF.8 | **fermé (décision de Kevin, 2026-11-06)** : meubles de remplacement gardés, géométrie inchangée |
 | RP-065 | DA.1 | Ombres de contact sous les arbres de forêt et les meubles (clé de règle prête, non activée) | idée | P3 (SOL-6) | DAF.8 | ouvert |
 | RP-066 | J12 | Après une évolution par pierre, retour sur la carte et non au Sac | idée | P3 | 1.0.x | ouvert (conforme au dossier) |
 
