@@ -34,6 +34,7 @@ SHOTS=(
 	"jour_aieule|50|$(day ville) --cell=15,13 --facing=up"
 	"jour_centre|50|$(day ville) --cell=22,14 --facing=up"
 	"jour_antre|50|$(day ville) --cell=25,14 --facing=right"
+	"jour_pilier|50|$(day ville) --cell=28,14 --facing=right"
 	"jour_herbes|50|$(day ville) --cell=18,18 --facing=right"
 	"nuit_aire|50|$(night ville) --cell=15,24 --facing=up"
 	"nuit_aieule|50|$(night ville) --cell=15,13 --facing=up"

@@ -200,8 +200,8 @@ const MAPS: Dictionary = {
 			["prop_lanterne_ebenelle_01", Vector2(10.6, 13.02), "Lanterne3", 1.0],
 			["prop_lanterne_ebenelle_01", Vector2(20.4, 13.02), "Lanterne4", 1.0],
 			["prop_lanterne_ebenelle_01", Vector2(27.6, 13.02), "Lanterne5", 1.0],
-			["prop_lanterne_ebenelle_01", Vector2(11.7, 21.1), "Lanterne6", 1.0],
-			["prop_lanterne_ebenelle_01", Vector2(20.3, 21.1), "Lanterne7", 1.0]]},
+			["prop_lanterne_ebenelle_01", Vector2(11.7, 22.1), "Lanterne6", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(20.3, 22.1), "Lanterne7", 1.0]]},
 }
 ## Traduction des grilles du JOH1 et du JOH2 vers la légende du kit : `T` forêt, `.` herbe, `p`
 ## pavés, `=` chemin (galets à Oliville, terre ailleurs), `h` hautes herbes, `z` platelage (herbe

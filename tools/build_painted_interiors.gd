@@ -3227,6 +3227,8 @@ func _blackthorn_rooms() -> Array[Dictionary]:
 		"lavanville_maison_1.txt", &"blackthorn_city", &"retour_aieule", "Ébènelle")
 	elder["shell"] = "res://assets/world/interiors/int_maison_aieule_coque.png"
 	elder["furniture"] = _elder_furniture()
+	# Tapis du clan sous l'Aïeule [D] : sa robe se perd sur le parquet sombre (QA A17).
+	elder["rugs"] = [[&"int_tapis_rouge_01", Vector2(7.5, 5.5), "RugElder"]]
 	var house_1 := _johto_house(&"blackthorn_house_1", "BlackthornHouse1",
 		"lavanville_maison_2.txt", &"blackthorn_city", &"retour_maison", "Ébènelle")
 	house_1["shell"] = "res://assets/world/interiors/int_maison_ebenelle_coque.png"
