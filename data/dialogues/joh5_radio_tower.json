@@ -216,7 +216,6 @@
 	},
 	"goldenrod_radio_reserve_locked": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"La porte de la réserve est fermée à clé.",
 			"Des voix étouffées appellent à l'aide."
@@ -348,14 +347,12 @@
 	},
 	"goldenrod_radio_emergency_stairs": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"La porte de l'escalier de secours est fermée."
 		]
 	},
 	"goldenrod_radio_office_locked": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"La porte du bureau du directeur est fermée."
 		]

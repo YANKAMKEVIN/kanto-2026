@@ -38,7 +38,7 @@
 			1
 		],
 		"facing": "down",
-		"sprite": "youngster",
+		"sprite": "psychic",
 		"dialogue": "saffron_gym_psychic_albin_after",
 		"trainer": {
 			"id": "saffron_gym_psychic_albin",
@@ -68,7 +68,7 @@
 			7
 		],
 		"facing": "down",
-		"sprite": "youngster",
+		"sprite": "psychic",
 		"dialogue": "saffron_gym_psychic_nestor_after",
 		"trainer": {
 			"id": "saffron_gym_psychic_nestor",
@@ -98,7 +98,7 @@
 			13
 		],
 		"facing": "down",
-		"sprite": "youngster",
+		"sprite": "psychic",
 		"dialogue": "saffron_gym_psychic_barnabe_after",
 		"trainer": {
 			"id": "saffron_gym_psychic_barnabe",
@@ -113,7 +113,7 @@
 			1
 		],
 		"facing": "down",
-		"sprite": "youngster",
+		"sprite": "psychic",
 		"dialogue": "saffron_gym_psychic_leandre_after",
 		"trainer": {
 			"id": "saffron_gym_psychic_leandre",

@@ -188,3 +188,12 @@ Format : bulles séparées par « / ». `{joueur}` = nom.
 | JH-37 | ✅ Le gardien du puits est **Fargas**, sans sa fabrique de Noigrumes (Kevin, 2026-11-02) | — |
 | JH-38 | ✅ Ramoloss capturable au puits ; **Roigada / Tarpaud possibles dès l'acte 1** avec la Roche Royale au terminal d'échange (Kevin) | — |
 | JH-39 | ✅ L'autel du Bois aux Chênes est **visible et examinable dès le JOH4** (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `azalea_house_1_habitant` (Habitant) : Le vieux Fargas connaît le puits mieux que personne. / Il y descendait déjà quand il était petit.
+- `azalea_well_block` (Sbire) : Hé, toi ! On ne passe pas ! / Le puits est fermé. Circule.
+- `ilex_forest_canarticho` : Canarticho serre son poireau. / Il veille sur les bûches de son maître.
+- `slowpoke_well_b2f_ramoloss_sans_queue` : Ramoloss n'a plus de queue. / Il n'a pas l'air de s'en rendre compte.

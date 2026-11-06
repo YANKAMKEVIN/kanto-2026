@@ -41,10 +41,9 @@ func test_every_painted_file_is_read_for_its_species() -> void:
 			assert_eq((image["texture"] as Texture2D).resource_path, BattleArt.painted_back_path(number), f)
 
 
-func test_a_species_without_painted_back_keeps_its_placeholder() -> void:
-	var image := _art.image(&"blastoise", true)
-	assert_false(image["official"])
-	assert_eq((image["texture"] as Texture2D).resource_path, BattleArt.placeholder_path(&"blastoise", true))
+func test_every_species_has_a_painted_back() -> void:
+	for dex: int in [9, 39, 64, 65, 105, 131, 135, 151]:
+		assert_ne(BattleArt.best_painted_back_path(dex), "", "n° %d" % dex)
 
 
 ## Salamèche (4) a un dos IA : il est peint, cadré dans la boîte, et prime sur son dos 3D.
@@ -54,13 +53,13 @@ func test_charmander_now_has_a_painted_back() -> void:
 	assert_eq((image["texture"] as Texture2D).resource_path, BattleArt.painted_back_path(4))
 
 
-## Priorité IA > 3D > provisoire : 001 a les deux (IA gagne), 050 n'a que le 3D, 009 aucun.
+## Priorité IA > 3D > provisoire : 001 a les deux (IA gagne), 050 n'a que le 3D, 999 aucun.
 func test_ia_beats_3d_beats_placeholder() -> void:
 	assert_true(FileAccess.file_exists(BattleArt.painted_back_3d_path(1)) or
 		ResourceLoader.exists(BattleArt.painted_back_3d_path(1)), "001 a un dos 3D")
 	assert_eq(BattleArt.best_painted_back_path(1), BattleArt.painted_back_path(1))
 	assert_eq(BattleArt.best_painted_back_path(50), BattleArt.painted_back_3d_path(50))
-	assert_eq(BattleArt.best_painted_back_path(9), "")
+	assert_eq(BattleArt.best_painted_back_path(999), "")
 	var image := _art.image(&"diglett", true)
 	assert_eq((image["texture"] as Texture2D).resource_path, BattleArt.painted_back_3d_path(50))
 	assert_true(image["official"])

@@ -70,7 +70,6 @@
 	},
 	"azalea_house_1_habitant": {
 		"speaker": "Habitant",
-		"draft": true,
 		"pages": [
 			"Le vieux Fargas connaît le puits\nmieux que personne.",
 			"Il y descendait déjà quand il était\npetit."

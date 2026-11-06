@@ -53,7 +53,6 @@
 	},
 	"route_36_grille_parc": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"La grille du Parc National est fermée.",
 			"Un écriteau : « Fermé pour entretien. »"

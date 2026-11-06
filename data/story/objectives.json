@@ -3,181 +3,156 @@
 		"id": "report_to_ecruteak_elder",
 		"text": "retourner voir le doyen de Rosalia.",
 		"if": ["johto_ho_oh_done"],
-		"unless": ["johto_act3"],
-		"draft": true
+		"unless": ["johto_act3"]
 	},
 	{
 		"id": "climb_bell_tower",
 		"text": "gravir la Tour Carillon avant l'aube.",
 		"if": ["johto_bell_tower_open"],
-		"unless": ["johto_ho_oh_done"],
-		"draft": true
+		"unless": ["johto_ho_oh_done"]
 	},
 	{
 		"id": "see_ecruteak_elder",
 		"text": "voir le doyen, à Rosalia.",
 		"if": ["johto_bell_tower_clue"],
-		"unless": ["johto_bell_tower_open"],
-		"draft": true
+		"unless": ["johto_bell_tower_open"]
 	},
-	{ "id": "joh6_talk_deserter", "text": "parler au déserteur, au Centre d'Acajou.", "if": ["johto_raikou_done"], "unless": ["johto_whirl_clue"], "draft": true },
-	{ "id": "joh6_free_raikou", "text": "libérer Raikou, au fond du repaire d'Acajou.", "if": ["johto_hideout_found"], "unless": ["johto_raikou_done"], "draft": true },
-	{ "id": "joh6_search_shop", "text": "fouiller la boutique de souvenirs d'Acajou.", "if": ["johto_red_gyarados_done"], "unless": ["johto_hideout_found"], "draft": true },
-	{ "id": "joh6_lake_of_rage", "text": "rejoindre le Lac Colère, au nord d'Acajou.", "if": ["johto_dante_plan_known"], "unless": ["johto_red_gyarados_done"], "draft": true },
-	{ "id": "joh6_burned_tower", "text": "explorer la Tour Cendrée, à Rosalia.", "if": ["johto_burned_tower_open"], "unless": ["johto_raikou_taken"], "draft": true },
+	{ "id": "joh6_talk_deserter", "text": "parler au déserteur, au Centre d'Acajou.", "if": ["johto_raikou_done"], "unless": ["johto_whirl_clue"] },
+	{ "id": "joh6_free_raikou", "text": "libérer Raikou, au fond du repaire d'Acajou.", "if": ["johto_hideout_found"], "unless": ["johto_raikou_done"] },
+	{ "id": "joh6_search_shop", "text": "fouiller la boutique de souvenirs d'Acajou.", "if": ["johto_red_gyarados_done"], "unless": ["johto_hideout_found"] },
+	{ "id": "joh6_lake_of_rage", "text": "rejoindre le Lac Colère, au nord d'Acajou.", "if": ["johto_dante_plan_known"], "unless": ["johto_red_gyarados_done"] },
+	{ "id": "joh6_burned_tower", "text": "explorer la Tour Cendrée, à Rosalia.", "if": ["johto_burned_tower_open"], "unless": ["johto_raikou_taken"] },
 	{
 		"id": "go_ecruteak_sages",
 		"text": "retourner voir les sages de Rosalia.",
 		"if": ["johto_act2"],
-		"unless": ["johto_burned_tower_open"],
-		"draft": true
+		"unless": ["johto_burned_tower_open"]
 	},
 	{
 		"id": "stones_back_to_rosalia",
 		"text": "rejoindre les sages de Rosalia avec Corentin.",
 		"if": ["johto_team_returned"],
-		"unless": ["johto_act2"],
-		"draft": true
+		"unless": ["johto_act2"]
 	},
 	{
 		"id": "stones_beat_cenere",
 		"text": "battre Cenere, au Sanctuaire de l'Antre du Dragon.",
 		"if": ["johto_stones_awakened"],
-		"unless": ["johto_team_returned"],
-		"draft": true
+		"unless": ["johto_team_returned"]
 	},
 	{
 		"id": "stones_go_altar",
 		"text": "porter les pierres à l'autel du Sanctuaire.",
 		"if": ["johto_stone_breath"],
-		"unless": ["johto_stones_awakened"],
-		"draft": true
+		"unless": ["johto_stones_awakened"]
 	},
 	{
 		"id": "stones_clan_trial",
 		"text": "passer l'épreuve du clan, dans l'Antre du Dragon.",
 		"if": ["johto_clan_trial_open"],
-		"unless": ["johto_stone_breath"],
-		"draft": true
+		"unless": ["johto_stone_breath"]
 	},
 	{
 		"id": "stones_meet_elder",
 		"text": "voir l'Aïeule, à Ébènelle.",
 		"if": ["johto_clan_called"],
-		"unless": ["johto_clan_trial_open"],
-		"draft": true
+		"unless": ["johto_clan_trial_open"]
 	},
 	{
 		"id": "stones_find_messenger",
 		"text": "retrouver le messager du clan, à Rosalia.",
 		"if": ["johto_stone_tide_lost"],
-		"unless": ["johto_clan_called"],
-		"draft": true
+		"unless": ["johto_clan_called"]
 	},
 	{
 		"id": "stones_reach_cianwood",
 		"text": "gagner Irisia avec Goulven, depuis le port d'Oliville.",
 		"if": ["johto_stone_memory"],
-		"unless": ["johto_stone_tide_lost"],
-		"draft": true
+		"unless": ["johto_stone_tide_lost"]
 	},
 	{
 		"id": "stones_reach_alph",
 		"text": "trouver Héloïse, aux Ruines d'Alpha, au sud de la Route 36.",
 		"if": ["johto_stones_quest"],
-		"unless": ["johto_stone_memory"],
-		"draft": true
+		"unless": ["johto_stone_memory"]
 	},
 	{
 		"id": "leave_radio_tower",
 		"text": "redescendre au hall de la Tour Radio.",
 		"if": ["johto_radio_office_done"],
-		"unless": ["johto_stones_quest"],
-		"draft": true
+		"unless": ["johto_stones_quest"]
 	},
 	{
 		"id": "free_radio_tower",
 		"text": "libérer la Tour Radio de Doublonville.",
 		"if": ["johto_slowpoke_well_cleared"],
-		"unless": ["johto_radio_office_done"],
-		"draft": true
+		"unless": ["johto_radio_office_done"]
 	},
 	{
 		"id": "talk_to_kurt_in_well",
 		"text": "reparler à Fargas, au fond du Puits Ramoloss.",
 		"if": ["johto_radio_pass"],
-		"unless": ["johto_slowpoke_well_cleared"],
-		"draft": true
+		"unless": ["johto_slowpoke_well_cleared"]
 	},
 	{
 		"id": "take_brace_papers",
 		"text": "ramasser les papiers laissés par Brace.",
 		"if": ["johto_brace_defeated"],
-		"unless": ["johto_radio_pass"],
-		"draft": true
+		"unless": ["johto_radio_pass"]
 	},
 	{
 		"id": "clear_slowpoke_well",
 		"text": "chasser la Team Rocket du Puits Ramoloss.",
 		"if": ["johto_kurt_told"],
-		"unless": ["johto_brace_defeated"],
-		"draft": true
+		"unless": ["johto_brace_defeated"]
 	},
 	{
 		"id": "meet_kurt",
 		"text": "trouver Fargas, à Écorcia.",
 		"if": ["johto_azalea_clue"],
-		"unless": ["johto_kurt_told"],
-		"draft": true
+		"unless": ["johto_kurt_told"]
 	},
 	{
 		"id": "search_underground",
 		"text": "fouiller le Souterrain de Doublonville.",
 		"if": ["johto_goldenrod_arrived"],
-		"unless": ["johto_azalea_clue"],
-		"draft": true
+		"unless": ["johto_azalea_clue"]
 	},
 	{
 		"id": "reach_goldenrod",
 		"text": "rejoindre Doublonville par les Routes 37, 36 et 35.",
 		"if": ["johto_rosalia_rockets_seen"],
-		"unless": ["johto_goldenrod_arrived"],
-		"draft": true
+		"unless": ["johto_goldenrod_arrived"]
 	},
 	{
 		"id": "go_route_39",
 		"text": "prendre la Route 39, à l'est d'Oliville.",
 		"if": ["johto_starter_chosen"],
-		"unless": ["johto_act2"],
-		"draft": true
+		"unless": ["johto_act2"]
 	},
 	{
 		"id": "choose_johto_partner",
 		"text": "choisir un partenaire avec le Professeur Orme.",
 		"if": ["johto_team_stolen"],
-		"unless": ["johto_starter_chosen"],
-		"draft": true
+		"unless": ["johto_starter_chosen"]
 	},
 	{
 		"id": "rest_olivine",
 		"text": "se reposer au Centre d'Oliville.",
 		"if": ["johto_arrived"],
-		"unless": ["johto_slept"],
-		"draft": true
+		"unless": ["johto_slept"]
 	},
 	{
 		"id": "reach_olivine",
 		"text": "rejoindre Oliville par la grotte marine.",
 		"if": ["johto_letter_read"],
-		"unless": ["johto_arrived"],
-		"draft": true
+		"unless": ["johto_arrived"]
 	},
 	{
 		"id": "talk_to_oak",
 		"text": "reparler au Professeur Chen.",
 		"if": ["oak_post_league_gifts_done"],
-		"unless": ["johto_letter_read"],
-		"draft": true
+		"unless": ["johto_letter_read"]
 	},
 	{
 		"id": "return_gold_teeth",

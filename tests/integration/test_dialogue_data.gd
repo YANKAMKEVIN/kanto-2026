@@ -2221,8 +2221,8 @@ const IDS_J32_CT: Array[StringName] = [&"route_4_tm04", &"ss_anne_lower_deck_tm0
 ## Chapitre Johto (JOH0) : textes [D] des systèmes, à relire par Kevin avec ceux du JOH1.
 ## JOH3 : dossier joh-04 (texte D-16 de l'éclosion, système du JOH0).
 const DOSSIER_JOH_04 := "res://docs/design/dossier-joh-04-doublonville.md"
-const PENDING_DRAFT_VARIANTS: Array[String] = ["olivine_guard:1", "olivine_lighthouse_sign:0",
-	"trade_terminal_item:0", "johto_return_test_before:0", "johto_return_test_after:0"]
+## Lot Johto validé par Kevin le 2026-11-06 : liste vide.
+const PENDING_DRAFT_VARIANTS: Array[String] = []
 
 
 func test_no_dialogue_nor_variant_is_draft() -> void:

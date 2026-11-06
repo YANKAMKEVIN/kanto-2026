@@ -261,7 +261,6 @@
 	},
 	"goldenrod_house_2_man": {
 		"speaker": "Habitant",
-		"draft": true,
 		"pages": [
 			"Le soir, on entend la radio\ngrésiller dans toute la rue.",
 			"Avant, elle passait de la musique\ntoute la nuit."

@@ -1,0 +1,14 @@
+POKE_SULFURA_MONDE — planche d'animation d'un Pokémon du monde de Kanto 2026 : un grand oiseau de feu POSÉ au fond d'une grotte, qui attend le joueur.
+Images jointes : l'artwork officiel (anatomie, couleurs et proportions seulement, pas son rendu ni sa pose) ; artikodin_sheet et rapasdepic_sheet = Pokémon déjà peints pour le monde du jeu : même rendu peint simplifié, même contour fin coloré, même finesse, même angle de vue.
+Style : Pokémon peint simplifié comme les planches du jeu, contour fin coloré sans trait noir, volumes doux. Ni pixel art, ni 3D, ni anime aux contours noirs.
+Lumière neutre et douce, venue du haut à gauche.
+
+POKÉMON (identique dans toutes les images) : SULFURA (Moltres, n° 146), l'oiseau légendaire de feu, fidèle à son design officiel : plumage JAUNE ORANGÉ, longues ailes bordées de flammes, crête et longue queue faites de FLAMMES orange et jaunes, bec fin gris-jaune, longues pattes fines. Fier, solennel.
+POSE : POSÉ au sol, debout sur ses deux pattes, de FACE, les ailes à demi repliées, la queue de flammes qui retombe sur le côté, la tête haute. Vue de dessus de trois quarts comme le jeu (caméra un peu au-dessus).
+
+PLANCHE D'ANIMATION : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 images, de gauche à droite, chacune dans une colonne invisible de 384 px, à la MÊME échelle (environ 330 px de haut), les pieds de toutes les images sur la même ligne.
+- Image 1 : au repos.
+- Image 2 : il INSPIRE (la poitrine se gonfle un peu, la tête monte légèrement).
+- Image 3 : les FLAMMES de sa crête et de ses ailes s'élèvent un peu plus haut, quelques braises montent (discret, transparent sur les bords, jamais un jet de feu).
+- Image 4 : retour au repos, l'effet se dissipe.
+Aucune ombre portée, aucun sol, aucun décor, aucun texte, aucun chiffre, aucun logo.

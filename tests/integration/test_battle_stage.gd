@@ -869,3 +869,10 @@ func test_withdraw_without_shrink_when_motion_is_reduced() -> void:
 	clock.release()
 	assert_true(done[0])
 	assert_false(sprite.visible)
+
+
+func test_ball_lancee_garde_son_icone() -> void:
+	assert_eq(BattleStage.ball_texture(&"ultra_ball").resource_path,
+		"res://assets/ui/items/ultra_ball.webp")
+	assert_eq(BattleStage.ball_texture(&""), BattleStage.BALL_TEXTURE, "sans identifiant")
+	assert_eq(BattleStage.ball_texture(&"ball_inconnue"), BattleStage.BALL_TEXTURE, "icône absente")

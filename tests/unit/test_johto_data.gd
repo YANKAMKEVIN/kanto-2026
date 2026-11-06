@@ -144,4 +144,4 @@ func test_pokedex_johto_file_is_valid() -> void:
 		assert_gt(float(entry.get("height", 0.0)), 0.0, String(id))
 		assert_gt(float(entry.get("weight", 0.0)), 0.0, String(id))
 		assert_false(str(entry.get("description", "")).is_empty(), String(id))
-		assert_true(entry.get("draft", false), "%s : draft" % id)
+		assert_false(entry.get("draft", false), "%s : validé le 2026-11-06" % id)

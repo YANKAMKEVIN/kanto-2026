@@ -45,7 +45,9 @@ func test_right_facing_artwork_is_flipped_toward_the_player() -> void:
 
 
 func test_player_side_keeps_the_placeholder_back() -> void:
-	var image := _art.image(&"blastoise", true)
+	var art := ArtWithoutPaintedBacks.new()
+	art.setup(_art_data(), null)
+	var image := art.image(&"blastoise", true)
 	assert_false(image["official"])
 	assert_eq((image["texture"] as Texture2D).resource_path,
 		BattleArt.placeholder_path(&"blastoise", true))
@@ -88,7 +90,7 @@ func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
 	var entries: Dictionary = JSON.parse_string(file.get_as_text())
 	var data := PokemonData.new()
 	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["blastoise"].duplicate()}))
-	var art := BattleArt.new()
+	var art := ArtWithoutPaintedBacks.new()
 	art.setup(data, null)
 	assert_false(ResourceLoader.exists(BattleArt.placeholder_path(&"zz_no_sprite", true)))
 	var image := art.image(&"zz_no_sprite", true)
@@ -155,3 +157,16 @@ func test_every_species_fits_the_framing() -> void:
 				assert_true(BattleLayout.max_rect(back, view).grow(0.5).encloses(rect), where)
 				for zone: Rect2 in BattleLayout.hud_zones(view):
 					assert_false(rect.intersects(zone), "%s hors de %s" % [where, zone])
+
+
+## Toutes les espèces ont un dos peint : les replis ne se testent qu'en le retirant.
+class ArtWithoutPaintedBacks extends BattleArt:
+	func _painted_back_path(_species: StringName) -> String:
+		return ""
+
+
+func _art_data() -> PokemonData:
+	var file := FileAccess.open("res://data/pokemon/species/kanto.json", FileAccess.READ)
+	var data := PokemonData.new()
+	data.add_species_from_dict(JSON.parse_string(file.get_as_text()))
+	return data

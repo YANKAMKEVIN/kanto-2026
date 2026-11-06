@@ -18,6 +18,9 @@ extends SceneTree
 ## examens, caches, déclencheurs, bâtiments du kit peint de Kanto [D], aplats provisoires (autel)
 ## [D], lampes de nuit d'Ébènelle (groupe `night_lights`). **Aucun nom d'autoload** dans ce fichier
 ## ni dans ce qu'il charge (mémoire « Outils sans autoload »).
+## **Image de l'Antre** : `tools/build_joh_ambiance_caves.gd -- --maps=dragons_den_1f,dragons_den_sanctuary`
+## repeint les deux cartes sans toucher à la logique (l'aplat de l'autel y est retiré) ; la relancer
+## après cet outil.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 

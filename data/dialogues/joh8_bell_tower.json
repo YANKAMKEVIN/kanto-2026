@@ -1,7 +1,6 @@
 {
 	"bell_tower_1f_autel": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"Un autel ancien.\nL'encens y brûle encore."
 		]
@@ -304,7 +303,6 @@
 	},
 	"bell_tower_roof_cloche": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"La grande cloche de la tour.\nSon bronze est encore tiède."
 		]
@@ -318,7 +316,6 @@
 	},
 	"bell_tower_roof_rambarde": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"Tout en bas, les toits de Rosalia\nsortent de la brume."
 		]
