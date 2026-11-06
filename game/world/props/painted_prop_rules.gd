@@ -933,6 +933,22 @@ const RULES: Dictionary[StringName, Dictionary] = {
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
 	&"bldg_cabane_safari_01": {"shadow": true, "width": 4, "depth": 2, "fade": true,
 		"open": [Vector2i(-1, 0)]},
+	# Ébènelle (`tools/art/johp3_ebenelle.py`) : façades posées par `build_joh_ambiance.gd`, l'emprise
+	# reste celle des bâtiments du kit cachés ; meubles aux emprises de ceux qu'ils remplacent.
+	&"bldg_maison_aieule_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"bldg_maison_ebenelle_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"relief_porche_antre_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_lanterne_ebenelle_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"int_armoire_clan_01": {"width": 1, "depth": 1},
+	&"int_buffet_clan_01": {"width": 3, "depth": 1},
+	&"int_brasero_clan_01": {"width": 1, "depth": 1},
+	&"int_table_basse_clan_01": {"width": 3, "depth": 2},
+	&"int_banquette_clan_01": {"width": 3, "depth": 1},
+	&"int_lanterne_clan_01": {"width": 1, "depth": 1},
+	&"int_table_the_01": {"width": 2, "depth": 1},
+	&"int_bonsai_01": {"width": 1, "depth": 1},
 }
 
 

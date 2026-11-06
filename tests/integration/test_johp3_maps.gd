@@ -40,6 +40,25 @@ func _plan(id: StringName) -> PlanGrid:
 	return _plans[id]
 
 
+func test_blackthorn_is_painted_with_its_facades_and_lanterns() -> void:
+	var city := _map(&"blackthorn_city")
+	assert_not_null(city.get_node_or_null(^"PaintedGround"))
+	assert_false(city.get_node(^"Ground").visible, "tuiles masquées")
+	for id: String in ["MaisonAieule", "Maison1", "PorcheAntre", "Lanterne0"]:
+		assert_not_null(city.get_node_or_null(NodePath("Entities/JohAmb" + id)), id)
+	for id: String in ["Bat_MaisonAieule", "Bat_Maison1"]:
+		assert_false((city.get_node(NodePath("Entities/" + id)) as CanvasItem).visible, id)
+	assert_true(city.get_node(^"NightLights") is CanvasLayer, "halos au-dessus de la nuit")
+	assert_gt(city.get_node(^"NightLights").get_child_count(), 8, "lanternes et fenêtres")
+
+
+func test_blackthorn_houses_use_the_clan_shells() -> void:
+	for id: StringName in [&"blackthorn_elder_house", &"blackthorn_house_1"]:
+		var shell := _map(id).get_node(^"Shell") as Sprite2D
+		assert_true(shell.texture.resource_path.contains("ebenelle")
+			or shell.texture.resource_path.contains("aieule"), String(id))
+
+
 func test_maps_exist_with_their_ids_and_profiles() -> void:
 	for id: StringName in PLANS:
 		var map := _map(id)

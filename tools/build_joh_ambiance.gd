@@ -41,6 +41,9 @@ extends SceneTree
 ## [constant MAPS] (légende propre à la grille, bâtiments, lampadaires, objets posés). Bâtiments
 ## propres à Johto peints par Codex (`tools/art/joh_ambiance_lot2.py`) ; les aplats de `Decor` sont
 ## retirés, les bâtiments du kit remplacés (clé « hide ») cachés avec leur emprise.
+## **Ébènelle** (JOHP3, `blackthorn_city`) : paroi d'ardoise, sapins repères, façades du clan et
+## porche de l'Antre peints par Codex (`tools/art/johp3_ebenelle.py`), lanternes de pierre pour la
+## nuit. Les cases `T` du nord et de l'est deviennent de la paroi **à l'image seulement**.
 ## **Ruines d'Alpha** (JOHP1) : mêmes briques ; tente, murets, piliers et façade du temple peints
 ## (`tools/art/johp1_alpha.py`), dallage en clé « slabs », escalier en clé « floors ».
 ## Nœuds posés : racine `PaintedGround`, `JohAmbForestFloor`, `JohAmbDecals` (hors des couches
@@ -74,6 +77,15 @@ const PEBBLES: String = "res://assets/world/ground/ground_roche_01.png"
 ## Chemin des routes du JOH2 : le sable, plus proche de la terre orangée des vues générales que
 ## `ground_chemin_01` (gris-beige, et mauve la nuit) [D].
 const EARTH: String = "res://assets/world/ground/ground_sable_01.png"
+## Ébènelle : paroi d'ardoise sombre de la vue générale, sapins repères [D].
+const EBE_SLATE: Dictionary = {"faces": ["relief_paroi_ardoise_01", "relief_paroi_ardoise_02"],
+	"mass": "relief_paroi_ardoise_04", "slope": "relief_paroi_ardoise_03",
+	"tint": Color(0.74, 0.76, 0.82)}
+## Touffes de mousse sur la paroi, comme la vue générale [D].
+const EBE_MOSS: Array[String] = ["prop_buisson_a_01", "prop_buisson_b_01", "prop_buisson_c_01"]
+const EBE_MOSS_SCALE: Vector2 = Vector2(0.4, 0.62)
+const EBE_MOSS_TINT := Color(0.72, 0.86, 0.62)
+const EBE_TREES: Array = [["tree_foret_05", 1.0, false], ["tree_foret_05", 1.05, true]]
 ## Carte → grille, graine, roche, texture du chemin `=` (vide : celle du kit), vitres éclairées la
 ## nuit (`night_pane` en plus de `night_window` : l'additif se perd sur les vitres claires).
 const MAPS: Dictionary = {
@@ -187,6 +199,23 @@ const MAPS: Dictionary = {
 		"hide": ["Bat_MaisonGoulven", "Bat_Maison1"],
 		"lamps": [Vector2(7.1, 14), Vector2(13.9, 14), Vector2(18.1, 14), Vector2(25.9, 14),
 			Vector2(18.1, 22), Vector2(24.9, 22)]},
+	# Arc des Pierres (JOHP3) : Ébènelle d'après sa vue générale.
+	&"blackthorn_city": {"plan": "blackthorn_city", "seed": 33201,
+		"rock": Rock.SHORE_THEN_PAROI, "path": "", "panes": true, "paroi": EBE_SLATE,
+		"edges": false, "moss": 70, "shade": 0.84, "trees": EBE_TREES, "legend": {"E": "p"},
+		"cells": [[Rect2i(2, 0, 30, 2), "#"], [Rect2i(30, 2, 2, 26), "#"]],
+		"buildings": [["bldg_maison_aieule_01", Vector2i(15, 11), "MaisonAieule"],
+			["bldg_maison_ebenelle_01", Vector2i(7, 12), "Maison1"]],
+		"hide": ["Bat_MaisonAieule", "Bat_Maison1"],
+		"props": [["relief_porche_antre_01", Vector2(29.7, 15.0), "PorcheAntre", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(13.3, 12.02), "Lanterne0", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(18.7, 12.02), "Lanterne1", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(4.4, 13.02), "Lanterne2", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(10.6, 13.02), "Lanterne3", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(20.4, 13.02), "Lanterne4", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(27.6, 13.02), "Lanterne5", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(11.7, 22.1), "Lanterne6", 1.0],
+			["prop_lanterne_ebenelle_01", Vector2(20.3, 22.1), "Lanterne7", 1.0]]},
 }
 ## Traduction des grilles du JOH1 et du JOH2 vers la légende du kit : `T` forêt, `.` herbe, `p`
 ## pavés, `=` chemin (galets à Oliville, terre ailleurs), `h` hautes herbes, `z` platelage (herbe
@@ -316,6 +345,8 @@ const WINDOWS: Dictionary = {
 	"bldg_charbonnerie_01": [Vector2(-240, -150), Vector2(-100, -150)],
 	"bldg_maison_ecorcia_01": [Vector2(-170, -125), Vector2(170, -125)],
 	"bldg_maison_toit_01": [Vector2(-125, -105), Vector2(125, -105)],
+	"bldg_maison_aieule_01": [Vector2(-260, -180), Vector2(258, -180)],
+	"bldg_maison_ebenelle_01": [Vector2(-188, -233), Vector2(188, -233)],
 }
 ## Vitres éclairées, là où elles diffèrent des halos de [constant WINDOWS] (pas sur les portes, ni
 ## sur le store de la Boutique).
@@ -325,6 +356,7 @@ const PANES: Dictionary = {
 }
 const LAMP_HEAD: Dictionary = {
 	"prop_lampadaire_01": Vector2(0, -222), "prop_lampadaire_quai_01": Vector2(0, -160),
+	"prop_lanterne_ebenelle_01": Vector2(0, -104),
 }
 const SIDES: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
@@ -390,9 +422,12 @@ func _build(map_id: StringName) -> void:
 	kit.call(&"place_tall_grass")
 	var deck: String = spec.get("deck", "q")
 	var planks := _place_planks(kit, decals, source.cells_of(deck))
-	var edges := _fill_cliff_edges(kit, source)
+	var edges := _fill_cliff_edges(kit, source) if spec.get("edges", true) else 0
 	kit.call(&"set_marks", PAROI_WALKABLE, "#", "")
-	var paroi: int = kit.call(&"place_paroi", seed_value + 3)
+	var paroi_look: Dictionary = spec.get("paroi", {})
+	var paroi_style := Callable() if paroi_look.is_empty() \
+		else func(_column: float) -> Dictionary: return paroi_look
+	var paroi: int = kit.call(&"place_paroi", seed_value + 3, paroi_style)
 	kit.call(&"set_marks", KIT_WALKABLE, "#", "")
 	var cropped := _crop_paroi(decals, source)
 	var shore: int = kit.call(&"place_shore")
@@ -711,7 +746,7 @@ func _johto(kit: Object, source: Object, decals: Node2D, entities: Node2D,
 	var glows: Array = []
 	var rules: GDScript = kit.get(&"rules")
 	var decor: RandomNumberGenerator = kit.get(&"decor_rng")
-	var count := _place_trees(kit, source, entities, ROUTE_TREES, feet)
+	var count := _place_trees(kit, source, entities, spec.get("trees", ROUTE_TREES), feet)
 	for cell: Vector2i in source.cells_of("a"):
 		var fruit: Node2D = kit.call(&"add_prop", entities, "tree_fruitier_01",
 			rules.call(&"foot_position", &"tree_fruitier_01", cell), "Fruit%02d" % count)
@@ -747,6 +782,8 @@ func _johto(kit: Object, source: Object, decals: Node2D, entities: Node2D,
 		stone.scale = Vector2.ONE * decor.randf_range(0.62, 0.78)
 		kit.call(&"flip", stone, decor.randf() < 0.5)
 		count += 1
+	if spec.has("moss"):
+		count += _place_moss(kit, decals, int(spec["moss"]))
 	if spec.has("mouth"):
 		var mouth: Array = spec["mouth"]
 		_place_mouth(kit, decals, mouth[0], mouth[1], mouth[2])
@@ -805,6 +842,26 @@ func _johto(kit: Object, source: Object, decals: Node2D, entities: Node2D,
 	for entry: Array in spec.get("glows", []):
 		glows.append([entry[0], (entry[1] as Vector2) * TILE])
 	return {"props": count, "feet": feet, "glows": glows}
+
+
+## Touffes de mousse posées sur la paroi (après ses modules, couche du sol), jamais sur la rangée
+## du pied : elles ne touchent pas les cases praticables. Renvoie leur nombre.
+func _place_moss(kit: Object, decals: Node2D, wanted: int) -> int:
+	var decor: RandomNumberGenerator = kit.get(&"decor_rng")
+	var cells: Array = (kit.get(&"cliff_cells") as Dictionary).keys()
+	cells.sort()
+	var count := 0
+	while count < wanted:
+		var cell: Vector2i = cells[decor.randi_range(0, cells.size() - 1)]
+		var foot := (Vector2(cell) + Vector2(decor.randf(), decor.randf())) * TILE
+		var moss: Node2D = kit.call(&"add_prop", decals, EBE_MOSS[count % EBE_MOSS.size()], foot,
+			"Mousse%02d" % count)
+		kit.call(&"clear_footprint", moss)
+		moss.scale = Vector2.ONE * decor.randf_range(EBE_MOSS_SCALE.x, EBE_MOSS_SCALE.y)
+		moss.modulate = EBE_MOSS_TINT
+		kit.call(&"flip", moss, decor.randf() < 0.5)
+		count += 1
+	return count
 
 
 ## Clôtures `x` : étendues horizontales en modules de piquets blancs (voir [method _place_fence]).

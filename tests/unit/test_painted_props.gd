@@ -8,7 +8,8 @@ const MANIFEST := "res://tools/art/manifeste.json"
 const SCENES := "res://game/world/props/painted/"
 ## Les seuls objets peints qu'on traverse (jalon-07.md §6.6).
 ## Série 07 : murs de soutènement et escaliers de ville (la carte bloque la rangée du mur).
-const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_herbes_01",
+const TRAVERSABLE: Array[StringName] = [&"relief_porche_antre_01", &"prop_lanterne_ebenelle_01",
+	&"relief_escalier_01", &"ground_hautes_herbes_01",
 	&"relief_muret_01", &"relief_escalier_ville_01", &"prop_portail_01", &"prop_balustrade_01",
 	# DA.0 (integration-da-bourg-route1.md) : à plat (champ, ponton, escalier en bois, rebord,
 	# tapis), herbes, oyats et petites pierres, arbres de forêt (les cases de forêt bloquent).
