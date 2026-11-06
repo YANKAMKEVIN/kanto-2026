@@ -34,6 +34,7 @@ PROMPTS = Path(__file__).parent / "prompts" / "joh_ambiance_lot3"
 REFS = {
 	"REF_ACAJOU_BOUTIQUE": ("acajou-vue-generale-v1.png", (0.56, 0.20, 0.82, 0.52)),
 	"REF_R42_PORTE": ("route-42-vue-generale-v1.png", (0.17, 0.26, 0.34, 0.45)),
+	"REF_R42_LAC": ("route-42-vue-generale-v1.png", (0.44, 0.15, 0.60, 0.55)),
 	"REF_CENDREE_SOL": ("tour-cendree-1f-vue-generale-v1.png", (0.20, 0.60, 0.45, 0.85)),
 	"REF_CENDREE_POUTRE": ("tour-cendree-1f-vue-generale-v1.png", (0.15, 0.25, 0.40, 0.36)),
 	"REF_CENDREE_COLONNE": ("tour-cendree-b1f-vue-generale-v1.png", (0.30, 0.30, 0.42, 0.42)),
@@ -108,6 +109,13 @@ ASSETS = {
 		"de DEUX cases de large. La tour continue au-delà du haut de l'image : le haut est coupé net "
 		"par un toit, aucun ciel."), [BAT / "bldg_tour_carillon_01.png", ART / "REF_BOIS_TOUR.png"]),
 	# Reliefs et décors de la montagne.
+	"RELIEF_ILOT_LAC": meuble(RELIEF / "relief_ile_tourbillon_01.png", "REF_R42_LAC",
+		"un tout petit ÎLOT de lac, vu de dessus : un sommet plat d'herbe courte, parfaitement dégagé "
+		"et de forme presque carrée, de deux cases sur deux au centre de l'image, ceinturé de tous "
+		"côtés par une berge naturelle de rochers gris arrondis et de galets mouillés, qui descend "
+		"dans l'eau, avec un fin liseré d'écume blanche et d'eau claire tout autour. Contour extérieur "
+		"irrégulier et naturel. L'eau elle-même n'est PAS peinte hors de ce liseré : fond transparent. "
+		"Quatre cases de large (384 px en jeu), quatre cases de haut. Aucun objet, arbre ni Poké Ball."),
 	"RELIEF_PORTE_CREUSET": meuble(RELIEF / "relief_entree_grotte_01.png", "REF_R42_PORTE",
 		"l'entrée FERMÉE du Mont Creuset : une bouche de grotte dans un contrefort rocheux gris, "
 		"entièrement bouchée par un éboulement de rochers ; touffes d'herbe sur le dessus. Quatre cases "
@@ -208,6 +216,7 @@ Format : PNG paysage 1536 × 1024, OPAQUE, aucun bord ; pas de texte.""",
 RETENUS = {
 	"bldg_boutique_acajou_01": ("BLDG_BOUTIQUE_ACAJOU_r1.png", BAT, 8, True, 0.12),
 	"relief_porte_creuset_01": ("RELIEF_PORTE_CREUSET_r1.png", RELIEF, 4, False, 0.0),
+	"relief_ilot_lac_01": ("RELIEF_ILOT_LAC_r1.png", RELIEF, 4, False, 0.0),
 	"prop_poutre_calcinee_h_01": ("PROP_POUTRE_CALCINEE_H_r1.png", PROPS, 5, False, 0.1),
 	"prop_poutre_calcinee_v_01": ("PROP_POUTRE_CALCINEE_V_r1.png", PROPS, 1, False, 0.1),
 	"prop_colonne_calcinee_01": ("PROP_COLONNE_CALCINEE_r1.png", PROPS, 1, False, 0.1),

@@ -11788,6 +11788,25 @@
      29
     ]
    }
+  },
+  "relief_ilot_lac_01": {
+   "fichier": "res://assets/world/relief/relief_ilot_lac_01.png",
+   "taille": [
+    384,
+    260
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_ilot_lac_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
   }
  },
  "personnages": {

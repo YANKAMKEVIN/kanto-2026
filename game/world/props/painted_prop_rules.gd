@@ -600,6 +600,7 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# JOH6 (lot 3 d'ambiance).
 	&"bldg_boutique_acajou_01": {"shadow": true, "width": 8, "depth": 7, "fade": true},
 	&"relief_porte_creuset_01": {"width": 4, "depth": 1},
+	&"relief_ilot_lac_01": {"traversable": true, "layer": LAYER_GROUND},
 	&"prop_poutre_calcinee_h_01": {"width": 5, "depth": 1},
 	&"prop_poutre_calcinee_v_01": {"width": 1, "depth": 5},
 	&"prop_colonne_calcinee_01": {"width": 1, "depth": 1},

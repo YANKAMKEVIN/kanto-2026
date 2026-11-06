@@ -168,7 +168,8 @@ const MAPS: Dictionary = {
 	# de l'eau. Porte du Mont Creuset, boutique d'Acajou : lot 3 (`tools/art/joh_ambiance_lot3.py`).
 	&"route_42": {"plan": "route_42", "seed": 42201, "rock": Rock.SHORE_THEN_PAROI, "path": EARTH,
 		"panes": false, "legend": {"Q": "c"},
-		"buildings": [["relief_porte_creuset_01", Vector2i(18, 5), "PorteCreuset"]]},
+		"buildings": [["relief_porte_creuset_01", Vector2i(18, 5), "PorteCreuset"]],
+		"floors": [["relief_ilot_lac_01", Vector2(37.0, 8.5), "IlotLac"]]},
 	&"route_43": {"plan": "route_43", "seed": 43201, "rock": Rock.SHORE, "path": EARTH,
 		"panes": true, "x": "fence",
 		"buildings": [["bldg_maison_toit_01", Vector2i(15, 24), "PostePeage", Vector2(1.2, 1.2)]]},
