@@ -8,7 +8,7 @@ Mis à jour : 2026-11-06.
 ## Où en est le projet
 
 - **Kanto :** jalons fusionnés dans `main` jusqu'au J34 en cours. RC **0.34.1** (Kanto seul, sauvegarde v9) sur la branche `release/0.34`, qui ne passe pas par `main`.
-- **Art de Kanto :** toutes les cartes ont leur décor peint, les 202 espèces ont un dos peint, Sulfura, Électhor et Mewtwo sont peints sur la carte (`reportes.md`, RP-010, RP-132, RP-141, RP-290). Pas dans la RC 0.34.1. Vu sur l'A17 le 2026-11-06 sans blocage, dos peints du joueur compris, à terre et sur l'eau, en tenue d'origine et en costume (`jalon-34-rapport.md` §3, ligne 9 bis) ; la joueuse et 15 costumes sur 16 restent vérifiés par la CI seule.
+- **Art de Kanto :** toutes les cartes ont leur décor peint, les 202 espèces ont un dos peint, Sulfura, Électhor et Mewtwo sont peints sur la carte (`reportes.md`, RP-010, RP-132, RP-141, RP-290). Pas dans la RC 0.34.1. Vu sur l'A17 le 2026-11-06 sans blocage, dos peints du joueur compris, à terre et sur l'eau, en tenue d'origine et en costume pour la joueuse et les 16 costumes (`jalon-34-rapport.md` §3, lignes 9 bis et 9 ter).
 - **Johto :** JOH0 à JOH9 et l'arc des Pierres (JOHP0 à JOHP3) sont dans `main`, ainsi que les personnages peints. L'arc est jouable de la Tour Radio à l'acte 2, retour de l'équipe compris.
 - **Musiques de Johto :** 32 pistes HeartGold / SoulSilver branchées (cartes, Centres et Boutiques, combats par région, légendaires, générique) ; détail dans `docs/tech/johto-musiques.md` §10. Jingles, victoires et « ! » restent ceux de Let's Go.
 - **Personne n'a encore joué Johto d'un bout à l'autre.**

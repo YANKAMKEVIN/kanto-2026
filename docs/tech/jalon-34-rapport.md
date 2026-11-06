@@ -65,7 +65,8 @@ Galaxy A17 (`SM-A175F`, Android 16, USB), Ne pas déranger actif. Aucune erreur 
 | 7 | Surf peint (**APK debug du même commit**, `trailer_surf`) | Bouton SURFER, joueur assis sur le nageur peint, 54 à 58 i/s | conforme |
 | 8 | Combat sur l'eau (idem) | Tentacool, interface et fuite correctes | conforme |
 | 9 | Dos peint du joueur | **Non vu** : l'entrée du premier combat a été manquée, pas de seconde rencontre en 8 essais | CI seulement |
-| 9 bis | Dos peint du joueur, **rejoué le 2026-11-06** (APK debug de `main` @ `c26932f5` + correctif d'Hydrocanon) | Dresseur à terre (Basile) en tenue d'origine puis en costume Tanjiro, Dresseur sur l'eau (Tanguy) en costume : poses debout et lancer, monture peinte, Surf en costume sur la carte ; 47 à 48 i/s, aucune erreur au journal. Le dos ne s'affiche qu'en combat de Dresseur. Non vus : la joueuse et les 15 autres costumes (CI seulement) | conforme |
+| 9 bis | Dos peint du joueur, **rejoué le 2026-11-06** (APK debug de `main` @ `c26932f5` + correctif d'Hydrocanon) | Dresseur à terre (Basile) en tenue d'origine puis en costume Tanjiro, Dresseur sur l'eau (Tanguy) en costume : poses debout et lancer, monture peinte, Surf en costume sur la carte ; 47 à 48 i/s, aucune erreur au journal. Le dos ne s'affiche qu'en combat de Dresseur. | conforme |
+| 9 ter | Joueuse et 15 autres costumes, **2026-11-06** (même APK, apparence posée dans une sauvegarde de test) | Les 16 costumes et les 2 tenues d'origine en combat de Dresseur à terre (Hugo, Route 19) et sur l'eau (Tanguy) : bon personnage, debout puis lancer, monture peinte ; 47 à 48 i/s, aucune erreur au journal. Relevé à 1 image/s : la pose de lancer n'est pas sur chaque planche. Hors périmètre : la Ball lancée à la capture en costume | conforme |
 
 **Régression.** Les parcours scriptés du J33 (`tests/parcours/`, 01 à 09 et starters, 10 scripts) font
 partie de la suite et sont passés dans la CI de ce commit. Les tronçons au doigt de
