@@ -160,3 +160,24 @@ Comme pour Kanto : **Kevin télécharge lui-même** l'album HeartGold / SoulSilv
 | Générique (1) | 38 Ending / Credits |
 
 Si un titre manque ou diffère dans l'album, Kevin garde le plus proche et le signale ; on ajuste la table.
+
+## 8. Album choisi : « Super Music Collection (Looped) » (relevé le 2026-11-06)
+
+Page lue sans rien télécharger : 6 disques, 281 fichiers, 648 Mo en MP3 ou 2,4 Go en FLAC ; chaque piste joue deux fois avant le fondu (boucle déjà faite). **Les disques 1 à 4 sont la version DS** (à utiliser) ; **les disques 5 et 6 sont la version Game Boy** (sons de Gold / Silver, à ignorer).
+
+**Présentes dans l'album (27 de nos 35)** : Azalea Town, Ecruteak City, Goldenrod City, Cianwood City, Pokémon Center, Route 29, Route 38, Route 42, Surf, Bicycle, Union Cave, Ruins of Alph, Burned Tower, Bell Tower, Radio Tower Occupied!, Team Rocket HQ, Dragon's Den, S.S. Aqua, Battle! Wild (Johto), Trainer (Johto), Team Rocket, Gym Leader (Johto), Champion, Rival, Raikou / Entei / Suicune, Lugia, Ho-Oh, Ending.
+
+**Absentes (8) — repli proposé (règle 4)** :
+
+| Piste voulue | Repli dans l'album |
+|---|---|
+| HG-01 Olivine City | Olivine Lighthouse |
+| HG-06 Mahogany Town | Route 42 |
+| HG-07 Blackthorn City | Ice Path |
+| HG-12 Route 28 | Route 26 |
+| HG-15 Ilex Forest | Viridian Forest (version HGSS de l'album) |
+| HG-22 Lake of Rage | Route 38 |
+| HG-24 Whirl Islands | Union Cave |
+| HG-25 Mt. Silver | Ice Path |
+
+Si Kevin veut les vrais thèmes manquants, ils sont peut-être dans le gamerip « Pokémon HeartGold and SoulSilver » de KHInsider (à vérifier plus tard).
