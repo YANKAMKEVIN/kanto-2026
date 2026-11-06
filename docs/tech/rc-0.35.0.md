@@ -97,8 +97,8 @@ Si le serveur adb tombe pendant l'envoi, passer par morceaux (`release.md` §5).
 |---|---|---|
 | B1 | ~~Go juridique pour Johto~~ : **étendu par Kevin le 2026-11-06** au cercle de la maison (`jalon-34-34e.md` §15.5, Q1) | Fait |
 | B2 | **Dépôt GitHub encore public**, contraire à une condition du Go ; les musiques HeartGold / SoulSilver y sont depuis le 2026-11-06 (§15.5, Q2) | Kevin |
-| B3 | **Partie complète et écoute des musiques** : personne n'a joué Johto d'un bout à l'autre | Kevin |
-| B4 | **T4** : première utilisation par un proche jamais faite. Choisir s'il se fait sur la 0.35.0 plutôt que sur la 0.34.1 | Kevin |
+| B3 | ~~Partie complète et écoute~~ : **Kevin juge Johto bon et donne son Go technique le 2026-11-06** ; il jouera le jeu entier sur la RC | Fait |
+| B4 | ~~T4~~ : **reporté par Kevin à la version suivante** (2026-11-06) | Reporté |
 
 Points ouverts, non bloquants sauf avis contraire de Kevin :
 - relecture de deux objectifs ajoutés (JOH9) ;
