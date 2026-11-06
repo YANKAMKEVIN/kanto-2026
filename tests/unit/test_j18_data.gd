@@ -295,7 +295,7 @@ func test_objectives_are_t56_in_lower_case_and_in_order() -> void:
 	# Chapitre Johto (JOH1) : ses cinq objectifs devant tous ceux de Kanto ; JOH3 : ses deux
 	# objectifs devant eux ; JOH4 : ses quatre objectifs devant ceux-là ; JOH5 : la Tour Radio ; JOH6 : ses cinq devant ;
 	# JOH8 : ses trois en tête.
-	assert_eq(ids.slice(0, first), [&"report_to_ecruteak_elder", &"climb_bell_tower",
+	assert_eq(ids.slice(0, first), [&"joh9_go_home", &"joh9_climb_mt_silver", &"report_to_ecruteak_elder", &"climb_bell_tower",
 		&"see_ecruteak_elder", &"joh6_talk_deserter", &"joh6_free_raikou", &"joh6_search_shop",
 		&"joh6_lake_of_rage", &"joh6_burned_tower", &"go_ecruteak_sages", &"stones_back_to_rosalia", &"stones_beat_cenere",
 		&"stones_go_altar", &"stones_clan_trial", &"stones_meet_elder", &"stones_find_messenger",
