@@ -23,7 +23,6 @@ Mis à jour : 2026-11-06.
 
 ## Questions ouvertes
 
-- Canal de retours des testeurs (J34).
 - Remise du dépôt en privé : public temporairement depuis le 2026-10-26 pour la CI GitHub, alors que la décision de diffusion prévoit un dépôt privé.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
@@ -32,6 +31,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
 - **Diffusion (2026-10-24) :** jeu privé, pour Kevin et un cercle restreint de proches. Jamais de store, de lien ouvert ni de page publique.
+- **Retours des testeurs (2026-11-06) :** groupe WhatsApp.
 - **RC :** Kanto seul pour les proches (2026-11-04). Toute nouvelle RC part de `release/0.34`, en version 0.34.2 ou plus.
 - **Son (2026-10-24) :** musiques de Let's Go Pikachu / Évoli, cris PokeAPI. Arbitrages : `docs/design/passes/son-arbitrages-kevin.md`.
 - **Art :** option B de `docs/design/phase-da-cadrage.md`, arbitrages DA-1 à DA-9. Une maquette validée par Kevin se reproduit à l'identique.
