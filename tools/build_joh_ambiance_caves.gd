@@ -42,6 +42,14 @@ extends SceneTree
 ## changent (aplats `Polygon2D` retirés, images peintes en enfants) ; les portes, leurs conditions,
 ## les passages et le déclencheur restent ceux de `build_joh1_pallet_cave.gd`.
 ##
+## **Lot JOH6** (Tour Cendrée 1F et B1F, Repaire Rocket d'Acajou B1F à B3F ; boutique : voir
+## `build_joh6_paint_shop.gd`) : mêmes briques, réglages [constant MAPS] (clés « joh6 », « marks »,
+## « props », « beams », « abyss », « partitions »…). Les aplats `Polygon2D` de `build_joh6_maps.gd`
+## sont retirés ; les [FlagGate] (escaliers du repaire, porte à mot de passe, grille de la cellule,
+## barreaux de la cage et son halo, levier), les dalles tournantes (`SpinTiles` et leurs décalcomanies)
+## et les trous FALL gardent leur logique : seul leur dessin devient peint ([method _paint_gates]).
+## À relancer après `build_joh6_maps.gd`.
+##
 ## Contrôle : `tools/dump_map_logic.gd` et `tools/dump_map_nodes.gd` identiques avant / après.
 ##
 ##   godot --headless --path . -s res://tools/build_joh_ambiance_caves.gd [-- --maps=sea_cave_1]
@@ -138,6 +146,52 @@ const MAPS: Dictionary = {
 		"wall": Color(0.5, 0.6, 0.92), "rock": Color(0.56, 0.64, 0.86), "land": ".g",
 		"water": "d", "deep": Color(0.0, 0.2, 0.34, 0.5), "crates": false,
 		"stairs": [[Vector2(14.0, 3.0), 0.0]]},
+	# Chapitre Johto, JOH6 (demande de Kevin du 2026-11-06) : Tour Cendrée (1F, B1F) et Repaire Rocket
+	# d'Acajou (B1F à B3F), d'après leurs vues générales. Dessins provisoires de
+	# `build_joh6_maps.gd` retirés ([constant JOH6_MARK]) ; leurs [FlagGate], dalles tournantes et
+	# trous FALL gardent leur logique, seul leur dessin devient peint. Clés propres à cette passe :
+	# « rocks » faux (`o` = case d'arrêt des dalles), « fixtures » faux (pas d'échelles `U` / `V`
+	# du lot 2), « marks » [caractères, objet, « floor » ou « entities », préfixe, échelle], « skip »
+	# (rectangles sans « marks »), « props » [objet, pied (cases), couche, nœud, échelle, teinte],
+	# « beams » (poutres `P` en runs), « abyss » (gouffre `O`, trous isolés), « border » (frontière
+	# du sol). Les sols : `ground_cendres_01` (Tour), `ground_beton_repaire_01` (repaire).
+	&"burned_tower_1f": {"plan": "burned_tower_1f", "seed": 6171, "joh6": true,
+		"floor": "ground_cendres_01", "modules": "relief_mur_tour", "walls": "#",
+		"bands": [[".VE", "ground_dalles_tour_01", Color(0.7, 0.68, 0.76), "Slabs"]],
+		"land": "", "water": "", "rocks": false, "wall": Color(0.66, 0.56, 0.54),
+		"border": Color(0.16, 0.14, 0.17),
+		"beams": {"chars": "P", "h": "prop_poutre_calcinee_h_01", "v": "prop_poutre_calcinee_v_01"},
+		"abyss": {"chars": "O", "hole": "res://assets/world/props/int_trou_plancher_01.png"}},
+	&"burned_tower_b1f": {"plan": "burned_tower_b1f", "seed": 6181, "joh6": true,
+		"floor": "ground_cendres_01", "modules": "relief_mur_tour", "walls": "#",
+		"bands": [[".U", "ground_cendres_01", Color(0.6, 0.58, 0.64), "Floor"]],
+		"land": "", "water": "", "rocks": false, "wall": Color(0.6, 0.52, 0.54),
+		"border": Color(0.13, 0.12, 0.16),
+		"marks": [["P", "prop_colonne_calcinee_01", "entities", "Column"]]},
+	&"mahogany_hideout_b1f": {"plan": "mahogany_hideout_b1f", "gate_stairs": true, "partitions": true, "seed": 6191, "joh6": true,
+		"floor": "ground_beton_repaire_01", "modules": "relief_mur_repaire", "walls": "#",
+		"bands": [], "land": "", "water": "", "rocks": false, "fixtures": false,
+		"wall": Color.WHITE, "border": Color(0.17, 0.18, 0.21),
+		"marks": [["MX", "int_caisse_repaire_01", "entities", "Crate"],
+			["S", "int_statue_persian_01", "entities", "Persian"]]},
+	&"mahogany_hideout_b2f": {"plan": "mahogany_hideout_b2f", "gate_stairs": true, "partitions": true, "seed": 6201, "joh6": true,
+		"floor": "ground_beton_repaire_01", "modules": "relief_mur_repaire", "walls": "#",
+		"bands": [], "land": "", "water": "", "rocks": false, "fixtures": false,
+		"wall": Color.WHITE, "border": Color(0.17, 0.18, 0.21),
+		"marks": [["MX", "int_caisse_repaire_01", "entities", "Crate"]],
+		"props": [[CELL_BARS, Vector2(3.5, 20.0), "entities", "CellLeft", Vector2(1.5, 2.54)],
+			[CELL_BARS, Vector2(11.5, 20.0), "entities", "CellRight", Vector2(1.5, 2.54)]]},
+	&"mahogany_hideout_b3f": {"plan": "mahogany_hideout_b3f", "gate_stairs": true, "partitions": true, "seed": 6211, "joh6": true,
+		"floor": "ground_beton_repaire_01", "modules": "relief_mur_repaire", "walls": "#",
+		"bands": [], "land": "", "water": "", "rocks": false, "fixtures": false,
+		"wall": Color.WHITE, "border": Color(0.17, 0.18, 0.21),
+		"skip": [Rect2i(15, 3, 6, 4)],
+		"marks": [["M", "int_caisse_repaire_01", "entities", "Crate"],
+			["X", "int_console_repaire_01", "entities", "Console"],
+			["p", "int_pupitre_centrale_01", "entities", "Desk"]],
+		"props": [["int_generateur_ondes_01", Vector2(18.0, 7.0), "entities", "Generator"],
+			["int_cage_ondes_01", Vector2(17.5, 10.99), "entities", "Cage", Vector2.ONE,
+				Color(0.5, 0.5, 0.58)]]},
 	&"dragons_den_sanctuary": {"plan": "dragons_den_sanctuary", "seed": 7381,
 		"floor": "ground_grotte_01",
 		"bands": [[".SU", "ground_grotte_01", Color(0.8, 0.86, 1.0), "Floor"]],
@@ -165,6 +219,7 @@ const MAPS: Dictionary = {
 }
 ## Escaliers de l'Antre : pierre refroidie, comme le sol [D].
 const STAIRS_TINT := Color(0.66, 0.74, 0.92)
+const CELL_BARS: String = "res://assets/world/props/int_grille_manoir_fermee_01.png"
 const DEN_ALTAR: String = "res://assets/world/props/prop_autel_antre_01.png"
 const TIDE_PUMP: String = "res://assets/world/props/prop_pompe_rocket_01.png"
 const TIDE_SOCLE: String = "res://assets/world/props/prop_socle_maree_01.png"
@@ -241,6 +296,8 @@ const SHAFTS: Dictionary = {
 	&"whirl_islands_b1f": [Vector2(11.0, 5.0), Vector2(26.0, 7.0), Vector2(10.5, 15.0)],
 	&"whirl_islands_b2f": [Vector2(10.0, 8.0), Vector2(15.0, 8.0), Vector2(12.5, 11.0)],
 	&"dragons_den_1f": [Vector2(11.0, 5.0)],
+	&"burned_tower_1f": [Vector2(8.5, 5.0), Vector2(17.5, 4.0)],
+	&"burned_tower_b1f": [Vector2(10.0, 7.0)],
 	&"dragons_den_sanctuary": [Vector2(11.0, 6.0)],
 	&"mt_silver_1f": [Vector2(11.0, 13.0), Vector2(23.0, 13.0)],
 	&"mt_silver_3f": [Vector2(16.0, 3.0)],
@@ -248,6 +305,12 @@ const SHAFTS: Dictionary = {
 ## Flaques de lumière seules : jour de la sortie vers Oliville (salle 2), halo chaud [D] ; jour de
 ## l'entrée des Îles Tourbillon.
 const POOLS: Dictionary = {&"sea_cave_2": [Vector2(4.0, 39.2)],
+	&"mahogany_hideout_b1f": [Vector2(5.5, 2.4), Vector2(15.5, 2.4), Vector2(24.5, 2.4),
+		Vector2(11.0, 10.4), Vector2(19.5, 10.4)],
+	&"mahogany_hideout_b2f": [Vector2(9.5, 4.4), Vector2(16.0, 12.4), Vector2(24.0, 9.0),
+		Vector2(8.0, 14.4)],
+	&"mahogany_hideout_b3f": [Vector2(3.5, 1.6), Vector2(11.0, 1.6), Vector2(17.5, 1.6),
+		Vector2(22.0, 1.6)],
 	&"tide_cave_1f": [Vector2(24.0, 10.0)], &"tide_cave_b1f": [Vector2(1.5, 12.0)],
 	&"dragons_den_1f": [Vector2(14.0, 22.5)],
 	&"mt_silver_1f": [Vector2(1.0, 23.5), Vector2(16.0, 27.0)],
@@ -329,7 +392,7 @@ func _build_cave(map_id: StringName) -> void:
 	var kit: Object = Kit.new(plan_path, size, seed_value, seed_value + 1, plan.walkable)
 	kit.set(&"floor_texture_path", GROUND % String(spec.get("floor", FLOOR)))
 	kit.set(&"mass_texture_path", GROUND % String(spec.get("mass", MASS)))
-	kit.set(&"border_color", BORDER)
+	kit.set(&"border_color", spec.get("border", BORDER))
 	kit.set(&"rubble_mark", "")
 	kit.set(&"rubble_is_logic", false)
 	kit.set(&"wall_marks", spec.get("walls", "#"))
@@ -353,6 +416,7 @@ func _build_cave(map_id: StringName) -> void:
 	for band: Array in spec.get("bands", [[BEACH_MARKS, PEBBLES, PEBBLE_TINT, "Beach"],
 			[LAND_MARKS, FLOOR, ISLAND_TINT, "Island"]]):
 		bands += _bands(kit, decals, plan, band[0], band[1], band[2], band[3])
+	bands += _partitions(kit, decals, plan, spec)
 	var filled := 0
 	var walls: Vector3i
 	if spec.has("modules"):
@@ -370,9 +434,10 @@ func _build_cave(map_id: StringName) -> void:
 	_tint_walls(entities)
 	_tint_walls(decals)
 	var edges := _island_edges(kit, decals, plan, spec.get("land", LAND_MARKS))
-	var rocks := _rocks(kit, entities, plan, seed_value + 3)
+	var rocks := _rocks(kit, entities, plan, seed_value + 3) if spec.get("rocks", true) else 0
 	rocks += _fixtures(kit, entities, decals, plan, spec)
-	_flows(kit, decals, entities, plan, map_id)
+	if not spec.get("joh6", false):
+		_flows(kit, decals, entities, plan, map_id)
 	_lot2_flows(kit, decals, entities, spec)
 	_lights(kit, map_id)
 	if not _kit_ok(kit, map_id):
@@ -381,7 +446,7 @@ func _build_cave(map_id: StringName) -> void:
 	var path := MAPS_DIR + "%s.tscn" % map_id
 	var root := (load(path) as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_MAIN) as Node2D
 	_clean_cave(root)
-	_clear_placeholders(root)
+	_clear_placeholders(root, spec.get("joh6", false))
 	for layer: Node in root.get_children():
 		if layer is TileMapLayer:
 			(layer as TileMapLayer).visible = false
@@ -412,6 +477,8 @@ func _build_cave(map_id: StringName) -> void:
 		child.name = OWN_PREFIX + String(child.name)
 		_adopt(child, map_entities, root, kit_root)
 	kit.call(&"discard")
+	if spec.get("joh6", false):
+		_paint_gates(root, spec)
 	var err := _save(root, path)
 	print("%s : %s (parois %s, masse %d, bandes %d, rebords %d, rochers %d, halos %d)" % [map_id,
 		error_string(err), walls, filled, bands, edges, rocks, glows.get_child_count()])
@@ -671,6 +738,12 @@ func _fixtures(kit: Object, entities: Node2D, decals: Node2D, plan: Object,
 		sprite.position = (entry[1] as Vector2) * TILE
 		kit.call(&"attach", entities, sprite)
 		count += 1
+	count += _marks(kit, entities, decals, plan, spec)
+	count += _props(kit, entities, decals, spec)
+	count += _beams(kit, entities, plan, spec)
+	count += _abyss(kit, decals, plan, spec)
+	if not spec.get("fixtures", true):
+		return count
 	if plan.width == STAIRS_MAP_WIDTH:
 		for cell: Vector2i in plan.cells_of("k"):
 			kit.call(&"add_sprite", entities, "prop_caisses_01",
@@ -727,6 +800,213 @@ func _frost(kit: Object, decals: Node2D, plan: Object, spec: Dictionary) -> int:
 		drift.position = (Vector2(cell) + Vector2(0.5, rng.randf_range(0.2, 0.8))) * TILE
 		drift.flip_h = rng.randf() < 0.5
 	return wanted
+
+
+## JOH6 : un objet peint (image seule, sans emprise) sur chaque case des caractères de la clé
+## « marks », hors des rectangles « skip » (voir [constant MAPS]). Renvoie leur nombre.
+func _marks(kit: Object, entities: Node2D, decals: Node2D, plan: Object, spec: Dictionary) -> int:
+	var rules: GDScript = kit.get(&"rules")
+	var skips: Array = spec.get("skip", [])
+	var count := 0
+	for entry: Array in spec.get("marks", []):
+		var parent: Node2D = decals if entry[2] == "floor" else entities
+		for cell: Vector2i in plan.cells_of(entry[0]):
+			var skipped := false
+			for rect: Rect2i in skips:
+				skipped = skipped or rect.has_point(cell)
+			if skipped:
+				continue
+			var foot: Vector2 = rules.call(&"foot_position", StringName(entry[1]), cell)
+			var sprite: Sprite2D = kit.call(&"add_sprite", parent, entry[1], foot,
+				"%s%03d" % [entry[3], count])
+			if entry.size() > 4:
+				sprite.scale = entry[4]
+			count += 1
+	return count
+
+
+## JOH6 : grands objets au pied donné en cases (clé « props » : objet peint ou image `res://`).
+func _props(kit: Object, entities: Node2D, decals: Node2D, spec: Dictionary) -> int:
+	var count := 0
+	for entry: Array in spec.get("props", []):
+		var parent: Node2D = decals if entry[2] == "floor" else entities
+		var foot: Vector2 = (entry[1] as Vector2) * TILE
+		var sprite: Sprite2D
+		if String(entry[0]).begins_with("res://"):
+			sprite = _png_sprite(entry[0], foot, entry[3])
+			kit.call(&"attach", parent, sprite)
+		else:
+			sprite = kit.call(&"add_sprite", parent, entry[0], foot, entry[3])
+		if entry.size() > 4:
+			sprite.scale = entry[4]
+		if entry.size() > 5:
+			sprite.modulate = entry[5]
+		count += 1
+	return count
+
+
+## Image seule (nœud `Sprite2D`) dont le pied est en [param foot] (pixels).
+func _png_sprite(path: String, foot: Vector2, node_name: String) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.name = node_name
+	sprite.texture = load(path)
+	sprite.material = load(PROP_MATERIAL)
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var size := sprite.texture.get_size()
+	sprite.centered = false
+	sprite.offset = Vector2(-size.x / 2.0, -size.y)
+	sprite.position = foot.round()
+	return sprite
+
+
+## JOH6 : poutres calcinées `P` de la Tour (clé « beams »). Une étendue horizontale de trois cases ou
+## plus reçoit la poutre couchée (étirée à sa longueur), les autres cases la poutre debout, couchée
+## sur la carte (étirée à la hauteur de son étendue verticale). Renvoie leur nombre.
+func _beams(kit: Object, entities: Node2D, plan: Object, spec: Dictionary) -> int:
+	var cfg: Dictionary = spec.get("beams", {})
+	if cfg.is_empty():
+		return 0
+	var marks: String = cfg["chars"]
+	var used: Dictionary = {}
+	var count := 0
+	for y: int in plan.height:
+		var x := 0
+		while x < plan.width:
+			if not marks.contains(plan.at(Vector2i(x, y))):
+				x += 1
+				continue
+			var start := x
+			while x < plan.width and marks.contains(plan.at(Vector2i(x, y))):
+				x += 1
+			if x - start < 3:
+				continue
+			for ux: int in range(start, x):
+				used[Vector2i(ux, y)] = true
+			var length := x - start
+			var beam: Sprite2D = kit.call(&"add_sprite", entities, cfg["h"],
+				Vector2((start + length / 2.0) * TILE, (y + 1) * TILE - 6.0),
+				"Beam%02d" % count)
+			beam.scale = Vector2(length / 5.0, 1.0)
+			count += 1
+	for x: int in plan.width:
+		var y := 0
+		while y < plan.height:
+			var cell := Vector2i(x, y)
+			if not marks.contains(plan.at(cell)) or used.has(cell):
+				y += 1
+				continue
+			var start := y
+			while y < plan.height and marks.contains(plan.at(Vector2i(x, y))) \
+					and not used.has(Vector2i(x, y)):
+				y += 1
+			var length := y - start
+			var beam: Sprite2D = kit.call(&"add_sprite", entities, cfg["v"],
+				Vector2((x + 0.5) * TILE, y * TILE - 4.0), "Beam%02d" % count)
+			beam.scale = Vector2(1.0, length * float(TILE) / 770.0)
+			count += 1
+	return count
+
+
+## JOH6 : gouffre (clé « abyss ») sur les cases `O` de la Tour : un ensemble de plusieurs cases est
+## un puits sombre avec sa lèvre, une case isolée un trou de plancher ([constant PROPS] « hole »).
+func _abyss(kit: Object, decals: Node2D, plan: Object, spec: Dictionary) -> int:
+	var cfg: Dictionary = spec.get("abyss", {})
+	if cfg.is_empty():
+		return 0
+	var seen: Dictionary = {}
+	var count := 0
+	for first: Vector2i in plan.cells_of(cfg["chars"]):
+		if seen.has(first):
+			continue
+		var cells: Array[Vector2i] = []
+		var stack: Array[Vector2i] = [first]
+		seen[first] = true
+		while not stack.is_empty():
+			var cell: Vector2i = stack.pop_back()
+			cells.append(cell)
+			for side: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+				var next: Vector2i = cell + side
+				if not seen.has(next) and String(cfg["chars"]).contains(plan.at(next)) \
+						and not plan.at(next).is_empty():
+					seen[next] = true
+					stack.append(next)
+		if cells.size() == 1:
+			var hole := _png_sprite(cfg["hole"], Vector2((first.x + 0.5) * TILE,
+				(first.y + 0.5) * TILE + 45.0), "Hole%02d" % count)
+			hole.material = null
+			kit.call(&"attach", decals, hole)
+		else:
+			var rect := Rect2i(cells[0], Vector2i.ONE)
+			for cell: Vector2i in cells:
+				rect = rect.merge(Rect2i(cell, Vector2i.ONE))
+			_pit(kit, decals, rect, count)
+		count += 1
+	return count
+
+
+## Puits sombre sur [param rect] (cases) : dégradé du bord éclairé vers le noir, lèvre en bois.
+func _pit(kit: Object, decals: Node2D, rect: Rect2i, index: int) -> void:
+	var gradient := Gradient.new()
+	gradient.offsets = PackedFloat32Array([0.0, 0.3, 1.0])
+	gradient.colors = PackedColorArray([Color(0.22, 0.2, 0.24), Color(0.03, 0.03, 0.05),
+		Color(0.0, 0.0, 0.01)])
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.fill_from = Vector2(0.0, 0.0)
+	texture.fill_to = Vector2(0.0, 1.0)
+	texture.width = 8
+	texture.height = 64
+	var pit := Sprite2D.new()
+	pit.name = "Pit%02d" % index
+	pit.texture = texture
+	pit.centered = false
+	pit.position = Vector2(rect.position * TILE)
+	pit.scale = Vector2(rect.size.x * TILE / 8.0, rect.size.y * TILE / 64.0)
+	kit.call(&"attach", decals, pit)
+	var lip_gradient := Gradient.new()
+	lip_gradient.colors = PackedColorArray([Color(0.36, 0.28, 0.24), Color(0.2, 0.16, 0.15)])
+	var lip_texture := GradientTexture2D.new()
+	lip_texture.gradient = lip_gradient
+	lip_texture.fill_from = Vector2(0.0, 0.0)
+	lip_texture.fill_to = Vector2(0.0, 1.0)
+	lip_texture.width = 8
+	lip_texture.height = 8
+	var lip := Sprite2D.new()
+	lip.name = "PitLip%02d" % index
+	lip.texture = lip_texture
+	lip.centered = false
+	lip.position = Vector2(rect.position * TILE) + Vector2(0.0, -8.0)
+	lip.scale = Vector2(rect.size.x * TILE / 8.0, 16.0 / 8.0)
+	kit.call(&"attach", decals, lip)
+
+
+## JOH6 : dessus des cloisons d'une case (`#` avec du sol à l'ouest et à l'est) : une bande du sol
+## entre les deux bords latéraux des modules (clé « partitions »), sinon la masse sombre y fait une
+## rainure. Renvoie leur nombre.
+func _partitions(kit: Object, decals: Node2D, plan: Object, spec: Dictionary) -> int:
+	if not spec.get("partitions", false):
+		return 0
+	var texture: Texture2D = load(GROUND % String(spec["floor"]))
+	var count := 0
+	for y: int in plan.height:
+		for x: int in plan.width:
+			var cell := Vector2i(x, y)
+			if x == 0 or x == plan.width - 1 or plan.at(cell) != "#" \
+					or not plan.is_walkable(cell + Vector2i.LEFT) \
+					or not plan.is_walkable(cell + Vector2i.RIGHT):
+				continue
+			var sprite := Sprite2D.new()
+			sprite.name = "Partition%03d" % count
+			sprite.texture = texture
+			sprite.centered = false
+			sprite.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+			sprite.region_enabled = true
+			sprite.region_rect = Rect2(x * TILE + 30, y * TILE, TILE - 60, TILE)
+			sprite.position = Vector2(x * TILE + 30, y * TILE)
+			sprite.modulate = Color(0.62, 0.64, 0.7)
+			kit.call(&"attach", decals, sprite)
+			count += 1
+	return count
 
 
 ## Eau vive de la salle 1 : courant `>` et cascade (image seule).
@@ -823,7 +1103,11 @@ func _lights(kit: Object, map_id: StringName) -> void:
 
 ## Dessins provisoires de `build_joh7_maps.gd` : halo de `Decor`, échelles en aplats (le nœud
 ## `Echelle*`, qui n'a pas de fonction, reste).
-func _clear_placeholders(root: Node) -> void:
+func _clear_placeholders(root: Node, joh6: bool = false) -> void:
+	if joh6:
+		_clear_polygons(root.get_node(^"Decor"), root)
+		_clear_polygons(root.get_node(^"Entities"), root)
+		return
 	var parents: Array[Node] = []
 	var decor := root.get_node_or_null(^"Decor")
 	if decor != null:
@@ -842,6 +1126,17 @@ func _clear_placeholders(root: Node) -> void:
 				child.free()
 
 
+## JOH6 : retire les aplats `Polygon2D` de `build_joh6_maps.gd` sous [param node] (ceux de la scène
+## de la carte seulement, pas ceux d'une instance) ; les nœuds qui les portaient, [FlagGate]
+## compris, restent avec leur logique.
+func _clear_polygons(node: Node, root: Node) -> void:
+	for child: Node in node.get_children():
+		_clear_polygons(child, root)
+		if child is Polygon2D and child.owner == root:
+			node.remove_child(child)
+			child.free()
+
+
 ## Retire ce que cette passe a posé (relance).
 func _clean_cave(root: Node) -> void:
 	for node_name: String in OWN_ROOT:
@@ -849,11 +1144,91 @@ func _clean_cave(root: Node) -> void:
 		if old != null:
 			root.remove_child(old)
 			old.free()
-	var entities := root.get_node(^"Entities")
-	for child: Node in entities.get_children():
+	_clean_prefixed(root.get_node(^"Entities"))
+	var decor := root.get_node_or_null(^"Decor")
+	if decor != null:
+		_clean_prefixed(decor)
+
+
+## Retire, sous [param node] et ses descendants, les nœuds de cette passe (images des [FlagGate]).
+func _clean_prefixed(node: Node) -> void:
+	for child: Node in node.get_children():
 		if String(child.name).begins_with(OWN_PREFIX):
-			entities.remove_child(child)
+			node.remove_child(child)
 			child.free()
+		else:
+			_clean_prefixed(child)
+
+
+# --- JOH6 : dessins des portes à drapeau -----------------------------------------------------
+
+const STAIRS_ART: Dictionary = {"U": "int_escalier_repaire_monte_01",
+	"D": "int_escalier_repaire_descend_01"}
+const DOOR_ART: String = "int_porte_ascenseur_repaire_01"
+const CAGE_ART: String = "int_cage_ondes_01"
+const LEVER_ART: String = "int_console_repaire_01"
+
+
+## Remplace par de l'art peint le dessin des nœuds de `build_joh6_maps.gd` (leur logique ne change
+## pas : drapeaux, cases occupées, interactions) : escaliers du repaire (`Escalier*`, le `U` ou le
+## `D` de la grille), porte à mot de passe, grille de la cellule, barreaux de la cage (vifs tant que
+## le générateur tourne : l'image de base de la cage est sombre) et son halo, levier.
+func _paint_gates(root: Node2D, spec: Dictionary) -> void:
+	var plan := PlanGrid.new()
+	plan.load_file("res://tools/plans/%s.txt" % spec["plan"])
+	var rules := load("res://game/world/props/painted_prop_rules.gd") as GDScript
+	for parent_name: String in ["Decor", "Entities"]:
+		for gate: Node in root.get_node(NodePath(parent_name)).get_children():
+			if not gate is Node2D:
+				continue
+			var label := String(gate.name)
+			var node := gate as Node2D
+			var cell := Vector2i(int(node.position.x / TILE), int(node.position.y / TILE) - 1)
+			if label.begins_with("Escalier") and spec.get("gate_stairs", false):
+				var id: String = STAIRS_ART.get(plan.at(cell), "")
+				if not id.is_empty():
+					var foot: Vector2 = rules.call(&"foot_position", StringName(id), cell)
+					_gate_sprite(root, node, id, foot - node.position, false, "Stairs")
+			elif label == "PortePorteMdp":
+				var door := _gate_sprite(root, node, DOOR_ART, Vector2.ZERO, false, "Door")
+				door.scale = Vector2(0.52, 0.8)
+			elif label == "PortePorteCellule":
+				var bars := _png_sprite(CELL_BARS, Vector2.ZERO, OWN_PREFIX + "Bars")
+				bars.scale = Vector2(0.5, 0.75)
+				node.add_child(bars)
+				bars.owner = root
+			elif label == "CageAOndes":
+				_gate_sprite(root, node, CAGE_ART, Vector2.ZERO, false, "CageOn")
+			elif label == "CageHalo":
+				_halo(root, node, Vector2(TILE, -1.5 * TILE), 336.0, Color(0.55, 0.4, 1.0, 0.4))
+			elif label.begins_with("DessinLevier"):
+				var lever := _gate_sprite(root, node, LEVER_ART, Vector2.ZERO, false, "Lever")
+				lever.scale = Vector2(0.8, 0.8)
+
+
+## Halo radial additif de [param size] pixels de diamètre, centré en [param at] (repère de
+## [param parent]).
+func _halo(root: Node, parent: Node2D, at: Vector2, size: float, color: Color) -> void:
+	var gradient := Gradient.new()
+	gradient.offsets = PackedFloat32Array([0.0, 1.0])
+	gradient.colors = PackedColorArray([color, Color(color, 0.0)])
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.fill = GradientTexture2D.FILL_RADIAL
+	texture.fill_from = Vector2(0.5, 0.5)
+	texture.fill_to = Vector2(1.0, 0.5)
+	texture.width = 128
+	texture.height = 128
+	var halo := Sprite2D.new()
+	halo.name = OWN_PREFIX + "Halo"
+	halo.texture = texture
+	halo.position = at
+	halo.scale = Vector2.ONE * (size / 128.0)
+	var material := CanvasItemMaterial.new()
+	material.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	halo.material = material
+	parent.add_child(halo)
+	halo.owner = root
 
 
 # --- Bourg Palette ------------------------------------------------------------------------
