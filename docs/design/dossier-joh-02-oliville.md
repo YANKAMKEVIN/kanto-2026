@@ -199,3 +199,10 @@ Format : bulles séparées par « / ». `{joueur}`, `{rival}`, `{pokemon}` = nom
 | JH-25 | ✅ Le Rappel Max de la grotte est gardé ; il revient avec le sac (Kevin, 2026-11-02) | — |
 | JH-26 | ✅ Pas de Carte Dresseur de Johto (Kevin) | — |
 | JH-27 | ✅ Le joueur voit les **silhouettes des Sbires** filer dans la pénombre du Centre (Kevin) | — |
+
+## Annexe : textes hors dossier validés par Kevin (2026-11-06)
+
+Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
+
+- `olivine_guard/variants/1` : La Route 39 est par là. / Bonne route, et méfie-toi des hommes en noir.
+- `olivine_lighthouse_sign/variants/0` : PHARE D'OLIVILLE / Fermé pour travaux.

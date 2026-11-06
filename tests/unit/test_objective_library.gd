@@ -439,7 +439,7 @@ func test_joh1_objectives_in_order() -> void:
 			flags.set_flag(step[0])
 		if not (step[1] as StringName).is_empty():
 			assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
-			assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
+			assert_false(library.is_draft(step[1]), "%s : validé le 2026-11-06" % step[1])
 
 
 ## JOH3 (QA A17 du 2026-11-04 : objectif de la Route 39 périmé à Doublonville) : de Rosalia à
@@ -458,7 +458,7 @@ func test_joh3_objectives_in_order() -> void:
 	for step: Array in steps:
 		flags.set_flag(step[0])
 		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
-		assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
+		assert_false(library.is_draft(step[1]), "%s : validé le 2026-11-06" % step[1])
 
 
 ## JOH4 (QA A17 : à Écorcia, l'objectif disait encore « prendre la Route 39 ») : de l'indice de
@@ -479,7 +479,7 @@ func test_joh4_objectives_in_order() -> void:
 	for step: Array in steps:
 		flags.set_flag(step[0])
 		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
-		assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
+		assert_false(library.is_draft(step[1]), "%s : validé le 2026-11-06" % step[1])
 	flags.set_flag(&"johto_slowpoke_well_cleared")
 	for id: StringName in [&"meet_kurt", &"clear_slowpoke_well", &"take_brace_papers",
 			&"talk_to_kurt_in_well"]:
@@ -506,4 +506,4 @@ func test_joh5_objectives_in_order() -> void:
 	for step: Array in steps:
 		flags.set_flag(step[0])
 		assert_eq(library.current_id(flags), step[1], "après %s" % step[0])
-		assert_true(library.is_draft(step[1]), "%s : texte [D] à relire" % step[1])
+		assert_false(library.is_draft(step[1]), "%s : validé le 2026-11-06" % step[1])
