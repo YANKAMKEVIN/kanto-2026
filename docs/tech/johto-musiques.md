@@ -126,18 +126,20 @@ Code : **HG-xx** = piste HGSS à obtenir (numérotation de la §4). Les noms de 
 
 Rien n'est touché dans ce document. Au branchement : (1) une règle **par région** pour le sauvage, le Dresseur, le Surf et le Vélo (aujourd'hui une seule piste pour tout le jeu) ; (2) une catégorie de combat « Rocket » ; (3) les Centres et Boutiques de Johto dans `music_zones.json` ; (4) Ho-Oh, Entei, Raikou à `legendary_species` ; (5) un thème d'apparition propre à Dante, Cenere, Brace. Le point de départ est `data/audio/*.json` et `tracks.json` (`expected: false` tant qu'un fichier manque).
 
-## 6. Questions à trancher
+## 6. Décisions (Kevin m'a laissé choisir, 2026-11-06 : mes recommandations s'appliquent)
 
-1. **JM-1 — Centres et Boutiques de Johto.** HGSS « Pokémon Center » à Johto (recommandé, et on corrige l'écart actuel) ou le Centre de Let's Go partout ?
-2. **JM-2 — Surf et Vélo à Johto.** Pistes HGSS (Surf, Bicycle) quand on est à Johto (recommandé pour Surf ; Vélo facultatif, −1 piste), ou on garde « The Sea » et « Pokémon Road » ?
-3. **JM-3 — Routes.** 4 thèmes regroupés (R29, R38, R42, R28, recommandé) ou une piste par route (≈ 15 pistes de plus) ?
-4. **JM-4 — Rocket.** Les Sbires gardent « Battle! Trainer » et seuls les chefs (Brace, Cenere, Dante, Chef) prennent « Battle! Team Rocket » (recommandé), ou tous les Rocket prennent la piste Rocket ?
-5. **JM-5 — Légendaires.** Trois pistes (Bêtes, Lugia / Ho-Oh) et ajout d'Ho-Oh, Entei, Raikou à la liste (recommandé), ou une seule piste « légendaire » ?
-6. **JM-6 — Dante 2, rival, final.** Dante 2 = Gym Leader et rival final = Champion (recommandé) ; autre option : rival final = « Battle! Rival » et Champion non utilisé (−1 piste).
-7. **JM-7 — Jingles, victoires, « ! ».** Garder ceux de Let's Go pour tout le jeu (recommandé, −3 pistes) ou prendre les victoires HGSS à Johto ?
-8. **JM-8 — Arc des Pierres.** Une piste par lieu (Alph, Marée, Antre) comme proposé, ou une musique propre à l'arc (Ruines d'Alpha pour tout) ? Le toit de la Tour Carillon et la chambre des dalles veulent-ils une piste à part ?
-9. **JM-9 — Générique de Johto.** Piste de fin HGSS (recommandé) ou la fin de Let's Go ?
-10. **JM-10 — Sommet du Mont Argenté.** Même piste que la montagne (recommandé), ou un thème fort réservé au sommet (le thème de Rouge dans HGSS) ?
-11. **JM-11 — Titres à confirmer.** Accord pour fixer les titres exacts à l'écoute avant tout téléchargement (comme T1), la liste ci-dessus pouvant perdre ou gagner quelques pistes ?
+| N° | Décision |
+|---|---|
+| JM-1 | Centres et Boutiques de Johto : HG-08 Pokémon Center HGSS (et l'écart actuel est corrigé au branchement). |
+| JM-2 | Surf : HG-13 à Johto. Vélo : HG-14 gardé (la piste est courte, 1 piste de plus). |
+| JM-3 | Routes : 4 thèmes regroupés (HG-09 à HG-12), pas une piste par route. |
+| JM-4 | Sbires et Scientifiques gardent « Battle! Trainer » ; Brace, Cenere, Dante 1 et les Chefs prennent HG-29 Team Rocket. |
+| JM-5 | Trois pistes de légendaires (HG-33 Bêtes, HG-34 Lugia / Ho-Oh, Celebi en sauvage) ; Ho-Oh, Entei, Raikou ajoutés à la liste. |
+| JM-6 | Dante 2 = HG-30 Gym Leader ; rival final = HG-31 Champion ; HG-32 Rival sert aux scènes d'apparition du rival. |
+| JM-7 | Jingles, « ! » des Dresseurs : Let's Go. Victoires : Let's Go aussi (HG-35 à HG-37 retirées du lot ; total ramené à **35 pistes**). Dante, Cenere et Brace prennent le « ! » Rocket. |
+| JM-8 | Une piste par lieu comme en §2 ; le toit de la Tour Carillon et la chambre des dalles gardent celle de leur lieu. |
+| JM-9 | Générique de Johto : HG-38 (fin HGSS). |
+| JM-10 | Sommet du Mont Argenté : même piste que la montagne (HG-25). |
+| JM-11 | Les titres exacts se fixent à l'écoute avant tout téléchargement ; la liste peut perdre ou gagner une ou deux pistes. |
 
-Les points non numérotés (Souterrain, Bois de la Tour, Goéland, Marée) prennent la piste proche de la §3 par défaut (règle 4), sans bloquer.
+**Liste finale à obtenir : 35 pistes** (38 moins les 3 victoires). Aucun téléchargement tant que Kevin n'a pas relu cette liste et choisi la source (droits). Les lieux inventés de la §3 prennent la piste proche proposée.

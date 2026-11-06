@@ -18,7 +18,7 @@ Mis à jour : 2026-11-06.
 1. **J34 T4 (Kevin) :** première utilisation de la RC par un proche ; consignes dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`. Go technique donné le 2026-11-05.
 2. **Johto, reste à peindre :** cartes de JOH6, JOH8, JOH9, des Ruines d'Alpha, d'Ébènelle et de l'Antre.
 3. **Johto, reste à vérifier sur téléphone :** combats complets contre Dante, le rival final et Cenere à l'autel ; sortie du labo après le générique ; Celebi ; scène du vol avec la joueuse.
-4. **Johto, musiques HeartGold / SoulSilver :** table carte → piste prête (38 pistes à obtenir, questions JM-1 à JM-11) dans `docs/tech/johto-musiques.md`, **à valider par Kevin** avant tout téléchargement ; Johto joue encore des pistes de Kanto. Textes [D] encore en `draft` (voir `docs/tech/jalon-joh9.md`).
+4. **Johto, musiques HeartGold / SoulSilver :** table carte → piste prête (35 pistes à obtenir ; JM-1 à JM-11 tranchées par Claude sur délégation de Kevin, 2026-11-06) dans `docs/tech/johto-musiques.md`, liste à relire par Kevin et source à choisir avant tout téléchargement ; Johto joue encore des pistes de Kanto. Textes [D] encore en `draft` (voir `docs/tech/jalon-joh9.md`).
 5. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
 
 ## Questions ouvertes
