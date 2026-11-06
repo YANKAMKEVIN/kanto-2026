@@ -232,3 +232,21 @@ func test_escape_rope_in_the_tower_returns_before_the_door() -> void:
 	assert_false(caves.is_cave(&"bell_tower_roof"))
 	assert_false(caves.is_cave(&"bell_tower_woods"))
 	assert_true(_map(&"bell_tower_woods").has_spawn(&"retour_tour"))
+
+
+## Peinture (`tools/build_joh_ambiance_carillon.gd`) : couches de tuiles masquées, aucun aplat
+## provisoire, la cage garde son image dans sa [FlagGate], le sommet a son décor de combat.
+func test_cartes_peintes_sans_provisoires() -> void:
+	for id: StringName in MAPS:
+		var map := _map(id)
+		assert_false((map.get_node(^"Ground") as TileMapLayer).visible, "%s : tuiles masquées" % id)
+		assert_eq(map.find_children("*", "Polygon2D", true, false).size(), 0, "%s : aplats" % id)
+		assert_eq(map.find_children("*", "Line2D", true, false).size(), 0, "%s : liserés" % id)
+	var cage := _map(&"bell_tower_roof").get_node(^"Entities/CageDeFeu")
+	assert_not_null(cage.get_node_or_null(^"JohAmbCarillonBarreaux"), "image de la cage")
+
+
+func test_decor_de_combat_du_sommet() -> void:
+	var decors: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/battle/decors.json"))
+	assert_eq(String((decors["places"]["bell_tower_roof"] as Array)[0]["decor"]), "bell_tower_sommet")
+	assert_true(ResourceLoader.exists(String(decors["decors"]["bell_tower_sommet"]["back"])), "image")

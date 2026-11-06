@@ -8,7 +8,11 @@ const MANIFEST := "res://tools/art/manifeste.json"
 const SCENES := "res://game/world/props/painted/"
 ## Les seuls objets peints qu'on traverse (jalon-07.md §6.6).
 ## Série 07 : murs de soutènement et escaliers de ville (la carte bloque la rangée du mur).
-const TRAVERSABLE: Array[StringName] = [&"relief_porche_antre_01", &"prop_lanterne_ebenelle_01",
+const TRAVERSABLE: Array[StringName] = [&"bldg_tour_carillon_base_01",
+	&"prop_lanterne_pierre_01", &"int_colonne_rouge_01", &"int_autel_carillon_01",
+	&"int_brule_parfum_01", &"int_grande_cloche_01", &"relief_mur_carillon_01",
+	&"relief_mur_carillon_02", &"relief_mur_carillon_03", &"relief_mur_carillon_04",
+	&"relief_porche_antre_01", &"prop_lanterne_ebenelle_01",
 	&"relief_escalier_01", &"ground_hautes_herbes_01",
 	&"relief_muret_01", &"relief_escalier_ville_01", &"prop_portail_01", &"prop_balustrade_01",
 	# DA.0 (integration-da-bourg-route1.md) : à plat (champ, ponton, escalier en bois, rebord,
@@ -178,7 +182,8 @@ const GROUND_LAYER: Array[StringName] = [
 	&"relief_quai_bois_04", &"relief_quai_bois_05", &"prop_passerelle_01",
 	&"prop_nenuphars_01", &"prop_nenuphars_02", &"prop_nenuphars_03",
 	&"relief_escalier_temple_01", &"relief_mur_alpha_01", &"relief_mur_alpha_02",
-	&"relief_mur_alpha_03", &"relief_mur_alpha_04",
+	&"relief_mur_carillon_01", &"relief_mur_carillon_02", &"relief_mur_carillon_03",
+	&"relief_mur_carillon_04", &"relief_mur_alpha_03", &"relief_mur_alpha_04",
 	&"relief_mur_souterrain_01", &"relief_mur_souterrain_02", &"relief_mur_souterrain_03",
 	&"relief_mur_souterrain_04", &"relief_mur_souterrain_05", &"relief_mur_souterrain_06",
 	&"prop_escalier_souterrain_monte_01", &"prop_escalier_souterrain_descend_01",
@@ -193,7 +198,7 @@ const GROUND_LAYER: Array[StringName] = [
 ## Bâtiments sans ombre : le poste de la forêt vu du nord (série 12) continue sous le bord sud
 ## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`) ; les trois
 ## tranches du S.S. Anne (série 17) : le jeu pose lui-même le reflet et la ligne d'eau.
-const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01",
+const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01", "bldg_tour_carillon_base_01",
 	"bldg_ss_anne_proue_01", "bldg_ss_anne_milieu_01", "bldg_ss_anne_poupe_01",
 	# Série 18 : la superstructure du pont extérieur (sur le pont, sans soleil rasant).
 	"bldg_ss_anne_superstructure_01",

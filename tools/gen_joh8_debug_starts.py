@@ -76,6 +76,13 @@ STARTS = {
 	"johto_bell_tower_entei": {"map": "bell_tower_roof", "spawn": "from_2f", "facing": "down",
 		"extra": ["johto_bell_tower_open", "johto_dante_met", "johto_dante_defeated_1",
 			"johto_ho_oh_seen", "johto_dante_fled_1"]},
+	# Nuit forcée, pour relire la peinture (lanternes, sommet après Ho-Oh : l'aube n'y est plus forcée).
+	"johto_bell_tower_woods_night": {"map": "bell_tower_woods", "spawn": "from_ecruteak",
+		"facing": "up", "extra": ["johto_bell_tower_open"], "period": "night"},
+	"johto_bell_tower_roof_night": {"map": "bell_tower_roof", "spawn": "from_2f", "facing": "down",
+		"extra": ["johto_bell_tower_open", "johto_dante_met", "johto_dante_defeated_1",
+			"johto_ho_oh_seen", "johto_dante_fled_1", "johto_entei_done", "johto_entei_caught",
+			"johto_ho_oh_done", "got_rainbow_wing"], "bag": {"rainbow_wing": 1}, "period": "night"},
 	# Rosalia après le sommet : doyen H-34, Orme H-35 / H-36, habitante H-37.
 	"johto_bell_tower_after": {"map": "ecruteak_city", "spawn": "from_center", "facing": "down",
 		"extra": ["johto_bell_tower_open", "johto_dante_met", "johto_dante_defeated_1",
@@ -96,6 +103,8 @@ def main():
 				data["rest_point"] = "ecruteak_center"
 		if spec.get("autosave"):
 			data["autosave"] = True
+		if spec.get("period"):
+			data["period"] = spec["period"]
 		path = os.path.join(OUT, name + ".json")
 		with open(path, "w", encoding="utf-8") as handle:
 			handle.write(json.dumps(data, ensure_ascii=False, indent="\t") + "\n")

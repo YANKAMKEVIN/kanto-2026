@@ -1,0 +1,130 @@
+{
+	"map": "bell_tower_woods",
+	"spawn": "from_ecruteak",
+	"facing": "up",
+	"flags": [
+		"mom_greeted",
+		"rival_met",
+		"oak_met",
+		"oak_lab_reunion",
+		"starter_offered",
+		"starter_chosen",
+		"taken_charmander",
+		"taken_squirtle",
+		"rival_lab_won",
+		"rival_challenged",
+		"rival_battle_done",
+		"rival_left_lab",
+		"viridian_arrived",
+		"got_oak_parcel",
+		"pokedex_activated",
+		"poison_unlocked",
+		"pewter_arrived",
+		"cerulean_reached",
+		"badge_boulder",
+		"badge_cascade",
+		"badge_thunder",
+		"badge_rainbow",
+		"badge_soul",
+		"badge_marsh",
+		"badge_volcano",
+		"badge_earth",
+		"league_champion_defeated",
+		"league_credits_seen",
+		"oak_post_league_gifts_done",
+		"johto_letter_read",
+		"johto_lugia_shadow",
+		"johto_arrived",
+		"johto_slept",
+		"johto_team_stolen",
+		"johto_starter_offered",
+		"johto_starter_chosen",
+		"johto_orme_left",
+		"johto_rosalia_rockets_seen",
+		"johto_tower_legend_heard",
+		"johto_goldenrod_arrived",
+		"johto_egg_received",
+		"johto_radio_tower_closed_seen",
+		"johto_azalea_clue",
+		"johto_shrine_seen",
+		"johto_kurt_told",
+		"johto_brace_defeated",
+		"johto_radio_pass",
+		"johto_slowpoke_well_cleared",
+		"johto_radio_impostor_defeated",
+		"johto_radio_staff_freed",
+		"johto_cenere_defeated",
+		"johto_dante_revealed",
+		"johto_team_returned",
+		"radio_exp_share_given",
+		"johto_act2",
+		"johto_burned_tower_open",
+		"johto_beasts_awakened",
+		"johto_raikou_taken",
+		"johto_dante_plan_known",
+		"johto_toll_cleared",
+		"johto_red_gyarados_done",
+		"johto_hideout_found",
+		"johto_dante_flashback_seen",
+		"johto_brace_defeated_2",
+		"johto_raikou_done",
+		"johto_whirl_clue",
+		"johto_suicune_seen",
+		"johto_cenere_defeated_2",
+		"johto_suicune_done",
+		"johto_lugia_done",
+		"johto_bell_tower_clue",
+		"johto_bell_tower_open"
+	],
+	"party": [
+		{
+			"species": "feraligatr",
+			"level": 66,
+			"moves": [
+				"surf",
+				"crunch",
+				"slash",
+				"ice_beam"
+			]
+		},
+		{
+			"species": "charizard",
+			"level": 65
+		},
+		{
+			"species": "venusaur",
+			"level": 64
+		},
+		{
+			"species": "ampharos",
+			"level": 62
+		},
+		{
+			"species": "pidgeot",
+			"level": 63
+		},
+		{
+			"species": "nidoking",
+			"level": 63
+		}
+	],
+	"companion": 0,
+	"bag": {
+		"ultra_ball": 20,
+		"great_ball": 10,
+		"full_restore": 5,
+		"hyper_potion": 10,
+		"max_revive": 3,
+		"revive": 5,
+		"escape_rope": 3,
+		"hm03": 1
+	},
+	"money": 80000,
+	"discovered": [
+		"pallet_town",
+		"olivine_city",
+		"ecruteak_city"
+	],
+	"rest_point": "ecruteak_center",
+	"period": "night"
+}

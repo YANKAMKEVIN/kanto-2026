@@ -145,6 +145,19 @@ const MAPS: Dictionary = {
 		"water": "d", "deep": Color(0.0, 0.08, 0.26, 0.72), "crates": false,
 		"stairs": [[Vector2(11.0, 16.0), PI]],
 		"sprites": [[DEN_ALTAR, Vector2(11.0, 5.0), "AutelPeint"]]},
+	# Tour Carillon (JOH8, peinture du 2026-11-06), d'après ses vues générales. Murs en modules,
+	# plancher peint, réchauffé contre le profil de lumière `tower` ; le reste (colonnes, autel, escaliers, porte, sommet) :
+	# `tools/build_joh_ambiance_carillon.gd`, à relancer après cette passe. « stairs » vide : ni
+	# échelles ni caisses ici. Au 2F, le plancher est plus vieux et plus gris que celui du hall [D].
+	&"bell_tower_1f": {"plan": "bell_tower_1f", "seed": 4812, "floor": "ground_plancher_carillon_01",
+		"mass": "ground_masse_carillon_01", "modules": "relief_mur_carillon", "walls": "#",
+		"bands": [[".UEAM", "ground_plancher_carillon_01", Color(1.0, 0.94, 0.8), "Floor"]],
+		"land": "", "water": "", "wall": Color.WHITE, "crates": false, "stairs": []},
+	&"bell_tower_2f": {"plan": "bell_tower_2f", "seed": 4822, "floor": "ground_plancher_carillon_01",
+		"mass": "ground_masse_carillon_01", "modules": "relief_mur_carillon", "walls": "#",
+		"bands": [[".UDM", "ground_plancher_carillon_01", Color(0.86, 0.8, 0.7), "Floor"],
+			["O", "ground_planches_cedent_01", Color.WHITE, "Planks"]],
+		"land": "", "water": "", "wall": Color(0.9, 0.88, 0.88), "crates": false, "stairs": []},
 }
 ## Escaliers de l'Antre : pierre refroidie, comme le sol [D].
 const STAIRS_TINT := Color(0.66, 0.74, 0.92)

@@ -2,10 +2,25 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_oa0de"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_i2h70"]
+[ext_resource type="Texture2D" path="res://assets/world/backdrops/backdrop_vue_carillon_01.png" id="3_1s6i1"]
 [ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_wv731"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_dalles_sommet_01.png" id="4_cdbr2"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_eml50"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_escalier_carillon_01.png" id="5_k0xp0"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_tque1"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_lueur_cage_01.png" id="6_k0xp0"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="6_k8wmc"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_cage_feu_01.png" id="7_y24np"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="8_httq1"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_rambarde_rouge_h_01.png" id="9_0ep20"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_rambarde_rouge_v_01.png" id="10_28fdv"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_cloison_palier_01.png" id="11_olwf1"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_grande_cloche_01.tscn" id="12_w76ky"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_brule_parfum_01.tscn" id="13_05ui0"]
+[ext_resource type="Script" path="res://game/world/lighting/light_glow.gd" id="18_y24np"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_k0xp0"]
+blend_mode = 1
 
 [node name="BellTowerRoof" type="Node2D" unique_id=913263322]
 script = ExtResource("1_oa0de")
@@ -16,26 +31,43 @@ size = Vector2i(20, 20)
 light_profile = &"johto_auto"
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1724528826]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAACAAMAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAABAAcAAAAKAAAAAAABAAcAAAALAAAAAAAAAAcAAAAMAAAAAAAAAAcAAAANAAAAAAABAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAAAAAcAAAASAAAAAAAAAAcAAAATAAAAAAAAAAcAAAAAAAEAAAAAAAcAAAABAAEAAAAAAAMAAAACAAEAAAACAAMAAAADAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAFAAEAAAAAAAcAAAAGAAEAAAAAAAMAAAAHAAEAAAACAAMAAAAIAAEAAAAAAAcAAAAJAAEAAAABAAcAAAAKAAEAAAABAAcAAAALAAEAAAAAAAcAAAAMAAEAAAABAAMAAAANAAEAAAACAAMAAAAOAAEAAAACAAMAAAAPAAEAAAAAAAMAAAAQAAEAAAABAAMAAAARAAEAAAABAAMAAAASAAEAAAAAAAMAAAATAAEAAAAAAAcAAAAAAAIAAAAAAAcAAAABAAIAAAACAAMAAAACAAIAAAACAAMAAAADAAIAAAABAAMAAAAEAAIAAAAAAAMAAAAFAAIAAAABAAcAAAAGAAIAAAACAAMAAAAHAAIAAAABAAMAAAAIAAIAAAAAAAcAAAAJAAIAAAABAAcAAAAKAAIAAAABAAcAAAALAAIAAAAAAAcAAAAMAAIAAAABAAMAAAANAAIAAAABAAMAAAAOAAIAAAABAAMAAAAPAAIAAAABAAMAAAAQAAIAAAAAAAMAAAARAAIAAAAAAAcAAAASAAIAAAACAAMAAAATAAIAAAABAAcAAAAAAAMAAAAAAAcAAAABAAMAAAABAAcAAAACAAMAAAAAAAcAAAADAAMAAAACAAMAAAAEAAMAAAAAAAcAAAAFAAMAAAAAAAcAAAAGAAMAAAACAAMAAAAHAAMAAAACAAMAAAAIAAMAAAAAAAcAAAAJAAMAAAAAAAcAAAAKAAMAAAAAAAcAAAALAAMAAAAAAAcAAAAMAAMAAAACAAMAAAANAAMAAAAAAAMAAAAOAAMAAAACAAMAAAAPAAMAAAAAAAMAAAAQAAMAAAACAAMAAAARAAMAAAACAAMAAAASAAMAAAAAAAMAAAATAAMAAAABAAcAAAAAAAQAAAAAAAcAAAABAAQAAAACAAMAAAACAAQAAAAAAAMAAAADAAQAAAAAAAMAAAAEAAQAAAACAAMAAAAFAAQAAAACAAMAAAAGAAQAAAABAAMAAAAHAAQAAAAAAAMAAAAIAAQAAAACAAMAAAAJAAQAAAABAAMAAAAKAAQAAAACAAMAAAALAAQAAAAAAAMAAAAMAAQAAAAAAAMAAAANAAQAAAAAAAMAAAAOAAQAAAABAAMAAAAPAAQAAAABAAMAAAAQAAQAAAACAAMAAAARAAQAAAACAAMAAAASAAQAAAAAAAMAAAATAAQAAAAAAAcAAAAAAAUAAAAAAAcAAAABAAUAAAACAAMAAAACAAUAAAABAAMAAAADAAUAAAAAAAMAAAAEAAUAAAABAAMAAAAFAAUAAAAAAAMAAAAGAAUAAAACAAMAAAAHAAUAAAACAAMAAAAIAAUAAAAAAAMAAAAJAAUAAAABAAMAAAAKAAUAAAABAAMAAAALAAUAAAACAAMAAAAMAAUAAAABAAMAAAANAAUAAAAAAAMAAAAOAAUAAAACAAMAAAAPAAUAAAAAAAMAAAAQAAUAAAABAAMAAAARAAUAAAAAAAMAAAASAAUAAAAAAAMAAAATAAUAAAABAAcAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAMAAAACAAYAAAACAAMAAAADAAYAAAABAAMAAAAEAAYAAAACAAMAAAAFAAYAAAABAAMAAAAGAAYAAAABAAMAAAAHAAYAAAABAAMAAAAIAAYAAAABAAMAAAAJAAYAAAAAAAMAAAAKAAYAAAACAAMAAAALAAYAAAACAAMAAAAMAAYAAAACAAMAAAANAAYAAAAAAAMAAAAOAAYAAAABAAMAAAAPAAYAAAABAAMAAAAQAAYAAAAAAAMAAAARAAYAAAACAAMAAAASAAYAAAACAAMAAAATAAYAAAABAAcAAAAAAAcAAAAAAAcAAAABAAcAAAACAAMAAAACAAcAAAACAAMAAAADAAcAAAACAAMAAAAEAAcAAAABAAMAAAAFAAcAAAACAAMAAAAGAAcAAAAAAAMAAAAHAAcAAAAAAAMAAAAIAAcAAAABAAMAAAAJAAcAAAAAAAMAAAAKAAcAAAACAAMAAAALAAcAAAAAAAMAAAAMAAcAAAAAAAMAAAANAAcAAAAAAAMAAAAOAAcAAAACAAMAAAAPAAcAAAAAAAMAAAAQAAcAAAAAAAMAAAARAAcAAAABAAMAAAASAAcAAAAAAAMAAAATAAcAAAAAAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAMAAAACAAgAAAAAAAMAAAADAAgAAAABAAMAAAAEAAgAAAABAAMAAAAFAAgAAAAAAAMAAAAGAAgAAAACAAMAAAAHAAgAAAABAAMAAAAIAAgAAAAAAAMAAAAJAAgAAAAAAAMAAAAKAAgAAAAAAAMAAAALAAgAAAACAAMAAAAMAAgAAAAAAAMAAAANAAgAAAACAAMAAAAOAAgAAAACAAMAAAAPAAgAAAACAAMAAAAQAAgAAAAAAAMAAAARAAgAAAACAAMAAAASAAgAAAABAAMAAAATAAgAAAABAAcAAAAAAAkAAAAAAAcAAAABAAkAAAAAAAMAAAACAAkAAAABAAMAAAADAAkAAAACAAMAAAAEAAkAAAABAAMAAAAFAAkAAAAAAAMAAAAGAAkAAAABAAMAAAAHAAkAAAAAAAMAAAAIAAkAAAAAAAMAAAAJAAkAAAAAAAMAAAAKAAkAAAACAAMAAAALAAkAAAAAAAMAAAAMAAkAAAACAAMAAAANAAkAAAACAAMAAAAOAAkAAAACAAMAAAAPAAkAAAACAAMAAAAQAAkAAAACAAMAAAARAAkAAAAAAAMAAAASAAkAAAAAAAMAAAATAAkAAAAAAAcAAAAAAAoAAAABAAcAAAABAAoAAAABAAMAAAACAAoAAAACAAMAAAADAAoAAAAAAAMAAAAEAAoAAAABAAMAAAAFAAoAAAAAAAMAAAAGAAoAAAABAAMAAAAHAAoAAAABAAMAAAAIAAoAAAACAAMAAAAJAAoAAAACAAMAAAAKAAoAAAACAAMAAAALAAoAAAACAAMAAAAMAAoAAAACAAMAAAANAAoAAAACAAMAAAAOAAoAAAABAAMAAAAPAAoAAAACAAMAAAAQAAoAAAACAAMAAAARAAoAAAAAAAMAAAASAAoAAAAAAAMAAAATAAoAAAABAAcAAAAAAAsAAAABAAcAAAABAAsAAAACAAMAAAACAAsAAAAAAAMAAAADAAsAAAAAAAMAAAAEAAsAAAAAAAMAAAAFAAsAAAABAAMAAAAGAAsAAAACAAMAAAAHAAsAAAACAAMAAAAIAAsAAAAAAAMAAAAJAAsAAAACAAMAAAAKAAsAAAACAAMAAAALAAsAAAAAAAMAAAAMAAsAAAABAAMAAAANAAsAAAABAAMAAAAOAAsAAAAAAAMAAAAPAAsAAAAAAAMAAAAQAAsAAAACAAMAAAARAAsAAAACAAMAAAASAAsAAAAAAAMAAAATAAsAAAAAAAcAAAAAAAwAAAAAAAcAAAABAAwAAAACAAMAAAACAAwAAAACAAMAAAADAAwAAAABAAMAAAAEAAwAAAACAAMAAAAFAAwAAAABAAMAAAAGAAwAAAACAAMAAAAHAAwAAAABAAMAAAAIAAwAAAABAAMAAAAJAAwAAAACAAMAAAAKAAwAAAACAAMAAAALAAwAAAABAAMAAAAMAAwAAAACAAMAAAANAAwAAAACAAMAAAAOAAwAAAACAAMAAAAPAAwAAAABAAMAAAAQAAwAAAABAAMAAAARAAwAAAACAAMAAAASAAwAAAAAAAMAAAATAAwAAAABAAcAAAAAAA0AAAAAAAcAAAABAA0AAAACAAMAAAACAA0AAAAAAAMAAAADAA0AAAABAAMAAAAEAA0AAAACAAMAAAAFAA0AAAAAAAMAAAAGAA0AAAACAAMAAAAHAA0AAAAAAAMAAAAIAA0AAAAAAAMAAAAJAA0AAAAAAAMAAAAKAA0AAAABAAMAAAALAA0AAAACAAMAAAAMAA0AAAAAAAMAAAANAA0AAAABAAMAAAAOAA0AAAACAAMAAAAPAA0AAAABAAMAAAAQAA0AAAABAAMAAAARAA0AAAABAAMAAAASAA0AAAABAAMAAAATAA0AAAABAAcAAAAAAA4AAAABAAcAAAABAA4AAAACAAMAAAACAA4AAAAAAAMAAAADAA4AAAACAAMAAAAEAA4AAAABAAMAAAAFAA4AAAAAAAMAAAAGAA4AAAAAAAMAAAAHAA4AAAAAAAMAAAAIAA4AAAAAAAMAAAAJAA4AAAAAAAMAAAAKAA4AAAACAAMAAAALAA4AAAABAAMAAAAMAA4AAAAAAAMAAAANAA4AAAAAAAMAAAAOAA4AAAAAAAMAAAAPAA4AAAABAAMAAAAQAA4AAAABAAMAAAARAA4AAAACAAMAAAASAA4AAAAAAAMAAAATAA4AAAABAAcAAAAAAA8AAAABAAcAAAABAA8AAAAAAAMAAAACAA8AAAACAAMAAAADAA8AAAABAAMAAAAEAA8AAAABAAMAAAAFAA8AAAABAAMAAAAGAA8AAAABAAMAAAAHAA8AAAAAAAMAAAAIAA8AAAAAAAMAAAAJAA8AAAACAAMAAAAKAA8AAAABAAMAAAALAA8AAAAAAAMAAAAMAA8AAAACAAMAAAANAA8AAAACAAMAAAAOAA8AAAABAAMAAAAPAA8AAAACAAMAAAAQAA8AAAABAAMAAAARAA8AAAACAAMAAAASAA8AAAABAAMAAAATAA8AAAABAAcAAAAAABAAAAABAAcAAAABABAAAAAAAAMAAAACABAAAAABAAMAAAADABAAAAABAAMAAAAEABAAAAABAAMAAAAFABAAAAAAAAMAAAAGABAAAAAAAAMAAAAHABAAAAACAAMAAAAIABAAAAABAAMAAAAJABAAAAABAAMAAAAKABAAAAACAAMAAAALABAAAAABAAMAAAAMABAAAAAAAAMAAAANABAAAAACAAMAAAAOABAAAAAAAAMAAAAPABAAAAACAAMAAAAQABAAAAAAAAMAAAARABAAAAABAAMAAAASABAAAAAAAAMAAAATABAAAAAAAAcAAAAAABEAAAABAAcAAAABABEAAAACAAMAAAACABEAAAABAAcAAAADABEAAAAAAAMAAAAEABEAAAACAAMAAAAFABEAAAACAAMAAAAGABEAAAACAAMAAAAHABEAAAABAAMAAAAIABEAAAAAAAMAAAAJABEAAAAAAAMAAAAKABEAAAACAAMAAAALABEAAAAAAAMAAAAMABEAAAABAAMAAAANABEAAAABAAMAAAAOABEAAAACAAMAAAAPABEAAAAAAAMAAAAQABEAAAACAAMAAAARABEAAAABAAcAAAASABEAAAACAAMAAAATABEAAAAAAAcAAAAAABIAAAABAAcAAAABABIAAAABAAMAAAACABIAAAAAAAMAAAADABIAAAACAAMAAAAEABIAAAABAAMAAAAFABIAAAACAAMAAAAGABIAAAACAAMAAAAHABIAAAABAAMAAAAIABIAAAABAAMAAAAJABIAAAAAAAMAAAAKABIAAAACAAMAAAALABIAAAACAAMAAAAMABIAAAACAAMAAAANABIAAAACAAMAAAAOABIAAAABAAMAAAAPABIAAAABAAMAAAAQABIAAAAAAAMAAAARABIAAAAAAAMAAAASABIAAAAAAAMAAAATABIAAAABAAcAAAAAABMAAAAAAAcAAAABABMAAAABAAcAAAACABMAAAABAAcAAAADABMAAAABAAcAAAAEABMAAAABAAcAAAAFABMAAAAAAAcAAAAGABMAAAAAAAcAAAAHABMAAAAAAAcAAAAIABMAAAAAAAcAAAAJABMAAAABAAcAAAAKABMAAAAAAAcAAAALABMAAAAAAAcAAAAMABMAAAABAAcAAAANABMAAAAAAAcAAAAOABMAAAAAAAcAAAAPABMAAAAAAAcAAAAQABMAAAABAAcAAAARABMAAAABAAcAAAASABMAAAAAAAcAAAATABMAAAAAAAcAAAA=")
 tile_set = ExtResource("2_i2h70")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=214805439]
+visible = false
 tile_set = ExtResource("2_i2h70")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=1219229288]
+visible = false
 tile_set = ExtResource("2_i2h70")
 
+[node name="JohAmbCarillonPaysage" type="Sprite2D" parent="." unique_id=1484303741]
+z_index = -3
+texture_filter = 2
+position = Vector2(-480, 0)
+scale = Vector2(1.875, 1.875)
+texture = ExtResource("3_1s6i1")
+centered = false
+
+[node name="JohAmbCarillonDalles" type="Sprite2D" parent="." unique_id=2124596850]
+z_index = -2
+texture_filter = 2
+texture_repeat = 2
+texture = ExtResource("4_cdbr2")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1920, 1920)
+
+[node name="JohAmbCarillonTrappe" type="Sprite2D" parent="." unique_id=408200282]
+modulate = Color(0.62, 0.6, 0.64, 1)
+z_index = -1
+texture_filter = 2
+position = Vector2(336, 72)
+texture = ExtResource("5_k0xp0")
+
 [node name="Decor" type="Node2D" parent="." unique_id=2115715670]
-
-[node name="GrandeCloche" type="Polygon2D" parent="Decor" unique_id=138060727]
-color = Color(0.45, 0.33, 0.18, 1)
-polygon = PackedVector2Array(883.2, 96, 1036.8, 96, 1132.8, 355.2, 787.2, 355.2)
-
-[node name="GrandeClocheLiseré" type="Line2D" parent="Decor" unique_id=2076401273]
-points = PackedVector2Array(883.2, 96, 1036.8, 96, 1132.8, 355.2, 787.2, 355.2)
-closed = true
-width = 8.0
-default_color = Color(0.75, 0.6, 0.3, 1)
 
 [node name="Entities" type="Node2D" parent="." unique_id=1122662142]
 unique_name_in_owner = true
@@ -47,63 +79,262 @@ script = ExtResource("3_wv731")
 unless_flags = Array[StringName]([&"johto_ho_oh_seen"])
 blocking_cells = Array[Vector2i]([Vector2i(11, 6), Vector2i(12, 6), Vector2i(13, 6), Vector2i(11, 7), Vector2i(13, 7), Vector2i(11, 8), Vector2i(13, 8)])
 
-[node name="Dessin" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=779949522]
-color = Color(0.95, 0.42, 0.1, 1)
-polygon = PackedVector2Array(-36, -284, 36, -284, 36, -196, -36, -196)
+[node name="JohAmbCarillonLueur" type="Sprite2D" parent="Entities/CageDeFeu" unique_id=1122301502]
+modulate = Color(1, 1, 1, 0.7)
+z_index = -1
+texture_filter = 2
+material = SubResource("CanvasItemMaterial_k0xp0")
+position = Vector2(96, -144)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("6_k0xp0")
 
-[node name="@Polygon2D@88" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=2003431738]
-color = Color(1, 0.8, 0.3, 1)
-polygon = PackedVector2Array(-8, -284, 8, -284, 8, -196, -8, -196)
+[node name="JohAmbCarillonBarreaux" type="Sprite2D" parent="Entities/CageDeFeu" unique_id=1382634612]
+texture_filter = 2
+position = Vector2(96, 0)
+texture = ExtResource("7_y24np")
+centered = false
+offset = Vector2(-144, -377)
 
-[node name="@Polygon2D@89" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=2043716300]
-color = Color(0.95, 0.42, 0.1, 1)
-polygon = PackedVector2Array(60, -284, 132, -284, 132, -196, 60, -196)
+[node name="JohAmbCarillonRambardeH_0_0" type="Sprite2D" parent="Entities" unique_id=1084210471]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(144, 96)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-144, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 288, 96)
 
-[node name="@Polygon2D@90" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=1198151079]
-color = Color(1, 0.8, 0.3, 1)
-polygon = PackedVector2Array(88, -284, 104, -284, 104, -196, 88, -196)
+[node name="JohAmbCarillonRambardeH_0_4" type="Sprite2D" parent="Entities" unique_id=539307183]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(576, 96)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@91" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=1802134548]
-color = Color(0.95, 0.42, 0.1, 1)
-polygon = PackedVector2Array(156, -284, 228, -284, 228, -196, 156, -196)
+[node name="JohAmbCarillonRambardeH_0_8" type="Sprite2D" parent="Entities" unique_id=457733044]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(960, 96)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@92" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=516019775]
-color = Color(1, 0.8, 0.3, 1)
-polygon = PackedVector2Array(184, -284, 200, -284, 200, -196, 184, -196)
+[node name="JohAmbCarillonRambardeH_0_12" type="Sprite2D" parent="Entities" unique_id=1754836257]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1344, 96)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@93" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=883386940]
-color = Color(0.95, 0.42, 0.1, 1)
-polygon = PackedVector2Array(-36, -188, 36, -188, 36, -100, -36, -100)
+[node name="JohAmbCarillonRambardeH_0_16" type="Sprite2D" parent="Entities" unique_id=353599020]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1728, 96)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@94" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=966553799]
-color = Color(1, 0.8, 0.3, 1)
-polygon = PackedVector2Array(-8, -188, 8, -188, 8, -100, -8, -100)
+[node name="JohAmbCarillonRambardeH_19_0" type="Sprite2D" parent="Entities" unique_id=393617365]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(192, 1920)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@95" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=1071251300]
-color = Color(0.95, 0.42, 0.1, 1)
-polygon = PackedVector2Array(156, -188, 228, -188, 228, -100, 156, -100)
+[node name="JohAmbCarillonRambardeH_19_4" type="Sprite2D" parent="Entities" unique_id=1021679423]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(576, 1920)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@96" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=453629482]
-color = Color(1, 0.8, 0.3, 1)
-polygon = PackedVector2Array(184, -188, 200, -188, 200, -100, 184, -100)
+[node name="JohAmbCarillonRambardeH_19_8" type="Sprite2D" parent="Entities" unique_id=169014508]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(960, 1920)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@97" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=510208936]
-color = Color(0.95, 0.42, 0.1, 1)
-polygon = PackedVector2Array(-36, -92, 36, -92, 36, -4, -36, -4)
+[node name="JohAmbCarillonRambardeH_19_12" type="Sprite2D" parent="Entities" unique_id=998157502]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1344, 1920)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@98" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=428285342]
-color = Color(1, 0.8, 0.3, 1)
-polygon = PackedVector2Array(-8, -92, 8, -92, 8, -4, -8, -4)
+[node name="JohAmbCarillonRambardeH_19_16" type="Sprite2D" parent="Entities" unique_id=1137989057]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1728, 1920)
+texture = ExtResource("9_0ep20")
+centered = false
+offset = Vector2(-192, -96)
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 96)
 
-[node name="@Polygon2D@99" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=1091408763]
-color = Color(0.95, 0.42, 0.1, 1)
-polygon = PackedVector2Array(156, -92, 228, -92, 228, -4, 156, -4)
+[node name="JohAmbCarillonRambardeV_0_1" type="Sprite2D" parent="Entities" unique_id=472054171]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(48, 480)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
 
-[node name="@Polygon2D@100" type="Polygon2D" parent="Entities/CageDeFeu" unique_id=316284964]
-color = Color(1, 0.8, 0.3, 1)
-polygon = PackedVector2Array(184, -92, 200, -92, 200, -4, 184, -4)
+[node name="JohAmbCarillonRambardeV_0_5" type="Sprite2D" parent="Entities" unique_id=1259275207]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(48, 864)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
+
+[node name="JohAmbCarillonRambardeV_0_9" type="Sprite2D" parent="Entities" unique_id=707279107]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(48, 1248)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
+
+[node name="JohAmbCarillonRambardeV_0_13" type="Sprite2D" parent="Entities" unique_id=748431772]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(48, 1632)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
+
+[node name="JohAmbCarillonRambardeV_0_17" type="Sprite2D" parent="Entities" unique_id=323783797]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(48, 1824)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -192)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 192)
+
+[node name="JohAmbCarillonRambardeV_19_1" type="Sprite2D" parent="Entities" unique_id=1791474847]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1872, 480)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
+
+[node name="JohAmbCarillonRambardeV_19_5" type="Sprite2D" parent="Entities" unique_id=1547674567]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1872, 864)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
+
+[node name="JohAmbCarillonRambardeV_19_9" type="Sprite2D" parent="Entities" unique_id=628545654]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1872, 1248)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
+
+[node name="JohAmbCarillonRambardeV_19_13" type="Sprite2D" parent="Entities" unique_id=1593194818]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1872, 1632)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -384)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 384)
+
+[node name="JohAmbCarillonRambardeV_19_17" type="Sprite2D" parent="Entities" unique_id=329425357]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(1872, 1824)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -192)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 192)
+
+[node name="JohAmbCarillonCloison0" type="Sprite2D" parent="Entities" unique_id=46145986]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(192, 384)
+texture = ExtResource("11_olwf1")
+centered = false
+offset = Vector2(-96, -96)
+
+[node name="JohAmbCarillonCloison1" type="Sprite2D" parent="Entities" unique_id=1460680135]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(432, 384)
+texture = ExtResource("11_olwf1")
+centered = false
+offset = Vector2(-96, -96)
+
+[node name="JohAmbCarillonMontant" type="Sprite2D" parent="Entities" unique_id=553156907]
+texture_filter = 2
+material = ExtResource("8_httq1")
+position = Vector2(528, 384)
+texture = ExtResource("10_28fdv")
+centered = false
+offset = Vector2(-24, -288)
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 288)
+
+[node name="JohAmbCarillonCloche" parent="Entities" unique_id=1024654884 instance=ExtResource("12_w76ky")]
+position = Vector2(960, 384)
+
+[node name="JohAmbCarillonBrule_17_2" parent="Entities" unique_id=1387542512 instance=ExtResource("13_05ui0")]
+position = Vector2(1680, 288)
+
+[node name="JohAmbCarillonBrule_2_17" parent="Entities" unique_id=1030728272 instance=ExtResource("13_05ui0")]
+position = Vector2(240, 1728)
+
+[node name="JohAmbCarillonBrule_17_17" parent="Entities" unique_id=9841892 instance=ExtResource("13_05ui0")]
+position = Vector2(1680, 1728)
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=1741859651]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_i2h70")
 
@@ -143,4 +374,30 @@ position = Vector2(336, 384)
 script = ExtResource("6_k8wmc")
 cutscene_id = &"bell_tower_summit"
 
-[node name="NightLights" type="Node2D" parent="." unique_id=626984961]
+[node name="NightLights" type="CanvasLayer" parent="." unique_id=123708543]
+layer = 7
+follow_viewport_enabled = true
+
+[node name="Lampe00" type="Sprite2D" parent="NightLights" unique_id=819476323 groups=["night_lights"]]
+visible = false
+z_index = 5
+z_as_relative = false
+position = Vector2(1680, 192)
+script = ExtResource("18_y24np")
+glow_type = &"night_lamp"
+
+[node name="Lampe01" type="Sprite2D" parent="NightLights" unique_id=364614647 groups=["night_lights"]]
+visible = false
+z_index = 5
+z_as_relative = false
+position = Vector2(240, 1632)
+script = ExtResource("18_y24np")
+glow_type = &"night_lamp"
+
+[node name="Lampe02" type="Sprite2D" parent="NightLights" unique_id=1509028711 groups=["night_lights"]]
+visible = false
+z_index = 5
+z_as_relative = false
+position = Vector2(1680, 1632)
+script = ExtResource("18_y24np")
+glow_type = &"night_lamp"

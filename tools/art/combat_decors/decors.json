@@ -523,5 +523,14 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	,
+	"bell_tower_sommet": {
+		"composition": "COMBAT_DECOR_CARILLON_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_CARILLON_r1_TL.png", "portion": [0, 0, 1002, 850] },
+			{ "image": "COMBAT_DECOR_CARILLON_r1_TR.png", "portion": [848, 0, 1850, 850] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
