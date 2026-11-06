@@ -178,7 +178,7 @@ def apply_titles(assembled: Path, titles: list[dict], tmp: Path) -> Path:
     return out
 
 
-def card_clip(index: int, text: str, seconds: float, tmp: Path) -> Path:
+def card_clip(index: int, text: str, seconds: float, tmp: Path, fade_max: float = CARD_FADE) -> Path:
     """Carton de texte doré sur le fond de l'ident, entrée et sortie en fondu, muet."""
     png = tmp / f"card_{index:02d}.png"
     image = Image.new("RGB", (W, H), CARD_BG)
@@ -195,7 +195,7 @@ def card_clip(index: int, text: str, seconds: float, tmp: Path) -> Path:
         y += box[3] - box[1] + gap
     image.save(png)
     out = tmp / f"card_{index:02d}.mkv"
-    fade = min(CARD_FADE, seconds / 2)
+    fade = min(fade_max, seconds / 2)
     run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-framerate", str(FPS), "-i", str(png),
          "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", f"{seconds:.3f}",
          "-vf", f"fade=t=in:d={fade},fade=t=out:st={seconds - fade:.3f}:d={fade},format=yuv420p",
@@ -236,7 +236,7 @@ def assemble(clips: list[tuple[Path, float, float]], beds: list[dict], tmp: Path
                               "gain": float(music.get("gain", 0.8)),
                               "fade_in": float(music.get("fade_in", 0.5)),
                               "fade_out": float(music.get("fade_out", 1.5))}]
-        inputs += ["-ss", f"{float(music.get('start', 0.0)):.3f}",
+        inputs += ["-stream_loop", "-1", "-ss", f"{float(music.get('start', 0.0)):.3f}",
                    "-t", f"{float(music.get('end_at', total_duration)):.3f}",
                    "-i", str(music_path(music["track"]))]
     filters: list[str] = []
@@ -351,7 +351,8 @@ def main() -> None:
         for i, cut in enumerate(cuts):
             if "card" in cut:
                 print(f"[{i + 1}/{len(cuts)}] carton « {cut['card']} » ({cut['dur']} s)")
-                clips.append((card_clip(i, cut["card"], float(cut["dur"]), tmp), float(cut["dur"]),
+                clips.append((card_clip(i, cut["card"], float(cut["dur"]), tmp,
+                                        float(spec.get("card_fade", CARD_FADE))), float(cut["dur"]),
                               float(cut.get("xfade", 0.0))))
                 continue
             if "title" in cut:

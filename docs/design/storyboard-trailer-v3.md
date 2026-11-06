@@ -132,3 +132,12 @@ Remplace le §2 et le §3 pour le montage courant : `tools/trailer/cuts_v4.json`
   les légendes. », « Jusqu'au sommet. », « Et ce n'est que la moitié du voyage. », « Johto », « La
   nuit tombe sur Rosalia. », « Deux régions. Un seul voyage. »
 - Ho-Oh est lancé par une rencontre directe : pas son entrée légendaire du jeu.
+
+## 8. Version 5 (2026-11-06, retour de Kevin sur la v4)
+
+Kevin garde les séquences et les textes de la v4, mais les veut dans **l'ancien style** : cartons
+dorés sur fond sombre **entre** les séquences, plus rien sur l'image (**rétablit la TR-6 (a)**, sauf
+les lignes du jeu). `tools/trailer/cuts_v5.json`, 65,8 s, `--tag v5 --raw raw_v3`.
+
+[D] : noms des villes et des costumes aussi en cartons (0,8 s) ; carton « La nuit tombe sur
+Rosalia. » retiré ; plans resserrés pour limiter la durée ; thème du titre rebouclé (50 s).
