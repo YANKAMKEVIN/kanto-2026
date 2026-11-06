@@ -172,6 +172,10 @@ enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE, EGG }
 ## FOE_FLED (jalon 14) : le Pokémon sauvage s'est enfui (Téléport) ; ajouté en fin d'enum.
 enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT, FOE_FLED }
 
+## Taux de capture à partir duquel un Pokémon sauvage retient Hurlement ([method _restrain_force_out]).
+const LEGEND_CATCH_RATE: int = 3
+## Un légendaire sauvage maintient Hurlement une fois sur tant.
+const FORCE_OUT_ODDS: int = 4
 const STRUGGLE_ID: StringName = &"struggle"
 ## Patience (CT34, jalon 11) : capacité dont la riposte est un DAMAGE de ce nom.
 const BIDE_ID: StringName = &"bide"
@@ -652,7 +656,29 @@ func _foe_action() -> BattleAction:
 	if action.kind == BattleAction.Kind.SWITCH and not _foe_can_switch_to(action.target):
 		push_error("Battle : changement adverse refusé (place %d)" % action.target)
 		return _foe.ai.choose(_foe, _player, _rng, _data)
-	return action
+	return _restrain_force_out(action)
+
+
+## Légendaire sauvage (taux de capture ≤ [constant LEGEND_CATCH_RATE]) : Hurlement met fin au combat,
+## or il en faut beaucoup, des tours, pour le capturer. Décision de Kevin du 2026-11-06 : il garde
+## l'attaque mais ne s'en sert pas tout le temps ; une fois sur [constant FORCE_OUT_ODDS] seulement
+## il la maintient, sinon il joue une autre capacité. Soit 1 tour sur 16 avec quatre capacités.
+func _restrain_force_out(action: BattleAction) -> BattleAction:
+	if _rules == null or not _rules.wild or action.kind != BattleAction.Kind.MOVE \
+			or action.move_index == BattleAction.STRUGGLE:
+		return action
+	var pokemon := _foe.active.pokemon
+	var species := _data.get_species(pokemon.species_id)
+	var move := _data.get_move(pokemon.moves[action.move_index].move_id)
+	if species == null or species.catch_rate > LEGEND_CATCH_RATE or move == null \
+			or move.effect_of(MoveEffect.Kind.FORCE_SWITCH) == null:
+		return action
+	var others := _foe.active.usable_moves()
+	others.erase(action.move_index)
+	if others.is_empty() or _rng.pick_index(FORCE_OUT_ODDS) == 0:
+		return action
+	return BattleAction.move(others[0] if others.size() == 1 \
+		else others[_rng.pick_index(others.size())])
 
 
 ## Le Dresseur adverse peut-il envoyer le Pokémon [param party_index] ? Jamais en combat

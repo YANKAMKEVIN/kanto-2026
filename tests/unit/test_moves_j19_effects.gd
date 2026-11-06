@@ -477,3 +477,29 @@ func test_recharging_text() -> void:
 	var event := BattleEvent.new(K.RECHARGING, BattleEvent.SideId.FOE)
 	event.pokemon_name = "Léviator"
 	assert_eq(texts.lines(event, _data), PackedStringArray(["Léviator doit se reposer !"]))
+
+
+# --- Hurlement d'un légendaire sauvage (décision de Kevin du 2026-11-06) ------------------------
+
+func test_a_wild_legendary_mostly_holds_back_roar() -> void:
+	var mine := Kit.mon(_data, &"rattata", 30, [&"growl"])
+	var foe := Kit.mon(_data, &"raikou", 60, [&"roar", &"bite"])
+	var battle := _wild([mine], foe, [1, 2])
+	assert_eq(battle._foe_action().move_index, 1, "Hurlement écarté : il joue l'autre capacité")
+	assert_eq(_rng.remaining(), 0)
+
+
+func test_a_wild_legendary_still_roars_one_time_in_four() -> void:
+	var mine := Kit.mon(_data, &"rattata", 30, [&"growl"])
+	var foe := Kit.mon(_data, &"raikou", 60, [&"roar", &"bite"])
+	var battle := _wild([mine], foe, [1, 1])
+	assert_eq(battle._foe_action().move_index, 0, "Hurlement maintenu")
+	assert_eq(_rng.remaining(), 0)
+
+
+func test_an_ordinary_wild_foe_keeps_roar_without_extra_draw() -> void:
+	var mine := Kit.mon(_data, &"rattata", 30, [&"growl"])
+	var foe := Kit.mon(_data, &"rattata", 30, [&"roar", &"bite"])
+	var battle := _wild([mine], foe, [1])
+	assert_eq(battle._foe_action().move_index, 0)
+	assert_eq(_rng.remaining(), 0)
