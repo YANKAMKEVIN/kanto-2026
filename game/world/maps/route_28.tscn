@@ -2,11 +2,86 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_xv44o"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_33rei"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_06aue"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_poste_route_22_01.tscn" id="3_563ho"]
-[ext_resource type="Script" path="res://game/world/props/prop.gd" id="4_fq4tr"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_herbe_01.png" id="4_bqwwq"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/route_28_ground.png" id="5_56d7f"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_maison_argenta_01.tscn" id="5_ill0h"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_sable_01.png" id="6_3o6rh"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="6_gfw01"]
 [ext_resource type="Script" path="res://game/world/lighting/light_glow.gd" id="7_v0kei"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_paves_01.png" id="7_vcy2l"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_70qyb"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/forest_floor.gdshader" id="9_64kf8"]
+[ext_resource type="Script" path="res://game/world/ground/forest_floor.gd" id="10_fopub"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_4.png" id="11_saiyl"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_1.png" id="12_k6nec"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_3.png" id="13_ah8dm"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_3.png" id="14_p158l"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_4.png" id="15_fantl"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_2.png" id="16_0dyxk"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_1.png" id="17_6x6va"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_2.png" id="18_wqc6k"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_fleur_5.png" id="19_k6ogx"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_fleur_1.png" id="20_pj0xl"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_fleur_3.png" id="21_4nuvd"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_04.tscn" id="22_06aue"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_02.tscn" id="23_bqwwq"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_01.tscn" id="24_56d7f"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="27_4dbhe"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_hautes_herbes_jaune_01.png" id="28_hyej1"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/tree_foret_05.tscn" id="29_kvfjv"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_poste_route_28_01.tscn" id="30_x20ey"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_maison_gardien_01.tscn" id="31_tuk5s"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_06.png" id="32_ey63s"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_04.png" id="33_5f222"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_08.png" id="34_aoxv5"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_03.png" id="35_2dfah"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_02.png" id="36_xnq0c"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_05.png" id="37_yt7yh"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_07.png" id="38_2dpxk"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="39_bicdj"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01_bourg.png" id="40_fefkk"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_a_01_bourg.png" id="41_h52je"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_06aue"]
+shader = ExtResource("3_06aue")
+shader_parameter/grass_texture = ExtResource("4_bqwwq")
+shader_parameter/paving_texture = ExtResource("7_vcy2l")
+shader_parameter/path_texture = ExtResource("6_3o6rh")
+shader_parameter/ground_mask = ExtResource("5_56d7f")
+shader_parameter/tile_size = 96.0
+shader_parameter/texture_size = null
+shader_parameter/paving_scale = null
+shader_parameter/path_scale = null
+shader_parameter/earth_color = null
+shader_parameter/has_shore = false
+shader_parameter/foam_color = null
+shader_parameter/water_texture_size = null
+shader_parameter/foam_strength = null
+shader_parameter/square_shore = null
+shader_parameter/pass_mode = null
+
+[sub_resource type="Image" id="Image_bqwwq"]
+data = {
+"data": PackedByteArray("////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///////////////////////////////////////////////////////////w=="),
+"format": "Lum8",
+"height": 20,
+"mipmaps": false,
+"width": 44
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_56d7f"]
+image = SubResource("Image_bqwwq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3o6rh"]
+shader = ExtResource("9_64kf8")
+shader_parameter/forest_mask = SubResource("ImageTexture_56d7f")
+shader_parameter/tile_size = 96.0
+shader_parameter/dark_color = null
+shader_parameter/light_color = null
+shader_parameter/opacity = null
+shader_parameter/softness = null
 
 [node name="Route28" type="Node2D" unique_id=570897830]
 script = ExtResource("1_xv44o")
@@ -17,14 +92,2232 @@ size = Vector2i(44, 20)
 light_profile = &"johto_auto"
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=900832235]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAACAAYAAAABAAAAAAACAAYAAAACAAAAAAAAAAYAAAADAAAAAAABAAYAAAAEAAAAAAABAAYAAAAFAAAAAAAAAAYAAAAGAAAAAAACAAYAAAAHAAAAAAABAAYAAAAIAAAAAAACAAYAAAAJAAAAAAABAAYAAAAKAAAAAAAAAAYAAAALAAAAAAACAAYAAAAMAAAAAAAAAAYAAAANAAAAAAABAAYAAAAOAAAAAAAAAAYAAAAPAAAAAAACAAYAAAAQAAAAAAABAAYAAAARAAAAAAACAAYAAAASAAAAAAABAAYAAAATAAAAAAABAAYAAAAUAAAAAAACAAYAAAAVAAAAAAACAAYAAAAWAAAAAAABAAYAAAAXAAAAAAAAAAYAAAAYAAAAAAABAAYAAAAZAAAAAAACAAYAAAAaAAAAAAACAAYAAAAbAAAAAAABAAYAAAAcAAAAAAACAAYAAAAdAAAAAAAAAAYAAAAeAAAAAAACAAYAAAAfAAAAAAACAAYAAAAgAAAAAAABAAYAAAAhAAAAAAABAAYAAAAiAAAAAAACAAYAAAAjAAAAAAABAAYAAAAkAAAAAAACAAYAAAAlAAAAAAACAAYAAAAmAAAAAAAAAAYAAAAnAAAAAAACAAYAAAAoAAAAAAABAAYAAAApAAAAAAACAAYAAAAqAAAAAAAAAAYAAAArAAAAAAACAAYAAAAAAAEAAAABAAcAAAABAAEAAAAAAAcAAAACAAEAAAABAAcAAAADAAEAAAAAAAcAAAAEAAEAAAABAAcAAAAFAAEAAAABAAcAAAAGAAEAAAABAAcAAAAHAAEAAAAAAAcAAAAIAAEAAAABAAcAAAAJAAEAAAABAAcAAAAKAAEAAAAAAAcAAAALAAEAAAAAAAcAAAAMAAEAAAAAAAcAAAANAAEAAAABAAcAAAAOAAEAAAAAAAcAAAAPAAEAAAABAAcAAAAQAAEAAAAAAAcAAAARAAEAAAABAAcAAAASAAEAAAABAAcAAAATAAEAAAAAAAcAAAAUAAEAAAAAAAcAAAAVAAEAAAAAAAcAAAAWAAEAAAAAAAcAAAAXAAEAAAABAAcAAAAYAAEAAAAAAAcAAAAZAAEAAAABAAcAAAAaAAEAAAABAAcAAAAbAAEAAAAAAAcAAAAcAAEAAAABAAcAAAAdAAEAAAABAAcAAAAeAAEAAAABAAcAAAAfAAEAAAABAAcAAAAgAAEAAAAAAAcAAAAhAAEAAAABAAcAAAAiAAEAAAABAAcAAAAjAAEAAAAAAAcAAAAkAAEAAAABAAcAAAAlAAEAAAABAAcAAAAmAAEAAAAAAAcAAAAnAAEAAAABAAcAAAAoAAEAAAABAAcAAAApAAEAAAABAAcAAAAqAAEAAAAAAAcAAAArAAEAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAAAAAcAAAACAAIAAAAAAAcAAAADAAIAAAAAAAcAAAAEAAIAAAABAAcAAAAFAAIAAAABAAcAAAAGAAIAAAABAAcAAAAHAAIAAAABAAcAAAAIAAIAAAABAAcAAAAJAAIAAAAAAAcAAAAKAAIAAAABAAcAAAALAAIAAAAAAAcAAAAMAAIAAAAAAAcAAAANAAIAAAABAAcAAAAOAAIAAAAAAAcAAAAPAAIAAAABAAcAAAAQAAIAAAABAAcAAAARAAIAAAAAAAcAAAASAAIAAAABAAcAAAATAAIAAAAAAAcAAAAUAAIAAAAAAAcAAAAVAAIAAAABAAcAAAAWAAIAAAABAAcAAAAXAAIAAAAAAAcAAAAYAAIAAAAAAAcAAAAZAAIAAAABAAcAAAAaAAIAAAAAAAcAAAAbAAIAAAAAAAcAAAAcAAIAAAAAAAcAAAAdAAIAAAAAAAcAAAAeAAIAAAABAAcAAAAfAAIAAAABAAcAAAAgAAIAAAABAAcAAAAhAAIAAAAAAAcAAAAiAAIAAAAAAAcAAAAjAAIAAAAAAAcAAAAkAAIAAAABAAcAAAAlAAIAAAAAAAcAAAAmAAIAAAABAAcAAAAnAAIAAAABAAcAAAAoAAIAAAABAAcAAAApAAIAAAABAAcAAAAqAAIAAAABAAcAAAArAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAcAAAACAAMAAAAAAAcAAAADAAMAAAABAAcAAAAEAAMAAAAAAAcAAAAFAAMAAAABAAcAAAAGAAMAAAABAAcAAAAHAAMAAAABAAcAAAAIAAMAAAABAAcAAAAJAAMAAAAAAAcAAAAKAAMAAAAAAAcAAAALAAMAAAAAAAcAAAAMAAMAAAAAAAcAAAANAAMAAAABAAcAAAAOAAMAAAABAAcAAAAPAAMAAAAAAAcAAAAQAAMAAAAAAAcAAAARAAMAAAAAAAcAAAASAAMAAAABAAcAAAATAAMAAAABAAcAAAAUAAMAAAAAAAcAAAAVAAMAAAAAAAcAAAAWAAMAAAAAAAcAAAAXAAMAAAAAAAcAAAAYAAMAAAAAAAcAAAAZAAMAAAABAAcAAAAaAAMAAAAAAAcAAAAbAAMAAAAAAAcAAAAcAAMAAAAAAAcAAAAdAAMAAAAAAAcAAAAeAAMAAAAAAAcAAAAfAAMAAAABAAcAAAAgAAMAAAAAAAcAAAAhAAMAAAABAAcAAAAiAAMAAAAAAAcAAAAjAAMAAAAAAAcAAAAkAAMAAAAAAAcAAAAlAAMAAAABAAcAAAAmAAMAAAAAAAcAAAAnAAMAAAABAAcAAAAoAAMAAAABAAcAAAApAAMAAAABAAcAAAAqAAMAAAAAAAcAAAArAAMAAAAAAAcAAAAAAAQAAAABAAYAAAABAAQAAAADAAAAAAACAAQAAAABAAAAAAADAAQAAAACAAAAAAAEAAQAAAABAAAAAAAFAAQAAAABAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAACAAAAAAAIAAQAAAADAAAAAAAJAAQAAAACAAAAAAAKAAQAAAABAAAAAAALAAQAAAADAAAAAAAMAAQAAAADAAAAAAANAAQAAAACAAAAAAAOAAQAAAADAAAAAAAPAAQAAAABAAAAAAAQAAQAAAABAAAAAAARAAQAAAABAAAAAAASAAQAAAACAAAAAAATAAQAAAAAAAAAAAAUAAQAAAABAAcAAAAVAAQAAAAAAAcAAAAWAAQAAAAAAAcAAAAXAAQAAAABAAcAAAAYAAQAAAAAAAcAAAAZAAQAAAAAAAcAAAAaAAQAAAAAAAcAAAAbAAQAAAACAAAAAAAcAAQAAAABAAAAAAAdAAQAAAAAAAAAAAAeAAQAAAABAAsAAAAfAAQAAAABAAsAAAAgAAQAAAABAAsAAAAhAAQAAAABAAsAAAAiAAQAAAABAAsAAAAjAAQAAAABAAsAAAAkAAQAAAABAAsAAAAlAAQAAAABAAsAAAAmAAQAAAAAAAAAAAAnAAQAAAABAAAAAAAoAAQAAAAAAAAAAAApAAQAAAAAAAAAAAAqAAQAAAAAAAAAAAArAAQAAAACAAYAAAAAAAUAAAAAAAYAAAABAAUAAAADAAAAAAACAAUAAAABAAcAAAADAAUAAAAAAAcAAAAEAAUAAAABAAcAAAAFAAUAAAAAAAcAAAAGAAUAAAAAAAcAAAAHAAUAAAABAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAAAAAAAAAAKAAUAAAACAAAAAAALAAUAAAAAAAAAAAAMAAUAAAABAAAAAAANAAUAAAADAAAAAAAOAAUAAAADAAAAAAAPAAUAAAADAAAAAAAQAAUAAAABAAAAAAARAAUAAAADAAAAAAASAAUAAAABAAAAAAATAAUAAAACAAAAAAAUAAUAAAABAAcAAAAVAAUAAAABAAcAAAAWAAUAAAABAAcAAAAXAAUAAAAAAAcAAAAYAAUAAAABAAcAAAAZAAUAAAABAAcAAAAaAAUAAAABAAcAAAAbAAUAAAACAAAAAAAcAAUAAAACAAYAAAAdAAUAAAACAAAAAAAeAAUAAAABAAsAAAAfAAUAAAAAAAsAAAAgAAUAAAAAAAsAAAAhAAUAAAAAAAsAAAAiAAUAAAAAAAsAAAAjAAUAAAABAAsAAAAkAAUAAAABAAsAAAAlAAUAAAABAAsAAAAmAAUAAAADAAAAAAAnAAUAAAADAAAAAAAoAAUAAAACAAAAAAApAAUAAAACAAAAAAAqAAUAAAADAAAAAAArAAUAAAACAAYAAAAAAAYAAAACAAYAAAABAAYAAAACAAAAAAACAAYAAAABAAcAAAADAAYAAAABAAcAAAAEAAYAAAAAAAcAAAAFAAYAAAABAAcAAAAGAAYAAAAAAAcAAAAHAAYAAAABAAAAAAAIAAYAAAADAAAAAAAJAAYAAAAAAAAAAAAKAAYAAAADAAAAAAALAAYAAAAAAAAAAAAMAAYAAAACAAAAAAANAAYAAAACAAYAAAAOAAYAAAADAAAAAAAPAAYAAAABAAAAAAAQAAYAAAAAAAAAAAARAAYAAAADAAAAAAASAAYAAAAAAAAAAAATAAYAAAAAAAAAAAAUAAYAAAABAAcAAAAVAAYAAAABAAcAAAAWAAYAAAABAAcAAAAXAAYAAAABAAcAAAAYAAYAAAABAAcAAAAZAAYAAAABAAcAAAAaAAYAAAAAAAcAAAAbAAYAAAAAAAAAAAAcAAYAAAAAAAAAAAAdAAYAAAABAAAAAAAeAAYAAAABAAsAAAAfAAYAAAAAAAsAAAAgAAYAAAAAAAsAAAAhAAYAAAAAAAsAAAAiAAYAAAABAAsAAAAjAAYAAAABAAsAAAAkAAYAAAAAAAsAAAAlAAYAAAAAAAsAAAAmAAYAAAAAAAAAAAAnAAYAAAADAAAAAAAoAAYAAAABAAAAAAApAAYAAAADAAAAAAAqAAYAAAAAAAAAAAArAAYAAAAAAAYAAAAAAAcAAAAAAAYAAAABAAcAAAABAAAAAAACAAcAAAABAAcAAAADAAcAAAABAAcAAAAEAAcAAAAAAAcAAAAFAAcAAAAAAAcAAAAGAAcAAAABAAcAAAAHAAcAAAABAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAACAAAAAAAKAAcAAAACAAAAAAALAAcAAAADAAAAAAAMAAcAAAACAAAAAAANAAcAAAACAAAAAAAOAAcAAAADAAAAAAAPAAcAAAACAAAAAAAQAAcAAAADAAAAAAARAAcAAAACAAAAAAASAAcAAAADAAAAAAATAAcAAAAAAAAAAAAUAAcAAAAAAAcAAAAVAAcAAAABAAcAAAAWAAcAAAABAAcAAAAXAAcAAAABAAcAAAAYAAcAAAABAAcAAAAZAAcAAAAAAAcAAAAaAAcAAAAAAAcAAAAbAAcAAAADAAAAAAAcAAcAAAABAAAAAAAdAAcAAAACAAAAAAAeAAcAAAABAAsAAAAfAAcAAAAAAAsAAAAgAAcAAAABAAsAAAAhAAcAAAAAAAsAAAAiAAcAAAABAAsAAAAjAAcAAAAAAAsAAAAkAAcAAAAAAAsAAAAlAAcAAAABAAsAAAAmAAcAAAADAAAAAAAnAAcAAAABAAAAAAAoAAcAAAABAAAAAAApAAcAAAAAAAAAAAAqAAcAAAADAAAAAAArAAcAAAABAAYAAAAAAAgAAAACAAYAAAABAAgAAAAAAAAAAAACAAgAAAAAAAcAAAADAAgAAAABAAcAAAAEAAgAAAABAAcAAAAFAAgAAAABAAcAAAAGAAgAAAABAAcAAAAHAAgAAAACAAAAAAAIAAgAAAABAAAAAAAJAAgAAAABAAAAAAAKAAgAAAAAAAAAAAALAAgAAAADAAAAAAAMAAgAAAAAAAAAAAANAAgAAAACAAAAAAAOAAgAAAACAAAAAAAPAAgAAAACAAAAAAAQAAgAAAABAAAAAAARAAgAAAABAAAAAAASAAgAAAADAAAAAAATAAgAAAAAAAAAAAAUAAgAAAABAAcAAAAVAAgAAAABAAcAAAAWAAgAAAAAAAcAAAAXAAgAAAAAAAcAAAAYAAgAAAAAAAcAAAAZAAgAAAABAAcAAAAaAAgAAAABAAcAAAAbAAgAAAADAAAAAAAcAAgAAAAAAAAAAAAdAAgAAAAAAAAAAAAeAAgAAAAAAAsAAAAfAAgAAAAAAAsAAAAgAAgAAAAAAAsAAAAhAAgAAAAAAAsAAAAiAAgAAAABAAsAAAAjAAgAAAABAAsAAAAkAAgAAAAAAAsAAAAlAAgAAAABAAsAAAAmAAgAAAACAAAAAAAnAAgAAAACAAAAAAAoAAgAAAABAAAAAAApAAgAAAABAAAAAAAqAAgAAAACAAAAAAArAAgAAAAAAAYAAAAAAAkAAAAAAAYAAAABAAkAAAADAAAAAAACAAkAAAABAAcAAAADAAkAAAABAAcAAAAEAAkAAAACAAMAAAAFAAkAAAABAAcAAAAGAAkAAAAAAAcAAAAHAAkAAAABAAAAAAAIAAkAAAACAAAAAAAJAAkAAAADAAAAAAAKAAkAAAADAAAAAAALAAkAAAACAAAAAAAMAAkAAAADAAAAAAANAAkAAAABAAAAAAAOAAkAAAADAAAAAAAPAAkAAAACAAAAAAAQAAkAAAAAAAAAAAARAAkAAAADAAAAAAASAAkAAAADAAAAAAATAAkAAAADAAAAAAAUAAkAAAAAAAcAAAAVAAkAAAABAAcAAAAWAAkAAAABAAcAAAAXAAkAAAACAAMAAAAYAAkAAAAAAAcAAAAZAAkAAAAAAAcAAAAaAAkAAAAAAAcAAAAbAAkAAAABAAAAAAAcAAkAAAACAAAAAAAdAAkAAAAAAAAAAAAeAAkAAAADAAAAAAAfAAkAAAADAAAAAAAgAAkAAAADAAAAAAAhAAkAAAADAAAAAAAiAAkAAAADAAAAAAAjAAkAAAAAAAAAAAAkAAkAAAABAAAAAAAlAAkAAAADAAAAAAAmAAkAAAADAAAAAAAnAAkAAAACAAAAAAAoAAkAAAADAAAAAAApAAkAAAACAAAAAAAqAAkAAAAAAAAAAAArAAkAAAACAAYAAAAAAAoAAAACAAYAAAABAAoAAAACAAAAAAACAAoAAAADAAAAAAADAAoAAAAAAAAAAAAEAAoAAAABAAIAAAAFAAoAAAAAAAIAAAAGAAoAAAAAAAIAAAAHAAoAAAACAAIAAAAIAAoAAAABAAIAAAAJAAoAAAACAAIAAAAKAAoAAAABAAIAAAALAAoAAAABAAIAAAAMAAoAAAAAAAIAAAANAAoAAAAAAAIAAAAOAAoAAAACAAIAAAAPAAoAAAAAAAIAAAAQAAoAAAACAAIAAAARAAoAAAABAAIAAAASAAoAAAABAAIAAAATAAoAAAACAAIAAAAUAAoAAAACAAIAAAAVAAoAAAABAAIAAAAWAAoAAAABAAIAAAAXAAoAAAABAAIAAAAYAAoAAAABAAIAAAAZAAoAAAABAAIAAAAaAAoAAAACAAIAAAAbAAoAAAACAAIAAAAcAAoAAAACAAIAAAAdAAoAAAAAAAIAAAAeAAoAAAACAAIAAAAfAAoAAAACAAIAAAAgAAoAAAACAAIAAAAhAAoAAAABAAIAAAAiAAoAAAACAAIAAAAjAAoAAAAAAAIAAAAkAAoAAAABAAIAAAAlAAoAAAABAAIAAAAmAAoAAAABAAIAAAAnAAoAAAAAAAIAAAAoAAoAAAABAAIAAAApAAoAAAAAAAIAAAAqAAoAAAAAAAIAAAArAAoAAAACAAIAAAAAAAsAAAAAAAYAAAABAAsAAAADAAAAAAACAAsAAAABAAAAAAADAAsAAAAAAAAAAAAEAAsAAAACAAIAAAAFAAsAAAAAAAAAAAAGAAsAAAABAAAAAAAHAAsAAAAAAAAAAAAIAAsAAAACAAAAAAAJAAsAAAABAAAAAAAKAAsAAAACAAAAAAALAAsAAAADAAAAAAAMAAsAAAACAAAAAAANAAsAAAACAAAAAAAOAAsAAAABAAAAAAAPAAsAAAADAAAAAAAQAAsAAAADAAAAAAARAAsAAAADAAAAAAASAAsAAAAAAAAAAAATAAsAAAACAAAAAAAUAAsAAAADAAAAAAAVAAsAAAADAAAAAAAWAAsAAAACAAAAAAAXAAsAAAADAAAAAAAYAAsAAAADAAAAAAAZAAsAAAAAAAAAAAAaAAsAAAAAAAAAAAAbAAsAAAACAAAAAAAcAAsAAAABAAAAAAAdAAsAAAACAAAAAAAeAAsAAAAAAAAAAAAfAAsAAAAAAAAAAAAgAAsAAAAAAAAAAAAhAAsAAAABAAAAAAAiAAsAAAABAAAAAAAjAAsAAAADAAAAAAAkAAsAAAADAAAAAAAlAAsAAAABAAAAAAAmAAsAAAAAAAAAAAAnAAsAAAABAAAAAAAoAAsAAAABAAAAAAApAAsAAAADAAAAAAAqAAsAAAAAAAAAAAArAAsAAAACAAYAAAAAAAwAAAAAAAYAAAABAAwAAAABAAAAAAACAAwAAAABAAAAAAADAAwAAAADAAAAAAAEAAwAAAABAAIAAAAFAAwAAAADAAAAAAAGAAwAAAACAAAAAAAHAAwAAAADAAAAAAAIAAwAAAABAAAAAAAJAAwAAAADAAAAAAAKAAwAAAAAAAAAAAALAAwAAAADAAAAAAAMAAwAAAACAAAAAAANAAwAAAACAAAAAAAOAAwAAAABAAAAAAAPAAwAAAABAAAAAAAQAAwAAAACAAAAAAARAAwAAAACAAAAAAASAAwAAAADAAAAAAATAAwAAAACAAAAAAAUAAwAAAABAAAAAAAVAAwAAAACAAAAAAAWAAwAAAABAAAAAAAXAAwAAAACAAAAAAAYAAwAAAAAAAAAAAAZAAwAAAABAAAAAAAaAAwAAAABAAAAAAAbAAwAAAABAAAAAAAcAAwAAAADAAAAAAAdAAwAAAADAAAAAAAeAAwAAAACAAAAAAAfAAwAAAACAAAAAAAgAAwAAAACAAAAAAAhAAwAAAABAAAAAAAiAAwAAAACAAAAAAAjAAwAAAADAAAAAAAkAAwAAAABAAAAAAAlAAwAAAADAAAAAAAmAAwAAAACAAAAAAAnAAwAAAABAAAAAAAoAAwAAAADAAAAAAApAAwAAAABAAAAAAAqAAwAAAABAAAAAAArAAwAAAABAAYAAAAAAA0AAAAAAAYAAAABAA0AAAADAAAAAAACAA0AAAADAAAAAAADAA0AAAABAAAAAAAEAA0AAAADAAAAAAAFAA0AAAAAAAAAAAAGAA0AAAAAAAAAAAAHAA0AAAADAAAAAAAIAA0AAAAAAAAAAAAJAA0AAAADAAAAAAAKAA0AAAAAAAsAAAALAA0AAAABAAsAAAAMAA0AAAAAAAsAAAANAA0AAAAAAAsAAAAOAA0AAAAAAAsAAAAPAA0AAAAAAAsAAAAQAA0AAAAAAAsAAAARAA0AAAABAAAAAAASAA0AAAADAAAAAAATAA0AAAAAAAAAAAAUAA0AAAAAAAAAAAAVAA0AAAACAAAAAAAWAA0AAAADAAAAAAAXAA0AAAACAAAAAAAYAA0AAAADAAAAAAAZAA0AAAACAAAAAAAaAA0AAAADAAAAAAAbAA0AAAABAAAAAAAcAA0AAAADAAAAAAAdAA0AAAAAAAAAAAAeAA0AAAACAAAAAAAfAA0AAAADAAAAAAAgAA0AAAABAAAAAAAhAA0AAAABAAAAAAAiAA0AAAABAAAAAAAjAA0AAAAAAAAAAAAkAA0AAAAAAAAAAAAlAA0AAAABAAAAAAAmAA0AAAADAAAAAAAnAA0AAAABAAAAAAAoAA0AAAAAAAAAAAApAA0AAAADAAAAAAAqAA0AAAACAAAAAAArAA0AAAACAAYAAAAAAA4AAAAAAAYAAAABAA4AAAAAAAAAAAACAA4AAAAAAAAAAAADAA4AAAABAAAAAAAEAA4AAAACAAAAAAAFAA4AAAABAAAAAAAGAA4AAAABAAAAAAAHAA4AAAACAAAAAAAIAA4AAAAAAAAAAAAJAA4AAAAAAAAAAAAKAA4AAAAAAAsAAAALAA4AAAAAAAsAAAAMAA4AAAABAAsAAAANAA4AAAAAAAsAAAAOAA4AAAAAAAsAAAAPAA4AAAABAAsAAAAQAA4AAAABAAsAAAARAA4AAAADAAAAAAASAA4AAAABAAAAAAATAA4AAAABAAAAAAAUAA4AAAAAAAAAAAAVAA4AAAAAAAAAAAAWAA4AAAAAAAAAAAAXAA4AAAACAAAAAAAYAA4AAAAAAAAAAAAZAA4AAAACAAAAAAAaAA4AAAABAAAAAAAbAA4AAAABAAAAAAAcAA4AAAADAAAAAAAdAA4AAAACAAAAAAAeAA4AAAAAAAAAAAAfAA4AAAACAAAAAAAgAA4AAAACAAAAAAAhAA4AAAADAAAAAAAiAA4AAAAAAAAAAAAjAA4AAAADAAAAAAAkAA4AAAABAAAAAAAlAA4AAAAAAAAAAAAmAA4AAAAAAAAAAAAnAA4AAAACAAAAAAAoAA4AAAABAAAAAAApAA4AAAACAAAAAAAqAA4AAAABAAAAAAArAA4AAAACAAYAAAAAAA8AAAABAAYAAAABAA8AAAACAAAAAAACAA8AAAACAAAAAAADAA8AAAABAAAAAAAEAA8AAAAAAAAAAAAFAA8AAAACAAAAAAAGAA8AAAACAAAAAAAHAA8AAAAAAAAAAAAIAA8AAAACAAYAAAAJAA8AAAAAAAAAAAAKAA8AAAAAAAsAAAALAA8AAAABAAsAAAAMAA8AAAAAAAsAAAANAA8AAAABAAsAAAAOAA8AAAABAAsAAAAPAA8AAAABAAsAAAAQAA8AAAAAAAsAAAARAA8AAAADAAAAAAASAA8AAAADAAAAAAATAA8AAAAAAAAAAAAUAA8AAAABAAAAAAAVAA8AAAADAAAAAAAWAA8AAAADAAAAAAAXAA8AAAABAAAAAAAYAA8AAAABAAAAAAAZAA8AAAADAAAAAAAaAA8AAAABAAAAAAAbAA8AAAACAAAAAAAcAA8AAAACAAAAAAAdAA8AAAAAAAAAAAAeAA8AAAACAAAAAAAfAA8AAAACAAAAAAAgAA8AAAACAAAAAAAhAA8AAAACAAAAAAAiAA8AAAACAAAAAAAjAA8AAAAAAAAAAAAkAA8AAAACAAYAAAAlAA8AAAAAAAAAAAAmAA8AAAABAAAAAAAnAA8AAAACAAAAAAAoAA8AAAAAAAAAAAApAA8AAAADAAAAAAAqAA8AAAAAAAAAAAArAA8AAAACAAYAAAAAABAAAAACAAYAAAABABAAAAAAAAAAAAACABAAAAAAAAAAAAADABAAAAABAAAAAAAEABAAAAABAAAAAAAFABAAAAABAAAAAAAGABAAAAADAAAAAAAHABAAAAAAAAAAAAAIABAAAAABAAAAAAAJABAAAAACAAAAAAAKABAAAAABAAsAAAALABAAAAABAAsAAAAMABAAAAAAAAsAAAANABAAAAABAAsAAAAOABAAAAAAAAsAAAAPABAAAAAAAAsAAAAQABAAAAAAAAsAAAARABAAAAABAAAAAAASABAAAAADAAAAAAATABAAAAADAAAAAAAUABAAAAABAAAAAAAVABAAAAACAAAAAAAWABAAAAABAAAAAAAXABAAAAADAAAAAAAYABAAAAADAAAAAAAZABAAAAAAAAAAAAAaABAAAAACAAAAAAAbABAAAAABAAAAAAAcABAAAAABAAAAAAAdABAAAAAAAAAAAAAeABAAAAABAAAAAAAfABAAAAAAAAAAAAAgABAAAAABAAAAAAAhABAAAAABAAAAAAAiABAAAAACAAAAAAAjABAAAAADAAAAAAAkABAAAAACAAAAAAAlABAAAAAAAAAAAAAmABAAAAACAAAAAAAnABAAAAADAAAAAAAoABAAAAAAAAYAAAApABAAAAAAAAAAAAAqABAAAAADAAAAAAArABAAAAACAAYAAAAAABEAAAABAAYAAAABABEAAAABAAAAAAACABEAAAACAAAAAAADABEAAAADAAAAAAAEABEAAAABAAAAAAAFABEAAAABAAAAAAAGABEAAAABAAAAAAAHABEAAAADAAAAAAAIABEAAAACAAAAAAAJABEAAAADAAAAAAAKABEAAAAAAAsAAAALABEAAAABAAsAAAAMABEAAAABAAsAAAANABEAAAABAAsAAAAOABEAAAAAAAsAAAAPABEAAAAAAAsAAAAQABEAAAAAAAsAAAARABEAAAACAAAAAAASABEAAAACAAAAAAATABEAAAADAAAAAAAUABEAAAADAAAAAAAVABEAAAABAAAAAAAWABEAAAACAAAAAAAXABEAAAACAAAAAAAYABEAAAACAAAAAAAZABEAAAABAAAAAAAaABEAAAAAAAAAAAAbABEAAAADAAAAAAAcABEAAAADAAAAAAAdABEAAAABAAAAAAAeABEAAAADAAAAAAAfABEAAAACAAAAAAAgABEAAAADAAAAAAAhABEAAAACAAAAAAAiABEAAAAAAAAAAAAjABEAAAACAAAAAAAkABEAAAADAAAAAAAlABEAAAABAAAAAAAmABEAAAABAAAAAAAnABEAAAAAAAAAAAAoABEAAAACAAAAAAApABEAAAADAAAAAAAqABEAAAAAAAAAAAArABEAAAABAAYAAAAAABIAAAACAAYAAAABABIAAAABAAAAAAACABIAAAABAAAAAAADABIAAAAAAAAAAAAEABIAAAACAAAAAAAFABIAAAABAAAAAAAGABIAAAABAAAAAAAHABIAAAACAAAAAAAIABIAAAAAAAAAAAAJABIAAAACAAAAAAAKABIAAAABAAAAAAALABIAAAAAAAAAAAAMABIAAAABAAAAAAANABIAAAADAAAAAAAOABIAAAAAAAAAAAAPABIAAAADAAAAAAAQABIAAAABAAAAAAARABIAAAACAAAAAAASABIAAAAAAAAAAAATABIAAAABAAAAAAAUABIAAAADAAAAAAAVABIAAAADAAAAAAAWABIAAAACAAAAAAAXABIAAAAAAAAAAAAYABIAAAADAAAAAAAZABIAAAACAAAAAAAaABIAAAAAAAAAAAAbABIAAAADAAAAAAAcABIAAAABAAAAAAAdABIAAAAAAAAAAAAeABIAAAADAAAAAAAfABIAAAADAAAAAAAgABIAAAAAAAAAAAAhABIAAAACAAAAAAAiABIAAAADAAAAAAAjABIAAAAAAAAAAAAkABIAAAADAAAAAAAlABIAAAADAAAAAAAmABIAAAABAAAAAAAnABIAAAABAAAAAAAoABIAAAABAAAAAAApABIAAAACAAAAAAAqABIAAAADAAAAAAArABIAAAACAAYAAAAAABMAAAABAAYAAAABABMAAAAAAAYAAAACABMAAAAAAAYAAAADABMAAAABAAYAAAAEABMAAAABAAYAAAAFABMAAAACAAYAAAAGABMAAAABAAYAAAAHABMAAAACAAYAAAAIABMAAAABAAYAAAAJABMAAAAAAAYAAAAKABMAAAAAAAYAAAALABMAAAABAAYAAAAMABMAAAABAAYAAAANABMAAAAAAAYAAAAOABMAAAAAAAYAAAAPABMAAAABAAYAAAAQABMAAAABAAYAAAARABMAAAAAAAYAAAASABMAAAACAAYAAAATABMAAAABAAYAAAAUABMAAAAAAAYAAAAVABMAAAABAAYAAAAWABMAAAABAAYAAAAXABMAAAACAAYAAAAYABMAAAABAAYAAAAZABMAAAACAAYAAAAaABMAAAACAAYAAAAbABMAAAACAAYAAAAcABMAAAACAAYAAAAdABMAAAABAAYAAAAeABMAAAAAAAYAAAAfABMAAAAAAAYAAAAgABMAAAABAAYAAAAhABMAAAACAAYAAAAiABMAAAACAAYAAAAjABMAAAABAAYAAAAkABMAAAAAAAYAAAAlABMAAAAAAAYAAAAmABMAAAAAAAYAAAAnABMAAAACAAYAAAAoABMAAAACAAYAAAApABMAAAACAAYAAAAqABMAAAACAAYAAAArABMAAAACAAYAAAA=")
 tile_set = ExtResource("2_33rei")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=2046056947]
+visible = false
 tile_set = ExtResource("2_33rei")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=1830196377]
+visible = false
 tile_set = ExtResource("2_33rei")
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=1744282395]
+z_index = -3
+material = SubResource("ShaderMaterial_06aue")
+script = ExtResource("8_70qyb")
+size = Vector2i(44, 20)
+mask = ExtResource("5_56d7f")
+g_texture = ExtResource("6_3o6rh")
+
+[node name="JohAmbForestFloor" type="Node2D" parent="." unique_id=1932562624]
+z_index = -3
+material = SubResource("ShaderMaterial_3o6rh")
+script = ExtResource("10_fopub")
+size = Vector2i(44, 20)
+mask = SubResource("ImageTexture_56d7f")
+
+[node name="JohAmbDecals" type="Node2D" parent="." unique_id=1945705627]
+z_index = -1
+
+[node name="@Sprite2D@831" type="Sprite2D" parent="JohAmbDecals" unique_id=461951134]
+position = Vector2(443.86566, 861.81476)
+scale = Vector2(0.79205155, 0.79205155)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@832" type="Sprite2D" parent="JohAmbDecals" unique_id=1500297287]
+position = Vector2(453.81537, 873.186)
+scale = Vector2(0.7066418, 0.7066418)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@833" type="Sprite2D" parent="JohAmbDecals" unique_id=1133702435]
+position = Vector2(380.52094, 878.61084)
+scale = Vector2(0.5140023, 0.5140023)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@834" type="Sprite2D" parent="JohAmbDecals" unique_id=1217718375]
+position = Vector2(375.78784, 878.61084)
+scale = Vector2(0.7651427, 0.7651427)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@835" type="Sprite2D" parent="JohAmbDecals" unique_id=1507147789]
+position = Vector2(382.534, 908.44824)
+scale = Vector2(0.80573016, 0.80573016)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@836" type="Sprite2D" parent="JohAmbDecals" unique_id=674293734]
+position = Vector2(472.45844, 908.4837)
+scale = Vector2(0.9062022, 0.9062022)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@837" type="Sprite2D" parent="JohAmbDecals" unique_id=1081015374]
+position = Vector2(472.80078, 929.20685)
+scale = Vector2(0.44892645, 0.44892645)
+texture = ExtResource("15_fantl")
+
+[node name="@Sprite2D@838" type="Sprite2D" parent="JohAmbDecals" unique_id=1084970289]
+position = Vector2(470.44962, 929.20685)
+scale = Vector2(0.8001896, 0.8001896)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@839" type="Sprite2D" parent="JohAmbDecals" unique_id=2136833556]
+position = Vector2(2274.3833, 861.7461)
+scale = Vector2(0.82376397, 0.82376397)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@840" type="Sprite2D" parent="JohAmbDecals" unique_id=718063353]
+position = Vector2(2284.141, 860.09894)
+scale = Vector2(0.83898926, 0.83898926)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@841" type="Sprite2D" parent="JohAmbDecals" unique_id=1406635711]
+position = Vector2(2212.6135, 879.4371)
+scale = Vector2(0.9196048, 0.9196048)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@842" type="Sprite2D" parent="JohAmbDecals" unique_id=660049251]
+position = Vector2(2202.0562, 951.4225)
+scale = Vector2(0.49330223, 0.49330223)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@843" type="Sprite2D" parent="JohAmbDecals" unique_id=1451167721]
+position = Vector2(2192.8342, 951.4225)
+scale = Vector2(0.68396556, 0.68396556)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@844" type="Sprite2D" parent="JohAmbDecals" unique_id=1034781406]
+position = Vector2(2307.0256, 932.24274)
+scale = Vector2(0.40845206, 0.40845206)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@845" type="Sprite2D" parent="JohAmbDecals" unique_id=1776332847]
+position = Vector2(2312.685, 932.24274)
+scale = Vector2(0.81438386, 0.81438386)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@846" type="Sprite2D" parent="JohAmbDecals" unique_id=422197427]
+position = Vector2(2302.5684, 933.7969)
+scale = Vector2(0.48319024, 0.48319024)
+texture = ExtResource("15_fantl")
+flip_h = true
+
+[node name="@Sprite2D@847" type="Sprite2D" parent="JohAmbDecals" unique_id=933311907]
+position = Vector2(2303.6953, 933.7969)
+scale = Vector2(0.8341411, 0.8341411)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@848" type="Sprite2D" parent="JohAmbDecals" unique_id=941062227]
+position = Vector2(384.22415, 1028.6389)
+scale = Vector2(0.48806265, 0.48806265)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@849" type="Sprite2D" parent="JohAmbDecals" unique_id=337691501]
+position = Vector2(377.52536, 1028.6389)
+scale = Vector2(0.89505136, 0.89505136)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@850" type="Sprite2D" parent="JohAmbDecals" unique_id=554017282]
+position = Vector2(393.40536, 980.51636)
+scale = Vector2(0.8942782, 0.8942782)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@851" type="Sprite2D" parent="JohAmbDecals" unique_id=1921891808]
+position = Vector2(567.1844, 946.68555)
+scale = Vector2(0.6985651, 0.6985651)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@852" type="Sprite2D" parent="JohAmbDecals" unique_id=2054995039]
+position = Vector2(553.36926, 965.1621)
+scale = Vector2(0.46466658, 0.46466658)
+texture = ExtResource("15_fantl")
+
+[node name="@Sprite2D@853" type="Sprite2D" parent="JohAmbDecals" unique_id=1115777510]
+position = Vector2(553.36926, 967.50336)
+scale = Vector2(0.7423304, 0.7423304)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@854" type="Sprite2D" parent="JohAmbDecals" unique_id=833596507]
+position = Vector2(556.1592, 1063.1339)
+scale = Vector2(0.7865413, 0.7865413)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@855" type="Sprite2D" parent="JohAmbDecals" unique_id=1032071435]
+position = Vector2(548.4538, 1049.0731)
+scale = Vector2(0.903345, 0.903345)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@856" type="Sprite2D" parent="JohAmbDecals" unique_id=825636665]
+position = Vector2(595.0102, 948.6588)
+scale = Vector2(0.77744234, 0.77744234)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@857" type="Sprite2D" parent="JohAmbDecals" unique_id=2095332368]
+position = Vector2(629.2863, 954.6162)
+scale = Vector2(0.50177044, 0.50177044)
+texture = ExtResource("17_6x6va")
+
+[node name="@Sprite2D@858" type="Sprite2D" parent="JohAmbDecals" unique_id=458783668]
+position = Vector2(629.2863, 947.3007)
+scale = Vector2(0.7701827, 0.7701827)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@859" type="Sprite2D" parent="JohAmbDecals" unique_id=608329994]
+position = Vector2(600.99976, 1056.5898)
+scale = Vector2(0.889211, 0.889211)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@860" type="Sprite2D" parent="JohAmbDecals" unique_id=1297529706]
+position = Vector2(586.53156, 1050.2144)
+scale = Vector2(0.8868434, 0.8868434)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@861" type="Sprite2D" parent="JohAmbDecals" unique_id=1930466554]
+position = Vector2(751.7969, 965.8096)
+scale = Vector2(0.7279407, 0.7279407)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@862" type="Sprite2D" parent="JohAmbDecals" unique_id=584320407]
+position = Vector2(680.6187, 957.5693)
+scale = Vector2(0.70678306, 0.70678306)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@863" type="Sprite2D" parent="JohAmbDecals" unique_id=1237334723]
+position = Vector2(692.99286, 1052.1531)
+scale = Vector2(0.69637984, 0.69637984)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@864" type="Sprite2D" parent="JohAmbDecals" unique_id=1688750544]
+position = Vector2(750.14557, 1056.7507)
+scale = Vector2(0.87217, 0.87217)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@865" type="Sprite2D" parent="JohAmbDecals" unique_id=333400691]
+position = Vector2(824.3644, 958.6688)
+scale = Vector2(0.8715227, 0.8715227)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@866" type="Sprite2D" parent="JohAmbDecals" unique_id=63402427]
+position = Vector2(833.09283, 956.0638)
+scale = Vector2(0.76803446, 0.76803446)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@867" type="Sprite2D" parent="JohAmbDecals" unique_id=1787821849]
+position = Vector2(795.2739, 1054.2958)
+scale = Vector2(0.4487432, 0.4487432)
+texture = ExtResource("15_fantl")
+flip_h = true
+
+[node name="@Sprite2D@868" type="Sprite2D" parent="JohAmbDecals" unique_id=745804141]
+position = Vector2(795.2739, 1052.3246)
+scale = Vector2(0.86514777, 0.86514777)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@869" type="Sprite2D" parent="JohAmbDecals" unique_id=564177895]
+position = Vector2(785.21094, 1053.0681)
+scale = Vector2(0.46454594, 0.46454594)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@870" type="Sprite2D" parent="JohAmbDecals" unique_id=1250585320]
+position = Vector2(785.21094, 1050.5448)
+scale = Vector2(0.72195554, 0.72195554)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@871" type="Sprite2D" parent="JohAmbDecals" unique_id=143182245]
+position = Vector2(932.73865, 954.8812)
+scale = Vector2(0.9163004, 0.9163004)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@872" type="Sprite2D" parent="JohAmbDecals" unique_id=1422658972]
+position = Vector2(939.5669, 956.3973)
+scale = Vector2(0.40197036, 0.40197036)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@873" type="Sprite2D" parent="JohAmbDecals" unique_id=1000426775]
+position = Vector2(939.5669, 955.89874)
+scale = Vector2(0.74377745, 0.74377745)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@874" type="Sprite2D" parent="JohAmbDecals" unique_id=141610324]
+position = Vector2(943.2088, 1062.6803)
+scale = Vector2(0.70081633, 0.70081633)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@875" type="Sprite2D" parent="JohAmbDecals" unique_id=1876857946]
+position = Vector2(945.261, 1056.7266)
+scale = Vector2(0.89624804, 0.89624804)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@876" type="Sprite2D" parent="JohAmbDecals" unique_id=1485625283]
+position = Vector2(1017.9488, 967.41956)
+scale = Vector2(0.69491947, 0.69491947)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@877" type="Sprite2D" parent="JohAmbDecals" unique_id=590761063]
+position = Vector2(1028.9471, 956.89606)
+scale = Vector2(0.38805947, 0.38805947)
+texture = ExtResource("15_fantl")
+flip_h = true
+
+[node name="@Sprite2D@878" type="Sprite2D" parent="JohAmbDecals" unique_id=1497934264]
+position = Vector2(1028.9471, 960.3456)
+scale = Vector2(0.69676316, 0.69676316)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@879" type="Sprite2D" parent="JohAmbDecals" unique_id=574854754]
+position = Vector2(1018.2523, 1063.5052)
+scale = Vector2(0.8463311, 0.8463311)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@880" type="Sprite2D" parent="JohAmbDecals" unique_id=1293911439]
+position = Vector2(1003.3039, 1058.854)
+scale = Vector2(0.8930292, 0.8930292)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@881" type="Sprite2D" parent="JohAmbDecals" unique_id=1818317290]
+position = Vector2(1101.46, 959.38696)
+scale = Vector2(0.45558837, 0.45558837)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@882" type="Sprite2D" parent="JohAmbDecals" unique_id=434982197]
+position = Vector2(1101.46, 958.0972)
+scale = Vector2(0.8501648, 0.8501648)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@883" type="Sprite2D" parent="JohAmbDecals" unique_id=811630432]
+position = Vector2(1116.5581, 965.43384)
+scale = Vector2(0.6851422, 0.6851422)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@884" type="Sprite2D" parent="JohAmbDecals" unique_id=331065823]
+position = Vector2(1090.0421, 1052.8535)
+scale = Vector2(0.90758324, 0.90758324)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@885" type="Sprite2D" parent="JohAmbDecals" unique_id=1867256820]
+position = Vector2(1074.4384, 1044.9661)
+scale = Vector2(0.90071565, 0.90071565)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@886" type="Sprite2D" parent="JohAmbDecals" unique_id=336553644]
+position = Vector2(1181.1237, 962.98035)
+scale = Vector2(0.39371735, 0.39371735)
+texture = ExtResource("15_fantl")
+flip_h = true
+
+[node name="@Sprite2D@887" type="Sprite2D" parent="JohAmbDecals" unique_id=306729275]
+position = Vector2(1181.1237, 964.11)
+scale = Vector2(0.7378974, 0.7378974)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@888" type="Sprite2D" parent="JohAmbDecals" unique_id=539880110]
+position = Vector2(1232.0988, 960.1153)
+scale = Vector2(0.50512755, 0.50512755)
+texture = ExtResource("15_fantl")
+flip_h = true
+
+[node name="@Sprite2D@889" type="Sprite2D" parent="JohAmbDecals" unique_id=1206796524]
+position = Vector2(1232.0988, 950.15936)
+scale = Vector2(0.90729636, 0.90729636)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@890" type="Sprite2D" parent="JohAmbDecals" unique_id=1440080827]
+position = Vector2(1218.3854, 1051.4293)
+scale = Vector2(0.7186068, 0.7186068)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@891" type="Sprite2D" parent="JohAmbDecals" unique_id=1816975068]
+position = Vector2(1177.374, 1062.8619)
+scale = Vector2(0.71491426, 0.71491426)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@892" type="Sprite2D" parent="JohAmbDecals" unique_id=264267137]
+position = Vector2(1264.8156, 964.1359)
+scale = Vector2(0.83657825, 0.83657825)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@893" type="Sprite2D" parent="JohAmbDecals" unique_id=83463669]
+position = Vector2(1330.5148, 968.6342)
+scale = Vector2(0.7704137, 0.7704137)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@894" type="Sprite2D" parent="JohAmbDecals" unique_id=1799433916]
+position = Vector2(1317.0381, 1059.6088)
+scale = Vector2(0.69129884, 0.69129884)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@895" type="Sprite2D" parent="JohAmbDecals" unique_id=1671774708]
+position = Vector2(1328.2244, 1063.9413)
+scale = Vector2(0.79210025, 0.79210025)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@896" type="Sprite2D" parent="JohAmbDecals" unique_id=267967667]
+position = Vector2(1377.008, 952.6748)
+scale = Vector2(0.41030055, 0.41030055)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@897" type="Sprite2D" parent="JohAmbDecals" unique_id=1188439285]
+position = Vector2(1377.008, 946.03174)
+scale = Vector2(0.7771665, 0.7771665)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@898" type="Sprite2D" parent="JohAmbDecals" unique_id=93115709]
+position = Vector2(1404.203, 952.9616)
+scale = Vector2(0.48275852, 0.48275852)
+texture = ExtResource("13_ah8dm")
+
+[node name="@Sprite2D@899" type="Sprite2D" parent="JohAmbDecals" unique_id=1442845669]
+position = Vector2(1404.203, 953.1843)
+scale = Vector2(0.91022635, 0.91022635)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@900" type="Sprite2D" parent="JohAmbDecals" unique_id=951642659]
+position = Vector2(1413.8063, 1048.7821)
+scale = Vector2(0.8710831, 0.8710831)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@901" type="Sprite2D" parent="JohAmbDecals" unique_id=1394697708]
+position = Vector2(1425.221, 1047.4152)
+scale = Vector2(0.84296924, 0.84296924)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@902" type="Sprite2D" parent="JohAmbDecals" unique_id=1705200643]
+position = Vector2(1452.4364, 960.63007)
+scale = Vector2(0.8594696, 0.8594696)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@903" type="Sprite2D" parent="JohAmbDecals" unique_id=1594600888]
+position = Vector2(1494.2229, 953.18555)
+scale = Vector2(0.77099854, 0.77099854)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@904" type="Sprite2D" parent="JohAmbDecals" unique_id=1109239325]
+position = Vector2(1488.5724, 1066.7858)
+scale = Vector2(0.6960838, 0.6960838)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@905" type="Sprite2D" parent="JohAmbDecals" unique_id=138361158]
+position = Vector2(1465.307, 1058.4583)
+scale = Vector2(0.85724354, 0.85724354)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@906" type="Sprite2D" parent="JohAmbDecals" unique_id=349092579]
+position = Vector2(1599.2876, 956.51215)
+scale = Vector2(0.69889575, 0.69889575)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@907" type="Sprite2D" parent="JohAmbDecals" unique_id=633972922]
+position = Vector2(1590.423, 956.77106)
+scale = Vector2(0.6929967, 0.6929967)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@908" type="Sprite2D" parent="JohAmbDecals" unique_id=1901918874]
+position = Vector2(1608.9391, 1066.7336)
+scale = Vector2(0.7036, 0.7036)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@909" type="Sprite2D" parent="JohAmbDecals" unique_id=224127972]
+position = Vector2(1582.6853, 1049.8857)
+scale = Vector2(0.41647464, 0.41647464)
+texture = ExtResource("15_fantl")
+
+[node name="@Sprite2D@910" type="Sprite2D" parent="JohAmbDecals" unique_id=973125410]
+position = Vector2(1582.6853, 1051.9674)
+scale = Vector2(0.83573544, 0.83573544)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@911" type="Sprite2D" parent="JohAmbDecals" unique_id=630714929]
+position = Vector2(1684.8271, 949.44904)
+scale = Vector2(0.78383, 0.78383)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@912" type="Sprite2D" parent="JohAmbDecals" unique_id=1487342415]
+position = Vector2(1699.2292, 959.04224)
+scale = Vector2(0.6906446, 0.6906446)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@913" type="Sprite2D" parent="JohAmbDecals" unique_id=1220873269]
+position = Vector2(1712.3252, 1063.6932)
+scale = Vector2(0.41880858, 0.41880858)
+texture = ExtResource("15_fantl")
+flip_h = true
+
+[node name="@Sprite2D@914" type="Sprite2D" parent="JohAmbDecals" unique_id=1142902890]
+position = Vector2(1712.3252, 1068.5598)
+scale = Vector2(0.77719307, 0.77719307)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@915" type="Sprite2D" parent="JohAmbDecals" unique_id=2143486168]
+position = Vector2(1708.4637, 1046.8655)
+scale = Vector2(0.8745822, 0.8745822)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@916" type="Sprite2D" parent="JohAmbDecals" unique_id=448766746]
+position = Vector2(1754.3408, 956.5035)
+scale = Vector2(0.7459372, 0.7459372)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@917" type="Sprite2D" parent="JohAmbDecals" unique_id=1650345909]
+position = Vector2(1805.7753, 945.2787)
+scale = Vector2(0.7037858, 0.7037858)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@918" type="Sprite2D" parent="JohAmbDecals" unique_id=2003265670]
+position = Vector2(1796.5662, 1057.404)
+scale = Vector2(0.39056927, 0.39056927)
+texture = ExtResource("18_wqc6k")
+flip_h = true
+
+[node name="@Sprite2D@919" type="Sprite2D" parent="JohAmbDecals" unique_id=2039194886]
+position = Vector2(1796.5662, 1059.7025)
+scale = Vector2(0.9133757, 0.9133757)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@920" type="Sprite2D" parent="JohAmbDecals" unique_id=60712204]
+position = Vector2(1812.8385, 1064.0786)
+scale = Vector2(0.91123897, 0.91123897)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@921" type="Sprite2D" parent="JohAmbDecals" unique_id=790112751]
+position = Vector2(1843.7198, 960.23444)
+scale = Vector2(0.7945205, 0.7945205)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@922" type="Sprite2D" parent="JohAmbDecals" unique_id=1643251482]
+position = Vector2(1909.0405, 954.5518)
+scale = Vector2(0.8175672, 0.8175672)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@923" type="Sprite2D" parent="JohAmbDecals" unique_id=924384981]
+position = Vector2(1907.9742, 1059.4025)
+scale = Vector2(0.6956191, 0.6956191)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@924" type="Sprite2D" parent="JohAmbDecals" unique_id=1049075086]
+position = Vector2(1905.4733, 1057.2233)
+scale = Vector2(0.8040056, 0.8040056)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@925" type="Sprite2D" parent="JohAmbDecals" unique_id=745369737]
+position = Vector2(1937.3577, 952.6518)
+scale = Vector2(0.8964464, 0.8964464)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@926" type="Sprite2D" parent="JohAmbDecals" unique_id=633944160]
+position = Vector2(1999.9489, 957.3677)
+scale = Vector2(0.4457063, 0.4457063)
+texture = ExtResource("13_ah8dm")
+
+[node name="@Sprite2D@927" type="Sprite2D" parent="JohAmbDecals" unique_id=1359752914]
+position = Vector2(1999.9489, 947.9934)
+scale = Vector2(0.77705884, 0.77705884)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@928" type="Sprite2D" parent="JohAmbDecals" unique_id=1565162777]
+position = Vector2(1988.6052, 1052.5538)
+scale = Vector2(0.79936904, 0.79936904)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@929" type="Sprite2D" parent="JohAmbDecals" unique_id=1250641904]
+position = Vector2(1983.7736, 1054.4944)
+scale = Vector2(0.85077286, 0.85077286)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@930" type="Sprite2D" parent="JohAmbDecals" unique_id=636876621]
+position = Vector2(2063.9592, 959.27673)
+scale = Vector2(0.90495366, 0.90495366)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@931" type="Sprite2D" parent="JohAmbDecals" unique_id=1451086664]
+position = Vector2(2036.5376, 950.10077)
+scale = Vector2(0.86878663, 0.86878663)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@932" type="Sprite2D" parent="JohAmbDecals" unique_id=922284990]
+position = Vector2(2079.1038, 1045.6658)
+scale = Vector2(0.71619886, 0.71619886)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@933" type="Sprite2D" parent="JohAmbDecals" unique_id=465538443]
+position = Vector2(2071.6982, 1053.0073)
+scale = Vector2(0.72596425, 0.72596425)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@934" type="Sprite2D" parent="JohAmbDecals" unique_id=249240011]
+position = Vector2(2120.8896, 960.3422)
+scale = Vector2(0.91109025, 0.91109025)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@935" type="Sprite2D" parent="JohAmbDecals" unique_id=559618554]
+position = Vector2(2160.7517, 956.58307)
+scale = Vector2(0.72331464, 0.72331464)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@936" type="Sprite2D" parent="JohAmbDecals" unique_id=1242131214]
+position = Vector2(2123.1118, 1057.0907)
+scale = Vector2(0.43465427, 0.43465427)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@937" type="Sprite2D" parent="JohAmbDecals" unique_id=1689873548]
+position = Vector2(2123.1118, 1062.7434)
+scale = Vector2(0.7556817, 0.7556817)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@938" type="Sprite2D" parent="JohAmbDecals" unique_id=11487509]
+position = Vector2(2188.18, 1061.6406)
+scale = Vector2(0.8207029, 0.8207029)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@939" type="Sprite2D" parent="JohAmbDecals" unique_id=1277928536]
+position = Vector2(2260.8145, 1057.7554)
+scale = Vector2(0.9015048, 0.9015048)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@940" type="Sprite2D" parent="JohAmbDecals" unique_id=1834907737]
+position = Vector2(2221.276, 1046.9127)
+scale = Vector2(0.9099878, 0.9099878)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@941" type="Sprite2D" parent="JohAmbDecals" unique_id=496750394]
+position = Vector2(2333.6797, 959.95953)
+scale = Vector2(0.42292684, 0.42292684)
+texture = ExtResource("17_6x6va")
+
+[node name="@Sprite2D@942" type="Sprite2D" parent="JohAmbDecals" unique_id=1180085066]
+position = Vector2(2333.6797, 955.63196)
+scale = Vector2(0.74438226, 0.74438226)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@943" type="Sprite2D" parent="JohAmbDecals" unique_id=335641090]
+position = Vector2(2389.0889, 952.0653)
+scale = Vector2(0.91246223, 0.91246223)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@944" type="Sprite2D" parent="JohAmbDecals" unique_id=1725556168]
+position = Vector2(2361.949, 1060.9816)
+scale = Vector2(0.43211615, 0.43211615)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@945" type="Sprite2D" parent="JohAmbDecals" unique_id=64983972]
+position = Vector2(2361.949, 1067.3566)
+scale = Vector2(0.70733106, 0.70733106)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@946" type="Sprite2D" parent="JohAmbDecals" unique_id=227573988]
+position = Vector2(2329.4595, 1063.7445)
+scale = Vector2(0.51191443, 0.51191443)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@947" type="Sprite2D" parent="JohAmbDecals" unique_id=117125508]
+position = Vector2(2329.4595, 1067.8815)
+scale = Vector2(0.9129305, 0.9129305)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@948" type="Sprite2D" parent="JohAmbDecals" unique_id=273661725]
+position = Vector2(2467.2778, 954.4938)
+scale = Vector2(0.74330556, 0.74330556)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@949" type="Sprite2D" parent="JohAmbDecals" unique_id=368332191]
+position = Vector2(2409.2402, 957.2651)
+scale = Vector2(0.86831456, 0.86831456)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@950" type="Sprite2D" parent="JohAmbDecals" unique_id=1171273657]
+position = Vector2(2464.0676, 1054.3507)
+scale = Vector2(0.7765163, 0.7765163)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@951" type="Sprite2D" parent="JohAmbDecals" unique_id=1200344260]
+position = Vector2(2423.6064, 1067.578)
+scale = Vector2(0.9035436, 0.9035436)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@952" type="Sprite2D" parent="JohAmbDecals" unique_id=1437308699]
+position = Vector2(2554.872, 964.5593)
+scale = Vector2(0.8214439, 0.8214439)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@953" type="Sprite2D" parent="JohAmbDecals" unique_id=1509697719]
+position = Vector2(2506.995, 965.0209)
+scale = Vector2(0.7011701, 0.7011701)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@954" type="Sprite2D" parent="JohAmbDecals" unique_id=865806824]
+position = Vector2(2514.513, 1048.8143)
+scale = Vector2(0.7132882, 0.7132882)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@955" type="Sprite2D" parent="JohAmbDecals" unique_id=1684205286]
+position = Vector2(2561.1702, 1056.6843)
+scale = Vector2(0.91740006, 0.91740006)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@956" type="Sprite2D" parent="JohAmbDecals" unique_id=2011554164]
+position = Vector2(2654.1655, 961.29047)
+scale = Vector2(0.4768617, 0.4768617)
+texture = ExtResource("13_ah8dm")
+
+[node name="@Sprite2D@957" type="Sprite2D" parent="JohAmbDecals" unique_id=1833557575]
+position = Vector2(2654.1655, 954.95776)
+scale = Vector2(0.7259264, 0.7259264)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@958" type="Sprite2D" parent="JohAmbDecals" unique_id=437672267]
+position = Vector2(2624.8088, 961.38385)
+scale = Vector2(0.48644912, 0.48644912)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@959" type="Sprite2D" parent="JohAmbDecals" unique_id=98470445]
+position = Vector2(2624.8088, 965.3511)
+scale = Vector2(0.82315445, 0.82315445)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@960" type="Sprite2D" parent="JohAmbDecals" unique_id=2020684815]
+position = Vector2(2605.5642, 1059.9785)
+scale = Vector2(0.50991774, 0.50991774)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@961" type="Sprite2D" parent="JohAmbDecals" unique_id=2050766798]
+position = Vector2(2605.5642, 1069.036)
+scale = Vector2(0.7116882, 0.7116882)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@962" type="Sprite2D" parent="JohAmbDecals" unique_id=413123639]
+position = Vector2(2604.9458, 1063.6849)
+scale = Vector2(0.4567147, 0.4567147)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@963" type="Sprite2D" parent="JohAmbDecals" unique_id=1629685403]
+position = Vector2(2604.9458, 1069.0109)
+scale = Vector2(0.7288231, 0.7288231)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@964" type="Sprite2D" parent="JohAmbDecals" unique_id=1350414842]
+position = Vector2(2730.8386, 966.664)
+scale = Vector2(0.48954022, 0.48954022)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@965" type="Sprite2D" parent="JohAmbDecals" unique_id=1286223876]
+position = Vector2(2730.8386, 963.8031)
+scale = Vector2(0.7176748, 0.7176748)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@966" type="Sprite2D" parent="JohAmbDecals" unique_id=208329897]
+position = Vector2(2706.6511, 962.9405)
+scale = Vector2(0.8550595, 0.8550595)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@967" type="Sprite2D" parent="JohAmbDecals" unique_id=1915829999]
+position = Vector2(2756.8364, 1061.9448)
+scale = Vector2(0.7710899, 0.7710899)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@968" type="Sprite2D" parent="JohAmbDecals" unique_id=1122150138]
+position = Vector2(2742.2153, 1057.9485)
+scale = Vector2(0.84507847, 0.84507847)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@969" type="Sprite2D" parent="JohAmbDecals" unique_id=2072310698]
+position = Vector2(2809.965, 967.0808)
+scale = Vector2(0.8319704, 0.8319704)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@970" type="Sprite2D" parent="JohAmbDecals" unique_id=1358881769]
+position = Vector2(2838.2563, 956.6076)
+scale = Vector2(0.7149742, 0.7149742)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@971" type="Sprite2D" parent="JohAmbDecals" unique_id=2139533392]
+position = Vector2(2867.5642, 1061.5167)
+scale = Vector2(0.50033414, 0.50033414)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@972" type="Sprite2D" parent="JohAmbDecals" unique_id=1893806718]
+position = Vector2(2867.5642, 1069.4882)
+scale = Vector2(0.68302566, 0.68302566)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@973" type="Sprite2D" parent="JohAmbDecals" unique_id=1115116626]
+position = Vector2(2860.65, 1060.4124)
+scale = Vector2(0.7833073, 0.7833073)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@974" type="Sprite2D" parent="JohAmbDecals" unique_id=1919854262]
+position = Vector2(2943.9546, 963.3159)
+scale = Vector2(0.466468, 0.466468)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@975" type="Sprite2D" parent="JohAmbDecals" unique_id=404592224]
+position = Vector2(2943.9546, 955.579)
+scale = Vector2(0.72735554, 0.72735554)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@976" type="Sprite2D" parent="JohAmbDecals" unique_id=310459271]
+position = Vector2(2935.801, 955.7928)
+scale = Vector2(0.7461912, 0.7461912)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@977" type="Sprite2D" parent="JohAmbDecals" unique_id=634677612]
+position = Vector2(2941.051, 1057.098)
+scale = Vector2(0.8322811, 0.8322811)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@978" type="Sprite2D" parent="JohAmbDecals" unique_id=1220781218]
+position = Vector2(2951.2542, 1059.6211)
+scale = Vector2(0.8175025, 0.8175025)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@979" type="Sprite2D" parent="JohAmbDecals" unique_id=321041908]
+position = Vector2(3003.9944, 955.1398)
+scale = Vector2(0.7365225, 0.7365225)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@980" type="Sprite2D" parent="JohAmbDecals" unique_id=979343986]
+position = Vector2(3017.003, 960.71735)
+scale = Vector2(0.68571, 0.68571)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@981" type="Sprite2D" parent="JohAmbDecals" unique_id=563320457]
+position = Vector2(3054.4421, 1048.5511)
+scale = Vector2(0.51672155, 0.51672155)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@982" type="Sprite2D" parent="JohAmbDecals" unique_id=200570403]
+position = Vector2(3054.4421, 1053.321)
+scale = Vector2(0.6891421, 0.6891421)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@983" type="Sprite2D" parent="JohAmbDecals" unique_id=903052281]
+position = Vector2(3008.2524, 1048.9833)
+scale = Vector2(0.4930837, 0.4930837)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@984" type="Sprite2D" parent="JohAmbDecals" unique_id=519191451]
+position = Vector2(3008.2524, 1045.4358)
+scale = Vector2(0.8707633, 0.8707633)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@985" type="Sprite2D" parent="JohAmbDecals" unique_id=1798234054]
+position = Vector2(3150.7961, 956.77686)
+scale = Vector2(0.51564395, 0.51564395)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@986" type="Sprite2D" parent="JohAmbDecals" unique_id=36021700]
+position = Vector2(3150.7961, 960.4662)
+scale = Vector2(0.89831984, 0.89831984)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@987" type="Sprite2D" parent="JohAmbDecals" unique_id=1297742915]
+position = Vector2(3089.0264, 952.32697)
+scale = Vector2(0.83221453, 0.83221453)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@988" type="Sprite2D" parent="JohAmbDecals" unique_id=405999940]
+position = Vector2(3104.6692, 1053.6641)
+scale = Vector2(0.509775, 0.509775)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@989" type="Sprite2D" parent="JohAmbDecals" unique_id=1612642158]
+position = Vector2(3104.6692, 1051.6102)
+scale = Vector2(0.81690466, 0.81690466)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@990" type="Sprite2D" parent="JohAmbDecals" unique_id=1728876392]
+position = Vector2(3103.715, 1058.3767)
+scale = Vector2(0.6929642, 0.6929642)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@991" type="Sprite2D" parent="JohAmbDecals" unique_id=1523319570]
+position = Vector2(3197.627, 955.3991)
+scale = Vector2(0.7666207, 0.7666207)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@992" type="Sprite2D" parent="JohAmbDecals" unique_id=1121553192]
+position = Vector2(3193.3223, 965.44446)
+scale = Vector2(0.7193743, 0.7193743)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@993" type="Sprite2D" parent="JohAmbDecals" unique_id=400545441]
+position = Vector2(3192.1223, 1058.1238)
+scale = Vector2(0.7185192, 0.7185192)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@994" type="Sprite2D" parent="JohAmbDecals" unique_id=1793273158]
+position = Vector2(3190.5896, 1056.0095)
+scale = Vector2(0.8408079, 0.8408079)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@995" type="Sprite2D" parent="JohAmbDecals" unique_id=1058687801]
+position = Vector2(3310.7285, 959.2086)
+scale = Vector2(0.51640743, 0.51640743)
+texture = ExtResource("13_ah8dm")
+
+[node name="@Sprite2D@996" type="Sprite2D" parent="JohAmbDecals" unique_id=245538744]
+position = Vector2(3310.7285, 954.38904)
+scale = Vector2(0.7998127, 0.7998127)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@997" type="Sprite2D" parent="JohAmbDecals" unique_id=1742531305]
+position = Vector2(3317.2617, 965.4653)
+scale = Vector2(0.8255779, 0.8255779)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@998" type="Sprite2D" parent="JohAmbDecals" unique_id=1737446902]
+position = Vector2(3317.0488, 1060.8057)
+scale = Vector2(0.75866675, 0.75866675)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@999" type="Sprite2D" parent="JohAmbDecals" unique_id=1309049395]
+position = Vector2(3291.738, 1055.1726)
+scale = Vector2(0.4587049, 0.4587049)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@1000" type="Sprite2D" parent="JohAmbDecals" unique_id=562625589]
+position = Vector2(3291.738, 1051.5892)
+scale = Vector2(0.91911745, 0.91911745)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1001" type="Sprite2D" parent="JohAmbDecals" unique_id=1343993092]
+position = Vector2(3403.8594, 961.76825)
+scale = Vector2(0.8305796, 0.8305796)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1002" type="Sprite2D" parent="JohAmbDecals" unique_id=770441301]
+position = Vector2(3373.588, 968.8813)
+scale = Vector2(0.78606045, 0.78606045)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1003" type="Sprite2D" parent="JohAmbDecals" unique_id=1040131062]
+position = Vector2(3405.0332, 1048.4543)
+scale = Vector2(0.39045388, 0.39045388)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@1004" type="Sprite2D" parent="JohAmbDecals" unique_id=1902948454]
+position = Vector2(3405.0332, 1045.1086)
+scale = Vector2(0.7628643, 0.7628643)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1005" type="Sprite2D" parent="JohAmbDecals" unique_id=1368182526]
+position = Vector2(3376.9104, 1055.2084)
+scale = Vector2(0.73574674, 0.73574674)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1006" type="Sprite2D" parent="JohAmbDecals" unique_id=1158888124]
+position = Vector2(3468.8096, 955.8138)
+scale = Vector2(0.70038605, 0.70038605)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1007" type="Sprite2D" parent="JohAmbDecals" unique_id=1754656963]
+position = Vector2(3464.6865, 951.3631)
+scale = Vector2(0.87696075, 0.87696075)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1008" type="Sprite2D" parent="JohAmbDecals" unique_id=1574849047]
+position = Vector2(3495.7312, 1048.399)
+scale = Vector2(0.46795428, 0.46795428)
+texture = ExtResource("18_wqc6k")
+flip_h = true
+
+[node name="@Sprite2D@1009" type="Sprite2D" parent="JohAmbDecals" unique_id=610718535]
+position = Vector2(3495.7312, 1058.0446)
+scale = Vector2(0.910538, 0.910538)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1010" type="Sprite2D" parent="JohAmbDecals" unique_id=1550583194]
+position = Vector2(3533.009, 1057.8312)
+scale = Vector2(0.7535324, 0.7535324)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1011" type="Sprite2D" parent="JohAmbDecals" unique_id=326579893]
+position = Vector2(3599.0017, 964.6914)
+scale = Vector2(0.489065, 0.489065)
+texture = ExtResource("18_wqc6k")
+flip_h = true
+
+[node name="@Sprite2D@1012" type="Sprite2D" parent="JohAmbDecals" unique_id=870060258]
+position = Vector2(3599.0017, 962.68604)
+scale = Vector2(0.83921015, 0.83921015)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1013" type="Sprite2D" parent="JohAmbDecals" unique_id=991322903]
+position = Vector2(3617.7031, 962.22437)
+scale = Vector2(0.5158013, 0.5158013)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@1014" type="Sprite2D" parent="JohAmbDecals" unique_id=602423178]
+position = Vector2(3617.7031, 964.3457)
+scale = Vector2(0.85489595, 0.85489595)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1015" type="Sprite2D" parent="JohAmbDecals" unique_id=22721592]
+position = Vector2(3627.9272, 1054.0862)
+scale = Vector2(0.70237505, 0.70237505)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1016" type="Sprite2D" parent="JohAmbDecals" unique_id=993611110]
+position = Vector2(3590.9756, 1063.1842)
+scale = Vector2(0.8325874, 0.8325874)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1017" type="Sprite2D" parent="JohAmbDecals" unique_id=1669697456]
+position = Vector2(3726.7227, 964.7669)
+scale = Vector2(0.860885, 0.860885)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1018" type="Sprite2D" parent="JohAmbDecals" unique_id=685114736]
+position = Vector2(3662.0068, 966.64215)
+scale = Vector2(0.45482814, 0.45482814)
+texture = ExtResource("13_ah8dm")
+flip_h = true
+
+[node name="@Sprite2D@1019" type="Sprite2D" parent="JohAmbDecals" unique_id=702444481]
+position = Vector2(3662.0068, 966.7217)
+scale = Vector2(0.7562212, 0.7562212)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1020" type="Sprite2D" parent="JohAmbDecals" unique_id=1743985940]
+position = Vector2(3680.0151, 1065.8232)
+scale = Vector2(0.8509719, 0.8509719)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1021" type="Sprite2D" parent="JohAmbDecals" unique_id=1233772189]
+position = Vector2(3665.9243, 1053.6846)
+scale = Vector2(0.72670317, 0.72670317)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1022" type="Sprite2D" parent="JohAmbDecals" unique_id=951965661]
+position = Vector2(3823.6772, 959.78516)
+scale = Vector2(0.46556482, 0.46556482)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@1023" type="Sprite2D" parent="JohAmbDecals" unique_id=1654083465]
+position = Vector2(3823.6772, 960.25494)
+scale = Vector2(0.8698331, 0.8698331)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1024" type="Sprite2D" parent="JohAmbDecals" unique_id=2019982915]
+position = Vector2(3830.1357, 951.3518)
+scale = Vector2(0.70246756, 0.70246756)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1025" type="Sprite2D" parent="JohAmbDecals" unique_id=200362967]
+position = Vector2(3814.7751, 1057.8367)
+scale = Vector2(0.9190542, 0.9190542)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1026" type="Sprite2D" parent="JohAmbDecals" unique_id=1201458388]
+position = Vector2(3820.8604, 1055.7574)
+scale = Vector2(0.70177996, 0.70177996)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1027" type="Sprite2D" parent="JohAmbDecals" unique_id=1647358459]
+position = Vector2(3901.0945, 946.4504)
+scale = Vector2(0.76062286, 0.76062286)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1028" type="Sprite2D" parent="JohAmbDecals" unique_id=787514938]
+position = Vector2(3864.8699, 958.71716)
+scale = Vector2(0.3954923, 0.3954923)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@1029" type="Sprite2D" parent="JohAmbDecals" unique_id=141176417]
+position = Vector2(3864.8699, 960.3066)
+scale = Vector2(0.8675726, 0.8675726)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1030" type="Sprite2D" parent="JohAmbDecals" unique_id=1739020127]
+position = Vector2(3869.7131, 1058.4377)
+scale = Vector2(0.8646077, 0.8646077)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1031" type="Sprite2D" parent="JohAmbDecals" unique_id=314355061]
+position = Vector2(3911.641, 1050.6271)
+scale = Vector2(0.4975193, 0.4975193)
+texture = ExtResource("18_wqc6k")
+
+[node name="@Sprite2D@1032" type="Sprite2D" parent="JohAmbDecals" unique_id=1675540036]
+position = Vector2(3911.641, 1060.5714)
+scale = Vector2(0.8393086, 0.8393086)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1033" type="Sprite2D" parent="JohAmbDecals" unique_id=726384391]
+position = Vector2(3971.9446, 952.7897)
+scale = Vector2(0.3944009, 0.3944009)
+texture = ExtResource("17_6x6va")
+
+[node name="@Sprite2D@1034" type="Sprite2D" parent="JohAmbDecals" unique_id=1645034521]
+position = Vector2(3971.9446, 956.2674)
+scale = Vector2(0.8820509, 0.8820509)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1035" type="Sprite2D" parent="JohAmbDecals" unique_id=1339292876]
+position = Vector2(3975.503, 954.5651)
+scale = Vector2(0.7407149, 0.7407149)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1036" type="Sprite2D" parent="JohAmbDecals" unique_id=1494164789]
+position = Vector2(4011.0789, 1062.0638)
+scale = Vector2(0.9058428, 0.9058428)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1037" type="Sprite2D" parent="JohAmbDecals" unique_id=2080987629]
+position = Vector2(3996.976, 1062.3176)
+scale = Vector2(0.79365176, 0.79365176)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1038" type="Sprite2D" parent="JohAmbDecals" unique_id=654503192]
+position = Vector2(4056.9302, 966.86945)
+scale = Vector2(0.49084982, 0.49084982)
+texture = ExtResource("17_6x6va")
+flip_h = true
+
+[node name="@Sprite2D@1039" type="Sprite2D" parent="JohAmbDecals" unique_id=2106783553]
+position = Vector2(4056.9302, 968.33093)
+scale = Vector2(0.8187935, 0.8187935)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1040" type="Sprite2D" parent="JohAmbDecals" unique_id=2056818334]
+position = Vector2(4083.3835, 955.7124)
+scale = Vector2(0.6955925, 0.6955925)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1041" type="Sprite2D" parent="JohAmbDecals" unique_id=1004476207]
+position = Vector2(4099.263, 1056.5673)
+scale = Vector2(0.7826983, 0.7826983)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1042" type="Sprite2D" parent="JohAmbDecals" unique_id=1401337201]
+position = Vector2(4107.55, 1065.8665)
+scale = Vector2(0.78839487, 0.78839487)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1043" type="Sprite2D" parent="JohAmbDecals" unique_id=1775349111]
+position = Vector2(4156.0405, 961.3514)
+scale = Vector2(0.44429708, 0.44429708)
+texture = ExtResource("15_fantl")
+flip_h = true
+
+[node name="@Sprite2D@1044" type="Sprite2D" parent="JohAmbDecals" unique_id=347838830]
+position = Vector2(4170.1426, 960.1434)
+scale = Vector2(0.7629047, 0.7629047)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1045" type="Sprite2D" parent="JohAmbDecals" unique_id=1822615413]
+position = Vector2(380.7238, 1089.5573)
+scale = Vector2(0.75623345, 0.75623345)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1046" type="Sprite2D" parent="JohAmbDecals" unique_id=573685938]
+position = Vector2(375.89258, 1091.2983)
+scale = Vector2(0.83300036, 0.83300036)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1047" type="Sprite2D" parent="JohAmbDecals" unique_id=656468209]
+position = Vector2(471.51782, 1095.2144)
+scale = Vector2(0.8854788, 0.8854788)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1048" type="Sprite2D" parent="JohAmbDecals" unique_id=1613641498]
+position = Vector2(485.61832, 1111.5438)
+scale = Vector2(0.49544767, 0.49544767)
+texture = ExtResource("13_ah8dm")
+
+[node name="@Sprite2D@1049" type="Sprite2D" parent="JohAmbDecals" unique_id=891208279]
+position = Vector2(487.29608, 1111.5438)
+scale = Vector2(0.88439894, 0.88439894)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1050" type="Sprite2D" parent="JohAmbDecals" unique_id=1657791520]
+position = Vector2(409.23004, 1243.1228)
+scale = Vector2(0.8610179, 0.8610179)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1051" type="Sprite2D" parent="JohAmbDecals" unique_id=1686117794]
+position = Vector2(418.1626, 1250.7106)
+scale = Vector2(0.8234193, 0.8234193)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1052" type="Sprite2D" parent="JohAmbDecals" unique_id=963375287]
+position = Vector2(388.32126, 1172.4115)
+scale = Vector2(0.8602499, 0.8602499)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1053" type="Sprite2D" parent="JohAmbDecals" unique_id=3965815]
+position = Vector2(377.5535, 1224.5443)
+scale = Vector2(0.42266148, 0.42266148)
+texture = ExtResource("15_fantl")
+
+[node name="@Sprite2D@1054" type="Sprite2D" parent="JohAmbDecals" unique_id=714968860]
+position = Vector2(368.20422, 1224.5443)
+scale = Vector2(0.77845144, 0.77845144)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1055" type="Sprite2D" parent="JohAmbDecals" unique_id=831220983]
+position = Vector2(476.48227, 1164.9528)
+scale = Vector2(0.46507224, 0.46507224)
+texture = ExtResource("15_fantl")
+
+[node name="@Sprite2D@1056" type="Sprite2D" parent="JohAmbDecals" unique_id=297609568]
+position = Vector2(480.03488, 1164.9528)
+scale = Vector2(0.79215306, 0.79215306)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1057" type="Sprite2D" parent="JohAmbDecals" unique_id=1722046029]
+position = Vector2(477.75162, 1216.3756)
+scale = Vector2(0.7244712, 0.7244712)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1058" type="Sprite2D" parent="JohAmbDecals" unique_id=1932735340]
+position = Vector2(748.0074, 567.83704)
+scale = Vector2(1.074625, 1.074625)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1059" type="Sprite2D" parent="JohAmbDecals" unique_id=1629103259]
+position = Vector2(2582.3423, 1523.0287)
+scale = Vector2(0.76994413, 0.76994413)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1060" type="Sprite2D" parent="JohAmbDecals" unique_id=1152710774]
+position = Vector2(3536.8374, 1663.0732)
+scale = Vector2(0.99828887, 0.99828887)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1061" type="Sprite2D" parent="JohAmbDecals" unique_id=1115951042]
+position = Vector2(437.1341, 1672.8596)
+scale = Vector2(1.130797, 1.130797)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1062" type="Sprite2D" parent="JohAmbDecals" unique_id=2112104178]
+position = Vector2(2351.38, 1178.8427)
+scale = Vector2(0.8564046, 0.8564046)
+texture = ExtResource("21_4nuvd")
+
+[node name="@Sprite2D@1063" type="Sprite2D" parent="JohAmbDecals" unique_id=1247615915]
+position = Vector2(3849.814, 463.46255)
+scale = Vector2(0.9043027, 0.9043027)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1064" type="Sprite2D" parent="JohAmbDecals" unique_id=1651957285]
+position = Vector2(2183.1182, 1120.0006)
+scale = Vector2(0.8514321, 0.8514321)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1065" type="Sprite2D" parent="JohAmbDecals" unique_id=1367936534]
+position = Vector2(1518.9751, 460.56818)
+scale = Vector2(0.827629, 0.827629)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1066" type="Sprite2D" parent="JohAmbDecals" unique_id=1120973761]
+position = Vector2(1926.8704, 1235.1345)
+scale = Vector2(1.0206066, 1.0206066)
+texture = ExtResource("21_4nuvd")
+
+[node name="@Sprite2D@1067" type="Sprite2D" parent="JohAmbDecals" unique_id=88506075]
+position = Vector2(104.66159, 636.12933)
+scale = Vector2(0.9718617, 0.9718617)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1068" type="Sprite2D" parent="JohAmbDecals" unique_id=1959872589]
+position = Vector2(673.78265, 1293.164)
+scale = Vector2(0.97497094, 0.97497094)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1069" type="Sprite2D" parent="JohAmbDecals" unique_id=1855832343]
+position = Vector2(367.5084, 1753.4692)
+scale = Vector2(0.89931244, 0.89931244)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1070" type="Sprite2D" parent="JohAmbDecals" unique_id=1222163237]
+position = Vector2(1041.1094, 505.82526)
+scale = Vector2(0.98327076, 0.98327076)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1071" type="Sprite2D" parent="JohAmbDecals" unique_id=1664095797]
+position = Vector2(1542.0869, 1158.8948)
+scale = Vector2(1.0014344, 1.0014344)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1072" type="Sprite2D" parent="JohAmbDecals" unique_id=1108754982]
+position = Vector2(1845.647, 681.1854)
+scale = Vector2(0.92185634, 0.92185634)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1073" type="Sprite2D" parent="JohAmbDecals" unique_id=1896793532]
+position = Vector2(4105.5234, 1650.1447)
+scale = Vector2(1.0337626, 1.0337626)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1074" type="Sprite2D" parent="JohAmbDecals" unique_id=1997763920]
+position = Vector2(2495.8452, 1584.2769)
+scale = Vector2(1.0244064, 1.0244064)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1075" type="Sprite2D" parent="JohAmbDecals" unique_id=1370951115]
+position = Vector2(2642.5754, 1087.8746)
+scale = Vector2(0.96708107, 0.96708107)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1076" type="Sprite2D" parent="JohAmbDecals" unique_id=827529803]
+position = Vector2(3922.7324, 641.4162)
+scale = Vector2(0.9292461, 0.9292461)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1077" type="Sprite2D" parent="JohAmbDecals" unique_id=1928145624]
+position = Vector2(3267.8196, 1090.1252)
+scale = Vector2(0.9349248, 0.9349248)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1078" type="Sprite2D" parent="JohAmbDecals" unique_id=979581430]
+position = Vector2(4017.8472, 403.39893)
+scale = Vector2(0.9094953, 0.9094953)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1079" type="Sprite2D" parent="JohAmbDecals" unique_id=1675949124]
+position = Vector2(3988.6501, 1352.8085)
+scale = Vector2(0.9697492, 0.9697492)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1080" type="Sprite2D" parent="JohAmbDecals" unique_id=1563505027]
+position = Vector2(2922.4429, 1582.6644)
+scale = Vector2(1.0347323, 1.0347323)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1081" type="Sprite2D" parent="JohAmbDecals" unique_id=309929825]
+position = Vector2(3995.4946, 1354.9309)
+scale = Vector2(0.95721215, 0.95721215)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1082" type="Sprite2D" parent="JohAmbDecals" unique_id=1942428627]
+position = Vector2(3660.871, 1685.4994)
+scale = Vector2(0.84398824, 0.84398824)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1083" type="Sprite2D" parent="JohAmbDecals" unique_id=742093337]
+position = Vector2(2619.3662, 524.47797)
+scale = Vector2(1.0158284, 1.0158284)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1084" type="Sprite2D" parent="JohAmbDecals" unique_id=182214510]
+position = Vector2(3984.0264, 1401.3912)
+scale = Vector2(0.81744397, 0.81744397)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1085" type="Sprite2D" parent="JohAmbDecals" unique_id=485057217]
+position = Vector2(2145.4902, 1086.3738)
+scale = Vector2(1.0118256, 1.0118256)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1086" type="Sprite2D" parent="JohAmbDecals" unique_id=458508183]
+position = Vector2(2197.5652, 1739.2255)
+scale = Vector2(0.9004213, 0.9004213)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1087" type="Sprite2D" parent="JohAmbDecals" unique_id=1745280298]
+position = Vector2(3873.5005, 1314.7755)
+scale = Vector2(0.9185488, 0.9185488)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1088" type="Sprite2D" parent="JohAmbDecals" unique_id=1923270701]
+position = Vector2(1462.6964, 1197.3613)
+scale = Vector2(1.0092543, 1.0092543)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1089" type="Sprite2D" parent="JohAmbDecals" unique_id=850763241]
+position = Vector2(3655.246, 1286.5596)
+scale = Vector2(0.9415691, 0.9415691)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1090" type="Sprite2D" parent="JohAmbDecals" unique_id=1750619355]
+position = Vector2(103.7113, 1076.4468)
+scale = Vector2(1.1315274, 1.1315274)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1091" type="Sprite2D" parent="JohAmbDecals" unique_id=570601742]
+position = Vector2(2816.4116, 832.61707)
+scale = Vector2(0.9988364, 0.9988364)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1092" type="Sprite2D" parent="JohAmbDecals" unique_id=317783769]
+position = Vector2(3828.0107, 1166.259)
+scale = Vector2(1.013119, 1.013119)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1093" type="Sprite2D" parent="JohAmbDecals" unique_id=276256242]
+position = Vector2(1228.7614, 513.60474)
+scale = Vector2(0.885988, 0.885988)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1094" type="Sprite2D" parent="JohAmbDecals" unique_id=1166838544]
+position = Vector2(724.0008, 1458.3284)
+scale = Vector2(0.8807233, 0.8807233)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1095" type="Sprite2D" parent="JohAmbDecals" unique_id=1238681340]
+position = Vector2(300.89233, 1409.599)
+scale = Vector2(1.0300854, 1.0300854)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1096" type="Sprite2D" parent="JohAmbDecals" unique_id=53393969]
+position = Vector2(3136.628, 1104.3044)
+scale = Vector2(0.9400209, 0.9400209)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1097" type="Sprite2D" parent="JohAmbDecals" unique_id=1686098320]
+position = Vector2(843.473, 1149.4504)
+scale = Vector2(0.9927878, 0.9927878)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1098" type="Sprite2D" parent="JohAmbDecals" unique_id=1586320263]
+position = Vector2(911.5479, 1557.6057)
+scale = Vector2(1.0429139, 1.0429139)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1099" type="Sprite2D" parent="JohAmbDecals" unique_id=116458947]
+position = Vector2(2126.0479, 1539.5471)
+scale = Vector2(0.87982386, 0.87982386)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1100" type="Sprite2D" parent="JohAmbDecals" unique_id=1790299501]
+position = Vector2(1774.6191, 1808.8931)
+scale = Vector2(0.99939394, 0.99939394)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1101" type="Sprite2D" parent="JohAmbDecals" unique_id=258745906]
+position = Vector2(890.67554, 1677.8835)
+scale = Vector2(0.77528614, 0.77528614)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1102" type="Sprite2D" parent="JohAmbDecals" unique_id=1957508826]
+position = Vector2(3367.0771, 1776.5083)
+scale = Vector2(0.93096876, 0.93096876)
+texture = ExtResource("21_4nuvd")
+
+[node name="@Sprite2D@1103" type="Sprite2D" parent="JohAmbDecals" unique_id=1670968178]
+position = Vector2(2800.3115, 895.0602)
+scale = Vector2(1.005447, 1.005447)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1104" type="Sprite2D" parent="JohAmbDecals" unique_id=807377556]
+position = Vector2(4004.961, 1760.283)
+scale = Vector2(1.0187675, 1.0187675)
+texture = ExtResource("21_4nuvd")
+
+[node name="@Sprite2D@1105" type="Sprite2D" parent="JohAmbDecals" unique_id=1929231604]
+position = Vector2(2273.53, 1459.9333)
+scale = Vector2(0.86336106, 0.86336106)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1106" type="Sprite2D" parent="JohAmbDecals" unique_id=576126648]
+position = Vector2(3827.5234, 1088.6932)
+scale = Vector2(0.812492, 0.812492)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1107" type="Sprite2D" parent="JohAmbDecals" unique_id=922112997]
+position = Vector2(1325.8171, 754.1969)
+scale = Vector2(0.8589521, 0.8589521)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1108" type="Sprite2D" parent="JohAmbDecals" unique_id=846675800]
+position = Vector2(1795.9915, 579.0598)
+scale = Vector2(0.9201943, 0.9201943)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1109" type="Sprite2D" parent="JohAmbDecals" unique_id=443273672]
+position = Vector2(2274.0376, 1765.2622)
+scale = Vector2(0.91978633, 0.91978633)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1110" type="Sprite2D" parent="JohAmbDecals" unique_id=2076914059]
+position = Vector2(4120.1826, 1092.5587)
+scale = Vector2(0.9331982, 0.9331982)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1111" type="Sprite2D" parent="JohAmbDecals" unique_id=80690946]
+position = Vector2(2023.8606, 1605.3679)
+scale = Vector2(0.9324916, 0.9324916)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1112" type="Sprite2D" parent="JohAmbDecals" unique_id=317544991]
+position = Vector2(3882.6416, 1723.2686)
+scale = Vector2(0.88002324, 0.88002324)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1113" type="Sprite2D" parent="JohAmbDecals" unique_id=58021075]
+position = Vector2(2140.375, 1390.9546)
+scale = Vector2(0.9464446, 0.9464446)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1114" type="Sprite2D" parent="JohAmbDecals" unique_id=930396788]
+position = Vector2(1174.34, 679.80334)
+scale = Vector2(0.98261607, 0.98261607)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1115" type="Sprite2D" parent="JohAmbDecals" unique_id=1662883206]
+position = Vector2(3747.7522, 1803.2911)
+scale = Vector2(0.9462313, 0.9462313)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1116" type="Sprite2D" parent="JohAmbDecals" unique_id=1491289961]
+position = Vector2(902.6747, 1653.4375)
+scale = Vector2(1.0846828, 1.0846828)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1117" type="Sprite2D" parent="JohAmbDecals" unique_id=1366229121]
+position = Vector2(3337.94, 945.86633)
+scale = Vector2(0.84343034, 0.84343034)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1118" type="Sprite2D" parent="JohAmbDecals" unique_id=1580372066]
+position = Vector2(3539.4639, 1806.2407)
+scale = Vector2(1.1212733, 1.1212733)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1119" type="Sprite2D" parent="JohAmbDecals" unique_id=509585912]
+position = Vector2(642.4566, 1556.2211)
+scale = Vector2(0.98222053, 0.98222053)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1120" type="Sprite2D" parent="JohAmbDecals" unique_id=1438394871]
+position = Vector2(3900.044, 438.19153)
+scale = Vector2(0.982195, 0.982195)
+texture = ExtResource("21_4nuvd")
+
+[node name="@Sprite2D@1121" type="Sprite2D" parent="JohAmbDecals" unique_id=968420549]
+position = Vector2(3891.2769, 736.0937)
+scale = Vector2(1.0053227, 1.0053227)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1122" type="Sprite2D" parent="JohAmbDecals" unique_id=1660287789]
+position = Vector2(1553.998, 521.80383)
+scale = Vector2(0.8167989, 0.8167989)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1123" type="Sprite2D" parent="JohAmbDecals" unique_id=865347591]
+position = Vector2(269.9621, 1153.4548)
+scale = Vector2(0.90855974, 0.90855974)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1124" type="Sprite2D" parent="JohAmbDecals" unique_id=1756345056]
+position = Vector2(2834.635, 1607.9268)
+scale = Vector2(0.8596196, 0.8596196)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1125" type="Sprite2D" parent="JohAmbDecals" unique_id=1258953292]
+position = Vector2(2398.1587, 1360.1394)
+scale = Vector2(0.8907524, 0.8907524)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1126" type="Sprite2D" parent="JohAmbDecals" unique_id=280232260]
+position = Vector2(2936.6228, 1594.0807)
+scale = Vector2(1.0055962, 1.0055962)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1127" type="Sprite2D" parent="JohAmbDecals" unique_id=1383482911]
+position = Vector2(1607.1848, 904.75653)
+scale = Vector2(0.76964396, 0.76964396)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1128" type="Sprite2D" parent="JohAmbDecals" unique_id=1343805220]
+position = Vector2(3478.7363, 1782.1992)
+scale = Vector2(1.056174, 1.056174)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1129" type="Sprite2D" parent="JohAmbDecals" unique_id=1624625520]
+position = Vector2(3972.712, 1489.5616)
+scale = Vector2(0.9930065, 0.9930065)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1130" type="Sprite2D" parent="JohAmbDecals" unique_id=1222281501]
+position = Vector2(695.5951, 1245.6267)
+scale = Vector2(0.80511856, 0.80511856)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1131" type="Sprite2D" parent="JohAmbDecals" unique_id=891012619]
+position = Vector2(272.88217, 1384.528)
+scale = Vector2(0.9273141, 0.9273141)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1132" type="Sprite2D" parent="JohAmbDecals" unique_id=67014732]
+position = Vector2(1960.348, 1071.8507)
+scale = Vector2(1.123774, 1.123774)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1133" type="Sprite2D" parent="JohAmbDecals" unique_id=1368423164]
+position = Vector2(1831.7864, 867.39465)
+scale = Vector2(1.0186677, 1.0186677)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1134" type="Sprite2D" parent="JohAmbDecals" unique_id=2060977573]
+position = Vector2(1755.1812, 1218.1165)
+scale = Vector2(1.1247332, 1.1247332)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1135" type="Sprite2D" parent="JohAmbDecals" unique_id=127961816]
+position = Vector2(2800.376, 385.68008)
+scale = Vector2(0.78904384, 0.78904384)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1136" type="Sprite2D" parent="JohAmbDecals" unique_id=425587216]
+position = Vector2(132.95824, 736.8875)
+scale = Vector2(0.8622595, 0.8622595)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1137" type="Sprite2D" parent="JohAmbDecals" unique_id=321527761]
+position = Vector2(1498.0653, 528.7994)
+scale = Vector2(1.0086743, 1.0086743)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1138" type="Sprite2D" parent="JohAmbDecals" unique_id=1516531919]
+position = Vector2(3409.024, 1316.7498)
+scale = Vector2(1.026325, 1.026325)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1139" type="Sprite2D" parent="JohAmbDecals" unique_id=712956476]
+position = Vector2(1735.4265, 1097.394)
+scale = Vector2(0.9303103, 0.9303103)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1140" type="Sprite2D" parent="JohAmbDecals" unique_id=1463337462]
+position = Vector2(2408.0393, 1469.8905)
+scale = Vector2(0.9591346, 0.9591346)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1141" type="Sprite2D" parent="JohAmbDecals" unique_id=1240519424]
+position = Vector2(2555.174, 1206.7709)
+scale = Vector2(0.9281256, 0.9281256)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1142" type="Sprite2D" parent="JohAmbDecals" unique_id=852579243]
+position = Vector2(1494.9775, 670.55005)
+scale = Vector2(0.8583844, 0.8583844)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1143" type="Sprite2D" parent="JohAmbDecals" unique_id=1675310809]
+position = Vector2(946.8679, 494.7079)
+scale = Vector2(0.81883085, 0.81883085)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1144" type="Sprite2D" parent="JohAmbDecals" unique_id=2085932195]
+position = Vector2(3992.5142, 825.1919)
+scale = Vector2(0.8784826, 0.8784826)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1145" type="Sprite2D" parent="JohAmbDecals" unique_id=1291679875]
+position = Vector2(4062.0508, 1056.1984)
+scale = Vector2(0.83629656, 0.83629656)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1146" type="Sprite2D" parent="JohAmbDecals" unique_id=1583923404]
+position = Vector2(1521.9839, 952.9198)
+scale = Vector2(0.9201602, 0.9201602)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1147" type="Sprite2D" parent="JohAmbDecals" unique_id=534735184]
+position = Vector2(2483.2847, 1700.5668)
+scale = Vector2(0.9223357, 0.9223357)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1148" type="Sprite2D" parent="JohAmbDecals" unique_id=152463430]
+position = Vector2(3756.4526, 1197.7036)
+scale = Vector2(1.0800352, 1.0800352)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1149" type="Sprite2D" parent="JohAmbDecals" unique_id=115040419]
+position = Vector2(2825.1543, 1546.4873)
+scale = Vector2(0.888434, 0.888434)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1150" type="Sprite2D" parent="JohAmbDecals" unique_id=409839775]
+position = Vector2(2712.9797, 1789.5071)
+scale = Vector2(0.9197335, 0.9197335)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1151" type="Sprite2D" parent="JohAmbDecals" unique_id=1694265681]
+position = Vector2(2709.144, 1326.1177)
+scale = Vector2(0.8442636, 0.8442636)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1152" type="Sprite2D" parent="JohAmbDecals" unique_id=2109394151]
+position = Vector2(1501.9761, 710.13214)
+scale = Vector2(0.972952, 0.972952)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1153" type="Sprite2D" parent="JohAmbDecals" unique_id=1258004286]
+position = Vector2(3666.285, 1473.684)
+scale = Vector2(1.0797825, 1.0797825)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1154" type="Sprite2D" parent="JohAmbDecals" unique_id=1887462404]
+position = Vector2(2135.853, 1789.0435)
+scale = Vector2(1.0114573, 1.0114573)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1155" type="Sprite2D" parent="JohAmbDecals" unique_id=852560540]
+position = Vector2(2079.141, 1620.0239)
+scale = Vector2(0.9853515, 0.9853515)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1156" type="Sprite2D" parent="JohAmbDecals" unique_id=1078462997]
+position = Vector2(3959.183, 1778.9004)
+scale = Vector2(1.0134666, 1.0134666)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1157" type="Sprite2D" parent="JohAmbDecals" unique_id=1427885509]
+position = Vector2(1896.3079, 1216.48)
+scale = Vector2(0.9453615, 0.9453615)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1158" type="Sprite2D" parent="JohAmbDecals" unique_id=1330252980]
+position = Vector2(637.7158, 1396.7433)
+scale = Vector2(0.89100754, 0.89100754)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1159" type="Sprite2D" parent="JohAmbDecals" unique_id=1468302287]
+position = Vector2(3949.7925, 1672.238)
+scale = Vector2(0.8551323, 0.8551323)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1160" type="Sprite2D" parent="JohAmbDecals" unique_id=1321254578]
+position = Vector2(1469.4022, 805.94324)
+scale = Vector2(0.8701745, 0.8701745)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1161" type="Sprite2D" parent="JohAmbDecals" unique_id=1520315284]
+position = Vector2(1694.4636, 1795.8767)
+scale = Vector2(0.87913203, 0.87913203)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1162" type="Sprite2D" parent="JohAmbDecals" unique_id=122755474]
+position = Vector2(1962.5339, 1558.3857)
+scale = Vector2(0.9678173, 0.9678173)
+texture = ExtResource("21_4nuvd")
+
+[node name="@Sprite2D@1163" type="Sprite2D" parent="JohAmbDecals" unique_id=1502153107]
+position = Vector2(2856.578, 872.93866)
+scale = Vector2(1.031947, 1.031947)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1164" type="Sprite2D" parent="JohAmbDecals" unique_id=133449930]
+position = Vector2(3447.7554, 952.4515)
+scale = Vector2(0.7790584, 0.7790584)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1165" type="Sprite2D" parent="JohAmbDecals" unique_id=1768043710]
+position = Vector2(2990.3823, 1629.1523)
+scale = Vector2(0.8842784, 0.8842784)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1166" type="Sprite2D" parent="JohAmbDecals" unique_id=1258314565]
+position = Vector2(520.67584, 1130.6581)
+scale = Vector2(1.0013804, 1.0013804)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1167" type="Sprite2D" parent="JohAmbDecals" unique_id=1054664334]
+position = Vector2(2952.6655, 1086.1791)
+scale = Vector2(0.95593905, 0.95593905)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1168" type="Sprite2D" parent="JohAmbDecals" unique_id=628198687]
+position = Vector2(2803.4756, 1175.8734)
+scale = Vector2(0.80709887, 0.80709887)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1169" type="Sprite2D" parent="JohAmbDecals" unique_id=450054386]
+position = Vector2(2717.0571, 859.8511)
+scale = Vector2(0.9512068, 0.9512068)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1170" type="Sprite2D" parent="JohAmbDecals" unique_id=138026695]
+position = Vector2(1861.529, 1420.4307)
+scale = Vector2(0.7902783, 0.7902783)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1171" type="Sprite2D" parent="JohAmbDecals" unique_id=1146708437]
+position = Vector2(175.04968, 960.0187)
+scale = Vector2(1.0503373, 1.0503373)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1172" type="Sprite2D" parent="JohAmbDecals" unique_id=1307728629]
+position = Vector2(3029.6904, 1295.7366)
+scale = Vector2(0.8970481, 0.8970481)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1173" type="Sprite2D" parent="JohAmbDecals" unique_id=1944870394]
+position = Vector2(2882.6978, 1704.2219)
+scale = Vector2(0.7666116, 0.7666116)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1174" type="Sprite2D" parent="JohAmbDecals" unique_id=843625183]
+position = Vector2(2959.627, 1399.2434)
+scale = Vector2(0.9833047, 0.9833047)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1175" type="Sprite2D" parent="JohAmbDecals" unique_id=1677450715]
+position = Vector2(1390.9968, 841.69464)
+scale = Vector2(0.8021107, 0.8021107)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1176" type="Sprite2D" parent="JohAmbDecals" unique_id=1742270156]
+position = Vector2(3221.8574, 1314.2201)
+scale = Vector2(0.97482675, 0.97482675)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1177" type="Sprite2D" parent="JohAmbDecals" unique_id=1777039201]
+position = Vector2(1156.061, 938.6043)
+scale = Vector2(1.1281675, 1.1281675)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1178" type="Sprite2D" parent="JohAmbDecals" unique_id=1269134530]
+position = Vector2(919.6582, 1756.1993)
+scale = Vector2(0.8895854, 0.8895854)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1179" type="Sprite2D" parent="JohAmbDecals" unique_id=225828581]
+position = Vector2(4065.332, 538.1941)
+scale = Vector2(0.9644848, 0.9644848)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1180" type="Sprite2D" parent="JohAmbDecals" unique_id=1189721451]
+position = Vector2(138.13028, 1366.3274)
+scale = Vector2(0.821925, 0.821925)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1181" type="Sprite2D" parent="JohAmbDecals" unique_id=1204951408]
+position = Vector2(733.7196, 1294.014)
+scale = Vector2(0.8993769, 0.8993769)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1182" type="Sprite2D" parent="JohAmbDecals" unique_id=397238262]
+position = Vector2(327.82275, 1654.0127)
+scale = Vector2(0.8264026, 0.8264026)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1183" type="Sprite2D" parent="JohAmbDecals" unique_id=2093013760]
+position = Vector2(2876.2769, 1490.7925)
+scale = Vector2(1.0462528, 1.0462528)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1184" type="Sprite2D" parent="JohAmbDecals" unique_id=198653985]
+position = Vector2(3980.8967, 431.01672)
+scale = Vector2(0.84237945, 0.84237945)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1185" type="Sprite2D" parent="JohAmbDecals" unique_id=364314634]
+position = Vector2(2602.1306, 1409.949)
+scale = Vector2(1.0548232, 1.0548232)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1186" type="Sprite2D" parent="JohAmbDecals" unique_id=204203928]
+position = Vector2(197.4196, 1477.3137)
+scale = Vector2(1.0219235, 1.0219235)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1187" type="Sprite2D" parent="JohAmbDecals" unique_id=1049345570]
+position = Vector2(1189.8718, 1122.1279)
+scale = Vector2(0.99568605, 0.99568605)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1188" type="Sprite2D" parent="JohAmbDecals" unique_id=763900941]
+position = Vector2(2261.398, 1318.5375)
+scale = Vector2(0.905581, 0.905581)
+texture = ExtResource("21_4nuvd")
+flip_h = true
+
+[node name="@Sprite2D@1189" type="Sprite2D" parent="JohAmbDecals" unique_id=1123345894]
+position = Vector2(2927.3025, 938.1886)
+scale = Vector2(1.0466431, 1.0466431)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1190" type="Sprite2D" parent="JohAmbDecals" unique_id=258571288]
+position = Vector2(111.94797, 583.27576)
+scale = Vector2(0.98041123, 0.98041123)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1191" type="Sprite2D" parent="JohAmbDecals" unique_id=328024475]
+position = Vector2(2217.4832, 1136.7454)
+scale = Vector2(0.83515406, 0.83515406)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1192" type="Sprite2D" parent="JohAmbDecals" unique_id=1157472244]
+position = Vector2(125.26353, 1246.3125)
+scale = Vector2(0.8340992, 0.8340992)
+texture = ExtResource("11_saiyl")
+
+[node name="@Sprite2D@1193" type="Sprite2D" parent="JohAmbDecals" unique_id=1331664809]
+position = Vector2(4023.4395, 487.18677)
+scale = Vector2(0.92551744, 0.92551744)
+texture = ExtResource("11_saiyl")
+flip_h = true
+
+[node name="@Sprite2D@1194" type="Sprite2D" parent="JohAmbDecals" unique_id=576795906]
+position = Vector2(2036.7594, 1725.4546)
+scale = Vector2(0.90974754, 0.90974754)
+texture = ExtResource("20_pj0xl")
+
+[node name="@Sprite2D@1195" type="Sprite2D" parent="JohAmbDecals" unique_id=1709024653]
+position = Vector2(1933.822, 1073.9761)
+scale = Vector2(0.9041291, 0.9041291)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1196" type="Sprite2D" parent="JohAmbDecals" unique_id=1398157473]
+position = Vector2(3313.6016, 1591.403)
+scale = Vector2(0.78112215, 0.78112215)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1197" type="Sprite2D" parent="JohAmbDecals" unique_id=2070731457]
+position = Vector2(2185.8015, 1336.9452)
+scale = Vector2(0.8513651, 0.8513651)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1198" type="Sprite2D" parent="JohAmbDecals" unique_id=98535617]
+position = Vector2(115.02255, 566.25946)
+scale = Vector2(0.9599407, 0.9599407)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1199" type="Sprite2D" parent="JohAmbDecals" unique_id=66752633]
+position = Vector2(2060.9766, 1110.5386)
+scale = Vector2(0.9684828, 0.9684828)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1200" type="Sprite2D" parent="JohAmbDecals" unique_id=643977416]
+position = Vector2(770.6805, 584.4961)
+scale = Vector2(0.83742476, 0.83742476)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1201" type="Sprite2D" parent="JohAmbDecals" unique_id=970310198]
+position = Vector2(2606.604, 538.82623)
+scale = Vector2(0.8559354, 0.8559354)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1202" type="Sprite2D" parent="JohAmbDecals" unique_id=1240145821]
+position = Vector2(3328.7915, 1474.157)
+scale = Vector2(0.9405932, 0.9405932)
+texture = ExtResource("14_p158l")
+flip_h = true
+
+[node name="@Sprite2D@1203" type="Sprite2D" parent="JohAmbDecals" unique_id=806302631]
+position = Vector2(2456.6416, 1800.7102)
+scale = Vector2(0.9030358, 0.9030358)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1204" type="Sprite2D" parent="JohAmbDecals" unique_id=638989154]
+position = Vector2(2817.4094, 1699.9307)
+scale = Vector2(1.0789961, 1.0789961)
+texture = ExtResource("20_pj0xl")
+flip_h = true
+
+[node name="@Sprite2D@1205" type="Sprite2D" parent="JohAmbDecals" unique_id=1125708119]
+position = Vector2(2716.9644, 1417.6829)
+scale = Vector2(0.9156013, 0.9156013)
+texture = ExtResource("21_4nuvd")
+
+[node name="@Sprite2D@1206" type="Sprite2D" parent="JohAmbDecals" unique_id=47474192]
+position = Vector2(828.596, 740.85175)
+scale = Vector2(0.9414679, 0.9414679)
+texture = ExtResource("19_k6ogx")
+
+[node name="@Sprite2D@1207" type="Sprite2D" parent="JohAmbDecals" unique_id=1058201276]
+position = Vector2(1547.8315, 827.9112)
+scale = Vector2(0.8212627, 0.8212627)
+texture = ExtResource("12_k6nec")
+flip_h = true
+
+[node name="@Sprite2D@1208" type="Sprite2D" parent="JohAmbDecals" unique_id=1269908130]
+position = Vector2(1789.0032, 954.41504)
+scale = Vector2(0.8341183, 0.8341183)
+texture = ExtResource("12_k6nec")
+
+[node name="@Sprite2D@1209" type="Sprite2D" parent="JohAmbDecals" unique_id=782216803]
+position = Vector2(1820.0251, 491.46985)
+scale = Vector2(0.9561026, 0.9561026)
+texture = ExtResource("19_k6ogx")
+flip_h = true
+
+[node name="@Sprite2D@1210" type="Sprite2D" parent="JohAmbDecals" unique_id=2071011529]
+position = Vector2(2094.7185, 1290.2559)
+scale = Vector2(0.8290805, 0.8290805)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="@Sprite2D@1211" type="Sprite2D" parent="JohAmbDecals" unique_id=1243877957]
+position = Vector2(2666.8718, 1570.8635)
+scale = Vector2(0.85968643, 0.85968643)
+texture = ExtResource("16_0dyxk")
+
+[node name="@Sprite2D@1212" type="Sprite2D" parent="JohAmbDecals" unique_id=1788920316]
+position = Vector2(641.8652, 1332.5337)
+scale = Vector2(0.92600316, 0.92600316)
+texture = ExtResource("14_p158l")
+
+[node name="@Sprite2D@1213" type="Sprite2D" parent="JohAmbDecals" unique_id=1561190581]
+position = Vector2(325.36298, 968.6304)
+scale = Vector2(0.9370577, 0.9370577)
+texture = ExtResource("16_0dyxk")
+flip_h = true
+
+[node name="Paroi00" parent="JohAmbDecals" unique_id=684439514 instance=ExtResource("22_06aue")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(39, 192)
+
+[node name="Paroi01" parent="JohAmbDecals" unique_id=1076136330 instance=ExtResource("22_06aue")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(423, 192)
+
+[node name="Paroi02" parent="JohAmbDecals" unique_id=2085211725 instance=ExtResource("23_bqwwq")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(818, 192)
+
+[node name="Paroi03" parent="JohAmbDecals" unique_id=1568261000 instance=ExtResource("23_bqwwq")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(1202, 192)
+
+[node name="Paroi04" parent="JohAmbDecals" unique_id=849385993 instance=ExtResource("24_56d7f")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(1584, 192)
+
+[node name="Paroi05" parent="JohAmbDecals" unique_id=63658317 instance=ExtResource("23_bqwwq")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(1970, 192)
+
+[node name="Paroi06" parent="JohAmbDecals" unique_id=1395389370 instance=ExtResource("23_bqwwq")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(2354, 192)
+
+[node name="Paroi07" parent="JohAmbDecals" unique_id=87716219 instance=ExtResource("22_06aue")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(2727, 192)
+
+[node name="Paroi08" parent="JohAmbDecals" unique_id=170789516 instance=ExtResource("23_bqwwq")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(3122, 192)
+
+[node name="Paroi09" parent="JohAmbDecals" unique_id=665183355 instance=ExtResource("22_06aue")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(3495, 192)
+
+[node name="Paroi10" parent="JohAmbDecals" unique_id=1702532201 instance=ExtResource("22_06aue")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(3879, 192)
+
+[node name="Paroi11" parent="JohAmbDecals" unique_id=1284598473 instance=ExtResource("22_06aue")]
+modulate = Color(0.9, 0.9, 0.9, 1)
+position = Vector2(4071, 192)
+
+[node name="Paroi12" parent="JohAmbDecals" unique_id=1902204589 instance=ExtResource("24_56d7f")]
+position = Vector2(240, 384)
+
+[node name="Paroi13" parent="JohAmbDecals" unique_id=728446651 instance=ExtResource("23_bqwwq")]
+position = Vector2(626, 384)
+
+[node name="Paroi14" parent="JohAmbDecals" unique_id=1223461293 instance=ExtResource("24_56d7f")]
+position = Vector2(1008, 384)
+
+[node name="Paroi15" parent="JohAmbDecals" unique_id=1594525550 instance=ExtResource("24_56d7f")]
+position = Vector2(1392, 384)
+
+[node name="Paroi16" parent="JohAmbDecals" unique_id=651051350 instance=ExtResource("23_bqwwq")]
+position = Vector2(1778, 384)
+
+[node name="Paroi17" parent="JohAmbDecals" unique_id=212676230 instance=ExtResource("24_56d7f")]
+position = Vector2(2160, 384)
+
+[node name="Paroi18" parent="JohAmbDecals" unique_id=1165736654 instance=ExtResource("24_56d7f")]
+position = Vector2(2544, 384)
+
+[node name="Paroi19" parent="JohAmbDecals" unique_id=1602461049 instance=ExtResource("23_bqwwq")]
+position = Vector2(2930, 384)
+
+[node name="Paroi20" parent="JohAmbDecals" unique_id=1998012710 instance=ExtResource("23_bqwwq")]
+position = Vector2(3314, 384)
+
+[node name="Paroi21" parent="JohAmbDecals" unique_id=1382842149 instance=ExtResource("23_bqwwq")]
+position = Vector2(3698, 384)
+
+[node name="Paroi22" parent="JohAmbDecals" unique_id=144478511 instance=ExtResource("23_bqwwq")]
+position = Vector2(4082, 384)
 
 [node name="Decor" type="Node2D" parent="." unique_id=1496476224]
 
@@ -32,19 +2325,2145 @@ tile_set = ExtResource("2_33rei")
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Bat_Poste" type="Node2D" parent="Entities" unique_id=539471548 instance=ExtResource("3_563ho")]
+[node name="Bat_Poste" parent="Entities" unique_id=539471548 instance=ExtResource("3_563ho")]
+visible = false
 position = Vector2(432, 960)
-script = ExtResource("4_fq4tr")
-footprint = Array[Vector2i]([Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(2, 0)])
-fade_when_covering = true
 
-[node name="Bat_MaisonGardien" type="Node2D" parent="Entities" unique_id=2102539682 instance=ExtResource("5_ill0h")]
+[node name="Bat_MaisonGardien" parent="Entities" unique_id=2102539682 instance=ExtResource("5_ill0h")]
+visible = false
 position = Vector2(2256, 960)
-script = ExtResource("4_fq4tr")
-footprint = Array[Vector2i]([Vector2i(-3, -5), Vector2i(-2, -5), Vector2i(-1, -5), Vector2i(0, -5), Vector2i(1, -5), Vector2i(2, -5), Vector2i(3, -5), Vector2i(-3, -4), Vector2i(-2, -4), Vector2i(-1, -4), Vector2i(0, -4), Vector2i(1, -4), Vector2i(2, -4), Vector2i(3, -4), Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -3), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(3, -2), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(3, -1), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)])
-fade_when_covering = true
+
+[node name="JohAmbTuft000" type="Sprite2D" parent="Entities" unique_id=1980258940]
+material = ExtResource("27_4dbhe")
+position = Vector2(2905, 437)
+scale = Vector2(1.1880431, 1.1880431)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft001" type="Sprite2D" parent="Entities" unique_id=132418451]
+material = ExtResource("27_4dbhe")
+position = Vector2(2929, 480)
+scale = Vector2(1.0221049, 1.0221049)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft002" type="Sprite2D" parent="Entities" unique_id=1049960371]
+material = ExtResource("27_4dbhe")
+position = Vector2(3011, 437)
+scale = Vector2(1.0383954, 1.0383954)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft003" type="Sprite2D" parent="Entities" unique_id=723298514]
+material = ExtResource("27_4dbhe")
+position = Vector2(3026, 480)
+scale = Vector2(1.1513742, 1.1513742)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft004" type="Sprite2D" parent="Entities" unique_id=27706337]
+material = ExtResource("27_4dbhe")
+position = Vector2(3116, 437)
+scale = Vector2(1.1109661, 1.1109661)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft005" type="Sprite2D" parent="Entities" unique_id=840014693]
+material = ExtResource("27_4dbhe")
+position = Vector2(3121, 480)
+scale = Vector2(1.1792837, 1.1792837)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft006" type="Sprite2D" parent="Entities" unique_id=2074102933]
+material = ExtResource("27_4dbhe")
+position = Vector2(3215, 437)
+scale = Vector2(1.0659541, 1.0659541)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft007" type="Sprite2D" parent="Entities" unique_id=421860797]
+material = ExtResource("27_4dbhe")
+position = Vector2(3239, 480)
+scale = Vector2(1.1479837, 1.1479837)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft008" type="Sprite2D" parent="Entities" unique_id=240135285]
+material = ExtResource("27_4dbhe")
+position = Vector2(3293, 437)
+scale = Vector2(1.2225528, 1.2225528)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft009" type="Sprite2D" parent="Entities" unique_id=1401343243]
+material = ExtResource("27_4dbhe")
+position = Vector2(3301, 480)
+scale = Vector2(1.2693218, 1.2693218)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft010" type="Sprite2D" parent="Entities" unique_id=1800106836]
+material = ExtResource("27_4dbhe")
+position = Vector2(3427, 437)
+scale = Vector2(1.2856652, 1.2856652)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft011" type="Sprite2D" parent="Entities" unique_id=1594903258]
+material = ExtResource("27_4dbhe")
+position = Vector2(3401, 480)
+scale = Vector2(1.2627245, 1.2627245)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft012" type="Sprite2D" parent="Entities" unique_id=196924571]
+material = ExtResource("27_4dbhe")
+position = Vector2(3499, 437)
+scale = Vector2(1.2938488, 1.2938488)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft013" type="Sprite2D" parent="Entities" unique_id=1572882007]
+material = ExtResource("27_4dbhe")
+position = Vector2(3528, 480)
+scale = Vector2(1.0328723, 1.0328723)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft014" type="Sprite2D" parent="Entities" unique_id=850552483]
+material = ExtResource("27_4dbhe")
+position = Vector2(3578, 437)
+scale = Vector2(1.2352107, 1.2352107)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft015" type="Sprite2D" parent="Entities" unique_id=1320530764]
+material = ExtResource("27_4dbhe")
+position = Vector2(3582, 480)
+scale = Vector2(1.0979663, 1.0979663)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft016" type="Sprite2D" parent="Entities" unique_id=772185597]
+material = ExtResource("27_4dbhe")
+position = Vector2(2949, 533)
+scale = Vector2(1.065623, 1.065623)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft017" type="Sprite2D" parent="Entities" unique_id=317062653]
+material = ExtResource("27_4dbhe")
+position = Vector2(2915, 576)
+scale = Vector2(1.1408832, 1.1408832)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft018" type="Sprite2D" parent="Entities" unique_id=1631993827]
+material = ExtResource("27_4dbhe")
+position = Vector2(3037, 533)
+scale = Vector2(1.2840754, 1.2840754)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft019" type="Sprite2D" parent="Entities" unique_id=1754924099]
+material = ExtResource("27_4dbhe")
+position = Vector2(3006, 576)
+scale = Vector2(1.2409636, 1.2409636)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft020" type="Sprite2D" parent="Entities" unique_id=260293231]
+material = ExtResource("27_4dbhe")
+position = Vector2(3132, 533)
+scale = Vector2(1.0768139, 1.0768139)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft021" type="Sprite2D" parent="Entities" unique_id=1197798334]
+material = ExtResource("27_4dbhe")
+position = Vector2(3099, 576)
+scale = Vector2(1.0680615, 1.0680615)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft022" type="Sprite2D" parent="Entities" unique_id=1386889253]
+material = ExtResource("27_4dbhe")
+position = Vector2(3194, 533)
+scale = Vector2(1.1108657, 1.1108657)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft023" type="Sprite2D" parent="Entities" unique_id=1428091719]
+material = ExtResource("27_4dbhe")
+position = Vector2(3209, 576)
+scale = Vector2(1.2828553, 1.2828553)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft024" type="Sprite2D" parent="Entities" unique_id=1617865284]
+material = ExtResource("27_4dbhe")
+position = Vector2(3316, 533)
+scale = Vector2(1.0675758, 1.0675758)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft025" type="Sprite2D" parent="Entities" unique_id=1259024930]
+material = ExtResource("27_4dbhe")
+position = Vector2(3314, 576)
+scale = Vector2(1.0984675, 1.0984675)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft026" type="Sprite2D" parent="Entities" unique_id=561635231]
+material = ExtResource("27_4dbhe")
+position = Vector2(3414, 533)
+scale = Vector2(1.1011324, 1.1011324)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft027" type="Sprite2D" parent="Entities" unique_id=934761733]
+material = ExtResource("27_4dbhe")
+position = Vector2(3413, 576)
+scale = Vector2(1.0436554, 1.0436554)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft028" type="Sprite2D" parent="Entities" unique_id=76689832]
+material = ExtResource("27_4dbhe")
+position = Vector2(3490, 533)
+scale = Vector2(1.2940856, 1.2940856)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft029" type="Sprite2D" parent="Entities" unique_id=1970401456]
+material = ExtResource("27_4dbhe")
+position = Vector2(3515, 576)
+scale = Vector2(1.0597742, 1.0597742)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft030" type="Sprite2D" parent="Entities" unique_id=932178282]
+material = ExtResource("27_4dbhe")
+position = Vector2(3600, 533)
+scale = Vector2(1.1487212, 1.1487212)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft031" type="Sprite2D" parent="Entities" unique_id=1640028130]
+material = ExtResource("27_4dbhe")
+position = Vector2(3612, 576)
+scale = Vector2(1.1217318, 1.1217318)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft032" type="Sprite2D" parent="Entities" unique_id=343943525]
+material = ExtResource("27_4dbhe")
+position = Vector2(2950, 629)
+scale = Vector2(1.0640607, 1.0640607)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft033" type="Sprite2D" parent="Entities" unique_id=369052798]
+material = ExtResource("27_4dbhe")
+position = Vector2(2905, 672)
+scale = Vector2(1.0114444, 1.0114444)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft034" type="Sprite2D" parent="Entities" unique_id=1368050476]
+material = ExtResource("27_4dbhe")
+position = Vector2(3044, 629)
+scale = Vector2(1.155579, 1.155579)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft035" type="Sprite2D" parent="Entities" unique_id=372696797]
+material = ExtResource("27_4dbhe")
+position = Vector2(3033, 672)
+scale = Vector2(1.052623, 1.052623)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft036" type="Sprite2D" parent="Entities" unique_id=1835007954]
+material = ExtResource("27_4dbhe")
+position = Vector2(3113, 629)
+scale = Vector2(1.0967672, 1.0967672)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft037" type="Sprite2D" parent="Entities" unique_id=51448626]
+material = ExtResource("27_4dbhe")
+position = Vector2(3142, 672)
+scale = Vector2(1.1320632, 1.1320632)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft038" type="Sprite2D" parent="Entities" unique_id=1444788709]
+material = ExtResource("27_4dbhe")
+position = Vector2(3211, 629)
+scale = Vector2(1.2960116, 1.2960116)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft039" type="Sprite2D" parent="Entities" unique_id=1805139971]
+material = ExtResource("27_4dbhe")
+position = Vector2(3196, 672)
+scale = Vector2(1.1302646, 1.1302646)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft040" type="Sprite2D" parent="Entities" unique_id=81992420]
+material = ExtResource("27_4dbhe")
+position = Vector2(3331, 629)
+scale = Vector2(1.1910979, 1.1910979)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft041" type="Sprite2D" parent="Entities" unique_id=1628868797]
+material = ExtResource("27_4dbhe")
+position = Vector2(3308, 672)
+scale = Vector2(1.1095576, 1.1095576)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft042" type="Sprite2D" parent="Entities" unique_id=1407842075]
+material = ExtResource("27_4dbhe")
+position = Vector2(3411, 629)
+scale = Vector2(1.2305613, 1.2305613)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft043" type="Sprite2D" parent="Entities" unique_id=1170769731]
+material = ExtResource("27_4dbhe")
+position = Vector2(3389, 672)
+scale = Vector2(1.226712, 1.226712)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft044" type="Sprite2D" parent="Entities" unique_id=604453254]
+material = ExtResource("27_4dbhe")
+position = Vector2(3490, 629)
+scale = Vector2(1.0879431, 1.0879431)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft045" type="Sprite2D" parent="Entities" unique_id=1878367657]
+material = ExtResource("27_4dbhe")
+position = Vector2(3513, 672)
+scale = Vector2(1.185489, 1.185489)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft046" type="Sprite2D" parent="Entities" unique_id=891042426]
+material = ExtResource("27_4dbhe")
+position = Vector2(3600, 629)
+scale = Vector2(1.244587, 1.244587)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft047" type="Sprite2D" parent="Entities" unique_id=1640075680]
+material = ExtResource("27_4dbhe")
+position = Vector2(3620, 672)
+scale = Vector2(1.2813115, 1.2813115)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft048" type="Sprite2D" parent="Entities" unique_id=1507064190]
+material = ExtResource("27_4dbhe")
+position = Vector2(2933, 725)
+scale = Vector2(1.0972521, 1.0972521)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft049" type="Sprite2D" parent="Entities" unique_id=1099741591]
+material = ExtResource("27_4dbhe")
+position = Vector2(2945, 768)
+scale = Vector2(1.2905996, 1.2905996)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft050" type="Sprite2D" parent="Entities" unique_id=1775868087]
+material = ExtResource("27_4dbhe")
+position = Vector2(3008, 725)
+scale = Vector2(1.1075087, 1.1075087)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft051" type="Sprite2D" parent="Entities" unique_id=1253465067]
+material = ExtResource("27_4dbhe")
+position = Vector2(3016, 768)
+scale = Vector2(1.0748299, 1.0748299)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft052" type="Sprite2D" parent="Entities" unique_id=982070657]
+material = ExtResource("27_4dbhe")
+position = Vector2(3130, 725)
+scale = Vector2(1.1124032, 1.1124032)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft053" type="Sprite2D" parent="Entities" unique_id=158875396]
+material = ExtResource("27_4dbhe")
+position = Vector2(3116, 768)
+scale = Vector2(1.0406002, 1.0406002)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft054" type="Sprite2D" parent="Entities" unique_id=1479432224]
+material = ExtResource("27_4dbhe")
+position = Vector2(3218, 725)
+scale = Vector2(1.1042798, 1.1042798)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft055" type="Sprite2D" parent="Entities" unique_id=326759371]
+material = ExtResource("27_4dbhe")
+position = Vector2(3210, 768)
+scale = Vector2(1.1616732, 1.1616732)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft056" type="Sprite2D" parent="Entities" unique_id=1414768176]
+material = ExtResource("27_4dbhe")
+position = Vector2(3317, 725)
+scale = Vector2(1.2525342, 1.2525342)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft057" type="Sprite2D" parent="Entities" unique_id=1559464102]
+material = ExtResource("27_4dbhe")
+position = Vector2(3321, 768)
+scale = Vector2(1.0778431, 1.0778431)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft058" type="Sprite2D" parent="Entities" unique_id=1453346206]
+material = ExtResource("27_4dbhe")
+position = Vector2(3399, 725)
+scale = Vector2(1.1170421, 1.1170421)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft059" type="Sprite2D" parent="Entities" unique_id=23200052]
+material = ExtResource("27_4dbhe")
+position = Vector2(3388, 768)
+scale = Vector2(1.0095915, 1.0095915)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft060" type="Sprite2D" parent="Entities" unique_id=797206724]
+material = ExtResource("27_4dbhe")
+position = Vector2(3497, 725)
+scale = Vector2(1.0426427, 1.0426427)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft061" type="Sprite2D" parent="Entities" unique_id=1179771639]
+material = ExtResource("27_4dbhe")
+position = Vector2(3527, 768)
+scale = Vector2(1.2259127, 1.2259127)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft062" type="Sprite2D" parent="Entities" unique_id=1562753289]
+material = ExtResource("27_4dbhe")
+position = Vector2(3619, 725)
+scale = Vector2(1.1631991, 1.1631991)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft063" type="Sprite2D" parent="Entities" unique_id=390217050]
+material = ExtResource("27_4dbhe")
+position = Vector2(3581, 768)
+scale = Vector2(1.0691483, 1.0691483)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft064" type="Sprite2D" parent="Entities" unique_id=182933307]
+material = ExtResource("27_4dbhe")
+position = Vector2(2932, 821)
+scale = Vector2(1.2581513, 1.2581513)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft065" type="Sprite2D" parent="Entities" unique_id=502738905]
+material = ExtResource("27_4dbhe")
+position = Vector2(2940, 864)
+scale = Vector2(1.0855231, 1.0855231)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft066" type="Sprite2D" parent="Entities" unique_id=301259880]
+material = ExtResource("27_4dbhe")
+position = Vector2(3005, 821)
+scale = Vector2(1.1146473, 1.1146473)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft067" type="Sprite2D" parent="Entities" unique_id=1715025348]
+material = ExtResource("27_4dbhe")
+position = Vector2(3019, 864)
+scale = Vector2(1.1238328, 1.1238328)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft068" type="Sprite2D" parent="Entities" unique_id=647802117]
+material = ExtResource("27_4dbhe")
+position = Vector2(3117, 821)
+scale = Vector2(1.0242109, 1.0242109)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft069" type="Sprite2D" parent="Entities" unique_id=1647419497]
+material = ExtResource("27_4dbhe")
+position = Vector2(3101, 864)
+scale = Vector2(1.0748972, 1.0748972)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft070" type="Sprite2D" parent="Entities" unique_id=1147346886]
+material = ExtResource("27_4dbhe")
+position = Vector2(3204, 821)
+scale = Vector2(1.1042573, 1.1042573)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft071" type="Sprite2D" parent="Entities" unique_id=944206837]
+material = ExtResource("27_4dbhe")
+position = Vector2(3218, 864)
+scale = Vector2(1.2094026, 1.2094026)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft072" type="Sprite2D" parent="Entities" unique_id=2130448646]
+material = ExtResource("27_4dbhe")
+position = Vector2(3302, 821)
+scale = Vector2(1.124542, 1.124542)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft073" type="Sprite2D" parent="Entities" unique_id=834215046]
+material = ExtResource("27_4dbhe")
+position = Vector2(3309, 864)
+scale = Vector2(1.1373577, 1.1373577)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft074" type="Sprite2D" parent="Entities" unique_id=1455250938]
+material = ExtResource("27_4dbhe")
+position = Vector2(3418, 821)
+scale = Vector2(1.1416966, 1.1416966)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft075" type="Sprite2D" parent="Entities" unique_id=330243408]
+material = ExtResource("27_4dbhe")
+position = Vector2(3413, 864)
+scale = Vector2(1.2032888, 1.2032888)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft076" type="Sprite2D" parent="Entities" unique_id=1377374560]
+material = ExtResource("27_4dbhe")
+position = Vector2(3495, 821)
+scale = Vector2(1.0723803, 1.0723803)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft077" type="Sprite2D" parent="Entities" unique_id=950528498]
+material = ExtResource("27_4dbhe")
+position = Vector2(3494, 864)
+scale = Vector2(1.2176858, 1.2176858)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft078" type="Sprite2D" parent="Entities" unique_id=1121599016]
+material = ExtResource("27_4dbhe")
+position = Vector2(3610, 821)
+scale = Vector2(1.2454094, 1.2454094)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft079" type="Sprite2D" parent="Entities" unique_id=931100017]
+material = ExtResource("27_4dbhe")
+position = Vector2(3613, 864)
+scale = Vector2(1.2655897, 1.2655897)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft080" type="Sprite2D" parent="Entities" unique_id=829996887]
+material = ExtResource("27_4dbhe")
+position = Vector2(1001, 1301)
+scale = Vector2(1.2262557, 1.2262557)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft081" type="Sprite2D" parent="Entities" unique_id=1992646453]
+material = ExtResource("27_4dbhe")
+position = Vector2(1001, 1344)
+scale = Vector2(1.0757226, 1.0757226)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft082" type="Sprite2D" parent="Entities" unique_id=280051986]
+material = ExtResource("27_4dbhe")
+position = Vector2(1087, 1301)
+scale = Vector2(1.1839767, 1.1839767)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft083" type="Sprite2D" parent="Entities" unique_id=173242447]
+material = ExtResource("27_4dbhe")
+position = Vector2(1122, 1344)
+scale = Vector2(1.2345906, 1.2345906)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft084" type="Sprite2D" parent="Entities" unique_id=462992560]
+material = ExtResource("27_4dbhe")
+position = Vector2(1210, 1301)
+scale = Vector2(1.2142036, 1.2142036)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft085" type="Sprite2D" parent="Entities" unique_id=2070827300]
+material = ExtResource("27_4dbhe")
+position = Vector2(1185, 1344)
+scale = Vector2(1.2047689, 1.2047689)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft086" type="Sprite2D" parent="Entities" unique_id=617572337]
+material = ExtResource("27_4dbhe")
+position = Vector2(1306, 1301)
+scale = Vector2(1.002392, 1.002392)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft087" type="Sprite2D" parent="Entities" unique_id=2038626512]
+material = ExtResource("27_4dbhe")
+position = Vector2(1291, 1344)
+scale = Vector2(1.1137732, 1.1137732)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft088" type="Sprite2D" parent="Entities" unique_id=428622753]
+material = ExtResource("27_4dbhe")
+position = Vector2(1412, 1301)
+scale = Vector2(1.0858517, 1.0858517)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft089" type="Sprite2D" parent="Entities" unique_id=1677262500]
+material = ExtResource("27_4dbhe")
+position = Vector2(1414, 1344)
+scale = Vector2(1.2662184, 1.2662184)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft090" type="Sprite2D" parent="Entities" unique_id=1865246243]
+material = ExtResource("27_4dbhe")
+position = Vector2(1484, 1301)
+scale = Vector2(1.1948539, 1.1948539)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft091" type="Sprite2D" parent="Entities" unique_id=1407367829]
+material = ExtResource("27_4dbhe")
+position = Vector2(1464, 1344)
+scale = Vector2(1.2356348, 1.2356348)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft092" type="Sprite2D" parent="Entities" unique_id=1603977529]
+material = ExtResource("27_4dbhe")
+position = Vector2(1601, 1301)
+scale = Vector2(1.1260725, 1.1260725)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft093" type="Sprite2D" parent="Entities" unique_id=417746001]
+material = ExtResource("27_4dbhe")
+position = Vector2(1581, 1344)
+scale = Vector2(1.1792866, 1.1792866)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft094" type="Sprite2D" parent="Entities" unique_id=1624843661]
+material = ExtResource("27_4dbhe")
+position = Vector2(1003, 1397)
+scale = Vector2(1.2941006, 1.2941006)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft095" type="Sprite2D" parent="Entities" unique_id=1626260990]
+material = ExtResource("27_4dbhe")
+position = Vector2(1017, 1440)
+scale = Vector2(1.0434667, 1.0434667)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft096" type="Sprite2D" parent="Entities" unique_id=756928612]
+material = ExtResource("27_4dbhe")
+position = Vector2(1097, 1397)
+scale = Vector2(1.157053, 1.157053)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft097" type="Sprite2D" parent="Entities" unique_id=1505671111]
+material = ExtResource("27_4dbhe")
+position = Vector2(1086, 1440)
+scale = Vector2(1.0206668, 1.0206668)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft098" type="Sprite2D" parent="Entities" unique_id=1564516931]
+material = ExtResource("27_4dbhe")
+position = Vector2(1204, 1397)
+scale = Vector2(1.0537392, 1.0537392)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft099" type="Sprite2D" parent="Entities" unique_id=881499960]
+material = ExtResource("27_4dbhe")
+position = Vector2(1216, 1440)
+scale = Vector2(1.2601708, 1.2601708)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft100" type="Sprite2D" parent="Entities" unique_id=1846839283]
+material = ExtResource("27_4dbhe")
+position = Vector2(1283, 1397)
+scale = Vector2(1.0434779, 1.0434779)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft101" type="Sprite2D" parent="Entities" unique_id=1643886879]
+material = ExtResource("27_4dbhe")
+position = Vector2(1275, 1440)
+scale = Vector2(1.0083923, 1.0083923)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft102" type="Sprite2D" parent="Entities" unique_id=545402641]
+material = ExtResource("27_4dbhe")
+position = Vector2(1404, 1397)
+scale = Vector2(1.1429203, 1.1429203)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft103" type="Sprite2D" parent="Entities" unique_id=1702702247]
+material = ExtResource("27_4dbhe")
+position = Vector2(1407, 1440)
+scale = Vector2(1.1674238, 1.1674238)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft104" type="Sprite2D" parent="Entities" unique_id=1575064222]
+material = ExtResource("27_4dbhe")
+position = Vector2(1489, 1397)
+scale = Vector2(1.1841455, 1.1841455)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft105" type="Sprite2D" parent="Entities" unique_id=700796205]
+material = ExtResource("27_4dbhe")
+position = Vector2(1469, 1440)
+scale = Vector2(1.2522122, 1.2522122)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft106" type="Sprite2D" parent="Entities" unique_id=1707203725]
+material = ExtResource("27_4dbhe")
+position = Vector2(1593, 1397)
+scale = Vector2(1.059788, 1.059788)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft107" type="Sprite2D" parent="Entities" unique_id=382969292]
+material = ExtResource("27_4dbhe")
+position = Vector2(1604, 1440)
+scale = Vector2(1.2138609, 1.2138609)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft108" type="Sprite2D" parent="Entities" unique_id=1269177318]
+material = ExtResource("27_4dbhe")
+position = Vector2(990, 1493)
+scale = Vector2(1.136539, 1.136539)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft109" type="Sprite2D" parent="Entities" unique_id=1939598643]
+material = ExtResource("27_4dbhe")
+position = Vector2(1001, 1536)
+scale = Vector2(1.0846342, 1.0846342)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft110" type="Sprite2D" parent="Entities" unique_id=1438198433]
+material = ExtResource("27_4dbhe")
+position = Vector2(1096, 1493)
+scale = Vector2(1.1145806, 1.1145806)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft111" type="Sprite2D" parent="Entities" unique_id=1341709669]
+material = ExtResource("27_4dbhe")
+position = Vector2(1108, 1536)
+scale = Vector2(1.287754, 1.287754)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft112" type="Sprite2D" parent="Entities" unique_id=1428757271]
+material = ExtResource("27_4dbhe")
+position = Vector2(1198, 1493)
+scale = Vector2(1.003493, 1.003493)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft113" type="Sprite2D" parent="Entities" unique_id=375838908]
+material = ExtResource("27_4dbhe")
+position = Vector2(1198, 1536)
+scale = Vector2(1.1095908, 1.1095908)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft114" type="Sprite2D" parent="Entities" unique_id=313663130]
+material = ExtResource("27_4dbhe")
+position = Vector2(1281, 1493)
+scale = Vector2(1.0704688, 1.0704688)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft115" type="Sprite2D" parent="Entities" unique_id=1048564452]
+material = ExtResource("27_4dbhe")
+position = Vector2(1285, 1536)
+scale = Vector2(1.0259308, 1.0259308)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft116" type="Sprite2D" parent="Entities" unique_id=1223360126]
+material = ExtResource("27_4dbhe")
+position = Vector2(1406, 1493)
+scale = Vector2(1.1740646, 1.1740646)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft117" type="Sprite2D" parent="Entities" unique_id=1846174693]
+material = ExtResource("27_4dbhe")
+position = Vector2(1386, 1536)
+scale = Vector2(1.0574651, 1.0574651)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft118" type="Sprite2D" parent="Entities" unique_id=901227279]
+material = ExtResource("27_4dbhe")
+position = Vector2(1487, 1493)
+scale = Vector2(1.1397631, 1.1397631)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft119" type="Sprite2D" parent="Entities" unique_id=924210082]
+material = ExtResource("27_4dbhe")
+position = Vector2(1490, 1536)
+scale = Vector2(1.2105737, 1.2105737)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft120" type="Sprite2D" parent="Entities" unique_id=1077118332]
+material = ExtResource("27_4dbhe")
+position = Vector2(1568, 1493)
+scale = Vector2(1.1365594, 1.1365594)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft121" type="Sprite2D" parent="Entities" unique_id=1594157353]
+material = ExtResource("27_4dbhe")
+position = Vector2(1572, 1536)
+scale = Vector2(1.0612754, 1.0612754)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft122" type="Sprite2D" parent="Entities" unique_id=170319961]
+material = ExtResource("27_4dbhe")
+position = Vector2(1019, 1589)
+scale = Vector2(1.0899376, 1.0899376)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft123" type="Sprite2D" parent="Entities" unique_id=1795790429]
+material = ExtResource("27_4dbhe")
+position = Vector2(1012, 1632)
+scale = Vector2(1.131333, 1.131333)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft124" type="Sprite2D" parent="Entities" unique_id=1554215913]
+material = ExtResource("27_4dbhe")
+position = Vector2(1100, 1589)
+scale = Vector2(1.2461361, 1.2461361)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft125" type="Sprite2D" parent="Entities" unique_id=646332327]
+material = ExtResource("27_4dbhe")
+position = Vector2(1094, 1632)
+scale = Vector2(1.1008002, 1.1008002)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft126" type="Sprite2D" parent="Entities" unique_id=1039669721]
+material = ExtResource("27_4dbhe")
+position = Vector2(1185, 1589)
+scale = Vector2(1.2239561, 1.2239561)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft127" type="Sprite2D" parent="Entities" unique_id=1576343692]
+material = ExtResource("27_4dbhe")
+position = Vector2(1191, 1632)
+scale = Vector2(1.1967124, 1.1967124)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft128" type="Sprite2D" parent="Entities" unique_id=382949081]
+material = ExtResource("27_4dbhe")
+position = Vector2(1316, 1589)
+scale = Vector2(1.1611605, 1.1611605)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft129" type="Sprite2D" parent="Entities" unique_id=777246474]
+material = ExtResource("27_4dbhe")
+position = Vector2(1307, 1632)
+scale = Vector2(1.2190063, 1.2190063)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft130" type="Sprite2D" parent="Entities" unique_id=705913709]
+material = ExtResource("27_4dbhe")
+position = Vector2(1377, 1589)
+scale = Vector2(1.0290021, 1.0290021)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft131" type="Sprite2D" parent="Entities" unique_id=695938252]
+material = ExtResource("27_4dbhe")
+position = Vector2(1386, 1632)
+scale = Vector2(1.1912701, 1.1912701)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft132" type="Sprite2D" parent="Entities" unique_id=619791536]
+material = ExtResource("27_4dbhe")
+position = Vector2(1484, 1589)
+scale = Vector2(1.1117077, 1.1117077)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft133" type="Sprite2D" parent="Entities" unique_id=1299591308]
+material = ExtResource("27_4dbhe")
+position = Vector2(1488, 1632)
+scale = Vector2(1.0388255, 1.0388255)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft134" type="Sprite2D" parent="Entities" unique_id=2013167494]
+material = ExtResource("27_4dbhe")
+position = Vector2(1581, 1589)
+scale = Vector2(1.1159725, 1.1159725)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft135" type="Sprite2D" parent="Entities" unique_id=2041253245]
+material = ExtResource("27_4dbhe")
+position = Vector2(1595, 1632)
+scale = Vector2(1.2864873, 1.2864873)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft136" type="Sprite2D" parent="Entities" unique_id=400199978]
+material = ExtResource("27_4dbhe")
+position = Vector2(1003, 1685)
+scale = Vector2(1.1690673, 1.1690673)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft137" type="Sprite2D" parent="Entities" unique_id=901749771]
+material = ExtResource("27_4dbhe")
+position = Vector2(992, 1728)
+scale = Vector2(1.0170327, 1.0170327)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft138" type="Sprite2D" parent="Entities" unique_id=1731638402]
+material = ExtResource("27_4dbhe")
+position = Vector2(1108, 1685)
+scale = Vector2(1.1428275, 1.1428275)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft139" type="Sprite2D" parent="Entities" unique_id=1782258439]
+material = ExtResource("27_4dbhe")
+position = Vector2(1110, 1728)
+scale = Vector2(1.1839517, 1.1839517)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft140" type="Sprite2D" parent="Entities" unique_id=1838896333]
+material = ExtResource("27_4dbhe")
+position = Vector2(1185, 1685)
+scale = Vector2(1.1601046, 1.1601046)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft141" type="Sprite2D" parent="Entities" unique_id=1213287964]
+material = ExtResource("27_4dbhe")
+position = Vector2(1196, 1728)
+scale = Vector2(1.2570254, 1.2570254)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft142" type="Sprite2D" parent="Entities" unique_id=405221238]
+material = ExtResource("27_4dbhe")
+position = Vector2(1304, 1685)
+scale = Vector2(1.0663087, 1.0663087)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft143" type="Sprite2D" parent="Entities" unique_id=1394087227]
+material = ExtResource("27_4dbhe")
+position = Vector2(1318, 1728)
+scale = Vector2(1.0119905, 1.0119905)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft144" type="Sprite2D" parent="Entities" unique_id=65623965]
+material = ExtResource("27_4dbhe")
+position = Vector2(1409, 1685)
+scale = Vector2(1.0651118, 1.0651118)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft145" type="Sprite2D" parent="Entities" unique_id=902052674]
+material = ExtResource("27_4dbhe")
+position = Vector2(1391, 1728)
+scale = Vector2(1.2740419, 1.2740419)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft146" type="Sprite2D" parent="Entities" unique_id=1366295105]
+material = ExtResource("27_4dbhe")
+position = Vector2(1511, 1685)
+scale = Vector2(1.1831052, 1.1831052)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft147" type="Sprite2D" parent="Entities" unique_id=383088322]
+material = ExtResource("27_4dbhe")
+position = Vector2(1494, 1728)
+scale = Vector2(1.1831933, 1.1831933)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTuft148" type="Sprite2D" parent="Entities" unique_id=1197326144]
+material = ExtResource("27_4dbhe")
+position = Vector2(1566, 1685)
+scale = Vector2(1.2269298, 1.2269298)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+flip_h = true
+
+[node name="JohAmbTuft149" type="Sprite2D" parent="Entities" unique_id=1676656925]
+material = ExtResource("27_4dbhe")
+position = Vector2(1604, 1728)
+scale = Vector2(1.2138951, 1.2138951)
+texture = ExtResource("28_hyej1")
+centered = false
+offset = Vector2(-55, -95)
+
+[node name="JohAmbTree00" parent="Entities" unique_id=502823003 instance=ExtResource("29_kvfjv")]
+position = Vector2(2736, 576)
+
+[node name="JohAmbTree01" parent="Entities" unique_id=1195111225 instance=ExtResource("29_kvfjv")]
+position = Vector2(1296, 672)
+scale = Vector2(1.05, 1.05)
+
+[node name="JohAmbTree02" parent="Entities" unique_id=863129569 instance=ExtResource("29_kvfjv")]
+position = Vector2(816, 1536)
+
+[node name="JohAmbTree03" parent="Entities" unique_id=1653091386 instance=ExtResource("29_kvfjv")]
+position = Vector2(3504, 1536)
+scale = Vector2(1.05, 1.05)
+
+[node name="JohAmbTree04" parent="Entities" unique_id=1004498583 instance=ExtResource("29_kvfjv")]
+position = Vector2(3888, 1632)
+
+[node name="JohAmbPoste" parent="Entities" unique_id=1521199820 instance=ExtResource("30_x20ey")]
+position = Vector2(432, 960)
+footprint = Array[Vector2i]([])
+
+[node name="JohAmbMaisonGardien" parent="Entities" unique_id=46474065 instance=ExtResource("31_tuk5s")]
+position = Vector2(2256, 960)
+footprint = Array[Vector2i]([])
+
+[node name="JohAmbForest000" type="Sprite2D" parent="Entities" unique_id=515961303]
+modulate = Color(0.9452324, 0.9804499, 1.0165757, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2779.2815, 67.98308)
+scale = Vector2(1.0489703, 1.0489703)
+texture = ExtResource("32_ey63s")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="JohAmbForest001" type="Sprite2D" parent="Entities" unique_id=578703334]
+modulate = Color(0.90828305, 0.8883642, 0.85168403, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2701.7102, 2020.9427)
+scale = Vector2(0.8004957, 0.8004957)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="JohAmbForest002" type="Sprite2D" parent="Entities" unique_id=533333769]
+modulate = Color(0.9189706, 0.9274786, 0.99103767, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(4190.8896, 89.07083)
+scale = Vector2(0.94591916, 0.94591916)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="JohAmbForest003" type="Sprite2D" parent="Entities" unique_id=39807307]
+modulate = Color(0.96165925, 0.9907209, 0.9713382, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1973.1201, 74.37196)
+scale = Vector2(0.8698894, 0.8698894)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="JohAmbForest004" type="Sprite2D" parent="Entities" unique_id=1397749285]
+modulate = Color(0.86830014, 0.9048773, 0.9634097, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3427.6587, 83.69893)
+scale = Vector2(0.88539034, 0.88539034)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="JohAmbForest005" type="Sprite2D" parent="Entities" unique_id=1745848233]
+modulate = Color(0.88088727, 0.91339844, 0.948484, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(337.85135, 84.91056)
+scale = Vector2(1.0552557, 1.0552557)
+texture = ExtResource("32_ey63s")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="JohAmbForest006" type="Sprite2D" parent="Entities" unique_id=1217617630]
+modulate = Color(0.86614364, 0.91125184, 0.9565177, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2446.0054, 78.084114)
+scale = Vector2(0.94168997, 0.94168997)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="JohAmbForest007" type="Sprite2D" parent="Entities" unique_id=294312173]
+modulate = Color(0.885163, 0.86365545, 0.85821325, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(4048.9255, 58.914127)
+scale = Vector2(0.9904296, 0.9904296)
+texture = ExtResource("32_ey63s")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="JohAmbForest008" type="Sprite2D" parent="Entities" unique_id=2128626090]
+modulate = Color(1.0492672, 1.056716, 1.0395467, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(4151.366, 2021.2723)
+scale = Vector2(0.8016401, 0.8016401)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="JohAmbForest009" type="Sprite2D" parent="Entities" unique_id=247908451]
+modulate = Color(0.88991505, 0.9253217, 0.9112555, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(807.996, 60.946945)
+scale = Vector2(1.0185652, 1.0185652)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="JohAmbForest010" type="Sprite2D" parent="Entities" unique_id=152295852]
+modulate = Color(1.066952, 1.0427743, 1.089592, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(630.7452, 69.01613)
+scale = Vector2(0.9564062, 0.9564062)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="JohAmbForest011" type="Sprite2D" parent="Entities" unique_id=1290436178]
+modulate = Color(0.8486049, 0.8754871, 0.8665991, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1619.9424, 94.91984)
+scale = Vector2(0.9493763, 0.9493763)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="JohAmbForest012" type="Sprite2D" parent="Entities" unique_id=293967225]
+modulate = Color(0.86156154, 0.8909085, 0.9418696, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1442.2012, 77.37532)
+scale = Vector2(0.9801909, 0.9801909)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="JohAmbForest013" type="Sprite2D" parent="Entities" unique_id=764365275]
+modulate = Color(0.9755006, 0.9513148, 0.9737228, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3266.6553, 88.45964)
+scale = Vector2(0.9037176, 0.9037176)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="JohAmbForest014" type="Sprite2D" parent="Entities" unique_id=1916415482]
+modulate = Color(0.95120674, 0.9584328, 0.91436726, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1472.634, 2031.1289)
+scale = Vector2(0.83586425, 0.83586425)
+texture = ExtResource("36_xnq0c")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="JohAmbForest015" type="Sprite2D" parent="Entities" unique_id=850301524]
+modulate = Color(1.0045596, 0.99932593, 0.96036273, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2078.5374, 83.11676)
+scale = Vector2(0.85213053, 0.85213053)
+texture = ExtResource("37_yt7yh")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="JohAmbForest016" type="Sprite2D" parent="Entities" unique_id=1015924824]
+modulate = Color(0.81304, 0.84930795, 0.8799378, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(515.01874, 77.89202)
+scale = Vector2(1.1390519, 1.1390519)
+texture = ExtResource("37_yt7yh")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="JohAmbForest017" type="Sprite2D" parent="Entities" unique_id=2060694051]
+modulate = Color(0.91398644, 0.9310731, 0.9819076, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3792.3027, 89.01912)
+scale = Vector2(1.0533328, 1.0533328)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="JohAmbForest018" type="Sprite2D" parent="Entities" unique_id=305156153]
+modulate = Color(0.9591381, 1.0041304, 1.0734091, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3053.3784, 72.37642)
+scale = Vector2(0.90510124, 0.90510124)
+texture = ExtResource("38_2dpxk")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="JohAmbForest019" type="Sprite2D" parent="Entities" unique_id=1972198927]
+modulate = Color(0.85414094, 0.876337, 0.8763812, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(962.8841, 79.162445)
+scale = Vector2(0.90201604, 0.90201604)
+texture = ExtResource("38_2dpxk")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="JohAmbForest020" type="Sprite2D" parent="Entities" unique_id=242004689]
+modulate = Color(1.005171, 1.0547788, 1.0092467, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(89.23341, 93.06143)
+scale = Vector2(1.1160562, 1.1160562)
+texture = ExtResource("38_2dpxk")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="JohAmbForest021" type="Sprite2D" parent="Entities" unique_id=1529256169]
+modulate = Color(0.9455479, 0.93325466, 0.95274407, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3942.044, 2026.3796)
+scale = Vector2(0.81937397, 0.81937397)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="JohAmbForest022" type="Sprite2D" parent="Entities" unique_id=1951625154]
+modulate = Color(1.0084628, 1.024175, 1.0902984, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3662.5093, 62.634415)
+scale = Vector2(1.1125468, 1.1125468)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="JohAmbForest023" type="Sprite2D" parent="Entities" unique_id=511183092]
+modulate = Color(1.0116093, 1.0333738, 1.0662457, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2311.5693, 72.34157)
+scale = Vector2(0.93734205, 0.93734205)
+texture = ExtResource("32_ey63s")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="JohAmbForest024" type="Sprite2D" parent="Entities" unique_id=1384113943]
+modulate = Color(0.9249074, 0.90724236, 0.9221751, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3160.8564, 2021.5588)
+scale = Vector2(0.8026351, 0.8026351)
+texture = ExtResource("33_5f222")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="JohAmbForest025" type="Sprite2D" parent="Entities" unique_id=265985230]
+modulate = Color(0.9041929, 0.95124626, 0.9666984, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3534.6133, 93.40762)
+scale = Vector2(1.0815837, 1.0815837)
+texture = ExtResource("37_yt7yh")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="JohAmbForest026" type="Sprite2D" parent="Entities" unique_id=1094221887]
+modulate = Color(0.8763352, 0.8888331, 0.8976824, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1851.6185, 82.9148)
+scale = Vector2(0.9021658, 0.9021658)
+texture = ExtResource("32_ey63s")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="JohAmbForest027" type="Sprite2D" parent="Entities" unique_id=2001434964]
+modulate = Color(0.89997035, 0.9220919, 0.94005966, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3670.912, 2032.8875)
+scale = Vector2(0.8419703, 0.8419703)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="JohAmbForest028" type="Sprite2D" parent="Entities" unique_id=1205709625]
+modulate = Color(0.9610464, 0.9561223, 1.0141877, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2184.9895, 73.526054)
+scale = Vector2(1.0053794, 1.0053794)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="JohAmbForest029" type="Sprite2D" parent="Entities" unique_id=562815611]
+modulate = Color(0.86659414, 0.8645744, 0.90654284, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2436.8984, 2034.9058)
+scale = Vector2(0.8681842, 0.8681842)
+texture = ExtResource("38_2dpxk")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="JohAmbForest030" type="Sprite2D" parent="Entities" unique_id=138380694]
+modulate = Color(0.9346908, 0.9774105, 1.0114663, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2931.7888, 2025.7471)
+scale = Vector2(0.81717736, 0.81717736)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="JohAmbForest031" type="Sprite2D" parent="Entities" unique_id=1310702558]
+modulate = Color(1.0698029, 1.0514779, 1.1160384, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(3942.5547, 69.129)
+scale = Vector2(0.8600396, 0.8600396)
+texture = ExtResource("37_yt7yh")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="JohAmbForest032" type="Sprite2D" parent="Entities" unique_id=1856621639]
+modulate = Color(0.92955315, 0.955777, 0.94197994, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2218.8787, 2024.4304)
+scale = Vector2(0.8700013, 0.8700013)
+texture = ExtResource("32_ey63s")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="JohAmbForest033" type="Sprite2D" parent="Entities" unique_id=828539270]
+modulate = Color(0.9967893, 1.0241269, 1.0107834, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1140.8164, 60.511475)
+scale = Vector2(1.095892, 1.095892)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="JohAmbForest034" type="Sprite2D" parent="Entities" unique_id=1759846456]
+modulate = Color(0.97286385, 0.99489945, 0.97689605, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2551.342, 65.706696)
+scale = Vector2(0.8504886, 0.8504886)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="JohAmbForest035" type="Sprite2D" parent="Entities" unique_id=1236842376]
+modulate = Color(0.8623149, 0.8693305, 0.8374975, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2325.606, 2022.0824)
+scale = Vector2(0.8044528, 0.8044528)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="JohAmbForest036" type="Sprite2D" parent="Entities" unique_id=1120593557]
+modulate = Color(1.0382224, 1.0322305, 1.0639294, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1820.2617, 2028.8196)
+scale = Vector2(0.82784575, 0.82784575)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="JohAmbForest037" type="Sprite2D" parent="Entities" unique_id=1029077887]
+modulate = Color(0.81374824, 0.853991, 0.86273426, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1354.8599, 2031.5292)
+scale = Vector2(0.8372541, 0.8372541)
+texture = ExtResource("36_xnq0c")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="JohAmbForest038" type="Sprite2D" parent="Entities" unique_id=732547250]
+modulate = Color(0.8893128, 0.9021411, 0.9446542, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1327.9465, 92.34633)
+scale = Vector2(0.935747, 0.935747)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="JohAmbForest039" type="Sprite2D" parent="Entities" unique_id=1331017473]
+modulate = Color(0.867052, 0.8847048, 0.87355363, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2937.3784, 82.04493)
+scale = Vector2(1.0367358, 1.0367358)
+texture = ExtResource("37_yt7yh")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="JohAmbForest040" type="Sprite2D" parent="Entities" unique_id=1023672081]
+modulate = Color(0.9127413, 0.9469615, 0.9320201, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(2657.1614, 92.00119)
+scale = Vector2(1.062119, 1.062119)
+texture = ExtResource("38_2dpxk")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="JohAmbForest041" type="Sprite2D" parent="Entities" unique_id=1029976593]
+modulate = Color(1.0024418, 1.042095, 0.9927294, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(206.73401, 84.68058)
+scale = Vector2(0.91850907, 0.91850907)
+texture = ExtResource("35_2dfah")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="JohAmbForest042" type="Sprite2D" parent="Entities" unique_id=1908712523]
+modulate = Color(0.98499966, 0.990534, 1.0375314, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(1740.6211, 57.632065)
+scale = Vector2(0.90878105, 0.90878105)
+texture = ExtResource("37_yt7yh")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="JohAmbForest043" type="Sprite2D" parent="Entities" unique_id=787700338]
+modulate = Color(0.8933812, 0.8851234, 0.9180696, 1)
+material = ExtResource("27_4dbhe")
+position = Vector2(743.81195, 2032.4395)
+scale = Vector2(0.8404146, 0.8404146)
+texture = ExtResource("34_aoxv5")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="JohAmbForestBush000" type="Sprite2D" parent="Entities" unique_id=490383599]
+material = ExtResource("39_bicdj")
+position = Vector2(1209.8103, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush001" type="Sprite2D" parent="Entities" unique_id=719315606]
+material = ExtResource("39_bicdj")
+position = Vector2(2075.2764, 1915.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush002" type="Sprite2D" parent="Entities" unique_id=1188480403]
+material = ExtResource("39_bicdj")
+position = Vector2(2836.8499, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush003" type="Sprite2D" parent="Entities" unique_id=2012944416]
+material = ExtResource("39_bicdj")
+position = Vector2(3037.5579, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush004" type="Sprite2D" parent="Entities" unique_id=559878108]
+material = ExtResource("39_bicdj")
+position = Vector2(3305.7813, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush005" type="Sprite2D" parent="Entities" unique_id=1890620540]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(55.359055, 475.19998)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush006" type="Sprite2D" parent="Entities" unique_id=1081812786]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4171.584, 475.19998)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush007" type="Sprite2D" parent="Entities" unique_id=893426614]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(60.25123, 571.19995)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush008" type="Sprite2D" parent="Entities" unique_id=884954583]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4187.036, 571.19995)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush009" type="Sprite2D" parent="Entities" unique_id=105286331]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(44.182808, 667.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush010" type="Sprite2D" parent="Entities" unique_id=1374938817]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4178.804, 667.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush011" type="Sprite2D" parent="Entities" unique_id=988455741]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(40.279205, 763.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush012" type="Sprite2D" parent="Entities" unique_id=611281110]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4170.089, 763.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush013" type="Sprite2D" parent="Entities" unique_id=214625753]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(43.530853, 859.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush014" type="Sprite2D" parent="Entities" unique_id=516790074]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4165.997, 859.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush015" type="Sprite2D" parent="Entities" unique_id=2093618759]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(43.205994, 955.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush016" type="Sprite2D" parent="Entities" unique_id=695598595]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4186.7236, 955.19995)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush017" type="Sprite2D" parent="Entities" unique_id=1617176337]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(46.018127, 1051.2)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush018" type="Sprite2D" parent="Entities" unique_id=1285731513]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(42.552723, 1147.2)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush019" type="Sprite2D" parent="Entities" unique_id=1514774876]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4163.375, 1147.2)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush020" type="Sprite2D" parent="Entities" unique_id=70326586]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(51.426167, 1243.2)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush021" type="Sprite2D" parent="Entities" unique_id=884863758]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4189.581, 1243.2)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush022" type="Sprite2D" parent="Entities" unique_id=151874556]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(58.699036, 1339.2)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush023" type="Sprite2D" parent="Entities" unique_id=799863336]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4188.174, 1339.2)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush024" type="Sprite2D" parent="Entities" unique_id=636530384]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(44.35049, 1435.2)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush025" type="Sprite2D" parent="Entities" unique_id=498105860]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4170.5635, 1435.2)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush026" type="Sprite2D" parent="Entities" unique_id=1533137714]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(42.23511, 1531.2)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush027" type="Sprite2D" parent="Entities" unique_id=1510869010]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4163.0366, 1531.2)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush028" type="Sprite2D" parent="Entities" unique_id=1537460833]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(56.123337, 1627.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush029" type="Sprite2D" parent="Entities" unique_id=969334568]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4176.7964, 1627.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush030" type="Sprite2D" parent="Entities" unique_id=1872602697]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(55.40205, 1723.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush031" type="Sprite2D" parent="Entities" unique_id=339921729]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(4166.7217, 1723.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush032" type="Sprite2D" parent="Entities" unique_id=1655084182]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(56.80639, 1819.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush033" type="Sprite2D" parent="Entities" unique_id=1844283972]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(49.19864, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush034" type="Sprite2D" parent="Entities" unique_id=67190022]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(130.85767, 1915.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush035" type="Sprite2D" parent="Entities" unique_id=1426721724]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(237.07657, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush036" type="Sprite2D" parent="Entities" unique_id=1317594965]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(342.46735, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush037" type="Sprite2D" parent="Entities" unique_id=540294176]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(420.79565, 1915.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush038" type="Sprite2D" parent="Entities" unique_id=390934397]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(529.6974, 1915.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush039" type="Sprite2D" parent="Entities" unique_id=535359587]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(615.12, 1915.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush040" type="Sprite2D" parent="Entities" unique_id=343968067]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(898.9835, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush041" type="Sprite2D" parent="Entities" unique_id=1009249566]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(998.4395, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush042" type="Sprite2D" parent="Entities" unique_id=1489928754]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(1105.5562, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush043" type="Sprite2D" parent="Entities" unique_id=563979564]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(1591.2462, 1915.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+
+[node name="JohAmbForestBush044" type="Sprite2D" parent="Entities" unique_id=174088691]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(1693.0525, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush045" type="Sprite2D" parent="Entities" unique_id=1710386486]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(1973.3273, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
+
+[node name="JohAmbForestBush046" type="Sprite2D" parent="Entities" unique_id=1022060545]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(2537.9324, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush047" type="Sprite2D" parent="Entities" unique_id=1979513843]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(3415.564, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+
+[node name="JohAmbForestBush048" type="Sprite2D" parent="Entities" unique_id=453713987]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(3513.1897, 1915.2001)
+texture = ExtResource("41_h52je")
+centered = false
+offset = Vector2(-67, -116)
+flip_h = true
+
+[node name="JohAmbForestBush049" type="Sprite2D" parent="Entities" unique_id=1795974631]
+modulate = Color(0.98, 0.98, 0.9996, 1)
+material = ExtResource("39_bicdj")
+position = Vector2(3798.6523, 1915.2001)
+texture = ExtResource("40_fefkk")
+centered = false
+offset = Vector2(-72, -114)
+flip_h = true
 
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=700524035]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_33rei")
 
@@ -90,18 +4509,54 @@ position = Vector2(2256, 1056)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=842745190]
 
-[node name="NightLights" type="Node2D" parent="." unique_id=1460024373]
+[node name="NightLights" type="CanvasLayer" parent="." unique_id=1484928850]
+layer = 7
+follow_viewport_enabled = true
 
-[node name="Lampe0" type="Sprite2D" parent="NightLights" unique_id=1670187407 groups=["night_lights"]]
+[node name="Lampe00" type="Sprite2D" parent="NightLights" unique_id=531058030 groups=["night_lights"]]
 visible = false
 z_index = 5
 z_as_relative = false
-position = Vector2(2160, 1008)
+position = Vector2(432, 850)
 script = ExtResource("7_v0kei")
+glow_type = &"night_window"
 
-[node name="Lampe1" type="Sprite2D" parent="NightLights" unique_id=1511855164 groups=["night_lights"]]
+[node name="Lampe01" type="Sprite2D" parent="NightLights" unique_id=422269177 groups=["night_lights"]]
 visible = false
 z_index = 5
 z_as_relative = false
-position = Vector2(2352, 1008)
+position = Vector2(432, 850)
 script = ExtResource("7_v0kei")
+glow_type = &"night_pane"
+
+[node name="Lampe02" type="Sprite2D" parent="NightLights" unique_id=1974349890 groups=["night_lights"]]
+visible = false
+z_index = 5
+z_as_relative = false
+position = Vector2(2080, 795)
+script = ExtResource("7_v0kei")
+glow_type = &"night_window"
+
+[node name="Lampe03" type="Sprite2D" parent="NightLights" unique_id=1490861214 groups=["night_lights"]]
+visible = false
+z_index = 5
+z_as_relative = false
+position = Vector2(2430, 796)
+script = ExtResource("7_v0kei")
+glow_type = &"night_window"
+
+[node name="Lampe04" type="Sprite2D" parent="NightLights" unique_id=2082273904 groups=["night_lights"]]
+visible = false
+z_index = 5
+z_as_relative = false
+position = Vector2(2080, 795)
+script = ExtResource("7_v0kei")
+glow_type = &"night_pane"
+
+[node name="Lampe05" type="Sprite2D" parent="NightLights" unique_id=724809893 groups=["night_lights"]]
+visible = false
+z_index = 5
+z_as_relative = false
+position = Vector2(2430, 796)
+script = ExtResource("7_v0kei")
+glow_type = &"night_pane"

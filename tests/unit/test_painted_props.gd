@@ -9,6 +9,13 @@ const SCENES := "res://game/world/props/painted/"
 ## Les seuls objets peints qu'on traverse (jalon-07.md §6.6).
 ## Série 07 : murs de soutènement et escaliers de ville (la carte bloque la rangée du mur).
 const TRAVERSABLE: Array[StringName] = [&"relief_porche_antre_01", &"prop_lanterne_ebenelle_01",
+	# Mont Argenté (JOH9) : image sur des cases que la grille bloque, ou à plat.
+	&"tree_sapin_neige_01", &"relief_bouche_neige_01", &"relief_trappe_sommet_01",
+	&"relief_marches_neige_01", &"prop_rocher_neige_01", &"prop_rocher_neige_02",
+	&"prop_bloc_neige_01", &"prop_bloc_neige_02", &"prop_bloc_neige_03", &"prop_bloc_neige_04",
+	&"prop_bloc_neige_05", &"prop_bloc_neige_06", &"relief_paroi_neige_01",
+	&"relief_paroi_neige_02", &"relief_paroi_neige_03", &"relief_paroi_neige_04",
+	&"relief_givre_01", &"relief_givre_02", &"relief_givre_03", &"relief_givre_04",
 	&"relief_escalier_01", &"ground_hautes_herbes_01",
 	&"relief_muret_01", &"relief_escalier_ville_01", &"prop_portail_01", &"prop_balustrade_01",
 	# DA.0 (integration-da-bourg-route1.md) : à plat (champ, ponton, escalier en bois, rebord,
@@ -177,6 +184,9 @@ const GROUND_LAYER: Array[StringName] = [
 	&"relief_quai_bois_01", &"relief_quai_bois_02", &"relief_quai_bois_03",
 	&"relief_quai_bois_04", &"relief_quai_bois_05", &"prop_passerelle_01",
 	&"prop_nenuphars_01", &"prop_nenuphars_02", &"prop_nenuphars_03",
+	&"relief_trappe_sommet_01", &"relief_marches_neige_01", &"relief_paroi_neige_01",
+	&"relief_paroi_neige_02", &"relief_paroi_neige_03", &"relief_paroi_neige_04",
+	&"relief_givre_01", &"relief_givre_02", &"relief_givre_03", &"relief_givre_04",
 	&"relief_escalier_temple_01", &"relief_mur_alpha_01", &"relief_mur_alpha_02",
 	&"relief_mur_alpha_03", &"relief_mur_alpha_04",
 	&"relief_mur_souterrain_01", &"relief_mur_souterrain_02", &"relief_mur_souterrain_03",

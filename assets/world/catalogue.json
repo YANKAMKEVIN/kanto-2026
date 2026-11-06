@@ -11838,6 +11838,407 @@
      17
     ]
    }
+  },
+  "bldg_centre_neige_01": {
+   "fichier": "res://assets/world/buildings/bldg_centre_neige_01.png",
+   "taille": [
+    768,
+    720
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_centre_neige_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     476,
+     71
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_centre_neige_01_contact.png",
+    "decalage": [
+     -392,
+     -68
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     53
+    ]
+   }
+  },
+  "bldg_poste_route_28_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_route_28_01.png",
+   "taille": [
+    480,
+    485
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_route_28_01_shadow.png",
+    "decalage": [
+     -265,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     310,
+     49
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_route_28_01_contact.png",
+    "decalage": [
+     -248,
+     -40
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     39
+    ]
+   }
+  },
+  "bldg_maison_gardien_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_gardien_01.png",
+   "taille": [
+    672,
+    595
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_gardien_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     416,
+     59
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_gardien_01_contact.png",
+    "decalage": [
+     -344,
+     -53
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     46
+    ]
+   }
+  },
+  "tree_sapin_neige_01": {
+   "fichier": "res://assets/world/props/tree_sapin_neige_01.png",
+   "taille": [
+    230,
+    286
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_sapin_neige_01_contact.png",
+    "decalage": [
+     -123,
+     -11
+    ],
+    "echelle": 2,
+    "taille": [
+     123,
+     25
+    ]
+   }
+  },
+  "relief_bouche_neige_01": {
+   "fichier": "res://assets/world/relief/relief_bouche_neige_01.png",
+   "taille": [
+    384,
+    249
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_bouche_neige_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "relief_trappe_sommet_01": {
+   "fichier": "res://assets/world/relief/relief_trappe_sommet_01.png",
+   "taille": [
+    106,
+    95
+   ]
+  },
+  "prop_rocher_neige_01": {
+   "fichier": "res://assets/world/props/prop_rocher_neige_01.png",
+   "taille": [
+    96,
+    67
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_rocher_neige_01_contact.png",
+    "decalage": [
+     -56,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "prop_rocher_neige_02": {
+   "fichier": "res://assets/world/props/prop_rocher_neige_02.png",
+   "taille": [
+    96,
+    83
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_rocher_neige_02_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "prop_bloc_neige_01": {
+   "fichier": "res://assets/world/props/prop_bloc_neige_01.png",
+   "taille": [
+    106,
+    172
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_bloc_neige_01_contact.png",
+    "decalage": [
+     -61,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     61,
+     23
+    ]
+   }
+  },
+  "prop_bloc_neige_02": {
+   "fichier": "res://assets/world/props/prop_bloc_neige_02.png",
+   "taille": [
+    106,
+    160
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_bloc_neige_02_contact.png",
+    "decalage": [
+     -61,
+     -6
+    ],
+    "echelle": 2,
+    "taille": [
+     61,
+     22
+    ]
+   }
+  },
+  "prop_bloc_neige_03": {
+   "fichier": "res://assets/world/props/prop_bloc_neige_03.png",
+   "taille": [
+    106,
+    166
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_bloc_neige_03_contact.png",
+    "decalage": [
+     -61,
+     -7
+    ],
+    "echelle": 2,
+    "taille": [
+     61,
+     23
+    ]
+   }
+  },
+  "prop_bloc_neige_04": {
+   "fichier": "res://assets/world/props/prop_bloc_neige_04.png",
+   "taille": [
+    96,
+    82
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_bloc_neige_04_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "prop_bloc_neige_05": {
+   "fichier": "res://assets/world/props/prop_bloc_neige_05.png",
+   "taille": [
+    96,
+    82
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_bloc_neige_05_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "prop_bloc_neige_06": {
+   "fichier": "res://assets/world/props/prop_bloc_neige_06.png",
+   "taille": [
+    96,
+    77
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_bloc_neige_06_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "relief_givre_01": {
+   "fichier": "res://assets/world/relief/relief_givre_01.png",
+   "taille": [
+    288,
+    33
+   ]
+  },
+  "relief_givre_02": {
+   "fichier": "res://assets/world/relief/relief_givre_02.png",
+   "taille": [
+    288,
+    32
+   ]
+  },
+  "relief_givre_03": {
+   "fichier": "res://assets/world/relief/relief_givre_03.png",
+   "taille": [
+    288,
+    31
+   ]
+  },
+  "relief_givre_04": {
+   "fichier": "res://assets/world/relief/relief_givre_04.png",
+   "taille": [
+    288,
+    37
+   ]
+  },
+  "relief_paroi_neige_01": {
+   "fichier": "res://assets/world/relief/relief_paroi_neige_01.png",
+   "taille": [
+    479,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_neige_01_contact.png",
+    "decalage": [
+     -247,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     11
+    ]
+   }
+  },
+  "relief_paroi_neige_02": {
+   "fichier": "res://assets/world/relief/relief_paroi_neige_02.png",
+   "taille": [
+    500,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_neige_02_contact.png",
+    "decalage": [
+     -258,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     258,
+     11
+    ]
+   }
+  },
+  "relief_paroi_neige_03": {
+   "fichier": "res://assets/world/relief/relief_paroi_neige_03.png",
+   "taille": [
+    500,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_neige_03_contact.png",
+    "decalage": [
+     -258,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     258,
+     11
+    ]
+   }
+  },
+  "relief_paroi_neige_04": {
+   "fichier": "res://assets/world/relief/relief_paroi_neige_04.png",
+   "taille": [
+    495,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_neige_04_contact.png",
+    "decalage": [
+     -255,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     256,
+     11
+    ]
+   }
+  },
+  "relief_marches_neige_01": {
+   "fichier": "res://assets/world/relief/relief_marches_neige_01.png",
+   "taille": [
+    1056,
+    672
+   ]
   }
  },
  "personnages": {
@@ -17228,6 +17629,20 @@
    "taille": [
     1440,
     960
+   ]
+  },
+  "ground_neige_01": {
+   "fichier": "res://assets/world/ground/ground_neige_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_nuages_01": {
+   "fichier": "res://assets/world/ground/ground_nuages_01.png",
+   "taille": [
+    384,
+    384
    ]
   }
  }
