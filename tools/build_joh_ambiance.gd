@@ -46,6 +46,8 @@ extends SceneTree
 ## nuit. Les cases `T` du nord et de l'est deviennent de la paroi **à l'image seulement**.
 ## **Ruines d'Alpha** (JOHP1) : mêmes briques ; tente, murets, piliers et façade du temple peints
 ## (`tools/art/johp1_alpha.py`), dallage en clé « slabs », escalier en clé « floors ».
+## **Mont Argenté et Route 28** (JOH9) : neige, forêt sous la neige, parois, muraille de glace,
+## blocs et mer de nuages du sommet dans `tools/joh_ambiance_neige.gd` ; art `tools/art/joh9_argente.py`.
 ## Nœuds posés : racine `PaintedGround`, `JohAmbForestFloor`, `JohAmbDecals` (hors des couches
 ## d'emprise de `GameMap`) ; enfants préfixés `JohAmb` dans `Entities` (sans emprise propre : les
 ## cases sont celles de la grille) ; halos de `NightLights`.
@@ -58,6 +60,7 @@ extends SceneTree
 ##   À relancer après chaque reconstruction de la carte par l'outil de son jalon.
 
 const Kit := preload("res://tools/coast_map_kit.gd")
+const Neige := preload("res://tools/joh_ambiance_neige.gd")
 const PortKit := preload("res://tools/vermilion_map_kit.gd")
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const MAPS_DIR: String = "res://game/world/maps/"
@@ -86,6 +89,13 @@ const EBE_MOSS: Array[String] = ["prop_buisson_a_01", "prop_buisson_b_01", "prop
 const EBE_MOSS_SCALE: Vector2 = Vector2(0.4, 0.62)
 const EBE_MOSS_TINT := Color(0.72, 0.86, 0.62)
 const EBE_TREES: Array = [["tree_foret_05", 1.0, false], ["tree_foret_05", 1.05, true]]
+## Route 28 : versant gris de la vue générale, ardoise éclaircie [D].
+const R28_ROCK: Dictionary = {"faces": ["relief_paroi_ardoise_01", "relief_paroi_ardoise_02"],
+	"mass": "relief_paroi_ardoise_04", "slope": "relief_paroi_ardoise_03",
+	"tint": Color(1.0, 1.0, 1.0)}
+## Mont Argenté : paroi de roche grise enneigée de la vue générale [D].
+const ARG_PAROI: Dictionary = {"faces": ["relief_paroi_neige_01", "relief_paroi_neige_02"],
+	"mass": "relief_paroi_neige_04", "slope": "relief_paroi_neige_03", "tint": Color.WHITE}
 ## Carte → grille, graine, roche, texture du chemin `=` (vide : celle du kit), vitres éclairées la
 ## nuit (`night_pane` en plus de `night_window` : l'additif se perd sur les vitres claires).
 const MAPS: Dictionary = {
@@ -216,6 +226,35 @@ const MAPS: Dictionary = {
 			["prop_lanterne_ebenelle_01", Vector2(27.6, 13.02), "Lanterne5", 1.0],
 			["prop_lanterne_ebenelle_01", Vector2(11.7, 22.1), "Lanterne6", 1.0],
 			["prop_lanterne_ebenelle_01", Vector2(20.3, 22.1), "Lanterne7", 1.0]]},
+	# JOH9 : Mont Argenté et Route 28, d'après leurs vues générales. « snow » : réglages de
+	# `tools/joh_ambiance_neige.gd` (neige `n` en pavés ou en sol de base, forêt et herbes sous la
+	# neige au-dessus de la rangée « row », plantes, muraille, blocs, nuages).
+	&"silver_trail": {"plan": "silver_trail", "seed": 91201, "rock": Rock.SHORE, "path": EARTH,
+		"panes": true, "legend": {"n": "p", "D": "=", "C": "c", "R": "c"},
+		"cells": [[Rect2i(1, 25, 11, 1), "c"], [Rect2i(13, 25, 10, 1), "c"]],
+		"trees": [["tree_sapin_neige_01", 1.0, false], ["tree_sapin_neige_01", 1.05, true]],
+		"drop": ["Neige"], "hide": ["Bat_Centre"],
+		"buildings": [["bldg_centre_neige_01", Vector2i(6, 11), "CentreNeige"]],
+		"snow": {"row": 25, "paved": true, "south_tree": "tree_a_01", "plants": 90,
+			"ice": [Rect2i(1, 25, 11, 1), Rect2i(13, 25, 10, 1)]}},
+	&"mt_silver_outside": {"plan": "mt_silver_outside", "seed": 91301, "rock": Rock.SHORE_THEN_PAROI,
+		"path": EARTH, "panes": false, "paroi": ARG_PAROI, "edges": false, "meadow": false,
+		"legend": {"n": ".", "E": "."}, "trees": [["tree_sapin_neige_01", 1.0, false],
+			["tree_sapin_neige_01", 1.05, true]], "drop": ["Neige"],
+		"floors": [["relief_marches_neige_01", Vector2(19.5, 14.0), "Marches"]],
+		"props": [["relief_bouche_neige_01", Vector2(19.5, 7.0), "Bouche", 1.0]],
+		"snow": {"row": 999, "base": true, "plants": 130, "rim": 39}},
+	&"mt_silver_summit": {"plan": "mt_silver_summit", "seed": 91401, "rock": Rock.SHORE, "path": "",
+		"panes": false, "edges": false, "meadow": false,
+		"legend": {"n": ".", "D": ".", "K": "c", "c": "c", "R": "c"},
+		"drop": ["Neige", "Nuages", "Echelle16_2"],
+		"floors": [["relief_trappe_sommet_01", Vector2(16.5, 3.0), "Trappe"]],
+		"snow": {"row": 999, "base": true, "plants": 0, "blocks": true, "cloud_row": 17}},
+	&"route_28": {"plan": "route_28", "seed": 91501, "rock": Rock.SHORE_THEN_PAROI, "path": EARTH,
+		"panes": true, "edges": false, "legend": {"D": "=", "P": "c", "m": "c"},
+		"paroi": R28_ROCK, "trees": EBE_TREES, "hide": ["Bat_Poste", "Bat_MaisonGardien"],
+		"buildings": [["bldg_poste_route_28_01", Vector2i(4, 9), "Poste"],
+			["bldg_maison_gardien_01", Vector2i(23, 9), "MaisonGardien"]]},
 }
 ## Traduction des grilles du JOH1 et du JOH2 vers la légende du kit : `T` forêt, `.` herbe, `p`
 ## pavés, `=` chemin (galets à Oliville, terre ailleurs), `h` hautes herbes, `z` platelage (herbe
@@ -347,12 +386,16 @@ const WINDOWS: Dictionary = {
 	"bldg_maison_toit_01": [Vector2(-125, -105), Vector2(125, -105)],
 	"bldg_maison_aieule_01": [Vector2(-260, -180), Vector2(258, -180)],
 	"bldg_maison_ebenelle_01": [Vector2(-188, -233), Vector2(188, -233)],
+	"bldg_centre_neige_01": [Vector2(-250, -193), Vector2(255, -191), Vector2(-4, -120)],
+	"bldg_maison_gardien_01": [Vector2(-176, -165), Vector2(174, -164)],
+	"bldg_poste_route_28_01": [Vector2(0, -110)],
 }
 ## Vitres éclairées, là où elles diffèrent des halos de [constant WINDOWS] (pas sur les portes, ni
 ## sur le store de la Boutique).
 const PANES: Dictionary = {
 	"bldg_centre_01": [Vector2(-240, -190), Vector2(250, -190)],
 	"bldg_boutique_01": [Vector2(-272, -150), Vector2(228, -150)],
+	"bldg_centre_neige_01": [Vector2(-240, -190), Vector2(250, -190)],
 }
 const LAMP_HEAD: Dictionary = {
 	"prop_lampadaire_01": Vector2(0, -222), "prop_lampadaire_quai_01": Vector2(0, -160),
@@ -403,7 +446,8 @@ func _build(map_id: StringName) -> void:
 	var kit_root: Node2D = kit.call(&"make_root", "Kit", map_id, "", "", &"johto_auto",
 		NPCS_PATH % map_id)
 	kit.call(&"make_shade", spec.get("shade", SHADE_VALUE), SHADE_RED, SHADE_BLUE)
-	if not kit.call(&"add_ground", MASK_PATH % map_id, kit.call(&"forest_undergrowth")):
+	var undergrowth: Dictionary = {} if spec.has("snow") else kit.call(&"forest_undergrowth")
+	if not kit.call(&"add_ground", MASK_PATH % map_id, undergrowth):
 		if (kit.get(&"errors") as PackedStringArray).is_empty():
 			_masks += 1
 		else:
@@ -416,9 +460,11 @@ func _build(map_id: StringName) -> void:
 		painted.set(&"g_texture", load(spec["path"]))
 	var decals: Node2D = kit.get(&"decals")
 	var entities: Node2D = kit.get(&"entities")
-	kit.call(&"place_border_decals", seed_value)
-	kit.call(&"place_meadow", int(size.x * size.y * MEADOW_PER_CELL), MEADOW_FLOWER_CHANCE,
-		FLOWERS)
+	Neige.ground(painted, spec)
+	if spec.get("meadow", true):
+		kit.call(&"place_border_decals", seed_value)
+		kit.call(&"place_meadow", int(size.x * size.y * MEADOW_PER_CELL), MEADOW_FLOWER_CHANCE,
+			FLOWERS)
 	kit.call(&"place_tall_grass")
 	var deck: String = spec.get("deck", "q")
 	var planks := _place_planks(kit, decals, source.cells_of(deck))
@@ -447,6 +493,8 @@ func _build(map_id: StringName) -> void:
 	var feet: Array[Vector2] = []
 	feet.assign(counts.get("feet", []))
 	var forest: Vector2i = kit.call(&"place_forest", seed_value + 5, feet, {})
+	if spec.has("snow"):
+		Neige.dress(kit, source, decals, entities, spec)
 	var errors: PackedStringArray = kit.get(&"errors")
 	if not errors.is_empty():
 		push_error("%s :\n%s" % [map_id, "\n".join(errors)])
@@ -473,6 +521,7 @@ func _build(map_id: StringName) -> void:
 	for child: Node in (kit_root.get_node(^"Entities") as Node).get_children():
 		child.name = OWN_PREFIX + String(child.name)
 		_adopt(child, map_entities, root, kit_root)
+	Neige.clouds(root, spec)
 	var glows := _night_lights(root, counts.get("glows", []) as Array, spec["panes"])
 	kit.call(&"discard")
 	var packed := PackedScene.new()
@@ -762,7 +811,9 @@ func _johto(kit: Object, source: Object, decals: Node2D, entities: Node2D,
 			count += _place_fence_rows(kit, source, entities)
 	# Massifs roses, comme le jardin de la vue générale de Doublonville [D].
 	count += _place_flowers(kit, source, entities, ROS_HYDRANGEA_SHARE, ROS_HYDRANGEA_TINT)
-	for cell: Vector2i in source.cells_of("n"):
+	# Sur les cartes enneigées, `n` est la neige, pas un banc.
+	var benches: Array = [] if spec.has("snow") else source.cells_of("n")
+	for cell: Vector2i in benches:
 		var bench: Node2D = kit.call(&"add_prop", entities, "prop_banc_01",
 			(Vector2(cell) + Vector2(0.5, 1.0)) * TILE, "Bench%02d" % count)
 		kit.call(&"clear_footprint", bench)
@@ -1199,7 +1250,7 @@ func _clean(root: Node, spec: Dictionary) -> void:
 	var decor := root.get_node_or_null(^"Decor")
 	if decor != null:
 		for child: Node in decor.get_children():
-			if child is Polygon2D:
+			if child is Polygon2D or (spec.get("drop", []) as Array).has(String(child.name)):
 				decor.remove_child(child)
 				child.free()
 

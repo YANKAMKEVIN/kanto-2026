@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_13kbn"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_3lqk2"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_rocher_neige_01.png" id="3_4nrhy"]
+
+[node name="PropRocherNeige01" type="Node2D" unique_id=2063917180]
+script = ExtResource("1_13kbn")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1622148225]
+unique_name_in_owner = true
+material = ExtResource("2_3lqk2")
+texture = ExtResource("3_4nrhy")
+centered = false
+offset = Vector2(-48, -67)
