@@ -176,4 +176,16 @@ func test_museum_reserve_is_behind_a_cut_tree() -> void:
 	if exits.size() == 1:
 		assert_eq([exits[0].target_map, exits[0].target_spawn],
 			[&"pewter_city", &"from_museum_reserve"])
+	# Repeinte : coque visible, tuiles provisoires masquées, vitrine pleine ou vide selon l'ambre.
+	assert_not_null(reserve.get_node_or_null(^"ReserveShell"), "coque peinte")
+	assert_false((reserve.get_node(^"Ground") as CanvasItem).visible, "tuiles masquées")
+	var full := reserve.get_node(^"Entities/VitrinePleine") as FlagGate
+	var empty := reserve.get_node(^"Entities/ReserveShowcaseEmpty") as FlagGate
+	assert_eq(full.unless_flags, [&"pewter_museum_got_old_amber"] as Array[StringName])
+	assert_eq(empty.if_flags, [&"pewter_museum_got_old_amber"] as Array[StringName])
+	assert_true(reserve.get_grid().is_solid(Vector2i(5, 5)), "comptoir toujours bloquant")
+	reserve.apply_flag_gates(_flags([]))
+	assert_eq([full.visible, empty.visible], [true, false], "ambre dans la vitrine")
+	reserve.apply_flag_gates(_flags([&"pewter_museum_got_old_amber"]))
+	assert_eq([full.visible, empty.visible], [false, true], "ambre remis : vitrine vide")
 	assert_push_error_count(0)

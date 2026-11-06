@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c66eeio3tw2ry"
-path="res://.godot/imported/mewtwo_provisoire.png-e4f32e16b7c52fa15bd888007fc82689.ctex"
+uid="uid://dg8erqckgfklh"
+path="res://.godot/imported/dos_ia_065.png-95f3c3e4b26db2b3a75515414b88d9a6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/pokemon/painted/mewtwo_provisoire.png"
-dest_files=["res://.godot/imported/mewtwo_provisoire.png-e4f32e16b7c52fa15bd888007fc82689.ctex"]
+source_file="res://assets/sprites/pokemon/dos/dos_ia_065.png"
+dest_files=["res://.godot/imported/dos_ia_065.png-95f3c3e4b26db2b3a75515414b88d9a6.ctex"]
 
 [params]
 

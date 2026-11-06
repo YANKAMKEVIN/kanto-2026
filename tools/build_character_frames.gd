@@ -193,6 +193,8 @@ const LOOKS: Dictionary = {
 	# `channeler`, mutualisé avec le J19), 128 px, sans planche d'attente → [constant IDLE_FROM_WALK].
 	"pokemaniac": [CHARACTERS_DIR, "pokemaniac", ""],
 	"exorciste": [CHARACTERS_DIR, "channeler", ""],
+	# RP-147 : Médiums masculins (d'après `medium.webp`), sans planche d'attente.
+	"medium": [CHARACTERS_DIR, "psychic", ""],
 	# J20 T10 (série 22, Céladopole, planches validées le 2026-10-16) : Erika, Giovanni, Rocket en
 	# civil, Intello, Beauté, Topdresseuse, 128 px, avec leur planche d'attente.
 	"erika": [CHARACTERS_DIR, "erika", ""],
@@ -311,6 +313,11 @@ const FIXED_POKEMON: Dictionary = {
 ## identifiant de données. J24 (série 27) : Artikodin, 4 images (repos, inspire, souffle, repos).
 const LOOPING_POKEMON: Dictionary = {
 	"artikodin": "articuno",
+	# RP-132 : Sulfura (Route Victoire) et Électhor (Centrale), même boucle (repos, inspire, effet, repos).
+	"sulfura": "moltres",
+	"electhor": "zapdos",
+	# RP-141 : Mewtwo à la Grotte Azurée.
+	"mewtwo": "mewtwo",
 	# Série Johto : légendaires observés (JOH7 Tourbillon, JOH8 Tour Carillon), 4 images, de face.
 	"suicune": "suicune",
 	"raikou": "raikou",
@@ -362,6 +369,7 @@ const IDLE_FROM_WALK := {
 	# J18 T3, à l'œil : les pieds les plus rapprochés de chaque ligne de marche.
 	"pokemaniac": {"down": 0, "left": 0, "right": 0, "up": 0},
 	"exorciste": {"down": 0, "left": 0, "right": 2, "up": 0},
+	"medium": {"down": 0, "left": 0, "right": 2, "up": 0},
 	# DAF.4 reliquat, à l'œil : colonne 0 (pieds joints) de chaque ligne, sauf le profil droit (2).
 	"olga": {"down": 0, "left": 0, "right": 2, "up": 0},
 	"aldo": {"down": 0, "left": 0, "right": 2, "up": 0},
