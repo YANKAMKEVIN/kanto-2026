@@ -256,3 +256,6 @@ Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
 
 - `goldenrod_house_2_man` (Habitant) : Le soir, on entend la radio grésiller dans toute la rue. / Avant, elle passait de la musique toute la nuit.
 - `route_36_grille_parc` : La grille du Parc National est fermée. / Un écriteau : « Fermé pour entretien. »
+- `trade_terminal_item` : Utiliser {item} ?
+- `johto_return_test_before` : (Scène de test du JOH0.) Les Poké Balls de ton équipe sont là.
+- `johto_return_test_after` : Le réseau de Kanto répond de nouveau.

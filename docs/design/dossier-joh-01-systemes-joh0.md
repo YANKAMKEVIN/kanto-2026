@@ -244,11 +244,3 @@ Chaque sous-jalon : tests ciblés, puis CI complète avant fusion (règle 2 de `
 | JH-22 | ✅ Pokédex en **liste continue**, sans cases vides, filtre Kanto / Johto / Tout (Kevin) | — |
 | JH-23 | ✅ À 6 Pokémon pendant l'acte 1, **lancer refusé** (Kevin) | — |
 | JH-24 | ✅ Au retour, le joueur **choisit ses 6** (Kevin) | — |
-
-## Annexe : textes hors dossier validés par Kevin (2026-11-06)
-
-Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
-
-- `trade_terminal_item` : Utiliser {item} ?
-- `johto_return_test_before` : (Scène de test du JOH0.) Les Poké Balls de ton équipe sont là.
-- `johto_return_test_after` : Le réseau de Kanto répond de nouveau.
