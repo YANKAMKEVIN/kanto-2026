@@ -8,7 +8,7 @@
 
 ## 1. Méthode et limites
 
-- **Douze pièces vues** sur YouTube par leurs planches d'aperçu : une image toutes les 1 à 7 s sur
+- **Treize pièces vues** sur YouTube par leurs planches d'aperçu : une image toutes les 1 à 7 s sur
   toute la durée, **sans le son**. Voix off, musique et rythme exact des coupes ne sont donc pas
   analysés. Il manque aussi ce qui se passe entre deux images.
 - Le reste vient d'articles de presse et de la page Bulbapedia « Pokémon commercial », qui recense
@@ -25,6 +25,7 @@
 |---|---|---|---|---|
 | **Rouge/Vert, Japon, 1996** | 31 s | Une fille joue dans un parc, deux hommes reliés par un câble sur un banc, Psykokwak apparaît dans le parc ; deux joueurs entourés de Pokémon ; un grand cercle de joueurs, texte « amis Pokémon » | Les Pokémon entrent dans ta vie et te font des amis | ≈ 2 s |
 | **Rouge/Bleu, USA, 1998** | 31 s | Chauffeur de bus inquiétant, Pikachu monte, bus bondé de Pokémon, compacteur ; il ne reste qu'une Game Boy où ils s'agitent | Ils sont tous là-dedans, dans ta poche | Quelques secondes, à la fin |
+| **Rouge/Bleu/Jaune, réédition 3DS, France, 2016** (signalée par Kevin ; images d'époque, montage de 2016) | 2 min 23 | Sur un écran beige, Chen écrit lettre à lettre « Bienvenue dans le monde magique des Pokémon » ; le voyage entier en images d'origine, dans l'ordre : starter, Pierre, Team Rocket, Sylphe, légendaires ; le texte revient annoncer la Ligue ; les consoles et les boîtes ; **après elles, un dernier retour dans le jeu** | Refais le voyage entier, là où tout a commencé | Presque tout |
 | **Or/Argent, Japon, 1999** | 75 s (deux spots) | Vraies scènes de vie (vélo au crépuscule, enfants, jeune femme au lit la nuit) **sous-titrées par la boîte de dialogue du jeu** : « Bienvenue dans le monde… », « Pokémon qu'on ne voit que la nuit » | Le jeu suit ta journée et ta nuit | Brefs inserts |
 | **Cristal, pub anglophone, 2001** | 25 s | Aventuriers dans un temple, ils poussent une porte marquée « PULL » ; dernier gag, puis la boîte et « Gotta catch 'em all! » | L'aventure est drôle et te fait sentir plus malin | ≈ 3 s |
 | **HeartGold/SoulSilver, Japon, 2009** | 30 s | Pagode, érables, les trois starters en images de synthèse poursuivent une feuille, Pichu l'attrape ; puis le jeu : marche avec un Pokémon, combat, Pokéathlon, Pokéwalker | Un monde où les Pokémon vivent, et où ils marchent avec toi | ≈ 16 s |
@@ -61,15 +62,20 @@ Classés par force de la preuve dans les pièces vues.
    une surprise, au moins dans la version française.
 6. **Le texte qui appartient au jeu ou à la phrase.** Boîte de dialogue du jeu posée sur l'image
    (Or/Argent), ou phrase éclatée en mots géants sur l'action (GO). Dans les deux cas l'image ne
-   s'arrête pas pour le texte, à la différence de nos cartons sur fond noir.
+   s'arrête pas pour le texte, à la différence de nos cartons sur fond noir. La réédition 3DS montre
+   une troisième voie, proche de nos cartons mais plus vivante : le texte du jeu qui s'écrit lettre à
+   lettre, comme si le jeu parlait au spectateur.
 7. **L'avant/après.** Rubis Oméga part de l'ancienne image pour révéler la nouvelle : l'émotion
    vient de la comparaison. Efficace seulement pour qui a connu l'original.
 8. **Le gag ou le sourire.** Bus, porte « PULL ». Une seule idée drôle reste en mémoire.
 9. **Ce qu'on garde caché.** Le trailer GO finit sans expliquer le jeu ; le tourbillon ouvre la
-   version française sur Lugia, qu'on ne voit presque pas.
+   version française sur Lugia, qu'on ne voit presque pas. La réédition 3DS ajoute un plan de jeu
+   après les boîtes : la vidéo ne s'arrête pas sur la pub, elle rend la main au jeu.
 
-Ce qu'**aucune** pièce ne fait : raconter le début du jeu dans l'ordre. Elles vendent ce qu'on
-ressentira, pas la suite des événements.
+Une seule pièce sur treize suit le jeu dans l'ordre, la réédition 3DS. Elle parcourt tout le voyage
+jusqu'à la Ligue, s'adresse à des gens qui le connaissent déjà et dure 2 min 23. Les autres vendent
+ce qu'on ressentira, pas la suite des événements ; aucune ne s'attarde sur le début du jeu, comme
+le fait notre premier tiers.
 
 ## 4. Ce que fait la vidéo actuelle (v2.1, 46 s)
 
@@ -125,7 +131,7 @@ nuit n'existe qu'à Johto (les cartes de Kanto ne lisent pas l'heure), ce qui re
 | TR-3 | **Lesquels** si (b), et leurs noms à l'écran | À choisir parmi Tanjiro, Luffy, Iron Man, Link, Naruto, Deku, Son Goku, Batman et leurs versions joueuse | Ton choix : ceux que tes proches reconnaîtront le plus vite. Noms affichés comme dans le jeu (CO-10) |
 | TR-4 | **Qui est le héros de la vidéo** | (a) Kevin ; (b) joueur et joueuse à parts égales ; (c) joueur, la joueuse dans « Toi » | **(c)** : le fil reste simple, et chacun se reconnaît |
 | TR-5 | **Le ton** | (a) épique du début à la fin ; (b) épique avec un moment drôle (Iron Man qui surfe) | **(b)** : le côté décalé des costumes est ce que seul Pokemake a |
-| TR-6 | **Le texte** | (a) cartons sur noir actuels ; (b) boîte de dialogue du jeu sur l'image ; (c) mots géants sur l'action ; (d) rien | **(b)**, avec trois ou quatre répliques, à écrire ensemble |
+| TR-6 | **Le texte** | (a) cartons sur noir actuels ; (b) boîte de dialogue du jeu sur l'image ; (c) mots géants sur l'action ; (d) texte du jeu écrit lettre à lettre sur un fond neutre ; (e) rien | **(b)**, avec trois ou quatre répliques, à écrire ensemble |
 | TR-7 | **L'ouverture** | (a) le duo (§5) ; (b) avant/après : Bourg Palette en tuiles qui devient peint | **(a)** : (b) ne parle qu'à ceux qui ont connu l'ancienne image ; à garder si tes proches sont de ceux-là |
 
 Restent inchangés sauf avis contraire : première lecture seulement, sans sauvegarde ; un toucher
@@ -134,6 +140,7 @@ passe la vidéo ; thème du titre comme musique, avec passage à une musique de 
 ## 7. Sources
 
 Vidéos vues : [Rouge/Vert Japon](https://www.youtube.com/watch?v=z4JeRKo3Rr4) ·
+[Réédition 3DS France](https://www.youtube.com/watch?v=AEQXXM6qdsQ) ·
 [Rouge/Bleu USA](https://www.youtube.com/watch?v=5tTc8__lXkM) ·
 [Or/Argent Japon](https://www.youtube.com/watch?v=0ANflPKkWUc) ·
 [Cristal](https://www.youtube.com/watch?v=wtEtaSJqQOM) ·
