@@ -30,6 +30,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 ## Décisions de Kevin en vigueur
 
+- **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
 - **Diffusion (2026-10-24) :** jeu privé, pour Kevin et un cercle restreint de proches. Jamais de store, de lien ouvert ni de page publique.
 - **Retours des testeurs (2026-11-06) :** groupe WhatsApp.
