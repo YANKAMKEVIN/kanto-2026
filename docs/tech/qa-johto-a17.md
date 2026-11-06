@@ -44,7 +44,10 @@ Cenere, une sauvegarde, puis le rival, sans rendre la main au joueur. Après Dan
 [`rival-sans-soin-apres-dante.jpg`](qa-johto-a17/rival-sans-soin-apres-dante.jpg). Le dossier JOH-10 ne prévoit ni
 n'exclut un soin à cet endroit. La défaite n'est pas pénalisante pour l'histoire (Dante reste battu, le rival
 attend), mais il faut remonter depuis le Centre. Ce résultat vient d'un jeu sans objets : il ne mesure pas la
-difficulté. À arbitrer par Kevin.
+difficulté.
+
+**Décision de Kevin (2026-11-06) :** le rival attend. Il dit A-40, A-41, A-41b, le joueur se soigne avec son Sac
+et lui parle pour lancer le combat, après confirmation (`docs/tech/jalon-joh9.md` §2.3).
 
 ## Méthode
 

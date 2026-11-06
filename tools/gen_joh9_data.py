@@ -37,7 +37,9 @@ ROUTE28 = "johto_route28_open"
 CHAPTER = "johto_chapter_done"
 CELEBI = "johto_celebi_done"
 SUMMIT_REACHED = "johto_summit_reached"      # [D] : A-23 et A-26 à A-28 une seule fois (A-25 ensuite)
-RIVAL_MET = "johto_rival_final_met"          # [D] : A-40, A-41 une seule fois (A-45 ensuite)
+RIVAL_MET = "johto_rival_final_met"          # [D] : combat engagé une fois (A-45 ensuite)
+RIVAL_ARRIVED = "johto_rival_final_arrived"  # [D] : A-40, A-41, A-41b dits, il attend le joueur
+RIVAL_READY = "johto_rival_final_ready"      # [D] : réponse à « On y va ? » (A-41c), le temps du talk
 GREEN_BALL = "johto_green_ball_received"     # [D] : la Balle Verte reçue (A-50)
 WIND = "johto_mt_silver_wind_seen"           # [D] : A-22 une fois (entrée de la salle du vent)
 
@@ -118,6 +120,10 @@ A = {
 	"A-39": "Dante ne répond pas. Il regarde les nuages. / Cenere s'agenouille à côté de lui.",
 	"A-40": "Ouf. J'ai cru que je n'arriverais jamais. / Alors ? C'est fini ? / … Bien.",
 	"A-41": "Tu sais pourquoi je suis monté jusqu'ici ? / Pas pour lui. Pour toi. / Depuis la Ligue, je m'entraîne. Et j'ai trouvé de quoi faire évoluer mon Onix, à Johto. / Toi et moi, ce n'est pas fini.",
+	# Décision et réplique A-41b de Kevin (2026-11-06) : le joueur se soigne avec son Sac ; A-41c, A-41d [D].
+	"A-41b": "Je ne veux pas que tu aies une excuse quand je te battrai. / Soigne ton équipe. Je t'attends.",
+	"A-41c": "On y va ?",
+	"A-41d": "Prends ton temps. Je ne bouge pas.",
 	"A-42": "… Encore. / Bon. Je crois que je commence à m'y faire.",
 	"A-43": "Tu sais, à la Ligue, je t'en ai voulu. / Mais là, en bas, quand je retenais ces deux-là… / J'étais content que ce soit toi, là-haut. Ne le répète à personne.",
 	"A-44": "L'Agente a embarqué l'impétueux, en bas. / Pour ces deux-là… Laissons-les. Ils n'iront plus nulle part.",
@@ -429,52 +435,70 @@ def giovanni_steps():
 	]
 
 
-def rival_steps(approach):
-	"""A-40, A-41 (première fois) ou A-45 (retour), combat final, A-42 à A-44, A-46."""
-	steps = []
-	if approach == "arrive":
-		steps += [
-			{"spawn": "rival_sommet", "sprite": "rival_hiver", "cell": [16, 6], "facing": "left"},
-			{"move": "rival_sommet", "to": [14, 8] },
-		]
-	elif approach == "walk":
-		steps += [{"move": "player", "to": {"near": "rival_sommet", "offsets": [[-1, 0], [0, 1],
-			[0, -1]]}}]
-	steps += [
+def rival_intro_steps():
+	"""A-40, A-41, puis A-41b : il attend, le joueur garde la main (décision du 2026-11-06)."""
+	return [
 		{"face": "rival_sommet", "to": "player"},
 		{"face": "player", "to": "rival_sommet"},
-		{"dialogue": "mt_silver_rival_arrives_summit", "unless": [RIVAL_MET]},
-		{"dialogue": "mt_silver_rival_why", "unless": [RIVAL_MET]},
-		{"dialogue": "mt_silver_rival_return", "if": [RIVAL_MET]},
-		{"set": [RIVAL_MET]},
-		{"battle": "mt_silver_rival_final", "win": [RIVAL_DONE]},
-		{"wake_up": True, "unless": [RIVAL_DONE]},
-		{"dialogue": "mt_silver_rival_defeated"},
-		{"dialogue": "mt_silver_rival_after"},
-		{"dialogue": "mt_silver_rival_agente"},
-		{"dialogue": "mt_silver_rival_race"},
-		{"dialogue": "mt_silver_rival_runs"},
-		{"move": "rival_sommet", "to": [16, 3] },
-		{"despawn": "rival_sommet"},
+		{"dialogue": "mt_silver_rival_arrives_summit"},
+		{"dialogue": "mt_silver_rival_why"},
+		{"dialogue": "mt_silver_rival_wait"},
+		{"set": [RIVAL_ARRIVED]},
 	]
-	return steps
+
+
+def rival_arrival_steps():
+	"""Fin de la scène du sommet : il arrive, parle et reste à sa place, sans combat."""
+	return [
+		{"spawn": "rival_sommet", "sprite": "rival_hiver", "cell": [16, 6], "facing": "left",
+			"dialogue": "mt_silver_summit_rival_talk"},
+		{"move": "rival_sommet", "to": [14, 8]},
+	] + rival_intro_steps()
+
+
+def rival_fight_steps():
+	"""A-45 (retour), A-41c (le joueur confirme), combat final, A-42 à A-44, A-46. Sans
+	confirmation, rien ne suit ; RIVAL_READY est remis à zéro à chaque talk (défaite comprise)."""
+	won = {"if": [RIVAL_DONE]}
+	return [
+		{"unset": [RIVAL_READY]},
+		{"face": "rival_sommet", "to": "player"},
+		{"face": "player", "to": "rival_sommet"},
+		{"dialogue": "mt_silver_rival_return", "if": [RIVAL_MET]},
+		{"dialogue": "mt_silver_rival_ready"},
+		{"set": [RIVAL_MET], "if": [RIVAL_READY]},
+		{"battle": "mt_silver_rival_final", "win": [RIVAL_DONE], "if": [RIVAL_READY]},
+		{"wake_up": True, "if": [RIVAL_READY], "unless": [RIVAL_DONE]},
+		{"dialogue": "mt_silver_rival_defeated", **won},
+		{"dialogue": "mt_silver_rival_after", **won},
+		{"dialogue": "mt_silver_rival_agente", **won},
+		{"dialogue": "mt_silver_rival_race", **won},
+		{"dialogue": "mt_silver_rival_runs", **won},
+		{"move": "rival_sommet", "to": [16, 3], **won},
+		{"despawn": "rival_sommet", **won},
+		{"unset": [RIVAL_READY]},
+	]
 
 
 def summit_scene():
-	"""Déclencheur du palier (16, 5), seule sortie : Dante (puis Giovanni, Cenere, le rival) ;
-	Giovanni seul si la partie a été reprise entre les deux ; le rival seul au retour d'une
-	défaite contre lui (A-45). Aucune scène rejouée en double (dossier §13)."""
+	"""Déclencheur du palier (16, 5), seule sortie : Dante, Giovanni, Cenere, l'arrivée du rival ;
+	Giovanni seul si la partie a été reprise entre les deux. Ensuite le déclencheur ne joue plus
+	rien : le joueur peut redescendre, le rival se défie en lui parlant (dossier §13)."""
 	return {"variants": [
-		{"unless": [DANTE_WON], "steps": dante_steps() + giovanni_steps() + rival_steps("arrive")},
-		{"if": [DANTE_WON], "unless": [GIOVANNI], "steps": giovanni_steps() + rival_steps("arrive")},
-		{"if": [GIOVANNI], "unless": [RIVAL_DONE], "steps": rival_steps("walk")},
+		{"unless": [DANTE_WON], "steps": dante_steps() + giovanni_steps() + rival_arrival_steps()},
+		{"if": [DANTE_WON], "unless": [GIOVANNI], "steps": giovanni_steps() + rival_arrival_steps()},
 	]}
 
 
 def rival_talk_scene():
-	"""Le rival du sommet, si on lui parle (reprise entre Giovanni et lui : il attend devant le
-	joueur, dossier §13)."""
-	return {"variants": [{"if": [GIOVANNI], "unless": [RIVAL_DONE], "steps": rival_steps("")}]}
+	"""Le rival du sommet, si on lui parle : ses répliques d'arrivée si la partie a été reprise
+	avant elles (les parties où le combat a déjà eu lieu passent directement au combat), puis
+	le combat après confirmation."""
+	return {"variants": [
+		{"if": [GIOVANNI], "unless": [RIVAL_ARRIVED, RIVAL_MET, RIVAL_DONE],
+			"steps": rival_intro_steps()},
+		{"if": [GIOVANNI], "unless": [RIVAL_DONE], "steps": rival_fight_steps()},
+	]}
 
 
 def gate_scene():
@@ -669,6 +693,10 @@ def main():
 	dlg["mt_silver_summit_rival_talk"] = {"cutscene": "mt_silver_rival_talk"}
 	dlg["mt_silver_rival_arrives_summit"] = say(RIVAL, "A-40")
 	dlg["mt_silver_rival_why"] = say(RIVAL, "A-41")
+	dlg["mt_silver_rival_wait"] = say(RIVAL, "A-41b")
+	dlg["mt_silver_rival_ready"] = say(RIVAL, "A-41c", draft=True, choice={
+		"confirm": "EN AVANT", "cancel": "PAS ENCORE", "confirm_set": [RIVAL_READY],
+		"cancel_pages": [wrap(A["A-41d"])]})
 	dlg["mt_silver_rival_return"] = say(RIVAL, "A-45")
 	dlg["mt_silver_rival_defeated"] = say(RIVAL, "A-42")
 	dlg["mt_silver_rival_after"] = say(RIVAL, "A-43")

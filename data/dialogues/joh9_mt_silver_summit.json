@@ -171,6 +171,30 @@
 			"Toi et moi, ce n'est pas fini."
 		]
 	},
+	"mt_silver_rival_wait": {
+		"speaker": "{rival}",
+		"pages": [
+			"Je ne veux pas que tu aies une\nexcuse quand je te battrai.",
+			"Soigne ton équipe. Je t'attends."
+		]
+	},
+	"mt_silver_rival_ready": {
+		"speaker": "{rival}",
+		"draft": true,
+		"choice": {
+			"confirm": "EN AVANT",
+			"cancel": "PAS ENCORE",
+			"confirm_set": [
+				"johto_rival_final_ready"
+			],
+			"cancel_pages": [
+				"Prends ton temps. Je ne bouge pas."
+			]
+		},
+		"pages": [
+			"On y va ?"
+		]
+	},
 	"mt_silver_rival_return": {
 		"speaker": "{rival}",
 		"pages": [
