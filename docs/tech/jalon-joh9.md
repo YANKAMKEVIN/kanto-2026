@@ -84,6 +84,9 @@ Ordre du dossier §4 : `johto_rival_relay` (extérieur) → `johto_rival_healed`
   scène rejouée en double. Le rival ne se déclenche plus seul (décision de Kevin du 2026-11-06) : il
   arrive, dit A-40, A-41, A-41b et attend ; on lui parle (A-45 après une défaite), on confirme, le
   combat part. Le palier (16, 5) ne joue plus rien après Giovanni : l'échelle reste libre.
+  Simulation (100 graines, attentif, 6 Hyper Potions pour les deux combats, équipe mixte, sans objets entre les
+  deux) : Dante 57 % (N70), 81 % (N73). Rival sans soin 0 % et 5 % ; rival après soin complet 51 % et 69 %. Le
+  soin par le Sac tombe entre ces bornes selon les réserves du joueur.
 
 ### 2.4 Épilogue
 
