@@ -20,7 +20,7 @@ SRC = os.path.join(ROOT, "assets", "sprites", "pokemon")
 # nom de la planche (`pokemon/<nom>`) → (source, hauteur affichée en px, rotation de teinte)
 SHEETS = {
 	"persian": ("official/053.png", 110, 0.0),
-	"gyarados_red": ("official/130.png", 230, 0.42),
+	"gyarados_red": ("official/130.png", 360, 0.42),
 	# Arc des Pierres (JOHP3) : le Dracolosse de Corentin, le Farfuret de Cenere.
 	"dragonite": ("official/149.png", 180, 0.0),
 	"sneasel": ("official/215.png", 100, 0.0),

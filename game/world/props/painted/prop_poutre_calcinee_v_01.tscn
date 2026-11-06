@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_o4sc3"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_3pisc"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_poutre_calcinee_v_01.png" id="3_30qpy"]
+
+[node name="PropPoutreCalcineeV01" type="Node2D" unique_id=816429782]
+script = ExtResource("1_o4sc3")
+footprint = Array[Vector2i]([Vector2i(0, -4), Vector2i(0, -3), Vector2i(0, -2), Vector2i(0, -1), Vector2i(0, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1841218342]
+unique_name_in_owner = true
+material = ExtResource("2_3pisc")
+texture = ExtResource("3_30qpy")
+centered = false
+offset = Vector2(-48, -770)

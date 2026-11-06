@@ -9,6 +9,15 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/build_joh6_maps.gd [-- --maps=route_42,lake_of_rage]
 ##   godot --headless --path . --import
 ##
+## **Passe de peinture à relancer après cet outil** (il reconstruit les cartes en tuiles et en
+## aplats provisoires : toute image peinte posée par-dessus est perdue). Dans l'ordre :
+##   godot --headless --path . -s res://tools/build_joh_ambiance_caves.gd -- \
+##     --maps=burned_tower_1f,burned_tower_b1f,mahogany_hideout_b1f,mahogany_hideout_b2f,mahogany_hideout_b3f
+##   godot --headless --path . -s res://tools/build_joh6_paint_shop.gd
+## (code 2 de la première : images écrites, `--import` puis relancer). Les aplats des [FlagGate], des
+## dalles tournantes et des trous FALL gardent leur logique, la passe n'en remplace que le dessin.
+## Routes 42 et 43, Lac Colère et Acajou ont leur propre passe de peinture (`tools/build_joh_ambiance*`).
+##
 ## Construire d'abord les intérieurs d'Acajou (`build_painted_interiors.gd --acajou`) : leurs
 ## arrivées (`entrance`) sont lues dans les scènes enregistrées.
 ##
