@@ -53,7 +53,7 @@ STARTS = {
 		["johto_rival_relay", "johto_rival_healed"], "Sommet, sous la trappe : Dante, Giovanni, rival"),
 	"johto_mt_silver_rival": ("mt_silver_summit", "from_3f", "down",
 		["johto_rival_relay", "johto_rival_healed", "johto_summit_reached",
-			"johto_dante_defeated_2", "johto_giovanni_seen"], "Sommet : retour contre le rival"),
+			"johto_dante_defeated_2", "johto_giovanni_seen"], "Sommet après Giovanni : le rival attend en (14, 8), lui parler"),
 	"johto_route_28": ("mt_silver_1f", "from_2f", "down",
 		["johto_rival_relay", "johto_rival_healed", "johto_summit_reached",
 			"johto_dante_defeated_2", "johto_giovanni_seen", "johto_rival_final_met",

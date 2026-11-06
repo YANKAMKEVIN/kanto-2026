@@ -8,7 +8,7 @@ Mis à jour : 2026-11-06.
 ## Où en est le projet
 
 - **Kanto :** jalons fusionnés dans `main` jusqu'au J34 en cours. RC **0.34.1** (Kanto seul, sauvegarde v9) sur la branche `release/0.34`, qui ne passe pas par `main`.
-- **Art de Kanto :** toutes les cartes ont leur décor peint, les 202 espèces ont un dos peint, Sulfura, Électhor et Mewtwo sont peints sur la carte (`reportes.md`, RP-010, RP-132, RP-141, RP-290). Pas dans la RC 0.34.1 ; pas encore vu sur téléphone.
+- **Art de Kanto :** toutes les cartes ont leur décor peint, les 202 espèces ont un dos peint, Sulfura, Électhor et Mewtwo sont peints sur la carte (`reportes.md`, RP-010, RP-132, RP-141, RP-290). Pas dans la RC 0.34.1. Vu sur l'A17 le 2026-11-06 sans blocage, dos peints du joueur compris, à terre et sur l'eau, en tenue d'origine et en costume (`jalon-34-rapport.md` §3, ligne 9 bis) ; la joueuse et 15 costumes sur 16 restent vérifiés par la CI seule.
 - **Johto :** JOH0 à JOH9 et l'arc des Pierres (JOHP0 à JOHP3) sont dans `main`, ainsi que les personnages peints. L'arc est jouable de la Tour Radio à l'acte 2, retour de l'équipe compris.
 - **Personne n'a encore joué Johto d'un bout à l'autre.**
 - **CI :** 14 lots équilibrés par durée (`tools/ci_shard.py`, `tools/ci_test_times.json`) et cache de l'import Godot : environ 10 min au lieu de 24. Quand les lots se déséquilibrent, refaire le fichier de durées avec `tools/ci_shard.py --update <dossier des artefacts>`.
@@ -17,13 +17,12 @@ Mis à jour : 2026-11-06.
 
 1. **J34 T4 (Kevin) :** première utilisation de la RC par un proche ; consignes dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`. Go technique donné le 2026-11-05.
 2. **Johto, reste à peindre :** ce que la branche d'Ébènelle n'a pas encore livré. JOH6, JOH8 et JOH9 peints et fusionnés.
-3. **Johto, reste à vérifier sur téléphone :** combats complets contre Dante, le rival final et Cenere à l'autel ; sortie du labo après le générique ; Celebi ; scène du vol avec la joueuse.
+3. **Johto, reste à vérifier sur téléphone :** jonctions entre jalons, capture de Raikou. Le rival du sommet attend désormais le joueur (décision de Kevin du 2026-11-06). Dante, rival final, Cenere à l'autel, sortie du labo, Celebi et scène du vol avec la joueuse sont vus sur l'A17 sans blocage (`docs/tech/qa-johto-a17.md`, 2026-11-06).
 4. **Johto, reporté au JOH9 :** musiques HeartGold / SoulSilver et textes [D] encore en `draft` (voir `docs/tech/jalon-joh9.md`).
 5. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
 
 ## Questions ouvertes
 
-- Canal de retours des testeurs (J34).
 - Remise du dépôt en privé : public temporairement depuis le 2026-10-26 pour la CI GitHub, alors que la décision de diffusion prévoit un dépôt privé.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
@@ -32,6 +31,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
 - **Diffusion (2026-10-24) :** jeu privé, pour Kevin et un cercle restreint de proches. Jamais de store, de lien ouvert ni de page publique.
+- **Retours des testeurs (2026-11-06) :** groupe WhatsApp.
 - **RC :** Kanto seul pour les proches (2026-11-04). Toute nouvelle RC part de `release/0.34`, en version 0.34.2 ou plus.
 - **Son (2026-10-24) :** musiques de Let's Go Pikachu / Évoli, cris PokeAPI. Arbitrages : `docs/design/passes/son-arbitrages-kevin.md`.
 - **Art :** option B de `docs/design/phase-da-cadrage.md`, arbitrages DA-1 à DA-9. Une maquette validée par Kevin se reproduit à l'identique.

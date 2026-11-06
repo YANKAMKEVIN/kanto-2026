@@ -186,7 +186,8 @@
 							16,
 							6
 						],
-						"facing": "left"
+						"facing": "left",
+						"dialogue": "mt_silver_summit_rival_talk"
 					},
 					{
 						"move": "rival_sommet",
@@ -204,64 +205,18 @@
 						"to": "rival_sommet"
 					},
 					{
-						"dialogue": "mt_silver_rival_arrives_summit",
-						"unless": [
-							"johto_rival_final_met"
-						]
+						"dialogue": "mt_silver_rival_arrives_summit"
 					},
 					{
-						"dialogue": "mt_silver_rival_why",
-						"unless": [
-							"johto_rival_final_met"
-						]
+						"dialogue": "mt_silver_rival_why"
 					},
 					{
-						"dialogue": "mt_silver_rival_return",
-						"if": [
-							"johto_rival_final_met"
-						]
+						"dialogue": "mt_silver_rival_wait"
 					},
 					{
 						"set": [
-							"johto_rival_final_met"
+							"johto_rival_final_arrived"
 						]
-					},
-					{
-						"battle": "mt_silver_rival_final",
-						"win": [
-							"johto_rival_final_done"
-						]
-					},
-					{
-						"wake_up": true,
-						"unless": [
-							"johto_rival_final_done"
-						]
-					},
-					{
-						"dialogue": "mt_silver_rival_defeated"
-					},
-					{
-						"dialogue": "mt_silver_rival_after"
-					},
-					{
-						"dialogue": "mt_silver_rival_agente"
-					},
-					{
-						"dialogue": "mt_silver_rival_race"
-					},
-					{
-						"dialogue": "mt_silver_rival_runs"
-					},
-					{
-						"move": "rival_sommet",
-						"to": [
-							16,
-							3
-						]
-					},
-					{
-						"despawn": "rival_sommet"
 					}
 				]
 			},
@@ -388,7 +343,8 @@
 							16,
 							6
 						],
-						"facing": "left"
+						"facing": "left",
+						"dialogue": "mt_silver_summit_rival_talk"
 					},
 					{
 						"move": "rival_sommet",
@@ -406,162 +362,18 @@
 						"to": "rival_sommet"
 					},
 					{
-						"dialogue": "mt_silver_rival_arrives_summit",
-						"unless": [
-							"johto_rival_final_met"
-						]
+						"dialogue": "mt_silver_rival_arrives_summit"
 					},
 					{
-						"dialogue": "mt_silver_rival_why",
-						"unless": [
-							"johto_rival_final_met"
-						]
+						"dialogue": "mt_silver_rival_why"
 					},
 					{
-						"dialogue": "mt_silver_rival_return",
-						"if": [
-							"johto_rival_final_met"
-						]
+						"dialogue": "mt_silver_rival_wait"
 					},
 					{
 						"set": [
-							"johto_rival_final_met"
+							"johto_rival_final_arrived"
 						]
-					},
-					{
-						"battle": "mt_silver_rival_final",
-						"win": [
-							"johto_rival_final_done"
-						]
-					},
-					{
-						"wake_up": true,
-						"unless": [
-							"johto_rival_final_done"
-						]
-					},
-					{
-						"dialogue": "mt_silver_rival_defeated"
-					},
-					{
-						"dialogue": "mt_silver_rival_after"
-					},
-					{
-						"dialogue": "mt_silver_rival_agente"
-					},
-					{
-						"dialogue": "mt_silver_rival_race"
-					},
-					{
-						"dialogue": "mt_silver_rival_runs"
-					},
-					{
-						"move": "rival_sommet",
-						"to": [
-							16,
-							3
-						]
-					},
-					{
-						"despawn": "rival_sommet"
-					}
-				]
-			},
-			{
-				"if": [
-					"johto_giovanni_seen"
-				],
-				"unless": [
-					"johto_rival_final_done"
-				],
-				"steps": [
-					{
-						"move": "player",
-						"to": {
-							"near": "rival_sommet",
-							"offsets": [
-								[
-									-1,
-									0
-								],
-								[
-									0,
-									1
-								],
-								[
-									0,
-									-1
-								]
-							]
-						}
-					},
-					{
-						"face": "rival_sommet",
-						"to": "player"
-					},
-					{
-						"face": "player",
-						"to": "rival_sommet"
-					},
-					{
-						"dialogue": "mt_silver_rival_arrives_summit",
-						"unless": [
-							"johto_rival_final_met"
-						]
-					},
-					{
-						"dialogue": "mt_silver_rival_why",
-						"unless": [
-							"johto_rival_final_met"
-						]
-					},
-					{
-						"dialogue": "mt_silver_rival_return",
-						"if": [
-							"johto_rival_final_met"
-						]
-					},
-					{
-						"set": [
-							"johto_rival_final_met"
-						]
-					},
-					{
-						"battle": "mt_silver_rival_final",
-						"win": [
-							"johto_rival_final_done"
-						]
-					},
-					{
-						"wake_up": true,
-						"unless": [
-							"johto_rival_final_done"
-						]
-					},
-					{
-						"dialogue": "mt_silver_rival_defeated"
-					},
-					{
-						"dialogue": "mt_silver_rival_after"
-					},
-					{
-						"dialogue": "mt_silver_rival_agente"
-					},
-					{
-						"dialogue": "mt_silver_rival_race"
-					},
-					{
-						"dialogue": "mt_silver_rival_runs"
-					},
-					{
-						"move": "rival_sommet",
-						"to": [
-							16,
-							3
-						]
-					},
-					{
-						"despawn": "rival_sommet"
 					}
 				]
 			}
@@ -574,6 +386,8 @@
 					"johto_giovanni_seen"
 				],
 				"unless": [
+					"johto_rival_final_arrived",
+					"johto_rival_final_met",
 					"johto_rival_final_done"
 				],
 				"steps": [
@@ -586,16 +400,41 @@
 						"to": "rival_sommet"
 					},
 					{
-						"dialogue": "mt_silver_rival_arrives_summit",
-						"unless": [
-							"johto_rival_final_met"
+						"dialogue": "mt_silver_rival_arrives_summit"
+					},
+					{
+						"dialogue": "mt_silver_rival_why"
+					},
+					{
+						"dialogue": "mt_silver_rival_wait"
+					},
+					{
+						"set": [
+							"johto_rival_final_arrived"
+						]
+					}
+				]
+			},
+			{
+				"if": [
+					"johto_giovanni_seen"
+				],
+				"unless": [
+					"johto_rival_final_done"
+				],
+				"steps": [
+					{
+						"unset": [
+							"johto_rival_final_ready"
 						]
 					},
 					{
-						"dialogue": "mt_silver_rival_why",
-						"unless": [
-							"johto_rival_final_met"
-						]
+						"face": "rival_sommet",
+						"to": "player"
+					},
+					{
+						"face": "player",
+						"to": "rival_sommet"
 					},
 					{
 						"dialogue": "mt_silver_rival_return",
@@ -604,46 +443,84 @@
 						]
 					},
 					{
+						"dialogue": "mt_silver_rival_ready"
+					},
+					{
 						"set": [
 							"johto_rival_final_met"
+						],
+						"if": [
+							"johto_rival_final_ready"
 						]
 					},
 					{
 						"battle": "mt_silver_rival_final",
 						"win": [
 							"johto_rival_final_done"
+						],
+						"if": [
+							"johto_rival_final_ready"
 						]
 					},
 					{
 						"wake_up": true,
+						"if": [
+							"johto_rival_final_ready"
+						],
 						"unless": [
 							"johto_rival_final_done"
 						]
 					},
 					{
-						"dialogue": "mt_silver_rival_defeated"
+						"dialogue": "mt_silver_rival_defeated",
+						"if": [
+							"johto_rival_final_done"
+						]
 					},
 					{
-						"dialogue": "mt_silver_rival_after"
+						"dialogue": "mt_silver_rival_after",
+						"if": [
+							"johto_rival_final_done"
+						]
 					},
 					{
-						"dialogue": "mt_silver_rival_agente"
+						"dialogue": "mt_silver_rival_agente",
+						"if": [
+							"johto_rival_final_done"
+						]
 					},
 					{
-						"dialogue": "mt_silver_rival_race"
+						"dialogue": "mt_silver_rival_race",
+						"if": [
+							"johto_rival_final_done"
+						]
 					},
 					{
-						"dialogue": "mt_silver_rival_runs"
+						"dialogue": "mt_silver_rival_runs",
+						"if": [
+							"johto_rival_final_done"
+						]
 					},
 					{
 						"move": "rival_sommet",
 						"to": [
 							16,
 							3
+						],
+						"if": [
+							"johto_rival_final_done"
 						]
 					},
 					{
-						"despawn": "rival_sommet"
+						"despawn": "rival_sommet",
+						"if": [
+							"johto_rival_final_done"
+						]
+					},
+					{
+						"unset": [
+							"johto_rival_final_ready"
+						]
 					}
 				]
 			}
