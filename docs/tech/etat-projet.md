@@ -18,7 +18,7 @@ Mis à jour : 2026-11-06.
 
 1. **J34 T4 (Kevin) :** première utilisation de la RC par un proche ; consignes dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`. Go technique donné le 2026-11-05.
 2. **Johto, reste à peindre :** ce que la branche d'Ébènelle n'a pas encore livré. JOH6, JOH8 et JOH9 peints et fusionnés.
-3. **Johto, reste à vérifier sur téléphone :** jonctions entre jalons, capture de Raikou, musiques HGSS (A17 occupé le 2026-11-06 : tests et CI seuls, pas d'écoute). Le rival du sommet attend désormais le joueur (décision de Kevin du 2026-11-06). Dante, rival final, Cenere à l'autel, sortie du labo, Celebi et scène du vol avec la joueuse sont vus sur l'A17 sans blocage (`docs/tech/qa-johto-a17.md`, 2026-11-06).
+3. **Johto, reste à vérifier sur téléphone :** deuxième passe sur l'A17 faite le 2026-11-06, sans blocage (`docs/tech/qa-johto-a17-2.md`) : Tour Radio vers l'arc, retour à Rosalia et acte 2, Route 28 et Kanto libre, Raikou, Entei et Ho-Oh, rival du sommet. Restent à jouer les autres jonctions (lues sans trou), la remontée à pied depuis le Centre et l'écoute des musiques par Kevin.
 4. **Johto, textes :** textes [D] encore en `draft` (voir `docs/tech/jalon-joh9.md`).
 5. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
 
