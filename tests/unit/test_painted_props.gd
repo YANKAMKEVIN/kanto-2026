@@ -83,6 +83,8 @@ const TRAVERSABLE: Array[StringName] = [&"relief_porche_antre_01", &"prop_lanter
 	&"relief_paroi_grotte_sombre_05", &"relief_paroi_grotte_sombre_06",
 	&"relief_paroi_fendue_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
 	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
+	&"relief_mur_cendree_01", &"relief_mur_cendree_02", &"relief_mur_cendree_03",
+	&"relief_mur_cendree_04", &"relief_mur_cendree_05",
 	&"relief_escalier_tour_01",
 	# Série 22 bis : modules du repaire et du Casino (cases déjà solides ou warps de la carte).
 	&"relief_mur_repaire_01", &"relief_mur_repaire_02", &"relief_mur_repaire_03",
@@ -156,6 +158,8 @@ const GROUND_LAYER: Array[StringName] = [
 	&"int_porte_ascenseur_repaire_01", &"hideout_office_door", &"game_corner_wall",
 	&"prop_flaque_grotte_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
 	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
+	&"relief_mur_cendree_01", &"relief_mur_cendree_02", &"relief_mur_cendree_03",
+	&"relief_mur_cendree_04", &"relief_mur_cendree_05",
 	&"relief_escalier_tour_01",
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",

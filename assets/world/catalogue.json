@@ -12460,6 +12460,101 @@
     1056,
     672
    ]
+  },
+  "relief_mur_cendree_01": {
+   "fichier": "res://assets/world/relief/relief_mur_cendree_01.png",
+   "taille": [
+    192,
+    175
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_cendree_01_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_cendree_02": {
+   "fichier": "res://assets/world/relief/relief_mur_cendree_02.png",
+   "taille": [
+    192,
+    175
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_cendree_02_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_cendree_03": {
+   "fichier": "res://assets/world/relief/relief_mur_cendree_03.png",
+   "taille": [
+    192,
+    34
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_cendree_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_mur_cendree_04": {
+   "fichier": "res://assets/world/relief/relief_mur_cendree_04.png",
+   "taille": [
+    34,
+    168
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_cendree_04_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
+  },
+  "relief_mur_cendree_05": {
+   "fichier": "res://assets/world/relief/relief_mur_cendree_05.png",
+   "taille": [
+    34,
+    43
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_mur_cendree_05_contact.png",
+    "decalage": [
+     -25,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     25,
+     11
+    ]
+   }
   }
  },
  "personnages": {

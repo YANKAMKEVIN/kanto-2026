@@ -12,15 +12,15 @@
 [ext_resource type="Texture2D" path="res://assets/world/ground/ground_gravats_01.png" id="7_54qyr"]
 [ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="8_ty08i"]
 [ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="9_wxwfc"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_tour_03.png" id="10_q2miw"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_tour_01.png" id="12_my4lj"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_tour_02.png" id="13_2e2a0"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_tour_04.png" id="14_2csmv"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_cendree_03.png" id="10_b3awo"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_cendree_01.png" id="12_pmvgv"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_cendree_02.png" id="13_whbwb"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_cendree_04.png" id="14_54qyr"]
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_colonne_calcinee_01.png" id="15_8dyur"]
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_echelle_monte_01.png" id="16_ah38v"]
 [ext_resource type="Script" path="res://game/world/lighting/light_glow.gd" id="17_b3awo"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b3awo"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ty08i"]
 shader = ExtResource("3_lnagc")
 shader_parameter/grass_texture = ExtResource("4_b3awo")
 shader_parameter/paving_texture = ExtResource("7_54qyr")
@@ -60,9 +60,9 @@ tile_set = ExtResource("2_haihk")
 visible = false
 tile_set = ExtResource("2_haihk")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=1203907426]
+[node name="PaintedGround" type="Node2D" parent="." unique_id=565341291]
 z_index = -3
-material = SubResource("ShaderMaterial_b3awo")
+material = SubResource("ShaderMaterial_ty08i")
 script = ExtResource("8_ty08i")
 size = Vector2i(20, 16)
 mask = ExtResource("5_pmvgv")
@@ -70,10 +70,10 @@ base_texture = ExtResource("4_b3awo")
 r_texture = ExtResource("7_54qyr")
 g_texture = ExtResource("6_whbwb")
 
-[node name="JohAmbCaveSol" type="Node2D" parent="." unique_id=2071721061]
+[node name="JohAmbCaveSol" type="Node2D" parent="." unique_id=1976069564]
 z_index = -1
 
-[node name="Floor00" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1350935713]
+[node name="Floor00" type="Sprite2D" parent="JohAmbCaveSol" unique_id=685461505]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 96)
@@ -82,7 +82,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 96, 1728, 96)
 
-[node name="Floor01" type="Sprite2D" parent="JohAmbCaveSol" unique_id=180943541]
+[node name="Floor01" type="Sprite2D" parent="JohAmbCaveSol" unique_id=994470834]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 192)
@@ -91,7 +91,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 192, 1440, 96)
 
-[node name="Floor02" type="Sprite2D" parent="JohAmbCaveSol" unique_id=69628748]
+[node name="Floor02" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2131621173]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(1632, 192)
@@ -100,7 +100,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1632, 192, 192, 96)
 
-[node name="Floor03" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1625166195]
+[node name="Floor03" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1695475001]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 288)
@@ -109,7 +109,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 1728, 96)
 
-[node name="Floor04" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1879495030]
+[node name="Floor04" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1134153926]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 384)
@@ -118,7 +118,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 384, 1728, 96)
 
-[node name="Floor05" type="Sprite2D" parent="JohAmbCaveSol" unique_id=287156147]
+[node name="Floor05" type="Sprite2D" parent="JohAmbCaveSol" unique_id=939173977]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 480)
@@ -127,7 +127,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 480, 480, 96)
 
-[node name="Floor06" type="Sprite2D" parent="JohAmbCaveSol" unique_id=109433625]
+[node name="Floor06" type="Sprite2D" parent="JohAmbCaveSol" unique_id=152281844]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(672, 480)
@@ -136,7 +136,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(672, 480, 576, 96)
 
-[node name="Floor07" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1725900789]
+[node name="Floor07" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2141867969]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(1344, 480)
@@ -145,7 +145,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 480, 480, 96)
 
-[node name="Floor08" type="Sprite2D" parent="JohAmbCaveSol" unique_id=320368787]
+[node name="Floor08" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1768264393]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 576)
@@ -154,7 +154,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 576, 1728, 96)
 
-[node name="Floor09" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1466278598]
+[node name="Floor09" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1523223635]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 672)
@@ -163,7 +163,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 672, 1728, 96)
 
-[node name="Floor10" type="Sprite2D" parent="JohAmbCaveSol" unique_id=5464528]
+[node name="Floor10" type="Sprite2D" parent="JohAmbCaveSol" unique_id=413230111]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 768)
@@ -172,7 +172,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 768, 1728, 96)
 
-[node name="Floor11" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1767437695]
+[node name="Floor11" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1488939370]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 864)
@@ -181,7 +181,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 864, 1728, 96)
 
-[node name="Floor12" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1825486281]
+[node name="Floor12" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1663253586]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 960)
@@ -190,7 +190,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 960, 1728, 96)
 
-[node name="Floor13" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1597781417]
+[node name="Floor13" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2127496543]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(192, 1056)
@@ -199,7 +199,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(192, 1056, 96, 96)
 
-[node name="Floor14" type="Sprite2D" parent="JohAmbCaveSol" unique_id=2088027794]
+[node name="Floor14" type="Sprite2D" parent="JohAmbCaveSol" unique_id=971888608]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(480, 1056)
@@ -208,7 +208,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(480, 1056, 96, 96)
 
-[node name="Floor15" type="Sprite2D" parent="JohAmbCaveSol" unique_id=623303049]
+[node name="Floor15" type="Sprite2D" parent="JohAmbCaveSol" unique_id=179560723]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(672, 1056)
@@ -217,7 +217,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(672, 1056, 576, 96)
 
-[node name="Floor16" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1128975628]
+[node name="Floor16" type="Sprite2D" parent="JohAmbCaveSol" unique_id=665387395]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(1344, 1056)
@@ -226,7 +226,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(1344, 1056, 480, 96)
 
-[node name="Floor17" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1752438692]
+[node name="Floor17" type="Sprite2D" parent="JohAmbCaveSol" unique_id=852375610]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 1152)
@@ -235,7 +235,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 1152, 288, 96)
 
-[node name="Floor18" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1052925485]
+[node name="Floor18" type="Sprite2D" parent="JohAmbCaveSol" unique_id=6336123]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(480, 1152)
@@ -244,7 +244,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(480, 1152, 1344, 96)
 
-[node name="Floor19" type="Sprite2D" parent="JohAmbCaveSol" unique_id=195933435]
+[node name="Floor19" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1742309687]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 1248)
@@ -253,7 +253,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 1248, 288, 96)
 
-[node name="Floor20" type="Sprite2D" parent="JohAmbCaveSol" unique_id=595998023]
+[node name="Floor20" type="Sprite2D" parent="JohAmbCaveSol" unique_id=762267295]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(480, 1248)
@@ -262,7 +262,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(480, 1248, 1344, 96)
 
-[node name="Floor21" type="Sprite2D" parent="JohAmbCaveSol" unique_id=395981886]
+[node name="Floor21" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1950105180]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(96, 1344)
@@ -271,7 +271,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 1344, 288, 96)
 
-[node name="Floor22" type="Sprite2D" parent="JohAmbCaveSol" unique_id=941685745]
+[node name="Floor22" type="Sprite2D" parent="JohAmbCaveSol" unique_id=486609526]
 modulate = Color(0.6, 0.58, 0.64, 1)
 texture_repeat = 2
 position = Vector2(480, 1344)
@@ -280,97 +280,97 @@ centered = false
 region_enabled = true
 region_rect = Rect2(480, 1344, 1344, 96)
 
-[node name="Lip000" type="Sprite2D" parent="JohAmbCaveSol" unique_id=872316655]
-modulate = Color(0.58004373, 0.50270456, 0.52203935, 1)
+[node name="Lip000" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1404590246]
+modulate = Color(0.7927264, 0.77339166, 0.83139604, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(192, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip001" type="Sprite2D" parent="JohAmbCaveSol" unique_id=91534158]
-modulate = Color(0.600364, 0.52031547, 0.5403276, 1)
+[node name="Lip001" type="Sprite2D" parent="JohAmbCaveSol" unique_id=893220693]
+modulate = Color(0.82049745, 0.8004853, 0.86052173, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(384, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip002" type="Sprite2D" parent="JohAmbCaveSol" unique_id=627382914]
-modulate = Color(0.5920375, 0.51309913, 0.53283376, 1)
+[node name="Lip002" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1642711622]
+modulate = Color(0.8091179, 0.78938335, 0.8485871, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(576, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip003" type="Sprite2D" parent="JohAmbCaveSol" unique_id=605355171]
-modulate = Color(0.6134869, 0.5316886, 0.5521382, 1)
+[node name="Lip003" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1438561537]
+modulate = Color(0.838432, 0.8179825, 0.8793312, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(768, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip004" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1335467308]
-modulate = Color(0.60831267, 0.5272043, 0.5474814, 1)
+[node name="Lip004" type="Sprite2D" parent="JohAmbCaveSol" unique_id=581799489]
+modulate = Color(0.8313606, 0.8110835, 0.8719148, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(960, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip005" type="Sprite2D" parent="JohAmbCaveSol" unique_id=722186314]
-modulate = Color(0.60709727, 0.52615094, 0.54638755, 1)
+[node name="Lip005" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1471990404]
+modulate = Color(0.8296996, 0.809463, 0.87017274, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1152, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip006" type="Sprite2D" parent="JohAmbCaveSol" unique_id=951008480]
-modulate = Color(0.6183549, 0.53590757, 0.55651945, 1)
+[node name="Lip006" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1867822880]
+modulate = Color(0.845085, 0.8244732, 0.88630867, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1344, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip007" type="Sprite2D" parent="JohAmbCaveSol" unique_id=647762377]
-modulate = Color(0.59091544, 0.5121267, 0.5318239, 1)
+[node name="Lip007" type="Sprite2D" parent="JohAmbCaveSol" unique_id=434662724]
+modulate = Color(0.80758435, 0.7878872, 0.8469787, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1536, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="Lip008" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1485452425]
-modulate = Color(0.5898455, 0.51119936, 0.5308609, 1)
+[node name="Lip008" type="Sprite2D" parent="JohAmbCaveSol" unique_id=1816535392]
+modulate = Color(0.8061221, 0.7864606, 0.84544516, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1728, 1474)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -34)
 region_enabled = true
@@ -386,582 +386,582 @@ script = ExtResource("3_r71mk")
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="JohAmbCaveFace000" type="Sprite2D" parent="Entities" unique_id=1188416422]
-modulate = Color(0.59663194, 0.51708096, 0.53696877, 1)
+[node name="JohAmbCaveFace000" type="Sprite2D" parent="Entities" unique_id=339346298]
+modulate = Color(0.81539696, 0.7955093, 0.85517246, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(192, 96)
-texture = ExtResource("12_my4lj")
+texture = ExtResource("12_pmvgv")
 centered = false
 offset = Vector2(-96, -62)
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop000" type="Sprite2D" parent="Entities" unique_id=415694679]
-modulate = Color(0.6181172, 0.5357016, 0.5563055, 1)
+[node name="JohAmbCaveFaceTop000" type="Sprite2D" parent="Entities" unique_id=813704656]
+modulate = Color(0.8447602, 0.8241563, 0.885968, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(192, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace001" type="Sprite2D" parent="Entities" unique_id=1678220634]
-modulate = Color(0.5850201, 0.50701743, 0.5265181, 1)
+[node name="JohAmbCaveFace001" type="Sprite2D" parent="Entities" unique_id=19657754]
+modulate = Color(0.79952747, 0.78002685, 0.8385289, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(384, 96)
-texture = ExtResource("13_2e2a0")
+texture = ExtResource("13_whbwb")
 centered = false
 offset = Vector2(-96, -62)
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop001" type="Sprite2D" parent="Entities" unique_id=1123480713]
-modulate = Color(0.57654005, 0.49966797, 0.518886, 1)
+[node name="JohAmbCaveFaceTop001" type="Sprite2D" parent="Entities" unique_id=938118974]
+modulate = Color(0.787938, 0.76872003, 0.826374, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(384, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace002" type="Sprite2D" parent="Entities" unique_id=2080246886]
-modulate = Color(0.60020447, 0.5201771, 0.540184, 1)
+[node name="JohAmbCaveFace002" type="Sprite2D" parent="Entities" unique_id=1462277387]
+modulate = Color(0.82027936, 0.8002726, 0.86029303, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(576, 96)
-texture = ExtResource("13_2e2a0")
+texture = ExtResource("13_whbwb")
 centered = false
 offset = Vector2(-96, -62)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop002" type="Sprite2D" parent="Entities" unique_id=1977959947]
-modulate = Color(0.5915342, 0.51266295, 0.5323808, 1)
+[node name="JohAmbCaveFaceTop002" type="Sprite2D" parent="Entities" unique_id=1462629768]
+modulate = Color(0.8084301, 0.78871226, 0.8478657, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(576, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace003" type="Sprite2D" parent="Entities" unique_id=368589514]
-modulate = Color(0.5936689, 0.51451296, 0.534302, 1)
+[node name="JohAmbCaveFace003" type="Sprite2D" parent="Entities" unique_id=1886194213]
+modulate = Color(0.8113474, 0.79155844, 0.8509253, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(768, 96)
-texture = ExtResource("12_my4lj")
+texture = ExtResource("12_pmvgv")
 centered = false
 offset = Vector2(-96, -62)
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop003" type="Sprite2D" parent="Entities" unique_id=328126338]
-modulate = Color(0.6058913, 0.5251058, 0.54530215, 1)
+[node name="JohAmbCaveFaceTop003" type="Sprite2D" parent="Entities" unique_id=617037371]
+modulate = Color(0.8280514, 0.80785507, 0.8684442, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(768, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace004" type="Sprite2D" parent="Entities" unique_id=31122137]
-modulate = Color(0.5948109, 0.51550275, 0.5353298, 1)
+[node name="JohAmbCaveFace004" type="Sprite2D" parent="Entities" unique_id=633437528]
+modulate = Color(0.8129082, 0.79308116, 0.85256225, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(960, 96)
-texture = ExtResource("12_my4lj")
+texture = ExtResource("12_pmvgv")
 centered = false
 offset = Vector2(-96, -62)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop004" type="Sprite2D" parent="Entities" unique_id=1991986281]
-modulate = Color(0.6007436, 0.5206444, 0.54066926, 1)
+[node name="JohAmbCaveFaceTop004" type="Sprite2D" parent="Entities" unique_id=1649390475]
+modulate = Color(0.8210162, 0.8009915, 0.8610658, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(960, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace005" type="Sprite2D" parent="Entities" unique_id=1452587092]
-modulate = Color(0.58211505, 0.5044997, 0.52390355, 1)
+[node name="JohAmbCaveFace005" type="Sprite2D" parent="Entities" unique_id=7466864]
+modulate = Color(0.7955572, 0.7761534, 0.8343649, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1152, 96)
-texture = ExtResource("12_my4lj")
+texture = ExtResource("12_pmvgv")
 centered = false
 offset = Vector2(-96, -62)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop005" type="Sprite2D" parent="Entities" unique_id=926747111]
-modulate = Color(0.58816713, 0.5097448, 0.52935046, 1)
+[node name="JohAmbCaveFaceTop005" type="Sprite2D" parent="Entities" unique_id=1962054812]
+modulate = Color(0.8038284, 0.78422284, 0.8430396, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1152, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace006" type="Sprite2D" parent="Entities" unique_id=455926609]
-modulate = Color(0.5872385, 0.50894, 0.5285146, 1)
+[node name="JohAmbCaveFace006" type="Sprite2D" parent="Entities" unique_id=331476176]
+modulate = Color(0.80255926, 0.7829847, 0.8417085, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1344, 96)
-texture = ExtResource("13_2e2a0")
+texture = ExtResource("13_whbwb")
 centered = false
 offset = Vector2(-96, -62)
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop006" type="Sprite2D" parent="Entities" unique_id=2137029430]
-modulate = Color(0.5922214, 0.5132585, 0.5329993, 1)
+[node name="JohAmbCaveFaceTop006" type="Sprite2D" parent="Entities" unique_id=1327719868]
+modulate = Color(0.8093692, 0.7896285, 0.84885067, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1344, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace007" type="Sprite2D" parent="Entities" unique_id=546681457]
-modulate = Color(0.6148873, 0.5329023, 0.55339855, 1)
+[node name="JohAmbCaveFace007" type="Sprite2D" parent="Entities" unique_id=714299562]
+modulate = Color(0.8403459, 0.81984967, 0.8813384, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1536, 96)
-texture = ExtResource("12_my4lj")
+texture = ExtResource("12_pmvgv")
 centered = false
 offset = Vector2(-96, -62)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop007" type="Sprite2D" parent="Entities" unique_id=760066587]
-modulate = Color(0.59601974, 0.5165504, 0.5364178, 1)
+[node name="JohAmbCaveFaceTop007" type="Sprite2D" parent="Entities" unique_id=1331884801]
+modulate = Color(0.8145603, 0.794693, 0.85429496, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1536, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveFace008" type="Sprite2D" parent="Entities" unique_id=1530462841]
-modulate = Color(0.60573936, 0.5249741, 0.5451654, 1)
+[node name="JohAmbCaveFace008" type="Sprite2D" parent="Entities" unique_id=940566033]
+modulate = Color(0.8278438, 0.8076525, 0.8682264, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1728, 96)
-texture = ExtResource("13_2e2a0")
+texture = ExtResource("13_whbwb")
 centered = false
 offset = Vector2(-96, -62)
 region_enabled = true
 region_rect = Rect2(0, 113, 192, 62)
 
-[node name="JohAmbCaveFaceTop008" type="Sprite2D" parent="Entities" unique_id=1835154760]
-modulate = Color(0.6116725, 0.53011614, 0.5505052, 1)
+[node name="JohAmbCaveFaceTop008" type="Sprite2D" parent="Entities" unique_id=1061905465]
+modulate = Color(0.8359524, 0.8155633, 0.87673056, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1728, 96)
-texture = ExtResource("10_q2miw")
+texture = ExtResource("10_b3awo")
 centered = false
 offset = Vector2(-96, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 34)
 
-[node name="JohAmbCaveSide000" type="Sprite2D" parent="Entities" unique_id=76574054]
-modulate = Color(0.5865762, 0.50836605, 0.52791864, 1)
+[node name="JohAmbCaveSide000" type="Sprite2D" parent="Entities" unique_id=1307099154]
+modulate = Color(0.80165416, 0.78210163, 0.8407593, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 192)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="JohAmbCaveSide001" type="Sprite2D" parent="Entities" unique_id=280347462]
-modulate = Color(0.60653645, 0.52566487, 0.5458828, 1)
+[node name="JohAmbCaveSide001" type="Sprite2D" parent="Entities" unique_id=742505399]
+modulate = Color(0.8289331, 0.8087153, 0.8693689, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 288)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide002" type="Sprite2D" parent="Entities" unique_id=2061860381]
-modulate = Color(0.58532095, 0.5072781, 0.52678883, 1)
+[node name="JohAmbCaveSide002" type="Sprite2D" parent="Entities" unique_id=1395605545]
+modulate = Color(0.79993856, 0.7804279, 0.83896, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 384)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide003" type="Sprite2D" parent="Entities" unique_id=247220578]
-modulate = Color(0.59653574, 0.5169976, 0.53688216, 1)
+[node name="JohAmbCaveSide003" type="Sprite2D" parent="Entities" unique_id=223301710]
+modulate = Color(0.8152654, 0.79538095, 0.85503453, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 480)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide004" type="Sprite2D" parent="Entities" unique_id=1648479428]
-modulate = Color(0.61491805, 0.53292894, 0.55342627, 1)
+[node name="JohAmbCaveSide004" type="Sprite2D" parent="Entities" unique_id=680274192]
+modulate = Color(0.84038794, 0.8198907, 0.8813825, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 576)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide005" type="Sprite2D" parent="Entities" unique_id=942070008]
-modulate = Color(0.6189304, 0.53640634, 0.55703735, 1)
+[node name="JohAmbCaveSide005" type="Sprite2D" parent="Entities" unique_id=237830195]
+modulate = Color(0.8458715, 0.82524055, 0.8871336, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 672)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide006" type="Sprite2D" parent="Entities" unique_id=1494031031]
-modulate = Color(0.583728, 0.5058976, 0.5253552, 1)
+[node name="JohAmbCaveSide006" type="Sprite2D" parent="Entities" unique_id=1809780814]
+modulate = Color(0.79776156, 0.778304, 0.8366768, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 768)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide007" type="Sprite2D" parent="Entities" unique_id=1092419754]
-modulate = Color(0.6132415, 0.5314759, 0.5519173, 1)
+[node name="JohAmbCaveSide007" type="Sprite2D" parent="Entities" unique_id=2023526492]
+modulate = Color(0.8380967, 0.81765527, 0.87897944, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 864)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide008" type="Sprite2D" parent="Entities" unique_id=1027532918]
-modulate = Color(0.5930968, 0.51401716, 0.53378713, 1)
+[node name="JohAmbCaveSide008" type="Sprite2D" parent="Entities" unique_id=168049277]
+modulate = Color(0.8105656, 0.79079574, 0.8501054, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 960)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide009" type="Sprite2D" parent="Entities" unique_id=957196443]
-modulate = Color(0.60189766, 0.5216446, 0.5417079, 1)
+[node name="JohAmbCaveSide009" type="Sprite2D" parent="Entities" unique_id=501953467]
+modulate = Color(0.82259345, 0.8025302, 0.86271995, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 1056)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide010" type="Sprite2D" parent="Entities" unique_id=1449744915]
-modulate = Color(0.6210082, 0.5382071, 0.5589074, 1)
+[node name="JohAmbCaveSide010" type="Sprite2D" parent="Entities" unique_id=678330523]
+modulate = Color(0.8487112, 0.828011, 0.8901118, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 1152)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide011" type="Sprite2D" parent="Entities" unique_id=773638903]
-modulate = Color(0.6026798, 0.5223225, 0.5424118, 1)
+[node name="JohAmbCaveSide011" type="Sprite2D" parent="Entities" unique_id=1527753567]
+modulate = Color(0.82366234, 0.8035731, 0.86384106, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 1248)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide012" type="Sprite2D" parent="Entities" unique_id=1962769126]
-modulate = Color(0.6020531, 0.5217793, 0.54184777, 1)
+[node name="JohAmbCaveSide012" type="Sprite2D" parent="Entities" unique_id=1803952314]
+modulate = Color(0.8228059, 0.8027374, 0.86294276, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 1344)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide013" type="Sprite2D" parent="Entities" unique_id=641358602]
-modulate = Color(0.62116134, 0.5383398, 0.55904526, 1)
+[node name="JohAmbCaveSide013" type="Sprite2D" parent="Entities" unique_id=137128342]
+modulate = Color(0.84892046, 0.8282151, 0.89033127, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(79, 1440)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 region_enabled = true
 region_rect = Rect2(0, 72, 34, 96)
 
-[node name="JohAmbCaveSide014" type="Sprite2D" parent="Entities" unique_id=1682083012]
-modulate = Color(0.5812626, 0.5037609, 0.5231364, 1)
+[node name="JohAmbCaveSide014" type="Sprite2D" parent="Entities" unique_id=1296413810]
+modulate = Color(0.79439217, 0.7750168, 0.83314306, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 192)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 34, 96)
 
-[node name="JohAmbCaveSide015" type="Sprite2D" parent="Entities" unique_id=1328364575]
-modulate = Color(0.5793761, 0.5021259, 0.5214385, 1)
+[node name="JohAmbCaveSide015" type="Sprite2D" parent="Entities" unique_id=2011004358]
+modulate = Color(0.79181397, 0.7725014, 0.83043903, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 288)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide016" type="Sprite2D" parent="Entities" unique_id=248036324]
-modulate = Color(0.5829076, 0.50518656, 0.52461684, 1)
+[node name="JohAmbCaveSide016" type="Sprite2D" parent="Entities" unique_id=292392649]
+modulate = Color(0.79664034, 0.7772101, 0.83550084, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 384)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide017" type="Sprite2D" parent="Entities" unique_id=1692116267]
-modulate = Color(0.6177381, 0.53537303, 0.55596435, 1)
+[node name="JohAmbCaveSide017" type="Sprite2D" parent="Entities" unique_id=1373216156]
+modulate = Color(0.8442421, 0.82365084, 0.8854247, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 480)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide018" type="Sprite2D" parent="Entities" unique_id=1512721309]
-modulate = Color(0.5927358, 0.51370436, 0.5334622, 1)
+[node name="JohAmbCaveSide018" type="Sprite2D" parent="Entities" unique_id=685979116]
+modulate = Color(0.81007224, 0.7903144, 0.849588, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 576)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide019" type="Sprite2D" parent="Entities" unique_id=1707561423]
-modulate = Color(0.62014294, 0.53745717, 0.5581286, 1)
+[node name="JohAmbCaveSide019" type="Sprite2D" parent="Entities" unique_id=1630783537]
+modulate = Color(0.84752864, 0.8268572, 0.8888715, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 672)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide020" type="Sprite2D" parent="Entities" unique_id=962093714]
-modulate = Color(0.6215335, 0.5386623, 0.5593802, 1)
+[node name="JohAmbCaveSide020" type="Sprite2D" parent="Entities" unique_id=296526955]
+modulate = Color(0.8494291, 0.82871133, 0.8908647, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 768)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide021" type="Sprite2D" parent="Entities" unique_id=2054563656]
-modulate = Color(0.607849, 0.5268024, 0.5470641, 1)
+[node name="JohAmbCaveSide021" type="Sprite2D" parent="Entities" unique_id=1504823579]
+modulate = Color(0.830727, 0.81046534, 0.8712503, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 864)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide022" type="Sprite2D" parent="Entities" unique_id=1469042483]
-modulate = Color(0.62008524, 0.53740716, 0.55807674, 1)
+[node name="JohAmbCaveSide022" type="Sprite2D" parent="Entities" unique_id=1123302993]
+modulate = Color(0.84744984, 0.8267803, 0.8887889, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 960)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide023" type="Sprite2D" parent="Entities" unique_id=205140537]
-modulate = Color(0.61791795, 0.53552884, 0.5561262, 1)
+[node name="JohAmbCaveSide023" type="Sprite2D" parent="Entities" unique_id=62732832]
+modulate = Color(0.84448785, 0.8238906, 0.8856824, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 1056)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide024" type="Sprite2D" parent="Entities" unique_id=1777204616]
-modulate = Color(0.5802351, 0.50287044, 0.5222116, 1)
+[node name="JohAmbCaveSide024" type="Sprite2D" parent="Entities" unique_id=1891082136]
+modulate = Color(0.792988, 0.77364683, 0.83167034, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 1152)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide025" type="Sprite2D" parent="Entities" unique_id=2101364264]
-modulate = Color(0.5978677, 0.518152, 0.538081, 1)
+[node name="JohAmbCaveSide025" type="Sprite2D" parent="Entities" unique_id=2009698733]
+modulate = Color(0.81708586, 0.797157, 0.8569437, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 1248)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide026" type="Sprite2D" parent="Entities" unique_id=17365927]
-modulate = Color(0.58104765, 0.5035746, 0.5229429, 1)
+[node name="JohAmbCaveSide026" type="Sprite2D" parent="Entities" unique_id=892799049]
+modulate = Color(0.7940984, 0.77473015, 0.83283496, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 1344)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 36, 34, 96)
 
-[node name="JohAmbCaveSide027" type="Sprite2D" parent="Entities" unique_id=58890366]
-modulate = Color(0.5948893, 0.51557064, 0.53540033, 1)
+[node name="JohAmbCaveSide027" type="Sprite2D" parent="Entities" unique_id=1607019671]
+modulate = Color(0.8130153, 0.79318565, 0.8526746, 1)
 material = ExtResource("9_wxwfc")
 position = Vector2(1841, 1440)
-texture = ExtResource("14_2csmv")
+texture = ExtResource("14_54qyr")
 centered = false
 offset = Vector2(-17, -96)
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 72, 34, 96)
 
-[node name="JohAmbCaveColumn000" type="Sprite2D" parent="Entities" unique_id=361403257]
+[node name="JohAmbCaveColumn000" type="Sprite2D" parent="Entities" unique_id=1147195061]
 material = ExtResource("9_wxwfc")
 position = Vector2(1584, 288)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn001" type="Sprite2D" parent="Entities" unique_id=585676367]
+[node name="JohAmbCaveColumn001" type="Sprite2D" parent="Entities" unique_id=42888572]
 material = ExtResource("9_wxwfc")
 position = Vector2(624, 576)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn002" type="Sprite2D" parent="Entities" unique_id=2036546277]
+[node name="JohAmbCaveColumn002" type="Sprite2D" parent="Entities" unique_id=147700918]
 material = ExtResource("9_wxwfc")
 position = Vector2(1296, 576)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn003" type="Sprite2D" parent="Entities" unique_id=1213513839]
+[node name="JohAmbCaveColumn003" type="Sprite2D" parent="Entities" unique_id=1019791060]
 material = ExtResource("9_wxwfc")
 position = Vector2(144, 1152)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn004" type="Sprite2D" parent="Entities" unique_id=596831280]
+[node name="JohAmbCaveColumn004" type="Sprite2D" parent="Entities" unique_id=2079234881]
 material = ExtResource("9_wxwfc")
 position = Vector2(336, 1152)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn005" type="Sprite2D" parent="Entities" unique_id=958050617]
+[node name="JohAmbCaveColumn005" type="Sprite2D" parent="Entities" unique_id=509981083]
 material = ExtResource("9_wxwfc")
 position = Vector2(432, 1152)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn006" type="Sprite2D" parent="Entities" unique_id=1584129774]
+[node name="JohAmbCaveColumn006" type="Sprite2D" parent="Entities" unique_id=1916105465]
 material = ExtResource("9_wxwfc")
 position = Vector2(624, 1152)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn007" type="Sprite2D" parent="Entities" unique_id=1406985558]
+[node name="JohAmbCaveColumn007" type="Sprite2D" parent="Entities" unique_id=1081974403]
 material = ExtResource("9_wxwfc")
 position = Vector2(1296, 1152)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn008" type="Sprite2D" parent="Entities" unique_id=1197617309]
+[node name="JohAmbCaveColumn008" type="Sprite2D" parent="Entities" unique_id=1494059598]
 material = ExtResource("9_wxwfc")
 position = Vector2(432, 1248)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn009" type="Sprite2D" parent="Entities" unique_id=1467816987]
+[node name="JohAmbCaveColumn009" type="Sprite2D" parent="Entities" unique_id=2214207]
 material = ExtResource("9_wxwfc")
 position = Vector2(432, 1344)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveColumn010" type="Sprite2D" parent="Entities" unique_id=1100006559]
+[node name="JohAmbCaveColumn010" type="Sprite2D" parent="Entities" unique_id=1516950030]
 material = ExtResource("9_wxwfc")
 position = Vector2(432, 1440)
 texture = ExtResource("15_8dyur")
 centered = false
 offset = Vector2(-48, -166)
 
-[node name="JohAmbCaveLadder11" type="Sprite2D" parent="Entities" unique_id=992403424]
+[node name="JohAmbCaveLadder11" type="Sprite2D" parent="Entities" unique_id=770475076]
 material = ExtResource("9_wxwfc")
 position = Vector2(336, 288)
 texture = ExtResource("16_ah38v")
 centered = false
 offset = Vector2(-48, -191)
 
-[node name="JohAmbCaveGlows" type="Node2D" parent="." unique_id=1162461056]
+[node name="JohAmbCaveGlows" type="Node2D" parent="." unique_id=829250280]
 
-[node name="Shaft0" type="Sprite2D" parent="JohAmbCaveGlows" unique_id=750491914]
+[node name="Shaft0" type="Sprite2D" parent="JohAmbCaveGlows" unique_id=548513861]
 z_index = 5
 z_as_relative = false
 position = Vector2(960, 634)
 script = ExtResource("17_b3awo")
 glow_type = &"shaft"
 
-[node name="Beam0" type="Sprite2D" parent="JohAmbCaveGlows" unique_id=30000752]
+[node name="Beam0" type="Sprite2D" parent="JohAmbCaveGlows" unique_id=940353584]
 z_index = 5
 z_as_relative = false
 position = Vector2(960, 672)
