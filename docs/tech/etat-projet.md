@@ -15,7 +15,7 @@ Mis à jour : 2026-11-06.
 ## Prochaines étapes
 
 1. **J34 T4 (Kevin) :** première utilisation de la RC par un proche ; consignes dans `docs/tech/jalon-34-t4-consignes.md` sur `release/0.34`. Go technique donné le 2026-11-05.
-2. **Johto, reste à peindre :** cartes de JOH6, JOH8, JOH9, des Ruines d'Alpha et d'Ébènelle. Antre et Sanctuaire peints sur `claude/peinture-antre`, à vérifier sur téléphone avant fusion.
+2. **Johto, reste à peindre :** cartes de JOH6, JOH8, JOH9, des Ruines d'Alpha et d'Ébènelle. Antre et Sanctuaire peints sur `claude/peinture-antre`, CI verte ; fusion après vérification sur A17, quand il sera libéré.
 3. **Johto, reste à vérifier sur téléphone :** combats complets contre Dante, le rival final et Cenere à l'autel ; sortie du labo après le générique ; Celebi ; scène du vol avec la joueuse.
 4. **Johto, reporté au JOH9 :** musiques HeartGold / SoulSilver et textes [D] encore en `draft` (voir `docs/tech/jalon-joh9.md`).
 5. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
