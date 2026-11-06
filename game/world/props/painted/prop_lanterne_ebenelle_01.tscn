@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_kqhy3"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_82gn5"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_lanterne_ebenelle_01.png" id="3_rmee1"]
+
+[node name="PropLanterneEbenelle01" type="Node2D" unique_id=567885922]
+script = ExtResource("1_kqhy3")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=673098469]
+unique_name_in_owner = true
+material = ExtResource("2_82gn5")
+texture = ExtResource("3_rmee1")
+centered = false
+offset = Vector2(-33, -154)

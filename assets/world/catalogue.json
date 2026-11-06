@@ -11403,6 +11403,258 @@
      16
     ]
    }
+  },
+  "bldg_maison_aieule_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_aieule_01.png",
+   "taille": [
+    720,
+    573
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_aieule_01_shadow.png",
+    "decalage": [
+     -385,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     438,
+     57
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_aieule_01_contact.png",
+    "decalage": [
+     -368,
+     -51
+    ],
+    "echelle": 2,
+    "taille": [
+     368,
+     45
+    ]
+   }
+  },
+  "bldg_maison_ebenelle_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_ebenelle_01.png",
+   "taille": [
+    672,
+    667
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_ebenelle_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     423,
+     66
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_ebenelle_01_contact.png",
+    "decalage": [
+     -344,
+     -62
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     50
+    ]
+   }
+  },
+  "relief_porche_antre_01": {
+   "fichier": "res://assets/world/relief/relief_porche_antre_01.png",
+   "taille": [
+    307,
+    307
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_porche_antre_01_contact.png",
+    "decalage": [
+     -161,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     162,
+     11
+    ]
+   }
+  },
+  "prop_lanterne_ebenelle_01": {
+   "fichier": "res://assets/world/props/prop_lanterne_ebenelle_01.png",
+   "taille": [
+    66,
+    154
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_lanterne_ebenelle_01_contact.png",
+    "decalage": [
+     -41,
+     10
+    ],
+    "echelle": 2,
+    "taille": [
+     41,
+     14
+    ]
+   }
+  },
+  "int_armoire_clan_01": {
+   "fichier": "res://assets/world/interiors/int_armoire_clan_01.png",
+   "taille": [
+    96,
+    182
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_armoire_clan_01_contact.png",
+    "decalage": [
+     -56,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_buffet_clan_01": {
+   "fichier": "res://assets/world/interiors/int_buffet_clan_01.png",
+   "taille": [
+    288,
+    170
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_buffet_clan_01_contact.png",
+    "decalage": [
+     -152,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     19
+    ]
+   }
+  },
+  "int_brasero_clan_01": {
+   "fichier": "res://assets/world/interiors/int_brasero_clan_01.png",
+   "taille": [
+    96,
+    171
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_brasero_clan_01_contact.png",
+    "decalage": [
+     -56,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_table_basse_clan_01": {
+   "fichier": "res://assets/world/interiors/int_table_basse_clan_01.png",
+   "taille": [
+    288,
+    226
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_basse_clan_01_contact.png",
+    "decalage": [
+     -152,
+     -5
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     22
+    ]
+   }
+  },
+  "int_banquette_clan_01": {
+   "fichier": "res://assets/world/interiors/int_banquette_clan_01.png",
+   "taille": [
+    288,
+    107
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_banquette_clan_01_contact.png",
+    "decalage": [
+     -152,
+     7
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     16
+    ]
+   }
+  },
+  "int_lanterne_clan_01": {
+   "fichier": "res://assets/world/interiors/int_lanterne_clan_01.png",
+   "taille": [
+    77,
+    149
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_lanterne_clan_01_contact.png",
+    "decalage": [
+     -46,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     47,
+     18
+    ]
+   }
+  },
+  "int_table_the_01": {
+   "fichier": "res://assets/world/interiors/int_table_the_01.png",
+   "taille": [
+    192,
+    130
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_the_01_contact.png",
+    "decalage": [
+     -104,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     17
+    ]
+   }
+  },
+  "int_bonsai_01": {
+   "fichier": "res://assets/world/interiors/int_bonsai_01.png",
+   "taille": [
+    96,
+    142
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bonsai_01_contact.png",
+    "decalage": [
+     -56,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
   }
  },
  "personnages": {
@@ -16779,6 +17031,20 @@
    "taille": [
     355,
     768
+   ]
+  },
+  "int_maison_aieule_coque": {
+   "fichier": "res://assets/world/interiors/int_maison_aieule_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "int_maison_ebenelle_coque": {
+   "fichier": "res://assets/world/interiors/int_maison_ebenelle_coque.png",
+   "taille": [
+    1440,
+    960
    ]
   }
  }

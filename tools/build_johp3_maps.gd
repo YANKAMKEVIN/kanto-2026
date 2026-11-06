@@ -6,6 +6,8 @@ extends SceneTree
 ##   blackthorn_city (Ébènelle), dragons_den_1f (Antre du Dragon), dragons_den_sanctuary
 ##   (Sanctuaire de l'Antre ; grottes : `data/world/caves.json`).
 ##
+## **Image d'Ébènelle** : `tools/build_joh_ambiance.gd -- --maps=blackthorn_city` repeint la carte sans
+## toucher à la logique ; la relancer après cet outil.
 ##   godot --headless --path . -s res://tools/build_johp3_maps.gd [-- --maps=blackthorn_city]
 ##   godot --headless --path . --import
 ##

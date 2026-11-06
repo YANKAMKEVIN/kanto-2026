@@ -206,6 +206,10 @@ passées par le bureau : `johto_stones_quest` n'est jamais posé, la barrière d
   Objectifs de l'arc `stones_*` en « draft ». T-32 garde sa bulle sur le réseau jusqu'au retour de
   l'équipe. Le don du mari et Raphaël chez lui suivent `johto_stones_quest` (la Tour libérée), avec une
   variante `johto_act2` pour les parties passées par l'ancien bureau.
+- **Peinture d'Ébènelle** (2026-11-06) : `build_joh_ambiance.gd -- --maps=blackthorn_city`, art `tools/art/johp3_ebenelle.py`,
+  captures `tools/capture_ebenelle.sh`. Défauts [D] : maison de l'Aïeule à 7,5 cases de large pour centrer son porche sur la porte (15, 11) ;
+  porche de l'Antre en pied de rue, pilier gauche sur la case `E` ; 8 lanternes de pierre (sans emprise) pour la nuit, absentes de la vue
+  générale ; meubles du clan aux emprises de ceux de `_mason_furniture` ; coques sombres sur la géométrie de `int_maison_argenta_coque`.
 - **Rosalia** : `from_dragon` ajouté **au texte** de `ecruteak_city.tscn` (`tools/build_johp3_maps.gd`), jamais
   réenregistré : la sauvegarde par l'outil aplatissait les décors peints.
 - **Équilibrage** (`tools/sim/gen_johp3_scenarios.py`, `simulate_mt_moon.gd`, 200 graines, attentif avec 3
