@@ -37,7 +37,7 @@ func before_each() -> void:
 
 ## Zones construites dont la description de la Carte attend la validation de Kevin. Vide du
 ## 2026-10-16 (description du S.S. Anne validée, jalon 16) au J26 T6 : description de Safrania [D].
-const AWAITING_TEXTS: Array[StringName] = [&"saffron_city", &"goeland_deck"]
+const AWAITING_TEXTS: Array[StringName] = []
 const SS_ANNE_DESCRIPTION := "Un paquebot de croisière amarré au port de Carmin. Salons, " \
 	+ "cabines et ponts promenade : on s'y croirait déjà au large."
 

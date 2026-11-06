@@ -1,7 +1,6 @@
 {
 	"mahogany_house_2_habitant_1": {
 		"speaker": "Habitant",
-		"draft": true,
 		"pages": [
 			"Acajou était un village\nbien tranquille.",
 			"Jusqu'à cette semaine."
@@ -9,7 +8,6 @@
 	},
 	"mahogany_house_2_habitant_2": {
 		"speaker": "Habitant",
-		"draft": true,
 		"pages": [
 			"Mon petit-fils dit que les\nMagicarpe sont furieux."
 		]

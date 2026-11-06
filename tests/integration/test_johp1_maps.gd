@@ -17,6 +17,26 @@ func after_all() -> void:
 	_cache.clear()
 
 
+
+func test_ruins_are_painted_without_placeholders() -> void:
+	for map_id: StringName in [&"ruins_of_alph", &"alph_gallery", &"alph_chamber"]:
+		var map := _map(map_id)
+		assert_not_null(map.get_node_or_null(^"PaintedGround"), String(map_id))
+		assert_false(map.get_node(^"Ground").visible, "%s : tuiles masquées" % map_id)
+		for child: Node in map.get_node(^"Decor").get_children():
+			assert_false(child is Polygon2D, "%s : aplat %s" % [map_id, child.name])
+	var tent := _map(&"alph_tent")
+	assert_not_null(tent.get_node_or_null(^"JohAmbAlphaFond"))
+	assert_eq(tent.get_node(^"Decor").get_child_count(), 0, "plus d'aplat provisoire")
+	assert_not_null(_map(&"ruins_of_alph").get_node_or_null(^"Entities/JohAmbTente"))
+
+
+func test_gates_of_the_ruins_show_their_paintings() -> void:
+	var door := _map(&"alph_gallery").get_node(^"Entities/PorteFond")
+	assert_not_null(door.get_node_or_null(^"JohAmbAlphaImage"), "porte du fond")
+	var stone := _map(&"alph_chamber").get_node(^"Decor/PierreMemoire")
+	assert_not_null(stone.get_node_or_null(^"JohAmbAlphaImage"), "Pierre Mémoire")
+
 func _map(id: StringName) -> GameMap:
 	if not _cache.has(id):
 		var map := (load("res://game/world/maps/%s.tscn" % id) as PackedScene).instantiate() as GameMap

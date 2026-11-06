@@ -2,9 +2,11 @@ extends SceneTree
 ## Construit les quatre cartes du jalon JOHP1 (arc des Pierres, `docs/tech/jalon-joh-pierres.md` §3)
 ## d'après leurs grilles (`tools/plans/ruins_of_alph.txt`, `alph_tent.txt`, `alph_gallery.txt`,
 ## `alph_chamber.txt` : **la grille fait foi**), en **tuiles provisoires** (`OverworldTiles`, modèle
-## du JOH8 ; vues peintes `reference/johp1-vues-v1.png` pour le lot d'art suivant), et pose la
+## du JOH8 ; vues peintes `reference/johp1-vues-v1.png`), et pose la
 ## **variante ARC** de la Route 36 sur la scène existante, **sans la reconstruire** (une carte
 ## peinte reste peinte ; idempotent : les nœuds `Johp1*` déjà présents sont remplacés).
+## **Image** : après cet outil, relancer les passes de peinture, dans l'ordre donné en tête de
+## `tools/build_joh_ambiance_alpha.gd`.
 ##
 ##   godot --headless --path . -s res://tools/build_johp1_maps.gd [-- --maps=alph_gallery,route_36]
 ##   godot --headless --path . --import

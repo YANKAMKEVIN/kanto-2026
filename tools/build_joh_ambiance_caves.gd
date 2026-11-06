@@ -101,6 +101,19 @@ const MAPS: Dictionary = {
 		"wall": Color(0.5, 0.62, 1.0), "rock": Color(0.5, 0.6, 0.9), "land": ".",
 		"water": "wdF", "deep": Color(0.01, 0.05, 0.22, 0.62),
 		"falls": [Rect2i(9, 1, 4, 3), Rect2i(14, 1, 4, 3)]},
+	# Ruines d'Alpha (JOHP1, demande de Kevin du 2026-11-06) : temple creusé dans la roche, d'après
+	# ses vues générales. Murs en modules, roche sombre autour (« fill » : sa teinte) ; le reste de l'image
+	# (dalles, escaliers, frise, socle, portes) : `tools/build_joh_ambiance_alpha.gd`, à relancer
+	# après cette passe.
+	&"alph_gallery": {"plan": "alph_gallery", "seed": 5171, "floor": "ground_sol_alpha_01",
+		"modules": "relief_mur_alpha", "walls": "#", "fill": Color(0.62, 0.68, 0.86),
+		"bands": [[".tUV", "ground_sol_alpha_01", Color(0.78, 0.76, 0.74), "Floor"],
+			["g", "ground_gravats_01", Color(0.6, 0.64, 0.76), "Rubble"]],
+		"land": "", "water": "", "wall": Color(1.0, 0.98, 1.0)},
+	&"alph_chamber": {"plan": "alph_chamber", "seed": 5181, "floor": "ground_sol_chambre_01",
+		"modules": "relief_mur_alpha", "walls": "#", "fill": Color(0.62, 0.68, 0.86),
+		"bands": [[".SU", "ground_sol_chambre_01", Color(0.74, 0.72, 0.7), "Floor"]],
+		"land": "", "water": "", "wall": Color(1.0, 0.98, 1.0)},
 	# Arc des Pierres (JOHP2, demande de Kevin du 2026-11-05) : Grotte de la Marée, d'après ses vues
 	# générales. « crates » faux : ici `R` n'est pas une caisse. « sprites » [image, pied (cases),
 	# nœud] : pompes et socle, sans emprise (leurs cases sont bloquées par la grille). Au B1F, les
@@ -201,6 +214,7 @@ const SPILLS: Dictionary = {&"sea_cave_2": Rect2i(6, 35, 3, 1)}
 const SPILL_STRENGTH: float = 0.55
 ## Puits de lumière, par carte : [cases du pied de la colonne (x, y, décimaux)].
 const SHAFTS: Dictionary = {
+	&"alph_gallery": [Vector2(3.5, 4.5)],
 	&"sea_cave_1": [Vector2(14.0, 6.5), Vector2(21.0, 22.0), Vector2(13.5, 32.5)],
 	&"sea_cave_2": [Vector2(21.0, 11.0), Vector2(12.0, 11.5), Vector2(13.0, 26.5)],
 	&"slowpoke_well_b1f": [Vector2(4.0, 4.0)],
@@ -321,6 +335,11 @@ func _build_cave(map_id: StringName) -> void:
 	var filled := 0
 	var walls: Vector3i
 	if spec.has("modules"):
+		if spec.has("fill"):
+			var wall_tint := _wall_tint
+			_wall_tint = spec["fill"]
+			_fill_mass(kit, decals, plan, seed_value + 4)
+			_wall_tint = wall_tint
 		walls = ModuleWalls.new(kit, spec["modules"], spec["walls"], spec["walls"],
 			seed_value + 2).place()
 		filled = _shop_fronts(kit, entities, plan)

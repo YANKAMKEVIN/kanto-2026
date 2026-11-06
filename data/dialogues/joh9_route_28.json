@@ -1,21 +1,18 @@
 {
 	"route_28_topdresseur_jules_before": {
 		"speaker": "Topdresseur Jules",
-		"draft": true,
 		"pages": [
 			"Le col de la Route 28 ne laisse\npasser que les meilleurs."
 		]
 	},
 	"route_28_topdresseur_jules_defeated": {
 		"speaker": "Topdresseur Jules",
-		"draft": true,
 		"pages": [
 			"Tu es des meilleurs, alors."
 		]
 	},
 	"route_28_topdresseur_jules_after": {
 		"speaker": "Topdresseur Jules",
-		"draft": true,
 		"pages": [
 			"Kanto est tout près, à l'ouest. On\nne dirait pas, hein ?"
 		]
@@ -27,7 +24,6 @@
 				"if": [
 					"johto_route28_open"
 				],
-				"draft": true,
 				"pages": [
 					"Le col est rouvert.",
 					"Bonne route, de part et d'autre."
@@ -59,7 +55,6 @@
 	},
 	"route_28_gate_locked": {
 		"narration": true,
-		"draft": true,
 		"pages": [
 			"La porte est verrouillée."
 		]
@@ -73,7 +68,6 @@
 	},
 	"route_28_house_gardien": {
 		"speaker": "Gardien",
-		"draft": true,
 		"pages": [
 			"Je garde ce col depuis trente ans.",
 			"Les Dresseurs qui en reviennent ne\nsont jamais tout à fait les mêmes."

@@ -149,8 +149,7 @@
 				"silph_co_elevator", "saffron_gym", "fighting_dojo"
 			],
 			"services": [{ "id": "pokemon_center", "found_on": "saffron_center" }, { "id": "poke_mart", "found_on": "saffron_mart" }, { "id": "gym", "found_on": "saffron_gym" }],
-			"description": "Une grande ville affairée, cœur commercial de Kanto. La Sylphe SARL y a son siège.",
-			"draft": true
+			"description": "Une grande ville affairée, cœur commercial de Kanto. La Sylphe SARL y a son siège."
 		},
 		"route_7": {
 			"name": "Route 7", "kind": "route",
@@ -531,8 +530,7 @@
 		"goeland_deck": {
 			"name": "Le Goéland", "kind": "place", "region": "johto", "maps": ["goeland_deck"],
 			"subtitle": "Oliville — Irisia",
-			"description": "Le bateau de Goulven, entre Oliville et Irisia.",
-			"draft": true
+			"description": "Le bateau de Goulven, entre Oliville et Irisia."
 		},
 		"cianwood_city": {
 			"name": "Irisia", "kind": "town", "region": "johto",

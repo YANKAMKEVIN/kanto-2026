@@ -479,7 +479,7 @@ func test_rosalia_retouches() -> void:
 	var open: Array[StringName] = [&"johto_act2", &"johto_burned_tower_open"]
 	assert_eq(_flat(sage.pick(_flags(act2))),
 		_expected("Le doyen t'attend, jeune Dresseur. / Toute la ville a entendu la radio."), "C-1")
-	assert_true(sage.pick(_flags(open)).draft, "après l'ouverture : texte [D]")
+	assert_false(sage.pick(_flags(open)).draft, "après l'ouverture : validé le 2026-11-06")
 	assert_eq(sage.pick(_flags()).pages[0].text, "Vous n'obtiendrez rien de moi.", "acte 1 inchangé")
 	var doyen := _dialogues.get_dialogue(&"ecruteak_elders_house_doyen")
 	var first := doyen.pick(_flags(act2))

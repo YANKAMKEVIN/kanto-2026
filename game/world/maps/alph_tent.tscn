@@ -2,7 +2,12 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_kfrqa"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_c5lt5"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_fond_tente_01.png" id="3_0lad3"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_a06sf"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_tapis_tente_01.png" id="4_0lad3"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="5_euwkn"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_caisses_tente_01.png" id="6_xtxn5"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_table_tente_01.png" id="7_el0db"]
 
 [node name="AlphTent" type="Node2D" unique_id=542621791]
 script = ExtResource("1_kfrqa")
@@ -15,30 +20,52 @@ interior = true
 light_profile = &"interior_warm"
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1606758102]
+visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAAAAAcAAAAEAAAAAAABAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAAAAEAAAABAAcAAAABAAEAAAABAAUAAAACAAEAAAAAAAUAAAADAAEAAAABAAUAAAAEAAEAAAABAAUAAAAFAAEAAAABAAUAAAAGAAEAAAABAAUAAAAHAAEAAAAAAAUAAAAIAAEAAAAAAAcAAAAAAAIAAAAAAAcAAAABAAIAAAABAAUAAAACAAIAAAAAAAUAAAADAAIAAAABAAUAAAAEAAIAAAAAAAUAAAAFAAIAAAAAAAUAAAAGAAIAAAAAAAUAAAAHAAIAAAAAAAUAAAAIAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAABAAUAAAACAAMAAAABAAUAAAADAAMAAAABAAUAAAAEAAMAAAABAAUAAAAFAAMAAAAAAAUAAAAGAAMAAAABAAUAAAAHAAMAAAAAAAUAAAAIAAMAAAAAAAcAAAAAAAQAAAABAAcAAAABAAQAAAAAAAUAAAACAAQAAAABAAUAAAADAAQAAAAAAAUAAAAEAAQAAAAAAAUAAAAFAAQAAAABAAUAAAAGAAQAAAAAAAUAAAAHAAQAAAAAAAUAAAAIAAQAAAABAAcAAAAAAAUAAAAAAAcAAAABAAUAAAABAAUAAAACAAUAAAABAAUAAAADAAUAAAABAAUAAAAEAAUAAAABAAUAAAAFAAUAAAAAAAUAAAAGAAUAAAAAAAUAAAAHAAUAAAAAAAUAAAAIAAUAAAABAAcAAAAAAAYAAAABAAcAAAABAAYAAAABAAcAAAACAAYAAAAAAAcAAAADAAYAAAAAAAcAAAAEAAYAAAACAAMAAAAFAAYAAAAAAAcAAAAGAAYAAAABAAcAAAAHAAYAAAABAAcAAAAIAAYAAAAAAAcAAAA=")
 tile_set = ExtResource("2_c5lt5")
 
 [node name="Detail" type="TileMapLayer" parent="." unique_id=1232002154]
+visible = false
 tile_set = ExtResource("2_c5lt5")
 
 [node name="Obstacles" type="TileMapLayer" parent="." unique_id=1169318818]
+visible = false
 tile_set = ExtResource("2_c5lt5")
 
+[node name="JohAmbAlphaFond" type="Sprite2D" parent="." unique_id=534720229]
+texture_filter = 2
+texture = ExtResource("3_0lad3")
+centered = false
+
+[node name="JohAmbAlphaTapis" type="Sprite2D" parent="." unique_id=1226075700]
+texture_filter = 2
+position = Vector2(288, 345.59998)
+texture = ExtResource("4_0lad3")
+
 [node name="Decor" type="Node2D" parent="." unique_id=714646418]
-
-[node name="Caisses" type="Polygon2D" parent="Decor" unique_id=1491626465]
-color = Color(0.42, 0.29, 0.17, 1)
-polygon = PackedVector2Array(96, 96, 768, 96, 768, 192, 96, 192)
-
-[node name="Table" type="Polygon2D" parent="Decor" unique_id=1151549131]
-color = Color(0.5, 0.35, 0.2, 1)
-polygon = PackedVector2Array(192, 288, 384, 288, 384, 384, 192, 384)
 
 [node name="Entities" type="Node2D" parent="." unique_id=2027784515]
 unique_name_in_owner = true
 y_sort_enabled = true
 
+[node name="JohAmbAlphaCaisses" type="Sprite2D" parent="Entities" unique_id=1767500556]
+texture_filter = 2
+material = ExtResource("5_euwkn")
+position = Vector2(432, 192)
+texture = ExtResource("6_xtxn5")
+centered = false
+offset = Vector2(-336, -224)
+
+[node name="JohAmbAlphaTable" type="Sprite2D" parent="Entities" unique_id=1889735292]
+texture_filter = 2
+material = ExtResource("5_euwkn")
+position = Vector2(288, 384)
+texture = ExtResource("7_el0db")
+centered = false
+offset = Vector2(-104, -156)
+
 [node name="Overhead" type="TileMapLayer" parent="." unique_id=974885581]
+visible = false
 z_index = 10
 tile_set = ExtResource("2_c5lt5")
 
