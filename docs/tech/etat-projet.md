@@ -12,7 +12,7 @@ Mis à jour : 2026-11-07.
 - **Art de Kanto :** toutes les cartes ont leur décor peint, les 202 espèces ont un dos peint, Sulfura, Électhor et Mewtwo sont peints sur la carte (`reportes.md`, RP-010, RP-132, RP-141, RP-290). Pas dans la RC 0.34.1. Vu sur l'A17 le 2026-11-06 sans blocage, dos peints du joueur compris, à terre et sur l'eau, en tenue d'origine et en costume pour la joueuse et les 16 costumes (`jalon-34-rapport.md` §3, lignes 9 bis et 9 ter).
 - **Johto :** JOH0 à JOH9 et l'arc des Pierres (JOHP0 à JOHP3) sont dans `main`, ainsi que les personnages peints. L'arc est jouable de la Tour Radio à l'acte 2, retour de l'équipe compris.
 - **Musiques de Johto :** 32 pistes HeartGold / SoulSilver branchées (cartes, Centres et Boutiques, combats par région, légendaires, générique) ; détail dans `docs/tech/johto-musiques.md` §10. Jingles, victoires et « ! » restent ceux de Let's Go.
-- **Avantages des costumes :** huit avantages actifs si le costume est porté, écrits dans l'écran Dresseur et à l'annonce du déblocage (`dossier-costumes.md` §2 bis), sur la branche `worktree-costumes-avantages`, pas encore dans `main`.
+- **Avantages des costumes :** huit avantages actifs si le costume est porté, écrits dans l'écran Dresseur et à l'annonce du déblocage (`dossier-costumes.md` §2 bis), sur la branche `worktree-costumes-avantages`. Décision de Kevin du 2026-11-07 : tout fusionner dans `main` une fois les musiques arrivées.
 - **Personne n'a encore joué Johto d'un bout à l'autre.**
 - **CI :** 14 lots équilibrés par durée (`tools/ci_shard.py`, `tools/ci_test_times.json`) et cache de l'import Godot : environ 10 min au lieu de 24. Quand les lots se déséquilibrent, refaire le fichier de durées avec `tools/ci_shard.py --update <dossier des artefacts>`.
 
