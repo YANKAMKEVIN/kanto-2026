@@ -26,6 +26,7 @@ Mis à jour : 2026-11-07.
 
 ## Questions ouvertes
 
+- Aucune au 2026-11-07.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
 
