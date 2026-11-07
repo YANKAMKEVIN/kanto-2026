@@ -1,6 +1,6 @@
 # État du projet
 
-Mis à jour : 2026-11-06.
+Mis à jour : 2026-11-07.
 
 > **Ce fichier reste court (quelques Ko).** On y **remplace** ce qui change, on n'empile pas une ligne par tâche : le détail d'une tâche va dans le plan du jalon (`docs/tech/jalon-*.md`) et dans le message de commit.
 > Historique complet jusqu'au 2026-11-05 : [`etat-projet-archive.md`](etat-projet-archive.md) (6,5 Mo, à chercher avec `grep`, pas à lire) et [`etat-projet-historique.md`](etat-projet-historique.md).
@@ -43,6 +43,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 - **Art :** option B de `docs/design/phase-da-cadrage.md`, arbitrages DA-1 à DA-9. Une maquette validée par Kevin se reproduit à l'identique.
 - **Entrée des combats de Dresseur (2026-11-02) :** deux niveaux, jamais sautée ; `docs/design/dossier-05-combat.md` §3.
 - **Difficulté :** première tentative gagnée à 80 % au plus, grands combats autour de 35 à 60 %. Ne pas adoucir au-delà de 80 % sans Kevin.
+- **Démarrage (2026-11-07) :** le jeu s'ouvre directement sur le carton « Les studios Kevin & Co / vous présentent » (image de démarrage, `tools/art/splash_carton.gd`) ; plus de K sur l'écran système Android 12+ ni de premier logo Pokemake. Arrive avec la prochaine RC.
 - **Nom :** le jeu s'appelle Pokemake ; dépôt, dossier et package gardent « kanto2026 ».
 
 Les décisions propres à un jalon restent dans son dossier et son plan.

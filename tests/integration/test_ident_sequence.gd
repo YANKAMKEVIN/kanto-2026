@@ -51,7 +51,7 @@ func test_eight_letters_and_a_rule_cut_from_the_logo_start_offscreen_right() -> 
 			assert_gt(ident.letter_target_x(i), ident.letter_target_x(i - 1), "ordre de lecture")
 	assert_almost_eq(ident.get_full_logo().size.x, float(UiTokens.IDENT_LOGO_WIDTH), 0.5)
 	assert_eq(ident.get_full_logo().modulate.a, 0.0, "le vrai logo attend le halo")
-	assert_eq(ident.get_card().modulate.a, 0.0, "le carton attend son entrée")
+	assert_eq(ident.get_card().modulate.a, 1.0, "le carton prolonge l'image de démarrage")
 	assert_eq(ident.get_card().get_child(0).text, "Les studios Kevin & Co")
 
 

@@ -26,19 +26,21 @@ const GLOW: StringName = &"glow"
 const LOGO_IN: StringName = &"logo_in"
 const FADE_OUT: StringName = &"fade_out"
 
-## Version complète [D] : carton 0,6 s d'entrée, 1,6 s de tenue, 0,5 s de sortie ; 0,3 s de noir ;
+## Le carton est déjà à l'écran : c'est l'image de démarrage (demande de Kevin du 2026-11-07), d'où
+## une entrée nulle.
+## Version complète [D] : carton 1,6 s de tenue, 0,5 s de sortie ; 0,3 s de noir ;
 ## lettres toutes les 0,14 s, 0,55 s de trajet chacune ; filet 0,4 s ; halo 0,5 s ; tenue 0,9 s ;
-## fondu de sortie 0,6 s (≈ 7 s pour 8 lettres).
+## fondu de sortie 0,6 s (≈ 6,4 s pour 8 lettres).
 const FULL := {
-	"card_in": 0.6, "card_hold": 1.6, "card_out": 0.5, "gap": 0.3,
+	"card_in": 0.0, "card_hold": 1.6, "card_out": 0.5, "gap": 0.3,
 	"xfade": 0.7, "reel_out": 0.6,
 	"letter_stagger": 0.14, "letter_travel": 0.55,
 	"rule": 0.4, "glow": 0.5, "hold": 0.9, "fade_out": 0.6,
 }
 ## « Réduire les animations » [D] : carton plus court, le logo entier apparaît en fondu, pas de
-## lettres en mouvement (≈ 3,2 s).
+## lettres en mouvement (≈ 2,8 s).
 const REDUCED := {
-	"card_in": 0.4, "card_hold": 1.0, "card_out": 0.3, "gap": 0.2,
+	"card_in": 0.0, "card_hold": 1.0, "card_out": 0.3, "gap": 0.2,
 	"logo_in": 0.5, "hold": 0.6, "fade_out": 0.4,
 }
 

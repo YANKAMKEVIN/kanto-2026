@@ -663,10 +663,11 @@ func _assert_in_the_bedroom() -> void:
 	assert_true(_boot.get_hud().visible)
 
 
-## Splash (§5.1) : le logo Pokemake sur un fond uni sombre et chaud, filtré, à l'échelle.
-func test_the_boot_splash_is_the_kanto_logo() -> void:
+## Splash (§5.1, demande de Kevin du 2026-11-07) : le carton de l'ident sur un fond uni sombre et
+## chaud, sans logo : le jeu s'ouvre directement sur « Les studios… vous présentent ».
+func test_the_boot_splash_is_the_ident_card() -> void:
 	var image: String = ProjectSettings.get_setting("application/boot_splash/image", "")
-	assert_eq(image, "res://assets/ui/opening/splash_pokemake.png")
+	assert_eq(image, "res://assets/ui/opening/splash_carton.png")
 	assert_true(FileAccess.file_exists(image))
 	assert_true(ProjectSettings.get_setting("application/boot_splash/use_filter", false))
 	var bg: Color = ProjectSettings.get_setting("application/boot_splash/bg_color")
