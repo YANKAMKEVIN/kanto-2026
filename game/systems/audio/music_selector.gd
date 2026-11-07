@@ -14,6 +14,9 @@ extends RefCounted
 ## - [constant STATE_HAS_FLAG] : `Callable(flag: StringName) -> bool` (drapeaux d'histoire) ;
 ## - [constant STATE_AREA] : `StringName`, partie de carte (« purified » : zone purifiée).
 
+## Catégories où le morceau du costume porté remplace la musique (CO-18).
+const ORDINARY_BATTLES: Array[StringName] = [&"wild", &"trainer", &"johto_wild", &"johto_trainer"]
+
 const STATE_OVERRIDE: StringName = &"override"
 const STATE_MOVEMENT: StringName = &"movement"
 const STATE_HAS_FLAG: StringName = &"has_flag"
@@ -68,6 +71,15 @@ func battle_category(trainer_id: StringName, species_id: StringName = &"",
 			and _library.has_battle_category(AudioLibrary.BATTLE_LEGENDARY):
 		return _library.regional_category(AudioLibrary.BATTLE_LEGENDARY, region)
 	return _library.regional_category(AudioLibrary.BATTLE_WILD, region)
+
+
+## Vrai pour un combat ordinaire (CO-18) : sauvage ou Dresseur sans thème propre, ni légendaire
+## (Johto les range avec les sauvages), ni rival.
+func is_ordinary_battle(trainer_id: StringName, species_id: StringName = &"",
+		region: StringName = &"") -> bool:
+	if _library.is_legendary(species_id) or String(trainer_id).contains("rival"):
+		return false
+	return ORDINARY_BATTLES.has(battle_category(trainer_id, species_id, region))
 
 
 ## Musique du combat ([param trainer_id] vide = sauvage).

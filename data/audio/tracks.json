@@ -785,6 +785,118 @@
 			"loop_offset": 0.0,
 			"volume_db": 0.0,
 			"expected": false
+		},
+		"costume_boulder_battle": {
+			"title": "Gurenge",
+			"file": "res://assets/audio/music/costumes/boulder_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_boulder_town": {
+			"title": "Kamado Tanjiro no Uta",
+			"file": "res://assets/audio/music/costumes/boulder_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
+		},
+		"costume_cascade_battle": {
+			"title": "Overtaken",
+			"file": "res://assets/audio/music/costumes/cascade_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_cascade_town": {
+			"title": "We Are!",
+			"file": "res://assets/audio/music/costumes/cascade_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
+		},
+		"costume_thunder_battle": {
+			"title": "Driving with the Top Down",
+			"file": "res://assets/audio/music/costumes/thunder_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_thunder_town": {
+			"title": "Back in Black",
+			"file": "res://assets/audio/music/costumes/thunder_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
+		},
+		"costume_rainbow_battle": {
+			"title": "Hyrule Field Main Theme",
+			"file": "res://assets/audio/music/costumes/rainbow_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_rainbow_town": {
+			"title": "Zelda's Lullaby",
+			"file": "res://assets/audio/music/costumes/rainbow_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
+		},
+		"costume_soul_battle": {
+			"title": "Strong and Strike",
+			"file": "res://assets/audio/music/costumes/soul_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_soul_town": {
+			"title": "Blue Bird",
+			"file": "res://assets/audio/music/costumes/soul_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
+		},
+		"costume_marsh_battle": {
+			"title": "You Say Run",
+			"file": "res://assets/audio/music/costumes/marsh_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_marsh_town": {
+			"title": "Peace Sign",
+			"file": "res://assets/audio/music/costumes/marsh_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
+		},
+		"costume_volcano_battle": {
+			"title": "Ultimate Battle",
+			"file": "res://assets/audio/music/costumes/volcano_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_volcano_town": {
+			"title": "Cha-La Head-Cha-La",
+			"file": "res://assets/audio/music/costumes/volcano_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
+		},
+		"costume_earth_battle": {
+			"title": "Molossus",
+			"file": "res://assets/audio/music/costumes/earth_battle.ogg",
+			"kind": "music",
+			"loop": true,
+			"expected": true
+		},
+		"costume_earth_town": {
+			"title": "The Batman Theme",
+			"file": "res://assets/audio/music/costumes/earth_town.ogg",
+			"kind": "jingle",
+			"loop": false,
+			"expected": true
 		}
 	},
 	"events": {

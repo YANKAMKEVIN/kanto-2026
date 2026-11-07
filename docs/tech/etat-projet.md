@@ -27,13 +27,13 @@ Mis à jour : 2026-11-07.
 ## Questions ouvertes
 
 - Remise du dépôt en privé : encore public au 2026-11-06, alors que le Go juridique du 2026-11-04 suppose que rien n'est publié (`jalon-34-34e.md` §15.4).
-- Musiques des costumes (`dossier-costumes.md` §2 ter) : morceaux par personnage, sens de « entrées de villes », source des fichiers, Go juridique.
+- Musiques des costumes (`dossier-costumes.md` §2 ter) : moteur prêt ; attendent la liste validée, les fichiers de Kevin, le Go juridique étendu et le dépôt en privé.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
 
 ## Décisions de Kevin en vigueur
 
-- **Costumes (2026-11-07) :** l'avantage n'agit que si le costume est porté, et il est écrit pour le joueur.
+- **Costumes (2026-11-07) :** l'avantage n'agit que si le costume est porté, et il est écrit pour le joueur. Musiques : un thème de combat (sauvages et Dresseurs ordinaires) et un jingle d'arrivée en ville par costume.
 - **Ordre de l'acte 2 (2026-11-06) :** JOH6 avant JOH7. La mer au sud d'Oliville reste fermée jusqu'au déserteur d'Acajou (`johto_whirl_clue`).
 - **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.

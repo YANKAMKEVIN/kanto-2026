@@ -54,6 +54,8 @@ var party_species: Callable = Callable()
 var companion_species: Callable = Callable()
 ## (move_id: StringName) -> Array [type: StringName, catégorie: StringName] (vide si inconnue).
 var move_info: Callable = Callable()
+## (kind: StringName) -> StringName : morceau du costume porté ([CostumeCatalog], CO-16), &"" sans.
+var costume_music: Callable = Callable()
 ## (cell: Vector2i) -> StringName : sol de la case (« grass », « hard », « indoor »…).
 var ground_at: Callable = Callable()
 
@@ -134,8 +136,33 @@ func on_battle_started(trainer_id: StringName) -> void:
 	_cued_moves = 0
 	_cued_hits = 0
 	_wild_species = StringName(str(wild_species.call())) if wild_species.is_valid() else &""
-	audio.call(&"set_music", L.BATTLE, selector.battle_track(trainer_id, _wild_species,
-		_zones.region_of(_map_id)))
+	var region := _zones.region_of(_map_id)
+	var track := selector.battle_track(trainer_id, _wild_species, region)
+	if selector.is_ordinary_battle(trainer_id, _wild_species, region):
+		var theme := _costume_track(CostumeCatalog.MUSIC_BATTLE)
+		track = theme if not theme.is_empty() else track
+	audio.call(&"set_music", L.BATTLE, track)
+
+
+## Arrivée annoncée sur [param map_id] (CO-17) : en ville, jingle du costume porté, puis la
+## musique de la ville reprend.
+func on_zone_announced(map_id: StringName) -> void:
+	var zone := _zones.get_zone(_zones.zone_of(map_id))
+	if zone == null or zone.kind != ZoneData.KIND_TOWN:
+		return
+	var jingle := _costume_track(CostumeCatalog.MUSIC_TOWN)
+	if not jingle.is_empty():
+		audio.call(&"play_jingle", jingle)
+
+
+## Morceau [param kind] du costume porté si son fichier existe, sinon &"" (CO-19 : sans fichier,
+## la musique normale joue, jamais le silence).
+func _costume_track(kind: StringName) -> StringName:
+	var track: StringName = costume_music.call(kind) if costume_music.is_valid() else &""
+	if track.is_empty() or not _library.has_track(track) \
+			or not ResourceLoader.exists(_library.track(track)["file"]):
+		return &""
+	return track
 
 
 ## Événement de combat : victoire (`BATTLE_ENDED` gagné) → musique de victoire ; montée de

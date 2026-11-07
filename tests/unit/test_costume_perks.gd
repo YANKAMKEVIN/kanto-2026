@@ -129,3 +129,39 @@ func test_move_card_shows_hint_after_power() -> void:
 		BattleMoveView.Category.PHYSICAL, 10, 10, 40, 100, "")
 	view.hint = BattleViews.HINT_SUPER
 	assert_eq(MoveCard.power_text(view), "40 · Super efficace")
+
+
+func test_every_costume_names_known_tracks() -> void:
+	var library := AudioLibrary.new()
+	assert_true(library.load_dir())
+	var catalog := CostumeCatalog.shared()
+	for id: StringName in catalog.ids():
+		var battle := catalog.music_track(id, CostumeCatalog.MUSIC_BATTLE)
+		var town := catalog.music_track(id, CostumeCatalog.MUSIC_TOWN)
+		assert_true(library.has_track(battle), String(id))
+		assert_true(library.is_jingle(town), String(id))
+	assert_eq(catalog.music_track(CostumeCatalog.ORIGINAL, CostumeCatalog.MUSIC_BATTLE), &"")
+
+
+func test_only_ordinary_battles_take_the_costume_theme() -> void:
+	var library := AudioLibrary.new()
+	library.load_dir()
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	var selector := MusicSelector.new(library, zones)
+	assert_true(selector.is_ordinary_battle(&"", &"pidgey"))
+	assert_true(selector.is_ordinary_battle(&"", &"pidgey", &"johto"))
+	assert_true(selector.is_ordinary_battle(&"bug_catcher_rick"))
+	assert_false(selector.is_ordinary_battle(&"", &"mewtwo"))
+	assert_false(selector.is_ordinary_battle(&"", &"mewtwo", &"johto"))
+	assert_false(selector.is_ordinary_battle(&"league_lance"))
+	assert_false(selector.is_ordinary_battle(&"rival_route_22"))
+
+
+func test_missing_file_keeps_normal_music() -> void:
+	var bridge := AudioBridge.new()
+	var library := AudioLibrary.new()
+	library.load_dir()
+	bridge._library = library
+	bridge.costume_music = func(_kind: StringName) -> StringName: return &"costume_soul_battle"
+	assert_eq(bridge._costume_track(CostumeCatalog.MUSIC_BATTLE), &"", "fichier absent")

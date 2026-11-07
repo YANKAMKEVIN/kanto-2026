@@ -49,7 +49,11 @@ const EFFECTS: Array[StringName] = [EFFECT_ITEM_SENSE, EFFECT_BITE_BONUS, EFFECT
 ## Texte d'un avantage (écran Dresseur, annonce du déblocage) : « Flair : … ».
 const PERK_FORMAT: String = "%s : %s"
 
-const _KEYS: Array[String] = ["id", "badge", "art", "names", "perk"]
+## Musiques (CO-16 à CO-19) : clés de « music ».
+const MUSIC_BATTLE: StringName = &"battle"
+const MUSIC_TOWN: StringName = &"town"
+
+const _KEYS: Array[String] = ["id", "badge", "art", "names", "perk", "music"]
 
 static var _shared: CostumeCatalog
 
@@ -141,6 +145,13 @@ func unlock_text(id: StringName, look: StringName) -> String:
 func perk_text(id: StringName) -> String:
 	var perk: Dictionary = _find(id).get("perk", {})
 	return PERK_FORMAT % [perk["name"], perk["text"]] if not perk.is_empty() else ""
+
+
+## Morceau [param kind] ([constant MUSIC_BATTLE], [constant MUSIC_TOWN]) de [param id] ; &"" sans
+## morceau (tenue d'origine comprise).
+func music_track(id: StringName, kind: StringName) -> StringName:
+	var music: Dictionary = _find(id).get("music", {})
+	return StringName(str(music.get(String(kind), "")))
 
 
 ## Valeur de l'effet [param key] du costume [param id] ; [param fallback] s'il ne l'a pas.
@@ -257,6 +268,11 @@ func _parse_entry(raw: Variant, where: String) -> Dictionary:
 		if perk.is_empty():
 			return {}
 		entry["perk"] = perk
+	if dict.has("music"):
+		if not dict["music"] is Dictionary:
+			_error("%s : « music » { battle, town } attendu" % where)
+			return {}
+		entry["music"] = dict["music"]
 	return entry
 
 

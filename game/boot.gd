@@ -1713,6 +1713,8 @@ func _on_map_entered(map: GameMap) -> void:
 	if _announcer.should_announce(map.display_name, indoors):
 		_hud.show_zone_title(map.display_name, region)
 		zone_announced.emit(map.display_name, region)
+		if not map.interior:
+			_audio_bridge.on_zone_announced(map.map_id)
 	# J17 T24 : Flash (ou l'avertissement) une fois par arrivée, après l'autosave d'arrivée.
 	_flash.on_map_entered(map, from)
 	# JOH0 : scène d'un départ de débogage (clé « cutscene »), une seule fois, à la première
@@ -2581,6 +2583,8 @@ func _setup_audio() -> void:
 		var trainer := _trainers.get_trainer(id) if _trainers != null else null
 		return trainer.name if trainer != null else ""
 	_audio_bridge.wild_species = _battle_director.get_wild_species
+	_audio_bridge.costume_music = func(kind: StringName) -> StringName:
+		return CostumeCatalog.shared().music_track(GameState.worn_costume(), kind)
 	_audio_bridge.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	_audio_bridge.items = _items
 	# SonB : cris (numéro national par l'espèce).

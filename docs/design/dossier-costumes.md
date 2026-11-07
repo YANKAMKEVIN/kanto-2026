@@ -64,9 +64,29 @@ Les costumes ne sont plus seulement visuels. Décisions de Kevin : **l'avantage 
 | Volcan | **Entraînement** | Expérience ×1,15 contre les sauvages |
 | Terre | **Traqueur** | Capture ×1,1. Proposé d'abord « la nuit », mais Kanto n'a pas d'heure : l'effet aurait été nul avant Johto |
 
-## 2 ter. Musiques des costumes (idée de Kevin, 2026-11-07, **à arbitrer**)
+## 2 ter. Musiques des costumes (Kevin, 2026-11-07)
 
-Idée : un thème de quelques musiques par personnage, joué **pendant les combats** et **aux entrées de villes** quand le costume est porté. Rien n'est codé ni téléchargé. Le moteur s'y prête (`MusicSelector`, `data/audio/`). Questions ouvertes dans `docs/tech/etat-projet.md`. Hors de l'univers Pokémon, ces musiques étendent l'inventaire de licences de la RC et demandent un nouveau Go juridique de Kevin.
+Idée de Kevin : un thème par personnage. Il a suivi les recommandations de Claude le 2026-11-07.
+
+| # | Sujet | Décision |
+|---|---|---|
+| CO-16 | Quels morceaux | Vraies musiques des séries, **un morceau de combat et un jingle de ville** par costume, les mêmes pour le joueur et la joueuse. Liste ci-dessous **à valider à l'écoute** |
+| CO-17 | Entrées de villes | **Court jingle** à l'arrivée en ville, au moment du titre de zone, puis la musique de la ville reprend. Jamais en intérieur. Durée [D] : 5 s environ |
+| CO-18 | Quels combats | Sauvages et Dresseurs ordinaires. Champions, Ligue, rival, Rocket de Johto et légendaires gardent leur musique. La musique de victoire ne change pas [D] |
+| CO-19 | Fichiers et droit | Kevin fournit les fichiers, Claude ne télécharge rien. **Aucun fichier n'entre dans le dépôt avant le Go juridique étendu et le passage du dépôt en privé.** Sans fichier, la musique normale joue |
+
+| Costume | Combat | Jingle de ville |
+|---|---|---|
+| Tanjiro / Nezuko | Gurenge | Kamado Tanjiro no Uta |
+| Luffy / Nami | Overtaken | We Are! |
+| Iron Man / Iron Woman | Driving with the Top Down | Back in Black |
+| Link / Zelda | Hyrule Field Main Theme | Zelda's Lullaby |
+| Naruto / Sakura | Strong and Strike | Blue Bird |
+| Deku / Ochaco | You Say Run | Peace Sign |
+| Son Goku / Combattante saiyan | Ultimate Battle | Cha-La Head-Cha-La |
+| Batman / Batgirl | Molossus | The Batman Theme |
+
+Titres cités de mémoire, à confirmer à l'écoute. Dépôt des fichiers : `~/Music/costumes/`, nommés `<badge>_battle` et `<badge>_town` (`boulder`, `cascade`, `thunder`, `rainbow`, `soul`, `marsh`, `volcano`, `earth`). Puis Claude coupe, normalise et convertit en OGG vers `assets/audio/music/costumes/` (`jalon-son.md`, T8), règle `loop_offset` et passe `expected` à faux.
 
 ## 3. Production
 
@@ -83,7 +103,7 @@ Idée : un thème de quelques musiques par personnage, joué **pendant les comba
 
 ## Suivi
 
-- [x] Avantages CO-12 à CO-15 — codés le 2026-11-07 sur `worktree-costumes-avantages`, à valider par Kevin ; musiques (§2 ter) à arbitrer
+- [x] Avantages CO-12 à CO-15 — codés le 2026-11-07 sur `worktree-costumes-avantages`, à valider par Kevin ; moteur des musiques (§2 ter) codé, fichiers et liste en attente
 
 - [x] Idée et liste des huit costumes (Kevin, 2026-10-30)
 - [x] Arbitrages CO-1 à CO-11 — **validés par Kevin le 2026-10-30** (« Okay », toutes les recommandations)
