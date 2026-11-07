@@ -1,8 +1,5 @@
 extends SceneTree
-## Image de démarrage (`application/boot_splash/image`) : le carton de l'ident, rendu par la vraie
-## [IdentSequence] à 1920 × 1080, pour que le jeu s'ouvre directement dessus (demande de Kevin du
-## 2026-11-07) et que l'ident reprenne sans saut. À relancer si le texte (`data/opening/title.json`,
-## groupe `ident`) ou le style du carton changent.
+## Capture du carton de l'ident, rendu par la vraie [IdentSequence] à 1920 × 1080.
 ##
 ##   godot --path . -s res://tools/art/splash_carton.gd
 

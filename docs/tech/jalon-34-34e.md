@@ -363,3 +363,8 @@ Rien de cela n'a été tranché ici, et aucune ressource n'a été retirée.
 > **Décision de Kevin du 2026-11-07 (« ok ») : Go étendu aux musiques des costumes du §16.1, pour le seul cercle de la maison**, en sachant qu'elles sont tirées de vidéos en ligne, reprises comprises. Ce n'est pas un avis juridique ; les conditions du §14 restent les mêmes.
 
 Ces fichiers n'entrent dans le dépôt **qu'après son retour en privé** (§15.5, Q2, toujours ouverte).
+
+
+## 17. Décision de Kevin pour la RC 0.35.1 (2026-11-07)
+
+Kevin reconduit son Go juridique pour la prochaine RC après la 0.35.0, identifiée comme 0.35.1. Sa décision s'applique au seul cercle de la maison, selon les conditions du §14, avec les musiques du §16. La question du passage du dépôt en privé reste ouverte (§15.5, Q2).
