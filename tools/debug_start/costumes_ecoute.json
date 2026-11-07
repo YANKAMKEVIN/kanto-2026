@@ -1,0 +1,26 @@
+{
+	"map": "route_1", "spawn": "from_viridian_w", "facing": "down",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated",
+		"badge_boulder", "badge_cascade", "badge_thunder", "badge_rainbow",
+		"badge_soul", "badge_marsh", "badge_volcano", "badge_earth"
+	],
+	"party": [
+		{ "species": "charmeleon", "level": 40, "moves": ["scratch", "ember", "slash", "bite"] },
+		{ "species": "pidgeotto", "level": 38 }
+	],
+	"bag": { "poke_ball": 20, "potion": 10 },
+	"money": 10000,
+	"wild": {
+		"rate": 60,
+		"slots": [
+			{ "species": "rattata", "levels": [3, 5], "weight": 30 },
+			{ "species": "pidgey", "levels": [3, 5], "weight": 30 },
+			{ "species": "gastly", "levels": [5, 7], "weight": 20 },
+			{ "species": "oddish", "levels": [5, 7], "weight": 20 }
+		]
+	}
+}
