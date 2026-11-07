@@ -54,12 +54,14 @@ var party_species: Callable = Callable()
 var companion_species: Callable = Callable()
 ## (move_id: StringName) -> Array [type: StringName, catégorie: StringName] (vide si inconnue).
 var move_info: Callable = Callable()
-## (kind: StringName) -> StringName : morceau du costume porté ([CostumeCatalog], CO-16), &"" sans.
+## (kind: StringName) -> Array[StringName] : morceaux du costume porté ([CostumeCatalog], CO-16,
+## CO-20), vide sans costume.
 var costume_music: Callable = Callable()
 ## (cell: Vector2i) -> StringName : sol de la case (« grass », « hard », « indoor »…).
 var ground_at: Callable = Callable()
 
 var _library: AudioLibrary
+var _costume_rng := RandomNumberGenerator.new()
 var _zones: ZoneLibrary
 var _map_id: StringName = &""
 var _map_override: StringName = &""
@@ -155,14 +157,17 @@ func on_zone_announced(map_id: StringName) -> void:
 		audio.call(&"play_jingle", jingle)
 
 
-## Morceau [param kind] du costume porté si son fichier existe, sinon &"" (CO-19 : sans fichier,
-## la musique normale joue, jamais le silence).
+## Un morceau [param kind] du costume porté, tiré au hasard parmi ceux dont le fichier existe
+## (CO-20) ; &"" s'il n'y en a aucun (CO-19 : la musique normale joue, jamais le silence). Le tirage
+## n'use pas l'aléatoire de la partie.
 func _costume_track(kind: StringName) -> StringName:
-	var track: StringName = costume_music.call(kind) if costume_music.is_valid() else &""
-	if track.is_empty() or not _library.has_track(track) \
-			or not ResourceLoader.exists(_library.track(track)["file"]):
-		return &""
-	return track
+	var tracks: Array = costume_music.call(kind) if costume_music.is_valid() else []
+	var playable: Array[StringName] = []
+	for track: StringName in tracks:
+		if _library.has_track(track) and ResourceLoader.exists(_library.track(track)["file"]):
+			playable.append(track)
+	return playable[_costume_rng.randi_range(0, playable.size() - 1)] \
+		if not playable.is_empty() else &""
 
 
 ## Événement de combat : victoire (`BATTLE_ENDED` gagné) → musique de victoire ; montée de

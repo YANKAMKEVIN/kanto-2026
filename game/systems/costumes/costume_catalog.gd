@@ -147,11 +147,14 @@ func perk_text(id: StringName) -> String:
 	return PERK_FORMAT % [perk["name"], perk["text"]] if not perk.is_empty() else ""
 
 
-## Morceau [param kind] ([constant MUSIC_BATTLE], [constant MUSIC_TOWN]) de [param id] ; &"" sans
-## morceau (tenue d'origine comprise).
-func music_track(id: StringName, kind: StringName) -> StringName:
+## Morceaux [param kind] ([constant MUSIC_BATTLE], [constant MUSIC_TOWN]) de [param id] (CO-20 :
+## un ou plusieurs) ; vide sans morceau (tenue d'origine comprise).
+func music_tracks(id: StringName, kind: StringName) -> Array[StringName]:
 	var music: Dictionary = _find(id).get("music", {})
-	return StringName(str(music.get(String(kind), "")))
+	var result: Array[StringName] = []
+	for track: Variant in music.get(kind, []):
+		result.append(StringName(str(track)))
+	return result
 
 
 ## Valeur de l'effet [param key] du costume [param id] ; [param fallback] s'il ne l'a pas.
@@ -272,7 +275,14 @@ func _parse_entry(raw: Variant, where: String) -> Dictionary:
 		if not dict["music"] is Dictionary:
 			_error("%s : « music » { battle, town } attendu" % where)
 			return {}
-		entry["music"] = dict["music"]
+		var music: Dictionary[StringName, Array] = {}
+		for kind: Variant in dict["music"]:
+			var list: Variant = (dict["music"] as Dictionary)[kind]
+			if not [MUSIC_BATTLE, MUSIC_TOWN].has(StringName(str(kind))) or not list is Array:
+				_error("%s : « music.%s » (liste de morceaux) invalide" % [where, kind])
+				return {}
+			music[StringName(str(kind))] = list
+		entry["music"] = music
 	return entry
 
 

@@ -2583,8 +2583,8 @@ func _setup_audio() -> void:
 		var trainer := _trainers.get_trainer(id) if _trainers != null else null
 		return trainer.name if trainer != null else ""
 	_audio_bridge.wild_species = _battle_director.get_wild_species
-	_audio_bridge.costume_music = func(kind: StringName) -> StringName:
-		return CostumeCatalog.shared().music_track(GameState.worn_costume(), kind)
+	_audio_bridge.costume_music = func(kind: StringName) -> Array[StringName]:
+		return CostumeCatalog.shared().music_tracks(GameState.worn_costume(), kind)
 	_audio_bridge.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	_audio_bridge.items = _items
 	# SonB : cris (numéro national par l'espèce).

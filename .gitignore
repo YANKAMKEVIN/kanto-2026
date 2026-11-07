@@ -10,3 +10,8 @@ override.cfg
 
 # Copies de travail des agents Claude Code
 .claude/worktrees/
+
+# Musiques des costumes (dossier-costumes.md CO-19) : fichiers de Kevin, jamais dans le dépôt tant
+# que le Go juridique n'est pas étendu et que le dépôt est public. Préparés par
+# tools/audio/prepare_costume_music.py.
+assets/audio/music/costumes/

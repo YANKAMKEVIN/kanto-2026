@@ -136,11 +136,16 @@ func test_every_costume_names_known_tracks() -> void:
 	assert_true(library.load_dir())
 	var catalog := CostumeCatalog.shared()
 	for id: StringName in catalog.ids():
-		var battle := catalog.music_track(id, CostumeCatalog.MUSIC_BATTLE)
-		var town := catalog.music_track(id, CostumeCatalog.MUSIC_TOWN)
-		assert_true(library.has_track(battle), String(id))
-		assert_true(library.is_jingle(town), String(id))
-	assert_eq(catalog.music_track(CostumeCatalog.ORIGINAL, CostumeCatalog.MUSIC_BATTLE), &"")
+		var battle := catalog.music_tracks(id, CostumeCatalog.MUSIC_BATTLE)
+		var town := catalog.music_tracks(id, CostumeCatalog.MUSIC_TOWN)
+		assert_false(battle.is_empty(), String(id))
+		assert_false(town.is_empty(), String(id))
+		for track: StringName in battle:
+			assert_true(library.has_track(track) and not library.is_jingle(track), String(track))
+		for track: StringName in town:
+			assert_true(library.is_jingle(track), String(track))
+	assert_eq(catalog.music_tracks(&"soul", CostumeCatalog.MUSIC_BATTLE).size(), 2, "CO-20")
+	assert_true(catalog.music_tracks(CostumeCatalog.ORIGINAL, CostumeCatalog.MUSIC_BATTLE).is_empty())
 
 
 func test_only_ordinary_battles_take_the_costume_theme() -> void:
@@ -163,5 +168,10 @@ func test_missing_file_keeps_normal_music() -> void:
 	var library := AudioLibrary.new()
 	library.load_dir()
 	bridge._library = library
-	bridge.costume_music = func(_kind: StringName) -> StringName: return &"costume_soul_battle"
-	assert_eq(bridge._costume_track(CostumeCatalog.MUSIC_BATTLE), &"", "fichier absent")
+	bridge.costume_music = func(_kind: StringName) -> Array[StringName]:
+		return [&"costume_unknown", &"costume_soul_battle"]
+	var track := bridge._costume_track(CostumeCatalog.MUSIC_BATTLE)
+	if ResourceLoader.exists(library.track(&"costume_soul_battle")["file"]):
+		assert_eq(track, &"costume_soul_battle", "seul morceau jouable")
+	else:
+		assert_eq(track, &"", "fichier absent : musique normale")
