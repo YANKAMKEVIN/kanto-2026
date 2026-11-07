@@ -44,6 +44,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 - **Entrée des combats de Dresseur (2026-11-02) :** deux niveaux, jamais sautée ; `docs/design/dossier-05-combat.md` §3.
 - **Difficulté :** première tentative gagnée à 80 % au plus, grands combats autour de 35 à 60 %. Ne pas adoucir au-delà de 80 % sans Kevin.
 - **Démarrage (2026-11-07) :** le jeu s'ouvre directement sur le carton « Les studios Kevin & Co / vous présentent » (image de démarrage, `tools/art/splash_carton.gd`) ; plus de K sur l'écran système Android 12+ ni de premier logo Pokemake. Arrive avec la prochaine RC.
+- **Icône (2026-11-07) :** Poké Ball céleste, validée par Kevin pour le lanceur Android et iOS.
 - **Nom :** le jeu s'appelle Pokemake ; dépôt, dossier et package gardent « kanto2026 ».
 
 Les décisions propres à un jalon restent dans son dossier et son plan.
