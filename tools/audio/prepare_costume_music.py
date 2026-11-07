@@ -12,8 +12,8 @@ Pour chaque morceau `costume_*` de `data/audio/tracks.json` :
    son niveau courant, ce qui saute un silence ou une intro parlée), ou du départ choisi à
    l'écoute (JINGLE_STARTS), fondu de sortie ;
 4. volume ramené à −16 LUFS (filtre `loudnorm` de ffmpeg), puis OGG q3 (oggenc).
-Sortie : assets/audio/music/costumes/<id>.ogg, **ignoré par Git** (CO-19) : les fichiers restent
-sur le Mac tant que le Go juridique n'est pas étendu et que le dépôt est public.
+Sortie : assets/audio/music/costumes/<id>.ogg, suivis par le dépôt depuis son retour en privé
+(2026-11-07, CO-19 ; Go juridique : docs/tech/jalon-34-34e.md §16).
 Usage : python3 tools/audio/prepare_costume_music.py [--src DOSSIER] [--only id,id]
 Rien n'est téléchargé.
 """

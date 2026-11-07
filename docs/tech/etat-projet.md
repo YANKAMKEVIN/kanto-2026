@@ -12,27 +12,26 @@ Mis à jour : 2026-11-07.
 - **Art de Kanto :** toutes les cartes ont leur décor peint, les 202 espèces ont un dos peint, Sulfura, Électhor et Mewtwo sont peints sur la carte (`reportes.md`, RP-010, RP-132, RP-141, RP-290). Pas dans la RC 0.34.1. Vu sur l'A17 le 2026-11-06 sans blocage, dos peints du joueur compris, à terre et sur l'eau, en tenue d'origine et en costume pour la joueuse et les 16 costumes (`jalon-34-rapport.md` §3, lignes 9 bis et 9 ter).
 - **Johto :** JOH0 à JOH9 et l'arc des Pierres (JOHP0 à JOHP3) sont dans `main`, ainsi que les personnages peints. L'arc est jouable de la Tour Radio à l'acte 2, retour de l'équipe compris.
 - **Musiques de Johto :** 32 pistes HeartGold / SoulSilver branchées (cartes, Centres et Boutiques, combats par région, légendaires, générique) ; détail dans `docs/tech/johto-musiques.md` §10. Jingles, victoires et « ! » restent ceux de Let's Go.
-- **Avantages des costumes :** huit avantages actifs si le costume est porté, écrits dans l'écran Dresseur et à l'annonce du déblocage (`dossier-costumes.md` §2 bis), sur la branche `worktree-costumes-avantages`. Décision de Kevin du 2026-11-07 : tout fusionner dans `main` une fois les musiques arrivées.
+- **Costumes (2026-11-07, dans `main`) :** huit avantages actifs si le costume est porté, écrits dans l'écran Dresseur et à l'annonce du déblocage ; un thème de combat (sauvages et Dresseurs ordinaires) et un chant d'arrivée en ville de 60 s par costume, 19 pistes validées à l'écoute par Kevin sur l'A17 (`dossier-costumes.md` §2 bis et §2 ter ; Go juridique `jalon-34-34e.md` §16).
 - **Personne n'a encore joué Johto d'un bout à l'autre.**
 - **CI :** 14 lots équilibrés par durée (`tools/ci_shard.py`, `tools/ci_test_times.json`) et cache de l'import Godot : environ 10 min au lieu de 24. Quand les lots se déséquilibrent, refaire le fichier de durées avec `tools/ci_shard.py --update <dossier des artefacts>`.
 
 ## Prochaines étapes
 
-1. **RC 0.35.0 (Kevin) :** installer la RC et jouer le jeu entier ; T4 reporté à la version suivante.
-2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto) ; RP-292.
+1. **RC 0.35.0 (Kevin) :** installer la RC et jouer le jeu entier ; T4 reporté à la version suivante. L'A17 porte pour l'instant la version de test des costumes (APK debug de la branche, 2026-11-07) à la place de la RC.
+2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto), maison du Gardien et souvenir de Dante compris. Le numéro RP-292 sert deux fois dans `reportes.md` : le second (bouton SURFER après un chargement au bord de l'eau) reste ouvert.
 3. **Johto, vérifié sur l'A17 le 2026-11-06 (`docs/tech/qa-johto-a17-2.md`) :** onze jonctions passées par morceaux, Raikou, Entei, Ho-Oh, rival du sommet, remontée et descente du Mont Argenté. Un blocage trouvé et corrigé : sortie de la chambre du Centre d'Oliville. Reste : une partie complète et l'écoute des musiques par Kevin, relecture de deux objectifs ajoutés (JOH9).
 4. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
 5. **Bande-annonce :** v7 validée par Kevin le 2026-11-06, dans le jeu sur `main` (`docs/design/storyboard-trailer-v3.md` §10). Reste : la lire sur téléphone. La RC 0.35.0, déjà construite, garde l'ancienne vidéo : la nouvelle arrive avec la RC suivante.
 
 ## Questions ouvertes
 
-- Remise du dépôt en privé : encore public au 2026-11-06, alors que le Go juridique du 2026-11-04 suppose que rien n'est publié (`jalon-34-34e.md` §15.4).
-- Musiques des costumes (`dossier-costumes.md` §2 ter) : fichiers de Kevin préparés sur le Mac, hors dépôt (`assets/audio/music/costumes/`, ignoré par Git) ; thèmes de combat et chants d'arrivée de 60 s validés à l'écoute sur l'A17 par Kevin le 2026-11-07 (version de test installée à la place de la RC) ; Go juridique étendu par Kevin le 2026-11-07 (`jalon-34-34e.md` §16) ; attendent le dépôt en privé.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
 
 ## Décisions de Kevin en vigueur
 
+- **Dépôt (2026-11-07) :** repassé en privé par Kevin. Le workflow de CI reste tel quel (consigne du 2026-11-04, `jalon-34-34e.md` §14).
 - **Costumes (2026-11-07) :** l'avantage n'agit que si le costume est porté, et il est écrit pour le joueur. Musiques : un thème de combat (sauvages et Dresseurs ordinaires) et un jingle d'arrivée en ville par costume.
 - **Ordre de l'acte 2 (2026-11-06) :** JOH6 avant JOH7. La mer au sud d'Oliville reste fermée jusqu'au déserteur d'Acajou (`johto_whirl_clue`).
 - **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
