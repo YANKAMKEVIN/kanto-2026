@@ -201,7 +201,9 @@ func _on_player_moved(cell: Vector2i) -> void:
 	var terrain := terrain_at(cell)
 	var table := _library.get_table(_map.map_id, terrain, _period())
 	# Un seul tirage de taux par pas, au taux effectif de la série (§3.6, montée du taux).
-	var encounter := table.roll(_state.rng as GameRng, _quiet_steps)
+	var rare := CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_RARE_GRASS, 1.0) \
+		if terrain == _GRASS_TERRAIN else 1.0
+	var encounter := table.roll(_state.rng as GameRng, _quiet_steps, _rate_factor(terrain), rare)
 	if encounter == null:
 		_quiet_steps += 1
 		return
@@ -213,6 +215,14 @@ func _on_player_moved(cell: Vector2i) -> void:
 	# Verrou synchrone, dans le `moved` : le pas suivant ne part pas (comme les déclencheurs
 	# du 3B). Le reste de la séquence est une coroutine lancée sans l'attendre.
 	_run(encounter, _origin_cell(cell), terrain)
+
+
+## Costumes (CO-13) : multiplicateur du taux de rencontre sur [param terrain].
+func _rate_factor(terrain: StringName) -> float:
+	var factor := CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_ENCOUNTER_RATE, 1.0)
+	if terrain == _WATER_TERRAIN:
+		factor *= CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_SURF_RATE, 1.0)
+	return factor
 
 
 ## Lot 32P : un pas libre décompte la Repousse en cours ([member GameState.repel_steps]) ; vrai si

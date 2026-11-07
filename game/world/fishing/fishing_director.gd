@@ -141,7 +141,9 @@ func fish(rod: StringName, cell: Vector2i) -> void:
 		if rng != null else roundi(WAIT_MIN * 10.0)
 	await _wait(tenths / 10.0)
 	var map_id: StringName = _map.map_id if is_instance_valid(_map) else &""
-	var encounter := FishingRules.roll(rng, _tables, rod, map_id) if rng != null else null
+	var bonus := roundi(CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_BITE_BONUS))
+	var encounter := FishingRules.roll(rng, _tables, rod, map_id, bonus) \
+		if rng != null else null
 	if encounter != null and _pokemon != null and not _pokemon.has_species(encounter.species):
 		push_error("FishingDirector : espèce inconnue « %s » (table « %s »)" % [
 			encounter.species, encounter.table_id])

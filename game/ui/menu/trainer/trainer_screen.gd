@@ -428,7 +428,8 @@ func _rebuild_costumes(view: TrainerView) -> void:
 		_costume_row.add_child(slot)
 		_costume_slots.append(slot)
 		if costume.worn:
-			_costume_caption.text = costume.name
+			_costume_caption.text = "%s\n%s" % [costume.name, costume.perk] \
+				if not costume.perk.is_empty() else costume.name
 
 
 ## Vignettes des costumes, dans l'ordre (tenue d'origine d'abord) ; vide : section absente.

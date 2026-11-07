@@ -32,7 +32,24 @@ const DEFAULT_LOOK: StringName = &"hero"
 ## Annonce du déblocage après la remise du badge (CO-4).
 const UNLOCK_FORMAT: String = "Nouveau costume : %s"
 
-const _KEYS: Array[String] = ["id", "badge", "art", "names"]
+## Avantages (CO-12 à CO-15) : clés de « perk.effects » lues par les systèmes de jeu.
+const EFFECT_ITEM_SENSE: StringName = &"item_sense"
+const EFFECT_BITE_BONUS: StringName = &"bite_bonus"
+const EFFECT_SURF_RATE: StringName = &"surf_rate"
+const EFFECT_PRIZE: StringName = &"prize_multiplier"
+const EFFECT_RARE_GRASS: StringName = &"rare_grass"
+const EFFECT_TRAINER_SIGHT: StringName = &"trainer_sight"
+const EFFECT_ENCOUNTER_RATE: StringName = &"encounter_rate"
+const EFFECT_MOVE_HINT: StringName = &"move_hint"
+const EFFECT_WILD_EXP: StringName = &"wild_exp"
+const EFFECT_CAPTURE: StringName = &"capture"
+const EFFECTS: Array[StringName] = [EFFECT_ITEM_SENSE, EFFECT_BITE_BONUS, EFFECT_SURF_RATE,
+	EFFECT_PRIZE, EFFECT_RARE_GRASS, EFFECT_TRAINER_SIGHT, EFFECT_ENCOUNTER_RATE,
+	EFFECT_MOVE_HINT, EFFECT_WILD_EXP, EFFECT_CAPTURE]
+## Texte d'un avantage (écran Dresseur, annonce du déblocage) : « Flair : … ».
+const PERK_FORMAT: String = "%s : %s"
+
+const _KEYS: Array[String] = ["id", "badge", "art", "names", "perk"]
 
 static var _shared: CostumeCatalog
 
@@ -118,6 +135,27 @@ func display_name(id: StringName, look: StringName) -> String:
 func unlock_text(id: StringName, look: StringName) -> String:
 	var name := display_name(id, look)
 	return UNLOCK_FORMAT % name if not name.is_empty() else ""
+
+
+## « Flair : Signale les objets cachés à 3 cases. » ; "" si [param id] n'a pas d'avantage.
+func perk_text(id: StringName) -> String:
+	var perk: Dictionary = _find(id).get("perk", {})
+	return PERK_FORMAT % [perk["name"], perk["text"]] if not perk.is_empty() else ""
+
+
+## Valeur de l'effet [param key] du costume [param id] ; [param fallback] s'il ne l'a pas.
+func effect(id: StringName, key: StringName, fallback: float = 0.0) -> float:
+	var perk: Dictionary = _find(id).get("perk", {})
+	var effects: Dictionary = perk.get("effects", {})
+	return float(effects.get(key, fallback))
+
+
+## Effet [param key] du costume porté par [param state] (GameState, ou un double de test sans
+## costume : [param fallback]). Les systèmes reçoivent l'état sans jamais nommer l'autoload.
+static func worn_effect(state: Object, key: StringName, fallback: float = 0.0) -> float:
+	if state == null or not state.has_method(&"worn_costume"):
+		return fallback
+	return shared().effect(state.call(&"worn_costume"), key, fallback)
 
 
 ## Vrai si [param id] est un costume connu dont le badge est obtenu. [param has_flag] :
@@ -212,8 +250,37 @@ func _parse_entry(raw: Variant, where: String) -> Dictionary:
 	if has(id):
 		_error("%s : identifiant en double « %s »" % [where, id])
 		return {}
-	return {"id": id, "badge": StringName(dict["badge"]), "art": String(dict["art"]),
+	var entry := {"id": id, "badge": StringName(dict["badge"]), "art": String(dict["art"]),
 		"names": parsed_names}
+	if dict.has("perk"):
+		var perk := _parse_perk(dict["perk"], where)
+		if perk.is_empty():
+			return {}
+		entry["perk"] = perk
+	return entry
+
+
+## Avantage d'un costume : { name, text, effects } ; {} (erreur notée) s'il est invalide.
+func _parse_perk(raw: Variant, where: String) -> Dictionary:
+	if not raw is Dictionary:
+		_error("%s : « perk » { name, text, effects } attendu" % where)
+		return {}
+	var dict := raw as Dictionary
+	for key: String in ["name", "text"]:
+		if not dict.get(key) is String or (dict[key] as String).is_empty():
+			_error("%s : « perk.%s » (texte non vide) attendu" % [where, key])
+			return {}
+	if not dict.get("effects") is Dictionary or (dict["effects"] as Dictionary).is_empty():
+		_error("%s : « perk.effects » attendu" % where)
+		return {}
+	var effects: Dictionary[StringName, float] = {}
+	for key: Variant in dict["effects"]:
+		var value: Variant = (dict["effects"] as Dictionary)[key]
+		if not EFFECTS.has(StringName(str(key))) or not (value is float or value is int):
+			_error("%s : effet inconnu ou invalide « %s »" % [where, key])
+			return {}
+		effects[StringName(str(key))] = float(value)
+	return {"name": String(dict["name"]), "text": String(dict["text"]), "effects": effects}
 
 
 func _fail(message: String) -> bool:

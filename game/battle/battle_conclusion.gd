@@ -27,9 +27,10 @@ var blackout: bool = false
 ## Conséquences de l'issue [param outcome] ([enum Battle.Outcome]) d'un combat contre
 ## [param trainer] (null = Pokémon sauvage). [param last_foe_level] : niveau du dernier Pokémon
 ## de l'équipe adverse (gain par niveau, [member TrainerData.prize_per_level]). [param coins] :
-## pièces du Jackpot éparpillées par le joueur pendant le combat.
-static func resolve(trainer: TrainerData, outcome: int,
-		last_foe_level: int = 0, coins: int = 0) -> BattleConclusion:
+## pièces du Jackpot éparpillées par le joueur pendant le combat. [param prize_factor] :
+## multiplicateur de l'argent gagné (costumes, CO-13).
+static func resolve(trainer: TrainerData, outcome: int, last_foe_level: int = 0, coins: int = 0,
+		prize_factor: float = 1.0) -> BattleConclusion:
 	var result := BattleConclusion.new()
 	result.outcome = outcome
 	result.pay_day_money = maxi(coins, 0) if PayDayPurse.is_collected(outcome) else 0
@@ -38,7 +39,7 @@ static func resolve(trainer: TrainerData, outcome: int,
 		result.blackout = lost
 		return result
 	result.heal_party = trainer.heal_after
-	result.prize_money = trainer.prize_for(last_foe_level) \
+	result.prize_money = roundi(trainer.prize_for(last_foe_level) * prize_factor) \
 		if outcome == Battle.Outcome.WIN else 0
 	result.blackout = lost and not trainer.can_lose
 	return result

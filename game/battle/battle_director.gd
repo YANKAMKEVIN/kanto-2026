@@ -271,6 +271,12 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	# JOH0 (JH-13) : bonus d'XP de l'acte 1 du Chapitre Johto, par-dessus les règles.
 	if request.rules != null and exp_bonus_source.is_valid():
 		request.rules.exp_multiplier *= float(exp_bonus_source.call())
+	# Costumes (CO-13, CO-14) : Entraînement et Traqueur, en sauvage hors Safari.
+	if request.rules != null and request.rules.wild and not request.rules.safari:
+		request.rules.exp_multiplier *= CostumeCatalog.worn_effect(_state,
+			CostumeCatalog.EFFECT_WILD_EXP, 1.0)
+		request.rules.capture_multiplier = CostumeCatalog.worn_effect(_state,
+			CostumeCatalog.EFFECT_CAPTURE, 1.0)
 	_battle = Battle.new(player_side, foe_side, _data, rng, request.rules)
 	# Le moteur choisit qui entre (premier Pokémon non K.O., pas forcément le premier de
 	# l'équipe) : l'entrée en scène suit ses événements SENT_OUT, jamais une supposition.
@@ -358,7 +364,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		var foes := request.foe_party
 		last_level = foes.get_at(foes.size() - 1).level if foes.size() > 0 else 0
 	var conclusion := BattleConclusion.resolve(trainer, outcome, last_level,
-		_battle.get_pay_day_coins())
+		_battle.get_pay_day_coins(),
+		CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_PRIZE, 1.0))
 	if conclusion.prize_money > 0:
 		if is_instance_valid(_hud) and _texts != null:
 			await _hud.show_message(_texts.prize_line(conclusion.prize_money))
@@ -552,7 +559,8 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		var usable := _battle.get_usable_moves()
 		if usable.is_empty():
 			return BattleAction.move(BattleAction.STRUGGLE)
-		_hud.show_moves(BattleViews.player_moves(_battle, _data, _texts))
+		_hud.show_moves(BattleViews.player_moves(_battle, _data, _texts,
+			CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_MOVE_HINT) > 0.0))
 		var index := await _await_move_or_back()
 		if index < 0:
 			continue

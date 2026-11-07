@@ -73,8 +73,10 @@ func check_at(cell: Vector2i) -> bool:
 		if not _is_waiting_trainer(npc):
 			continue
 		var spec := npc.get_spec()
+		var sight := TrainerRules.reduced_sight(spec.sight, CostumeCatalog.worn_effect(_state,
+			CostumeCatalog.EFFECT_TRAINER_SIGHT, 1.0))
 		var distance := TrainerRules.sight_distance(grid, npc.get_cell(), spec.facing,
-			spec.sight, cell, spec.move_mode)
+			sight, cell, spec.move_mode)
 		if distance >= 1:
 			return _play(npc, distance)
 	return false

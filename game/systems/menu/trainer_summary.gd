@@ -97,6 +97,7 @@ static func costume_views(state: Object, catalog: CostumeCatalog) -> Array[Costu
 	original.unlocked = true
 	original.worn = worn.is_empty()
 	original.name = TrainerView.ORIGINAL_COSTUME_NAME
+	original.perk = TrainerView.ORIGINAL_COSTUME_PERK
 	original.sprite = TrainerLooks.player_sprite(player_look)
 	views.append(original)
 	for id: StringName in catalog.ids():
@@ -105,6 +106,7 @@ static func costume_views(state: Object, catalog: CostumeCatalog) -> Array[Costu
 		slot.unlocked = catalog.is_unlocked(id, flags.has_flag)
 		slot.worn = slot.unlocked and id == worn
 		slot.name = catalog.display_name(id, player_look) if slot.unlocked else ""
+		slot.perk = catalog.perk_text(id) if slot.unlocked else ""
 		slot.sprite = catalog.world_sprite(id, player_look)
 		views.append(slot)
 	return views

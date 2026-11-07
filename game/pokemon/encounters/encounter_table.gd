@@ -100,27 +100,44 @@ func effective_rate(quiet_steps: int = 0) -> int:
 ## Tirage complet d'un pas : null si aucune rencontre (le taux n'a pas été atteint) ou si la
 ## table est vide. [param quiet_steps] : pas d'herbe consécutifs déjà faits sans rencontre
 ## (voir [method effective_rate]).
-func roll(rng: GameRng, quiet_steps: int = 0) -> WildEncounter:
+## [param rate_factor] : multiplicateur du taux (costumes, CO-13), 1 sur [constant RATE_DEN] au
+## moins si le taux n'est pas nul. [param rare_factor] : voir [method pick].
+func roll(rng: GameRng, quiet_steps: int = 0, rate_factor: float = 1.0,
+		rare_factor: float = 1.0) -> WildEncounter:
 	var effective := effective_rate(quiet_steps)
+	if effective > 0 and rate_factor != 1.0:
+		effective = maxi(1, roundi(effective * rate_factor))
 	if effective <= 0 or rng.roll(RATE_DEN) > effective:
 		return null
-	return pick(rng)
+	return pick(rng, rare_factor)
 
 
 ## Tire une rencontre sans le test de taux (une rencontre est toujours produite si la table a
 ## des emplacements). null si la table est vide.
-func pick(rng: GameRng) -> WildEncounter:
-	var total := total_weight()
-	if total <= 0 or slots.is_empty():
+## [param rare_factor] multiplie le poids des emplacements rares (10 % du total au plus) ; à 1,
+## le tirage est inchangé.
+func pick(rng: GameRng, rare_factor: float = 1.0) -> WildEncounter:
+	var base_total := total_weight()
+	if base_total <= 0 or slots.is_empty():
 		return null
+	var total := 0
+	for slot: EncounterSlot in slots:
+		total += _boosted_weight(slot, base_total, rare_factor)
 	var target := rng.roll(total)
 	var accumulated := 0
 	for slot: EncounterSlot in slots:
-		accumulated += slot.weight
+		accumulated += _boosted_weight(slot, base_total, rare_factor)
 		if target <= accumulated:
 			var level := rng.range_int(slot.min_level, slot.max_level)
 			return WildEncounter.new(slot.species, level, id)
 	return null
+
+
+## Poids de [param slot] sous [param rare_factor].
+func _boosted_weight(slot: EncounterSlot, base_total: int, rare_factor: float) -> int:
+	if rare_factor == 1.0 or slot.weight * 10 > base_total:
+		return slot.weight
+	return maxi(1, roundi(slot.weight * rare_factor))
 
 
 ## Probabilité qu'une rencontre (quand elle a lieu) soit [param species] (information pour

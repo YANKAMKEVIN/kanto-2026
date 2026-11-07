@@ -4,6 +4,11 @@ extends RefCounted
 ## des chaînes et des entiers, pour que les composants de `game/ui/battle/` ne connaissent
 ## ni le moteur ni les données (jalon-04.md §3.8, §14.2). Classe pure, statique.
 
+## Analyste (CO-13) : efficacité écrite sur la carte de capacité.
+const HINT_SUPER: String = "Super efficace"
+const HINT_WEAK: String = "Peu efficace"
+const HINT_NONE: String = "Sans effet"
+
 ## Actions de la grille disponibles contre un Pokémon sauvage (jalons 5B et 5D) : ATTAQUER, SAC
 ## (lancer une Ball) et FUITE ; ÉQUIPE s'y ajoute par [method with_team] (jalon 7).
 ## Clés : ActionGrid.ACTIONS.
@@ -171,12 +176,39 @@ static func bag_entries(bag: Bag, items: ItemLibrary,
 	return BagQuery.entries(bag, items, context)
 
 
+## Remplit [member BattleMoveView.hint] : rien pour une capacité de statut ou neutre.
+static func _add_hints(views: Array[BattleMoveView], pokemon: Pokemon,
+		foe_types: Array[StringName], data: PokemonData) -> void:
+	var chart := data.get_type_chart()
+	var index := 0
+	for slot: MoveSlot in pokemon.moves:
+		var move := data.get_move(slot.move_id)
+		if move == null:
+			continue
+		if move.category != MoveData.Category.STATUS and not move.typeless:
+			views[index].hint = hint_for(chart.multiplier(move.type, foe_types))
+		index += 1
+
+
+## Texte d'efficacité d'un multiplicateur de types ; "" s'il est neutre.
+static func hint_for(multiplier: float) -> String:
+	if multiplier == 0.0:
+		return HINT_NONE
+	if multiplier > 1.0:
+		return HINT_SUPER
+	return HINT_WEAK if multiplier < 1.0 else ""
+
+
 ## Cartes des capacités du Pokémon du joueur en jeu ([method moves]) ; celle que bloque Entrave
 ## (jalon 12, [method Battle.get_disabled_move]) est marquée [member BattleMoveView.blocked],
 ## libellé « move_disabled_label » de [param texts] (« BLOQUÉE »).
-static func player_moves(battle: Battle, data: PokemonData,
-		texts: BattleText) -> Array[BattleMoveView]:
+## [param show_hints] (Analyste, CO-13) : chaque carte dit son efficacité sur l'adversaire en jeu.
+static func player_moves(battle: Battle, data: PokemonData, texts: BattleText,
+		show_hints: bool = false) -> Array[BattleMoveView]:
 	var views := moves(battle.get_player_side().active.pokemon, data)
+	var foe := battle.get_foe_side().active
+	if show_hints and foe != null:
+		_add_hints(views, battle.get_player_side().active.pokemon, foe.types, data)
 	var slot := battle.get_disabled_move()
 	if slot != Battle.NO_LOCK and slot < views.size():
 		views[slot].blocked = true

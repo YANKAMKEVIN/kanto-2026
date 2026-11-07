@@ -27,6 +27,7 @@ const HALL_OF_FAME_LABEL: String = "Panthéon"
 ## phrase d'un costume verrouillé touché (CO-2).
 const COSTUMES_TITLE: String = "Costumes"
 const ORIGINAL_COSTUME_NAME: String = "Tenue d'origine"
+const ORIGINAL_COSTUME_PERK: String = "Aucun avantage."
 const COSTUME_LOCKED_TEXT: String = "Se débloque avec un nouveau badge."
 
 ## Identité.

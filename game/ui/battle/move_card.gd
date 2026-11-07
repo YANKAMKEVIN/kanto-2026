@@ -28,6 +28,9 @@ const PP_FORMAT := "%d/%d"
 const POWER_FORMAT := "Puissance %s"
 const STATUS_TEXT := "Statut"
 const NO_VALUE := "—"
+## Valeur de la puissance suivie de l'efficacité (Analyste, CO-13), sans le mot « Puissance » :
+## « TÉNÈBRES » et une puissance à trois chiffres doivent tenir sur la ligne.
+const HINT_FORMAT := "%s · %s"
 ## Icône neutre (anneau, comme NORMAL sur la référence) pour un type sans icône.
 const GENERIC_ICON: Texture2D = preload("res://assets/ui/icons/types/normal.svg")
 ## Cadenas d'une capacité bloquée (Entrave, jalon 12).
@@ -200,7 +203,8 @@ func _apply() -> void:
 static func power_text(view: BattleMoveView) -> String:
 	if view.category == BattleMoveView.Category.STATUS:
 		return STATUS_TEXT
-	return POWER_FORMAT % (str(view.power) if view.power > 0 else NO_VALUE)
+	var power := str(view.power) if view.power > 0 else NO_VALUE
+	return POWER_FORMAT % power if view.hint.is_empty() else HINT_FORMAT % [power, view.hint]
 
 
 func _apply_style() -> void:

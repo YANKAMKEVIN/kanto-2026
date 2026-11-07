@@ -494,6 +494,11 @@ func worn_costume() -> StringName:
 	return CostumeCatalog.shared().worn(player_costume, flags.has_flag)
 
 
+## Effet [param key] de l'avantage du costume porté (CO-12) ; [param fallback] sans cet effet.
+func costume_effect(key: StringName, fallback: float = 0.0) -> float:
+	return CostumeCatalog.shared().effect(worn_costume(), key, fallback)
+
+
 ## Porte [param costume] (CO-7 : instantané, gratuit) : [constant NO_COSTUME] (tenue d'origine,
 ## toujours permise, CO-6) ou un costume débloqué. Faux (rien ne change) sinon.
 func wear_costume(costume: StringName) -> bool:

@@ -15,6 +15,8 @@ var can_flee: bool = false
 var gives_exp: bool = true
 ## Multiplicateur d'XP (1,0 sauvage ; 1,5 dresseur, Q23).
 var exp_multiplier: float = 1.0
+## Multiplicateur de capture du costume porté (CO-13) ; sans effet sur un légendaire.
+var capture_multiplier: float = 1.0
 ## Le Sac et les Balls sont permis (sauvage seulement, 5D).
 var allow_balls: bool = false
 ## Les soins sur un Pokémon de l'équipe sont permis (jalon 6, Q-10 : sauvage et dresseur). Il

@@ -25,6 +25,8 @@ var power: int = 0
 var accuracy: int = 0
 ## Description de la fiche (texte fourni tel quel).
 var description: String = ""
+## Efficacité écrite sur la carte (Analyste, CO-13) ; "" : rien à dire.
+var hint: String = ""
 ## Bloquée (Entrave, jalon 12) : carte grisée, inerte, [member blocked_text] à la place de la
 ## puissance.
 var blocked: bool = false

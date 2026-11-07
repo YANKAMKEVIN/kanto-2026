@@ -42,6 +42,32 @@
 | CO-10 | Nom affiché dans le jeu | (a) nom du personnage (« Mario ») ; (b) nom descriptif (« Plombier moustachu ») | **(a)** : jeu diffusé au seul cercle restreint de Kevin ; noms en données, faciles à changer |
 | CO-11 | Rival | Le rival ou la rivale porte-t-il des costumes ? | **Non** |
 
+## 2 bis. Avantages des costumes (Kevin, 2026-11-07)
+
+Les costumes ne sont plus seulement visuels. Décisions de Kevin : **l'avantage n'agit que si le costume est porté**, et **il est écrit pour le joueur**. La liste ci-dessous est la proposition de Claude ; valeurs [D], en données (`data/costumes.json`, champ `perk`).
+
+| # | Sujet | Décision |
+|---|---|---|
+| CO-12 | Quand l'avantage agit | **Costume porté seulement** (Kevin). La tenue d'origine n'en a pas |
+| CO-13 | Nature des avantages | Exploration et confort, jamais d'attaque ni de défense : la difficulté des combats reste celle de l'équilibrage [D] |
+| CO-14 | Limites [D] | Entraînement et Traqueur : Pokémon sauvages seulement, hors Safari ; Traqueur sans effet sur les légendaires (taux de capture 3) |
+| CO-15 | Où c'est écrit | **Écran Dresseur** sous la bande des costumes (nom, puis avantage) et **annonce du déblocage** (Kevin). Un costume verrouillé ne dit rien (CO-2). Tenue d'origine : « Aucun avantage. » |
+
+| Badge | Avantage | Effet |
+|---|---|---|
+| Roche | **Flair** | Une phrase sur le monde annonce une fois chaque objet caché à 3 cases, avec sa direction |
+| Cascade | **Marin** | Pêche : +20 points de chance de touche ; rencontres en surf ×0,5 |
+| Foudre | **Mécène** | Argent gagné contre les Dresseurs ×1,2 (pas le Jackpot) |
+| Prisme | **Explorateur** | Hautes herbes : poids des emplacements rares (10 % du total au plus) ×1,5 |
+| Âme | **Ninja** | Vue des Dresseurs ×0,5 (arrondie au-dessus, 1 case au moins) ; rencontres sauvages ×0,75 |
+| Marais | **Analyste** | Les cartes d'attaque disent « Super efficace », « Peu efficace » ou « Sans effet » |
+| Volcan | **Entraînement** | Expérience ×1,15 contre les sauvages |
+| Terre | **Traqueur** | Capture ×1,1. Proposé d'abord « la nuit », mais Kanto n'a pas d'heure : l'effet aurait été nul avant Johto |
+
+## 2 ter. Musiques des costumes (idée de Kevin, 2026-11-07, **à arbitrer**)
+
+Idée : un thème de quelques musiques par personnage, joué **pendant les combats** et **aux entrées de villes** quand le costume est porté. Rien n'est codé ni téléchargé. Le moteur s'y prête (`MusicSelector`, `data/audio/`). Questions ouvertes dans `docs/tech/etat-projet.md`. Hors de l'univers Pokémon, ces musiques étendent l'inventaire de licences de la RC et demandent un nouveau Go juridique de Kevin.
+
 ## 3. Production
 
 - **Art** : Codex, même méthode que la joueuse (`tools/art/joueuse_rivale/`) : gabarit = asset validé du héros ou de la joueuse (pose, cadrage, 128 px, origine aux pieds), identité = une planche de chara design par costume, validée par Kevin avant les sprites. Style **peint simplifié**, dans la même main que le monde. Environ 15 images par version, soit ≈ 240 images pour les 16 versions. Ordre proposé : une planche des 16 costumes, puis les sprites badge par badge.
@@ -56,6 +82,8 @@
 4. Code, dans la branche du chantier JR ou juste après : sauvegarde v9 (validée seule, avec `rival_look`), puis l'écran et les apparences, validés sur S24.
 
 ## Suivi
+
+- [x] Avantages CO-12 à CO-15 — codés le 2026-11-07 sur `worktree-costumes-avantages`, à valider par Kevin ; musiques (§2 ter) à arbitrer
 
 - [x] Idée et liste des huit costumes (Kevin, 2026-10-30)
 - [x] Arbitrages CO-1 à CO-11 — **validés par Kevin le 2026-10-30** (« Okay », toutes les recommandations)

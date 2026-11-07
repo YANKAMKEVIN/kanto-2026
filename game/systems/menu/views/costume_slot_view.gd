@@ -14,5 +14,7 @@ var unlocked: bool = false
 var worn: bool = false
 ## Nom affiché (CO-10) ; "" si verrouillé.
 var name: String = ""
+## Avantage écrit (CO-15) ; "" si verrouillé (CO-2).
+var perk: String = ""
 ## Apparence du monde ([CharacterLook]) : vignette, ou silhouette si verrouillé.
 var sprite: StringName = &""

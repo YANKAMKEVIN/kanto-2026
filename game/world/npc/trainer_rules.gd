@@ -33,6 +33,12 @@ static func is_beaten(flags: StoryFlags, trainer_id: StringName) -> bool:
 	return flags != null and flags.has_flag(beaten_flag(trainer_id))
 
 
+## Portée de vue sous [param factor] (costumes, CO-13) : arrondie au-dessus, 1 case au moins pour
+## un Dresseur qui voit.
+static func reduced_sight(sight: int, factor: float) -> int:
+	return clampi(ceili(sight * factor), 1, sight) if sight > 0 else sight
+
+
 ## Distance (1..[param sight]) du joueur [param target] sur la ligne droite devant le Dresseur
 ## (case [param from], orientation [param facing]), ou [constant NOT_SEEN]. La ligne s'arrête à
 ## la première case hors carte, solide, d'eau, ou occupée par un autre que le joueur ; les

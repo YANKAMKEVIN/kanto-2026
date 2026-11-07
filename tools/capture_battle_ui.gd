@@ -20,6 +20,7 @@ extends SceneTree
 ##   moves          Griffe + Rugissement (capacités de Salamèche), Griffe sélectionnée, « ‹ »
 ##   moves_4        Griffe, Flammèche, Rugissement, Morsure (Ténèbres : icône neutre),
 ##                  Flammèche sélectionnée (comparaison avec combat-capacites-v1)
+##   moves_hint     les mêmes, efficacité écrite sur les cartes (Analyste, CO-13)
 ##   moves_pp0      Griffe à 0 PP (atténuée) + Rugissement
 ##   moves_detail   pression longue réelle sur Griffe (doigt tenu) : fiche détaillée
 ##   moves_detail_status  pression longue sur Rugissement (Statut, Précision 100)
@@ -183,6 +184,14 @@ func _run() -> void:
 		moves.call(&"select", 1)
 		await _frames(6)
 		await _shot("moves_4")
+		var hinted := _move_views([&"scratch", &"ember", &"growl", &"bite"], [35, 25, 40, 25])
+		hinted[0].hint = "Sans effet"
+		hinted[1].hint = "Super efficace"
+		hinted[3].hint = "Peu efficace"
+		moves.call(&"show_moves", hinted)
+		moves.call(&"select", 1)
+		await _frames(6)
+		await _shot("moves_hint")
 		moves.call(&"show_moves", _move_views([&"scratch", &"growl"], [0, 40]))
 		await _frames(6)
 		await _shot("moves_pp0")

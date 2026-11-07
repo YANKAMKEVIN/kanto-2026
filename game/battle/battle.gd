@@ -499,8 +499,10 @@ func _throw_ball(item_id: StringName, events: Array[BattleEvent]) -> void:
 	thrown.item_id = item_id
 	thrown.item_name = item.name
 	events.append(thrown)
-	var result := CaptureCalc.throw_ball(target.max_hp(), target.hp,
-		species.catch_rate if species != null else 1, item.catch_bonus, _rng,
+	var catch_rate := species.catch_rate if species != null else 1
+	var bonus := item.catch_bonus * (_rules.capture_multiplier \
+		if catch_rate > CaptureCalc.LEGENDARY_CATCH_RATE else 1.0)
+	var result := CaptureCalc.throw_ball(target.max_hp(), target.hp, catch_rate, bonus, _rng,
 		StatusRules.catch_bonus(target.status))
 	for i: int in result.shakes:
 		var shake := _event(BattleEvent.Kind.BALL_SHAKE, _foe)

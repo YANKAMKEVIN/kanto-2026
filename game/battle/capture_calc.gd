@@ -8,6 +8,8 @@ extends RefCounted
 ## réussissent. Secousses montrées = min(tests réussis, 3). Pas de capture critique.
 ## Ordre des tirages : 0 (a ≥ 255) à 4 roll(65536), un par test, dans l'ordre.
 
+## Taux de capture des légendaires : le bonus des costumes ne s'y applique pas (CO-14).
+const LEGENDARY_CATCH_RATE: int = 3
 ## Valeur de a à partir de laquelle la capture est assurée.
 const CERTAIN: int = 255
 ## Tests de secousse (une capture les réussit tous).

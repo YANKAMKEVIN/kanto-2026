@@ -33,6 +33,7 @@ extends SceneTree
 ##   trainer              la vraie partie de Kevin (fixture v1), Pokédex pas visible : ni vus ni capturés
 ##   trainer_dex          idem, Pokédex activé : « vus » et « capturés » (liens)
 ##   trainer_badge[_detail]  Badge Roche obtenu (état de test), puis bulle de détail ouverte (J10 T6)
+##   trainer_costume      costume Ninja porté : nom et avantage écrits sous la bande (CO-15)
 ##   trainer_empty        partie neuve : frise vide (« Ton aventure ne fait que commencer. »)
 ## Paramètres et commandes (T28, avec --only=settings,settings_controls,settings_access,
 ## settings_graphics,settings_save,settings_no_save,choice_cards,left_handed,text_large_dialogue,
@@ -175,7 +176,7 @@ func _begin(scenario: String) -> void:
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex", "map_route_2":
 			_map_scenario(scenario)
-		"trainer", "trainer_dex", "trainer_empty", "trainer_badge", "trainer_badge_detail", "trainer_badge_moment":
+		"trainer", "trainer_dex", "trainer_empty", "trainer_badge", "trainer_badge_detail", "trainer_badge_moment", "trainer_costume":
 			_trainer_scenario(scenario)
 		"shop_buy", "shop_sell", "shop_no_money", "shop_confirm":
 			_shop_scenario(scenario)
@@ -417,6 +418,10 @@ func _trainer_scenario(scenario: String) -> void:
 			state.flags.set_flag(&"badge_boulder")
 			state.record_moment(BadgeMoment.TYPE, &"pewter_city",
 				BadgeMoment.details(&"boulder", state.party))
+	if scenario == "trainer_costume":
+		# Avantage le plus long, sous la bande des costumes (CO-15).
+		state.flags.set_flag(&"badge_soul")
+		state.wear_costume(&"soul")
 	if scenario == "trainer_badge":
 		state.money = 999999 # montant long : la ligne d'argent ne passe jamais sous le portrait
 	var unlocks := MenuUnlocks.new(state.flags, state.party)

@@ -73,7 +73,8 @@ func test_the_badge_scene_announces_its_costume_at_its_end() -> void:
 	_boot._on_costume_badge_step(step)
 	assert_signal_not_emitted(toast, "toast_shown", "pas pendant la scène")
 	_boot._announce_costume()
-	assert_signal_emitted_with_parameters(toast, "toast_shown", ["Nouveau costume : Luffy", ""])
+	assert_signal_emitted_with_parameters(toast, "toast_shown", ["Nouveau costume : Luffy",
+		CostumeCatalog.shared().perk_text(&"cascade")])
 	assert_not_null(toast.get_icon(), "vignette du costume")
 	_boot._announce_costume()
 	assert_signal_emit_count(toast, "toast_shown", 1, "une seule fois")

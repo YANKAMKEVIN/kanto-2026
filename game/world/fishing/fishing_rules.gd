@@ -43,11 +43,12 @@ static func table_for(tables: WaterRodTables, rod: StringName,
 
 ## Tirage complet d'une pêche : touche ou non, puis rencontre. null si rien ne mord, sans
 ## canne ou sans table (dans ces deux derniers cas, aucun tirage n'est fait).
+## [param bite_bonus] : points de chance ajoutés à la touche (costumes, CO-13).
 static func roll(rng: GameRng, tables: WaterRodTables, rod: StringName,
-		map_id: StringName) -> WildEncounter:
+		map_id: StringName, bite_bonus: int = 0) -> WildEncounter:
 	var table := table_for(tables, rod, map_id)
 	if table == null:
 		return null
-	if not rng.chance(bite_chance(rod), 100):
+	if not rng.chance(mini(bite_chance(rod) + bite_bonus, 100), 100):
 		return null
 	return table.pick(rng)

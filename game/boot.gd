@@ -103,6 +103,8 @@ var device: Dictionary = {}
 ## Durées de l'ouverture multipliées (fondus, écrans ; 0 = instantané, tests et captures).
 var opening_speed_scale: float = 1.0
 
+## Flair : objets cachés déjà annoncés (« carte:case ») depuis le lancement du jeu.
+var _flair_announced: Dictionary[String, bool] = {}
 var _settings := GameSettings.new()
 var _profile: GraphicsProfile
 var _player: Player
@@ -437,6 +439,7 @@ func _ready() -> void:
 	_cutscenes_node.awakening_screen_handler = _on_awakening_review_requested
 	# JOH0 : lien et œufs à chaque pas libre du joueur.
 	_player.moved.connect(_on_player_moved_for_bond)
+	_player.moved.connect(_on_player_moved_for_flair)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -2174,6 +2177,20 @@ func _on_egg_given(_egg: Pokemon) -> void:
 
 ## JOH0 : un pas du joueur : le lien et les œufs comptent ([BondStepCounter]) ; un œuf arrivé à
 ## terme éclot dès que la partie est stable (hors combat, scène, dialogue, menu).
+## Flair (costume, CO-13) : annonce une fois chaque objet caché qui entre à portée.
+func _on_player_moved_for_flair(cell: Vector2i) -> void:
+	var radius := roundi(GameState.costume_effect(CostumeCatalog.EFFECT_ITEM_SENSE))
+	var map := SceneRouter.get_current_map()
+	if radius <= 0 or not is_instance_valid(map):
+		return
+	var target := Itemfinder.nearest(map.hidden_item_cells(GameState.flags), cell, radius)
+	var key := "%s:%s" % [map.map_id, target]
+	if target == Vector2i(-1, -1) or _flair_announced.has(key):
+		return
+	_flair_announced[key] = true
+	_hud.show_caption(Itemfinder.sense_text(cell, target), -1.0, false, false)
+
+
 func _on_player_moved_for_bond(_cell: Vector2i) -> void:
 	var result := _bond_steps.on_player_moved(GameState.party, GameState.companion_uid,
 		_player.is_input_enabled())
@@ -2300,8 +2317,8 @@ func _announce_costume() -> void:
 	if not is_inside_tree():
 		return
 	var sprite := catalog.world_sprite(costume, GameState.player_look)
-	_hud.show_toast(catalog.unlock_text(costume, GameState.player_look), "",
-		CostumeSlot.idle_texture(sprite))
+	_hud.show_toast(catalog.unlock_text(costume, GameState.player_look),
+		catalog.perk_text(costume), CostumeSlot.idle_texture(sprite))
 
 
 func _on_costume_changed() -> void:

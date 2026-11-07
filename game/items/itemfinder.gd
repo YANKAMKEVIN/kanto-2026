@@ -17,6 +17,15 @@ const DIRECTION_DIALOGUES: Dictionary[Vector2i, StringName] = {
 	Vector2i.RIGHT: &"itemfinder_east",
 }
 const NOTHING_DIALOGUE: StringName = &"itemfinder_nothing"
+## Flair (costume, CO-13) : phrase sur le monde, sans ouvrir de dialogue.
+const SENSE_FORMAT: String = "Un objet caché, tout près, %s !"
+const SENSE_HERE: String = "Un objet caché, juste ici !"
+const SENSE_WORDS: Dictionary[Vector2i, String] = {
+	Vector2i.UP: "au nord",
+	Vector2i.DOWN: "au sud",
+	Vector2i.LEFT: "à l'ouest",
+	Vector2i.RIGHT: "à l'est",
+}
 ## Le joueur se tient sur la case de l'objet (aucun cas connu : les indices sont des cases
 ## bloquantes, mais une case libre reste possible).
 const HERE_DIALOGUE: StringName = &"itemfinder_here"
@@ -24,9 +33,9 @@ const HERE_DIALOGUE: StringName = &"itemfinder_here"
 
 ## Case de l'objet caché le plus proche de [param player] parmi [param cells], à
 ## [constant RADIUS] cases au plus ; [code]Vector2i(-1, -1)[/code] s'il n'y en a aucun.
-static func nearest(cells: Array[Vector2i], player: Vector2i) -> Vector2i:
+static func nearest(cells: Array[Vector2i], player: Vector2i, radius: int = RADIUS) -> Vector2i:
 	var best := Vector2i(-1, -1)
-	var best_distance := RADIUS + 1
+	var best_distance := radius + 1
 	for cell: Vector2i in cells:
 		var distance := distance_to(cell, player)
 		if distance < best_distance:
@@ -49,6 +58,12 @@ static func direction(player: Vector2i, target: Vector2i) -> Vector2i:
 	if absi(delta.y) >= absi(delta.x):
 		return Vector2i.UP if delta.y < 0 else Vector2i.DOWN
 	return Vector2i.LEFT if delta.x < 0 else Vector2i.RIGHT
+
+
+## Phrase du Flair pour l'objet [param target], vu de [param player].
+static func sense_text(player: Vector2i, target: Vector2i) -> String:
+	var dir := direction(player, target)
+	return SENSE_HERE if dir == Vector2i.ZERO else SENSE_FORMAT % SENSE_WORDS[dir]
 
 
 ## Dialogue à jouer pour [param player] face aux objets cachés [param cells].

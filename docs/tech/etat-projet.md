@@ -1,6 +1,6 @@
 # État du projet
 
-Mis à jour : 2026-11-06.
+Mis à jour : 2026-11-07.
 
 > **Ce fichier reste court (quelques Ko).** On y **remplace** ce qui change, on n'empile pas une ligne par tâche : le détail d'une tâche va dans le plan du jalon (`docs/tech/jalon-*.md`) et dans le message de commit.
 > Historique complet jusqu'au 2026-11-05 : [`etat-projet-archive.md`](etat-projet-archive.md) (6,5 Mo, à chercher avec `grep`, pas à lire) et [`etat-projet-historique.md`](etat-projet-historique.md).
@@ -12,6 +12,7 @@ Mis à jour : 2026-11-06.
 - **Art de Kanto :** toutes les cartes ont leur décor peint, les 202 espèces ont un dos peint, Sulfura, Électhor et Mewtwo sont peints sur la carte (`reportes.md`, RP-010, RP-132, RP-141, RP-290). Pas dans la RC 0.34.1. Vu sur l'A17 le 2026-11-06 sans blocage, dos peints du joueur compris, à terre et sur l'eau, en tenue d'origine et en costume pour la joueuse et les 16 costumes (`jalon-34-rapport.md` §3, lignes 9 bis et 9 ter).
 - **Johto :** JOH0 à JOH9 et l'arc des Pierres (JOHP0 à JOHP3) sont dans `main`, ainsi que les personnages peints. L'arc est jouable de la Tour Radio à l'acte 2, retour de l'équipe compris.
 - **Musiques de Johto :** 32 pistes HeartGold / SoulSilver branchées (cartes, Centres et Boutiques, combats par région, légendaires, générique) ; détail dans `docs/tech/johto-musiques.md` §10. Jingles, victoires et « ! » restent ceux de Let's Go.
+- **Avantages des costumes :** huit avantages actifs si le costume est porté, écrits dans l'écran Dresseur et à l'annonce du déblocage (`dossier-costumes.md` §2 bis), sur la branche `worktree-costumes-avantages`, pas encore dans `main`.
 - **Personne n'a encore joué Johto d'un bout à l'autre.**
 - **CI :** 14 lots équilibrés par durée (`tools/ci_shard.py`, `tools/ci_test_times.json`) et cache de l'import Godot : environ 10 min au lieu de 24. Quand les lots se déséquilibrent, refaire le fichier de durées avec `tools/ci_shard.py --update <dossier des artefacts>`.
 
@@ -26,11 +27,13 @@ Mis à jour : 2026-11-06.
 ## Questions ouvertes
 
 - Remise du dépôt en privé : encore public au 2026-11-06, alors que le Go juridique du 2026-11-04 suppose que rien n'est publié (`jalon-34-34e.md` §15.4).
+- Musiques des costumes (`dossier-costumes.md` §2 ter) : morceaux par personnage, sens de « entrées de villes », source des fichiers, Go juridique.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
 
 ## Décisions de Kevin en vigueur
 
+- **Costumes (2026-11-07) :** l'avantage n'agit que si le costume est porté, et il est écrit pour le joueur.
 - **Ordre de l'acte 2 (2026-11-06) :** JOH6 avant JOH7. La mer au sud d'Oliville reste fermée jusqu'au déserteur d'Acajou (`johto_whirl_clue`).
 - **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
