@@ -27,7 +27,7 @@ Mis à jour : 2026-11-07.
 ## Questions ouvertes
 
 - Remise du dépôt en privé : encore public au 2026-11-06, alors que le Go juridique du 2026-11-04 suppose que rien n'est publié (`jalon-34-34e.md` §15.4).
-- Musiques des costumes (`dossier-costumes.md` §2 ter) : fichiers de Kevin préparés sur le Mac, hors dépôt (`assets/audio/music/costumes/`, ignoré par Git) ; thèmes de combat et chants d'arrivée de 60 s validés à l'écoute sur l'A17 par Kevin le 2026-11-07 (version de test installée à la place de la RC) ; attendent le Go juridique étendu (fichiers tirés de vidéos en ligne, reprises comprises) et le dépôt en privé.
+- Musiques des costumes (`dossier-costumes.md` §2 ter) : fichiers de Kevin préparés sur le Mac, hors dépôt (`assets/audio/music/costumes/`, ignoré par Git) ; thèmes de combat et chants d'arrivée de 60 s validés à l'écoute sur l'A17 par Kevin le 2026-11-07 (version de test installée à la place de la RC) ; Go juridique étendu par Kevin le 2026-11-07 (`jalon-34-34e.md` §16) ; attendent le dépôt en privé.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
 
@@ -38,7 +38,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 - **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
 - **RC 0.35.0 (2026-11-06) :** Go technique de Kevin, qui installe la vraie version pour jouer le jeu entier. Le T4 (première utilisation par un proche) est reporté à la version suivante.
-- **Go juridique (2026-11-06) :** étendu à la RC 0.35.0 et à Johto, pour le seul cercle de la maison, aux mêmes conditions (`jalon-34-34e.md` §14, §15.5).
+- **Go juridique (2026-11-07) :** étendu aux musiques des costumes (§16). **2026-11-06 :** étendu à la RC 0.35.0 et à Johto, pour le seul cercle de la maison, aux mêmes conditions (`jalon-34-34e.md` §14, §15.5).
 - **Diffusion (2026-10-24) :** jeu privé, pour Kevin et un cercle restreint de proches. Jamais de store, de lien ouvert ni de page publique.
 - **Retours des testeurs (2026-11-06) :** groupe WhatsApp.
 - **RC (2026-11-06) :** jeu complet depuis `main`, en version 0.35.0, après la partie complète de Kevin. Remplace « Kanto seul depuis `release/0.34` » du 2026-11-04. `release/0.34` reste telle quelle.

@@ -343,3 +343,23 @@ Le §8.4 reste exact pour Johto.
 **Q2 — Dépôt.** Quand repasse-t-il en privé, et que faire de l'historique ? Le retour en privé est une action de Kevin ; ensuite, `push.branches` revient à `[main]` et le verrou de suite du Mac reprend (mémoire `depot-public-ci`). Tant que ce n'est pas réglé, aucune session ne doit ajouter de nouveau type de contenu protégé au dépôt.
 
 Rien de cela n'a été tranché ici, et aucune ressource n'a été retirée.
+
+
+## 16. Complément costumes : avantages et musiques (2026-11-07)
+
+> **Inventaire factuel, ce n'est pas un avis juridique.** Branche `worktree-costumes-avantages`, pas encore dans `main`
+> (`docs/design/dossier-costumes.md` §2 bis et §2 ter).
+
+### 16.1 Ce que les costumes ajoutent
+
+| Famille | Contenu | Source | Statut |
+|---|---|---|---|
+| **Musique des costumes** | 19 pistes : 10 thèmes de combat (4 min au plus) et 9 chants d'arrivée en ville (60 s), 8 costumes ; environ 33 Mo en OGG (`assets/audio/music/costumes/`) | MP3 fournis par Kevin dans `~/Downloads/PokeMakeThemes/`. D'après leurs noms, **tirés de vidéos en ligne**, dont des **reprises par d'autres artistes** (Raon Lee, NateWantsToBattle, Tiny Desk Japan, hommage à Black Sabbath, version longue de Gilles Nuytens). Œuvres de Demon Slayer, One Piece, Iron Man, Zelda, Naruto, My Hero Academia, Dragon Ball et Batman. Titres dans `data/audio/tracks.json`, préparation par `tools/audio/prepare_costume_music.py` | **Enregistrements et reprises reproduits, aucune licence**, hors univers Pokémon. **Ignorés par Git** (`.gitignore`) |
+| **Costumes** (déjà présents) | Personnages de licences tierces adoucis, noms affichés (CO-10) | Codex | Inchangé |
+| **Avantages** | Textes et règles du projet | `data/costumes.json` | Aucun contenu tiers |
+
+### 16.2 Décision de Kevin
+
+> **Décision de Kevin du 2026-11-07 (« ok ») : Go étendu aux musiques des costumes du §16.1, pour le seul cercle de la maison**, en sachant qu'elles sont tirées de vidéos en ligne, reprises comprises. Ce n'est pas un avis juridique ; les conditions du §14 restent les mêmes.
+
+Ces fichiers n'entrent dans le dépôt **qu'après son retour en privé** (§15.5, Q2, toujours ouverte).

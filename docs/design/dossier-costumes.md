@@ -73,7 +73,7 @@ Idée de Kevin : un thème par personnage. Il a suivi les recommandations de Cla
 | CO-16 | Quels morceaux | Vraies musiques des séries, **un morceau de combat et un jingle de ville** par costume, les mêmes pour le joueur et la joueuse. Liste ci-dessous **à valider à l'écoute** |
 | CO-17 | Entrées de villes | **Chant d'arrivée** en ville, au moment du titre de zone, puis la musique de la ville reprend. Jamais déclenché en intérieur. Durée : **60 s** (Kevin, 2026-11-07), validée à l'écoute sur l'A17 (« excellent ») |
 | CO-18 | Quels combats | Sauvages et Dresseurs ordinaires. Champions, Ligue, rival, Rocket de Johto et légendaires gardent leur musique. La musique de victoire ne change pas [D] |
-| CO-19 | Fichiers et droit | Kevin fournit les fichiers, Claude ne télécharge rien. **Aucun fichier n'entre dans le dépôt avant le Go juridique étendu et le passage du dépôt en privé.** Sans fichier, la musique normale joue |
+| CO-19 | Fichiers et droit | Kevin fournit les fichiers, Claude ne télécharge rien. **Go juridique étendu par Kevin le 2026-11-07** (`docs/tech/jalon-34-34e.md` §16). **Aucun fichier n'entre dans le dépôt avant son passage en privé.** Sans fichier, la musique normale joue |
 
 | CO-20 | Plusieurs morceaux | Un costume peut avoir plusieurs morceaux de combat ou de jingle : un est tiré au hasard à chaque combat ou arrivée [D] |
 
