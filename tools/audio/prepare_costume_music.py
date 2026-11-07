@@ -32,8 +32,9 @@ TARGET_LUFS = -16.0
 MAX_BATTLE_S = 240.0
 BATTLE_FADE_S = 3.0
 BATTLE_LEAD_S = 1.0
-JINGLE_S = 10.0
-JINGLE_FADE_S = 2.0
+## Kevin (2026-11-07) : 10 s ne laissent pas apprécier le chant ; 45 s à 1 min.
+JINGLE_S = 60.0
+JINGLE_FADE_S = 4.0
 ANALYSIS_RATE = 8000
 ## Départ imposé d'un jingle (s), choisi à l'écoute par Kevin (2026-11-07).
 JINGLE_STARTS = {"boulder_town": 45.0}

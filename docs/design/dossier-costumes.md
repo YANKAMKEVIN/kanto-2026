@@ -71,7 +71,7 @@ Idée de Kevin : un thème par personnage. Il a suivi les recommandations de Cla
 | # | Sujet | Décision |
 |---|---|---|
 | CO-16 | Quels morceaux | Vraies musiques des séries, **un morceau de combat et un jingle de ville** par costume, les mêmes pour le joueur et la joueuse. Liste ci-dessous **à valider à l'écoute** |
-| CO-17 | Entrées de villes | **Court jingle** à l'arrivée en ville, au moment du titre de zone, puis la musique de la ville reprend. Jamais en intérieur. Durée [D] : 5 s environ |
+| CO-17 | Entrées de villes | **Chant d'arrivée** en ville, au moment du titre de zone, puis la musique de la ville reprend. Jamais déclenché en intérieur. Durée : **60 s** (Kevin, 2026-11-07) |
 | CO-18 | Quels combats | Sauvages et Dresseurs ordinaires. Champions, Ligue, rival, Rocket de Johto et légendaires gardent leur musique. La musique de victoire ne change pas [D] |
 | CO-19 | Fichiers et droit | Kevin fournit les fichiers, Claude ne télécharge rien. **Aucun fichier n'entre dans le dépôt avant le Go juridique étendu et le passage du dépôt en privé.** Sans fichier, la musique normale joue |
 
@@ -90,7 +90,7 @@ Fichiers fournis par Kevin le 2026-11-07 (`~/Downloads/PokeMakeThemes/`, MP3) :
 | Son Goku / Combattante saiyan | Dragon Ball Z Ultimate Battle 22, opening 1 ; Dragon Ball Z, musique 3 | Cha-La Head-Cha-La |
 | Batman / Batgirl | Molossus | The Batman Theme (Michael Giacchino) |
 
-Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/costumes/` (OGG q3, −16 LUFS, 27 Mo), **ignoré par Git**. Volumes validés par Kevin à l'écoute sur l'A17 (2026-11-07). Combat : départ quand le morceau atteint sa pleine énergie (intro lente sautée, demande de Kevin du 2026-11-07), coupé à 4 min au plus, bouclé depuis ce départ [D]. Jingle : **10 s** (5 s jugées trop courtes par Kevin) à partir du premier passage franc ; Kamado Tanjirou no Uta part à 45 s (Kevin).
+Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/costumes/` (OGG q3, −16 LUFS, 27 Mo), **ignoré par Git**. Volumes validés par Kevin à l'écoute sur l'A17 (2026-11-07). Combat : départ quand le morceau atteint sa pleine énergie (intro lente sautée, demande de Kevin du 2026-11-07), coupé à 4 min au plus, bouclé depuis ce départ [D]. Chant d'arrivée en ville : **60 s** (Kevin, 2026-11-07 : 5 puis 10 s trop courtes pour apprécier le chant, « 45 s à 1 min »), à partir du premier passage franc ; Kamado Tanjirou no Uta part à 45 s (Kevin). Un combat, un « ! » de Dresseur, une scène ou un autre jingle l'arrêtent aussitôt.
 
 **Provenance :** les noms des fichiers indiquent des vidéos en ligne, dont plusieurs reprises par d'autres artistes (Raon Lee, NateWantsToBattle, Tiny Desk, hommage à Black Sabbath, version longue de Gilles Nuytens). Ce ne sont pas des achats : à couvrir par le Go juridique étendu avant toute diffusion, même au cercle de la maison.
 

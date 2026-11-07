@@ -118,7 +118,7 @@ func test_analyste_writes_effectiveness_on_move_cards() -> void:
 	assert_false(hinted.is_empty(), "une attaque Normal sur Fantominus : %s" % [texts])
 
 
-func test_town_arrival_plays_the_costume_jingle_then_the_town_resumes() -> void:
+func test_town_song_plays_then_gives_way_to_a_battle() -> void:
 	await _start(&"soul")
 	var jingles := _playable(CostumeCatalog.shared().music_tracks(&"soul",
 		CostumeCatalog.MUSIC_TOWN))
@@ -132,5 +132,14 @@ func test_town_arrival_plays_the_costume_jingle_then_the_town_resumes() -> void:
 		return
 	assert_true(heard.any(func(track: StringName) -> bool: return jingles.has(track)),
 		"jingle du costume entendu : %s" % [heard])
-	await wait_until(func() -> bool: return Audio.current_track() == town, 10.0)
-	assert_eq(Audio.current_track(), town, "la ville reprend après le jingle")
+	assert_has(jingles, Audio.current_track(), "le chant d'arrivée joue encore (une minute)")
+	# Un combat pendant le chant : le thème de combat passe devant, le chant s'arrête, et la
+	# ville reprend après le combat.
+	var enc := _boot.get_encounter_director()
+	assert_true(enc.start_encounter(WildEncounter.new(&"rattata", 3, &"route_1_grass")))
+	await wait_until(func() -> bool: return _boot.get_battle_director().is_running(), TIMEOUT)
+	assert_true(Audio.get_music_player().stream.resource_path.contains("battle") \
+		or Audio.current_track() == &"battle_wild", "musique de combat : %s" % Audio.current_track())
+	await _flee()
+	await wait_until(func() -> bool: return Audio.current_track() == town, TIMEOUT)
+	assert_eq(Audio.current_track(), town, "la ville reprend, sans le chant")

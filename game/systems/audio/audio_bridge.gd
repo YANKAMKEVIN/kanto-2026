@@ -62,6 +62,8 @@ var ground_at: Callable = Callable()
 
 var _library: AudioLibrary
 var _costume_rng := RandomNumberGenerator.new()
+## Chant d'arrivée du costume en cours (CO-17), &"" sinon.
+var _costume_song: StringName = &""
 var _zones: ZoneLibrary
 var _map_id: StringName = &""
 var _map_override: StringName = &""
@@ -95,7 +97,7 @@ func play_title() -> void:
 
 ## Introduction de Chen (prénoms) ouverte / refermée.
 func on_intro_opened() -> void:
-	audio.call(&"set_music", L.SCENE, selector.event_track(&"oak_intro"))
+	_music(L.SCENE, selector.event_track(&"oak_intro"))
 
 
 func on_intro_closed() -> void:
@@ -130,7 +132,7 @@ func on_trainer_spotted(_npc_id: StringName, trainer_id: StringName) -> void:
 		return
 	_encounter_theme = true
 	_sfx(&"world", &"trainer_spotted")
-	audio.call(&"set_music", L.SCENE, track)
+	_music(L.SCENE, track)
 
 
 func on_battle_started(trainer_id: StringName) -> void:
@@ -143,18 +145,20 @@ func on_battle_started(trainer_id: StringName) -> void:
 	if selector.is_ordinary_battle(trainer_id, _wild_species, region):
 		var theme := _costume_track(CostumeCatalog.MUSIC_BATTLE)
 		track = theme if not theme.is_empty() else track
-	audio.call(&"set_music", L.BATTLE, track)
+	_music(L.BATTLE, track)
 
 
-## Arrivée annoncée sur [param map_id] (CO-17) : en ville, jingle du costume porté, puis la
-## musique de la ville reprend.
+## Arrivée annoncée sur [param map_id] (CO-17) : en ville, chant d'arrivée du costume porté
+## (une minute), puis la musique de la ville reprend.
 func on_zone_announced(map_id: StringName) -> void:
 	var zone := _zones.get_zone(_zones.zone_of(map_id))
 	if zone == null or zone.kind != ZoneData.KIND_TOWN:
 		return
 	var jingle := _costume_track(CostumeCatalog.MUSIC_TOWN)
 	if not jingle.is_empty():
+		_end_costume_song()
 		audio.call(&"play_jingle", jingle)
+		_costume_song = jingle
 
 
 ## Un morceau [param kind] du costume porté, tiré au hasard parmi ceux dont le fichier existe
@@ -184,7 +188,7 @@ func on_battle_event(event: BattleEvent) -> void:
 			play_species_cry(event.species_id, true)
 		BattleEvent.Kind.BATTLE_ENDED:
 			if event.outcome == Battle.Outcome.WIN:
-				audio.call(&"set_music", L.BATTLE, selector.victory_track(_trainer_id,
+				_music(L.BATTLE, selector.victory_track(_trainer_id,
 					_wild_species, _zones.region_of(_map_id)))
 		BattleEvent.Kind.LEVEL_UP:
 			_jingle(&"level_up")
@@ -222,7 +226,7 @@ func on_item_found(item_id: StringName, _count: int = 1) -> void:
 
 
 func on_evolution_started(party_index: int = 0, _into: StringName = &"") -> void:
-	audio.call(&"set_music", L.JINGLE, selector.event_track(&"evolution"))
+	_music(L.JINGLE, selector.event_track(&"evolution"))
 	if party_species.is_valid():
 		play_species_cry(StringName(str(party_species.call(party_index))))
 
@@ -233,7 +237,7 @@ func on_evolution_finished(_party_index: int = 0, into: StringName = &"",
 	if cancelled:
 		audio.call(&"clear_music", L.JINGLE)
 	else:
-		audio.call(&"set_music", L.JINGLE, selector.event_track(&"evolved"))
+		_music(L.JINGLE, selector.event_track(&"evolved"))
 		play_species_cry(into)
 
 
@@ -245,7 +249,7 @@ func on_awakening_silence() -> void:
 
 ## La lumière sort : le thème du Réveil, à voix basse.
 func on_awakening_theme() -> void:
-	audio.call(&"set_music", L.SCENE, selector.event_track(&"awakening"))
+	_music(L.SCENE, selector.event_track(&"awakening"))
 	audio.call(&"set_music_offset", AWAKENING_LOW_DB, AWAKENING_RISE)
 
 
@@ -310,7 +314,7 @@ func on_cutscene_step(step: CutsceneStep) -> void:
 		# Un identifiant de morceau (« blue_theme ») ou un moment (« rival », « oak »).
 		var track := step.music if _library.has_track(step.music) \
 			else selector.event_track(step.music)
-		audio.call(&"set_music", L.SCENE, track)
+		_music(L.SCENE, track)
 	match step.kind:
 		CutsceneStep.Kind.BADGE:
 			_jingle(&"badge")
@@ -473,7 +477,24 @@ func _sfx(table: StringName, key: StringName) -> void:
 func _jingle(event: StringName) -> void:
 	var track := selector.event_track(event)
 	if track != AudioLibrary.SILENCE:
+		_end_costume_song()
 		audio.call(&"play_jingle", track)
+
+
+## Pose [param track] sur [param layer] (scène, combat, jingle) : le chant d'arrivée du costume
+## s'arrête d'abord (CO-17 : il dure une minute et ne doit masquer ni un combat ni une scène).
+func _music(layer: int, track: StringName) -> void:
+	_end_costume_song()
+	audio.call(&"set_music", layer, track)
+
+
+## Arrête le chant d'arrivée du costume s'il joue encore ; la couche du dessous reprend.
+func _end_costume_song() -> void:
+	if _costume_song.is_empty():
+		return
+	if not audio.has_method(&"current_track") or audio.call(&"current_track") == _costume_song:
+		audio.call(&"clear_music", L.JINGLE)
+	_costume_song = &""
 
 
 func _is_key_item(item_id: StringName) -> bool:
