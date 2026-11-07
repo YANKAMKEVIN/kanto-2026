@@ -109,7 +109,7 @@ Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/co
 
 ## Suivi
 
-- [x] Avantages CO-12 à CO-15 — codés le 2026-11-07 sur `worktree-costumes-avantages`, à valider par Kevin ; musiques (§2 ter) codées et préparées sur le Mac, hors dépôt ; jingles validés à l'écoute, Go juridique en attente
+- [x] Avantages CO-12 à CO-15 — codés le 2026-11-07 sur `worktree-costumes-avantages`, à valider par Kevin ; musiques (§2 ter) codées et préparées sur le Mac, hors dépôt ; jingles validés à l'écoute ; essai en jeu passé le 2026-11-07 sur le Mac avec le vrai Boot (`tests/integration/test_costume_music_boot.gd`, avec et sans fichiers) ; Go juridique en attente
 
 - [x] Idée et liste des huit costumes (Kevin, 2026-10-30)
 - [x] Arbitrages CO-1 à CO-11 — **validés par Kevin le 2026-10-30** (« Okay », toutes les recommandations)
