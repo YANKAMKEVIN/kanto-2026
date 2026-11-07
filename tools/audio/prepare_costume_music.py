@@ -4,8 +4,10 @@ fournis par Kevin (`~/Downloads/PokeMakeThemes/`, noms d'origine) aux OGG du jeu
 
 Pour chaque morceau `costume_*` de `data/audio/tracks.json` :
 1. retrouve son fichier par un extrait de son nom (table SOURCES) ;
-2. combat : silence initial retiré, coupé à MAX_BATTLE_S au plus avec un fondu final, bouclé
-   depuis le début (`loop_offset` 0 : ces fichiers ne sont pas des pistes d'album à deux tours) ;
+2. combat : départ quand le morceau atteint sa pleine énergie (intro lente sautée, voir
+   `full_energy`), coupé à MAX_BATTLE_S
+   au plus avec un fondu final, bouclé depuis ce départ (`loop_offset` 0 : ces fichiers ne sont
+   pas des pistes d'album à deux tours) ;
 3. jingle : JINGLE_S secondes à partir du premier passage franc (le volume atteint la moitié de
    son niveau courant, ce qui saute un silence ou une intro parlée), ou du départ choisi à
    l'écoute (JINGLE_STARTS), fondu de sortie ;
@@ -29,8 +31,9 @@ OUT = os.path.join(RACINE, "assets", "audio", "music", "costumes")
 TARGET_LUFS = -16.0
 MAX_BATTLE_S = 240.0
 BATTLE_FADE_S = 3.0
-JINGLE_S = 5.0
-JINGLE_FADE_S = 1.0
+BATTLE_LEAD_S = 1.0
+JINGLE_S = 10.0
+JINGLE_FADE_S = 2.0
 ANALYSIS_RATE = 8000
 ## Départ imposé d'un jingle (s), choisi à l'écoute par Kevin (2026-11-07).
 JINGLE_STARTS = {"boulder_town": 45.0}
@@ -82,6 +85,17 @@ def first_strong(samples: np.ndarray) -> float:
     return float(loud[0] * win / ANALYSIS_RATE) if len(loud) else 0.0
 
 
+def full_energy(samples: np.ndarray) -> float:
+    """Début (s) d'un combat : la moyenne glissante sur 2 s du RMS atteint 70 % du 75e centile
+    (l'intro qui monte est sautée), moins BATTLE_LEAD_S pour ne pas couper l'attaque du temps."""
+    win = ANALYSIS_RATE // 4
+    count = len(samples) // win
+    rms = np.sqrt(np.mean(samples[: count * win].reshape(count, win) ** 2, axis=1))
+    smooth = np.convolve(rms, np.ones(8) / 8, mode="same")
+    loud = np.nonzero(smooth >= np.percentile(rms, 75) * 0.7)[0]
+    return max(float(loud[0] * win / ANALYSIS_RATE) - BATTLE_LEAD_S, 0.0) if len(loud) else 0.0
+
+
 def leading_silence(samples: np.ndarray) -> float:
     loud = np.nonzero(np.abs(samples) > 10 ** (-50 / 20))[0]
     return float(loud[0] / ANALYSIS_RATE) if len(loud) else 0.0
@@ -95,7 +109,9 @@ def prepare(track_id: str, src_path: str, jingle: bool) -> dict:
         length = min(JINGLE_S, total - start)
         fade = JINGLE_FADE_S
     else:
-        start = leading_silence(samples)
+        # Kevin (2026-11-07) : une intro qui monte lentement retarde la tension ; le combat
+        # part au premier passage franc, comme les jingles, et boucle depuis ce point.
+        start = max(leading_silence(samples), full_energy(samples))
         length = min(MAX_BATTLE_S, total - start)
         fade = BATTLE_FADE_S if length < total - start else 0.5
     filters = "atrim=start=%.3f:duration=%.3f,asetpts=PTS-STARTPTS,afade=t=in:d=0.05," \

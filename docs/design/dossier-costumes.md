@@ -90,7 +90,7 @@ Fichiers fournis par Kevin le 2026-11-07 (`~/Downloads/PokeMakeThemes/`, MP3) :
 | Son Goku / Combattante saiyan | Dragon Ball Z Ultimate Battle 22, opening 1 ; Dragon Ball Z, musique 3 | Cha-La Head-Cha-La |
 | Batman / Batgirl | Molossus | The Batman Theme (Michael Giacchino) |
 
-Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/costumes/` (OGG q3, −16 LUFS, 27 Mo), **ignoré par Git**. Combat : coupé à 4 min au plus, bouclé depuis le début [D]. Jingle : 5 s à partir du premier passage franc, choisi au volume [D] ; **écoutés et validés par Kevin le 2026-11-07**, sauf Kamado Tanjirou no Uta, qu'il fait partir à 45 s.
+Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/costumes/` (OGG q3, −16 LUFS, 27 Mo), **ignoré par Git**. Volumes validés par Kevin à l'écoute sur l'A17 (2026-11-07). Combat : départ quand le morceau atteint sa pleine énergie (intro lente sautée, demande de Kevin du 2026-11-07), coupé à 4 min au plus, bouclé depuis ce départ [D]. Jingle : **10 s** (5 s jugées trop courtes par Kevin) à partir du premier passage franc ; Kamado Tanjirou no Uta part à 45 s (Kevin).
 
 **Provenance :** les noms des fichiers indiquent des vidéos en ligne, dont plusieurs reprises par d'autres artistes (Raon Lee, NateWantsToBattle, Tiny Desk, hommage à Black Sabbath, version longue de Gilles Nuytens). Ce ne sont pas des achats : à couvrir par le Go juridique étendu avant toute diffusion, même au cercle de la maison.
 
