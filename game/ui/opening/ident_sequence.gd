@@ -1,7 +1,8 @@
 class_name IdentSequence
 extends CanvasLayer
-## Ident de démarrage (J34, demande de Kevin du 2026-11-03, « à la Netflix ») : sur le fond du
-## splash, le carton « Les studios Kevin & Co / vous présentent », puis les lettres du logo qui
+## Ident de démarrage (J34, demande de Kevin du 2026-11-03, « à la Netflix ») : le carton
+## « Les studios Kevin & Co / vous présentent », déjà à l'écran puisque l'image de démarrage en est
+## le rendu (`tools/art/splash_carton.gd`, demande de Kevin du 2026-11-07), puis les lettres du logo qui
 ## entrent une à une depuis la droite pour former « POKEMAKE », le filet qui se trace depuis le
 ## centre, le halo du vrai logo qui s'allume, une tenue, puis un fondu qui découvre l'écran titre
 ## déjà en place dessous. La partition vient d'[IntroTimeline] ; ici on ne fait que la jouer.
@@ -195,7 +196,6 @@ func _build_card() -> void:
 	_card.alignment = BoxContainer.ALIGNMENT_CENTER
 	_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_card.add_theme_constant_override(&"separation", UiTokens.IDENT_CARD_GAP)
-	_card.modulate.a = 0.0
 	var font := load(SERIF_FONT) as Font
 	_card_title = _card_label("Studio", font, UiTokens.IDENT_CARD_TITLE_FONT, UiTokens.IDENT_CARD_TITLE)
 	_card_sub = _card_label("Presents", font, UiTokens.IDENT_CARD_SUB_FONT, UiTokens.IDENT_CARD_SUB)
