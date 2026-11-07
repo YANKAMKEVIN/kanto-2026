@@ -7,7 +7,8 @@ Pour chaque morceau `costume_*` de `data/audio/tracks.json` :
 2. combat : silence initial retiré, coupé à MAX_BATTLE_S au plus avec un fondu final, bouclé
    depuis le début (`loop_offset` 0 : ces fichiers ne sont pas des pistes d'album à deux tours) ;
 3. jingle : JINGLE_S secondes à partir du premier passage franc (le volume atteint la moitié de
-   son niveau courant, ce qui saute un silence ou une intro parlée), fondu de sortie ;
+   son niveau courant, ce qui saute un silence ou une intro parlée), ou du départ choisi à
+   l'écoute (JINGLE_STARTS), fondu de sortie ;
 4. volume ramené à −16 LUFS (filtre `loudnorm` de ffmpeg), puis OGG q3 (oggenc).
 Sortie : assets/audio/music/costumes/<id>.ogg, **ignoré par Git** (CO-19) : les fichiers restent
 sur le Mac tant que le Go juridique n'est pas étendu et que le dépôt est public.
@@ -31,6 +32,8 @@ BATTLE_FADE_S = 3.0
 JINGLE_S = 5.0
 JINGLE_FADE_S = 1.0
 ANALYSIS_RATE = 8000
+## Départ imposé d'un jingle (s), choisi à l'écoute par Kevin (2026-11-07).
+JINGLE_STARTS = {"boulder_town": 45.0}
 ## Extrait du nom de fichier → identifiant (sans « costume_ »).
 SOURCES = {
     "boulder_battle": "Gurenge (Instrumental)",
@@ -88,7 +91,7 @@ def prepare(track_id: str, src_path: str, jingle: bool) -> dict:
     samples = mono(src_path)
     total = len(samples) / ANALYSIS_RATE
     if jingle:
-        start = first_strong(samples)
+        start = JINGLE_STARTS.get(track_id, first_strong(samples))
         length = min(JINGLE_S, total - start)
         fade = JINGLE_FADE_S
     else:

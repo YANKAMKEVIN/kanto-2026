@@ -90,7 +90,7 @@ Fichiers fournis par Kevin le 2026-11-07 (`~/Downloads/PokeMakeThemes/`, MP3) :
 | Son Goku / Combattante saiyan | Dragon Ball Z Ultimate Battle 22, opening 1 ; Dragon Ball Z, musique 3 | Cha-La Head-Cha-La |
 | Batman / Batgirl | Molossus | The Batman Theme (Michael Giacchino) |
 
-Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/costumes/` (OGG q3, −16 LUFS, 27 Mo), **ignoré par Git**. Combat : coupé à 4 min au plus, bouclé depuis le début [D]. Jingle : 5 s à partir du premier passage franc, choisi au volume, **à valider à l'écoute** [D].
+Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/costumes/` (OGG q3, −16 LUFS, 27 Mo), **ignoré par Git**. Combat : coupé à 4 min au plus, bouclé depuis le début [D]. Jingle : 5 s à partir du premier passage franc, choisi au volume [D] ; **écoutés et validés par Kevin le 2026-11-07**, sauf Kamado Tanjirou no Uta, qu'il fait partir à 45 s.
 
 **Provenance :** les noms des fichiers indiquent des vidéos en ligne, dont plusieurs reprises par d'autres artistes (Raon Lee, NateWantsToBattle, Tiny Desk, hommage à Black Sabbath, version longue de Gilles Nuytens). Ce ne sont pas des achats : à couvrir par le Go juridique étendu avant toute diffusion, même au cercle de la maison.
 
@@ -109,7 +109,7 @@ Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/co
 
 ## Suivi
 
-- [x] Avantages CO-12 à CO-15 — codés le 2026-11-07 sur `worktree-costumes-avantages`, à valider par Kevin ; musiques (§2 ter) codées et préparées sur le Mac, hors dépôt ; écoute de Kevin et Go juridique en attente
+- [x] Avantages CO-12 à CO-15 — codés le 2026-11-07 sur `worktree-costumes-avantages`, à valider par Kevin ; musiques (§2 ter) codées et préparées sur le Mac, hors dépôt ; jingles validés à l'écoute, Go juridique en attente
 
 - [x] Idée et liste des huit costumes (Kevin, 2026-10-30)
 - [x] Arbitrages CO-1 à CO-11 — **validés par Kevin le 2026-10-30** (« Okay », toutes les recommandations)

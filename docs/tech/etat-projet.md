@@ -27,7 +27,7 @@ Mis à jour : 2026-11-07.
 ## Questions ouvertes
 
 - Remise du dépôt en privé : encore public au 2026-11-06, alors que le Go juridique du 2026-11-04 suppose que rien n'est publié (`jalon-34-34e.md` §15.4).
-- Musiques des costumes (`dossier-costumes.md` §2 ter) : fichiers de Kevin préparés sur le Mac, hors dépôt (`assets/audio/music/costumes/`, ignoré par Git) ; attendent l'écoute de Kevin, le Go juridique étendu (fichiers tirés de vidéos en ligne, reprises comprises) et le dépôt en privé.
+- Musiques des costumes (`dossier-costumes.md` §2 ter) : fichiers de Kevin préparés sur le Mac, hors dépôt (`assets/audio/music/costumes/`, ignoré par Git) ; jingles validés à l'écoute par Kevin le 2026-11-07 ; attendent le Go juridique étendu (fichiers tirés de vidéos en ligne, reprises comprises) et le dépôt en privé.
 
 Remarques de rendu et points reportés : registre unique [`reportes.md`](reportes.md) (identifiants `RP-NNN`).
 
