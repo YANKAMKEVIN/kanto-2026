@@ -73,3 +73,41 @@ Kevin est le **directeur du jeu** : il conçoit, souvent avec ChatGPT, et Claude
 - Avant chaque fusion dans `main` : tests ciblés et suite complète (CI GitHub verte ou suite du Mac).
 - Validation sur téléphone par sous-jalon. Depuis le 2026-11-04, les sessions avancent et fusionnent sur auto-validation et CI verte ; seules les décisions de game design et les questions juridiques remontent à Kevin.
 - L'art est généré avec Codex, à partir de planches validées par Kevin ; une maquette validée se reproduit à l'identique.
+
+## Les coulisses : ce qui a été difficile, et ce qui a permis de tenir
+
+*Note écrite le 2026-11-08 par Claude, à la demande de Kevin, à partir de ce que le projet a gardé en mémoire : décisions notées, rapports de QA, règles de travail.*
+
+### Les difficultés
+
+**1. Trouver l'identité visuelle.** Le jeu devait d'abord avoir des personnages en pixel art fin sur des décors HD. Le 3 octobre 2026, après un test en mouvement sur le S24, Kevin a tout basculé vers des personnages peints. Il a ensuite fallu repeindre 300 cartes et plus de 200 espèces, avec des dos de combat et une même main partout.
+
+**2. Produire l'art avec une IA capricieuse.** Codex refusait Mario et Harry Potter, et a bloqué Link six fois sur onze à cause d'un blason de bouclier. Il y avait aussi une limite d'images sur 24 h. Même refaire une pose devenait un petit chantier.
+
+**3. Ne pas se perdre.** Avec des centaines de décisions de design, les maquettes contredisaient parfois les dossiers. D'où la règle : l'écrit gagne toujours sur l'image. Et une IA ne se souvient de rien d'une session à l'autre.
+
+**4. Faire travailler plusieurs sessions en même temps.** Elles partageaient le même dépôt et se marchaient dessus. Il a fallu des copies séparées, une règle d'ancienneté sur les fichiers et une file d'attente pour le téléphone.
+
+**5. Les pannes qui mentent.** Ce sont les plus dangereuses :
+
+- un « All tests passed » alors qu'un fichier de test n'avait pas pu se charger ;
+- une CI « réussie » sans conclusion après une coupure réseau ;
+- un outil qui réenregistrait des cartes dégradées en disant « OK ».
+
+**6. Les limites matérielles.** Le Mac ne tenait que deux suites de tests à la fois, et les fusions attendaient une à deux heures. L'APK de 780 Mo faisait tomber la connexion adb. Une QA sur téléphone a duré plus de 3 h. Le S24 a aussi été indisponible un temps.
+
+**7. Le risque de tout perdre.** La sauvegarde a connu dix versions de format, et chacune devait relire les anciennes parties. Ce système se validait toujours seul.
+
+**8. Le droit.** Un jeu de fan rempli de licences, c'est un risque que personne ne peut faire disparaître. Il fallait le regarder en face et décider : diffusion limitée à moins de dix proches, jamais de store.
+
+### Ce qui a permis de tenir
+
+- **Un seul directeur.** Kevin a tranché, parfois brutalement, comme quand Mario a été remplacé en une décision. Sans cela, un projet pareil se dilue.
+- **Des petites étapes vérifiables.** Le premier jalon, c'était juste se promener dans Bourg Palette. Chaque jalon se terminait sur un téléphone réel, et on voyait le jeu grandir.
+- **Une mémoire écrite.** `etat-projet.md`, les dossiers et les arbitrages numérotés permettaient à chaque nouvelle session de repartir sans rien perdre.
+- **Les petites questions ne bloquent jamais.** Une valeur par défaut, une note, et on continue. Seul le vrai game design remontait jusqu'à Kevin.
+- **Corriger la méthode, pas seulement le bug.** Chaque panne est devenue une règle ou un outil, et on est arrivé à plus de 800 fichiers de test et une CI passée de 24 à 10 minutes.
+- **Se faire confiance progressivement.** La validation déléguée du 4 novembre 2026 a enlevé à Kevin le rôle de goulot d'étranglement.
+- **Le plaisir.** Kevin a continué à ajouter ce qui l'amusait : l'arc de Johto, les costumes, et même Naruto en arrivant à Jadielle. Un projet tenu par obligation s'arrête avant.
+
+Une nuance sur « jusqu'au bout » : le jeu existe, il est complet et il tourne sur un téléphone, ce qui est déjà énorme. Mais il reste le plus beau : personne n'a encore joué Johto d'un bout à l'autre, et la partie complète de Kevin reste à faire.
