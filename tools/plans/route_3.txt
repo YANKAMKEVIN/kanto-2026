@@ -61,13 +61,13 @@ GRILLE 82 38
 15 TRRR............RRTTTTTThhhTTTTTTTTTTTTTTT...RRRRRRRRRRRRoooooooooooRRRRRRooooKKKK
 16 TR................TTTTTThhhTTTTTTTTTTTTTTT...RRRRRR.RRRRRoooooooooooRRRRRRooooKKKK
 17 T.................TTTTTThhhTTTTTTTTTTTTTTT....RRRRR.RRRRRooooooooo==RRRRRRooooKKKK
-18 T.................RRRRRT...TTT....................R.RRR...Rvvvvvvo==RRRRRRooooKKKK
+18 T.................RRRRRT...TTT....................R.RRRoooRvvvvvvo==RRRRRRooooKKKK
 19 T.................RRRRRT...TTT.........................hhhh.......==RRRRRRooooKKKK
 20 T.................RRRRRT...TTTvvTTTTTTTTTT..===========hhhh=========RRRRRRooooKKKK
-21 T.................RRRRR.........TTTTTTTTTT..=====RRRRR=hhRRR=RRR===RRRRRRRooooKKKK
-22 T.................RR.RR.........TTTTTTTTTT..==...RRRRRRhRRRRRRRRR.RRRRRRRRooooKKKK
+21 T.................RRRRR.........TTTTTTTTTT..===========hhhhR=RRR===RRRRRRRooooKKKK
+22 T.................RR.RR.........TTTTTTTTTT..==....RRRR.hhhhRRRRRR.RRRRRRRRooooKKKK
 23 T.................RR.RR.........TTTTTTTTTTT.==.TTTRRRRRRRRRRRRRRRRRRRRRRRRooKKKKKK
-24 T.................RR.RR.........TTTTTTTTTTT.==.TTTRRRRRRRRRRRRRRRRRRRRRRKK..KKKKKK
+24 T.................RR.RR.........TTTTTTTTTTT.==.TTTRRRRRRRRRRRRRRRRRRRRRRKKooKKKKKK
 25 =======================......TTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK
 26 =============================TTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK
 27 =============================TTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK

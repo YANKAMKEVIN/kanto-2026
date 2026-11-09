@@ -46,11 +46,11 @@ GRILLE 72 20
 08 T.............................wwwwwwwwwwwwww.....RRRR..................T
 09 ==============================wwwwwwwwwwwwww====RRRRR===================
 10 ==============================wwwwwwwwwwwwww============================
-11 ==============================wwwwwwwwwwwwww====GGGRR===================
-12 T.............................wwwwwwwwwwwwww....GGGRR..................T
-13 T...hhhhhhh...................wwwwwwwwwwwwww....GGGRR..................T
-14 T...hhhhhhh...................wwwwwwwwwwwwww....GGGRR...G..............T
-15 T...hhhhhhh...................wwwwwwwwwwwwww...GGGGRR..................T
+11 ==============================wwwwwwwwwwwwww====GGRRR===================
+12 T.............................wwwwwwwwwwwwww....GGRRR..................T
+13 T...hhhhhhh...................wwwwwwwwwwwwww....GGRRR..................T
+14 T...hhhhhhh...................wwwwwwwwwwwwww....GGRRR...G..............T
+15 T...hhhhhhh...................wwwwwwwwwwwwww...GGGRRR..................T
 16 T.G.hhhhhhh................G..wwwwwwwwwwwwww........R..................T
 17 T.............................wwwwwwwwwwwwww........R..................T
 18 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

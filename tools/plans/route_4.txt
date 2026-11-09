@@ -41,13 +41,13 @@ GRILLE 64 24
 01 ##############################################TTTTTTTTTTTTTTTTTT
 02 ##############################################TTTTTTTTTTTTTTTTTT
 03 ########...........o...b............TTTTTTTTTTTTTTTTTTTTTTTTTTTT
-04 ###..###.o.............b...o........TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 ########.o.............b...o........TTTTTTTTTTTTTTTTTTTTTTTTTTTT
 05 ###....................b.........o..TTTTTTTTTTTTTTTTTTTTTTTTTTTT
 06 ##D=============================....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
 07 ###=============================....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
 08 ###....................b......==....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
-09 ####...................b......==..o.TTTTTTTTTTTTTTTTTTTTTTTTTTTT
-10 #####...........o......b..o...==....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+09 ###....................b......==..o.TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+10 ######..........o......b..o...==....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
 11 ######.................b......==....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
 12 ###~~~~~~~~~~~~~~~~~~~~~~~~~vvvvvvTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 13 ###~~~~~~~~~~~~~~~~~~~~~~~~~..==..TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
