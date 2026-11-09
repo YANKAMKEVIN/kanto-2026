@@ -74,10 +74,12 @@ func battle_category(trainer_id: StringName, species_id: StringName = &"",
 
 
 ## Vrai pour un combat ordinaire (CO-18) : sauvage ou Dresseur sans thème propre, ni légendaire
-## (Johto les range avec les sauvages), ni rival.
+## (Johto les range avec les sauvages), ni rival, ni Rocket ni Ysolde
+## (`costume_music_excluded`, décision de Kevin du 2026-11-09).
 func is_ordinary_battle(trainer_id: StringName, species_id: StringName = &"",
 		region: StringName = &"") -> bool:
-	if _library.is_legendary(species_id) or String(trainer_id).contains("rival"):
+	if _library.is_legendary(species_id) or String(trainer_id).contains("rival") \
+			or _library.is_costume_music_excluded(trainer_id):
 		return false
 	return ORDINARY_BATTLES.has(battle_category(trainer_id, species_id, region))
 

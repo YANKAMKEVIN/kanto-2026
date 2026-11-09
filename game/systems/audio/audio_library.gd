@@ -54,6 +54,7 @@ var _battle_categories: Dictionary[StringName, Dictionary] = {}
 var _default_battle: StringName = &""
 var _trainer_battle: Dictionary[StringName, StringName] = {}
 var _legendary_species: Array[StringName] = []
+var _costume_music_excluded: Array[StringName] = []
 ## Espèce sauvage → catégorie propre (Bêtes, Lugia, Ho-Oh).
 var _species_battle: Dictionary[StringName, StringName] = {}
 ## Région → catégorie → catégorie de la région (« wild » → « johto_wild »).
@@ -201,6 +202,7 @@ func add_battle_music(data: Dictionary, source: String = "") -> bool:
 		else:
 			ok = _fail("%s trainers.%s : catégorie inconnue « %s »" % [source, raw, category])
 	_legendary_species = JsonFields.get_ids(data, "legendary_species")
+	_costume_music_excluded = JsonFields.get_ids(data, "costume_music_excluded")
 	var species := JsonFields.get_dict(data, "species_categories")
 	for raw: Variant in species:
 		var category := StringName(str(species[raw]))
@@ -409,6 +411,11 @@ func battle_category(category: StringName) -> Dictionary:
 ## Catégorie de combat d'un Dresseur (défaut : `default_category`).
 func trainer_category(trainer_id: StringName) -> StringName:
 	return _trainer_battle.get(trainer_id, _default_battle)
+
+
+## Vrai si [param trainer_id] garde sa musique même avec un costume (CO-18).
+func is_costume_music_excluded(trainer_id: StringName) -> bool:
+	return _costume_music_excluded.has(trainer_id)
 
 
 func is_legendary(species_id: StringName) -> bool:

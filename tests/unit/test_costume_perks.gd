@@ -161,6 +161,9 @@ func test_only_ordinary_battles_take_the_costume_theme() -> void:
 	assert_false(selector.is_ordinary_battle(&"", &"mewtwo", &"johto"))
 	assert_false(selector.is_ordinary_battle(&"league_lance"))
 	assert_false(selector.is_ordinary_battle(&"rival_route_22"))
+	assert_false(selector.is_ordinary_battle(&"cerulean_rocket"), "Sbire de Kanto")
+	assert_false(selector.is_ordinary_battle(&"route_37_grunt_a", &"", &"johto"), "Sbire de Johto")
+	assert_false(selector.is_ordinary_battle(&"den_ysolde", &"", &"johto"), "maîtresse du clan")
 
 
 func test_missing_file_keeps_normal_music() -> void:
