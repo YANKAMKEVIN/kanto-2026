@@ -53,6 +53,7 @@
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_a_01_bourg.png" id="51_ulot4"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="52_dndvc"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="53_lb7i6"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_chemin_01.png" id="side_forest_path"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_48lju"]
 shader = ExtResource("4_vf3js")
@@ -126,6 +127,25 @@ material = SubResource("ShaderMaterial_33dxa")
 script = ExtResource("11_3qjqk")
 size = Vector2i(16, 48)
 mask = SubResource("ImageTexture_np0qb")
+
+[node name="SideForestFloorWest" type="Polygon2D" parent="." unique_id=1213596575]
+z_index = -3
+color = Color(0.10, 0.26, 0.16, 1)
+polygon = PackedVector2Array(-576, -192, 0, -192, 0, 4992, -576, 4992)
+
+[node name="SideForestFloorEast" type="Polygon2D" parent="." unique_id=467468303]
+z_index = -3
+color = Color(0.10, 0.26, 0.16, 1)
+polygon = PackedVector2Array(1536, -192, 2112, -192, 2112, 4992, 1536, 4992)
+
+[node name="SideForestPathWest" type="Sprite2D" parent="." unique_id=1742444259]
+z_index = -3
+texture_repeat = 2
+position = Vector2(-576, 4128)
+texture = ExtResource("side_forest_path")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 576, 192)
 
 [node name="GroundDecals" type="Node2D" parent="." unique_id=1328719574]
 z_index = -1
@@ -3430,6 +3450,2044 @@ texture = ExtResource("42_oanpj")
 centered = false
 offset = Vector2(-142, -288)
 flip_h = true
+
+[node name="SideForest000" type="Sprite2D" parent="Entities" unique_id=233780462]
+modulate = Color(0.8945, 0.9001, 0.9081, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-85.4, 76.3)
+scale = Vector2(1.0741, 1.0741)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest001" type="Sprite2D" parent="Entities" unique_id=2001382295]
+modulate = Color(0.8710, 0.8946, 0.8568, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-60.3, 207.6)
+scale = Vector2(1.1434, 1.1434)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest002" type="Sprite2D" parent="Entities" unique_id=1087227923]
+modulate = Color(0.8486, 0.8513, 0.8398, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-85.5, 363.4)
+scale = Vector2(1.0673, 1.0673)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest003" type="Sprite2D" parent="Entities" unique_id=1536333643]
+modulate = Color(0.8481, 0.8782, 0.8310, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-45.5, 503.7)
+scale = Vector2(1.1831, 1.1831)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest004" type="Sprite2D" parent="Entities" unique_id=1911621165]
+modulate = Color(0.9013, 0.9143, 0.8695, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-84.2, 600.7)
+scale = Vector2(0.9749, 0.9749)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest005" type="Sprite2D" parent="Entities" unique_id=566595121]
+modulate = Color(0.8947, 0.9022, 0.9073, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-39.8, 732.5)
+scale = Vector2(1.0580, 1.0580)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest006" type="Sprite2D" parent="Entities" unique_id=1954781425]
+modulate = Color(0.8592, 0.8772, 0.8850, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-58.5, 899.6)
+scale = Vector2(1.1597, 1.1597)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest007" type="Sprite2D" parent="Entities" unique_id=1845223551]
+modulate = Color(0.7973, 0.8258, 0.8197, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-78.6, 1037.7)
+scale = Vector2(1.1544, 1.1544)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest008" type="Sprite2D" parent="Entities" unique_id=630929340]
+modulate = Color(0.8635, 0.8985, 0.9015, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-74.7, 1147.2)
+scale = Vector2(0.9788, 0.9788)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest009" type="Sprite2D" parent="Entities" unique_id=436629110]
+modulate = Color(0.8851, 0.8887, 0.8618, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-62.7, 1282.5)
+scale = Vector2(0.9546, 0.9546)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest010" type="Sprite2D" parent="Entities" unique_id=150210399]
+modulate = Color(0.8540, 0.8565, 0.8391, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-55.6, 1443.4)
+scale = Vector2(1.0882, 1.0882)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest011" type="Sprite2D" parent="Entities" unique_id=273423793]
+modulate = Color(0.7809, 0.8084, 0.7814, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-85.2, 1564.7)
+scale = Vector2(1.0452, 1.0452)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest012" type="Sprite2D" parent="Entities" unique_id=650635820]
+modulate = Color(0.8613, 0.8936, 0.8970, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-86.8, 1706.2)
+scale = Vector2(1.1398, 1.1398)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest013" type="Sprite2D" parent="Entities" unique_id=2073072814]
+modulate = Color(0.8395, 0.8445, 0.8149, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-88.3, 1815.2)
+scale = Vector2(1.0034, 1.0034)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest014" type="Sprite2D" parent="Entities" unique_id=1968432544]
+modulate = Color(0.7971, 0.8006, 0.7769, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-59.5, 1971.2)
+scale = Vector2(0.9973, 0.9973)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest015" type="Sprite2D" parent="Entities" unique_id=1188184563]
+modulate = Color(0.8104, 0.8143, 0.7788, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-69.4, 2095.3)
+scale = Vector2(1.1661, 1.1661)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest016" type="Sprite2D" parent="Entities" unique_id=899192740]
+modulate = Color(0.8549, 0.8596, 0.8615, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-85.2, 2249.1)
+scale = Vector2(1.0889, 1.0889)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest017" type="Sprite2D" parent="Entities" unique_id=885949651]
+modulate = Color(0.7958, 0.8162, 0.7711, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-91.4, 2344.5)
+scale = Vector2(1.1842, 1.1842)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest018" type="Sprite2D" parent="Entities" unique_id=186111189]
+modulate = Color(0.7901, 0.8228, 0.8388, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-60.7, 2505.0)
+scale = Vector2(1.1245, 1.1245)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest019" type="Sprite2D" parent="Entities" unique_id=719120996]
+modulate = Color(0.8390, 0.8467, 0.8623, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-92.6, 2618.8)
+scale = Vector2(1.0698, 1.0698)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest020" type="Sprite2D" parent="Entities" unique_id=397320659]
+modulate = Color(0.8314, 0.8641, 0.8610, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-48.7, 2782.7)
+scale = Vector2(0.9735, 0.9735)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest021" type="Sprite2D" parent="Entities" unique_id=824744698]
+modulate = Color(0.8147, 0.8161, 0.7956, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-41.0, 2904.8)
+scale = Vector2(1.0787, 1.0787)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest022" type="Sprite2D" parent="Entities" unique_id=146515799]
+modulate = Color(0.9022, 0.9164, 0.9294, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-58.2, 3042.4)
+scale = Vector2(1.0074, 1.0074)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest023" type="Sprite2D" parent="Entities" unique_id=669752275]
+modulate = Color(0.8264, 0.8575, 0.8206, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-56.2, 3179.2)
+scale = Vector2(0.9686, 0.9686)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest024" type="Sprite2D" parent="Entities" unique_id=2026349641]
+modulate = Color(0.8583, 0.8629, 0.8717, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-52.3, 3302.0)
+scale = Vector2(1.1151, 1.1151)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest025" type="Sprite2D" parent="Entities" unique_id=389017512]
+modulate = Color(0.8558, 0.8618, 0.8375, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-43.7, 3434.4)
+scale = Vector2(0.9780, 0.9780)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest026" type="Sprite2D" parent="Entities" unique_id=764033613]
+modulate = Color(0.7860, 0.8051, 0.8182, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-85.4, 3559.1)
+scale = Vector2(1.0024, 1.0024)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest027" type="Sprite2D" parent="Entities" unique_id=124349261]
+modulate = Color(0.9115, 0.9157, 0.8832, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-47.7, 3683.8)
+scale = Vector2(1.1565, 1.1565)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest028" type="Sprite2D" parent="Entities" unique_id=1104560011]
+modulate = Color(0.7986, 0.8273, 0.8029, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-40.7, 3821.6)
+scale = Vector2(1.0887, 1.0887)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest029" type="Sprite2D" parent="Entities" unique_id=1785647018]
+modulate = Color(0.8404, 0.8484, 0.8477, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-72.8, 3953.7)
+scale = Vector2(1.0806, 1.0806)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest030" type="Sprite2D" parent="Entities" unique_id=1969779274]
+modulate = Color(0.8237, 0.8527, 0.8690, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-89.6, 4094.1)
+scale = Vector2(0.9747, 0.9747)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest031" type="Sprite2D" parent="Entities" unique_id=1332121740]
+modulate = Color(0.8492, 0.8646, 0.8496, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-52.1, 4664.1)
+scale = Vector2(1.0898, 1.0898)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest032" type="Sprite2D" parent="Entities" unique_id=1767226673]
+modulate = Color(0.8494, 0.8556, 0.8692, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-81.5, 4769.6)
+scale = Vector2(0.9775, 0.9775)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest033" type="Sprite2D" parent="Entities" unique_id=335727278]
+modulate = Color(0.8373, 0.8670, 0.8843, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-211.1, 149.1)
+scale = Vector2(0.9681, 0.9681)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest034" type="Sprite2D" parent="Entities" unique_id=1809088094]
+modulate = Color(0.8890, 0.9158, 0.8772, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-185.0, 262.2)
+scale = Vector2(1.0941, 1.0941)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest035" type="Sprite2D" parent="Entities" unique_id=1310363256]
+modulate = Color(0.7870, 0.8061, 0.7737, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-191.1, 404.8)
+scale = Vector2(0.9577, 0.9577)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest036" type="Sprite2D" parent="Entities" unique_id=804313120]
+modulate = Color(0.7782, 0.8097, 0.7960, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-238.1, 556.1)
+scale = Vector2(1.0587, 1.0587)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest037" type="Sprite2D" parent="Entities" unique_id=1831184015]
+modulate = Color(0.8662, 0.8748, 0.8393, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-197.1, 696.2)
+scale = Vector2(0.9559, 0.9559)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest038" type="Sprite2D" parent="Entities" unique_id=866121245]
+modulate = Color(0.7785, 0.8081, 0.7645, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-223.4, 809.7)
+scale = Vector2(1.1713, 1.1713)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest039" type="Sprite2D" parent="Entities" unique_id=531835569]
+modulate = Color(0.8975, 0.9059, 0.8985, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-202.7, 944.3)
+scale = Vector2(1.1541, 1.1541)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest040" type="Sprite2D" parent="Entities" unique_id=1535418143]
+modulate = Color(0.8023, 0.8311, 0.8103, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-198.1, 1101.4)
+scale = Vector2(0.9909, 0.9909)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest041" type="Sprite2D" parent="Entities" unique_id=1157136670]
+modulate = Color(0.8569, 0.8747, 0.8777, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-235.2, 1212.3)
+scale = Vector2(1.1195, 1.1195)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest042" type="Sprite2D" parent="Entities" unique_id=857448018]
+modulate = Color(0.7824, 0.8137, 0.7658, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-189.2, 1372.7)
+scale = Vector2(1.1992, 1.1992)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest043" type="Sprite2D" parent="Entities" unique_id=742545819]
+modulate = Color(0.8761, 0.8865, 0.8503, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-228.2, 1466.6)
+scale = Vector2(1.1019, 1.1019)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest044" type="Sprite2D" parent="Entities" unique_id=792193083]
+modulate = Color(0.8140, 0.8432, 0.8264, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-212.7, 1644.7)
+scale = Vector2(1.0678, 1.0678)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest045" type="Sprite2D" parent="Entities" unique_id=1166122269]
+modulate = Color(0.8528, 0.8693, 0.8866, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-238.9, 1773.9)
+scale = Vector2(1.1736, 1.1736)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest046" type="Sprite2D" parent="Entities" unique_id=809634695]
+modulate = Color(0.8323, 0.8426, 0.8510, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-236.0, 1893.8)
+scale = Vector2(1.0684, 1.0684)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest047" type="Sprite2D" parent="Entities" unique_id=573703746]
+modulate = Color(0.8724, 0.8786, 0.8934, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-185.9, 2039.4)
+scale = Vector2(1.1255, 1.1255)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest048" type="Sprite2D" parent="Entities" unique_id=658007299]
+modulate = Color(0.8219, 0.8425, 0.8252, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-185.7, 2163.4)
+scale = Vector2(1.1194, 1.1194)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest049" type="Sprite2D" parent="Entities" unique_id=1895868537]
+modulate = Color(0.8056, 0.8385, 0.8036, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-230.5, 2315.5)
+scale = Vector2(1.1162, 1.1162)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest050" type="Sprite2D" parent="Entities" unique_id=2077554274]
+modulate = Color(0.8679, 0.8759, 0.8544, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-217.7, 2450.9)
+scale = Vector2(1.1648, 1.1648)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest051" type="Sprite2D" parent="Entities" unique_id=248424327]
+modulate = Color(0.8035, 0.8089, 0.8156, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-219.8, 2557.0)
+scale = Vector2(1.1209, 1.1209)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest052" type="Sprite2D" parent="Entities" unique_id=316815393]
+modulate = Color(0.8043, 0.8313, 0.8326, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-200.6, 2721.2)
+scale = Vector2(1.1054, 1.1054)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest053" type="Sprite2D" parent="Entities" unique_id=449866395]
+modulate = Color(0.8220, 0.8430, 0.8484, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-226.3, 2818.7)
+scale = Vector2(0.9609, 0.9609)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest054" type="Sprite2D" parent="Entities" unique_id=194255439]
+modulate = Color(0.8097, 0.8229, 0.8236, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-208.3, 2954.0)
+scale = Vector2(1.1167, 1.1167)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest055" type="Sprite2D" parent="Entities" unique_id=1541079180]
+modulate = Color(0.7966, 0.8036, 0.8070, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-203.7, 3088.8)
+scale = Vector2(1.1313, 1.1313)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest056" type="Sprite2D" parent="Entities" unique_id=722165111]
+modulate = Color(0.9050, 0.9052, 0.9082, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-211.6, 3247.4)
+scale = Vector2(0.9688, 0.9688)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest057" type="Sprite2D" parent="Entities" unique_id=2021610762]
+modulate = Color(0.8325, 0.8426, 0.8288, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-183.2, 3370.0)
+scale = Vector2(0.9946, 0.9946)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest058" type="Sprite2D" parent="Entities" unique_id=1143009817]
+modulate = Color(0.8016, 0.8102, 0.8029, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-208.2, 3501.4)
+scale = Vector2(1.0451, 1.0451)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest059" type="Sprite2D" parent="Entities" unique_id=177549048]
+modulate = Color(0.7985, 0.8147, 0.8054, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-204.7, 3629.7)
+scale = Vector2(1.0064, 1.0064)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest060" type="Sprite2D" parent="Entities" unique_id=1774729886]
+modulate = Color(0.8291, 0.8572, 0.8216, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-208.4, 3778.5)
+scale = Vector2(1.1906, 1.1906)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest061" type="Sprite2D" parent="Entities" unique_id=237230841]
+modulate = Color(0.7991, 0.8199, 0.7824, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-194.3, 3924.2)
+scale = Vector2(1.1092, 1.1092)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest062" type="Sprite2D" parent="Entities" unique_id=1902479688]
+modulate = Color(0.8217, 0.8496, 0.8666, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-203.7, 4051.4)
+scale = Vector2(1.1889, 1.1889)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest063" type="Sprite2D" parent="Entities" unique_id=1402606259]
+modulate = Color(0.8312, 0.8653, 0.8451, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-190.2, 4717.3)
+scale = Vector2(1.1524, 1.1524)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest064" type="Sprite2D" parent="Entities" unique_id=2021685024]
+modulate = Color(0.8844, 0.9027, 0.8649, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-217.0, 4856.7)
+scale = Vector2(1.0575, 1.0575)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest065" type="Sprite2D" parent="Entities" unique_id=1741700258]
+modulate = Color(0.7928, 0.8170, 0.7720, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-349.4, 69.6)
+scale = Vector2(1.1908, 1.1908)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest066" type="Sprite2D" parent="Entities" unique_id=977253663]
+modulate = Color(0.8971, 0.8977, 0.9007, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-367.1, 228.2)
+scale = Vector2(1.0567, 1.0567)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest067" type="Sprite2D" parent="Entities" unique_id=988509787]
+modulate = Color(0.8152, 0.8185, 0.7840, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-336.2, 342.6)
+scale = Vector2(1.1552, 1.1552)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest068" type="Sprite2D" parent="Entities" unique_id=1992817270]
+modulate = Color(0.8564, 0.8710, 0.8355, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-359.3, 472.5)
+scale = Vector2(1.1852, 1.1852)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest069" type="Sprite2D" parent="Entities" unique_id=803370250]
+modulate = Color(0.8876, 0.8964, 0.8498, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-356.1, 630.0)
+scale = Vector2(1.0720, 1.0720)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest070" type="Sprite2D" parent="Entities" unique_id=1081713064]
+modulate = Color(0.8591, 0.8703, 0.8586, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-332.2, 763.7)
+scale = Vector2(1.0215, 1.0215)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest071" type="Sprite2D" parent="Entities" unique_id=1552749116]
+modulate = Color(0.8054, 0.8368, 0.8225, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-375.2, 894.7)
+scale = Vector2(1.1165, 1.1165)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest072" type="Sprite2D" parent="Entities" unique_id=143086955]
+modulate = Color(0.8994, 0.9031, 0.8496, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-355.9, 1019.1)
+scale = Vector2(1.1718, 1.1718)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest073" type="Sprite2D" parent="Entities" unique_id=1555068496]
+modulate = Color(0.8740, 0.9064, 0.8670, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-326.4, 1144.6)
+scale = Vector2(1.1467, 1.1467)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest074" type="Sprite2D" parent="Entities" unique_id=1741671241]
+modulate = Color(0.8188, 0.8328, 0.7838, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-364.9, 1309.6)
+scale = Vector2(0.9565, 0.9565)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest075" type="Sprite2D" parent="Entities" unique_id=116767692]
+modulate = Color(0.7948, 0.8126, 0.7755, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-342.1, 1418.1)
+scale = Vector2(1.1160, 1.1160)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest076" type="Sprite2D" parent="Entities" unique_id=1132367106]
+modulate = Color(0.8751, 0.8754, 0.8587, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-353.9, 1538.6)
+scale = Vector2(1.0760, 1.0760)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest077" type="Sprite2D" parent="Entities" unique_id=519118689]
+modulate = Color(0.8711, 0.8725, 0.8343, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-383.2, 1671.3)
+scale = Vector2(1.1432, 1.1432)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest078" type="Sprite2D" parent="Entities" unique_id=304769159]
+modulate = Color(0.8576, 0.8580, 0.8707, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-331.9, 1838.1)
+scale = Vector2(1.0963, 1.0963)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest079" type="Sprite2D" parent="Entities" unique_id=878869736]
+modulate = Color(0.7932, 0.8129, 0.7981, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-377.6, 1944.8)
+scale = Vector2(1.1669, 1.1669)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest080" type="Sprite2D" parent="Entities" unique_id=285210151]
+modulate = Color(0.8694, 0.8886, 0.8472, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-379.2, 2113.1)
+scale = Vector2(0.9903, 0.9903)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest081" type="Sprite2D" parent="Entities" unique_id=1936197488]
+modulate = Color(0.8340, 0.8568, 0.8168, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-376.1, 2228.3)
+scale = Vector2(1.1887, 1.1887)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest082" type="Sprite2D" parent="Entities" unique_id=1106211317]
+modulate = Color(0.8909, 0.9071, 0.8915, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-355.7, 2375.8)
+scale = Vector2(0.9955, 0.9955)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest083" type="Sprite2D" parent="Entities" unique_id=1525506857]
+modulate = Color(0.8463, 0.8666, 0.8316, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-375.5, 2519.6)
+scale = Vector2(1.0126, 1.0126)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest084" type="Sprite2D" parent="Entities" unique_id=1829535421]
+modulate = Color(0.8445, 0.8471, 0.8402, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-344.0, 2625.2)
+scale = Vector2(1.0395, 1.0395)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest085" type="Sprite2D" parent="Entities" unique_id=583289074]
+modulate = Color(0.8744, 0.9039, 0.9085, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-358.6, 2785.5)
+scale = Vector2(1.1540, 1.1540)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest086" type="Sprite2D" parent="Entities" unique_id=260791475]
+modulate = Color(0.8842, 0.8846, 0.8909, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-327.6, 2919.0)
+scale = Vector2(1.1369, 1.1369)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest087" type="Sprite2D" parent="Entities" unique_id=978352512]
+modulate = Color(0.8104, 0.8167, 0.8103, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-369.3, 3011.2)
+scale = Vector2(1.1240, 1.1240)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest088" type="Sprite2D" parent="Entities" unique_id=248262272]
+modulate = Color(0.8234, 0.8285, 0.7915, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-373.7, 3168.1)
+scale = Vector2(1.1629, 1.1629)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest089" type="Sprite2D" parent="Entities" unique_id=316360338]
+modulate = Color(0.8531, 0.8615, 0.8124, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-371.5, 3283.5)
+scale = Vector2(1.1674, 1.1674)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest090" type="Sprite2D" parent="Entities" unique_id=778943133]
+modulate = Color(0.9053, 0.9140, 0.8708, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-374.2, 3436.2)
+scale = Vector2(1.0799, 1.0799)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest091" type="Sprite2D" parent="Entities" unique_id=750445701]
+modulate = Color(0.8950, 0.9134, 0.8997, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-382.8, 3566.5)
+scale = Vector2(1.0548, 1.0548)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest092" type="Sprite2D" parent="Entities" unique_id=281617876]
+modulate = Color(0.9107, 0.9188, 0.9158, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-333.9, 3708.7)
+scale = Vector2(1.1927, 1.1927)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest093" type="Sprite2D" parent="Entities" unique_id=372982974]
+modulate = Color(0.8516, 0.8805, 0.8561, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-371.2, 3855.4)
+scale = Vector2(1.0378, 1.0378)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest094" type="Sprite2D" parent="Entities" unique_id=1598887596]
+modulate = Color(0.8147, 0.8319, 0.8102, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-328.0, 3993.6)
+scale = Vector2(1.0087, 1.0087)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest095" type="Sprite2D" parent="Entities" unique_id=1247413691]
+modulate = Color(0.8552, 0.8836, 0.8451, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-348.1, 4637.7)
+scale = Vector2(1.1601, 1.1601)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest096" type="Sprite2D" parent="Entities" unique_id=835910691]
+modulate = Color(0.8312, 0.8492, 0.8083, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-341.4, 4787.9)
+scale = Vector2(1.0481, 1.0481)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest097" type="Sprite2D" parent="Entities" unique_id=1884648701]
+modulate = Color(0.8198, 0.8224, 0.8080, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1625.1, 74.2)
+scale = Vector2(1.0001, 1.0001)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest098" type="Sprite2D" parent="Entities" unique_id=1579006748]
+modulate = Color(0.8898, 0.9093, 0.9144, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1585.0, 225.8)
+scale = Vector2(1.1926, 1.1926)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest099" type="Sprite2D" parent="Entities" unique_id=862408239]
+modulate = Color(0.8488, 0.8657, 0.8347, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1597.6, 354.1)
+scale = Vector2(1.0063, 1.0063)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest100" type="Sprite2D" parent="Entities" unique_id=1091071281]
+modulate = Color(0.8891, 0.9043, 0.9166, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1587.3, 498.2)
+scale = Vector2(1.0524, 1.0524)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest101" type="Sprite2D" parent="Entities" unique_id=761348573]
+modulate = Color(0.8511, 0.8692, 0.8285, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1585.6, 597.1)
+scale = Vector2(1.0946, 1.0946)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest102" type="Sprite2D" parent="Entities" unique_id=1555932575]
+modulate = Color(0.8726, 0.8792, 0.8928, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1610.6, 771.4)
+scale = Vector2(1.1785, 1.1785)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest103" type="Sprite2D" parent="Entities" unique_id=298463383]
+modulate = Color(0.8443, 0.8777, 0.8739, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1581.6, 893.4)
+scale = Vector2(1.0205, 1.0205)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest104" type="Sprite2D" parent="Entities" unique_id=1781166388]
+modulate = Color(0.7961, 0.8182, 0.8213, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1574.6, 1026.8)
+scale = Vector2(0.9887, 0.9887)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest105" type="Sprite2D" parent="Entities" unique_id=562198491]
+modulate = Color(0.8472, 0.8475, 0.8056, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1616.5, 1173.1)
+scale = Vector2(1.0705, 1.0705)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest106" type="Sprite2D" parent="Entities" unique_id=745975612]
+modulate = Color(0.8499, 0.8619, 0.8349, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1603.9, 1303.8)
+scale = Vector2(1.1559, 1.1559)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest107" type="Sprite2D" parent="Entities" unique_id=595059827]
+modulate = Color(0.7971, 0.8022, 0.8068, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1608.4, 1437.2)
+scale = Vector2(1.1641, 1.1641)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest108" type="Sprite2D" parent="Entities" unique_id=1585971779]
+modulate = Color(0.8763, 0.8992, 0.8863, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1596.0, 1577.4)
+scale = Vector2(0.9794, 0.9794)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest109" type="Sprite2D" parent="Entities" unique_id=933796031]
+modulate = Color(0.8649, 0.8667, 0.8171, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1622.4, 1691.5)
+scale = Vector2(1.1193, 1.1193)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest110" type="Sprite2D" parent="Entities" unique_id=1508455569]
+modulate = Color(0.8427, 0.8505, 0.8503, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1575.6, 1815.8)
+scale = Vector2(1.1302, 1.1302)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest111" type="Sprite2D" parent="Entities" unique_id=1813828831]
+modulate = Color(0.8109, 0.8298, 0.8366, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1595.1, 1952.0)
+scale = Vector2(1.1260, 1.1260)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest112" type="Sprite2D" parent="Entities" unique_id=960854719]
+modulate = Color(0.8324, 0.8623, 0.8233, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1581.9, 2085.4)
+scale = Vector2(1.0355, 1.0355)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest113" type="Sprite2D" parent="Entities" unique_id=677891464]
+modulate = Color(0.8265, 0.8378, 0.8077, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1575.3, 2218.6)
+scale = Vector2(1.0814, 1.0814)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest114" type="Sprite2D" parent="Entities" unique_id=1597685226]
+modulate = Color(0.8630, 0.8652, 0.8721, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1586.9, 2347.2)
+scale = Vector2(1.1828, 1.1828)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest115" type="Sprite2D" parent="Entities" unique_id=1649065878]
+modulate = Color(0.8193, 0.8364, 0.8367, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1624.2, 2483.1)
+scale = Vector2(1.0183, 1.0183)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest116" type="Sprite2D" parent="Entities" unique_id=103803712]
+modulate = Color(0.8416, 0.8644, 0.8582, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1577.8, 2623.5)
+scale = Vector2(0.9919, 0.9919)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest117" type="Sprite2D" parent="Entities" unique_id=1377924635]
+modulate = Color(0.8923, 0.9025, 0.8905, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1608.2, 2758.5)
+scale = Vector2(1.1532, 1.1532)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest118" type="Sprite2D" parent="Entities" unique_id=382360600]
+modulate = Color(0.8382, 0.8696, 0.8489, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1599.9, 2881.5)
+scale = Vector2(1.1541, 1.1541)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest119" type="Sprite2D" parent="Entities" unique_id=2067855250]
+modulate = Color(0.8576, 0.8859, 0.8806, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1587.6, 3011.3)
+scale = Vector2(0.9757, 0.9757)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest120" type="Sprite2D" parent="Entities" unique_id=110432807]
+modulate = Color(0.7984, 0.8312, 0.8212, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1596.6, 3145.1)
+scale = Vector2(1.0990, 1.0990)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest121" type="Sprite2D" parent="Entities" unique_id=1464867144]
+modulate = Color(0.8439, 0.8725, 0.8525, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1586.9, 3314.9)
+scale = Vector2(1.1369, 1.1369)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest122" type="Sprite2D" parent="Entities" unique_id=698202898]
+modulate = Color(0.8944, 0.9109, 0.9113, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1599.6, 3427.7)
+scale = Vector2(0.9522, 0.9522)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest123" type="Sprite2D" parent="Entities" unique_id=501703099]
+modulate = Color(0.8783, 0.8996, 0.9099, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1623.6, 3563.6)
+scale = Vector2(1.1777, 1.1777)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest124" type="Sprite2D" parent="Entities" unique_id=946551778]
+modulate = Color(0.8764, 0.8955, 0.8863, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1600.1, 3712.2)
+scale = Vector2(1.0064, 1.0064)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest125" type="Sprite2D" parent="Entities" unique_id=2041482574]
+modulate = Color(0.8599, 0.8651, 0.8245, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1620.0, 3822.2)
+scale = Vector2(1.1265, 1.1265)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest126" type="Sprite2D" parent="Entities" unique_id=1347469561]
+modulate = Color(0.8761, 0.8822, 0.8937, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1605.4, 3966.2)
+scale = Vector2(1.1076, 1.1076)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest127" type="Sprite2D" parent="Entities" unique_id=828361043]
+modulate = Color(0.8076, 0.8294, 0.8313, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1619.7, 4128.7)
+scale = Vector2(0.9571, 0.9571)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest128" type="Sprite2D" parent="Entities" unique_id=940180586]
+modulate = Color(0.8072, 0.8234, 0.7742, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1577.5, 4228.2)
+scale = Vector2(1.0587, 1.0587)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest129" type="Sprite2D" parent="Entities" unique_id=1420923081]
+modulate = Color(0.9088, 0.9114, 0.9164, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1597.2, 4380.0)
+scale = Vector2(1.0322, 1.0322)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest130" type="Sprite2D" parent="Entities" unique_id=1054577867]
+modulate = Color(0.8212, 0.8220, 0.8264, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1608.2, 4521.1)
+scale = Vector2(0.9795, 0.9795)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest131" type="Sprite2D" parent="Entities" unique_id=1211796357]
+modulate = Color(0.8081, 0.8103, 0.7807, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1585.9, 4658.4)
+scale = Vector2(1.1415, 1.1415)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest132" type="Sprite2D" parent="Entities" unique_id=625952395]
+modulate = Color(0.8217, 0.8432, 0.7977, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1619.1, 4792.1)
+scale = Vector2(1.1877, 1.1877)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest133" type="Sprite2D" parent="Entities" unique_id=1790141535]
+modulate = Color(0.8136, 0.8287, 0.8188, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1743.7, 161.0)
+scale = Vector2(1.0641, 1.0641)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest134" type="Sprite2D" parent="Entities" unique_id=834529540]
+modulate = Color(0.8823, 0.9157, 0.8616, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1773.3, 266.9)
+scale = Vector2(1.0608, 1.0608)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest135" type="Sprite2D" parent="Entities" unique_id=1748753260]
+modulate = Color(0.8220, 0.8488, 0.8455, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1768.0, 425.0)
+scale = Vector2(1.1837, 1.1837)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest136" type="Sprite2D" parent="Entities" unique_id=702630772]
+modulate = Color(0.8596, 0.8846, 0.8730, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1730.8, 565.3)
+scale = Vector2(1.1344, 1.1344)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest137" type="Sprite2D" parent="Entities" unique_id=306745759]
+modulate = Color(0.8751, 0.9070, 0.8976, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1741.8, 700.9)
+scale = Vector2(1.1321, 1.1321)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest138" type="Sprite2D" parent="Entities" unique_id=1556831239]
+modulate = Color(0.8980, 0.9048, 0.8821, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1730.9, 816.4)
+scale = Vector2(1.1336, 1.1336)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest139" type="Sprite2D" parent="Entities" unique_id=1105201735]
+modulate = Color(0.8072, 0.8280, 0.8333, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1740.8, 931.3)
+scale = Vector2(0.9654, 0.9654)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest140" type="Sprite2D" parent="Entities" unique_id=654962611]
+modulate = Color(0.8247, 0.8323, 0.8373, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1769.1, 1083.6)
+scale = Vector2(0.9695, 0.9695)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest141" type="Sprite2D" parent="Entities" unique_id=1306321959]
+modulate = Color(0.8823, 0.9102, 0.8836, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1763.9, 1206.6)
+scale = Vector2(1.1424, 1.1424)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest142" type="Sprite2D" parent="Entities" unique_id=1511592428]
+modulate = Color(0.8301, 0.8548, 0.8090, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1753.9, 1363.1)
+scale = Vector2(1.0608, 1.0608)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest143" type="Sprite2D" parent="Entities" unique_id=952774784]
+modulate = Color(0.8282, 0.8352, 0.8208, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1732.8, 1473.5)
+scale = Vector2(1.1384, 1.1384)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest144" type="Sprite2D" parent="Entities" unique_id=211374407]
+modulate = Color(0.8488, 0.8765, 0.8454, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1760.0, 1622.3)
+scale = Vector2(1.1593, 1.1593)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest145" type="Sprite2D" parent="Entities" unique_id=184553011]
+modulate = Color(0.8827, 0.9183, 0.9325, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1752.9, 1739.9)
+scale = Vector2(1.0857, 1.0857)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest146" type="Sprite2D" parent="Entities" unique_id=383850506]
+modulate = Color(0.8848, 0.9137, 0.9292, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1771.8, 1887.8)
+scale = Vector2(1.1022, 1.1022)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest147" type="Sprite2D" parent="Entities" unique_id=2002873993]
+modulate = Color(0.7867, 0.8064, 0.8109, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1723.5, 2046.5)
+scale = Vector2(1.0307, 1.0307)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest148" type="Sprite2D" parent="Entities" unique_id=1722535869]
+modulate = Color(0.8386, 0.8578, 0.8317, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1753.1, 2180.4)
+scale = Vector2(1.0340, 1.0340)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest149" type="Sprite2D" parent="Entities" unique_id=2098709770]
+modulate = Color(0.8773, 0.8887, 0.8668, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1723.9, 2276.9)
+scale = Vector2(1.1029, 1.1029)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest150" type="Sprite2D" parent="Entities" unique_id=561341484]
+modulate = Color(0.8193, 0.8474, 0.8446, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1719.5, 2420.8)
+scale = Vector2(1.0939, 1.0939)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest151" type="Sprite2D" parent="Entities" unique_id=1052945418]
+modulate = Color(0.8235, 0.8556, 0.8403, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1761.9, 2571.0)
+scale = Vector2(1.0748, 1.0748)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest152" type="Sprite2D" parent="Entities" unique_id=2065563934]
+modulate = Color(0.8139, 0.8336, 0.8157, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1758.5, 2686.7)
+scale = Vector2(1.1403, 1.1403)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest153" type="Sprite2D" parent="Entities" unique_id=1096541677]
+modulate = Color(0.8553, 0.8580, 0.8578, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1746.4, 2847.8)
+scale = Vector2(1.1409, 1.1409)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest154" type="Sprite2D" parent="Entities" unique_id=606736309]
+modulate = Color(0.8405, 0.8673, 0.8737, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1720.0, 2977.3)
+scale = Vector2(1.0791, 1.0791)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest155" type="Sprite2D" parent="Entities" unique_id=1915886894]
+modulate = Color(0.8978, 0.8979, 0.8615, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1744.5, 3098.1)
+scale = Vector2(1.1332, 1.1332)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest156" type="Sprite2D" parent="Entities" unique_id=109691862]
+modulate = Color(0.8844, 0.9198, 0.8854, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1762.9, 3256.5)
+scale = Vector2(1.0239, 1.0239)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest157" type="Sprite2D" parent="Entities" unique_id=475616512]
+modulate = Color(0.8445, 0.8687, 0.8562, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1752.5, 3391.5)
+scale = Vector2(1.1990, 1.1990)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest158" type="Sprite2D" parent="Entities" unique_id=1794868791]
+modulate = Color(0.8985, 0.9043, 0.8765, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1731.6, 3499.0)
+scale = Vector2(1.0772, 1.0772)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest159" type="Sprite2D" parent="Entities" unique_id=1532458260]
+modulate = Color(0.7846, 0.8119, 0.8055, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1741.3, 3657.9)
+scale = Vector2(1.1347, 1.1347)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest160" type="Sprite2D" parent="Entities" unique_id=1739827703]
+modulate = Color(0.8353, 0.8564, 0.8458, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1752.7, 3758.2)
+scale = Vector2(1.1775, 1.1775)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest161" type="Sprite2D" parent="Entities" unique_id=224748277]
+modulate = Color(0.8777, 0.8853, 0.8900, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1734.3, 3923.7)
+scale = Vector2(0.9744, 0.9744)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest162" type="Sprite2D" parent="Entities" unique_id=266015601]
+modulate = Color(0.8896, 0.8989, 0.9027, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1761.2, 4045.3)
+scale = Vector2(1.1536, 1.1536)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest163" type="Sprite2D" parent="Entities" unique_id=1794155206]
+modulate = Color(0.8587, 0.8828, 0.8891, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1756.4, 4188.2)
+scale = Vector2(1.1102, 1.1102)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest164" type="Sprite2D" parent="Entities" unique_id=678696923]
+modulate = Color(0.8398, 0.8622, 0.8386, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1747.8, 4291.0)
+scale = Vector2(1.0327, 1.0327)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest165" type="Sprite2D" parent="Entities" unique_id=194310822]
+modulate = Color(0.8428, 0.8743, 0.8345, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1759.6, 4462.5)
+scale = Vector2(1.1792, 1.1792)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest166" type="Sprite2D" parent="Entities" unique_id=310582754]
+modulate = Color(0.8173, 0.8320, 0.8196, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1774.0, 4578.0)
+scale = Vector2(1.1032, 1.1032)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest167" type="Sprite2D" parent="Entities" unique_id=1065675767]
+modulate = Color(0.8174, 0.8449, 0.8302, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1773.3, 4726.6)
+scale = Vector2(1.1316, 1.1316)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest168" type="Sprite2D" parent="Entities" unique_id=293724019]
+modulate = Color(0.8943, 0.9131, 0.8663, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1730.9, 4834.3)
+scale = Vector2(1.1323, 1.1323)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest169" type="Sprite2D" parent="Entities" unique_id=2033692478]
+modulate = Color(0.8785, 0.8962, 0.8467, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1888.5, 57.7)
+scale = Vector2(1.0318, 1.0318)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest170" type="Sprite2D" parent="Entities" unique_id=1212797033]
+modulate = Color(0.8188, 0.8345, 0.8256, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1895.7, 192.8)
+scale = Vector2(1.0856, 1.0856)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest171" type="Sprite2D" parent="Entities" unique_id=276364979]
+modulate = Color(0.8763, 0.9128, 0.9219, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1907.9, 351.1)
+scale = Vector2(1.0124, 1.0124)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest172" type="Sprite2D" parent="Entities" unique_id=1348035843]
+modulate = Color(0.8265, 0.8278, 0.8403, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1918.4, 463.6)
+scale = Vector2(1.0076, 1.0076)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest173" type="Sprite2D" parent="Entities" unique_id=2078293658]
+modulate = Color(0.7776, 0.8056, 0.7860, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1915.7, 635.7)
+scale = Vector2(1.0713, 1.0713)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest174" type="Sprite2D" parent="Entities" unique_id=400217613]
+modulate = Color(0.7908, 0.8056, 0.7678, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1891.3, 760.1)
+scale = Vector2(1.1025, 1.1025)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest175" type="Sprite2D" parent="Entities" unique_id=1673611395]
+modulate = Color(0.8264, 0.8345, 0.8502, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1883.2, 902.1)
+scale = Vector2(1.0451, 1.0451)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest176" type="Sprite2D" parent="Entities" unique_id=753405730]
+modulate = Color(0.8939, 0.9097, 0.8648, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1877.6, 1028.4)
+scale = Vector2(0.9614, 0.9614)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest177" type="Sprite2D" parent="Entities" unique_id=1076214099]
+modulate = Color(0.8113, 0.8303, 0.7834, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1883.6, 1164.7)
+scale = Vector2(1.1491, 1.1491)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest178" type="Sprite2D" parent="Entities" unique_id=1613840114]
+modulate = Color(0.8570, 0.8607, 0.8396, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1917.4, 1310.0)
+scale = Vector2(1.0519, 1.0519)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest179" type="Sprite2D" parent="Entities" unique_id=579454205]
+modulate = Color(0.7907, 0.8173, 0.8289, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1863.5, 1404.2)
+scale = Vector2(1.1652, 1.1652)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest180" type="Sprite2D" parent="Entities" unique_id=990518459]
+modulate = Color(0.8701, 0.8970, 0.8770, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1877.3, 1550.6)
+scale = Vector2(1.0850, 1.0850)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest181" type="Sprite2D" parent="Entities" unique_id=842602807]
+modulate = Color(0.8858, 0.8970, 0.8808, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1873.1, 1700.0)
+scale = Vector2(1.0992, 1.0992)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest182" type="Sprite2D" parent="Entities" unique_id=1520633046]
+modulate = Color(0.8810, 0.8848, 0.8445, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1903.8, 1825.9)
+scale = Vector2(0.9681, 0.9681)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest183" type="Sprite2D" parent="Entities" unique_id=1297175152]
+modulate = Color(0.8407, 0.8473, 0.8411, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1910.1, 1941.3)
+scale = Vector2(1.0389, 1.0389)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest184" type="Sprite2D" parent="Entities" unique_id=373618232]
+modulate = Color(0.7841, 0.8130, 0.8190, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1885.1, 2078.5)
+scale = Vector2(1.1369, 1.1369)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest185" type="Sprite2D" parent="Entities" unique_id=1964780006]
+modulate = Color(0.7855, 0.8042, 0.8190, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1879.8, 2226.1)
+scale = Vector2(0.9829, 0.9829)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest186" type="Sprite2D" parent="Entities" unique_id=536914939]
+modulate = Color(0.8781, 0.9079, 0.8961, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1918.6, 2379.1)
+scale = Vector2(0.9903, 0.9903)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest187" type="Sprite2D" parent="Entities" unique_id=1639743590]
+modulate = Color(0.9013, 0.9147, 0.9282, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1880.7, 2509.2)
+scale = Vector2(0.9736, 0.9736)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest188" type="Sprite2D" parent="Entities" unique_id=419003585]
+modulate = Color(0.8125, 0.8343, 0.8033, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1880.0, 2615.4)
+scale = Vector2(1.0800, 1.0800)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest189" type="Sprite2D" parent="Entities" unique_id=307116647]
+modulate = Color(0.8055, 0.8339, 0.8129, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1913.2, 2769.9)
+scale = Vector2(1.1608, 1.1608)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest190" type="Sprite2D" parent="Entities" unique_id=680529344]
+modulate = Color(0.8768, 0.8813, 0.8940, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1918.3, 2919.8)
+scale = Vector2(0.9747, 0.9747)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest191" type="Sprite2D" parent="Entities" unique_id=564871912]
+modulate = Color(0.8515, 0.8721, 0.8410, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1868.8, 3023.4)
+scale = Vector2(1.1699, 1.1699)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest192" type="Sprite2D" parent="Entities" unique_id=708430024]
+modulate = Color(0.9075, 0.9092, 0.8947, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1894.4, 3145.8)
+scale = Vector2(1.0999, 1.0999)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest193" type="Sprite2D" parent="Entities" unique_id=411895589]
+modulate = Color(0.7890, 0.8058, 0.7627, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1906.8, 3325.3)
+scale = Vector2(1.0567, 1.0567)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest194" type="Sprite2D" parent="Entities" unique_id=683973760]
+modulate = Color(0.8269, 0.8346, 0.8160, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1902.3, 3416.6)
+scale = Vector2(0.9972, 0.9972)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest195" type="Sprite2D" parent="Entities" unique_id=1368717174]
+modulate = Color(0.8311, 0.8553, 0.8402, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1898.8, 3578.4)
+scale = Vector2(1.0476, 1.0476)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest196" type="Sprite2D" parent="Entities" unique_id=1032431498]
+modulate = Color(0.8669, 0.8836, 0.8922, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1911.5, 3694.7)
+scale = Vector2(1.1707, 1.1707)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest197" type="Sprite2D" parent="Entities" unique_id=951658708]
+modulate = Color(0.8741, 0.8973, 0.8692, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1868.3, 3854.5)
+scale = Vector2(1.0651, 1.0651)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+
+[node name="SideForest198" type="Sprite2D" parent="Entities" unique_id=724232611]
+modulate = Color(0.8292, 0.8581, 0.8494, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1917.5, 3953.9)
+scale = Vector2(1.0596, 1.0596)
+texture = ExtResource("46_1xug8")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest199" type="Sprite2D" parent="Entities" unique_id=1416401550]
+modulate = Color(0.8177, 0.8214, 0.7958, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1884.9, 4106.6)
+scale = Vector2(0.9908, 0.9908)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest200" type="Sprite2D" parent="Entities" unique_id=253323791]
+modulate = Color(0.8337, 0.8630, 0.8648, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1873.7, 4262.0)
+scale = Vector2(1.1479, 1.1479)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest201" type="Sprite2D" parent="Entities" unique_id=976067649]
+modulate = Color(0.9026, 0.9046, 0.9117, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1862.7, 4377.2)
+scale = Vector2(1.0118, 1.0118)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest202" type="Sprite2D" parent="Entities" unique_id=1610361323]
+modulate = Color(0.8218, 0.8343, 0.7915, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1877.9, 4525.3)
+scale = Vector2(1.1633, 1.1633)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+
+[node name="SideForest203" type="Sprite2D" parent="Entities" unique_id=401891042]
+modulate = Color(0.8654, 0.8966, 0.8572, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1891.1, 4647.3)
+scale = Vector2(1.0650, 1.0650)
+texture = ExtResource("48_npro2")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest204" type="Sprite2D" parent="Entities" unique_id=1530469798]
+modulate = Color(0.7833, 0.8120, 0.7662, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(1907.6, 4760.4)
+scale = Vector2(1.0364, 1.0364)
+texture = ExtResource("43_ta48i")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest205" type="Sprite2D" parent="Entities" unique_id=284156172]
+modulate = Color(0.8226, 0.8261, 0.8351, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-66.8, 4120.4)
+scale = Vector2(1.0578, 1.0578)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest206" type="Sprite2D" parent="Entities" unique_id=715289058]
+modulate = Color(0.8472, 0.8652, 0.8770, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-153.8, 4118.1)
+scale = Vector2(1.0141, 1.0141)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+
+[node name="SideForest207" type="Sprite2D" parent="Entities" unique_id=249633565]
+modulate = Color(0.8219, 0.8283, 0.7927, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-273.3, 4127.4)
+scale = Vector2(1.0132, 1.0132)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest208" type="Sprite2D" parent="Entities" unique_id=474672677]
+modulate = Color(0.8020, 0.8261, 0.8395, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-393.6, 4128.4)
+scale = Vector2(1.1661, 1.1661)
+texture = ExtResource("49_gri40")
+centered = false
+offset = Vector2(-132, -298)
+flip_h = true
+
+[node name="SideForest209" type="Sprite2D" parent="Entities" unique_id=1801527691]
+modulate = Color(0.8039, 0.8091, 0.7940, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-501.4, 4124.8)
+scale = Vector2(0.9559, 0.9559)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest210" type="Sprite2D" parent="Entities" unique_id=1373075204]
+modulate = Color(0.8649, 0.8691, 0.8798, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-53.3, 4615.3)
+scale = Vector2(1.0728, 1.0728)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+
+[node name="SideForest211" type="Sprite2D" parent="Entities" unique_id=1601608230]
+modulate = Color(0.8543, 0.8863, 0.8743, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-179.0, 4612.2)
+scale = Vector2(1.0016, 1.0016)
+texture = ExtResource("44_l0jbh")
+centered = false
+offset = Vector2(-135, -288)
+flip_h = true
+
+[node name="SideForest212" type="Sprite2D" parent="Entities" unique_id=754713125]
+modulate = Color(0.8697, 0.8795, 0.8411, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-297.4, 4618.1)
+scale = Vector2(0.9861, 0.9861)
+texture = ExtResource("45_mb514")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest213" type="Sprite2D" parent="Entities" unique_id=1157993476]
+modulate = Color(0.8823, 0.8964, 0.8702, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-400.6, 4613.2)
+scale = Vector2(0.9625, 0.9625)
+texture = ExtResource("42_oanpj")
+centered = false
+offset = Vector2(-142, -288)
+flip_h = true
+
+[node name="SideForest214" type="Sprite2D" parent="Entities" unique_id=705402185]
+modulate = Color(0.8514, 0.8701, 0.8806, 1)
+material = ExtResource("41_si0kw")
+position = Vector2(-497.6, 4621.8)
+scale = Vector2(1.0702, 1.0702)
+texture = ExtResource("47_4auyq")
+centered = false
+offset = Vector2(-129.5, -317)
 
 [node name="ForestBush000" type="Sprite2D" parent="Entities" unique_id=1293869279]
 material = ExtResource("25_s66wt")
