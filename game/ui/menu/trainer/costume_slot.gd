@@ -3,8 +3,7 @@ extends PanelContainer
 ## Un costume de la section « Costumes » de l'écran Dresseur (dossier-costumes.md, CO-1, CO-2) :
 ## vignette = l'image d'attente de face de l'apparence du monde [D]. **Verrouillé** : silhouette
 ## noire, sans nom (CO-2). Le costume porté est cerclé (variation « TrainerBadgeOn »).
-## Un toucher émet [signal touched] (verrouillé compris : l'écran dit alors pourquoi). Dans un
-## défilement horizontal : le glissement du doigt atteint le ScrollContainer ([TapGuard]).
+## Un toucher émet [signal touched] (verrouillé compris : l'écran dit alors pourquoi).
 
 signal touched(slot: CostumeSlot)
 
@@ -17,8 +16,8 @@ func _init(view: CostumeSlotView = null) -> void:
 	_view = view if view != null else CostumeSlotView.new()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hit = Button.new()
-	# Zone tactile d'au moins TOUCH_MIN (le cadre du panneau s'ajoute autour).
-	_hit.custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
+	# Haute d'au moins TOUCH_MIN (le cadre du panneau s'ajoute autour) ; la grille l'élargit.
+	_hit.custom_minimum_size = Vector2(UiTokens.TRAINER_COSTUME_SLOT_MIN_WIDTH, UiTokens.TOUCH_MIN)
 	_hit.flat = true
 	_hit.focus_mode = Control.FOCUS_NONE
 	_hit.mouse_filter = Control.MOUSE_FILTER_PASS

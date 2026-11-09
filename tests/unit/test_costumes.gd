@@ -210,7 +210,7 @@ func test_trainer_screen_locked_touch_explains_and_unlocked_touch_chooses() -> v
 	screen.show_trainer(view)
 	var slots := screen.get_costume_slots()
 	assert_eq(slots.size(), 9)
-	assert_eq(screen.get_costume_caption().text, "%s\n%s" % [
+	assert_eq(screen.get_costume_caption().text, TrainerView.COSTUME_CAPTION_FORMAT % [
 		TrainerView.ORIGINAL_COSTUME_NAME, TrainerView.ORIGINAL_COSTUME_PERK])
 	assert_true(slots[2].is_silhouette())
 	assert_false(slots[1].is_silhouette())

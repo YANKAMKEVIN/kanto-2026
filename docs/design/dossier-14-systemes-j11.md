@@ -229,6 +229,7 @@ Interactions [A-1 n° 3 et D] :
 | Carte d'extérieur (routes, villes, Forêt de Jade) | visible |
 | Carte d'intérieur (`Map.interior`, postes de la forêt compris) | rentre dans sa Ball ; ressort en sortant |
 | Compagnon K.O. | reste choisi, invisible jusqu'à sa guérison |
+| Pokémon K.O. pas encore sorti | pas de bouton FAIRE SORTIR (Kevin, 2026-11-09) |
 | Aucune case libre pour un suivi propre | masqué jusqu'au premier pas qui libère une case |
 | Cinématique qui déplace le joueur ou exige son absence | rentre au début, ressort à la fin [D] |
 | Combat | rien ne change sur la carte ; il ne combat pas en premier [D] |

@@ -32,6 +32,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 ## Décisions de Kevin en vigueur
 
+- **Écran Dresseur (2026-11-09) :** plus de section Équipe ; Costumes au centre, Grands moments à droite (`dossier-costumes.md` §2 quater). Un Pokémon K.O. n'a plus de FAIRE SORTIR.
 - **Dépôt (2026-11-07) :** repassé en privé par Kevin. Le workflow de CI reste tel quel (consigne du 2026-11-04, `jalon-34-34e.md` §14).
 - **Costumes (2026-11-07) :** l'avantage n'agit que si le costume est porté, et il est écrit pour le joueur. Musiques : un thème de combat (sauvages et Dresseurs ordinaires) et un jingle d'arrivée en ville par costume.
 - **Ordre de l'acte 2 (2026-11-06) :** JOH6 avant JOH7. La mer au sud d'Oliville reste fermée jusqu'au déserteur d'Acajou (`johto_whirl_clue`).

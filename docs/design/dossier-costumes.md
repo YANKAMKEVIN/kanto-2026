@@ -94,6 +94,10 @@ Préparation : `tools/audio/prepare_costume_music.py` → `assets/audio/music/co
 
 **Provenance :** les noms des fichiers indiquent des vidéos en ligne, dont plusieurs reprises par d'autres artistes (Raon Lee, NateWantsToBattle, Tiny Desk, hommage à Black Sabbath, version longue de Gilles Nuytens). Ce ne sont pas des achats : à couvrir par le Go juridique étendu avant toute diffusion, même au cercle de la maison.
 
+## 2 quater. Place dans l'écran Dresseur (Kevin, 2026-11-09)
+
+Remplace CO-1 sur l'emplacement. Option B retenue par Kevin : la section « Équipe actuelle » disparaît (l'équipe reste dans le menu) ; **Costumes** prend sa place au centre, les 9 vignettes visibles sur 2 rangées, nom et avantage à droite du titre ; **Grands moments** occupe la colonne de droite sous les statistiques.
+
 ## 3. Production
 
 - **Art** : Codex, même méthode que la joueuse (`tools/art/joueuse_rivale/`) : gabarit = asset validé du héros ou de la joueuse (pose, cadrage, 128 px, origine aux pieds), identité = une planche de chara design par costume, validée par Kevin avant les sprites. Style **peint simplifié**, dans la même main que le monde. Environ 15 images par version, soit ≈ 240 images pour les 16 versions. Ordre proposé : une planche des 16 costumes, puis les sprites badge par badge.

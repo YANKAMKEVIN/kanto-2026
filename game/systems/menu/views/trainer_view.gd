@@ -27,6 +27,8 @@ const HALL_OF_FAME_LABEL: String = "Panthéon"
 ## phrase d'un costume verrouillé touché (CO-2).
 const COSTUMES_TITLE: String = "Costumes"
 const ORIGINAL_COSTUME_NAME: String = "Tenue d'origine"
+## Légende de la section : nom du costume, puis son avantage [D].
+const COSTUME_CAPTION_FORMAT: String = "%s · %s"
 const ORIGINAL_COSTUME_PERK: String = "Aucun avantage."
 const COSTUME_LOCKED_TEXT: String = "Se débloque avec un nouveau badge."
 
@@ -58,8 +60,6 @@ var badges: Array[BadgeSlotView] = []
 var costumes: Array[CostumeSlotView] = []
 ## Zone où se tient le joueur (décor de son portrait, MM.2) ; &"" si inconnue.
 var zone_id: StringName = &""
-## Équipe actuelle, dans l'ordre de l'équipe (MM.2) ; vide = section absente.
-var team: Array[TeamMemberView] = []
 ## Grands moments, du plus ancien au plus récent ; vide → [constant MOMENTS_EMPTY_TEXT].
 var moments: Array[MomentView] = []
 ## Statistiques, dans l'ordre d'affichage ; une statistique à 0 est absente.

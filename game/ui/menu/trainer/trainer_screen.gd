@@ -66,9 +66,6 @@ var _caught_route: MenuRoute
 ## J30 (Q30-4) : lien « Panthéon ».
 var _hall: Button
 var _slots: Array[BadgeSlot] = []
-var _team_panel: PanelContainer
-var _team_grid: GridContainer
-var _team_cards: Array[TrainerTeamCard] = []
 var _stats_panel: PanelContainer
 var _stats_grid: GridContainer
 var _scroll: ScrollContainer
@@ -78,10 +75,10 @@ var _empty: Label
 var _catcher: Control
 var _bubble: BadgeBubble
 var _bubble_slot: BadgeSlot
-## Costumes (CO-1) : section, bande défilante, vignettes et légende (nom du costume porté, ou
-## phrase d'un costume verrouillé touché).
+## Costumes (CO-1) : section, grille des 9 vignettes et légende (nom et avantage du costume porté,
+## ou phrase d'un costume verrouillé touché).
 var _costume_panel: PanelContainer
-var _costume_row: HBoxContainer
+var _costume_row: GridContainer
 var _costume_slots: Array[CostumeSlot] = []
 var _costume_caption: Label
 
@@ -116,7 +113,9 @@ func _ready() -> void:
 	center.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
 	body.add_child(center)
 	center.add_child(_build_badges())
-	center.add_child(_build_team())
+	# Décision de Kevin du 2026-11-09 : les costumes prennent la place de l'équipe (déjà dans le
+	# menu), la frise des grands moments toute la colonne de droite sous les statistiques.
+	center.add_child(_build_costumes())
 	var side := VBoxContainer.new()
 	side.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	side.custom_minimum_size.x = UiTokens.TRAINER_SIDE_WIDTH
@@ -126,9 +125,6 @@ func _ready() -> void:
 	_stats_panel.theme_type_variation = &"MenuGlass"
 	_stats_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	side.add_child(_stats_panel)
-	# Costumes (CO-1) : colonne de droite, entre les statistiques et la frise (qui défile et
-	# cède la place) ; le centre n'a plus de hauteur libre sous les badges et l'équipe.
-	side.add_child(_build_costumes())
 	side.add_child(_build_moments())
 	_build_bubble_layer()
 	_built = true
@@ -174,15 +170,6 @@ func get_caught_button() -> Button:
 ## Toujours 8 emplacements.
 func get_badge_slots() -> Array[BadgeSlot]:
 	return _slots
-
-
-## Cartes de l'équipe actuelle, dans l'ordre (vide : section absente).
-func get_team_cards() -> Array[TrainerTeamCard]:
-	return _team_cards
-
-
-func get_team_panel() -> PanelContainer:
-	return _team_panel
 
 
 ## Bulle de détail ouverte (null : fermée).
@@ -396,22 +383,27 @@ func _build_costumes() -> PanelContainer:
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
 	_costume_panel.add_child(column)
-	_section_title(column, TrainerView.COSTUMES_TITLE)
-	var scroll := ScrollContainer.new()
-	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
-	scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
-	column.add_child(scroll)
-	_costume_row = HBoxContainer.new()
-	_costume_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_costume_row.add_theme_constant_override(&"separation", UiTokens.TRAINER_BADGE_GAP)
-	scroll.add_child(_costume_row)
-	# Légende sous la bande : nom du costume porté, ou phrase d'un costume verrouillé (CO-2).
+	# Titre et légende sur la même ligne : les deux rangées de vignettes gardent leur hauteur.
+	var header := HBoxContainer.new()
+	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	header.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
+	column.add_child(header)
+	_section_title(header, TrainerView.COSTUMES_TITLE)
 	_costume_caption = Label.new()
 	_costume_caption.theme_type_variation = &"TrainerBadgeName"
 	_costume_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_costume_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_costume_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(_costume_caption)
+	_costume_caption.custom_minimum_size.y = UiTokens.TRAINER_COSTUME_CAPTION_HEIGHT
+	_costume_caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	header.add_child(_costume_caption)
+	_costume_row = GridContainer.new()
+	_costume_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_costume_row.columns = UiTokens.TRAINER_COSTUME_COLUMNS
+	_costume_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_costume_row.add_theme_constant_override(&"h_separation", UiTokens.TRAINER_COSTUME_GAP)
+	_costume_row.add_theme_constant_override(&"v_separation", UiTokens.TRAINER_COSTUME_GAP)
+	column.add_child(_costume_row)
 	return _costume_panel
 
 
@@ -424,11 +416,13 @@ func _rebuild_costumes(view: TrainerView) -> void:
 	_costume_caption.text = ""
 	for costume: CostumeSlotView in view.costumes:
 		var slot := CostumeSlot.new(costume)
+		slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		slot.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		slot.touched.connect(_on_costume_touched)
 		_costume_row.add_child(slot)
 		_costume_slots.append(slot)
 		if costume.worn:
-			_costume_caption.text = "%s\n%s" % [costume.name, costume.perk] \
+			_costume_caption.text = TrainerView.COSTUME_CAPTION_FORMAT % [costume.name, costume.perk] \
 				if not costume.perk.is_empty() else costume.name
 
 
@@ -471,26 +465,6 @@ func _on_catcher_input(event: InputEvent) -> void:
 	if (mouse != null and not mouse.pressed) or (touch != null and not touch.pressed):
 		close_badge_detail()
 	_catcher.accept_event()
-
-
-func _build_team() -> PanelContainer:
-	_team_panel = PanelContainer.new()
-	_team_panel.theme_type_variation = &"MenuGlass"
-	_team_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_team_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var column := VBoxContainer.new()
-	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
-	_team_panel.add_child(column)
-	_section_title(column, TrainerView.TEAM_TITLE)
-	_team_grid = GridContainer.new()
-	_team_grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_team_grid.columns = UiTokens.TRAINER_TEAM_COLUMNS
-	_team_grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_team_grid.add_theme_constant_override(&"h_separation", UiTokens.TRAINER_BADGE_GAP)
-	_team_grid.add_theme_constant_override(&"v_separation", UiTokens.TRAINER_BADGE_GAP)
-	column.add_child(_team_grid)
-	return _team_panel
 
 
 func _build_moments() -> PanelContainer:
@@ -541,22 +515,8 @@ func _apply(view: TrainerView) -> void:
 		_slots[i].setup(view.badges[i] if i < view.badges.size() else BadgeSlotView.new(i))
 	_rebuild_costumes(view)
 	_portrait.texture = MenuArt.hero_bust()
-	_rebuild_team(view)
 	_rebuild_stats(view)
 	_rebuild_moments(view)
-
-
-func _rebuild_team(view: TrainerView) -> void:
-	for card: TrainerTeamCard in _team_cards:
-		_team_grid.remove_child(card)
-		card.queue_free()
-	_team_cards.clear()
-	_team_panel.visible = not view.team.is_empty()
-	for member: TeamMemberView in view.team:
-		var card := TrainerTeamCard.new()
-		_team_grid.add_child(card)
-		card.setup(member)
-		_team_cards.append(card)
 
 
 func _rebuild_stats(view: TrainerView) -> void:

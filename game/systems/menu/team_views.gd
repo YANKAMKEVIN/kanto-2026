@@ -93,13 +93,15 @@ static func field_actions(pokemon: Pokemon, data: PokemonData,
 
 
 ## Bouton du compagnon pour [param pokemon] : RAPPELER s'il est le compagnon actuel, FAIRE SORTIR
-## si son espèce est éligible, rien sinon (pas de bouton grisé, A-11). Un Pokémon K.O. peut être
-## choisi : il reste invisible jusqu'à sa guérison (§8.3).
+## si son espèce est éligible et qu'il n'est pas K.O., rien sinon (pas de bouton grisé, A-11). Un
+## compagnon déjà sorti qui tombe K.O. reste choisi, invisible jusqu'à sa guérison (§8.3).
 static func companion_action(pokemon: Pokemon, companions: CompanionCatalog,
 		companion_uid: String) -> PokemonSheetView.CompanionAction:
 	if not companion_uid.is_empty() and pokemon.uid == companion_uid:
 		return PokemonSheetView.CompanionAction.RECALL
-	if companions != null and CompanionRules.is_eligible(pokemon, companions):
+	# Un K.O. ne sort pas (Kevin, 2026-11-09) ; un compagnon déjà sorti garde RAPPELER au-dessus.
+	if companions != null and not pokemon.is_fainted() \
+			and CompanionRules.is_eligible(pokemon, companions):
 		return PokemonSheetView.CompanionAction.SEND_OUT
 	return PokemonSheetView.CompanionAction.NONE
 

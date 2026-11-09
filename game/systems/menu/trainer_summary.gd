@@ -73,9 +73,6 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments:
 			view.badges.append(BadgeSlotView.new(i))
 	if zones != null:
 		view.zone_id = MapJournal.player_zone(state.current_map, zones)
-	var party: Party = state.party
-	for i: int in party.size():
-		view.team.append(DashboardViews.member(party.get_at(i), i, data))
 	if moments != null:
 		view.moments = moment_views(state, data, zones, moments, unlocks, badges, items)
 	view.stats = stat_views(state, zones)

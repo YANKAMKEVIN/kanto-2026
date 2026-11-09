@@ -289,29 +289,6 @@ func test_badges_come_from_the_badge_library_in_silhouette() -> void:
 	state.free()
 
 
-func test_current_team_in_official_artworks() -> void:
-	var state := _trainer_state()
-	var screen := await _trainer_in(2340, state)
-	var cards := screen.get_team_cards()
-	assert_eq(cards.size(), state.party.size())
-	assert_gt(cards.size(), 0)
-	for i: int in cards.size():
-		var number := _data.get_species(state.party.get_at(i).species_id).dex
-		var wanted := MenuArt.pokemon_portrait(number) as AtlasTexture
-		var shown := cards[i].get_art().texture as AtlasTexture
-		assert_not_null(shown, "grand artwork officiel")
-		assert_eq(shown.atlas, wanted.atlas)
-		assert_eq(shown.region, wanted.region)
-	assert_true(screen.get_team_panel().visible)
-	state.free()
-
-
-func test_no_team_section_without_a_team() -> void:
-	var screen := await _trainer_in(2340, _state)
-	assert_true(screen.get_team_cards().is_empty())
-	assert_false(screen.get_team_panel().visible, "liste vide = section absente")
-
-
 func test_moments_show_the_place_preview_and_the_pokemon_artwork() -> void:
 	var state := _trainer_state()
 	var screen := await _trainer_in(2340, state)
@@ -352,8 +329,8 @@ func test_trainer_targets_and_margins_at_both_widths() -> void:
 		for control: Control in controls:
 			assert_gte(control.get_global_rect().size.y, float(UiTokens.TOUCH_MIN) - 0.5)
 			_inside_safe_area(control, width)
-		for card: TrainerTeamCard in screen.get_team_cards():
-			_inside_safe_area(card, width)
+		for slot: CostumeSlot in screen.get_costume_slots():
+			_inside_safe_area(slot, width)
 		for slot: BadgeSlot in screen.get_badge_slots():
 			_inside_safe_area(slot, width)
 		state.free()

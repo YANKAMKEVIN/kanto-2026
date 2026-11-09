@@ -84,6 +84,19 @@ func test_team_buttons_send_out_recall_and_none_for_a_species_without_sheet() ->
 	assert_eq(views.back().sheets[0].companion_action, ACTION.SEND_OUT)
 
 
+func test_a_fainted_pokemon_cannot_be_sent_out() -> void:
+	var menu := _boot.get_menu_director()
+	var views: Array = []
+	menu.team_shown.connect(func(view: TeamView, _selected: int) -> void: views.append(view))
+	assert_true(menu.toggle_companion(0), "FAIRE SORTIR")
+	_lead.hp = 0
+	assert_true(menu.toggle_companion(0), "RAPPELER reste possible sur un compagnon K.O.")
+	assert_null(GameState.get_companion())
+	assert_eq(views.back().sheets[0].companion_action, ACTION.NONE, "plus de FAIRE SORTIR")
+	assert_false(menu.toggle_companion(0), "K.O. : ne sort pas")
+	assert_null(GameState.get_companion())
+
+
 func test_follows_the_player_and_holds_its_cell_softly() -> void:
 	var from := await _send_out_and_step()
 	var node := _companion.get_node_2d()

@@ -1656,7 +1656,12 @@ const TRAINER_BADGE_UNKNOWN_PAINTED := Color(1, 1, 1, 0.5)
 ## Costumes (dossier-costumes.md, CO-2) : silhouette noire d'un costume verrouillé.
 const TRAINER_COSTUME_SILHOUETTE := Color(0.0, 0.0, 0.0, 0.85)
 const TRAINER_BADGE_UNKNOWN_FONT := FONT_CAPTION
-const TRAINER_TEAM_COLUMNS := 3
+## Grille des costumes (Kevin, 2026-11-09) : 9 vignettes visibles sur 2 rangées, même à 1920 de
+## large. La vignette reste haute de TOUCH_MIN ; largeur minimale [D].
+const TRAINER_COSTUME_COLUMNS := 5
+const TRAINER_COSTUME_GAP := 8
+const TRAINER_COSTUME_SLOT_MIN_WIDTH := 88
+const TRAINER_COSTUME_CAPTION_HEIGHT := 64
 const TRAINER_TEAM_ART := 104
 const TRAINER_TEAM_NAME_FONT := 24
 const TRAINER_TEAM_LEVEL_FONT := 22

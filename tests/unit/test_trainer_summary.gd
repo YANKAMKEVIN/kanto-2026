@@ -382,20 +382,9 @@ func test_badges_come_from_the_library_and_the_flags() -> void:
 	assert_eq(view.badges[0].detail, "Argenta — Pierre")
 
 
-func test_team_and_player_zone_for_the_screen() -> void:
+func test_player_zone_for_the_screen() -> void:
 	_load_kevin()
-	var view := _build()
-	assert_eq(view.team.size(), _state.party.size())
-	assert_gt(view.team.size(), 0)
-	for i: int in view.team.size():
-		assert_eq(view.team[i].party_index, i)
-		assert_eq(view.team[i].species_id, _state.party.get_at(i).species_id)
-		assert_gt(view.team[i].dex_number, 0)
-	assert_eq(view.zone_id, MapJournal.player_zone(_state.current_map, _zones))
-
-
-func test_no_team_in_a_new_game() -> void:
-	assert_true(_build().team.is_empty())
+	assert_eq(_build().zone_id, MapJournal.player_zone(_state.current_map, _zones))
 
 
 func test_species_moments_carry_their_dex_number() -> void:
