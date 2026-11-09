@@ -416,3 +416,4 @@ versions, déjà réglées sur `main` par DAF.6 : non reprises.
 | RP-246 | [jalon-15.md](jalon-15.md) §9 (ancien RP-002) | Départ de débogage `route_5` sans `route_5_entered` (objectif « Badge Cascade » au premier pas) | voulu : `test_route_5_life.gd` part de ce départ pour vérifier que l'entrée pose le drapeau ; correctif annulé après la CI (2026-10-26) |
 | RP-247 | [jalon-19.md](jalon-19.md) §9.5 n° 5 (ancien RP-122) | « Tu prends la fuite ! » : tu ou vous | tutoiement gardé (R-4, Kevin, 2026-10-26) |
 | RP-248 | J12 (ancien RP-123) | Vampirisme à 80 de puissance | valeur moderne gardée (R-5, Kevin, 2026-10-26) |
+| RP-293 | S24, Kevin, 2026-11-09 | Route 22 : colonne 0 solide peinte en herbe, bout du sentier haut sans fermeture visible | arbre et buissons sur la colonne 0, aucune case changée, sortie (1, 16..18) dégagée |
