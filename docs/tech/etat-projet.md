@@ -1,6 +1,6 @@
 # État du projet
 
-Mis à jour : 2026-11-07.
+Mis à jour : 2026-11-09.
 
 > **Ce fichier reste court (quelques Ko).** On y **remplace** ce qui change, on n'empile pas une ligne par tâche : le détail d'une tâche va dans le plan du jalon (`docs/tech/jalon-*.md`) et dans le message de commit.
 > Historique complet jusqu'au 2026-11-05 : [`etat-projet-archive.md`](etat-projet-archive.md) (6,5 Mo, à chercher avec `grep`, pas à lire) et [`etat-projet-historique.md`](etat-projet-historique.md).
@@ -22,7 +22,7 @@ Mis à jour : 2026-11-07.
 ## Prochaines étapes
 
 1. **RC 0.35.0 (Kevin) :** installer la RC et jouer le jeu entier ; T4 reporté à la version suivante. L'A17 porte pour l'instant la version de test des costumes (APK debug de la branche, 2026-11-07) à la place de la RC.
-2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto), maison du Gardien et souvenir de Dante compris. Le numéro RP-292 sert deux fois dans `reportes.md` : le second (bouton SURFER après un chargement au bord de l'eau) reste ouvert.
+2. **Peinture :** plus aucune carte en tuiles (Kanto et Johto), maison du Gardien et souvenir de Dante compris. Le numéro RP-292 sert deux fois dans `reportes.md` : le second (bouton SURFER après un chargement au bord de l'eau) reste ouvert. Route 2 est : forêt décorative hors limites sur les côtés de l'écran du S24 (`tools/route_2_east_foret_laterale.py`). Autres extérieurs étroits, côtés encore noirs : `route_23`, `route_37`, `route_22_west`, `indigo_plateau`, `mt_silver_summit` (20 cases).
 3. **Johto, vérifié sur l'A17 le 2026-11-06 (`docs/tech/qa-johto-a17-2.md`) :** onze jonctions passées par morceaux, Raikou, Entei, Ho-Oh, rival du sommet, remontée et descente du Mont Argenté. Un blocage trouvé et corrigé : sortie de la chambre du Centre d'Oliville. Reste : une partie complète et l'écoute des musiques par Kevin, relecture de deux objectifs ajoutés (JOH9).
 4. **Suite de Kanto :** J35 à J40, plans dans `docs/tech/`.
 5. **Bande-annonce :** v7 validée par Kevin le 2026-11-06, dans le jeu sur `main` (`docs/design/storyboard-trailer-v3.md` §10). Reste : la lire sur téléphone. La RC 0.35.0, déjà construite, garde l'ancienne vidéo : la nouvelle arrive avec la RC suivante.
