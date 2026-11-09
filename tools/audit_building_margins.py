@@ -49,8 +49,11 @@ def peindre(masque, prop):
     x0 = prop['pos'][0] + prop['scale'][0] * (s['at'][0] + ox * s['scale'][0])
     y0 = prop['pos'][1] + prop['scale'][1] * (s['at'][1] + oy * s['scale'][1])
     H, L = masque.shape
-    ys = np.arange(max(0, int(y0 / 4)), min(H, int((y0 + h * sy) / 4) + 1))
-    xs = np.arange(max(0, int(x0 / 4)), min(L, int((x0 + l * sx) / 4) + 1))
+    # Une échelle négative (objet retourné) inverse le sens du rectangle.
+    ybas, yhaut = sorted((y0, y0 + h * sy))
+    xbas, xhaut = sorted((x0, x0 + l * sx))
+    ys = np.arange(max(0, int(ybas / 4)), min(H, int(yhaut / 4) + 1))
+    xs = np.arange(max(0, int(xbas / 4)), min(L, int(xhaut / 4) + 1))
     if ys.size == 0 or xs.size == 0:
         return
     iy = np.clip(((ys * 4 + 2 - y0) / sy).astype(int), 0, h - 1)

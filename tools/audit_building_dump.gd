@@ -43,13 +43,15 @@ func _dump(id: String, map: Node2D) -> Dictionary:
 	for cell: Vector2i in map.get(&"blocked_cells"):
 		blocked.append([cell.x, cell.y])
 	var props: Array = []
-	var entities := map.get_node_or_null(^"Entities")
-	if entities != null:
-		for child: Node in entities.get_children():
+	# Entities et les calques de décor (GroundDecals, JohAmbDecals…) : la roche est posée au sol.
+	for parent: Node in map.get_children():
+		if parent is TileMapLayer or parent.name in [&"Warps", &"Interactables", &"Spawns", &"Triggers"]:
+			continue
+		for child: Node in parent.get_children():
 			if child.has_method(&"get_footprint"):
 				props.append(_prop(child as Node2D))
 	var markers: Array = []
-	for group: String in ["Warps", "Interactables", "Triggers"]:
+	for group: String in ["Warps", "Interactables", "Triggers", "Spawns"]:
 		var parent := map.get_node_or_null(group)
 		if parent == null:
 			continue

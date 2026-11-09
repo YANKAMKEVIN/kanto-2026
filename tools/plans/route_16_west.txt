@@ -53,7 +53,7 @@ GRILLE 40 27
 05 TT..mmmmmmm...hhhhhhhhhhhhh.TTT........T
 06 TT..mmmDmmm...hhhhhhhhhhhhh.TTT........T
 07 TT............hhhhhhhhhhhhh.TTT........T
-08 TT.....................................T
+08 TTTT..R.RRRRRRRRRRRRRRRRRRRRRRRRR......T
 09 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRP..DD...
 10 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRP..PP...
 11 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRP.PPPP..

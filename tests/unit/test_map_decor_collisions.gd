@@ -8,8 +8,12 @@ const MARGINS: Dictionary = {
 	&"vermilion_city": [Vector2i(5, 17), Vector2i(11, 17)],
 	&"route_39": [Vector2i(13, 24), Vector2i(19, 24)],
 	&"cianwood_city": [Vector2i(7, 8), Vector2i(13, 8)],
+	# Poche de Nolan, Route 3 : le sable peint va jusqu'à la rangée 24.
+	&"route_3": [Vector2i(74, 24), Vector2i(75, 24)],
 }
 const BODIES: Dictionary = {
+	# Même poche : la paroi peinte occupe ces cases.
+	&"route_3": [Vector2i(76, 23), Vector2i(77, 23)],
 	&"fuchsia_city": [Vector2i(2, 35)],
 	&"vermilion_city": [Vector2i(5, 18)],
 	&"route_39": [Vector2i(13, 25)],
