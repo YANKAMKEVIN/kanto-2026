@@ -11,7 +11,7 @@ const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", 
 	&"statut_geste", &"fouet", &"bulles", &"statut_fil", &"dard", &"poudre", &"graine",
 	&"chute_pierres", &"teleport", &"trempette", &"explosion", &"fumee", &"gaz", &"flash",
 	&"cuiller", &"etoiles", &"foudre", &"poing", &"os", &"onde_folie", &"brume", &"lancer",
-	&"atlas", &"fissure", &"tunnel"]
+	&"atlas", &"fissure", &"tunnel", &"cage_eclair", &"charge_electrique", &"elecanon"]
 ## Vague 1 « Effets fidèles à Rouge » (2026-11-02) : attaque → [famille, variante, brique de
 ## trajet, brique de lancement].
 const ROUGE_WAVE_1: Dictionary = {
@@ -93,7 +93,7 @@ func test_real_catalog_has_no_error() -> void:
 	assert_eq(catalog.get_errors(), PackedStringArray(), "\n".join(catalog.get_errors()))
 
 
-func test_the_44_families_exist() -> void:
+func test_every_family_exists() -> void:
 	var catalog := MoveFxCatalog.load_dir()
 	assert_eq(catalog.family_ids().size(), FAMILIES.size())
 	for family: StringName in FAMILIES:

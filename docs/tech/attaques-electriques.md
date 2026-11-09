@@ -31,3 +31,10 @@ Chaque attaque se reconnaît à sa **forme et son geste**, pas seulement à sa f
 2. Brancher les familles et signatures dans `data/battle/move_fx/`, avec les nouvelles briques si besoin (`game/battle/fx/`).
 3. Vidéo des sept attaques avec la galerie : `game/battle/fx/fx_gallery.tscn -- --moves=thunder_wave,thunder_shock,spark,thunder_punch,thunderbolt,thunder,zap_cannon --mode=full`.
 4. Validation de Kevin sur la vidéo, puis CI GitHub verte.
+
+## Réalisation (2026-11-09)
+
+- **Art :** `tools/art/serie_cv_fx_electrik.py` (Codex, 11 flipbooks et 8 particules, `manifeste_electrik.json`). Courant, colonne, sphère et explosion sont détourés sur noir mais posés en mélange normal : en additif, ils viraient au blanc sur le décor clair.
+- **Par attaque :** Cage-Éclair `cage_eclair` (cage de filaments, brique `electric_cage`) ; Éclair signature `eclair` (éclair fin, petit impact) ; Étincelle `charge_electrique` (aura et traînée sur la charge) ; Poing-Éclair `poing` variante `eclair` (plus de poing dessiné : point de choc et onde au contact) ; Tonnerre signature `tonnerre` (`courant_tresse`, du lanceur à la cible) ; Fatal-Foudre `foudre` (plafond d'orage, colonne) ; Élecanon `elecanon` (brique `giant_orb`, explosion `orb_blast`, file plus loin si elle rate).
+- **Valeurs par défaut [D] :** épaisseurs et tailles d'impact dans `families.json` (`bolt_height`, `impact_size`), constantes `CAGE_SIZE` à `SKY_SIZE` de `move_fx_player.gd`.
+- **Capture Mac :** une fenêtre masquée n'est plus dessinée et Movie Maker répète alors la même image : lancer la galerie avec `--always-on-top`.

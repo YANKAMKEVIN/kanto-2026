@@ -1,0 +1,134 @@
+{
+ "flipbooks": {
+  "eclair_fin": {
+   "fichier": "fb_eclair_fin.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "courant_tresse": {
+   "fichier": "fb_courant_tresse.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "trainee_foudre": {
+   "fichier": "fb_trainee_foudre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "cage_eclair": {
+   "fichier": "fb_cage_eclair.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "aura_etincelle": {
+   "fichier": "fb_aura_etincelle.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "impact_foudre": {
+   "fichier": "fb_impact_foudre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": false
+  },
+  "onde_choc_foudre": {
+   "fichier": "fb_onde_choc_foudre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": false
+  },
+  "colonne_foudre": {
+   "fichier": "fb_colonne_foudre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "nuages_orage": {
+   "fichier": "fb_nuages_orage.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
+  "sphere_instable": {
+   "fichier": "fb_sphere_instable.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "explosion_foudre": {
+   "fichier": "fb_explosion_foudre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  }
+ },
+ "particules": {
+  "fil_foudre": {
+   "fichier": "p_fil_foudre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "fourche_foudre": {
+   "fichier": "p_fourche_foudre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "halo_or": {
+   "fichier": "p_halo_or.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "anneau_foudre": {
+   "fichier": "p_anneau_foudre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "eclair_or": {
+   "fichier": "p_eclair_or.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "braise_foudre": {
+   "fichier": "p_braise_foudre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "arc_joue": {
+   "fichier": "p_arc_joue.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etoile_contact": {
+   "fichier": "p_etoile_contact.webp",
+   "taille": 192,
+   "melange": "add"
+  }
+ }
+}

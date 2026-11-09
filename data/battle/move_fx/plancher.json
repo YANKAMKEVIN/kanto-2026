@@ -153,7 +153,7 @@
 		"thunder": {"family": "foudre", "signature": "fatal_foudre"},
 		"thunder_punch": {"family": "poing", "impact": "poing", "variant": "eclair"},
 		"thunder_shock": {"family": "electrique", "signature": "eclair"},
-		"thunder_wave": {"family": "electrique"},
+		"thunder_wave": {"family": "cage_eclair"},
 		"thunderbolt": {"family": "electrique", "signature": "tonnerre"},
 		"toxic": {"family": "poison"},
 		"transform": {"family": "statut_plus"},

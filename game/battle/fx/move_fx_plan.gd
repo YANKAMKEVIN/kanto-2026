@@ -134,6 +134,11 @@ var volley_wobble: float = 0.0
 var beats: int = 1
 ## Teinte des flipbooks de la famille (`fx.tint` ; blanc : aucune).
 var art_tint: Color = Color.WHITE
+## Refonte Électrik : épaisseur d'un courant ou largeur d'une colonne (hauteurs d'écran ; 0 : la
+## valeur du lecteur), taille de l'impact peint (part de la hauteur de la cible ; 0 : idem). La
+## signature l'emporte sur `fx`.
+var bolt_height: float = 0.0
+var impact_size: float = 0.0
 ## Brique de la variante d'impact (`impacts.<impact>.brick` : `coin_burst`, `lick`, `toss`…) ;
 ## "" sans variante.
 var impact_brick: StringName = &""
@@ -280,7 +285,8 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	beats = maxi(1, JsonFields.get_int(catalog.impact(impact), "beats",
 		JsonFields.get_int(fx, "beats", 1)))
 	var stamp := JsonFields.get_id(catalog.impact(impact), "art")
-	if not stamp.is_empty():
+	if not stamp.is_empty() and not art.has(&"stamp"):
+		# Une variante peut remplacer la marque (Poing-Éclair : pas de poing, un point de choc).
 		art[&"stamp"] = stamp
 	impact_brick = JsonFields.get_id(catalog.impact(impact), "brick")
 	# Vague 2 : rôles propres de la variante d'impact (pièces de Jackpot, salive, coquille…).
@@ -294,6 +300,9 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 			if raw[role] is String and not art.has(StringName(role)):
 				art[StringName(role)] = StringName(raw[role])
 	art_tint = Color.from_string(JsonFields.get_string(fx, "tint", "#FFFFFF"), Color.WHITE)
+	var own := catalog.signature(signature)
+	bolt_height = JsonFields.get_float(own, "bolt_height", JsonFields.get_float(fx, "bolt_height"))
+	impact_size = JsonFields.get_float(own, "impact_size", JsonFields.get_float(fx, "impact_size"))
 
 
 ## Le plan porte le modificateur [param modifier] (`drain`, `piege`, `chute`…).
