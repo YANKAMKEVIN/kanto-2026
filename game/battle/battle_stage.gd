@@ -271,6 +271,7 @@ var _art := BattleArt.new()
 var _artwork_material: ShaderMaterial
 var _shadow_texture: GradientTexture2D
 var _tweens: Array[Tween] = []
+var _hit_tweens: Dictionary = {} # côté → clignotement de dégâts en cours
 ## Capture (5D) : accessoires créés au premier besoin (aucun dans la scène .tscn).
 var _ball: Sprite2D
 var _ball_shadow: Sprite2D
@@ -730,10 +731,21 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 		.set_delay(HIT_BLINK * HIT_BLINKS * 2)
 	if critical:
 		_add_crit(tween)
+	_hit_tweens[side] = tween
 	await _play(tween)
+	if _hit_tweens.get(side) == tween:
+		_hit_tweens.erase(side)
 	_rest(side)
 	_flash.color = Color(1, 1, 1, 0)
 	_set_jolt(Vector2.ZERO)
+
+
+## Termine tout de suite le clignotement de [param side] s'il court encore (la coroutine de
+## [method play_hit] reprend et finit normalement).
+func _finish_hit(side: BattleEvent.SideId) -> void:
+	var tween: Tween = _hit_tweens.get(side)
+	if tween != null and tween.is_valid() and tween.is_running():
+		tween.custom_step(INSTANT_STEP)
 
 
 ## Coroutine : l'éclair et le tremblement d'un coup critique seuls (rien sinon).
@@ -773,6 +785,9 @@ func move_fx_mode() -> MoveFxPlan.Mode:
 func play_move_fx(side: BattleEvent.SideId, plan: MoveFxPlan) -> void:
 	if not _active or plan == null:
 		return
+	# L'effet mémorise l'opacité de repos : un clignotement en cours y resterait figé.
+	_finish_hit(side)
+	_finish_hit(_other(side))
 	_fx_target = side if plan.on_self else _other(side)
 	_fx_hits = 0
 	# Les durées du plan suivent déjà le mode (Rapides, Réduites) : pas de second facteur.

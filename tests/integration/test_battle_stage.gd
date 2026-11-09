@@ -242,6 +242,22 @@ func test_move_fx_hands_over_at_the_impact_and_drives_the_hit() -> void:
 	assert_eq(_stage.get_sprite(FOE_SIDE).position, _anchors()["foe_feet"])
 
 
+## Reptincel resté transparent (S24, 2026-11-09) : petits dégâts, l'attaque suivante part en plein
+## clignotement et mémorisait son opacité.
+func test_move_fx_never_freezes_a_blink_in_progress() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	var mine := _stage.get_sprite(PLAYER_SIDE)
+	var clock := TweenClock.new(get_tree())
+	_stage.play_hit(PLAYER_SIDE, false)
+	clock.step(BattleStage.HIT_BLINK * 0.5)
+	clock.release()
+	assert_between(mine.modulate.a, 0.01, 0.99, "en plein clignotement")
+	await _stage.play_move_fx(PLAYER_SIDE, _fx_plan(&"tackle", MoveFxOutcome.Result.HIT))
+	await _stage.finish_move_fx()
+	assert_almost_eq(mine.modulate.a, 1.0, 0.001, "opaque après l'attaque")
+
+
 func test_move_fx_mode_follows_the_settings() -> void:
 	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.FULL)
 	_stage.battle_animations = GameSettings.BattleAnimations.FAST
