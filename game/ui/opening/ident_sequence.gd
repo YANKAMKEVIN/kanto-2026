@@ -1,8 +1,7 @@
 class_name IdentSequence
 extends CanvasLayer
 ## Ident de démarrage (J34, demande de Kevin du 2026-11-03, « à la Netflix ») : le carton
-## « Les studios Kevin & Co / vous présentent », déjà à l'écran puisque l'image de démarrage en est
-## le rendu (`tools/art/splash_carton.gd`, demande de Kevin du 2026-11-07), puis les lettres du logo qui
+## « Les studios Kevin & Co / vous présentent » après le chargement du moteur, puis les lettres du logo qui
 ## entrent une à une depuis la droite pour former « POKEMAKE », le filet qui se trace depuis le
 ## centre, le halo du vrai logo qui s'allume, une tenue, puis un fondu qui découvre l'écran titre
 ## déjà en place dessous. La partition vient d'[IntroTimeline] ; ici on ne fait que la jouer.

@@ -6,13 +6,14 @@ config_version=5
 
 config/name="Pokemake"
 config/description="Jeu personnel, version smartphone 2026."
-config/version="0.35.0"
+config/version="0.35.1"
 run/main_scene="res://game/boot.tscn"
+run/main_scene.android="res://game/ui/opening/android_launch.tscn"
 config/icon="res://assets/ui/icon.png"
 config/features=PackedStringArray("4.7", "Mobile")
 config/quit_on_go_back=false
-boot_splash/bg_color=Color(0.078431375, 0.0627451, 0.043137256, 1)
-boot_splash/image="res://assets/ui/opening/splash_carton.png"
+boot_splash/bg_color=Color(0.0431373, 0.0627451, 0.2039216, 1)
+boot_splash/image="res://assets/ui/icon/icon_ios_1024.png"
 boot_splash/stretch_mode=1
 boot_splash/use_filter=true
 

@@ -37,8 +37,9 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 - **Ordre de l'acte 2 (2026-11-06) :** JOH6 avant JOH7. La mer au sud d'Oliville reste fermée jusqu'au déserteur d'Acajou (`johto_whirl_clue`).
 - **Hurlement des légendaires sauvages (2026-11-06) :** Raikou et Entei gardent l'attaque, mais ne la maintiennent qu'une fois sur quatre (`Battle._restrain_force_out`). Après une fuite, on peut toujours les retrouver.
 - **Validation déléguée (2026-11-04) :** les sessions Kanto et Johto avancent sans lui. Tests ciblés, CI verte (« Conclusion : success ») et auto-validation sur téléphone suffisent pour fusionner dans `main`, avec un compte rendu. Seules les vraies décisions de game design et les décisions juridiques lui remontent.
+- **RC 0.35.1 (2026-11-07) :** Kanto et Johto, bande-annonce v7, costumes et leurs 19 musiques locales, icône céleste et démarrage Android sans coupure observée sur l'A17. Validation de cette RC à faire.
 - **RC 0.35.0 (2026-11-06) :** Go technique de Kevin, qui installe la vraie version pour jouer le jeu entier. Le T4 (première utilisation par un proche) est reporté à la version suivante.
-- **Go juridique (2026-11-07) :** étendu aux musiques des costumes (§16). **2026-11-06 :** étendu à la RC 0.35.0 et à Johto, pour le seul cercle de la maison, aux mêmes conditions (`jalon-34-34e.md` §14, §15.5).
+- **Go juridique (2026-11-07) :** reconduit pour la RC 0.35.1, avec les musiques des costumes (§16 et §17). **2026-11-06 :** étendu à la RC 0.35.0 et à Johto, pour le seul cercle de la maison, aux mêmes conditions (`jalon-34-34e.md` §14, §15.5).
 - **Diffusion (2026-10-24) :** jeu privé, pour Kevin et un cercle restreint de proches. Jamais de store, de lien ouvert ni de page publique.
 - **Retours des testeurs (2026-11-06) :** groupe WhatsApp.
 - **RC (2026-11-06) :** jeu complet depuis `main`, en version 0.35.0, après la partie complète de Kevin. Remplace « Kanto seul depuis `release/0.34` » du 2026-11-04. `release/0.34` reste telle quelle.
@@ -46,7 +47,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 - **Art :** option B de `docs/design/phase-da-cadrage.md`, arbitrages DA-1 à DA-9. Une maquette validée par Kevin se reproduit à l'identique.
 - **Entrée des combats de Dresseur (2026-11-02) :** deux niveaux, jamais sautée ; `docs/design/dossier-05-combat.md` §3.
 - **Difficulté :** première tentative gagnée à 80 % au plus, grands combats autour de 35 à 60 %. Ne pas adoucir au-delà de 80 % sans Kevin.
-- **Démarrage (2026-11-07) :** le jeu s'ouvre directement sur le carton « Les studios Kevin & Co / vous présentent » (image de démarrage, `tools/art/splash_carton.gd`) ; plus de K sur l'écran système Android 12+ ni de premier logo Pokemake. Arrive avec la prochaine RC.
+- **Démarrage (2026-11-07) :** Android garde la Poké Ball céleste à l'écran jusqu'au démarrage de Godot. La première scène Android affiche l'illustration en grand pendant le chargement du jeu, avant le carton « Les studios Kevin & Co / vous présentent ».
 - **Icône (2026-11-07) :** Poké Ball céleste, validée par Kevin pour le lanceur Android et iOS.
 - **Nom :** le jeu s'appelle Pokemake ; dépôt, dossier et package gardent « kanto2026 ».
 
