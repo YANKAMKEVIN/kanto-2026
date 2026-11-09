@@ -231,7 +231,7 @@ const ANCHORED: Array = [
 	["prop_buisson_a_01_bourg", Vector2i(19, 11), "BushResidential", 1.0, false],
 	["prop_lampadaire_01", Vector2i(17, 12), "LampPlazaNW", 1.0, false],
 	["prop_lampadaire_01", Vector2i(31, 12), "LampPlazaNE", 1.0, false],
-	["prop_lampadaire_01", Vector2i(17, 17), "LampPlazaSW", 1.0, false],
+	["prop_lampadaire_01", Vector2i(18, 17), "LampPlazaSW", 1.0, false],
 	["prop_lampadaire_01", Vector2i(31, 17), "LampPlazaSE", 1.0, false],
 	["prop_panneau_01", Vector2i(21, 13), "SignPallet", 1.0, false],
 	["prop_mangeoire_01", Vector2i(30, 15), "AokiFeeder", 1.0, false],

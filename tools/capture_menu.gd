@@ -176,7 +176,7 @@ func _begin(scenario: String) -> void:
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex", "map_route_2":
 			_map_scenario(scenario)
-		"trainer", "trainer_dex", "trainer_empty", "trainer_badge", "trainer_badge_detail", "trainer_badge_moment", "trainer_costume":
+		"trainer", "trainer_dex", "trainer_empty", "trainer_badge", "trainer_badge_detail", "trainer_badge_moment", "trainer_costume", "trainer_costume_boulder", "trainer_costume_cascade", "trainer_costume_thunder", "trainer_costume_rainbow", "trainer_costume_soul", "trainer_costume_marsh", "trainer_costume_volcano", "trainer_costume_earth":
 			_trainer_scenario(scenario)
 		"shop_buy", "shop_sell", "shop_no_money", "shop_confirm":
 			_shop_scenario(scenario)
@@ -418,10 +418,13 @@ func _trainer_scenario(scenario: String) -> void:
 			state.flags.set_flag(&"badge_boulder")
 			state.record_moment(BadgeMoment.TYPE, &"pewter_city",
 				BadgeMoment.details(&"boulder", state.party))
-	if scenario == "trainer_costume":
-		# Avantage le plus long, sous la bande des costumes (CO-15).
-		state.flags.set_flag(&"badge_soul")
-		state.wear_costume(&"soul")
+	if scenario.begins_with("trainer_costume"):
+		# Légende d'un costume (CO-15) : trainer_costume_<id>, Ninja (la plus longue) par défaut.
+		var costume := StringName(scenario.trim_prefix("trainer_costume_")) \
+			if scenario != "trainer_costume" else &"soul"
+		var catalog := CostumeCatalog.shared()
+		state.flags.set_flag(catalog.badges.flag(catalog.badge_of(costume)))
+		state.wear_costume(costume)
 	if scenario == "trainer_badge":
 		state.money = 999999 # montant long : la ligne d'argent ne passe jamais sous le portrait
 	var unlocks := MenuUnlocks.new(state.flags, state.party)
