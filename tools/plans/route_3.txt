@@ -61,7 +61,7 @@ GRILLE 82 38
 15 TRRR............RRTTTTTThhhTTTTTTTTTTTTTTT...RRRRRRRRRRRRoooooooooooRRRRRRooooKKKK
 16 TR................TTTTTThhhTTTTTTTTTTTTTTT...RRRRRR.RRRRRoooooooooooRRRRRRooooKKKK
 17 T.................TTTTTThhhTTTTTTTTTTTTTTT....RRRRR.RRRRRooooooooo==RRRRRRooooKKKK
-18 T.................RRRRRT...TTT....................R.RRRoooRvvvvvvo==RRRRRRooooKKKK
+18 T.................RRRRRT...TTT....................R.RRRRRRRvvvvvvo==RRRRRRooooKKKK
 19 T.................RRRRRT...TTT.........................hhhh.......==RRRRRRooooKKKK
 20 T.................RRRRRT...TTTvvTTTTTTTTTT..===========hhhh=========RRRRRRooooKKKK
 21 T.................RRRRR.........TTTTTTTTTT..===========hhhhR=RRR===RRRRRRRooooKKKK
