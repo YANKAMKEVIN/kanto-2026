@@ -1,0 +1,17 @@
+POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (projet personnel, non distribué). La créature est un petit oiseau fantastique de jeu vidéo.
+
+Image jointe : l'illustration de face de cet oiseau. C'est LA référence absolue de ses couleurs, de ses marques et de son style. Le résultat doit être reconnu au premier coup d'œil comme le même oiseau, simplement vu de derrière.
+
+VUE : de dos, en trois quarts, en légère plongée : la caméra est juste derrière son épaule gauche. Le corps nous tourne le dos, mais la TÊTE est tournée de PROFIL vers la droite de l'image, de sorte qu'on voit bien un côté du visage. Il fait face à un adversaire lointain, en haut à droite de l'image.
+
+CE QUI DOIT ÊTRE IDENTIQUE À L'IMAGE JOINTE :
+- ŒIL : le même œil étroit et sévère, entouré du même large MASQUE NOIR en forme de virgule qui part du bec et file vers l'arrière de la tête.
+- BEC : OUVERT, comme s'il criait, crochu, de la même couleur rose-gris, avec l'intérieur de la bouche visible.
+- CRÊTE : la même houppe de plumes dressées sur le sommet du crâne, brune et crème, mêmes pointes.
+- PLUMAGE : tête et dos BRUN moyen ; grandes ailes repliées BRUN plus foncé avec les plumes bordées de crème, comme sur l'image ; poitrine et flanc CRÈME clair visibles sur le côté ; plumes de queue brunes en éventail. Pas un plumage beige uni.
+
+STYLE : exactement celui de l'image jointe : même trait fin et doux, même ombrage en aplats nuancés, même palette. Pas de pixel art, pas de 3D, pas de photo.
+LUMIÈRE : neutre, diffuse, légèrement du haut à gauche.
+FOND : PNG avec une vraie transparence, aucun damier, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, décor, autre créature, personnage.
+CADRAGE : image CARRÉE 1024 × 1024, cadrage SERRÉ : la tête et le haut du corps, GRANDS ; le bas du corps est nettement COUPÉ par le bord BAS de l'image (environ le tiers inférieur hors champ, coupe nette, sans fondu). Rien n'est coupé en haut, à gauche ni à droite. Une seule image fixe.
