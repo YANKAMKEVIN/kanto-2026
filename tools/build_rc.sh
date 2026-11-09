@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Construit l'APK **release signé** du cercle de la maison (J34 T2) : build identifié et traçable.
 #
-# Usage : tools/build_rc.sh [--allow-dirty] [--skip-ci] [--install]
+# Usage : tools/build_rc.sh [--allow-dirty] [--skip-ci] [--mac-suite] [--install]
 #   --allow-dirty  accepte un arbre Git modifié (le manifeste le note ; jamais pour un APK diffusé)
 #   --skip-ci      ne vérifie pas que la CI GitHub est verte sur ce commit (le manifeste le note)
+#   --mac-suite    remplace la CI GitHub par la suite complète lancée ici ; un échec arrête le build
 #   --install      installe l'APK par adb sur le téléphone branché (mise à jour par-dessus, -r)
 #
 # Clé de signature (jamais dans le dépôt) : variables d'environnement lues par Godot lui-même,
@@ -16,11 +17,13 @@ cd "$(dirname "$0")/.."
 
 ALLOW_DIRTY=0
 SKIP_CI=0
+MAC_SUITE=0
 INSTALL=0
 for arg in "$@"; do
 	case "$arg" in
 		--allow-dirty) ALLOW_DIRTY=1 ;;
 		--skip-ci) SKIP_CI=1 ;;
+		--mac-suite) MAC_SUITE=1 ;;
 		--install) INSTALL=1 ;;
 		*) echo "Option inconnue : $arg" >&2; exit 2 ;;
 	esac
@@ -51,7 +54,11 @@ esac
 
 # 3. Tests : CI GitHub verte sur ce commit (remplace la suite du Mac, décision du 2026-10-26).
 CI="non vérifiée (--skip-ci)"
-if [ "$SKIP_CI" = 0 ]; then
+if [ "$MAC_SUITE" = 1 ]; then
+	[ "$DIRTY" = 0 ] || fail "arbre modifié : la suite ne couvrirait pas ce commit"
+	tools/test.sh || fail "suite complète en échec sur ${SHA:0:8}"
+	CI="suite complète sur le Mac (tools/test.sh), commit ${SHA:0:8}"
+elif [ "$SKIP_CI" = 0 ]; then
 	[ "$DIRTY" = 0 ] || fail "arbre modifié : la CI ne peut pas couvrir ce build (--skip-ci pour un essai local)"
 	# La CI ne se lance pas pour un commit qui ne touche que docs/ ou *.md (paths-ignore du workflow) :
 	# dans ce cas on prend la CI du dernier ancêtre testé, à condition que tout ce qui a changé depuis

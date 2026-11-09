@@ -67,6 +67,8 @@ sombre du splash Android 12+ (`tools/android_splash_bg.py --release`, re-signé 
 contrôle la signature (`apksigner`), l'identifiant et la version (`aapt`), puis écrit le manifeste
 (version, code, commit, branche, Godot, CI, taille, SHA-256, date). `--allow-dirty` et `--skip-ci`
 servent aux essais locaux seulement : le manifeste le note, on ne diffuse pas un tel APK.
+Quand GitHub Actions ne peut pas tourner, `--mac-suite` remplace la CI par la suite complète lancée
+sur le Mac par le script lui-même : un échec arrête le build, et le manifeste le note.
 
 La CI ne se lance pas pour un commit qui ne touche que `docs/` ou `*.md` : dans ce cas le script
 prend la CI du dernier ancêtre testé, à condition que tout ce qui a changé depuis soit de la
