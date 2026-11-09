@@ -250,7 +250,8 @@ func test_reserved_cells_stay_free() -> void:
 
 
 func test_buildings_cover_their_grid_cells_and_leave_the_door() -> void:
-	var specs := [["Daycare", "W", Vector2i(27, 27), 7 * 6], ["SaffronGate", "P",
+	# Pension : 7 × 5, la rangée d'herbe au-dessus du toit est praticable (audit du 2026-11-09).
+	var specs := [["Daycare", "W", Vector2i(27, 27), 7 * 5], ["SaffronGate", "P",
 		Vector2i(34, 44), 7 * 4], ["UndergroundEntrance", "U", Vector2i(11, 56), 7 * 4]]
 	for spec: Array in specs:
 		var building := _map.get_node_or_null(NodePath("Entities/" + spec[0])) as WorldProp

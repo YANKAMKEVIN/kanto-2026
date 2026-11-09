@@ -58,8 +58,8 @@ PRATICABLES .=yD
 GRILLE 60 54
 00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-02 TT.cccccccc.cccccccc....SSSSSSSSSS..ccccccccc.cccccccccc..TT
-03 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
+02 TT.cccccccc.cccccccc.......SSSS.....ccccccccc.cccccccccc..TT
+03 TT.cggggggc.cggggggc.....SSSSSSSS...cgggggggc.cggggggggc..TT
 04 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
 05 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
 06 TT.cggggggc.cggggggc....SSSSSSSSSS..cgggggggc.cggggggggc..TT
@@ -69,7 +69,7 @@ GRILLE 60 54
 10 TTTT...................xxx..==.xxx......................TTTT
 11 TTTT...................xxx..==.xxx......................TTTT
 12 TTTT...................xxx..==.xxx......................TTTT
-13 TT..OOOOOOOO...FFFFFFFF.....==......ccccccccc.cccccccccc..TT
+13 TT..OOOOOOOO................==......ccccccccc.cccccccccc..TT
 14 TT..OOOOOOOO...FFFFFFFF.....==......cwwwwwwwc.cggggggggc..TT
 15 TT..OOOOOOOO...FFFFFFFF.....==......cwwwwwwwc.cggggggggc..TT
 16 TT..OOOOOOOO...FFFFFFFF.....==......cwwwwwwwc.cggggggggc..TT
@@ -90,8 +90,8 @@ GRILLE 60 54
 31 TTTTT.................TTTT..==..............ffffffffffffTTTT
 32 TTTTT.......................==..........................TTTT
 33 TT..........................==..........................TTTT
-34 TTZZZZZZZZZZZZ..............==.CCCCCCCC...................TT
-35 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
+34 TT.ZZZZZZZZZZ...............==.CCCCCCCC...................TT
+35 TTZZZZZZZZZZZZ..............==.CCCCCCCC...................TT
 36 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
 37 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT
 38 TTZZZZZZZZZZZZ..mmmmmmm.....==.CCCCCCCC..mmmmmmm..mmmmmmm.TT

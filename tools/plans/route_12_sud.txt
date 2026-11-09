@@ -62,7 +62,7 @@ GRILLE 30 70
 13 TTTTTTTTTRRffffffffffffffqqfTT
 14 TTTTTTTTTTT.............===.TT
 15 TTTTTTTTTTT.............===.TT
-16 TTTTTTTTTTT.mmmmmmm.....===TTT
+16 TTTTTTTTTTT.............===TTT
 17 TTTTTTTTTTT.mmmmmmm.....===TTT
 18 TTTTTTTTTTT.mmmmmmm.....===TTT
 19 TTTTTTTTTTT.mmmmmmm.....===TTT

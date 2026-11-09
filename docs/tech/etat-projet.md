@@ -15,7 +15,7 @@ Mis à jour : 2026-11-07.
 - **Costumes (2026-11-07, dans `main`) :** huit avantages actifs si le costume est porté, écrits dans l'écran Dresseur et à l'annonce du déblocage ; un thème de combat (sauvages et Dresseurs ordinaires seulement, Team Rocket et Ysolde exclues le 2026-11-09) et un chant d'arrivée en ville de 60 s par costume, 19 pistes validées à l'écoute par Kevin sur l'A17 (`dossier-costumes.md` §2 bis et §2 ter ; Go juridique `jalon-34-34e.md` §16).
 - **Décor et collisions (audit du 2026-11-09, `tools/audit_decor_*`, `tools/audit_building_*`) :** deux maisons de Doublonville réaffichées ; 159 cases de marge invisible autour des bâtiments ouvertes sur 14 cartes, chacune relue sur image. Reste les bords de roche décalés (Route 3, Routes 4, 16, 20, 23, 42).
 - **Personne n'a encore joué Johto d'un bout à l'autre.**
-- **CI :** 14 lots équilibrés par durée (`tools/ci_shard.py`, `tools/ci_test_times.json`) et cache de l'import Godot : environ 10 min au lieu de 24. Quand les lots se déséquilibrent, refaire le fichier de durées avec `tools/ci_shard.py --update <dossier des artefacts>`. Depuis le 2026-11-09, dépôt privé et GitHub Actions bloqué par la facturation du compte : la suite complète se lance sur le Mac (`tools/test.sh`).
+- **CI :** 14 lots équilibrés par durée (`tools/ci_shard.py`, `tools/ci_test_times.json`) et cache de l'import Godot : environ 10 min au lieu de 24. Quand les lots se déséquilibrent, refaire le fichier de durées avec `tools/ci_shard.py --update <dossier des artefacts>`. Dépôt privé depuis le 2026-11-09 : la CI GitHub Actions reste la référence avant une fusion, à la demande de Kevin ; `tools/build_rc.sh --mac-suite` existe seulement si Actions est indisponible.
 
 ## Prochaines étapes
 
