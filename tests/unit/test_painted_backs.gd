@@ -38,7 +38,9 @@ func test_every_painted_file_is_read_for_its_species() -> void:
 		# 072 (Tentacool) et 129 (Magicarpe) : dos prêts, espèces pas encore dans les données.
 		if by_number.has(number):
 			var image := _art.image(by_number[number], true)
-			assert_eq((image["texture"] as Texture2D).resource_path, BattleArt.painted_back_path(number), f)
+			# Un dos en plongée (refonte, cadrage B) prime sur le dos IA.
+			assert_eq((image["texture"] as Texture2D).resource_path,
+				BattleArt.best_painted_back_path(number), f)
 
 
 func test_every_species_has_a_painted_back() -> void:
@@ -72,9 +74,11 @@ func test_every_3d_file_is_used_only_without_ia() -> void:
 		if f.begins_with("dos3d_") and f.ends_with(".png"):
 			n += 1
 			var number := f.trim_prefix("dos3d_").trim_suffix(".png").to_int()
-			var want := BattleArt.painted_back_path(number) \
-				if ResourceLoader.exists(BattleArt.painted_back_path(number)) \
-				else BattleArt.painted_back_3d_path(number)
+			var want := BattleArt.painted_back_3d_path(number)
+			if ResourceLoader.exists(BattleArt.painted_back_rb_path(number)):
+				want = BattleArt.painted_back_rb_path(number)
+			elif ResourceLoader.exists(BattleArt.painted_back_path(number)):
+				want = BattleArt.painted_back_path(number)
 			assert_eq(BattleArt.best_painted_back_path(number), want, f)
 	assert_eq(n, 16, "16 dos 3D")
 

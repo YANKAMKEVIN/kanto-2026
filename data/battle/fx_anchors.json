@@ -1062,35 +1062,18 @@
     }
    },
    "back": {
-    "image": "assets/sprites/pokemon/dos/dos_ia_016.png",
+    "image": "assets/sprites/pokemon/dos/dos_rb_016.png",
     "size": [
      1024,
      1024
     ],
     "box": [
-     157,
-     71,
-     710,
-     890
+     65,
+     24,
+     893,
+     1000
     ],
-    "points": {
-     "tete": [
-      0.87,
-      0.18
-     ],
-     "bouche": [
-      0.95,
-      0.2
-     ],
-     "queue": [
-      0.04,
-      0.87
-     ],
-     "centre": [
-      0.562,
-      0.539
-     ]
-    }
+    "points": {"centre": [0.567, 0.601], "tete": [0.72, 0.28], "bouche": [0.93, 0.4], "queue": [0.08, 0.95]}
    }
   },
   "017": {
