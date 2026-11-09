@@ -57,7 +57,7 @@ GRILLE 24 50
 21 ===========............T
 22 ===========............T
 23 Thhhhhhh...............T
-24 Thhhhhhh.....MMMMMMM...T
+24 Thhhhhhh...............T
 25 Thhhhhhh.....MMMMMMM...T
 26 Thhhhhhh.....MMMMMMM...T
 27 Thhhhhhh.....MMMMMMM...T

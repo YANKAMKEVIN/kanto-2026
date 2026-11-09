@@ -66,7 +66,7 @@ GRILLE 44 36
 22 TTT.pppppppppppppppppppppppppppppppppppp.TTT
 23 TTT.pppppppppppppppppppppppppppppppppppp.TTT
 24 TTT.pppppppppppppppppppppppppppppppppppp.TTT
-25 TTT....KKKKKKK.............mmmmmmm.......TTT
+25 TTT.....KKKKK..............mmmmmm........TTT
 26 TTT....KKKKKKK.............mmmmmmm.......TTT
 27 TTT....KKKKKKK.............mmmmmmm.......TTT
 28 TTT....KKKKKKK.............mmmmmmm.......TTT

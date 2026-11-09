@@ -29,7 +29,7 @@ GRILLE 32 28
 05 wwwRR.G..........hhhhhhhhh.Rwwww
 06 wwwRR..........pp..........Rwwww
 07 wwwRR..........pp.CCCCCCCC.Rwwww
-08 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
+08 wwwRR..........pp.CCCCCCCC.Rwwww
 09 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
 10 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
 11 wwwRR..mmmmmmm.pp.CCCCCCCC.Rwwww
@@ -37,7 +37,7 @@ GRILLE 32 28
 13 wwwRR..mmmDmmm.pp.CCCDDCCCqqqqqw
 14 wwwREpppppppppppppppppppppqqqqqw
 15 wwwREpppppppppppppppppppppqqqqqw
-16 wwwRR.hhhhhhhh....NNNNNNN.qqqqqw
+16 wwwRR.hhhhhhhh............qqqqqw
 17 wwwRR.hhhhhhhh....NNNNNNN..Rwwww
 18 wwwRR.hhhhhhhh....NNNNNNN..Rwwww
 19 wwwRR.hhhhhhhhG...NNNNNNN..Rwwww

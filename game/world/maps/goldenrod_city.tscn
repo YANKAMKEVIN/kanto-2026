@@ -9875,11 +9875,9 @@ position = Vector2(960, 2688)
 position = Vector2(2256, 1536)
 
 [node name="Bat_Maison1" parent="Entities" unique_id=1191519241 instance=ExtResource("7_dxcl7")]
-visible = false
 position = Vector2(2256, 2688)
 
 [node name="Bat_Maison2" parent="Entities" unique_id=371215782 instance=ExtResource("7_dxcl7")]
-visible = false
 position = Vector2(4560, 1536)
 
 [node name="JohAmbTree00" parent="Entities" unique_id=349956060 instance=ExtResource("31_uyxs4")]

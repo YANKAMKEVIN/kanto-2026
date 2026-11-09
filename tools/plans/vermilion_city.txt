@@ -45,7 +45,7 @@ GRILLE 64 43
 01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 02 TT............................===........................TTTTTTT
 03 TT...................CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
-04 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
+04 TT..mmmmmmm..........CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
 05 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
 06 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
 07 TT..mmmmmmm.FFFFFFFF.CCCCCCCC.===.OOOOOOOO..ZZZZZZZZZZZZ.TTTTTTT
@@ -58,7 +58,7 @@ GRILLE 64 43
 14 TT.....................ppppppppppppppppp.............mmmmmmm..TT
 15 TT.G..........G........pnpppppppppppppnp.............mmmmmmm..TT
 16 TT.....................ppppppppppppppppp.....G.......mmmmmmm..TT
-17 TT...mmmmmmm...........ppppppppppppppppp.............mmmmmmm..TT
+17 TT.....................ppppppppppppppppp.............mmmmmmm..TT
 18 TT...mmmmmmm...........ppppppppppppppppp.............mmmmmmm..TT
 19 TT.x.mmmmmmm..x........pnpppppppppppppnp.x.....x.....mmmDmmm..TT
 20 TT...mmmmmmm...........ppppppppppppppppp......................TT

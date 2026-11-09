@@ -64,7 +64,7 @@ GRILLE 24 44
 32 T.hhhhhhh.===..........T
 33 T.hhhhhhh.===..........T
 34 T.hhhhhhh.===..........T
-35 T.........===PPPPPPTTTTT
+35 T.........===.PPPPPTTTTT
 36 T.........===PPPPPPTTTTT
 37 T.........===PPPPPPTTTTT
 38 Txxxxxxxxxx=.PPPPPPTTTTT
