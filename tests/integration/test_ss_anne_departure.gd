@@ -96,6 +96,10 @@ func _start(start_name: String) -> void:
 	add_child_autofree(_boot)
 	await _attach()
 	start.apply(GameState, _boot.get_pokemon_data())
+	if start_name == "cut_ready":
+		# Reptincel (4e) apprend Coupe : il faut la connaître pour l'utiliser dans le monde.
+		assert_true(GameState.party.get_at(3).replace_move(0, &"cut", _boot.get_pokemon_data()),
+			"Reptincel apprend Coupe")
 	_boot.get_map().refresh_npcs(GameState.flags)
 	_boot.get_map().apply_flag_gates(GameState.flags)
 	assert_eq(_boot.get_map().map_id, start.map)

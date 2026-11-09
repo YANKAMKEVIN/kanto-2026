@@ -27,6 +27,11 @@ func _party(species: Array[StringName]) -> Party:
 	return party
 
 
+## Le Pokémon [param index] apprend Flash (règle : il faut connaître la CS pour l'utiliser).
+func _teach_flash(party: Party, index: int) -> void:
+	assert_true(party.get_at(index).replace_move(0, &"flash", _data), "apprend Flash")
+
+
 func _bag(with_hm: bool) -> Bag:
 	var bag := Bag.new()
 	if with_hm:
@@ -61,26 +66,31 @@ func test_hm05_without_compatible_pokemon() -> void:
 
 ## H-6 : aucune condition de badge (aucun drapeau, même pas `null`).
 func test_no_badge_needed() -> void:
-	var r := _rules.check(&"flash", _party([&"pikachu"]), _bag(true), null, _items, _data)
+	var party := _party([&"pikachu"])
+	_teach_flash(party, 0)
+	var r := _rules.check(&"flash", party, _bag(true), null, _items, _data)
 	assert_eq([r.state, r.pokemon_index, r.pokemon_name], [FieldMoves.State.READY, 0, "Pikachu"])
 	assert_eq(r.key(&"flash"), "flash:ready")
 
 
-func test_first_compatible_then_companion() -> void:
+func test_first_who_knows_then_companion() -> void:
 	var party := _party([&"squirtle", &"pikachu", &"clefairy"])
+	_teach_flash(party, 1)
+	_teach_flash(party, 2)
 	var r := _check(party)
 	assert_eq([r.state, r.pokemon_index, r.pokemon_name],
-		[FieldMoves.State.READY, 1, "Pikachu"], "premier compatible dans l'ordre de l'équipe")
+		[FieldMoves.State.READY, 1, "Pikachu"], "premier qui la connaît")
 	var with_companion := _check(party, true, party.get_at(2))
 	assert_eq([with_companion.pokemon_index, with_companion.pokemon_name], [2, "Mélofée"],
 		"le compagnon compatible éclaire")
 	var squirtle_out := _check(party, true, party.get_at(0))
-	assert_eq(squirtle_out.pokemon_index, 1, "compagnon incompatible : le premier compatible")
+	assert_eq(squirtle_out.pokemon_index, 1, "compagnon sans Flash : le premier qui la connaît")
 
 
 ## Défaut du J16 (repris au §2.8) : un Pokémon K.O. peut éclairer, aucun blocage possible.
 func test_fainted_pokemon_can_flash() -> void:
 	var party := _party([&"rattata", &"abra"])
+	_teach_flash(party, 1)
 	party.get_at(1).hp = 0
 	var r := _check(party)
 	assert_eq([r.state, r.pokemon_index], [FieldMoves.State.READY, 1])

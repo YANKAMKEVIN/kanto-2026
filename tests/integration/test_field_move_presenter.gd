@@ -61,6 +61,10 @@ func _start() -> void:
 		return is_instance_valid(_boot.get_map()) and not SceneRouter.is_transitioning(),
 		TIMEOUT)
 	start.apply(GameState, _boot.get_pokemon_data())
+	# Seuls Sabelette (1) et Reptincel (3) connaissent Coupe (règle : il faut connaître la CS).
+	for index: int in [1, CHARMELEON]:
+		assert_true(GameState.party.get_at(index).replace_move(0, &"cut",
+			_boot.get_pokemon_data()), "apprend Coupe")
 	_boot.get_map().refresh_npcs(GameState.flags)
 	_boot.get_map().apply_flag_gates(GameState.flags)
 	_boot.get_dialogue_runner().chars_per_second = 0.0

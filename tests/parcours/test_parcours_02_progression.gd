@@ -25,7 +25,12 @@ func after_each() -> void:
 
 func test_parcours_02_azuria_a_safrania() -> void:
 	_play.begin("Route 24 : rival d'Azuria")
-	await _play.start(START, _play.make_ace)
+	await _play.start(START, func() -> void:
+		_play.make_ace()
+		# Salamèche (devenu 2e, derrière Mewtwo) apprend Coupe : il faut la connaître pour
+		# l'utiliser dans le monde.
+		_play.expect(GameState.party.get_at(1).replace_move(0, &"cut",
+			_play.boot.get_pokemon_data()), "Salamèche apprend Coupe"))
 	await _play.walk_through(Vector2i(32, 56))
 	await _play.walk_through(Vector2i(32, 55))
 	if not _play.boot.is_stable():

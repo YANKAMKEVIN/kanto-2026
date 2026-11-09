@@ -49,6 +49,9 @@ func test_surf_and_strength_are_ready_with_hm_badge_and_a_compatible_pokemon() -
 	var party := Party.new()
 	party.add(PokemonFactory.create(data, &"squirtle", 20, GameRng.new(5)))
 	party.add(PokemonFactory.create(data, &"pikachu", 18, GameRng.new(5)))
+	# Carapuce connaît Surf et Force (règle : il faut connaître la CS pour l'utiliser).
+	assert_true(party.get_at(0).replace_move(0, &"surf", data), "apprend Surf")
+	assert_true(party.get_at(0).replace_move(1, &"strength", data), "apprend Force")
 	for pair: Array in [[&"surf", &"badge_soul", &"water"], [&"strength", &"badge_rainbow",
 			&"normal"]]:
 		var move: StringName = pair[0]
