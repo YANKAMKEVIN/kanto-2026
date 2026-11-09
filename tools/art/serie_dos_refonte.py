@@ -8,7 +8,7 @@ sur la planche, puis `--integrer IDENT ESSAI` écrit assets/sprites/pokemon/dos/
 
 Usage :
   tools/art/serie_dos_refonte.py [IDENT ...]             génère (3 à la fois)
-  tools/art/serie_dos_refonte.py --contact FICHIER.png   planche face | dos actuel | essais
+  tools/art/serie_dos_refonte.py --contact FICHIER.png [IDENT ...]   planche face | dos actuel | essais
   tools/art/serie_dos_refonte.py --integrer IDENT ESSAI  ex. : --integrer ONIX A2
 """
 from __future__ import annotations
@@ -43,6 +43,19 @@ ESPECES: dict[str, tuple[int, str]] = {
 	"SMOGO": (109, "grosse boule VIOLETTE ronde à cratères d'où sortent des bouffées de gaz beige, comme sur l'image ; grande et ronde, pas hérissée"),
 	"MAGICARPE": (129, "poisson ROUGE à grandes écailles, couronne jaune sur le dessus, grandes nageoires blanches et jaunes, longues moustaches jaune clair ; même rouge que sur l'image, pas orange"),
 	"PORYGON": (137, "créature faite de FACETTES géométriques anguleuses, rouge rosé et bleu turquoise comme sur l'image, aucune forme arrondie"),
+	# --- dos optionnels (2026-11-09) ---
+	"SALAMECHE": (4, "petit lézard bipède ORANGE au ventre crème, grosse tête ronde tournée de profil, queue terminée par une flamme vive, ombrage doux comme sur l'image"),
+	"PIKACHU": (25, "petit rongeur JAUNE rondouillard, longues oreilles à pointe noire, deux bandes brunes sur le dos, queue en éclair, joue rouge visible de profil"),
+	"PAPILUSION": (12, "papillon au corps violet-bleu, grandes ailes BLANCHES à fines nervures et bordure noire légère, gros yeux rouges visibles de profil, comme sur l'image"),
+	"NOSFERALTO": (42, "grande chauve-souris au corps BLEU, ailes à membrane VIOLETTE, grandes oreilles, comme sur l'image"),
+	"PARASECT": (47, "crabe orange portant un grand champignon ORANGE-ROSÉ à taches crème sur le dos, comme sur l'image, grosses pinces orange"),
+	"SOPORIFIK": (96, "créature bipède trapue JAUNE en haut et BRUN foncé en bas, longue trompe visible de profil, oreilles triangulaires ; ombrage doux comme sur l'image"),
+	"AMONISTAR": (139, "grosse coquille spiralée BEIGE à pointes, tentacules BLEU CLAIR comme sur l'image, pas de bleu foncé"),
+	"PTERA": (142, "reptile volant GRIS-VIOLET clair aux ailes membraneuses, tête allongée tournée de profil, trait doux comme sur l'image, pas réaliste"),
+	"RONFLEX": (143, "énorme créature ronde au corps BLEU-VERT sombre et ventre crème visible sur le côté, petites oreilles pointues, surface lisse sans fourrure réaliste, comme sur l'image"),
+	"STEELIX": (208, "immense serpent fait de segments d'ACIER gris bien séparés, de plus en plus gros, tête massive à mâchoire carrée tournée de profil, comme sur l'image"),
+	"HYPOROI": (230, "hippocampe BLEU moyen au ventre crème, grandes nageoires hérissées, museau tubulaire visible de profil, comme sur l'image, bleu pas trop saturé"),
+	"ENTEI": (244, "grand fauve au pelage BRUN, crinière grise et blanche comme un nuage de fumée, masque rouge et jaune visible de profil, comme sur l'image, trait doux et non réaliste"),
 }
 
 GABARIT = """POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (projet personnel, non distribué). La créature est un animal fantastique de jeu vidéo.
@@ -107,11 +120,12 @@ def actuel(num: int) -> Path:
 	raise FileNotFoundError(num)
 
 
-def contact(sortie: Path) -> None:
+def contact(sortie: Path, idents: list[str]) -> None:
 	cote, marge = 300, 26
-	feuille = Image.new("RGB", (cote * 5, (cote + marge) * len(ESPECES)), (112, 148, 96))
+	choisies = {i: ESPECES[i] for i in (idents or ESPECES)}
+	feuille = Image.new("RGB", (cote * 5, (cote + marge) * len(choisies)), (112, 148, 96))
 	dessin = ImageDraw.Draw(feuille)
-	for y, (ident, (num, _)) in enumerate(ESPECES.items()):
+	for y, (ident, (num, _)) in enumerate(choisies.items()):
 		cases = [("Face", OFFICIEL / f"{num:03d}.png"), ("Actuel", actuel(num))]
 		cases += [(n, ART / f"DOS2_{ident}_{n}.png") for n in ("A1", "A2", "S1")]
 		for x, (nom, chemin) in enumerate(cases):
@@ -133,7 +147,7 @@ def integrer(ident: str, nom: str) -> None:
 def main() -> None:
 	args = sys.argv[1:]
 	if args[:1] == ["--contact"]:
-		contact(Path(args[1]))
+		contact(Path(args[1]), args[2:])
 	elif args[:1] == ["--integrer"]:
 		integrer(args[1], args[2])
 	else:

@@ -1,0 +1,15 @@
+POKÉMON DE DOS POUR UN ÉCRAN DE COMBAT (projet personnel, non distribué). La créature est un animal fantastique de jeu vidéo.
+
+Design original de créature de jeu vidéo.
+
+SUJET : grand fauve au pelage BRUN, crinière grise et blanche comme un nuage de fumée, masque rouge et jaune visible de profil, trait doux et non réaliste.
+
+VUE : de dos, en trois quarts, en légère plongée : la caméra est juste derrière son épaule gauche. Elle fait face à un adversaire lointain, en haut à droite de l'image. Si la créature a une tête distincte, elle est tournée de PROFIL vers la droite pour qu'on reconnaisse son visage.
+
+Couleurs franches, marques nettes.
+
+STYLE : illustration officielle de jeu des années 2000 : trait fin et doux, ombrage en aplats nuancés. Pas de pixel art, pas de 3D, pas de photo.
+LUMIÈRE : neutre, diffuse, légèrement du haut à gauche.
+FOND : PNG avec une vraie transparence, aucun damier, aucun fond coloré, aucun sol, aucune ombre portée.
+INTERDITS : texte, lettres, chiffres, signature, cadre, décor, autre créature, personnage.
+CADRAGE : image CARRÉE 1024 × 1024, cadrage SERRÉ : la créature GRANDE ; le bas du corps est nettement COUPÉ par le bord BAS de l'image (environ le tiers inférieur hors champ, coupe nette, sans fondu). Rien n'est coupé en haut, à gauche ni à droite. Une seule image fixe.
