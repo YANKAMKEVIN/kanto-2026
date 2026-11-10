@@ -556,6 +556,9 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# elles passent devant le personnage qui se tient derrière (blocage par la grille).
 	&"int_comptoir_hotel_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"int_comptoir_restaurant_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Découpe du comptoir peint dans la coque du 5e étage du grand magasin de Céladopole (aussi
+	# le 3e de Doublonville) : elle passe devant le vendeur, derrière le plateau.
+	&"int_comptoir_magasin_5e_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
 	# Pont extérieur : bastingages dans la couche du sol (cases `r` bloquées par la grille), la
 	# superstructure ouest dans `Entities` (cases `K` bloquées) ; chaises longues et bouées
 	# bloquent leurs cases.

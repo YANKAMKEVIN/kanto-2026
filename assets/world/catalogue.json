@@ -12778,6 +12778,13 @@
     438,
     140
    ]
+  },
+  "int_comptoir_magasin_5e_celadon_01": {
+   "fichier": "res://assets/world/interiors/int_comptoir_magasin_5e_celadon_01.png",
+   "taille": [
+    458,
+    152
+   ]
   }
  },
  "personnages": {

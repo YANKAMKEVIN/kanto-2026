@@ -8,6 +8,7 @@
 #   c canapé   t table   p plante   n banc   f porte FERMÉE « BUREAU PRIVÉ » (bloquée)
 # Les escaliers PRINCIPAUX montent du RdC au 3e et NE vont PAS au toit : le toit n'est
 # atteignable que par l'ESCALIER DE SERVICE (porte (30..31, 4) de la ville, au nord).
+# 2026-11-10 : canapé (11..14, 3), accoudoir gauche compris, tel que peint dans la coque.
 
 PRATICABLES .XSZ
 
@@ -15,7 +16,7 @@ GRILLE 16 11
 00 KKKKKKKKKKKKKKKK
 01 KKKKKKKKKKKKKKKK
 02 KKSSKKKKKKKKKKKK
-03 K...........cccK
+03 K..........ccccK
 04 K..............K
 05 K..............K
 06 K..tt..........K

@@ -5,6 +5,7 @@
 # Légende :
 #   K mur (bloqué)   . sol (praticable)   X sortie (praticable : paillasson, PUSH ↓)
 #   B comptoir (bloqué)   t table   c canapé   p plante   e étagère
+# 2026-11-10 : canapé gauche (2..3, 5), tel que peint dans la coque ; (2..3, 6) libre.
 
 PRATICABLES .X
 
@@ -14,8 +15,8 @@ GRILLE 15 10
 02 KKKKKKKKKKKKKKK
 03 K.ee.BBBBB.cccK
 04 K.............K
-05 K.............K
-06 K.cc..........K
+05 K.cc..........K
+06 K.............K
 07 Kp...........pK
 08 KKKKKKXXXKKKKKK
 09 KKKKKKKKKKKKKKK

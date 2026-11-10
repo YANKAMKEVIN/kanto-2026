@@ -5,6 +5,7 @@
 # Légende :
 #   K mur (bloqué)   . sol (praticable)   X sortie (praticable : paillasson, PUSH ↓)
 #   B comptoir (bloqué)   t table   c canapé   p plante   e étagère
+# 2026-11-10 : tables du haut (9..11, 4) ; les étagères sont peintes au mur : (10..12, 3) libre.
 
 PRATICABLES .X
 
@@ -12,8 +13,8 @@ GRILLE 15 10
 00 KKKKKKKKKKKKKKK
 01 KKKKKKKKKKKKKKK
 02 KKKKKKKKKKKKKKK
-03 K.BBBBB...eee.K
-04 K.............K
+03 K.BBBBB.......K
+04 K........ttt..K
 05 K........ttt..K
 06 K........ttt..K
 07 Kp...........pK

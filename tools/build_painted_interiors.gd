@@ -2353,7 +2353,7 @@ const GOLDENROD_COUNTERS: Dictionary = {
 	"1f": [["HostessCounter", Vector2i(7, 5), 6, &"goldenrod_dept_hostess"]],
 	"2f": [["ClerkCounterA", Vector2i(6, 5), 3, &"goldenrod_dept_2f_clerk"],
 		["ClerkCounterB", Vector2i(11, 5), 3, &"goldenrod_dept_2f_clerk"]],
-	"3f": [["ClerkCounter", Vector2i(9, 5), 3, &"goldenrod_dept_3f_clerk"]],
+	"3f": [["ClerkCounter", Vector2i(8, 5), 5, &"goldenrod_dept_3f_clerk"]],
 }
 
 
@@ -2424,6 +2424,8 @@ func _goldenrod_dept_floor(index: int) -> Dictionary:
 	for counter: Array in GOLDENROD_COUNTERS.get(floor_id, []):
 		(room["interactables"] as Array).append([counter[0], counter[1],
 			Vector2i(counter[2], 1), counter[3], TALK, Vector2i.UP])
+	if GOLDENROD_DEPT[index][2] == "5f":
+		room["free_props"] = [DEPT_5F_COUNTER_CUTOUT]
 	return room
 
 
@@ -2601,8 +2603,12 @@ const DEPT_COUNTERS: Dictionary = {
 		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_2f_clerk_tm"]],
 	"4f": [["ClerkCounterA", Vector2i(6, 5), 3, &"celadon_dept_4f_clerk"],
 		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_4f_clerk_stones"]],
-	"5f": [["ClerkCounter", Vector2i(9, 5), 3, &"celadon_dept_5f_clerk"]],
+	"5f": [["ClerkCounter", Vector2i(8, 5), 5, &"celadon_dept_5f_clerk"]],
 }
+## Comptoir du 5e (coque `int_celadon_dept_5f_coque`, aussi le 3e de Doublonville) peint sur
+## (8..12, 5) ; sa découpe passe devant le vendeur, debout derrière sur (10, 4) (2026-11-10).
+const DEPT_5F_COUNTER_CUTOUT: Array = [&"int_comptoir_magasin_5e_celadon_01", Vector2(966, 581)
+	/ TILE, "CounterCutout"]
 ## Distributeurs du toit (T17) : [nœud, case, dialogue] (EXAMINER depuis la case du sud, ↑).
 const ROOF_DISPENSERS: Array = [
 	["DispenserWater", Vector2i(10, 2), &"celadon_dept_roof_water"],
@@ -2718,6 +2724,8 @@ func _celadon_dept_floor(index: int) -> Dictionary:
 	for counter: Array in DEPT_COUNTERS.get(floor_id, []):
 		(room["interactables"] as Array).append([counter[0], counter[1],
 			Vector2i(counter[2], 1), counter[3], TALK, Vector2i.UP])
+	if floor_id == "5f":
+		room["free_props"] = [DEPT_5F_COUNTER_CUTOUT]
 	return room
 
 

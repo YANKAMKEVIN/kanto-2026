@@ -15,6 +15,9 @@
 # ASCENSEUR À L'EST (V en x 16..17, rangée 2) ; mêmes cases à chaque étage. Arrivées : from_up
 # (descendu d'en haut, devant S), from_down (monté d'en bas, devant Z), from_elevator.
 # Tous les PNJ des intérieurs sont à des cases NON obligatoires (le contrôle le vérifie).
+# 2026-11-10 : grille calée sur la coque peinte (aussi le 3e de Doublonville) : comptoir (8..12, 5),
+# vendeur derrière sur (10, 4) avec une découpe du comptoir devant lui ; canapés peints contre le
+# mur (rangée 2, rangée 3 libre) ; tables (3..6) et (13..16, 6..7).
 
 PRATICABLES .XSZV
 
@@ -22,11 +25,11 @@ GRILLE 20 13
 00 KKKKKKKKKKKKKKKKKKKK
 01 KKKKKKKKKKKKKKKKKKKK
 02 KKSSZZKKKKKKKKKKVVKK
-03 K......cc...cc.....K
+03 K..................K
 04 K..................K
-05 K........BBB.......K
-06 K...ttt......ttt...K
-07 K...ttt......ttt...K
+05 K.......BBBBB......K
+06 K..tttt......tttt..K
+07 K..tttt......tttt..K
 08 K..................K
 09 K..................K
 10 K..................K
