@@ -15,7 +15,8 @@ extends MenuScreen
 ## - Depuis l'Équipe (target_index >= 0) : pas de choix du Pokémon, « Pour Salamèche ».
 ##   Sinon [method show_targets] ouvre le [PartyPicker] dans l'écran ; [signal target_chosen]
 ##   n'est émis que pour une cible utilisable ; ANNULER (ou [method go_back], retour Android) le
-##   referme, sans signal.
+##   referme, sans signal. Apercevoir un autre objet (carte, onglet, objet épuisé) le referme
+##   aussi : le choix ne sert jamais pour un objet qui n'est plus celui aperçu.
 ## - [method show_result] : [UseResultBar] ; [signal repeat_requested] (UTILISER À NOUVEAU).
 ##   Elle reste jusqu'au prochain geste de l'utilisateur.
 ## Composition (MM.1, maquette) : l'écran remonte dans la rangée du × et y pose son « ‹ » rond,
@@ -652,6 +653,10 @@ func _rebuild_cards() -> void:
 
 func _select(item_id: StringName) -> void:
 	_selected = item_id
+	# Un autre objet aperçu remplace le précédent : le choix du Pokémon ouvert pour lui se
+	# referme (sinon il gardait l'objet précédent et c'est lui qui servait ; bogue S24 0.36.0).
+	if is_picker_open() and item_id != _picker_item:
+		_close_picker()
 	for card: BagItemCard in _cards:
 		card.set_selected(card.get_view().item_id == item_id)
 	_refresh()
