@@ -37,6 +37,7 @@ const EFFECT_ITEM_SENSE: StringName = &"item_sense"
 const EFFECT_BITE_BONUS: StringName = &"bite_bonus"
 const EFFECT_SURF_RATE: StringName = &"surf_rate"
 const EFFECT_PRIZE: StringName = &"prize_multiplier"
+## Explorateur : l'identifiant garde « grass », mais l'effet vaut sur tous les terrains au pas.
 const EFFECT_RARE_GRASS: StringName = &"rare_grass"
 const EFFECT_TRAINER_SIGHT: StringName = &"trainer_sight"
 const EFFECT_ENCOUNTER_RATE: StringName = &"encounter_rate"

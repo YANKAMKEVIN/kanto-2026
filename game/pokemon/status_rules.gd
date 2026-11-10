@@ -16,7 +16,7 @@ extends RefCounted
 ## défaut [D] de la règle 4 notées) :
 ##  - brûlure : 1/16 des PV max en fin de tour (au moins 1) ; dégâts **physiques** infligés
 ##    ÷ 2 ([DamageCalc]) ; type Feu immunisé [D] ; capture ×1,5 [D] ;
-##  - paralysie : Vitesse ÷ 2 (ordre d'action) ; 25 % de chance de ne pas agir à chaque
+##  - paralysie : Vitesse ÷ 2 (ordre d'action) ; 33 % de chance de ne pas agir à chaque
 ##    tentative ; type Électrik immunisé [D] ; capture ×1,5 [D] ;
 ##  - sommeil : 1 à 3 tours perdus, tirés à l'application ([method sleep_turns],
 ##    [member Pokemon.status_turns]) ; le compteur baisse à chaque tentative d'agir ; à 0, le
@@ -60,8 +60,9 @@ const IMMUNE_TYPES: Dictionary[StringName, Array] = {
 const POISON_CATCH_BONUS: float = 1.5
 ## Multiplicateur de capture : sommeil et gel ×2,5, les autres ×1,5.
 const STRONG_CATCH_BONUS: float = 2.5
-## Chance (en %) qu'un Pokémon paralysé ne puisse pas agir.
-const FULL_PARALYSIS_CHANCE: int = 25
+## Chance (en %) qu'un Pokémon paralysé ne puisse pas agir : environ un tour sur trois (décision
+## de Kevin du 2026-11-10 ; 25 % auparavant, comme Rouge/Bleu).
+const FULL_PARALYSIS_CHANCE: int = 33
 ## Chance (en %) qu'un Pokémon gelé dégèle au moment d'agir.
 const THAW_CHANCE: int = 20
 ## Tours de sommeil tirés à l'application ([method sleep_turns]).

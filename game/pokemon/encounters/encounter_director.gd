@@ -201,9 +201,8 @@ func _on_player_moved(cell: Vector2i) -> void:
 	var terrain := terrain_at(cell)
 	var table := _library.get_table(_map.map_id, terrain, _period())
 	# Un seul tirage de taux par pas, au taux effectif de la série (§3.6, montée du taux).
-	var rare := CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_RARE_GRASS, 1.0) \
-		if terrain == _GRASS_TERRAIN else 1.0
-	var encounter := table.roll(_state.rng as GameRng, _quiet_steps, _rate_factor(terrain), rare)
+	var encounter := table.roll(_state.rng as GameRng, _quiet_steps, _rate_factor(terrain),
+		rare_factor(_state, terrain))
 	if encounter == null:
 		_quiet_steps += 1
 		return
@@ -215,6 +214,13 @@ func _on_player_moved(cell: Vector2i) -> void:
 	# Verrou synchrone, dans le `moved` : le pas suivant ne part pas (comme les déclencheurs
 	# du 3B). Le reste de la séquence est une coroutine lancée sans l'attendre.
 	_run(encounter, _origin_cell(cell), terrain)
+
+
+## Costumes (Explorateur, Link / Zelda) : multiplicateur du poids des emplacements rares. Il
+## vaut sur tous les terrains de rencontre au pas (herbes, grottes, surf…) depuis la décision de
+## Kevin du 2026-11-10 (hautes herbes seules auparavant) ; la pêche ne passe pas par ici.
+static func rare_factor(state: Node, _terrain: StringName) -> float:
+	return CostumeCatalog.worn_effect(state, CostumeCatalog.EFFECT_RARE_GRASS, 1.0)
 
 
 ## Costumes (CO-13) : multiplicateur du taux de rencontre sur [param terrain].

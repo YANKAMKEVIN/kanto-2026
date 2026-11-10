@@ -58,7 +58,7 @@ Les costumes ne sont plus seulement visuels. Décisions de Kevin : **l'avantage 
 | Roche | **Flair** | Une phrase sur le monde annonce une fois chaque objet caché à 3 cases, avec sa direction |
 | Cascade | **Marin** | Pêche : +20 points de chance de touche ; rencontres en surf ×0,5 |
 | Foudre | **Mécène** | Argent gagné contre les Dresseurs ×1,2 (pas le Jackpot) |
-| Prisme | **Explorateur** | Hautes herbes : poids des emplacements rares (10 % du total au plus) ×1,5 |
+| Prisme | **Explorateur** | Toutes les rencontres au pas (herbes, grottes, surf ; pas la pêche) : poids des emplacements rares (10 % du total au plus) ×1,5 — étendu au-delà des hautes herbes par Kevin le 2026-11-10 |
 | Âme | **Ninja** | Vue des Dresseurs ×0,5 (arrondie au-dessus, 1 case au moins) ; rencontres sauvages ×0,75 |
 | Marais | **Analyste** | Les cartes d'attaque disent « Super efficace », « Peu efficace » ou « Sans effet » |
 | Volcan | **Entraînement** | Expérience ×1,15 contre les sauvages |
