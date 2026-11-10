@@ -757,8 +757,9 @@ func _route_2_east_gate() -> Dictionary:
 			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
 			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
 		],
-		# Table de lecture : image de 3 × 1,5 cases posée sur ses deux rangées (6..7) ; carte
-		# murale accrochée au mur du fond, entre la bibliothèque et le bureau.
+		# Table de lecture : image de 3 × 1,5 cases, emprise d'une rangée (2..4, 7) ; la rangée 6,
+		# derrière elle, reste praticable (2026-11-10) ; carte murale accrochée au mur du fond,
+		# entre la bibliothèque et le bureau.
 		"props": [
 			[&"int_table_lecture_01", Vector2i(3, 7), 7.95, "ReadingTable"],
 			[&"int_carte_murale_01", Vector2i(6, 2), 2.7, "WallMap"],
@@ -2929,7 +2930,7 @@ func _saffron_copycat_2f() -> Dictionary:
 		"safrania_maison_copieur_2f.txt", &"", [
 			[&"int_bureau_angle_pc_01", Rect2i(1, 3, 2, 1), "DeskComputer"],
 			[&"int_lit_01", Rect2i(10, 3, 2, 2), "Bed",
-				[Vector2i(10, 3), Vector2i(11, 3), Vector2i(11, 4), Vector2i(12, 4)]],
+				[Vector2i(10, 3), Vector2i(11, 3), Vector2i(10, 4), Vector2i(11, 4)]],
 			[&"int_tele_01", Rect2i(5, 5, 1, 1), "GameConsole", [], 0.5],
 			[&"int_panier_pokemon_01", Rect2i(1, 7, 1, 1), "DollsWest"],
 			[&"int_panier_pokemon_01", Rect2i(2, 7, 1, 1), "DollsEast"],

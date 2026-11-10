@@ -39,7 +39,7 @@ position = Vector2(192, 384)
 
 [node name="Bed" parent="Entities" unique_id=309113351 instance=ExtResource("5_co248")]
 position = Vector2(1056, 480)
-footprint = Array[Vector2i]([Vector2i(-1, -1), Vector2i(0, -1), Vector2i(0, 0), Vector2i(1, 0)])
+footprint = Array[Vector2i]([Vector2i(-1, -1), Vector2i(0, -1), Vector2i(-1, 0), Vector2i(0, 0)])
 
 [node name="GameConsole" parent="Entities" unique_id=95025398 instance=ExtResource("6_vhyqt")]
 position = Vector2(528, 576)

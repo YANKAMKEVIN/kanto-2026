@@ -35,5 +35,5 @@ entrance            spawn          7,8          libre   facing=up  # arrivée de
 counter             spawn          7,5          libre   facing=up  # devant la caisse
 vendeur             pnj            7,3          bloque  role=clerk facing=down shop=saffron_mart  # derrière la caisse ; on lui parle depuis (6..8, 5)
 super_nerd          pnj            4,5          bloque  role=saffron_mart_super_nerd facing=down  # RB (4, 2)
-dresseuse           pnj            10,6         bloque  role=saffron_mart_cooltrainer facing=left mouvement=libre  # RB (6, 5), WALK ANY_DIR
+dresseuse           pnj            10,5         bloque  role=saffron_mart_cooltrainer facing=left mouvement=libre  # RB (6, 5), WALK ANY_DIR ; au-dessus du présentoir est (2026-11-10 : sur (10, 6), elle était cachée derrière lui)
 FIN

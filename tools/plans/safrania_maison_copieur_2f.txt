@@ -21,7 +21,7 @@ GRILLE 15 10
 01 KKKKKKKKKKKKKKK
 02 KKKKKKKKKKKKEEK
 03 KPB.......LL..K
-04 K..........LL.K
+04 K.........LL..K
 05 K....v........K
 06 K.............K
 07 Ktt...........K
