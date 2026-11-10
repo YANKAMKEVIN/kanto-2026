@@ -406,7 +406,7 @@ func test_tail_whip_wags_the_user_without_an_eye() -> void:
 
 
 ## Écume et Bulles d'O : plusieurs bulles peintes en vol en même temps, entre le lanceur et la
-## cible ; Bulles d'O les a plus grosses (refonte Eau : Écume est une nuée de petites bulles).
+## cible ; Bulles d'O en envoie plus (refonte Eau : Écume, moins de bulles mais plus grandes).
 func test_bubbles_float_toward_the_target_and_bubble_beam_sends_more() -> void:
 	var stage := _stage()
 	var peaks: Dictionary = {}
@@ -428,7 +428,7 @@ func test_bubbles_float_toward_the_target_and_bubble_beam_sends_more() -> void:
 		peaks[move_id] = peak
 		assert_gte(peak, 3, "%s : une volée de bulles" % move_id)
 		_player.stop()
-	assert_gt(_plan(&"bubble_beam").volley_size, _plan(&"bubble").volley_size, "Bulles d'O : plus grosses")
+	assert_gt(_plan(&"bubble_beam").volley_count, _plan(&"bubble").volley_count, "Bulles d'O : plus nombreuses")
 
 
 ## Dard-Venin : une aiguille peinte, pointe vers la cible, qui avance ; piqûre à l'impact.
