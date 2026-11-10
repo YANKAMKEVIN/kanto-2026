@@ -272,6 +272,7 @@ var _artwork_material: ShaderMaterial
 var _shadow_texture: GradientTexture2D
 var _tweens: Array[Tween] = []
 var _hit_tweens: Dictionary = {} # côté → clignotement de dégâts en cours
+var _appear_tweens: Dictionary = {} # côté → fondu d'entrée de show_pokemon
 ## Capture (5D) : accessoires créés au premier besoin (aucun dans la scène .tscn).
 var _ball: Sprite2D
 var _ball_shadow: Sprite2D
@@ -539,7 +540,23 @@ func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void:
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(sprite, ^"modulate", Color.WHITE, APPEAR_DURATION)
 	tween.tween_property(_shadows[side], ^"modulate", Color.WHITE, APPEAR_DURATION)
+	_appear_tweens[side] = tween
 	_play(tween)
+
+
+## Coroutine : attend la fin du fondu d'entrée de [param side] s'il court encore
+## ([method show_pokemon] ne l'attend pas). Rend la main si le combat est interrompu.
+func wait_appear(side: BattleEvent.SideId) -> void:
+	var tween: Tween = _appear_tweens.get(side)
+	while tween != null and tween.is_valid() and tween.is_running():
+		await get_tree().process_frame
+
+
+## Termine tout de suite le fondu d'entrée de [param side] s'il court encore.
+func _finish_appear(side: BattleEvent.SideId) -> void:
+	var tween: Tween = _appear_tweens.get(side)
+	if tween != null and tween.is_valid() and tween.is_running():
+		tween.custom_step(INSTANT_STEP)
 
 
 ## Coroutine (~0,6 s avec l'apparition) : entrée d'une rencontre sauvage (jalon 5 §3.7). Le
@@ -785,9 +802,12 @@ func move_fx_mode() -> MoveFxPlan.Mode:
 func play_move_fx(side: BattleEvent.SideId, plan: MoveFxPlan) -> void:
 	if not _active or plan == null:
 		return
-	# L'effet mémorise l'opacité de repos : un clignotement en cours y resterait figé.
+	# L'effet mémorise l'opacité de repos : un clignotement ou un fondu d'entrée en cours y
+	# resterait figé.
 	_finish_hit(side)
 	_finish_hit(_other(side))
+	_finish_appear(side)
+	_finish_appear(_other(side))
 	_fx_target = side if plan.on_self else _other(side)
 	_fx_hits = 0
 	# Les durées du plan suivent déjà le mode (Rapides, Réduites) : pas de second facteur.

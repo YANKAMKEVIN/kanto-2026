@@ -258,6 +258,35 @@ func test_move_fx_never_freezes_a_blink_in_progress() -> void:
 	assert_almost_eq(mine.modulate.a, 1.0, 0.001, "opaque après l'attaque")
 
 
+## Reptincel invisible (S24, 2026-11-09) : après un changement, l'attaque adverse part pendant le
+## fondu d'entrée (message passé d'un toucher) et mémorisait son opacité presque nulle.
+func test_move_fx_never_freezes_an_appearance_in_progress() -> void:
+	await _enter()
+	await _stage.play_withdraw(PLAYER_SIDE)
+	_stage.speed_scale = 1.0
+	var mine := _stage.get_sprite(PLAYER_SIDE)
+	var clock := TweenClock.new(get_tree())
+	_stage.show_pokemon(PLAYER_SIDE, &"charmander")
+	clock.step(BattleStage.APPEAR_DURATION * 0.1)
+	clock.release()
+	assert_between(mine.modulate.a, 0.01, 0.5, "en plein fondu d'entrée")
+	await _stage.play_move_fx(FOE_SIDE, _fx_plan(&"tackle", MoveFxOutcome.Result.HIT))
+	await _stage.finish_move_fx()
+	assert_almost_eq(mine.modulate.a, 1.0, 0.001, "opaque après l'attaque adverse")
+
+
+func test_wait_appear_returns_once_the_pokemon_is_fully_shown() -> void:
+	await _enter()
+	await _stage.play_withdraw(PLAYER_SIDE)
+	_stage.speed_scale = 1.0
+	var mine := _stage.get_sprite(PLAYER_SIDE)
+	_stage.show_pokemon(PLAYER_SIDE, &"charmander")
+	assert_almost_eq(mine.modulate.a, 0.0, 0.001, "le fondu commence")
+	await _stage.wait_appear(PLAYER_SIDE)
+	assert_almost_eq(mine.modulate.a, 1.0, 0.001, "entièrement apparu")
+	await _stage.wait_appear(PLAYER_SIDE) # Sans fondu en cours : rend la main tout de suite.
+
+
 func test_move_fx_mode_follows_the_settings() -> void:
 	assert_eq(_stage.move_fx_mode(), MoveFxPlan.Mode.FULL)
 	_stage.battle_animations = GameSettings.BattleAnimations.FAST
