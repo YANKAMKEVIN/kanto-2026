@@ -1054,7 +1054,8 @@ func test_withdraw_shells_the_user_only() -> void:
 	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
 	var shell := _player.get_art(MoveFxPlayer.Flip.AURA)
 	assert_true(shell.visible, "la coque d'eau")
-	assert_almost_eq(shell.position, stage.user_rect.get_center(), Vector2.ONE, "autour du lanceur")
+	# La coque suit le lanceur, qui se tasse un peu pendant sa posture.
+	assert_almost_eq(shell.position, stage.user_rect.get_center(), Vector2.ONE * 20.0, "autour du lanceur")
 	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part")
 	_player.stop()
 	_assert_at_rest(stage)
@@ -1067,7 +1068,9 @@ func test_rain_dance_covers_the_screen_with_rain() -> void:
 	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
 	var rain := _player.get_art(MoveFxPlayer.Flip.SKY)
 	assert_true(rain.visible, "la pluie")
-	assert_almost_eq(rain.position, stage.view_size * 0.5, Vector2.ONE, "sur tout l'écran")
+	# Quatre tuiles d'un quart d'écran ; la première dans le quart haut gauche.
+	assert_almost_eq(rain.position, stage.view_size * 0.25, Vector2.ONE, "quart haut gauche")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.WAVE_C).visible, "jusqu'au quart bas droit")
 	_player.stop()
 	_assert_at_rest(stage)
 
