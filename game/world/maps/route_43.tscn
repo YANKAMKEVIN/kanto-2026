@@ -42,6 +42,8 @@
 [ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="37_040jt"]
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_a_01_bourg.png" id="38_bqcky"]
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01_bourg.png" id="39_esldl"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/bords/route_43_west.png" id="side_decor_0"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/bords/route_43_east.png" id="side_decor_1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r0lqi"]
 shader = ExtResource("3_rgahc")
@@ -90,6 +92,18 @@ region = "Acajou — Lac Colère"
 size = Vector2i(24, 52)
 blocked_cells = Array[Vector2i]([Vector2i(13, 48), Vector2i(13, 21), Vector2i(14, 21), Vector2i(15, 21), Vector2i(16, 21), Vector2i(17, 21), Vector2i(13, 22), Vector2i(14, 22), Vector2i(15, 22), Vector2i(16, 22), Vector2i(17, 22), Vector2i(13, 23), Vector2i(14, 23), Vector2i(15, 23), Vector2i(16, 23), Vector2i(17, 23), Vector2i(13, 24), Vector2i(14, 24), Vector2i(15, 24), Vector2i(16, 24), Vector2i(17, 24)])
 light_profile = &"johto_auto"
+
+[node name="SideForestEdgeWest" type="Sprite2D" parent="." unique_id=1227630751]
+z_index = -3
+position = Vector2(-64, 0)
+texture = ExtResource("side_decor_0")
+centered = false
+
+[node name="SideForestEdgeEast" type="Sprite2D" parent="." unique_id=536490397]
+z_index = -3
+position = Vector2(2304, 0)
+texture = ExtResource("side_decor_1")
+centered = false
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=913910117]
 visible = false

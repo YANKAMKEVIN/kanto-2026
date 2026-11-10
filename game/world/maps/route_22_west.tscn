@@ -24,6 +24,17 @@
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_a_01.tscn" id="19_mp6v6"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/tree_b_01.tscn" id="20_ofp4s"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_poste_route_22_01.tscn" id="21_p07ve"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="side_decor_0"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_01.png" id="side_decor_1"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_02.png" id="side_decor_2"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_03.png" id="side_decor_3"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_04.png" id="side_decor_4"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_05.png" id="side_decor_5"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_06.png" id="side_decor_6"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_07.png" id="side_decor_7"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_08.png" id="side_decor_8"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_herbe_01.png" id="side_decor_9"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_chemin_01.png" id="side_decor_10"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_umxpf"]
 shader = ExtResource("3_gjcus")
@@ -51,6 +62,33 @@ region = "Jadielle — Plateau Indigo"
 size = Vector2i(20, 14)
 blocked_cells = Array[Vector2i]([Vector2i(4, 9)])
 light_profile = &"golden_hour"
+
+[node name="SideForestFloorWest" type="Sprite2D" parent="." unique_id=347998359]
+z_index = -3
+texture_repeat = 2
+position = Vector2(-384, -192)
+texture = ExtResource("side_decor_9")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 1920)
+
+[node name="SideForestFloorEast" type="Sprite2D" parent="." unique_id=1982242403]
+z_index = -3
+texture_repeat = 2
+position = Vector2(1920, -192)
+texture = ExtResource("side_decor_9")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 1920)
+
+[node name="SideForestPath0" type="Sprite2D" parent="." unique_id=1226193515]
+z_index = -3
+texture_repeat = 2
+position = Vector2(1920, 864)
+texture = ExtResource("side_decor_10")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 384, 288)
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=652770579]
 visible = false
@@ -510,6 +548,449 @@ flip_h = true
 [node name="Entities" type="Node2D" parent="." unique_id=348069242]
 unique_name_in_owner = true
 y_sort_enabled = true
+
+[node name="SideForest000" type="Sprite2D" parent="Entities" unique_id=1498385587]
+modulate = Color(0.8184, 0.8454, 0.8229, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-86.8, 80.0)
+scale = Vector2(1.1958, 1.1958)
+texture = ExtResource("side_decor_5")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest001" type="Sprite2D" parent="Entities" unique_id=1823598817]
+modulate = Color(0.8376, 0.8399, 0.8014, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-65.7, 230.9)
+scale = Vector2(1.1055, 1.1055)
+texture = ExtResource("side_decor_8")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest002" type="Sprite2D" parent="Entities" unique_id=1800532781]
+modulate = Color(0.7931, 0.8257, 0.7848, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-49.4, 354.2)
+scale = Vector2(1.0639, 1.0639)
+texture = ExtResource("side_decor_8")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest003" type="Sprite2D" parent="Entities" unique_id=262835015]
+modulate = Color(0.8033, 0.8195, 0.8125, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-72.0, 457.4)
+scale = Vector2(1.1585, 1.1585)
+texture = ExtResource("side_decor_4")
+centered = false
+offset = Vector2(-135.0, -288)
+flip_h = true
+
+[node name="SideForest004" type="Sprite2D" parent="Entities" unique_id=382163341]
+modulate = Color(0.8858, 0.9080, 0.8568, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-77.9, 606.6)
+scale = Vector2(0.9758, 0.9758)
+texture = ExtResource("side_decor_2")
+centered = false
+offset = Vector2(-142.0, -288)
+flip_h = true
+
+[node name="SideForest005" type="Sprite2D" parent="Entities" unique_id=1727868636]
+modulate = Color(0.8268, 0.8473, 0.8509, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-50.9, 726.2)
+scale = Vector2(1.0324, 1.0324)
+texture = ExtResource("side_decor_2")
+centered = false
+offset = Vector2(-142.0, -288)
+flip_h = true
+
+[node name="SideForest006" type="Sprite2D" parent="Entities" unique_id=885945095]
+modulate = Color(0.8655, 0.8875, 0.8669, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-69.7, 882.3)
+scale = Vector2(1.0117, 1.0117)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
+flip_h = true
+
+[node name="SideForest007" type="Sprite2D" parent="Entities" unique_id=334045677]
+modulate = Color(0.8617, 0.8811, 0.8893, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-76.6, 1027.8)
+scale = Vector2(1.1136, 1.1136)
+texture = ExtResource("side_decor_8")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest008" type="Sprite2D" parent="Entities" unique_id=474712421]
+modulate = Color(0.8516, 0.8582, 0.8565, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-61.0, 1159.9)
+scale = Vector2(1.0028, 1.0028)
+texture = ExtResource("side_decor_8")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest009" type="Sprite2D" parent="Entities" unique_id=355687453]
+modulate = Color(0.8872, 0.8973, 0.8564, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-76.3, 1263.6)
+scale = Vector2(0.9956, 0.9956)
+texture = ExtResource("side_decor_7")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest010" type="Sprite2D" parent="Entities" unique_id=1929568708]
+modulate = Color(0.8549, 0.8885, 0.8859, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-72.5, 1399.1)
+scale = Vector2(0.9971, 0.9971)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
+flip_h = true
+
+[node name="SideForest011" type="Sprite2D" parent="Entities" unique_id=1412349072]
+modulate = Color(0.8429, 0.8602, 0.8572, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-49.6, 1579.0)
+scale = Vector2(0.9857, 0.9857)
+texture = ExtResource("side_decor_1")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest012" type="Sprite2D" parent="Entities" unique_id=150254271]
+modulate = Color(0.7829, 0.8037, 0.7780, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-182.5, 156.1)
+scale = Vector2(1.1879, 1.1879)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
+
+[node name="SideForest013" type="Sprite2D" parent="Entities" unique_id=258516587]
+modulate = Color(0.8158, 0.8265, 0.8331, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-232.2, 295.4)
+scale = Vector2(1.1077, 1.1077)
+texture = ExtResource("side_decor_7")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest014" type="Sprite2D" parent="Entities" unique_id=239535085]
+modulate = Color(0.9027, 0.9114, 0.9180, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-183.7, 410.8)
+scale = Vector2(1.1885, 1.1885)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
+flip_h = true
+
+[node name="SideForest015" type="Sprite2D" parent="Entities" unique_id=1375134610]
+modulate = Color(0.7924, 0.8139, 0.8266, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-195.2, 570.3)
+scale = Vector2(1.1271, 1.1271)
+texture = ExtResource("side_decor_4")
+centered = false
+offset = Vector2(-135.0, -288)
+
+[node name="SideForest016" type="Sprite2D" parent="Entities" unique_id=111205861]
+modulate = Color(0.8090, 0.8119, 0.7681, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-222.6, 666.1)
+scale = Vector2(0.9903, 0.9903)
+texture = ExtResource("side_decor_7")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest017" type="Sprite2D" parent="Entities" unique_id=155682272]
+modulate = Color(0.8526, 0.8664, 0.8213, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-235.9, 829.1)
+scale = Vector2(0.9673, 0.9673)
+texture = ExtResource("side_decor_1")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest018" type="Sprite2D" parent="Entities" unique_id=1432883170]
+modulate = Color(0.7774, 0.8010, 0.8122, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-190.3, 945.8)
+scale = Vector2(1.0227, 1.0227)
+texture = ExtResource("side_decor_4")
+centered = false
+offset = Vector2(-135.0, -288)
+flip_h = true
+
+[node name="SideForest019" type="Sprite2D" parent="Entities" unique_id=1241917320]
+modulate = Color(0.8750, 0.8966, 0.8477, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-216.1, 1073.8)
+scale = Vector2(0.9737, 0.9737)
+texture = ExtResource("side_decor_1")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest020" type="Sprite2D" parent="Entities" unique_id=1851586838]
+modulate = Color(0.8112, 0.8247, 0.8363, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-206.2, 1200.8)
+scale = Vector2(1.1058, 1.1058)
+texture = ExtResource("side_decor_4")
+centered = false
+offset = Vector2(-135.0, -288)
+flip_h = true
+
+[node name="SideForest021" type="Sprite2D" parent="Entities" unique_id=690310113]
+modulate = Color(0.8922, 0.9057, 0.8622, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-198.9, 1360.3)
+scale = Vector2(1.1334, 1.1334)
+texture = ExtResource("side_decor_7")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest022" type="Sprite2D" parent="Entities" unique_id=1591217535]
+modulate = Color(0.8564, 0.8852, 0.8830, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-184.0, 1475.8)
+scale = Vector2(1.1326, 1.1326)
+texture = ExtResource("side_decor_2")
+centered = false
+offset = Vector2(-142.0, -288)
+flip_h = true
+
+[node name="SideForest023" type="Sprite2D" parent="Entities" unique_id=1646798363]
+modulate = Color(0.8094, 0.8393, 0.8123, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(-183.8, 1614.3)
+scale = Vector2(1.0064, 1.0064)
+texture = ExtResource("side_decor_6")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest024" type="Sprite2D" parent="Entities" unique_id=320936619]
+modulate = Color(0.8457, 0.8766, 0.8347, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(1993.1, 61.2)
+scale = Vector2(1.1658, 1.1658)
+texture = ExtResource("side_decor_6")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest025" type="Sprite2D" parent="Entities" unique_id=1222157830]
+modulate = Color(0.8569, 0.8828, 0.8748, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2007.4, 192.9)
+scale = Vector2(1.0401, 1.0401)
+texture = ExtResource("side_decor_2")
+centered = false
+offset = Vector2(-142.0, -288)
+flip_h = true
+
+[node name="SideForest026" type="Sprite2D" parent="Entities" unique_id=1951871333]
+modulate = Color(0.8312, 0.8540, 0.8071, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(1992.7, 349.2)
+scale = Vector2(1.0706, 1.0706)
+texture = ExtResource("side_decor_2")
+centered = false
+offset = Vector2(-142.0, -288)
+
+[node name="SideForest027" type="Sprite2D" parent="Entities" unique_id=1261836655]
+modulate = Color(0.8843, 0.8844, 0.8585, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(1979.2, 499.5)
+scale = Vector2(0.9842, 0.9842)
+texture = ExtResource("side_decor_1")
+centered = false
+offset = Vector2(-135.5, -288)
+flip_h = true
+
+[node name="SideForest028" type="Sprite2D" parent="Entities" unique_id=630994957]
+modulate = Color(0.7838, 0.8044, 0.7606, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2014.5, 601.6)
+scale = Vector2(1.1395, 1.1395)
+texture = ExtResource("side_decor_6")
+centered = false
+offset = Vector2(-110.5, -269)
+flip_h = true
+
+[node name="SideForest029" type="Sprite2D" parent="Entities" unique_id=1849397700]
+modulate = Color(0.9027, 0.9103, 0.8929, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2000.1, 754.1)
+scale = Vector2(1.0687, 1.0687)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
+flip_h = true
+
+[node name="SideForest030" type="Sprite2D" parent="Entities" unique_id=548777730]
+modulate = Color(0.8355, 0.8565, 0.8627, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(1974.3, 1433.4)
+scale = Vector2(1.0631, 1.0631)
+texture = ExtResource("side_decor_5")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest031" type="Sprite2D" parent="Entities" unique_id=1033308692]
+modulate = Color(0.8377, 0.8628, 0.8681, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(1985.5, 1542.0)
+scale = Vector2(1.1260, 1.1260)
+texture = ExtResource("side_decor_4")
+centered = false
+offset = Vector2(-135.0, -288)
+flip_h = true
+
+[node name="SideForest032" type="Sprite2D" parent="Entities" unique_id=1915004110]
+modulate = Color(0.8193, 0.8256, 0.7896, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2114.4, 149.0)
+scale = Vector2(0.9849, 0.9849)
+texture = ExtResource("side_decor_8")
+centered = false
+offset = Vector2(-140.5, -288)
+flip_h = true
+
+[node name="SideForest033" type="Sprite2D" parent="Entities" unique_id=742426961]
+modulate = Color(0.8629, 0.8792, 0.8351, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2129.7, 260.0)
+scale = Vector2(1.1001, 1.1001)
+texture = ExtResource("side_decor_1")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest034" type="Sprite2D" parent="Entities" unique_id=563850536]
+modulate = Color(0.8690, 0.8785, 0.8771, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2146.0, 402.2)
+scale = Vector2(1.0184, 1.0184)
+texture = ExtResource("side_decor_7")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest035" type="Sprite2D" parent="Entities" unique_id=493464795]
+modulate = Color(0.9039, 0.9073, 0.8741, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2119.1, 549.8)
+scale = Vector2(1.0305, 1.0305)
+texture = ExtResource("side_decor_5")
+centered = false
+offset = Vector2(-129.5, -317)
+flip_h = true
+
+[node name="SideForest036" type="Sprite2D" parent="Entities" unique_id=546073168]
+modulate = Color(0.8954, 0.9171, 0.9106, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2115.7, 668.3)
+scale = Vector2(1.0332, 1.0332)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
+flip_h = true
+
+[node name="SideForest037" type="Sprite2D" parent="Entities" unique_id=633205494]
+modulate = Color(0.8383, 0.8713, 0.8687, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2137.1, 811.0)
+scale = Vector2(1.1230, 1.1230)
+texture = ExtResource("side_decor_5")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest038" type="Sprite2D" parent="Entities" unique_id=1804309694]
+modulate = Color(0.7969, 0.8273, 0.7850, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2149.7, 1471.7)
+scale = Vector2(0.9621, 0.9621)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
+
+[node name="SideForest039" type="Sprite2D" parent="Entities" unique_id=850060191]
+modulate = Color(0.7996, 0.8023, 0.8161, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2123.0, 1617.5)
+scale = Vector2(1.0297, 1.0297)
+texture = ExtResource("side_decor_4")
+centered = false
+offset = Vector2(-135.0, -288)
+flip_h = true
+
+[node name="SideForest040" type="Sprite2D" parent="Entities" unique_id=1936654759]
+modulate = Color(0.7878, 0.8193, 0.8166, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(1982.9, 866.0)
+scale = Vector2(1.0952, 1.0952)
+texture = ExtResource("side_decor_8")
+centered = false
+offset = Vector2(-140.5, -288)
+
+[node name="SideForest041" type="Sprite2D" parent="Entities" unique_id=1566578601]
+modulate = Color(0.8157, 0.8174, 0.7809, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2069.7, 849.1)
+scale = Vector2(1.0730, 1.0730)
+texture = ExtResource("side_decor_5")
+centered = false
+offset = Vector2(-129.5, -317)
+
+[node name="SideForest042" type="Sprite2D" parent="Entities" unique_id=279311557]
+modulate = Color(0.8297, 0.8545, 0.8655, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2205.8, 869.2)
+scale = Vector2(1.1312, 1.1312)
+texture = ExtResource("side_decor_7")
+centered = false
+offset = Vector2(-132.5, -278)
+
+[node name="SideForest043" type="Sprite2D" parent="Entities" unique_id=1383908372]
+modulate = Color(0.8837, 0.9027, 0.8824, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(1980.7, 1440.2)
+scale = Vector2(1.0527, 1.0527)
+texture = ExtResource("side_decor_7")
+centered = false
+offset = Vector2(-132.5, -278)
+flip_h = true
+
+[node name="SideForest044" type="Sprite2D" parent="Entities" unique_id=1112561805]
+modulate = Color(0.8941, 0.9152, 0.9242, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2095.1, 1445.5)
+scale = Vector2(1.0825, 1.0825)
+texture = ExtResource("side_decor_1")
+centered = false
+offset = Vector2(-135.5, -288)
+
+[node name="SideForest045" type="Sprite2D" parent="Entities" unique_id=935686260]
+modulate = Color(0.8552, 0.8690, 0.8562, 1)
+material = ExtResource("side_decor_0")
+position = Vector2(2214.9, 1441.0)
+scale = Vector2(0.9504, 0.9504)
+texture = ExtResource("side_decor_3")
+centered = false
+offset = Vector2(-132.0, -298)
 
 [node name="Batiment" type="Node2D" parent="Entities" unique_id=1913329768]
 position = Vector2(624, 576)

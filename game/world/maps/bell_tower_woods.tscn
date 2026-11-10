@@ -43,6 +43,8 @@
 [ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="38_2b76e"]
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_a_01_bourg.png" id="39_hfyap"]
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01_bourg.png" id="40_oad3c"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/bords/bell_tower_woods_west.png" id="side_decor_0"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/bords/bell_tower_woods_east.png" id="side_decor_1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_teynx"]
 shader = ExtResource("3_i24qa")
@@ -91,6 +93,18 @@ region = "Rosalia"
 size = Vector2i(24, 20)
 blocked_cells = Array[Vector2i]([Vector2i(9, 8), Vector2i(12, 8), Vector2i(9, 14), Vector2i(12, 14)])
 light_profile = &"johto_auto"
+
+[node name="SideForestEdgeWest" type="Sprite2D" parent="." unique_id=1637773655]
+z_index = -3
+position = Vector2(-64, 0)
+texture = ExtResource("side_decor_0")
+centered = false
+
+[node name="SideForestEdgeEast" type="Sprite2D" parent="." unique_id=1327279318]
+z_index = -3
+position = Vector2(2304, 0)
+texture = ExtResource("side_decor_1")
+centered = false
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1267370214]
 visible = false

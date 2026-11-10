@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://game/world/props/painted/int_escalier_descendant_01.tscn" id="6_orgvx"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="7_cmmib"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="8_6s0uu"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_route_12_gate_2f_mur_sud.png" id="mur_sud_sans_porte"]
 
 [node name="Route12Gate2F" type="Node2D" unique_id=575328242]
 script = ExtResource("1_e1hii")
@@ -21,6 +22,12 @@ light_profile = &"interior_warm"
 [node name="Shell" type="Sprite2D" parent="." unique_id=920639833]
 z_index = -3
 texture = ExtResource("2_rpest")
+centered = false
+
+[node name="ShellSouthWall" type="Sprite2D" parent="." unique_id=1837264011]
+z_index = -3
+position = Vector2(490, 736)
+texture = ExtResource("mur_sud_sans_porte")
 centered = false
 
 [node name="Entities" type="Node2D" parent="." unique_id=1475016330]

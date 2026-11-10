@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/world/interiors/int_celadon_mansion_roof_coque.png" id="2_5dbrr"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/bldg_maison_toit_01.tscn" id="3_wbvm7"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_7jrns"]
+[ext_resource type="Texture2D" path="res://assets/world/backdrops/backdrop_vue_ville_01.png" id="side_decor_0"]
 
 [node name="CeladonMansionRoof" type="Node2D" unique_id=925901971]
 script = ExtResource("1_4jdr8")
@@ -13,6 +14,12 @@ size = Vector2i(16, 10)
 blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(0, 2), Vector2i(15, 2), Vector2i(0, 3), Vector2i(15, 3), Vector2i(0, 4), Vector2i(15, 4), Vector2i(0, 5), Vector2i(15, 5), Vector2i(0, 6), Vector2i(15, 6), Vector2i(0, 7), Vector2i(5, 7), Vector2i(6, 7), Vector2i(15, 7), Vector2i(0, 8), Vector2i(1, 8), Vector2i(14, 8), Vector2i(15, 8), Vector2i(0, 9), Vector2i(1, 9), Vector2i(2, 9), Vector2i(3, 9), Vector2i(4, 9), Vector2i(5, 9), Vector2i(6, 9), Vector2i(7, 9), Vector2i(8, 9), Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9), Vector2i(12, 9), Vector2i(13, 9), Vector2i(14, 9), Vector2i(15, 9)])
 interior = true
 light_profile = &"golden_hour"
+
+[node name="SideForestBackdrop" type="Sprite2D" parent="." unique_id=145207680]
+z_index = -4
+position = Vector2(768.0, 480.0)
+scale = Vector2(1.6276, 1.6276)
+texture = ExtResource("side_decor_0")
 
 [node name="Shell" type="Sprite2D" parent="." unique_id=1589781183]
 z_index = -3

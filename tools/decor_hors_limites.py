@@ -1,160 +1,257 @@
 #!/usr/bin/env python3
-"""Forêt décorative de part et d'autre de la Route 2 est (demande de Kevin, 2026-11-09).
+"""Décor hors des limites des cartes plus petites que l'écran (demande de Kevin, 2026-11-09).
 
-La carte fait 16 cases de large et l'écran du S24 en montre 24,4 : la caméra la centre et le
-fond du projet (noir) restait visible sur les côtés. On pose, hors des limites de la carte, un
-sol sombre et des arbres de forêt : aucune case, aucune collision, la grille ne change pas.
+Quand une carte est moins large (ou moins haute) que la vue, la caméra la centre et le fond du
+projet, noir, reste visible. On pose autour d'elle, hors de la grille, sans case ni collision :
 
-Édition du texte de la scène, sans passer par Godot (voir la mémoire « outils sans autoload ») :
-un enregistrement par `godot -s` pourrait dégrader la carte. Graine fixe, relance sans effet :
-les nœuds déjà posés sont retirés puis réécrits à l'identique.
+- `FORETS` : sol, arbres de forêt, et les chemins de sortie prolongés jusqu'au bord de l'écran ;
+- `BORDS` : pour un écart de quelques pixels, une bande du bord de la carte retournée en miroir
+  (images de `tools/capture_bord_carte.gd`, à refaire si le bord de la carte change) ;
+- `FONDS` : un paysage derrière les toits-terrasses.
 
-    python3 tools/route_2_east_foret_laterale.py
+Édition du texte des scènes, sans passer par Godot : un enregistrement par `godot -s`, sans
+autoloads, peut dégrader une carte. Graine fixe, relance sans effet : les nœuds déjà posés sont
+retirés puis réécrits à l'identique.
+
+Contrôle : `tools/audit_bords_noirs.gd` balaie les extérieurs et compte le noir visible.
+
+    python3 tools/decor_hors_limites.py
 """
 
 import pathlib
 import random
 import re
 
-SCENE = pathlib.Path(__file__).parent.parent / "game/world/maps/route_2_east.tscn"
-TILE = 96
-MAP_W, MAP_H = 16, 48
-SEED = 20261109
+from PIL import Image
 
-# Distance du pied des arbres au bord de la carte, en cases : le feuillage (≈ 1,4 case de
-# demi-largeur) couvre jusqu'à 5 cases, soit plus que les 4,5 d'un écran 20:9.
-COLUMNS = [0.7, 2.2, 3.7]
+ROOT = pathlib.Path(__file__).parent.parent
+MAPS = ROOT / "game/world/maps"
+TILE = 96
+SEED = 20261109
+PREFIX = "SideForest"
+RES = "side_decor_"
+
+COLOR_FLOOR = "Color(0.10, 0.26, 0.16, 1)"
+TEX_PATH = "res://assets/world/ground/ground_chemin_01.png"
+TEX_GRASS = "res://assets/world/ground/ground_herbe_01.png"
+WIND = "res://game/world/lighting/materials/world_object_wind.tres"
+
+# Écart entre colonnes et rangées d'arbres, en cases ; le feuillage fait ≈ 1,4 case de
+# demi-largeur et 3 de haut.
 ROW_STEP = 1.4
 JITTER_X, JITTER_Y = 0.3, 0.25
 SCALE_MIN, SCALE_MAX = 0.95, 1.2
-FIRST_ROW, LAST_ROW = 0.8, MAP_H + 3.0
-FLOOR_WIDTH = 6
-FLOOR_COLOR = "Color(0.10, 0.26, 0.16, 1)"
-# Identifiant de ressource de chaque arbre déjà utilisé par la scène, avec son décalage.
-TREES = {
-    "42_oanpj": -142.0,
-    "43_ta48i": -140.5,
-    "44_l0jbh": None,
-    "45_mb514": None,
-    "46_1xug8": None,
-    "47_4auyq": None,
-    "48_npro2": None,
-    "49_gri40": None,
+CANOPY = 2.9
+
+# Carte : colonnes d'arbres (distance au bord), largeur de sol, sol, chemins (côté, lignes).
+FORETS = {
+    "route_2_east": ([0.7, 2.2, 3.7], 6, "dark", [(-1, 43, 45)]),
+    "route_22_west": ([0.7, 2.2], 4, "grass", [(1, 9, 12)]),
+    "route_37": ([0.7, 2.2], 4, "dark", []),
 }
-MATERIAL = "41_si0kw"
-PREFIX = "SideForest"
-# Le chemin sort à l'ouest sur les lignes 43 et 44 (passage vers la Route 2) : pas de pied
-# d'arbre dont le feuillage (3 cases vers le nord) le couvrirait, et le chemin se prolonge.
-PATH_ROWS = (43, 45)
-PATH_RES = "side_forest_path"
-PATH_TEXTURE = "res://assets/world/ground/ground_chemin_01.png"
+# Carte : axe et épaisseur en pixels.
+BORDS = {
+    "route_34": ("x", 64),
+    "route_35": ("x", 64),
+    "route_39": ("x", 64),
+    "route_40": ("x", 64),
+    "route_43": ("x", 64),
+    "silver_trail": ("x", 64),
+    "bell_tower_woods": ("x", 64),
+    "ss_anne_outer_deck": ("y", 32),
+}
+# Carte : image de fond.
+FONDS = {
+    "celadon_dept_roof": "res://assets/world/backdrops/backdrop_vue_ville_01.png",
+    "celadon_mansion_roof": "res://assets/world/backdrops/backdrop_vue_ville_01.png",
+    "goldenrod_dept_store_roof": "res://assets/world/backdrops/backdrop_vue_ville_01.png",
+}
+VIEW = (2500, 1300)  # un peu plus qu'un écran 20:9
 
 
 def strip_previous(text: str) -> str:
-    text = re.sub(r'\[ext_resource [^\n]*id="%s"\]\n' % PATH_RES, "", text)
+    text = re.sub(r'\[ext_resource [^\n]*id="%s[^"]*"\]\n' % RES, "", text)
     return re.sub(r'\[node name="%s[^\n]*\n(?:[^\[\n][^\n]*\n)*\n' % PREFIX, "", text)
 
 
-def offsets_from_scene(text: str) -> dict:
-    """Décalage de chaque texture, repris des arbres déjà dans la scène."""
-    found = {}
-    for block in re.findall(r'texture = ExtResource\("([^"]+)"\)\ncentered = false\noffset = '
-                            r"(Vector2\([^)]*\))", text):
-        found.setdefault(block[0], block[1])
-    return {key: found[key] for key in TREES}
+def map_size(text: str) -> tuple:
+    match = re.search(r"size = Vector2i\((\d+), (\d+)\)", text)
+    return int(match[1]), int(match[2])
 
 
-def main() -> None:
-    text = strip_previous(SCENE.read_text())
-    offsets = offsets_from_scene(text)
-    rng = random.Random(SEED)
-    used_ids = {int(x) for x in re.findall(r"unique_id=(\d+)", text)}
+class Scene:
+    def __init__(self, map_id: str) -> None:
+        self.path = MAPS / f"{map_id}.tscn"
+        self.text = strip_previous(self.path.read_text())
+        self.width, self.height = map_size(self.text)
+        self.rng = random.Random(f"{SEED}-{map_id}")
+        self.used = {int(x) for x in re.findall(r"unique_id=(\d+)", self.text)}
+        self.resources = []
 
-    def new_id() -> int:
+    def new_id(self) -> int:
         while True:
-            value = rng.randint(100_000_000, 2_147_000_000)
-            if value not in used_ids:
-                used_ids.add(value)
+            value = self.rng.randint(100_000_000, 2_147_000_000)
+            if value not in self.used:
+                self.used.add(value)
                 return value
+
+    def resource(self, kind: str, path: str) -> str:
+        res_id = f"{RES}{len(self.resources)}"
+        self.resources.append(f'[ext_resource type="{kind}" path="{path}" id="{res_id}"]\n')
+        return res_id
+
+    def write(self, under: str, entities: str) -> None:
+        text = self.text
+        cut = min(i for i in (text.find("\n[sub_resource"), text.find("\n[node")) if i >= 0)
+        text = text[:cut].rstrip("\n") + "\n" + "".join(self.resources) + text[cut:]
+        # Sous tout le reste : juste après la racine et ses propriétés.
+        root_end = text.index("\n[node", text.index("[node ")) + 1
+        text = text[:root_end] + under + text[root_end:]
+        if entities:
+            header = re.search(r'\[node name="Entities"[^\n]*\n(?:[^\[\n][^\n]*\n)*\n?', text)
+            text = text[:header.end()] + entities + text[header.end():]
+        self.path.write_text(text)
+
+
+def repeat_sprite(scene: Scene, name: str, res: str, rect: tuple) -> str:
+    x, y, w, h = rect
+    return (
+        f'[node name="{PREFIX}{name}" type="Sprite2D" parent="." unique_id={scene.new_id()}]\n'
+        "z_index = -3\ntexture_repeat = 2\n"
+        f"position = Vector2({x}, {y})\n"
+        f'texture = ExtResource("{res}")\n'
+        "centered = false\nregion_enabled = true\n"
+        f"region_rect = Rect2(0, 0, {w}, {h})\n\n"
+    )
+
+
+def build_forest(map_id: str, columns: list, floor_width: int, floor: str, paths: list) -> None:
+    scene = Scene(map_id)
+    rng = scene.rng
+    wind = scene.resource("Material", WIND)
+    trees = []
+    for number in range(1, 9):
+        file = f"assets/world/props/tree_foret_{number:02d}.png"
+        width, height = Image.open(ROOT / file).size
+        trees.append((scene.resource("Texture2D", "res://" + file), -width / 2, -height))
+
+    def in_path(side: int, y: float) -> bool:
+        return any(s == side and top - 0.2 < y < bottom + CANOPY for s, top, bottom in paths)
 
     feet = []
     for side in (-1, 1):
-        for index, distance in enumerate(COLUMNS):
-            row = FIRST_ROW + (ROW_STEP / 2 if index % 2 else 0)
-            while row <= LAST_ROW:
-                base = -distance if side < 0 else MAP_W + distance
+        for index, distance in enumerate(columns):
+            row = 0.8 + (ROW_STEP / 2 if index % 2 else 0)
+            while row <= scene.height + 3.0:
+                base = -distance if side < 0 else scene.width + distance
                 foot = (base + rng.uniform(-JITTER_X, JITTER_X),
                         row + rng.uniform(-JITTER_Y, JITTER_Y))
-                if side > 0 or not PATH_ROWS[0] - 0.2 < foot[1] < PATH_ROWS[1] + 2.9:
+                if not in_path(side, foot[1]):
                     feet.append(foot)
                 row += ROW_STEP
-    # Deux rangées qui longent le chemin : elles comblent le sous-bois et cassent ses bords droits.
-    for edge in (PATH_ROWS[0] - 0.05, PATH_ROWS[1] + 3.1):
-        x = 0.6
-        while x < FLOOR_WIDTH:
-            feet.append((-x + rng.uniform(-0.2, 0.2), edge + rng.uniform(-0.12, 0.12)))
-            x += 1.15
+    # Deux rangées qui longent chaque chemin : elles comblent le sous-bois et cassent ses bords.
+    for side, top, bottom in paths:
+        for edge in (top - 0.05, bottom + 3.1):
+            x = 0.6
+            while x < floor_width:
+                base = -x if side < 0 else scene.width + x
+                feet.append((base + rng.uniform(-0.2, 0.2), edge + rng.uniform(-0.12, 0.12)))
+                x += 1.15
 
     blocks = []
     for number, (x, y) in enumerate(feet):
-        texture = rng.choice(list(TREES))
+        res, off_x, off_y = rng.choice(trees)
         scale = rng.uniform(SCALE_MIN, SCALE_MAX)
         value = rng.uniform(0.80, 0.92)
         flip = "flip_h = true\n" if rng.random() < 0.5 else ""
         blocks.append(
             f'[node name="{PREFIX}{number:03d}" type="Sprite2D" parent="Entities" '
-            f"unique_id={new_id()}]\n"
+            f"unique_id={scene.new_id()}]\n"
             f"modulate = Color({value * rng.uniform(0.96, 1.0):.4f}, {value:.4f}, "
             f"{value * rng.uniform(0.94, 1.02):.4f}, 1)\n"
-            f'material = ExtResource("{MATERIAL}")\n'
+            f'material = ExtResource("{wind}")\n'
             f"position = Vector2({x * TILE:.1f}, {y * TILE:.1f})\n"
             f"scale = Vector2({scale:.4f}, {scale:.4f})\n"
-            f'texture = ExtResource("{texture}")\n'
+            f'texture = ExtResource("{res}")\n'
             "centered = false\n"
-            f"offset = {offsets[texture]}\n"
+            f"offset = Vector2({off_x}, {off_y})\n"
             f"{flip}\n"
         )
 
-    floors = []
-    top, bottom = -2 * TILE, (MAP_H + 4) * TILE
-    for name, left in (("West", -FLOOR_WIDTH * TILE), ("East", MAP_W * TILE)):
-        right = left + FLOOR_WIDTH * TILE
-        floors.append(
-            f'[node name="{PREFIX}Floor{name}" type="Polygon2D" parent="." '
-            f"unique_id={new_id()}]\n"
-            "z_index = -3\n"
-            f"color = {FLOOR_COLOR}\n"
-            f"polygon = PackedVector2Array({left}, {top}, {right}, {top}, "
-            f"{right}, {bottom}, {left}, {bottom})\n\n"
+    under = []
+    width = floor_width * TILE
+    top, height = -2 * TILE, (scene.height + 6) * TILE
+    grass = scene.resource("Texture2D", TEX_GRASS) if floor == "grass" else None
+    for name, left in (("West", -width), ("East", scene.width * TILE)):
+        if grass:
+            under.append(repeat_sprite(scene, f"Floor{name}", grass, (left, top, width, height)))
+        else:
+            under.append(
+                f'[node name="{PREFIX}Floor{name}" type="Polygon2D" parent="." '
+                f"unique_id={scene.new_id()}]\n"
+                f"z_index = -3\ncolor = {COLOR_FLOOR}\n"
+                f"polygon = PackedVector2Array({left}, {top}, {left + width}, {top}, "
+                f"{left + width}, {top + height}, {left}, {top + height})\n\n"
+            )
+    if paths:
+        path_res = scene.resource("Texture2D", TEX_PATH)
+        for number, (side, row_top, row_bottom) in enumerate(paths):
+            left = -width if side < 0 else scene.width * TILE
+            rect = (left, row_top * TILE, width, (row_bottom - row_top) * TILE)
+            under.append(repeat_sprite(scene, f"Path{number}", path_res, rect))
+    scene.write("".join(under), "".join(blocks))
+    print(f"{map_id} : {len(blocks)} arbres")
+
+
+def build_edges(map_id: str, axis: str, thickness: int) -> None:
+    scene = Scene(map_id)
+    width, height = scene.width * TILE, scene.height * TILE
+    if axis == "x":
+        places = {"west": (-thickness, 0), "east": (width, 0)}
+    else:
+        places = {"north": (0, -thickness), "south": (0, height)}
+    under = []
+    for side, (x, y) in places.items():
+        res = scene.resource("Texture2D", f"res://assets/world/maps/bords/{map_id}_{side}.png")
+        under.append(
+            f'[node name="{PREFIX}Edge{side.title()}" type="Sprite2D" parent="." '
+            f"unique_id={scene.new_id()}]\n"
+            f"z_index = -3\nposition = Vector2({x}, {y})\n"
+            f'texture = ExtResource("{res}")\ncentered = false\n\n'
         )
+    scene.write("".join(under), "")
+    print(f"{map_id} : bords {axis}")
 
-    width = FLOOR_WIDTH * TILE
-    path_y = PATH_ROWS[0] * TILE
-    path_h = (PATH_ROWS[1] - PATH_ROWS[0]) * TILE
-    floors.append(
-        f'[node name="{PREFIX}PathWest" type="Sprite2D" parent="." unique_id={new_id()}]\n'
-        "z_index = -3\n"
-        "texture_repeat = 2\n"
-        f"position = Vector2({-width}, {path_y})\n"
-        f'texture = ExtResource("{PATH_RES}")\n'
-        "centered = false\n"
-        "region_enabled = true\n"
-        f"region_rect = Rect2(0, 0, {width}, {path_h})\n\n"
+
+def build_backdrop(map_id: str, path: str) -> None:
+    scene = Scene(map_id)
+    image = Image.open(ROOT / path.removeprefix("res://"))
+    scale = max(VIEW[0] / image.width, VIEW[1] / image.height)
+    res = scene.resource("Texture2D", path)
+    center = (scene.width * TILE / 2, scene.height * TILE / 2)
+    under = (
+        f'[node name="{PREFIX}Backdrop" type="Sprite2D" parent="." unique_id={scene.new_id()}]\n'
+        f"z_index = -4\nposition = Vector2({center[0]}, {center[1]})\n"
+        f"scale = Vector2({scale:.4f}, {scale:.4f})\n"
+        f'texture = ExtResource("{res}")\n\n'
     )
-    resource = f'[ext_resource type="Texture2D" path="{PATH_TEXTURE}" id="{PATH_RES}"]\n'
-    first_node = text.index("\n[sub_resource") if "\n[sub_resource" in text else text.index("\n[node")
-    text = text[:first_node].rstrip("\n") + "\n" + resource + text[first_node:]
+    scene.write(under, "")
+    print(f"{map_id} : fond")
 
-    anchor = '[node name="GroundDecals"'
-    if text.count(anchor) != 1:
-        raise SystemExit("GroundDecals introuvable")
-    text = text.replace(anchor, "".join(floors) + anchor)
 
-    last = list(re.finditer(r'\[node name="Forest\d+"', text))[-1]
-    end = text.index("\n[node", last.end()) + 1
-    text = text[:end] + "".join(blocks) + text[end:]
-    SCENE.write_text(text)
-    print(f"{len(blocks)} arbres, sol et chemin posés dans {SCENE.name}")
+def main() -> None:
+    for map_id, config in FORETS.items():
+        build_forest(map_id, *config)
+    for map_id, config in BORDS.items():
+        if (ROOT / f"assets/world/maps/bords/{map_id}_{'west' if config[0] == 'x' else 'north'}.png").exists():
+            build_edges(map_id, *config)
+        else:
+            print(f"{map_id} : images de bord absentes, ignorée")
+    for map_id, path in FONDS.items():
+        if (ROOT / path.removeprefix("res://")).exists():
+            build_backdrop(map_id, path)
+        else:
+            print(f"{map_id} : fond absent, ignorée")
 
 
 if __name__ == "__main__":
