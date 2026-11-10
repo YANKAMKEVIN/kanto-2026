@@ -633,7 +633,7 @@
 		"seisme": {"base": "sol_roche", "priority": "A", "origin": "centre"},
 		"psyko": {"base": "psy", "priority": "A", "origin": "yeux"},
 		"blizzard": {"base": "glace", "priority": "B", "origin": "bouche"},
-		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche", "bolt_height": 0.55, "impact_size": 3.2, "shake": 6.0, "zoom": 1.06, "art": {"travel": "", "charge": "poussiere_or", "aura": "aura_solaire", "bolt": "rayon_solaire", "impact": "explosion_solaire", "particle": "rayon_court", "rise": "pollen_dore"}, "light_peak": 0.85, "flashes": 2},
+		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche", "bolt_height": 0.55, "impact_size": 3.2, "shake": 6.0, "zoom": 1.06, "art": {"travel": "poussiere_or", "charge": "poussiere_or", "aura": "aura_solaire", "bolt": "rayon_solaire", "impact": "explosion_solaire", "particle": "rayon_court", "rise": "pollen_dore"}, "light_peak": 0.85, "flashes": 2},
 		"explosion": {"base": "explosion", "priority": "B", "origin": "centre"}
 	}
 }

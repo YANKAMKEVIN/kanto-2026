@@ -1284,7 +1284,9 @@ func test_solar_beam_charges_sunlight_then_fires_a_huge_beam() -> void:
 	_player.play(charge, stage)
 	_pose_at(charge, MoveFxPlan.CHARGE, 0.6)
 	assert_true(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "il absorbe la lumière")
-	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part encore")
+	var mouth := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(not mouth.visible or mouth.texture == FxArt.particle(&"poussiere_or").get("texture"),
+		"rien ne part encore : la lumière se rassemble à la bouche")
 	_player.stop()
 	var plan := _plan(&"solar_beam")
 	assert_eq(plan.art.get(&"bolt"), &"rayon_solaire")
