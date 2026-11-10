@@ -64,6 +64,14 @@
    "melange": "norm",
    "boucle": false
   },
+  "jet_pistolet": {
+   "fichier": "fb_jet_pistolet.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "norm",
+   "boucle": true
+  },
   "pluie": {
    "fichier": "fb_pluie.webp",
    "images": 16,
@@ -113,6 +121,46 @@
    "fichier": "p_halo_eau.webp",
    "taille": 192,
    "melange": "add"
+  },
+  "bulle_eau": {
+   "fichier": "p_bulle_eau.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "bulle_double": {
+   "fichier": "p_bulle_double.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "bulle_eclatee": {
+   "fichier": "p_bulle_eclatee.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "goutte_ronde": {
+   "fichier": "p_goutte_ronde.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "gouttes_vol": {
+   "fichier": "p_gouttes_vol.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclat_bulle": {
+   "fichier": "p_eclat_bulle.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "bulle_reflet": {
+   "fichier": "p_bulle_reflet.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "mousse_bulles": {
+   "fichier": "p_mousse_bulles.webp",
+   "taille": 192,
+   "melange": "norm"
   },
   "valve_eau": {
    "fichier": "p_valve_eau.webp",

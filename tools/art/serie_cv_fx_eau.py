@@ -62,6 +62,11 @@ FLIPBOOKS = [
 		"une énorme explosion d'eau centrée, jouée UNE fois : image 1 un point d'impact blanc, images 2 à 4 une "
 		"gerbe d'eau immense qui jaillit en étoile jusqu'aux bords de la case, écume blanche, images 5 à 7 elle se "
 		"brise en paquets d'eau et en gouttes, image 8 il ne reste que des gouttes."),
+	("jet_pistolet", "norm", "bande", False, 320, "JET D'EAU NET ET DENSE",
+		"UN jet d'eau horizontal DENSE et bien visible, du bord GAUCHE exact jusqu'au bord DROIT exact de la case, sans "
+		"interruption, épaisseur environ un quart de la hauteur de la case : un cylindre d'eau bleu clair et turquoise "
+		"qui ondule légèrement, cœur blanc brillant, bords nets avec un liseré bleu plus soutenu, gouttes et petits "
+		"éclats d'écume arrachés le long du jet. Boucle : l'eau coule vers la droite."),
 	("pluie", "add", "pleine", False, 384, "PLUIE QUI TOMBE",
 		"une PLUIE dense qui tombe sur toute la case : de longs traits de pluie fins, blancs et bleu pâle, légèrement "
 		"inclinés vers la gauche en descendant, répartis sur toute la case du haut en bas, plus quelques gouttes plus "
@@ -78,6 +83,17 @@ b.PARTICULES = [
 		("embrun", "un nuage d'embruns fins, gouttelettes blanches"),
 		("filet_eau", "un filet d'eau vertical mince et ondulé, bleu clair"),
 		("halo_eau", "une lueur ronde très douce, bleu pâle, qui s'estompe jusqu'au noir"),
+	]),
+	("part_q", "norm", [
+		("bulle_eau", "UNE bulle d'eau ronde bien visible : intérieur bleu clair translucide, contour bleu soutenu et net, "
+			"grand reflet blanc en haut à gauche, petit reflet en bas à droite"),
+		("bulle_double", "deux bulles d'eau accolées, une grande et une petite, contour bleu net, reflets blancs"),
+		("bulle_eclatee", "une bulle d'eau qui éclate : anneau de gouttes bleues et blanches qui jaillit"),
+		("goutte_ronde", "une goutte d'eau ronde et pleine, bleu clair, reflet blanc"),
+		("gouttes_vol", "trois gouttes d'eau en vol, bleu clair, reflets blancs"),
+		("eclat_bulle", "une étoile d'éclaboussure bleue et blanche, compacte"),
+		("bulle_reflet", "une bulle d'eau irisée, contour bleu net, reflet blanc en croissant"),
+		("mousse_bulles", "un amas de petites bulles d'eau serrées, bleu clair et blanc"),
 	]),
 	("part_p", "norm", [
 		("valve_eau", "UNE valve de coquillage faite d'eau, grande coquille Saint-Jacques vue de face, nervures en "

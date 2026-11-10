@@ -1026,7 +1026,7 @@ func test_sunny_day_lights_the_whole_field_not_the_target() -> void:
 func test_water_gun_is_thin_and_hydro_pump_huge() -> void:
 	var gun := _plan(&"water_gun")
 	var pump := _plan(&"hydro_pump")
-	assert_eq(gun.art.get(&"bolt"), &"jet_fin_eau")
+	assert_eq(gun.art.get(&"bolt"), &"jet_pistolet")
 	assert_eq(pump.art.get(&"bolt"), &"torrent_spirale")
 	assert_lt(gun.bolt_height * 3.0, pump.bolt_height, "Hydrocanon bien plus épais")
 	assert_lt(gun.impact_size, pump.impact_size)

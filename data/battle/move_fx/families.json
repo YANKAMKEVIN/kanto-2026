@@ -56,7 +56,7 @@
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#9FDAFF", "light_peak": 0.3, "flashes": 1, "droplets": true},
 			"camera": {"zoom": 1.03, "shake": 3.5},
-			"fx": {"palette": ["#F0FAFF", "#5FB8F0", "#1E4E8A"], "particles": 36, "bolt_height": 0.15, "impact_size": 1.4, "art": {"charge": "petite_bulle", "bolt": "jet_fin_eau", "impact": "eclabousse_eau", "particle": "goutte_claire", "rise": "petite_bulle", "fallout": "gouttelettes"}}
+			"fx": {"palette": ["#F0FAFF", "#5FB8F0", "#1E4E8A"], "particles": 36, "bolt_height": 0.2, "impact_size": 1.4, "art": {"charge": "petite_bulle", "bolt": "jet_pistolet", "impact": "eclabousse_eau", "particle": "goutte_claire", "rise": "petite_bulle", "fallout": "gouttelettes"}}
 		},
 		"electrique": {
 			"name": "Électrique", "target": "foe",
@@ -207,7 +207,7 @@
 			"camera": {"zoom": 1.02, "shake": 1.0},
 			"fx": {"palette": ["#F0FAFF", "#8FD0F8", "#2E6AA8"], "particles": 18, "volley": {"count": 4, "stagger": 0.1, "size": 0.1, "wobble": 0.035}, "art": {"charge": "bulle", "piece": "bulle", "impact": "bulles_eclatent", "particle": "goutte"}},
 			"variants": {
-				"ecume": {"_doc": "Écume (refonte Eau, direction A) : une nuée de petites bulles peintes, plus nombreuses et plus légères ; elles éclatent en éclaboussure.", "particles": 26, "impact_size": 1.3, "volley": {"count": 10, "stagger": 0.045, "size": 0.075, "wobble": 0.035}, "art": {"piece": "petite_bulle", "impact": "eclabousse_eau", "particle": "goutte_claire"}},
+				"ecume": {"_doc": "Écume (refonte Eau, direction A) : une nuée de petites bulles peintes, plus nombreuses et plus légères ; elles éclatent en éclaboussure.", "particles": 26, "impact_size": 1.5, "volley": {"count": 8, "stagger": 0.06, "size": 0.12, "wobble": 0.035}, "art": {"piece": "bulle_eau", "impact": "eclabousse_eau", "particle": "gouttes_vol"}},
 				"rafale": {"_doc": "Bulles d'O : plus nombreuses, plus rapides.", "particles": 26, "volley": {"count": 11, "stagger": 0.055, "size": 0.085, "wobble": 0.015}}
 			}
 		},
