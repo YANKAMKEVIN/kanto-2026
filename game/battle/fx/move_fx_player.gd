@@ -136,7 +136,8 @@ const REAR_BACK: float = 16.0
 const GESTURES: Array[String] = ["tail_wag", "powder_shake", "rear_back", "teleport_out",
 	"splash_hop", "swell", "stomp", "spoon"]
 ## Briques de trajet en pièces ou en traits posés par [method _pose_rouge].
-const ROUGE_TRAVELS: Array[String] = ["bubbles", "needle", "seed_arc", "string", "whip"]
+const ROUGE_TRAVELS: Array[String] = ["bubbles", "needle", "seed_arc", "string", "whip",
+	"leaf_volley"]
 ## Pièces d'une volée (bulles, aiguille, graines, pousses, feuilles d'une liane) : au plus.
 const VOLLEY_MAX: int = 24
 ## Bulles : petit soulèvement en vol (hauteurs d'écran), début de l'éclatement (part du vol).
@@ -165,7 +166,7 @@ const WHIP_WAVE: float = 0.07
 const WHIP_LIFT: float = 0.16
 const WHIP_POINTS: int = 16
 const WHIP_LEAF: float = 0.07
-const CRACK_SIZE: float = 0.16
+const CRACK_SIZE: float = 0.26
 ## Bec : taille d'une marque (part de la marque du Contact), points frappés (parts de la cible).
 const PECK_POP: float = 0.5
 const PECK_SPOTS: Array[Vector2] = [Vector2(-0.16, -0.14), Vector2(0.14, 0.06),
@@ -183,9 +184,11 @@ const POWDER_SPARKLES: int = 22
 const ROUGE2_TRAVELS: Array[String] = ["rockfall", "smoke_ball", "gas_drift", "stars", "sky_bolt",
 	"giant_orb", "bone", "strange_orb", "lob", "underground", "ground_pillar", "wave_sweep"]
 const ROUGE2_IMPACTS: Array[String] = ["explosions", "screen_flash", "field_haze", "fissure_open",
-	"electric_cage", "fire_vortex", "beam_up", "warp_aura", "sunshine", "rain"]
+	"electric_cage", "fire_vortex", "beam_up", "warp_aura", "sunshine", "rain", "petal_vortex", "siphon",
+	"sunshaft"]
 ## Impacts sans tremblement de la cible (Flash, Buée Noire) ; impacts où elle ondule sur place.
-const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine", "rain", "shield"]
+const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine", "rain", "shield",
+	"sunshaft"]
 const WOBBLE_IMPACTS: Array[String] = ["distortion", "warp_aura", "dizzy"]
 ## Volée d'aiguilles (Double-Dard, Dard-Nuée) : écart entre deux aiguilles (hauteurs d'écran).
 const NEEDLE_SPACING: float = 0.05
@@ -275,6 +278,14 @@ const SUN_SIZE: float = 1.45
 const RAIN_ALPHA: float = 1.0
 const SURF_HEIGHT: float = 0.95
 const SURF_PAST: float = 0.18
+## Refonte Plante, direction A [D] (2026-11-10) : liane peinte de Fouet Lianes (épaisseur, hauteurs
+## d'écran) ; rotation des feuilles de Tranch'Herbe (tours par seconde) et leur arc (hauteurs
+## d'écran) ; rayon de Synthèse (largeur, en hauteurs du lanceur) ; flot de sève par défaut (Vol-Vie).
+const VINE_HEIGHT: float = 0.34
+const LEAF_SPIN: float = 2.5
+const LEAF_ARC: float = 0.08
+const SUNSHAFT_WIDTH: float = 0.85
+const SIPHON_HEIGHT: float = 0.2
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
 ## images).
@@ -609,9 +620,12 @@ func _impact_burst(phase: MoveFxPlan.Phase) -> void:
 			_rock_burst(0)
 		"explosions":
 			_blast_burst(0)
-		"electric_cage", "fire_vortex":
+		"electric_cage", "fire_vortex", "petal_vortex":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 22.0, reach * 0.7,
 				life * 1.5, true)
+		"sunshaft":
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 30.0, reach,
+				life * 1.6, true)
 		"orb_blast":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.BURST, 46.0, reach * 3.0,
 				life * 1.3, true)
@@ -1028,13 +1042,21 @@ func _pose_drain(phase: MoveFxPlan.Phase, _k: float) -> void:
 	var strike := _plan.phase(MoveFxPlan.IMPACT, phase.hit)
 	if strike == null:
 		return
-	var from_t := strike.start + strike.duration * 0.5
-	if _t < from_t:
+	var k := _drain_progress()
+	if k < 0.0:
 		return
-	var k := clampf((_t - from_t) / maxf(_plan.duration - from_t, 0.001), 0.0, 1.0)
 	var id := _plan.art.get(&"stream", &"") as StringName
 	var from := _stage.impact_point()
 	var to := _stage.user_rect.get_center()
+	var siphon := _plan.art.get(&"siphon", &"") as StringName
+	if not siphon.is_empty():
+		# Refonte Plante : un flot de sève peint relie la cible au lanceur, il s'étire vers lui puis
+		# s'éteint ; les orbes courent par-dessus.
+		var reach := from.distance_to(to) * _ease_out(clampf(k * 2.5, 0.0, 1.0))
+		var thick := (_plan.bolt_height if _plan.bolt_height > 0.0 else SIPHON_HEIGHT) \
+			* _stage.view_size.y * (1.0 + 0.06 * sin(_t * 30.0))
+		_show_flip(Flip.TRAVEL, siphon, from, Vector2(reach, thick), (to - from).angle(),
+			1.0 - clampf((k - 0.75) / 0.25, 0.0, 1.0), true)
 	var bend := (to - from).orthogonal().normalized() * from.distance_to(to) * STREAM_ARC
 	for i: int in WAVE_COUNT:
 		var p := clampf(k * 1.6 - 0.3 * i, 0.0, 1.0)
@@ -1043,6 +1065,20 @@ func _pose_drain(phase: MoveFxPlan.Phase, _k: float) -> void:
 		var at := from.lerp(to, _ease_in_out(p)) + bend * sin(PI * p)
 		_show_flip(Flip.WAVE_A + i, id, at, Vector2.ONE * STREAM_SIZE * _stage.view_size.y
 			* lerpf(0.8, 1.2, sin(PI * p)), 0.0, sin(PI * p))
+
+
+## Avancée [0, 1] du drain : de la moitié de l'impact du dernier coup à la fin de l'attaque ; -1
+## avant lui (ou sans drain qui porte).
+func _drain_progress() -> float:
+	if not _plan.has_modifier(&"drain") or not _plan.lands() or _missed(_plan.hits - 1):
+		return -1.0
+	var strike := _plan.phase(MoveFxPlan.IMPACT, _plan.hits - 1)
+	if strike == null:
+		return -1.0
+	var from_t := strike.start + strike.duration * 0.5
+	if _t < from_t:
+		return -1.0
+	return clampf((_t - from_t) / maxf(_plan.duration - from_t, 0.001), 0.0, 1.0)
 
 
 ## Étincelles des joues (Éclair) : un petit arc peint sur chaque point d'origine.
@@ -1408,6 +1444,8 @@ func _pose_rouge(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_string(phase, k)
 		"whip":
 			_pose_whip(phase, k)
+		"leaf_volley":
+			_pose_leaf_volley()
 
 
 ## Phase qui conclut le coup 0 : impact, raté ou sans effet (null si l'attaque échoue).
@@ -1531,7 +1569,9 @@ func _pose_seeds() -> void:
 	var count := mini(_plan.volley_count, floori(VOLLEY_MAX * 0.5))
 	var flight := maxf(1.0 - _plan.volley_stagger * (count - 1), 0.1)
 	var sprout := FxArt.particle(_plan.art.get(&"sprout", &""))
-	var seed_info := {"texture": _seed, "additive": false}
+	var seed_info := FxArt.particle(_plan.art.get(&"seed", &""))
+	if seed_info.is_empty():
+		seed_info = {"texture": _seed, "additive": false}
 	var seed_size := Vector2(1.0, 0.7) * _plan.volley_size * height
 	var back := _plan.phase(MoveFxPlan.RETURN)
 	for i: int in count:
@@ -1568,6 +1608,65 @@ func _pose_seeds() -> void:
 
 static func _seed_at(from: Vector2, land: Vector2, p: float, height: float) -> Vector2:
 	return from.lerp(land, p) + Vector2(0.0, -sin(PI * p) * SEED_ARC * height)
+
+
+## Tranch'Herbe : les feuilles tranchantes partent l'une après l'autre en tournoyant sur elles-mêmes,
+## en léger arc alterné, et se plantent sur des points de la cible où elles disparaissent (l'impact
+## peint marque les entailles). Ratée : elles filent à côté.
+func _pose_leaf_volley() -> void:
+	var travel := _plan.phase(MoveFxPlan.TRAVEL)
+	var strike := _strike()
+	var info := FxArt.particle(_plan.art.get(&"piece", &""))
+	if travel == null or strike == null or info.is_empty():
+		return
+	var u := (_t - travel.start) / maxf(strike.start + strike.duration * 0.35 - travel.start, 0.001)
+	if u <= 0.0 or u > 1.0 + MoveFxPlan.EPSILON:
+		return
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var to := _miss_point() if _missed(0) else _stage.impact_point()
+	var normal := (to - from).orthogonal().normalized()
+	var count := mini(_plan.volley_count, VOLLEY_MAX)
+	var flight := maxf(1.0 - _plan.volley_stagger * (count - 1), 0.1)
+	var rect := _stage.target_rect
+	for i: int in count:
+		var p := (u - _plan.volley_stagger * i) / flight
+		if p <= 0.0 or p >= 1.0:
+			continue
+		var r := _rand(i + 11)
+		var aim := to + Vector2((r - 0.5) * rect.size.x * 0.6, (_rand(i + 23) - 0.5) * rect.size.y * 0.5)
+		var e := p * p * (3.0 - 2.0 * p)
+		var side := 1.0 if i % 2 == 0 else -1.0
+		var at := from.lerp(aim, e) + normal * side * sin(PI * p) * (LEAF_ARC + _plan.volley_wobble) * height
+		var size := _plan.volley_size * height * lerpf(0.85, 1.15, r) * lerpf(1.0, _depth_far(), p)
+		_show_piece(i, info, at, Vector2.ONE * size, TAU * LEAF_SPIN * (_t + r),
+			minf(1.0, p * 8.0) * (1.0 - clampf((p - 0.9) / 0.1, 0.0, 1.0)))
+
+
+## Synthèse : un rayon de soleil (`sky`) descend du haut de l'écran jusqu'aux pieds du lanceur
+## pendant l'anticipation, brille pendant l'impact et s'efface au retour ; l'aura (`aura`) suit
+## son corps.
+func _pose_sunshaft(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"sky", &"") as StringName
+	var rect := _stage.user_rect
+	var foot := _feet(rect)
+	var reveal := 1.0
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION:
+			reveal = _ease_out(k)
+			alpha = minf(1.0, k * 3.0)
+		MoveFxPlan.IMPACT:
+			alpha = 1.0 - 0.1 * absf(sin(TAU * 3.0 * k))
+		MoveFxPlan.RETURN:
+			alpha = 1.0 - _ease_in(k)
+		_:
+			return
+	var length := foot.y * reveal
+	if length <= 1.0:
+		return
+	_show_flip(Flip.SKY, id, Vector2(foot.x, length * 0.5), Vector2(rect.size.y * SUNSHAFT_WIDTH,
+		length), 0.0, alpha)
 
 
 ## Sécrétion : trois fils se tendent du lanceur à la cible l'un après l'autre (légèrement
@@ -1678,9 +1777,17 @@ func _pose_whip(phase: MoveFxPlan.Phase, k: float) -> void:
 		at += normal * sin(TAU * (s * 1.3 - _t * 2.5)) * wave * sin(PI * s)
 		at += normal * sin(PI * s) * lift * WHIP_LIFT * height
 		points.append(at)
-	_whip.points = points
-	_whip.visible = true
-	_color_whip(alpha)
+	var vine := _plan.art.get(&"vine", &"") as StringName
+	if vine.is_empty():
+		_whip.points = points
+		_whip.visible = true
+		_color_whip(alpha)
+	else:
+		# Liane peinte (refonte Plante) : tendue du lanceur au bout du fouet, relevée avec lui.
+		var bent := from.lerp(tip, 0.5) + normal * lift * WHIP_LIFT * height
+		var end := bent + (bent - from)
+		_show_flip(Flip.EXTRA_A, vine, from, Vector2(from.distance_to(end), VINE_HEIGHT * height
+			* (1.0 + 0.08 * sin(_t * 30.0))), (end - from).angle(), alpha, true)
 	var leaf := FxArt.particle(_plan.art.get(&"piece", &""))
 	for i: int in 3:
 		var at := points[roundi((0.3 + 0.25 * i) * (WHIP_POINTS - 1))]
@@ -2163,8 +2270,10 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_blasts()
 		"screen_flash":
 			_pose_flash_glow(phase, k)
-		"electric_cage", "fire_vortex":
+		"electric_cage", "fire_vortex", "petal_vortex":
 			_pose_cage(phase, k)
+		"sunshaft":
+			_pose_sunshaft(phase, k)
 		"sunshine", "rain":
 			_pose_weather(phase, k)
 		"field_haze":
@@ -2516,6 +2625,10 @@ func _pose_aura(phase: MoveFxPlan.Phase, k: float) -> void:
 			alpha *= _ease_out(k)
 		MoveFxPlan.RETURN:
 			alpha *= 1.0 - k
+	if _plan.has_modifier(&"drain"):
+		# Méga-Sangsue : le lanceur s'illumine quand la sève lui revient.
+		var drained := _drain_progress()
+		alpha = 0.95 * sin(PI * drained) if drained > 0.0 else 0.0
 	var center := _stage.user_rect.get_center() + _stage.user.position - _stage.user_rest
 	_show_flip(Flip.AURA, id, center, _stage.user_rect.size * AURA_SIZE, 0.0, alpha)
 
@@ -2548,7 +2661,9 @@ func _pose_cage(phase: MoveFxPlan.Phase, k: float) -> void:
 	var id := _plan.art.get(&"cage", &"") as StringName
 	var rect := _stage.target_rect
 	var at := rect.get_center()
-	var base := maxf(rect.size.x, rect.size.y) * CAGE_SIZE
+	# Danse Fleur : le tourbillon dépasse largement la cible (taille d'impact de la famille).
+	var base := maxf(rect.size.x, rect.size.y) * (_plan.impact_size if _plan.impact_size > 0.0
+		and _impact_brick() == "petal_vortex" else CAGE_SIZE)
 	match phase.name:
 		MoveFxPlan.IMPACT:
 			_show_flip(Flip.IMPACT, id, at, Vector2.ONE * base * lerpf(1.5, 1.0, _ease_out(minf(k * 3.0,

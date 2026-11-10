@@ -8,7 +8,7 @@
 		"beat_up": {"family": "contact", "impact": "coup"},
 		"charm": {"family": "statut_moins"},
 		"conversion_2": {"family": "statut_plus"},
-		"cotton_spore": {"family": "statut_moins"},
+		"cotton_spore": {"family": "spore_coton"},
 		"crunch": {"family": "contact", "impact": "crocs"},
 		"curse": {"family": "spectre"},
 		"destiny_bond": {"family": "spectre"},
@@ -46,7 +46,7 @@
 		"sunny_day": {"family": "zenith"},
 		"swagger": {"family": "statut_moins"},
 		"sweet_kiss": {"family": "statut_moins"},
-		"synthesis": {"family": "soin"},
+		"synthesis": {"family": "synthese"},
 		"twister": {"family": "vent"},
 		"zap_cannon": {"family": "elecanon"}
 	}

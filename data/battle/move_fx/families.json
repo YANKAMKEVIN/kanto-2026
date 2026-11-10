@@ -191,12 +191,12 @@
 		},
 		"fouet": {
 			"name": "Fouet", "target": "foe",
-			"_doc": "Fouet Lianes (vague 1) : une liane part du lanceur (brique whip, ondulation qui court jusqu'au bout), fouette la cible, se relève et claque une seconde fois (beats 2), puis se retire. Feuilles peintes le long de la liane (piece), étoile de claquement (crack).",
+			"_doc": "Fouet Lianes (vague 1) : une liane part du lanceur (brique whip, ondulation qui court jusqu'au bout), fouette la cible, se relève et claque une seconde fois (beats 2), puis se retire. Feuilles peintes le long de la liane (piece), étoile de claquement (crack). Refonte Plante, direction A (2026-11-10, docs/tech/attaques-plante.md) : deux lianes torsadées peintes (vine) à la place de la liane dessinée en code.",
 			"bricks": {"launch": "rear_back", "travel": "whip", "impact": "whip_crack"},
 			"phases": {"anticipation": 0.15, "travel": 0.25, "impact": 0.45, "return": 0.15},
 			"world": {"light": "#B8F28A", "light_peak": 0.0, "flashes": 0, "foliage": true},
-			"camera": {"zoom": 1.02, "shake": 2.0},
-			"fx": {"palette": ["#D8F59A", "#5FA83A", "#22401A"], "particles": 14, "beats": 2, "art": {"piece": "feuille", "particle": "feuille", "crack": "etoile_impact"}}
+			"camera": {"zoom": 1.03, "shake": 4.5},
+			"fx": {"palette": ["#E8FFC8", "#5FB83A", "#1E4A14"], "particles": 22, "beats": 2, "art": {"vine": "liane_fouet", "piece": "feuille_vive", "particle": "eclat_feuilles", "crack": "claque_vert"}}
 		},
 		"bulles": {
 			"name": "Bulles", "target": "foe",
@@ -250,13 +250,13 @@
 			}
 		},
 		"graine": {
-			"name": "Graine", "target": "foe",
-			"_doc": "Vampigraine (vague 1) : trois graines lancées en arc (brique seed_arc, formes en code [phase DA]) tombent sur la cible et y germent (impact sprout : pousses peintes qui sortent, art sprout).",
+			"name": "Graine", "target": "foe", "duration": 1.3,
+			"_doc": "Vampigraine (vague 1) : trois graines lancées en arc (brique seed_arc) tombent sur la cible et y germent (impact sprout : pousses peintes qui sortent, art sprout). Refonte Plante, direction A : graines peintes (seed), lianes qui jaillissent et enserrent la cible (impact, joué une fois).",
 			"bricks": {"launch": "rear_back", "travel": "seed_arc", "impact": "sprout"},
 			"phases": {"anticipation": 0.15, "travel": 0.35, "impact": 0.35, "return": 0.15},
 			"world": {"light": "#B8F28A", "light_peak": 0.0, "flashes": 0},
-			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#E8D8A8", "#8A6A3A", "#3A2A14"], "particles": 10, "volley": {"count": 3, "stagger": 0.12, "size": 0.045}, "art": {"sprout": "liane", "particle": "feuille"}}
+			"camera": {"zoom": 1.02, "shake": 2.5},
+			"fx": {"palette": ["#E8FFC8", "#5FB83A", "#1E4A14"], "particles": 16, "volley": {"count": 3, "stagger": 0.12, "size": 0.2}, "impact_size": 2.0, "art": {"seed": "graine_vampi", "sprout": "feuille_double", "impact": "lianes_enserrent", "particle": "feuille_vive"}}
 		},
 		"chute_pierres": {
 			"name": "Chute de pierres", "target": "foe",
@@ -447,6 +447,54 @@
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#F0FAFF", "#9FC8E8", "#3A5A7A"], "particles": 0, "art": {"sky": "pluie"}}
 		},
+		"sangsue": {
+			"name": "Sangsue", "target": "foe",
+			"_doc": "refonte Plante, direction A (2026-11-10, docs/tech/attaques-plante.md) : Vol-Vie et Méga-Sangsue. Rien ne part du lanceur : la sève jaillit de la cible (brique siphon, impact eclat_seve), puis un flot de sève peint (siphon) et ses orbes (stream) reviennent au lanceur (modificateur drain). Méga-Sangsue (variante mega) : flot plus épais, gerbe plus grande, le lanceur s'illumine (aura).",
+			"bricks": {"launch": "posture", "travel": "", "impact": "siphon"},
+			"phases": {"anticipation": 0.2, "travel": 0.0, "impact": 0.45, "return": 0.35},
+			"world": {"light": "#9AF07A", "light_peak": 0.3, "flashes": 0, "foliage": true},
+			"camera": {"zoom": 1.02, "shake": 2.0},
+			"fx": {"palette": ["#F0FFE0", "#6FE04A", "#1E5A14"], "particles": 22, "bolt_height": 0.2, "impact_size": 1.6, "art": {"charge": "etincelle_seve", "impact": "eclat_seve", "siphon": "flot_seve", "stream": "orbe_seve", "particle": "etincelle_seve"}},
+			"variants": {
+				"mega": {"particles": 36, "bolt_height": 0.36, "impact_size": 2.4, "light_peak": 0.5, "art": {"aura": "aura_seve", "rise": "lueur_seve"}}
+			}
+		},
+		"tranch_herbe": {
+			"name": "Tranch'Herbe", "target": "foe",
+			"_doc": "refonte Plante, direction A : une volée de feuilles tranchantes part en tournoyant (brique leaf_volley, pièces feuille_tranchante) et se plante sur la cible ; entailles peintes à l'impact.",
+			"bricks": {"launch": "leaf_swirl", "travel": "leaf_volley", "impact": "leaf_fall"},
+			"phases": {"anticipation": 0.15, "travel": 0.4, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#B8F28A", "light_peak": 0.25, "flashes": 1, "foliage": true},
+			"camera": {"zoom": 1.03, "shake": 4.0},
+			"fx": {"palette": ["#E8FFC8", "#5FB83A", "#1E4A14"], "particles": 26, "volley": {"count": 9, "stagger": 0.06, "size": 0.22, "wobble": 0.02}, "impact_size": 2.2, "art": {"charge": "feuille_vive", "piece": "feuille_tranchante", "impact": "entailles_feuilles", "particle": "eclat_feuilles", "fallout": "feuille_vive"}}
+		},
+		"danse_fleur": {
+			"name": "Danse Fleur", "target": "foe",
+			"_doc": "refonte Plante, direction A : un immense tourbillon de pétales engloutit la cible (brique petal_vortex, la cage de Cage-Éclair en plus grand), pétales et fleurs qui volent.",
+			"bricks": {"launch": "leaf_swirl", "travel": "", "impact": "petal_vortex"},
+			"phases": {"anticipation": 0.2, "travel": 0.0, "impact": 0.6, "return": 0.2},
+			"world": {"light": "#FFC8E0", "light_peak": 0.45, "flashes": 1},
+			"camera": {"zoom": 1.05, "shake": 6.0},
+			"fx": {"palette": ["#FFF4FA", "#FF8AC0", "#8A2A5A"], "particles": 44, "impact_size": 2.6, "art": {"charge": "petale_rose", "cage": "tourbillon_petales", "particle": "petale_rose", "rise": "fleur_blanche", "fallout": "petales_vol"}}
+		},
+		"spore_coton": {
+			"name": "Spore Coton", "target": "foe", "duration": 1.2,
+			"_doc": "refonte Plante, direction A : de gros flocons de coton flottent vers la cible (brique bubbles, pièces flocon_coton) et s'y collent en couronne (impact coton_colle, joué une fois).",
+			"bricks": {"launch": "rear_back", "travel": "bubbles", "impact": "falling_aura"},
+			"phases": {"anticipation": 0.15, "travel": 0.4, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FFF8E8", "light_peak": 0.0, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 1.0},
+			"fx": {"palette": ["#FFFFFF", "#FFFFFF", "#A89878"], "particles": 18, "volley": {"count": 10, "stagger": 0.05, "size": 0.16, "wobble": 0.025}, "impact_size": 1.9, "art": {"piece": "flocon_coton", "impact": "coton_colle", "particle": "touffe_coton"}}
+		},
+		"synthese": {
+			"name": "Synthèse", "target": "self", "duration": 1.3,
+			"_doc": "refonte Plante, direction A : un rayon de soleil descend sur le lanceur (brique sunshaft, sky) qui se couvre d'une aura de photosynthèse verte et dorée (aura), feuilles de lumière qui montent ; rien sur la cible.",
+			"bricks": {"launch": "posture", "travel": "", "impact": "sunshaft"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#E8F890", "light_peak": 0.45, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFFBE0", "#B8F06A", "#3A7A1E"], "particles": 24, "art": {"sky": "rayon_synthese", "aura": "aura_synthese", "particle": "feuille_lumineuse", "rise": "pollen_dore"}}
+		},
 		"poing": {
 			"name": "Poing élémentaire", "target": "foe",
 			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Poing de Feu, Poing-Glace, Poing-Éclair. Rouge : un poing frappe la cible, puis l'élément éclate dessus. Ici : course de Contact, poing peint (impact poing), puis l'élément au contact (element_burst : flipbook, particules qui montent, lumière de l'élément) ; une variante par élément.",
@@ -585,7 +633,7 @@
 		"seisme": {"base": "sol_roche", "priority": "A", "origin": "centre"},
 		"psyko": {"base": "psy", "priority": "A", "origin": "yeux"},
 		"blizzard": {"base": "glace", "priority": "B", "origin": "bouche"},
-		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche"},
+		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche", "bolt_height": 0.55, "impact_size": 3.2, "shake": 6.0, "zoom": 1.06, "art": {"travel": "", "charge": "poussiere_or", "aura": "aura_solaire", "bolt": "rayon_solaire", "impact": "explosion_solaire", "particle": "rayon_court", "rise": "pollen_dore"}, "light_peak": 0.85, "flashes": 2},
 		"explosion": {"base": "explosion", "priority": "B", "origin": "centre"}
 	}
 }

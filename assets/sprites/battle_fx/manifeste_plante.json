@@ -1,0 +1,230 @@
+{
+ "flipbooks": {
+  "flot_seve": {
+   "fichier": "fb_flot_seve.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "eclat_seve": {
+   "fichier": "fb_eclat_seve.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": false
+  },
+  "aura_seve": {
+   "fichier": "fb_aura_seve.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "liane_fouet": {
+   "fichier": "fb_liane_fouet.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "entailles_feuilles": {
+   "fichier": "fb_entailles_feuilles.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "tourbillon_petales": {
+   "fichier": "fb_tourbillon_petales.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  },
+  "rayon_solaire": {
+   "fichier": "fb_rayon_solaire.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "explosion_solaire": {
+   "fichier": "fb_explosion_solaire.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "aura_solaire": {
+   "fichier": "fb_aura_solaire.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "lianes_enserrent": {
+   "fichier": "fb_lianes_enserrent.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "coton_colle": {
+   "fichier": "fb_coton_colle.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "rayon_synthese": {
+   "fichier": "fb_rayon_synthese.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "aura_synthese": {
+   "fichier": "fb_aura_synthese.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "feuille_tranchante": {
+   "fichier": "p_feuille_tranchante.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "graine_vampi": {
+   "fichier": "p_graine_vampi.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "flocon_coton": {
+   "fichier": "p_flocon_coton.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "feuille_double": {
+   "fichier": "p_feuille_double.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "feuille_vive": {
+   "fichier": "p_feuille_vive.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "touffe_coton": {
+   "fichier": "p_touffe_coton.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "brin_herbe": {
+   "fichier": "p_brin_herbe.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclat_feuilles": {
+   "fichier": "p_eclat_feuilles.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "petale_rose": {
+   "fichier": "p_petale_rose.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "fleur_blanche": {
+   "fichier": "p_fleur_blanche.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "fleur_rose": {
+   "fichier": "p_fleur_rose.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "petale_pale": {
+   "fichier": "p_petale_pale.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "petales_vol": {
+   "fichier": "p_petales_vol.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "bouton_fleur": {
+   "fichier": "p_bouton_fleur.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "petale_courbe": {
+   "fichier": "p_petale_courbe.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "pluie_petales": {
+   "fichier": "p_pluie_petales.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "orbe_seve": {
+   "fichier": "p_orbe_seve.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "claque_vert": {
+   "fichier": "p_claque_vert.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etincelle_seve": {
+   "fichier": "p_etincelle_seve.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "lueur_seve": {
+   "fichier": "p_lueur_seve.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "poussiere_or": {
+   "fichier": "p_poussiere_or.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "rayon_court": {
+   "fichier": "p_rayon_court.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "feuille_lumineuse": {
+   "fichier": "p_feuille_lumineuse.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "pollen_dore": {
+   "fichier": "p_pollen_dore.webp",
+   "taille": 192,
+   "melange": "add"
+  }
+ }
+}

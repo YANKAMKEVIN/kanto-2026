@@ -477,22 +477,25 @@ func test_string_shot_stretches_threads_then_wraps_the_target() -> void:
 
 
 ## Fouet Lianes : une liane tendue du lanceur à la cible, qui frappe deux fois (la cible encaisse
-## au début de chaque temps).
+## au début de chaque temps). Refonte Plante : la liane est peinte (deux lianes torsadées).
 func test_vine_whip_lashes_twice() -> void:
 	var stage := _stage()
 	var plan := _plan(&"vine_whip")
 	assert_eq(plan.beats, 2, "deux claquements")
+	assert_eq(plan.art.get(&"vine"), &"liane_fouet", "liane peinte")
 	_player.play(plan, stage)
 	var impact := plan.phase(MoveFxPlan.IMPACT)
 	_player.pose(impact.start)
-	var whip := _player.get_whip()
-	assert_true(whip.visible, "la liane est tendue")
-	assert_almost_eq(whip.points[0], stage.origin(), Vector2.ONE, "depuis le lanceur")
-	assert_almost_eq(whip.points[-1], stage.impact_point(), Vector2.ONE * 2.0, "jusqu'à la cible")
+	var vine := _player.get_art(MoveFxPlayer.Flip.EXTRA_A)
+	assert_true(vine.visible, "la liane est tendue")
+	assert_false(_player.get_whip().visible, "plus de liane dessinée en code")
+	assert_almost_eq(vine.position, stage.origin(), Vector2.ONE, "depuis le lanceur")
+	var reach := vine.scale.x * float(FxArt.flipbook(&"liane_fouet")["size"])
+	assert_almost_eq(reach, stage.origin().distance_to(stage.impact_point()), 2.0, "jusqu'à la cible")
+	var rest_angle := vine.rotation
 	var first := _target.modulate
 	_player.pose(impact.start + impact.duration * 0.25)
-	assert_true(whip.points[whip.points.size() / 2].y < stage.origin().lerp(stage.impact_point(),
-		0.5).y, "elle se relève entre les deux coups")
+	assert_lt(vine.rotation, rest_angle - 0.05, "elle se relève entre les deux coups")
 	_player.pose(impact.start + impact.duration * 0.5 + 0.001)
 	assert_eq(_target.modulate, first, "second claquement : la cible encaisse à nouveau")
 	_player.stop()
@@ -545,7 +548,9 @@ func test_leech_seed_arcs_seeds_that_sprout() -> void:
 	_player.pose(impact.end() - 0.001)
 	var sprout := _player.get_piece(plan.volley_count)
 	assert_true(sprout.visible, "une pousse sort")
-	assert_eq(sprout.texture, FxArt.particle(&"liane").get("texture"), "pousse peinte")
+	assert_eq(sprout.texture, FxArt.particle(&"feuille_double").get("texture"), "pousse peinte")
+	assert_eq(seed_piece.texture, FxArt.particle(&"graine_vampi").get("texture"), "graine peinte")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "les lianes enserrent la cible")
 	assert_true(stage.target_rect.grow(40.0).has_point(sprout.position), "sur la cible")
 	_player.stop()
 
@@ -1205,3 +1210,119 @@ func test_contact_wave_2_stamps_their_own_art() -> void:
 		assert_eq(stamp.texture, art.get("texture"), "%s : %s" % pair)
 		_player.stop()
 		_assert_at_rest(stage)
+
+
+# --- Refonte Plante, direction A (2026-11-10, docs/tech/attaques-plante.md) ----------------
+
+## Vol-Vie : la sève jaillit de la cible et un flot peint revient au lanceur ; Méga-Sangsue : flot
+## plus épais et le lanceur s'illumine.
+func test_absorb_siphons_sap_back_and_mega_drain_lights_the_user() -> void:
+	var stage := _stage()
+	var absorb := _plan(&"absorb")
+	var mega := _plan(&"mega_drain")
+	assert_gt(mega.bolt_height, absorb.bolt_height * 1.5, "Méga-Sangsue : flot plus épais")
+	assert_gt(mega.impact_size, absorb.impact_size)
+	_player.play(absorb, stage)
+	_pose_at(absorb, MoveFxPlan.TRAVEL if absorb.phase(MoveFxPlan.TRAVEL) != null else MoveFxPlan.IMPACT, 0.2)
+	assert_false(_player.get_projectile().visible, "rien ne part du lanceur")
+	_pose_at(absorb, MoveFxPlan.RETURN, 0.3)
+	var flow := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(flow.visible, "le flot de sève")
+	assert_almost_eq(flow.position, stage.impact_point(), Vector2.ONE, "depuis la cible")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "Vol-Vie : pas d'aura")
+	_player.stop()
+	_player.play(mega, stage)
+	_pose_at(mega, MoveFxPlan.ANTICIPATION, 0.8)
+	assert_false(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "pas d'aura avant le drain")
+	_pose_at(mega, MoveFxPlan.RETURN, 0.3)
+	assert_true(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "le lanceur s'illumine")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Tranch'Herbe : une volée de feuilles qui tournoient vers la cible.
+func test_razor_leaf_sends_spinning_leaves() -> void:
+	var stage := _stage()
+	var plan := _plan(&"razor_leaf")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.6)
+	assert_gte(_visible_pieces(), 4, "une volée")
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.5)
+	var leaf := _player.get_piece(4)
+	assert_true(leaf.visible, "une feuille en vol")
+	assert_eq(leaf.texture, FxArt.particle(&"feuille_tranchante").get("texture"), "feuilles peintes")
+	var spin := leaf.rotation
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.55)
+	assert_ne(leaf.rotation, spin, "elle tournoie")
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.4)
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "entailles")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Danse Fleur : un tourbillon de pétales bien plus grand que la cage de Cage-Éclair.
+func test_petal_dance_engulfs_the_target_in_a_huge_vortex() -> void:
+	var stage := _stage()
+	var sizes: Array[float] = []
+	for move_id: StringName in [&"thunder_wave", &"petal_dance"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.6)
+		var cage := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+		assert_true(cage.visible, "%s : autour de la cible" % move_id)
+		assert_almost_eq(cage.position, stage.target_rect.get_center(), Vector2.ONE)
+		sizes.append(cage.scale.x * float(FxArt.flipbook(plan.art[&"cage"])["size"]))
+		_player.stop()
+	assert_gt(sizes[1], sizes[0] * 1.5, "Danse Fleur engloutit la cible")
+	_assert_at_rest(stage)
+
+
+## Lance-Soleil : le lanceur absorbe la lumière (aura) au tour de charge, puis un rayon énorme.
+func test_solar_beam_charges_sunlight_then_fires_a_huge_beam() -> void:
+	var stage := _stage()
+	var charge := _plan(&"solar_beam", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.CHARGING, 0))
+	_player.play(charge, stage)
+	_pose_at(charge, MoveFxPlan.CHARGE, 0.6)
+	assert_true(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "il absorbe la lumière")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part encore")
+	_player.stop()
+	var plan := _plan(&"solar_beam")
+	assert_eq(plan.art.get(&"bolt"), &"rayon_solaire")
+	assert_gt(plan.bolt_height, _plan(&"flamethrower").bolt_height, "plus épais que Lance-Flammes")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.8)
+	assert_true(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "le rayon")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Spore Coton : des flocons de coton flottent vers la cible et s'y collent.
+func test_cotton_spore_floats_cotton_that_sticks() -> void:
+	var stage := _stage()
+	var plan := _plan(&"cotton_spore")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.6)
+	assert_gte(_visible_pieces(), 4, "des flocons")
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var cotton := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+	assert_true(cotton.visible, "le coton colle")
+	assert_eq(cotton.texture, FxArt.flipbook(&"coton_colle").get("texture"))
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Synthèse : un rayon de soleil descend sur le lanceur, couvert d'une aura ; rien vers la cible.
+func test_synthesis_bathes_the_user_in_a_sunshaft() -> void:
+	var stage := _stage()
+	var plan := _plan(&"synthesis")
+	assert_true(plan.on_self)
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var shaft := _player.get_art(MoveFxPlayer.Flip.SKY)
+	assert_true(shaft.visible, "le rayon de soleil")
+	assert_almost_eq(shaft.position.x, stage.user_rect.get_center().x, 1.0, "sur le lanceur")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "aura de photosynthèse")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part")
+	assert_eq(_target.position, stage.target_rest, "la cible ne bouge pas")
+	_player.stop()
+	_assert_at_rest(stage)
