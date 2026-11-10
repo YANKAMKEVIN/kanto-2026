@@ -45,7 +45,7 @@ FLIPBOOKS = [
 		"une traînée de flammes horizontale laissée par quelque chose qui fonce vers la droite : épaisse et vive contre "
 		"le bord DROIT, elle s'effiloche en langues de feu et en braises de plus en plus clairsemées jusqu'au bord "
 		"GAUCHE. Flammes couchées vers la gauche. Tracé différent à chaque image."),
-	("jet_flammes", "add", "bande", False, 384, "JET DE FLAMMES CONTINU ET ÉPAIS",
+	("fleuve_flammes", "add", "bande", False, 384, "JET DE FLAMMES CONTINU ET ÉPAIS",
 		"un JET DE FLAMMES CONTINU, horizontal, du bord GAUCHE exact jusqu'au bord DROIT exact de la case, sans "
 		"interruption : un fleuve de feu épais (environ la moitié de la hauteur de la case) qui ondule doucement, cœur "
 		"jaune pâle au centre, orange autour, bords orange profond qui se déchirent en petites langues. Boucle : les "
@@ -91,7 +91,7 @@ b.FLIPBOOKS = [(i, m, t, c) for i, m, _ca, _o, _co, t, c in FLIPBOOKS]
 _INFO = {i: (ca, o, co) for i, _m, ca, o, co, _t, _c in FLIPBOOKS}
 ## Détourés sur fond noir mais posés en mélange normal : matière dense qui garde ses couleurs sur un décor clair
 ## (en additif, ces grandes surfaces virent au blanc). Valeur : part de réchauffement (voir `_rechauffer`).
-_MATIERE = {"tourbillon_feu": 0.1, "jet_flammes": 0.12, "colonne_feu": 0.15, "explosion_feu": 0.15}
+_MATIERE = {"tourbillon_feu": 0.1, "fleuve_flammes": 0.12, "colonne_feu": 0.15, "explosion_feu": 0.15}
 ## Celle de la chaîne de base (l'import de l'Électrik a remplacé `b._prompt_particules` par la sienne).
 _prompt_particules_base = e._prompt_particules_base
 

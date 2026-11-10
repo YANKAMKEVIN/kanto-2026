@@ -181,11 +181,11 @@ const POWDER_SPARKLES: int = 22
 ## Trajets et impacts posés par [method _pose_rouge2] (l'impact seul quand la famille n'a pas de
 ## trajet).
 const ROUGE2_TRAVELS: Array[String] = ["rockfall", "smoke_ball", "gas_drift", "stars", "sky_bolt",
-	"giant_orb", "bone", "strange_orb", "lob", "underground"]
+	"giant_orb", "bone", "strange_orb", "lob", "underground", "ground_pillar"]
 const ROUGE2_IMPACTS: Array[String] = ["explosions", "screen_flash", "field_haze", "fissure_open",
-	"electric_cage", "beam_up", "warp_aura"]
+	"electric_cage", "fire_vortex", "beam_up", "warp_aura", "sunshine"]
 ## Impacts sans tremblement de la cible (Flash, Buée Noire) ; impacts où elle ondule sur place.
-const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash"]
+const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine"]
 const WOBBLE_IMPACTS: Array[String] = ["distortion", "warp_aura", "dizzy"]
 ## Volée d'aiguilles (Double-Dard, Dard-Nuée) : écart entre deux aiguilles (hauteurs d'écran).
 const NEEDLE_SPACING: float = 0.05
@@ -264,6 +264,12 @@ const ORB_AHEAD: float = 0.2
 const ORB_TREMBLE: float = 0.008
 const ORB_DEPTH_FAR: float = 0.82
 const SKY_SIZE := Vector2(1.5, 0.62)
+## Refonte Feu, direction A [D] (2026-11-10) : colonne de Feu Sacré (largeur et hauteur en hauteurs
+## de la cible, haut plafonné au-dessus de l'écran) ; opacité et taille (hauteurs d'écran) du soleil de Zénith.
+const PILLAR_WIDTH: float = 0.95
+const PILLAR_HEIGHT: float = 2.4
+const SUN_ALPHA: float = 0.45
+const SUN_SIZE: float = 1.45
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
 ## images).
@@ -598,7 +604,7 @@ func _impact_burst(phase: MoveFxPlan.Phase) -> void:
 			_rock_burst(0)
 		"explosions":
 			_blast_burst(0)
-		"electric_cage":
+		"electric_cage", "fire_vortex":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 22.0, reach * 0.7,
 				life * 1.5, true)
 		"orb_blast":
@@ -796,7 +802,7 @@ func _pose_target(phase: MoveFxPlan.Phase, elapsed: float) -> void:
 			match impact_brick:
 				"distortion", "warp_aura", "dizzy", "field_haze", "screen_flash":
 					pass
-				"vibrate", "electric_cage":
+				"vibrate", "electric_cage", "fire_vortex":
 					offset.x = sin(TAU * VIBRATE_WAVES * k) * VIBRATE_SHAKE * hit_k
 				_:
 					offset.x = sin(TAU * HIT_SHAKE_WAVES * k) * HIT_SHAKE * heavy * hit_k
@@ -905,7 +911,7 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 				_pose_cheeks(e)
 			elif not travel.is_empty():
 				_show_flip(Flip.TRAVEL, travel, from, Vector2.ONE * ART_PROJECTILE * height * 0.5 * e
-					* _projectile_scale(travel), angle, 1.0)
+					* _projectile_scale(travel) * _plan.travel_scale, angle, 1.0)
 		MoveFxPlan.TRAVEL:
 			if not bolt.is_empty():
 				var reach := from.distance_to(to) * _ease_out(k)
@@ -914,7 +920,8 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 					_pose_cheeks(1.0 - k)
 			else:
 				var s := k * k * (3.0 - 2.0 * k)
-				var size := ART_PROJECTILE * height * lerpf(1.0, depth_far, k) * _projectile_scale(travel)
+				var size := ART_PROJECTILE * height * lerpf(1.0, depth_far, k) * _projectile_scale(travel) \
+					* _plan.travel_scale
 				_show_flip(Flip.TRAVEL, travel, from.lerp(to, s), Vector2.ONE * size, angle, 1.0)
 		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
 			var fade := 1.0 - _ease_in(k)
@@ -924,10 +931,10 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 			elif phase.name == MoveFxPlan.MISS:
 				var past := to + (to - from) * MISS_OVERSHOOT * k
 				_show_flip(Flip.TRAVEL, travel, past, Vector2.ONE * ART_PROJECTILE * height
-					* depth_far * _projectile_scale(travel), angle, fade)
+					* depth_far * _projectile_scale(travel) * _plan.travel_scale, angle, fade)
 			elif phase.name == MoveFxPlan.NO_EFFECT:
 				_show_flip(Flip.TRAVEL, travel, to, Vector2.ONE * ART_PROJECTILE * height
-					* lerpf(0.8, 0.2, k) * _projectile_scale(travel), angle, fade)
+					* lerpf(0.8, 0.2, k) * _projectile_scale(travel) * _plan.travel_scale, angle, fade)
 	return true
 
 
@@ -2134,6 +2141,8 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_sky_bolt(phase, k)
 		"giant_orb":
 			_pose_giant_orb(phase, k)
+		"ground_pillar":
+			_pose_ground_pillar(phase, k)
 		"bone":
 			_pose_bone(phase, k)
 		"strange_orb":
@@ -2147,8 +2156,10 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_blasts()
 		"screen_flash":
 			_pose_flash_glow(phase, k)
-		"electric_cage":
+		"electric_cage", "fire_vortex":
 			_pose_cage(phase, k)
+		"sunshine":
+			_pose_sunshine(phase, k)
 		"field_haze":
 			_pose_haze()
 		"fissure_open":
@@ -2610,6 +2621,49 @@ func _pose_storm_sky(phase: MoveFxPlan.Phase, k: float) -> void:
 	var view := _stage.view_size
 	var at := Vector2(_stage.impact_point().x, SKY_SIZE.y * view.y * 0.5 - 0.08 * view.y)
 	_show_flip(Flip.SKY, id, at, Vector2(SKY_SIZE.x * view.x, SKY_SIZE.y * view.y), 0.0, alpha)
+
+
+## Feu Sacré : la colonne de flammes (`pillar`) jaillit du sol sous la cible pendant le trajet,
+## brûle pendant l'impact puis s'éteint ; à côté de la cible si l'attaque rate.
+func _pose_ground_pillar(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"pillar", &"") as StringName
+	var rect := _stage.target_rect
+	var foot := _feet(rect)
+	if _missed(phase.hit):
+		foot.x = _miss_point().x
+	var reveal := 1.0
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.TRAVEL:
+			reveal = _ease_out(k)
+		MoveFxPlan.IMPACT:
+			alpha = (1.0 - 0.12 * absf(sin(TAU * 4.0 * k))) * (1.0 - clampf((k - 0.55) / 0.45, 0.0, 1.0))
+		MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
+			alpha = 1.0 - _ease_in(k)
+		_:
+			return
+	var full := minf(rect.size.y * PILLAR_HEIGHT, foot.y + 0.08 * _stage.view_size.y)
+	var length := full * reveal
+	if length <= 1.0 or alpha <= 0.0:
+		return
+	_show_flip(Flip.TRAVEL, id, foot + Vector2(0.0, -length * 0.5),
+		Vector2(rect.size.y * PILLAR_WIDTH, length), 0.0, alpha)
+
+
+## Zénith : le soleil (`sky`) se lève sur tout l'écran pendant l'anticipation, brille pendant
+## l'impact et s'efface au retour ; rien ne part vers la cible.
+func _pose_sunshine(phase: MoveFxPlan.Phase, k: float) -> void:
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			alpha = _ease_out(k)
+		MoveFxPlan.RETURN:
+			alpha = 1.0 - _ease_in(k)
+	# Carré (sans déformer les rayons), soleil dans le coin haut droit de l'écran.
+	var view := _stage.view_size
+	var side := SUN_SIZE * view.y
+	_show_flip(Flip.SKY, _plan.art.get(&"sky", &""), Vector2(view.x - side * 0.5, side * 0.5 - 0.06 * view.y),
+		Vector2.ONE * side, 0.0, alpha * SUN_ALPHA)
 
 
 ## Onde Folie : une sphère irisée (sa couleur tourne) flotte en ondulant jusqu'à la tête de la

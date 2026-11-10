@@ -29,3 +29,9 @@ Suite de la refonte par famille de types, après l'Électrik (`attaques-electriq
 2. Familles et signatures dans `data/battle/move_fx/`.
 3. Vidéo des huit attaques : `game/battle/fx/fx_gallery.tscn -- --moves=ember,fire_spin,flame_wheel,fire_punch,flamethrower,sacred_fire,fire_blast,sunny_day --mode=full` (avec `--always-on-top`).
 4. Validation de Kevin sur la vidéo, puis CI GitHub verte.
+
+## Réalisation (2026-11-10)
+
+- **Art :** `tools/art/serie_cv_fx_feu.py` (Codex, 10 flipbooks et 8 particules, `manifeste_feu.json`). Le jet s'appelle `fleuve_flammes` : `jet_flammes` existe déjà dans la vague 1. Rayons du soleil refaits une fois (`_r2`) : la première planche ressemblait à des flammes. Tourbillon, jet, colonne et explosion sont posés en mélange normal (en additif, ils viraient au blanc sur le décor clair).
+- **Par attaque :** Flammèche signature `flammeche` (gerbe `flammeches`, petite) ; Danse Flamme `danse_flamme` (brique `fire_vortex`, la cage de Cage-Éclair avec le tourbillon) ; Roue de Feu `roue_feu` (roue `anneau_feu` et traînée sur la charge, impact `flamme`) ; Poing de Feu `poing` variante `feu` (plus de poing dessiné : `contact_flamme` et `eclat_feu`) ; Lance-Flammes signature `lance_flammes` (`fleuve_flammes`, du lanceur à la cible) ; Feu Sacré `feu_sacre` (brique `ground_pillar` : la colonne jaillit du sol sous la cible) ; Déflagration signature `deflagration` (étoile `etoile_feu`, embrasement `explosion_feu`) ; Zénith `zenith` (brique `sunshine` : soleil et rayons dans le coin haut droit de l'écran, rien sur la cible).
+- **Valeurs par défaut [D] :** `travel_scale` (Flammèche 1,15, Déflagration 1,9), `bolt_height` 0,42 et tailles d'impact dans `families.json` ; `PILLAR_WIDTH`, `PILLAR_HEIGHT`, `SUN_ALPHA`, `SUN_SIZE` de `move_fx_player.gd`.

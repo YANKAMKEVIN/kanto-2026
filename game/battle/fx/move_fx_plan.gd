@@ -139,6 +139,8 @@ var art_tint: Color = Color.WHITE
 ## signature l'emporte sur `fx`.
 var bolt_height: float = 0.0
 var impact_size: float = 0.0
+## Taille du projectile peint (Flammèche petite, Déflagration grande) ; la signature l'emporte sur `fx`.
+var travel_scale: float = 1.0
 ## Brique de la variante d'impact (`impacts.<impact>.brick` : `coin_burst`, `lick`, `toss`…) ;
 ## "" sans variante.
 var impact_brick: StringName = &""
@@ -303,6 +305,7 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	var own := catalog.signature(signature)
 	bolt_height = JsonFields.get_float(own, "bolt_height", JsonFields.get_float(fx, "bolt_height"))
 	impact_size = JsonFields.get_float(own, "impact_size", JsonFields.get_float(fx, "impact_size"))
+	travel_scale = JsonFields.get_float(own, "travel_scale", JsonFields.get_float(fx, "travel_scale", 1.0))
 
 
 ## Le plan porte le modificateur [param modifier] (`drain`, `piege`, `chute`…).

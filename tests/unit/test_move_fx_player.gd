@@ -873,7 +873,9 @@ func test_elemental_punches_hit_with_a_fist_then_their_element() -> void:
 		var fist := _player.get_art(MoveFxPlayer.Flip.IMPACT)
 		assert_true(fist.visible, "%s : le poing" % move_id)
 		# Poing-Éclair (refonte Électrik) : pas de poing dessiné, un point de choc au contact.
-		var stamp := &"etoile_contact" if move_id == &"thunder_punch" else &"poing"
+		# Poing-Éclair et Poing de Feu (refontes Électrik et Feu) : pas de poing dessiné.
+		var stamps := {&"thunder_punch": &"etoile_contact", &"fire_punch": &"contact_flamme"}
+		var stamp: StringName = stamps.get(move_id, &"poing")
 		assert_eq(fist.texture, FxArt.particle(stamp).get("texture"), "%s : marque peinte" % move_id)
 		assert_true(_player.get_light().is_lit(), "%s : la lumière de l'élément" % move_id)
 		_player.stop()
@@ -936,6 +938,86 @@ func test_zap_cannon_orb_swells_travels_and_explodes() -> void:
 	assert_lt(orb.position.distance_to(stage.impact_point()), near_user, "elle va vers la cible")
 	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
 	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "elle explose")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Refonte Feu : chaque attaque se reconnaît à sa forme.
+func test_ember_is_smaller_than_fire_blast() -> void:
+	var ember := _plan(&"ember")
+	var blast := _plan(&"fire_blast")
+	assert_eq(ember.art.get(&"travel"), &"flammeches")
+	assert_eq(blast.art.get(&"travel"), &"etoile_feu")
+	assert_lt(ember.travel_scale, blast.travel_scale, "Flammèche la plus petite")
+	assert_lt(ember.impact_size, blast.impact_size)
+
+
+func test_flamethrower_is_a_continuous_jet_from_the_user() -> void:
+	var stage := _stage()
+	var plan := _plan(&"flamethrower")
+	assert_eq(plan.art.get(&"bolt"), &"fleuve_flammes")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.1)
+	var jet := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(jet.visible, "le jet")
+	assert_eq(jet.position, stage.origin(), "part du lanceur")
+	var frame := jet.texture.get_width() / float(jet.hframes)
+	assert_almost_eq(jet.scale.x * frame, stage.origin().distance_to(stage.impact_point()), 0.5,
+		"atteint la cible")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_fire_spin_encircles_the_target_without_a_projectile() -> void:
+	var stage := _stage()
+	var plan := _plan(&"fire_spin")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var vortex := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+	assert_true(vortex.visible, "le tourbillon")
+	assert_eq(vortex.position, stage.impact_point(), "autour de la cible")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "pas de projectile")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_flame_wheel_rolls_the_user_in_a_ring_of_fire() -> void:
+	var stage := _stage()
+	var plan := _plan(&"flame_wheel")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.9)
+	assert_gt(_user.position.distance_to(stage.user_rest), 40.0, "il charge")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "la roue de feu")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.TRAIL).visible, "la traînée de flammes")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_sacred_fire_rises_from_the_ground_under_the_target() -> void:
+	var stage := _stage()
+	var plan := _plan(&"sacred_fire")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.3)
+	var pillar := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(pillar.visible, "la colonne")
+	var low := pillar.position.y
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.2)
+	assert_lt(pillar.position.y, low, "elle monte")
+	assert_almost_eq(pillar.position.x, stage.target_rect.get_center().x, 1.0, "sous la cible")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_sunny_day_lights_the_whole_field_not_the_target() -> void:
+	var stage := _stage()
+	var plan := _plan(&"sunny_day")
+	assert_true(plan.on_self)
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var sun := _player.get_art(MoveFxPlayer.Flip.SKY)
+	assert_true(sun.visible, "le soleil")
+	assert_gt(sun.position.x, stage.view_size.x * 0.5, "dans le haut droit de l'écran")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part")
 	_player.stop()
 	_assert_at_rest(stage)
 

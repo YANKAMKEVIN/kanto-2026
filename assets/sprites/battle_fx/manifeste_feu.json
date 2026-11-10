@@ -1,0 +1,126 @@
+{
+ "flipbooks": {
+  "flammeches": {
+   "fichier": "fb_flammeches.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "tourbillon_feu": {
+   "fichier": "fb_tourbillon_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "anneau_feu": {
+   "fichier": "fb_anneau_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "trainee_feu": {
+   "fichier": "fb_trainee_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "fleuve_flammes": {
+   "fichier": "fb_fleuve_flammes.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "colonne_feu": {
+   "fichier": "fb_colonne_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "etoile_feu": {
+   "fichier": "fb_etoile_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "add",
+   "boucle": true
+  },
+  "explosion_feu": {
+   "fichier": "fb_explosion_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "eclat_feu": {
+   "fichier": "fb_eclat_feu.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": false
+  },
+  "rayons_soleil": {
+   "fichier": "fb_rayons_soleil.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "add",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "flammeche": {
+   "fichier": "p_flammeche.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "braise_vive": {
+   "fichier": "p_braise_vive.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "contact_flamme": {
+   "fichier": "p_contact_flamme.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "halo_feu": {
+   "fichier": "p_halo_feu.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "anneau_flamme": {
+   "fichier": "p_anneau_flamme.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "langue_feu": {
+   "fichier": "p_langue_feu.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "eclat_soleil": {
+   "fichier": "p_eclat_soleil.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "volute_chaleur": {
+   "fichier": "p_volute_chaleur.webp",
+   "taille": 192,
+   "melange": "add"
+  }
+ }
+}
