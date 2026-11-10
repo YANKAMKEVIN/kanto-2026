@@ -185,7 +185,8 @@ const ROUGE2_TRAVELS: Array[String] = ["rockfall", "smoke_ball", "gas_drift", "s
 const ROUGE2_IMPACTS: Array[String] = ["explosions", "screen_flash", "field_haze", "fissure_open",
 	"electric_cage", "fire_vortex", "beam_up", "warp_aura", "sunshine", "rain"]
 ## Impacts sans tremblement de la cible (Flash, Buée Noire) ; impacts où elle ondule sur place.
-const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine", "rain", "shield"]
+const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine", "rain", "shield",
+	"barrier_wall"]
 const WOBBLE_IMPACTS: Array[String] = ["distortion", "warp_aura", "dizzy"]
 ## Volée d'aiguilles (Double-Dard, Dard-Nuée) : écart entre deux aiguilles (hauteurs d'écran).
 const NEEDLE_SPACING: float = 0.05
@@ -275,6 +276,15 @@ const SUN_SIZE: float = 1.45
 const RAIN_ALPHA: float = 1.0
 const SURF_HEIGHT: float = 0.95
 const SURF_PAST: float = 0.18
+## Refonte Psy, direction A [D] (2026-11-10) : mur de Bouclier, Protection, Mur Lumière et Voile Miroir
+## (largeur et hauteur en hauteurs du lanceur, avancée devant lui en largeurs du lanceur) ; œil de
+## Prescience et couronne d'Amnésie et de Repos au-dessus de la tête (tailles en hauteurs du lanceur) ;
+## épaisseur de la brume de Dévorêve (hauteurs d'écran).
+const WALL_SIZE := Vector2(1.0, 1.45)
+const WALL_AHEAD: float = 0.55
+const EYE_SIZE: float = 0.75
+const CROWN_SIZE: float = 1.0
+const DREAM_HEIGHT: float = 0.3
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
 ## images).
@@ -852,6 +862,10 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 	_pose_trail(phase, k)
 	_pose_trap(phase, k)
 	_pose_drain(phase, k)
+	_pose_wall(phase, k)
+	_pose_eye(phase, k)
+	_pose_crown(phase, k)
+	_pose_dream(phase, k)
 
 
 ## Formes dessinées en code (échafaudage de CV.0) quand le trajet n'a pas d'art : projectile,
@@ -2710,6 +2724,100 @@ func _pose_wave(phase: MoveFxPlan.Phase, k: float) -> void:
 	var height := SURF_HEIGHT * view.y * lerpf(1.0, _depth_far(), along * 0.5) * lerpf(0.3, 1.0, rise)
 	_show_flip(Flip.TRAVEL, _plan.art.get(&"wave", &""), foot - Vector2(0.0, height * 0.42),
 		Vector2(height * 1.25, height), 0.0 if dir >= 0.0 else PI, alpha)
+
+
+## Bouclier, Protection, Mur Lumière, Voile Miroir (`wall`) : la paroi se dresse du sol devant le
+## lanceur, côté adversaire, pendant l'anticipation, luit pendant l'impact et s'efface au retour.
+func _pose_wall(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"wall", &"") as StringName
+	if id.is_empty() or _stage.user == null:
+		return
+	var rise := 1.0
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			rise = _ease_out(k)
+			alpha = minf(1.0, k * 3.0)
+		MoveFxPlan.IMPACT:
+			alpha = 1.0 - 0.1 * absf(sin(TAU * 2.0 * k))
+		MoveFxPlan.RETURN:
+			alpha = 1.0 - _ease_in(k)
+		_:
+			return
+	var rect := _stage.user_rect
+	var dir := signf(_stage.target_rest.x - _stage.user_rest.x)
+	var size := WALL_SIZE * rect.size.y * Vector2(1.0, rise)
+	var foot := _feet(rect) + Vector2(dir * WALL_AHEAD * rect.size.x, 0.0)
+	_show_flip(Flip.TRAVEL, id, foot - Vector2(0.0, size.y * 0.5), size, 0.0, alpha)
+
+
+## Prescience (`eye`) : un œil de lumière s'ouvre au-dessus du lanceur pendant l'anticipation et
+## reste ouvert pendant que la colonne tombe, puis se ferme.
+func _pose_eye(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"eye", &"") as StringName
+	if id.is_empty() or _stage.user == null:
+		return
+	var open := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			open = _ease_out(k)
+		MoveFxPlan.TRAVEL:
+			pass
+		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
+			open = 1.0 - _ease_in(k)
+		_:
+			return
+	var rect := _stage.user_rect
+	var side := EYE_SIZE * rect.size.y
+	var at := Vector2(rect.get_center().x, maxf(rect.position.y - side * 0.2, side * 0.3))
+	_show_flip(Flip.EXTRA_B, id, at, Vector2(side, side * lerpf(0.15, 1.0, open)), 0.0, open)
+
+
+## Amnésie, Repos (`crown`) : brume ou « Z » au-dessus de la tête du lanceur, de l'anticipation au
+## retour.
+func _pose_crown(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"crown", &"") as StringName
+	if id.is_empty() or _stage.user == null:
+		return
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			alpha = _ease_out(k)
+		MoveFxPlan.RETURN:
+			alpha = 1.0 - _ease_in(k)
+		MoveFxPlan.TRAVEL, MoveFxPlan.IMPACT:
+			pass
+		_:
+			return
+	var rect := _stage.user_rect
+	var side := CROWN_SIZE * rect.size.y
+	var center := rect.get_center() + _stage.user.position - _stage.user_rest
+	var at := Vector2(center.x, maxf(rect.position.y - side * 0.15, side * 0.4))
+	_show_flip(Flip.EXTRA_A, id, at, Vector2.ONE * side, 0.0, alpha)
+
+
+## Dévorêve (`drain_band`) : un courant de brume de rêve est arraché de la cible et coule jusqu'au
+## lanceur, de la moitié de l'impact à la fin ; rien si l'attaque rate.
+func _pose_dream(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"drain_band", &"") as StringName
+	if id.is_empty() or not _plan.lands() or _missed(phase.hit):
+		return
+	var reach := 1.0
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.IMPACT:
+			if k < 0.3:
+				return
+			reach = _ease_out((k - 0.3) / 0.7)
+		MoveFxPlan.RETURN:
+			alpha = 1.0 - _ease_in(k)
+		_:
+			return
+	var from := _stage.impact_point()
+	var to := _stage.user_rect.get_center()
+	var thick := DREAM_HEIGHT * _stage.view_size.y * (1.0 + 0.05 * sin(_t * 9.0))
+	_show_flip(Flip.TRAIL, id, from, Vector2(from.distance_to(to) * reach, thick), (to - from).angle(), alpha,
+		true)
 
 
 ## Onde Folie : une sphère irisée (sa couleur tourne) flotte en ondulant jusqu'à la tête de la

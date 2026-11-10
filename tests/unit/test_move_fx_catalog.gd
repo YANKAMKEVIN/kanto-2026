@@ -12,7 +12,9 @@ const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", 
 	&"chute_pierres", &"teleport", &"trempette", &"explosion", &"fumee", &"gaz", &"flash",
 	&"cuiller", &"etoiles", &"foudre", &"poing", &"os", &"onde_folie", &"brume", &"lancer",
 	&"atlas", &"fissure", &"tunnel", &"cage_eclair", &"charge_electrique", &"elecanon",
-	&"danse_flamme", &"roue_feu", &"feu_sacre", &"zenith", &"surf", &"repli", &"danse_pluie"]
+	&"danse_flamme", &"roue_feu", &"feu_sacre", &"zenith", &"surf", &"repli", &"danse_pluie",
+	&"rafale_psy", &"vague_psy", &"devoreve", &"prescience", &"hypnose", &"yoga", &"hate", &"amnesie",
+	&"repos", &"bouclier", &"protection", &"mur_lumiere", &"voile_miroir"]
 ## Vague 1 « Effets fidèles à Rouge » (2026-11-02) : attaque → [famille, variante, brique de
 ## trajet, brique de lancement].
 const ROUGE_WAVE_1: Dictionary = {

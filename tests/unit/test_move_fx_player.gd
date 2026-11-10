@@ -1205,3 +1205,105 @@ func test_contact_wave_2_stamps_their_own_art() -> void:
 		assert_eq(stamp.texture, art.get("texture"), "%s : %s" % pair)
 		_player.stop()
 		_assert_at_rest(stage)
+
+
+## Refonte Psy (direction A, docs/tech/attaques-psy.md) : chaque attaque se reconnaît à sa forme.
+func test_psychic_crushes_far_harder_than_confusion() -> void:
+	var shock := _plan(&"confusion")
+	var crush := _plan(&"psychic")
+	assert_eq(String(shock.bricks.get("travel", "")), "", "Choc Mental : rien ne part du lanceur")
+	assert_eq(shock.art.get(&"impact"), &"onde_choc_psy")
+	assert_eq(crush.art.get(&"impact"), &"implosion_psy", "Psyko : la sphère qui écrase puis explose")
+	assert_gt(crush.impact_size, shock.impact_size * 1.5, "Psyko bien plus gros")
+	assert_gt(crush.camera_shake, shock.camera_shake, "Psyko secoue plus")
+
+
+func test_psybeam_and_psywave_run_from_the_user_to_the_target() -> void:
+	var stage := _stage()
+	for pair: Array in [[&"psybeam", &"rayon_anneaux"], [&"psywave", &"onde_sinus"]]:
+		var plan := _plan(pair[0])
+		assert_eq(plan.art.get(&"bolt"), pair[1], "%s : son courant" % pair[0])
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.2)
+		var beam := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+		assert_true(beam.visible, "%s : le courant" % pair[0])
+		assert_almost_eq(beam.position, stage.origin(), Vector2.ONE, "%s : depuis le lanceur" % pair[0])
+		_player.stop()
+		_assert_at_rest(stage)
+
+
+func test_dream_eater_pulls_a_dream_back_to_the_user() -> void:
+	var stage := _stage()
+	var plan := _plan(&"dream_eater")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.RETURN, 0.3)
+	var dream := _player.get_art(MoveFxPlayer.Flip.TRAIL)
+	assert_true(dream.visible, "la brume de rêve")
+	assert_almost_eq(dream.position, stage.impact_point(), Vector2.ONE, "arrachée de la cible")
+	var toward := (stage.user_rect.get_center() - stage.impact_point()).normalized()
+	assert_gt(Vector2.from_angle(dream.rotation).dot(toward), 0.9, "vers le lanceur")
+	_player.stop()
+	var missed := _plan(&"dream_eater", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.MISSED))
+	_player.play(missed, stage)
+	_pose_at(missed, MoveFxPlan.RETURN, 0.3)
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAIL).visible, "rien ne revient d'un raté")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_future_sight_opens_an_eye_then_drops_a_column() -> void:
+	var stage := _stage()
+	var plan := _plan(&"future_sight")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.ANTICIPATION, 0.8)
+	var eye := _player.get_art(MoveFxPlayer.Flip.EXTRA_B)
+	assert_true(eye.visible, "l'œil")
+	assert_lt(eye.position.y, stage.user_rect.get_center().y, "au-dessus du lanceur")
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.6)
+	var column := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(column.visible, "la colonne")
+	assert_almost_eq(column.position.x, stage.target_rect.get_center().x, 1.0, "sur la cible")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_hypnosis_sends_rings_and_spins_spirals_on_the_target() -> void:
+	var plan := _plan(&"hypnosis")
+	assert_eq(String(plan.bricks.get("travel", "")), "rings")
+	assert_eq(plan.art.get(&"travel"), &"anneau_hypnose")
+	assert_eq(plan.art.get(&"impact"), &"spirale_hypnose")
+
+
+func test_psychic_barriers_rise_in_front_of_the_user_and_differ() -> void:
+	var stage := _stage()
+	var walls: Dictionary = {}
+	for move_id: StringName in [&"barrier", &"reflect", &"light_screen", &"mirror_coat"]:
+		var plan := _plan(move_id)
+		assert_true(plan.on_self, "%s : sur le lanceur" % move_id)
+		walls[plan.art.get(&"wall")] = true
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+		var wall := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+		assert_true(wall.visible, "%s : la paroi" % move_id)
+		assert_gt(wall.position.x, stage.user_rect.get_center().x, "%s : devant lui, côté adversaire" % move_id)
+		_player.stop()
+		_assert_at_rest(stage)
+	assert_eq(walls.size(), 4, "quatre parois différentes")
+
+
+func test_self_psychic_moves_glow_on_the_user_only() -> void:
+	var stage := _stage()
+	for pair: Array in [[&"meditate", MoveFxPlayer.Flip.AURA], [&"agility", MoveFxPlayer.Flip.AURA],
+			[&"amnesia", MoveFxPlayer.Flip.EXTRA_A], [&"rest", MoveFxPlayer.Flip.EXTRA_A]]:
+		var plan := _plan(pair[0])
+		assert_true(plan.on_self, "%s : sur le lanceur" % pair[0])
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+		var art := _player.get_art(pair[1])
+		assert_true(art.visible, "%s : visible" % pair[0])
+		assert_lt(absf(art.position.x - stage.user_rect.get_center().x), stage.user_rect.size.x * 0.5,
+			"%s : sur le lanceur" % pair[0])
+		if pair[1] == MoveFxPlayer.Flip.EXTRA_A:
+			assert_lt(art.position.y, stage.user_rect.get_center().y, "%s : au-dessus de sa tête" % pair[0])
+		_player.stop()
+		_assert_at_rest(stage)
