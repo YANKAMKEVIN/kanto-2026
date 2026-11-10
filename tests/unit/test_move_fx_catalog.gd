@@ -112,15 +112,17 @@ func test_the_165_moves_of_the_annex_are_listed() -> void:
 	assert_eq(MoveFxCatalog.load_dir().move_ids().size(), ANNEX_COUNT + JOHTO_COUNT)
 
 
-func test_13_signatures_on_14_moves() -> void:
+## 14 signatures (Flammèche ajoutée par la refonte Feu) sur 15 attaques.
+func test_14_signatures_on_15_moves() -> void:
 	var catalog := MoveFxCatalog.load_dir()
-	assert_eq(catalog.signature_ids().size(), 13)
+	assert_eq(catalog.signature_ids().size(), 14)
 	var signed: Array[StringName] = []
 	for move_id: StringName in catalog.move_ids():
 		if not catalog.entry(move_id).signature.is_empty():
 			signed.append(move_id)
-	assert_eq(signed.size(), 14, "Explosion et Destruction partagent la leur")
+	assert_eq(signed.size(), 15, "Explosion et Destruction partagent la leur")
 	assert_eq(catalog.entry(&"thunder_shock").signature, &"eclair")
+	assert_eq(catalog.entry(&"ember").signature, &"flammeche")
 	assert_eq(catalog.entry(&"self_destruct").signature, catalog.entry(&"explosion").signature)
 
 
