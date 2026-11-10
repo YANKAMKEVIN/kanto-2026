@@ -552,6 +552,10 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# milieu. `int_barriere_active_01` sert d'image à cet objet (aucune carte ne la pose).
 	&"int_barriere_active_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"int_barriere_coupee_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Découpes des comptoirs peints dans les coques de l'hôtel et du restaurant de Céladopole :
+	# elles passent devant le personnage qui se tient derrière (blocage par la grille).
+	&"int_comptoir_hotel_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"int_comptoir_restaurant_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
 	# Pont extérieur : bastingages dans la couche du sol (cases `r` bloquées par la grille), la
 	# superstructure ouest dans `Entities` (cases `K` bloquées) ; chaises longues et bouées
 	# bloquent leurs cases.

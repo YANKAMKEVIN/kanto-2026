@@ -2815,13 +2815,18 @@ func _celadon_mansion_roof_house() -> Dictionary:
 func _celadon_small_room(id: StringName, node: String, plan: String, base: String) -> Dictionary:
 	var room := _celadon_room(id, node, plan, ".X")
 	(room["spawns"] as Dictionary)["entrance"] = Vector2i(7, 8)
-	# Comptoirs parlants (T17) : réception de l'hôtel (5..9, 4), serveur du restaurant (2..5, 4).
+	# Comptoirs parlants (T17) : réception de l'hôtel (5..9, 3), serveur du restaurant (2..6, 3),
+	# là où la coque les peint (2026-11-10) ; leur découpe passe devant le personnage de derrière.
 	if base == "hotel":
-		(room["interactables"] as Array).append(["ReceptionCounter", Vector2i(5, 4),
+		(room["interactables"] as Array).append(["ReceptionCounter", Vector2i(5, 3),
 			Vector2i(5, 1), &"celadon_hotel_reception", TALK, Vector2i.UP])
+		room["free_props"] = [[&"int_comptoir_hotel_celadon_01", Vector2(721, 391) / TILE,
+			"CounterCutout"]]
 	elif base == "restaurant":
-		(room["interactables"] as Array).append(["WaiterCounter", Vector2i(2, 4),
-			Vector2i(4, 1), &"celadon_restaurant_waiter", TALK, Vector2i.UP])
+		(room["interactables"] as Array).append(["WaiterCounter", Vector2i(2, 3),
+			Vector2i(5, 1), &"celadon_restaurant_waiter", TALK, Vector2i.UP])
+		room["free_props"] = [[&"int_comptoir_restaurant_celadon_01", Vector2(424, 367) / TILE,
+			"CounterCutout"]]
 	var cells: Array = [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)]
 	if base == "chief":
 		for index: int in cells.size():

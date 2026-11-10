@@ -80,6 +80,7 @@ const TRAVERSABLE: Array[StringName] = [&"bldg_tour_carillon_base_01",
 	&"relief_bastingage_est_01", &"relief_bastingage_angle_ne_01",
 	&"relief_bastingage_angle_se_01", &"bldg_ss_anne_superstructure_01",
 	&"int_barriere_active_01", &"int_barriere_coupee_01",
+	&"int_comptoir_hotel_celadon_01", &"int_comptoir_restaurant_celadon_01",
 	# Série 21 (J18) : lointains, flaque, parois de la Grotte Sombre, murs et escalier de la Tour.
 	&"bldg_centrale_lointaine_01", &"prop_tour_lointaine_01", &"prop_flaque_grotte_01",
 	&"relief_paroi_grotte_sombre_01", &"relief_paroi_grotte_sombre_02",

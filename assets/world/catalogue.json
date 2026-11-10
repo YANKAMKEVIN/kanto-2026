@@ -12764,6 +12764,20 @@
      11
     ]
    }
+  },
+  "int_comptoir_hotel_celadon_01": {
+   "fichier": "res://assets/world/interiors/int_comptoir_hotel_celadon_01.png",
+   "taille": [
+    498,
+    139
+   ]
+  },
+  "int_comptoir_restaurant_celadon_01": {
+   "fichier": "res://assets/world/interiors/int_comptoir_restaurant_celadon_01.png",
+   "taille": [
+    438,
+    140
+   ]
   }
  },
  "personnages": {
