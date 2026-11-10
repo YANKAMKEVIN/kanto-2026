@@ -94,6 +94,14 @@ func test_rare_factor_boosts_rare_slots_only_when_asked() -> void:
 	assert_gt(_count_rare(1.5), _count_rare(1.0))
 
 
+func test_explorer_boosts_rare_slots_on_every_terrain() -> void:
+	var worn := _state_wearing(&"rainbow")
+	var plain := _state_wearing(&"")
+	for terrain: StringName in [&"grass", &"cave", &"water", &"floor"]:
+		assert_eq(EncounterDirector.rare_factor(worn, terrain), 1.5, "Explorateur : %s" % terrain)
+		assert_eq(EncounterDirector.rare_factor(plain, terrain), 1.0, "sans costume : %s" % terrain)
+
+
 func test_reduced_sight() -> void:
 	assert_eq(TrainerRules.reduced_sight(4, 0.5), 2)
 	assert_eq(TrainerRules.reduced_sight(3, 0.5), 2)
