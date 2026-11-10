@@ -37,6 +37,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 ## Décisions de Kevin en vigueur
 
+- **Explorateur, Link / Zelda (2026-11-10) :** Pokémon rares ×1,5 sur toutes les rencontres au pas (herbes, grottes, surf), plus seulement dans les hautes herbes ; la pêche reste à Marin.
 - **Paralysie (2026-11-10) :** un Pokémon paralysé ne peut pas agir un tour sur trois (33 %, `StatusRules.FULL_PARALYSIS_CHANCE`), au lieu d'un sur quatre ; Vitesse toujours ÷ 2. Dans `main`, pas encore dans une RC.
 - **Centres et Boutiques (2026-11-10) :** fin du « pied remonté » du jalon 7 ; l'emprise suit ce qui est peint.
 - **Écran Dresseur (2026-11-09) :** plus de section Équipe ; Costumes au centre, Grands moments à droite (`dossier-costumes.md` §2 quater). Un Pokémon K.O. n'a plus de FAIRE SORTIR.
