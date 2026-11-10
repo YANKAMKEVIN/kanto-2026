@@ -17,7 +17,7 @@
 		"body_slam": {"family": "contact", "impact": "corps"},
 		"bone_club": {"family": "os", "variant": "massue"},
 		"bonemerang": {"family": "os", "variant": "boomerang", "modifiers": ["multi"]},
-		"bubble": {"family": "bulles"},
+		"bubble": {"family": "bulles", "variant": "ecume"},
 		"bubble_beam": {"family": "bulles", "variant": "rafale"},
 		"clamp": {"family": "contact", "impact": "claquoir", "modifiers": ["piege"]},
 		"comet_punch": {"family": "contact", "impact": "coup", "modifiers": ["multi"]},
@@ -142,7 +142,7 @@
 		"substitute": {"family": "statut_plus"},
 		"super_fang": {"family": "contact", "impact": "crocs"},
 		"supersonic": {"family": "son"},
-		"surf": {"family": "eau", "signature": "surf"},
+		"surf": {"family": "surf"},
 		"swift": {"family": "etoiles"},
 		"swords_dance": {"family": "statut_plus"},
 		"tackle": {"family": "contact", "impact": "corps"},
@@ -165,7 +165,7 @@
 		"waterfall": {"family": "contact", "impact": "cascade"},
 		"whirlwind": {"family": "vent"},
 		"wing_attack": {"family": "vent"},
-		"withdraw": {"family": "statut_plus"},
+		"withdraw": {"family": "repli"},
 		"wrap": {"family": "contact", "impact": "corps", "modifiers": ["piege"]}
 	}
 }

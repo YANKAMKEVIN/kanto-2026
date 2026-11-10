@@ -14,6 +14,7 @@ const MANIFESTS: Array[String] = [
 	"res://assets/sprites/battle_fx/manifeste_vague3.json",
 	"res://assets/sprites/battle_fx/manifeste_electrik.json",
 	"res://assets/sprites/battle_fx/manifeste_feu.json",
+	"res://assets/sprites/battle_fx/manifeste_eau.json",
 ]
 const DIR: String = "res://assets/sprites/battle_fx/"
 

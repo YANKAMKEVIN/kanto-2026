@@ -1,0 +1,158 @@
+{
+ "flipbooks": {
+  "coque_eau": {
+   "fichier": "fb_coque_eau.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "jet_fin_eau": {
+   "fichier": "fb_jet_fin_eau.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "eclabousse_eau": {
+   "fichier": "fb_eclabousse_eau.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": false
+  },
+  "chute_eau": {
+   "fichier": "fb_chute_eau.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "gerbe_eau": {
+   "fichier": "fb_gerbe_eau.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "vague": {
+   "fichier": "fb_vague.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "torrent_spirale": {
+   "fichier": "fb_torrent_spirale.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "explosion_eau": {
+   "fichier": "fb_explosion_eau.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "pluie": {
+   "fichier": "fb_pluie.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "add",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "petite_bulle": {
+   "fichier": "p_petite_bulle.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "goutte_claire": {
+   "fichier": "p_goutte_claire.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "anneau_eau": {
+   "fichier": "p_anneau_eau.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "eclat_lumiere": {
+   "fichier": "p_eclat_lumiere.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "mousse_eau": {
+   "fichier": "p_mousse_eau.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "embrun": {
+   "fichier": "p_embrun.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "filet_eau": {
+   "fichier": "p_filet_eau.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "halo_eau": {
+   "fichier": "p_halo_eau.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "valve_eau": {
+   "fichier": "p_valve_eau.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "pince_eau": {
+   "fichier": "p_pince_eau.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "goutte_lourde": {
+   "fichier": "p_goutte_lourde.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "paquet_eau": {
+   "fichier": "p_paquet_eau.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclat_ecume": {
+   "fichier": "p_eclat_ecume.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "vaguelette": {
+   "fichier": "p_vaguelette.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "flaque": {
+   "fichier": "p_flaque.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "ride_eau": {
+   "fichier": "p_ride_eau.webp",
+   "taille": 192,
+   "melange": "norm"
+  }
+ }
+}

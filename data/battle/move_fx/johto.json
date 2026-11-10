@@ -32,7 +32,7 @@
 		"perish_song": {"family": "son"},
 		"psych_up": {"family": "statut_plus"},
 		"pursuit": {"family": "contact", "impact": "coup"},
-		"rain_dance": {"family": "statut_plus"},
+		"rain_dance": {"family": "danse_pluie"},
 		"rapid_spin": {"family": "contact", "impact": "corps"},
 		"reversal": {"family": "contact", "impact": "coup"},
 		"rollout": {"family": "sol_roche"},

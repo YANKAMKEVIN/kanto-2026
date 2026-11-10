@@ -120,6 +120,23 @@ b._prompt_flipbook = _prompt_flipbook
 b._prompt_particules = _prompt_particules
 
 
+def _fondre_bords(im: Image.Image, part: float = 0.22) -> Image.Image:
+	"""Fond les quatre bords : une vague coupée par sa case n'y laisse pas d'arête droite."""
+	alpha = np.asarray(im.getchannel("A")).astype(np.float32)
+	h, l = alpha.shape
+	x = np.clip(np.minimum(np.arange(l), l - 1 - np.arange(l)) / (l * part), 0.0, 1.0)
+	y = np.clip(np.minimum(np.arange(h), h - 1 - np.arange(h)) / (h * part), 0.0, 1.0)
+	im.putalpha(Image.fromarray((alpha * y[:, None] * x[None, :]).astype(np.uint8)))
+	return im
+
+
+## Flipbooks carrés qui touchent les bords de leur case (fondus, voir `_fondre_bords`).
+_BORDS = {"vague"}
+
+## Planches peintes en 4 colonnes pleine hauteur (une image par colonne).
+_QUATRE_COLONNES = {"chute_eau"}
+
+
 def preparer() -> None:
 	b.SORTIE.mkdir(parents=True, exist_ok=True)
 	manifeste = {"flipbooks": {}, "particules": {}}
@@ -138,11 +155,19 @@ def preparer() -> None:
 		else:
 			ident = next(i for i in _INFO if f"CV_FX_{i.upper()}_" in nom)
 			cadrage, once, cote = _INFO[ident]
-			cases = [b._alpha(c, mode) for c in e._cases(Image.open(src), cadrage)]
+			planche = Image.open(src)
+			if ident in _QUATRE_COLONNES:
+				# Codex a peint quatre colonnes sur toute la hauteur au lieu de 4 × 2 cases.
+				l, h = planche.size
+				cases = [b._alpha(planche.crop((c * l // 4, 0, (c + 1) * l // 4, h)), mode) for c in range(4)]
+			else:
+				cases = [b._alpha(c, mode) for c in e._cases(planche, cadrage)]
 			if cadrage == "carre":
 				cles = b._recadrer(cases, cote, True)
 				if once:
 					cles = [e._vignette(c) for c in cles]
+				if ident in _BORDS:
+					cles = [_fondre_bords(c) for c in cles]
 			else:
 				cles = [c.resize((cote, cote), Image.LANCZOS) for c in cases]
 				if cadrage == "pleine":

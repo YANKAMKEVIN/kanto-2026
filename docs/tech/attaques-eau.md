@@ -33,3 +33,9 @@ Suite de la refonte par famille de types, après l'Électrik et le Feu (`attaque
 2. Familles, variantes et signatures dans `data/battle/move_fx/` ; briques nouvelles : vague qui traverse le terrain (Surf), pluie plein écran (Danse Pluie), coque sur le lanceur (Repli).
 3. Vidéo des dix attaques : `game/battle/fx/fx_gallery.tscn -- --moves=withdraw,bubble,water_gun,clamp,bubble_beam,waterfall,surf,crabhammer,hydro_pump,rain_dance --mode=full` (avec `--always-on-top`).
 4. Validation de Kevin sur la vidéo, puis CI GitHub verte.
+
+## Réalisation (2026-11-10)
+
+- **Art :** `tools/art/serie_cv_fx_eau.py` (Codex, 9 flipbooks et 16 particules, `manifeste_eau.json`). Vague, torrent, chute, gerbes, explosion, valve et pince détourées sur magenta, en mélange normal ; bulles, jets fins et pluie additifs sur noir. La chute d'eau a été peinte en 4 colonnes pleine hauteur (découpe propre, `_QUATRE_COLONNES`) ; la vague touche les bords de sa case (fondus, `_fondre_bords`). `mousse_eau` : `ecume` existe déjà.
+- **Par attaque :** Repli `repli` (coque `coque_eau` sur le lanceur, brique `shield`) ; Écume `bulles` variante `ecume` (nuée de petites bulles) ; Pistolet à O `eau` (jet fin `jet_fin_eau`, petite éclaboussure) ; Claquoir, Cascade, Pince-Masse : même geste de Contact, art refait (`valve_eau`, `chute_eau` et `gerbe_eau`, `pince_eau`) ; Surf `surf` (brique `wave_sweep` : la vague se lève derrière le lanceur, traverse le terrain et engloutit la cible ; la signature `surf` est retirée) ; Hydrocanon signature `hydrocanon` (`torrent_spirale`, `explosion_eau`) ; Danse Pluie `danse_pluie` (brique `rain` : quatre tuiles de pluie, scène assombrie). Bulles d'O inchangée.
+- **Valeurs par défaut [D] :** `bolt_height` (0,1 et 0,5), tailles d'impact et volée d'Écume dans `families.json` ; `RAIN_ALPHA`, `SURF_HEIGHT`, `SURF_PAST` de `move_fx_player.gd`.

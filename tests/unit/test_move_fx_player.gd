@@ -406,7 +406,7 @@ func test_tail_whip_wags_the_user_without_an_eye() -> void:
 
 
 ## Écume et Bulles d'O : plusieurs bulles peintes en vol en même temps, entre le lanceur et la
-## cible ; Bulles d'O en montre plus.
+## cible ; Bulles d'O les a plus grosses (refonte Eau : Écume est une nuée de petites bulles).
 func test_bubbles_float_toward_the_target_and_bubble_beam_sends_more() -> void:
 	var stage := _stage()
 	var peaks: Dictionary = {}
@@ -420,7 +420,7 @@ func test_bubbles_float_toward_the_target_and_bubble_beam_sends_more() -> void:
 			var shown := 0
 			for index: int in MoveFxPlayer.VOLLEY_MAX:
 				var piece := _player.get_piece(index)
-				if piece.visible and piece.texture == FxArt.particle(&"bulle").get("texture"):
+				if piece.visible and piece.texture == FxArt.particle(plan.art.get(&"piece")).get("texture"):
 					shown += 1
 					assert_between(piece.position.x, stage.origin().x - 80.0,
 						stage.target_rect.end.x + 80.0, "%s : entre les deux" % move_id)
@@ -428,7 +428,7 @@ func test_bubbles_float_toward_the_target_and_bubble_beam_sends_more() -> void:
 		peaks[move_id] = peak
 		assert_gte(peak, 3, "%s : une volée de bulles" % move_id)
 		_player.stop()
-	assert_gt(peaks[&"bubble_beam"], peaks[&"bubble"], "Bulles d'O : plus nombreuses")
+	assert_gt(_plan(&"bubble_beam").volley_size, _plan(&"bubble").volley_size, "Bulles d'O : plus grosses")
 
 
 ## Dard-Venin : une aiguille peinte, pointe vers la cible, qui avance ; piqûre à l'impact.
@@ -1022,6 +1022,56 @@ func test_sunny_day_lights_the_whole_field_not_the_target() -> void:
 	_assert_at_rest(stage)
 
 
+## Refonte Eau : chaque attaque se reconnaît à sa forme (Bulles d'O inchangée).
+func test_water_gun_is_thin_and_hydro_pump_huge() -> void:
+	var gun := _plan(&"water_gun")
+	var pump := _plan(&"hydro_pump")
+	assert_eq(gun.art.get(&"bolt"), &"jet_fin_eau")
+	assert_eq(pump.art.get(&"bolt"), &"torrent_spirale")
+	assert_lt(gun.bolt_height * 3.0, pump.bolt_height, "Hydrocanon bien plus épais")
+	assert_lt(gun.impact_size, pump.impact_size)
+
+
+func test_surf_wave_sweeps_across_to_the_target() -> void:
+	var stage := _stage()
+	var plan := _plan(&"surf")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.1)
+	var wave := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(wave.visible, "la vague")
+	var early := wave.position.distance_to(stage.target_rect.get_center())
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.2)
+	assert_lt(wave.position.distance_to(stage.target_rect.get_center()), early, "elle arrive sur la cible")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_withdraw_shells_the_user_only() -> void:
+	var stage := _stage()
+	var plan := _plan(&"withdraw")
+	assert_true(plan.on_self)
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var shell := _player.get_art(MoveFxPlayer.Flip.AURA)
+	assert_true(shell.visible, "la coque d'eau")
+	assert_almost_eq(shell.position, stage.user_rect.get_center(), Vector2.ONE, "autour du lanceur")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_rain_dance_covers_the_screen_with_rain() -> void:
+	var stage := _stage()
+	var plan := _plan(&"rain_dance")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var rain := _player.get_art(MoveFxPlayer.Flip.SKY)
+	assert_true(rain.visible, "la pluie")
+	assert_almost_eq(rain.position, stage.view_size * 0.5, Vector2.ONE, "sur tout l'écran")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
 ## Météores : plusieurs étoiles en vol à la fois, chacune tournée dans son sens de vol.
 func test_swift_stars_fly_head_first() -> void:
 	var stage := _stage()
@@ -1137,13 +1187,16 @@ func test_dig_burrows_then_erupts_under_the_target() -> void:
 ## Jackpot, Léchouille, Claquoir, Pince-Masse, Cascade : la marque peinte de la variante d'impact.
 func test_contact_wave_2_stamps_their_own_art() -> void:
 	var stage := _stage()
-	for pair: Array in [[&"lick", &"langue"], [&"clamp", &"coquille"], [&"crabhammer", &"pince"],
-			[&"waterfall", &"goutte_cascade"], [&"pay_day", &"etoile_impact"]]:
+	for pair: Array in [[&"lick", &"langue"], [&"clamp", &"valve_eau"], [&"crabhammer", &"pince_eau"],
+			[&"waterfall", &"chute_eau"], [&"pay_day", &"etoile_impact"]]:
 		var plan := _plan(pair[0])
 		_player.play(plan, stage)
 		_pose_at(plan, MoveFxPlan.IMPACT, 0.4)
 		var stamp := _player.get_art(MoveFxPlayer.Flip.IMPACT)
 		assert_true(stamp.visible, "%s : marque" % pair[0])
-		assert_eq(stamp.texture, FxArt.particle(pair[1]).get("texture"), "%s : %s" % pair)
+		var art := FxArt.particle(pair[1])
+		if art.is_empty():
+			art = FxArt.flipbook(pair[1])
+		assert_eq(stamp.texture, art.get("texture"), "%s : %s" % pair)
 		_player.stop()
 		_assert_at_rest(stage)

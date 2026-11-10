@@ -181,11 +181,11 @@ const POWDER_SPARKLES: int = 22
 ## Trajets et impacts posés par [method _pose_rouge2] (l'impact seul quand la famille n'a pas de
 ## trajet).
 const ROUGE2_TRAVELS: Array[String] = ["rockfall", "smoke_ball", "gas_drift", "stars", "sky_bolt",
-	"giant_orb", "bone", "strange_orb", "lob", "underground", "ground_pillar"]
+	"giant_orb", "bone", "strange_orb", "lob", "underground", "ground_pillar", "wave_sweep"]
 const ROUGE2_IMPACTS: Array[String] = ["explosions", "screen_flash", "field_haze", "fissure_open",
-	"electric_cage", "fire_vortex", "beam_up", "warp_aura", "sunshine"]
+	"electric_cage", "fire_vortex", "beam_up", "warp_aura", "sunshine", "rain"]
 ## Impacts sans tremblement de la cible (Flash, Buée Noire) ; impacts où elle ondule sur place.
-const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine"]
+const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine", "rain", "shield"]
 const WOBBLE_IMPACTS: Array[String] = ["distortion", "warp_aura", "dizzy"]
 ## Volée d'aiguilles (Double-Dard, Dard-Nuée) : écart entre deux aiguilles (hauteurs d'écran).
 const NEEDLE_SPACING: float = 0.05
@@ -270,6 +270,11 @@ const PILLAR_WIDTH: float = 0.95
 const PILLAR_HEIGHT: float = 2.4
 const SUN_ALPHA: float = 0.45
 const SUN_SIZE: float = 1.45
+## Refonte Eau, direction A [D] (2026-11-10) : opacité de la pluie de Danse Pluie ; hauteur de la
+## vague de Surf (hauteurs d'écran) et sa course au-delà de la cible.
+const RAIN_ALPHA: float = 0.75
+const SURF_HEIGHT: float = 0.85
+const SURF_PAST: float = 0.18
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
 ## images).
@@ -2143,6 +2148,8 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_giant_orb(phase, k)
 		"ground_pillar":
 			_pose_ground_pillar(phase, k)
+		"wave_sweep":
+			_pose_wave(phase, k)
 		"bone":
 			_pose_bone(phase, k)
 		"strange_orb":
@@ -2158,8 +2165,8 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_flash_glow(phase, k)
 		"electric_cage", "fire_vortex":
 			_pose_cage(phase, k)
-		"sunshine":
-			_pose_sunshine(phase, k)
+		"sunshine", "rain":
+			_pose_weather(phase, k)
 		"field_haze":
 			_pose_haze()
 		"fissure_open":
@@ -2650,20 +2657,59 @@ func _pose_ground_pillar(phase: MoveFxPlan.Phase, k: float) -> void:
 		Vector2(rect.size.y * PILLAR_WIDTH, length), 0.0, alpha)
 
 
-## Zénith : le soleil (`sky`) se lève sur tout l'écran pendant l'anticipation, brille pendant
-## l'impact et s'efface au retour ; rien ne part vers la cible.
-func _pose_sunshine(phase: MoveFxPlan.Phase, k: float) -> void:
+## Météo sur tout le terrain (`sky`) : soleil de Zénith dans le coin haut droit, pluie de Danse
+## Pluie sur tout l'écran. Elle arrive pendant l'anticipation, reste pendant l'impact et s'efface au
+## retour ; rien ne part vers la cible.
+func _pose_weather(phase: MoveFxPlan.Phase, k: float) -> void:
 	var alpha := 1.0
 	match phase.name:
 		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
 			alpha = _ease_out(k)
 		MoveFxPlan.RETURN:
 			alpha = 1.0 - _ease_in(k)
-	# Carré (sans déformer les rayons), soleil dans le coin haut droit de l'écran.
 	var view := _stage.view_size
+	if _impact_brick() == "rain":
+		# Quatre tuiles d'un quart d'écran : étirée sur tout l'écran, la pluie ferait des traits énormes.
+		var tile := view * 0.5
+		for i: int in 4:
+			_show_flip([Flip.SKY, Flip.WAVE_A, Flip.WAVE_B, Flip.WAVE_C][i], _plan.art.get(&"sky", &""),
+				tile * Vector2(0.5 + i % 2, 0.5 + i / 2), tile, 0.0, alpha * RAIN_ALPHA)
+		return
+	# Carré (sans déformer les rayons), soleil dans le coin haut droit de l'écran.
 	var side := SUN_SIZE * view.y
 	_show_flip(Flip.SKY, _plan.art.get(&"sky", &""), Vector2(view.x - side * 0.5, side * 0.5 - 0.06 * view.y),
 		Vector2.ONE * side, 0.0, alpha * SUN_ALPHA)
+
+
+## Surf : une grande vague (`wave`) se lève derrière le lanceur, traverse le terrain, déferle sur
+## la cible et la dépasse en s'effaçant ; tournée vers la gauche quand l'adversaire attaque.
+func _pose_wave(phase: MoveFxPlan.Phase, k: float) -> void:
+	var view := _stage.view_size
+	var start := _feet(_stage.user_rect)
+	var end := _feet(_stage.target_rect)
+	if _missed(phase.hit):
+		end.x = _miss_point().x
+	var dir := signf(end.x - start.x)
+	start.x -= dir * 0.5 * view.y
+	end.x += dir * SURF_PAST * view.y
+	var along := 0.0
+	var rise := 1.0
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			rise = _ease_out(k)
+			alpha = minf(1.0, k * 3.0)
+		MoveFxPlan.TRAVEL:
+			along = _ease_in_out(k) * 0.85
+		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
+			along = 0.85 + 0.15 * _ease_out(k)
+			alpha = 1.0 - clampf((k - 0.4) / 0.6, 0.0, 1.0)
+		_:
+			return
+	var foot := start.lerp(end, along)
+	var height := SURF_HEIGHT * view.y * lerpf(1.0, _depth_far(), along * 0.5) * lerpf(0.3, 1.0, rise)
+	_show_flip(Flip.TRAVEL, _plan.art.get(&"wave", &""), foot - Vector2(0.0, height * 0.42),
+		Vector2(height * 1.25, height), 0.0 if dir >= 0.0 else PI, alpha)
 
 
 ## Onde Folie : une sphère irisée (sa couleur tourne) flotte en ondulant jusqu'à la tête de la

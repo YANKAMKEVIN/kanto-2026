@@ -12,13 +12,13 @@ const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", 
 	&"chute_pierres", &"teleport", &"trempette", &"explosion", &"fumee", &"gaz", &"flash",
 	&"cuiller", &"etoiles", &"foudre", &"poing", &"os", &"onde_folie", &"brume", &"lancer",
 	&"atlas", &"fissure", &"tunnel", &"cage_eclair", &"charge_electrique", &"elecanon",
-	&"danse_flamme", &"roue_feu", &"feu_sacre", &"zenith"]
+	&"danse_flamme", &"roue_feu", &"feu_sacre", &"zenith", &"surf", &"repli", &"danse_pluie"]
 ## Vague 1 « Effets fidèles à Rouge » (2026-11-02) : attaque → [famille, variante, brique de
 ## trajet, brique de lancement].
 const ROUGE_WAVE_1: Dictionary = {
 	&"tail_whip": [&"statut_geste", &"", "", "tail_wag"],
 	&"vine_whip": [&"fouet", &"", "whip", "rear_back"],
-	&"bubble": [&"bulles", &"", "bubbles", "bubble_swell"],
+	&"bubble": [&"bulles", &"ecume", "bubbles", "bubble_swell"],
 	&"bubble_beam": [&"bulles", &"rafale", "bubbles", "bubble_swell"],
 	&"string_shot": [&"statut_fil", &"", "string", "rear_back"],
 	&"poison_sting": [&"dard", &"", "needle", "rear_back"],
@@ -112,15 +112,16 @@ func test_the_165_moves_of_the_annex_are_listed() -> void:
 	assert_eq(MoveFxCatalog.load_dir().move_ids().size(), ANNEX_COUNT + JOHTO_COUNT)
 
 
-## 14 signatures (Flammèche ajoutée par la refonte Feu) sur 15 attaques.
-func test_14_signatures_on_15_moves() -> void:
+## 13 signatures sur 14 attaques (Flammèche ajoutée par la refonte Feu ; Surf devenu une famille
+## par la refonte Eau).
+func test_13_signatures_on_14_moves() -> void:
 	var catalog := MoveFxCatalog.load_dir()
-	assert_eq(catalog.signature_ids().size(), 14)
+	assert_eq(catalog.signature_ids().size(), 13)
 	var signed: Array[StringName] = []
 	for move_id: StringName in catalog.move_ids():
 		if not catalog.entry(move_id).signature.is_empty():
 			signed.append(move_id)
-	assert_eq(signed.size(), 15, "Explosion et Destruction partagent la leur")
+	assert_eq(signed.size(), 14, "Explosion et Destruction partagent la leur")
 	assert_eq(catalog.entry(&"thunder_shock").signature, &"eclair")
 	assert_eq(catalog.entry(&"ember").signature, &"flammeche")
 	assert_eq(catalog.entry(&"self_destruct").signature, catalog.entry(&"explosion").signature)
