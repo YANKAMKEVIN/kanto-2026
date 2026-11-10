@@ -32,14 +32,6 @@
    "melange": "vert",
    "boucle": true
   },
-  "brume_reve": {
-   "fichier": "fb_brume_reve.webp",
-   "images": 16,
-   "colonnes": 4,
-   "taille": 384,
-   "melange": "vert",
-   "boucle": true
-  },
   "colonne_psy": {
    "fichier": "fb_colonne_psy.webp",
    "images": 16,
@@ -96,24 +88,8 @@
    "melange": "vert",
    "boucle": true
   },
-  "aura_meditation": {
-   "fichier": "fb_aura_meditation.webp",
-   "images": 16,
-   "colonnes": 4,
-   "taille": 320,
-   "melange": "vert",
-   "boucle": true
-  },
   "aura_vitesse": {
    "fichier": "fb_aura_vitesse.webp",
-   "images": 16,
-   "colonnes": 4,
-   "taille": 320,
-   "melange": "vert",
-   "boucle": true
-  },
-  "brume_amnesie": {
-   "fichier": "fb_brume_amnesie.webp",
    "images": 16,
    "colonnes": 4,
    "taille": 320,

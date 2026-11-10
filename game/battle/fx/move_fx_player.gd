@@ -278,13 +278,11 @@ const SURF_HEIGHT: float = 0.95
 const SURF_PAST: float = 0.18
 ## Refonte Psy, direction A [D] (2026-11-10) : mur de Bouclier, Protection, Mur Lumière et Voile Miroir
 ## (largeur et hauteur en hauteurs du lanceur, avancée devant lui en largeurs du lanceur) ; œil de
-## Prescience et couronne d'Amnésie et de Repos au-dessus de la tête (tailles en hauteurs du lanceur) ;
-## épaisseur de la brume de Dévorêve (hauteurs d'écran).
+## Prescience et couronne de Repos au-dessus de la tête (tailles en hauteurs du lanceur).
 const WALL_SIZE := Vector2(1.0, 1.45)
 const WALL_AHEAD: float = 0.55
 const EYE_SIZE: float = 0.75
 const CROWN_SIZE: float = 1.0
-const DREAM_HEIGHT: float = 0.3
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
 ## images).
@@ -865,7 +863,6 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 	_pose_wall(phase, k)
 	_pose_eye(phase, k)
 	_pose_crown(phase, k)
-	_pose_dream(phase, k)
 
 
 ## Formes dessinées en code (échafaudage de CV.0) quand le trajet n'a pas d'art : projectile,
@@ -2773,8 +2770,7 @@ func _pose_eye(phase: MoveFxPlan.Phase, k: float) -> void:
 	_show_flip(Flip.EXTRA_B, id, at, Vector2(side, side * lerpf(0.15, 1.0, open)), 0.0, open)
 
 
-## Amnésie, Repos (`crown`) : brume ou « Z » au-dessus de la tête du lanceur, de l'anticipation au
-## retour.
+## Repos (`crown`) : les « Z » au-dessus de la tête du lanceur, de l'anticipation au retour.
 func _pose_crown(phase: MoveFxPlan.Phase, k: float) -> void:
 	var id := _plan.art.get(&"crown", &"") as StringName
 	if id.is_empty() or _stage.user == null:
@@ -2794,30 +2790,6 @@ func _pose_crown(phase: MoveFxPlan.Phase, k: float) -> void:
 	var center := rect.get_center() + _stage.user.position - _stage.user_rest
 	var at := Vector2(center.x, maxf(rect.position.y - side * 0.15, side * 0.4))
 	_show_flip(Flip.EXTRA_A, id, at, Vector2.ONE * side, 0.0, alpha)
-
-
-## Dévorêve (`drain_band`) : un courant de brume de rêve est arraché de la cible et coule jusqu'au
-## lanceur, de la moitié de l'impact à la fin ; rien si l'attaque rate.
-func _pose_dream(phase: MoveFxPlan.Phase, k: float) -> void:
-	var id := _plan.art.get(&"drain_band", &"") as StringName
-	if id.is_empty() or not _plan.lands() or _missed(phase.hit):
-		return
-	var reach := 1.0
-	var alpha := 1.0
-	match phase.name:
-		MoveFxPlan.IMPACT:
-			if k < 0.3:
-				return
-			reach = _ease_out((k - 0.3) / 0.7)
-		MoveFxPlan.RETURN:
-			alpha = 1.0 - _ease_in(k)
-		_:
-			return
-	var from := _stage.impact_point()
-	var to := _stage.user_rect.get_center()
-	var thick := DREAM_HEIGHT * _stage.view_size.y * (1.0 + 0.05 * sin(_t * 9.0))
-	_show_flip(Flip.TRAIL, id, from, Vector2(from.distance_to(to) * reach, thick), (to - from).angle(), alpha,
-		true)
 
 
 ## Onde Folie : une sphère irisée (sa couleur tourne) flotte en ondulant jusqu'à la tête de la

@@ -4,7 +4,7 @@ Suite de la refonte par famille de types, après l'Électrik, le Feu et l'Eau (`
 
 **Direction retenue par Kevin : A, « psy peint »**, rose vif, magenta et violet, cœurs blanc rosé, coups de pinceau visibles ; la même main que la foudre, la flamme et l'eau peintes. Planches de référence : `docs/design/references/attaques/psy_direction_A1.png` (attaques 1 à 9) et `psy_direction_A2.png` (statuts 10 à 17) ; directions B « cosmos mental » et C « prisme » écartées. Elles donnent la direction, pas un dessin à reproduire au pixel (règle 10 de `CLAUDE.md`) : les petits cœurs dessinés par Codex sur la planche A ne sont pas repris.
 
-**Décision de Kevin : les 17 attaques sont refaites** (aucune gardée telle quelle).
+**Décisions de Kevin (2026-11-10), après les vidéos de comparaison avant / après une à une :** Yoga, Dévorêve et Amnésie gardent leur effet d'avant ; les quatorze autres sont refaites et validées.
 
 ## Les dix-sept attaques
 
@@ -14,17 +14,17 @@ Suite de la refonte par famille de types, après l'Électrik, le Feu et l'Eau (`
 | 2 | Rafale Psy | 65 | Rayon enfilé d'anneaux psychiques, du lanceur à la cible | `psy` |
 | 3 | Vague Psy | variable | Deux ondes sinusoïdales épaisses du lanceur à la cible | `psy` |
 | 4 | Psyko | 90 | Sphère qui enveloppe la cible, se comprime et explose ; la plus forte | `psy`, signature `psyko` |
-| 5 | Dévorêve | 100 | Brume de rêve arrachée de la cible et aspirée par le lanceur | `psy` + `drain` |
+| 5 | Dévorêve | 100 | **Inchangée** (décision de Kevin) | `psy` + `drain` |
 | 6 | Prescience | 80 | Œil de lumière au-dessus du lanceur, puis colonne de lumière sur la cible | `psy` |
 | 7 | Hypnose | statut | Anneaux hypnotiques en série, spirales autour de la cible | `psy` |
 | 8 | Télékinésie | statut | Cuiller de lumière tordue au-dessus du lanceur, la cible ondule | `cuiller` |
 | 9 | Téléport | statut | Le lanceur file dans une colonne de lumière | `teleport` |
-| 10 | Yoga | statut | Halo et volutes de méditation autour du lanceur | `statut_plus` |
+| 10 | Yoga | statut | **Inchangée** (décision de Kevin) | `statut_plus` |
 | 11 | Hâte | statut | Traînées de vitesse autour du lanceur | `statut_plus` |
 | 12 | Bouclier | statut | Mur de cristal à alvéoles hexagonales devant le lanceur | `statut_plus` |
 | 13 | Protection | statut | Panneau de verre lisse et réfléchissant devant le lanceur | `statut_plus` |
 | 14 | Mur Lumière | statut | Rideau de bandes de lumière dorée et rosée devant le lanceur | `statut_plus` |
-| 15 | Amnésie | statut | Brume qui s'échappe de la tête du lanceur et se dissipe | `statut_plus` |
+| 15 | Amnésie | statut | **Inchangée** (décision de Kevin) | `statut_plus` |
 | 16 | Voile Miroir | statut | Miroir courbe irisé devant le lanceur | `psy` |
 | 17 | Repos | statut | Lueur de soin et « Z » au-dessus du lanceur (il reste debout : pas de pose couchée) | `soin` |
 
@@ -44,6 +44,7 @@ Suite de la refonte par famille de types, après l'Électrik, le Feu et l'Eau (`
 
 ## Réalisation (2026-11-10)
 
-- **Art :** `tools/art/serie_cv_fx_psy.py` (Codex, 21 flipbooks et 16 particules, `manifeste_psy.json`). Masses denses (onde, implosion, rayons, brume, spirales, murs, auras) sur fond vert en mélange normal, densifiées ; œil, éclat, lueur de Repos et colonnes en additif sur noir.
-- **Par attaque :** Choc Mental `psy` (plus de trajet : regard puis `onde_choc_psy` sur la cible) ; Psyko signature `psyko` (`implosion_psy`, aura `aura_psy`, secousse 6) ; Rafale Psy `rafale_psy` et Vague Psy `vague_psy` (courant `bolt` : `rayon_anneaux`, `onde_sinus`) ; Dévorêve `devoreve` (rôle `drain_band` : `brume_reve` de la cible au lanceur) ; Prescience `prescience` (rôle `eye` : `oeil_lumiere` ; colonne `colonne_psy` par `ground_pillar`) ; Hypnose `hypnose` (ondes `rings` d'`anneau_hypnose`, `spirale_hypnose`) ; Télékinésie `cuiller` et Téléport `teleport` (art refait) ; Yoga `yoga`, Hâte `hate` (aura) ; Amnésie `amnesie`, Repos `repos` (rôle `crown` au-dessus de la tête) ; Bouclier `bouclier`, Protection `protection`, Mur Lumière `mur_lumiere`, Voile Miroir `voile_miroir` (brique `barrier_wall`, rôle `wall` devant le lanceur).
-- **Valeurs par défaut [D] :** `bolt_height`, `impact_size` et secousses dans `families.json` ; `WALL_SIZE`, `WALL_AHEAD`, `EYE_SIZE`, `CROWN_SIZE`, `DREAM_HEIGHT` de `move_fx_player.gd`.
+- **Art :** `tools/art/serie_cv_fx_psy.py` (Codex, 18 flipbooks et 16 particules, `manifeste_psy.json`). Masses denses (onde, implosion, rayons, spirales, murs, auras) sur fond vert en mélange normal, densifiées ; œil, éclat, lueur de Repos et colonnes en additif sur noir.
+- **Par attaque :** Choc Mental `psy` (plus de trajet : regard puis `onde_choc_psy` sur la cible) ; Psyko signature `psyko` (`implosion_psy`, aura `aura_psy`, secousse 6) ; Rafale Psy `rafale_psy` et Vague Psy `vague_psy` (courant `bolt` : `rayon_anneaux`, `onde_sinus`) ; Dévorêve `devoreve` (copie de l'ancienne famille `psy` : anneaux, drain) ; Prescience `prescience` (rôle `eye` : `oeil_lumiere` ; colonne `colonne_psy` par `ground_pillar`) ; Hypnose `hypnose` (ondes `rings` d'`anneau_hypnose`, `spirale_hypnose`) ; Télékinésie `cuiller` et Téléport `teleport` (art refait) ; Hâte `hate` (aura) ; Repos `repos` (rôle `crown` au-dessus de la tête) ; Yoga et Amnésie restent en `statut_plus` ; Bouclier `bouclier`, Protection `protection`, Mur Lumière `mur_lumiere`, Voile Miroir `voile_miroir` (brique `barrier_wall`, rôle `wall` devant le lanceur).
+- **Valeurs par défaut [D] :** `bolt_height`, `impact_size` et secousses dans `families.json` ; `WALL_SIZE`, `WALL_AHEAD`, `EYE_SIZE`, `CROWN_SIZE` de `move_fx_player.gd`. Vague Psy et Hypnose durent 1 s ; la lueur de Repos est creusée au centre (`_creuser`) pour ne pas cacher le lanceur.
+- **Retirés après le choix de Kevin :** flipbooks `brume_reve`, `aura_meditation`, `brume_amnesie` et la brique de la brume aspirée (Dévorêve, Yoga et Amnésie inchangées).

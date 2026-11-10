@@ -1232,23 +1232,14 @@ func test_psybeam_and_psywave_run_from_the_user_to_the_target() -> void:
 		_assert_at_rest(stage)
 
 
-func test_dream_eater_pulls_a_dream_back_to_the_user() -> void:
-	var stage := _stage()
-	var plan := _plan(&"dream_eater")
-	_player.play(plan, stage)
-	_pose_at(plan, MoveFxPlan.RETURN, 0.3)
-	var dream := _player.get_art(MoveFxPlayer.Flip.TRAIL)
-	assert_true(dream.visible, "la brume de rêve")
-	assert_almost_eq(dream.position, stage.impact_point(), Vector2.ONE, "arrachée de la cible")
-	var toward := (stage.user_rect.get_center() - stage.impact_point()).normalized()
-	assert_gt(Vector2.from_angle(dream.rotation).dot(toward), 0.9, "vers le lanceur")
-	_player.stop()
-	var missed := _plan(&"dream_eater", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.MISSED))
-	_player.play(missed, stage)
-	_pose_at(missed, MoveFxPlan.RETURN, 0.3)
-	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAIL).visible, "rien ne revient d'un raté")
-	_player.stop()
-	_assert_at_rest(stage)
+## Dévorêve, Yoga et Amnésie gardent leur effet d'avant la refonte (décision de Kevin du 2026-11-10).
+func test_dream_eater_meditate_and_amnesia_keep_their_old_look() -> void:
+	var dream := _plan(&"dream_eater")
+	assert_eq(String(dream.bricks.get("travel", "")), "rings", "Dévorêve : les anneaux en série")
+	assert_eq(dream.art.get(&"travel"), &"anneau_psy")
+	assert_true(dream.has_modifier(&"drain"), "Dévorêve : le drain revient")
+	for move_id: StringName in [&"meditate", &"amnesia"]:
+		assert_eq(_catalog.entry(move_id).family, &"statut_plus", "%s : l'aura d'avant" % move_id)
 
 
 func test_future_sight_opens_an_eye_then_drops_a_column() -> void:
@@ -1293,8 +1284,7 @@ func test_psychic_barriers_rise_in_front_of_the_user_and_differ() -> void:
 
 func test_self_psychic_moves_glow_on_the_user_only() -> void:
 	var stage := _stage()
-	for pair: Array in [[&"meditate", MoveFxPlayer.Flip.AURA], [&"agility", MoveFxPlayer.Flip.AURA],
-			[&"amnesia", MoveFxPlayer.Flip.EXTRA_A], [&"rest", MoveFxPlayer.Flip.EXTRA_A]]:
+	for pair: Array in [[&"agility", MoveFxPlayer.Flip.AURA], [&"rest", MoveFxPlayer.Flip.EXTRA_A]]:
 		var plan := _plan(pair[0])
 		assert_true(plan.on_self, "%s : sur le lanceur" % pair[0])
 		_player.play(plan, stage)

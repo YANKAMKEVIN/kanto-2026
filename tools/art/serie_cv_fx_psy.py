@@ -47,10 +47,6 @@ FLIPBOOKS = [
 		"DEUX ondes psychiques épaisses qui ondulent en SINUSOÏDE horizontale du bord GAUCHE exact au bord DROIT exact "
 		"de la case, entrelacées, rose vif et violet, cœur blanc rosé, environ trois vagues sur la longueur, amplitude "
 		"de la moitié de la hauteur de la bande. Boucle : les ondulations courent vers la droite."),
-	("brume_reve", "vert", "bande", False, 384, "COURANT DE BRUME DE RÊVE",
-		"un courant de BRUME onirique horizontal, du bord GAUCHE exact au bord DROIT exact de la case : volutes "
-		"denses rose pâle et lilas qui s'enroulent, petites bulles et étincelles douces prises dedans, lumineux au cœur, "
-		"épaisseur environ la moitié de la hauteur de la bande. Boucle : la brume coule vers la DROITE."),
 	("colonne_psy", "add", "pleine", False, 384, "COLONNE DE LUMIÈRE PSYCHIQUE",
 		"une COLONNE VERTICALE de lumière psychique qui tombe du bord HAUT exact jusqu'au bord BAS exact de la case, "
 		"large d'environ la moitié de la case : cœur blanc éclatant, rayons rose vif et magenta, stries verticales, "
@@ -78,17 +74,10 @@ FLIPBOOKS = [
 		"une aura psychique en forme de flamme ovale verticale, centrée, qui occupe 85 % de la case : contour épais de "
 		"volutes rose vif et violettes qui montent, ondes de pression, liseré blanc. L'INTÉRIEUR RESTE VIDE. Boucle : "
 		"les volutes montent et ondulent."),
-	("aura_meditation", "vert", "carre", False, 320, "AURA DE MÉDITATION",
-		"une aura calme de méditation, centrée : un HALO circulaire lumineux rose dans le tiers haut de la case, et des "
-		"volutes rose et lilas qui montent en spirale lente du bas de la case vers le halo, de chaque côté. L'INTÉRIEUR "
-		"(le centre de la case) RESTE VIDE. Boucle : les volutes montent et le halo pulse."),
 	("aura_vitesse", "vert", "carre", False, 320, "TRAÎNÉES DE VITESSE PSYCHIQUES",
 		"des TRAÎNÉES DE VITESSE psychiques autour du centre vide de la case : longs rubans rose vif et magenta qui "
 		"filent à l'HORIZONTALE vers la GAUCHE, en arcs autour du centre, liserés blancs, comme des images rémanentes "
 		"étirées. Le centre reste vide. Boucle : les rubans filent vers la gauche."),
-	("brume_amnesie", "vert", "carre", False, 320, "BRUME QUI S'ÉCHAPPE ET SE DISSIPE",
-		"une BRUME psychique qui naît au BAS-CENTRE de la case et MONTE en volutes épaisses rose et lilas qui "
-		"s'élargissent et se dissipent vers le haut, petites bulles qui éclatent. Boucle : la brume monte."),
 	("lueur_repos", "add", "carre", False, 320, "LUEUR DE REPOS",
 		"une lueur de soin ronde et douce mais bien visible, centrée, rose pâle et blanc, scintillements qui montent "
 		"lentement, anneau lumineux au sol en bas de la case. Boucle : la lueur respire."),

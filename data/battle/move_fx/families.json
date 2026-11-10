@@ -561,12 +561,12 @@
 		},
 		"devoreve": {
 			"name": "Dévorêve", "target": "foe",
-			"_doc": "refonte Psy, direction A : la cible endormie est secouée par un éclat psychique, puis un courant de brume de rêve est arraché d'elle et coule jusqu'au lanceur (drain_band) ; bulles de rêve en retour.",
-			"bricks": {"launch": "psy_aura", "travel": "", "impact": "distortion"},
-			"phases": {"anticipation": 0.2, "travel": 0.0, "impact": 0.45, "return": 0.35},
-			"world": {"light": "#FFA8E0", "light_peak": 0.5, "flashes": 1},
-			"camera": {"zoom": 1.04, "shake": 4.0},
-			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 28, "impact_size": 2.0, "art": {"charge": "bulle_reve", "impact": "eclat_psy", "particle": "bulle_reve", "stream": "bulle_reve", "drain_band": "brume_reve", "rise": "volute_psy"}}
+			"_doc": "refonte Psy : Dévorêve garde l'effet Psy d'avant la refonte (décision de Kevin du 2026-11-10) : anneaux roses en série, cible qui ondule, flux du drain qui revient au lanceur.",
+			"bricks": {"launch": "psy_aura", "travel": "rings", "impact": "distortion"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
+			"camera": {"zoom": 1.03, "shake": 0.0},
+			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 20, "art": {"charge": "oeil_psy", "travel": "anneau_psy", "impact": "onde_psy", "particle": "anneau_psy"}}
 		},
 		"prescience": {
 			"name": "Prescience", "target": "foe",
@@ -586,15 +586,6 @@
 			"camera": {"zoom": 1.02, "shake": 0.0},
 			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 18, "impact_size": 1.5, "art": {"charge": "halo_psy", "travel": "anneau_hypnose", "impact": "spirale_hypnose", "particle": "bulle_reve"}}
 		},
-		"yoga": {
-			"name": "Yoga", "target": "self",
-			"_doc": "refonte Psy, direction A : le lanceur médite : halo et volutes psychiques montent autour de lui ; rien vers la cible.",
-			"bricks": {"launch": "posture", "travel": "", "impact": "shield"},
-			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
-			"world": {"light": "#FFA8E0", "light_peak": 0.3, "flashes": 0},
-			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 16, "art": {"aura": "aura_meditation", "particle": "volute_psy"}}
-		},
 		"hate": {
 			"name": "Hâte", "target": "self",
 			"_doc": "refonte Psy, direction A : traînées de vitesse psychiques autour du lanceur ; rien vers la cible.",
@@ -603,15 +594,6 @@
 			"world": {"light": "#FFA8E0", "light_peak": 0.3, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 18, "art": {"aura": "aura_vitesse", "particle": "trait_vitesse"}}
-		},
-		"amnesie": {
-			"name": "Amnésie", "target": "self",
-			"_doc": "refonte Psy, direction A : une brume psychique s'échappe de la tête du lanceur et se dissipe (crown) ; rien vers la cible.",
-			"bricks": {"launch": "posture", "travel": "", "impact": "shield"},
-			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
-			"world": {"light": "#FFA8E0", "light_peak": 0.25, "flashes": 0},
-			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 14, "art": {"crown": "brume_amnesie", "particle": "bulle_reve"}}
 		},
 		"repos": {
 			"name": "Repos", "target": "self",
