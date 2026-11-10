@@ -178,7 +178,7 @@ func test_no_effect() -> void:
 
 
 func test_failed_keeps_only_anticipation_and_return() -> void:
-	var plan := _plan(&"thunder_wave", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.FAILED, 0))
+	var plan := _plan(&"growl", MoveFxPlan.Mode.FULL, _outcome(MoveFxOutcome.Result.FAILED, 0))
 	assert_eq(plan.phases.size(), 2)
 	assert_eq(plan.phases[0].name, MoveFxPlan.ANTICIPATION)
 	assert_eq(plan.phases[1].name, MoveFxPlan.RETURN)

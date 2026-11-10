@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), `spray` : grains de la gerbe de Jet de Sable ; vague 1 « Effets fidèles à Rouge » : piece (pièce d'une volée), sprout, crack, powder, sparkle ; fx.volley : volée (count, stagger, size, wobble en hauteurs d'écran) ; fx.beats ou impacts.*.beats : claquements par impact ; families.*.variants : réglages fx remplacés par la variante d'une attaque (\"variant\" dans son entrée, art fusionné rôle par rôle) ; complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; vague 2 (2026-11-04) : families.*.duration (durée en Complètes d'une attaque sans dégâts), families.*.vanish (Téléport : le lanceur reste caché si TELEPORTED), fx.light / fx.light_peak / fx.flashes (lumière d'une variante), impacts.*.roles (art propre d'une variante d'impact), world.storm (la scène s'assombrit avant la foudre), rôles blast, spark, crack, bolt_sky, column, glow, spoon, ring, coin, glint, drool, splash, burst, star, rock, grit ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
+	"_doc": "Familles d'effets de combat (docs/tech/combat-vivant.md §2.2, §2.6, §3). Les attaques sont dans les autres fichiers du dossier (plancher.json, puis un fichier par lot). Valeurs [D] (règle 4), réglées sur S24. phases : parts de la durée (anticipation, trajet, impact, retour ; somme 1) ; world.light_peak : lumière simulée du décor (0..1) ; world.flashes : éclats de lumière par attaque ; camera : zoom et tremblement (px) au plafond de limits ; fx.palette : dégradé des effets (cœur presque blanc, couleur de l'élément, bord sombre, §2.9) ; fx.particles : particules d'un éclat d'impact (avant le facteur des Réduites ; ≤ 64, un émetteur) ; fx.art : art peint de la famille (identifiants des manifestes de assets/sprites/battle_fx/ : charge, travel, bolt, impact, particle, rise, fallout, dust), `spray` : grains de la gerbe de Jet de Sable ; vague 1 « Effets fidèles à Rouge » : piece (pièce d'une volée), sprout, crack, powder, sparkle ; fx.volley : volée (count, stagger, size, wobble en hauteurs d'écran) ; fx.beats ou impacts.*.beats : claquements par impact ; families.*.variants : réglages fx remplacés par la variante d'une attaque (\"variant\" dans son entrée, art fusionné rôle par rôle) ; complété par impacts.*.art (Contact), modifiers.*.art (stream, trap, self_burst : rôles absents de la famille seulement) et signatures.*.art ; vague 2 (2026-11-04) : families.*.duration (durée en Complètes d'une attaque sans dégâts), families.*.vanish (Téléport : le lanceur reste caché si TELEPORTED), fx.light / fx.light_peak / fx.flashes (lumière d'une variante), impacts.*.roles (art propre d'une variante d'impact), fx.bolt_height et fx.impact_size ou signature : épaisseur du courant (hauteurs d'écran) et taille de l'impact peint (hauteurs de cible) ; refonte Électrik : rôles aura, trail, bolt_twin, cage, orb, halo, ring, tether, sky ; world.storm (la scène s'assombrit avant la foudre), rôles blast, spark, crack, bolt_sky, column, glow, spoon, ring, coin, glint, drool, splash, burst, star, rock, grit ; fx.tint : teinte des flipbooks de la famille (blanc par défaut) ; sans art, formes dessinées en code (échafaudage de CV.0).",
 	"durations": {
 		"_doc": "CV-2 (décision de Kevin du 2026-10-26) : durée en Complètes selon la puissance ; la durée suit la puissance dans la ligne (power_min → min, power_max → max). Coups multiples : chaque coup prend la première ligne. Ligne 3 aussi pour K.O. en un coup, Explosion / Destruction et les légendaires.",
 		"bands": [
@@ -64,7 +64,7 @@
 			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
 			"world": {"light": "#FFF3A0", "light_peak": 0.55, "flashes": 2},
 			"camera": {"zoom": 1.04, "shake": 3.0},
-			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 28, "art": {"charge": "etincelle", "bolt": "arc_electrique_a", "impact": "decharge_etoile", "particle": "etincelle"}}
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 28, "art": {"charge": "etincelle_or", "bolt": "eclair_fin", "impact": "impact_foudre", "particle": "etincelle_or"}}
 		},
 		"plante": {
 			"name": "Plante", "target": "foe",
@@ -352,9 +352,36 @@
 			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Fatal-Foudre. Rouge : l'écran s'assombrit et un éclair tombe du ciel sur la cible. Ici : la scène s'assombrit (world storm), des étincelles se rassemblent sur le lanceur, puis la foudre peinte (flipbook foudre) tombe du haut de l'écran sur la cible, éclair plein écran plafonné, décharge en étoile et étincelles.",
 			"bricks": {"launch": "charge_spark", "travel": "sky_bolt", "impact": "spark_burst"},
 			"phases": {"anticipation": 0.3, "travel": 0.15, "impact": 0.4, "return": 0.15},
-			"world": {"light": "#FFF3A0", "light_peak": 0.9, "flashes": 2, "storm": true},
-			"camera": {"zoom": 1.04, "shake": 5.0},
-			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#5A4AC8"], "particles": 30, "art": {"charge": "etincelle", "bolt_sky": "foudre", "impact": "decharge_etoile", "particle": "etincelle", "rise": "eclair_vertical"}}
+			"world": {"light": "#FFF3A0", "light_peak": 0.75, "flashes": 2, "storm": true, "dust": true},
+			"camera": {"zoom": 1.05, "shake": 6.0},
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 40, "art": {"charge": "etincelle_or", "bolt_sky": "colonne_foudre", "sky": "nuages_orage", "impact": "impact_foudre", "particle": "fourche_foudre", "rise": "eclair_or", "fallout": "eclats_pierre", "dust": "poussiere"}}
+		},
+		"cage_eclair": {
+			"name": "Cage-Éclair", "target": "foe", "duration": 1.1,
+			"_doc": "refonte Électrik, direction A (2026-11-09, docs/tech/attaques-electriques.md) : une cage de filaments se referme autour de la cible, sans trait de frappe.",
+			"bricks": {"launch": "charge_spark", "travel": "", "impact": "electric_cage"},
+			"phases": {"anticipation": 0.25, "travel": 0.0, "impact": 0.55, "return": 0.2},
+			"world": {"light": "#FFF3A0", "light_peak": 0.3, "flashes": 1},
+			"camera": {"zoom": 1.02, "shake": 0.0},
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 14, "art": {"charge": "etincelle_or", "cage": "cage_eclair", "particle": "fil_foudre"}}
+		},
+		"charge_electrique": {
+			"name": "Charge électrique", "target": "foe",
+			"_doc": "refonte Électrik, direction A : Étincelle. La charge du dos existante porte le geste (pas de pose de course), le corps couvert d'électricité (aura) laisse une traînée de foudre ; percussion en décharge.",
+			"bricks": {"launch": "crouch", "travel": "dash", "impact": "spark_burst"},
+			"phases": {"anticipation": 0.25, "travel": 0.25, "impact": 0.3, "return": 0.2},
+			"world": {"light": "#FFF3A0", "light_peak": 0.5, "flashes": 1, "dust": true},
+			"camera": {"zoom": 1.03, "shake": 3.5},
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 26, "impact_size": 1.9, "art": {"aura": "aura_etincelle", "trail": "trainee_foudre", "particle": "etincelle_or", "dust": "poussiere"}}
+		},
+		"elecanon": {
+			"name": "Élecanon", "target": "foe",
+			"_doc": "refonte Électrik, direction A : une énorme sphère dense et instable enfle devant le lanceur, part lourdement et explose sur la cible ; à côté une fois sur deux (précision 50).",
+			"bricks": {"launch": "charge_spark", "travel": "giant_orb", "impact": "orb_blast"},
+			"phases": {"anticipation": 0.4, "travel": 0.3, "impact": 0.22, "return": 0.08},
+			"world": {"light": "#FFE890", "light_peak": 0.7, "flashes": 2, "dust": true},
+			"camera": {"zoom": 1.05, "shake": 6.0},
+			"fx": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "particles": 44, "impact_size": 3.2, "art": {"charge": "fil_foudre", "aura": "aura_etincelle", "orb": "sphere_instable", "halo": "halo_or", "ring": "anneau_foudre", "tether": "eclair_fin", "impact": "explosion_foudre", "particle": "fourche_foudre", "rise": "caillou", "fallout": "fumee", "dust": "poussiere"}}
 		},
 		"poing": {
 			"name": "Poing élémentaire", "target": "foe",
@@ -367,7 +394,7 @@
 			"variants": {
 				"feu": {"palette": ["#FFF1B0", "#FF8A3C", "#8A1E0A"], "light": "#FF9A3C", "light_peak": 0.5, "flashes": 1, "art": {"burst": "gerbe_braises", "particle": "braise", "rise": "flamme", "fallout": "fumee"}},
 				"glace": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "light": "#CFEFFF", "light_peak": 0.35, "flashes": 1, "particles": 34, "art": {"burst": "eclat_glace", "particle": "eclat_glace", "rise": "flocon", "fallout": "flocon"}},
-				"eclair": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "light": "#FFF3A0", "light_peak": 0.55, "flashes": 2, "art": {"burst": "decharge_etoile", "particle": "etincelle", "rise": "etincelle_bleue"}}
+				"eclair": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "light": "#FFF3A0", "light_peak": 0.6, "flashes": 1, "art": {"stamp": "etoile_contact", "aura": "aura_etincelle", "burst": "onde_choc_foudre", "particle": "etincelle_or", "rise": "fil_foudre"}}
 			}
 		},
 		"os": {
@@ -452,6 +479,7 @@
 	},
 	"impacts": {
 		"_doc": "Variantes d'impact de la famille Contact (§3.2).",
+		"etincelle": {"name": "Étincelle", "brick": "impact_star", "art": "impact_foudre", "_doc": "Étincelle (refonte Électrik) : la percussion éclate en décharge de foudre."},
 		"coup": {"name": "Coup", "brick": "impact_star", "art": "etoile_impact"},
 		"griffe": {"name": "Griffe", "brick": "claw_slashes", "art": "entailles_griffes"},
 		"crocs": {"name": "Crocs", "brick": "jaws", "art": "machoires"},
@@ -481,9 +509,9 @@
 	},
 	"signatures": {
 		"_doc": "Attaques qui demandent une brique neuve (§3.3). Priorité A : CV.0 à CV.2 ; B ensuite.",
-		"eclair": {"base": "electrique", "priority": "A", "origin": "joues", "art": {"cheeks": "arc_electrique_b", "bolt": "arc_electrique_a", "impact": "decharge_etoile", "feathers": "plume"}, "light_peak": 0.85, "flashes": 2},
-		"tonnerre": {"base": "electrique", "priority": "A", "origin": "joues"},
-		"fatal_foudre": {"base": "foudre", "priority": "A", "origin": "centre"},
+		"eclair": {"base": "electrique", "priority": "A", "origin": "joues", "bolt_height": 0.17, "impact_size": 0.8, "art": {"cheeks": "arc_joue", "feathers": "plume"}, "light_peak": 0.4, "flashes": 1},
+		"tonnerre": {"base": "electrique", "priority": "A", "origin": "joues", "bolt_height": 0.42, "impact_size": 2.3, "art": {"bolt": "courant_tresse", "bolt_twin": "eclair_fin", "aura": "aura_etincelle", "particle": "fourche_foudre", "rise": "fil_foudre"}, "light_peak": 0.75, "flashes": 2},
+		"fatal_foudre": {"base": "foudre", "priority": "A", "origin": "centre", "bolt_height": 0.8, "impact_size": 2.6},
 		"lance_flammes": {"base": "feu", "priority": "A", "origin": "bouche"},
 		"deflagration": {"base": "feu", "priority": "A", "origin": "bouche"},
 		"hydrocanon": {"base": "eau", "priority": "A", "origin": "canons"},

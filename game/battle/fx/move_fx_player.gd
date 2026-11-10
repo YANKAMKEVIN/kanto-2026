@@ -121,7 +121,8 @@ const SPRAY_DUST: float = 0.09
 const SPRAY_DUST_AMOUNT: int = 20
 ## Rôles des sprites d'art : le trajet (projectile, arc), l'impact, deux étincelles de joues, trois
 ## copies en série (ondes du trajet, flux du drain, anneau du piège : jamais dans la même phase).
-enum Flip { TRAVEL, IMPACT, EXTRA_A, EXTRA_B, WAVE_A, WAVE_B, WAVE_C }
+## Ordre de dessin : le plafond d'orage (`SKY`) passe sous tout le reste.
+enum Flip { SKY, TRAVEL, IMPACT, EXTRA_A, EXTRA_B, WAVE_A, WAVE_B, WAVE_C, AURA, TRAIL }
 ## Vague 1 « Effets fidèles à Rouge » [D] (2026-11-02, à régler sur téléphone).
 ## Gestes du lanceur : dandinement (part de sa largeur, balancements), ébrouement (px, secousses),
 ## recul (px).
@@ -180,9 +181,9 @@ const POWDER_SPARKLES: int = 22
 ## Trajets et impacts posés par [method _pose_rouge2] (l'impact seul quand la famille n'a pas de
 ## trajet).
 const ROUGE2_TRAVELS: Array[String] = ["rockfall", "smoke_ball", "gas_drift", "stars", "sky_bolt",
-	"bone", "strange_orb", "lob", "underground"]
+	"giant_orb", "bone", "strange_orb", "lob", "underground"]
 const ROUGE2_IMPACTS: Array[String] = ["explosions", "screen_flash", "field_haze", "fissure_open",
-	"beam_up", "warp_aura"]
+	"electric_cage", "beam_up", "warp_aura"]
 ## Impacts sans tremblement de la cible (Flash, Buée Noire) ; impacts où elle ondule sur place.
 const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash"]
 const WOBBLE_IMPACTS: Array[String] = ["distortion", "warp_aura", "dizzy"]
@@ -250,6 +251,19 @@ const COIN_SIZE: float = 0.08
 const COINS: int = 16
 ## Flash : le calque plein écran déborde de la vue (caméra qui bouge).
 const SCREEN_MARGIN: float = 0.15
+## Refonte Électrik (direction A, `docs/tech/attaques-electriques.md`) [D] : cage (part de la cible),
+## aura du lanceur (part de sa boîte), traînée d'une charge (hauteurs d'écran), sphère d'Élecanon
+## (hauteurs d'écran : taille, avancée devant le lanceur, tremblement), plafond d'orage.
+const IMPACT_MAX: float = 1.0
+const CAGE_SIZE: float = 1.45
+const AURA_SIZE: float = 1.15
+const TRAIL_HEIGHT: float = 0.24
+const TRAIL_BEHIND: float = 0.3
+const ORB_SIZE: float = 0.5
+const ORB_AHEAD: float = 0.2
+const ORB_TREMBLE: float = 0.008
+const ORB_DEPTH_FAR: float = 0.82
+const SKY_SIZE := Vector2(1.5, 0.62)
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
 ## images).
@@ -584,6 +598,14 @@ func _impact_burst(phase: MoveFxPlan.Phase) -> void:
 			_rock_burst(0)
 		"explosions":
 			_blast_burst(0)
+		"electric_cage":
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 22.0, reach * 0.7,
+				life * 1.5, true)
+		"orb_blast":
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.BURST, 46.0, reach * 3.0,
+				life * 1.3, true)
+			_art_burst(&"rise", Vector2(at.x, _stage.target_rect.end.y), roundi(_plan.particles / 2.0),
+				FxParticlePool.Shape.FALL, 0.022 * height, reach * 1.8, life * 1.5)
 		"beam_up":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 26.0,
 				reach * 2.0, life * 1.3, true)
@@ -774,7 +796,7 @@ func _pose_target(phase: MoveFxPlan.Phase, elapsed: float) -> void:
 			match impact_brick:
 				"distortion", "warp_aura", "dizzy", "field_haze", "screen_flash":
 					pass
-				"vibrate":
+				"vibrate", "electric_cage":
 					offset.x = sin(TAU * VIBRATE_WAVES * k) * VIBRATE_SHAKE * hit_k
 				_:
 					offset.x = sin(TAU * HIT_SHAKE_WAVES * k) * HIT_SHAKE * heavy * hit_k
@@ -815,6 +837,8 @@ func _pose_effect(phase: MoveFxPlan.Phase, k: float) -> void:
 		# Sans trajet (regard de RP-286) : rien ne part du lanceur ; le regard reste sur lui.
 		_pose_gaze(phase, k)
 	_pose_impact_art()
+	_pose_aura(phase, k)
+	_pose_trail(phase, k)
 	_pose_trap(phase, k)
 	_pose_drain(phase, k)
 
@@ -885,8 +909,7 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 		MoveFxPlan.TRAVEL:
 			if not bolt.is_empty():
 				var reach := from.distance_to(to) * _ease_out(k)
-				_show_flip(Flip.TRAVEL, bolt, from, Vector2(reach, ART_BOLT_HEIGHT * height), angle,
-					1.0, true)
+				_show_bolt_art(bolt, from, reach, angle, 1.0)
 				if _plan.art.has(&"cheeks"):
 					_pose_cheeks(1.0 - k)
 			else:
@@ -896,9 +919,8 @@ func _pose_art(phase: MoveFxPlan.Phase, k: float) -> bool:
 		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
 			var fade := 1.0 - _ease_in(k)
 			if not bolt.is_empty():
-				_show_flip(Flip.TRAVEL, bolt, from, Vector2(from.distance_to(to),
-					ART_BOLT_HEIGHT * height), angle, fade * (1.0 if phase.name == MoveFxPlan.IMPACT
-					else 0.6), true)
+				_show_bolt_art(bolt, from, from.distance_to(to), angle, fade
+					* (1.0 if phase.name == MoveFxPlan.IMPACT else 0.6))
 			elif phase.name == MoveFxPlan.MISS:
 				var past := to + (to - from) * MISS_OVERSHOOT * k
 				_show_flip(Flip.TRAVEL, travel, past, Vector2.ONE * ART_PROJECTILE * height
@@ -927,7 +949,9 @@ func _pose_impact_art() -> void:
 		return
 	var once := clampf((_t - strike.start) / maxf(hit_end - strike.start, 0.001), 0.0, 1.0)
 	var at := _stage.impact_point()
-	var size := _stage.target_rect.size.y * ART_IMPACT
+	# Plafonné : vers le joueur, la cible est grande à l'écran et l'impact la dépasserait de loin.
+	var size := minf(_stage.target_rect.size.y * (_plan.impact_size if _plan.impact_size > 0.0
+		else ART_IMPACT), IMPACT_MAX * _stage.view_size.y)
 	if _plan.on_self:
 		at = _stage.user_rect.get_center()
 		size = _stage.user_rect.size.y * ART_SELF
@@ -1016,7 +1040,9 @@ func _pose_cheeks(amount: float) -> void:
 		return
 	var size := Vector2.ONE * ART_CHEEKS * _stage.view_size.y * lerpf(0.6, 1.0, amount)
 	for i: int in mini(points.size(), 2):
-		_show_flip(Flip.EXTRA_A + i, _plan.art[&"cheeks"], points[i], size, PI * 0.5 * i, amount)
+		# Une particule ne s'anime pas : elle tourne par à-coups (le crépitement des joues).
+		var crackle := PI * 0.5 * i + _rand(floori(_t * FLIP_FPS * 0.5) + i) * TAU
+		_show_flip(Flip.EXTRA_A + i, _plan.art[&"cheeks"], points[i], size, crackle, amount)
 
 
 ## Marque d'impact peinte du Contact (`stamp`) : surgit, se pose, s'efface ; les mâchoires se
@@ -1026,7 +1052,8 @@ func _pose_stamp(k: float) -> bool:
 	if stamp.is_empty():
 		return false
 	var rect := _stage.target_rect
-	var base := ART_STAMP * minf(rect.size.x, rect.size.y)
+	var base := ART_STAMP * minf(rect.size.x, rect.size.y) \
+		* (_plan.impact_size if _plan.impact_size > 0.0 else 1.0)
 	if _plan.impact == &"bec" or _plan.impact == &"vrille":
 		_pose_beak(stamp, k, base)
 		return true
@@ -2103,7 +2130,10 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 		"stars":
 			_pose_stars()
 		"sky_bolt":
+			_pose_storm_sky(phase, k)
 			_pose_sky_bolt(phase, k)
+		"giant_orb":
+			_pose_giant_orb(phase, k)
 		"bone":
 			_pose_bone(phase, k)
 		"strange_orb":
@@ -2117,6 +2147,8 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_blasts()
 		"screen_flash":
 			_pose_flash_glow(phase, k)
+		"electric_cage":
+			_pose_cage(phase, k)
 		"field_haze":
 			_pose_haze()
 		"fissure_open":
@@ -2271,6 +2303,8 @@ func _pose_screen(phase: MoveFxPlan.Phase, k: float) -> void:
 			amount = _plan.light_peak * absf(sin(PI * k * _plan.flashes)) * (1.0 - 0.3 * k)
 		"explosions":
 			amount = _plan.light_peak * 0.6 * maxf(0.0, 1.0 - k * 5.0)
+		"orb_blast":
+			amount = _plan.light_peak * 0.35 * maxf(0.0, 1.0 - k * 4.0)
 		_:
 			if _travel() == "sky_bolt":
 				amount = _plan.light_peak * 0.5 * absf(sin(PI * k * _plan.flashes)) * (1.0 - k)
@@ -2433,11 +2467,149 @@ func _pose_sky_bolt(phase: MoveFxPlan.Phase, k: float) -> void:
 		return
 	var length := full * reveal
 	var center := Vector2(lerpf(top.x, bottom.x, reveal * 0.5), top.y + length * 0.5)
-	_show_flip(Flip.TRAVEL, id, center, Vector2(BOLT_SKY_WIDTH * height, length), 0.0, alpha)
+	_show_flip(Flip.TRAVEL, id, center, Vector2((_plan.bolt_height if _plan.bolt_height > 0.0
+		else BOLT_SKY_WIDTH) * height, length), 0.0, alpha)
 	if phase.name == MoveFxPlan.IMPACT:
 		var twin := _plan.art.get(&"rise", &"") as StringName
 		_show_flip(Flip.EXTRA_A, twin, Vector2(to.x - 0.13 * height, top.y + full * 0.42),
 			Vector2(0.25 * height, full * 0.8), 0.0, alpha * absf(sin(TAU * 2.0 * k)))
+
+
+## Courant peint du lanceur à la cible : le cœur (`bolt`) et, s'il y en a un, les filaments qui
+## l'accompagnent (`bolt_twin`) ; il respire un peu en épaisseur.
+func _show_bolt_art(bolt: StringName, from: Vector2, reach: float, angle: float, alpha: float) -> void:
+	var thick := (_plan.bolt_height if _plan.bolt_height > 0.0 else ART_BOLT_HEIGHT) \
+		* _stage.view_size.y * (1.0 + 0.06 * sin(_t * 40.0))
+	_show_flip(Flip.TRAVEL, bolt, from, Vector2(reach, thick), angle, alpha, true)
+	var twin := _plan.art.get(&"bolt_twin", &"") as StringName
+	if not twin.is_empty():
+		_show_flip(Flip.EXTRA_B, twin, from, Vector2(reach, thick * 1.5), angle, alpha * 0.7, true)
+
+
+## Aura du lanceur (`aura` : Étincelle, Poing-Éclair, Tonnerre, Élecanon) : le crépitement suit son
+## corps, de l'anticipation à l'impact, puis s'éteint au retour.
+func _pose_aura(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"aura", &"") as StringName
+	if id.is_empty() or _stage.user == null:
+		return
+	var alpha := 0.9
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			alpha *= _ease_out(k)
+		MoveFxPlan.RETURN:
+			alpha *= 1.0 - k
+	var center := _stage.user_rect.get_center() + _stage.user.position - _stage.user_rest
+	_show_flip(Flip.AURA, id, center, _stage.user_rect.size * AURA_SIZE, 0.0, alpha)
+
+
+## Traînée de foudre d'une charge (`trail`, Étincelle) : elle s'étire depuis l'arrière du départ
+## jusqu'au lanceur qui fonce, puis s'éteint pendant l'impact.
+func _pose_trail(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"trail", &"") as StringName
+	if id.is_empty() or _stage.user == null:
+		return
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.TRAVEL:
+			alpha = minf(1.0, k * 4.0)
+		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
+			alpha = 1.0 - _ease_out(k)
+		_:
+			return
+	var height := _stage.view_size.y
+	var dir := (_stage.target_rest - _stage.user_rest).normalized()
+	var center := _stage.user_rect.get_center() + _stage.user.position - _stage.user_rest
+	var tail := _stage.user_rect.get_center() - dir * TRAIL_BEHIND * height
+	_show_flip(Flip.TRAIL, id, tail, Vector2(tail.distance_to(center), TRAIL_HEIGHT * height),
+		(center - tail).angle(), alpha, true)
+
+
+## Cage-Éclair : la cage de filaments se referme autour de la cible (aucun trait ne part du
+## lanceur), crépite pendant l'impact et s'éteint au retour ; à côté si l'attaque rate.
+func _pose_cage(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"cage", &"") as StringName
+	var rect := _stage.target_rect
+	var at := rect.get_center()
+	var base := maxf(rect.size.x, rect.size.y) * CAGE_SIZE
+	match phase.name:
+		MoveFxPlan.IMPACT:
+			_show_flip(Flip.IMPACT, id, at, Vector2.ONE * base * lerpf(1.5, 1.0, _ease_out(minf(k * 3.0,
+				1.0))), 0.0, minf(1.0, k * 6.0))
+		MoveFxPlan.RETURN:
+			if _plan.lands():
+				_show_flip(Flip.IMPACT, id, at, Vector2.ONE * base, 0.0, 1.0 - _ease_in(k))
+		MoveFxPlan.MISS:
+			_show_flip(Flip.IMPACT, id, _miss_point(), Vector2.ONE * base, 0.0, 1.0 - k)
+		MoveFxPlan.NO_EFFECT:
+			_show_flip(Flip.IMPACT, id, at, Vector2.ONE * base * lerpf(1.0, 0.7, k), 0.0, 1.0 - k)
+
+
+## Élecanon : une énorme sphère instable (`orb`) enfle devant le lanceur, reliée à lui par un arc
+## (`tether`), part lourdement, tremble tout du long et s'ouvre sur la cible : l'explosion est
+## l'art `impact`. Ratée (précision 50), elle file plus loin et s'éteint.
+func _pose_giant_orb(phase: MoveFxPlan.Phase, k: float) -> void:
+	var height := _stage.view_size.y
+	var from := _stage.origin()
+	var to := _stage.impact_point()
+	var ahead := from + (to - from).normalized() * ORB_AHEAD * height
+	var depth := ORB_DEPTH_FAR if _stage.user_is_player else 2.0 - ORB_DEPTH_FAR
+	var at := ahead
+	var size := ORB_SIZE * height
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			size *= _ease_in_out(k)
+		MoveFxPlan.TRAVEL:
+			at = ahead.lerp(to, _ease_in_out(k))
+			size *= lerpf(1.0, depth, k)
+		MoveFxPlan.IMPACT:
+			at = to
+			size *= depth * lerpf(1.0, 1.35, _ease_out(minf(k * 4.0, 1.0)))
+			alpha = 1.0 - minf(k * 4.0, 1.0)
+		MoveFxPlan.MISS:
+			at = _miss_point() + (_miss_point() - from) * MISS_OVERSHOOT * k
+			size *= depth
+			alpha = 1.0 - _ease_in(k)
+		MoveFxPlan.NO_EFFECT:
+			at = to
+			size *= depth * lerpf(1.0, 0.3, k)
+			alpha = 1.0 - k
+		_:
+			return
+	if size <= 1.0 or alpha <= 0.0:
+		return
+	# Instable : elle se déforme et tressaute en permanence.
+	var tremble := ORB_TREMBLE * height * Vector2(sin(_t * 71.0), cos(_t * 53.0))
+	var wobble := Vector2(1.0 + 0.05 * sin(_t * 34.0), 1.0 - 0.05 * sin(_t * 34.0))
+	# Le halo passe sous la sphère (Flip.SKY est dessiné en premier).
+	_show_flip(Flip.SKY, _plan.art.get(&"halo", &""), at + tremble, Vector2.ONE * size * 2.1, 0.0,
+		alpha * 0.3)
+	_show_flip(Flip.TRAVEL, _plan.art.get(&"orb", &""), at + tremble, size * wobble, 0.0, alpha)
+	_show_flip(Flip.EXTRA_A, _plan.art.get(&"ring", &""), at + tremble, Vector2.ONE * size * 1.25,
+		_t * 3.0, alpha * 0.8)
+	if phase.name == MoveFxPlan.ANTICIPATION or phase.name == MoveFxPlan.TRAVEL:
+		_show_flip(Flip.WAVE_A, _plan.art.get(&"tether", &""), from, Vector2(from.distance_to(at),
+			0.2 * height), (at - from).angle(), alpha * (1.0 - (k if phase.name == MoveFxPlan.TRAVEL
+			else 0.0)), true)
+
+
+## Plafond d'orage de Fatal-Foudre (`sky`) : les nuages arrivent pendant l'anticipation, au-dessus
+## de la cible, et se dissipent à la fin de l'impact.
+func _pose_storm_sky(phase: MoveFxPlan.Phase, k: float) -> void:
+	var id := _plan.art.get(&"sky", &"") as StringName
+	if id.is_empty():
+		return
+	var alpha := 1.0
+	match phase.name:
+		MoveFxPlan.ANTICIPATION, MoveFxPlan.CHARGE:
+			alpha = _ease_out(k)
+		MoveFxPlan.IMPACT, MoveFxPlan.MISS, MoveFxPlan.NO_EFFECT:
+			alpha = 1.0 - clampf((k - 0.5) * 2.0, 0.0, 1.0)
+		MoveFxPlan.RETURN:
+			alpha = 0.0
+	var view := _stage.view_size
+	var at := Vector2(_stage.impact_point().x, SKY_SIZE.y * view.y * 0.5 - 0.08 * view.y)
+	_show_flip(Flip.SKY, id, at, Vector2(SKY_SIZE.x * view.x, SKY_SIZE.y * view.y), 0.0, alpha)
 
 
 ## Onde Folie : une sphère irisée (sa couleur tourne) flotte en ondulant jusqu'à la tête de la

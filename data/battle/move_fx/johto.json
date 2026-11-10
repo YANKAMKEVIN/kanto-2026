@@ -41,13 +41,13 @@
 		"sandstorm": {"family": "statut_plus"},
 		"scary_face": {"family": "statut_moins"},
 		"snore": {"family": "son"},
-		"spark": {"family": "electrique"},
+		"spark": {"family": "charge_electrique", "impact": "etincelle"},
 		"steel_wing": {"family": "contact", "impact": "griffe"},
 		"sunny_day": {"family": "statut_plus"},
 		"swagger": {"family": "statut_moins"},
 		"sweet_kiss": {"family": "statut_moins"},
 		"synthesis": {"family": "soin"},
 		"twister": {"family": "vent"},
-		"zap_cannon": {"family": "electrique"}
+		"zap_cannon": {"family": "elecanon"}
 	}
 }

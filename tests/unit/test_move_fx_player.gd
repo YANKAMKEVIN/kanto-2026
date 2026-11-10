@@ -225,8 +225,8 @@ func test_projectile_travels_for_fire() -> void:
 func test_painted_bolt_stretches_from_origin_to_target_then_star_on_impact() -> void:
 	# T7 : Éclair en art peint (arc tendu de l'origine à la cible, décharge en étoile à l'impact).
 	var plan := _plan(&"thunder_shock")
-	assert_eq(plan.art.get(&"bolt"), &"arc_electrique_a")
-	assert_eq(plan.art.get(&"cheeks"), &"arc_electrique_b", "signature Éclair : les joues")
+	assert_eq(plan.art.get(&"bolt"), &"eclair_fin")
+	assert_eq(plan.art.get(&"cheeks"), &"arc_joue", "signature Éclair : les joues")
 	var stage := _stage()
 	_player.play(plan, stage)
 	var impact := plan.phase(MoveFxPlan.IMPACT)
@@ -853,7 +853,7 @@ func test_thunder_falls_from_the_sky() -> void:
 	_pose_at(plan, MoveFxPlan.IMPACT, 0.1)
 	var bolt := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
 	assert_true(bolt.visible, "la foudre")
-	var top := bolt.position.y - bolt.scale.y * 320.0 * 0.5
+	var top := bolt.position.y - bolt.scale.y * bolt.texture.get_height() / bolt.vframes * 0.5
 	assert_lt(top, 0.0, "elle part du haut de l'écran")
 	assert_almost_eq(bolt.position.x, stage.impact_point().x, 60.0, "à la verticale de la cible")
 	assert_eq(bolt.rotation, 0.0, "verticale")
@@ -872,10 +872,72 @@ func test_elemental_punches_hit_with_a_fist_then_their_element() -> void:
 		_pose_at(plan, MoveFxPlan.IMPACT, 0.3)
 		var fist := _player.get_art(MoveFxPlayer.Flip.IMPACT)
 		assert_true(fist.visible, "%s : le poing" % move_id)
-		assert_eq(fist.texture, FxArt.particle(&"poing").get("texture"), "%s : poing peint" % move_id)
+		# Poing-Éclair (refonte Électrik) : pas de poing dessiné, un point de choc au contact.
+		var stamp := &"etoile_contact" if move_id == &"thunder_punch" else &"poing"
+		assert_eq(fist.texture, FxArt.particle(stamp).get("texture"), "%s : marque peinte" % move_id)
 		assert_true(_player.get_light().is_lit(), "%s : la lumière de l'élément" % move_id)
 		_player.stop()
 		_assert_at_rest(stage)
+
+
+## Refonte Électrik : chaque attaque se reconnaît à sa forme.
+func test_thunderbolt_is_a_braided_current_from_the_user() -> void:
+	var stage := _stage()
+	var plan := _plan(&"thunderbolt")
+	assert_eq(plan.art.get(&"bolt"), &"courant_tresse")
+	assert_false(plan.art.has(&"bolt_sky"), "jamais du ciel : c'est Fatal-Foudre")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.1)
+	var current := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(current.visible, "le courant")
+	assert_eq(current.position, stage.origin(), "part du lanceur")
+	var frame := current.texture.get_width() / float(current.hframes)
+	assert_almost_eq(current.scale.x * frame, stage.origin().distance_to(stage.impact_point()), 0.5,
+		"atteint la cible")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_thunder_wave_cages_the_target_without_a_strike() -> void:
+	var stage := _stage()
+	var plan := _plan(&"thunder_wave")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var cage := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+	assert_true(cage.visible, "la cage")
+	assert_eq(cage.position, stage.impact_point(), "autour de la cible")
+	assert_false(_player.get_bolt().visible, "pas de trait")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "pas de trait peint")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_spark_covers_the_charging_user_with_lightning() -> void:
+	var stage := _stage()
+	var plan := _plan(&"spark")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.9)
+	assert_gt(_user.position.distance_to(stage.user_rest), 40.0, "il charge")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "corps couvert d'électricité")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.TRAIL).visible, "traînée de foudre")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+func test_zap_cannon_orb_swells_travels_and_explodes() -> void:
+	var stage := _stage()
+	var plan := _plan(&"zap_cannon")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.ANTICIPATION, 0.9)
+	var orb := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(orb.visible, "la sphère enfle devant le lanceur")
+	var near_user := orb.position.distance_to(stage.origin())
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.9)
+	assert_lt(orb.position.distance_to(stage.impact_point()), near_user, "elle va vers la cible")
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "elle explose")
+	_player.stop()
+	_assert_at_rest(stage)
 
 
 ## Météores : plusieurs étoiles en vol à la fois, chacune tournée dans son sens de vol.
