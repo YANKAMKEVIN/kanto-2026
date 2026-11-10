@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://game/world/props/sleeper_bed.gd" id="10_daqe1"]
 [ext_resource type="Texture2D" path="res://assets/world/interiors/int_lit_dormeur_heros_01.png" id="11_lqx5v"]
 [ext_resource type="Texture2D" path="res://assets/world/interiors/int_lit_dormeur_joueuse_01.png" id="12_qxygr"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_argenta_mur_sud_sans_porte.png" id="mur_sud_sans_porte"]
 
 [node name="OlivineCenterRoom" type="Node2D" unique_id=1560705044]
 script = ExtResource("1_lx7vu")
@@ -25,6 +26,12 @@ light_profile = &"johto_auto"
 [node name="Shell" type="Sprite2D" parent="." unique_id=1927870854]
 z_index = -3
 texture = ExtResource("2_4wvhd")
+centered = false
+
+[node name="ShellSouthWall" type="Sprite2D" parent="." unique_id=1837264119]
+z_index = -3
+position = Vector2(490, 736)
+texture = ExtResource("mur_sud_sans_porte")
 centered = false
 
 [node name="Entities" type="Node2D" parent="." unique_id=592170543]

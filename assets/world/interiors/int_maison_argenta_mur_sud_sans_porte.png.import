@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bhmotcsrs3abq"
-path="res://.godot/imported/int_route_12_gate_2f_mur_sud.png-c8a745e342db2e0e3c65d77e202ade6f.ctex"
+path="res://.godot/imported/int_maison_argenta_mur_sud_sans_porte.png-92804d921da414ddc8ec188792c61dbf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/interiors/int_route_12_gate_2f_mur_sud.png"
-dest_files=["res://.godot/imported/int_route_12_gate_2f_mur_sud.png-c8a745e342db2e0e3c65d77e202ade6f.ctex"]
+source_file="res://assets/world/interiors/int_maison_argenta_mur_sud_sans_porte.png"
+dest_files=["res://.godot/imported/int_maison_argenta_mur_sud_sans_porte.png-92804d921da414ddc8ec188792c61dbf.ctex"]
 
 [params]
 
