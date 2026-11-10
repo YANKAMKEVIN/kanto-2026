@@ -54,9 +54,9 @@
 			"name": "Eau", "target": "foe",
 			"bricks": {"launch": "bubble_swell", "travel": "jet", "impact": "splash"},
 			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
-			"world": {"light": "#7FC8FF", "light_peak": 0.15, "flashes": 0, "droplets": true},
-			"camera": {"zoom": 1.02, "shake": 2.0},
-			"fx": {"palette": ["#F0FAFF", "#5FB8F0", "#1E4E8A"], "particles": 28, "bolt_height": 0.1, "impact_size": 0.9, "art": {"charge": "petite_bulle", "bolt": "jet_fin_eau", "impact": "eclabousse_eau", "particle": "goutte_claire", "rise": "petite_bulle", "fallout": "gouttelettes"}}
+			"world": {"light": "#9FDAFF", "light_peak": 0.3, "flashes": 1, "droplets": true},
+			"camera": {"zoom": 1.03, "shake": 3.5},
+			"fx": {"palette": ["#F0FAFF", "#5FB8F0", "#1E4E8A"], "particles": 36, "bolt_height": 0.15, "impact_size": 1.4, "art": {"charge": "petite_bulle", "bolt": "jet_fin_eau", "impact": "eclabousse_eau", "particle": "goutte_claire", "rise": "petite_bulle", "fallout": "gouttelettes"}}
 		},
 		"electrique": {
 			"name": "Électrique", "target": "foe",
@@ -207,7 +207,7 @@
 			"camera": {"zoom": 1.02, "shake": 1.0},
 			"fx": {"palette": ["#F0FAFF", "#8FD0F8", "#2E6AA8"], "particles": 18, "volley": {"count": 4, "stagger": 0.1, "size": 0.1, "wobble": 0.035}, "art": {"charge": "bulle", "piece": "bulle", "impact": "bulles_eclatent", "particle": "goutte"}},
 			"variants": {
-				"ecume": {"_doc": "Écume (refonte Eau, direction A) : une nuée de petites bulles peintes, plus nombreuses et plus légères ; elles éclatent en éclaboussure.", "particles": 20, "volley": {"count": 9, "stagger": 0.05, "size": 0.06, "wobble": 0.04}, "art": {"piece": "petite_bulle", "impact": "eclabousse_eau", "particle": "goutte_claire"}},
+				"ecume": {"_doc": "Écume (refonte Eau, direction A) : une nuée de petites bulles peintes, plus nombreuses et plus légères ; elles éclatent en éclaboussure.", "particles": 26, "impact_size": 1.3, "volley": {"count": 10, "stagger": 0.045, "size": 0.075, "wobble": 0.035}, "art": {"piece": "petite_bulle", "impact": "eclabousse_eau", "particle": "goutte_claire"}},
 				"rafale": {"_doc": "Bulles d'O : plus nombreuses, plus rapides.", "particles": 26, "volley": {"count": 11, "stagger": 0.055, "size": 0.085, "wobble": 0.015}}
 			}
 		},
@@ -425,9 +425,9 @@
 			"_doc": "refonte Eau, direction A (2026-11-10, docs/tech/attaques-eau.md) : une grande vague se lève derrière le lanceur, traverse le terrain et déferle sur la cible (brique wave_sweep).",
 			"bricks": {"launch": "bubble_swell", "travel": "wave_sweep", "impact": "splash"},
 			"phases": {"anticipation": 0.25, "travel": 0.35, "impact": 0.3, "return": 0.1},
-			"world": {"light": "#9FDAFF", "light_peak": 0.25, "flashes": 0, "droplets": true},
-			"camera": {"zoom": 1.03, "shake": 3.5},
-			"fx": {"palette": ["#F0FAFF", "#5FC8E8", "#1E5E8A"], "particles": 34, "impact_size": 1.8, "art": {"charge": "petite_bulle", "wave": "vague", "impact": "gerbe_eau", "particle": "goutte_claire", "rise": "mousse_eau", "fallout": "gouttelettes"}}
+			"world": {"light": "#9FDAFF", "light_peak": 0.45, "flashes": 1, "droplets": true, "dust": true},
+			"camera": {"zoom": 1.05, "shake": 6.0},
+			"fx": {"palette": ["#F0FAFF", "#5FC8E8", "#1E5E8A"], "particles": 44, "impact_size": 2.8, "art": {"charge": "petite_bulle", "wave": "vague", "impact": "gerbe_eau", "particle": "goutte_claire", "rise": "mousse_eau", "fallout": "gouttelettes"}}
 		},
 		"repli": {
 			"name": "Repli", "target": "self",
@@ -554,9 +554,9 @@
 		"vrille": {"name": "Vrille", "brick": "drill_spin", "art": "etoile_impact", "_doc": "Bec Vrille : la marque tourne en vrille et trois éclats spiralent vers le centre."},
 		"pieces": {"name": "Pièces", "brick": "coin_burst", "art": "etoile_impact", "roles": {"coin": "piece_or", "glint": "etincelle_or"}, "_doc": "Jackpot (vague 2) : le coup, puis des pièces d'or jaillissent de la cible et retombent, avec des scintillements."},
 		"langue": {"name": "Langue", "brick": "lick", "art": "langue", "roles": {"drool": "salive"}, "_doc": "Léchouille (vague 2) : la langue balaie la cible de bas en haut, gouttes de salive."},
-		"claquoir": {"name": "Claquoir", "brick": "shell_clamp", "art": "valve_eau", "roles": {"particle": "goutte_claire"}, "_doc": "Claquoir (vague 2) : deux coquilles se referment sur la cible, gouttes."},
-		"pince_masse": {"name": "Pince-Masse", "brick": "pincer_smash", "art": "pince_eau", "roles": {"particle": "goutte_claire", "splash": "gerbe_eau"}, "_doc": "Pince-Masse (vague 2) : une grosse pince s'abat sur la cible, éclaboussure."},
-		"cascade": {"name": "Cascade", "brick": "waterfall", "art": "chute_eau", "roles": {"particle": "goutte_claire", "splash": "gerbe_eau"}, "_doc": "Cascade (vague 2) : une colonne d'eau tombe sur la cible, éclaboussure."},
+		"claquoir": {"name": "Claquoir", "brick": "shell_clamp", "art": "valve_eau", "shake": 4.5, "roles": {"particle": "goutte_claire"}, "_doc": "Claquoir (vague 2) : deux coquilles se referment sur la cible, gouttes."},
+		"pince_masse": {"name": "Pince-Masse", "brick": "pincer_smash", "art": "pince_eau", "shake": 6.0, "roles": {"particle": "goutte_claire", "splash": "gerbe_eau"}, "_doc": "Pince-Masse (vague 2) : une grosse pince s'abat sur la cible, éclaboussure."},
+		"cascade": {"name": "Cascade", "brick": "waterfall", "art": "chute_eau", "shake": 5.0, "roles": {"particle": "goutte_claire", "splash": "gerbe_eau"}, "_doc": "Cascade (vague 2) : une colonne d'eau tombe sur la cible, éclaboussure."},
 		"atlas": {"name": "Atlas", "brick": "toss", "art": "onde_choc", "_doc": "Frappe Atlas (vague 2) : la cible est soulevée puis projetée au sol."},
 		"poing": {"name": "Poing", "brick": "punch", "art": "poing", "_doc": "Poings élémentaires (vague 2) : le poing peint frappe, l'élément vient de la famille poing."}
 	},
@@ -580,7 +580,7 @@
 		"flammeche": {"base": "feu", "priority": "A", "origin": "bouche", "travel_scale": 1.15, "impact_size": 0.9, "art": {"travel": "flammeches"}, "light_peak": 0.35, "flashes": 1},
 		"lance_flammes": {"base": "feu", "priority": "A", "origin": "bouche", "bolt_height": 0.42, "impact_size": 1.8, "art": {"bolt": "fleuve_flammes", "particle": "braise_vive", "rise": "langue_feu"}, "light_peak": 0.6, "flashes": 1},
 		"deflagration": {"base": "feu", "priority": "A", "origin": "bouche", "travel_scale": 1.9, "impact_size": 2.6, "art": {"travel": "etoile_feu", "impact": "explosion_feu", "particle": "braise_vive", "rise": "langue_feu"}, "light_peak": 0.75, "flashes": 2},
-		"hydrocanon": {"base": "eau", "priority": "A", "origin": "canons", "bolt_height": 0.5, "impact_size": 2.4, "art": {"bolt": "torrent_spirale", "impact": "explosion_eau", "particle": "goutte_lourde", "rise": "mousse_eau"}, "light_peak": 0.35, "flashes": 1},
+		"hydrocanon": {"base": "eau", "priority": "A", "origin": "canons", "bolt_height": 0.62, "impact_size": 3.3, "shake": 6.0, "zoom": 1.05, "art": {"bolt": "torrent_spirale", "impact": "explosion_eau", "particle": "goutte_lourde", "rise": "mousse_eau"}, "light_peak": 0.55, "flashes": 2},
 		"ultralaser": {"base": "energie", "priority": "A", "origin": "bouche"},
 		"seisme": {"base": "sol_roche", "priority": "A", "origin": "centre"},
 		"psyko": {"base": "psy", "priority": "A", "origin": "yeux"},

@@ -222,9 +222,9 @@ const PUNCH_SIZE: float = 1.1
 const ELEMENT_SIZE: float = 1.4
 ## Léchouille, Claquoir, Pince-Masse, Cascade : tailles (parts de la cible).
 const LICK_SIZE: float = 0.95
-const SHELL_SIZE: float = 0.8
-const PINCER_SIZE: float = 1.0
-const CASCADE_SIZE := Vector2(0.75, 1.0)
+const SHELL_SIZE: float = 1.05
+const PINCER_SIZE: float = 1.35
+const CASCADE_SIZE := Vector2(1.05, 1.0)
 ## Frappe Atlas : hauteur du jet (hauteurs d'écran), instant où la cible touche le sol (part de
 ## l'impact).
 const TOSS_HEIGHT: float = 0.26
@@ -272,8 +272,8 @@ const SUN_ALPHA: float = 0.45
 const SUN_SIZE: float = 1.45
 ## Refonte Eau, direction A [D] (2026-11-10) : opacité de la pluie de Danse Pluie ; hauteur de la
 ## vague de Surf (hauteurs d'écran) et sa course au-delà de la cible.
-const RAIN_ALPHA: float = 0.75
-const SURF_HEIGHT: float = 0.85
+const RAIN_ALPHA: float = 1.0
+const SURF_HEIGHT: float = 0.95
 const SURF_PAST: float = 0.18
 ## Préchauffage (RP-263) [D] : opacité du calque de préchauffage (au-dessus du seuil où le moteur
 ## ne dessine plus rien, invisible à l'œil), taille des éléments (px), durée de vie (s, quelques
@@ -3092,7 +3092,7 @@ func _show_splash(at: Vector2, k: float, from_k: float) -> void:
 	if id.is_empty() or k < from_k:
 		return
 	var once := (k - from_k) / (1.0 - from_k)
-	_show_flip(Flip.EXTRA_A, id, at, Vector2.ONE * _stage.target_rect.size.y * 1.4, 0.0,
+	_show_flip(Flip.EXTRA_A, id, at, Vector2.ONE * _stage.target_rect.size.y * 2.1, 0.0,
 		1.0 - clampf((once - 0.7) / 0.3, 0.0, 1.0), false, once)
 
 

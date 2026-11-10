@@ -419,7 +419,14 @@ func _camera(catalog: MoveFxCatalog, family_data: Dictionary, outcome: MoveFxOut
 	var camera := JsonFields.get_dict(family_data, "camera")
 	camera_zoom = JsonFields.get_float(camera, "zoom", 1.0)
 	var lands := result == MoveFxOutcome.Result.HIT or result == MoveFxOutcome.Result.AFFECTED
-	camera_shake = JsonFields.get_float(camera, "shake") if lands else 0.0
+	camera_shake = JsonFields.get_float(camera, "shake")
+	# Refonte Eau : une signature (Hydrocanon) ou une variante d'impact (Pince-Masse) peut frapper
+	# plus fort que sa famille.
+	for own: Dictionary in [catalog.impact(impact), catalog.signature(signature)]:
+		camera_zoom = JsonFields.get_float(own, "zoom", camera_zoom)
+		camera_shake = JsonFields.get_float(own, "shake", camera_shake)
+	if not lands:
+		camera_shake = 0.0
 	if outcome != null and outcome.critical:
 		camera_zoom += JsonFields.get_float(limits, "critical_zoom")
 		camera_shake *= JsonFields.get_float(limits, "critical_shake", 1.0)

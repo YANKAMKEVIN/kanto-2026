@@ -130,6 +130,13 @@ def _fondre_bords(im: Image.Image, part: float = 0.22) -> Image.Image:
 	return im
 
 
+def _densifier(im: Image.Image, gamma: float = 0.6) -> Image.Image:
+	"""Eau plus dense : les voiles translucides du détourage magenta deviennent de la matière."""
+	alpha = np.asarray(im.getchannel("A")).astype(np.float32) / 255.0
+	im.putalpha(Image.fromarray((alpha ** gamma * 255).astype(np.uint8)))
+	return im
+
+
 ## Flipbooks carrés qui touchent les bords de leur case (fondus, voir `_fondre_bords`).
 _BORDS = {"vague"}
 
@@ -150,6 +157,8 @@ def preparer() -> None:
 			ident = next(i for i, _m, _s in b.PARTICULES if f"CV_FX_{i.upper()}_" in nom)
 			sprites = next(s for i, _m, s in b.PARTICULES if i == ident)
 			for (n, _d), im in zip(sprites, b._recadrer(cases, b.PART, False)):
+				if mode == "norm":
+					im = _densifier(im)
 				im.save(b.SORTIE / f"p_{n}.webp", lossless=True)
 				manifeste["particules"][n] = {"fichier": f"p_{n}.webp", "taille": b.PART, "melange": mode}
 		else:
@@ -174,6 +183,8 @@ def preparer() -> None:
 					cles = [e._fondre_bas(c, 0.3) for c in cles]
 				else:
 					cles = [e._effiler(c) for c in cles]
+			if mode == "norm":
+				cles = [_densifier(c) for c in cles]
 			images = (e._unique if once else b._interpoler)(cles, b.NB_FINAL)
 			b._atlas(images, 4).save(b.SORTIE / f"fb_{ident}.webp", lossless=True)
 			manifeste["flipbooks"][ident] = {"fichier": f"fb_{ident}.webp", "images": b.NB_FINAL, "colonnes": 4,

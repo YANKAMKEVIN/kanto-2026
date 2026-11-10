@@ -1030,6 +1030,8 @@ func test_water_gun_is_thin_and_hydro_pump_huge() -> void:
 	assert_eq(pump.art.get(&"bolt"), &"torrent_spirale")
 	assert_lt(gun.bolt_height * 3.0, pump.bolt_height, "Hydrocanon bien plus épais")
 	assert_lt(gun.impact_size, pump.impact_size)
+	assert_gt(pump.camera_shake, gun.camera_shake, "Hydrocanon secoue plus (signature)")
+	assert_gt(_plan(&"crabhammer").camera_shake, _plan(&"tackle").camera_shake, "Pince-Masse secoue plus que Charge")
 
 
 func test_surf_wave_sweeps_across_to_the_target() -> void:
