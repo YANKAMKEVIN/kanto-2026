@@ -4,8 +4,9 @@
 #
 # Légende :
 #   K mur (bloqué)   . sol (praticable)   X sortie vers le hall (praticable : paillasson, PUSH ↓)
-#   Q ordinateurs (1..3, 3)   M machine de recherche (9..11, 3)   d lampe (13, 3)
-#   T table de travail (10..12, 6..7)   x plante (1, 7), (13, 7)
+#   d lampe (13, 3)   T paillasse (10..12, 7)   x plante (1, 7), (13, 7) : meubles posés (props
+#   peints). Les ordinateurs (1..3) et la machine de recherche (9..11) sont peints dans la coque
+#   contre le mur du fond (rangée 2, bloquée) : la rangée 3 est libre (2026-11-10).
 #
 # Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
 
@@ -15,10 +16,10 @@ GRILLE 15 10
 00 KKKKKKKKKKKKKKK
 01 KKKKKKKKKKKKKKK
 02 KKKKKKKKKKKKKKK
-03 KQQQ.....MMM.dK
+03 K............dK
 04 K.............K
 05 K.............K
-06 K.........TTT.K
+06 K.............K
 07 Kx........TTTxK
 08 KKKKKKXXXKKKKKK
 09 KKKKKKKKKKKKKKK
@@ -29,5 +30,5 @@ sortie                     warp           6..8,8            libre   # PUSH ↓ �
 entree                     spawn          7,8               libre   # spawn « entrance », tourné ↑
 scientifique_ct35          pnj            10,4              bloque  role=P1 facing=down rb=7,2 texte=T-55,T-56 don=tm35  # CT35 Métronome une fois (got_tm35)
 scientifique_evoli         pnj            3..7,5            bloque  role=P2 facing=right move=walk_lr rb=2,3 texte=T-57  # marche de gauche à droite (RB WALK LEFT_RIGHT) ; zone entière réservée
-pc_courriel                examen         1..3,3            bloque  rb=0,4 texte=T-58  # ordinateurs (RB : clavier et écran), EXAMINER depuis (1..3,4) tourné ↑
+pc_courriel                examen         1..3,2            bloque  rb=0,4 texte=T-58  # ordinateurs peints au mur (RB : clavier et écran), EXAMINER depuis (1..3,3) tourné ↑
 FIN

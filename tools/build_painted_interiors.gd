@@ -2992,8 +2992,10 @@ func _retarget(room: Dictionary, id: StringName, node: String, title: String, ma
 
 
 ## Centre et Boutique : définitions communes ; Labo : quatre pièces relues sur leur grille
-## (`tools/plans/cinnabar_labo_*.txt`), enveloppes de la série 27 (`int_labo_cramois_*_coque`),
-## sans meubles posés (provisoire : la grille bloque les cases des meubles peints).
+## (`tools/plans/cinnabar_labo_*.txt`), enveloppes de la série 27 (`int_labo_cramois_*_coque`).
+## Les machines, ordinateurs et vitrines sont peints contre le mur du fond (rangée 2) ; les autres
+## meubles des grilles (tables, canapé, lampe, plantes) sont des objets peints du catalogue posés
+## sur leurs cases (2026-11-10 : les coques n'en peignent aucun).
 func _cinnabar_rooms() -> Array[Dictionary]:
 	var lab_exit := func(spawn: StringName) -> Array:
 		var warps: Array = []
@@ -3032,6 +3034,15 @@ func _cinnabar_rooms() -> Array[Dictionary]:
 		"plan": PLANS_DIR + "cinnabar_labo_reunion.txt", "walkable": ".X",
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": lab_exit.call(&"from_meeting"),
+		"props": [
+			# Pas de plante à l'est : elle cacherait le chercheur du J32 (13, 6).
+			[&"int_canape_01", Vector2i(3, 3), 3.95, "Sofa"],
+			[&"int_table_basse_01", Vector2i(11, 3), 3.95, "CoffeeTable"],
+			[&"int_chevet_lampe_01", Vector2i(13, 3), 3.95, "Lamp"],
+			[&"int_table_repas_01", Vector2i(5, 6), 6.95, "MeetingTableWest"],
+			[&"int_table_repas_01", Vector2i(10, 6), 6.95, "MeetingTableEast"],
+			[&"int_plante_sylphe_01", Vector2i(1, 7), 7.85, "PlantWest"],
+		],
 	}
 	var rd := {
 		"id": &"cinnabar_lab_rd", "node": "CinnabarLabRd", "size": Vector2i(15, 10),
@@ -3040,8 +3051,15 @@ func _cinnabar_rooms() -> Array[Dictionary]:
 		"plan": PLANS_DIR + "cinnabar_labo_rd.txt", "walkable": ".X",
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": lab_exit.call(&"from_rd"),
-		"interactables": [["Computer", Vector2i(1, 3), Vector2i(3, 1), &"cinnabar_lab_pc",
+		# Ordinateurs peints au mur (1..3, 2), examinés depuis la rangée 3.
+		"interactables": [["Computer", Vector2i(1, 2), Vector2i(3, 1), &"cinnabar_lab_pc",
 			EXAMINE, Vector2i.UP]],
+		"props": [
+			[&"int_chevet_lampe_01", Vector2i(13, 3), 3.95, "Lamp"],
+			[&"int_paillasse_01", Vector2i(11, 7), 7.9, "WorkBench"],
+			[&"int_plante_sylphe_01", Vector2i(1, 7), 7.85, "PlantWest"],
+			[&"int_plante_sylphe_01", Vector2i(13, 7), 7.85, "PlantEast"],
+		],
 	}
 	var fossil := {
 		"id": &"cinnabar_lab_fossil", "node": "CinnabarLabFossil", "size": Vector2i(15, 10),
@@ -3050,6 +3068,12 @@ func _cinnabar_rooms() -> Array[Dictionary]:
 		"plan": PLANS_DIR + "cinnabar_labo_fossiles.txt", "walkable": ".X",
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": lab_exit.call(&"from_fossil"),
+		"props": [
+			[&"int_chevet_lampe_01", Vector2i(13, 3), 3.95, "Lamp"],
+			[&"int_paillasse_01", Vector2i(10, 6), 6.9, "Table"],
+			[&"int_plante_sylphe_01", Vector2i(1, 7), 7.85, "PlantWest"],
+			[&"int_plante_sylphe_01", Vector2i(13, 7), 7.85, "PlantEast"],
+		],
 	}
 	return [
 		_pokemon_center(&"cinnabar_center", "CinnabarCenter", "Cramois'Île",
