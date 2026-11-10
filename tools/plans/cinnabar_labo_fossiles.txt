@@ -5,8 +5,9 @@
 #
 # Légende :
 #   K mur (bloqué)   . sol (praticable)   X sortie vers le hall (praticable : paillasson, PUSH ↓)
-#   M machine de résurrection (2..6, 3)   A vitrines de fossiles (9..10, 3)   d lampe (13, 3)
-#   T table (9..11, 6)   x plante (1, 7), (13, 7)
+#   d lampe (13, 3)   T table (9..11, 6)   x plante (1, 7), (13, 7) : meubles posés (props peints).
+#   La machine de résurrection (2..6) et les vitrines de fossiles (9..10) sont peintes dans la
+#   coque contre le mur du fond (rangée 2, bloquée) : la rangée 3 est libre (2026-11-10).
 #
 # Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
 
@@ -16,7 +17,7 @@ GRILLE 15 10
 00 KKKKKKKKKKKKKKK
 01 KKKKKKKKKKKKKKK
 02 KKKKKKKKKKKKKKK
-03 K.MMMMM..AA..dK
+03 K............dK
 04 K.............K
 05 K.............K
 06 K........TTT..K

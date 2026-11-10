@@ -96,14 +96,14 @@ size = Vector2i(3, 1)
 facing = Vector2i(0, -1)
 
 [node name="StorageTerminalScreen" type="Marker2D" parent="Interactables" unique_id=338640264]
-position = Vector2(144, 384)
+position = Vector2(144, 288)
 script = ExtResource("9_dypi1")
 dialogue_id = &"storage_terminal"
 size = Vector2i(2, 1)
 facing = Vector2i(0, -1)
 
 [node name="TradeTerminalScreen" type="Marker2D" parent="Interactables" unique_id=1723321455]
-position = Vector2(1200, 384)
+position = Vector2(1200, 288)
 script = ExtResource("9_dypi1")
 dialogue_id = &"trade_terminal"
 size = Vector2i(2, 1)
@@ -118,9 +118,9 @@ position = Vector2(720, 864)
 position = Vector2(720, 576)
 
 [node name="terminal" type="Marker2D" parent="Spawns" unique_id=1698440179]
-position = Vector2(144, 480)
+position = Vector2(144, 384)
 
 [node name="trade_terminal" type="Marker2D" parent="Spawns" unique_id=557910115]
-position = Vector2(1200, 480)
+position = Vector2(1200, 384)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=1567522645]

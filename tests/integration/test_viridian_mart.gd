@@ -72,9 +72,11 @@ func test_furniture_is_painted_and_solid() -> void:
 			assert_true(_grid.is_solid(cell), "%s : %s solide" % [node_name, cell])
 	for cell: Vector2i in COUNTER:
 		assert_true(_grid.is_solid(cell), "caisse en %s" % cell)
-	# Présentoirs symétriques de part et d'autre de l'allée du paillasson.
+	# Présentoirs symétriques de part et d'autre de l'allée du paillasson, sur la rangée où ils
+	# sont peints (2026-11-10) ; la rangée 7, devant eux, est libre.
 	for x: int in [2, 3, 4, 10, 11, 12]:
-		assert_true(_grid.is_solid(Vector2i(x, 7)), "présentoir (%d, 7)" % x)
+		assert_true(_grid.is_solid(Vector2i(x, 6)), "présentoir (%d, 6)" % x)
+		assert_false(_grid.is_solid(Vector2i(x, 7)), "devant le présentoir (%d, 7)" % x)
 
 
 func test_walls_follow_the_shell() -> void:

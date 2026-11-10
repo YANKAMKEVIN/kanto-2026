@@ -94,12 +94,20 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_pots_fleurs_01": {"width": 1, "depth": 1},
 	&"prop_linge_01": {"width": 3, "depth": 1},
 	&"int_centre_comptoir": {"width": 5, "depth": 1},
-	&"int_centre_terminal": {"width": 2, "depth": 1},
-	&"int_centre_banquette": {"width": 2, "depth": 1},
+	# Gabarit des Centres et Boutiques (décision de Kevin, 2026-11-10) : terminaux, banquettes,
+	# rayons muraux et présentoirs sont peints 0,6 à 0,8 rangée au-dessus de leur pied (« pied
+	# remonté » du jalon 7) ; l'emprise est remontée d'une rangée, sur ce qui est peint, sans
+	# bouger l'image (la rangée de devant redevient praticable).
+	&"int_centre_terminal": {"cells": [Vector2i(-1, -1), Vector2i(0, -1)],
+		"align": ALIGN_EDGE},
+	&"int_centre_banquette": {"cells": [Vector2i(-1, -1), Vector2i(0, -1)],
+		"align": ALIGN_EDGE},
 	&"int_plante": {"width": 1, "depth": 1},
 	&"int_boutique_caisse": {"width": 5, "depth": 1},
-	&"int_boutique_rayon_mural": {"width": 3, "depth": 1},
-	&"int_boutique_presentoir": {"width": 3, "depth": 1},
+	&"int_boutique_rayon_mural": {"cells": [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1)],
+		"align": ALIGN_CENTRE},
+	&"int_boutique_presentoir": {"cells": [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1)],
+		"align": ALIGN_CENTRE},
 	&"ground_hautes_herbes_01": {"traversable": true, "align": ALIGN_CENTRE},
 	# --- Intégration du monde peint, DA.0 (docs/tech/integration-da-bourg-route1.md) ---
 	# Emprises de `proto/da_jadielle/emprises.gd`. Série 06 : Bourg Palette. Portes des
@@ -552,6 +560,13 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# milieu. `int_barriere_active_01` sert d'image à cet objet (aucune carte ne la pose).
 	&"int_barriere_active_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"int_barriere_coupee_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Découpes des comptoirs peints dans les coques de l'hôtel et du restaurant de Céladopole :
+	# elles passent devant le personnage qui se tient derrière (blocage par la grille).
+	&"int_comptoir_hotel_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"int_comptoir_restaurant_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Découpe du comptoir peint dans la coque du 5e étage du grand magasin de Céladopole (aussi
+	# le 3e de Doublonville) : elle passe devant le vendeur, derrière le plateau.
+	&"int_comptoir_magasin_5e_celadon_01": {"traversable": true, "align": ALIGN_CENTRE},
 	# Pont extérieur : bastingages dans la couche du sol (cases `r` bloquées par la grille), la
 	# superstructure ouest dans `Entities` (cases `K` bloquées) ; chaises longues et bouées
 	# bloquent leurs cases.

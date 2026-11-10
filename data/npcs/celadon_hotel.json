@@ -2,7 +2,7 @@
 	"receptionist": {
 		"cell": [
 			7,
-			3
+			2
 		],
 		"facing": "down",
 		"sprite": "hostess"

@@ -4,13 +4,14 @@
 [ext_resource type="Texture2D" path="res://assets/world/interiors/int_celadon_dept_5f_coque.png" id="2_7h7kf"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_brt5n"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="4_7ls0j"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_comptoir_magasin_5e_celadon_01.tscn" id="counter_cutout"]
 
 [node name="CeladonDept5F" type="Node2D" unique_id=1193460221]
 script = ExtResource("1_rj538")
 map_id = &"celadon_dept_5f"
 display_name = "Céladopole"
 size = Vector2i(20, 13)
-blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(18, 0), Vector2i(19, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(18, 1), Vector2i(19, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(15, 2), Vector2i(18, 2), Vector2i(19, 2), Vector2i(0, 3), Vector2i(7, 3), Vector2i(8, 3), Vector2i(12, 3), Vector2i(13, 3), Vector2i(19, 3), Vector2i(0, 4), Vector2i(19, 4), Vector2i(0, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(19, 5), Vector2i(0, 6), Vector2i(4, 6), Vector2i(5, 6), Vector2i(6, 6), Vector2i(13, 6), Vector2i(14, 6), Vector2i(15, 6), Vector2i(19, 6), Vector2i(0, 7), Vector2i(4, 7), Vector2i(5, 7), Vector2i(6, 7), Vector2i(13, 7), Vector2i(14, 7), Vector2i(15, 7), Vector2i(19, 7), Vector2i(0, 8), Vector2i(19, 8), Vector2i(0, 9), Vector2i(19, 9), Vector2i(0, 10), Vector2i(19, 10), Vector2i(0, 11), Vector2i(1, 11), Vector2i(2, 11), Vector2i(3, 11), Vector2i(4, 11), Vector2i(5, 11), Vector2i(6, 11), Vector2i(7, 11), Vector2i(8, 11), Vector2i(9, 11), Vector2i(10, 11), Vector2i(11, 11), Vector2i(12, 11), Vector2i(13, 11), Vector2i(14, 11), Vector2i(15, 11), Vector2i(16, 11), Vector2i(17, 11), Vector2i(18, 11), Vector2i(19, 11), Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(4, 12), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(12, 12), Vector2i(13, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(18, 12), Vector2i(19, 12)])
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(18, 0), Vector2i(19, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(18, 1), Vector2i(19, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(15, 2), Vector2i(18, 2), Vector2i(19, 2), Vector2i(0, 3), Vector2i(19, 3), Vector2i(0, 4), Vector2i(19, 4), Vector2i(0, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(19, 5), Vector2i(0, 6), Vector2i(3, 6), Vector2i(4, 6), Vector2i(5, 6), Vector2i(6, 6), Vector2i(13, 6), Vector2i(14, 6), Vector2i(15, 6), Vector2i(16, 6), Vector2i(19, 6), Vector2i(0, 7), Vector2i(3, 7), Vector2i(4, 7), Vector2i(5, 7), Vector2i(6, 7), Vector2i(13, 7), Vector2i(14, 7), Vector2i(15, 7), Vector2i(16, 7), Vector2i(19, 7), Vector2i(0, 8), Vector2i(19, 8), Vector2i(0, 9), Vector2i(19, 9), Vector2i(0, 10), Vector2i(19, 10), Vector2i(0, 11), Vector2i(1, 11), Vector2i(2, 11), Vector2i(3, 11), Vector2i(4, 11), Vector2i(5, 11), Vector2i(6, 11), Vector2i(7, 11), Vector2i(8, 11), Vector2i(9, 11), Vector2i(10, 11), Vector2i(11, 11), Vector2i(12, 11), Vector2i(13, 11), Vector2i(14, 11), Vector2i(15, 11), Vector2i(16, 11), Vector2i(17, 11), Vector2i(18, 11), Vector2i(19, 11), Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(4, 12), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(12, 12), Vector2i(13, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(18, 12), Vector2i(19, 12)])
 interior = true
 light_profile = &"interior_warm"
 
@@ -22,6 +23,9 @@ centered = false
 [node name="Entities" type="Node2D" parent="." unique_id=256968783]
 unique_name_in_owner = true
 y_sort_enabled = true
+
+[node name="CounterCutout" parent="Entities" instance=ExtResource("counter_cutout")]
+position = Vector2(966, 581)
 
 [node name="Warps" type="Node2D" parent="." unique_id=2107064371]
 
@@ -72,11 +76,11 @@ arrival_facing = Vector2i(0, -1)
 [node name="Interactables" type="Node2D" parent="." unique_id=1776721779]
 
 [node name="ClerkCounter" type="Marker2D" parent="Interactables" unique_id=415774855]
-position = Vector2(912, 576)
+position = Vector2(816, 576)
 script = ExtResource("4_7ls0j")
 dialogue_id = &"celadon_dept_5f_clerk"
 kind = 0
-size = Vector2i(3, 1)
+size = Vector2i(5, 1)
 facing = Vector2i(0, -1)
 
 [node name="Spawns" type="Node2D" parent="." unique_id=1870904483]

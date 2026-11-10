@@ -5,7 +5,9 @@
 # Légende :
 #   K mur (bloqué)   . sol (praticable)   X sortie vers le hall (praticable : paillasson, PUSH ↓)
 #   S canapé (2..4, 3)   b table basse (10..11, 3)   d lampe (13, 3)
-#   T tables de réunion (4..6, 5..6) et (9..11, 5..6)   x plante (1, 7), (13, 7)
+#   T tables de réunion (4..6, 5..6) et (9..11, 5..6)   x plante (1, 7)
+#   Tous ces meubles sont posés (props peints du catalogue, 2026-11-10) : la coque n'en peint
+#   aucun. Pas de plante en (13, 7) : elle cacherait le chercheur du J32 (13, 6).
 #
 # Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
 
@@ -19,7 +21,7 @@ GRILLE 15 10
 04 K.............K
 05 K...TTT..TTT..K
 06 K...TTT..TTT..K
-07 Kx...........xK
+07 Kx............K
 08 KKKKKKXXXKKKKKK
 09 KKKKKKKKKKKKKKK
 FIN

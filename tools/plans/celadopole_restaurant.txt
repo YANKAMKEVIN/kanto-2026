@@ -5,6 +5,7 @@
 # Légende :
 #   K mur (bloqué)   . sol (praticable)   X sortie (praticable : paillasson, PUSH ↓)
 #   B comptoir (bloqué)   t table   c canapé   p plante   e étagère
+# 2026-11-10 : tables du haut (9..11, 4) ; les étagères sont peintes au mur : (10..12, 3) libre.
 
 PRATICABLES .X
 
@@ -12,8 +13,8 @@ GRILLE 15 10
 00 KKKKKKKKKKKKKKK
 01 KKKKKKKKKKKKKKK
 02 KKKKKKKKKKKKKKK
-03 K.........eee.K
-04 K.BBBB........K
+03 K.BBBBB.......K
+04 K........ttt..K
 05 K........ttt..K
 06 K........ttt..K
 07 Kp...........pK
@@ -24,7 +25,7 @@ FIN
 POSITIONS
 sortie               warp           6..8,8        libre   to=celadon_city spawn=from_restaurant  # PUSH ↓ → celadon_city, from_restaurant
 entree               spawn          7,8           libre    # spawn « entrance », tourné ↑
-serveur              pnj            3,3           bloque  role=P1 facing=down  # serveur derrière le comptoir (2..5, 4) ; on lui parle depuis (3, 5) ↑
+serveur              pnj            3,2           bloque  role=P1 facing=down  # serveur derrière le comptoir (2..6, 3), tel que peint dans la coque ; on lui parle depuis (3, 4) ↑
 client_casino        pnj            8,5           bloque  role=P2 facing=right  # texte 44 (« J'ai tout perdu au Casino hier soir ») ; assis à gauche de la table
 convive              pnj            12,7          bloque  role=P3 facing=up  # convive
 FIN

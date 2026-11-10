@@ -245,3 +245,26 @@ func test_node_budget() -> void:
 	map.free()
 	assert_lte(total, NODE_BUDGET, "nœuds de la scène")
 	gut.p("route_2_east : %d nœuds" % total)
+
+
+## Forêt hors limites (écran de 24,4 cases pour 16 de large) : uniquement du décor, posé hors de
+## la grille, et qui garnit les deux côtés jusqu'au bord d'un écran 20:9.
+func test_side_forest_is_outside_the_map_and_fills_the_view() -> void:
+	var tile := float(Grid.TILE_SIZE)
+	var west := 0.0
+	var east := float(SIZE.x)
+	var count := 0
+	for child: Node in _map.get_node(^"Entities").get_children():
+		if not child.name.begins_with("SideForest"):
+			continue
+		count += 1
+		assert_true(child is Sprite2D, "%s : simple image, sans collision" % child.name)
+		var foot := (child as Node2D).position.x / tile
+		assert_true(foot < 0.0 or foot > float(SIZE.x), "%s hors de la grille" % child.name)
+		west = minf(west, foot)
+		east = maxf(east, foot)
+	assert_gt(count, 100)
+	var half_view := (2400.0 / tile - float(SIZE.x)) / 2.0
+	const CANOPY_HALF_WIDTH := 1.0
+	assert_lte(west - CANOPY_HALF_WIDTH, -half_view)
+	assert_gte(east + CANOPY_HALF_WIDTH, float(SIZE.x) + half_view)

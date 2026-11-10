@@ -786,6 +786,9 @@ func _play_beat(beat: BattleBeat) -> void:
 				_stage.set_status(beat.side, beat.event.status)
 			if is_instance_valid(_hud):
 				_hud.set_card(side, BattleViews.card(beat.event))
+			# Il est entièrement là avant la suite (l'attaque adverse après un changement).
+			if is_instance_valid(_stage):
+				await _stage.wait_appear(beat.side)
 		BattleBeat.Kind.MOVE:
 			if is_instance_valid(_stage) and beat.fx_plan != null:
 				await _stage.play_move_fx(beat.side, beat.fx_plan)

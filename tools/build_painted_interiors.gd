@@ -342,6 +342,8 @@ func _pokemon_center(id: StringName, node: String, title: String, exit_target: A
 			[&"int_centre_terminal", Vector2i(2, 3), 3.4, "StorageTerminal"],
 			# J32 (T5, N-15) : terminal d'échange local, à la place de la plante nord-est [D].
 			[&"int_centre_terminal", Vector2i(13, 3), 3.4, "TradeTerminal"],
+			# Banquettes : pied en (3, 7) et (12, 7) comme au prototype, emprise une rangée plus
+			# haut ((2..3, 6), (11..12, 6)), là où elles sont peintes (2026-11-10).
 			[&"int_centre_banquette", Vector2i(3, 7), 7.2, "BenchWest"],
 			[&"int_centre_banquette", Vector2i(12, 7), 7.2, "BenchEast"],
 			[&"int_plante", Vector2i(1, 8), 8.8, "PlantSouthWest"],
@@ -359,13 +361,15 @@ func _pokemon_center(id: StringName, node: String, title: String, exit_target: A
 		},
 		# Parler à l'infirmière par-dessus le comptoir (trois cases devant elle, tourné vers le
 		# haut).
-		# Le terminal du Stockage (T16) : ses deux cases, face à lui (tourné vers le haut).
+		# Le terminal du Stockage (T16) : ses deux cases, face à lui (tourné vers le haut). Les
+		# terminaux sont peints contre le mur : emprise sur la rangée 2 (règle des objets peints,
+		# 2026-11-10), examinés depuis la rangée 3.
 		"interactables": [["NurseCounter", Vector2i(6, 4), Vector2i(3, 1), &"nurse", TALK,
-			Vector2i.UP], ["StorageTerminalScreen", Vector2i(1, 3), Vector2i(2, 1),
-			&"storage_terminal", EXAMINE, Vector2i.UP], ["TradeTerminalScreen", Vector2i(12, 3),
+			Vector2i.UP], ["StorageTerminalScreen", Vector2i(1, 2), Vector2i(2, 1),
+			&"storage_terminal", EXAMINE, Vector2i.UP], ["TradeTerminalScreen", Vector2i(12, 2),
 			Vector2i(2, 1), &"trade_terminal", EXAMINE, Vector2i.UP]],
 		"spawns": {"entrance": Vector2i(7, 8), "heal": Vector2i(7, 5),
-			"terminal": Vector2i(1, 4), "trade_terminal": Vector2i(12, 4)},
+			"terminal": Vector2i(1, 3), "trade_terminal": Vector2i(12, 3)},
 	}
 
 
@@ -399,6 +403,8 @@ func _poke_mart(id: StringName, node: String, title: String, exit_target: Array)
 			[&"int_boutique_caisse", Vector2i(7, 4), 5.0, "Counter"],
 			[&"int_boutique_rayon_mural", Vector2i(2, 3), 3.2, "ShelfWest"],
 			[&"int_boutique_rayon_mural", Vector2i(12, 3), 3.2, "ShelfEast"],
+			# Rayons muraux et présentoirs : emprise une rangée au-dessus du pied, là où ils sont
+			# peints (rayons (1..3) et (11..13, 2), présentoirs (2..4) et (10..12, 6)).
 			[&"int_boutique_presentoir", Vector2i(3, 7), 7.3, "StandWest"],
 			[&"int_boutique_presentoir", Vector2i(11, 7), 7.3, "StandEast"],
 			[&"int_plante", Vector2i(13, 8), 8.8, "PlantSouthEast"],
@@ -757,8 +763,9 @@ func _route_2_east_gate() -> Dictionary:
 			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
 			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
 		],
-		# Table de lecture : image de 3 × 1,5 cases posée sur ses deux rangées (6..7) ; carte
-		# murale accrochée au mur du fond, entre la bibliothèque et le bureau.
+		# Table de lecture : image de 3 × 1,5 cases, emprise d'une rangée (2..4, 7) ; la rangée 6,
+		# derrière elle, reste praticable (2026-11-10) ; carte murale accrochée au mur du fond,
+		# entre la bibliothèque et le bureau.
 		"props": [
 			[&"int_table_lecture_01", Vector2i(3, 7), 7.95, "ReadingTable"],
 			[&"int_carte_murale_01", Vector2i(6, 2), 2.7, "WallMap"],
@@ -2198,6 +2205,11 @@ func _olivine_center() -> Dictionary:
 	room["exit_spawns"] = [&"from_center", &"from_center", &"from_center_1"]
 	(room["props"] as Array).append([&"int_escalier_montant_01", Vector2i(13, 6), 7.0,
 		"StairsUpBody"])
+	# La banquette est (emprise remontée sur la rangée 6, 2026-11-10) glisse d'une case à l'ouest :
+	# peinte sur (10..11, 6), elle laisse libres les deux cases de l'escalier (12..13, 6).
+	for prop: Array in room["props"]:
+		if prop[3] == "BenchEast":
+			prop[1] = Vector2i(11, 7)
 	(room["spawns"] as Dictionary)["from_room"] = Vector2i(13, 6)
 	# JOH1 (`jalon-joh1.md` §2.5) : rangée d'entrée (5..9, 7), traversée en entrant → scène de
 	# l'arrivée (O-8, nuit, vol, matin), qui ne joue que si `johto_arrived` et pas `johto_slept`.
@@ -2212,7 +2224,7 @@ func _olivine_center() -> Dictionary:
 	# (`night_watch`) ; le plateau des Poké Balls sur la machine du comptoir et la lueur des deux
 	# terminaux n'existent que dans la pénombre (`johto_center_dark`, profil
 	# `interior_night_dark` de `lighting.json`).
-	(room["spawns"] as Dictionary)["night_watch"] = Vector2i(3, 6)
+	(room["spawns"] as Dictionary)["night_watch"] = Vector2i(1, 6)
 	room["night_tray"] = [Vector2(867, 358), [&"johto_center_dark"]]
 	room["gates"] = [
 		["NightGlowStorage", [&"johto_center_dark"], [], &"shard", Vector2(192, 250)],
@@ -2353,7 +2365,7 @@ const GOLDENROD_COUNTERS: Dictionary = {
 	"1f": [["HostessCounter", Vector2i(7, 5), 6, &"goldenrod_dept_hostess"]],
 	"2f": [["ClerkCounterA", Vector2i(6, 5), 3, &"goldenrod_dept_2f_clerk"],
 		["ClerkCounterB", Vector2i(11, 5), 3, &"goldenrod_dept_2f_clerk"]],
-	"3f": [["ClerkCounter", Vector2i(9, 5), 3, &"goldenrod_dept_3f_clerk"]],
+	"3f": [["ClerkCounter", Vector2i(8, 5), 5, &"goldenrod_dept_3f_clerk"]],
 }
 
 
@@ -2424,6 +2436,8 @@ func _goldenrod_dept_floor(index: int) -> Dictionary:
 	for counter: Array in GOLDENROD_COUNTERS.get(floor_id, []):
 		(room["interactables"] as Array).append([counter[0], counter[1],
 			Vector2i(counter[2], 1), counter[3], TALK, Vector2i.UP])
+	if GOLDENROD_DEPT[index][2] == "5f":
+		room["free_props"] = [DEPT_5F_COUNTER_CUTOUT]
 	return room
 
 
@@ -2601,8 +2615,12 @@ const DEPT_COUNTERS: Dictionary = {
 		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_2f_clerk_tm"]],
 	"4f": [["ClerkCounterA", Vector2i(6, 5), 3, &"celadon_dept_4f_clerk"],
 		["ClerkCounterB", Vector2i(11, 5), 3, &"celadon_dept_4f_clerk_stones"]],
-	"5f": [["ClerkCounter", Vector2i(9, 5), 3, &"celadon_dept_5f_clerk"]],
+	"5f": [["ClerkCounter", Vector2i(8, 5), 5, &"celadon_dept_5f_clerk"]],
 }
+## Comptoir du 5e (coque `int_celadon_dept_5f_coque`, aussi le 3e de Doublonville) peint sur
+## (8..12, 5) ; sa découpe passe devant le vendeur, debout derrière sur (10, 4) (2026-11-10).
+const DEPT_5F_COUNTER_CUTOUT: Array = [&"int_comptoir_magasin_5e_celadon_01", Vector2(966, 581)
+	/ TILE, "CounterCutout"]
 ## Distributeurs du toit (T17) : [nœud, case, dialogue] (EXAMINER depuis la case du sud, ↑).
 const ROOF_DISPENSERS: Array = [
 	["DispenserWater", Vector2i(10, 2), &"celadon_dept_roof_water"],
@@ -2718,6 +2736,8 @@ func _celadon_dept_floor(index: int) -> Dictionary:
 	for counter: Array in DEPT_COUNTERS.get(floor_id, []):
 		(room["interactables"] as Array).append([counter[0], counter[1],
 			Vector2i(counter[2], 1), counter[3], TALK, Vector2i.UP])
+	if floor_id == "5f":
+		room["free_props"] = [DEPT_5F_COUNTER_CUTOUT]
 	return room
 
 
@@ -2815,13 +2835,18 @@ func _celadon_mansion_roof_house() -> Dictionary:
 func _celadon_small_room(id: StringName, node: String, plan: String, base: String) -> Dictionary:
 	var room := _celadon_room(id, node, plan, ".X")
 	(room["spawns"] as Dictionary)["entrance"] = Vector2i(7, 8)
-	# Comptoirs parlants (T17) : réception de l'hôtel (5..9, 4), serveur du restaurant (2..5, 4).
+	# Comptoirs parlants (T17) : réception de l'hôtel (5..9, 3), serveur du restaurant (2..6, 3),
+	# là où la coque les peint (2026-11-10) ; leur découpe passe devant le personnage de derrière.
 	if base == "hotel":
-		(room["interactables"] as Array).append(["ReceptionCounter", Vector2i(5, 4),
+		(room["interactables"] as Array).append(["ReceptionCounter", Vector2i(5, 3),
 			Vector2i(5, 1), &"celadon_hotel_reception", TALK, Vector2i.UP])
+		room["free_props"] = [[&"int_comptoir_hotel_celadon_01", Vector2(721, 391) / TILE,
+			"CounterCutout"]]
 	elif base == "restaurant":
-		(room["interactables"] as Array).append(["WaiterCounter", Vector2i(2, 4),
-			Vector2i(4, 1), &"celadon_restaurant_waiter", TALK, Vector2i.UP])
+		(room["interactables"] as Array).append(["WaiterCounter", Vector2i(2, 3),
+			Vector2i(5, 1), &"celadon_restaurant_waiter", TALK, Vector2i.UP])
+		room["free_props"] = [[&"int_comptoir_restaurant_celadon_01", Vector2(424, 367) / TILE,
+			"CounterCutout"]]
 	var cells: Array = [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)]
 	if base == "chief":
 		for index: int in cells.size():
@@ -2916,7 +2941,7 @@ func _saffron_copycat_2f() -> Dictionary:
 		"safrania_maison_copieur_2f.txt", &"", [
 			[&"int_bureau_angle_pc_01", Rect2i(1, 3, 2, 1), "DeskComputer"],
 			[&"int_lit_01", Rect2i(10, 3, 2, 2), "Bed",
-				[Vector2i(10, 3), Vector2i(11, 3), Vector2i(11, 4), Vector2i(12, 4)]],
+				[Vector2i(10, 3), Vector2i(11, 3), Vector2i(10, 4), Vector2i(11, 4)]],
 			[&"int_tele_01", Rect2i(5, 5, 1, 1), "GameConsole", [], 0.5],
 			[&"int_panier_pokemon_01", Rect2i(1, 7, 1, 1), "DollsWest"],
 			[&"int_panier_pokemon_01", Rect2i(2, 7, 1, 1), "DollsEast"],
@@ -2979,8 +3004,10 @@ func _retarget(room: Dictionary, id: StringName, node: String, title: String, ma
 
 
 ## Centre et Boutique : définitions communes ; Labo : quatre pièces relues sur leur grille
-## (`tools/plans/cinnabar_labo_*.txt`), enveloppes de la série 27 (`int_labo_cramois_*_coque`),
-## sans meubles posés (provisoire : la grille bloque les cases des meubles peints).
+## (`tools/plans/cinnabar_labo_*.txt`), enveloppes de la série 27 (`int_labo_cramois_*_coque`).
+## Les machines, ordinateurs et vitrines sont peints contre le mur du fond (rangée 2) ; les autres
+## meubles des grilles (tables, canapé, lampe, plantes) sont des objets peints du catalogue posés
+## sur leurs cases (2026-11-10 : les coques n'en peignent aucun).
 func _cinnabar_rooms() -> Array[Dictionary]:
 	var lab_exit := func(spawn: StringName) -> Array:
 		var warps: Array = []
@@ -3019,6 +3046,15 @@ func _cinnabar_rooms() -> Array[Dictionary]:
 		"plan": PLANS_DIR + "cinnabar_labo_reunion.txt", "walkable": ".X",
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": lab_exit.call(&"from_meeting"),
+		"props": [
+			# Pas de plante à l'est : elle cacherait le chercheur du J32 (13, 6).
+			[&"int_canape_01", Vector2i(3, 3), 3.95, "Sofa"],
+			[&"int_table_basse_01", Vector2i(11, 3), 3.95, "CoffeeTable"],
+			[&"int_chevet_lampe_01", Vector2i(13, 3), 3.95, "Lamp"],
+			[&"int_table_repas_01", Vector2i(5, 6), 6.95, "MeetingTableWest"],
+			[&"int_table_repas_01", Vector2i(10, 6), 6.95, "MeetingTableEast"],
+			[&"int_plante_sylphe_01", Vector2i(1, 7), 7.85, "PlantWest"],
+		],
 	}
 	var rd := {
 		"id": &"cinnabar_lab_rd", "node": "CinnabarLabRd", "size": Vector2i(15, 10),
@@ -3027,8 +3063,15 @@ func _cinnabar_rooms() -> Array[Dictionary]:
 		"plan": PLANS_DIR + "cinnabar_labo_rd.txt", "walkable": ".X",
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": lab_exit.call(&"from_rd"),
-		"interactables": [["Computer", Vector2i(1, 3), Vector2i(3, 1), &"cinnabar_lab_pc",
+		# Ordinateurs peints au mur (1..3, 2), examinés depuis la rangée 3.
+		"interactables": [["Computer", Vector2i(1, 2), Vector2i(3, 1), &"cinnabar_lab_pc",
 			EXAMINE, Vector2i.UP]],
+		"props": [
+			[&"int_chevet_lampe_01", Vector2i(13, 3), 3.95, "Lamp"],
+			[&"int_paillasse_01", Vector2i(11, 7), 7.9, "WorkBench"],
+			[&"int_plante_sylphe_01", Vector2i(1, 7), 7.85, "PlantWest"],
+			[&"int_plante_sylphe_01", Vector2i(13, 7), 7.85, "PlantEast"],
+		],
 	}
 	var fossil := {
 		"id": &"cinnabar_lab_fossil", "node": "CinnabarLabFossil", "size": Vector2i(15, 10),
@@ -3037,6 +3080,12 @@ func _cinnabar_rooms() -> Array[Dictionary]:
 		"plan": PLANS_DIR + "cinnabar_labo_fossiles.txt", "walkable": ".X",
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": lab_exit.call(&"from_fossil"),
+		"props": [
+			[&"int_chevet_lampe_01", Vector2i(13, 3), 3.95, "Lamp"],
+			[&"int_paillasse_01", Vector2i(10, 6), 6.9, "Table"],
+			[&"int_plante_sylphe_01", Vector2i(1, 7), 7.85, "PlantWest"],
+			[&"int_plante_sylphe_01", Vector2i(13, 7), 7.85, "PlantEast"],
+		],
 	}
 	return [
 		_pokemon_center(&"cinnabar_center", "CinnabarCenter", "Cramois'Île",

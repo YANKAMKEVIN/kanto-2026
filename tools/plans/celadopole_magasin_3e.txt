@@ -15,6 +15,8 @@
 # ASCENSEUR À L'EST (V en x 16..17, rangée 2) ; mêmes cases à chaque étage. Arrivées : from_up
 # (descendu d'en haut, devant S), from_down (monté d'en bas, devant Z), from_elevator.
 # Tous les PNJ des intérieurs sont à des cases NON obligatoires (le contrôle le vérifie).
+# 2026-11-10 : grille calée sur la coque peinte : table et fauteuils (3..7, 6..7), bornes de
+# droite (12..13, 3).
 
 PRATICABLES .XSZV
 
@@ -22,12 +24,12 @@ GRILLE 20 13
 00 KKKKKKKKKKKKKKKKKKKK
 01 KKKKKKKKKKKKKKKKKKKK
 02 KKSSZZKKKKKKKKKKVVKK
-03 K.......mm.mm......K
+03 K.......mm..mm.....K
 04 K..................K
 05 K..................K
-06 K..................K
-07 K....tt............K
-08 K....tt............K
+06 K..ctttc...........K
+07 K..ctttc...........K
+08 K..................K
 09 K..................K
 10 Kp................pK
 11 KKKKKKKKKKKKKKKKKKKK

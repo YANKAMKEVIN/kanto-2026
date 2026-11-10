@@ -21,7 +21,7 @@ const DATE := "2026-10-05T18:30:00"
 const FADE := 0.05
 const TIMEOUT := 12.0
 const MAX_FRAMES := 600
-const TERMINAL_CELL := Vector2i(1, 4)
+const TERMINAL_CELL := Vector2i(1, 3)
 const PARTY := StorageRules.Place.PARTY
 const STORAGE := StorageRules.Place.STORAGE
 
