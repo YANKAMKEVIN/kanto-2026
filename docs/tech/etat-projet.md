@@ -1,6 +1,6 @@
 # État du projet
 
-Mis à jour : 2026-11-09.
+Mis à jour : 2026-11-10.
 
 > **Ce fichier reste court (quelques Ko).** On y **remplace** ce qui change, on n'empile pas une ligne par tâche : le détail d'une tâche va dans le plan du jalon (`docs/tech/jalon-*.md`) et dans le message de commit.
 > Historique complet jusqu'au 2026-11-05 : [`etat-projet-archive.md`](etat-projet-archive.md) (6,5 Mo, à chercher avec `grep`, pas à lire) et [`etat-projet-historique.md`](etat-projet-historique.md).
@@ -14,6 +14,7 @@ Mis à jour : 2026-11-09.
 - **Musiques de Johto :** 32 pistes HeartGold / SoulSilver branchées (cartes, Centres et Boutiques, combats par région, légendaires, générique) ; détail dans `docs/tech/johto-musiques.md` §10. Jingles, victoires et « ! » restent ceux de Let's Go.
 - **Costumes (2026-11-07, dans `main`) :** huit avantages actifs si le costume est porté, écrits dans l'écran Dresseur et à l'annonce du déblocage ; un thème de combat (sauvages et Dresseurs ordinaires seulement, Team Rocket et Ysolde exclues le 2026-11-09) et un chant d'arrivée en ville de 60 s par costume, 19 pistes validées à l'écoute par Kevin sur l'A17 (`dossier-costumes.md` §2 bis et §2 ter ; Go juridique `jalon-34-34e.md` §16).
 - **Décor et collisions (audit du 2026-11-09, `tools/audit_decor_*`, `tools/audit_building_*`) :** deux maisons de Doublonville réaffichées ; 159 cases de marge invisible autour des bâtiments ouvertes sur 14 cartes, chacune relue sur image ; bords de roche alignés sur le décor sur 8 cartes (`tools/audit_rock_edges.py`). Laissés tels quels : buissons, entrée de grotte, bout de rebord, Dresseur de la Route 25 posé sur la roche, hautes herbes et goulet de Léa de la Route 3, Route 4 (reprise des sauvegardes du sas).
+- **Intérieurs peints (2026-11-10) :** grilles calées sur les coques (Céladopole, magasin de Doublonville 3e, Labo de Cramois'Île, poste de la Route 2 est, Copieur, Boutique de Safrania) ; gabarit des Centres et Boutiques : emprise des terminaux, banquettes, rayons et présentoirs remontée d'une rangée, image inchangée (`jalon-07.md`, Écarts §2). Plantes d'angle des Centres et Boutiques non touchées (pot dans le mur du bas, feuillage sur la rangée 7).
 - **Attaques électriques (décidé le 2026-11-09) :** refonte en cours de préparation, direction A choisie par Kevin, plan dans `attaques-electriques.md`. Rien n'est encore dans le jeu. Les autres familles de types suivront.
 - **CS, reste à faire :** certains départs de débogage (`tools/debug_start/*_cut.json`, `cut_ready.json`, `dark_cave_1f_flash.json`, `koga_qa.json`) ne déclarent pas la CS apprise.
 - **Personne n'a encore joué Johto d'un bout à l'autre.**
@@ -35,6 +36,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 ## Décisions de Kevin en vigueur
 
+- **Centres et Boutiques (2026-11-10) :** fin du « pied remonté » du jalon 7 ; l'emprise suit ce qui est peint.
 - **Écran Dresseur (2026-11-09) :** plus de section Équipe ; Costumes au centre, Grands moments à droite (`dossier-costumes.md` §2 quater). Un Pokémon K.O. n'a plus de FAIRE SORTIR.
 - **Bourg Palette (2026-11-09) :** lampadaires sud déplacés en (18, 17) et (30, 17), hors des chemins [D] ; gazons de chaque côté du labo ouverts (ancienne emprise du labo à 1:1), buissons, vélos et matériel restent solides.
 - **Dépôt (2026-11-07) :** repassé en privé par Kevin. Le workflow de CI reste tel quel (consigne du 2026-11-04, `jalon-34-34e.md` §14).

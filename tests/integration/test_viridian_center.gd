@@ -13,7 +13,8 @@ const ENTRANCE := Vector2i(7, 8)
 const HEAL := Vector2i(7, 5)
 const NURSE := Vector2i(7, 3)
 const COUNTER := [Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4)]
-const TERMINAL := [Vector2i(1, 3), Vector2i(2, 3)]
+## Terminal peint contre le mur : emprise sur la rangée 2 (2026-11-10), examiné depuis la 3.
+const TERMINAL := [Vector2i(1, 2), Vector2i(2, 2)]
 
 var _map: GameMap
 var _grid: GridWorld
@@ -162,7 +163,7 @@ func test_the_storage_terminal_is_examined_from_the_front() -> void:
 			assert_eq(interaction.kind, Interaction.Kind.EXAMINE, "EXAMINER")
 	assert_null(InteractionFinder.find(_grid, table, Vector2i(3, 3), Vector2i.LEFT),
 		"seulement de face")
-	assert_eq(_map.get_spawn_cell(&"terminal"), Vector2i(1, 4), "spawn devant le terminal")
+	assert_eq(_map.get_spawn_cell(&"terminal"), Vector2i(1, 3), "spawn devant le terminal")
 
 
 ## Décision de Kevin (2026-10-05) : pas de clones. La Dresseuse et son Roucool sont sur la
@@ -180,4 +181,4 @@ func test_the_whole_room_is_reachable_with_the_inhabitants_in_place() -> void:
 			continue
 		assert_true(crowded.has(cell), "les habitants ne ferment aucune case : %s" % cell)
 	# Le terminal s'utilisera depuis la salle (T16).
-	assert_true(free.has(Vector2i(1, 4)) or free.has(Vector2i(2, 4)), "devant le terminal")
+	assert_true(free.has(Vector2i(1, 3)) or free.has(Vector2i(2, 3)), "devant le terminal")

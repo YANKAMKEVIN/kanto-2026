@@ -342,6 +342,8 @@ func _pokemon_center(id: StringName, node: String, title: String, exit_target: A
 			[&"int_centre_terminal", Vector2i(2, 3), 3.4, "StorageTerminal"],
 			# J32 (T5, N-15) : terminal d'échange local, à la place de la plante nord-est [D].
 			[&"int_centre_terminal", Vector2i(13, 3), 3.4, "TradeTerminal"],
+			# Banquettes : pied en (3, 7) et (12, 7) comme au prototype, emprise une rangée plus
+			# haut ((2..3, 6), (11..12, 6)), là où elles sont peintes (2026-11-10).
 			[&"int_centre_banquette", Vector2i(3, 7), 7.2, "BenchWest"],
 			[&"int_centre_banquette", Vector2i(12, 7), 7.2, "BenchEast"],
 			[&"int_plante", Vector2i(1, 8), 8.8, "PlantSouthWest"],
@@ -359,13 +361,15 @@ func _pokemon_center(id: StringName, node: String, title: String, exit_target: A
 		},
 		# Parler à l'infirmière par-dessus le comptoir (trois cases devant elle, tourné vers le
 		# haut).
-		# Le terminal du Stockage (T16) : ses deux cases, face à lui (tourné vers le haut).
+		# Le terminal du Stockage (T16) : ses deux cases, face à lui (tourné vers le haut). Les
+		# terminaux sont peints contre le mur : emprise sur la rangée 2 (règle des objets peints,
+		# 2026-11-10), examinés depuis la rangée 3.
 		"interactables": [["NurseCounter", Vector2i(6, 4), Vector2i(3, 1), &"nurse", TALK,
-			Vector2i.UP], ["StorageTerminalScreen", Vector2i(1, 3), Vector2i(2, 1),
-			&"storage_terminal", EXAMINE, Vector2i.UP], ["TradeTerminalScreen", Vector2i(12, 3),
+			Vector2i.UP], ["StorageTerminalScreen", Vector2i(1, 2), Vector2i(2, 1),
+			&"storage_terminal", EXAMINE, Vector2i.UP], ["TradeTerminalScreen", Vector2i(12, 2),
 			Vector2i(2, 1), &"trade_terminal", EXAMINE, Vector2i.UP]],
 		"spawns": {"entrance": Vector2i(7, 8), "heal": Vector2i(7, 5),
-			"terminal": Vector2i(1, 4), "trade_terminal": Vector2i(12, 4)},
+			"terminal": Vector2i(1, 3), "trade_terminal": Vector2i(12, 3)},
 	}
 
 
@@ -399,6 +403,8 @@ func _poke_mart(id: StringName, node: String, title: String, exit_target: Array)
 			[&"int_boutique_caisse", Vector2i(7, 4), 5.0, "Counter"],
 			[&"int_boutique_rayon_mural", Vector2i(2, 3), 3.2, "ShelfWest"],
 			[&"int_boutique_rayon_mural", Vector2i(12, 3), 3.2, "ShelfEast"],
+			# Rayons muraux et présentoirs : emprise une rangée au-dessus du pied, là où ils sont
+			# peints (rayons (1..3) et (11..13, 2), présentoirs (2..4) et (10..12, 6)).
 			[&"int_boutique_presentoir", Vector2i(3, 7), 7.3, "StandWest"],
 			[&"int_boutique_presentoir", Vector2i(11, 7), 7.3, "StandEast"],
 			[&"int_plante", Vector2i(13, 8), 8.8, "PlantSouthEast"],
@@ -2199,6 +2205,11 @@ func _olivine_center() -> Dictionary:
 	room["exit_spawns"] = [&"from_center", &"from_center", &"from_center_1"]
 	(room["props"] as Array).append([&"int_escalier_montant_01", Vector2i(13, 6), 7.0,
 		"StairsUpBody"])
+	# La banquette est (emprise remontée sur la rangée 6, 2026-11-10) glisse d'une case à l'ouest :
+	# peinte sur (10..11, 6), elle laisse libres les deux cases de l'escalier (12..13, 6).
+	for prop: Array in room["props"]:
+		if prop[3] == "BenchEast":
+			prop[1] = Vector2i(11, 7)
 	(room["spawns"] as Dictionary)["from_room"] = Vector2i(13, 6)
 	# JOH1 (`jalon-joh1.md` §2.5) : rangée d'entrée (5..9, 7), traversée en entrant → scène de
 	# l'arrivée (O-8, nuit, vol, matin), qui ne joue que si `johto_arrived` et pas `johto_slept`.
@@ -2213,7 +2224,7 @@ func _olivine_center() -> Dictionary:
 	# (`night_watch`) ; le plateau des Poké Balls sur la machine du comptoir et la lueur des deux
 	# terminaux n'existent que dans la pénombre (`johto_center_dark`, profil
 	# `interior_night_dark` de `lighting.json`).
-	(room["spawns"] as Dictionary)["night_watch"] = Vector2i(3, 6)
+	(room["spawns"] as Dictionary)["night_watch"] = Vector2i(1, 6)
 	room["night_tray"] = [Vector2(867, 358), [&"johto_center_dark"]]
 	room["gates"] = [
 		["NightGlowStorage", [&"johto_center_dark"], [], &"shard", Vector2(192, 250)],

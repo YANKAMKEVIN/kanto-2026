@@ -94,12 +94,20 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_pots_fleurs_01": {"width": 1, "depth": 1},
 	&"prop_linge_01": {"width": 3, "depth": 1},
 	&"int_centre_comptoir": {"width": 5, "depth": 1},
-	&"int_centre_terminal": {"width": 2, "depth": 1},
-	&"int_centre_banquette": {"width": 2, "depth": 1},
+	# Gabarit des Centres et Boutiques (décision de Kevin, 2026-11-10) : terminaux, banquettes,
+	# rayons muraux et présentoirs sont peints 0,6 à 0,8 rangée au-dessus de leur pied (« pied
+	# remonté » du jalon 7) ; l'emprise est remontée d'une rangée, sur ce qui est peint, sans
+	# bouger l'image (la rangée de devant redevient praticable).
+	&"int_centre_terminal": {"cells": [Vector2i(-1, -1), Vector2i(0, -1)],
+		"align": ALIGN_EDGE},
+	&"int_centre_banquette": {"cells": [Vector2i(-1, -1), Vector2i(0, -1)],
+		"align": ALIGN_EDGE},
 	&"int_plante": {"width": 1, "depth": 1},
 	&"int_boutique_caisse": {"width": 5, "depth": 1},
-	&"int_boutique_rayon_mural": {"width": 3, "depth": 1},
-	&"int_boutique_presentoir": {"width": 3, "depth": 1},
+	&"int_boutique_rayon_mural": {"cells": [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1)],
+		"align": ALIGN_CENTRE},
+	&"int_boutique_presentoir": {"cells": [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1)],
+		"align": ALIGN_CENTRE},
 	&"ground_hautes_herbes_01": {"traversable": true, "align": ALIGN_CENTRE},
 	# --- Intégration du monde peint, DA.0 (docs/tech/integration-da-bourg-route1.md) ---
 	# Emprises de `proto/da_jadielle/emprises.gd`. Série 06 : Bourg Palette. Portes des

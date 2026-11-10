@@ -123,7 +123,7 @@ func test_center_and_mart_are_the_viridian_definitions() -> void:
 			(there.get_node(^"Shell") as Sprite2D).texture)
 	assert_not_null(_maps[&"vermilion_center"].get_node_or_null(^"%HealMachine"))
 	var center: GameMap = _maps[&"vermilion_center"]
-	var terminal := center.get_interactions().find(Vector2i(1, 3),
+	var terminal := center.get_interactions().find(Vector2i(1, 2),
 		Vector2i.UP)
 	assert_not_null(terminal, "Stockage au Centre (contrat du J16)")
 	if terminal != null:

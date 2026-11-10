@@ -141,7 +141,7 @@ func test_every_center_has_a_trade_terminal_beside_the_storage() -> void:
 		assert_not_null(storage, "%s : Stockage gardé" % map_id)
 		if trade != null:
 			assert_eq([trade.dialogue_id, trade.get_cells(), trade.facing], [&"trade_terminal",
-				[Vector2i(12, 3), Vector2i(13, 3)] as Array[Vector2i], Vector2i.UP], String(map_id))
+				[Vector2i(12, 2), Vector2i(13, 2)] as Array[Vector2i], Vector2i.UP], String(map_id))
 		assert_not_null(map.get_node_or_null(^"Entities/TradeTerminal"), "%s : le meuble" % map_id)
 		assert_null(map.get_node_or_null(^"Entities/PlantNorthEast"), String(map_id))
 		assert_not_null(map.get_node_or_null(^"Spawns/trade_terminal"), String(map_id))
