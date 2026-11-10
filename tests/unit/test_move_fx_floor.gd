@@ -6,7 +6,7 @@ extends GutTest
 
 const VIEW := Vector2(1920, 1080)
 const STEP: float = 1.0 / 20.0
-const FAMILIES: int = 59
+const FAMILIES: int = 70
 
 var _data: PokemonData
 var _catalog: MoveFxCatalog
@@ -155,7 +155,7 @@ func test_every_family_has_painted_art() -> void:
 	for move_id: StringName in _catalog.move_ids():
 		var entry := _catalog.entry(move_id)
 		families[entry.family] = true
-	assert_eq(families.size(), FAMILIES, "les 59 familles sont employées (17, regard et sable de RP-286, 7 de la vague 1 Rouge, 18 de la vague 2, 3 de la refonte Électrik, 4 de la refonte Feu, 3 de la refonte Eau, 5 de la refonte Plante)")
+	assert_eq(families.size(), FAMILIES, "les 70 familles sont employées (17, regard et sable de RP-286, 7 de la vague 1 Rouge, 18 de la vague 2, 3 de la refonte Électrik, 4 de la refonte Feu, 3 de la refonte Eau, 11 de la refonte Psy, 5 de la refonte Plante)")
 	for family: StringName in families:
 		var art := JsonFields.get_dict(JsonFields.get_dict(_catalog.family(family), "fx"), "art")
 		assert_false(art.is_empty(), "%s : art peint" % family)
@@ -200,7 +200,7 @@ func test_code_beams_still_get_a_painted_impact() -> void:
 
 func test_psychic_and_sound_send_waves_in_series() -> void:
 	var stage := _stage()
-	for move_id: StringName in [&"confusion", &"growl", &"supersonic"]:
+	for move_id: StringName in [&"hypnosis", &"growl", &"supersonic"]:
 		var plan := _plan(move_id)
 		_player.play(plan, stage)
 		_pose_in(plan, MoveFxPlan.TRAVEL, 0.7)

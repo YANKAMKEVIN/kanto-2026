@@ -1,0 +1,230 @@
+{
+ "flipbooks": {
+  "onde_choc_psy": {
+   "fichier": "fb_onde_choc_psy.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": false
+  },
+  "implosion_psy": {
+   "fichier": "fb_implosion_psy.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": false
+  },
+  "rayon_anneaux": {
+   "fichier": "fb_rayon_anneaux.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  },
+  "onde_sinus": {
+   "fichier": "fb_onde_sinus.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  },
+  "colonne_psy": {
+   "fichier": "fb_colonne_psy.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "add",
+   "boucle": true
+  },
+  "oeil_lumiere": {
+   "fichier": "fb_oeil_lumiere.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "eclat_psy": {
+   "fichier": "fb_eclat_psy.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": false
+  },
+  "anneau_hypnose": {
+   "fichier": "fb_anneau_hypnose.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": true
+  },
+  "spirale_hypnose": {
+   "fichier": "fb_spirale_hypnose.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": true
+  },
+  "colonne_teleport": {
+   "fichier": "fb_colonne_teleport.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "add",
+   "boucle": true
+  },
+  "aura_psy": {
+   "fichier": "fb_aura_psy.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": true
+  },
+  "aura_vitesse": {
+   "fichier": "fb_aura_vitesse.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": true
+  },
+  "lueur_repos": {
+   "fichier": "fb_lueur_repos.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "z_sommeil": {
+   "fichier": "fb_z_sommeil.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "vert",
+   "boucle": true
+  },
+  "mur_hexagones": {
+   "fichier": "fb_mur_hexagones.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  },
+  "panneau_verre": {
+   "fichier": "fb_panneau_verre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  },
+  "rideau_lumiere": {
+   "fichier": "fb_rideau_lumiere.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  },
+  "voile_miroir": {
+   "fichier": "fb_voile_miroir.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "cuiller_psy": {
+   "fichier": "p_cuiller_psy.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "fragment_cristal": {
+   "fichier": "p_fragment_cristal.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "bulle_reve": {
+   "fichier": "p_bulle_reve.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "volute_psy": {
+   "fichier": "p_volute_psy.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "z_flottant": {
+   "fichier": "p_z_flottant.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "eclat_hexagone": {
+   "fichier": "p_eclat_hexagone.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "plume_lumiere": {
+   "fichier": "p_plume_lumiere.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "goutte_psy": {
+   "fichier": "p_goutte_psy.webp",
+   "taille": 192,
+   "melange": "vert"
+  },
+  "anneau_psy_rose": {
+   "fichier": "p_anneau_psy_rose.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "etincelle_psy": {
+   "fichier": "p_etincelle_psy.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "halo_psy": {
+   "fichier": "p_halo_psy.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "trait_vitesse": {
+   "fichier": "p_trait_vitesse.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "point_lumiere": {
+   "fichier": "p_point_lumiere.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "onde_fine": {
+   "fichier": "p_onde_fine.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "scintille_rose": {
+   "fichier": "p_scintille_rose.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "poussiere_psy": {
+   "fichier": "p_poussiere_psy.webp",
+   "taille": 192,
+   "melange": "add"
+  }
+ }
+}

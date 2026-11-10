@@ -84,11 +84,12 @@
 		},
 		"psy": {
 			"name": "Psy", "target": "foe",
-			"bricks": {"launch": "psy_aura", "travel": "rings", "impact": "distortion"},
-			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
-			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
-			"camera": {"zoom": 1.03, "shake": 0.0},
-			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 20, "art": {"charge": "oeil_psy", "travel": "anneau_psy", "impact": "onde_psy", "particle": "anneau_psy"}}
+			"_doc": "refonte Psy, direction A (2026-11-10, docs/tech/attaques-psy.md) : Choc Mental et repli des attaques Psy. Rien ne part du lanceur (regard) ; une onde de distorsion compacte enserre la cible, qui ondule. Psyko (signature) : la sphère qui écrase puis explose.",
+			"bricks": {"launch": "psy_aura", "travel": "", "impact": "distortion"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FF7FCF", "light_peak": 0.4, "flashes": 1},
+			"camera": {"zoom": 1.03, "shake": 2.5},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 24, "impact_size": 1.7, "art": {"charge": "oeil_lumiere", "impact": "onde_choc_psy", "particle": "etincelle_psy", "rise": "volute_psy"}}
 		},
 		"poison": {
 			"name": "Poison", "target": "foe",
@@ -277,7 +278,7 @@
 			"phases": {"anticipation": 0.4, "travel": 0.0, "impact": 0.45, "return": 0.15},
 			"world": {"light": "#FFD8F4", "light_peak": 0.35, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#FFFFFF", "#FFC8EE", "#8A4A8A"], "particles": 22, "art": {"charge": "etincelle", "particle": "etincelle", "column": "flash_blanc"}}
+			"fx": {"palette": ["#FFFFFF", "#FFC8EE", "#8A4A8A"], "particles": 22, "art": {"charge": "etincelle_psy", "particle": "etincelle_psy", "column": "colonne_teleport"}}
 		},
 		"trempette": {
 			"name": "Trempette", "target": "self", "duration": 1.0,
@@ -337,7 +338,7 @@
 			"phases": {"anticipation": 0.5, "travel": 0.0, "impact": 0.35, "return": 0.15},
 			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 14, "art": {"spoon": "cuiller", "ring": "anneau_psy", "particle": "fleche_bas"}}
+			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 14, "impact_size": 1.4, "art": {"spoon": "cuiller_psy", "ring": "anneau_psy_rose", "impact": "onde_choc_psy", "particle": "fleche_bas"}}
 		},
 		"etoiles": {
 			"name": "Étoiles", "target": "foe",
@@ -587,6 +588,105 @@
 			"world": {"light": "#A8FFB0", "light_peak": 0.15, "flashes": 0},
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#F4FFF4", "#A8FFB0", "#3A8A4A"], "particles": 20, "art": {"charge": "lueur_douce", "impact": "lumiere_soin", "particle": "brillant_soin"}}
+		},
+		"rafale_psy": {
+			"name": "Rafale Psy", "target": "foe",
+			"_doc": "refonte Psy, direction A : un rayon enfilé d'anneaux psychiques irisés part du front du lanceur et frappe la cible, qui ondule.",
+			"bricks": {"launch": "psy_aura", "travel": "bolt", "impact": "distortion"},
+			"phases": {"anticipation": 0.2, "travel": 0.3, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#FF7FCF", "light_peak": 0.5, "flashes": 1},
+			"camera": {"zoom": 1.03, "shake": 3.5},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 30, "bolt_height": 0.3, "impact_size": 1.9, "art": {"charge": "halo_psy", "bolt": "rayon_anneaux", "impact": "eclat_psy", "particle": "anneau_psy_rose", "rise": "etincelle_psy"}}
+		},
+		"vague_psy": {
+			"name": "Vague Psy", "target": "foe", "duration": 1.0,
+			"_doc": "refonte Psy, direction A : deux ondes sinusoïdales épaisses ondulent du lanceur jusqu'à la cible.",
+			"bricks": {"launch": "psy_aura", "travel": "bolt", "impact": "distortion"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FF7FCF", "light_peak": 0.45, "flashes": 1},
+			"camera": {"zoom": 1.03, "shake": 3.0},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 26, "bolt_height": 0.36, "impact_size": 1.7, "art": {"charge": "halo_psy", "bolt": "onde_sinus", "impact": "onde_choc_psy", "particle": "onde_fine", "rise": "etincelle_psy"}}
+		},
+		"devoreve": {
+			"name": "Dévorêve", "target": "foe",
+			"_doc": "refonte Psy : Dévorêve garde l'effet Psy d'avant la refonte (décision de Kevin du 2026-11-10) : anneaux roses en série, cible qui ondule, flux du drain qui revient au lanceur.",
+			"bricks": {"launch": "psy_aura", "travel": "rings", "impact": "distortion"},
+			"phases": {"anticipation": 0.25, "travel": 0.3, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FF9AD8", "light_peak": 0.2, "flashes": 0},
+			"camera": {"zoom": 1.03, "shake": 0.0},
+			"fx": {"palette": ["#FFF0FA", "#FF6FB8", "#6A1E5A"], "particles": 20, "art": {"charge": "oeil_psy", "travel": "anneau_psy", "impact": "onde_psy", "particle": "anneau_psy"}}
+		},
+		"prescience": {
+			"name": "Prescience", "target": "foe",
+			"_doc": "refonte Psy, direction A : un œil de lumière s'ouvre au-dessus du lanceur, puis une colonne de lumière psychique s'abat sur la cible (brique ground_pillar).",
+			"bricks": {"launch": "psy_aura", "travel": "ground_pillar", "impact": "distortion"},
+			"phases": {"anticipation": 0.35, "travel": 0.2, "impact": 0.35, "return": 0.1},
+			"world": {"light": "#FF8FD8", "light_peak": 0.7, "flashes": 2},
+			"camera": {"zoom": 1.05, "shake": 5.0},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 34, "impact_size": 2.0, "art": {"eye": "oeil_lumiere", "pillar": "colonne_psy", "impact": "eclat_psy", "particle": "etincelle_psy", "rise": "anneau_psy_rose"}}
+		},
+		"hypnose": {
+			"name": "Hypnose", "target": "foe", "duration": 1.0,
+			"_doc": "refonte Psy, direction A : des anneaux hypnotiques en spirale partent en série du lanceur ; des spirales tournent autour de la cible, qui ondule.",
+			"bricks": {"launch": "psy_aura", "travel": "rings", "impact": "distortion"},
+			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
+			"world": {"light": "#FF8FD8", "light_peak": 0.3, "flashes": 0},
+			"camera": {"zoom": 1.02, "shake": 0.0},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 18, "impact_size": 1.5, "art": {"charge": "halo_psy", "travel": "anneau_hypnose", "impact": "spirale_hypnose", "particle": "bulle_reve"}}
+		},
+		"hate": {
+			"name": "Hâte", "target": "self",
+			"_doc": "refonte Psy, direction A : traînées de vitesse psychiques autour du lanceur ; rien vers la cible.",
+			"bricks": {"launch": "posture", "travel": "", "impact": "shield"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FFA8E0", "light_peak": 0.3, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 18, "art": {"aura": "aura_vitesse", "particle": "trait_vitesse"}}
+		},
+		"repos": {
+			"name": "Repos", "target": "self",
+			"_doc": "refonte Psy, direction A : le lanceur s'endort : lueur de soin autour de lui, « Z » au-dessus de sa tête (crown).",
+			"bricks": {"launch": "posture", "travel": "", "impact": "shield"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FFC8EE", "light_peak": 0.25, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 12, "art": {"aura": "lueur_repos", "crown": "z_sommeil", "particle": "z_flottant"}}
+		},
+		"bouclier": {
+			"name": "Bouclier", "target": "self",
+			"_doc": "refonte Psy, direction A : un mur de cristal à alvéoles hexagonales se dresse devant le lanceur (brique barrier_wall).",
+			"bricks": {"launch": "posture", "travel": "", "impact": "barrier_wall"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FF9AD8", "light_peak": 0.35, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 1.5},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 16, "art": {"wall": "mur_hexagones", "particle": "eclat_hexagone"}}
+		},
+		"protection": {
+			"name": "Protection", "target": "self",
+			"_doc": "refonte Psy, direction A : un grand panneau de verre lisse et réfléchissant se dresse devant le lanceur (brique barrier_wall).",
+			"bricks": {"launch": "posture", "travel": "", "impact": "barrier_wall"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FFC8EE", "light_peak": 0.35, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 1.5},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 14, "art": {"wall": "panneau_verre", "particle": "scintille_rose"}}
+		},
+		"mur_lumiere": {
+			"name": "Mur Lumière", "target": "self",
+			"_doc": "refonte Psy, direction A : un rideau de bandes de lumière dorée et rosée descend devant le lanceur (brique barrier_wall).",
+			"bricks": {"launch": "posture", "travel": "", "impact": "barrier_wall"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FFE0A8", "light_peak": 0.4, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 1.5},
+			"fx": {"palette": ["#FFFBEA", "#FFC8A8", "#A8506A"], "particles": 18, "art": {"wall": "rideau_lumiere", "particle": "point_lumiere"}}
+		},
+		"voile_miroir": {
+			"name": "Voile Miroir", "target": "self",
+			"_doc": "refonte Psy, direction A : un miroir courbe irisé se dresse devant le lanceur, prêt à renvoyer le coup (brique barrier_wall).",
+			"bricks": {"launch": "posture", "travel": "", "impact": "barrier_wall"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#FFC8EE", "light_peak": 0.35, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 1.5},
+			"fx": {"palette": ["#FFF0FA", "#FF5FB8", "#5A1A6A"], "particles": 14, "art": {"wall": "voile_miroir", "particle": "scintille_rose"}}
 		}
 	},
 	"impacts": {
@@ -631,7 +731,7 @@
 		"hydrocanon": {"base": "eau", "priority": "A", "origin": "canons", "bolt_height": 0.62, "impact_size": 3.3, "shake": 6.0, "zoom": 1.05, "art": {"bolt": "torrent_spirale", "impact": "explosion_eau", "particle": "goutte_lourde", "rise": "mousse_eau"}, "light_peak": 0.55, "flashes": 2},
 		"ultralaser": {"base": "energie", "priority": "A", "origin": "bouche"},
 		"seisme": {"base": "sol_roche", "priority": "A", "origin": "centre"},
-		"psyko": {"base": "psy", "priority": "A", "origin": "yeux"},
+		"psyko": {"base": "psy", "priority": "A", "origin": "yeux", "impact_size": 3.0, "shake": 6.0, "zoom": 1.06, "art": {"impact": "implosion_psy", "aura": "aura_psy", "particle": "fragment_cristal", "rise": "volute_psy", "fallout": "poussiere_psy"}, "light_peak": 0.85, "flashes": 2},
 		"blizzard": {"base": "glace", "priority": "B", "origin": "bouche"},
 		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche", "bolt_height": 0.55, "impact_size": 3.2, "shake": 6.0, "zoom": 1.06, "art": {"travel": "poussiere_or", "charge": "poussiere_or", "aura": "aura_solaire", "bolt": "rayon_solaire", "impact": "explosion_solaire", "particle": "rayon_court", "rise": "pollen_dore"}, "light_peak": 0.85, "flashes": 2},
 		"explosion": {"base": "explosion", "priority": "B", "origin": "centre"}
