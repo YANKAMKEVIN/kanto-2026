@@ -122,13 +122,13 @@ func test_burn_takes_a_sixteenth_and_halves_physical_damage() -> void:
 	assert_eq(StatusRules.end_turn_damage(pidgey), 1, "au moins 1")
 
 
-func test_paralysis_halves_speed_and_blocks_on_25_or_less() -> void:
+func test_paralysis_halves_speed_and_blocks_on_33_or_less() -> void:
 	assert_eq(StatusRules.speed_multiplier(StatusRules.PARALYSIS), 0.5)
 	assert_eq(StatusRules.speed_multiplier(StatusRules.BURN), 1.0)
 	var rattata := _mon(&"rattata", 3)
 	rattata.status = StatusRules.PARALYSIS
-	assert_eq(StatusRules.check_act(rattata, ScriptedRng.new([25])), StatusRules.Act.FULLY_PARALYZED)
-	assert_eq(StatusRules.check_act(rattata, ScriptedRng.new([26])), StatusRules.Act.OK)
+	assert_eq(StatusRules.check_act(rattata, ScriptedRng.new([33])), StatusRules.Act.FULLY_PARALYZED)
+	assert_eq(StatusRules.check_act(rattata, ScriptedRng.new([34])), StatusRules.Act.OK)
 	assert_eq(rattata.status, StatusRules.PARALYSIS, "la paralysie ne passe pas seule")
 
 
