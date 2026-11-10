@@ -68,8 +68,6 @@ func _start(saved: bool = false) -> void:
 		assert_true(start.load_file(START, _boot.get_pokemon_data(), _boot.get_item_library()),
 			"\n".join(start.get_errors()))
 		start.apply(GameState, _boot.get_pokemon_data())
-		assert_true(GameState.party.get_at(0).replace_move(0, &"surf", _boot.get_pokemon_data()),
-			"Carapuce apprend Surf")
 		GameState.flags.set_flag(MountDirector.SURF_FIRST_FLAG)
 	await wait_process_frames(2)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)

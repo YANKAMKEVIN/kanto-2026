@@ -267,7 +267,6 @@ func test_soul_badge_makes_surf_ready() -> void:
 	items.load_dir()
 	var party := Party.new()
 	party.add(PokemonFactory.create(_data, &"vaporeon", 40, GameRng.new(3)))
-	assert_true(party.get_at(0).replace_move(0, &"surf", _data), "Aquali apprend Surf")
 	var bag := Bag.new()
 	bag.add(&"hm03", 1)
 	var flags := StoryFlags.new()

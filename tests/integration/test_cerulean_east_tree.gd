@@ -69,8 +69,6 @@ func _start(change: Callable = Callable()) -> void:
 	_boot.get_dialogue_runner().page_started.connect(_on_page_started)
 	await _settle()
 	start.apply(GameState, _boot.get_pokemon_data())
-	assert_true(GameState.party.get_at(0).replace_move(0, &"cut", _boot.get_pokemon_data()),
-		"Reptincel apprend Coupe")
 	_boot.get_encounter_director().enabled = false
 	if change.is_valid():
 		change.call()

@@ -7,12 +7,6 @@ garde la partie en cours.
 
 ## Ce qui change pour toi
 
-### Capacités de terrain (CS)
-
-- **Coupe, Flash, Surf, Force et Vol demandent maintenant un Pokémon qui connaît vraiment
-  l'attaque.** Avant, il suffisait qu'un Pokémon de l'équipe puisse l'apprendre. Si un arbuste, un
-  rocher ou l'eau ne te laissent plus passer, apprends la CS à un Pokémon depuis le Sac.
-
 ### Combats
 
 - **Toutes les attaques Électrik, Feu, Eau, Psy et Plante ont de nouveaux effets peints** : foudre,

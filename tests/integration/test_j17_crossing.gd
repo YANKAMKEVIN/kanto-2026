@@ -244,8 +244,6 @@ func test_full_crossing_from_vermilion_to_viridian_and_back_through_the_cave() -
 	flags.append(&"badge_cascade")
 	await _start(&"vermilion_city", &"from_route_11_c", Vector2i.RIGHT, flags)
 	GameState.bag.add(&"hm01")
-	assert_true(GameState.party.get_at(0).replace_move(0, &"cut", _boot.get_pokemon_data()),
-		"Salamèche apprend Coupe")
 	# Aller : Carmin → Route 11 → Cave (bouche sud) → Route 2 est (bouche nord).
 	await _through(&"route_11", &"from_vermilion_c")
 	await _through(&"digletts_cave", &"from_route_11_w")

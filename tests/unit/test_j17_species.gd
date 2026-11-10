@@ -146,7 +146,6 @@ func test_real_hm05_unlocks_flash_on_the_field() -> void:
 	var party := Party.new()
 	party.add(_mon(&"diglett"))
 	party.add(_mon(&"drowzee"))
-	assert_true(party.get_at(1).replace_move(0, &"flash", _data), "Soporifik apprend Flash")
 	var bag := Bag.new()
 	bag.add(&"hm05")
 	var result := rules.check(&"flash", party, bag, StoryFlags.new(), _items, _data)

@@ -2,23 +2,24 @@ class_name FieldMoves
 extends RefCounted
 ## Capacités de terrain (jalon 16, dossier 19 §7, `jalon-16.md` §2.2) : classe pure.
 ##
-## Une capacité de terrain (Coupe) demande sa CS dans le Sac, un badge (Coupe : le Badge Cascade,
-## G-3) et un Pokémon de l'équipe qui **l'a réellement apprise** (décision de Kevin du 2026-11-09,
-## remplace G-2 : elle occupe donc un emplacement de capacité, comme sur Game Boy).
-## Un Pokémon K.O. peut s'en servir (défaut, `jalon-16.md` §6). Les règles viennent de
+## Une capacité de terrain (Coupe) se débloque par une CS dans le Sac ; elle demande un badge
+## (Coupe : le Badge Cascade, G-3) et un Pokémon de l'équipe **compatible** (il peut l'apprendre
+## par la CS, ou la connaît déjà) ; elle **n'occupe aucun emplacement** de capacité (G-2, dossier
+## 06 §11). Un Pokémon K.O. peut s'en servir (défaut, `jalon-16.md` §6). Les règles viennent de
 ## `data/world/field_moves.json` :
 ## [codeblock]
 ## "cut": { "hm": "hm01", "badge": "badge_cascade" }
 ## [/codeblock]
 ## L'ordre des vérifications fixe l'état et le texte de l'arbuste (dossier 19 §0.5, n° 25 à 28) :
 ## pas de CS → NO_HM ; pas de badge → NO_BADGE (prime sur l'équipe) ; aucun compatible →
-## NO_POKEMON ; sinon READY. Le Pokémon nommé ({pokemon}) : le compagnon s'il connaît la capacité,
-## sinon le premier qui la connaît dans l'ordre de l'équipe ; pour NO_BADGE si personne ne la
-## connaît, le premier de l'équipe (défaut du §0.5).
+## NO_POKEMON ; sinon READY. Le Pokémon nommé ({pokemon}) : le compagnon s'il est compatible,
+## sinon le premier compatible dans l'ordre de l'équipe ; pour NO_BADGE sans compatible, le
+## premier de l'équipe (défaut du §0.5).
 ## Jalon 17 (T24, dossier 20 T-17) : « cue » (facultatif) : texte de la mise en scène de la
 ## capacité, jeton `{pokemon}` ([method cue_text]) — « {pokemon} utilise Flash ! ».
 ## Passe systèmes 2 (T25b, Téléport et Tunnel hors combat) : une capacité **sans CS**
-## (`"hm": ""`) ne demande pas de CS ; jamais NO_HM, NO_BADGE seulement si un badge est donné.
+## (`"hm": ""`) ne demande que d'être **connue** par un Pokémon de l'équipe (pas de compatibilité
+## par CS) ; jamais NO_HM, NO_BADGE seulement si un badge est donné.
 
 enum State { NO_HM, NO_BADGE, NO_POKEMON, READY }
 
@@ -115,7 +116,7 @@ func check(move: StringName, party: Party, bag: Bag, flags: StoryFlags, items: I
 		hm = items.get_item(hm_of(move)) if items != null else null
 		if hm == null or not hm.is_hm() or bag == null or not bag.has(hm.id):
 			return Result.new(State.NO_HM)
-	var compatible := _user_index(move, party, companion)
+	var compatible := _compatible_index(move, hm, party, data, companion)
 	var badge: StringName = _rules[move][&"badge"]
 	if badge != &"" and (flags == null or not flags.has_flag(badge)):
 		var named := compatible if compatible >= 0 else (0 if party != null and party.size() > 0 \
@@ -130,18 +131,19 @@ func get_errors() -> PackedStringArray:
 	return _errors
 
 
-## Indice du Pokémon qui utilise [param move] : le compagnon s'il la connaît, sinon le premier
-## de l'équipe qui la connaît ; −1 si aucun.
-func _user_index(move: StringName, party: Party, companion: Pokemon) -> int:
+## Indice du Pokémon qui utilise [param move] : le compagnon s'il est compatible, sinon le premier
+## compatible de l'équipe ; −1 si aucun.
+func _compatible_index(move: StringName, hm: ItemData, party: Party, data: PokemonData,
+		companion: Pokemon) -> int:
 	if party == null:
 		return -1
-	if companion != null and companion.knows_move(move):
+	if companion != null and _can_use(move, hm, companion, data):
 		var index := party.index_of(companion)
 		if index >= 0:
 			return index
 	var members := party.get_all()
 	for i: int in members.size():
-		if members[i].knows_move(move):
+		if _can_use(move, hm, members[i], data):
 			return i
 	return -1
 
@@ -151,6 +153,13 @@ func _named(result: Result, party: Party, data: PokemonData) -> Result:
 	if pokemon != null:
 		result.pokemon_name = pokemon.display_name(data)
 	return result
+
+
+## [param hm] null : capacité sans CS, il faut la connaître.
+func _can_use(move: StringName, hm: ItemData, pokemon: Pokemon, data: PokemonData) -> bool:
+	if pokemon.knows_move(move):
+		return true
+	return hm != null and data != null and data.can_learn_hm(pokemon.species_id, hm.hm_number)
 
 
 ## « cue » : absent, ou un texte dont les seuls jetons sont `{pokemon}`.

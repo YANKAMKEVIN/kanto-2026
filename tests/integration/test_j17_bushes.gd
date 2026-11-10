@@ -79,8 +79,6 @@ func _start(path: String, change: Callable = Callable()) -> void:
 	add_child_autofree(_boot)
 	await _attach()
 	start.apply(GameState, _boot.get_pokemon_data())
-	assert_true(GameState.party.get_at(0).replace_move(0, &"cut", _boot.get_pokemon_data()),
-		"Salamèche apprend Coupe")
 	_boot.get_encounter_director().enabled = false
 	if change.is_valid():
 		change.call()

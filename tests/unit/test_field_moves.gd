@@ -49,54 +49,38 @@ func test_no_hm_first() -> void:
 	assert_eq(r.key(&"cut"), "cut:no_hm")
 
 
-func _teach_cut(party: Party, index: int) -> void:
-	assert_true(party.get_at(index).replace_move(0, &"cut", _data), "apprend Coupe")
-
-
 func test_no_badge_wins_over_team() -> void:
-	var party := _party([&"squirtle", &"paras"])
-	_teach_cut(party, 1)
-	var r := _rules.check(&"cut", party, _bag(true), _flags(false), _items, _data)
+	var r := _rules.check(&"cut", _party([&"squirtle", &"paras"]), _bag(true), _flags(false),
+		_items, _data)
 	assert_eq(r.state, FieldMoves.State.NO_BADGE, "ARB-01 prime")
-	assert_eq(r.pokemon_index, 1, "nomme celui qui connaît Coupe (Paras)")
+	assert_eq(r.pokemon_index, 1, "nomme le compatible (Paras)")
 	var none := _rules.check(&"cut", _party([&"squirtle", &"pikachu"]), _bag(true),
 		_flags(false), _items, _data)
-	assert_eq(none.state, FieldMoves.State.NO_BADGE, "sans badge, personne ne la connaît : ARB-01")
+	assert_eq(none.state, FieldMoves.State.NO_BADGE, "sans badge ni compatible : ARB-01 aussi")
 	assert_eq(none.pokemon_index, 0, "nomme le premier de l'équipe")
 
 
-func test_no_pokemon_even_if_compatible() -> void:
-	var r := _rules.check(&"cut", _party([&"charmander", &"oddish"]), _bag(true), _flags(true),
+func test_no_pokemon() -> void:
+	var r := _rules.check(&"cut", _party([&"squirtle", &"pikachu"]), _bag(true), _flags(true),
 		_items, _data)
-	assert_eq(r.state, FieldMoves.State.NO_POKEMON, "compatibles, mais personne ne l'a apprise")
+	assert_eq(r.state, FieldMoves.State.NO_POKEMON)
 	assert_eq(r.key(&"cut"), "cut:no_pokemon")
 
 
-## Le cas de Kevin (2026-11-09) : Reptincel, compatible et sorti, n'a pas appris Coupe.
-func test_only_the_pokemon_that_learned_it_cuts() -> void:
-	var party := _party([&"charmeleon", &"oddish"])
-	_teach_cut(party, 1)
-	var r := _rules.check(&"cut", party, _bag(true), _flags(true), _items, _data, party.get_at(0))
-	assert_eq([r.state, r.pokemon_index], [FieldMoves.State.READY, 1])
-
-
-func test_ready_picks_first_who_knows_then_companion() -> void:
+func test_ready_picks_first_compatible_then_companion() -> void:
 	var party := _party([&"squirtle", &"beedrill", &"sandshrew"])
-	_teach_cut(party, 1)
-	_teach_cut(party, 2)
 	var r := _rules.check(&"cut", party, _bag(true), _flags(true), _items, _data)
 	assert_eq([r.state, r.pokemon_index], [FieldMoves.State.READY, 1])
 	var with_companion := _rules.check(&"cut", party, _bag(true), _flags(true), _items, _data,
 		party.get_at(2))
-	assert_eq(with_companion.pokemon_index, 2, "le compagnon qui la connaît coupe")
+	assert_eq(with_companion.pokemon_index, 2, "le compagnon compatible coupe")
 	var squirtle_out := _rules.check(&"cut", party, _bag(true), _flags(true), _items, _data,
 		party.get_at(0))
-	assert_eq(squirtle_out.pokemon_index, 1, "le compagnon ne la connaît pas : le premier qui la connaît")
+	assert_eq(squirtle_out.pokemon_index, 1, "compagnon incompatible : le premier compatible")
 
 
 func test_fainted_and_known_move() -> void:
 	var party := _party([&"squirtle", &"charmander"])
-	_teach_cut(party, 1)
 	party.get_at(1).hp = 0
 	var r := _rules.check(&"cut", party, _bag(true), _flags(true), _items, _data)
 	assert_eq([r.state, r.pokemon_index], [FieldMoves.State.READY, 1], "un K.O. peut couper")

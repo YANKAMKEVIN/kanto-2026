@@ -315,10 +315,7 @@ func _walk_through(direction: Vector2i) -> void:
 
 func test_cutting_the_tree_opens_the_high_path_for_good() -> void:
 	# Le départ a `got_hm01` et le Badge Cascade ; la CS01 revient dans le Sac.
-	# Reptincel (en tête) apprend Coupe : il faut la connaître pour l'utiliser dans le monde.
-	await _start(&"face_arbre", func() -> void:
-		GameState.bag.add(&"hm01")
-		GameState.party.get_at(0).replace_move(0, &"cut", _boot.get_pokemon_data()))
+	await _start(&"face_arbre", func() -> void: GameState.bag.add(&"hm01"))
 	assert_eq(_player.get_cell(), Vector2i(38, 21), "sous l'arbre")
 	var gate := _boot.get_map().get_node(^"Entities/CutTree") as FlagGate
 	assert_true(gate.visible)

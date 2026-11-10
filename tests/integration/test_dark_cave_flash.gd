@@ -47,8 +47,6 @@ func _start(map_id: String, spawn: String, facing: String, with_hm05: bool) -> v
 	start["map"] = map_id
 	start["spawn"] = spawn
 	start["facing"] = facing
-	# Pikachu connaît Flash (règle : il faut connaître la CS pour l'utiliser dans le monde).
-	(start["party"] as Array)[0]["moves"] = ["flash", "thunder_shock", "growl", "quick_attack"]
 	if not with_hm05:
 		(start["flags"] as Array).erase("got_hm05")
 		(start["bag"] as Dictionary).erase("hm05")

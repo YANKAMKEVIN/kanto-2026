@@ -59,7 +59,7 @@ Grotte Azurée, Pokédex, Pokémon rares, zones auparavant inaccessibles, petite
 « Je préfère 40 heures excellentes. »
 
 ## 11. Capacités d'exploration (ex-CS) — non négociable
-Coupe, Surf, Force, Flash, Vol restent : **un Pokémon doit les avoir réellement apprises** pour les utiliser dans le monde, et elles occupent donc un de ses 4 emplacements (décision de Kevin du 2026-11-09, qui remplace « sans occuper d'emplacement »). Et elles sont visuelles : le Pokémon aquatique apparaît pour Surf, animation dans la végétation pour Coupe, un Pokémon adapté aide pour Force, petite transition aérienne pour Vol. *Ton équipe voyage avec toi.*
+Coupe, Surf, Force, Flash, Vol restent, mais une fois apprises/débloquées l'équipe les utilise dans le monde **sans occuper l'un des 4 emplacements de combat**. (Confirmé par Kevin le 2026-11-10, qui annule l'essai du 2026-11-09 où il fallait les avoir apprises.) Et elles sont visuelles : le Pokémon aquatique apparaît pour Surf, animation dans la végétation pour Coupe, un Pokémon adapté aide pour Force, petite transition aérienne pour Vol. *Ton équipe voyage avec toi.*
 
 ## Décisions verrouillées
 8 badges : oui · ordre historique global : oui · monde totalement ouvert : non · semi-ouvert progressif : oui · routes A+ : oui · Team Rocket plus présente : oui · monde réactif : oui · rival avec vraie évolution : oui · Lavanville = tournant émotionnel : oui · Ligue classique : oui · monde jouable après victoire : oui · Mewtwo = épilogue majeur : oui · Mew = grand secret : oui · CS occupant des capacités : **non** · capacités d'exploration : oui.

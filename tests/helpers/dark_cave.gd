@@ -41,9 +41,7 @@ static func start(team: Team, inside: bool = false) -> Dictionary:
 	if team != Team.NO_HM:
 		flags.append("got_hm05")
 		bag["hm05"] = 1
-	# Pikachu connaît Flash (règle : il faut connaître la CS pour l'utiliser dans le monde).
-	var pikachu := {"species": "pikachu", "level": 20,
-		"moves": ["flash", "thunder_shock", "growl", "quick_attack"]}
+	var pikachu := {"species": "pikachu", "level": 20}
 	var charmeleon := {"species": "charmeleon", "level": 22}
 	var pidgeotto := {"species": "pidgeotto", "level": 19}
 	var party: Array = [pikachu, charmeleon, pidgeotto]

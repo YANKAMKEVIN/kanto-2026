@@ -41,9 +41,6 @@ func before_each() -> void:
 	assert_true(start.load_file(START, _boot.get_pokemon_data(), _boot.get_item_library()),
 		"\n".join(start.get_errors()))
 	start.apply(GameState, _boot.get_pokemon_data())
-	# Aquali (4e) apprend Surf : il faut la connaître pour l'utiliser dans le monde.
-	assert_true(GameState.party.get_at(3).replace_move(0, &"surf", _boot.get_pokemon_data()),
-		"Aquali apprend Surf")
 	_player = _boot.get_player()
 
 
