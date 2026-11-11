@@ -185,17 +185,31 @@ func test_painted_run_profile_alternates_and_mirrors() -> void:
 
 
 ## Mêmes pixels visibles (la couleur des pixels presque transparents est réécrite à l'import,
-## alpha ≤ 0,1 : elle ne compte pas).
+## alpha ≤ 0,1 : elle ne compte pas). Depuis la 0.36.2, les planches sont importées avec perte
+## (`test_texture_import.gd`) : la transparence reste exacte, la couleur est comparée par blocs de
+## 8 × 8 (écart moyen ≤ [constant SAME_BLOCK_GAP]), assez pour le bruit de compression, bien moins
+## qu'un changement de pose.
+const SAME_BLOCK = 8
+const SAME_BLOCK_GAP = 0.06
+
+
 func _same(a: Image, b: Image) -> bool:
 	if a.get_size() != b.get_size():
 		return false
-	for y: int in a.get_height():
-		for x: int in a.get_width():
-			var ca := a.get_pixel(x, y)
-			var cb := b.get_pixel(x, y)
-			if absf(ca.a - cb.a) > 0.01:
-				return false
-			if ca.a > 0.1 and not ca.is_equal_approx(cb):
+	for by: int in range(0, a.get_height(), SAME_BLOCK):
+		for bx: int in range(0, a.get_width(), SAME_BLOCK):
+			var gap := 0.0
+			var count := 0
+			for y: int in range(by, mini(by + SAME_BLOCK, a.get_height())):
+				for x: int in range(bx, mini(bx + SAME_BLOCK, a.get_width())):
+					var ca := a.get_pixel(x, y)
+					var cb := b.get_pixel(x, y)
+					if absf(ca.a - cb.a) > 0.01:
+						return false
+					if ca.a > 0.1:
+						gap += (absf(ca.r - cb.r) + absf(ca.g - cb.g) + absf(ca.b - cb.b)) / 3.0
+						count += 1
+			if count > 0 and gap / count > SAME_BLOCK_GAP:
 				return false
 	return true
 

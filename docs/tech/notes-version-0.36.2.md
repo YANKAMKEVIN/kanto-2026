@@ -16,8 +16,8 @@ Version **0.36.2** (code Android 3602), le 2026-11-11. Elle s'installe **par-des
 | | |
 |---|---|
 | Depuis | RC 0.36.1, `bff44c47` |
-| Changement | 3 403 images peintes importées avec perte (WebP qualité 90) au lieu de sans perte |
-| Restent sans perte | masques de données de `assets/world/maps`, atlas du Pokédex, icônes SVG, icône de l'app, tuiles provisoires |
+| Changement | 3 287 images peintes importées avec perte (WebP qualité 90) au lieu de sans perte |
+| Restent sans perte | masques de données de `assets/world/maps`, sols en mosaïque de `assets/world/ground` (raccords), atlas du Pokédex, icônes SVG, icône de l'app, tuiles provisoires |
 | Mesures | images importées ~730 → ~205 Mo ; transparence identique au pixel près ; comparaison avant/après relue et validée par Kevin le 2026-11-11 |
 | Garde-fou | `tests/unit/test_texture_import.gd` : masques sans perte, toute nouvelle image peinte avec perte |
 | Sauvegarde | aucun changement de format |

@@ -3,6 +3,8 @@ extends GutTest
 ## sont importées **avec perte** (WebP qualité 0,9) pour garder l'APK léger (959 → 410 Mo) ; ce qui
 ## est lu comme des **données** reste **sans perte** :
 ## - les masques de `assets/world/maps` (1 pixel = 1 case : sol, eau, lumière, ombre, voile…) ;
+## - les sols répétés en mosaïque de `assets/world/ground` (raccords de bords,
+##   `test_serie14_assets.gd`) ;
 ## - l'atlas du Pokédex ([PokedexArt], voir `test_pokedex_art.gd`) ;
 ## - les icônes SVG, l'icône de l'application et les tuiles provisoires.
 ## Une nouvelle image peinte arrive « sans perte » par défaut : mettre `compress/mode=1` et
@@ -12,7 +14,7 @@ const ROOT := "res://assets"
 const MASK_DIR := "res://assets/world/maps/"
 ## Préfixes et fichiers gardés sans perte (en plus des masques).
 const LOSSLESS_PREFIXES: Array[String] = [
-	"res://assets/ui/icon", "res://assets/tiles/placeholder/",
+	"res://assets/ui/icon", "res://assets/tiles/placeholder/", "res://assets/world/ground/",
 	"res://assets/sprites/pokemon/official/atlas_128.png",
 ]
 const RASTER: Array[String] = ["png", "webp", "jpg", "jpeg"]
