@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/tree_foret_02_contact.png-296016e25e8e6b3ff74
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/tentacruel_front.png-9d4ac4ddc8645690476516b1
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

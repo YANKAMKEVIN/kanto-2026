@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/osselait_sheet.png-a18fd852af7bac5a383e5a1839
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/miaouss_sheet.png-12ee6d55f959ef52f12c6e0f7b7
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

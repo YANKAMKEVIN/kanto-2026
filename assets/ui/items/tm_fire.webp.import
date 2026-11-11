@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/tm_fire.webp-a9ad03640ba9f9dea274fdfc84b5d1c3
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/ground_mer_goeland_01.png-00c04ca39ebe6e0b878
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
