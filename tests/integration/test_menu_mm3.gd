@@ -115,9 +115,12 @@ func test_every_existing_setting_is_present_with_its_control() -> void:
 					assert_same(row, screen.get_action_button(), "toute la ligne")
 			assert_true(screen.get_texts().has(item.label), item.label)
 			seen.append(item.key)
+	# Le mode auto est un réglage caché : sa ligne n'apparaît qu'après le geste secret.
 	for key: StringName in GameSettings.KEYS:
-		assert_true(seen.has(key), String(key))
-	assert_eq(seen.size(), GameSettings.KEYS.size() + 1, "aucun réglage nouveau")
+		if key != GameSettings.AUTO_BATTLE:
+			assert_true(seen.has(key), String(key))
+	assert_false(seen.has(GameSettings.AUTO_BATTLE), "mode auto : réglage caché")
+	assert_eq(seen.size(), GameSettings.KEYS.size(), "aucun réglage nouveau")
 
 
 func test_every_setting_works_from_the_screen() -> void:
