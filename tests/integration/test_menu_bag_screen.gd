@@ -123,3 +123,42 @@ func test_cards_never_turn_favorite_by_themselves() -> void:
 		await wait_process_frames(1)
 	assert_false(GameState.bag.is_favorite(&"potion"), "aucun appui long sans doigt")
 	_menu.close()
+
+
+# --- Ergonomie (QA du Sac du 2026-11-12) ------------------------------------------------
+
+## Sept catégories (favoris compris) tiennent dans la colonne sans défiler ; les cartes sont
+## plus petites, le nom tient sur deux lignes au lieu d'être coupé.
+func test_all_categories_fit_and_cards_show_whole_names() -> void:
+	for id: StringName in [&"poke_ball", &"x_attack", &"nugget", &"tm11", &"oak_parcel"]:
+		GameState.bag.add(id, 1)
+	GameState.bag.set_favorite(&"potion", true)
+	assert_true(_menu.open(MenuRoute.bag()))
+	await wait_process_frames(4)
+	var bag := _screen.get_bag()
+	var tabs := bag.get_tabs()
+	assert_eq(tabs.size(), 7, "favoris et six catégories")
+	var column := bag.get_left_panel().get_global_rect()
+	for id: StringName in tabs:
+		var tab := tabs[id]
+		assert_true(column.encloses(tab.get_global_rect()), "%s visible sans défiler" % id)
+		assert_gte(tab.size.y, float(UiTokens.BAG_TAB_FIT_MIN), String(id))
+	bag.open_category(&"tm")
+	await wait_process_frames(3)
+	var card := bag.get_card(&"tm11")
+	assert_eq(card.custom_minimum_size, UiTokens.BAG_MENU_CARD_SIZE)
+	assert_gte(card.custom_minimum_size.y, float(UiTokens.TOUCH_MIN))
+	var label := card.get_node("%NameLabel") as Label
+	assert_gt(label.get_line_count(), 1, "nom long : deux lignes")
+	assert_lte(label.get_line_count(), UiTokens.BAG_MENU_CARD_NAME_LINES, "nom entier, pas coupé")
+
+
+## Le résultat d'un usage ne réduit plus le panneau du choix du Pokémon.
+func test_the_result_bar_does_not_shrink_the_picker() -> void:
+	var bag := await _open_picker()
+	await wait_process_frames(2)
+	var before := bag.get_detail_panel().size.y
+	_tap(bag.get_picker().get_card(1))
+	await wait_process_frames(3)
+	assert_false(bag.get_result_bar().get_text().is_empty(), "résultat affiché")
+	assert_eq(bag.get_detail_panel().size.y, before, "le panneau de droite garde sa hauteur")

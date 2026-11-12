@@ -1590,6 +1590,16 @@ const BAG_HERO_GAP := 16
 const BAG_TAB_CAPTION_FONT := 22
 const BAG_TAB_PAINTED_ICON := 56
 const BAG_TARGETS_TITLE_FONT := FONT_BODY
+## Ergonomie du Sac (QA du 2026-11-12, valeurs par défaut [D]) : cartes plus petites dans
+## l'écran Sac du menu (cinq par rangée en 2340, nom sur deux lignes), objet en petit pendant le
+## choix du Pokémon, et onglets resserrés quand les catégories ne tiennent pas dans la colonne.
+const BAG_MENU_CARD_SIZE := Vector2(204, 196)
+const BAG_MENU_CARD_ICON := 96
+const BAG_MENU_CARD_NAME_FONT := 24
+const BAG_MENU_CARD_NAME_LINES := 2
+const BAG_HERO_COMPACT_ICON := 96
+const BAG_TAB_FIT_GAP := 4
+const BAG_TAB_FIT_MIN := 100
 ## Ligne de la cible dans le panneau du Sac (≥ TOUCH_MIN) et son rond.
 const PICKER_COMPACT_ROW := TOUCH_MIN
 const PICKER_COMPACT_THUMB := 100

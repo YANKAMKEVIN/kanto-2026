@@ -46,6 +46,20 @@ func use_menu_style() -> void:
 	set_selected(_selected)
 
 
+## Écran Sac du menu : carte plus petite (BAG_MENU_CARD_SIZE), nom entier sur deux lignes au
+## lieu d'être coupé (« CT11 — Bulles d'O »). La Boutique garde les grandes cartes.
+func use_dense_layout() -> void:
+	custom_minimum_size = UiTokens.BAG_MENU_CARD_SIZE
+	_icon_box.custom_minimum_size.y = UiTokens.BAG_MENU_CARD_ICON
+	_icon.custom_minimum_size = Vector2.ONE * UiTokens.BAG_MENU_CARD_ICON
+	_name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_name_label.max_lines_visible = UiTokens.BAG_MENU_CARD_NAME_LINES
+	_name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_name_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_name_label.add_theme_font_size_override(&"font_size", UiTokens.BAG_MENU_CARD_NAME_FONT)
+	_name_label.add_theme_constant_override(&"line_spacing", 0)
+
+
 ## Objet affiché ; null = carte vide (inerte).
 func set_view(view: BagEntryView) -> void:
 	_view = view

@@ -58,6 +58,10 @@ var _detail_tween: Tween
 @onready var _divider: Panel = %Divider
 @onready var _scroll: ScrollContainer = %Scroll
 @onready var _pad: MarginContainer = %Pad
+## Au-delà de DENSE_FROM objets dans la catégorie, la liste passe sur DENSE_COLUMNS colonnes.
+const DENSE_FROM := 3
+const DENSE_COLUMNS := 2
+
 @onready var _grid: GridContainer = %Grid
 @onready var _empty: Label = %Empty
 @onready var _detail: PanelContainer = %Detail
@@ -311,7 +315,11 @@ func _rebuild_cards() -> void:
 		card.set_view(view)
 		card.tapped.connect(_on_card_tapped.bind(view.item_id))
 		_cards.append(card)
-	var rows := _cards.size()
+	# Plus de trois objets : deux colonnes, pour en voir six à la fois au lieu de trois (QA du Sac
+	# du 2026-11-12) ; les rangées gardent leur hauteur (TOUCH_MIN).
+	_grid.columns = DENSE_COLUMNS if _cards.size() > DENSE_FROM else 1
+	_grid.add_theme_constant_override(&"h_separation", UiTokens.BATTLE_BAG_ROW_GAP)
+	var rows := ceili(float(_cards.size()) / _grid.columns)
 	var height := rows * UiTokens.BATTLE_BAG_ROW_HEIGHT \
 		+ maxi(rows - 1, 0) * UiTokens.BATTLE_BAG_ROW_GAP
 	_scroll.custom_minimum_size.y = minf(height, UiTokens.BAG_GRID_MAX_HEIGHT) \

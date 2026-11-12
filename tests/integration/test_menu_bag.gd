@@ -94,9 +94,16 @@ func test_potion_heals_a_hurt_member_spends_one_and_autosaves() -> void:
 	await _open_bag()
 	_screen.bag_target_chosen.emit(&"potion", 1)
 	assert_eq(hurt.hp, mini(23, hurt.max_hp()))
-	assert_eq(GameState.bag.count_of(&"potion"), 2)
+	var left := GameState.bag.count_of(&"potion")
+	assert_eq(left, 2)
 	assert_string_contains(_screen.bag_results[-1], "+")
-	assert_true(_screen.bag_repeats[-1])
+	# UTILISER À NOUVEAU : seulement si ce Pokémon peut encore en profiter (QA du 2026-11-12).
+	assert_eq(_screen.bag_repeats[-1], hurt.hp < hurt.max_hp(),
+		"proposé tant que les PV ne sont pas pleins")
+	hurt.hp = hurt.max_hp() - 1
+	_screen.bag_target_chosen.emit(&"potion", 1)
+	assert_eq(hurt.hp, hurt.max_hp())
+	assert_false(_screen.bag_repeats[-1], "PV pleins : plus de UTILISER À NOUVEAU")
 	_menu.close()
 	await wait_until(func() -> bool: return _writes() > before, TIMEOUT)
 	assert_gt(_writes(), before, "autosave demandé")
