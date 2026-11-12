@@ -325,7 +325,7 @@ func _run(encounter: WildEncounter, origin: Vector2i,
 	# J23 : rencontre Safari (visite vérifiée avant le verrou par les gardes).
 	var visit := _active_safari_visit() if is_safari_map() else null
 	var request := BattleRequest.safari(encounter, _data, _state.rng as GameRng, origin, visit,
-		get_safari_config().ball_bonus) if visit != null \
+		get_safari_config().ball_bonus, get_safari_config().flee_factor) if visit != null \
 		else BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, items)
 	var outcome := Battle.Outcome.NONE
 	if _battles != null:

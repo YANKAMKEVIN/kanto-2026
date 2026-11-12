@@ -16,7 +16,8 @@ func test_config_reads_the_red_blue_values() -> void:
 	assert_eq(_config.fee, 500, "500 ₽ par entrée (RB)")
 	assert_eq(_config.balls, 30, "30 Safari Balls (RB)")
 	assert_eq(_config.steps, 500, "500 pas (RB, compte du joueur)")
-	assert_eq(_config.ball_bonus, 2.0, "N-5 : multiplicateur de l'Ultra Ball")
+	assert_eq(_config.ball_bonus, 3.0, "adouci le 2026-11-12 (2 en RB)")
+	assert_eq(_config.flee_factor, 0.5, "fuite deux fois moins fréquente qu'en RB (2026-11-12)")
 	assert_eq(_config.end_map, &"safari_zone_gate")
 
 
@@ -32,7 +33,7 @@ func test_config_lists_the_four_zones_and_the_houses() -> void:
 
 func test_config_refuses_an_unknown_or_missing_key() -> void:
 	var config := SafariConfig.new()
-	var good := {"fee": 500, "balls": 30, "steps": 500, "ball_bonus": 2.0,
+	var good := {"fee": 500, "balls": 30, "steps": 500, "ball_bonus": 2.0, "flee_factor": 1.0,
 		"maps": ["safari_zone_center"], "end_map": "safari_zone_gate", "end_spawn": "end"}
 	var unknown := good.duplicate()
 	unknown["bonus"] = 1

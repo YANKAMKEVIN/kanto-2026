@@ -5,18 +5,21 @@ extends RefCounted
 ## (`pret/pokered` af519899, `engine/battle/core.asm`), particularités comprises (N-5). Pure : tout
 ## l'aléatoire vient du [GameRng] reçu.
 ##
-## - **Appât** : taux ÷ 2 ; colère = 0 ; repas += 1 à 5 (plafond 255).
+## - **Appât** : taux = taux de base ÷ 2 ; colère = 0 ; repas += 1 à 5 (plafond 255).
 ## - **Caillou** : taux × 2 (plafond 255) ; repas = 0 ; colère += 1 à 5 (plafond 255).
 ## - **Fin de tour** ([method end_turn], après toute action qui ne capture pas) : repas > 0 →
-##   repas − 1 (« mange ») ; sinon colère > 0 → colère − 1 (« en colère ») ; quand la colère
+##   repas − 1 (« mange »), et le taux **revient au taux de base** quand le repas finit ; sinon colère > 0 → colère − 1 (« en colère ») ; quand la colère
 ##   retombe à 0, le taux **revient au taux de base de l'espèce**.
 ## - **Fuite** ([method flees], après la fin de tour) : b = Vitesse × 2 ; repas > 0 → b ÷ 4 ;
 ##   colère > 0 → min(b × 2, 255) ; fuite si un tirage 0..255 est < b. Rien avant la première
 ##   action ([method can_flee_now]).
-## Particularités RB **gardées** : la division due à l'appât n'est jamais annulée à la fin du repas
-## (plusieurs appâts rendent la capture de plus en plus dure) ; la fin de la colère remet le taux de
-## base, ce qui efface aussi les appâts. **Non reprise** : RB ne lit que l'octet bas de la Vitesse
-## (sans effet ici : aucune espèce du Parc n'atteint 128).
+## **Adouci le 2026-11-12** (décision de Kevin : « c'était vraiment dur », valeurs [D]) :
+## - l'appât ne se cumule plus : il met le taux à la **moitié du taux de base**, et la fin du repas
+##   **rend le taux de base** (en RB la division restait et s'empilait à chaque appât : plusieurs
+##   appâts rendaient la capture presque impossible) ;
+## - le seuil de fuite est multiplié par [member flee_factor] ([member SafariConfig.flee_factor]).
+## Particularité RB gardée : la fin de la colère remet le taux de base. **Non reprise** : RB ne lit
+## que l'octet bas de la Vitesse (sans effet ici : aucune espèce du Parc n'atteint 128).
 
 ## Réponse de [method end_turn].
 const NONE: StringName = &""
@@ -40,11 +43,14 @@ var bait: int = 0
 var anger: int = 0
 ## Vrai dès que le joueur a agi une fois (aucun test de fuite avant).
 var acted: bool = false
+## Multiplicateur du seuil de fuite ([member SafariConfig.flee_factor] ; 1 = règle de RB).
+var flee_factor: float = 1.0
 
 
 ## Rencontre d'un Pokémon de taux de capture [param catch_rate].
-static func begin(catch_rate: int) -> SafariRules:
+static func begin(catch_rate: int, flee: float = 1.0) -> SafariRules:
 	var rules := SafariRules.new()
+	rules.flee_factor = maxf(flee, 0.0)
 	rules.base_rate = clampi(catch_rate, 1, CAP)
 	rules.rate = rules.base_rate
 	return rules
@@ -53,7 +59,7 @@ static func begin(catch_rate: int) -> SafariRules:
 ## Le joueur lance un appât. Tirage : un range_int(1, 5).
 func throw_bait(rng: GameRng) -> void:
 	acted = true
-	rate = maxi(rate / 2, 1)
+	rate = maxi(base_rate / 2, 1)
 	anger = 0
 	bait = mini(bait + rng.range_int(COUNTER_MIN, COUNTER_MAX), CAP)
 
@@ -75,6 +81,8 @@ func throw_ball() -> void:
 func end_turn() -> StringName:
 	if bait > 0:
 		bait -= 1
+		if bait == 0:
+			rate = base_rate
 		return EATING
 	if anger > 0:
 		anger -= 1
@@ -89,14 +97,15 @@ func can_flee_now() -> bool:
 	return acted
 
 
-## Seuil de fuite pour une Vitesse [param speed], selon l'état courant (0..255, voir la doc).
+## Seuil de fuite pour une Vitesse [param speed], selon l'état courant (0..255, voir la doc),
+## multiplié par [member flee_factor].
 func flee_threshold(speed: int) -> int:
 	var b := mini(maxi(speed, 0) * 2, CAP)
 	if bait > 0:
 		b /= 4
 	if anger > 0:
 		b = mini(b * 2, CAP)
-	return b
+	return floori(b * flee_factor)
 
 
 ## Le Pokémon de Vitesse [param speed] s'enfuit-il ? Un tirage roll(256) seulement si

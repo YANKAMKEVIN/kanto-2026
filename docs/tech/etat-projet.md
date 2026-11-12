@@ -43,6 +43,7 @@ Remarques de rendu et points reportés : registre unique [`reportes.md`](reporte
 
 - **CS (2026-11-10) :** retour à la règle d'origine (dossier 06 §11) : un Pokémon **capable d'apprendre** la CS suffit, sans occuper d'emplacement. La règle « il faut l'avoir apprise » du 2026-11-09 est annulée avant toute RC.
 - **Explorateur, Link / Zelda (2026-11-10) :** Pokémon rares ×1,5 sur toutes les rencontres au pas (herbes, grottes, surf), plus seulement dans les hautes herbes ; la pêche reste à Marin.
+- **Parc Safari adouci (2026-11-12) :** Kevin a trouvé la capture trop dure (une capture pour 30 Balls). Valeurs [D] : Safari Ball ×3 (×2 avant), fuite deux fois moins fréquente (`flee_factor` 0,5), et l'appât ne se cumule plus (moitié du taux de base pendant le repas, taux de base ensuite ; en RB la division restait et s'empilait). Mesuré avec le moteur, Balls seules : Insécateur ≈ 48 % par rencontre (23 % avant), Leveinard ≈ 52 % (25 %), Rhinocorne ≈ 91 % (75 %). Remplace « taux RB gardés » du 2026-10-26 (RP-240). Dans `main`, pas encore dans une RC.
 - **Paralysie (2026-11-10) :** un Pokémon paralysé ne peut pas agir un tour sur trois (33 %, `StatusRules.FULL_PARALYSIS_CHANCE`), au lieu d'un sur quatre ; Vitesse toujours ÷ 2. Dans `main`, pas encore dans une RC.
 - **Centres et Boutiques (2026-11-10) :** fin du « pied remonté » du jalon 7 ; l'emprise suit ce qui est peint.
 - **Écran Dresseur (2026-11-09) :** plus de section Équipe ; Costumes au centre, Grands moments à droite (`dossier-costumes.md` §2 quater). Un Pokémon K.O. n'a plus de FAIRE SORTIR.

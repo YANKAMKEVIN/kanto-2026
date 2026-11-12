@@ -193,6 +193,12 @@ Rien n'entre dans le Sac, rien n'en sort. [RB]
 
 ## 5. Capture Safari : Safari Ball, appât, caillou
 
+> **Adouci le 2026-11-12 (décision de Kevin après sa visite sur la RC 0.37.0 : une seule capture pour
+> 30 Balls ; valeurs [D]).** Safari Ball **×3** (au lieu de ×2), seuil de fuite **× 0,5**, et l'appât ne
+> se cumule plus : taux = moitié du taux de base pendant le repas, taux de base à la fin du repas. Les
+> §5.2 à §5.4 décrivent les règles de RB d'origine ; réglages dans `data/safari/safari.json`
+> (`ball_bonus`, `flee_factor`).
+
 ### 5.1 Déroulé
 
 Toute rencontre dans les quatre zones est une **rencontre Safari** [RB] : aucun Pokémon du joueur

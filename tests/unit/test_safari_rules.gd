@@ -45,23 +45,39 @@ func test_end_turn_eats_first_then_anger() -> void:
 	assert_eq(rules.anger, 1)
 
 
-func test_the_end_of_anger_restores_the_base_rate_and_erases_the_baits() -> void:
+func test_the_end_of_the_meal_restores_the_base_rate() -> void:
 	var rules := SafariRules.begin(45)
-	rules.throw_bait(ScriptedRng.new([1]))
-	rules.end_turn()
-	assert_eq(rules.rate, 22, "le repas fini, la division reste (particularité RB)")
+	rules.throw_bait(ScriptedRng.new([2]))
+	assert_eq(rules.end_turn(), SafariRules.EATING)
+	assert_eq(rules.rate, 22, "encore à table : moitié du taux de base")
+	assert_eq(rules.end_turn(), SafariRules.EATING)
+	assert_eq(rules.rate, 45, "repas fini : taux de base (adouci le 2026-11-12, RB gardait la division)")
+
+
+func test_the_end_of_anger_restores_the_base_rate() -> void:
+	var rules := SafariRules.begin(45)
 	rules.throw_rock(ScriptedRng.new([1]))
-	assert_eq(rules.rate, 44)
+	assert_eq(rules.rate, 90)
 	assert_eq(rules.end_turn(), SafariRules.ANGRY, "colère 1 → 0")
-	assert_eq(rules.rate, 45, "fin de la colère : taux de base (efface l'appât)")
+	assert_eq(rules.rate, 45, "fin de la colère : taux de base")
 
 
-func test_several_baits_keep_dividing() -> void:
+func test_several_baits_do_not_stack() -> void:
 	var rules := SafariRules.begin(45)
 	for i: int in 3:
-		rules.throw_bait(ScriptedRng.new([1]))
-		rules.end_turn()
-	assert_eq(rules.rate, 5, "45 → 22 → 11 → 5, jamais annulé")
+		rules.throw_bait(ScriptedRng.new([5]))
+	assert_eq(rules.rate, 22, "toujours la moitié du taux de base, jamais 45 → 22 → 11 → 5")
+	rules.throw_rock(ScriptedRng.new([1]))
+	rules.throw_bait(ScriptedRng.new([1]))
+	assert_eq(rules.rate, 22, "l'appât après un caillou repart aussi du taux de base")
+
+
+func test_flee_factor_scales_the_threshold() -> void:
+	var rules := SafariRules.begin(45, 0.5)
+	assert_eq(rules.flee_threshold(60), 60, "Vitesse × 2, puis × 0,5")
+	rules.anger = 1
+	assert_eq(rules.flee_threshold(100), 127, "plafond 255 avant le facteur")
+	assert_eq(SafariRules.begin(45).flee_factor, 1.0, "sans facteur : règle de RB")
 
 
 func test_no_flee_test_before_the_first_action() -> void:

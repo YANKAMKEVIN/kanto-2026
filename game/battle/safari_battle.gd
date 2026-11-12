@@ -42,14 +42,14 @@ var _started: bool = false
 ## Rencontre de [param foe] pendant la visite [param visit] (null : aucune Ball). Le taux de base
 ## est le [member SpeciesData.catch_rate] de l'espèce.
 func _init(foe: Pokemon, data: PokemonData, visit: SafariVisit, bonus: float,
-		rng: GameRng) -> void:
+		rng: GameRng, flee_factor: float = 1.0) -> void:
 	_foe = foe
 	_data = data
 	_visit = visit
 	ball_bonus = bonus
 	_rng = rng
 	var species := data.get_species(foe.species_id) if data != null and foe != null else null
-	_rules = SafariRules.begin(species.catch_rate if species != null else 1)
+	_rules = SafariRules.begin(species.catch_rate if species != null else 1, flee_factor)
 
 
 ## Ouverture : le sauvage apparaît (SENT_OUT FOE, sans dresseur). Une seule fois.

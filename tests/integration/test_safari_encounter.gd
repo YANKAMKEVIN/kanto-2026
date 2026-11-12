@@ -36,7 +36,7 @@ func before_each() -> void:
 	_boot.get_battle_hud().speed_scale = 0.0
 	_boot.get_battle_hud().haptics_enabled = false
 	var config := SafariConfig.new()
-	assert_true(config.set_from_dict({"fee": 500, "balls": 30, "steps": 500, "ball_bonus": 2.0,
+	assert_true(config.set_from_dict({"fee": 500, "balls": 30, "steps": 500, "ball_bonus": 2.0, "flee_factor": 1.0,
 		"maps": ["route_1"], "end_map": "safari_zone_gate", "end_spawn": "end_of_visit"}))
 	_boot.get_encounter_director().set_safari_config(config)
 

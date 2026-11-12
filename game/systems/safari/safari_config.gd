@@ -9,7 +9,8 @@ extends RefCounted
 ##   "fee": 500,              # prix d'une visite (RB)
 ##   "balls": 30,             # Safari Balls remises à l'entrée (RB)
 ##   "steps": 500,            # pas utilisables (RB : 502 dont 2 scriptés ; K26 : 500 du joueur)
-##   "ball_bonus": 2.0,       # multiplicateur de la Safari Ball dans CaptureCalc (N-5 : Ultra Ball)
+##   "ball_bonus": 3.0,       # multiplicateur de la Safari Ball dans CaptureCalc (2 en RB ; 3 depuis le 2026-11-12)
+##   "flee_factor": 0.5,      # multiplicateur du seuil de fuite (1 = RB ; 0,5 depuis le 2026-11-12)
 ##   "maps": ["…"],           # cartes où la visite compte les pas et où les rencontres sont Safari
 ##   "end_map": "…",          # carte où la fin de visite ramène le joueur (la Porte)
 ##   "end_spawn": "…"         # point d'apparition de la fin de visite
@@ -20,13 +21,14 @@ extends RefCounted
 
 const DATA_PATH: String = "res://data/safari/safari.json"
 const _KEYS: Array[String] = [
-	"fee", "balls", "steps", "ball_bonus", "maps", "end_map", "end_spawn",
+	"fee", "balls", "steps", "ball_bonus", "flee_factor", "maps", "end_map", "end_spawn",
 ]
 
 var fee: int = 500
 var balls: int = 30
 var steps: int = 500
-var ball_bonus: float = 2.0
+var ball_bonus: float = 3.0
+var flee_factor: float = 0.5
 var maps: Array[StringName] = []
 var end_map: StringName = &"safari_zone_gate"
 var end_spawn: StringName = &"arrivee_fin"
@@ -69,6 +71,9 @@ func set_from_dict(data: Dictionary, source: String = "") -> bool:
 	if not (data["ball_bonus"] is float or data["ball_bonus"] is int) \
 			or float(data["ball_bonus"]) <= 0.0:
 		return _fail("%s : « ball_bonus » doit être un nombre > 0" % source)
+	if not (data["flee_factor"] is float or data["flee_factor"] is int) \
+			or float(data["flee_factor"]) < 0.0:
+		return _fail("%s : « flee_factor » doit être un nombre ≥ 0" % source)
 	if not data["maps"] is Array or (data["maps"] as Array).is_empty():
 		return _fail("%s : « maps » doit être une liste non vide" % source)
 	for map: Variant in data["maps"]:
@@ -81,6 +86,7 @@ func set_from_dict(data: Dictionary, source: String = "") -> bool:
 	balls = int(data["balls"])
 	steps = int(data["steps"])
 	ball_bonus = float(data["ball_bonus"])
+	flee_factor = float(data["flee_factor"])
 	maps.clear()
 	for map: Variant in data["maps"]:
 		maps.append(StringName(str(map)))

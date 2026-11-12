@@ -1424,7 +1424,7 @@ func _run_safari(request: BattleRequest, map: GameMap, foe: Pokemon) -> int:
 	_map_id = map.map_id if is_instance_valid(map) else &""
 	_trainer_id = &""
 	_safari = SafariBattle.new(foe, _data, request.safari_visit, request.safari_ball_bonus,
-		_state.rng as GameRng)
+		_state.rng as GameRng, request.safari_flee_factor)
 	if is_instance_valid(_player):
 		_player.set_input_enabled(false, REASON)
 	battle_started.emit(_trainer_id)

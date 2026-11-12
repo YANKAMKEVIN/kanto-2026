@@ -36,6 +36,8 @@ var reveal: bool = false
 var safari_visit: SafariVisit = null
 ## J23 : multiplicateur de la Safari Ball ([member SafariConfig.ball_bonus]).
 var safari_ball_bonus: float = 1.0
+## Multiplicateur du seuil de fuite au Parc ([member SafariConfig.flee_factor]).
+var safari_flee_factor: float = 1.0
 
 
 ## Requête d'un combat sauvage : le sauvage est créé par [method PokemonFactory.create] à
@@ -84,11 +86,12 @@ static func trainer_battle(trainer: TrainerData, foe_party: Party,
 ## (créé comme pour [method wild]), règles [method BattleRules.for_safari], visite
 ## [param visit] et multiplicateur [param ball_bonus] de la Safari Ball.
 static func safari(encounter: WildEncounter, data: PokemonData, rng: GameRng, cell: Vector2i,
-		visit: SafariVisit, ball_bonus: float) -> BattleRequest:
+		visit: SafariVisit, ball_bonus: float, flee_factor: float = 1.0) -> BattleRequest:
 	var request := wild(encounter, data, rng, cell, null)
 	request.rules = BattleRules.for_safari()
 	request.safari_visit = visit
 	request.safari_ball_bonus = ball_bonus
+	request.safari_flee_factor = flee_factor
 	return request
 
 
