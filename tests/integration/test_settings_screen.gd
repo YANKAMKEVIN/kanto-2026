@@ -582,3 +582,19 @@ func test_short_tap_on_the_slider_sets_it_on_release() -> void:
 	await wait_process_frames(2)
 	assert_eq(_changes.size(), 1)
 	assert_lt(float(_changes[0][1]), 0.8)
+
+
+## Mode auto : sept touchers rapprochés sur le titre demandent la ligne cachée ; six ne font rien.
+func test_seven_taps_on_the_title_ask_for_the_hidden_auto_row() -> void:
+	var screen := await _screen_in()
+	var relayed: Array = []
+	_menu.setting_changed.connect(func(key: StringName, value: Variant) -> void:
+		relayed.append([key, value]))
+	var tap := InputEventMouseButton.new()
+	tap.button_index = MOUSE_BUTTON_LEFT
+	tap.pressed = true
+	for i: int in SettingsScreen.SECRET_TAPS - 1:
+		screen._on_title_input(tap)
+	assert_eq(relayed, [], "six touchers : rien")
+	screen._on_title_input(tap)
+	assert_eq(relayed, [[SettingsViews.REVEAL_AUTO, true]])

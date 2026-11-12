@@ -221,6 +221,9 @@ const WILD_DECOR_DURATION: float = 0.7
 
 ## Multiplicateur des durées (0 = instantané, tests).
 var speed_scale: float = 1.0
+## Mode auto : vitesse des chorégraphies d'attaque (1 = durées du plan ; 4 = quatre fois plus
+## vite), posée par le [BattleDirector].
+var fx_speed: float = 1.0
 ## Accessibilité : pas de clignotement ni d'éclair vif (voir [constant REDUCED_HIT_DIM]).
 var reduce_flashes: bool = false
 ## « Réduire les animations » (jalon 11) : effets de statut sans particules ([StatusAura]).
@@ -811,7 +814,7 @@ func play_move_fx(side: BattleEvent.SideId, plan: MoveFxPlan) -> void:
 	_fx_target = side if plan.on_self else _other(side)
 	_fx_hits = 0
 	# Les durées du plan suivent déjà le mode (Rapides, Réduites) : pas de second facteur.
-	_fx.speed_scale = 0.0 if speed_scale <= 0.0 else 1.0
+	_fx.speed_scale = 0.0 if speed_scale <= 0.0 else fx_speed
 	var impact := plan.cue_time(MoveFxPlan.CUE_IMPACT)
 	var species := _fx_pokemon.get_species(_species.get(_fx_target, &"")) \
 		if _fx_pokemon != null else null

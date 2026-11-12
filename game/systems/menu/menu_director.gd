@@ -145,6 +145,8 @@ var _dex_text: String = ""
 var _settings: GameSettings
 var _device_quality: GameSettings.Graphics = GameSettings.Graphics.HIGH
 var _can_save: bool = false
+## Geste secret des Paramètres fait dans cette session ([constant SettingsViews.REVEAL_AUTO]).
+var _auto_revealed: bool = false
 var _shops: ShopLibrary
 ## Espèces éligibles au compagnon (jalon 11) ; null = aucun bouton FAIRE SORTIR.
 var _companions: CompanionCatalog
@@ -264,6 +266,11 @@ func set_settings(settings: GameSettings, device_quality: GameSettings.Graphics,
 ## différente : [signal settings_changed] puis la vue neuve ([signal settings_shown]) ; sinon
 ## rien n'est émis. Ce n'est jamais un changement de la partie (pas d'autosave).
 func change_setting(key: StringName, value: Variant) -> bool:
+	if key == SettingsViews.REVEAL_AUTO:
+		# Geste secret : la ligne du mode auto apparaît (jusqu'à la fin de la session).
+		_auto_revealed = true
+		_emit_settings()
+		return false
 	if _settings == null or not _settings.set_value(key, value):
 		return false
 	settings_changed.emit(_settings)
@@ -838,7 +845,8 @@ func _emit_storage(result: StorageResult = null) -> void:
 
 func _emit_settings() -> void:
 	if _settings != null:
-		settings_shown.emit(SettingsViews.build(_settings, _device_quality, _can_save))
+		settings_shown.emit(SettingsViews.build(_settings, _device_quality, _can_save, true,
+			_auto_revealed))
 
 
 func _emit_team() -> void:

@@ -46,10 +46,14 @@ const MUSIC_VOLUME: StringName = &"music_volume"
 const SFX_VOLUME: StringName = &"sfx_volume"
 const CRY_VOLUME: StringName = &"cry_volume"
 const BATTLE_ANIMATIONS: StringName = &"battle_animations"
+## Mode auto (demande de Kevin du 2026-11-12) : montre l'interrupteur AUTO en combat sauvage.
+## Réglage caché : sa ligne n'apparaît dans les Paramètres qu'après le geste secret
+## ([constant SettingsViews.REVEAL_AUTO]) ou tant qu'il est activé.
+const AUTO_BATTLE: StringName = &"auto_battle"
 ## Tous les réglages, dans l'ordre du fichier.
 const KEYS: Array[StringName] = [TEXT_SPEED, CONFIRM_ACTIONS, JOYSTICK_SCALE, JOYSTICK_OPACITY,
 	BUTTON_SCALE, HAPTICS, LEFT_HANDED, TEXT_SIZE, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES,
-	GRAPHICS, ECONOMY, MUSIC_VOLUME, SFX_VOLUME, CRY_VOLUME, BATTLE_ANIMATIONS]
+	GRAPHICS, ECONOMY, MUSIC_VOLUME, SFX_VOLUME, CRY_VOLUME, BATTLE_ANIMATIONS, AUTO_BATTLE]
 
 ## Noms écrits dans le JSON pour les enums (un rang changerait si l'enum était réordonnée).
 const TEXT_SPEED_NAMES: Array[String] = ["slow", "normal", "fast", "instant"]
@@ -102,6 +106,8 @@ var music_volume: float = DEFAULT_MUSIC_VOLUME
 var sfx_volume: float = DEFAULT_SFX_VOLUME
 var cry_volume: float = DEFAULT_CRY_VOLUME
 var battle_animations: BattleAnimations = BattleAnimations.FULL
+## Désactivé par défaut ; absent d'un ancien fichier = désactivé.
+var auto_battle: bool = false
 
 
 ## Réglages lus de [param dict] ; tout champ absent, mal formé ou hors bornes garde sa valeur
@@ -138,6 +144,7 @@ func to_dict() -> Dictionary:
 		String(SFX_VOLUME): sfx_volume,
 		String(CRY_VOLUME): cry_volume,
 		String(BATTLE_ANIMATIONS): BATTLE_ANIMATIONS_NAMES[battle_animations],
+		String(AUTO_BATTLE): auto_battle,
 	}
 
 
@@ -168,7 +175,8 @@ static func is_valid(key: StringName, value: Variant) -> bool:
 			return _is_index(value, GRAPHICS_NAMES.size())
 		BATTLE_ANIMATIONS:
 			return _is_index(value, BATTLE_ANIMATIONS_NAMES.size())
-		CONFIRM_ACTIONS, HAPTICS, LEFT_HANDED, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES, ECONOMY:
+		CONFIRM_ACTIONS, HAPTICS, LEFT_HANDED, HIGH_CONTRAST, REDUCE_MOTION, REDUCE_FLASHES, ECONOMY, \
+				AUTO_BATTLE:
 			return value is bool
 		JOYSTICK_SCALE:
 			return _is_number(value) and _find_step(JOYSTICK_SCALES, float(value)) >= 0

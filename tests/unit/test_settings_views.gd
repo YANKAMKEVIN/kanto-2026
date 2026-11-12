@@ -22,7 +22,9 @@ func test_categories_in_order_with_sound_after_game() -> void:
 
 
 func test_every_setting_has_exactly_one_control() -> void:
-	var view := _build()
+	# Geste secret fait : la ligne cachée du mode auto compte parmi les réglages.
+	var view := SettingsViews.build(GameSettings.new(), GameSettings.Graphics.HIGH, true, true,
+		true)
 	var keys: Array[StringName] = []
 	for category: SettingsCategoryView in view.categories:
 		for item: SettingControlView in category.controls:
@@ -134,7 +136,8 @@ func test_without_save_now_for_the_title() -> void:
 		for item: SettingControlView in category.controls:
 			keys.append(item.key)
 	assert_false(keys.has(SettingsViews.SAVE_NOW))
-	assert_eq(keys.size(), GameSettings.KEYS.size(), "tous les réglages, rien d'autre")
+	assert_false(keys.has(GameSettings.AUTO_BATTLE), "mode auto : réglage caché")
+	assert_eq(keys.size(), GameSettings.KEYS.size() - 1, "tous les réglages visibles, rien d'autre")
 	assert_eq(view.categories.size(), _build().categories.size(), "mêmes catégories")
 	assert_false(view.category(SettingsViews.CATEGORY_GAME).controls.is_empty())
 
@@ -218,3 +221,19 @@ func test_battle_animations_choice_in_game_category() -> void:
 	var settings := GameSettings.new()
 	settings.battle_animations = GameSettings.BattleAnimations.FAST
 	assert_eq(_build(settings).control(GameSettings.BATTLE_ANIMATIONS).value_text, "Rapides")
+
+
+func _has_auto(view: SettingsView) -> bool:
+	for item: SettingControlView in view.categories[0].controls:
+		if item.key == GameSettings.AUTO_BATTLE:
+			return true
+	return false
+
+
+func test_auto_battle_row_is_hidden_until_revealed_or_enabled() -> void:
+	assert_false(_has_auto(_build()), "réglage caché par défaut")
+	assert_true(_has_auto(SettingsViews.build(GameSettings.new(), GameSettings.Graphics.HIGH,
+		true, true, true)), "montré après le geste secret")
+	var settings := GameSettings.new()
+	settings.auto_battle = true
+	assert_true(_has_auto(_build(settings)), "montré tant qu'il est activé")

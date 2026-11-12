@@ -23,6 +23,7 @@ func apply(s: GameSettings, device: Dictionary, evolution_screen: EvolutionScree
 	runner.chars_per_second = s.chars_per_second()
 	battle_director.speed_scale = s.battle_speed_scale()
 	battle_director.confirm_forget = s.confirm_actions
+	battle_director.auto_offered = s.auto_battle
 	battle_hud.message_hold_scale = 1.0
 	battle_stage.reduce_flashes = s.reduce_flashes
 	battle_stage.reduce_motion = s.reduce_motion

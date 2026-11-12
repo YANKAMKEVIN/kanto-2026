@@ -15,6 +15,13 @@ const CATEGORY_GRAPHICS: StringName = &"graphics"
 ## Clé de l'action « Sauvegarder maintenant » (pas un réglage : émet `save_now_requested`).
 const SAVE_NOW: StringName = &"save_now"
 
+## Pseudo-clé du geste secret (sept touchers sur le titre « Paramètres ») : pas un réglage ;
+## le [MenuDirector] montre alors la ligne du mode auto jusqu'à la fin de la session.
+const REVEAL_AUTO: StringName = &"reveal_auto_battle"
+## Mode auto [D] (demande de Kevin du 2026-11-12 ; textes à relire par Kevin).
+const AUTO_BATTLE_LABEL: String = "Mode auto en combat"
+const AUTO_BATTLE_DETAIL: String = "Affiche l'interrupteur AUTO contre les Pokémon sauvages."
+
 const ON_TEXT: String = "Activé"
 const OFF_TEXT: String = "Désactivé"
 const SAVE_DONE_TEXT: String = "Partie sauvegardée"
@@ -48,8 +55,10 @@ const SUBTITLE_SOUND: String = "Règle le volume de la musique, des effets et de
 ## « Sauvegarder maintenant » est alors visible mais inactif, avec la raison.
 ## [param with_save_now] : faux depuis l'écran titre (OUV.1, dossier 13 §5.3) : il n'y a pas
 ## encore de partie, l'action est absente (pas seulement inactive).
+## [param with_auto] : le geste secret a été fait ; la ligne du mode auto est montrée (elle
+## l'est aussi tant que le réglage est activé, pour pouvoir le couper).
 static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
-		can_save: bool, with_save_now: bool = true) -> SettingsView:
+		can_save: bool, with_save_now: bool = true, with_auto: bool = false) -> SettingsView:
 	var view := SettingsView.new()
 	var game := SettingsCategoryView.new(CATEGORY_GAME, "JEU", SUBTITLE_GAME)
 	game.controls.append(_choice(GameSettings.TEXT_SPEED, "Vitesse du texte",
@@ -62,6 +71,9 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 		BATTLE_ANIMATIONS_DETAIL, settings.battle_animations,
 		[["Complètes", GameSettings.BattleAnimations.FULL],
 		["Rapides", GameSettings.BattleAnimations.FAST]]))
+	if with_auto or settings.auto_battle:
+		game.controls.append(_toggle(GameSettings.AUTO_BATTLE, AUTO_BATTLE_LABEL,
+			AUTO_BATTLE_DETAIL, settings.auto_battle))
 	var save := SettingControlView.new()
 	save.key = SAVE_NOW
 	save.kind = SettingControlView.Kind.ACTION
