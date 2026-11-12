@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_c1p3e"]
 [ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_2425k"]
-[ext_resource type="Texture2D" path="res://assets/world/interiors/int_safari_12x10_coque.png" id="3_fvcdq"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_safari_porte_coque.png" id="3_fvcdq"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="3_lybq7"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="4_fvcdq"]
 [ext_resource type="PackedScene" path="res://game/world/props/painted/int_comptoir_pension_01.tscn" id="4_lybq7"]

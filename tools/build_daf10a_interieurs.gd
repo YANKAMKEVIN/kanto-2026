@@ -14,6 +14,8 @@ const MAPS_DIR: String = "res://game/world/maps/"
 const PROPS: String = "res://game/world/props/painted/%s.tscn"
 const SHELL_15: String = "res://assets/world/interiors/int_maison_argenta_coque.png"
 const SHELL_12: String = "res://assets/world/interiors/int_safari_12x10_coque.png"
+## Porte du Parc : la même, avec l'ouverture au nord (`tools/art/safari_porte_coque.py`).
+const SHELL_GATE: String = "res://assets/world/interiors/int_safari_porte_coque.png"
 const OWN_PREFIX: String = "Daf10a"
 const TILE: int = 96
 const Z_GROUND: int = -3
@@ -34,7 +36,7 @@ const SECRET_HOUSE: Array = [
 	["int_aquarium_01", Vector2(5.5, 4.0)], ["int_aquarium_01", Vector2(6.5, 4.0)],
 ]
 const MAPS: Dictionary = {
-	&"safari_zone_gate": [SHELL_12, GATE],
+	&"safari_zone_gate": [SHELL_GATE, GATE],
 	&"safari_zone_rest_house_center": [SHELL_15, REST_HOUSE],
 	&"safari_zone_rest_house_east": [SHELL_15, REST_HOUSE],
 	&"safari_zone_rest_house_north": [SHELL_15, REST_HOUSE],

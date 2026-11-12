@@ -158,3 +158,19 @@ func test_park_maps_are_in_the_safari_zone() -> void:
 	for id: StringName in MAPS:
 		var expected := &"fuchsia_city" if id == &"wardens_house" else &"safari_zone"
 		assert_eq(zones.zone_of(id), expected, "%s : zone" % id)
+
+
+## La Porte a une sortie au nord vers le Parc : son enveloppe peinte y montre une ouverture (elle ne
+## reprend pas l'enveloppe sans sortie nord de la Maison Secrète, où l'on traversait un mur).
+func test_gate_shell_opens_to_the_north() -> void:
+	var shell := _map(&"safari_zone_gate").get_node(^"Daf10aShell") as Sprite2D
+	assert_eq(shell.texture.resource_path, "res://assets/world/interiors/int_safari_porte_coque.png")
+	var closed := (load("res://assets/world/interiors/int_safari_12x10_coque.png") as Texture2D).get_image()
+	var open := shell.texture.get_image()
+	closed.decompress()
+	open.decompress()
+	# Milieu des deux cases de la sortie (5 et 6, rangée du mur) : plus le mur de l'enveloppe commune.
+	for x: int in [528, 624]:
+		assert_ne(open.get_pixel(x, 120), closed.get_pixel(x, 120), "ouverture en x=%d" % x)
+	# Hors de l'ouverture, les deux enveloppes restent la même image.
+	assert_almost_eq(open.get_pixel(200, 600).r, closed.get_pixel(200, 600).r, 0.03)
