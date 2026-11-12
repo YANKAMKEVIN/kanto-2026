@@ -7,6 +7,7 @@ extends GutTest
 const STARTER := &"charmander"
 const FADE := 0.05
 const TIMEOUT := 12.0
+const SELF_KO_MOVE := &"self_destruct"
 
 var _boot: Boot
 var _fades: Array[float] = []
@@ -90,6 +91,10 @@ func test_auto_wins_a_wild_battle_alone_then_resets() -> void:
 	director.battle_finished.connect(func(_id: StringName, outcome: int) -> void:
 		outcomes.append(outcome))
 	await _start_wild(&"rattata", 2)
+	# Vibrations de la HUD actives, sans vibration réelle.
+	var real_haptics := Haptics.enabled
+	Haptics.enabled = false
+	hud.haptics_enabled = true
 	assert_true(hud.get_auto_button().visible, "interrupteur offert en combat sauvage")
 	assert_false(hud.is_auto_on(), "désactivé au début du combat")
 	# Combat instantané : il se joue en entier dès l'activation ; on note l'état à chaque
@@ -106,6 +111,8 @@ func test_auto_wins_a_wild_battle_alone_then_resets() -> void:
 	assert_false(hud.get_auto_button().visible, "interrupteur retiré")
 	assert_eq(hud.message_hold_scale, 1.0, "tenue des messages rendue")
 	assert_eq(_boot.get_battle_stage().fx_speed, 1.0, "vitesse des effets rendue")
+	assert_true(hud.haptics_enabled, "vibrations rendues")
+	Haptics.enabled = real_haptics
 	assert_push_error_count(0)
 
 
@@ -192,3 +199,26 @@ func test_auto_plays_attacks_not_status_moves() -> void:
 	assert_false(used.is_empty(), "le Pokémon a attaqué")
 	for move_id: StringName in used:
 		assert_false(BattleAI.is_status_move(data.get_move(move_id)), String(move_id))
+
+
+## Sous ¼ des PV, l'IA jouerait Destruction : le mode auto ne met jamais son Pokémon K.O. seul.
+func test_auto_never_plays_a_self_ko_move() -> void:
+	var director := _boot.get_battle_director()
+	var hud := _boot.get_battle_hud()
+	var data := _boot.get_pokemon_data()
+	director.auto_offered = true
+	var lead := GameState.party.get_lead()
+	lead.moves[0] = MoveSlot.new(SELF_KO_MOVE, 5)
+	lead.moves[0].pp = 5
+	lead.hp = maxi(lead.hp / 5, 1)
+	assert_not_null(data.get_move(SELF_KO_MOVE).effect_of(MoveEffect.Kind.SELF_KO))
+	var used: Array[StringName] = []
+	director.event_played.connect(func(event: BattleEvent) -> void:
+		if event.kind == BattleEvent.Kind.MOVE_USED and event.side == BattleEvent.SideId.PLAYER:
+			used.append(event.move_id))
+	await _start_wild(&"rattata", 2)
+	hud.get_auto_button().button_pressed = true
+	await _finish_encounter()
+	assert_false(used.is_empty(), "le Pokémon a attaqué")
+	assert_false(used.has(SELF_KO_MOVE), "jamais d'auto-K.O. en mode auto")
+	assert_gt(lead.hp, 0)

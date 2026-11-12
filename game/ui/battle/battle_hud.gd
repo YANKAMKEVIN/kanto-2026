@@ -40,6 +40,7 @@ const AUTO_TEXT_OFF: String = "AUTO"
 const AUTO_TEXT_ON: String = "AUTO ●"
 ## Taille de l'interrupteur AUTO [D], en haut à droite (à BATTLE_EDGE des bords).
 const AUTO_SIZE: Vector2 = Vector2(240, UiTokens.TOUCH_MIN)
+const AUTO_RADIUS: int = 16
 
 ## Durées multipliées (0 = instantané, pour les tests) ; relayé à tous les composants.
 var speed_scale: float = 1.0:
@@ -347,6 +348,14 @@ func _build_auto() -> void:
 	_auto.offset_right = -UiTokens.BATTLE_EDGE
 	_auto.offset_top = UiTokens.BATTLE_EDGE
 	_auto.offset_bottom = UiTokens.BATTLE_EDGE + AUTO_SIZE.y
+	# Activé : plaque d'accent et texte sombre, pour le voir d'un coup d'œil.
+	var on_box := StyleBoxFlat.new()
+	on_box.bg_color = UiTokens.ACCENT
+	on_box.set_corner_radius_all(AUTO_RADIUS)
+	for style: StringName in [&"pressed", &"hover_pressed"]:
+		_auto.add_theme_stylebox_override(style, on_box)
+	for color: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		_auto.add_theme_color_override(color, UiTokens.ACCENT_TEXT)
 	_auto.toggled.connect(_on_auto_toggled)
 	_screen.add_child(_auto)
 	_sync_auto()

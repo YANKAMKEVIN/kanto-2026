@@ -70,7 +70,8 @@ extends Node
 ## faute d'attaque utile), jamais de changement, d'objet ni de fuite, et le combat se joue à
 ## [constant AUTO_SPEED] (animations et tenue des messages). Il s'arrête au K.O. du Pokémon du
 ## joueur (le choix du suivant redevient manuel), quand le joueur le coupe, et à la fin du
-## combat ; il repart désactivé à chaque combat. « X apprend Y ! » et l'oubli d'une capacité
+## combat ; il repart désactivé à chaque combat. Tant qu'il joue : aucune vibration de coup, jamais
+## Destruction ni Explosion. « X apprend Y ! » et l'oubli d'une capacité
 ## attendent toujours le joueur. Valeurs par défaut [D] : vitesse, choix des capacités.
 ##
 ## Entrée des combats de Dresseur (dossier 05 §3, décisions de Kevin du 2026-11-02 ;
@@ -142,6 +143,7 @@ var _auto_allowed: bool = false
 var _auto: bool = false
 var _auto_ai: BattleAI
 var _auto_hold_base: float = 1.0
+var _auto_haptics_base: bool = true
 var _battle: Battle
 var _trainer_id: StringName = &""
 var _items: ItemLibrary
@@ -1267,11 +1269,15 @@ func _set_auto(on: bool) -> void:
 		return
 	_auto = on
 	if is_instance_valid(_hud):
+		# Tenue des messages raccourcie ; pas de vibration à chaque coup tant qu'il joue seul.
 		if on:
 			_auto_hold_base = _hud.message_hold_scale
+			_auto_haptics_base = _hud.haptics_enabled
 			_hud.message_hold_scale = _auto_hold_base * AUTO_SPEED
+			_hud.haptics_enabled = false
 		else:
 			_hud.message_hold_scale = _auto_hold_base
+			_hud.haptics_enabled = _auto_haptics_base
 	_relay_speed()
 
 
@@ -1287,7 +1293,9 @@ func _auto_action() -> BattleAction:
 	if own.active != null and foe.active != null and _data != null:
 		for index: int in _battle.get_usable_moves():
 			var move := _data.get_move(own.active.pokemon.moves[index].move_id)
+			# Jamais Destruction ni Explosion : le Pokémon du mode auto ne se met pas K.O. seul.
 			if move == null or BattleAI.is_status_move(move) \
+					or move.effect_of(MoveEffect.Kind.SELF_KO) != null \
 					or not _battle.is_legal(BattleAction.move(index)):
 				continue
 			var score := BattleAI.score_move(move, own.active, foe.active,
