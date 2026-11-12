@@ -66,8 +66,8 @@ extends Node
 ## Mode auto (demande de Kevin du 2026-11-12) : réglage caché « Mode auto en combat »
 ## ([member auto_offered]). En combat [b]sauvage[/b] seulement (jamais un Dresseur, le Safari ni
 ## le SPECTRE), la HUD offre l'interrupteur AUTO. Activé : le Pokémon en jeu choisit seul ses
-## capacités ([BattleAI] « smart » sans tirage de statut, comme le joueur simulé des outils
-## d'équilibrage), jamais de changement, d'objet ni de fuite, et le combat se joue à
+## capacités (son attaque la mieux notée par [BattleAI] ; une capacité de statut seulement
+## faute d'attaque utile), jamais de changement, d'objet ni de fuite, et le combat se joue à
 ## [constant AUTO_SPEED] (animations et tenue des messages). Il s'arrête au K.O. du Pokémon du
 ## joueur (le choix du suivant redevient manuel), quand le joueur le coupe, et à la fin du
 ## combat ; il repart désactivé à chaque combat. « X apprend Y ! » et l'oubli d'une capacité
@@ -1275,15 +1275,32 @@ func _set_auto(on: bool) -> void:
 	_relay_speed()
 
 
-## Action du mode auto : la capacité que choisit l'IA « smart » pour le Pokémon en jeu (Lutte
-## sans PP) ; jamais un changement, un objet ni la fuite. Une capacité refusée par le moteur
-## (Entrave) : la première permise.
+## Action du mode auto : l'attaque la mieux notée ([method BattleAI.score_move]) parmi celles
+## que le moteur permet, la première à égalité (aucun tirage) ; aucune attaque utile : le choix
+## de l'IA « smart » (statut), puis la première capacité permise, Lutte sans PP. Jamais un
+## changement, un objet ni la fuite.
 func _auto_action() -> BattleAction:
+	var own := _battle.get_player_side()
+	var foe := _battle.get_foe_side()
+	var best := -1
+	var best_score := 0.0
+	if own.active != null and foe.active != null and _data != null:
+		for index: int in _battle.get_usable_moves():
+			var move := _data.get_move(own.active.pokemon.moves[index].move_id)
+			if move == null or BattleAI.is_status_move(move) \
+					or not _battle.is_legal(BattleAction.move(index)):
+				continue
+			var score := BattleAI.score_move(move, own.active, foe.active,
+				_data.get_type_chart(), 0)
+			if score > best_score:
+				best = index
+				best_score = score
+	if best >= 0:
+		return BattleAction.move(best)
 	if _auto_ai == null:
 		_auto_ai = BattleAI.new(BattleAI.SMART)
 		_auto_ai.status_draw = false
-	var action := _auto_ai.choose(_battle.get_player_side(), _battle.get_foe_side(),
-		_state.rng as GameRng, _data)
+	var action := _auto_ai.choose(own, foe, _state.rng as GameRng, _data)
 	if _battle.is_legal(action):
 		return action
 	for index: int in _battle.get_usable_moves():

@@ -174,3 +174,21 @@ func test_no_auto_against_a_trainer() -> void:
 					hud.move_selected.emit(0)
 		await wait_process_frames(1)
 	assert_false(director.is_running())
+
+
+## Le mode auto attaque : jamais une capacité de statut tant qu'une attaque porte.
+func test_auto_plays_attacks_not_status_moves() -> void:
+	var director := _boot.get_battle_director()
+	var hud := _boot.get_battle_hud()
+	var data := _boot.get_pokemon_data()
+	director.auto_offered = true
+	var used: Array[StringName] = []
+	director.event_played.connect(func(event: BattleEvent) -> void:
+		if event.kind == BattleEvent.Kind.MOVE_USED and event.side == BattleEvent.SideId.PLAYER:
+			used.append(event.move_id))
+	await _start_wild(&"onix", 8)
+	hud.get_auto_button().button_pressed = true
+	await _finish_encounter()
+	assert_false(used.is_empty(), "le Pokémon a attaqué")
+	for move_id: StringName in used:
+		assert_false(BattleAI.is_status_move(data.get_move(move_id)), String(move_id))
