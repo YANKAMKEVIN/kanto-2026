@@ -27,8 +27,19 @@ signal action_selected(action: StringName)
 signal move_selected(index: int)
 ## « ‹ » touché (ou Échap) depuis les capacités ; la grille d'actions revient déjà seule.
 signal back_requested
+## Interrupteur AUTO basculé par le joueur (mode auto, combat sauvage). Activé pendant un
+## choix, il le termine aussi : [signal action_selected] avec [constant AUTO_ACTION] depuis la
+## grille, [signal back_requested] depuis les capacités.
+signal auto_toggled(on: bool)
 ## Vibration demandée par un composant (millisecondes), même si haptics_enabled est faux.
 signal haptic_played(duration_ms: int)
+
+## Pseudo-action émise par [signal action_selected] quand AUTO est activé sur la grille.
+const AUTO_ACTION: StringName = &"auto"
+const AUTO_TEXT_OFF: String = "AUTO"
+const AUTO_TEXT_ON: String = "AUTO ●"
+## Taille de l'interrupteur AUTO [D], en haut à droite (à BATTLE_EDGE des bords).
+const AUTO_SIZE: Vector2 = Vector2(240, UiTokens.TOUCH_MIN)
 
 ## Durées multipliées (0 = instantané, pour les tests) ; relayé à tous les composants.
 var speed_scale: float = 1.0:
@@ -52,6 +63,9 @@ var _zone: Zone = Zone.NONE
 ## Change à chaque changement de zone : une bascule dépassée par une plus récente s'arrête.
 var _serial: int = 0
 var _enabled: Dictionary[StringName, bool] = {}
+## Interrupteur AUTO (mode auto) : créé ici, caché tant que [method offer_auto] ne l'offre pas.
+var _auto: Button
+var _auto_offered: bool = false
 
 @onready var _screen: Control = %Screen
 @onready var _foe_card: BattleInfoCard = %FoeCard
@@ -83,6 +97,7 @@ func _ready() -> void:
 	_actions.action_selected.connect(action_selected.emit)
 	_moves.move_selected.connect(move_selected.emit)
 	_back.back_requested.connect(_on_back)
+	_build_auto()
 	_relay_settings()
 
 
@@ -156,6 +171,30 @@ func set_party(count: int) -> void:
 	_pips.set_party(count)
 
 
+## Mode auto : offre (ou retire) l'interrupteur AUTO pour ce combat, remis sur « désactivé ».
+## Offert, il se montre avec la zone du bas (grille, capacités, messages) et reste tant qu'il
+## est activé.
+func offer_auto(offered: bool) -> void:
+	_auto_offered = offered
+	_auto.set_pressed_no_signal(false)
+	_sync_auto()
+
+
+## Mode auto : pose l'interrupteur sur [param on] sans émettre [signal auto_toggled].
+func set_auto(on: bool) -> void:
+	_auto.set_pressed_no_signal(on)
+	_sync_auto()
+
+
+func is_auto_on() -> bool:
+	return _auto.button_pressed
+
+
+## L'interrupteur AUTO (tests et placement).
+func get_auto_button() -> Button:
+	return _auto
+
+
 ## Montre la grille d'actions (après la sortie de la zone affichée) : ATTAQUER, SAC, ÉQUIPE,
 ## FUITE selon [param enabled] (action absente = indisponible : atténuée et muette).
 func show_actions(enabled: Dictionary[StringName, bool]) -> void:
@@ -205,6 +244,7 @@ func hide_zone() -> void:
 func hide_all() -> void:
 	_zone = Zone.NONE
 	_serial += 1
+	_sync_auto()
 	_banner.skip()
 	await _slide_out_all(_widgets())
 
@@ -269,6 +309,7 @@ func _open_moves(views: Array[BattleMoveView]) -> void:
 func _switch(zone: Zone) -> bool:
 	_zone = zone
 	_serial += 1
+	_sync_auto()
 	var serial := _serial
 	var leaving: Array[BattleWidget] = []
 	if zone != Zone.ACTIONS:
@@ -292,6 +333,45 @@ func _slide_out_all(widgets: Array[BattleWidget]) -> void:
 			moving.append(widget)
 	while moving.any(func(widget: BattleWidget) -> bool: return widget.is_sliding()):
 		await get_tree().process_frame
+
+
+func _build_auto() -> void:
+	_auto = Button.new()
+	_auto.name = &"AutoSwitch"
+	_auto.toggle_mode = true
+	_auto.focus_mode = Control.FOCUS_NONE
+	_auto.visible = false
+	_auto.anchor_left = 1.0
+	_auto.anchor_right = 1.0
+	_auto.offset_left = -UiTokens.BATTLE_EDGE - AUTO_SIZE.x
+	_auto.offset_right = -UiTokens.BATTLE_EDGE
+	_auto.offset_top = UiTokens.BATTLE_EDGE
+	_auto.offset_bottom = UiTokens.BATTLE_EDGE + AUTO_SIZE.y
+	_auto.toggled.connect(_on_auto_toggled)
+	_screen.add_child(_auto)
+	_sync_auto()
+
+
+func _sync_auto() -> void:
+	if _auto == null:
+		return
+	_auto.text = AUTO_TEXT_ON if _auto.button_pressed else AUTO_TEXT_OFF
+	_auto.visible = _auto_offered and (_zone != Zone.NONE or _auto.button_pressed)
+
+
+func _on_auto_toggled(on: bool) -> void:
+	_sync_auto()
+	if haptics_enabled:
+		Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	haptic_played.emit(UiTokens.HAPTIC_TAP_MS)
+	auto_toggled.emit(on)
+	if not on:
+		return
+	# Activé pendant un choix : le choix se termine, celui qui pilote joue le tour.
+	if _zone == Zone.ACTIONS:
+		action_selected.emit(AUTO_ACTION)
+	elif _zone == Zone.MOVES:
+		back_requested.emit()
 
 
 func _on_back() -> void:

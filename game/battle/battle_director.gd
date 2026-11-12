@@ -63,6 +63,16 @@ extends Node
 ## (SENT_OUT [member BattleEvent.revealed]) ; rien n'est masqué. Sauvage « uncatchable » : une Ball
 ## est refusée de la même façon, par « ball_uncatchable ».
 ##
+## Mode auto (demande de Kevin du 2026-11-12) : réglage caché « Mode auto en combat »
+## ([member auto_offered]). En combat [b]sauvage[/b] seulement (jamais un Dresseur, le Safari ni
+## le SPECTRE), la HUD offre l'interrupteur AUTO. Activé : le Pokémon en jeu choisit seul ses
+## capacités ([BattleAI] « smart » sans tirage de statut, comme le joueur simulé des outils
+## d'équilibrage), jamais de changement, d'objet ni de fuite, et le combat se joue à
+## [constant AUTO_SPEED] (animations et tenue des messages). Il s'arrête au K.O. du Pokémon du
+## joueur (le choix du suivant redevient manuel), quand le joueur le coupe, et à la fin du
+## combat ; il repart désactivé à chaque combat. « X apprend Y ! » et l'oubli d'une capacité
+## attendent toujours le joueur. Valeurs par défaut [D] : vitesse, choix des capacités.
+##
 ## Entrée des combats de Dresseur (dossier 05 §3, décisions de Kevin du 2026-11-02 ;
 ## [TrainerIntro], maquettes `reference/entree-dresseur-*-v1.png`) : la vue de combat entre sans
 ## Pokémon et, pendant que la caméra finit, les deux dresseurs glissent dans le décor
@@ -102,8 +112,12 @@ const SUMMARY_CARD_SCENE: PackedScene = preload("res://game/ui/battle/exp_summar
 ## Catégorie du Sac voulue d'emblée en combat sauvage (les Balls) ; contre un dresseur : les
 ## soins ([method BagQuery.start_category]).
 const BAG_START_CATEGORY: StringName = &"ball"
+## Mode auto : facteur des durées (animations, tenue des messages) tant qu'il est activé [D].
+const AUTO_SPEED: float = 0.25
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
+## Réglage « Mode auto en combat » : l'interrupteur AUTO est offert en combat sauvage.
+var auto_offered: bool = false
 ## « Confirmer certaines actions » (Paramètres, Q-18) : oublier une capacité passe par une
 ## question à deux cartes (OUBLIER / GARDER). Désactivé par défaut : comportement du 5C.
 var confirm_forget: bool = false
@@ -123,6 +137,11 @@ var _state: Node
 var _learn: MoveLearnPrompt
 var _evolutions: EvolutionDirector
 var _running: bool = false
+## Mode auto : permis dans le combat en cours, activé, IA du joueur, tenue d'avant l'activation.
+var _auto_allowed: bool = false
+var _auto: bool = false
+var _auto_ai: BattleAI
+var _auto_hold_base: float = 1.0
 var _battle: Battle
 var _trainer_id: StringName = &""
 var _items: ItemLibrary
@@ -171,6 +190,8 @@ func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage
 	_hud = hud
 	_player = player
 	_state = state
+	if is_instance_valid(_hud) and not _hud.auto_toggled.is_connected(_on_auto_toggled):
+		_hud.auto_toggled.connect(_on_auto_toggled)
 	get_move_learn_prompt().setup(data, texts)
 
 
@@ -339,9 +360,16 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var actions := BattleViews.with_team(BattleViews.WILD_BATTLE_ACTIONS if wild
 		else BattleViews.trainer_actions(trainer), party.size())
 	var can_flee := request.rules != null and request.rules.can_flee
+	# Mode auto : offert en combat sauvage seulement, jamais contre le SPECTRE.
+	_auto_allowed = auto_offered and wild and not (request.rules != null and request.rules.ghost)
+	_auto_ai = null
+	if is_instance_valid(_hud):
+		_hud.offer_auto(_auto_allowed)
 	while _battle.get_state() in [Battle.State.CHOOSING, Battle.State.REPLACING]:
 		# K.O. du Pokémon du joueur : il choisit le suivant (pas de retour, pas de fuite).
 		if _battle.needs_replacement():
+			# Le mode auto s'arrête avec le Pokémon qui le jouait.
+			_set_auto(false)
 			await _play_events(_battle.replace(await _choose_party(true)), trainer)
 			continue
 		# Patience (CT34, jalon 11) : tours 2 et 3 imposés, le joueur ne choisit rien.
@@ -354,6 +382,10 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		if action.kind == BattleAction.Kind.ITEM and not _spend_item(action):
 			continue
 		await _play_events(_battle.submit(action), trainer)
+	_set_auto(false)
+	_auto_allowed = false
+	if is_instance_valid(_hud):
+		_hud.offer_auto(false)
 	# Fin : l'argent gagné (dresseur vaincu : « Tu remportes 280 ₽. », versé à GameState ; jamais
 	# rien de retiré), sortie de la vue, puis le soin éventuel du dresseur (les deux Pokémon,
 	# l'équipe du rival n'est pas gardée). Sauvage : aucun soin, aucun argent de Dresseur.
@@ -499,8 +531,13 @@ func get_forget_panel() -> MoveForgetPanel:
 ## [BattleAction.switch_to] ; « ‹ » revient ici.
 func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> BattleAction:
 	while true:
+		# Mode auto (déjà activé, ou activé pendant ce choix) : le Pokémon en jeu joue seul.
+		if _auto:
+			return _auto_action()
 		_hud.show_actions(actions)
 		var action: StringName = await _hud.action_selected
+		if _auto:
+			return _auto_action()
 		if action == ActionGrid.RUN and can_flee:
 			# Piégé (jalon 12) : « Impossible de fuir ! », rien n'est soumis, aucun tour perdu.
 			if _battle.is_player_trapped():
@@ -1197,11 +1234,62 @@ func _npc(map: GameMap, id: StringName) -> Node2D:
 	return map.get_npc(id)
 
 
+## La HUD multiplie ses durées par le facteur ; la scène et [method _wait] le donnent comme
+## vitesse à leurs tweens : le mode auto raccourcit donc l'une et accélère les autres.
 func _relay_speed() -> void:
 	if is_instance_valid(_stage):
-		_stage.speed_scale = speed_scale
+		_stage.speed_scale = _tween_speed()
+		_stage.fx_speed = 1.0 / AUTO_SPEED if _auto else 1.0
 	if is_instance_valid(_hud):
-		_hud.speed_scale = speed_scale
+		_hud.speed_scale = speed_scale * AUTO_SPEED if _auto else speed_scale
+
+
+## Vitesse des tweens de la scène et des attentes : [member speed_scale], accélérée tant que
+## le mode auto joue.
+func _tween_speed() -> float:
+	return speed_scale / AUTO_SPEED if _auto else speed_scale
+
+
+## Vrai tant que le mode auto joue le combat en cours.
+func is_auto() -> bool:
+	return _auto
+
+
+func _on_auto_toggled(on: bool) -> void:
+	_set_auto(on and _auto_allowed and _battle != null)
+
+
+## Active ou coupe le mode auto : vitesse, tenue des messages et interrupteur de la HUD.
+func _set_auto(on: bool) -> void:
+	if is_instance_valid(_hud) and _hud.is_auto_on() != on:
+		_hud.set_auto(on)
+	if _auto == on:
+		return
+	_auto = on
+	if is_instance_valid(_hud):
+		if on:
+			_auto_hold_base = _hud.message_hold_scale
+			_hud.message_hold_scale = _auto_hold_base * AUTO_SPEED
+		else:
+			_hud.message_hold_scale = _auto_hold_base
+	_relay_speed()
+
+
+## Action du mode auto : la capacité que choisit l'IA « smart » pour le Pokémon en jeu (Lutte
+## sans PP) ; jamais un changement, un objet ni la fuite. Une capacité refusée par le moteur
+## (Entrave) : la première permise.
+func _auto_action() -> BattleAction:
+	if _auto_ai == null:
+		_auto_ai = BattleAI.new(BattleAI.SMART)
+		_auto_ai.status_draw = false
+	var action := _auto_ai.choose(_battle.get_player_side(), _battle.get_foe_side(),
+		_state.rng as GameRng, _data)
+	if _battle.is_legal(action):
+		return action
+	for index: int in _battle.get_usable_moves():
+		if _battle.is_legal(BattleAction.move(index)):
+			return BattleAction.move(index)
+	return BattleAction.move(BattleAction.STRUGGLE)
 
 
 # --- Entrée des combats de Dresseur (dossier 05 §3, décision de Kevin du 2026-11-02) -----------
@@ -1277,7 +1365,7 @@ func _wait(seconds: float) -> void:
 	if speed_scale <= 0.0 or seconds <= 0.0:
 		return
 	var tween := create_tween()
-	tween.set_speed_scale(speed_scale)
+	tween.set_speed_scale(_tween_speed())
 	tween.tween_interval(seconds)
 	await tween.finished
 

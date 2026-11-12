@@ -273,3 +273,12 @@ func test_battle_animations_independent_of_reduce_motion() -> void:
 	settings.set_value(GameSettings.BATTLE_ANIMATIONS, GameSettings.BattleAnimations.FAST)
 	assert_false(settings.reduce_motion, "CV-5 : deux réglages distincts")
 	assert_eq(settings.battle_speed_scale(), 1.0)
+
+
+func test_auto_battle_is_off_by_default_and_round_trips() -> void:
+	var settings := GameSettings.new()
+	assert_false(settings.auto_battle, "mode auto : désactivé par défaut")
+	assert_false(GameSettings.from_dict({}).auto_battle, "ancien fichier : désactivé")
+	assert_true(settings.set_value(GameSettings.AUTO_BATTLE, true))
+	assert_false(settings.set_value(GameSettings.AUTO_BATTLE, 1), "booléen seulement")
+	assert_true(GameSettings.from_dict(settings.to_dict()).auto_battle)

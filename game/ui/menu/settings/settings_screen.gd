@@ -42,6 +42,12 @@ const CATEGORY_ICONS: Dictionary[StringName, Texture2D] = {
 	SettingsViews.CATEGORY_GRAPHICS: preload("res://assets/ui/icons/settings/graphics.svg"),
 }
 
+## Geste secret du mode auto : nombre de touchers sur le titre et écart maximal entre deux.
+const SECRET_TAPS := 7
+const SECRET_GAP_MS := 800
+
+var _secret_taps: int = 0
+var _secret_last_ms: int = 0
 var _view: SettingsView
 var _built: bool = false
 var _selected: StringName = &""
@@ -223,7 +229,9 @@ func _build_header(parent: Control) -> void:
 	var title := Label.new()
 	title.theme_type_variation = &"MenuScreenTitle"
 	title.text = TITLE
-	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Geste secret (mode auto) : sept touchers rapprochés sur le titre.
+	title.mouse_filter = Control.MOUSE_FILTER_STOP
+	title.gui_input.connect(_on_title_input)
 	title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(title)
 
@@ -504,6 +512,20 @@ func _fit_section() -> void:
 	var room := maxf(_body.size.y - overhead, float(UiTokens.TOUCH_MIN))
 	var wanted := _list.get_combined_minimum_size().y
 	_scroll.custom_minimum_size.y = minf(wanted, room)
+
+
+## Sept touchers sur le titre, chacun à moins de SECRET_GAP_MS du précédent : demande la ligne
+## cachée du mode auto ([constant SettingsViews.REVEAL_AUTO], relayée comme un réglage).
+func _on_title_input(event: InputEvent) -> void:
+	var click := event as InputEventMouseButton
+	if click == null or not click.pressed or click.button_index != MOUSE_BUTTON_LEFT:
+		return
+	var now := Time.get_ticks_msec()
+	_secret_taps = _secret_taps + 1 if now - _secret_last_ms <= SECRET_GAP_MS else 1
+	_secret_last_ms = now
+	if _secret_taps >= SECRET_TAPS:
+		_secret_taps = 0
+		setting_changed.emit(SettingsViews.REVEAL_AUTO, true)
 
 
 func _on_back() -> void:
