@@ -63,7 +63,7 @@ const CATEGORY_CAPTIONS: Dictionary[StringName, String] = {
 	&"battle": "Objets pour les combats.",
 	&"field": "Objets utiles en exploration.",
 	# Jalon 11, défaut (règle 4) : légende de l'onglet CT.
-	&"tm": "Des capacités à enseigner à tes Pokémon.",
+	&"tm": "Des capacités à enseigner.",
 	&"key": "Objets importants.",
 }
 ## Icône peinte d'une catégorie (l'objet qui la représente) ; sinon CATEGORY_ICONS.
@@ -116,6 +116,8 @@ var _empty: Label
 var _detail_panel: PanelContainer
 var _detail_column: VBoxContainer
 var _hero: HBoxContainer
+var _art: Control
+var _tabs_scroll: ScrollContainer
 var _halo: TextureRect
 var _big_icon: TextureRect
 var _name: Label
@@ -166,12 +168,19 @@ func _ready() -> void:
 	_browse.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_browse.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_GAP)
 	zone.add_child(_browse)
-	_build_center(_browse)
+	# Le résultat d'un usage se pose sous la grille seulement : le panneau de droite (et le choix
+	# du Pokémon qu'il contient) garde toute sa hauteur.
+	var center_zone := VBoxContainer.new()
+	center_zone.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	center_zone.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center_zone.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_GAP)
+	_browse.add_child(center_zone)
+	_build_center(center_zone)
 	_build_detail(_browse)
 	_result = UseResultBar.new()
 	_result.speed_scale = speed_scale
 	_result.repeat_requested.connect(_on_repeat)
-	zone.add_child(_result)
+	center_zone.add_child(_result)
 	_refresh()
 
 
@@ -202,8 +211,10 @@ func show_bag(view: BagView) -> void:
 func show_targets(view: PartyPickerView) -> void:
 	_picker_item = view.item_id
 	_lower_browse.visible = false
-	# La place de l'équipe : la description se replie pendant le choix (nom et quantité restent).
+	# La place de l'équipe : la description se replie pendant le choix (nom et quantité restent)
+	# et l'objet passe en petit.
 	_description.visible = false
+	_set_hero_compact(true)
 	_picker.speed_scale = speed_scale
 	_picker.show_targets(view)
 
@@ -399,6 +410,8 @@ func _build_left(parent: Control) -> void:
 	parent.add_child(_left_panel)
 	var scroll := ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_tabs_scroll = scroll
+	scroll.resized.connect(_fit_tabs)
 	_left_panel.add_child(scroll)
 	_tabs_box = VBoxContainer.new()
 	_tabs_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -411,6 +424,7 @@ func _build_center(parent: Control) -> void:
 	_center_panel = PanelContainer.new()
 	_center_panel.theme_type_variation = &"MenuGlass"
 	_center_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_center_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	parent.add_child(_center_panel)
 	var column := VBoxContainer.new()
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -492,6 +506,7 @@ func _build_detail(parent: Control) -> void:
 	_hero.add_theme_constant_override(&"separation", UiTokens.BAG_HERO_GAP)
 	_detail_column.add_child(_hero)
 	var art := Control.new()
+	_art = art
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	art.custom_minimum_size = Vector2.ONE * UiTokens.BAG_HERO_ICON
 	art.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -614,6 +629,7 @@ func _build_tabs() -> void:
 		tab.set_count(_view.entries_in(category_id).size())
 		tab.tapped.connect(_on_tab_tapped.bind(category_id))
 		_tabs[category_id] = tab
+	_fit_tabs()
 
 
 ## Ouvre [param category_id] : ses cartes, l'objet [param wanted] aperçu s'il y est (sinon le
@@ -643,6 +659,7 @@ func _rebuild_cards() -> void:
 		var card := CARD_SCENE.instantiate() as BagItemCard
 		_flow.add_child(card)
 		card.use_menu_style()
+		card.use_dense_layout()
 		card.set_view(entry)
 		card.long_press_enabled = true
 		card.tapped.connect(_on_card_tapped.bind(entry.item_id))
@@ -724,15 +741,42 @@ func _flash_detail() -> void:
 	_detail_tween.tween_property(_hero, ^"modulate:a", 1.0, time)
 
 
+## Objet en petit (pendant le choix du Pokémon) ou en grand.
+func _set_hero_compact(compact: bool) -> void:
+	var side := UiTokens.BAG_HERO_COMPACT_ICON if compact else UiTokens.BAG_HERO_ICON
+	_hero.custom_minimum_size.y = side if compact else UiTokens.BAG_HERO_MIN_HEIGHT
+	_art.custom_minimum_size = Vector2.ONE * side
+
+
+## Fait tenir toutes les catégories dans la colonne : d'abord en resserrant l'écart, puis en
+## réduisant la hauteur des onglets (jamais sous BAG_TAB_FIT_MIN ; la liste défile alors).
+func _fit_tabs() -> void:
+	var count := _tabs.size()
+	if count == 0 or _tabs_scroll == null or _tabs_scroll.size.y <= 0.0:
+		return
+	var available := _tabs_scroll.size.y
+	var gap := float(UiTokens.BAG_TAB_GAP)
+	var height := float(UiTokens.BAG_TAB_HEIGHT)
+	if count * height + (count - 1) * gap > available:
+		gap = float(UiTokens.BAG_TAB_FIT_GAP)
+		height = clampf(floorf((available - (count - 1) * gap) / count),
+			float(UiTokens.BAG_TAB_FIT_MIN), float(UiTokens.BAG_TAB_HEIGHT))
+	_tabs_box.add_theme_constant_override(&"separation", int(gap))
+	for tab: BagCategoryTab in _tabs.values():
+		tab.set_fit_height(height)
+
+
 func _close_picker() -> void:
 	if not is_picker_open():
 		return
+	_set_hero_compact(false)
 	_lower_browse.visible = true
 	_description.visible = not _description.text.is_empty()
 	_picker.slide_out()
 
 
 func _close_picker_now() -> void:
+	_set_hero_compact(false)
 	_lower_browse.visible = true
 	_description.visible = not _description.text.is_empty()
 	if _picker != null and _picker.is_shown():

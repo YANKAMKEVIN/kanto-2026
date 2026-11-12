@@ -7,6 +7,7 @@ var _category_id: StringName = &""
 var _count: Label
 var _count_round: PanelContainer
 var _caption: Label
+var _tight: bool = false
 
 @onready var _row: HBoxContainer = %Row
 @onready var _icon: TextureRect = %Icon
@@ -72,7 +73,21 @@ func use_menu_layout() -> void:
 func set_caption(text: String) -> void:
 	if _caption != null:
 		_caption.text = text
-		_caption.visible = not text.is_empty()
+		_caption.max_lines_visible = 2
+		_caption.visible = not text.is_empty() and not _tight
+
+
+## Hauteur imposée par l'écran quand les catégories ne tiennent pas toutes dans la colonne :
+## sous BAG_TAB_HEIGHT, la légende se replie (le nom et le compteur restent).
+func set_fit_height(height: float) -> void:
+	custom_minimum_size.y = height
+	_tight = height < float(UiTokens.BAG_TAB_HEIGHT)
+	if _caption != null:
+		_caption.visible = not _caption.text.is_empty() and not _tight
+
+
+func is_caption_shown() -> bool:
+	return _caption != null and _caption.visible
 
 
 ## Nombre d'objets de la catégorie (après use_list_layout).

@@ -574,8 +574,11 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 	_repeat_index = index
 	if result.is_ok():
 		mark_changed()
-	bag_result_shown.emit(BagQuery.result_text(result, pokemon.display_name(_data)),
-		BagQuery.can_repeat(result))
+	# UTILISER À NOUVEAU vise le même Pokémon : proposé seulement s'il en a encore l'usage
+	# (QA du Sac du 2026-11-12 : sinon le bouton ne répondait que « Sans effet »).
+	var again := BagQuery.can_repeat(result) \
+		and ItemUse.check(_state.bag, item, pokemon, _bag_context) == ItemUse.Check.OK
+	bag_result_shown.emit(BagQuery.result_text(result, pokemon.display_name(_data)), again)
 	if _bag_context != BagQuery.CONTEXT_TEAM:
 		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
 			_data, index))
@@ -655,7 +658,7 @@ func _use_vitamin(item: ItemData, index: int, pokemon: Pokemon) -> bool:
 	_repeat_index = index
 	mark_changed()
 	bag_result_shown.emit(Vitamin.result_text(item, pokemon.display_name(_data)),
-		_state.bag.has(item.id))
+		_state.bag.has(item.id) and Vitamin.check(pokemon, item) == Vitamin.Check.OK)
 	if _bag_context != BagQuery.CONTEXT_TEAM:
 		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
 			_data, index))
