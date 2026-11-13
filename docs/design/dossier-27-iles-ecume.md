@@ -643,7 +643,7 @@ Pépite s'ils n'existent pas encore.
 | T-12 | (B4F, RB) « Les rochers peuvent changer le cours de l'eau ! » |
 | T-13 | (B4F, RB) « DANGER ! Courant rapide ! » |
 | T-14 | (SURFER refusé, RB) « Le courant est beaucoup trop fort ! » |
-| T-15 | (rocher qui tombe, première fois) « Le rocher a dévalé dans le trou ! » |
+| T-15 | (rocher qui tombe, première fois) « Le rocher est tombé à l'étage du dessous ! Des éboulis ont bouché le trou. » (texte changé par Kevin le 2026-11-13 : le rocher tombe, des éboulis bouchent le trou ; l'ancien « Le rocher a dévalé dans le trou ! » faisait croire qu'il restait coincé) |
 
 ### 15.3 Artikodin
 

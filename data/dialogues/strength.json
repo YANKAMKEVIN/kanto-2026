@@ -39,7 +39,7 @@
 	},
 	"strength_boulder_fell": {
 		"narration": true,
-		"pages": ["Le rocher a dévalé dans le trou !"]
+		"pages": ["Le rocher est tombé à l'étage du dessous ! Des éboulis ont bouché le trou."]
 	},
 	"strength_switch_pressed": {
 		"narration": true,

@@ -234,7 +234,7 @@ const TEXTS_S2D_STRENGTH: Dictionary[StringName, Array] = {
 	&"strength_boulder": ["Un gros rocher. Il pourrait être déplacé.",
 		"Il faut le Badge Prisme pour utiliser Force hors des combats."],
 	&"strength_used": ["{pokemon} utilise Force ! Les rochers peuvent être déplacés."],
-	&"strength_boulder_fell": ["Le rocher a dévalé dans le trou !"],
+	&"strength_boulder_fell": ["Le rocher est tombé à l'étage du dessous ! Des éboulis ont bouché le trou."],
 	# Jalon 29 (T29-09) : un rocher enfonce un interrupteur (texte dans jalon-29-textes.md).
 	&"strength_switch_pressed": ["Clac ! Un mécanisme s'est enclenché quelque part."],
 }
