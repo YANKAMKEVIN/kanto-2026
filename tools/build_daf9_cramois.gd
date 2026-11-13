@@ -402,7 +402,13 @@ func _dress_gates(root: Node, entities: Node, plan: PlanGrid) -> void:
 			var anchor := Vector2i(box.position.x, box.end.y - 1)
 			var gate := gates[anchor] as Node2D
 			var foot := Vector2((box.position.x + box.end.x) / 2.0 * TILE, box.end.y * TILE)
-			_sprite(root, gate, "Dessin", PROPS % groups[key]["art"], foot - gate.position)
+			var art := String(groups[key]["art"])
+			var wall_x := _ns_wall_column(plan, box) if art.begins_with("int_grille_manoir_") else -1
+			if wall_x >= 0:
+				# De profil, dans l'axe du mur nord-sud.
+				art = art.replace("_01", "_cote_01")
+				foot.x = (wall_x + 0.5) * TILE
+			_sprite(root, gate, "Dessin", PROPS % art, foot - gate.position)
 			if key.begins_with("Herse"):
 				_open_portcullis(root, entities, gate as Node, foot)
 
@@ -516,3 +522,20 @@ func _box(comp: Array) -> Rect2i:
 		lo = Vector2i(mini(lo.x, c.x), mini(lo.y, c.y))
 		hi = Vector2i(maxi(hi.x, c.x), maxi(hi.y, c.y))
 	return Rect2i(lo, hi - lo + Vector2i.ONE)
+
+
+## Colonne du mur nord-sud que coupe la grille [param box] (passage est-ouest), -1 sinon : une de
+## ses colonnes a un mur juste au-dessus et juste au-dessous, et la colonne à sa gauche n'est pas
+## murée (retour de Kevin, 2026-11-13 : ces grilles étaient dessinées de face). Elle est alors
+## dessinée de profil, dans l'axe de ce mur.
+func _ns_wall_column(plan: PlanGrid, box: Rect2i) -> int:
+	var left_walled := true
+	for y: int in range(box.position.y, box.end.y):
+		if plan.at(Vector2i(box.position.x - 1, y)) != "#":
+			left_walled = false
+	if left_walled:
+		return -1
+	for x: int in range(box.position.x, box.end.x):
+		if plan.at(Vector2i(x, box.position.y - 1)) == "#" and plan.at(Vector2i(x, box.end.y)) == "#":
+			return x
+	return -1

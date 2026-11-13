@@ -15,6 +15,8 @@
 #   T statue à interrupteur (bloquée)   P pupitre et journal (bloqué)
 # Personnages, objets, statues, journaux, trous et escaliers : section POSITIONS.
 
+# Grilles de profil (2026-11-13, retour de Kevin) : dans un mur nord-sud, la grille n'occupe que la colonne du
+# mur ; les cases de sol voisines ((8, 4), (8, 5)) sont redevenues du plancher.
 PRATICABLES .abUVOE
 
 GRILLE 30 28
@@ -22,8 +24,8 @@ GRILLE 30 28
 01 ######U..#.....#......#.######
 02 ####.....#.....#..P#..#...####
 03 ####.....#.....#..##........##
-04 ##......bb.....#......###....#
-05 ##......bb.....###..#####....#
+04 ##.......b.....#......###....#
+05 ##.......b.....###..#####....#
 06 #...#.#..#.............#####.#
 07 #...#.#..#.............#####.#
 08 #........#...#####aa##########
