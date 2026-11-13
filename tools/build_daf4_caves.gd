@@ -62,12 +62,20 @@ const SWAPS: Dictionary = {
 	"TrouBouche": "decal_trou_victoire_bouche_01",
 }
 
+## Échelle qui descend (retour de Kevin, 2026-11-13 : un seul dessin pour les deux sens prêtait à
+## confusion) : choisie quand le passage de la même case mène à un étage plus bas.
+const LADDER_UP: String = "prop_echelle_monte_01"
+const LADDER_DOWN: String = "prop_echelle_descend_01"
+
 var _errors: int = 0
+## Carte en cours de construction.
+var _map_id: String = ""
 var _masks: int = 0
 
 
 func _init() -> void:
 	for map_id: StringName in MAPS:
+		_map_id = String(map_id)
 		_build(map_id)
 	if _errors > 0:
 		quit(1)
@@ -267,6 +275,8 @@ func _swap_drawings(root: Node) -> int:
 				break
 		if image.is_empty():
 			continue
+		if image == LADDER_UP and _goes_down(root, gate):
+			image = LADDER_DOWN
 		var drawings: Array[Node] = []
 		for child: Node in gate.get_children():
 			if child is Polygon2D or String(child.name).begins_with("Peint"):
@@ -297,3 +307,24 @@ func _swap_drawings(root: Node) -> int:
 			sprite.owner = root
 		count += 1
 	return count
+
+
+## Vrai si le passage posé sur la case de [param gate] mène à un étage plus bas que la carte.
+func _goes_down(root: Node, gate: Node2D) -> bool:
+	var warps := root.get_node_or_null(^"Warps")
+	if warps == null:
+		return false
+	for warp: Node in warps.get_children():
+		if warp is Node2D and (warp as Node2D).position.is_equal_approx(gate.position):
+			var target := String(warp.get(&"target_map"))
+			return _floor_level(target) < _floor_level(_map_id)
+	return false
+
+
+## Niveau d'un étage d'après le suffixe de la carte (`_b2f` -2, `_b1f` -1, `_1f` 0, `_2f` 1…).
+static func _floor_level(map_id: String) -> int:
+	var m := RegEx.create_from_string("_(b?)(\\d+)f$").search(map_id)
+	if m == null:
+		return 0
+	var n := int(m.get_string(2))
+	return -n if m.get_string(1) == "b" else n - 1
