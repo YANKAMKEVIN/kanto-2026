@@ -24,7 +24,7 @@ GRILLE 30 18
 01 #::::::::#####~~#####::::::::#
 02 #::::::::#~~~~~~~~~~#::::::::#
 03 #::::::::#~~~~~~~~~~#::::U:::#
-04 #::::::::##::::::#~~#::::V:::#
+04 #::::::::##::::::#~~#:::::::V#
 05 #::::#==###::::::#~~##########
 06 #::::#..V.#::::::#FF#::::::::#
 07 #::::#....#::##=##v<#::::::::#
@@ -49,8 +49,8 @@ echelle_p10          echelle        25,14        libre   paire=P10 sens=monte ve
 arrivee_p10          spawn          25,13        libre   paire=P10
 echelle_p11          echelle        8,6          libre   paire=P11 sens=descend vers=seafoam_b4f
 arrivee_p11          spawn          8,7          libre   paire=P11
-echelle_p12          echelle        25,4         libre   paire=P12 sens=descend vers=seafoam_b4f
-arrivee_p12          spawn          24,4         libre   paire=P12
+echelle_p12          echelle        28,4         libre   paire=P12 sens=descend vers=seafoam_b4f  # écartée de l'échelle p9 (25, 3) : collées, elles se lisaient comme une seule échelle
+arrivee_p12          spawn          27,4         libre   paire=P12
 passage_w1           passage        20,17        libre   paire=W1 sens=descend vers=seafoam_b4f  # fin du courant 1 : sens unique, arrivée en (20, 16) au B4F
 passage_w2           passage        21,17        libre   paire=W2 sens=descend vers=seafoam_b4f  # deux sens : remonter le chenal depuis le B4F
 arrivee_w2           spawn          21,16        libre   paire=W2  # arrivée depuis le B4F, en Surf (case s)
