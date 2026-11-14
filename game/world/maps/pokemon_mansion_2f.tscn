@@ -74,7 +74,7 @@ tile_set = ExtResource("2_37ep6")
 visible = false
 tile_set = ExtResource("2_37ep6")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=864037602]
+[node name="PaintedGround" type="Node2D" parent="." unique_id=780042150]
 z_index = -3
 material = SubResource("ShaderMaterial_u2lp6")
 script = ExtResource("7_8xh0y")
@@ -84,354 +84,354 @@ base_texture = ExtResource("4_g6csn")
 r_texture = ExtResource("4_g6csn")
 g_texture = ExtResource("6_shxbx")
 
-[node name="Daf9Decor" type="Node2D" parent="." unique_id=959131989]
+[node name="Daf9Decor" type="Node2D" parent="." unique_id=307329566]
 z_index = -1
 
-[node name="Voile" type="Sprite2D" parent="Daf9Decor" unique_id=167248927]
+[node name="Voile" type="Sprite2D" parent="Daf9Decor" unique_id=1661380825]
 texture_filter = 2
 scale = Vector2(96, 96)
 texture = ExtResource("8_fn7d7")
 centered = false
 
-[node name="Gravats_7_1" type="Sprite2D" parent="Daf9Decor" unique_id=1676232164]
+[node name="Gravats_7_1" type="Sprite2D" parent="Daf9Decor" unique_id=950280068]
 position = Vector2(720, 277)
 texture = ExtResource("9_qple1")
 centered = false
 offset = Vector2(-86.5, -175)
 
-[node name="Gravats_17_1" type="Sprite2D" parent="Daf9Decor" unique_id=1867443602]
+[node name="Gravats_17_1" type="Sprite2D" parent="Daf9Decor" unique_id=2078584498]
 position = Vector2(1680, 217)
 texture = ExtResource("10_u2lp6")
 centered = false
 offset = Vector2(-72, -115)
 
-[node name="Gravats_24_2" type="Sprite2D" parent="Daf9Decor" unique_id=797855967]
+[node name="Gravats_24_2" type="Sprite2D" parent="Daf9Decor" unique_id=1769312536]
 position = Vector2(2352, 308)
 texture = ExtResource("11_j1k8p")
 centered = false
 offset = Vector2(-57.5, -110)
 
-[node name="Gravats_22_3" type="Sprite2D" parent="Daf9Decor" unique_id=2984658]
+[node name="Gravats_22_3" type="Sprite2D" parent="Daf9Decor" unique_id=1406119693]
 position = Vector2(2160, 384)
 texture = ExtResource("12_xmvof")
 centered = false
 offset = Vector2(-48, -90)
 
-[node name="Gravats_16_6" type="Sprite2D" parent="Daf9Decor" unique_id=614378940]
+[node name="Gravats_16_6" type="Sprite2D" parent="Daf9Decor" unique_id=317525314]
 position = Vector2(1584, 697)
 texture = ExtResource("10_u2lp6")
 centered = false
 offset = Vector2(-72, -115)
 
-[node name="Gravats_3_10" type="Sprite2D" parent="Daf9Decor" unique_id=1649588191]
+[node name="Gravats_3_10" type="Sprite2D" parent="Daf9Decor" unique_id=660505579]
 position = Vector2(336, 1076)
 texture = ExtResource("11_j1k8p")
 centered = false
 offset = Vector2(-57.5, -110)
 
-[node name="Gravats_27_10" type="Sprite2D" parent="Daf9Decor" unique_id=771712353]
+[node name="Gravats_27_10" type="Sprite2D" parent="Daf9Decor" unique_id=73345753]
 position = Vector2(2640, 1048)
 texture = ExtResource("13_nnjq0")
 centered = false
 offset = Vector2(-48, -82)
 
-[node name="Gravats_19_14" type="Sprite2D" parent="Daf9Decor" unique_id=1179094189]
+[node name="Gravats_19_14" type="Sprite2D" parent="Daf9Decor" unique_id=1595907003]
 position = Vector2(1872, 1475)
 texture = ExtResource("14_56me4")
 centered = false
 offset = Vector2(-67, -125)
 
-[node name="Gravats_27_14" type="Sprite2D" parent="Daf9Decor" unique_id=612808702]
+[node name="Gravats_27_14" type="Sprite2D" parent="Daf9Decor" unique_id=578421626]
 position = Vector2(2640, 1525)
 texture = ExtResource("9_qple1")
 centered = false
 offset = Vector2(-86.5, -175)
 
-[node name="Gravats_8_18" type="Sprite2D" parent="Daf9Decor" unique_id=1884104564]
+[node name="Gravats_8_18" type="Sprite2D" parent="Daf9Decor" unique_id=392772455]
 position = Vector2(816, 1816)
 texture = ExtResource("13_nnjq0")
 centered = false
 offset = Vector2(-48, -82)
 
-[node name="Gravats_5_20" type="Sprite2D" parent="Daf9Decor" unique_id=205345666]
+[node name="Gravats_5_20" type="Sprite2D" parent="Daf9Decor" unique_id=701983834]
 position = Vector2(528, 2051)
 texture = ExtResource("14_56me4")
 centered = false
 offset = Vector2(-67, -125)
 
-[node name="Gravats_5_24" type="Sprite2D" parent="Daf9Decor" unique_id=390640729]
+[node name="Gravats_5_24" type="Sprite2D" parent="Daf9Decor" unique_id=1103098232]
 position = Vector2(528, 2485)
 texture = ExtResource("9_qple1")
 centered = false
 offset = Vector2(-86.5, -175)
 
-[node name="Couronnement_22_4" type="Sprite2D" parent="Daf9Decor" unique_id=795563196]
+[node name="Couronnement_22_4" type="Sprite2D" parent="Daf9Decor" unique_id=58105755]
 position = Vector2(2112, 384)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_24_4" type="Sprite2D" parent="Daf9Decor" unique_id=139949089]
+[node name="Couronnement_24_4" type="Sprite2D" parent="Daf9Decor" unique_id=1387780328]
 position = Vector2(2304, 384)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_9_6" type="Sprite2D" parent="Daf9Decor" unique_id=1561060227]
+[node name="Couronnement_9_6" type="Sprite2D" parent="Daf9Decor" unique_id=1007661231]
 position = Vector2(864, 576)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_25_6" type="Sprite2D" parent="Daf9Decor" unique_id=916316264]
+[node name="Couronnement_25_6" type="Sprite2D" parent="Daf9Decor" unique_id=146342748]
 position = Vector2(2400, 576)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_27_6" type="Sprite2D" parent="Daf9Decor" unique_id=1379928280]
+[node name="Couronnement_27_6" type="Sprite2D" parent="Daf9Decor" unique_id=460739325]
 position = Vector2(2592, 576)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_13_8" type="Sprite2D" parent="Daf9Decor" unique_id=1213330161]
+[node name="Couronnement_13_8" type="Sprite2D" parent="Daf9Decor" unique_id=1241473240]
 position = Vector2(1248, 768)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_15_8" type="Sprite2D" parent="Daf9Decor" unique_id=312433537]
+[node name="Couronnement_15_8" type="Sprite2D" parent="Daf9Decor" unique_id=1125835002]
 position = Vector2(1440, 768)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_22_8" type="Sprite2D" parent="Daf9Decor" unique_id=1516814676]
+[node name="Couronnement_22_8" type="Sprite2D" parent="Daf9Decor" unique_id=1724481917]
 position = Vector2(2112, 768)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_28_8" type="Sprite2D" parent="Daf9Decor" unique_id=817283404]
+[node name="Couronnement_28_8" type="Sprite2D" parent="Daf9Decor" unique_id=1391823869]
 position = Vector2(2688, 768)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_2_9" type="Sprite2D" parent="Daf9Decor" unique_id=1572198103]
+[node name="Couronnement_2_9" type="Sprite2D" parent="Daf9Decor" unique_id=2088500457]
 position = Vector2(192, 864)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_7_12" type="Sprite2D" parent="Daf9Decor" unique_id=157392166]
+[node name="Couronnement_7_12" type="Sprite2D" parent="Daf9Decor" unique_id=1155719284]
 position = Vector2(672, 1152)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_16_12" type="Sprite2D" parent="Daf9Decor" unique_id=1788509772]
+[node name="Couronnement_16_12" type="Sprite2D" parent="Daf9Decor" unique_id=1579211995]
 position = Vector2(1536, 1152)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_11_13" type="Sprite2D" parent="Daf9Decor" unique_id=386770802]
+[node name="Couronnement_11_13" type="Sprite2D" parent="Daf9Decor" unique_id=1019245129]
 position = Vector2(1056, 1248)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_13_13" type="Sprite2D" parent="Daf9Decor" unique_id=230228614]
+[node name="Couronnement_13_13" type="Sprite2D" parent="Daf9Decor" unique_id=1156063176]
 position = Vector2(1248, 1248)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_1_14" type="Sprite2D" parent="Daf9Decor" unique_id=1834052767]
+[node name="Couronnement_1_14" type="Sprite2D" parent="Daf9Decor" unique_id=1044926749]
 position = Vector2(96, 1344)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_3_14" type="Sprite2D" parent="Daf9Decor" unique_id=2070689712]
+[node name="Couronnement_3_14" type="Sprite2D" parent="Daf9Decor" unique_id=1127580322]
 position = Vector2(288, 1344)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_6_14" type="Sprite2D" parent="Daf9Decor" unique_id=2128090546]
+[node name="Couronnement_6_14" type="Sprite2D" parent="Daf9Decor" unique_id=2125241152]
 position = Vector2(576, 1344)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_23_14" type="Sprite2D" parent="Daf9Decor" unique_id=1677317362]
+[node name="Couronnement_23_14" type="Sprite2D" parent="Daf9Decor" unique_id=171103181]
 position = Vector2(2208, 1344)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_5_16" type="Sprite2D" parent="Daf9Decor" unique_id=307518343]
+[node name="Couronnement_5_16" type="Sprite2D" parent="Daf9Decor" unique_id=1679846723]
 position = Vector2(480, 1536)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_9_16" type="Sprite2D" parent="Daf9Decor" unique_id=1435164396]
+[node name="Couronnement_9_16" type="Sprite2D" parent="Daf9Decor" unique_id=1372003889]
 position = Vector2(864, 1536)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_18_16" type="Sprite2D" parent="Daf9Decor" unique_id=929331762]
+[node name="Couronnement_18_16" type="Sprite2D" parent="Daf9Decor" unique_id=1471570476]
 position = Vector2(1728, 1536)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_20_16" type="Sprite2D" parent="Daf9Decor" unique_id=1957420891]
+[node name="Couronnement_20_16" type="Sprite2D" parent="Daf9Decor" unique_id=1104989315]
 position = Vector2(1920, 1536)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_24_16" type="Sprite2D" parent="Daf9Decor" unique_id=1393294510]
+[node name="Couronnement_24_16" type="Sprite2D" parent="Daf9Decor" unique_id=1642383852]
 position = Vector2(2304, 1536)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_26_16" type="Sprite2D" parent="Daf9Decor" unique_id=870968472]
+[node name="Couronnement_26_16" type="Sprite2D" parent="Daf9Decor" unique_id=1393673672]
 position = Vector2(2496, 1536)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_28_16" type="Sprite2D" parent="Daf9Decor" unique_id=1776804189]
+[node name="Couronnement_28_16" type="Sprite2D" parent="Daf9Decor" unique_id=820990375]
 position = Vector2(2688, 1536)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_1_18" type="Sprite2D" parent="Daf9Decor" unique_id=1438308684]
+[node name="Couronnement_1_18" type="Sprite2D" parent="Daf9Decor" unique_id=1196624565]
 position = Vector2(96, 1728)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_3_18" type="Sprite2D" parent="Daf9Decor" unique_id=2125260883]
+[node name="Couronnement_3_18" type="Sprite2D" parent="Daf9Decor" unique_id=507746313]
 position = Vector2(288, 1728)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_2_22" type="Sprite2D" parent="Daf9Decor" unique_id=1637526510]
+[node name="Couronnement_2_22" type="Sprite2D" parent="Daf9Decor" unique_id=1305948252]
 position = Vector2(192, 2112)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_4_22" type="Sprite2D" parent="Daf9Decor" unique_id=1388983547]
+[node name="Couronnement_4_22" type="Sprite2D" parent="Daf9Decor" unique_id=1351192565]
 position = Vector2(384, 2112)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_11_23" type="Sprite2D" parent="Daf9Decor" unique_id=1773246096]
+[node name="Couronnement_11_23" type="Sprite2D" parent="Daf9Decor" unique_id=151092978]
 position = Vector2(1056, 2208)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_7_24" type="Sprite2D" parent="Daf9Decor" unique_id=1116199265]
+[node name="Couronnement_7_24" type="Sprite2D" parent="Daf9Decor" unique_id=1311973636]
 position = Vector2(672, 2304)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Couronnement_12_26" type="Sprite2D" parent="Daf9Decor" unique_id=1412534897]
+[node name="Couronnement_12_26" type="Sprite2D" parent="Daf9Decor" unique_id=646978443]
 position = Vector2(1152, 2496)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_1_27" type="Sprite2D" parent="Daf9Decor" unique_id=690029827]
+[node name="Couronnement_1_27" type="Sprite2D" parent="Daf9Decor" unique_id=1930352623]
 position = Vector2(96, 2592)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_3_27" type="Sprite2D" parent="Daf9Decor" unique_id=309508312]
+[node name="Couronnement_3_27" type="Sprite2D" parent="Daf9Decor" unique_id=1337314499]
 position = Vector2(288, 2592)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_5_27" type="Sprite2D" parent="Daf9Decor" unique_id=758945210]
+[node name="Couronnement_5_27" type="Sprite2D" parent="Daf9Decor" unique_id=1288494662]
 position = Vector2(480, 2592)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_8_27" type="Sprite2D" parent="Daf9Decor" unique_id=1554828841]
+[node name="Couronnement_8_27" type="Sprite2D" parent="Daf9Decor" unique_id=1465005026]
 position = Vector2(768, 2592)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 25)
 
-[node name="Couronnement_10_27" type="Sprite2D" parent="Daf9Decor" unique_id=867860740]
+[node name="Couronnement_10_27" type="Sprite2D" parent="Daf9Decor" unique_id=1838352088]
 position = Vector2(960, 2592)
 texture = ExtResource("15_8vurc")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 25)
 
-[node name="Face_6_0" type="Sprite2D" parent="Daf9Decor" unique_id=1751167517]
+[node name="Face_6_0" type="Sprite2D" parent="Daf9Decor" unique_id=709164350]
 position = Vector2(576, -13)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_8_0" type="Sprite2D" parent="Daf9Decor" unique_id=2032856531]
+[node name="Face_8_0" type="Sprite2D" parent="Daf9Decor" unique_id=2054895924]
 position = Vector2(768, -13)
 texture = ExtResource("16_shjin")
 centered = false
@@ -439,21 +439,21 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_10_0" type="Sprite2D" parent="Daf9Decor" unique_id=1087728978]
+[node name="Face_10_0" type="Sprite2D" parent="Daf9Decor" unique_id=1899844728]
 position = Vector2(960, -13)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_12_0" type="Sprite2D" parent="Daf9Decor" unique_id=1860497171]
+[node name="Face_12_0" type="Sprite2D" parent="Daf9Decor" unique_id=1526799274]
 position = Vector2(1152, -13)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_14_0" type="Sprite2D" parent="Daf9Decor" unique_id=1627754068]
+[node name="Face_14_0" type="Sprite2D" parent="Daf9Decor" unique_id=250186434]
 position = Vector2(1344, -13)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -461,14 +461,14 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_16_0" type="Sprite2D" parent="Daf9Decor" unique_id=386755163]
+[node name="Face_16_0" type="Sprite2D" parent="Daf9Decor" unique_id=1631698494]
 position = Vector2(1536, -13)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_18_0" type="Sprite2D" parent="Daf9Decor" unique_id=2064337086]
+[node name="Face_18_0" type="Sprite2D" parent="Daf9Decor" unique_id=347027740]
 position = Vector2(1728, -13)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -476,7 +476,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_20_0" type="Sprite2D" parent="Daf9Decor" unique_id=29266600]
+[node name="Face_20_0" type="Sprite2D" parent="Daf9Decor" unique_id=1666014087]
 position = Vector2(1920, -12)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -484,7 +484,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 108)
 
-[node name="Face_23_0" type="Sprite2D" parent="Daf9Decor" unique_id=111335342]
+[node name="Face_23_0" type="Sprite2D" parent="Daf9Decor" unique_id=358902031]
 position = Vector2(2208, -12)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -492,7 +492,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_4_1" type="Sprite2D" parent="Daf9Decor" unique_id=1415593016]
+[node name="Face_4_1" type="Sprite2D" parent="Daf9Decor" unique_id=2011850561]
 position = Vector2(384, 83)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -500,7 +500,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_24_1" type="Sprite2D" parent="Daf9Decor" unique_id=1931251984]
+[node name="Face_24_1" type="Sprite2D" parent="Daf9Decor" unique_id=1179528233]
 position = Vector2(2304, 83)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -508,7 +508,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_22_2" type="Sprite2D" parent="Daf9Decor" unique_id=332857990]
+[node name="Face_22_2" type="Sprite2D" parent="Daf9Decor" unique_id=374479854]
 position = Vector2(2112, 180)
 texture = ExtResource("19_xjw83")
 centered = false
@@ -516,14 +516,14 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_26_2" type="Sprite2D" parent="Daf9Decor" unique_id=1617677146]
+[node name="Face_26_2" type="Sprite2D" parent="Daf9Decor" unique_id=175342468]
 position = Vector2(2496, 179)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_2_3" type="Sprite2D" parent="Daf9Decor" unique_id=403547716]
+[node name="Face_2_3" type="Sprite2D" parent="Daf9Decor" unique_id=1593115649]
 position = Vector2(192, 275)
 texture = ExtResource("16_shjin")
 centered = false
@@ -531,7 +531,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_9_3" type="Sprite2D" parent="Daf9Decor" unique_id=134046561]
+[node name="Face_9_3" type="Sprite2D" parent="Daf9Decor" unique_id=1020868395]
 position = Vector2(864, 275)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -539,14 +539,14 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_28_3" type="Sprite2D" parent="Daf9Decor" unique_id=55311337]
+[node name="Face_28_3" type="Sprite2D" parent="Daf9Decor" unique_id=450834669]
 position = Vector2(2688, 275)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_1_5" type="Sprite2D" parent="Daf9Decor" unique_id=658733786]
+[node name="Face_1_5" type="Sprite2D" parent="Daf9Decor" unique_id=485933093]
 position = Vector2(96, 467)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -554,7 +554,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_15_5" type="Sprite2D" parent="Daf9Decor" unique_id=1452752152]
+[node name="Face_15_5" type="Sprite2D" parent="Daf9Decor" unique_id=763735643]
 position = Vector2(1440, 467)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -562,14 +562,14 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_17_5" type="Sprite2D" parent="Daf9Decor" unique_id=945763772]
+[node name="Face_17_5" type="Sprite2D" parent="Daf9Decor" unique_id=1087979676]
 position = Vector2(1632, 467)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_20_5" type="Sprite2D" parent="Daf9Decor" unique_id=888312224]
+[node name="Face_20_5" type="Sprite2D" parent="Daf9Decor" unique_id=77981691]
 position = Vector2(1920, 467)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -577,14 +577,14 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_22_5" type="Sprite2D" parent="Daf9Decor" unique_id=1815203859]
+[node name="Face_22_5" type="Sprite2D" parent="Daf9Decor" unique_id=1751805727]
 position = Vector2(2112, 468)
 texture = ExtResource("18_4kbx4")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_16_8" type="Sprite2D" parent="Daf9Decor" unique_id=1231182004]
+[node name="Face_16_8" type="Sprite2D" parent="Daf9Decor" unique_id=1497254044]
 position = Vector2(1536, 756)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -592,7 +592,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 108)
 
-[node name="Face_20_8" type="Sprite2D" parent="Daf9Decor" unique_id=636110348]
+[node name="Face_20_8" type="Sprite2D" parent="Daf9Decor" unique_id=1218048542]
 position = Vector2(1920, 755)
 texture = ExtResource("17_fw12r")
 centered = false
@@ -600,28 +600,28 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_24_8" type="Sprite2D" parent="Daf9Decor" unique_id=1618914977]
+[node name="Face_24_8" type="Sprite2D" parent="Daf9Decor" unique_id=235671158]
 position = Vector2(2304, 755)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_1_9" type="Sprite2D" parent="Daf9Decor" unique_id=564646099]
+[node name="Face_1_9" type="Sprite2D" parent="Daf9Decor" unique_id=767556908]
 position = Vector2(96, 851)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_3_9" type="Sprite2D" parent="Daf9Decor" unique_id=1979551013]
+[node name="Face_3_9" type="Sprite2D" parent="Daf9Decor" unique_id=349802398]
 position = Vector2(288, 851)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_5_9" type="Sprite2D" parent="Daf9Decor" unique_id=1732698920]
+[node name="Face_5_9" type="Sprite2D" parent="Daf9Decor" unique_id=166138394]
 position = Vector2(480, 851)
 texture = ExtResource("16_shjin")
 centered = false
@@ -629,42 +629,42 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_7_9" type="Sprite2D" parent="Daf9Decor" unique_id=230890175]
+[node name="Face_7_9" type="Sprite2D" parent="Daf9Decor" unique_id=583465210]
 position = Vector2(672, 852)
 texture = ExtResource("19_xjw83")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 108)
 
-[node name="Face_9_9" type="Sprite2D" parent="Daf9Decor" unique_id=1424031240]
+[node name="Face_9_9" type="Sprite2D" parent="Daf9Decor" unique_id=491031690]
 position = Vector2(864, 851)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_23_9" type="Sprite2D" parent="Daf9Decor" unique_id=846838028]
+[node name="Face_23_9" type="Sprite2D" parent="Daf9Decor" unique_id=641001418]
 position = Vector2(2208, 852)
 texture = ExtResource("18_4kbx4")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_26_9" type="Sprite2D" parent="Daf9Decor" unique_id=316218697]
+[node name="Face_26_9" type="Sprite2D" parent="Daf9Decor" unique_id=589329960]
 position = Vector2(2496, 851)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_28_9" type="Sprite2D" parent="Daf9Decor" unique_id=1598415606]
+[node name="Face_28_9" type="Sprite2D" parent="Daf9Decor" unique_id=583867012]
 position = Vector2(2688, 851)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_2_10" type="Sprite2D" parent="Daf9Decor" unique_id=2096236816]
+[node name="Face_2_10" type="Sprite2D" parent="Daf9Decor" unique_id=1320502980]
 position = Vector2(192, 948)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -672,21 +672,21 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_13_11" type="Sprite2D" parent="Daf9Decor" unique_id=2078533810]
+[node name="Face_13_11" type="Sprite2D" parent="Daf9Decor" unique_id=1002365847]
 position = Vector2(1248, 1044)
 texture = ExtResource("19_xjw83")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_18_13" type="Sprite2D" parent="Daf9Decor" unique_id=1202653545]
+[node name="Face_18_13" type="Sprite2D" parent="Daf9Decor" unique_id=1124463973]
 position = Vector2(1728, 1235)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_26_13" type="Sprite2D" parent="Daf9Decor" unique_id=701087519]
+[node name="Face_26_13" type="Sprite2D" parent="Daf9Decor" unique_id=1095827881]
 position = Vector2(2496, 1236)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -694,7 +694,7 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 108)
 
-[node name="Face_28_13" type="Sprite2D" parent="Daf9Decor" unique_id=904156482]
+[node name="Face_28_13" type="Sprite2D" parent="Daf9Decor" unique_id=355679781]
 position = Vector2(2688, 1236)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -702,56 +702,56 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_4_14" type="Sprite2D" parent="Daf9Decor" unique_id=827380286]
+[node name="Face_4_14" type="Sprite2D" parent="Daf9Decor" unique_id=2056016395]
 position = Vector2(384, 1331)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_1_15" type="Sprite2D" parent="Daf9Decor" unique_id=992224501]
+[node name="Face_1_15" type="Sprite2D" parent="Daf9Decor" unique_id=1421886027]
 position = Vector2(96, 1427)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_3_15" type="Sprite2D" parent="Daf9Decor" unique_id=194365793]
+[node name="Face_3_15" type="Sprite2D" parent="Daf9Decor" unique_id=1689574850]
 position = Vector2(288, 1427)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_12_15" type="Sprite2D" parent="Daf9Decor" unique_id=1313939717]
+[node name="Face_12_15" type="Sprite2D" parent="Daf9Decor" unique_id=1971509217]
 position = Vector2(1152, 1427)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_8_17" type="Sprite2D" parent="Daf9Decor" unique_id=987359304]
+[node name="Face_8_17" type="Sprite2D" parent="Daf9Decor" unique_id=1660263258]
 position = Vector2(768, 1619)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_6_18" type="Sprite2D" parent="Daf9Decor" unique_id=199088874]
+[node name="Face_6_18" type="Sprite2D" parent="Daf9Decor" unique_id=143685945]
 position = Vector2(576, 1715)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_1_19" type="Sprite2D" parent="Daf9Decor" unique_id=1001380996]
+[node name="Face_1_19" type="Sprite2D" parent="Daf9Decor" unique_id=2035559416]
 position = Vector2(96, 1811)
 texture = ExtResource("16_shjin")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 109)
 
-[node name="Face_3_19" type="Sprite2D" parent="Daf9Decor" unique_id=1825229317]
+[node name="Face_3_19" type="Sprite2D" parent="Daf9Decor" unique_id=24727056]
 position = Vector2(288, 1812)
 texture = ExtResource("19_xjw83")
 centered = false
@@ -759,14 +759,14 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 108)
 
-[node name="Face_5_19" type="Sprite2D" parent="Daf9Decor" unique_id=1042375774]
+[node name="Face_5_19" type="Sprite2D" parent="Daf9Decor" unique_id=331903967]
 position = Vector2(480, 1812)
 texture = ExtResource("18_4kbx4")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_7_21" type="Sprite2D" parent="Daf9Decor" unique_id=1860048843]
+[node name="Face_7_21" type="Sprite2D" parent="Daf9Decor" unique_id=2144218591]
 position = Vector2(672, 2004)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -774,21 +774,21 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 108)
 
-[node name="Face_11_21" type="Sprite2D" parent="Daf9Decor" unique_id=1171260326]
+[node name="Face_11_21" type="Sprite2D" parent="Daf9Decor" unique_id=658695338]
 position = Vector2(1056, 2003)
 texture = ExtResource("17_fw12r")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 109)
 
-[node name="Face_2_23" type="Sprite2D" parent="Daf9Decor" unique_id=488792369]
+[node name="Face_2_23" type="Sprite2D" parent="Daf9Decor" unique_id=1842748743]
 position = Vector2(192, 2196)
 texture = ExtResource("18_4kbx4")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 108)
 
-[node name="Face_4_23" type="Sprite2D" parent="Daf9Decor" unique_id=1224618661]
+[node name="Face_4_23" type="Sprite2D" parent="Daf9Decor" unique_id=1275217283]
 position = Vector2(384, 2196)
 texture = ExtResource("18_4kbx4")
 centered = false
@@ -828,7 +828,7 @@ script = ExtResource("3_aaymg")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(18, 9)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_18_9" unique_id=1573471880]
+[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_18_9" unique_id=2078188186]
 position = Vector2(48, 0)
 texture = ExtResource("21_be3ig")
 centered = false
@@ -839,7 +839,7 @@ position = Vector2(1776, 960)
 script = ExtResource("3_aaymg")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/RailA_18_9" unique_id=1546324506]
+[node name="Dessin" type="Sprite2D" parent="Entities/RailA_18_9" unique_id=1242003039]
 position = Vector2(48, 0)
 texture = ExtResource("22_5okyl")
 centered = false
@@ -860,7 +860,6 @@ if_flags = Array[StringName]([&"mansion_switch_on"])
 position = Vector2(624, 2208)
 script = ExtResource("3_aaymg")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([Vector2i(6, 22)])
 
 [node name="RailA_6_22" type="Node2D" parent="Entities" unique_id=2017983268]
 position = Vector2(624, 2208)
@@ -882,24 +881,23 @@ if_flags = Array[StringName]([&"mansion_switch_on"])
 position = Vector2(624, 2304)
 script = ExtResource("3_aaymg")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([Vector2i(6, 23)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_6_23" unique_id=1442300034]
-position = Vector2(48, 0)
-texture = ExtResource("21_be3ig")
+[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_6_23" unique_id=2069407093]
+position = Vector2(96, 0)
+texture = ExtResource("23_u2lp6")
 centered = false
-offset = Vector2(-96, -151)
+offset = Vector2(-32, -262)
 
 [node name="RailA_6_23" type="Node2D" parent="Entities" unique_id=609642444]
 position = Vector2(624, 2304)
 script = ExtResource("3_aaymg")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/RailA_6_23" unique_id=1786881247]
-position = Vector2(48, 0)
-texture = ExtResource("22_5okyl")
+[node name="Dessin" type="Sprite2D" parent="Entities/RailA_6_23" unique_id=300203019]
+position = Vector2(96, 0)
+texture = ExtResource("24_j1k8p")
 centered = false
-offset = Vector2(-96, -143)
+offset = Vector2(-32.5, -262)
 
 [node name="GrilleA_7_23" type="Node2D" parent="Entities" unique_id=1986665006]
 position = Vector2(720, 2304)
@@ -916,7 +914,6 @@ if_flags = Array[StringName]([&"mansion_switch_on"])
 position = Vector2(816, 480)
 script = ExtResource("3_aaymg")
 if_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([])
 
 [node name="RailB_8_4" type="Node2D" parent="Entities" unique_id=289369420]
 position = Vector2(816, 480)
@@ -938,9 +935,8 @@ unless_flags = Array[StringName]([&"mansion_switch_on"])
 position = Vector2(816, 576)
 script = ExtResource("3_aaymg")
 if_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/GrilleB_8_5" unique_id=1197573957]
+[node name="Dessin" type="Sprite2D" parent="Entities/GrilleB_8_5" unique_id=10505274]
 position = Vector2(96, 0)
 texture = ExtResource("23_u2lp6")
 centered = false
@@ -951,7 +947,7 @@ position = Vector2(816, 576)
 script = ExtResource("3_aaymg")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/RailB_8_5" unique_id=1953053441]
+[node name="Dessin" type="Sprite2D" parent="Entities/RailB_8_5" unique_id=684136461]
 position = Vector2(96, 0)
 texture = ExtResource("24_j1k8p")
 centered = false
@@ -972,7 +968,7 @@ unless_flags = Array[StringName]([&"mansion_switch_on"])
 position = Vector2(528, 1056)
 script = ExtResource("3_aaymg")
 
-[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_5_10" unique_id=1548953463]
+[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_5_10" unique_id=632196788]
 z_index = -1
 texture = ExtResource("23_kox5s")
 centered = false
@@ -982,7 +978,7 @@ offset = Vector2(-48, -84)
 position = Vector2(720, 1056)
 script = ExtResource("3_aaymg")
 
-[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_7_10" unique_id=679660839]
+[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_7_10" unique_id=2094531750]
 texture = ExtResource("24_hg2j4")
 centered = false
 offset = Vector2(-48, -119)
@@ -991,7 +987,7 @@ offset = Vector2(-48, -119)
 position = Vector2(624, 192)
 script = ExtResource("3_aaymg")
 
-[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_6_1" unique_id=1749115645]
+[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_6_1" unique_id=1226277865]
 texture = ExtResource("24_hg2j4")
 centered = false
 offset = Vector2(-48, -119)
@@ -1000,7 +996,7 @@ offset = Vector2(-48, -119)
 position = Vector2(2448, 1440)
 script = ExtResource("3_aaymg")
 
-[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_25_14" unique_id=1029166857]
+[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_25_14" unique_id=2138618201]
 texture = ExtResource("24_hg2j4")
 centered = false
 offset = Vector2(-48, -119)
@@ -1010,7 +1006,7 @@ position = Vector2(240, 1152)
 script = ExtResource("3_aaymg")
 blocking_cells = Array[Vector2i]([Vector2i(2, 11)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Statue_2_11" unique_id=1218151852]
+[node name="Dessin" type="Sprite2D" parent="Entities/Statue_2_11" unique_id=682814354]
 texture = ExtResource("25_qhcep")
 centered = false
 offset = Vector2(-41, -154)
@@ -1020,7 +1016,7 @@ position = Vector2(1776, 288)
 script = ExtResource("3_aaymg")
 blocking_cells = Array[Vector2i]([Vector2i(18, 2)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Pupitre_18_2" unique_id=1168817374]
+[node name="Dessin" type="Sprite2D" parent="Entities/Pupitre_18_2" unique_id=1470735212]
 texture = ExtResource("26_if3ic")
 centered = false
 offset = Vector2(-48, -108)
@@ -1030,48 +1026,48 @@ position = Vector2(336, 2208)
 script = ExtResource("3_aaymg")
 blocking_cells = Array[Vector2i]([Vector2i(3, 22)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Pupitre_3_22" unique_id=1704850565]
+[node name="Dessin" type="Sprite2D" parent="Entities/Pupitre_3_22" unique_id=168396100]
 texture = ExtResource("26_if3ic")
 centered = false
 offset = Vector2(-48, -108)
 
-[node name="Daf9Meuble_19_2" type="Sprite2D" parent="Entities" unique_id=411046519]
+[node name="Daf9Meuble_19_2" type="Sprite2D" parent="Entities" unique_id=1647994946]
 position = Vector2(1872, 288)
 texture = ExtResource("27_fn7d7")
 centered = false
 offset = Vector2(-48, -89)
 
-[node name="Daf9Meuble_18_3" type="Sprite2D" parent="Entities" unique_id=68028715]
+[node name="Daf9Meuble_18_3" type="Sprite2D" parent="Entities" unique_id=450004522]
 position = Vector2(1776, 384)
 texture = ExtResource("28_qple1")
 centered = false
 offset = Vector2(-48, -88)
 
-[node name="Daf9Meuble_19_3" type="Sprite2D" parent="Entities" unique_id=814582428]
+[node name="Daf9Meuble_19_3" type="Sprite2D" parent="Entities" unique_id=959079262]
 position = Vector2(1872, 384)
 texture = ExtResource("29_u2lp6")
 centered = false
 offset = Vector2(-48, -107)
 
-[node name="Daf9Meuble_4_6" type="Sprite2D" parent="Entities" unique_id=374170962]
+[node name="Daf9Meuble_4_6" type="Sprite2D" parent="Entities" unique_id=369788466]
 position = Vector2(432, 672)
 texture = ExtResource("30_j1k8p")
 centered = false
 offset = Vector2(-43, -122)
 
-[node name="Daf9Meuble_4_7" type="Sprite2D" parent="Entities" unique_id=1269743938]
+[node name="Daf9Meuble_4_7" type="Sprite2D" parent="Entities" unique_id=367054183]
 position = Vector2(432, 768)
 texture = ExtResource("27_fn7d7")
 centered = false
 offset = Vector2(-48, -89)
 
-[node name="Daf9Meuble_6_6" type="Sprite2D" parent="Entities" unique_id=146097868]
+[node name="Daf9Meuble_6_6" type="Sprite2D" parent="Entities" unique_id=569941094]
 position = Vector2(624, 672)
 texture = ExtResource("28_qple1")
 centered = false
 offset = Vector2(-48, -88)
 
-[node name="Daf9Meuble_6_7" type="Sprite2D" parent="Entities" unique_id=1375834631]
+[node name="Daf9Meuble_6_7" type="Sprite2D" parent="Entities" unique_id=481223074]
 position = Vector2(624, 768)
 texture = ExtResource("31_xmvof")
 centered = false

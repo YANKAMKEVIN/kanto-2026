@@ -525,16 +525,10 @@ func _box(comp: Array) -> Rect2i:
 
 
 ## Colonne du mur nord-sud que coupe la grille [param box] (passage est-ouest), -1 sinon : une de
-## ses colonnes a un mur juste au-dessus et juste au-dessous, et la colonne à sa gauche n'est pas
-## murée (retour de Kevin, 2026-11-13 : ces grilles étaient dessinées de face). Elle est alors
+## ses colonnes a un mur juste au-dessus et juste au-dessous (retour de Kevin, 2026-11-13 : ces
+## grilles étaient dessinées de face ; audit du 2026-11-14 : aussi la grille d'angle du 2F en 7,22). Elle est alors
 ## dessinée de profil, dans l'axe de ce mur.
 func _ns_wall_column(plan: PlanGrid, box: Rect2i) -> int:
-	var left_walled := true
-	for y: int in range(box.position.y, box.end.y):
-		if plan.at(Vector2i(box.position.x - 1, y)) != "#":
-			left_walled = false
-	if left_walled:
-		return -1
 	for x: int in range(box.position.x, box.end.x):
 		if plan.at(Vector2i(x, box.position.y - 1)) == "#" and plan.at(Vector2i(x, box.end.y)) == "#":
 			return x
