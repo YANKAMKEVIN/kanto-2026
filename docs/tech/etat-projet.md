@@ -1,6 +1,6 @@
 # État du projet
 
-Mis à jour : 2026-11-12.
+Mis à jour : 2026-11-14.
 
 > **Ce fichier reste court (quelques Ko).** On y **remplace** ce qui change, on n'empile pas une ligne par tâche : le détail d'une tâche va dans le plan du jalon (`docs/tech/jalon-*.md`) et dans le message de commit.
 > Historique complet jusqu'au 2026-11-05 : [`etat-projet-archive.md`](etat-projet-archive.md) (6,5 Mo, à chercher avec `grep`, pas à lire) et [`etat-projet-historique.md`](etat-projet-historique.md).
@@ -8,6 +8,7 @@ Mis à jour : 2026-11-12.
 ## Où en est le projet
 
 - **Kanto :** jalons fusionnés dans `main` jusqu'au J34 en cours. RC **0.34.1** (Kanto seul, sauvegarde v9) sur la branche `release/0.34`, qui ne passe pas par `main`.
+- **RC 0.37.2 (2026-11-14), cartes recalées sur les plans :** arènes (murs, sorties de Cramois'Île et Safrania, herse 4), Manoir, échelles et trous bouchés des grottes, retouches de Carmin, du repaire et de la Sylphe ; construite depuis `main` @ `cc97441a`, CI verte, `~/.pokemake/rc/0.37.2/`, 424 632 157 octets, SHA-256 `bd4420f3d879f7c521b6ad0076cecafa4ea82ab2dd1fce60bf28ed8c3e0f0a51`, notes `notes-version-0.37.2.md`. Rien d'essayé sur téléphone (Kevin absent, accord du 2026-11-14) ; pas encore installée.
 - **RC 0.37.1 (2026-11-12), Parc Safari :** porte de l'accueil et capture adoucie ; construite depuis `main` @ `d4be6cd1`, CI verte, `~/.pokemake/rc/0.37.1/`, 424 840 049 octets, SHA-256 `436ba98ddfadc60fd5f10f08bfeb810a64b95f1218f3fa8ea5dcfae68472ff49`, notes `notes-version-0.37.1.md`. Installée sur le S24 le 2026-11-12 par-dessus la 0.37.0 (mise à jour, partie conservée), à la demande de Kevin ; à lui de revoir le Parc en jouant.
 - **RC 0.37.0 (2026-11-12), mode auto et Sac :** construite depuis `main` @ `33059d35`, CI verte, `~/.pokemake/rc/0.37.0/`, 424 712 831 octets, SHA-256 `9d1cbf05c03a84c76ceee08ebe00d2825da5906bd1f638a35b77f6d1a599bd19`, notes `notes-version-0.37.0.md`. Installée sur le S24 le 2026-11-12 par-dessus la 0.36.2 (mise à jour, partie conservée), à la demande de Kevin ; le mode auto et l'ergonomie du Sac n'ont été essayés que sur le Mac, à Kevin de les voir en jouant.
 - **Porte du Parc Safari (2026-11-12, retour de Kevin sur la 0.37.0) :** l'enveloppe peinte de la Porte n'avait pas de sortie au nord (enveloppe commune avec la Maison Secrète) : on entrait dans le Parc en traversant un mur. Enveloppe propre `int_safari_porte_coque.png` avec une ouverture dérivée du poste de la Forêt [D] (`tools/art/safari_porte_coque.py`). Revue des 117 sorties hors sud des 60 intérieurs concernés : aucun autre cas. Dans la RC 0.37.1.
