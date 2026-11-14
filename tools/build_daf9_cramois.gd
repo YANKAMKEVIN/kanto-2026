@@ -268,7 +268,10 @@ func _place_debris(root: Node, decor: Node, plan: PlanGrid, floors: Dictionary,
 		if taken.has(cell) or taken.has(cell + Vector2i.DOWN) or taken.has(cell + Vector2i.RIGHT):
 			continue
 		if wall.call(cell + Vector2i.UP) and rng.randf() < DEBRIS_CHANCE:
-			var id := "decal_gravats_manoir_0%d" % rng.randi_range(1, 6)
+			# Pas de gravats clairs (03, plâtre et briques) : sur une case libre, ils se lisaient
+			# comme un obstacle (QA du Manoir, 2026-11-14). Même tirage, image du papier à la place.
+			var pick := rng.randi_range(1, 6)
+			var id := "decal_gravats_manoir_0%d" % (2 if pick == 3 else pick)
 			var texture: Texture2D = load(DECALS % id)
 			_sprite(root, decor, "Gravats_%d_%d" % [cell.x, cell.y], DECALS % id,
 				Vector2((cell.x + 0.5) * TILE, cell.y * TILE + 6 + texture.get_height()))

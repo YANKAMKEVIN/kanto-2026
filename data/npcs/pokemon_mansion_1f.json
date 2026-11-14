@@ -31,7 +31,7 @@
 	"pokemon_mansion_1f_item_2": {
 		"cell": [
 			18,
-			21
+			20
 		],
 		"facing": "down",
 		"sprite": "object/poke_ball_ground",

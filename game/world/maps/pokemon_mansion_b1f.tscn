@@ -2,44 +2,43 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_nlf1q"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_i7dv4"]
-[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_iamsu"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_a45c3"]
 [ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_v7767"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_carrelage_b1_01.png" id="4_msflr"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_rm3y1"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_mansion_b1f_ground.png" id="5_48cq4"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_carrelage_b1_01.png" id="4_rnwf1"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_mansion_b1f_ground.png" id="5_ctxtt"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_vkef6"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_manoir_b1_01.png" id="6_vq5u3"]
-[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="7_mi3ru"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_mansion_b1f_voile.png" id="8_a45c3"]
-[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_06.png" id="9_rnwf1"]
-[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_05.png" id="10_ctxtt"]
-[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_03.png" id="11_odlgp"]
-[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_01.png" id="12_wf2vi"]
-[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_04.png" id="13_igs8l"]
-[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_02.png" id="14_ygriu"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_cap_01.png" id="15_404lb"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_02.png" id="16_a8i6p"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_04.png" id="17_nwajr"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_01.png" id="18_b76fl"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_03.png" id="19_m8kj2"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_fermee_01.png" id="21_jtbje"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_fermee_cote_01.png" id="21_rnwf1"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_ouverte_cote_01.png" id="22_ctxtt"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_ouverte_01.png" id="22_erx70"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_escalier_manoir_monte_01.png" id="23_6kcda"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_statue_manoir_01.png" id="24_pq5ht"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_pupitre_carnet_01.png" id="25_skv1i"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_armoire_basse_01.png" id="26_mi3ru"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_petite_table_01.png" id="27_a45c3"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_caisse_archives_01.png" id="28_rnwf1"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_table_labo_01.png" id="29_ctxtt"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_manoir_b1_01.png" id="6_odlgp"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="7_wf2vi"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/pokemon_mansion_b1f_voile.png" id="8_igs8l"]
+[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_06.png" id="9_ygriu"]
+[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_05.png" id="10_404lb"]
+[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_02.png" id="11_a8i6p"]
+[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_01.png" id="12_nwajr"]
+[ext_resource type="Texture2D" path="res://assets/world/decals/decal_gravats_manoir_04.png" id="13_b76fl"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_cap_01.png" id="14_m8kj2"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_02.png" id="15_jtbje"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_04.png" id="16_erx70"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_01.png" id="17_6kcda"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_manoir_b1_03.png" id="18_pq5ht"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_fermee_cote_01.png" id="20_skv1i"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_ouverte_cote_01.png" id="21_w50yh"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_fermee_01.png" id="22_sxfhl"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_grille_manoir_ouverte_01.png" id="23_5rxf5"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_escalier_manoir_monte_01.png" id="24_g3vvt"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_statue_manoir_01.png" id="25_jfgav"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_pupitre_carnet_01.png" id="26_f8ooj"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_armoire_basse_01.png" id="27_xdkk3"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_petite_table_01.png" id="28_44ayw"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_caisse_archives_01.png" id="29_ur1g8"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_table_labo_01.png" id="30_fk4b4"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rnwf1"]
-shader = ExtResource("3_iamsu")
-shader_parameter/grass_texture = ExtResource("4_msflr")
-shader_parameter/paving_texture = ExtResource("4_msflr")
-shader_parameter/path_texture = ExtResource("6_vq5u3")
-shader_parameter/ground_mask = ExtResource("5_48cq4")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a45c3"]
+shader = ExtResource("3_a45c3")
+shader_parameter/grass_texture = ExtResource("4_rnwf1")
+shader_parameter/paving_texture = ExtResource("4_rnwf1")
+shader_parameter/path_texture = ExtResource("6_odlgp")
+shader_parameter/ground_mask = ExtResource("5_ctxtt")
 shader_parameter/tile_size = 96.0
 shader_parameter/texture_size = 384.0
 shader_parameter/paving_scale = 1.0
@@ -52,1066 +51,1018 @@ shader_parameter/foam_strength = null
 shader_parameter/square_shore = null
 shader_parameter/pass_mode = null
 
-[node name="PokemonMansionB1F" type="Node2D" unique_id=1987355721]
+[node name="PokemonMansionB1F" type="Node2D" unique_id=83397169]
 script = ExtResource("1_nlf1q")
 map_id = &"pokemon_mansion_b1f"
 display_name = "Manoir Pokémon"
 size = Vector2i(30, 28)
 light_profile = &"tower"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=447777686]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1775575508]
 visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAAAAAcAAAAEAAAAAAAAAAcAAAAFAAAAAAAAAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAABAAcAAAAKAAAAAAABAAcAAAALAAAAAAAAAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAAAAAcAAAARAAAAAAAAAAcAAAASAAAAAAABAAcAAAATAAAAAAAAAAcAAAAUAAAAAAABAAcAAAAVAAAAAAAAAAcAAAAWAAAAAAAAAAcAAAAXAAAAAAABAAcAAAAYAAAAAAAAAAcAAAAZAAAAAAAAAAcAAAAaAAAAAAABAAcAAAAbAAAAAAABAAcAAAAcAAAAAAABAAcAAAAdAAAAAAAAAAcAAAAAAAEAAAABAAcAAAABAAEAAAAAAAcAAAACAAEAAAABAAcAAAADAAEAAAAAAAcAAAAEAAEAAAABAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAABAAcAAAAIAAEAAAACAAMAAAAJAAEAAAABAAcAAAAKAAEAAAABAAcAAAALAAEAAAAAAAcAAAAMAAEAAAAAAAcAAAANAAEAAAABAAcAAAAOAAEAAAAAAAcAAAAPAAEAAAABAAcAAAAQAAEAAAAAAAcAAAARAAEAAAABAAcAAAASAAEAAAABAAcAAAATAAEAAAABAAcAAAAUAAEAAAAAAAMAAAAVAAEAAAACAAMAAAAWAAEAAAABAAMAAAAXAAEAAAAAAAMAAAAYAAEAAAAAAAMAAAAZAAEAAAABAAMAAAAaAAEAAAAAAAMAAAAbAAEAAAACAAMAAAAcAAEAAAACAAMAAAAdAAEAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAAAAAcAAAACAAIAAAABAAMAAAADAAIAAAAAAAMAAAAEAAIAAAABAAMAAAAFAAIAAAACAAMAAAAGAAIAAAACAAMAAAAHAAIAAAACAAMAAAAIAAIAAAABAAMAAAAJAAIAAAAAAAcAAAAKAAIAAAAAAAMAAAALAAIAAAAAAAMAAAAMAAIAAAACAAMAAAANAAIAAAABAAMAAAAOAAIAAAACAAMAAAAPAAIAAAABAAMAAAAQAAIAAAABAAMAAAARAAIAAAACAAMAAAASAAIAAAAAAAcAAAATAAIAAAABAAcAAAAUAAIAAAABAAcAAAAVAAIAAAAAAAMAAAAWAAIAAAAAAAcAAAAXAAIAAAACAAMAAAAYAAIAAAAAAAcAAAAZAAIAAAACAAMAAAAaAAIAAAAAAAcAAAAbAAIAAAABAAMAAAAcAAIAAAABAAMAAAAdAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAAAAAcAAAACAAMAAAAAAAMAAAADAAMAAAAAAAMAAAAEAAMAAAACAAMAAAAFAAMAAAAAAAMAAAAGAAMAAAABAAMAAAAHAAMAAAAAAAMAAAAIAAMAAAACAAMAAAAJAAMAAAABAAcAAAAKAAMAAAACAAMAAAALAAMAAAACAAMAAAAMAAMAAAAAAAMAAAANAAMAAAABAAMAAAAOAAMAAAAAAAMAAAAPAAMAAAABAAMAAAAQAAMAAAABAAMAAAARAAMAAAAAAAMAAAASAAMAAAABAAcAAAATAAMAAAABAAcAAAAUAAMAAAABAAcAAAAVAAMAAAABAAMAAAAWAAMAAAABAAcAAAAXAAMAAAACAAMAAAAYAAMAAAABAAcAAAAZAAMAAAABAAMAAAAaAAMAAAABAAcAAAAbAAMAAAACAAMAAAAcAAMAAAABAAMAAAAdAAMAAAABAAcAAAAAAAQAAAAAAAcAAAABAAQAAAABAAMAAAACAAQAAAABAAMAAAADAAQAAAAAAAMAAAAEAAQAAAAAAAcAAAAFAAQAAAAAAAMAAAAGAAQAAAACAAMAAAAHAAQAAAAAAAMAAAAIAAQAAAACAAMAAAAJAAQAAAAAAAcAAAAKAAQAAAACAAMAAAALAAQAAAABAAMAAAAMAAQAAAAAAAMAAAANAAQAAAABAAMAAAAOAAQAAAACAAMAAAAPAAQAAAAAAAMAAAAQAAQAAAACAAMAAAARAAQAAAACAAMAAAASAAQAAAACAAMAAAATAAQAAAABAAcAAAAUAAQAAAAAAAMAAAAVAAQAAAABAAMAAAAWAAQAAAAAAAMAAAAXAAQAAAAAAAMAAAAYAAQAAAACAAMAAAAZAAQAAAABAAMAAAAaAAQAAAACAAMAAAAbAAQAAAABAAMAAAAcAAQAAAABAAMAAAAdAAQAAAAAAAcAAAAAAAUAAAABAAcAAAABAAUAAAABAAMAAAACAAUAAAABAAMAAAADAAUAAAAAAAMAAAAEAAUAAAAAAAcAAAAFAAUAAAAAAAcAAAAGAAUAAAAAAAMAAAAHAAUAAAABAAMAAAAIAAUAAAAAAAMAAAAJAAUAAAAAAAcAAAAKAAUAAAABAAcAAAALAAUAAAABAAcAAAAMAAUAAAABAAMAAAANAAUAAAABAAMAAAAOAAUAAAABAAcAAAAPAAUAAAABAAcAAAAQAAUAAAAAAAcAAAARAAUAAAAAAAcAAAASAAUAAAABAAcAAAATAAUAAAABAAcAAAAUAAUAAAABAAcAAAAVAAUAAAABAAcAAAAWAAUAAAAAAAcAAAAXAAUAAAAAAAcAAAAYAAUAAAAAAAMAAAAZAAUAAAAAAAMAAAAaAAUAAAAAAAcAAAAbAAUAAAABAAcAAAAcAAUAAAABAAcAAAAdAAUAAAAAAAcAAAAAAAYAAAABAAcAAAABAAYAAAABAAMAAAACAAYAAAABAAMAAAADAAYAAAACAAMAAAAEAAYAAAACAAMAAAAFAAYAAAAAAAMAAAAGAAYAAAABAAMAAAAHAAYAAAABAAMAAAAIAAYAAAACAAMAAAAJAAYAAAAAAAMAAAAKAAYAAAABAAMAAAALAAYAAAAAAAMAAAAMAAYAAAAAAAMAAAANAAYAAAAAAAMAAAAOAAYAAAACAAMAAAAPAAYAAAACAAMAAAAQAAYAAAAAAAMAAAARAAYAAAABAAMAAAASAAYAAAAAAAMAAAATAAYAAAAAAAMAAAAUAAYAAAAAAAMAAAAVAAYAAAACAAMAAAAWAAYAAAAAAAMAAAAXAAYAAAABAAMAAAAYAAYAAAABAAMAAAAZAAYAAAAAAAMAAAAaAAYAAAAAAAMAAAAbAAYAAAABAAMAAAAcAAYAAAACAAMAAAAdAAYAAAABAAcAAAAAAAcAAAABAAcAAAABAAcAAAABAAMAAAACAAcAAAACAAMAAAADAAcAAAACAAMAAAAEAAcAAAACAAMAAAAFAAcAAAABAAMAAAAGAAcAAAABAAMAAAAHAAcAAAAAAAMAAAAIAAcAAAABAAMAAAAJAAcAAAAAAAMAAAAKAAcAAAAAAAMAAAALAAcAAAAAAAMAAAAMAAcAAAABAAMAAAANAAcAAAABAAMAAAAOAAcAAAACAAMAAAAPAAcAAAABAAMAAAAQAAcAAAACAAMAAAARAAcAAAABAAMAAAASAAcAAAABAAMAAAATAAcAAAABAAMAAAAUAAcAAAAAAAMAAAAVAAcAAAAAAAMAAAAWAAcAAAABAAMAAAAXAAcAAAAAAAMAAAAYAAcAAAABAAMAAAAZAAcAAAACAAMAAAAaAAcAAAACAAMAAAAbAAcAAAABAAMAAAAcAAcAAAACAAMAAAAdAAcAAAABAAcAAAAAAAgAAAAAAAcAAAABAAgAAAAAAAcAAAACAAgAAAABAAcAAAADAAgAAAAAAAcAAAAEAAgAAAAAAAMAAAAFAAgAAAAAAAMAAAAGAAgAAAABAAcAAAAHAAgAAAABAAcAAAAIAAgAAAABAAcAAAAJAAgAAAAAAAcAAAAKAAgAAAABAAcAAAALAAgAAAAAAAcAAAAMAAgAAAABAAcAAAANAAgAAAAAAAcAAAAOAAgAAAAAAAcAAAAPAAgAAAAAAAcAAAAQAAgAAAABAAcAAAARAAgAAAABAAcAAAASAAgAAAABAAcAAAATAAgAAAABAAcAAAAUAAgAAAAAAAcAAAAVAAgAAAABAAcAAAAWAAgAAAAAAAcAAAAXAAgAAAAAAAcAAAAYAAgAAAAAAAcAAAAZAAgAAAAAAAcAAAAaAAgAAAACAAMAAAAbAAgAAAABAAMAAAAcAAgAAAACAAMAAAAdAAgAAAAAAAcAAAAAAAkAAAAAAAcAAAABAAkAAAAAAAMAAAACAAkAAAACAAMAAAADAAkAAAABAAMAAAAEAAkAAAACAAMAAAAFAAkAAAACAAMAAAAGAAkAAAAAAAMAAAAHAAkAAAAAAAMAAAAIAAkAAAABAAMAAAAJAAkAAAAAAAcAAAAKAAkAAAABAAMAAAALAAkAAAACAAMAAAAMAAkAAAABAAMAAAANAAkAAAABAAMAAAAOAAkAAAAAAAMAAAAPAAkAAAABAAMAAAAQAAkAAAACAAMAAAARAAkAAAACAAMAAAASAAkAAAABAAMAAAATAAkAAAACAAMAAAAUAAkAAAACAAMAAAAVAAkAAAACAAMAAAAWAAkAAAACAAMAAAAXAAkAAAACAAMAAAAYAAkAAAABAAMAAAAZAAkAAAAAAAcAAAAaAAkAAAACAAMAAAAbAAkAAAAAAAMAAAAcAAkAAAAAAAMAAAAdAAkAAAAAAAcAAAAAAAoAAAABAAcAAAABAAoAAAAAAAMAAAACAAoAAAABAAcAAAADAAoAAAAAAAcAAAAEAAoAAAAAAAMAAAAFAAoAAAAAAAMAAAAGAAoAAAABAAcAAAAHAAoAAAAAAAcAAAAIAAoAAAAAAAMAAAAJAAoAAAAAAAcAAAAKAAoAAAABAAMAAAALAAoAAAABAAMAAAAMAAoAAAAAAAMAAAANAAoAAAACAAMAAAAOAAoAAAABAAMAAAAPAAoAAAAAAAMAAAAQAAoAAAABAAMAAAARAAoAAAAAAAMAAAASAAoAAAACAAMAAAATAAoAAAAAAAMAAAAUAAoAAAACAAMAAAAVAAoAAAABAAMAAAAWAAoAAAABAAMAAAAXAAoAAAABAAMAAAAYAAoAAAACAAMAAAAZAAoAAAABAAcAAAAaAAoAAAAAAAMAAAAbAAoAAAACAAMAAAAcAAoAAAACAAMAAAAdAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAAAAAMAAAACAAsAAAABAAcAAAADAAsAAAAAAAcAAAAEAAsAAAAAAAMAAAAFAAsAAAAAAAMAAAAGAAsAAAAAAAcAAAAHAAsAAAAAAAcAAAAIAAsAAAAAAAMAAAAJAAsAAAAAAAcAAAAKAAsAAAAAAAMAAAALAAsAAAAAAAMAAAAMAAsAAAACAAMAAAANAAsAAAACAAMAAAAOAAsAAAACAAMAAAAPAAsAAAACAAMAAAAQAAsAAAACAAMAAAARAAsAAAABAAMAAAASAAsAAAAAAAMAAAATAAsAAAABAAMAAAAUAAsAAAACAAMAAAAVAAsAAAACAAMAAAAWAAsAAAACAAMAAAAXAAsAAAACAAMAAAAYAAsAAAABAAMAAAAZAAsAAAABAAcAAAAaAAsAAAACAAMAAAAbAAsAAAACAAMAAAAcAAsAAAAAAAMAAAAdAAsAAAABAAcAAAAAAAwAAAABAAcAAAABAAwAAAAAAAMAAAACAAwAAAACAAMAAAADAAwAAAABAAMAAAAEAAwAAAACAAMAAAAFAAwAAAACAAMAAAAGAAwAAAABAAMAAAAHAAwAAAABAAMAAAAIAAwAAAACAAMAAAAJAAwAAAAAAAcAAAAKAAwAAAACAAMAAAALAAwAAAABAAMAAAAMAAwAAAABAAMAAAANAAwAAAACAAMAAAAOAAwAAAACAAMAAAAPAAwAAAABAAMAAAAQAAwAAAABAAMAAAARAAwAAAAAAAMAAAASAAwAAAABAAMAAAATAAwAAAABAAMAAAAUAAwAAAAAAAMAAAAVAAwAAAAAAAMAAAAWAAwAAAABAAMAAAAXAAwAAAAAAAMAAAAYAAwAAAAAAAMAAAAZAAwAAAABAAcAAAAaAAwAAAAAAAMAAAAbAAwAAAACAAMAAAAcAAwAAAAAAAMAAAAdAAwAAAAAAAcAAAAAAA0AAAABAAcAAAABAA0AAAABAAMAAAACAA0AAAAAAAMAAAADAA0AAAAAAAMAAAAEAA0AAAABAAMAAAAFAA0AAAACAAMAAAAGAA0AAAACAAMAAAAHAA0AAAACAAMAAAAIAA0AAAAAAAMAAAAJAA0AAAABAAcAAAAKAA0AAAAAAAMAAAALAA0AAAAAAAMAAAAMAA0AAAABAAMAAAANAA0AAAABAAMAAAAOAA0AAAAAAAMAAAAPAA0AAAABAAMAAAAQAA0AAAABAAMAAAARAA0AAAAAAAMAAAASAA0AAAAAAAMAAAATAA0AAAAAAAMAAAAUAA0AAAACAAMAAAAVAA0AAAABAAMAAAAWAA0AAAAAAAMAAAAXAA0AAAACAAMAAAAYAA0AAAABAAMAAAAZAA0AAAABAAcAAAAaAA0AAAACAAMAAAAbAA0AAAAAAAMAAAAcAA0AAAAAAAMAAAAdAA0AAAAAAAcAAAAAAA4AAAABAAcAAAABAA4AAAACAAMAAAACAA4AAAABAAcAAAADAA4AAAABAAcAAAAEAA4AAAACAAMAAAAFAA4AAAABAAMAAAAGAA4AAAAAAAcAAAAHAA4AAAAAAAcAAAAIAA4AAAACAAMAAAAJAA4AAAAAAAcAAAAKAA4AAAAAAAMAAAALAA4AAAACAAMAAAAMAA4AAAACAAMAAAANAA4AAAAAAAMAAAAOAA4AAAABAAMAAAAPAA4AAAAAAAMAAAAQAA4AAAAAAAMAAAARAA4AAAAAAAMAAAASAA4AAAAAAAMAAAATAA4AAAABAAMAAAAUAA4AAAABAAMAAAAVAA4AAAABAAMAAAAWAA4AAAACAAMAAAAXAA4AAAABAAMAAAAYAA4AAAACAAMAAAAZAA4AAAABAAcAAAAaAA4AAAAAAAMAAAAbAA4AAAABAAMAAAAcAA4AAAAAAAMAAAAdAA4AAAABAAcAAAAAAA8AAAABAAcAAAABAA8AAAACAAMAAAACAA8AAAAAAAcAAAADAA8AAAABAAcAAAAEAA8AAAABAAMAAAAFAA8AAAAAAAMAAAAGAA8AAAAAAAcAAAAHAA8AAAABAAcAAAAIAA8AAAAAAAMAAAAJAA8AAAAAAAcAAAAKAA8AAAAAAAMAAAALAA8AAAACAAMAAAAMAA8AAAAAAAMAAAANAA8AAAACAAMAAAAOAA8AAAACAAMAAAAPAA8AAAAAAAMAAAAQAA8AAAABAAMAAAARAA8AAAAAAAMAAAASAA8AAAAAAAMAAAATAA8AAAABAAMAAAAUAA8AAAACAAMAAAAVAA8AAAABAAMAAAAWAA8AAAABAAMAAAAXAA8AAAABAAMAAAAYAA8AAAABAAMAAAAZAA8AAAABAAcAAAAaAA8AAAABAAMAAAAbAA8AAAACAAMAAAAcAA8AAAACAAMAAAAdAA8AAAABAAcAAAAAABAAAAAAAAcAAAABABAAAAACAAMAAAACABAAAAACAAMAAAADABAAAAABAAMAAAAEABAAAAABAAMAAAAFABAAAAACAAMAAAAGABAAAAACAAMAAAAHABAAAAAAAAMAAAAIABAAAAACAAMAAAAJABAAAAAAAAcAAAAKABAAAAACAAMAAAALABAAAAABAAMAAAAMABAAAAACAAMAAAANABAAAAABAAcAAAAOABAAAAABAAcAAAAPABAAAAAAAAcAAAAQABAAAAABAAMAAAARABAAAAAAAAMAAAASABAAAAAAAAcAAAATABAAAAABAAcAAAAUABAAAAABAAcAAAAVABAAAAACAAMAAAAWABAAAAAAAAMAAAAXABAAAAABAAMAAAAYABAAAAACAAMAAAAZABAAAAAAAAcAAAAaABAAAAACAAMAAAAbABAAAAABAAMAAAAcABAAAAABAAMAAAAdABAAAAAAAAcAAAAAABEAAAABAAcAAAABABEAAAABAAcAAAACABEAAAAAAAcAAAADABEAAAABAAcAAAAEABEAAAABAAcAAAAFABEAAAAAAAcAAAAGABEAAAABAAcAAAAHABEAAAABAAcAAAAIABEAAAAAAAcAAAAJABEAAAAAAAcAAAAKABEAAAAAAAMAAAALABEAAAABAAMAAAAMABEAAAACAAMAAAANABEAAAABAAcAAAAOABEAAAABAAcAAAAPABEAAAABAAcAAAAQABEAAAABAAMAAAARABEAAAACAAMAAAASABEAAAAAAAcAAAATABEAAAABAAcAAAAUABEAAAAAAAcAAAAVABEAAAAAAAMAAAAWABEAAAACAAMAAAAXABEAAAAAAAMAAAAYABEAAAAAAAMAAAAZABEAAAABAAcAAAAaABEAAAABAAMAAAAbABEAAAABAAMAAAAcABEAAAAAAAcAAAAdABEAAAABAAcAAAAAABIAAAAAAAcAAAABABIAAAABAAMAAAACABIAAAAAAAMAAAADABIAAAACAAMAAAAEABIAAAAAAAMAAAAFABIAAAABAAMAAAAGABIAAAAAAAMAAAAHABIAAAABAAMAAAAIABIAAAACAAMAAAAJABIAAAAAAAMAAAAKABIAAAABAAMAAAALABIAAAACAAMAAAAMABIAAAABAAMAAAANABIAAAAAAAcAAAAOABIAAAACAAMAAAAPABIAAAABAAMAAAAQABIAAAACAAMAAAARABIAAAAAAAMAAAASABIAAAACAAMAAAATABIAAAAAAAMAAAAUABIAAAAAAAcAAAAVABIAAAACAAMAAAAWABIAAAACAAMAAAAXABIAAAABAAMAAAAYABIAAAABAAMAAAAZABIAAAACAAMAAAAaABIAAAAAAAMAAAAbABIAAAAAAAMAAAAcABIAAAABAAMAAAAdABIAAAAAAAcAAAAAABMAAAABAAcAAAABABMAAAACAAMAAAACABMAAAAAAAMAAAADABMAAAAAAAMAAAAEABMAAAACAAMAAAAFABMAAAAAAAMAAAAGABMAAAAAAAMAAAAHABMAAAACAAMAAAAIABMAAAACAAMAAAAJABMAAAACAAMAAAAKABMAAAACAAMAAAALABMAAAABAAMAAAAMABMAAAAAAAMAAAANABMAAAABAAcAAAAOABMAAAABAAMAAAAPABMAAAAAAAMAAAAQABMAAAABAAMAAAARABMAAAACAAMAAAASABMAAAABAAMAAAATABMAAAABAAMAAAAUABMAAAABAAcAAAAVABMAAAACAAMAAAAWABMAAAAAAAMAAAAXABMAAAACAAMAAAAYABMAAAABAAMAAAAZABMAAAABAAMAAAAaABMAAAABAAMAAAAbABMAAAACAAMAAAAcABMAAAAAAAMAAAAdABMAAAAAAAcAAAAAABQAAAAAAAcAAAABABQAAAAAAAMAAAACABQAAAACAAMAAAADABQAAAABAAMAAAAEABQAAAABAAMAAAAFABQAAAABAAMAAAAGABQAAAACAAMAAAAHABQAAAAAAAMAAAAIABQAAAACAAMAAAAJABQAAAABAAMAAAAKABQAAAACAAMAAAALABQAAAAAAAMAAAAMABQAAAACAAMAAAANABQAAAAAAAcAAAAOABQAAAABAAMAAAAPABQAAAABAAMAAAAQABQAAAABAAcAAAARABQAAAAAAAcAAAASABQAAAABAAMAAAATABQAAAAAAAMAAAAUABQAAAAAAAcAAAAVABQAAAABAAMAAAAWABQAAAAAAAMAAAAXABQAAAABAAMAAAAYABQAAAAAAAMAAAAZABQAAAABAAMAAAAaABQAAAAAAAMAAAAbABQAAAAAAAMAAAAcABQAAAAAAAMAAAAdABQAAAABAAcAAAAAABUAAAAAAAcAAAABABUAAAAAAAMAAAACABUAAAACAAMAAAADABUAAAABAAMAAAAEABUAAAACAAMAAAAFABUAAAABAAMAAAAGABUAAAACAAMAAAAHABUAAAAAAAMAAAAIABUAAAACAAMAAAAJABUAAAAAAAMAAAAKABUAAAACAAMAAAALABUAAAACAAMAAAAMABUAAAACAAMAAAANABUAAAAAAAcAAAAOABUAAAABAAMAAAAPABUAAAAAAAMAAAAQABUAAAABAAcAAAARABUAAAAAAAcAAAASABUAAAABAAMAAAATABUAAAAAAAMAAAAUABUAAAABAAcAAAAVABUAAAACAAMAAAAWABUAAAABAAMAAAAXABUAAAACAAMAAAAYABUAAAACAAMAAAAZABUAAAAAAAMAAAAaABUAAAAAAAMAAAAbABUAAAACAAMAAAAcABUAAAACAAMAAAAdABUAAAAAAAcAAAAAABYAAAAAAAcAAAABABYAAAABAAMAAAACABYAAAACAAMAAAADABYAAAABAAMAAAAEABYAAAABAAMAAAAFABYAAAACAAMAAAAGABYAAAACAAMAAAAHABYAAAACAAMAAAAIABYAAAABAAMAAAAJABYAAAACAAMAAAAKABYAAAACAAMAAAALABYAAAACAAMAAAAMABYAAAACAAMAAAANABYAAAABAAMAAAAOABYAAAAAAAMAAAAPABYAAAABAAMAAAAQABYAAAABAAMAAAARABYAAAAAAAMAAAASABYAAAACAAMAAAATABYAAAABAAMAAAAUABYAAAAAAAcAAAAVABYAAAAAAAMAAAAWABYAAAABAAMAAAAXABYAAAABAAMAAAAYABYAAAAAAAMAAAAZABYAAAABAAMAAAAaABYAAAACAAMAAAAbABYAAAACAAMAAAAcABYAAAABAAMAAAAdABYAAAABAAcAAAAAABcAAAABAAcAAAABABcAAAACAAMAAAACABcAAAABAAMAAAADABcAAAAAAAMAAAAEABcAAAACAAMAAAAFABcAAAACAAMAAAAGABcAAAABAAMAAAAHABcAAAAAAAMAAAAIABcAAAACAAMAAAAJABcAAAAAAAMAAAAKABcAAAAAAAMAAAALABcAAAAAAAMAAAAMABcAAAABAAMAAAANABcAAAABAAMAAAAOABcAAAABAAMAAAAPABcAAAABAAMAAAAQABcAAAABAAMAAAARABcAAAAAAAMAAAASABcAAAACAAMAAAATABcAAAAAAAMAAAAUABcAAAAAAAcAAAAVABcAAAACAAMAAAAWABcAAAABAAMAAAAXABcAAAAAAAMAAAAYABcAAAABAAMAAAAZABcAAAACAAMAAAAaABcAAAACAAMAAAAbABcAAAACAAMAAAAcABcAAAACAAMAAAAdABcAAAAAAAcAAAAAABgAAAABAAcAAAABABgAAAAAAAMAAAACABgAAAAAAAMAAAADABgAAAABAAMAAAAEABgAAAAAAAMAAAAFABgAAAACAAMAAAAGABgAAAACAAMAAAAHABgAAAAAAAMAAAAIABgAAAAAAAMAAAAJABgAAAAAAAMAAAAKABgAAAAAAAMAAAALABgAAAACAAMAAAAMABgAAAABAAMAAAANABgAAAABAAcAAAAOABgAAAAAAAMAAAAPABgAAAABAAMAAAAQABgAAAACAAMAAAARABgAAAACAAMAAAASABgAAAABAAcAAAATABgAAAACAAMAAAAUABgAAAAAAAcAAAAVABgAAAACAAMAAAAWABgAAAAAAAMAAAAXABgAAAABAAMAAAAYABgAAAAAAAMAAAAZABgAAAABAAMAAAAaABgAAAACAAMAAAAbABgAAAAAAAMAAAAcABgAAAABAAMAAAAdABgAAAABAAcAAAAAABkAAAABAAcAAAABABkAAAACAAMAAAACABkAAAACAAMAAAADABkAAAAAAAMAAAAEABkAAAAAAAMAAAAFABkAAAABAAMAAAAGABkAAAAAAAMAAAAHABkAAAABAAMAAAAIABkAAAABAAMAAAAJABkAAAABAAMAAAAKABkAAAAAAAMAAAALABkAAAABAAMAAAAMABkAAAACAAMAAAANABkAAAABAAcAAAAOABkAAAACAAMAAAAPABkAAAAAAAMAAAAQABkAAAAAAAMAAAARABkAAAACAAMAAAASABkAAAABAAcAAAATABkAAAACAAMAAAAUABkAAAAAAAcAAAAVABkAAAACAAMAAAAWABkAAAACAAMAAAAXABkAAAABAAMAAAAYABkAAAACAAMAAAAZABkAAAABAAMAAAAaABkAAAAAAAMAAAAbABkAAAAAAAMAAAAcABkAAAAAAAMAAAAdABkAAAABAAcAAAAAABoAAAAAAAcAAAABABoAAAAAAAMAAAACABoAAAABAAMAAAADABoAAAAAAAMAAAAEABoAAAABAAMAAAAFABoAAAAAAAMAAAAGABoAAAACAAMAAAAHABoAAAACAAMAAAAIABoAAAACAAMAAAAJABoAAAABAAMAAAAKABoAAAACAAMAAAALABoAAAACAAMAAAAMABoAAAABAAMAAAANABoAAAAAAAcAAAAOABoAAAACAAMAAAAPABoAAAAAAAMAAAAQABoAAAACAAMAAAARABoAAAACAAMAAAASABoAAAACAAMAAAATABoAAAABAAMAAAAUABoAAAAAAAcAAAAVABoAAAABAAMAAAAWABoAAAABAAMAAAAXABoAAAAAAAMAAAAYABoAAAABAAMAAAAZABoAAAAAAAMAAAAaABoAAAAAAAMAAAAbABoAAAAAAAMAAAAcABoAAAAAAAMAAAAdABoAAAABAAcAAAAAABsAAAAAAAcAAAABABsAAAABAAcAAAACABsAAAABAAcAAAADABsAAAAAAAcAAAAEABsAAAAAAAcAAAAFABsAAAAAAAcAAAAGABsAAAAAAAcAAAAHABsAAAABAAcAAAAIABsAAAAAAAcAAAAJABsAAAABAAcAAAAKABsAAAABAAcAAAALABsAAAAAAAcAAAAMABsAAAAAAAcAAAANABsAAAABAAcAAAAOABsAAAABAAcAAAAPABsAAAABAAcAAAAQABsAAAABAAcAAAARABsAAAAAAAcAAAASABsAAAABAAcAAAATABsAAAABAAcAAAAUABsAAAAAAAcAAAAVABsAAAAAAAcAAAAWABsAAAABAAcAAAAXABsAAAAAAAcAAAAYABsAAAABAAcAAAAZABsAAAAAAAcAAAAaABsAAAAAAAcAAAAbABsAAAABAAcAAAAcABsAAAAAAAcAAAAdABsAAAAAAAcAAAA=")
 tile_set = ExtResource("2_i7dv4")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=591606562]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=486642493]
 visible = false
 tile_set = ExtResource("2_i7dv4")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1772253282]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=253934880]
 visible = false
 tile_set = ExtResource("2_i7dv4")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=533192188]
+[node name="PaintedGround" type="Node2D" parent="." unique_id=1699918025]
 z_index = -3
-material = SubResource("ShaderMaterial_rnwf1")
-script = ExtResource("7_mi3ru")
+material = SubResource("ShaderMaterial_a45c3")
+script = ExtResource("7_wf2vi")
 size = Vector2i(30, 28)
-mask = ExtResource("5_48cq4")
-base_texture = ExtResource("4_msflr")
-r_texture = ExtResource("4_msflr")
-g_texture = ExtResource("6_vq5u3")
+mask = ExtResource("5_ctxtt")
+base_texture = ExtResource("4_rnwf1")
+r_texture = ExtResource("4_rnwf1")
+g_texture = ExtResource("6_odlgp")
 
-[node name="Daf9Decor" type="Node2D" parent="." unique_id=1848174931]
+[node name="Daf9Decor" type="Node2D" parent="." unique_id=686571973]
 z_index = -1
 
-[node name="Voile" type="Sprite2D" parent="Daf9Decor" unique_id=114173080]
+[node name="Voile" type="Sprite2D" parent="Daf9Decor" unique_id=521639018]
 texture_filter = 2
 scale = Vector2(96, 96)
-texture = ExtResource("8_a45c3")
+texture = ExtResource("8_igs8l")
 centered = false
 
-[node name="Gravats_8_1" type="Sprite2D" parent="Daf9Decor" unique_id=676899629]
+[node name="Gravats_8_1" type="Sprite2D" parent="Daf9Decor" unique_id=56093990]
 position = Vector2(816, 227)
-texture = ExtResource("9_rnwf1")
+texture = ExtResource("9_ygriu")
 centered = false
 offset = Vector2(-67, -125)
 
-[node name="Gravats_2_2" type="Sprite2D" parent="Daf9Decor" unique_id=1715179941]
+[node name="Gravats_2_2" type="Sprite2D" parent="Daf9Decor" unique_id=665078474]
 position = Vector2(240, 288)
-texture = ExtResource("10_ctxtt")
+texture = ExtResource("10_404lb")
 centered = false
 offset = Vector2(-48, -90)
 
-[node name="Gravats_4_2" type="Sprite2D" parent="Daf9Decor" unique_id=1748131475]
-position = Vector2(432, 280)
-texture = ExtResource("11_odlgp")
+[node name="Gravats_4_2" type="Sprite2D" parent="Daf9Decor" unique_id=1508812189]
+position = Vector2(432, 308)
+texture = ExtResource("11_a8i6p")
 centered = false
-offset = Vector2(-48, -82)
+offset = Vector2(-57.5, -110)
 
-[node name="Gravats_6_2" type="Sprite2D" parent="Daf9Decor" unique_id=901011177]
+[node name="Gravats_6_2" type="Sprite2D" parent="Daf9Decor" unique_id=1171393024]
 position = Vector2(624, 313)
-texture = ExtResource("12_wf2vi")
+texture = ExtResource("12_nwajr")
 centered = false
 offset = Vector2(-72, -115)
 
-[node name="Gravats_10_6" type="Sprite2D" parent="Daf9Decor" unique_id=871683915]
+[node name="Gravats_10_6" type="Sprite2D" parent="Daf9Decor" unique_id=1161241753]
 position = Vector2(1008, 757)
-texture = ExtResource("13_igs8l")
+texture = ExtResource("13_b76fl")
 centered = false
 offset = Vector2(-86.5, -175)
 
-[node name="Gravats_22_6" type="Sprite2D" parent="Daf9Decor" unique_id=1701044689]
+[node name="Gravats_22_6" type="Sprite2D" parent="Daf9Decor" unique_id=1695179643]
 position = Vector2(2160, 697)
-texture = ExtResource("12_wf2vi")
+texture = ExtResource("12_nwajr")
 centered = false
 offset = Vector2(-72, -115)
 
-[node name="Gravats_28_6" type="Sprite2D" parent="Daf9Decor" unique_id=272070367]
+[node name="Gravats_28_6" type="Sprite2D" parent="Daf9Decor" unique_id=1920091795]
 position = Vector2(2736, 707)
-texture = ExtResource("9_rnwf1")
+texture = ExtResource("9_ygriu")
 centered = false
 offset = Vector2(-67, -125)
 
-[node name="Gravats_10_9" type="Sprite2D" parent="Daf9Decor" unique_id=1780706520]
+[node name="Gravats_10_9" type="Sprite2D" parent="Daf9Decor" unique_id=465666034]
 position = Vector2(1008, 985)
-texture = ExtResource("12_wf2vi")
+texture = ExtResource("12_nwajr")
 centered = false
 offset = Vector2(-72, -115)
 
-[node name="Gravats_11_9" type="Sprite2D" parent="Daf9Decor" unique_id=1862006415]
+[node name="Gravats_11_9" type="Sprite2D" parent="Daf9Decor" unique_id=380263275]
 position = Vector2(1104, 980)
-texture = ExtResource("14_ygriu")
+texture = ExtResource("11_a8i6p")
 centered = false
 offset = Vector2(-57.5, -110)
 
-[node name="Gravats_13_9" type="Sprite2D" parent="Daf9Decor" unique_id=1695800237]
+[node name="Gravats_13_9" type="Sprite2D" parent="Daf9Decor" unique_id=923190716]
 position = Vector2(1296, 995)
-texture = ExtResource("9_rnwf1")
+texture = ExtResource("9_ygriu")
 centered = false
 offset = Vector2(-67, -125)
 
-[node name="Gravats_20_9" type="Sprite2D" parent="Daf9Decor" unique_id=208527472]
+[node name="Gravats_20_9" type="Sprite2D" parent="Daf9Decor" unique_id=1303631884]
 position = Vector2(1968, 985)
-texture = ExtResource("12_wf2vi")
+texture = ExtResource("12_nwajr")
 centered = false
 offset = Vector2(-72, -115)
 
-[node name="Gravats_22_9" type="Sprite2D" parent="Daf9Decor" unique_id=1721565011]
+[node name="Gravats_22_9" type="Sprite2D" parent="Daf9Decor" unique_id=1109117935]
 position = Vector2(2160, 980)
-texture = ExtResource("14_ygriu")
+texture = ExtResource("11_a8i6p")
 centered = false
 offset = Vector2(-57.5, -110)
 
-[node name="Gravats_1_18" type="Sprite2D" parent="Daf9Decor" unique_id=1951499561]
+[node name="Gravats_1_18" type="Sprite2D" parent="Daf9Decor" unique_id=1939974292]
 position = Vector2(144, 1844)
-texture = ExtResource("14_ygriu")
+texture = ExtResource("11_a8i6p")
 centered = false
 offset = Vector2(-57.5, -110)
 
-[node name="Gravats_8_18" type="Sprite2D" parent="Daf9Decor" unique_id=944178784]
+[node name="Gravats_8_18" type="Sprite2D" parent="Daf9Decor" unique_id=73141351]
 position = Vector2(816, 1849)
-texture = ExtResource("12_wf2vi")
+texture = ExtResource("12_nwajr")
 centered = false
 offset = Vector2(-72, -115)
 
-[node name="Gravats_14_18" type="Sprite2D" parent="Daf9Decor" unique_id=540662361]
+[node name="Gravats_14_18" type="Sprite2D" parent="Daf9Decor" unique_id=1531050557]
 position = Vector2(1392, 1824)
-texture = ExtResource("10_ctxtt")
+texture = ExtResource("10_404lb")
 centered = false
 offset = Vector2(-48, -90)
 
-[node name="Couronnement_9_8" type="Sprite2D" parent="Daf9Decor" unique_id=1392331623]
+[node name="Couronnement_9_8" type="Sprite2D" parent="Daf9Decor" unique_id=1570507689]
 position = Vector2(864, 768)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 31)
 
-[node name="Couronnement_25_8" type="Sprite2D" parent="Daf9Decor" unique_id=1433630341]
+[node name="Couronnement_25_8" type="Sprite2D" parent="Daf9Decor" unique_id=1311832533]
 position = Vector2(2400, 768)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 31)
 
-[node name="Couronnement_13_16" type="Sprite2D" parent="Daf9Decor" unique_id=1327301174]
+[node name="Couronnement_13_16" type="Sprite2D" parent="Daf9Decor" unique_id=662315288]
 position = Vector2(1248, 1536)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_15_16" type="Sprite2D" parent="Daf9Decor" unique_id=257475750]
+[node name="Couronnement_15_16" type="Sprite2D" parent="Daf9Decor" unique_id=1649869555]
 position = Vector2(1440, 1536)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 31)
 
-[node name="Couronnement_18_16" type="Sprite2D" parent="Daf9Decor" unique_id=198325503]
+[node name="Couronnement_18_16" type="Sprite2D" parent="Daf9Decor" unique_id=1802134539]
 position = Vector2(1728, 1536)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_20_16" type="Sprite2D" parent="Daf9Decor" unique_id=895639214]
+[node name="Couronnement_20_16" type="Sprite2D" parent="Daf9Decor" unique_id=1302440533]
 position = Vector2(1920, 1536)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 31)
 
-[node name="Couronnement_13_24" type="Sprite2D" parent="Daf9Decor" unique_id=1469563783]
+[node name="Couronnement_13_24" type="Sprite2D" parent="Daf9Decor" unique_id=560369539]
 position = Vector2(1248, 2304)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 31)
 
-[node name="Couronnement_1_27" type="Sprite2D" parent="Daf9Decor" unique_id=498049365]
+[node name="Couronnement_1_27" type="Sprite2D" parent="Daf9Decor" unique_id=160066953]
 position = Vector2(96, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_3_27" type="Sprite2D" parent="Daf9Decor" unique_id=939184493]
+[node name="Couronnement_3_27" type="Sprite2D" parent="Daf9Decor" unique_id=1182739760]
 position = Vector2(288, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_5_27" type="Sprite2D" parent="Daf9Decor" unique_id=1231618136]
+[node name="Couronnement_5_27" type="Sprite2D" parent="Daf9Decor" unique_id=862500523]
 position = Vector2(480, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_7_27" type="Sprite2D" parent="Daf9Decor" unique_id=1810494113]
+[node name="Couronnement_7_27" type="Sprite2D" parent="Daf9Decor" unique_id=113161208]
 position = Vector2(672, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_9_27" type="Sprite2D" parent="Daf9Decor" unique_id=806697117]
+[node name="Couronnement_9_27" type="Sprite2D" parent="Daf9Decor" unique_id=1361703745]
 position = Vector2(864, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_11_27" type="Sprite2D" parent="Daf9Decor" unique_id=2123012725]
+[node name="Couronnement_11_27" type="Sprite2D" parent="Daf9Decor" unique_id=2077204141]
 position = Vector2(1056, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_14_27" type="Sprite2D" parent="Daf9Decor" unique_id=1779001380]
+[node name="Couronnement_14_27" type="Sprite2D" parent="Daf9Decor" unique_id=199617108]
 position = Vector2(1344, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_16_27" type="Sprite2D" parent="Daf9Decor" unique_id=963315846]
+[node name="Couronnement_16_27" type="Sprite2D" parent="Daf9Decor" unique_id=1540127947]
 position = Vector2(1536, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_18_27" type="Sprite2D" parent="Daf9Decor" unique_id=1574270223]
+[node name="Couronnement_18_27" type="Sprite2D" parent="Daf9Decor" unique_id=1507540582]
 position = Vector2(1728, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_21_27" type="Sprite2D" parent="Daf9Decor" unique_id=1891375851]
+[node name="Couronnement_21_27" type="Sprite2D" parent="Daf9Decor" unique_id=664675329]
 position = Vector2(2016, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_23_27" type="Sprite2D" parent="Daf9Decor" unique_id=514315971]
+[node name="Couronnement_23_27" type="Sprite2D" parent="Daf9Decor" unique_id=1019135336]
 position = Vector2(2208, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_25_27" type="Sprite2D" parent="Daf9Decor" unique_id=1094078606]
+[node name="Couronnement_25_27" type="Sprite2D" parent="Daf9Decor" unique_id=1318924640]
 position = Vector2(2400, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Couronnement_27_27" type="Sprite2D" parent="Daf9Decor" unique_id=177634484]
+[node name="Couronnement_27_27" type="Sprite2D" parent="Daf9Decor" unique_id=1127967871]
 position = Vector2(2592, 2592)
-texture = ExtResource("15_404lb")
+texture = ExtResource("14_m8kj2")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 31)
 
-[node name="Face_8_0" type="Sprite2D" parent="Daf9Decor" unique_id=715561245]
+[node name="Face_8_0" type="Sprite2D" parent="Daf9Decor" unique_id=1927473752]
 position = Vector2(768, -35)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_20_0" type="Sprite2D" parent="Daf9Decor" unique_id=1505371827]
+[node name="Face_20_0" type="Sprite2D" parent="Daf9Decor" unique_id=1629442831]
 position = Vector2(1920, -35)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_22_0" type="Sprite2D" parent="Daf9Decor" unique_id=1126237806]
+[node name="Face_22_0" type="Sprite2D" parent="Daf9Decor" unique_id=418278334]
 position = Vector2(2112, -35)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_24_0" type="Sprite2D" parent="Daf9Decor" unique_id=631759157]
+[node name="Face_24_0" type="Sprite2D" parent="Daf9Decor" unique_id=1588893822]
 position = Vector2(2304, -34)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_26_0" type="Sprite2D" parent="Daf9Decor" unique_id=1227774407]
+[node name="Face_26_0" type="Sprite2D" parent="Daf9Decor" unique_id=1455011428]
 position = Vector2(2496, -35)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_28_0" type="Sprite2D" parent="Daf9Decor" unique_id=494280174]
+[node name="Face_28_0" type="Sprite2D" parent="Daf9Decor" unique_id=275827331]
 position = Vector2(2688, -34)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 130)
 
-[node name="Face_2_1" type="Sprite2D" parent="Daf9Decor" unique_id=1087719646]
+[node name="Face_2_1" type="Sprite2D" parent="Daf9Decor" unique_id=1376257022]
 position = Vector2(192, 61)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_4_1" type="Sprite2D" parent="Daf9Decor" unique_id=294183077]
+[node name="Face_4_1" type="Sprite2D" parent="Daf9Decor" unique_id=232854645]
 position = Vector2(384, 61)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_6_1" type="Sprite2D" parent="Daf9Decor" unique_id=745449458]
+[node name="Face_6_1" type="Sprite2D" parent="Daf9Decor" unique_id=828594584]
 position = Vector2(576, 62)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_10_1" type="Sprite2D" parent="Daf9Decor" unique_id=812072408]
+[node name="Face_10_1" type="Sprite2D" parent="Daf9Decor" unique_id=1286564654]
 position = Vector2(960, 61)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_12_1" type="Sprite2D" parent="Daf9Decor" unique_id=1380783321]
+[node name="Face_12_1" type="Sprite2D" parent="Daf9Decor" unique_id=1781012953]
 position = Vector2(1152, 61)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_14_1" type="Sprite2D" parent="Daf9Decor" unique_id=2119713101]
+[node name="Face_14_1" type="Sprite2D" parent="Daf9Decor" unique_id=306200091]
 position = Vector2(1344, 61)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_16_1" type="Sprite2D" parent="Daf9Decor" unique_id=1166458512]
+[node name="Face_16_1" type="Sprite2D" parent="Daf9Decor" unique_id=1977528437]
 position = Vector2(1536, 62)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_20_2" type="Sprite2D" parent="Daf9Decor" unique_id=1005286584]
+[node name="Face_20_2" type="Sprite2D" parent="Daf9Decor" unique_id=339706197]
 position = Vector2(1920, 157)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_1_3" type="Sprite2D" parent="Daf9Decor" unique_id=1518118461]
+[node name="Face_1_3" type="Sprite2D" parent="Daf9Decor" unique_id=518939420]
 position = Vector2(96, 253)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_18_3" type="Sprite2D" parent="Daf9Decor" unique_id=1267506407]
+[node name="Face_18_3" type="Sprite2D" parent="Daf9Decor" unique_id=404757250]
 position = Vector2(1728, 253)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_9_5" type="Sprite2D" parent="Daf9Decor" unique_id=260611433]
+[node name="Face_9_5" type="Sprite2D" parent="Daf9Decor" unique_id=131260715]
 position = Vector2(864, 445)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_11_5" type="Sprite2D" parent="Daf9Decor" unique_id=842645799]
+[node name="Face_11_5" type="Sprite2D" parent="Daf9Decor" unique_id=207088481]
 position = Vector2(1056, 445)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_14_5" type="Sprite2D" parent="Daf9Decor" unique_id=76984303]
+[node name="Face_14_5" type="Sprite2D" parent="Daf9Decor" unique_id=1426792430]
 position = Vector2(1344, 445)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_16_5" type="Sprite2D" parent="Daf9Decor" unique_id=1690359142]
+[node name="Face_16_5" type="Sprite2D" parent="Daf9Decor" unique_id=1597147227]
 position = Vector2(1536, 446)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_18_5" type="Sprite2D" parent="Daf9Decor" unique_id=1273583719]
+[node name="Face_18_5" type="Sprite2D" parent="Daf9Decor" unique_id=2079296804]
 position = Vector2(1728, 445)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_20_5" type="Sprite2D" parent="Daf9Decor" unique_id=742459278]
+[node name="Face_20_5" type="Sprite2D" parent="Daf9Decor" unique_id=585412209]
 position = Vector2(1920, 445)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_22_5" type="Sprite2D" parent="Daf9Decor" unique_id=2104270565]
+[node name="Face_22_5" type="Sprite2D" parent="Daf9Decor" unique_id=1248494087]
 position = Vector2(2112, 445)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_26_5" type="Sprite2D" parent="Daf9Decor" unique_id=400312109]
+[node name="Face_26_5" type="Sprite2D" parent="Daf9Decor" unique_id=1536864433]
 position = Vector2(2496, 445)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_28_5" type="Sprite2D" parent="Daf9Decor" unique_id=293093275]
+[node name="Face_28_5" type="Sprite2D" parent="Daf9Decor" unique_id=1114977104]
 position = Vector2(2688, 446)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 130)
 
-[node name="Face_1_8" type="Sprite2D" parent="Daf9Decor" unique_id=1156070372]
+[node name="Face_1_8" type="Sprite2D" parent="Daf9Decor" unique_id=578961577]
 position = Vector2(96, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_3_8" type="Sprite2D" parent="Daf9Decor" unique_id=49316111]
+[node name="Face_3_8" type="Sprite2D" parent="Daf9Decor" unique_id=1279915938]
 position = Vector2(288, 734)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 130)
 
-[node name="Face_6_8" type="Sprite2D" parent="Daf9Decor" unique_id=1463026713]
+[node name="Face_6_8" type="Sprite2D" parent="Daf9Decor" unique_id=1859404440]
 position = Vector2(576, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_8_8" type="Sprite2D" parent="Daf9Decor" unique_id=144254200]
+[node name="Face_8_8" type="Sprite2D" parent="Daf9Decor" unique_id=1089724810]
 position = Vector2(768, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_10_8" type="Sprite2D" parent="Daf9Decor" unique_id=1917208124]
+[node name="Face_10_8" type="Sprite2D" parent="Daf9Decor" unique_id=1843889413]
 position = Vector2(960, 733)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_12_8" type="Sprite2D" parent="Daf9Decor" unique_id=211715510]
+[node name="Face_12_8" type="Sprite2D" parent="Daf9Decor" unique_id=1188875859]
 position = Vector2(1152, 734)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_14_8" type="Sprite2D" parent="Daf9Decor" unique_id=1980678210]
+[node name="Face_14_8" type="Sprite2D" parent="Daf9Decor" unique_id=218532784]
 position = Vector2(1344, 734)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_16_8" type="Sprite2D" parent="Daf9Decor" unique_id=1689080737]
+[node name="Face_16_8" type="Sprite2D" parent="Daf9Decor" unique_id=153805142]
 position = Vector2(1536, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_18_8" type="Sprite2D" parent="Daf9Decor" unique_id=1250960213]
+[node name="Face_18_8" type="Sprite2D" parent="Daf9Decor" unique_id=848410171]
 position = Vector2(1728, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_20_8" type="Sprite2D" parent="Daf9Decor" unique_id=1453747185]
+[node name="Face_20_8" type="Sprite2D" parent="Daf9Decor" unique_id=282850016]
 position = Vector2(1920, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_22_8" type="Sprite2D" parent="Daf9Decor" unique_id=469467797]
+[node name="Face_22_8" type="Sprite2D" parent="Daf9Decor" unique_id=1923982415]
 position = Vector2(2112, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_24_8" type="Sprite2D" parent="Daf9Decor" unique_id=655219653]
+[node name="Face_24_8" type="Sprite2D" parent="Daf9Decor" unique_id=855181874]
 position = Vector2(2304, 733)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_1_17" type="Sprite2D" parent="Daf9Decor" unique_id=1569089657]
+[node name="Face_1_17" type="Sprite2D" parent="Daf9Decor" unique_id=431509422]
 position = Vector2(96, 1598)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_3_17" type="Sprite2D" parent="Daf9Decor" unique_id=1667095610]
+[node name="Face_3_17" type="Sprite2D" parent="Daf9Decor" unique_id=1531564179]
 position = Vector2(288, 1597)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_5_17" type="Sprite2D" parent="Daf9Decor" unique_id=1246903864]
+[node name="Face_5_17" type="Sprite2D" parent="Daf9Decor" unique_id=1994797716]
 position = Vector2(480, 1598)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_7_17" type="Sprite2D" parent="Daf9Decor" unique_id=1814735401]
+[node name="Face_7_17" type="Sprite2D" parent="Daf9Decor" unique_id=859828283]
 position = Vector2(672, 1598)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 130)
 
-[node name="Face_9_17" type="Sprite2D" parent="Daf9Decor" unique_id=1308324938]
+[node name="Face_9_17" type="Sprite2D" parent="Daf9Decor" unique_id=1749922295]
 position = Vector2(864, 1597)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_14_17" type="Sprite2D" parent="Daf9Decor" unique_id=1443793236]
+[node name="Face_14_17" type="Sprite2D" parent="Daf9Decor" unique_id=1403278821]
 position = Vector2(1344, 1597)
-texture = ExtResource("16_a8i6p")
+texture = ExtResource("15_jtbje")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_18_17" type="Sprite2D" parent="Daf9Decor" unique_id=1125690694]
+[node name="Face_18_17" type="Sprite2D" parent="Daf9Decor" unique_id=805874290]
 position = Vector2(1728, 1597)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 131)
 
-[node name="Face_25_17" type="Sprite2D" parent="Daf9Decor" unique_id=1712470042]
+[node name="Face_25_17" type="Sprite2D" parent="Daf9Decor" unique_id=884239762]
 position = Vector2(2400, 1597)
-texture = ExtResource("18_b76fl")
+texture = ExtResource("17_6kcda")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 131)
 
-[node name="Face_28_17" type="Sprite2D" parent="Daf9Decor" unique_id=1887810680]
+[node name="Face_28_17" type="Sprite2D" parent="Daf9Decor" unique_id=545155552]
 position = Vector2(2688, 1596)
-texture = ExtResource("19_m8kj2")
+texture = ExtResource("18_pq5ht")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 132)
 
-[node name="Face_13_21" type="Sprite2D" parent="Daf9Decor" unique_id=953397639]
+[node name="Face_13_21" type="Sprite2D" parent="Daf9Decor" unique_id=1300142147]
 position = Vector2(1248, 1982)
-texture = ExtResource("17_nwajr")
+texture = ExtResource("16_erx70")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 130)
 
-[node name="Entities" type="Node2D" parent="." unique_id=474931758]
+[node name="Entities" type="Node2D" parent="." unique_id=1679854830]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="GrilleA_8_6" type="Node2D" parent="Entities" unique_id=1446762809]
-position = Vector2(816, 672)
-script = ExtResource("3_v7767")
-unless_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([])
-
-[node name="RailA_8_6" type="Node2D" parent="Entities" unique_id=1835227100]
-position = Vector2(816, 672)
-script = ExtResource("3_v7767")
-if_flags = Array[StringName]([&"mansion_switch_on"])
-
-[node name="GrilleA_9_6" type="Node2D" parent="Entities" unique_id=1870827110]
+[node name="GrilleA_9_6" type="Node2D" parent="Entities" unique_id=341397094]
 position = Vector2(912, 672)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(9, 6)])
 
-[node name="RailA_9_6" type="Node2D" parent="Entities" unique_id=50425152]
+[node name="RailA_9_6" type="Node2D" parent="Entities" unique_id=1495802171]
 position = Vector2(912, 672)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleA_8_7" type="Node2D" parent="Entities" unique_id=947256875]
-position = Vector2(816, 768)
-script = ExtResource("3_v7767")
-unless_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([])
-
-[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_8_7" unique_id=893400579]
-position = Vector2(96, 0)
-texture = ExtResource("21_rnwf1")
-centered = false
-offset = Vector2(-32, -262)
-
-[node name="RailA_8_7" type="Node2D" parent="Entities" unique_id=829678544]
-position = Vector2(816, 768)
-script = ExtResource("3_v7767")
-if_flags = Array[StringName]([&"mansion_switch_on"])
-
-[node name="Dessin" type="Sprite2D" parent="Entities/RailA_8_7" unique_id=731542797]
-position = Vector2(96, 0)
-texture = ExtResource("22_ctxtt")
-centered = false
-offset = Vector2(-32.5, -262)
-
-[node name="GrilleA_9_7" type="Node2D" parent="Entities" unique_id=1122520563]
+[node name="GrilleA_9_7" type="Node2D" parent="Entities" unique_id=33449367]
 position = Vector2(912, 768)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(9, 7)])
 
-[node name="RailA_9_7" type="Node2D" parent="Entities" unique_id=1829596043]
+[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_9_7" unique_id=175839926]
+texture = ExtResource("20_skv1i")
+centered = false
+offset = Vector2(-32, -262)
+
+[node name="RailA_9_7" type="Node2D" parent="Entities" unique_id=825610376]
 position = Vector2(912, 768)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleA_16_16" type="Node2D" parent="Entities" unique_id=1881159294]
+[node name="Dessin" type="Sprite2D" parent="Entities/RailA_9_7" unique_id=816043899]
+texture = ExtResource("21_w50yh")
+centered = false
+offset = Vector2(-32.5, -262)
+
+[node name="GrilleA_16_16" type="Node2D" parent="Entities" unique_id=802495506]
 position = Vector2(1584, 1632)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(16, 16)])
 
-[node name="RailA_16_16" type="Node2D" parent="Entities" unique_id=897228728]
+[node name="RailA_16_16" type="Node2D" parent="Entities" unique_id=1560353761]
 position = Vector2(1584, 1632)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleA_17_16" type="Node2D" parent="Entities" unique_id=273943891]
+[node name="GrilleA_17_16" type="Node2D" parent="Entities" unique_id=910088686]
 position = Vector2(1680, 1632)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(17, 16)])
 
-[node name="RailA_17_16" type="Node2D" parent="Entities" unique_id=8289683]
+[node name="RailA_17_16" type="Node2D" parent="Entities" unique_id=1000433781]
 position = Vector2(1680, 1632)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleA_16_17" type="Node2D" parent="Entities" unique_id=1532720157]
+[node name="GrilleA_16_17" type="Node2D" parent="Entities" unique_id=1062520217]
 position = Vector2(1584, 1728)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(16, 17)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_16_17" unique_id=676264331]
+[node name="Dessin" type="Sprite2D" parent="Entities/GrilleA_16_17" unique_id=643522213]
 position = Vector2(48, 0)
-texture = ExtResource("21_jtbje")
+texture = ExtResource("22_sxfhl")
 centered = false
 offset = Vector2(-96, -151)
 
-[node name="RailA_16_17" type="Node2D" parent="Entities" unique_id=173212046]
+[node name="RailA_16_17" type="Node2D" parent="Entities" unique_id=1212985828]
 position = Vector2(1584, 1728)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/RailA_16_17" unique_id=891481307]
+[node name="Dessin" type="Sprite2D" parent="Entities/RailA_16_17" unique_id=1646252106]
 position = Vector2(48, 0)
-texture = ExtResource("22_erx70")
+texture = ExtResource("23_5rxf5")
 centered = false
 offset = Vector2(-96, -143)
 
-[node name="GrilleA_17_17" type="Node2D" parent="Entities" unique_id=110065976]
+[node name="GrilleA_17_17" type="Node2D" parent="Entities" unique_id=708011248]
 position = Vector2(1680, 1728)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(17, 17)])
 
-[node name="RailA_17_17" type="Node2D" parent="Entities" unique_id=192240608]
+[node name="RailA_17_17" type="Node2D" parent="Entities" unique_id=274371581]
 position = Vector2(1680, 1728)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleB_26_16" type="Node2D" parent="Entities" unique_id=997812473]
+[node name="GrilleB_26_16" type="Node2D" parent="Entities" unique_id=299181603]
 position = Vector2(2544, 1632)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(26, 16)])
 
-[node name="RailB_26_16" type="Node2D" parent="Entities" unique_id=1774007724]
+[node name="RailB_26_16" type="Node2D" parent="Entities" unique_id=1497537402]
 position = Vector2(2544, 1632)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleB_27_16" type="Node2D" parent="Entities" unique_id=1927176302]
+[node name="GrilleB_27_16" type="Node2D" parent="Entities" unique_id=686611381]
 position = Vector2(2640, 1632)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(27, 16)])
 
-[node name="RailB_27_16" type="Node2D" parent="Entities" unique_id=1021149013]
+[node name="RailB_27_16" type="Node2D" parent="Entities" unique_id=1195899701]
 position = Vector2(2640, 1632)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleB_26_17" type="Node2D" parent="Entities" unique_id=984835797]
+[node name="GrilleB_26_17" type="Node2D" parent="Entities" unique_id=1721512712]
 position = Vector2(2544, 1728)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(26, 17)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/GrilleB_26_17" unique_id=1094556757]
+[node name="Dessin" type="Sprite2D" parent="Entities/GrilleB_26_17" unique_id=1973910217]
 position = Vector2(48, 0)
-texture = ExtResource("21_jtbje")
+texture = ExtResource("22_sxfhl")
 centered = false
 offset = Vector2(-96, -151)
 
-[node name="RailB_26_17" type="Node2D" parent="Entities" unique_id=176403819]
+[node name="RailB_26_17" type="Node2D" parent="Entities" unique_id=247294614]
 position = Vector2(2544, 1728)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/RailB_26_17" unique_id=565900792]
+[node name="Dessin" type="Sprite2D" parent="Entities/RailB_26_17" unique_id=1636246323]
 position = Vector2(48, 0)
-texture = ExtResource("22_erx70")
+texture = ExtResource("23_5rxf5")
 centered = false
 offset = Vector2(-96, -143)
 
-[node name="GrilleB_27_17" type="Node2D" parent="Entities" unique_id=111137349]
+[node name="GrilleB_27_17" type="Node2D" parent="Entities" unique_id=1566022414]
 position = Vector2(2640, 1728)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(27, 17)])
 
-[node name="RailB_27_17" type="Node2D" parent="Entities" unique_id=521487313]
+[node name="RailB_27_17" type="Node2D" parent="Entities" unique_id=1544847037]
 position = Vector2(2640, 1728)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleB_12_22" type="Node2D" parent="Entities" unique_id=655575589]
-position = Vector2(1200, 2208)
-script = ExtResource("3_v7767")
-if_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([])
-
-[node name="RailB_12_22" type="Node2D" parent="Entities" unique_id=135153577]
-position = Vector2(1200, 2208)
-script = ExtResource("3_v7767")
-unless_flags = Array[StringName]([&"mansion_switch_on"])
-
-[node name="GrilleB_13_22" type="Node2D" parent="Entities" unique_id=848786241]
+[node name="GrilleB_13_22" type="Node2D" parent="Entities" unique_id=117413987]
 position = Vector2(1296, 2208)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(13, 22)])
 
-[node name="RailB_13_22" type="Node2D" parent="Entities" unique_id=32579053]
+[node name="RailB_13_22" type="Node2D" parent="Entities" unique_id=481757089]
 position = Vector2(1296, 2208)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="GrilleB_12_23" type="Node2D" parent="Entities" unique_id=1907879919]
-position = Vector2(1200, 2304)
-script = ExtResource("3_v7767")
-if_flags = Array[StringName]([&"mansion_switch_on"])
-blocking_cells = Array[Vector2i]([])
-
-[node name="Dessin" type="Sprite2D" parent="Entities/GrilleB_12_23" unique_id=1070033421]
-position = Vector2(96, 0)
-texture = ExtResource("21_rnwf1")
-centered = false
-offset = Vector2(-32, -262)
-
-[node name="RailB_12_23" type="Node2D" parent="Entities" unique_id=1165409489]
-position = Vector2(1200, 2304)
-script = ExtResource("3_v7767")
-unless_flags = Array[StringName]([&"mansion_switch_on"])
-
-[node name="Dessin" type="Sprite2D" parent="Entities/RailB_12_23" unique_id=317213851]
-position = Vector2(96, 0)
-texture = ExtResource("22_ctxtt")
-centered = false
-offset = Vector2(-32.5, -262)
-
-[node name="GrilleB_13_23" type="Node2D" parent="Entities" unique_id=1013702388]
+[node name="GrilleB_13_23" type="Node2D" parent="Entities" unique_id=1054438976]
 position = Vector2(1296, 2304)
 script = ExtResource("3_v7767")
 if_flags = Array[StringName]([&"mansion_switch_on"])
 blocking_cells = Array[Vector2i]([Vector2i(13, 23)])
 
-[node name="RailB_13_23" type="Node2D" parent="Entities" unique_id=1621670255]
+[node name="Dessin" type="Sprite2D" parent="Entities/GrilleB_13_23" unique_id=1389881324]
+texture = ExtResource("20_skv1i")
+centered = false
+offset = Vector2(-32, -262)
+
+[node name="RailB_13_23" type="Node2D" parent="Entities" unique_id=819088891]
 position = Vector2(1296, 2304)
 script = ExtResource("3_v7767")
 unless_flags = Array[StringName]([&"mansion_switch_on"])
 
-[node name="EscalierDessin_23_22" type="Node2D" parent="Entities" unique_id=281786014]
+[node name="Dessin" type="Sprite2D" parent="Entities/RailB_13_23" unique_id=656271894]
+texture = ExtResource("21_w50yh")
+centered = false
+offset = Vector2(-32.5, -262)
+
+[node name="EscalierDessin_23_22" type="Node2D" parent="Entities" unique_id=1780759910]
 position = Vector2(2256, 2208)
 script = ExtResource("3_v7767")
 
-[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_23_22" unique_id=1189078022]
-texture = ExtResource("23_6kcda")
+[node name="Dessin" type="Sprite2D" parent="Entities/EscalierDessin_23_22" unique_id=1546770391]
+texture = ExtResource("24_g3vvt")
 centered = false
 offset = Vector2(-48, -119)
 
-[node name="Statue_20_3" type="Node2D" parent="Entities" unique_id=985279283]
+[node name="Statue_20_3" type="Node2D" parent="Entities" unique_id=1098898661]
 position = Vector2(1968, 384)
 script = ExtResource("3_v7767")
 blocking_cells = Array[Vector2i]([Vector2i(20, 3)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Statue_20_3" unique_id=1094187924]
-texture = ExtResource("24_pq5ht")
+[node name="Dessin" type="Sprite2D" parent="Entities/Statue_20_3" unique_id=570148378]
+texture = ExtResource("25_jfgav")
 centered = false
 offset = Vector2(-41, -154)
 
-[node name="Statue_18_25" type="Node2D" parent="Entities" unique_id=1933191474]
+[node name="Statue_18_25" type="Node2D" parent="Entities" unique_id=1988336953]
 position = Vector2(1776, 2496)
 script = ExtResource("3_v7767")
 blocking_cells = Array[Vector2i]([Vector2i(18, 25)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Statue_18_25" unique_id=1018706628]
-texture = ExtResource("24_pq5ht")
+[node name="Dessin" type="Sprite2D" parent="Entities/Statue_18_25" unique_id=94720068]
+texture = ExtResource("25_jfgav")
 centered = false
 offset = Vector2(-41, -154)
 
-[node name="Pupitre_16_20" type="Node2D" parent="Entities" unique_id=1606931185]
+[node name="Pupitre_16_20" type="Node2D" parent="Entities" unique_id=1313562723]
 position = Vector2(1584, 2016)
 script = ExtResource("3_v7767")
 blocking_cells = Array[Vector2i]([Vector2i(16, 20)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Pupitre_16_20" unique_id=1382100203]
-texture = ExtResource("25_skv1i")
+[node name="Dessin" type="Sprite2D" parent="Entities/Pupitre_16_20" unique_id=1792156976]
+texture = ExtResource("26_f8ooj")
 centered = false
 offset = Vector2(-48, -108)
 
-[node name="Daf9Meuble_22_2" type="Sprite2D" parent="Entities" unique_id=823023864]
+[node name="Daf9Meuble_22_2" type="Sprite2D" parent="Entities" unique_id=296453697]
 position = Vector2(2160, 288)
-texture = ExtResource("26_mi3ru")
+texture = ExtResource("27_xdkk3")
 centered = false
 offset = Vector2(-48, -88)
 
-[node name="Daf9Meuble_22_3" type="Sprite2D" parent="Entities" unique_id=1439191028]
+[node name="Daf9Meuble_22_3" type="Sprite2D" parent="Entities" unique_id=168682021]
 position = Vector2(2160, 384)
-texture = ExtResource("27_a45c3")
+texture = ExtResource("28_44ayw")
 centered = false
 offset = Vector2(-45.5, -66)
 
-[node name="Daf9Meuble_24_2" type="Sprite2D" parent="Entities" unique_id=1743159540]
+[node name="Daf9Meuble_24_2" type="Sprite2D" parent="Entities" unique_id=422478643]
 position = Vector2(2352, 288)
-texture = ExtResource("28_rnwf1")
+texture = ExtResource("29_ur1g8")
 centered = false
 offset = Vector2(-48, -107)
 
-[node name="Daf9Meuble_24_3" type="Sprite2D" parent="Entities" unique_id=1530105344]
+[node name="Daf9Meuble_24_3" type="Sprite2D" parent="Entities" unique_id=1101413301]
 position = Vector2(2352, 384)
-texture = ExtResource("26_mi3ru")
+texture = ExtResource("27_xdkk3")
 centered = false
 offset = Vector2(-48, -88)
 
-[node name="Daf9Meuble_26_2" type="Sprite2D" parent="Entities" unique_id=1335201728]
+[node name="Daf9Meuble_26_2" type="Sprite2D" parent="Entities" unique_id=1272712370]
 position = Vector2(2544, 288)
-texture = ExtResource("27_a45c3")
+texture = ExtResource("28_44ayw")
 centered = false
 offset = Vector2(-45.5, -66)
 
-[node name="Daf9Meuble_26_3" type="Sprite2D" parent="Entities" unique_id=666681380]
+[node name="Daf9Meuble_26_3" type="Sprite2D" parent="Entities" unique_id=183740395]
 position = Vector2(2544, 384)
-texture = ExtResource("28_rnwf1")
+texture = ExtResource("29_ur1g8")
 centered = false
 offset = Vector2(-48, -107)
 
-[node name="Daf9Meuble_4_4" type="Sprite2D" parent="Entities" unique_id=1680414222]
+[node name="Daf9Meuble_4_4" type="Sprite2D" parent="Entities" unique_id=64748870]
 position = Vector2(432, 480)
-texture = ExtResource("28_rnwf1")
+texture = ExtResource("29_ur1g8")
 centered = false
 offset = Vector2(-48, -107)
 
-[node name="Daf9Meuble_4_5" type="Sprite2D" parent="Entities" unique_id=772226006]
+[node name="Daf9Meuble_4_5" type="Sprite2D" parent="Entities" unique_id=426132066]
 position = Vector2(432, 576)
-texture = ExtResource("26_mi3ru")
+texture = ExtResource("27_xdkk3")
 centered = false
 offset = Vector2(-48, -88)
 
-[node name="Daf9Meuble_5_5" type="Sprite2D" parent="Entities" unique_id=1875594914]
+[node name="Daf9Meuble_5_5" type="Sprite2D" parent="Entities" unique_id=706002776]
 position = Vector2(528, 576)
-texture = ExtResource("27_a45c3")
+texture = ExtResource("28_44ayw")
 centered = false
 offset = Vector2(-45.5, -66)
 
-[node name="Daf9Meuble_2_10" type="Sprite2D" parent="Entities" unique_id=405731639]
+[node name="Daf9Meuble_2_10" type="Sprite2D" parent="Entities" unique_id=1958882063]
 position = Vector2(240, 1152)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_3_10" type="Sprite2D" parent="Entities" unique_id=1850489400]
+[node name="Daf9Meuble_3_10" type="Sprite2D" parent="Entities" unique_id=1206034845]
 position = Vector2(336, 1152)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_6_10" type="Sprite2D" parent="Entities" unique_id=1601800793]
+[node name="Daf9Meuble_6_10" type="Sprite2D" parent="Entities" unique_id=1689339080]
 position = Vector2(624, 1152)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_7_10" type="Sprite2D" parent="Entities" unique_id=27582798]
+[node name="Daf9Meuble_7_10" type="Sprite2D" parent="Entities" unique_id=621072395]
 position = Vector2(720, 1152)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_2_14" type="Sprite2D" parent="Entities" unique_id=1201207403]
+[node name="Daf9Meuble_2_14" type="Sprite2D" parent="Entities" unique_id=1558107649]
 position = Vector2(240, 1536)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_3_14" type="Sprite2D" parent="Entities" unique_id=1141555326]
+[node name="Daf9Meuble_3_14" type="Sprite2D" parent="Entities" unique_id=1589541688]
 position = Vector2(336, 1536)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_6_14" type="Sprite2D" parent="Entities" unique_id=1821663964]
+[node name="Daf9Meuble_6_14" type="Sprite2D" parent="Entities" unique_id=1757550495]
 position = Vector2(624, 1536)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_7_14" type="Sprite2D" parent="Entities" unique_id=1838220895]
+[node name="Daf9Meuble_7_14" type="Sprite2D" parent="Entities" unique_id=1508261548]
 position = Vector2(720, 1536)
-texture = ExtResource("29_ctxtt")
+texture = ExtResource("30_fk4b4")
 centered = false
 offset = Vector2(-48, -179)
 
-[node name="Daf9Meuble_17_20" type="Sprite2D" parent="Entities" unique_id=1706292339]
+[node name="Daf9Meuble_17_20" type="Sprite2D" parent="Entities" unique_id=1431418141]
 position = Vector2(1680, 2016)
-texture = ExtResource("27_a45c3")
+texture = ExtResource("28_44ayw")
 centered = false
 offset = Vector2(-45.5, -66)
 
-[node name="Daf9Meuble_16_21" type="Sprite2D" parent="Entities" unique_id=778487814]
+[node name="Daf9Meuble_16_21" type="Sprite2D" parent="Entities" unique_id=1925792650]
 position = Vector2(1584, 2112)
-texture = ExtResource("27_a45c3")
+texture = ExtResource("28_44ayw")
 centered = false
 offset = Vector2(-45.5, -66)
 
-[node name="Daf9Meuble_17_21" type="Sprite2D" parent="Entities" unique_id=590523071]
+[node name="Daf9Meuble_17_21" type="Sprite2D" parent="Entities" unique_id=222470812]
 position = Vector2(1680, 2112)
-texture = ExtResource("28_rnwf1")
+texture = ExtResource("29_ur1g8")
 centered = false
 offset = Vector2(-48, -107)
 
-[node name="Daf9Meuble_18_24" type="Sprite2D" parent="Entities" unique_id=869189416]
+[node name="Daf9Meuble_18_24" type="Sprite2D" parent="Entities" unique_id=204422871]
 position = Vector2(1776, 2400)
-texture = ExtResource("26_mi3ru")
+texture = ExtResource("27_xdkk3")
 centered = false
 offset = Vector2(-48, -88)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=272910860]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=2071334116]
 visible = false
 z_index = 10
 tile_set = ExtResource("2_i7dv4")
 
-[node name="Warps" type="Node2D" parent="." unique_id=1143384862]
+[node name="Warps" type="Node2D" parent="." unique_id=1313970929]
 
-[node name="Escalier_s" type="Marker2D" parent="Warps" unique_id=1415666111]
+[node name="Escalier_s" type="Marker2D" parent="Warps" unique_id=1705180349]
 position = Vector2(2256, 2208)
 script = ExtResource("4_rm3y1")
 target_map = &"pokemon_mansion_1f"
 target_spawn = &"arrivee_s"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=2074112337]
+[node name="Interactables" type="Node2D" parent="." unique_id=37032947]
 
-[node name="StatuePoint_20_3" type="Marker2D" parent="Interactables" unique_id=909301422]
+[node name="StatuePoint_20_3" type="Marker2D" parent="Interactables" unique_id=1355262653]
 position = Vector2(1968, 384)
 script = ExtResource("5_vkef6")
 dialogue_id = &"mansion_statue"
 facing = Vector2i(0, -1)
 
-[node name="StatuePoint_18_25" type="Marker2D" parent="Interactables" unique_id=971243374]
+[node name="StatuePoint_18_25" type="Marker2D" parent="Interactables" unique_id=130720427]
 position = Vector2(1776, 2496)
 script = ExtResource("5_vkef6")
 dialogue_id = &"mansion_statue"
 facing = Vector2i(0, -1)
 
-[node name="PupitrePoint_16_20" type="Marker2D" parent="Interactables" unique_id=103927589]
+[node name="PupitrePoint_16_20" type="Marker2D" parent="Interactables" unique_id=2086532100]
 position = Vector2(1584, 2016)
 script = ExtResource("5_vkef6")
 dialogue_id = &"mansion_journal_4"
 
-[node name="Cache_1_9" type="Marker2D" parent="Interactables" unique_id=366849390]
+[node name="Cache_1_9" type="Marker2D" parent="Interactables" unique_id=1316572614]
 position = Vector2(144, 960)
 script = ExtResource("5_vkef6")
 dialogue_id = &"pokemon_mansion_b1f_hidden_1"
 unless_flags = Array[StringName]([&"got_pokemon_mansion_b1f_hidden_1"])
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1356006934]
+[node name="Spawns" type="Node2D" parent="." unique_id=571521340]
 
-[node name="arrivee_s" type="Marker2D" parent="Spawns" unique_id=954320974]
+[node name="arrivee_s" type="Marker2D" parent="Spawns" unique_id=1316925029]
 position = Vector2(2256, 2304)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=439320750]
+[node name="Triggers" type="Node2D" parent="." unique_id=119397470]

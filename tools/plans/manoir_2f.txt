@@ -41,8 +41,8 @@ GRILLE 30 28
 18 ########...#..################
 19 ######.#...#..################
 20 #......#...#..################
-21 #......#...#..################
-22 #.#P##.a......################
+21 #..P...#...#..################
+22 #.####.a......################
 23 #.####.a...#..################
 24 #......#...#..################
 25 #......#...#..################
@@ -62,7 +62,7 @@ arrivee_d                    spawn          25,15        libre   paire=D  # arri
 chute                        spawn          18,14        libre   role=chute  # arrivée du trou_3 du 3F
 statue_1                     statue         2,11         bloque  facing=up  # interrupteur secret (textes 9–11), actionné depuis la case du dessous
 journal_1                    journal        18,2         bloque  # carnet sur pupitre, textes 1–2
-journal_2                    journal        3,22         bloque  # carnet sur pupitre, textes 3–4
+journal_2                    journal        3,21         bloque  # carnet sur pupitre, textes 3–4
 mansion_burglar_1            dresseur       3,17         bloque  facing=down sight=0  # Pillard : Salamèche 34, Reptincel 34 ; on lui parle
 pokemon_mansion_2f_item_1    objet_visible  28,7         bloque  item=calcium  # Calcium (lot 32P : repli Super Bonbon défait)
 FIN
