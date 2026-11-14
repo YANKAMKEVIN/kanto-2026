@@ -74,11 +74,14 @@ func _touch() -> void:
 	var touch := InputEventScreenTouch.new()
 	touch.pressed = true
 	touch.position = Vector2(960, 540)
-	get_viewport().push_input(touch)
+	# Remis directement à l'écran (comme [method _touch_at]) : par la fenêtre, un nœud laissé
+	# par un autre script du même lot de CI pouvait consommer le toucher (échec du lot 5 depuis
+	# le 2026-11-14, le script passait seul).
+	_screen._input(touch)
 	var release := InputEventScreenTouch.new()
 	release.pressed = false
 	release.position = touch.position
-	get_viewport().push_input(release)
+	_screen._input(release)
 
 
 ## L'écran ouvert, l'ancienne espèce présentée (à vitesse réelle, temps simulé).
