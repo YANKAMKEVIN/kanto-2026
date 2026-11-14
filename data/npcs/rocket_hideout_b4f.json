@@ -45,12 +45,12 @@
 		"unless": ["got_rocket_hideout_b4f_item_1"]
 	},
 	"rocket_hideout_b4f_item_2": {
-		"cell": [10, 12], "facing": "down", "sprite": "object/poke_ball_ground",
+		"cell": [10, 12], "facing": "down", "sprite": "object/poke_ball_ground", "lift": 40,
 		"dialogue": "rocket_hideout_b4f_item_2", "verb": "take", "turn_to_player": false,
 		"unless": ["got_rocket_hideout_b4f_item_2"]
 	},
 	"rocket_hideout_b4f_item_3": {
-		"cell": [12, 20], "facing": "down", "sprite": "object/poke_ball_ground",
+		"cell": [12, 20], "facing": "down", "sprite": "object/poke_ball_ground", "lift": 40,
 		"dialogue": "rocket_hideout_b4f_item_3", "verb": "take", "turn_to_player": false,
 		"unless": ["got_rocket_hideout_b4f_item_3"]
 	}

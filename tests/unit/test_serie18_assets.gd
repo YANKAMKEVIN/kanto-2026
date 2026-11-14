@@ -153,8 +153,9 @@ func test_barrier_is_drawn_by_the_middle_segment() -> void:
 		as SpriteFrames
 	assert_not_null(middle)
 	assert_not_null(side)
-	# 3,5 cases : pylônes à cheval sur les machines voisines.
-	assert_eq(middle.get_frame_texture(&"idle_down", 0).get_width(), 336)
+	# 4,5 cases (élargie le 2026-11-14) : pylônes sur les machines voisines (6 et 10), hors des
+	# cases de la barrière (7..9), praticables une fois ouverte.
+	assert_eq(middle.get_frame_texture(&"idle_down", 0).get_width(), 432)
 	assert_true(_map("vermilion_gym").has_node(^"Entities/BarrierPylons"))
 
 

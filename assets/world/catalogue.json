@@ -6627,18 +6627,18 @@
   "int_barriere_active_01": {
    "fichier": "res://assets/world/interiors/int_barriere_active_01.png",
    "taille": [
-    336,
+    432,
     238
    ],
    "contact": {
     "fichier": "res://assets/world/interiors/int_barriere_active_01_contact.png",
     "decalage": [
-     -176,
+     -224,
      -18
     ],
     "echelle": 2,
     "taille": [
-     176,
+     224,
      28
     ]
    }
@@ -6646,18 +6646,18 @@
   "int_barriere_coupee_01": {
    "fichier": "res://assets/world/interiors/int_barriere_coupee_01.png",
    "taille": [
-    336,
+    432,
     237
    ],
    "contact": {
     "fichier": "res://assets/world/interiors/int_barriere_coupee_01_contact.png",
     "decalage": [
-     -176,
+     -224,
      -18
     ],
     "echelle": 2,
     "taille": [
-     176,
+     224,
      28
     ]
    }
@@ -17704,7 +17704,7 @@
   "electric_barrier": {
    "fichier": "res://assets/sprites/objects/painted/electric_barrier.png",
    "taille": [
-    336,
+    432,
     238
    ]
   },

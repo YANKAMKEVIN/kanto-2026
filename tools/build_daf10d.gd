@@ -527,7 +527,10 @@ func _auto_theme(plan_name: String) -> Dictionary:
 				previous = cell
 				var wall := cell + Vector2i.UP
 				var ok := carpet.has(cell) and wall.y >= 1 and _mark(plan, cell) == "." and _mark(plan, wall) == "#" \
-					and _mark(plan, wall + Vector2i.LEFT) == "#" and _mark(plan, wall + Vector2i.RIGHT) == "#"
+					and _mark(plan, wall + Vector2i.LEFT) == "#" and _mark(plan, wall + Vector2i.RIGHT) == "#" \
+					and not "TUD".contains(_mark(plan, wall + Vector2i.UP))
+				# Pas de plante sous un téléporteur ou un escalier : elle le cachait (9F (9, 3), audit
+				# du 2026-11-14).
 				run = run + 1 if ok else 0
 				if ok and run % AUTO_PLANT_STEP == 2 and count < AUTO_PLANTS:
 					plants.append([INT % "int_plante_sylphe_01", wall.x + 0.5, wall.y + 1.0, BLANC, 1.0])

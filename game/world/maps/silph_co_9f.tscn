@@ -2404,31 +2404,25 @@ z_index = -2
 texture = ExtResource("21_wjp0u")
 centered = false
 
-[node name="Daf10dObjet_0" type="Sprite2D" parent="Entities" unique_id=1487952551]
+[node name="Daf10dObjet_0" type="Sprite2D" parent="Entities" unique_id=1313793466]
 position = Vector2(1584, 1056)
 texture = ExtResource("23_em6a3")
 centered = false
 offset = Vector2(-48, -160)
 
-[node name="Daf10dObjet_1" type="Sprite2D" parent="Entities" unique_id=192622156]
+[node name="Daf10dObjet_1" type="Sprite2D" parent="Entities" unique_id=1979869511]
 position = Vector2(2160, 1056)
 texture = ExtResource("23_em6a3")
 centered = false
 offset = Vector2(-48, -160)
 
-[node name="Daf10dObjet_2" type="Sprite2D" parent="Entities" unique_id=1732488794]
+[node name="Daf10dObjet_2" type="Sprite2D" parent="Entities" unique_id=406187047]
 position = Vector2(528, 480)
 texture = ExtResource("23_em6a3")
 centered = false
 offset = Vector2(-48, -160)
 
-[node name="Daf10dObjet_3" type="Sprite2D" parent="Entities" unique_id=1468523844]
-position = Vector2(912, 480)
-texture = ExtResource("23_em6a3")
-centered = false
-offset = Vector2(-48, -160)
-
-[node name="Daf10dObjet_4" type="Sprite2D" parent="Entities" unique_id=739452332]
+[node name="Daf10dObjet_3" type="Sprite2D" parent="Entities" unique_id=165874009]
 position = Vector2(1008, 864)
 texture = ExtResource("23_em6a3")
 centered = false
@@ -2562,10 +2556,10 @@ position = Vector2(1680, 1536)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=200378259]
 
-[node name="Daf10dDecor" type="Node2D" parent="." unique_id=1558275748]
+[node name="Daf10dDecor" type="Node2D" parent="." unique_id=26518914]
 z_index = -2
 
-[node name="Moquette_4_5" type="Sprite2D" parent="Daf10dDecor" unique_id=932779901]
+[node name="Moquette_4_5" type="Sprite2D" parent="Daf10dDecor" unique_id=254879751]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 480)
@@ -2574,7 +2568,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 672, 96)
 
-[node name="Moquette_12_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1233580377]
+[node name="Moquette_12_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1244920050]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 480)
@@ -2583,7 +2577,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 192, 96)
 
-[node name="Moquette_23_5" type="Sprite2D" parent="Daf10dDecor" unique_id=358324014]
+[node name="Moquette_23_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1001172859]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2208, 480)
@@ -2592,7 +2586,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 96, 192, 96)
 
-[node name="Moquette_4_6" type="Sprite2D" parent="Daf10dDecor" unique_id=973561973]
+[node name="Moquette_4_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1232542866]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 576)
@@ -2601,7 +2595,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 672, 96)
 
-[node name="Moquette_12_6" type="Sprite2D" parent="Daf10dDecor" unique_id=790687050]
+[node name="Moquette_12_6" type="Sprite2D" parent="Daf10dDecor" unique_id=16914831]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 576)
@@ -2610,7 +2604,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 192, 96)
 
-[node name="Moquette_17_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1284637600]
+[node name="Moquette_17_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1692121031]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1632, 576)
@@ -2619,7 +2613,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 192, 384, 96)
 
-[node name="Moquette_23_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1013540167]
+[node name="Moquette_23_6" type="Sprite2D" parent="Daf10dDecor" unique_id=1745251875]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2208, 576)
@@ -2628,7 +2622,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 192, 192, 96)
 
-[node name="Moquette_4_7" type="Sprite2D" parent="Daf10dDecor" unique_id=239804421]
+[node name="Moquette_4_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1718841078]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 672)
@@ -2637,7 +2631,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 288, 96)
 
-[node name="Moquette_9_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1945787307]
+[node name="Moquette_9_7" type="Sprite2D" parent="Daf10dDecor" unique_id=892484270]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(864, 672)
@@ -2646,7 +2640,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 192, 96)
 
-[node name="Moquette_12_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1964214016]
+[node name="Moquette_12_7" type="Sprite2D" parent="Daf10dDecor" unique_id=402262979]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 672)
@@ -2655,7 +2649,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 192, 96)
 
-[node name="Moquette_17_7" type="Sprite2D" parent="Daf10dDecor" unique_id=309290879]
+[node name="Moquette_17_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1401253249]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1632, 672)
@@ -2664,7 +2658,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 384, 96)
 
-[node name="Moquette_23_7" type="Sprite2D" parent="Daf10dDecor" unique_id=376822625]
+[node name="Moquette_23_7" type="Sprite2D" parent="Daf10dDecor" unique_id=576135584]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2208, 672)
@@ -2673,7 +2667,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 288, 192, 96)
 
-[node name="Moquette_4_8" type="Sprite2D" parent="Daf10dDecor" unique_id=863672089]
+[node name="Moquette_4_8" type="Sprite2D" parent="Daf10dDecor" unique_id=734132299]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 768)
@@ -2682,7 +2676,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 96)
 
-[node name="Moquette_12_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1982926288]
+[node name="Moquette_12_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1905789067]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 768)
@@ -2691,7 +2685,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 96)
 
-[node name="Moquette_17_8" type="Sprite2D" parent="Daf10dDecor" unique_id=890863100]
+[node name="Moquette_17_8" type="Sprite2D" parent="Daf10dDecor" unique_id=359892354]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1632, 768)
@@ -2700,7 +2694,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 0, 384, 96)
 
-[node name="Moquette_23_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1601269590]
+[node name="Moquette_23_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1314011176]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2208, 768)
@@ -2709,7 +2703,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 0, 192, 96)
 
-[node name="Moquette_4_9" type="Sprite2D" parent="Daf10dDecor" unique_id=740122782]
+[node name="Moquette_4_9" type="Sprite2D" parent="Daf10dDecor" unique_id=221169635]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 864)
@@ -2718,7 +2712,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 384, 96)
 
-[node name="Moquette_9_9" type="Sprite2D" parent="Daf10dDecor" unique_id=606857940]
+[node name="Moquette_9_9" type="Sprite2D" parent="Daf10dDecor" unique_id=1085499045]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(864, 864)
@@ -2727,7 +2721,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 96, 192, 96)
 
-[node name="Moquette_12_9" type="Sprite2D" parent="Daf10dDecor" unique_id=2002586262]
+[node name="Moquette_12_9" type="Sprite2D" parent="Daf10dDecor" unique_id=302324549]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 864)
@@ -2736,7 +2730,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 192, 96)
 
-[node name="Moquette_17_9" type="Sprite2D" parent="Daf10dDecor" unique_id=47652775]
+[node name="Moquette_17_9" type="Sprite2D" parent="Daf10dDecor" unique_id=1412268673]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1632, 864)
@@ -2745,7 +2739,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 96, 384, 96)
 
-[node name="Moquette_23_9" type="Sprite2D" parent="Daf10dDecor" unique_id=1027009903]
+[node name="Moquette_23_9" type="Sprite2D" parent="Daf10dDecor" unique_id=799904705]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2208, 864)
@@ -2754,7 +2748,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 96, 192, 96)
 
-[node name="Moquette_4_10" type="Sprite2D" parent="Daf10dDecor" unique_id=1781427858]
+[node name="Moquette_4_10" type="Sprite2D" parent="Daf10dDecor" unique_id=1575593127]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 960)
@@ -2763,7 +2757,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 384, 96)
 
-[node name="Moquette_9_10" type="Sprite2D" parent="Daf10dDecor" unique_id=1069483696]
+[node name="Moquette_9_10" type="Sprite2D" parent="Daf10dDecor" unique_id=978810925]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(864, 960)
@@ -2772,7 +2766,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 192, 192, 96)
 
-[node name="Moquette_12_10" type="Sprite2D" parent="Daf10dDecor" unique_id=729721329]
+[node name="Moquette_12_10" type="Sprite2D" parent="Daf10dDecor" unique_id=650158983]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 960)
@@ -2781,7 +2775,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 192, 96)
 
-[node name="Moquette_24_10" type="Sprite2D" parent="Daf10dDecor" unique_id=539739643]
+[node name="Moquette_24_10" type="Sprite2D" parent="Daf10dDecor" unique_id=811056984]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2304, 960)
@@ -2790,7 +2784,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 96, 96)
 
-[node name="Moquette_4_11" type="Sprite2D" parent="Daf10dDecor" unique_id=751504455]
+[node name="Moquette_4_11" type="Sprite2D" parent="Daf10dDecor" unique_id=501565397]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 1056)
@@ -2799,7 +2793,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 384, 96)
 
-[node name="Moquette_9_11" type="Sprite2D" parent="Daf10dDecor" unique_id=1264937970]
+[node name="Moquette_9_11" type="Sprite2D" parent="Daf10dDecor" unique_id=446303450]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(864, 1056)
@@ -2808,7 +2802,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 192, 96)
 
-[node name="Moquette_12_11" type="Sprite2D" parent="Daf10dDecor" unique_id=1974074015]
+[node name="Moquette_12_11" type="Sprite2D" parent="Daf10dDecor" unique_id=430509819]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 1056)
@@ -2817,7 +2811,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 192, 96)
 
-[node name="Moquette_15_11" type="Sprite2D" parent="Daf10dDecor" unique_id=917058941]
+[node name="Moquette_15_11" type="Sprite2D" parent="Daf10dDecor" unique_id=727374827]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1440, 1056)
@@ -2826,7 +2820,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 288, 768, 96)
 
-[node name="Moquette_24_11" type="Sprite2D" parent="Daf10dDecor" unique_id=1497907307]
+[node name="Moquette_24_11" type="Sprite2D" parent="Daf10dDecor" unique_id=929171706]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2304, 1056)
@@ -2835,7 +2829,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 96, 96)
 
-[node name="Moquette_4_12" type="Sprite2D" parent="Daf10dDecor" unique_id=20145712]
+[node name="Moquette_4_12" type="Sprite2D" parent="Daf10dDecor" unique_id=980921503]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(384, 1152)
@@ -2844,7 +2838,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 672, 96)
 
-[node name="Moquette_12_12" type="Sprite2D" parent="Daf10dDecor" unique_id=2017988037]
+[node name="Moquette_12_12" type="Sprite2D" parent="Daf10dDecor" unique_id=183177438]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 1152)
@@ -2853,7 +2847,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 96)
 
-[node name="Moquette_15_12" type="Sprite2D" parent="Daf10dDecor" unique_id=528941966]
+[node name="Moquette_15_12" type="Sprite2D" parent="Daf10dDecor" unique_id=548236211]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1440, 1152)
@@ -2862,7 +2856,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 0, 768, 96)
 
-[node name="Moquette_24_12" type="Sprite2D" parent="Daf10dDecor" unique_id=1664299841]
+[node name="Moquette_24_12" type="Sprite2D" parent="Daf10dDecor" unique_id=825085686]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2304, 1152)
@@ -2871,7 +2865,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 96)
 
-[node name="Moquette_5_13" type="Sprite2D" parent="Daf10dDecor" unique_id=2112346044]
+[node name="Moquette_5_13" type="Sprite2D" parent="Daf10dDecor" unique_id=1356395134]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(480, 1248)
@@ -2880,7 +2874,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 96, 96, 96)
 
-[node name="Moquette_7_13" type="Sprite2D" parent="Daf10dDecor" unique_id=128402283]
+[node name="Moquette_7_13" type="Sprite2D" parent="Daf10dDecor" unique_id=87692432]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(672, 1248)
@@ -2889,7 +2883,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 96, 384, 96)
 
-[node name="Moquette_12_13" type="Sprite2D" parent="Daf10dDecor" unique_id=102763408]
+[node name="Moquette_12_13" type="Sprite2D" parent="Daf10dDecor" unique_id=509085280]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 1248)
@@ -2898,7 +2892,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 192, 96)
 
-[node name="Moquette_15_13" type="Sprite2D" parent="Daf10dDecor" unique_id=1123709148]
+[node name="Moquette_15_13" type="Sprite2D" parent="Daf10dDecor" unique_id=488395208]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1440, 1248)
@@ -2907,7 +2901,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 96, 288, 96)
 
-[node name="Moquette_19_13" type="Sprite2D" parent="Daf10dDecor" unique_id=1352491578]
+[node name="Moquette_19_13" type="Sprite2D" parent="Daf10dDecor" unique_id=796937918]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1824, 1248)
@@ -2916,7 +2910,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 96, 384, 96)
 
-[node name="Moquette_24_13" type="Sprite2D" parent="Daf10dDecor" unique_id=1843454746]
+[node name="Moquette_24_13" type="Sprite2D" parent="Daf10dDecor" unique_id=930319439]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(2304, 1248)
@@ -2925,7 +2919,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 96, 96, 96)
 
-[node name="Moquette_1_14" type="Sprite2D" parent="Daf10dDecor" unique_id=1839103172]
+[node name="Moquette_1_14" type="Sprite2D" parent="Daf10dDecor" unique_id=144573311]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(96, 1344)
@@ -2934,7 +2928,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 192, 672, 96)
 
-[node name="Moquette_9_14" type="Sprite2D" parent="Daf10dDecor" unique_id=1432399085]
+[node name="Moquette_9_14" type="Sprite2D" parent="Daf10dDecor" unique_id=283017672]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(864, 1344)
@@ -2943,7 +2937,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 192, 192, 96)
 
-[node name="Moquette_12_14" type="Sprite2D" parent="Daf10dDecor" unique_id=1199337279]
+[node name="Moquette_12_14" type="Sprite2D" parent="Daf10dDecor" unique_id=604295902]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 1344)
@@ -2952,7 +2946,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 192, 192, 96)
 
-[node name="Moquette_15_14" type="Sprite2D" parent="Daf10dDecor" unique_id=1874848546]
+[node name="Moquette_15_14" type="Sprite2D" parent="Daf10dDecor" unique_id=486753481]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1440, 1344)
@@ -2961,7 +2955,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 192, 960, 96)
 
-[node name="Moquette_1_15" type="Sprite2D" parent="Daf10dDecor" unique_id=733756309]
+[node name="Moquette_1_15" type="Sprite2D" parent="Daf10dDecor" unique_id=27107131]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(96, 1440)
@@ -2970,7 +2964,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 96, 96)
 
-[node name="Moquette_3_15" type="Sprite2D" parent="Daf10dDecor" unique_id=2035929298]
+[node name="Moquette_3_15" type="Sprite2D" parent="Daf10dDecor" unique_id=1298836345]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(288, 1440)
@@ -2979,7 +2973,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 288, 96, 96)
 
-[node name="Moquette_5_15" type="Sprite2D" parent="Daf10dDecor" unique_id=2032839372]
+[node name="Moquette_5_15" type="Sprite2D" parent="Daf10dDecor" unique_id=2080739824]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(480, 1440)
@@ -2988,7 +2982,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 96, 96)
 
-[node name="Moquette_7_15" type="Sprite2D" parent="Daf10dDecor" unique_id=1618556733]
+[node name="Moquette_7_15" type="Sprite2D" parent="Daf10dDecor" unique_id=2065901608]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(672, 1440)
@@ -2997,7 +2991,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 288, 96, 96)
 
-[node name="Moquette_9_15" type="Sprite2D" parent="Daf10dDecor" unique_id=961410618]
+[node name="Moquette_9_15" type="Sprite2D" parent="Daf10dDecor" unique_id=1598436954]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(864, 1440)
@@ -3006,7 +3000,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(96, 288, 192, 96)
 
-[node name="Moquette_12_15" type="Sprite2D" parent="Daf10dDecor" unique_id=1863407581]
+[node name="Moquette_12_15" type="Sprite2D" parent="Daf10dDecor" unique_id=279214956]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 1440)
@@ -3015,7 +3009,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 288, 192, 96)
 
-[node name="Moquette_15_15" type="Sprite2D" parent="Daf10dDecor" unique_id=93812552]
+[node name="Moquette_15_15" type="Sprite2D" parent="Daf10dDecor" unique_id=820377033]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1440, 1440)
@@ -3024,7 +3018,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 288, 960, 96)
 
-[node name="Moquette_12_16" type="Sprite2D" parent="Daf10dDecor" unique_id=327514874]
+[node name="Moquette_12_16" type="Sprite2D" parent="Daf10dDecor" unique_id=1075902145]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1152, 1536)
@@ -3033,7 +3027,7 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 96)
 
-[node name="Moquette_15_16" type="Sprite2D" parent="Daf10dDecor" unique_id=957345636]
+[node name="Moquette_15_16" type="Sprite2D" parent="Daf10dDecor" unique_id=640253487]
 modulate = Color(0.74, 0.82, 1, 1)
 texture_repeat = 2
 position = Vector2(1440, 1536)
@@ -3042,70 +3036,70 @@ centered = false
 region_enabled = true
 region_rect = Rect2(288, 0, 960, 96)
 
-[node name="Lueur_0" type="Sprite2D" parent="Daf10dDecor" unique_id=1180750086]
+[node name="Lueur_0" type="Sprite2D" parent="Daf10dDecor" unique_id=860056305]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_em6a3")
 position = Vector2(1200, 240)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_1" type="Sprite2D" parent="Daf10dDecor" unique_id=782032613]
+[node name="Lueur_1" type="Sprite2D" parent="Daf10dDecor" unique_id=310741322]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_2jya0")
 position = Vector2(1680, 240)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_2" type="Sprite2D" parent="Daf10dDecor" unique_id=1908314046]
+[node name="Lueur_2" type="Sprite2D" parent="Daf10dDecor" unique_id=983758454]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_i0uyw")
 position = Vector2(1200, 720)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_3" type="Sprite2D" parent="Daf10dDecor" unique_id=549143292]
+[node name="Lueur_3" type="Sprite2D" parent="Daf10dDecor" unique_id=30713573]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_512sx")
 position = Vector2(2160, 240)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_4" type="Sprite2D" parent="Daf10dDecor" unique_id=1670673352]
+[node name="Lueur_4" type="Sprite2D" parent="Daf10dDecor" unique_id=2004299479]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_33eip")
 position = Vector2(1200, 1200)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_5" type="Sprite2D" parent="Daf10dDecor" unique_id=1756006820]
+[node name="Lueur_5" type="Sprite2D" parent="Daf10dDecor" unique_id=977287177]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_85mi7")
 position = Vector2(2160, 1200)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_6" type="Sprite2D" parent="Daf10dDecor" unique_id=402500091]
+[node name="Lueur_6" type="Sprite2D" parent="Daf10dDecor" unique_id=708711776]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_s7acx")
 position = Vector2(240, 240)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_7" type="Sprite2D" parent="Daf10dDecor" unique_id=1411493350]
+[node name="Lueur_7" type="Sprite2D" parent="Daf10dDecor" unique_id=140209506]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_b3ecx")
 position = Vector2(720, 240)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_8" type="Sprite2D" parent="Daf10dDecor" unique_id=848887808]
+[node name="Lueur_8" type="Sprite2D" parent="Daf10dDecor" unique_id=1251155785]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_120nk")
 position = Vector2(240, 720)
 scale = Vector2(2.25, 2.25)
 texture = SubResource("GradientTexture2D_pgc63")
 
-[node name="Lueur_9" type="Sprite2D" parent="Daf10dDecor" unique_id=1626003043]
+[node name="Lueur_9" type="Sprite2D" parent="Daf10dDecor" unique_id=249201090]
 modulate = Color(1, 0.86, 0.62, 0.16)
 material = SubResource("CanvasItemMaterial_1g552")
 position = Vector2(240, 1200)

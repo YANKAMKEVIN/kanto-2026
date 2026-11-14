@@ -13,4 +13,4 @@ unique_name_in_owner = true
 material = ExtResource("2_3u7m3")
 texture = ExtResource("3_yk1eu")
 centered = false
-offset = Vector2(-168, -238)
+offset = Vector2(-216, -238)
