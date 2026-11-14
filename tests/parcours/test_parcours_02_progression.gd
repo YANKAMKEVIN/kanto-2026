@@ -141,7 +141,7 @@ func test_parcours_02_azuria_a_safrania() -> void:
 	await _play.talk(Vector2i(6, 5), Vector2i.RIGHT)
 	_play.expect(GameState.bag.has(&"master_ball"), "Master Ball du président")
 
-	await _gym("Arène de Safrania", &"saffron_gym", &"tp_19", Vector2i(9, 9), Vector2i.UP,
+	await _gym("Arène de Safrania", &"saffron_gym", &"tp_19", Vector2i(10, 9), Vector2i.UP,
 		&"saffron_gym_sabrina", ["badge_marsh", "tm46_received"], [], "")
 
 	_play.begin("Bilan et relance")

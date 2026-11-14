@@ -16,9 +16,9 @@ const START := "res://tools/debug_start/saffron_gym.json"
 const SABRINA := "res://tools/debug_start/sabrina.json"
 const SAVE_PATH := "user://test_saffron_gym.json"
 const MAP := &"saffron_gym"
-## Case d'où l'on parle à Morgane (9, 8) (repère « but » de la grille).
-const GOAL := Vector2i(9, 9)
-const MORGANE_ROOM := Rect2i(7, 7, 6, 5)
+## Case d'où l'on parle à Morgane (10, 8) (repère « but » de la grille).
+const GOAL := Vector2i(10, 9)
+const MORGANE_ROOM := Rect2i(8, 7, 6, 5)
 const TIMEOUT := 15.0
 const FADE := 0.05
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
@@ -86,7 +86,7 @@ func test_every_pad_leads_onto_the_facing_pad_and_back() -> void:
 		if MORGANE_ROOM.has_point(arrival) and not MORGANE_ROOM.has_point(warp.cell):
 			into_room.append(warp.cell)
 	assert_eq(count, 30, "15 paires de tapis (RB)")
-	assert_eq(into_room, [Vector2i(1, 5)] as Array[Vector2i], "un seul tapis vers Morgane")
+	assert_eq(into_room, [Vector2i(2, 5)] as Array[Vector2i], "un seul tapis vers Morgane")
 
 
 ## De l'entrée à Morgane, à pied et par les tapis (plus court chemin), Dresseurs battus.
@@ -111,10 +111,10 @@ func test_route_from_the_entrance_to_sabrina_is_played() -> void:
 	await _play.walk_to(GOAL)
 	assert_eq(_play.player.get_cell(), GOAL, "devant Morgane")
 	# Retour : un pas de côté puis sur le tapis du centre → salle nord-ouest.
-	await _play.walk_to(Vector2i(11, 11))
+	await _play.walk_to(Vector2i(12, 11))
 	await wait_until(func() -> bool:
 		return not SceneRouter.is_transitioning() and _play.boot.is_stable(), TIMEOUT)
-	assert_eq(_play.player.get_cell(), Vector2i(1, 5), "retour possible")
+	assert_eq(_play.player.get_cell(), Vector2i(2, 5), "retour possible")
 	assert_push_error_count(0)
 
 

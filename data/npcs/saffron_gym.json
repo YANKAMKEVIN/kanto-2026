@@ -1,7 +1,7 @@
 {
 	"morgane": {
 		"cell": [
-			9,
+			10,
 			8
 		],
 		"facing": "down",
@@ -10,7 +10,7 @@
 	},
 	"guide": {
 		"cell": [
-			10,
+			11,
 			15
 		],
 		"facing": "down",
@@ -19,7 +19,7 @@
 	},
 	"melusine": {
 		"cell": [
-			10,
+			11,
 			1
 		],
 		"facing": "down",
@@ -34,7 +34,7 @@
 	},
 	"albin": {
 		"cell": [
-			17,
+			18,
 			1
 		],
 		"facing": "down",
@@ -49,7 +49,7 @@
 	},
 	"ophelie": {
 		"cell": [
-			3,
+			4,
 			7
 		],
 		"facing": "down",
@@ -64,7 +64,7 @@
 	},
 	"nestor": {
 		"cell": [
-			17,
+			18,
 			7
 		],
 		"facing": "down",
@@ -79,7 +79,7 @@
 	},
 	"cassandre": {
 		"cell": [
-			3,
+			4,
 			13
 		],
 		"facing": "down",
@@ -94,7 +94,7 @@
 	},
 	"barnabe": {
 		"cell": [
-			17,
+			18,
 			13
 		],
 		"facing": "down",
@@ -109,7 +109,7 @@
 	},
 	"leandre": {
 		"cell": [
-			3,
+			4,
 			1
 		],
 		"facing": "down",

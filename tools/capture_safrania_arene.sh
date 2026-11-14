@@ -20,9 +20,9 @@ printf '[display]\nwindow/size/window_width_override=2340\nwindow/size/window_he
 
 # nom | images | options de capture_pewter.gd
 SHOTS=(
-	"arene_ensemble|20|--map=saffron_gym --aim=10,9 --zoom=0.45 --noplayer"
+	"arene_ensemble|20|--map=saffron_gym --aim=11,9.5 --zoom=0.45 --noplayer"
 	"arene_entree|40|--map=saffron_gym --spawn=entrance --facing=up"
-	"arene_morgane|40|--map=saffron_gym --cell=9,10 --facing=up"
+	"arene_morgane|40|--map=saffron_gym --cell=10,10 --facing=up"
 	"dojo_ensemble|20|--map=fighting_dojo --aim=5,6 --zoom=0.6 --noplayer"
 	"dojo_balls|40|--map=fighting_dojo --cell=4,2 --facing=up"
 )

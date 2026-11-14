@@ -11,9 +11,9 @@ const ParcoursPlay := preload("res://tests/parcours/parcours_play.gd")
 const DEBUG := "res://tools/debug_start/%s.json"
 ## Arène de Safrania : téléporteur posé → case d'arrivée (plus court chemin du plan
 ## `safrania_arene.txt` : S, SE, NE, NO, salle centrale).
-const SAFFRON_HOPS: Array[Array] = [[Vector2i(11, 15), Vector2i(19, 17)],
-	[Vector2i(15, 15), Vector2i(19, 3)], [Vector2i(15, 5), Vector2i(1, 3)],
-	[Vector2i(1, 5), Vector2i(11, 11)]]
+const SAFFRON_HOPS: Array[Array] = [[Vector2i(12, 15), Vector2i(20, 17)],
+	[Vector2i(16, 15), Vector2i(20, 3)], [Vector2i(16, 5), Vector2i(2, 3)],
+	[Vector2i(2, 5), Vector2i(12, 11)]]
 ## Quiz de Cramois'Île : case devant la machine (tournée vers le haut) et bonne réponse.
 const QUIZ: Array[Array] = [[Vector2i(15, 8), true], [Vector2i(10, 2), false],
 	[Vector2i(9, 8), false], [Vector2i(9, 14), false], [Vector2i(1, 14), true],
@@ -54,7 +54,7 @@ func test_09a_arene_de_safrania_teleporteurs() -> void:
 		_play.expect(_play.player.get_cell() == hop[1], "téléporteur %s → %s (case %s)"
 			% [hop[0], hop[1], _play.player.get_cell()])
 	_play.heal()
-	await _play.talk(Vector2i(9, 9), Vector2i.UP)
+	await _play.talk(Vector2i(10, 9), Vector2i.UP)
 	_play.expect(_play.won(&"saffron_gym_sabrina"), "Morgane battue")
 	_play.expect_flags(["badge_marsh", "tm46_received"], "Badge Marais et CT46")
 	assert_true(_play.report())

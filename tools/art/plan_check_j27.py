@@ -109,7 +109,7 @@ def verifier_arene(r: Rapport) -> None:
 	occupees = _occupees(plan)
 	but = plan.of_kind("but")[0].cells[0]
 	r.ok(plan.positions["morgane"].cells[0] == (but[0], but[1] - 1), "Morgane juste au nord du but")
-	salle_morgane = {(x, y) for x in range(7, 13) for y in range(7, 12)}
+	salle_morgane = {(x, y) for x in range(8, 14) for y in range(7, 12)}  # x RB + 1 (murs extérieurs, 2026-11-14)
 	entrees = [c for c, d in _tapis(plan).items() if d in salle_morgane and c not in salle_morgane]
 	r.ok(len(entrees) == 1, "un seul tapis mène dans la salle de Morgane : %s" % entrees)
 	court = _chemin(plan, set())
