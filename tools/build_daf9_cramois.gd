@@ -406,19 +406,24 @@ func _dress_gates(root: Node, entities: Node, plan: PlanGrid) -> void:
 			var gate := gates[anchor] as Node2D
 			var foot := Vector2((box.position.x + box.end.x) / 2.0 * TILE, box.end.y * TILE)
 			var art := String(groups[key]["art"])
-			var wall_x := _ns_wall_column(plan, box) if art.begins_with("int_grille_manoir_") else -1
-			if wall_x >= 0:
-				# De profil, dans l'axe du mur nord-sud.
+			var wall_x := _ns_wall_column(plan, box)
+			var side := wall_x >= 0
+			if side:
+				# De profil, dans l'axe du mur nord-sud. La herse (2 × 2, audit du 2026-11-14 : herse 4
+				# de Cramois'Île) reste au milieu de ses deux colonnes ; la grille du Manoir ne bloque
+				# que la colonne du mur.
 				art = art.replace("_01", "_cote_01")
-				foot.x = (wall_x + 0.5) * TILE
+				if not key.begins_with("Herse"):
+					foot.x = (wall_x + 0.5) * TILE
 			_sprite(root, gate, "Dessin", PROPS % art, foot - gate.position)
 			if key.begins_with("Herse"):
-				_open_portcullis(root, entities, gate as Node, foot)
+				_open_portcullis(root, entities, gate as Node, foot,
+					"int_herse_ouverte_cote_01" if side else "int_herse_ouverte_01")
 
 
 ## Herse ouverte : affichée si l'un des drapeaux qui ouvrent la herse est levé (deux [FlagGate]
 ## visuels, sans case bloquée).
-func _open_portcullis(root: Node, entities: Node, closed: Node, foot: Vector2) -> void:
+func _open_portcullis(root: Node, entities: Node, closed: Node, foot: Vector2, art: String) -> void:
 	var flags: Array[StringName] = closed.get(&"unless_flags")
 	for i: int in flags.size():
 		var gate := Node2D.new()
@@ -431,7 +436,7 @@ func _open_portcullis(root: Node, entities: Node, closed: Node, foot: Vector2) -
 		gate.set(&"if_flags", if_flags)
 		gate.set(&"unless_flags", unless)
 		_attach(root, entities, gate)
-		_sprite(root, gate, "Dessin", PROPS % "int_herse_ouverte_01", Vector2.ZERO)
+		_sprite(root, gate, "Dessin", PROPS % art, Vector2.ZERO)
 
 
 ## Image posée par le milieu du bas en [param foot] (relatif à [param parent]).

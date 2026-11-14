@@ -2,31 +2,33 @@
 
 [ext_resource type="Script" path="res://game/world/map.gd" id="1_ubajb"]
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="2_dm61y"]
-[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_h2llv"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="3_nlyuk"]
 [ext_resource type="Script" path="res://game/world/flag_gate.gd" id="3_x6gum"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="4_0yd3a"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_dalles_arene_01.png" id="4_4nfnq"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_dalles_arene_01.png" id="4_mcuin"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="5_caxar"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/cinnabar_gym_ground.png" id="5_nlyuk"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_arene_01.png" id="6_mcuin"]
-[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="7_ld7ns"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/cinnabar_gym_voile.png" id="8_h60c8"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_cap_01.png" id="9_i5q7y"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_02.png" id="10_x7w00"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_01.png" id="11_ur0mw"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_04.png" id="12_bsusq"]
-[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_03.png" id="13_we2m8"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_machine_quiz_01.png" id="15_1xrxd"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_herse_fermee_01.png" id="16_dh65c"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_statue_arene_01.png" id="17_neyry"]
-[ext_resource type="Texture2D" path="res://assets/world/props/int_herse_ouverte_01.png" id="18_ovmro"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/cinnabar_gym_ground.png" id="5_ld7ns"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_masse_arene_01.png" id="6_h60c8"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="7_i5q7y"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/cinnabar_gym_voile.png" id="8_x7w00"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_cap_01.png" id="9_ur0mw"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_02.png" id="10_bsusq"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_01.png" id="11_we2m8"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_04.png" id="12_1xrxd"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_mur_arene_03.png" id="13_dh65c"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_machine_quiz_01.png" id="15_neyry"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_herse_fermee_01.png" id="16_ovmro"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_herse_fermee_cote_01.png" id="17_fuxs7"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_statue_arene_01.png" id="18_ivkgf"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_herse_ouverte_01.png" id="19_vpop7"]
+[ext_resource type="Texture2D" path="res://assets/world/props/int_herse_ouverte_cote_01.png" id="20_41xhd"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h2llv"]
-shader = ExtResource("3_h2llv")
-shader_parameter/grass_texture = ExtResource("4_4nfnq")
-shader_parameter/paving_texture = ExtResource("4_4nfnq")
-shader_parameter/path_texture = ExtResource("6_mcuin")
-shader_parameter/ground_mask = ExtResource("5_nlyuk")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elw28"]
+shader = ExtResource("3_nlyuk")
+shader_parameter/grass_texture = ExtResource("4_mcuin")
+shader_parameter/paving_texture = ExtResource("4_mcuin")
+shader_parameter/path_texture = ExtResource("6_h60c8")
+shader_parameter/ground_mask = ExtResource("5_ld7ns")
 shader_parameter/tile_size = 96.0
 shader_parameter/texture_size = 384.0
 shader_parameter/paving_scale = 1.0
@@ -39,627 +41,690 @@ shader_parameter/foam_strength = null
 shader_parameter/square_shore = null
 shader_parameter/pass_mode = null
 
-[node name="CinnabarGym" type="Node2D" unique_id=326483600]
+[node name="CinnabarGym" type="Node2D" unique_id=791690698]
 script = ExtResource("1_ubajb")
 map_id = &"cinnabar_gym"
 display_name = "Cramois'Île"
-size = Vector2i(20, 18)
+size = Vector2i(21, 19)
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1709293738]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1345854243]
 visible = false
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAABAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAAAAAcAAAAJAAAAAAABAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAAAAAcAAAARAAAAAAABAAcAAAASAAAAAAAAAAcAAAATAAAAAAAAAAcAAAAAAAEAAAAAAAcAAAABAAEAAAABAAMAAAACAAEAAAAAAAcAAAADAAEAAAAAAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAAAAAcAAAAHAAEAAAABAAcAAAAIAAEAAAABAAcAAAAJAAEAAAAAAAMAAAAKAAEAAAAAAAcAAAALAAEAAAAAAAcAAAAMAAEAAAACAAMAAAANAAEAAAAAAAMAAAAOAAEAAAAAAAMAAAAPAAEAAAAAAAMAAAAQAAEAAAABAAMAAAARAAEAAAABAAMAAAASAAEAAAAAAAMAAAATAAEAAAACAAMAAAAAAAIAAAABAAcAAAABAAIAAAACAAMAAAACAAIAAAACAAMAAAADAAIAAAACAAMAAAAEAAIAAAACAAMAAAAFAAIAAAAAAAMAAAAGAAIAAAABAAcAAAAHAAIAAAABAAcAAAAIAAIAAAABAAcAAAAJAAIAAAACAAMAAAAKAAIAAAAAAAMAAAALAAIAAAACAAMAAAAMAAIAAAABAAMAAAANAAIAAAAAAAMAAAAOAAIAAAABAAcAAAAPAAIAAAABAAMAAAAQAAIAAAABAAMAAAARAAIAAAABAAMAAAASAAIAAAABAAMAAAATAAIAAAAAAAMAAAAAAAMAAAAAAAcAAAABAAMAAAACAAMAAAACAAMAAAACAAMAAAADAAMAAAAAAAMAAAAEAAMAAAABAAMAAAAFAAMAAAABAAMAAAAGAAMAAAABAAcAAAAHAAMAAAAAAAcAAAAIAAMAAAABAAcAAAAJAAMAAAABAAMAAAAKAAMAAAAAAAMAAAALAAMAAAABAAMAAAAMAAMAAAAAAAMAAAANAAMAAAAAAAMAAAAOAAMAAAABAAcAAAAPAAMAAAABAAMAAAAQAAMAAAACAAMAAAARAAMAAAACAAMAAAASAAMAAAACAAMAAAATAAMAAAAAAAMAAAAAAAQAAAABAAcAAAABAAQAAAAAAAMAAAACAAQAAAACAAMAAAADAAQAAAAAAAMAAAAEAAQAAAACAAMAAAAFAAQAAAAAAAMAAAAGAAQAAAABAAcAAAAHAAQAAAABAAcAAAAIAAQAAAABAAcAAAAJAAQAAAACAAMAAAAKAAQAAAAAAAMAAAALAAQAAAACAAMAAAAMAAQAAAAAAAMAAAANAAQAAAAAAAMAAAAOAAQAAAABAAcAAAAPAAQAAAAAAAMAAAAQAAQAAAACAAMAAAARAAQAAAAAAAMAAAASAAQAAAACAAMAAAATAAQAAAABAAMAAAAAAAUAAAAAAAcAAAABAAUAAAAAAAMAAAACAAUAAAABAAMAAAADAAUAAAACAAMAAAAEAAUAAAABAAMAAAAFAAUAAAACAAMAAAAGAAUAAAABAAcAAAAHAAUAAAABAAcAAAAIAAUAAAABAAcAAAAJAAUAAAACAAMAAAAKAAUAAAAAAAMAAAALAAUAAAAAAAMAAAAMAAUAAAAAAAMAAAANAAUAAAAAAAMAAAAOAAUAAAAAAAcAAAAPAAUAAAAAAAMAAAAQAAUAAAABAAMAAAARAAUAAAACAAMAAAASAAUAAAABAAMAAAATAAUAAAACAAMAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAcAAAACAAYAAAABAAcAAAADAAYAAAAAAAcAAAAEAAYAAAAAAAMAAAAFAAYAAAAAAAMAAAAGAAYAAAABAAcAAAAHAAYAAAAAAAcAAAAIAAYAAAABAAcAAAAJAAYAAAAAAAcAAAAKAAYAAAAAAAcAAAALAAYAAAABAAcAAAAMAAYAAAABAAMAAAANAAYAAAACAAMAAAAOAAYAAAABAAcAAAAPAAYAAAAAAAcAAAAQAAYAAAAAAAcAAAARAAYAAAAAAAcAAAASAAYAAAAAAAMAAAATAAYAAAABAAMAAAAAAAcAAAABAAcAAAABAAcAAAABAAcAAAACAAcAAAACAAMAAAADAAcAAAAAAAMAAAAEAAcAAAABAAMAAAAFAAcAAAACAAMAAAAGAAcAAAAAAAcAAAAHAAcAAAABAAcAAAAIAAcAAAAAAAcAAAAJAAcAAAABAAcAAAAKAAcAAAAAAAMAAAALAAcAAAACAAMAAAAMAAcAAAAAAAMAAAANAAcAAAABAAMAAAAOAAcAAAAAAAcAAAAPAAcAAAABAAcAAAAQAAcAAAABAAMAAAARAAcAAAACAAMAAAASAAcAAAABAAMAAAATAAcAAAAAAAMAAAAAAAgAAAABAAcAAAABAAgAAAABAAMAAAACAAgAAAABAAMAAAADAAgAAAACAAMAAAAEAAgAAAABAAMAAAAFAAgAAAABAAMAAAAGAAgAAAAAAAcAAAAHAAgAAAAAAAcAAAAIAAgAAAABAAcAAAAJAAgAAAAAAAMAAAAKAAgAAAAAAAMAAAALAAgAAAABAAMAAAAMAAgAAAACAAMAAAANAAgAAAABAAMAAAAOAAgAAAAAAAcAAAAPAAgAAAABAAMAAAAQAAgAAAAAAAMAAAARAAgAAAAAAAMAAAASAAgAAAAAAAMAAAATAAgAAAABAAMAAAAAAAkAAAAAAAcAAAABAAkAAAABAAMAAAACAAkAAAACAAMAAAADAAkAAAACAAMAAAAEAAkAAAACAAMAAAAFAAkAAAAAAAMAAAAGAAkAAAAAAAcAAAAHAAkAAAABAAcAAAAIAAkAAAAAAAcAAAAJAAkAAAACAAMAAAAKAAkAAAAAAAMAAAALAAkAAAAAAAMAAAAMAAkAAAACAAMAAAANAAkAAAABAAMAAAAOAAkAAAABAAcAAAAPAAkAAAABAAMAAAAQAAkAAAABAAMAAAARAAkAAAABAAMAAAASAAkAAAAAAAMAAAATAAkAAAACAAMAAAAAAAoAAAABAAcAAAABAAoAAAABAAMAAAACAAoAAAABAAMAAAADAAoAAAACAAMAAAAEAAoAAAACAAMAAAAFAAoAAAABAAMAAAAGAAoAAAAAAAcAAAAHAAoAAAABAAcAAAAIAAoAAAABAAcAAAAJAAoAAAACAAMAAAAKAAoAAAABAAMAAAALAAoAAAACAAMAAAAMAAoAAAAAAAMAAAANAAoAAAABAAMAAAAOAAoAAAABAAcAAAAPAAoAAAABAAMAAAAQAAoAAAACAAMAAAARAAoAAAACAAMAAAASAAoAAAAAAAMAAAATAAoAAAABAAMAAAAAAAsAAAAAAAcAAAABAAsAAAACAAMAAAACAAsAAAABAAMAAAADAAsAAAABAAMAAAAEAAsAAAACAAMAAAAFAAsAAAABAAMAAAAGAAsAAAABAAcAAAAHAAsAAAAAAAcAAAAIAAsAAAAAAAcAAAAJAAsAAAABAAMAAAAKAAsAAAAAAAMAAAALAAsAAAACAAMAAAAMAAsAAAACAAMAAAANAAsAAAABAAMAAAAOAAsAAAABAAcAAAAPAAsAAAAAAAcAAAAQAAsAAAAAAAcAAAARAAsAAAAAAAcAAAASAAsAAAACAAMAAAATAAsAAAAAAAMAAAAAAAwAAAAAAAcAAAABAAwAAAAAAAcAAAACAAwAAAAAAAcAAAADAAwAAAAAAAcAAAAEAAwAAAACAAMAAAAFAAwAAAAAAAMAAAAGAAwAAAAAAAcAAAAHAAwAAAABAAcAAAAIAAwAAAABAAcAAAAJAAwAAAAAAAcAAAAKAAwAAAABAAcAAAALAAwAAAAAAAcAAAAMAAwAAAACAAMAAAANAAwAAAABAAMAAAAOAAwAAAABAAcAAAAPAAwAAAAAAAMAAAAQAAwAAAACAAMAAAARAAwAAAABAAcAAAASAAwAAAACAAMAAAATAAwAAAAAAAMAAAAAAA0AAAABAAcAAAABAA0AAAAAAAcAAAACAA0AAAAAAAMAAAADAA0AAAABAAMAAAAEAA0AAAABAAMAAAAFAA0AAAAAAAMAAAAGAA0AAAABAAcAAAAHAA0AAAAAAAcAAAAIAA0AAAABAAcAAAAJAA0AAAABAAcAAAAKAA0AAAACAAMAAAALAA0AAAACAAMAAAAMAA0AAAACAAMAAAANAA0AAAABAAMAAAAOAA0AAAABAAcAAAAPAA0AAAAAAAMAAAAQAA0AAAABAAMAAAARAA0AAAACAAMAAAASAA0AAAABAAMAAAATAA0AAAAAAAMAAAAAAA4AAAABAAcAAAABAA4AAAACAAMAAAACAA4AAAACAAMAAAADAA4AAAABAAMAAAAEAA4AAAACAAMAAAAFAA4AAAAAAAMAAAAGAA4AAAABAAcAAAAHAA4AAAAAAAcAAAAIAA4AAAABAAcAAAAJAA4AAAACAAMAAAAKAA4AAAAAAAMAAAALAA4AAAABAAMAAAAMAA4AAAAAAAMAAAANAA4AAAABAAMAAAAOAA4AAAAAAAcAAAAPAA4AAAABAAMAAAAQAA4AAAAAAAMAAAARAA4AAAABAAMAAAASAA4AAAACAAMAAAATAA4AAAABAAMAAAAAAA8AAAAAAAcAAAABAA8AAAACAAMAAAACAA8AAAAAAAMAAAADAA8AAAACAAMAAAAEAA8AAAABAAMAAAAFAA8AAAACAAMAAAAGAA8AAAABAAcAAAAHAA8AAAABAAcAAAAIAA8AAAABAAcAAAAJAA8AAAABAAMAAAAKAA8AAAACAAMAAAALAA8AAAABAAMAAAAMAA8AAAAAAAMAAAANAA8AAAACAAMAAAAOAA8AAAAAAAcAAAAPAA8AAAAAAAMAAAAQAA8AAAACAAMAAAARAA8AAAAAAAMAAAASAA8AAAABAAMAAAATAA8AAAAAAAMAAAAAABAAAAAAAAcAAAABABAAAAABAAMAAAACABAAAAABAAMAAAADABAAAAABAAMAAAAEABAAAAACAAMAAAAFABAAAAAAAAMAAAAGABAAAAABAAMAAAAHABAAAAABAAMAAAAIABAAAAACAAMAAAAJABAAAAACAAMAAAAKABAAAAACAAMAAAALABAAAAAAAAMAAAAMABAAAAABAAMAAAANABAAAAACAAMAAAAOABAAAAABAAcAAAAPABAAAAAAAAcAAAAQABAAAAAAAAMAAAARABAAAAABAAMAAAASABAAAAAAAAMAAAATABAAAAABAAMAAAAAABEAAAABAAcAAAABABEAAAACAAMAAAACABEAAAACAAMAAAADABEAAAACAAMAAAAEABEAAAACAAMAAAAFABEAAAABAAMAAAAGABEAAAAAAAMAAAAHABEAAAAAAAMAAAAIABEAAAACAAMAAAAJABEAAAABAAMAAAAKABEAAAABAAMAAAALABEAAAAAAAMAAAAMABEAAAACAAMAAAANABEAAAACAAMAAAAOABEAAAABAAcAAAAPABEAAAABAAMAAAAQABEAAAACAAIAAAARABEAAAACAAIAAAASABEAAAAAAAMAAAATABEAAAAAAAMAAAA=")
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAcAAAABAAAAAAABAAcAAAACAAAAAAAAAAcAAAADAAAAAAABAAcAAAAEAAAAAAABAAcAAAAFAAAAAAABAAcAAAAGAAAAAAABAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAAAAAcAAAAJAAAAAAABAAcAAAAKAAAAAAAAAAcAAAALAAAAAAABAAcAAAAMAAAAAAABAAcAAAANAAAAAAABAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAAAAAcAAAARAAAAAAABAAcAAAASAAAAAAAAAAcAAAATAAAAAAAAAAcAAAAUAAAAAAAAAAcAAAAAAAEAAAABAAcAAAABAAEAAAAAAAMAAAACAAEAAAAAAAcAAAADAAEAAAAAAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAABAAcAAAAHAAEAAAABAAcAAAAIAAEAAAAAAAcAAAAJAAEAAAAAAAMAAAAKAAEAAAAAAAcAAAALAAEAAAABAAcAAAAMAAEAAAAAAAMAAAANAAEAAAAAAAMAAAAOAAEAAAAAAAMAAAAPAAEAAAABAAMAAAAQAAEAAAABAAMAAAARAAEAAAAAAAMAAAASAAEAAAACAAMAAAATAAEAAAABAAMAAAAUAAEAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAACAAMAAAACAAIAAAACAAMAAAADAAIAAAAAAAMAAAAEAAIAAAACAAMAAAAFAAIAAAACAAMAAAAGAAIAAAABAAcAAAAHAAIAAAABAAcAAAAIAAIAAAAAAAcAAAAJAAIAAAACAAMAAAAKAAIAAAABAAMAAAALAAIAAAAAAAMAAAAMAAIAAAACAAMAAAANAAIAAAABAAMAAAAOAAIAAAAAAAcAAAAPAAIAAAABAAMAAAAQAAIAAAABAAMAAAARAAIAAAAAAAMAAAASAAIAAAABAAMAAAATAAIAAAACAAMAAAAUAAIAAAABAAcAAAAAAAMAAAABAAcAAAABAAMAAAABAAMAAAACAAMAAAABAAMAAAADAAMAAAABAAMAAAAEAAMAAAACAAMAAAAFAAMAAAABAAMAAAAGAAMAAAABAAcAAAAHAAMAAAABAAcAAAAIAAMAAAABAAcAAAAJAAMAAAAAAAMAAAAKAAMAAAAAAAMAAAALAAMAAAACAAMAAAAMAAMAAAABAAMAAAANAAMAAAACAAMAAAAOAAMAAAAAAAcAAAAPAAMAAAACAAMAAAAQAAMAAAAAAAMAAAARAAMAAAACAAMAAAASAAMAAAAAAAMAAAATAAMAAAACAAMAAAAUAAMAAAABAAcAAAAAAAQAAAAAAAcAAAABAAQAAAAAAAMAAAACAAQAAAAAAAMAAAADAAQAAAABAAMAAAAEAAQAAAABAAMAAAAFAAQAAAACAAMAAAAGAAQAAAAAAAcAAAAHAAQAAAAAAAcAAAAIAAQAAAAAAAcAAAAJAAQAAAAAAAMAAAAKAAQAAAAAAAMAAAALAAQAAAAAAAMAAAAMAAQAAAACAAMAAAANAAQAAAAAAAMAAAAOAAQAAAABAAcAAAAPAAQAAAABAAMAAAAQAAQAAAABAAMAAAARAAQAAAAAAAMAAAASAAQAAAABAAMAAAATAAQAAAACAAMAAAAUAAQAAAAAAAcAAAAAAAUAAAABAAcAAAABAAUAAAABAAMAAAACAAUAAAABAAMAAAADAAUAAAABAAMAAAAEAAUAAAACAAMAAAAFAAUAAAAAAAMAAAAGAAUAAAABAAcAAAAHAAUAAAABAAcAAAAIAAUAAAAAAAcAAAAJAAUAAAABAAMAAAAKAAUAAAAAAAMAAAALAAUAAAABAAMAAAAMAAUAAAACAAMAAAANAAUAAAABAAMAAAAOAAUAAAABAAcAAAAPAAUAAAAAAAMAAAAQAAUAAAAAAAMAAAARAAUAAAAAAAMAAAASAAUAAAACAAMAAAATAAUAAAAAAAMAAAAUAAUAAAAAAAcAAAAAAAYAAAABAAcAAAABAAYAAAAAAAcAAAACAAYAAAABAAcAAAADAAYAAAAAAAcAAAAEAAYAAAABAAMAAAAFAAYAAAABAAMAAAAGAAYAAAAAAAcAAAAHAAYAAAAAAAcAAAAIAAYAAAABAAcAAAAJAAYAAAAAAAcAAAAKAAYAAAAAAAcAAAALAAYAAAAAAAcAAAAMAAYAAAAAAAMAAAANAAYAAAABAAMAAAAOAAYAAAABAAcAAAAPAAYAAAABAAcAAAAQAAYAAAAAAAcAAAARAAYAAAAAAAcAAAASAAYAAAABAAMAAAATAAYAAAACAAMAAAAUAAYAAAAAAAcAAAAAAAcAAAABAAcAAAABAAcAAAAAAAcAAAACAAcAAAACAAMAAAADAAcAAAAAAAMAAAAEAAcAAAACAAMAAAAFAAcAAAAAAAMAAAAGAAcAAAABAAcAAAAHAAcAAAAAAAcAAAAIAAcAAAABAAcAAAAJAAcAAAABAAcAAAAKAAcAAAACAAMAAAALAAcAAAABAAMAAAAMAAcAAAAAAAMAAAANAAcAAAABAAMAAAAOAAcAAAAAAAcAAAAPAAcAAAABAAcAAAAQAAcAAAACAAMAAAARAAcAAAABAAMAAAASAAcAAAABAAMAAAATAAcAAAAAAAMAAAAUAAcAAAAAAAcAAAAAAAgAAAABAAcAAAABAAgAAAAAAAMAAAACAAgAAAAAAAMAAAADAAgAAAABAAMAAAAEAAgAAAACAAMAAAAFAAgAAAABAAMAAAAGAAgAAAAAAAcAAAAHAAgAAAAAAAcAAAAIAAgAAAAAAAcAAAAJAAgAAAAAAAMAAAAKAAgAAAAAAAMAAAALAAgAAAABAAMAAAAMAAgAAAAAAAMAAAANAAgAAAABAAMAAAAOAAgAAAAAAAcAAAAPAAgAAAACAAMAAAAQAAgAAAACAAMAAAARAAgAAAAAAAMAAAASAAgAAAABAAMAAAATAAgAAAABAAMAAAAUAAgAAAAAAAcAAAAAAAkAAAABAAcAAAABAAkAAAAAAAMAAAACAAkAAAAAAAMAAAADAAkAAAACAAMAAAAEAAkAAAABAAMAAAAFAAkAAAACAAMAAAAGAAkAAAAAAAcAAAAHAAkAAAAAAAcAAAAIAAkAAAABAAcAAAAJAAkAAAAAAAMAAAAKAAkAAAACAAMAAAALAAkAAAACAAMAAAAMAAkAAAABAAMAAAANAAkAAAABAAMAAAAOAAkAAAABAAcAAAAPAAkAAAACAAMAAAAQAAkAAAABAAMAAAARAAkAAAAAAAMAAAASAAkAAAAAAAMAAAATAAkAAAAAAAMAAAAUAAkAAAABAAcAAAAAAAoAAAAAAAcAAAABAAoAAAACAAMAAAACAAoAAAAAAAMAAAADAAoAAAABAAMAAAAEAAoAAAACAAMAAAAFAAoAAAABAAMAAAAGAAoAAAAAAAcAAAAHAAoAAAABAAcAAAAIAAoAAAAAAAcAAAAJAAoAAAABAAMAAAAKAAoAAAACAAMAAAALAAoAAAACAAMAAAAMAAoAAAABAAMAAAANAAoAAAABAAMAAAAOAAoAAAAAAAcAAAAPAAoAAAABAAMAAAAQAAoAAAABAAMAAAARAAoAAAACAAMAAAASAAoAAAAAAAMAAAATAAoAAAABAAMAAAAUAAoAAAABAAcAAAAAAAsAAAAAAAcAAAABAAsAAAACAAMAAAACAAsAAAABAAMAAAADAAsAAAABAAMAAAAEAAsAAAABAAMAAAAFAAsAAAAAAAMAAAAGAAsAAAAAAAcAAAAHAAsAAAAAAAcAAAAIAAsAAAABAAcAAAAJAAsAAAACAAMAAAAKAAsAAAACAAMAAAALAAsAAAABAAMAAAAMAAsAAAAAAAMAAAANAAsAAAACAAMAAAAOAAsAAAABAAcAAAAPAAsAAAAAAAcAAAAQAAsAAAABAAcAAAARAAsAAAABAAcAAAASAAsAAAACAAMAAAATAAsAAAAAAAMAAAAUAAsAAAAAAAcAAAAAAAwAAAABAAcAAAABAAwAAAABAAcAAAACAAwAAAABAAcAAAADAAwAAAAAAAcAAAAEAAwAAAACAAMAAAAFAAwAAAAAAAMAAAAGAAwAAAABAAcAAAAHAAwAAAABAAcAAAAIAAwAAAABAAcAAAAJAAwAAAAAAAcAAAAKAAwAAAAAAAcAAAALAAwAAAAAAAcAAAAMAAwAAAABAAMAAAANAAwAAAAAAAMAAAAOAAwAAAABAAcAAAAPAAwAAAAAAAMAAAAQAAwAAAAAAAMAAAARAAwAAAABAAcAAAASAAwAAAACAAMAAAATAAwAAAACAAMAAAAUAAwAAAAAAAcAAAAAAA0AAAABAAcAAAABAA0AAAABAAcAAAACAA0AAAAAAAMAAAADAA0AAAABAAMAAAAEAA0AAAACAAMAAAAFAA0AAAABAAMAAAAGAA0AAAAAAAcAAAAHAA0AAAABAAcAAAAIAA0AAAAAAAcAAAAJAA0AAAAAAAcAAAAKAA0AAAABAAMAAAALAA0AAAACAAMAAAAMAA0AAAAAAAMAAAANAA0AAAABAAMAAAAOAA0AAAAAAAcAAAAPAA0AAAACAAMAAAAQAA0AAAACAAMAAAARAA0AAAAAAAMAAAASAA0AAAABAAMAAAATAA0AAAAAAAMAAAAUAA0AAAAAAAcAAAAAAA4AAAAAAAcAAAABAA4AAAABAAMAAAACAA4AAAAAAAMAAAADAA4AAAABAAMAAAAEAA4AAAACAAMAAAAFAA4AAAABAAMAAAAGAA4AAAAAAAcAAAAHAA4AAAABAAcAAAAIAA4AAAABAAcAAAAJAA4AAAACAAMAAAAKAA4AAAABAAMAAAALAA4AAAACAAMAAAAMAA4AAAAAAAMAAAANAA4AAAAAAAMAAAAOAA4AAAABAAcAAAAPAA4AAAABAAMAAAAQAA4AAAACAAMAAAARAA4AAAABAAMAAAASAA4AAAAAAAMAAAATAA4AAAACAAMAAAAUAA4AAAAAAAcAAAAAAA8AAAABAAcAAAABAA8AAAACAAMAAAACAA8AAAAAAAMAAAADAA8AAAABAAMAAAAEAA8AAAAAAAMAAAAFAA8AAAAAAAMAAAAGAA8AAAABAAcAAAAHAA8AAAABAAcAAAAIAA8AAAABAAcAAAAJAA8AAAACAAMAAAAKAA8AAAAAAAMAAAALAA8AAAABAAMAAAAMAA8AAAABAAMAAAANAA8AAAACAAMAAAAOAA8AAAABAAcAAAAPAA8AAAACAAMAAAAQAA8AAAAAAAMAAAARAA8AAAABAAMAAAASAA8AAAACAAMAAAATAA8AAAACAAMAAAAUAA8AAAAAAAcAAAAAABAAAAABAAcAAAABABAAAAABAAMAAAACABAAAAAAAAMAAAADABAAAAABAAMAAAAEABAAAAAAAAMAAAAFABAAAAACAAMAAAAGABAAAAACAAMAAAAHABAAAAACAAMAAAAIABAAAAACAAMAAAAJABAAAAABAAMAAAAKABAAAAAAAAMAAAALABAAAAAAAAMAAAAMABAAAAACAAMAAAANABAAAAABAAMAAAAOABAAAAABAAcAAAAPABAAAAAAAAcAAAAQABAAAAACAAMAAAARABAAAAACAAMAAAASABAAAAACAAMAAAATABAAAAABAAMAAAAUABAAAAABAAcAAAAAABEAAAAAAAcAAAABABEAAAAAAAMAAAACABEAAAAAAAMAAAADABEAAAACAAMAAAAEABEAAAACAAMAAAAFABEAAAACAAMAAAAGABEAAAAAAAMAAAAHABEAAAABAAMAAAAIABEAAAACAAMAAAAJABEAAAACAAMAAAAKABEAAAABAAMAAAALABEAAAAAAAMAAAAMABEAAAACAAMAAAANABEAAAABAAMAAAAOABEAAAABAAcAAAAPABEAAAACAAMAAAAQABEAAAABAAMAAAARABEAAAABAAMAAAASABEAAAABAAMAAAATABEAAAABAAMAAAAUABEAAAABAAcAAAAAABIAAAAAAAcAAAABABIAAAAAAAcAAAACABIAAAAAAAcAAAADABIAAAAAAAcAAAAEABIAAAABAAcAAAAFABIAAAAAAAcAAAAGABIAAAABAAcAAAAHABIAAAAAAAcAAAAIABIAAAABAAcAAAAJABIAAAAAAAcAAAAKABIAAAAAAAcAAAALABIAAAABAAcAAAAMABIAAAAAAAcAAAANABIAAAAAAAcAAAAOABIAAAABAAcAAAAPABIAAAABAAcAAAAQABIAAAAAAAIAAAARABIAAAAAAAIAAAASABIAAAAAAAcAAAATABIAAAABAAcAAAAUABIAAAAAAAcAAAA=")
 tile_set = ExtResource("2_dm61y")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=84656445]
-visible = false
-tile_set = ExtResource("2_dm61y")
-
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=641601136]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1978793802]
 visible = false
 tile_set = ExtResource("2_dm61y")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=1488880097]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=147550779]
+visible = false
+tile_set = ExtResource("2_dm61y")
+
+[node name="PaintedGround" type="Node2D" parent="." unique_id=689265665]
 z_index = -3
-material = SubResource("ShaderMaterial_h2llv")
-script = ExtResource("7_ld7ns")
-size = Vector2i(20, 18)
-mask = ExtResource("5_nlyuk")
-base_texture = ExtResource("4_4nfnq")
-r_texture = ExtResource("4_4nfnq")
-g_texture = ExtResource("6_mcuin")
+material = SubResource("ShaderMaterial_elw28")
+script = ExtResource("7_i5q7y")
+size = Vector2i(21, 19)
+mask = ExtResource("5_ld7ns")
+base_texture = ExtResource("4_mcuin")
+r_texture = ExtResource("4_mcuin")
+g_texture = ExtResource("6_h60c8")
 
-[node name="Daf9Decor" type="Node2D" parent="." unique_id=24112242]
+[node name="Daf9Decor" type="Node2D" parent="." unique_id=1612513718]
 z_index = -1
 
-[node name="Voile" type="Sprite2D" parent="Daf9Decor" unique_id=1868676559]
+[node name="Voile" type="Sprite2D" parent="Daf9Decor" unique_id=300588533]
 texture_filter = 2
 scale = Vector2(96, 96)
-texture = ExtResource("8_h60c8")
+texture = ExtResource("8_x7w00")
 centered = false
 
-[node name="Couronnement_14_2" type="Sprite2D" parent="Daf9Decor" unique_id=1408051569]
+[node name="Couronnement_14_2" type="Sprite2D" parent="Daf9Decor" unique_id=586472656]
 position = Vector2(1344, 192)
-texture = ExtResource("9_i5q7y")
+texture = ExtResource("9_ur0mw")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 36)
 
-[node name="Couronnement_17_11" type="Sprite2D" parent="Daf9Decor" unique_id=1451043556]
+[node name="Couronnement_17_11" type="Sprite2D" parent="Daf9Decor" unique_id=1204987823]
 position = Vector2(1632, 1056)
-texture = ExtResource("9_i5q7y")
+texture = ExtResource("9_ur0mw")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 36)
 
-[node name="Face_1_0" type="Sprite2D" parent="Daf9Decor" unique_id=902060147]
+[node name="Couronnement_1_18" type="Sprite2D" parent="Daf9Decor" unique_id=1885564160]
+position = Vector2(96, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 36)
+
+[node name="Couronnement_3_18" type="Sprite2D" parent="Daf9Decor" unique_id=1429729980]
+position = Vector2(288, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 36)
+
+[node name="Couronnement_5_18" type="Sprite2D" parent="Daf9Decor" unique_id=213399645]
+position = Vector2(480, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 36)
+
+[node name="Couronnement_7_18" type="Sprite2D" parent="Daf9Decor" unique_id=1308447991]
+position = Vector2(672, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 36)
+
+[node name="Couronnement_9_18" type="Sprite2D" parent="Daf9Decor" unique_id=1843839942]
+position = Vector2(864, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 36)
+
+[node name="Couronnement_11_18" type="Sprite2D" parent="Daf9Decor" unique_id=1195595913]
+position = Vector2(1056, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 36)
+
+[node name="Couronnement_13_18" type="Sprite2D" parent="Daf9Decor" unique_id=797606490]
+position = Vector2(1248, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 36)
+
+[node name="Couronnement_15_18" type="Sprite2D" parent="Daf9Decor" unique_id=646850767]
+position = Vector2(1440, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 36)
+
+[node name="Couronnement_18_18" type="Sprite2D" parent="Daf9Decor" unique_id=1794295007]
+position = Vector2(1728, 1728)
+texture = ExtResource("9_ur0mw")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 192, 36)
+
+[node name="Face_1_0" type="Sprite2D" parent="Daf9Decor" unique_id=1591245649]
 position = Vector2(96, 7)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 89)
 
-[node name="Face_9_0" type="Sprite2D" parent="Daf9Decor" unique_id=3252612]
+[node name="Face_9_0" type="Sprite2D" parent="Daf9Decor" unique_id=284250504]
 position = Vector2(864, 7)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 89)
 
-[node name="Face_12_0" type="Sprite2D" parent="Daf9Decor" unique_id=1275720700]
+[node name="Face_12_0" type="Sprite2D" parent="Daf9Decor" unique_id=155416354]
 position = Vector2(1152, 9)
-texture = ExtResource("11_ur0mw")
+texture = ExtResource("11_we2m8")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 87)
 
-[node name="Face_14_0" type="Sprite2D" parent="Daf9Decor" unique_id=1218167881]
+[node name="Face_14_0" type="Sprite2D" parent="Daf9Decor" unique_id=146176454]
 position = Vector2(1344, 8)
-texture = ExtResource("12_bsusq")
+texture = ExtResource("12_1xrxd")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 88)
 
-[node name="Face_16_0" type="Sprite2D" parent="Daf9Decor" unique_id=1392873954]
+[node name="Face_16_0" type="Sprite2D" parent="Daf9Decor" unique_id=80404453]
 position = Vector2(1536, 6)
-texture = ExtResource("13_we2m8")
+texture = ExtResource("13_dh65c")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 90)
 
-[node name="Face_18_0" type="Sprite2D" parent="Daf9Decor" unique_id=584750393]
+[node name="Face_18_0" type="Sprite2D" parent="Daf9Decor" unique_id=795941479]
 position = Vector2(1728, 7)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 89)
 
-[node name="Face_2_1" type="Sprite2D" parent="Daf9Decor" unique_id=2128260486]
+[node name="Face_2_1" type="Sprite2D" parent="Daf9Decor" unique_id=1592551884]
 position = Vector2(192, 102)
-texture = ExtResource("13_we2m8")
+texture = ExtResource("13_dh65c")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 90)
 
-[node name="Face_4_1" type="Sprite2D" parent="Daf9Decor" unique_id=725002773]
+[node name="Face_4_1" type="Sprite2D" parent="Daf9Decor" unique_id=213602914]
 position = Vector2(384, 104)
-texture = ExtResource("12_bsusq")
+texture = ExtResource("12_1xrxd")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 88)
 
-[node name="Face_11_1" type="Sprite2D" parent="Daf9Decor" unique_id=563512916]
+[node name="Face_11_1" type="Sprite2D" parent="Daf9Decor" unique_id=1544952083]
 position = Vector2(1056, 104)
-texture = ExtResource("12_bsusq")
+texture = ExtResource("12_1xrxd")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 88)
 
-[node name="Face_1_6" type="Sprite2D" parent="Daf9Decor" unique_id=382209628]
+[node name="Face_1_6" type="Sprite2D" parent="Daf9Decor" unique_id=1331808594]
 position = Vector2(96, 583)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 89)
 
-[node name="Face_3_6" type="Sprite2D" parent="Daf9Decor" unique_id=514037173]
+[node name="Face_3_6" type="Sprite2D" parent="Daf9Decor" unique_id=1348944193]
 position = Vector2(288, 585)
-texture = ExtResource("11_ur0mw")
+texture = ExtResource("11_we2m8")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 87)
 
-[node name="Face_9_6" type="Sprite2D" parent="Daf9Decor" unique_id=146133961]
+[node name="Face_9_6" type="Sprite2D" parent="Daf9Decor" unique_id=959843535]
 position = Vector2(864, 583)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 89)
 
-[node name="Face_11_6" type="Sprite2D" parent="Daf9Decor" unique_id=1267926593]
+[node name="Face_11_6" type="Sprite2D" parent="Daf9Decor" unique_id=1449009417]
 position = Vector2(1056, 585)
-texture = ExtResource("11_ur0mw")
+texture = ExtResource("11_we2m8")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 87)
 
-[node name="Face_15_6" type="Sprite2D" parent="Daf9Decor" unique_id=471714121]
+[node name="Face_15_6" type="Sprite2D" parent="Daf9Decor" unique_id=1848770894]
 position = Vector2(1440, 583)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 89)
 
-[node name="Face_17_6" type="Sprite2D" parent="Daf9Decor" unique_id=774881465]
+[node name="Face_17_6" type="Sprite2D" parent="Daf9Decor" unique_id=62087578]
 position = Vector2(1632, 585)
-texture = ExtResource("11_ur0mw")
+texture = ExtResource("11_we2m8")
 centered = false
 flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 87)
 
-[node name="Face_15_11" type="Sprite2D" parent="Daf9Decor" unique_id=743898919]
+[node name="Face_15_11" type="Sprite2D" parent="Daf9Decor" unique_id=616824301]
 position = Vector2(1440, 1063)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 89)
 
-[node name="Face_1_12" type="Sprite2D" parent="Daf9Decor" unique_id=1516323366]
+[node name="Face_1_12" type="Sprite2D" parent="Daf9Decor" unique_id=1940861291]
 position = Vector2(96, 1158)
-texture = ExtResource("13_we2m8")
+texture = ExtResource("13_dh65c")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 90)
 
-[node name="Face_3_12" type="Sprite2D" parent="Daf9Decor" unique_id=2091279849]
+[node name="Face_3_12" type="Sprite2D" parent="Daf9Decor" unique_id=1440904455]
 position = Vector2(288, 1160)
-texture = ExtResource("12_bsusq")
+texture = ExtResource("12_1xrxd")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 88)
 
-[node name="Face_9_12" type="Sprite2D" parent="Daf9Decor" unique_id=1887278260]
+[node name="Face_9_12" type="Sprite2D" parent="Daf9Decor" unique_id=1266120017]
 position = Vector2(864, 1159)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 89)
 
-[node name="Face_11_12" type="Sprite2D" parent="Daf9Decor" unique_id=1346638531]
+[node name="Face_11_12" type="Sprite2D" parent="Daf9Decor" unique_id=1880049208]
 position = Vector2(1056, 1159)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 89)
 
-[node name="Face_17_12" type="Sprite2D" parent="Daf9Decor" unique_id=381807096]
+[node name="Face_17_12" type="Sprite2D" parent="Daf9Decor" unique_id=795560122]
 position = Vector2(1632, 1160)
-texture = ExtResource("12_bsusq")
+texture = ExtResource("12_1xrxd")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 88)
 
-[node name="Face_6_15" type="Sprite2D" parent="Daf9Decor" unique_id=463749723]
+[node name="Face_6_15" type="Sprite2D" parent="Daf9Decor" unique_id=863653994]
 position = Vector2(576, 1449)
-texture = ExtResource("11_ur0mw")
+texture = ExtResource("11_we2m8")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 192, 87)
 
-[node name="Face_8_15" type="Sprite2D" parent="Daf9Decor" unique_id=1493101607]
+[node name="Face_8_15" type="Sprite2D" parent="Daf9Decor" unique_id=367398306]
 position = Vector2(768, 1448)
-texture = ExtResource("12_bsusq")
+texture = ExtResource("12_1xrxd")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 88)
 
-[node name="Face_15_16" type="Sprite2D" parent="Daf9Decor" unique_id=2014773466]
+[node name="Face_15_16" type="Sprite2D" parent="Daf9Decor" unique_id=2104818598]
 position = Vector2(1440, 1543)
-texture = ExtResource("10_x7w00")
+texture = ExtResource("10_bsusq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 89)
 
-[node name="Entities" type="Node2D" parent="." unique_id=506271339]
+[node name="Entities" type="Node2D" parent="." unique_id=17417767]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Machine_1" type="Node2D" parent="Entities" unique_id=1790660824]
+[node name="Machine_1" type="Node2D" parent="Entities" unique_id=1233782481]
 position = Vector2(1488, 768)
 script = ExtResource("3_x6gum")
 blocking_cells = Array[Vector2i]([Vector2i(15, 7)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Machine_1" unique_id=1487939483]
-texture = ExtResource("15_1xrxd")
+[node name="Dessin" type="Sprite2D" parent="Entities/Machine_1" unique_id=2014350289]
+texture = ExtResource("15_neyry")
 centered = false
 offset = Vector2(-45.5, -124)
 
-[node name="Machine_2" type="Node2D" parent="Entities" unique_id=749803355]
+[node name="Machine_2" type="Node2D" parent="Entities" unique_id=23325188]
 position = Vector2(1008, 192)
 script = ExtResource("3_x6gum")
 blocking_cells = Array[Vector2i]([Vector2i(10, 1)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Machine_2" unique_id=413797780]
-texture = ExtResource("15_1xrxd")
+[node name="Dessin" type="Sprite2D" parent="Entities/Machine_2" unique_id=1795784863]
+texture = ExtResource("15_neyry")
 centered = false
 offset = Vector2(-45.5, -124)
 
-[node name="Machine_3" type="Node2D" parent="Entities" unique_id=1591050308]
+[node name="Machine_3" type="Node2D" parent="Entities" unique_id=629606137]
 position = Vector2(912, 768)
 script = ExtResource("3_x6gum")
 blocking_cells = Array[Vector2i]([Vector2i(9, 7)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Machine_3" unique_id=2014155141]
-texture = ExtResource("15_1xrxd")
+[node name="Dessin" type="Sprite2D" parent="Entities/Machine_3" unique_id=1371914647]
+texture = ExtResource("15_neyry")
 centered = false
 offset = Vector2(-45.5, -124)
 
-[node name="Machine_4" type="Node2D" parent="Entities" unique_id=2000666248]
+[node name="Machine_4" type="Node2D" parent="Entities" unique_id=988885356]
 position = Vector2(912, 1344)
 script = ExtResource("3_x6gum")
 blocking_cells = Array[Vector2i]([Vector2i(9, 13)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Machine_4" unique_id=1279280240]
-texture = ExtResource("15_1xrxd")
+[node name="Dessin" type="Sprite2D" parent="Entities/Machine_4" unique_id=2000817355]
+texture = ExtResource("15_neyry")
 centered = false
 offset = Vector2(-45.5, -124)
 
-[node name="Machine_5" type="Node2D" parent="Entities" unique_id=1923662447]
+[node name="Machine_5" type="Node2D" parent="Entities" unique_id=296462241]
 position = Vector2(144, 1344)
 script = ExtResource("3_x6gum")
 blocking_cells = Array[Vector2i]([Vector2i(1, 13)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Machine_5" unique_id=20035774]
-texture = ExtResource("15_1xrxd")
+[node name="Dessin" type="Sprite2D" parent="Entities/Machine_5" unique_id=670387526]
+texture = ExtResource("15_neyry")
 centered = false
 offset = Vector2(-45.5, -124)
 
-[node name="Machine_6" type="Node2D" parent="Entities" unique_id=43642008]
+[node name="Machine_6" type="Node2D" parent="Entities" unique_id=17448834]
 position = Vector2(144, 768)
 script = ExtResource("3_x6gum")
 blocking_cells = Array[Vector2i]([Vector2i(1, 7)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Machine_6" unique_id=235302376]
-texture = ExtResource("15_1xrxd")
+[node name="Dessin" type="Sprite2D" parent="Entities/Machine_6" unique_id=537103391]
+texture = ExtResource("15_neyry")
 centered = false
 offset = Vector2(-45.5, -124)
 
-[node name="Herse1_18_6" type="Node2D" parent="Entities" unique_id=1216580601]
+[node name="Herse1_18_6" type="Node2D" parent="Entities" unique_id=1028707368]
 position = Vector2(1776, 672)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
 blocking_cells = Array[Vector2i]([Vector2i(18, 6)])
 
-[node name="Herse1_19_6" type="Node2D" parent="Entities" unique_id=1341427233]
+[node name="Herse1_19_6" type="Node2D" parent="Entities" unique_id=1430753543]
 position = Vector2(1872, 672)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
 blocking_cells = Array[Vector2i]([Vector2i(19, 6)])
 
-[node name="Herse1_18_7" type="Node2D" parent="Entities" unique_id=2131152518]
+[node name="Herse1_18_7" type="Node2D" parent="Entities" unique_id=617430567]
 position = Vector2(1776, 768)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
 blocking_cells = Array[Vector2i]([Vector2i(18, 7)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Herse1_18_7" unique_id=99301136]
+[node name="Dessin" type="Sprite2D" parent="Entities/Herse1_18_7" unique_id=1373676258]
 position = Vector2(48, 0)
-texture = ExtResource("16_dh65c")
+texture = ExtResource("16_ovmro")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Herse1_19_7" type="Node2D" parent="Entities" unique_id=786514130]
+[node name="Herse1_19_7" type="Node2D" parent="Entities" unique_id=796026896]
 position = Vector2(1872, 768)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_1", &"beaten_cinnabar_gym_2"])
 blocking_cells = Array[Vector2i]([Vector2i(19, 7)])
 
-[node name="Herse2_12_6" type="Node2D" parent="Entities" unique_id=1065206241]
+[node name="Herse2_12_6" type="Node2D" parent="Entities" unique_id=519757764]
 position = Vector2(1200, 672)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
 blocking_cells = Array[Vector2i]([Vector2i(12, 6)])
 
-[node name="Herse2_13_6" type="Node2D" parent="Entities" unique_id=1268817276]
+[node name="Herse2_13_6" type="Node2D" parent="Entities" unique_id=1517275632]
 position = Vector2(1296, 672)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
 blocking_cells = Array[Vector2i]([Vector2i(13, 6)])
 
-[node name="Herse2_12_7" type="Node2D" parent="Entities" unique_id=517688374]
+[node name="Herse2_12_7" type="Node2D" parent="Entities" unique_id=447142305]
 position = Vector2(1200, 768)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
 blocking_cells = Array[Vector2i]([Vector2i(12, 7)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Herse2_12_7" unique_id=1122998644]
+[node name="Dessin" type="Sprite2D" parent="Entities/Herse2_12_7" unique_id=1762231786]
 position = Vector2(48, 0)
-texture = ExtResource("16_dh65c")
+texture = ExtResource("16_ovmro")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Herse2_13_7" type="Node2D" parent="Entities" unique_id=1935525837]
+[node name="Herse2_13_7" type="Node2D" parent="Entities" unique_id=1041778537]
 position = Vector2(1296, 768)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_2", &"beaten_cinnabar_gym_3"])
 blocking_cells = Array[Vector2i]([Vector2i(13, 7)])
 
-[node name="Herse3_12_12" type="Node2D" parent="Entities" unique_id=1403330543]
+[node name="Herse3_12_12" type="Node2D" parent="Entities" unique_id=1370451801]
 position = Vector2(1200, 1248)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
 blocking_cells = Array[Vector2i]([Vector2i(12, 12)])
 
-[node name="Herse3_13_12" type="Node2D" parent="Entities" unique_id=683725724]
+[node name="Herse3_13_12" type="Node2D" parent="Entities" unique_id=685529152]
 position = Vector2(1296, 1248)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
 blocking_cells = Array[Vector2i]([Vector2i(13, 12)])
 
-[node name="Herse3_12_13" type="Node2D" parent="Entities" unique_id=659311102]
+[node name="Herse3_12_13" type="Node2D" parent="Entities" unique_id=1641173763]
 position = Vector2(1200, 1344)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
 blocking_cells = Array[Vector2i]([Vector2i(12, 13)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Herse3_12_13" unique_id=1397002727]
+[node name="Dessin" type="Sprite2D" parent="Entities/Herse3_12_13" unique_id=833782020]
 position = Vector2(48, 0)
-texture = ExtResource("16_dh65c")
+texture = ExtResource("16_ovmro")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Herse3_13_13" type="Node2D" parent="Entities" unique_id=1822242191]
+[node name="Herse3_13_13" type="Node2D" parent="Entities" unique_id=565597722]
 position = Vector2(1296, 1344)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_3", &"beaten_cinnabar_gym_4"])
 blocking_cells = Array[Vector2i]([Vector2i(13, 13)])
 
-[node name="Herse4_6_16" type="Node2D" parent="Entities" unique_id=270016298]
+[node name="Herse4_6_16" type="Node2D" parent="Entities" unique_id=1338238191]
 position = Vector2(624, 1632)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
 blocking_cells = Array[Vector2i]([Vector2i(6, 16)])
 
-[node name="Herse4_7_16" type="Node2D" parent="Entities" unique_id=909125503]
+[node name="Herse4_7_16" type="Node2D" parent="Entities" unique_id=1498815948]
 position = Vector2(720, 1632)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
 blocking_cells = Array[Vector2i]([Vector2i(7, 16)])
 
-[node name="Herse4_6_17" type="Node2D" parent="Entities" unique_id=1809851379]
+[node name="Herse4_6_17" type="Node2D" parent="Entities" unique_id=254001103]
 position = Vector2(624, 1728)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
 blocking_cells = Array[Vector2i]([Vector2i(6, 17)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Herse4_6_17" unique_id=548630631]
+[node name="Dessin" type="Sprite2D" parent="Entities/Herse4_6_17" unique_id=731982420]
 position = Vector2(48, 0)
-texture = ExtResource("16_dh65c")
+texture = ExtResource("17_fuxs7")
 centered = false
-offset = Vector2(-96, -175)
+offset = Vector2(-25, -262)
 
-[node name="Herse4_7_17" type="Node2D" parent="Entities" unique_id=189422690]
+[node name="Herse4_7_17" type="Node2D" parent="Entities" unique_id=338876808]
 position = Vector2(720, 1728)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_4", &"beaten_cinnabar_gym_5"])
 blocking_cells = Array[Vector2i]([Vector2i(7, 17)])
 
-[node name="Herse5_4_12" type="Node2D" parent="Entities" unique_id=1259132787]
+[node name="Herse5_4_12" type="Node2D" parent="Entities" unique_id=1181627599]
 position = Vector2(432, 1248)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
 blocking_cells = Array[Vector2i]([Vector2i(4, 12)])
 
-[node name="Herse5_5_12" type="Node2D" parent="Entities" unique_id=2030583185]
+[node name="Herse5_5_12" type="Node2D" parent="Entities" unique_id=1004883085]
 position = Vector2(528, 1248)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
 blocking_cells = Array[Vector2i]([Vector2i(5, 12)])
 
-[node name="Herse5_4_13" type="Node2D" parent="Entities" unique_id=790695417]
+[node name="Herse5_4_13" type="Node2D" parent="Entities" unique_id=1996120173]
 position = Vector2(432, 1344)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
 blocking_cells = Array[Vector2i]([Vector2i(4, 13)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Herse5_4_13" unique_id=854041947]
+[node name="Dessin" type="Sprite2D" parent="Entities/Herse5_4_13" unique_id=268066096]
 position = Vector2(48, 0)
-texture = ExtResource("16_dh65c")
+texture = ExtResource("16_ovmro")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Herse5_5_13" type="Node2D" parent="Entities" unique_id=2093697185]
+[node name="Herse5_5_13" type="Node2D" parent="Entities" unique_id=391558544]
 position = Vector2(528, 1344)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_5", &"beaten_cinnabar_gym_6"])
 blocking_cells = Array[Vector2i]([Vector2i(5, 13)])
 
-[node name="Herse6_4_6" type="Node2D" parent="Entities" unique_id=149143450]
+[node name="Herse6_4_6" type="Node2D" parent="Entities" unique_id=1731658435]
 position = Vector2(432, 672)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
 blocking_cells = Array[Vector2i]([Vector2i(4, 6)])
 
-[node name="Herse6_5_6" type="Node2D" parent="Entities" unique_id=1134320819]
+[node name="Herse6_5_6" type="Node2D" parent="Entities" unique_id=683853202]
 position = Vector2(528, 672)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
 blocking_cells = Array[Vector2i]([Vector2i(5, 6)])
 
-[node name="Herse6_4_7" type="Node2D" parent="Entities" unique_id=1211366795]
+[node name="Herse6_4_7" type="Node2D" parent="Entities" unique_id=1744374386]
 position = Vector2(432, 768)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
 blocking_cells = Array[Vector2i]([Vector2i(4, 7)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Herse6_4_7" unique_id=1178337693]
+[node name="Dessin" type="Sprite2D" parent="Entities/Herse6_4_7" unique_id=495449147]
 position = Vector2(48, 0)
-texture = ExtResource("16_dh65c")
+texture = ExtResource("16_ovmro")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Herse6_5_7" type="Node2D" parent="Entities" unique_id=262743759]
+[node name="Herse6_5_7" type="Node2D" parent="Entities" unique_id=645413348]
 position = Vector2(528, 768)
 script = ExtResource("3_x6gum")
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_6", &"beaten_cinnabar_gym_7"])
 blocking_cells = Array[Vector2i]([Vector2i(5, 7)])
 
-[node name="StatueArene" type="Node2D" parent="Entities" unique_id=1364029526]
+[node name="StatueArene" type="Node2D" parent="Entities" unique_id=1244050472]
 position = Vector2(1680, 1344)
 script = ExtResource("3_x6gum")
 blocking_cells = Array[Vector2i]([Vector2i(17, 13)])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/StatueArene" unique_id=337676658]
-texture = ExtResource("17_neyry")
+[node name="Dessin" type="Sprite2D" parent="Entities/StatueArene" unique_id=723686074]
+texture = ExtResource("18_ivkgf")
 centered = false
 offset = Vector2(-51.5, -173)
 
-[node name="Daf9HerseOuverte_Herse1_18_7_0" type="Node2D" parent="Entities" unique_id=1504065249]
+[node name="Daf9HerseOuverte_Herse1_18_7_0" type="Node2D" parent="Entities" unique_id=45401620]
 position = Vector2(1824, 768)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"cinnabar_gym_gate_1"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse1_18_7_0" unique_id=1260178878]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse1_18_7_0" unique_id=17105597]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse1_18_7_1" type="Node2D" parent="Entities" unique_id=1592125081]
+[node name="Daf9HerseOuverte_Herse1_18_7_1" type="Node2D" parent="Entities" unique_id=422568528]
 position = Vector2(1824, 768)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"beaten_cinnabar_gym_2"])
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_1"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse1_18_7_1" unique_id=1605533983]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse1_18_7_1" unique_id=2097657416]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse2_12_7_0" type="Node2D" parent="Entities" unique_id=1262654055]
+[node name="Daf9HerseOuverte_Herse2_12_7_0" type="Node2D" parent="Entities" unique_id=1457737183]
 position = Vector2(1248, 768)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"cinnabar_gym_gate_2"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse2_12_7_0" unique_id=1213905776]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse2_12_7_0" unique_id=1440439967]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse2_12_7_1" type="Node2D" parent="Entities" unique_id=1006506543]
+[node name="Daf9HerseOuverte_Herse2_12_7_1" type="Node2D" parent="Entities" unique_id=368096241]
 position = Vector2(1248, 768)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"beaten_cinnabar_gym_3"])
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_2"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse2_12_7_1" unique_id=927600217]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse2_12_7_1" unique_id=1392654861]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse3_12_13_0" type="Node2D" parent="Entities" unique_id=289911881]
+[node name="Daf9HerseOuverte_Herse3_12_13_0" type="Node2D" parent="Entities" unique_id=1312988508]
 position = Vector2(1248, 1344)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"cinnabar_gym_gate_3"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse3_12_13_0" unique_id=1010008434]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse3_12_13_0" unique_id=104475401]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse3_12_13_1" type="Node2D" parent="Entities" unique_id=1027708372]
+[node name="Daf9HerseOuverte_Herse3_12_13_1" type="Node2D" parent="Entities" unique_id=1039688294]
 position = Vector2(1248, 1344)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"beaten_cinnabar_gym_4"])
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_3"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse3_12_13_1" unique_id=158043039]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse3_12_13_1" unique_id=1576406344]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse4_6_17_0" type="Node2D" parent="Entities" unique_id=1794476638]
+[node name="Daf9HerseOuverte_Herse4_6_17_0" type="Node2D" parent="Entities" unique_id=1302779861]
 position = Vector2(672, 1728)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"cinnabar_gym_gate_4"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse4_6_17_0" unique_id=1551820005]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse4_6_17_0" unique_id=1159654702]
+texture = ExtResource("20_41xhd")
 centered = false
-offset = Vector2(-96, -175)
+offset = Vector2(-25, -262)
 
-[node name="Daf9HerseOuverte_Herse4_6_17_1" type="Node2D" parent="Entities" unique_id=123810479]
+[node name="Daf9HerseOuverte_Herse4_6_17_1" type="Node2D" parent="Entities" unique_id=1351379064]
 position = Vector2(672, 1728)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"beaten_cinnabar_gym_5"])
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_4"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse4_6_17_1" unique_id=1859306232]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse4_6_17_1" unique_id=338485539]
+texture = ExtResource("20_41xhd")
 centered = false
-offset = Vector2(-96, -175)
+offset = Vector2(-25, -262)
 
-[node name="Daf9HerseOuverte_Herse5_4_13_0" type="Node2D" parent="Entities" unique_id=528396063]
+[node name="Daf9HerseOuverte_Herse5_4_13_0" type="Node2D" parent="Entities" unique_id=1659137520]
 position = Vector2(480, 1344)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"cinnabar_gym_gate_5"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse5_4_13_0" unique_id=851309665]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse5_4_13_0" unique_id=351881997]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse5_4_13_1" type="Node2D" parent="Entities" unique_id=942907148]
+[node name="Daf9HerseOuverte_Herse5_4_13_1" type="Node2D" parent="Entities" unique_id=271849414]
 position = Vector2(480, 1344)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"beaten_cinnabar_gym_6"])
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_5"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse5_4_13_1" unique_id=1615089224]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse5_4_13_1" unique_id=311120204]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse6_4_7_0" type="Node2D" parent="Entities" unique_id=2031064680]
+[node name="Daf9HerseOuverte_Herse6_4_7_0" type="Node2D" parent="Entities" unique_id=1182600234]
 position = Vector2(480, 768)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"cinnabar_gym_gate_6"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse6_4_7_0" unique_id=1760363520]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse6_4_7_0" unique_id=1795469035]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Daf9HerseOuverte_Herse6_4_7_1" type="Node2D" parent="Entities" unique_id=1716593613]
+[node name="Daf9HerseOuverte_Herse6_4_7_1" type="Node2D" parent="Entities" unique_id=626916940]
 position = Vector2(480, 768)
 script = ExtResource("3_x6gum")
 if_flags = Array[StringName]([&"beaten_cinnabar_gym_7"])
 unless_flags = Array[StringName]([&"cinnabar_gym_gate_6"])
 
-[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse6_4_7_1" unique_id=965060178]
-texture = ExtResource("18_ovmro")
+[node name="Dessin" type="Sprite2D" parent="Entities/Daf9HerseOuverte_Herse6_4_7_1" unique_id=1892222408]
+texture = ExtResource("19_vpop7")
 centered = false
 offset = Vector2(-96, -175)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=212116477]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1135473890]
 visible = false
 z_index = 10
 tile_set = ExtResource("2_dm61y")
 
-[node name="Warps" type="Node2D" parent="." unique_id=2053218500]
+[node name="Warps" type="Node2D" parent="." unique_id=1781882766]
 
-[node name="Entree_1" type="Marker2D" parent="Warps" unique_id=946824321]
-position = Vector2(1584, 1728)
+[node name="Entree_1" type="Marker2D" parent="Warps" unique_id=1680908629]
+position = Vector2(1584, 1824)
 script = ExtResource("4_0yd3a")
 trigger = 1
 direction = Vector2i(0, 1)
@@ -667,8 +732,8 @@ target_map = &"cinnabar_island"
 target_spawn = &"from_arene"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Entree_2" type="Marker2D" parent="Warps" unique_id=1765329633]
-position = Vector2(1680, 1728)
+[node name="Entree_2" type="Marker2D" parent="Warps" unique_id=588388319]
+position = Vector2(1680, 1824)
 script = ExtResource("4_0yd3a")
 trigger = 1
 direction = Vector2i(0, 1)
@@ -676,47 +741,47 @@ target_map = &"cinnabar_island"
 target_spawn = &"from_arene"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=156932240]
+[node name="Interactables" type="Node2D" parent="." unique_id=1991721654]
 
-[node name="MachinePoint_1" type="Marker2D" parent="Interactables" unique_id=23935036]
+[node name="MachinePoint_1" type="Marker2D" parent="Interactables" unique_id=1955489069]
 position = Vector2(1488, 768)
 script = ExtResource("5_caxar")
 dialogue_id = &"cinnabar_gym_quiz_1"
 facing = Vector2i(0, -1)
 
-[node name="MachinePoint_2" type="Marker2D" parent="Interactables" unique_id=637547986]
+[node name="MachinePoint_2" type="Marker2D" parent="Interactables" unique_id=261560139]
 position = Vector2(1008, 192)
 script = ExtResource("5_caxar")
 dialogue_id = &"cinnabar_gym_quiz_2"
 facing = Vector2i(0, -1)
 
-[node name="MachinePoint_3" type="Marker2D" parent="Interactables" unique_id=913560768]
+[node name="MachinePoint_3" type="Marker2D" parent="Interactables" unique_id=1268658681]
 position = Vector2(912, 768)
 script = ExtResource("5_caxar")
 dialogue_id = &"cinnabar_gym_quiz_3"
 facing = Vector2i(0, -1)
 
-[node name="MachinePoint_4" type="Marker2D" parent="Interactables" unique_id=198971368]
+[node name="MachinePoint_4" type="Marker2D" parent="Interactables" unique_id=421027527]
 position = Vector2(912, 1344)
 script = ExtResource("5_caxar")
 dialogue_id = &"cinnabar_gym_quiz_4"
 facing = Vector2i(0, -1)
 
-[node name="MachinePoint_5" type="Marker2D" parent="Interactables" unique_id=718809007]
+[node name="MachinePoint_5" type="Marker2D" parent="Interactables" unique_id=253023137]
 position = Vector2(144, 1344)
 script = ExtResource("5_caxar")
 dialogue_id = &"cinnabar_gym_quiz_5"
 facing = Vector2i(0, -1)
 
-[node name="MachinePoint_6" type="Marker2D" parent="Interactables" unique_id=1145489931]
+[node name="MachinePoint_6" type="Marker2D" parent="Interactables" unique_id=1384659252]
 position = Vector2(144, 768)
 script = ExtResource("5_caxar")
 dialogue_id = &"cinnabar_gym_quiz_6"
 facing = Vector2i(0, -1)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=765076808]
+[node name="Spawns" type="Node2D" parent="." unique_id=1924793586]
 
-[node name="depuis_ile" type="Marker2D" parent="Spawns" unique_id=171117087]
-position = Vector2(1584, 1632)
+[node name="depuis_ile" type="Marker2D" parent="Spawns" unique_id=1048948214]
+position = Vector2(1584, 1728)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=466781295]
+[node name="Triggers" type="Node2D" parent="." unique_id=702146088]

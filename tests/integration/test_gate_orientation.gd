@@ -6,7 +6,8 @@ extends GutTest
 ##
 ## Pour chaque [FlagGate] dessinée avec une de ces images, on retrouve le bloc de cases bloquées
 ## de sa barrière (cases des portes du même préfixe de nom, reliées à la case du pied du dessin),
-## puis on regarde les murs autour du bloc.
+## puis on regarde les murs autour du bloc. Le bord de la carte compte comme un mur (audit du
+## 2026-11-14 : la herse 4 de Cramois'Île, au bord du bas, échappait au contrôle).
 
 const MAPS_DIR := "res://game/world/maps/"
 const PROPS := "res://assets/world/props/"
@@ -29,6 +30,8 @@ const SIDE: Array[String] = [
 	"int_grille_manoir_fermee_cote_01.png",
 	"int_grille_manoir_ouverte_cote_01.png",
 	"int_porte_sylphe_v_01.png",
+	"int_herse_fermee_cote_01.png",
+	"int_herse_ouverte_cote_01.png",
 ]
 
 
@@ -70,6 +73,11 @@ func _component(cells: Dictionary, start: Vector2i) -> Array[Vector2i]:
 	return out
 
 
+## Mur ou hors de la carte.
+func _wall(grid: GridWorld, cell: Vector2i) -> bool:
+	return not grid.is_in_bounds(cell) or grid.is_solid(cell)
+
+
 ## Défaut de sens pour [param drawing] (texte vide si bon ou non vérifiable).
 func _check(map: GameMap, gates: Array[FlagGate], drawing: Sprite2D) -> String:
 	var image := drawing.texture.resource_path.get_file()
@@ -91,12 +99,12 @@ func _check(map: GameMap, gates: Array[FlagGate], drawing: Sprite2D) -> String:
 	# Une colonne du bloc entre deux murs au nord et au sud : le bloc coupe un mur nord-sud.
 	var ns := false
 	for x: int in range(r.position.x, r.end.x):
-		if grid.is_solid(Vector2i(x, r.position.y - 1)) and grid.is_solid(Vector2i(x, r.end.y)):
+		if _wall(grid, Vector2i(x, r.position.y - 1)) and _wall(grid, Vector2i(x, r.end.y)):
 			ns = true
 	# Une rangée du bloc entre deux murs à l'ouest et à l'est : le bloc ferme un couloir nord-sud.
 	var ew := false
 	for y: int in range(r.position.y, r.end.y):
-		if grid.is_solid(Vector2i(r.position.x - 1, y)) and grid.is_solid(Vector2i(r.end.x, y)):
+		if _wall(grid, Vector2i(r.position.x - 1, y)) and _wall(grid, Vector2i(r.end.x, y)):
 			ew = true
 	if image in FRONT and ns and not ew:
 		return "%s %s : %s vue de face dans un mur nord-sud (cases %s)" % [

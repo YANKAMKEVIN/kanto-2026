@@ -1,7 +1,8 @@
 # Arène de Cramois'Île (cinnabar_gym) — grille fonctionnelle v1 (jalon 25, dossier 28 §8). Tirée des
 # blocs RB (annexe j25-annexe-rb-cramois.md §3.5), 1 case = 1 pas (X-4). Contrôle : tools/art/plan_check_cramois.py.
 #
-# 20 × 18 cases ; nord en haut. Six salles en serpentin depuis l'entrée (sud-est) jusqu'à Auguste (nord-ouest) :
+# 21 × 19 cases ; nord en haut (mur de droite x 20 et mur du bas y 18 ajoutés le 2026-11-14, audit des
+# bâtiments-donjons : la carte ne s'arrête plus au sol ; sortie dans l'ouverture du mur du bas). Six salles en serpentin depuis l'entrée (sud-est) jusqu'à Auguste (nord-ouest) :
 # Q1 → P1 → couloir nord → Q2 → P2 → Q3 → P3 → Q4 → P4 → Q5 → P5 → Q6 → P6 → Auguste. Les Dresseurs ne voient pas
 # le joueur (RB) : on les affronte en leur parlant ou après une mauvaise réponse.
 #
@@ -14,30 +15,31 @@
 
 PRATICABLES .pE
 
-GRILLE 20 18
-00 ####################
-01 #.#######.Q#........
-02 #.....###.....#.....
-03 #.....###.....#.....
-04 #.....###.....#.....
-05 #.....###.....#.....
-06 ####pp######pp####pp
-07 #Q..pp###Q..pp#Q..pp
-08 #.....###.....#.....
-09 #.....###.....#.....
-10 #.....###.....#.....
-11 #.....###.....####..
-12 ####pp######pp#..#..
-13 #Q..pp###Q..pp#.....
-14 #.....###.....#.....
-15 #.....###.....#.....
-16 #.....pp......##....
-17 #.....pp......#.EE..
+GRILLE 21 19
+00 #####################
+01 #.#######.Q#........#
+02 #.....###.....#.....#
+03 #.....###.....#.....#
+04 #.....###.....#.....#
+05 #.....###.....#.....#
+06 ####pp######pp####pp#
+07 #Q..pp###Q..pp#Q..pp#
+08 #.....###.....#.....#
+09 #.....###.....#.....#
+10 #.....###.....#.....#
+11 #.....###.....####..#
+12 ####pp######pp#..#..#
+13 #Q..pp###Q..pp#.....#
+14 #.....###.....#.....#
+15 #.....###.....#.....#
+16 #.....pp......##....#
+17 #.....pp......#.....#
+18 ################EE###
 FIN
 
 POSITIONS
-entree               warp       16..17,17    libre   vers=cinnabar_island  # PUSH ↓ → Cramois'Île, devant la porte de l'Arène
-depuis_ile           spawn      16,16        libre  # arrivée, tourné ↑
+entree               warp       16..17,18    libre   vers=cinnabar_island  # PUSH ↓ → Cramois'Île, devant la porte de l'Arène
+depuis_ile           spawn      16,17        libre  # arrivée, tourné ↑
 auguste              champion   3,3          bloque  facing=down  # Auguste (textes 99–105)
 guide                pnj        16,13        bloque  facing=down  # guide de l'Arène (textes 79, 106)
 statue_arene         examen     17,13        bloque  # statue de l'Arène (vainqueurs)
