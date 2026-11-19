@@ -104,6 +104,9 @@ const LAYER_TRANSITION := 100
 
 const ZONE_TITLE_ICON := 64
 const ZONE_TITLE_HOLD := 2.5
+## Première découverte d'une zone [D] : le titre porte le sous-titre du lieu et tient plus
+## longtemps (2,5 s × 1,4 = 3,5 s).
+const ZONE_TITLE_FIRST_HOLD_SCALE := 1.4
 ## Longueur du dégradé qui prolonge le fond vers la droite, jusqu'à la transparence.
 const ZONE_TITLE_FADE := 120
 ## Écart vertical entre le nom et la région.

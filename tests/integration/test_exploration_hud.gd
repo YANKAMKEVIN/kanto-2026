@@ -79,6 +79,30 @@ func test_zone_title_animation_cycle() -> void:
 	assert_false(title.is_showing())
 
 
+## Première découverte d'une zone : la tenue est multipliée (temps simulé, au pas près).
+func test_zone_title_hold_scale_lengthens_the_hold() -> void:
+	var durations: Array[float] = []
+	for hold_scale: float in [1.0, UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE]:
+		var title := (load(TITLE_SCENE) as PackedScene).instantiate() as ZoneTitle
+		title.slide_duration = 0.0
+		title.hold_duration = 1.0
+		add_child_autofree(title)
+		watch_signals(title)
+		await wait_process_frames(1)
+		var clock := TweenClock.new(get_tree())
+		title.show_title("Route 1", "Bourg Palette — Jadielle", hold_scale)
+		var steps := clock.run_until(func() -> bool:
+			return get_signal_emit_count(title, "title_hidden") > 0, 5.0)
+		clock.release()
+		durations.append(steps * TweenClock.STEP)
+		assert_eq(title.get_region_text(), "Bourg Palette — Jadielle")
+	assert_between(durations[0], 1.0 - 0.0001, 1.0 + 3.0 * TweenClock.STEP, "tenue habituelle")
+	var longer := UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE
+	assert_between(durations[1], longer - 0.0001, longer + 3.0 * TweenClock.STEP,
+		"tenue allongée à la première découverte")
+	assert_gt(UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE, 1.0)
+
+
 func test_hide_zone_title_during_display() -> void:
 	watch_signals(_hud)
 	_hud.show_zone_title("Bourg Palette", "Kanto")

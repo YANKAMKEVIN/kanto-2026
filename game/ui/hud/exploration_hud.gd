@@ -106,8 +106,8 @@ func _apply_safe_area() -> void:
 
 
 ## Affiche « NOM / région » en haut à gauche (glissement, maintien, disparition).
-func show_zone_title(zone_name: String, region: String) -> void:
-	_zone_title.show_title(zone_name, region)
+func show_zone_title(zone_name: String, region: String, hold_scale: float = 1.0) -> void:
+	_zone_title.show_title(zone_name, region, hold_scale)
 
 
 ## Masque le titre de zone en ANIM_MICRO (début d'une transition) ; émet title_hidden.

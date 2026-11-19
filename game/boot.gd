@@ -1698,7 +1698,9 @@ func get_darkness() -> DarknessController:
 
 ## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
 ## Toute première sortie de la maison (OUV.3) : la légende remplace la région, déduite des
-## cartes découvertes **avant** de marquer celle-ci.
+## cartes découvertes **avant** de marquer celle-ci. Première découverte d'une zone (bible UI/UX
+## §5) : son sous-titre de `zones.json` remplace la région, et le titre tient plus longtemps ;
+## la légende d'une première sortie garde la priorité.
 func _on_map_entered(map: GameMap) -> void:
 	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
 		map.region)
@@ -1709,13 +1711,19 @@ func _on_map_entered(map: GameMap) -> void:
 	# J31 (T5) : première entrée dans la Grotte Azurée (drapeau d'histoire, avant l'autosave).
 	CeruleanCaveAccess.record_entry(GameState.flags, map.map_id)
 	_companion.on_map_entered(map)
+	var title_hold := 1.0
+	if not _first_exit.is_first_exit(map.map_id, _arrival_from, GameState.discovered_maps):
+		var discovery := _zones.first_visit_subtitle(map.map_id, GameState.discovered_maps)
+		if not discovery.is_empty():
+			region = discovery
+			title_hold = UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE
 	# Passe systèmes 2 (T15) : arrivée en Surf sur un courant (reprise) → la glissade part ici ;
 	# l'autosave d'arrivée attend sa fin (partie pas stable).
 	_forced_slide.ride_from_here()
 	request_autosave("changement de carte")
 	var indoors := map.interior and not _zones.interior_title_of(map.map_id)
 	if _announcer.should_announce(map.display_name, indoors):
-		_hud.show_zone_title(map.display_name, region)
+		_hud.show_zone_title(map.display_name, region, title_hold)
 		zone_announced.emit(map.display_name, region)
 		if not map.interior:
 			_audio_bridge.on_zone_announced(map.map_id)
