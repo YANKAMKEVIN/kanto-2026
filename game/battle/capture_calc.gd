@@ -8,8 +8,13 @@ extends RefCounted
 ## réussissent. Secousses montrées = min(tests réussis, 3). Pas de capture critique.
 ## Ordre des tirages : 0 (a ≥ 255) à 4 roll(65536), un par test, dans l'ordre.
 
-## Taux de capture des légendaires : le bonus des costumes ne s'y applique pas (CO-14).
+## Taux de capture des légendaires dans les données (Rouge / Bleu) : le bonus des costumes ne s'y
+## applique pas (CO-14).
 const LEGENDARY_CATCH_RATE: int = 3
+## Taux réellement utilisé pour un légendaire (décision de Kevin du 2026-11-19, après 30 Balls
+## lancées en vain sur Sulfura) : dans le rouge avec une Hyper Ball, ≈ 15 % par Ball sans statut,
+## ≈ 36 % endormi (≈ 2 % et 5 % au taux 3). Les données gardent 3.
+const LEGENDARY_PLAYED_RATE: int = 20
 ## Valeur de a à partir de laquelle la capture est assurée.
 const CERTAIN: int = 255
 ## Tests de secousse (une capture les réussit tous).
@@ -35,6 +40,12 @@ static func throw_ball(max_hp: int, hp: int, catch_rate: int, ball_bonus: float,
 			break
 		passed += 1
 	return CaptureResult.new(passed == SHAKE_TESTS, mini(passed, SHOWN_SHAKES))
+
+
+## Taux joué pour un taux [param catch_rate] des données : [constant LEGENDARY_PLAYED_RATE] pour un
+## légendaire ([constant LEGENDARY_CATCH_RATE]), sinon inchangé.
+static func played_rate(catch_rate: int) -> int:
+	return LEGENDARY_PLAYED_RATE if catch_rate == LEGENDARY_CATCH_RATE else catch_rate
 
 
 ## Valeur a de la formule (au moins 1 : un a nul rendrait b indéfini ; ≥ 255 = assurée).
