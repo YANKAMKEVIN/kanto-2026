@@ -1,0 +1,158 @@
+{
+ "flipbooks": {
+  "ruban_aurore": {
+   "fichier": "fb_ruban_aurore.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "vert",
+   "boucle": true
+  },
+  "eclat_givre": {
+   "fichier": "fb_eclat_givre.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "rayon_glace": {
+   "fichier": "fb_rayon_glace.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "bloc_glace": {
+   "fichier": "fb_bloc_glace.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "rafale_blizzard": {
+   "fichier": "fb_rafale_blizzard.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "tempete_neige": {
+   "fichier": "fb_tempete_neige.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "explosion_glace": {
+   "fichier": "fb_explosion_glace.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "etoile_cristaux": {
+   "fichier": "fb_etoile_cristaux.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "voile_brume": {
+   "fichier": "fb_voile_brume.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  }
+ },
+ "particules": {
+  "cristal_glace": {
+   "fichier": "p_cristal_glace.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "pic_glace": {
+   "fichier": "p_pic_glace.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "flocon_peint": {
+   "fichier": "p_flocon_peint.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclat_cristal": {
+   "fichier": "p_eclat_cristal.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "neige_lourde": {
+   "fichier": "p_neige_lourde.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "nappe_buee": {
+   "fichier": "p_nappe_buee.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "volute_buee": {
+   "fichier": "p_volute_buee.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "glacon": {
+   "fichier": "p_glacon.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "etincelle_givre": {
+   "fichier": "p_etincelle_givre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "lueur_givre": {
+   "fichier": "p_lueur_givre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "scintille_givre": {
+   "fichier": "p_scintille_givre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "poussiere_givre": {
+   "fichier": "p_poussiere_givre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "contact_givre": {
+   "fichier": "p_contact_givre.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "flocon_lumiere": {
+   "fichier": "p_flocon_lumiere.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "reflet_aurore": {
+   "fichier": "p_reflet_aurore.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "brume_lumiere": {
+   "fichier": "p_brume_lumiere.webp",
+   "taille": 192,
+   "melange": "add"
+  }
+ }
+}

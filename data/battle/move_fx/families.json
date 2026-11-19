@@ -76,13 +76,13 @@
 		},
 		"glace": {
 			"name": "Glace", "target": "foe",
-			"bricks": {"launch": "frost", "travel": "ice_beam", "impact": "ice_shards"},
-			"phases": {"anticipation": 0.2, "travel": 0.35, "impact": 0.3, "return": 0.15},
-			"world": {"light": "#CFEFFF", "light_peak": 0.3, "flashes": 1},
-			"camera": {"zoom": 1.02, "shake": 2.0},
-			"fx": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "particles": 28, "art": {"charge": "flocon", "particle": "eclat_glace", "rise": "flocon"}}
-		},
-		"psy": {
+			"_doc": "refonte Glace, direction A « givre peint » (2026-11-19, docs/tech/attaques-glace.md) : Onde Boréale, et le repli du type Glace. Un ruban d'aurore ondulant (courant bolt) part de la bouche du lanceur ; étoile de givre sur la cible.",
+			"bricks": {"launch": "frost", "travel": "bolt", "impact": "ice_shards"},
+			"phases": {"anticipation": 0.2, "travel": 0.3, "impact": 0.35, "return": 0.15},
+			"world": {"light": "#CFEFFF", "light_peak": 0.4, "flashes": 1},
+			"camera": {"zoom": 1.03, "shake": 3.0},
+			"fx": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "particles": 28, "bolt_height": 0.26, "impact_size": 1.8, "art": {"charge": "scintille_givre", "bolt": "ruban_aurore", "impact": "eclat_givre", "particle": "reflet_aurore", "rise": "flocon_lumiere", "fallout": "eclat_cristal"}}
+		},		"psy": {
 			"name": "Psy", "target": "foe",
 			"_doc": "refonte Psy, direction A (2026-11-10, docs/tech/attaques-psy.md) : Choc Mental et repli des attaques Psy. Rien ne part du lanceur (regard) ; une onde de distorsion compacte enserre la cible, qui ondule. Psyko (signature) : la sphère qui écrase puis explose.",
 			"bricks": {"launch": "psy_aura", "travel": "", "impact": "distortion"},
@@ -496,6 +496,33 @@
 			"camera": {"zoom": 1.0, "shake": 0.0},
 			"fx": {"palette": ["#FFFBE0", "#B8F06A", "#3A7A1E"], "particles": 24, "art": {"sky": "rayon_synthese", "aura": "aura_synthese", "particle": "feuille_lumineuse", "rise": "pollen_dore"}}
 		},
+		"laser_glace": {
+			"name": "Laser Glace", "target": "foe",
+			"_doc": "refonte Glace, direction A : un rayon de glace épais et droit (courant bolt) part de la bouche du lanceur ; de grands cristaux poussent en cage autour de la cible puis éclatent.",
+			"bricks": {"launch": "frost", "travel": "bolt", "impact": "ice_shards"},
+			"phases": {"anticipation": 0.2, "travel": 0.3, "impact": 0.4, "return": 0.1},
+			"world": {"light": "#BFE8FF", "light_peak": 0.6, "flashes": 2},
+			"camera": {"zoom": 1.05, "shake": 5.0},
+			"fx": {"palette": ["#FFFFFF", "#8FD8FF", "#2E6AA8"], "particles": 40, "bolt_height": 0.42, "impact_size": 2.6, "art": {"charge": "flocon_lumiere", "bolt": "rayon_glace", "impact": "bloc_glace", "particle": "cristal_glace", "rise": "flocon_lumiere", "fallout": "eclat_cristal"}}
+		},
+		"blizzard": {
+			"name": "Blizzard", "target": "foe",
+			"_doc": "refonte Glace, direction A : la neige du blizzard couvre tout l'écran (brique snowstorm, quatre tuiles sky), un mur de tempête se lève derrière le lanceur, traverse le terrain et engloutit la cible (wave_sweep) ; explosion de pics de glace sur elle.",
+			"bricks": {"launch": "frost", "travel": "wave_sweep", "impact": "snowstorm"},
+			"phases": {"anticipation": 0.3, "travel": 0.3, "impact": 0.3, "return": 0.1},
+			"world": {"light": "#E8F6FF", "light_peak": 0.75, "flashes": 2, "dust": true},
+			"camera": {"zoom": 1.06, "shake": 6.0},
+			"fx": {"palette": ["#FFFFFF", "#BFE8FF", "#2E5A8A"], "particles": 44, "impact_size": 3.2, "art": {"charge": "flocon_peint", "sky": "tempete_neige", "wave": "rafale_blizzard", "impact": "explosion_glace", "particle": "pic_glace", "rise": "flocon_peint", "fallout": "neige_lourde", "dust": "poussiere_givre"}}
+		},
+		"voile_brume": {
+			"name": "Brume", "target": "self",
+			"_doc": "refonte Glace, direction A : un voile de brume blanche et scintillante tourne autour du lanceur pour le protéger (brique shield) ; rien vers la cible.",
+			"bricks": {"launch": "posture", "travel": "", "impact": "shield"},
+			"phases": {"anticipation": 0.3, "travel": 0.0, "impact": 0.5, "return": 0.2},
+			"world": {"light": "#E0F4FF", "light_peak": 0.35, "flashes": 0},
+			"camera": {"zoom": 1.0, "shake": 0.0},
+			"fx": {"palette": ["#FFFFFF", "#CFEFFF", "#5A8AB8"], "particles": 18, "art": {"aura": "voile_brume", "particle": "flocon_lumiere", "rise": "scintille_givre"}}
+		},
 		"poing": {
 			"name": "Poing élémentaire", "target": "foe",
 			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Poing de Feu, Poing-Glace, Poing-Éclair. Rouge : un poing frappe la cible, puis l'élément éclate dessus. Ici : course de Contact, poing peint (impact poing), puis l'élément au contact (element_burst : flipbook, particules qui montent, lumière de l'élément) ; une variante par élément.",
@@ -506,7 +533,7 @@
 			"fx": {"palette": ["#FFFFFF", "#F2E6D0", "#8A7A66"], "particles": 26, "art": {"dust": "poussiere"}},
 			"variants": {
 				"feu": {"palette": ["#FFF1B0", "#FF8A3C", "#8A1E0A"], "light": "#FF9A3C", "light_peak": 0.5, "flashes": 1, "art": {"stamp": "contact_flamme", "burst": "eclat_feu", "particle": "braise_vive", "rise": "flammeche", "fallout": "fumee"}},
-				"glace": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "light": "#CFEFFF", "light_peak": 0.35, "flashes": 1, "particles": 34, "art": {"burst": "eclat_glace", "particle": "eclat_glace", "rise": "flocon", "fallout": "flocon"}},
+				"glace": {"palette": ["#FFFFFF", "#A8E4FF", "#3A7AA8"], "light": "#CFEFFF", "light_peak": 0.6, "flashes": 1, "particles": 40, "art": {"stamp": "contact_givre", "burst": "etoile_cristaux", "particle": "cristal_glace", "rise": "flocon_lumiere", "fallout": "eclat_cristal"}},
 				"eclair": {"palette": ["#FFFFF0", "#F7D02C", "#8A6A00"], "light": "#FFF3A0", "light_peak": 0.6, "flashes": 1, "art": {"stamp": "etoile_contact", "aura": "aura_etincelle", "burst": "onde_choc_foudre", "particle": "etincelle_or", "rise": "fil_foudre"}}
 			}
 		},
@@ -534,12 +561,12 @@
 		},
 		"brume": {
 			"name": "Brume", "target": "foe", "duration": 1.2,
-			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Buée Noire. Rouge : souvenir incertain (une brume sombre sur l'écran). Ici : des nappes de brume peintes traversent tout le terrain à plusieurs hauteurs (field_haze), le décor s'assombrit, puis la brume se dissipe ; aucun coup sur la cible.",
+			"_doc": "vague 2 « Effets fidèles à Rouge » (2026-11-04) : Buée Noire. Rouge : souvenir incertain (une brume sombre sur l'écran). Ici : des nappes de brume peintes traversent tout le terrain à plusieurs hauteurs (field_haze), le décor s'assombrit, puis la brume se dissipe ; aucun coup sur la cible. Refonte Glace, direction A (2026-11-19) : brume froide bleu nuit, plus dense et plus grande (nappe_buee).",
 			"bricks": {"launch": "frost", "travel": "", "impact": "field_haze"},
 			"phases": {"anticipation": 0.2, "travel": 0.0, "impact": 0.6, "return": 0.2},
-			"world": {"light": "#4A4058", "light_peak": 0.0, "flashes": 0, "darken": true},
+			"world": {"light": "#2E3A58", "light_peak": 0.0, "flashes": 0, "darken": true},
 			"camera": {"zoom": 1.0, "shake": 0.0},
-			"fx": {"palette": ["#C8C0D8", "#5A5068", "#1E1A28"], "particles": 12, "volley": {"count": 5, "size": 0.7}, "art": {"piece": "brume", "particle": "fumee"}}
+			"fx": {"palette": ["#B8C8E0", "#3A4A68", "#141A2A"], "particles": 12, "volley": {"count": 7, "size": 0.85}, "art": {"piece": "nappe_buee", "particle": "volute_buee"}}
 		},
 		"lancer": {
 			"name": "Lancer", "target": "foe",
@@ -732,7 +759,6 @@
 		"ultralaser": {"base": "energie", "priority": "A", "origin": "bouche"},
 		"seisme": {"base": "sol_roche", "priority": "A", "origin": "centre"},
 		"psyko": {"base": "psy", "priority": "A", "origin": "yeux", "impact_size": 3.0, "shake": 6.0, "zoom": 1.06, "art": {"impact": "implosion_psy", "aura": "aura_psy", "particle": "fragment_cristal", "rise": "volute_psy", "fallout": "poussiere_psy"}, "light_peak": 0.85, "flashes": 2},
-		"blizzard": {"base": "glace", "priority": "B", "origin": "bouche"},
 		"lance_soleil": {"base": "plante", "priority": "B", "origin": "bouche", "bolt_height": 0.55, "impact_size": 3.2, "shake": 6.0, "zoom": 1.06, "art": {"travel": "poussiere_or", "charge": "poussiere_or", "aura": "aura_solaire", "bolt": "rayon_solaire", "impact": "explosion_solaire", "particle": "rayon_court", "rise": "pollen_dore"}, "light_peak": 0.85, "flashes": 2},
 		"explosion": {"base": "explosion", "priority": "B", "origin": "centre"}
 	}

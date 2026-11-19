@@ -15,7 +15,8 @@ const FAMILIES: Array[StringName] = [&"contact", &"feu", &"eau", &"electrique", 
 	&"danse_flamme", &"roue_feu", &"feu_sacre", &"zenith", &"surf", &"repli", &"danse_pluie",
 	&"rafale_psy", &"vague_psy", &"devoreve", &"prescience", &"hypnose", &"hate", &"repos",
 	&"bouclier", &"protection", &"mur_lumiere", &"voile_miroir",
-	&"sangsue", &"tranch_herbe", &"danse_fleur", &"spore_coton", &"synthese"]
+	&"sangsue", &"tranch_herbe", &"danse_fleur", &"spore_coton", &"synthese",
+	&"laser_glace", &"blizzard", &"voile_brume"]
 ## Vague 1 « Effets fidèles à Rouge » (2026-11-02) : attaque → [famille, variante, brique de
 ## trajet, brique de lancement].
 const ROUGE_WAVE_1: Dictionary = {
@@ -115,16 +116,16 @@ func test_the_165_moves_of_the_annex_are_listed() -> void:
 	assert_eq(MoveFxCatalog.load_dir().move_ids().size(), ANNEX_COUNT + JOHTO_COUNT)
 
 
-## 13 signatures sur 14 attaques (Flammèche ajoutée par la refonte Feu ; Surf devenu une famille
-## par la refonte Eau).
-func test_13_signatures_on_14_moves() -> void:
+## 12 signatures sur 13 attaques (Flammèche ajoutée par la refonte Feu ; Surf et Blizzard devenus
+## des familles par les refontes Eau et Glace).
+func test_12_signatures_on_13_moves() -> void:
 	var catalog := MoveFxCatalog.load_dir()
-	assert_eq(catalog.signature_ids().size(), 13)
+	assert_eq(catalog.signature_ids().size(), 12)
 	var signed: Array[StringName] = []
 	for move_id: StringName in catalog.move_ids():
 		if not catalog.entry(move_id).signature.is_empty():
 			signed.append(move_id)
-	assert_eq(signed.size(), 14, "Explosion et Destruction partagent la leur")
+	assert_eq(signed.size(), 13, "Explosion et Destruction partagent la leur")
 	assert_eq(catalog.entry(&"thunder_shock").signature, &"eclair")
 	assert_eq(catalog.entry(&"ember").signature, &"flammeche")
 	assert_eq(catalog.entry(&"self_destruct").signature, catalog.entry(&"explosion").signature)

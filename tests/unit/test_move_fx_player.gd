@@ -661,7 +661,7 @@ func test_plan_palette_and_particles_from_data() -> void:
 ## Formes en code (repli sans art) : jets et rayons épais, avec halo (vidéos CV.3 et CV.1).
 func test_water_jet_is_much_thicker_than_a_beam() -> void:
 	var stage := _stage()
-	for move_id: StringName in [&"water_gun", &"ice_beam", &"hyper_beam"]:
+	for move_id: StringName in [&"water_gun", &"hyper_beam"]:
 		var plan := _plan(move_id)
 		plan.art.erase(&"bolt")
 		_player.play(plan, stage)
@@ -878,8 +878,9 @@ func test_elemental_punches_hit_with_a_fist_then_their_element() -> void:
 		var fist := _player.get_art(MoveFxPlayer.Flip.IMPACT)
 		assert_true(fist.visible, "%s : le poing" % move_id)
 		# Poing-Éclair (refonte Électrik) : pas de poing dessiné, un point de choc au contact.
-		# Poing-Éclair et Poing de Feu (refontes Électrik et Feu) : pas de poing dessiné.
-		var stamps := {&"thunder_punch": &"etoile_contact", &"fire_punch": &"contact_flamme"}
+		# Poing-Éclair, Poing de Feu, Poing-Glace (refontes Électrik, Feu, Glace) : pas de poing dessiné.
+		var stamps := {&"thunder_punch": &"etoile_contact", &"fire_punch": &"contact_flamme",
+			&"ice_punch": &"contact_givre"}
 		var stamp: StringName = stamps.get(move_id, &"poing")
 		assert_eq(fist.texture, FxArt.particle(stamp).get("texture"), "%s : marque peinte" % move_id)
 		assert_true(_player.get_light().is_lit(), "%s : la lumière de l'élément" % move_id)
@@ -1416,6 +1417,76 @@ func test_synthesis_bathes_the_user_in_a_sunshaft() -> void:
 	assert_true(shaft.visible, "le rayon de soleil")
 	assert_almost_eq(shaft.position.x, stage.user_rect.get_center().x, 1.0, "sur le lanceur")
 	assert_true(_player.get_art(MoveFxPlayer.Flip.AURA).visible, "aura de photosynthèse")
+	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part")
+	assert_eq(_target.position, stage.target_rest, "la cible ne bouge pas")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Refonte Glace : chaque attaque se reconnaît à sa forme ; Onde Boréale la plus petite,
+## Blizzard la plus grosse.
+func test_ice_moves_grow_from_aurora_beam_to_blizzard() -> void:
+	var aurora := _plan(&"aurora_beam")
+	var beam := _plan(&"ice_beam")
+	var blizzard := _plan(&"blizzard")
+	assert_eq(aurora.art.get(&"bolt"), &"ruban_aurore")
+	assert_eq(beam.art.get(&"bolt"), &"rayon_glace")
+	assert_eq(beam.art.get(&"impact"), &"bloc_glace")
+	assert_lt(aurora.bolt_height, beam.bolt_height, "Laser Glace plus épais")
+	assert_lt(aurora.impact_size, beam.impact_size)
+	assert_lt(beam.impact_size, blizzard.impact_size, "Blizzard : le plus gros impact")
+	assert_lt(aurora.camera_shake, beam.camera_shake)
+	assert_lt(beam.camera_shake, blizzard.camera_shake, "Blizzard secoue le plus")
+
+
+func test_ice_beam_is_a_thick_ray_from_the_user() -> void:
+	var stage := _stage()
+	var plan := _plan(&"ice_beam")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.1)
+	var ray := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(ray.visible, "le rayon de glace")
+	assert_eq(ray.position, stage.origin(), "part du lanceur")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "les cristaux sur la cible")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Blizzard : la neige couvre tout l'écran, un mur de tempête traverse le terrain jusqu'à la cible,
+## qui encaisse (contrairement à Danse Pluie).
+func test_blizzard_storm_covers_the_screen_and_sweeps_to_the_target() -> void:
+	var stage := _stage()
+	var plan := _plan(&"blizzard")
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.TRAVEL, 0.1)
+	var wall := _player.get_art(MoveFxPlayer.Flip.TRAVEL)
+	assert_true(wall.visible, "le mur de tempête")
+	var early := wall.position.distance_to(stage.target_rect.get_center())
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.3)
+	assert_lt(wall.position.distance_to(stage.target_rect.get_center()), early, "il arrive sur la cible")
+	var snow := _player.get_art(MoveFxPlayer.Flip.SKY)
+	assert_true(snow.visible, "la neige")
+	assert_almost_eq(snow.position, stage.view_size * 0.25, Vector2.ONE, "quart haut gauche")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.WAVE_C).visible, "jusqu'au quart bas droit")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "explosion de glace")
+	assert_false(MoveFxPlayer.STILL_IMPACTS.has(String(plan.bricks.get("impact"))), "la cible encaisse")
+	_player.stop()
+	_assert_at_rest(stage)
+
+
+## Brume : un voile de brume tourne autour du lanceur ; rien vers la cible.
+func test_mist_veils_the_user_only() -> void:
+	var stage := _stage()
+	var plan := _plan(&"mist")
+	assert_true(plan.on_self)
+	_player.play(plan, stage)
+	_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+	var veil := _player.get_art(MoveFxPlayer.Flip.AURA)
+	assert_true(veil.visible, "le voile de brume")
+	assert_eq(veil.texture, FxArt.flipbook(&"voile_brume").get("texture"))
+	# Le voile suit le lanceur, qui se redresse (posture).
+	assert_almost_eq(veil.position, stage.user_rect.get_center() + _user.position - stage.user_rest,
+		Vector2.ONE, "autour du lanceur")
 	assert_false(_player.get_art(MoveFxPlayer.Flip.TRAVEL).visible, "rien ne part")
 	assert_eq(_target.position, stage.target_rest, "la cible ne bouge pas")
 	_player.stop()

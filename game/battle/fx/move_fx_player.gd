@@ -185,7 +185,7 @@ const ROUGE2_TRAVELS: Array[String] = ["rockfall", "smoke_ball", "gas_drift", "s
 	"giant_orb", "bone", "strange_orb", "lob", "underground", "ground_pillar", "wave_sweep"]
 const ROUGE2_IMPACTS: Array[String] = ["explosions", "screen_flash", "field_haze", "fissure_open",
 	"electric_cage", "fire_vortex", "beam_up", "warp_aura", "sunshine", "rain", "petal_vortex", "siphon",
-	"sunshaft"]
+	"sunshaft", "snowstorm"]
 ## Impacts sans tremblement de la cible (Flash, Buée Noire) ; impacts où elle ondule sur place.
 const STILL_IMPACTS: Array[String] = ["field_haze", "screen_flash", "sunshine", "rain", "shield",
 	"sunshaft", "barrier_wall"]
@@ -641,6 +641,12 @@ func _impact_burst(phase: MoveFxPlan.Phase) -> void:
 		"beam_up":
 			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.RISE, 26.0,
 				reach * 2.0, life * 1.3, true)
+		"snowstorm":
+			# Blizzard : les pics de glace volent loin, la neige retombe autour de la cible.
+			_art_burst(&"particle", at, _plan.particles, FxParticlePool.Shape.BURST, 44.0, reach * 2.6,
+				life * 1.3)
+			_art_burst(&"rise", at, roundi(_plan.particles / 2.0), FxParticlePool.Shape.FALL, 34.0,
+				reach * 1.6, life * 1.5)
 		"smoke_cloud", "gas_cloud":
 			_art_burst(&"particle", at, roundi(_plan.particles / 2.0), FxParticlePool.Shape.RISE,
 				0.12 * height, reach * 0.6, life * 1.6)
@@ -2284,7 +2290,7 @@ func _pose_rouge2(phase: MoveFxPlan.Phase, k: float) -> void:
 			_pose_cage(phase, k)
 		"sunshaft":
 			_pose_sunshaft(phase, k)
-		"sunshine", "rain":
+		"sunshine", "rain", "snowstorm":
 			_pose_weather(phase, k)
 		"field_haze":
 			_pose_haze()
@@ -2783,8 +2789,8 @@ func _pose_ground_pillar(phase: MoveFxPlan.Phase, k: float) -> void:
 
 
 ## Météo sur tout le terrain (`sky`) : soleil de Zénith dans le coin haut droit, pluie de Danse
-## Pluie sur tout l'écran. Elle arrive pendant l'anticipation, reste pendant l'impact et s'efface au
-## retour ; rien ne part vers la cible.
+## Pluie et neige de Blizzard (`snowstorm`, la cible encaisse) sur tout l'écran. Elle arrive
+## pendant l'anticipation, reste pendant l'impact et s'efface au retour.
 func _pose_weather(phase: MoveFxPlan.Phase, k: float) -> void:
 	var alpha := 1.0
 	match phase.name:
@@ -2793,7 +2799,7 @@ func _pose_weather(phase: MoveFxPlan.Phase, k: float) -> void:
 		MoveFxPlan.RETURN:
 			alpha = 1.0 - _ease_in(k)
 	var view := _stage.view_size
-	if _impact_brick() == "rain":
+	if _impact_brick() in ["rain", "snowstorm"]:
 		# Quatre tuiles d'un quart d'écran : étirée sur tout l'écran, la pluie ferait des traits énormes.
 		var tile := view * 0.5
 		for i: int in 4:
