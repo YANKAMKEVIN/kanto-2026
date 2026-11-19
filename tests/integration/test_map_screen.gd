@@ -174,6 +174,22 @@ func test_touch_areas_are_at_least_touch_min_and_never_steal_a_neighbour() -> vo
 		assert_eq(canvas.zone_at(beside), &"route_1")
 
 
+## Remarque de Kevin sur S24 (2026-11-19) : toucher le nom d'une zone la choisit, même
+## décalé de la zone ; un doigt qui glisse un peu garde la zone de l'appui.
+func test_touching_a_label_or_slipping_a_little_still_picks_the_zone() -> void:
+	var screen := await _screen_in(2340, _view())
+	var canvas := screen.get_map_canvas()
+	var labels := canvas.get_label_rects()
+	assert_false(labels.is_empty(), "des étiquettes sont posées")
+	for zone: StringName in labels:
+		assert_eq(canvas.zone_at(labels[zone].get_center()), zone, "étiquette de %s" % zone)
+	var center := canvas.zone_rect(&"pallet_town").get_center()
+	_touched.clear()
+	canvas._gui_input(_mouse(true, center))
+	canvas._gui_input(_mouse(false, center + Vector2(30, 20)))
+	assert_eq(_touched, [&"pallet_town"] as Array[StringName], "petit glissement toléré")
+
+
 # --- Panneau ----------------------------------------------------------------------------------
 
 

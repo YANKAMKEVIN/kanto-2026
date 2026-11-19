@@ -27,6 +27,9 @@ const KIND_ICONS: Dictionary[StringName, Texture2D] = {
 }
 const ICON_DEFAULT: Texture2D = preload("res://assets/ui/icons/map/route.svg")
 ## Priorité des étiquettes (reliquats du Menu peint) : les deux premières ne sont jamais masquées.
+## Toucher (2026-11-19) : marge autour d'une étiquette et glissement toléré d'un appui (px) [D].
+const LABEL_TOUCH_MARGIN := 12.0
+const TAP_SLOP := 40.0
 const LABEL_RANK_CURRENT := 0
 const LABEL_RANK_SELECTED := 1
 const LABEL_RANK_TOWN := 2
@@ -37,6 +40,7 @@ var _view: MapView
 var _texture: Texture2D
 var _selected: StringName = &""
 var _pressed_zone: StringName = &""
+var _pressed_at: Vector2 = Vector2.ZERO
 var _labels: Dictionary[StringName, PanelContainer] = {}
 var _label_texts: Dictionary[StringName, Label] = {}
 var _label_icons: Dictionary[StringName, TextureRect] = {}
@@ -181,13 +185,27 @@ func touch_rect(zone_id: StringName) -> Rect2:
 
 
 ## La zone **découverte** touchée en [param point] (repère du contrôle), &"" si aucune.
+## Remarque de Kevin sur S24 (2026-11-19, « on a du mal à sélectionner le lieu ») : une
+## **étiquette** visible touchée donne sa zone en premier (on appuie sur le nom, souvent décalé
+## de sa zone) ; entre vrais rectangles qui se recouvrent, le **plus petit** gagne (une ville
+## sur le tracé d'une route) ; puis les zones agrandies, la plus proche par le centre.
 func zone_at(point: Vector2) -> StringName:
 	if _view == null:
 		return &""
-	for zone: MapZoneView in _view.zones:
-		if zone_rect(zone.zone_id).has_point(point):
-			return zone.zone_id
+	for zone_id: StringName in _labels:
+		var pill := _labels[zone_id]
+		if pill.visible and Rect2(pill.position, pill.size).grow(LABEL_TOUCH_MARGIN) \
+				.has_point(point) and zone_rect(zone_id).has_area():
+			return zone_id
 	var best: StringName = &""
+	var best_area := INF
+	for zone: MapZoneView in _view.zones:
+		var rect := zone_rect(zone.zone_id)
+		if rect.has_point(point) and rect.get_area() < best_area:
+			best_area = rect.get_area()
+			best = zone.zone_id
+	if not best.is_empty():
+		return best
 	var best_distance := INF
 	for zone: MapZoneView in _view.zones:
 		if not touch_rect(zone.zone_id).has_point(point):
@@ -236,10 +254,13 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	if button.pressed:
 		_pressed_zone = zone_at(button.position)
+		_pressed_at = button.position
 		return
 	var zone := _pressed_zone
 	_pressed_zone = &""
-	if not zone.is_empty() and zone_at(button.position) == zone:
+	# Un doigt qui a un peu glissé garde la zone où il s'était posé (2026-11-19).
+	var still := button.position.distance_to(_pressed_at) <= TAP_SLOP
+	if not zone.is_empty() and (still or zone_at(button.position) == zone):
 		Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 		zone_pressed.emit(zone)
 

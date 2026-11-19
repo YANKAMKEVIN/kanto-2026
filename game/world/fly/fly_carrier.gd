@@ -8,8 +8,8 @@ extends Node2D
 
 ## Hauteur affichée de l'artwork officiel (px de référence) [D].
 const ARTWORK_HEIGHT: float = 190.0
-## Le porteur vole au-dessus de la tête du joueur (128 px) [D].
-const ABOVE_HEAD: float = 150.0
+## Le porteur vole juste au-dessus de la tête du joueur (128 px), serres sur la tête [D].
+const ABOVE_HEAD: float = 112.0
 ## Balancement : amplitude (px) et période (s) [D].
 const BOB_HEIGHT: float = 10.0
 const BOB_PERIOD: float = 0.7
