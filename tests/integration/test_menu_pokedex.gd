@@ -110,6 +110,11 @@ func test_observing_gives_a_toast_and_only_once_per_individual_and_visit() -> vo
 	await _observe_rattata()
 	assert_eq(GameState.pokedex.get_entry(&"rattata").times_seen, 1)
 	assert_eq(_toasts, [PokedexUpdates.TITLES[PokedexUpdates.Kind.NEW_SPECIES]] as Array[String])
+	var toast := _boot.get_hud().get_toast()
+	var rattata := _boot.get_pokemon_data().get_species(&"rattata").dex
+	assert_eq(toast.get_icon(), MenuArt.pokemon_thumbnail(rattata),
+		"le toast du Pokédex porte la vignette de l'espèce")
+	assert_ne(toast.get_icon(), Toast.DEFAULT_ICON, "pas la Poké Ball d'un ramassage")
 	await _observe_rattata(false)
 	assert_eq(GameState.pokedex.get_entry(&"rattata").times_seen, 1, "même individu, même visite")
 	# Autre visite de la carte : l'individu compte à nouveau.

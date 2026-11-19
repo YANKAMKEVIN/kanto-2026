@@ -2421,12 +2421,16 @@ func _queue_dex_toast(species: StringName, kind: PokedexUpdates.Kind) -> void:
 		_dex_toasts.append([species, message])
 
 
-## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran.
+## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran. Il porte la
+## vignette peinte de l'espèce (une espèce nommée par un toast est déjà vue : rien n'est révélé).
 func _show_next_dex_toast() -> void:
 	if _menu.is_open() or not is_stable() or _hud.get_toast().is_showing():
 		return
-	var message: PackedStringArray = _dex_toasts.pop_front()[1]
-	_hud.show_toast(message[0], message[1])
+	var entry: Array = _dex_toasts.pop_front()
+	var message: PackedStringArray = entry[1]
+	var species := _pokemon.get_species(entry[0])
+	_hud.show_toast(message[0], message[1],
+		MenuArt.pokemon_thumbnail(species.dex) if species != null else null)
 
 
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
