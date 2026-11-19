@@ -191,4 +191,4 @@ Boutiques et dons uniques des scènes (union des branches, maximum par branche),
 | 148 | Draco (`dragonair`) | dragon | Minidraco (niveau 30) | — | HEAD | obtenable | — |
 | 149 | Dracolosse (`dragonite`) | dragon/flying | Draco (niveau 55) | — | HEAD | obtenable | — |
 | 150 | Mewtwo (`mewtwo`) | psychic | — | fixe : cerulean_cave (N70) [main, HEAD] | main | obtenable | — |
-| 151 | Mew (`mew`) | psychic | — | fixe : j32_mew (N30) [HEAD] | HEAD | obtenable | — |
+| 151 | Mew (`mew`) | psychic | — | fixe : j32_mew (N70, Kevin 2026-11-20) [HEAD] | HEAD | obtenable | — |

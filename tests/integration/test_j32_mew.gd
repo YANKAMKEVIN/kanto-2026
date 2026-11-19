@@ -1,7 +1,7 @@
 extends GutTest
 ## Jalon 32, lot 32J (`jalon-32.md` T3 ; N-1 à N-5, textes 1 à 7) avec le vrai Boot :
 ## - Carmin : le docker de la rumeur ; le vieux camion du quai ne cache Mew que quand les
-##   **150 autres espèces** sont capturées (rencontre unique, N30, `mew_appeared`) ;
+##   **150 autres espèces** sont capturées (rencontre unique, N70, décision de Kevin du 2026-11-20, `mew_appeared`) ;
 ## - Résidence de Céladopole, 3e : le concepteur, après la Ligue, remet le Diplôme à 150.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -166,3 +166,11 @@ func _examine(cell: Vector2i, facing: Vector2i, stop: Callable) -> void:
 		if box.is_open() and not runner.is_awaiting_choice():
 			box.advance_requested.emit()
 		await wait_process_frames(1)
+
+
+func test_mew_is_met_at_level_70() -> void:
+	var text := FileAccess.get_file_as_string("res://data/cutscenes/j32_mew.json")
+	var scenes: Dictionary = JSON.parse_string(text)
+	var battle: Dictionary = scenes["mew"]["variants"][0]["steps"][1]
+	assert_eq([battle["wild_battle"], int(battle["level"])], ["mew", 70],
+		"Mew au niveau 70 (décision de Kevin du 2026-11-20), comme Mewtwo")
