@@ -468,6 +468,10 @@ const MOVE_CARD_SELECTED_GLOW_SIZE := 14
 const MOVE_CARD_DISABLED := Color(0.55, 0.58, 0.62, 0.85)
 const MODULATE_FULL := Color(1, 1, 1, 1)
 const MOVE_PP_EMPTY := HP_LOW
+## PP bientôt épuisés [D] : sous un quart des PP max, le chiffre prend l'ambre de la barre de PV
+## moyenne (HP_MID) ; à zéro, il reste rouge.
+const MOVE_PP_LOW := HP_MID
+const MOVE_PP_LOW_RATIO := 0.25
 ## Emplacement vide (moins de 4 capacités).
 const MOVE_CARD_EMPTY_BG := Color(1, 1, 1, 0.04)
 const MOVE_CARD_EMPTY_BORDER := Color(1, 1, 1, 0.12)

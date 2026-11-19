@@ -173,6 +173,12 @@ func get_style() -> StyleBoxFlat:
 	return get_theme_stylebox(&"panel") as StyleBoxFlat
 
 
+## Vrai s'il reste des PP, mais moins de MOVE_PP_LOW_RATIO des PP max (1 sur 15, 4 sur 20) : le
+## chiffre passe en ambre pour prévenir avant la panne (à zéro, il est rouge).
+static func is_pp_low(pp: int, max_pp: int) -> bool:
+	return pp > 0 and max_pp > 0 and float(pp) / float(max_pp) < UiTokens.MOVE_PP_LOW_RATIO
+
+
 func _apply() -> void:
 	var empty := _view == null
 	_row.visible = not empty
@@ -181,10 +187,12 @@ func _apply() -> void:
 	if not empty:
 		_name_label.text = _view.display_name.to_upper()
 		_pp_value.text = PP_FORMAT % [_view.pp, _view.max_pp]
-		if _view.pp > 0:
-			_pp_value.remove_theme_color_override(&"font_color")
-		else:
+		if _view.pp <= 0:
 			_pp_value.add_theme_color_override(&"font_color", UiTokens.MOVE_PP_EMPTY)
+		elif is_pp_low(_view.pp, _view.max_pp):
+			_pp_value.add_theme_color_override(&"font_color", UiTokens.MOVE_PP_LOW)
+		else:
+			_pp_value.remove_theme_color_override(&"font_color")
 		_power.text = power_text(_view)
 		_badge.set_type(_view.type_id, _view.type_name)
 		_icon.texture = TypeBadge.ICONS.get(_view.type_id, GENERIC_ICON)

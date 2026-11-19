@@ -144,6 +144,28 @@ func test_type_without_icon_uses_neutral_ring() -> void:
 	assert_eq(_grid.get_card(0).get_badge().get_color(), UiTokens.TYPE_COLORS[&"dark"])
 
 
+func test_pp_turn_amber_under_a_quarter_and_red_at_zero() -> void:
+	assert_true(MoveCard.is_pp_low(1, 15))
+	assert_true(MoveCard.is_pp_low(8, 35), "8 sur 35 : sous le quart")
+	assert_false(MoveCard.is_pp_low(5, 20), "le quart tout juste : pas encore")
+	assert_false(MoveCard.is_pp_low(35, 35))
+	assert_false(MoveCard.is_pp_low(0, 35), "à zéro, c'est le rouge")
+	assert_false(MoveCard.is_pp_low(1, 0), "PP max inconnus")
+	await _show([_scratch(8), _scratch(9), _scratch(0)] as Array[BattleMoveView])
+	var low := _grid.get_card(0).get_node(^"%PpValue") as Label
+	var fine := _grid.get_card(1).get_node(^"%PpValue") as Label
+	var empty := _grid.get_card(2).get_node(^"%PpValue") as Label
+	assert_eq(low.get_theme_color(&"font_color"), UiTokens.MOVE_PP_LOW, "ambre")
+	assert_eq(UiTokens.MOVE_PP_LOW, UiTokens.HP_MID, "le jeton de la barre de PV moyenne")
+	assert_ne(fine.get_theme_color(&"font_color"), UiTokens.MOVE_PP_LOW, "9 sur 35 : normal")
+	assert_eq(empty.get_theme_color(&"font_color"), UiTokens.MOVE_PP_EMPTY, "rouge à zéro")
+	assert_true(_grid.get_card(0).is_usable(), "presque vide, mais toujours utilisable")
+	# Les PP remontent (Éther, Centre) : la carte reprend sa couleur.
+	await _show([_scratch(35)] as Array[BattleMoveView])
+	assert_ne((_grid.get_card(0).get_node(^"%PpValue") as Label).get_theme_color(&"font_color"),
+		UiTokens.MOVE_PP_LOW)
+
+
 func test_card_without_pp_dimmed_and_inert() -> void:
 	await _show([_scratch(0), _growl()] as Array[BattleMoveView])
 	var card := _grid.get_card(0)
