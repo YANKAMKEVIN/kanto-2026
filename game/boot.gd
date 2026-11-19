@@ -1550,9 +1550,13 @@ func _current_map_id() -> StringName:
 	return map.map_id if is_instance_valid(map) else &""
 
 
-func _on_transition_started(_target_map: StringName) -> void:
+func _on_transition_started(target_map: StringName) -> void:
 	_companion.on_transition_started()
 	_arrival_from = _current_map_id()
+	# Décision de Kevin (2026-11-19) : un légendaire de Kanto mis K.O. revient quand on quitte
+	# la carte (avant le chargement de la suivante et son autosave).
+	if not target_map.is_empty() and target_map != _arrival_from:
+		StaticRespawn.on_map_left(_cutscenes.get_static_encounters(), GameState.flags)
 	_hud.hide_zone_title()
 	_hud.hide_caption()
 

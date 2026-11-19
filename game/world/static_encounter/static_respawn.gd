@@ -24,6 +24,16 @@ extends RefCounted
 ## `StaticRespawn.on_league_won(cutscenes.get_static_encounters(), flags)`.
 
 
+## Décision de Kevin (2026-11-19, sur S24, après avoir mis Électhor K.O. par mégarde) : « il
+## suffit de sortir de la grotte et de revenir et on peut les voir ». Les légendaires de Kanto
+## ([constant MAP_RESPAWN_SPECIES]) mis K.O. sans capture reviennent dès que le joueur **quitte
+## la carte** ([method on_map_left], branché par Boot sur [signal SceneRouter.transition_started]
+## vers une autre carte) : en revenant, la scène et l'acteur sont là. Les autres rencontres fixes
+## (Johto, Voltorbe des fausses Balls, Lokhlass du vendredi) gardent la règle de la Ligue.
+## Une sauvegarde où Électhor a déjà été mis K.O. le retrouve au premier changement de carte.
+const MAP_RESPAWN_SPECIES: Array[StringName] = [
+	&"articuno", &"zapdos", &"moltres", &"mewtwo", &"mew"]
+
 ## Drapeaux des deux Ronflex du J21 (`data/cutscenes/j21_snorlax*.json`).
 const ROUTE_SNORLAX_DONE: Array[StringName] = [&"snorlax_route_12_done", &"snorlax_route_16_done"]
 const ROUTE_SNORLAX_CAUGHT: Array[StringName] = [
@@ -81,4 +91,17 @@ static func on_league_won(encounters: Array[StaticEncounter], flags: StoryFlags)
 		cleared.append(encounter.done_flag)
 	if flags != null:
 		cleared.append_array(apply_snorlax_rule(flags))
+	return cleared
+
+
+## Le joueur quitte une carte : les légendaires de Kanto mis K.O. sans capture reviennent.
+## Rend les drapeaux `done` baissés.
+static func on_map_left(encounters: Array[StaticEncounter], flags: StoryFlags) \
+		-> Array[StringName]:
+	var cleared: Array[StringName] = []
+	for encounter: StaticEncounter in knocked_out(encounters, flags):
+		if not MAP_RESPAWN_SPECIES.has(encounter.species) or cleared.has(encounter.done_flag):
+			continue
+		flags.set_flag(encounter.done_flag, false)
+		cleared.append(encounter.done_flag)
 	return cleared
