@@ -138,6 +138,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"forget_confirm_no",
 	&"withdrawn", &"withdrawn_foe", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
+	# Consigne de la fiche d'une capacité, sous les cartes ([MoveSheetHint]).
+	&"move_sheet_hint",
 	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
 	&"status_cured_poison",
 	# Jalon 23 (T18) : poison grave (Toxik).

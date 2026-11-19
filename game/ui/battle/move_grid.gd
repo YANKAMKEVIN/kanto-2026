@@ -13,6 +13,8 @@ extends BattleWidget
 ##   SANS move_selected ; la fiche se ferme au relâchement du doigt, qui ne lance jamais la
 ##   capacité (details_opened / details_closed) ;
 ## - doigt relâché hors de la carte : rien (sélection effacée).
+## Consigne ([method set_hint]) : une ligne discrète sous les cartes, sur le bandeau (« Maintiens
+## une capacité pour voir sa fiche ») ; celui qui pilote décide quand l'écrire.
 ## Clavier (tests sur Mac) : flèches (ui_left/right/up/down) = select, ui_accept = confirm.
 ## Le bouton « ‹ » est un composant à part (BattleBackButton), sous la carte joueur.
 
@@ -29,6 +31,8 @@ var _cards: Array[MoveCard] = []
 var _selected: int = -1
 var _answered: bool = false
 var _details: int = -1
+## Consigne sous les cartes (créée ici ; vide = cachée).
+var _hint: Label
 
 @onready var _grid: GridContainer = %Cards
 @onready var _arrow: TextureRect = %Arrow
@@ -53,6 +57,24 @@ func _ready() -> void:
 	_sheet.offset_bottom = -UiTokens.GAP
 	_sheet.offset_top = -UiTokens.GAP
 	_sheet.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_hint = Label.new()
+	_hint.name = &"Hint"
+	_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hint.add_theme_font_size_override(&"font_size", UiTokens.MOVE_HINT_FONT)
+	_hint.add_theme_color_override(&"font_color", UiTokens.TEXT_MUTED)
+	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	# Sous les cartes, dans la marge basse du bandeau (qui déborde jusqu'au bord de l'écran).
+	_hint.anchor_top = 1.0
+	_hint.anchor_bottom = 1.0
+	_hint.anchor_right = 1.0
+	_hint.offset_left = UiTokens.MOVE_GAP_H
+	_hint.offset_right = -UiTokens.MOVE_BAND_PAD
+	_hint.offset_top = -UiTokens.MOVE_BAND_PAD
+	_hint.offset_bottom = UiTokens.BATTLE_MOVES_BOTTOM - UiTokens.MOVE_BAND_PAD \
+		- UiTokens.MOVE_HINT_BOTTOM
+	_hint.visible = false
+	_body.add_child(_hint)
 	for i: int in SLOTS:
 		var card := CARD_SCENE.instantiate() as MoveCard
 		_grid.add_child(card)
@@ -98,6 +120,22 @@ func show_moves(views: Array[BattleMoveView]) -> void:
 	_sheet.slide_out()
 	select(-1)
 	slide_in()
+
+
+## Écrit [param text] sous les cartes (« Maintiens une capacité pour voir sa fiche ») ; une
+## chaîne vide retire la consigne.
+func set_hint(text: String) -> void:
+	_hint.text = text
+	_hint.visible = not text.is_empty()
+
+
+## Consigne affichée sous les cartes ("" si aucune).
+func get_hint_text() -> String:
+	return _hint.text if _hint.visible else ""
+
+
+func get_hint_label() -> Label:
+	return _hint
 
 
 ## Sélectionne la carte [param index] (liseré ACCENT + ▶) ; -1, une carte vide ou sans PP :

@@ -164,6 +164,8 @@ var _summary: ExpSummary = ExpSummary.new()
 var _fainted_indices: Array[int] = []
 ## État des pastilles d'équipe des deux camps, tenu au fil des événements joués.
 var _pips := PartyPipTracker.new()
+## Consigne « Maintiens une capacité pour voir sa fiche » : ce que le joueur en a déjà vu.
+var _move_sheet_hint := MoveSheetHint.new()
 ## JOH0 (Exp ×1,5 de l'acte 1, §2.10) : `func() -> float`, multiplié aux règles du combat à la
 ## création du moteur. Non valide : 1,0.
 var exp_bonus_source: Callable
@@ -196,6 +198,9 @@ func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage
 	_state = state
 	if is_instance_valid(_hud) and not _hud.auto_toggled.is_connected(_on_auto_toggled):
 		_hud.auto_toggled.connect(_on_auto_toggled)
+	if is_instance_valid(_hud) \
+			and not _hud.get_move_grid().details_opened.is_connected(_on_move_details_opened):
+		_hud.get_move_grid().details_opened.connect(_on_move_details_opened)
 	get_move_learn_prompt().setup(data, texts)
 
 
@@ -601,7 +606,8 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		if usable.is_empty():
 			return BattleAction.move(BattleAction.STRUGGLE)
 		_hud.show_moves(BattleViews.player_moves(_battle, _data, _texts,
-			CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_MOVE_HINT) > 0.0))
+			CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_MOVE_HINT) > 0.0),
+			_take_move_sheet_hint())
 		var index := await _await_move_or_back()
 		if index < 0:
 			continue
@@ -1196,6 +1202,25 @@ func _sent_out_species(events: Array[BattleEvent], side: BattleEvent.SideId) -> 
 func _find_player_pokemon(event: BattleEvent) -> Pokemon:
 	var party := _state.party as Party
 	return party.get_at(event.party_index) if party != null else null
+
+
+## La consigne de la fiche d'une capacité (Boot y branche le fichier de l'appareil).
+func get_move_sheet_hint() -> MoveSheetHint:
+	return _move_sheet_hint
+
+
+## Consigne de la fiche d'une capacité, écrite sous les cartes aux premiers choix
+## ([MoveSheetHint]) ; "" quand elle n'est plus due. La demander la compte comme affichée.
+func _take_move_sheet_hint() -> String:
+	if _texts == null or not _move_sheet_hint.is_due():
+		return ""
+	_move_sheet_hint.record_shown()
+	return _texts.get_template(&"move_sheet_hint")
+
+
+## Une fiche de capacité vient d'être ouverte : la consigne ne reviendra plus.
+func _on_move_details_opened(_index: int) -> void:
+	_move_sheet_hint.record_opened()
 
 
 ## Carte d'information du Pokémon de [param event]. Un Pokémon sauvage d'une espèce déjà

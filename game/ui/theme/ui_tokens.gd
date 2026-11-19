@@ -447,6 +447,10 @@ const MOVE_GAP_V := 16
 const MOVE_BAND_PAD := 20
 const MOVE_BAND_BLEED := 96
 const MOVE_BAND_BG := Color(0.06, 0.09, 0.13, 0.66)
+## Consigne sous les cartes de capacités [D] (« Maintiens une capacité pour voir sa fiche ») :
+## taille du texte et marge gardée au bord bas de l'écran.
+const MOVE_HINT_FONT := FONT_CAPTION
+const MOVE_HINT_BOTTOM := 4
 ## Part de la couleur du type dans le fond de la carte (mêlée à PANEL_BG), et opacité du
 ## liseré à la couleur du type.
 const MOVE_CARD_TINT := 0.32

@@ -74,6 +74,7 @@
 		"summary_level": { "text": "Nv. {level}" },
 		"summary_stat": { "text": "{stat} +{amount}" },
 		"summary_continue": { "text": "Touchez l'écran pour continuer" },
+		"move_sheet_hint": { "text": "Maintiens une capacité pour voir sa fiche", "draft": true },
 		"status_inflicted_poison": {
 			"text": "{pokemon} est empoisonné !",
 			"text_f": "{pokemon} est empoisonnée !"

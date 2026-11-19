@@ -250,9 +250,9 @@ func set_action_labels(labels: Dictionary[StringName, String]) -> void:
 
 
 ## Montre les capacités [param views] (4 au plus) et « ‹ », après la sortie de la zone
-## affichée.
-func show_moves(views: Array[BattleMoveView]) -> void:
-	_open_moves(views.duplicate())
+## affichée. [param hint] : consigne écrite sous les cartes ("" : aucune).
+func show_moves(views: Array[BattleMoveView], hint: String = "") -> void:
+	_open_moves(views.duplicate(), hint)
 
 
 ## Coroutine : affiche [param text] dans le bandeau (après la sortie de la zone affichée) et
@@ -341,9 +341,10 @@ func _open_actions() -> void:
 	_actions.show_actions(_enabled)
 
 
-func _open_moves(views: Array[BattleMoveView]) -> void:
+func _open_moves(views: Array[BattleMoveView], hint: String = "") -> void:
 	if not await _switch(Zone.MOVES):
 		return
+	_moves.set_hint(hint)
 	_moves.show_moves(views)
 	_back.slide_in()
 

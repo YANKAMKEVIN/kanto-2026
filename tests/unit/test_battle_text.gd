@@ -10,7 +10,8 @@ const K := BattleEvent.Kind
 ## de l'annexe A du jalon 15 (Jackpot, 2026-10-14) ; messages d'Ultralaser et de Hurlement du
 ## jalon 19 validés par Kevin le 2026-10-16.
 ## Jalon 32 (32N, N-22) : messages de charge de Coupe-Vent validés par Kevin le 2026-10-28.
-const PENDING_DRAFTS: Array[StringName] = []
+## Lot UI/UX (2026-11-19) : consigne de la fiche d'une capacité [D], à relire par Kevin.
+const PENDING_DRAFTS: Array[StringName] = [&"move_sheet_hint"]
 
 var _data: PokemonData
 var _text: BattleText

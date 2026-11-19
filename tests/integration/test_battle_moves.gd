@@ -144,6 +144,21 @@ func test_type_without_icon_uses_neutral_ring() -> void:
 	assert_eq(_grid.get_card(0).get_badge().get_color(), UiTokens.TYPE_COLORS[&"dark"])
 
 
+func test_hint_line_under_the_cards_only_when_asked() -> void:
+	await _show(_charmander_moves())
+	assert_eq(_grid.get_hint_text(), "", "aucune consigne par défaut")
+	assert_false(_grid.get_hint_label().visible)
+	_grid.set_hint("Maintiens une capacité pour voir sa fiche")
+	assert_eq(_grid.get_hint_text(), "Maintiens une capacité pour voir sa fiche")
+	var hint := _grid.get_hint_label()
+	assert_eq(hint.mouse_filter, Control.MOUSE_FILTER_IGNORE, "elle ne prend aucun toucher")
+	await wait_process_frames(2)
+	var cards_bottom := _grid.get_card(2).get_global_rect().end.y
+	assert_gte(hint.get_global_rect().position.y, cards_bottom, "sous les cartes")
+	_grid.set_hint("")
+	assert_eq(_grid.get_hint_text(), "")
+
+
 func test_pp_turn_amber_under_a_quarter_and_red_at_zero() -> void:
 	assert_true(MoveCard.is_pp_low(1, 15))
 	assert_true(MoveCard.is_pp_low(8, 35), "8 sur 35 : sous le quart")

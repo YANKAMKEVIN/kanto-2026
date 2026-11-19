@@ -97,6 +97,9 @@ var force_debug_unlocks: bool = false
 ## **seulement s'il est la scène principale lancée par le moteur** (même garde que la
 ## sauvegarde) ; sinon réglages par défaut et rien d'écrit.
 var settings_store: SettingsStore = null
+## Consignes déjà montrées au joueur ([HintStore], `user://hints.json`) ; null : rien n'est lu ni
+## écrit (tests, outils). Créé en jeu réel seulement, comme le fichier des réglages.
+var hint_store: HintStore = null
 ## Dernière version dont les nouveautés ont été vues (carte « Nouveautés » du titre) ; null :
 ## aucune carte (tests, outils). Créé avec le fichier des réglages, en jeu réel seulement.
 var whats_new_store: WhatsNewStore = null
@@ -393,6 +396,11 @@ func _ready() -> void:
 	MenuArt.set_tm_types(_items.tm_types(_pokemon))
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
+	# Consignes déjà vues (pression longue sur une capacité) : fichier de l'appareil, en jeu réel
+	# seulement (même garde que le fichier des réglages).
+	if hint_store == null and get_tree().current_scene == self:
+		hint_store = HintStore.new()
+	_battle_director.get_move_sheet_hint().attach(hint_store)
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
 	_battle_stage.set_species_source(_pokemon, _dex)
 	_cutscenes_node.set_battle_runner(_battle_director)
