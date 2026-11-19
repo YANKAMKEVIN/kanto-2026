@@ -387,6 +387,21 @@ const FOE_PIPS_GAP := 8
 # Grille des 4 actions (combat-v1 : boutons colorés).
 const ACTION_ATTACK := Color("#E04A3C")
 const ACTION_BAG := Color("#D49A2E")
+# Puces des crans de statistiques d'une carte de combat [D] (« ATT ▲2 ») : petites capsules sur la
+# bande des pastilles, alignées au bord droit de la carte ; elles passent à la ligne au besoin.
+const STAT_CHIP_FONT := 20
+const STAT_CHIP_BG := DIALOG_PANEL_BG
+const STAT_CHIP_RADIUS := 14
+const STAT_CHIP_PAD_H := 10
+const STAT_CHIP_PAD_V := 1
+const STAT_CHIP_GAP := 5
+const STAT_CHIP_ARROW := 12
+const STAT_CHIP_UP := SUCCESS
+const STAT_CHIP_DOWN := HP_LOW
+## Écart entre deux puces, et entre les pastilles et la première puce.
+const STAT_CHIPS_GAP := 6
+const STAT_CHIPS_MARGIN := 12
+
 const ACTION_TEAM := Color("#2D6DB5")
 const ACTION_RUN := Color(0.16, 0.2, 0.25, 0.92)
 const BATTLE_ACTION_SIZE := Vector2(360, 128)

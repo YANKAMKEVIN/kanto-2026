@@ -97,6 +97,13 @@ static func card(event: BattleEvent) -> BattleCardView:
 	return view
 
 
+## Libellé court de [param stat] pour la puce de cran de la carte (« ATT ») : celui de
+## [param texts] (« stage_labels »), sinon l'identifiant en majuscules.
+static func stage_label(stat: StringName, texts: BattleText) -> String:
+	var label := texts.stage_label(stat) if texts != null else ""
+	return label if not label.is_empty() else String(stat).to_upper()
+
+
 ## Sexe du modèle Pokémon → sexe affiché par la carte.
 static func card_gender(gender: Pokemon.Gender) -> BattleCardView.Gender:
 	match gender:

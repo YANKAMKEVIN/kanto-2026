@@ -101,6 +101,8 @@ func _ready() -> void:
 	_foe_card.slide_direction = Vector2.LEFT
 	_own_card.slide_direction = Vector2.RIGHT
 	_foe_pips.slide_direction = Vector2.LEFT
+	# Puces de crans : sur la bande des pastilles de chaque carte.
+	_own_card.chips_above = true
 	_actions.action_selected.connect(action_selected.emit)
 	_moves.move_selected.connect(move_selected.emit)
 	_back.back_requested.connect(_on_back)
@@ -175,6 +177,17 @@ func play_poison(side: BattleHud.Side) -> void:
 ## side].
 func set_status(side: BattleHud.Side, status: StringName) -> void:
 	get_card(side).set_status(status)
+
+
+## Pose sur la carte de [param side] la puce du cran de [param stat] : [param label] (« ATT ») et
+## [param stage] (cran d'après ; 0 la retire).
+func set_stat_stage(side: BattleHud.Side, stat: StringName, label: String, stage: int) -> void:
+	get_card(side).set_stat_stage(stat, label, stage)
+
+
+## Retire les puces de crans de la carte de [param side] (nouveau Pokémon, Buée Noire).
+func clear_stat_stages(side: BattleHud.Side) -> void:
+	get_card(side).clear_stat_stages()
 
 
 ## [param count] Pokémon dans l'équipe du joueur (pastilles pleines, le reste gris).

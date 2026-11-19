@@ -732,6 +732,10 @@ func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 		if event.kind == BattleEvent.Kind.FAINTED and event.side == BattleEvent.SideId.PLAYER \
 				and event.party_index >= 0:
 			_fainted_indices.append(event.party_index)
+		if event.kind == BattleEvent.Kind.STATS_RESET and is_instance_valid(_hud):
+			# Buée Noire : les crans des deux Pokémon reviennent à zéro, leurs puces partent.
+			_hud.clear_stat_stages(BattleHud.Side.PLAYER)
+			_hud.clear_stat_stages(BattleHud.Side.FOE)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
 			# « X apprend Y ! » (juste après le K.O. adverse) attend un toucher.
 			beat.wait_touch = event.kind == BattleEvent.Kind.MOVE_LEARNED
@@ -830,6 +834,8 @@ func _play_beat(beat: BattleBeat) -> void:
 					_stage.show_pokemon(beat.side, beat.event.species_id)
 				_stage.set_status(beat.side, beat.event.status)
 			if is_instance_valid(_hud):
+				# Un Pokémon qui entre n'a aucun cran : les puces du précédent s'en vont.
+				_hud.clear_stat_stages(side)
 				_hud.set_card(side, BattleViews.card(beat.event))
 			# Il est entièrement là avant la suite (l'attaque adverse après un changement).
 			if is_instance_valid(_stage):
@@ -851,6 +857,10 @@ func _play_beat(beat: BattleBeat) -> void:
 		BattleBeat.Kind.STAT:
 			if is_instance_valid(_stage):
 				await _stage.play_stat(beat.side, beat.event.stages > 0)
+			# La carte garde la trace du cran (« ATT ▲2 ») jusqu'au retour à zéro ou au rappel.
+			if is_instance_valid(_hud):
+				_hud.set_stat_stage(side, beat.event.stat, BattleViews.stage_label(
+					beat.event.stat, _texts), beat.event.stage)
 		BattleBeat.Kind.FAINT:
 			if is_instance_valid(_stage):
 				await _stage.play_faint(beat.side)

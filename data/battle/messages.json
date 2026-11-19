@@ -276,5 +276,9 @@
 	"stat_labels": {
 		"hp": "PV", "atk": "Attaque", "def": "Défense", "spa": "Atq. Spé.", "spd": "Déf. Spé.",
 		"spe": "Vitesse"
+	},
+	"stage_labels": {
+		"atk": "ATT", "def": "DÉF", "spa": "ATQ. SPÉ", "spd": "DÉF. SPÉ", "spe": "VIT",
+		"acc": "PRÉC", "eva": "ESQ"
 	}
 }
