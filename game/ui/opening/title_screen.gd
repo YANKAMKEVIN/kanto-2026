@@ -15,6 +15,11 @@ extends CanvasLayer
 ##   une carte de verre du côté du logo, au-dessus de la version ; un toucher la referme ;
 ## - Paramètres : le même [SettingsScreen] que le Menu Dresseur, sur le titre flouté.
 ##
+## Entrée ([method prepare_entrance], puis [method play_entrance] quand le titre est découvert) :
+## le logo descend en fondu, puis les cartes glissent l'une après l'autre depuis leur bord
+## d'écran ; ensuite le halo doré de l'entrée mise en avant respire doucement. Avec « Réduire les
+## animations » ([member reduce_motion]) ou des durées nulles, tout est en place tout de suite.
+##
 ## Vue pure : il affiche un [TitleMenuModel] (et son [SaveSummary]) et relaie les touchers par
 ## signaux ; c'est l'[OpeningDirector] qui décide. Retour Android : géré par le directeur
 ## ([method is_settings_open], [method is_confirm_open]).
@@ -60,8 +65,19 @@ var speed_scale: float = 1.0:
 		if _settings != null:
 			_settings.speed_scale = value
 
+## « Réduire les animations » : ni entrée en cascade ni halo qui respire.
+var reduce_motion: bool = false:
+	set(value):
+		reduce_motion = value
+		if value and _root != null:
+			_finish_entrance()
+			_stop_breath()
+
 var _model: TitleMenuModel
 var _left_handed: bool = false
+## Entrée en cascade (logo, puis cartes) et respiration du halo de l'entrée mise en avant.
+var _entrance: Tween
+var _breath: Tween
 var _root: Control
 var _logo: TextureRect
 ## Version du build (J34 T1, `GameVersion.label`), discrète dans le coin bas du côté du logo :
@@ -148,6 +164,61 @@ func show_title(model: TitleMenuModel) -> void:
 	_model = model
 	if _root != null:
 		_rebuild()
+
+
+## Avant que le titre soit découvert (sous le rideau ou l'ident) : logo et cartes effacés, prêts
+## à entrer. Sans effet si l'entrée n'est pas jouée ([method plays_entrance]).
+func prepare_entrance() -> void:
+	if not plays_entrance():
+		return
+	_kill_entrance()
+	for control: Control in _entrance_controls():
+		control.modulate.a = 0.0
+
+
+## Le titre est découvert : le logo descend en fondu (TITLE_LOGO_DROP, ANIM_PANEL), puis chaque
+## carte glisse de PANEL_SLIDE depuis son bord d'écran, à TITLE_ENTRANCE_STAGGER d'écart ; à la
+## fin, le halo de l'entrée mise en avant se met à respirer. Immédiat si l'entrée n'est pas jouée.
+func play_entrance() -> void:
+	_kill_entrance()
+	if not plays_entrance():
+		_finish_entrance()
+		return
+	var time := UiTokens.ANIM_PANEL * speed_scale
+	var stagger := UiTokens.TITLE_ENTRANCE_STAGGER * speed_scale
+	_entrance = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC) \
+		.set_ease(Tween.EASE_OUT)
+	var logo_rest := _logo.position
+	_entrance.tween_property(_logo, ^"modulate:a", 1.0, time).from(0.0)
+	_entrance.tween_property(_logo, ^"position:y", logo_rest.y, time) \
+		.from(logo_rest.y - UiTokens.TITLE_LOGO_DROP)
+	var side := -1.0 if _left_handed else 1.0
+	var delay := time
+	for control: Control in _entrance_controls():
+		if control == _logo:
+			continue
+		control.modulate.a = 0.0
+		var rest_x := control.position.x
+		_entrance.tween_property(control, ^"modulate:a", 1.0, time).from(0.0).set_delay(delay)
+		_entrance.tween_property(control, ^"position:x", rest_x, time) \
+			.from(rest_x + side * UiTokens.PANEL_SLIDE).set_delay(delay)
+		delay += stagger
+	_entrance.chain().tween_callback(_finish_entrance)
+
+
+## Vrai si l'entrée en cascade est jouée : pas avec « Réduire les animations », ni à durée nulle.
+func plays_entrance() -> bool:
+	return not reduce_motion and speed_scale > 0.0
+
+
+## L'entrée est en cours (logo ou cartes encore en mouvement).
+func is_entering() -> bool:
+	return _entrance != null and _entrance.is_valid() and _entrance.is_running()
+
+
+## Le halo de l'entrée mise en avant respire.
+func is_breathing() -> bool:
+	return _breath != null and _breath.is_valid()
 
 
 ## Mode gaucher : colonne à gauche, logo à droite (dossier 13 §7).
@@ -384,7 +455,66 @@ func _layout() -> void:
 	_column.offset_bottom = -margin
 
 
+## Logo, cartes de la colonne (de haut en bas) et message : ce qui entre en cascade.
+func _entrance_controls() -> Array[Control]:
+	var controls: Array[Control] = [_logo]
+	for child: Node in _column.get_children():
+		if child is Control and not child.is_queued_for_deletion():
+			controls.append(child as Control)
+	return controls
+
+
+func _kill_entrance() -> void:
+	if _entrance != null:
+		_entrance.kill()
+		_entrance = null
+
+
+## Tout est à sa place, pleinement visible ; puis le halo respire (sauf animations réduites).
+func _finish_entrance() -> void:
+	_kill_entrance()
+	for control: Control in _entrance_controls():
+		control.modulate.a = 1.0
+	_layout()
+	_column.queue_sort()
+	_start_breath()
+
+
+## Fait respirer le halo doré de l'entrée mise en avant : son opacité va et vient entre celle du
+## thème et TITLE_GLOW_BREATH_ALPHA (demi-période TITLE_GLOW_BREATH), sur une copie du style.
+func _start_breath() -> void:
+	_stop_breath()
+	var button: Button = _buttons.get(get_featured())
+	if button == null or reduce_motion or speed_scale <= 0.0:
+		return
+	var box := button.get_theme_stylebox(&"normal").duplicate() as StyleBoxFlat
+	if box == null:
+		return
+	for state: StringName in [&"normal", &"hover"]:
+		button.add_theme_stylebox_override(state, box)
+	# Boucle à durée réelle (jamais nulle : une boucle de durée nulle bloque).
+	_breath = create_tween().set_loops().set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN_OUT)
+	_breath.tween_property(box, ^"shadow_color:a", UiTokens.TITLE_GLOW_BREATH_ALPHA,
+		UiTokens.TITLE_GLOW_BREATH)
+	_breath.tween_property(box, ^"shadow_color:a", UiTokens.TITLE_CARD_GLOW.a,
+		UiTokens.TITLE_GLOW_BREATH)
+
+
+func _stop_breath() -> void:
+	if _breath != null:
+		_breath.kill()
+		_breath = null
+	for button: Button in _buttons.values():
+		if not is_instance_valid(button):
+			continue
+		for state: StringName in [&"normal", &"hover"]:
+			button.remove_theme_stylebox_override(state)
+
+
 func _rebuild() -> void:
+	_kill_entrance()
+	_stop_breath()
 	for child: Node in _column.get_children():
 		_column.remove_child(child)
 		if child != _message:

@@ -156,6 +156,10 @@ func run() -> void:
 	_screen.show_title(_model)
 	if _settings != null:
 		_screen.set_left_handed(_settings.left_handed)
+		_screen.reduce_motion = _settings.reduce_motion
+	# Entrée en cascade du logo et des cartes, jouée quand le titre est découvert.
+	_screen.prepare_entrance()
+	title_revealed.connect(_play_title_entrance, CONNECT_ONE_SHOT)
 	_prepare_whats_new(status)
 	print("Ouverture : titre (sauvegarde %s)" % OpeningFlow.SaveStatus.find_key(status))
 	if _fade != null:
@@ -274,6 +278,7 @@ func apply_settings(settings: GameSettings, backdrop_blur: bool) -> void:
 		_stage.set_backdrop_blur(backdrop_blur)
 	if _screen != null:
 		_screen.set_left_handed(settings.left_handed)
+		_screen.reduce_motion = settings.reduce_motion
 		_screen.set_backdrop_blur(backdrop_blur)
 		UiPrefsApplier.apply(_screen)
 
@@ -318,6 +323,11 @@ func _on_ident_finished() -> void:
 		_ident.queue_free()
 		_ident = null
 	title_revealed.emit()
+
+
+func _play_title_entrance() -> void:
+	if _screen != null:
+		_screen.play_entrance()
 
 
 ## Vrai si la carte « Nouveautés » a été montrée à ce lancement.

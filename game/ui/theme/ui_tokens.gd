@@ -1896,6 +1896,14 @@ const TITLE_CONTINUE_DIVIDER := Color(0.36, 0.55, 0.85, 0.7)
 ## Message d'état de la sauvegarde (corrompue, plus récente) : sous la colonne, verre sombre.
 const TITLE_MESSAGE_FONT := FONT_CAPTION
 const TITLE_MESSAGE_BG := Color(0.04, 0.07, 0.11, 0.86)
+## Entrée du titre [D] : le logo descend de TITLE_LOGO_DROP en fondu (ANIM_PANEL), puis les cartes
+## glissent l'une après l'autre (PANEL_SLIDE, TITLE_ENTRANCE_STAGGER d'écart) ; ensuite le halo de
+## l'entrée mise en avant respire (demi-période et opacité haute ; l'opacité basse est celle de
+## TITLE_CARD_GLOW).
+const TITLE_LOGO_DROP := 24.0
+const TITLE_ENTRANCE_STAGGER := 0.08
+const TITLE_GLOW_BREATH := 1.6
+const TITLE_GLOW_BREATH_ALPHA := 0.75
 ## Carte « Nouveautés » [D] (premier lancement après une mise à jour) : largeur, du côté du logo.
 const TITLE_WHATS_NEW_WIDTH := 760
 ## Fondus de l'ouverture (dossier 13 §4) : apparition du titre après le splash ; sortie au noir
