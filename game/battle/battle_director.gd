@@ -162,6 +162,8 @@ var _summary: ExpSummary = ExpSummary.new()
 ## JOH0 (lien, `jalon-joh0.md` §2.7) : places de l'équipe tombées K.O. pendant le combat (une
 ## entrée par K.O.), lues par Boot à la fin ([method get_fainted_indices]).
 var _fainted_indices: Array[int] = []
+## État des pastilles d'équipe des deux camps, tenu au fil des événements joués.
+var _pips := PartyPipTracker.new()
 ## JOH0 (Exp ×1,5 de l'acte 1, §2.10) : `func() -> float`, multiplié aux règles du combat à la
 ## création du moteur. Non valide : 1,0.
 var exp_bonus_source: Callable
@@ -349,8 +351,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 				await _play_vs(intro)
 	elif reveal:
 		await _play_reveal(foe_species)
-	if is_instance_valid(_hud):
-		_hud.set_party(party.size())
+	_pips.reset(party, null if wild else request.foe_party)
+	_sync_pips()
 	# Déroulé du moteur : présentation des camps, puis la boucle de tours. Entrée de Dresseur :
 	# messages de l'ouverture tenus moins longtemps, sous les gestes des dresseurs.
 	var hold_scale := _hud.message_hold_scale if is_instance_valid(_hud) else 1.0
@@ -736,6 +738,10 @@ func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 			if beat.kind == BattleBeat.Kind.MOVE:
 				beat.fx_plan = _move_fx_plan(events, index)
 			await _play_beat(beat)
+			# Pastilles d'équipe : dès le geste (chute, étiquette), sans attendre la phrase.
+			if beat.kind != BattleBeat.Kind.MESSAGE:
+				_track_pips(event)
+		_track_pips(event)
 		_log_progress(event)
 		event_played.emit(event)
 	if is_instance_valid(_stage):
@@ -1182,6 +1188,20 @@ func _find_player_pokemon(event: BattleEvent) -> Pokemon:
 	return party.get_at(event.party_index) if party != null else null
 
 
+## Pastilles d'équipe : [param event] vient d'être joué ; elles changent s'il le raconte.
+func _track_pips(event: BattleEvent) -> void:
+	if _pips.apply(event):
+		_sync_pips()
+
+
+## Pose l'état des pastilles des deux camps sur la HUD.
+func _sync_pips() -> void:
+	if not is_instance_valid(_hud):
+		return
+	_hud.set_party_states(BattleHud.Side.PLAYER, _pips.states(BattleEvent.SideId.PLAYER))
+	_hud.set_party_states(BattleHud.Side.FOE, _pips.states(BattleEvent.SideId.FOE))
+
+
 ## Le Pokémon de [param event] est celui qui a sa carte (le Pokémon du joueur en jeu).
 func _is_in_play(event: BattleEvent) -> bool:
 	if _battle == null or _battle.get_player_side().active == null:
@@ -1421,6 +1441,9 @@ func _run_safari(request: BattleRequest, map: GameMap, foe: Pokemon) -> int:
 	_running = true
 	_summary = ExpSummary.new()
 	_wild_foe = foe
+	# Ni équipe du joueur ni équipe adverse : aucune pastille (pas celles du combat d'avant).
+	_pips.reset(null, null)
+	_sync_pips()
 	_map_id = map.map_id if is_instance_valid(map) else &""
 	_trainer_id = &""
 	_safari = SafariBattle.new(foe, _data, request.safari_visit, request.safari_ball_bonus,

@@ -195,6 +195,50 @@ func test_hide_card_player_takes_pips_foe_does_not() -> void:
 	assert_true(_hud.get_card(BattleHud.Side.FOE).visible, "un nouveau Pokémon revient")
 
 
+func test_party_states_show_on_the_player_pips() -> void:
+	_hud.set_party_states(BattleHud.Side.PLAYER, [PartyPips.State.READY,
+		PartyPips.State.STATUS, PartyPips.State.FAINTED] as Array[PartyPips.State])
+	var pips := _hud.get_party_pips()
+	assert_eq(pips.get_party_count(), 3, "un Pokémon K.O. reste dans l'équipe")
+	assert_eq(pips.get_slot_state(0), PartyPips.State.READY)
+	assert_eq(pips.get_slot_state(1), PartyPips.State.STATUS)
+	assert_eq(pips.get_slot_state(2), PartyPips.State.FAINTED)
+	assert_true(pips.is_slot_filled(2), "K.O. : la Poké Ball reste, éteinte")
+	assert_eq(pips.get_slot_state(3), PartyPips.State.EMPTY)
+
+
+## Combat de Dresseur : ses pastilles suivent sa carte, juste en dessous ; sauvage : aucune.
+func test_foe_pips_follow_the_foe_card_in_a_trainer_battle() -> void:
+	var foe_pips := _hud.get_foe_pips()
+	_hud.set_card(BattleHud.Side.FOE, _wild_foe())
+	assert_false(foe_pips.visible, "sauvage : pas de pastilles adverses")
+	_hud.set_party_states(BattleHud.Side.FOE, [PartyPips.State.FAINTED,
+		PartyPips.State.READY] as Array[PartyPips.State])
+	assert_true(foe_pips.visible, "elles rejoignent la carte déjà affichée")
+	assert_eq(foe_pips.get_party_count(), 2)
+	assert_eq(foe_pips.get_slot_state(0), PartyPips.State.FAINTED)
+	_hud.hide_card(BattleHud.Side.FOE)
+	assert_false(foe_pips.visible, "elles sortent avec la carte")
+	_hud.set_card(BattleHud.Side.FOE, _foe())
+	assert_true(foe_pips.visible, "et reviennent avec le Pokémon suivant")
+	_hud.set_party_states(BattleHud.Side.FOE, [] as Array[PartyPips.State])
+	assert_false(foe_pips.visible, "combat sauvage suivant : retirées")
+	_hud.hide_card(BattleHud.Side.FOE)
+	_hud.set_card(BattleHud.Side.FOE, _wild_foe())
+	assert_false(foe_pips.visible)
+
+
+func test_foe_pips_sit_under_the_foe_card() -> void:
+	for width: float in SCREEN_WIDTHS:
+		var view := Vector2(width, SCREEN_HEIGHT)
+		var card := BattleHudLayout.rect(BattleHudLayout.Slot.FOE_CARD, view)
+		var pips := BattleHudLayout.rect(BattleHudLayout.Slot.FOE_PIPS, view)
+		assert_gt(pips.position.y, card.end.y, "sous la carte adverse")
+		assert_gte(pips.position.x, card.position.x)
+		assert_lte(pips.end.x, card.end.x)
+		assert_lt(pips.end.y, view.y * 0.5, "dans la moitié haute")
+
+
 func test_invalid_card_view_refused() -> void:
 	_hud.set_card(BattleHud.Side.FOE, BattleCardView.new())
 	assert_push_error("vue de carte invalide")

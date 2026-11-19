@@ -372,6 +372,17 @@ const PARTY_PIPS_INSET := 20
 const PARTY_PIPS_GAP := 8
 const PARTY_PIP_EMPTY := Color(0.62, 0.67, 0.74, 0.9)
 const PARTY_PIP_EMPTY_BORDER := Color(0.06, 0.09, 0.13, 0.55)
+## État d'une pastille [D] : Poké Ball éteinte et barrée (K.O.), point ambre (statut), comme la
+## barre de PV moyenne. Jamais la couleur seule.
+const PARTY_PIP_FAINTED := Color(0.42, 0.45, 0.5, 0.8)
+const PARTY_PIP_STATUS := HP_MID
+const PARTY_PIP_MARK := 5
+const PARTY_PIP_MARK_BORDER := 2.0
+const PARTY_PIP_STRIKE := 3.0
+const PARTY_PIP_STRIKE_INSET := 0.14
+const PARTY_PIP_STRIKE_COLOR := Color(1, 1, 1, 0.92)
+## Pastilles de l'équipe adverse (combat de Dresseur) : écart sous la carte adverse.
+const FOE_PIPS_GAP := 8
 
 # Grille des 4 actions (combat-v1 : boutons colorés).
 const ACTION_ATTACK := Color("#E04A3C")
