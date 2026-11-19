@@ -514,6 +514,10 @@ const TOAST_HOLD := 2.0
 const TOAST_FADE_IN := 0.24
 const TOAST_FADE_OUT := 0.3
 ## Glissement depuis le haut pendant l'apparition (et vers le haut à la disparition).
+## File des toasts [D] : nombre de toasts en attente au plus, et tenue raccourcie d'un toast tant
+## que d'autres attendent derrière lui.
+const TOAST_QUEUE_MAX := 3
+const TOAST_HOLD_QUEUED := 1.2
 const TOAST_SLIDE := 24.0
 ## Capsule sombre translucide, comme la boîte de dialogue.
 const TOAST_BG := DIALOG_PANEL_BG

@@ -1,8 +1,9 @@
 extends GutTest
 ## Toast (bible UI/UX §6, jalon 4B T7) : « Poké Balls ×5 » / « Ajoutées au Sac » en haut au
 ## centre, icône Poké Ball, caché après TOAST_FADE_IN + TOAST_HOLD + TOAST_FADE_OUT (± 1 image),
-## n'intercepte aucun toucher, une vibration « tic » ; ExplorationHud.show_toast, affiché
-## aussi quand les contrôles sont cachés (scène).
+## n'intercepte aucun toucher, une vibration « tic » ; file (un toast demandé pendant un autre
+## attend son tour) ; ExplorationHud.show_toast, affiché aussi quand les contrôles sont cachés
+## (scène).
 
 const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const TOAST_SCENE := "res://game/ui/components/toast.tscn"
@@ -45,6 +46,9 @@ func test_custom_icon_then_back_to_default() -> void:
 	var dome: Texture2D = load("res://assets/ui/items/dome_fossil.webp")
 	_toast.show_toast("Fossile Dôme", "obtenu", dome)
 	assert_eq(_toast.get_icon(), dome, "icône de l'objet")
+	_toast.speed_scale = 0.0
+	_toast.hide_now()
+	await wait_until(func() -> bool: return not _toast.is_showing(), 2.0)
 	_toast.show_toast(TITLE, DETAIL)
 	assert_eq(_toast.get_icon(), Toast.DEFAULT_ICON, "retour à la Poké Ball")
 
@@ -98,15 +102,107 @@ func test_still_visible_during_hold() -> void:
 	assert_eq(_toast.modulate.a, 1.0, "pleinement visible pendant la tenue")
 
 
-func test_new_toast_restarts_hold_without_new_fade() -> void:
+func test_same_toast_again_restarts_hold_without_new_fade() -> void:
 	_toast.show_toast(TITLE, DETAIL)
 	await wait_seconds(UiTokens.TOAST_FADE_IN + 1.0)
-	_toast.show_toast("Potion ×1", "Ajoutée au Sac")
+	_toast.show_toast(TITLE, DETAIL)
 	assert_eq(_toast.modulate.a, 1.0, "pas de nouveau fondu d'apparition")
-	assert_eq(_toast.get_title_text(), "Potion ×1")
+	assert_eq(_toast.get_queue_size(), 0, "le même message ne se met pas en file")
 	await wait_seconds(UiTokens.TOAST_HOLD - 0.5)
 	assert_true(_toast.visible, "la tenue est repartie de zéro")
 	assert_signal_emit_count(_toast, "haptic_played", 2)
+
+
+# --- File (un toast n'en écrase jamais un autre) ---------------------------------------------
+
+func _shown_titles() -> Array[String]:
+	var titles: Array[String] = []
+	for i: int in get_signal_emit_count(_toast, "toast_shown"):
+		titles.append(get_signal_parameters(_toast, "toast_shown", i)[0])
+	return titles
+
+
+func test_second_toast_waits_then_enters_after_the_first() -> void:
+	await wait_process_frames(2)
+	var clock := TweenClock.new(get_tree())
+	_toast.show_toast(TITLE, DETAIL)
+	clock.step(UiTokens.TOAST_FADE_IN + 0.5)
+	_toast.show_toast("Potion ×1", "Ajoutée au Sac")
+	assert_eq(_toast.get_title_text(), TITLE, "le premier reste lisible")
+	assert_eq(_toast.get_queue_size(), 1)
+	assert_signal_emit_count(_toast, "toast_shown", 1, "le second n'est pas encore montré")
+	var steps := clock.run_until(func() -> bool:
+		return get_signal_emit_count(_toast, "toast_shown") > 1, _total() + 1.0)
+	var waited := UiTokens.TOAST_HOLD - 0.5 + UiTokens.TOAST_FADE_OUT
+	assert_between(steps * TweenClock.STEP, waited - 0.0001, waited + 2.0 * TweenClock.STEP,
+		"il entre quand le premier est sorti (%d pas)" % steps)
+	assert_eq(_toast.get_title_text(), "Potion ×1")
+	assert_eq(_toast.modulate.a, 0.0, "nouvelle apparition en fondu")
+	assert_true(_toast.is_showing())
+	assert_signal_not_emitted(_toast, "toast_hidden", "pas caché entre deux toasts")
+	assert_signal_emit_count(_toast, "haptic_played", 2, "un « tic » par toast, à son entrée")
+	clock.run_until(func() -> bool:
+		return get_signal_emit_count(_toast, "toast_hidden") > 0, _total() + 1.0)
+	clock.release()
+	assert_signal_emit_count(_toast, "toast_hidden", 1)
+	assert_false(_toast.visible)
+
+
+func test_hold_is_shorter_while_others_wait() -> void:
+	await wait_process_frames(2)
+	var clock := TweenClock.new(get_tree())
+	_toast.show_toast("A", "")
+	_toast.show_toast("B", "")
+	_toast.show_toast("C", "")
+	clock.run_until(func() -> bool: return _toast.get_title_text() == "B", _total() + 1.0)
+	# « B » entre alors que « C » attend : tenue raccourcie.
+	var steps := clock.run_until(func() -> bool: return _toast.get_title_text() == "C",
+		_total() + 1.0)
+	var short := UiTokens.TOAST_FADE_IN + UiTokens.TOAST_HOLD_QUEUED + UiTokens.TOAST_FADE_OUT
+	assert_between(steps * TweenClock.STEP, short - 0.0001, short + 2.0 * TweenClock.STEP,
+		"tenue raccourcie (%d pas)" % steps)
+	# « C » est le dernier : tenue entière.
+	steps = clock.run_until(func() -> bool:
+		return get_signal_emit_count(_toast, "toast_hidden") > 0, _total() + 1.0)
+	clock.release()
+	assert_between(steps * TweenClock.STEP, _total() - 0.0001, _total() + 2.0 * TweenClock.STEP,
+		"tenue entière pour le dernier (%d pas)" % steps)
+	assert_eq(_shown_titles(), ["A", "B", "C"] as Array[String], "dans l'ordre d'arrivée")
+	assert_lt(UiTokens.TOAST_HOLD_QUEUED, UiTokens.TOAST_HOLD)
+
+
+func test_queue_keeps_the_latest_and_skips_a_repeat() -> void:
+	_toast.show_toast("A", "")
+	for title: String in ["B", "C", "C", "D", "E"]:
+		_toast.show_toast(title, "")
+	assert_eq(_toast.get_queue_size(), UiTokens.TOAST_QUEUE_MAX,
+		"file bornée, « C » redemandé n'y entre qu'une fois")
+	_toast.speed_scale = 0.0
+	_toast.hide_now()
+	await wait_process_frames(3)
+	assert_eq(_toast.get_queue_size(), 0, "hide_now vide la file")
+	assert_false(_toast.visible)
+	assert_eq(_shown_titles(), ["A"] as Array[String])
+
+
+func test_queue_drops_the_oldest_waiting_toast() -> void:
+	_toast.speed_scale = 0.0
+	_toast.show_toast("A", "")
+	for title: String in ["B", "C", "D", "E"]:
+		_toast.show_toast(title, "")
+	await wait_until(func() -> bool: return not _toast.is_showing(), 2.0)
+	assert_eq(_shown_titles(), ["A", "C", "D", "E"] as Array[String],
+		"le plus ancien en attente cède sa place")
+
+
+func test_toast_asked_during_hide_now_enters_after_it() -> void:
+	_toast.show_toast(TITLE, DETAIL)
+	await wait_process_frames(2)
+	_toast.hide_now()
+	_toast.show_toast("Potion ×1", "Ajoutée au Sac")
+	await wait_until(func() -> bool: return _toast.get_title_text() == "Potion ×1", 2.0)
+	assert_true(_toast.is_showing(), "le toast demandé pendant le fondu n'est pas perdu")
+	assert_signal_not_emitted(_toast, "toast_hidden")
 
 
 func test_hide_now_fades_quickly() -> void:
