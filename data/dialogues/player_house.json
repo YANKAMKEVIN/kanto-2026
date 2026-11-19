@@ -21,6 +21,78 @@
 				]
 			},
 			{
+				"if": ["badge_earth"],
+				"heal": true,
+				"pages": [
+					"Huit badges ! Tu vas affronter la Ligue, alors ?",
+					"Je ne vais pas te dire de ne pas y aller. Je te dirai juste : sois {g:prudent|prudente}.",
+					"Tes Pokémon sont en pleine forme. Ils croient en toi. Moi aussi."
+				]
+			},
+			{
+				"if": ["badge_volcano"],
+				"heal": true,
+				"pages": [
+					"Sept badges. Tu as grandi si vite…",
+					"Ton père serait fier de toi. Moi, je le suis.",
+					"Je soigne tes Pokémon. Reviens vite."
+				]
+			},
+			{
+				"if": ["badge_marsh"],
+				"heal": true,
+				"pages": [
+					"Six badges ! Tu es {g:allé|allée} jusqu'à Safrania ?",
+					"J'ai lu dans le journal que la Sylphe SARL avait eu des ennuis.",
+					"Tu n'y es pour rien, j'espère ? Allez, je soigne tes Pokémon."
+				]
+			},
+			{
+				"if": ["badge_soul"],
+				"heal": true,
+				"pages": [
+					"Cinq badges… Je n'en reviens pas.",
+					"Les voisins me demandent sans arrêt de tes nouvelles.",
+					"Laisse tes Pokémon ici une minute, je m'en occupe."
+				]
+			},
+			{
+				"if": ["badge_rainbow"],
+				"heal": true,
+				"pages": [
+					"Le badge d'Erika ! Ses parfums sont connus jusqu'ici.",
+					"Tu sens les fleurs, d'ailleurs.",
+					"Je soigne tes Pokémon, ils ont l'air fatigués."
+				]
+			},
+			{
+				"if": ["badge_thunder"],
+				"heal": true,
+				"pages": [
+					"Trois badges ! On m'a dit qu'il y avait un orage à Carmin sur Mer.",
+					"C'était toi, hein ?",
+					"Allez, viens que je soigne tes Pokémon."
+				]
+			},
+			{
+				"if": ["badge_cascade"],
+				"heal": true,
+				"pages": [
+					"Deux badges déjà ! Tu es {g:allé|allée} jusqu'à Azuria ?",
+					"Tu me raconteras. Et tu manges bien, au moins ?",
+					"Je m'occupe de tes Pokémon."
+				]
+			},
+			{
+				"if": ["badge_boulder"],
+				"heal": true,
+				"pages": [
+					"Tu as gagné un badge ? Montre-moi !",
+					"Il brille comme un vrai caillou. Je le garde dans ma tête, celui-là.",
+					"Laisse-moi soigner tes Pokémon, ils l'ont bien mérité."
+				]
+			},
+			{
 				"if": ["starter_chosen"],
 				"heal": true,
 				"pages": [

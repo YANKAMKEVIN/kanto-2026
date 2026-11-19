@@ -111,6 +111,10 @@ const IDS_J29: Array[StringName] = [
 const TEXTES_J29 := "res://docs/tech/jalon-29-textes.md"
 ## Lot 32P : textes validés par Kevin le 2026-10-29, une citation par ligne.
 const TEXTES_32P := "res://docs/tech/lot-32p-textes.md"
+## Répliques de Chen et de Maman par badge (validées par Kevin le 2026-11-19).
+const BADGE_ORDER: Array[StringName] = [&"badge_boulder", &"badge_cascade", &"badge_thunder",
+	&"badge_rainbow", &"badge_soul", &"badge_marsh", &"badge_volcano", &"badge_earth"]
+const TEXTES_BADGES := "res://docs/design/textes/textes-badges-chen-maman.md"
 ## J29 : renvois vers les scènes (objets, cachés, gardes, rival n° 7, Sulfura ; data/dialogues/
 ## j29_monde.json), sans page.
 const IDS_J29_MONDE: Array[StringName] = [
@@ -2006,20 +2010,23 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	# 4B : la variante répétée « starter_chosen » du 4A est supprimée (3 variantes) ; J7 (T18) :
 	# la variante du colis passe en tête (test_oak_parcel_lines).
 	# JOH1 : la lettre d'Orme après les cadeaux (variante « cutscene »), puis son rappel (O-4).
-	assert_eq(oak.variants.size(), 7, "J32 (32A) : le don d'après la Ligue en tête ; JOH1 : la lettre et son rappel")
+	assert_eq(oak.variants.size(), 15, "J32 (32A) : le don d'après la Ligue en tête ; JOH1 : la lettre et son rappel")
 	assert_eq(oak.variants[0].cutscene, &"j32_oak_gifts")
 	assert_eq(oak.variants[1].cutscene, &"johto_letter")
 	assert_eq(oak.variants[2].if_flags, [&"johto_letter_read"] as Array[StringName])
 	assert_eq(oak.variants[3].cutscene, &"oak_parcel")
-	assert_eq(oak.variants[4].if_flags, [&"rival_battle_done"] as Array[StringName])
-	assert_eq(_texts(oak.variants[4]), [
+	# 2026-11-19 : une réplique par badge, du dernier (Terre) au premier (Roche).
+	for i: int in 8:
+		assert_eq(oak.variants[4 + i].if_flags, [BADGE_ORDER[7 - i]] as Array[StringName])
+	assert_eq(oak.variants[12].if_flags, [&"rival_battle_done"] as Array[StringName])
+	assert_eq(_texts(oak.variants[12]), [
 		"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 		"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.",
 	] as Array[String])
-	assert_eq(oak.variants[5].if_flags, [&"starter_offered"] as Array[StringName])
-	assert_eq(_texts(oak.variants[5]), ["Prends ton temps.",
+	assert_eq(oak.variants[13].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(oak.variants[13]), ["Prends ton temps.",
 		"Choisis celui avec qui tu as envie de partir."] as Array[String])
-	assert_eq(_texts(oak.variants[6]),
+	assert_eq(_texts(oak.variants[14]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
 	var rival := _library.get_dialogue(&"rival_lab_waiting")
 	assert_eq(rival.speaker, "{rival}")
@@ -2041,11 +2048,11 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 		"Vous avez l'air de déjà bien vous entendre."] as Array[String])
 	var flags := StoryFlags.new()
 	flags.set_flag(&"oak_met")
-	assert_eq(oak.pick(flags), oak.variants[6], "avant l'offre : réplique du 3B")
+	assert_eq(oak.pick(flags), oak.variants[14], "avant l'offre : réplique du 3B")
 	assert_eq(rival.pick(flags), rival.variants[1], "avant l'offre : réplique du 3B")
 	assert_eq(maya.pick(flags), maya.variants[2], "réplique du 3B")
 	flags.set_flag(&"starter_offered")
-	assert_eq(oak.pick(flags), oak.variants[5], "pendant le choix")
+	assert_eq(oak.pick(flags), oak.variants[13], "pendant le choix")
 	assert_eq(rival.pick(flags), rival.variants[0], "pendant le choix")
 	assert_eq(maya.pick(flags), maya.variants[2])
 	# L'état « starter choisi, combat pas encore fini » n'est plus atteint par le joueur : la
@@ -2055,7 +2062,7 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	flags.set_flag(&"rival_left_lab")
 	flags.set_flag(&"rival_battle_done")
 	flags.set_flag(&"starter_female")
-	assert_eq(oak.pick(flags), oak.variants[4], "après le combat : « Le monde qui vous attend… »")
+	assert_eq(oak.pick(flags), oak.variants[12], "après le combat : « Le monde qui vous attend… »")
 	assert_eq(maya.pick(flags), maya.variants[0], "starter femelle : « elle »")
 	flags.set_flag(&"starter_female", false)
 	assert_eq(maya.pick(flags), maya.variants[1], "starter mâle ou sans sexe : « lui »")
@@ -2239,7 +2246,15 @@ func test_no_dialogue_nor_variant_is_draft() -> void:
 ## Le soin de Maman (Q22, jalon 5C) : elle soigne l'équipe, seulement après le starter.
 func test_mom_heal_variant() -> void:
 	# JOH1 : la variante O-1 (après la Ligue, avant la lettre d'Orme) passe avant le soin.
-	var heal: DialogueVariant = _library.get_dialogue(&"mom").variants[2]
+	# 2026-11-19 : les huit répliques par badge (du dernier au premier) soignent aussi.
+	var mom := _library.get_dialogue(&"mom")
+	var heal: DialogueVariant = mom.variants[10]
+	var badge_heals: Array[DialogueVariant] = []
+	for i: int in 8:
+		var badge: DialogueVariant = mom.variants[2 + i]
+		assert_eq(badge.if_flags, [BADGE_ORDER[7 - i]] as Array[StringName])
+		assert_eq(badge.action, &"heal", "%s : soigne" % BADGE_ORDER[7 - i])
+		badge_heals.append(badge)
 	assert_eq(heal.action, &"heal", "soigne l'équipe")
 	assert_eq(heal.if_flags, [&"starter_chosen"] as Array[StringName], "après le starter")
 	assert_false(heal.auto, "jamais automatique")
@@ -2251,7 +2266,8 @@ func test_mom_heal_variant() -> void:
 			var zone_heal := id == &"tower_purified_zone_heal"
 			# J26 (T9) : l'infirmière du 9F de la Sylphe soigne (RB) à chaque visite.
 			var silph_nurse := id == &"silph_co_9f_nurse"
-			assert_eq(variant.action == &"heal", variant == heal or zone_heal or silph_nurse,
+			assert_eq(variant.action == &"heal",
+				variant == heal or badge_heals.has(variant) or zone_heal or silph_nurse,
 				"%s : « heal »" % id)
 
 
@@ -2291,6 +2307,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var plan_j30 := FileAccess.get_file_as_string(PLAN_J30)
 	var textes_j29 := FileAccess.get_file_as_string(TEXTES_J29)
 	var textes_32p := FileAccess.get_file_as_string(TEXTES_32P)
+	var textes_badges := FileAccess.get_file_as_string(TEXTES_BADGES)
 	var dossier_joh02 := FileAccess.get_file_as_string("res://docs/design/dossier-joh-02-oliville.md")
 	var annex_a_17 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_17))
 	# Jalon 21 (T21) : textes validés du dossier 24 (§15) et de l'annexe A du plan.
@@ -2329,7 +2346,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			assert_eq(row[1], TEXTS_J26_T6[row[0]], String(row[0]))
 			continue
 		if TEXTS_J32.has(row[0]):
-			assert_true(TEXTS_J32[row[0]].has(row[1]), "%s : %s" % [row[0], row[1]])
+			assert_true(TEXTS_J32[row[0]].has(row[1])
+				or _each_line_quoted(textes_badges, row[1]), "%s : %s" % [row[0], row[1]])
 			continue
 		if TEXTS_J21_T22.has(row[0]):
 			assert_true(TEXTS_J21_T22[row[0]].has(text_t22(row[1])), "%s : %s" % [row[0], row[1]])
@@ -2425,6 +2443,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(textes_j29, text.replace("{joueur}", "{player}"))
 			# Lot 32P : `lot-32p-textes.md`, une citation par ligne.
 			or _each_line_quoted(textes_32p, text.replace("{joueur}", "{player}"))
+			# Répliques par badge de Chen et de Maman (2026-11-19).
+			or _each_line_quoted(textes_badges, text.replace("{joueur}", "{player}"))
 			# J22 (T13, T17) : dossier 25 §16, bulles « / » et lignes à plat.
 			or dossier_25.contains(J22Ids.flat_text(row[1]))
 			# Chantier JR : reformulations du relevé des accords (T1, T2), validé le 2026-10-31.
