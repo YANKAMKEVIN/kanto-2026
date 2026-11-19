@@ -110,3 +110,14 @@ func test_poison_status_bonus() -> void:
 	assert_eq(CaptureCalc.catch_value(15, 1, 255, 1.0, bonus), 364, "≥ 255 : assurée")
 	assert_eq(CaptureCalc.chance(15, 1, 255, 1.0, bonus), 1.0)
 	assert_eq(CaptureCalc.catch_value(15, 15, 255, 1.0, StatusRules.catch_bonus(&"")), 85)
+
+
+func test_legendaries_are_played_at_rate_20() -> void:
+	assert_eq(CaptureCalc.played_rate(CaptureCalc.LEGENDARY_CATCH_RATE), 20)
+	assert_eq(CaptureCalc.played_rate(45), 45, "les autres taux ne changent pas")
+	assert_eq(CaptureCalc.played_rate(255), 255)
+	# Sulfura (≈ 160 PV) dans le rouge, Hyper Ball (×2) : ≈ 15 % sans statut, ≈ 36 % endormi.
+	var rate := CaptureCalc.played_rate(3)
+	assert_almost_eq(CaptureCalc.chance(160, 16, rate, 2.0), 0.145, 0.01)
+	assert_almost_eq(CaptureCalc.chance(160, 16, rate, 2.0, StatusRules.STRONG_CATCH_BONUS),
+		0.361, 0.01)
