@@ -97,6 +97,9 @@ var force_debug_unlocks: bool = false
 ## **seulement s'il est la scène principale lancée par le moteur** (même garde que la
 ## sauvegarde) ; sinon réglages par défaut et rien d'écrit.
 var settings_store: SettingsStore = null
+## Dernière version dont les nouveautés ont été vues (carte « Nouveautés » du titre) ; null :
+## aucune carte (tests, outils). Créé avec le fichier des réglages, en jeu réel seulement.
+var whats_new_store: WhatsNewStore = null
 ## Appareil pour « Auto » ([method GraphicsProfile.current_device]) ; vide : l'appareil réel
 ## (tests : injecter une description).
 var device: Dictionary = {}
@@ -1236,6 +1239,10 @@ func _start_opening() -> void:
 	_opening.setup(save_system, _build_new_game, _fade, _settings, _profile_device_quality(),
 		_zones.zone_name_of, badge_flags, _badges.ids())
 	_opening.set_dialogue_box(_dialogue_box)
+	# Carte « Nouveautés » : seulement en jeu réel (même garde que le fichier des réglages).
+	if whats_new_store == null and settings_store != null and get_tree().current_scene == self:
+		whats_new_store = WhatsNewStore.new()
+	_opening.whats_new_store = whats_new_store
 	_opening.title_closed.connect(_release_title_backdrop)
 	_opening.intro_opened.connect(_show_intro_backdrop)
 	_opening.intro_closed.connect(_release_title_backdrop)
@@ -1704,6 +1711,12 @@ func get_darkness() -> DarknessController:
 func _on_map_entered(map: GameMap) -> void:
 	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
 		map.region)
+	var title_hold := 1.0
+	if not _first_exit.is_first_exit(map.map_id, _arrival_from, GameState.discovered_maps):
+		var discovery := _zones.first_visit_subtitle(map.map_id, GameState.discovered_maps)
+		if not discovery.is_empty():
+			region = discovery
+			title_hold = UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE
 	var from := _arrival_from
 	_arrival_from = &""
 	_active_puzzles.clear()
@@ -1711,12 +1724,6 @@ func _on_map_entered(map: GameMap) -> void:
 	# J31 (T5) : première entrée dans la Grotte Azurée (drapeau d'histoire, avant l'autosave).
 	CeruleanCaveAccess.record_entry(GameState.flags, map.map_id)
 	_companion.on_map_entered(map)
-	var title_hold := 1.0
-	if not _first_exit.is_first_exit(map.map_id, _arrival_from, GameState.discovered_maps):
-		var discovery := _zones.first_visit_subtitle(map.map_id, GameState.discovered_maps)
-		if not discovery.is_empty():
-			region = discovery
-			title_hold = UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE
 	# Passe systèmes 2 (T15) : arrivée en Surf sur un courant (reprise) → la glissade part ici ;
 	# l'autosave d'arrivée attend sa fin (partie pas stable).
 	_forced_slide.ride_from_here()

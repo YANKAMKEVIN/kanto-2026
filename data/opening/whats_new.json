@@ -1,0 +1,13 @@
+{
+	"_note": "Carte « Nouveautés » de l'écran titre, montrée une fois au premier lancement après une mise à jour (lot UI/UX du 2026-11-19, valeurs [D] à relire par Kevin). « version » : la version dont parlent les lignes ; la carte ne s'affiche que si c'est celle du build (project.godot), donc jamais avec des lignes périmées : à refaire à chaque RC, d'après docs/tech/notes-version-<version>.md (« Ce qui change pour toi »). « lines » : 1 à 5 lignes courtes. « title » : {version} est remplacé.",
+	"version": "0.37.3",
+	"title": "Nouveautés de la {version}",
+	"hint": "Touche la carte pour la fermer",
+	"lines": [
+		"Attaques Glace refaites : Blizzard couvre tout l'écran de neige.",
+		"Vol animé : ton Pokémon sort de sa Ball et t'emporte dans les airs.",
+		"Carte : toucher le nom d'une zone la choisit.",
+		"Stockage : les Pokémon au PC sont soignés.",
+		"Légendaires plus faciles à capturer."
+	]
+}

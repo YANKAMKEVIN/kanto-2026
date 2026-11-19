@@ -387,9 +387,6 @@ const PARTY_PIP_STRIKE_COLOR := Color(1, 1, 1, 0.92)
 ## Pastilles de l'équipe adverse (combat de Dresseur) : écart sous la carte adverse.
 const FOE_PIPS_GAP := 8
 
-# Grille des 4 actions (combat-v1 : boutons colorés).
-const ACTION_ATTACK := Color("#E04A3C")
-const ACTION_BAG := Color("#D49A2E")
 # Puces des crans de statistiques d'une carte de combat [D] (« ATT ▲2 ») : petites capsules sur la
 # bande des pastilles, alignées au bord droit de la carte ; elles passent à la ligne au besoin.
 const STAT_CHIP_FONT := 20
@@ -405,6 +402,9 @@ const STAT_CHIP_DOWN := HP_LOW
 const STAT_CHIPS_GAP := 6
 const STAT_CHIPS_MARGIN := 12
 
+# Grille des 4 actions (combat-v1 : boutons colorés).
+const ACTION_ATTACK := Color("#E04A3C")
+const ACTION_BAG := Color("#D49A2E")
 const ACTION_TEAM := Color("#2D6DB5")
 const ACTION_RUN := Color(0.16, 0.2, 0.25, 0.92)
 const BATTLE_ACTION_SIZE := Vector2(360, 128)
@@ -514,13 +514,13 @@ const BATTLE_BACK_ICON := 56
 const TOAST_TOP := SAFE_MARGIN
 ## Tenue entre l'apparition et la disparition (~2 s, jamais bloquant).
 const TOAST_HOLD := 2.0
-const TOAST_FADE_IN := 0.24
-const TOAST_FADE_OUT := 0.3
-## Glissement depuis le haut pendant l'apparition (et vers le haut à la disparition).
 ## File des toasts [D] : nombre de toasts en attente au plus, et tenue raccourcie d'un toast tant
 ## que d'autres attendent derrière lui.
 const TOAST_QUEUE_MAX := 3
 const TOAST_HOLD_QUEUED := 1.2
+const TOAST_FADE_IN := 0.24
+const TOAST_FADE_OUT := 0.3
+## Glissement depuis le haut pendant l'apparition (et vers le haut à la disparition).
 const TOAST_SLIDE := 24.0
 ## Capsule sombre translucide, comme la boîte de dialogue.
 const TOAST_BG := DIALOG_PANEL_BG
@@ -1878,6 +1878,8 @@ const TITLE_CONTINUE_DIVIDER := Color(0.36, 0.55, 0.85, 0.7)
 ## Message d'état de la sauvegarde (corrompue, plus récente) : sous la colonne, verre sombre.
 const TITLE_MESSAGE_FONT := FONT_CAPTION
 const TITLE_MESSAGE_BG := Color(0.04, 0.07, 0.11, 0.86)
+## Carte « Nouveautés » [D] (premier lancement après une mise à jour) : largeur, du côté du logo.
+const TITLE_WHATS_NEW_WIDTH := 760
 ## Fondus de l'ouverture (dossier 13 §4) : apparition du titre après le splash ; sortie au noir
 ## vers la partie (valeur des portes) ; entrée dans la partie.
 const TITLE_FADE_IN := 0.4

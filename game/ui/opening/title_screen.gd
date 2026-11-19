@@ -11,6 +11,8 @@ extends CanvasLayer
 ##   captures), **Nouvelle partie**, **Paramètres** ; l'entrée mise en avant porte un liseré doré ;
 ## - message d'état de la sauvegarde (corrompue, plus récente) sous la colonne ;
 ## - confirmation de nouvelle partie : le choix à deux cartes ([ChoiceCards]) ;
+## - carte « Nouveautés » ([method show_whats_new]) : au premier lancement après une mise à jour,
+##   une carte de verre du côté du logo, au-dessus de la version ; un toucher la referme ;
 ## - Paramètres : le même [SettingsScreen] que le Menu Dresseur, sur le titre flouté.
 ##
 ## Vue pure : il affiche un [TitleMenuModel] (et son [SaveSummary]) et relaie les touchers par
@@ -25,6 +27,8 @@ signal confirm_chosen(confirmed: bool)
 signal settings_back_requested
 ## Un réglage change dans les Paramètres (valeur du réglage).
 signal setting_changed(key: StringName, value: Variant)
+## La carte « Nouveautés » vient d'être refermée par le joueur.
+signal whats_new_closed
 
 const LOGO: Texture2D = preload("res://assets/ui/opening/logo_pokemake.png")
 ## Ombre douce du logo (DAF.7b, `tools/art/ombre_logo.py`) : même cadre que le logo, posée sous
@@ -72,6 +76,9 @@ var _settings_layer: Control
 var _settings_backdrop: ColorRect
 var _settings: SettingsScreen
 var _blur_enabled: bool = true
+## Carte « Nouveautés » (null tant qu'elle n'a pas été montrée) et son fondu.
+var _whats_new: Button
+var _whats_new_tween: Tween
 
 
 func _ready() -> void:
@@ -155,6 +162,46 @@ func set_backdrop_blur(enabled: bool) -> void:
 	_blur_enabled = enabled
 	if _settings_backdrop != null:
 		(_settings_backdrop.material as ShaderMaterial).set_shader_parameter(&"blur_on", enabled)
+
+
+## Carte « Nouveautés » : [param title] (« Nouveautés de la 0.37.3 », mis en capitales),
+## [param lines] (une ligne par nouveauté) et [param hint] (« Touche la carte pour la fermer »).
+## Posée du côté du logo, au-dessus de la version ; elle apparaît en fondu (ANIM_PANEL).
+func show_whats_new(title: String, lines: PackedStringArray, hint: String) -> void:
+	if _whats_new != null:
+		_whats_new.queue_free()
+	_whats_new = _make_whats_new_card(title, lines, hint)
+	_root.add_child(_whats_new)
+	# Sous la confirmation et les Paramètres, qui passent devant elle.
+	_root.move_child(_whats_new, _confirm.get_index())
+	_layout()
+	UiPrefsApplier.apply(_whats_new)
+	_fade_whats_new(1.0)
+
+
+## Referme la carte « Nouveautés » (fondu, puis retirée). Sans effet si elle n'est pas affichée.
+func hide_whats_new() -> void:
+	if not is_whats_new_open():
+		return
+	_whats_new.disabled = true
+	_fade_whats_new(0.0)
+
+
+func is_whats_new_open() -> bool:
+	return _whats_new != null and not _whats_new.disabled
+
+
+## La carte « Nouveautés » (null si elle n'a pas été montrée ou une fois retirée).
+func get_whats_new_card() -> Button:
+	return _whats_new
+
+
+## Textes de la carte « Nouveautés », dans l'ordre (vide sans carte).
+func get_whats_new_texts() -> PackedStringArray:
+	var texts := PackedStringArray()
+	if _whats_new != null:
+		_collect_texts(_whats_new, texts)
+	return texts
 
 
 ## Carte de confirmation de nouvelle partie (§5.4).
@@ -313,6 +360,19 @@ func _layout() -> void:
 	_version.offset_right = _version.offset_left + VERSION_WIDTH
 	_version.offset_bottom = -margin
 	_version.offset_top = -margin - VERSION_HEIGHT
+	if _whats_new != null:
+		# Du côté du logo, au-dessus de la version ; elle grandit vers le haut avec son texte.
+		var bottom := -margin - VERSION_HEIGHT - UiTokens.GAP
+		_whats_new.anchor_left = logo_side
+		_whats_new.anchor_right = logo_side
+		_whats_new.anchor_top = 1.0
+		_whats_new.anchor_bottom = 1.0
+		_whats_new.offset_left = -margin - UiTokens.TITLE_WHATS_NEW_WIDTH if _left_handed \
+			else margin
+		_whats_new.offset_right = _whats_new.offset_left + UiTokens.TITLE_WHATS_NEW_WIDTH
+		_whats_new.offset_bottom = bottom
+		_whats_new.offset_top = bottom - _whats_new.custom_minimum_size.y
+		_whats_new.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	var column_side := 0.0 if _left_handed else 1.0
 	_column.anchor_left = column_side
 	_column.anchor_right = column_side
@@ -393,6 +453,62 @@ func _make_continue_card(summary: SaveSummary) -> Button:
 			stat.name = line[2]
 			texts.add_child(stat)
 	return card
+
+
+## Carte « Nouveautés » : titre en capitales, une ligne par nouveauté (retour à la ligne), puis la
+## consigne, discrète. Toute la carte se touche.
+func _make_whats_new_card(title: String, lines: PackedStringArray, hint: String) -> Button:
+	var card := _card_button(0.0)
+	card.name = "WhatsNew"
+	card.theme_type_variation = &"TitleCard"
+	card.modulate.a = 0.0
+	var rows := VBoxContainer.new()
+	rows.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	rows.add_theme_constant_override(&"separation", UiTokens.TITLE_CONTINUE_LINE_GAP)
+	_fill(card, rows)
+	var heading := _label(&"TitleEntryLabel", title)
+	heading.uppercase = true
+	rows.add_child(heading)
+	var divider := Panel.new()
+	divider.theme_type_variation = &"TitleDivider"
+	divider.custom_minimum_size.y = UiTokens.BORDER_WIDTH
+	divider.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	rows.add_child(divider)
+	for line: String in lines:
+		var text := _label(&"TitleMessageText", line)
+		text.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+		text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		rows.add_child(text)
+	var footer := _label(&"TitleMessageText", hint)
+	footer.add_theme_color_override(&"font_color", UiTokens.TEXT_MUTED)
+	footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	rows.add_child(footer)
+	card.pressed.connect(_on_whats_new_pressed)
+	return card
+
+
+func _fade_whats_new(alpha: float) -> void:
+	if _whats_new_tween != null:
+		_whats_new_tween.kill()
+	_whats_new_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_whats_new_tween.tween_property(_whats_new, ^"modulate:a", alpha,
+		maxf(UiTokens.ANIM_PANEL * speed_scale, 0.0))
+	if alpha <= 0.0:
+		_whats_new_tween.tween_callback(_remove_whats_new)
+
+
+func _remove_whats_new() -> void:
+	if _whats_new != null:
+		_whats_new.queue_free()
+		_whats_new = null
+
+
+func _on_whats_new_pressed() -> void:
+	if is_settings_open() or is_confirm_open() or not is_whats_new_open():
+		return
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	hide_whats_new()
+	whats_new_closed.emit()
 
 
 ## Icône de la ligne des badges : le dernier badge obtenu, peint ([method MenuArt.badge_icon]) ;
