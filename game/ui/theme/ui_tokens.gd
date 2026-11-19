@@ -141,6 +141,14 @@ const INTERACT_LABEL_PAD_H := 20
 const INTERACT_LABEL_PAD_V := 8
 ## Vibration courte à l'appui du bouton contextuel (millisecondes).
 const HAPTIC_TAP_MS := 15
+## Force des vibrations [D] (bible UI/UX §12, [method Haptics.amplitude_for]) : amplitude de 0 à 1
+## selon la durée. Légère jusqu'à 25 ms (tic, toucher, menu, statut), moyenne jusqu'à 50 ms (coup
+## reçu, secousse de la Ball, badge), forte au-delà (coup critique, capture réussie).
+const HAPTIC_LIGHT_MAX_MS := 25
+const HAPTIC_MEDIUM_MAX_MS := 50
+const HAPTIC_AMPLITUDE_LIGHT := 0.4
+const HAPTIC_AMPLITUDE_MEDIUM := 0.7
+const HAPTIC_AMPLITUDE_STRONG := 1.0
 
 # --- Bulle « ! » d'un Dresseur (jalon 9, T12) -----------------------------------------------
 
