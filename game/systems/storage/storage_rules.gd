@@ -6,7 +6,9 @@ extends RefCounted
 ##
 ## - Le stockage n'a **aucune limite** (un stockage unique, sans boîtes : dossier 09 §8) ; un
 ##   Pokémon déposé arrive à la fin (ordre d'arrivée), un Pokémon repris arrive en fin d'équipe.
-## - Déplacer garde **la même instance** : PV, PP, XP, favori et histoire ne changent pas.
+## - Déplacer garde **la même instance** : XP, favori et histoire ne changent pas. Le stockage
+##   **soigne** ([method PokemonStorage.add], décision de Kevin du 2026-11-19) : un Pokémon déposé
+##   y arrive PV et PP pleins, sans statut ; il revient dans l'équipe ainsi.
 ## - « Garder au moins un Pokémon avec toi » (Q-7, règle stricte validée le 2026-10-05) : l'équipe
 ##   doit garder au moins un Pokémon **en état de combattre** après un dépôt ou une libération
 ##   depuis l'équipe. Deux refus distincts, pour que le texte explique la raison : l'équipe

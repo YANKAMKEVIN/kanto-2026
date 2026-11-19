@@ -12,15 +12,24 @@ var assigns_uids: bool = false
 var _pokemon: Array[Pokemon] = []
 
 
-## Ajoute [param pokemon] à la fin (la même instance, PV et PP gardés ; un identifiant s'il n'en
-## a pas, pour le Stockage du joueur : [member assigns_uids]). Faux s'il est null ou déjà rangé.
+## Ajoute [param pokemon] à la fin (la même instance, **soignée** : PV, PP et statut, décision de
+## Kevin du 2026-11-19 ; un identifiant s'il n'en a pas, pour le Stockage du joueur :
+## [member assigns_uids]). Faux s'il est null ou déjà rangé.
 func add(pokemon: Pokemon) -> bool:
 	if pokemon == null or _pokemon.has(pokemon):
 		return false
 	if assigns_uids:
 		pokemon.ensure_uid()
+	_heal(pokemon)
 	_pokemon.append(pokemon)
 	return true
+
+
+## Le stockage soigne (décision de Kevin du 2026-11-19) : PV et PP au maximum, statut effacé. Un
+## œuf n'a rien à soigner.
+static func _heal(pokemon: Pokemon) -> void:
+	if not pokemon.is_egg():
+		pokemon.heal_full()
 
 
 ## Pokémon d'index [param index] (ordre d'arrivée), ou null.
@@ -69,7 +78,8 @@ func to_array() -> Array[Dictionary]:
 
 
 ## Remplace le contenu par celui de [param entries] ([method to_array]). Faux si une entrée
-## est invalide (elle est écartée avec push_error, les autres sont gardées).
+## est invalide (elle est écartée avec push_error, les autres sont gardées). Chaque Pokémon chargé
+## est soigné : une sauvegarde d'avant le 2026-11-19 garde des blessés au stockage.
 func load_array(entries: Array, data: PokemonData) -> bool:
 	_pokemon.clear()
 	var ok := true
@@ -81,5 +91,6 @@ func load_array(entries: Array, data: PokemonData) -> bool:
 			continue
 		if assigns_uids:
 			pokemon.ensure_uid()
+		_heal(pokemon)
 		_pokemon.append(pokemon)
 	return ok
