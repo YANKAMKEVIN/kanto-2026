@@ -49,6 +49,9 @@ const REACT_HEIGHT: float = 16.0
 const REACT_DURATION: float = 0.28
 ## Repos de l'ombre (px monde), comme dans la scène.
 const SHADOW_REST_Y: float = -6.0
+## Vol : hauteur à laquelle l'ombre a disparu (px) et sa plus petite taille [D].
+const FLIGHT_SHADOW_FADE: float = 480.0
+const FLIGHT_SHADOW_MIN: float = 0.35
 ## Raison de blocage par défaut : celle du routeur de scènes (changement de carte).
 const REASON_TRANSITION: StringName = &"transition"
 ## Bas de la bande d'herbe devant les jambes, sous l'origine (pieds), en px monde.
@@ -81,6 +84,13 @@ var _body_size: Vector2 = BODY_SIZE
 var _look: CharacterLook
 ## Hauteur courante du bond de surprise (px monde), animée par [member _react_tween].
 var _react_lift: float = 0.0
+## Vol (remarque de Kevin, 2026-11-19) : hauteur du joueur en l'air (px), posée par
+## [FlyDirector] pendant l'envol et l'atterrissage ; l'ombre rapetisse et pâlit avec elle.
+## La caméra reste au sol : le joueur sort par le haut de l'écran.
+var flight_lift: float = 0.0:
+	set(value):
+		flight_lift = maxf(value, 0.0)
+		_update_jump_and_grass()
 var _react_tween: Tween
 ## Bande d'herbe de la carte ([member GameMap.grass_front]) ; nulle = la bande provisoire.
 var _grass_front_texture: Texture2D
@@ -389,15 +399,18 @@ func _update_jump_and_grass() -> void:
 		arc = 4.0 * JUMP_ARC_HEIGHT * t * (1.0 - t)
 	var seat := _mount_placeholder.seat_lift() if _mount_placeholder != null else 0.0
 	if _sprite != null:
-		_sprite.position.y = -arc - _react_lift - seat
+		_sprite.position.y = -arc - _react_lift - seat - flight_lift
 	if _mount_placeholder != null:
 		_mount_placeholder.set_lift(arc + _react_lift)
 	if _shadow != null:
 		_shadow.position.y = SHADOW_REST_Y
 		# En Surf (nageur provisoire ou peint), pas d'ombre au sol : le nageur a son sillage.
 		_shadow.visible = seat == 0.0 and _mount != Mount.Kind.SURF
+		var fade := clampf(1.0 - flight_lift / FLIGHT_SHADOW_FADE, 0.0, 1.0)
+		_shadow.scale = Vector2.ONE * lerpf(FLIGHT_SHADOW_MIN, 1.0, fade)
+		_shadow.modulate.a = fade
 	if _grass_front != null:
-		_grass_front.visible = not jumping and _grid != null \
+		_grass_front.visible = not jumping and flight_lift == 0.0 and _grid != null \
 			and _grid.is_tall_grass(_mover.get_target_cell())
 
 

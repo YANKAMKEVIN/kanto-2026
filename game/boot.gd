@@ -3040,6 +3040,13 @@ func _setup_fly() -> void:
 	# JOH0 (JH-18) : pas de Vol entre Kanto et Johto pendant l'acte 1.
 	_fly.region_source = _zones.region_of
 	_fly.cross_source = func() -> bool: return not TeamConfiscation.is_act1(GameState.flags)
+	# Animation du Vol (2026-11-19) : porteur, ciel du trajet, son de l'envol.
+	_fly.overlay = _dragon_flight_overlay
+	_fly.carrier_source = _fly_carrier_info
+	_fly.sfx = func(id: StringName) -> void: Audio.play_sfx(id)
+	_fly.reduce_motion = _settings.reduce_motion
+	_fly.flight_started.connect(func(_zone: StringName) -> void:
+		_fly.reduce_motion = _settings.reduce_motion)
 	_menu.set_fly_check(_fly.can_fly_to)
 	_menu.fly_requested.connect(func(zone: StringName) -> void:
 		_menu.close()
@@ -3048,6 +3055,16 @@ func _setup_fly() -> void:
 		_menu_screen.map_fly_requested.connect(_menu.request_fly)
 	_fly.flight_started.connect(_refresh_controls.unbind(1))
 	_fly.flight_finished.connect(_refresh_controls.unbind(1))
+
+
+## Le porteur du Vol : espèce et artwork du Pokémon d'équipe [param index] ; {} sans lui.
+func _fly_carrier_info(index: int) -> Dictionary:
+	var member := GameState.party.get_at(index) if index >= 0 else null
+	if member == null:
+		return {}
+	var species := _pokemon.get_species(member.species_id)
+	var artwork := PokedexArt.portrait(species.dex) if species != null else null
+	return {"species": member.species_id, "artwork": artwork}
 
 
 func get_fly_director() -> FlyDirector:

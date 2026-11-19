@@ -66,7 +66,10 @@ func _ready() -> void:
 
 
 ## Joue le vol ; coroutine. [param direction] : [constant OUT] (aller) ou tout autre sens (retour).
-func play(direction: StringName) -> void:
+## Vol hors combat (2026-11-19) : [param artwork] montre le Pokémon porteur à la place de
+## Dracolosse, [param crossing] règle la traversée (s).
+func play(direction: StringName, artwork: Texture2D = null, crossing: float = CROSSING) -> void:
+	_dragon.texture = artwork if artwork != null else DRAGON_TEXTURE
 	var view := _root.get_viewport_rect().size
 	var rightward := direction == OUT
 	_dragon.flip_h = not rightward
@@ -81,12 +84,12 @@ func play(direction: StringName) -> void:
 	if reduce_motion:
 		tween.tween_interval(REDUCED_HOLD)
 	else:
-		tween.tween_property(_dragon, ^"position:x", to_x, CROSSING) \
+		tween.tween_property(_dragon, ^"position:x", to_x, crossing) \
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		for i: int in _clouds.size():
 			var cloud := _clouds[i]
 			var shift := view.x * (0.5 + 0.1 * (i % 3)) * (-1.0 if rightward else 1.0)
-			tween.parallel().tween_property(cloud, ^"position:x", cloud.position.x + shift, CROSSING)
+			tween.parallel().tween_property(cloud, ^"position:x", cloud.position.x + shift, crossing)
 	await tween.finished
 
 

@@ -98,6 +98,43 @@ func test_fly_goes_to_the_arrival_point_and_frees_the_player() -> void:
 	assert_false(_director.is_flying())
 
 
+## Animation (2026-11-19) : le porteur sort au-dessus du joueur, ils montent, et à l'arrivée
+## tout redescend au sol ; le porteur rentre et disparaît.
+func test_fly_lifts_the_player_with_a_carrier_and_lands_back() -> void:
+	var sounds: Array[StringName] = []
+	_director.sfx = func(id: StringName) -> void: sounds.append(id)
+	_director.carrier_source = func(_index: int) -> Dictionary:
+		return {"species": &"charizard", "artwork": PokedexArt.portrait(6)}
+	var carriers: Array[int] = []
+	_director.fly.call_deferred(&"pewter_city")
+	await wait_seconds(0.6)
+	carriers.append(_count_carriers())
+	await wait_for_signal(_director.flight_finished, 10.0)
+	assert_eq(carriers, [1] as Array[int], "porteur au-dessus du joueur pendant l'envol")
+	assert_eq(_count_carriers(), 0, "porteur rentré à l'arrivée")
+	assert_eq(_player.flight_lift, 0.0, "joueur revenu au sol")
+	assert_eq(sounds, [FlyDirector.TAKEOFF_SFX] as Array[StringName])
+	assert_true(_player.is_input_enabled())
+
+
+func test_reduced_motion_flight_keeps_the_player_on_the_ground() -> void:
+	_director.reduce_motion = true
+	_director.carrier_source = func(_index: int) -> Dictionary:
+		return {"species": &"charizard", "artwork": PokedexArt.portrait(6)}
+	await _director.fly(&"pewter_city")
+	assert_eq(_player.flight_lift, 0.0)
+	assert_eq(_count_carriers(), 0)
+	assert_eq(_player.modulate.a, 1.0)
+
+
+func _count_carriers() -> int:
+	var count := 0
+	for child: Node in _player.get_children():
+		if child is FlyCarrier and not child.is_queued_for_deletion():
+			count += 1
+	return count
+
+
 func test_fly_to_a_closed_town_does_nothing() -> void:
 	await _director.fly(&"cerulean_city")
 	assert_eq(_router.calls.size(), 0)
