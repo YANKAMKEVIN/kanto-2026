@@ -98,3 +98,32 @@ func test_mew_comes_back_after_the_league_unless_caught() -> void:
 	flags.set_flag(&"mew_caught")
 	StaticRespawn.on_league_won(library.get_static_encounters(), flags)
 	assert_false(flags.has_none(gate), "capturé : jamais de retour")
+
+
+## Décision de Kevin (2026-11-19) : un légendaire de Kanto mis K.O. revient dès qu'on quitte la
+## carte ; capturé, jamais ; les autres rencontres fixes (Voltorbe des fausses Balls) attendent
+## la Ligue.
+func test_kanto_legendaries_come_back_when_leaving_the_map() -> void:
+	var library := CutsceneLibrary.new()
+	library.load_dir()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"zapdos_done", &"moltres_done", &"moltres_caught",
+			&"fausse_ball_1_done"]:
+		flags.set_flag(flag)
+	var cleared := StaticRespawn.on_map_left(library.get_static_encounters(), flags)
+	assert_eq(cleared, [&"zapdos_done"] as Array[StringName])
+	assert_false(flags.has_flag(&"zapdos_done"), "Électhor K.O. : il revient")
+	assert_true(flags.has_flag(&"moltres_done"), "Sulfura capturé : ne revient pas")
+	assert_true(flags.has_flag(&"fausse_ball_1_done"), "Voltorbe : règle de la Ligue")
+	var gate := library.get_cutscene(&"zapdos").variants[0].unless_flags
+	assert_true(flags.has_none(gate), "la scène d'Électhor rejoue")
+
+
+func test_every_kanto_legendary_is_a_static_encounter() -> void:
+	var library := CutsceneLibrary.new()
+	library.load_dir()
+	var species: Array[StringName] = []
+	for encounter: StaticEncounter in library.get_static_encounters():
+		species.append(encounter.species)
+	for legend: StringName in StaticRespawn.MAP_RESPAWN_SPECIES:
+		assert_true(species.has(legend), "%s absent des rencontres fixes" % legend)
