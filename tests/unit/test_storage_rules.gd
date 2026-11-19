@@ -176,22 +176,29 @@ func test_withdraw_an_unknown_index_is_not_found() -> void:
 	assert_eq(StorageRules.withdraw(_party, _storage, 3).status, StorageRules.Status.NOT_FOUND)
 
 
-func test_moved_instance_keeps_hp_pp_favorite_and_history() -> void:
+func test_moved_instance_keeps_favorite_and_history_and_is_healed() -> void:
 	_fill_party(1)
 	var traveler := _mon(&"charmander", 7)
 	traveler.take_damage(4)
 	traveler.moves[0].pp = 3
+	traveler.status = StatusRules.POISON
 	traveler.favorite = true
 	traveler.nickname = "Flammèche"
 	traveler.record_meeting(Pokemon.Origin.CAPTURE, &"route_1", "2026-10-02T20:51:16", "Kevin")
-	var before := traveler.to_dict()
+	var wounded := traveler.to_dict()
 	_party.add(traveler)
 	assert_true(StorageRules.deposit(_party, _storage, 1).is_ok())
 	assert_same(_storage.get_at(0), traveler)
-	assert_eq(traveler.to_dict(), before, "rien ne change en entrant au stockage")
+	assert_eq(traveler.hp, traveler.max_hp(), "le stockage soigne les PV")
+	assert_eq(traveler.moves[0].pp, traveler.moves[0].max_pp, "et les PP")
+	assert_eq(traveler.status, StatusRules.NONE, "et le statut")
+	assert_eq([traveler.favorite, traveler.nickname, traveler.origin],
+		[true, "Flammèche", Pokemon.Origin.CAPTURE], "favori et histoire gardés")
+	var stored := traveler.to_dict()
+	assert_ne(stored, wounded)
 	assert_true(StorageRules.withdraw(_party, _storage, 0).is_ok())
 	assert_same(_party.get_at(1), traveler)
-	assert_eq(traveler.to_dict(), before, "rien ne change en revenant dans l'équipe")
+	assert_eq(traveler.to_dict(), stored, "rien ne change en revenant dans l'équipe")
 
 
 # --- Libérer ---------------------------------------------------------------------------------

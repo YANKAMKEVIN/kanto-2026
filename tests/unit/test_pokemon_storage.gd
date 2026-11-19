@@ -112,3 +112,19 @@ func test_get_at_index_of_and_remove_at() -> void:
 	assert_eq(storage.get_all(), [rattata, other] as Array[Pokemon], "ordre d'arrivée gardé")
 	assert_null(storage.remove_at(5))
 	assert_eq(storage.size(), 2)
+
+
+func test_storage_heals_on_add_and_on_load() -> void:
+	var storage := PokemonStorage.new()
+	var pidgey := _mon(&"pidgey", 4)
+	pidgey.take_damage(pidgey.hp)
+	pidgey.moves[0].use()
+	storage.add(pidgey)
+	assert_eq(pidgey.hp, pidgey.max_hp(), "un K.O. déposé revient sur pied")
+	assert_eq(pidgey.moves[0].pp, pidgey.moves[0].max_pp)
+	var wounded := _mon(&"rattata", 3).to_dict()
+	wounded["hp"] = 1
+	var loaded := PokemonStorage.new()
+	assert_true(loaded.load_array([wounded], _data))
+	var rattata := loaded.get_at(0)
+	assert_eq(rattata.hp, rattata.max_hp(), "ancienne sauvegarde : soigné au chargement")

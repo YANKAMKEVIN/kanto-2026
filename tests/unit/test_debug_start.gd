@@ -249,7 +249,8 @@ func test_money_and_storage_are_applied() -> void:
 	assert_eq(state.party.size(), 1, "le Stockage n'entre pas dans l'équipe")
 	assert_eq(state.storage.size(), 2)
 	assert_eq(state.storage.get_at(0).species_id, &"rattata")
-	assert_eq(state.storage.get_at(1).hp, 0, "même format que l'équipe (PV)")
+	var spearow: Pokemon = state.storage.get_at(1)
+	assert_eq(spearow.hp, spearow.max_hp(), "le stockage soigne (2026-11-19) : PV pleins")
 	assert_true(state.pokedex.is_caught(&"spearow"), "capturé au Pokédex")
 
 
@@ -523,7 +524,7 @@ func test_status_marks_a_member() -> void:
 	start.apply(state, _data)
 	assert_eq(state.party.get_at(0).status, StatusRules.POISON)
 	assert_eq(state.party.get_at(1).status, StatusRules.NONE, "vide : aucun")
-	assert_eq(state.storage.get_at(0).status, StatusRules.POISON, "stockage")
+	assert_eq(state.storage.get_at(0).status, StatusRules.NONE, "le stockage soigne (2026-11-19)")
 	assert_eq(state.storage.get_at(1).status, StatusRules.NONE, "absent : aucun")
 	assert_string_contains(start.describe(), "charmander N9 (poison)")
 
@@ -657,7 +658,8 @@ func test_shipped_status_qa_start() -> void:
 	var state: Node = autofree(GameStateScript.new())
 	start.apply(state, _data)
 	assert_eq(state.party.get_at(4).status_turns, 3, "Pikachu dort encore 3 tours")
-	assert_eq(state.storage.get_all()[0].status, StatusRules.FREEZE, "un gelé au Stockage")
+	assert_eq(state.storage.get_all()[0].status, StatusRules.NONE,
+		"le stockage soigne (2026-11-19) : plus de gelé au Stockage")
 	var moves: Array[StringName] = []
 	moves.assign(state.party.get_at(1).moves.map(func(m: MoveSlot) -> StringName: return m.move_id))
 	assert_eq(moves, [&"confusion", &"poison_powder", &"stun_spore", &"sleep_powder"],

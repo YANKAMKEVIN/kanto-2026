@@ -811,7 +811,7 @@ func test_v4_round_trip_keeps_poisoned_party_and_storage_members() -> void:
 	assert_eq(loaded.to_dict(), before, "même état après rechargement")
 	assert_eq(loaded.party.get_lead().status, StatusRules.POISON, "équipe")
 	assert_eq(loaded.party.get_at(1).status, StatusRules.NONE)
-	assert_eq(loaded.storage.get_at(0).status, StatusRules.POISON, "stockage")
+	assert_eq(loaded.storage.get_at(0).status, StatusRules.NONE, "stockage : soigné en entrant (2026-11-19)")
 	# Relue puis réécrite : identique octet pour octet.
 	assert_eq(_save.write(loaded.to_dict()), OK)
 	assert_eq((_fs as MemoryFs).files[PATH], text, "réécriture identique")
