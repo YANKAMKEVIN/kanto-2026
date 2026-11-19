@@ -836,7 +836,7 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_hud):
 				# Un Pokémon qui entre n'a aucun cran : les puces du précédent s'en vont.
 				_hud.clear_stat_stages(side)
-				_hud.set_card(side, BattleViews.card(beat.event))
+				_hud.set_card(side, _card_view(beat.event))
 			# Il est entièrement là avant la suite (l'attaque adverse après un changement).
 			if is_instance_valid(_stage):
 				await _stage.wait_appear(beat.side)
@@ -924,7 +924,7 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_stage):
 				await _stage.play_break_free()
 			if is_instance_valid(_hud):
-				_hud.set_card(BattleHud.Side.FOE, BattleViews.card(beat.event))
+				_hud.set_card(BattleHud.Side.FOE, _card_view(beat.event))
 				_show_own_card()
 
 
@@ -1196,6 +1196,17 @@ func _sent_out_species(events: Array[BattleEvent], side: BattleEvent.SideId) -> 
 func _find_player_pokemon(event: BattleEvent) -> Pokemon:
 	var party := _state.party as Party
 	return party.get_at(event.party_index) if party != null else null
+
+
+## Carte d'information du Pokémon de [param event]. Un Pokémon sauvage d'une espèce déjà
+## capturée porte la Poké Ball du Pokédex (jamais un Pokémon de Dresseur ni le SPECTRE).
+func _card_view(event: BattleEvent) -> BattleCardView:
+	var view := BattleViews.card(event)
+	if event.side == BattleEvent.SideId.FOE and _wild_foe != null and not event.disguised \
+			and _state != null:
+		view.caught = BattleViews.already_caught(event.species_id,
+			_state.get(&"pokedex") as Pokedex, _state.get(&"flags") as StoryFlags)
+	return view
 
 
 ## Pastilles d'équipe : [param event] vient d'être joué ; elles changent s'il le raconte.

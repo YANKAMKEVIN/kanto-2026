@@ -2,6 +2,8 @@ class_name BattleInfoCard
 extends BattleWidget
 ## Carte d'information de combat (combat-v1) : NOM en MAJUSCULES, ♂/♀ coloré, « Nv. 5 » à
 ## droite, barre de PV, et « 19 / 19 » sous la barre, à droite, côté joueur seulement.
+## Pokémon sauvage d'une espèce déjà capturée : une petite Poké Ball entre le nom et le sexe
+## ([member BattleCardView.caught]).
 ##
 ## Carte sombre translucide comme la boîte de dialogue (jalon 4 Q17), largeur
 ## BATTLE_CARD_WIDTH, hauteur BATTLE_CARD_HEIGHT (sans chiffres) ou BATTLE_CARD_HEIGHT_NUMBERS.
@@ -32,6 +34,7 @@ const GENDER_ICONS: Dictionary[BattleCardView.Gender, Texture2D] = {
 	BattleCardView.Gender.MALE: preload("res://assets/ui/icons/battle/male.svg"),
 	BattleCardView.Gender.FEMALE: preload("res://assets/ui/icons/battle/female.svg"),
 }
+const CAUGHT_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const GENDER_COLORS: Dictionary[BattleCardView.Gender, Color] = {
 	BattleCardView.Gender.MALE: UiTokens.GENDER_MALE,
 	BattleCardView.Gender.FEMALE: UiTokens.GENDER_FEMALE,
@@ -58,6 +61,9 @@ var _exp_serial: int = 0
 var _level_pulse: Tween
 ## Rangée des puces de crans (créée ici, enfant de l'Overlay) et puce de chaque statistique.
 var _chips: HFlowContainer
+## Poké Ball « espèce déjà capturée », créée ici, à droite du nom.
+var _caught_icon: TextureRect
+var _caught: bool = false
 var _stage_chips: Dictionary[StringName, StatStageChip] = {}
 
 @onready var _rows: VBoxContainer = %Rows
@@ -79,6 +85,17 @@ func _ready() -> void:
 	_rows.add_theme_constant_override(&"separation", UiTokens.BATTLE_CARD_ROW_GAP)
 	_header.add_theme_constant_override(&"separation", UiTokens.BATTLE_CARD_NAME_GAP)
 	_gender_icon.custom_minimum_size = Vector2.ONE * UiTokens.GENDER_ICON
+	_caught_icon = TextureRect.new()
+	_caught_icon.name = &"Caught"
+	_caught_icon.texture = CAUGHT_ICON
+	_caught_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_caught_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_caught_icon.custom_minimum_size = Vector2.ONE * UiTokens.BATTLE_CARD_CAUGHT_ICON
+	_caught_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_caught_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_caught_icon.visible = false
+	_header.add_child(_caught_icon)
+	_header.move_child(_caught_icon, _name_label.get_index() + 1)
 	_level_tag.text = LEVEL_TAG
 	_bar.display_changed.connect(_on_hp_shown)
 	_level_value.pivot_offset_ratio = Vector2(0.5, 0.5)
@@ -100,6 +117,8 @@ func set_view(view: BattleCardView) -> void:
 	_gender_icon.texture = GENDER_ICONS.get(_gender, null)
 	_gender_icon.modulate = GENDER_COLORS.get(_gender, UiTokens.TEXT)
 	_gender_icon.visible = _gender_icon.texture != null
+	_caught = view.caught
+	_caught_icon.visible = _caught
 	_level = view.level
 	_level_value.text = GhostDisguise.HIDDEN_LEVEL_TEXT if view.level_hidden \
 		else str(view.level)
@@ -275,6 +294,15 @@ func get_status_badge() -> TypeBadge:
 	return _status_badge
 
 
+## La Poké Ball « espèce déjà capturée » est affichée.
+func is_caught_shown() -> bool:
+	return _caught_icon.visible
+
+
+func get_caught_icon() -> TextureRect:
+	return _caught_icon
+
+
 func get_gender() -> BattleCardView.Gender:
 	return _gender
 
@@ -395,15 +423,19 @@ func _place_chips() -> void:
 
 ## Nom entier dans la largeur de la carte : taille du thème si tout tient ; sinon la pastille de
 ## statut perd d'abord son icône (le nom garde ainsi une taille proche de celle du niveau), puis
-## le nom rétrécit (plancher BATTLE_CARD_NAME_FONT_MIN).
+## le nom rétrécit (plancher BATTLE_CARD_NAME_FONT_MIN). S'il ne tient toujours pas, la Poké Ball
+## « déjà capturé » cède sa place : le nom n'est jamais rogné pour elle.
 func _fit_name() -> void:
 	_name_label.remove_theme_font_size_override(&"font_size")
 	_status_badge.set_show_icon(true)
+	_caught_icon.visible = _caught
 	if _name_label.get_combined_minimum_size().x <= _name_room():
 		return
 	if _status_badge.visible:
 		_status_badge.set_show_icon(false)
-	_shrink_name_to(_name_room())
+	if not _shrink_name_to(_name_room()) and _caught_icon.visible:
+		_caught_icon.visible = false
+		_shrink_name_to(_name_room())
 
 
 ## Réduit le nom jusqu'à ce qu'il tienne dans [param room] pixels ; faux s'il ne tient pas même

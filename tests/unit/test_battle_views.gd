@@ -11,6 +11,22 @@ func before_all() -> void:
 	_data.load_dir()
 
 
+func test_already_caught_needs_the_capture_and_the_activated_pokedex() -> void:
+	var pokedex := Pokedex.new()
+	var flags := StoryFlags.new()
+	pokedex.mark_seen(&"pidgey", &"route_1")
+	pokedex.mark_caught(&"rattata", &"route_1")
+	assert_false(BattleViews.already_caught(&"rattata", pokedex, flags),
+		"avant l'activation du Pokédex par Chen : rien n'est montré")
+	flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
+	assert_true(BattleViews.already_caught(&"rattata", pokedex, flags))
+	assert_false(BattleViews.already_caught(&"pidgey", pokedex, flags), "seulement vu")
+	assert_false(BattleViews.already_caught(&"mew", pokedex, flags), "jamais rencontré")
+	assert_false(BattleViews.already_caught(&"rattata", null, flags))
+	assert_false(BattleViews.already_caught(&"rattata", pokedex, null))
+	assert_false(BattleCardView.new("Rattata").caught, "jamais par défaut")
+
+
 func test_card_of_the_player_shows_hp_numbers_and_the_foe_does_not() -> void:
 	var event := BattleEvent.new(BattleEvent.Kind.SENT_OUT, BattleEvent.SideId.PLAYER)
 	event.pokemon_name = "Salamèche"

@@ -332,6 +332,8 @@ const BATTLE_CARD_LEVEL_VALUE_FONT := FONT_BODY
 const BATTLE_HP_NUMBERS_FONT := 28
 ## Symboles ♂ / ♀ (dessinés en SVG : la police par défaut n'a pas ces caractères).
 const GENDER_ICON := 30
+## Poké Ball « espèce déjà capturée » de la carte d'un Pokémon sauvage [D], à droite du nom.
+const BATTLE_CARD_CAUGHT_ICON := 28
 const GENDER_MALE := Color("#4A9BF0")
 const GENDER_FEMALE := Color("#F2679A")
 

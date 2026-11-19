@@ -97,6 +97,14 @@ static func card(event: BattleEvent) -> BattleCardView:
 	return view
 
 
+## Vrai si la carte d'un Pokémon sauvage de l'espèce [param species] porte la Poké Ball « déjà
+## capturé » : l'espèce est capturée dans [param pokedex], et Chen a activé le Pokédex
+## ([param flags], règle de déblocage : rien du Pokédex n'est visible avant).
+static func already_caught(species: StringName, pokedex: Pokedex, flags: StoryFlags) -> bool:
+	return pokedex != null and flags != null \
+		and flags.has_flag(StoryFlags.POKEDEX_ACTIVATED) and pokedex.is_caught(species)
+
+
 ## Libellé court de [param stat] pour la puce de cran de la carte (« ATT ») : celui de
 ## [param texts] (« stage_labels »), sinon l'identifiant en majuscules.
 static func stage_label(stat: StringName, texts: BattleText) -> String:

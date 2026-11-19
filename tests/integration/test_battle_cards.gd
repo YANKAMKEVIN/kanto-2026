@@ -44,6 +44,39 @@ func _screen(width: float) -> Control:
 	return screen
 
 
+# --- Poké Ball « espèce déjà capturée » ----------------------------------------------------
+
+func test_caught_ball_sits_between_the_name_and_the_gender() -> void:
+	var card := _card()
+	card.set_view(_foe_view())
+	assert_false(card.is_caught_shown(), "pas de Poké Ball par défaut")
+	var view := _foe_view()
+	view.caught = true
+	card.set_view(view)
+	assert_true(card.is_caught_shown())
+	var icon := card.get_caught_icon()
+	assert_eq(icon.custom_minimum_size, Vector2.ONE * UiTokens.BATTLE_CARD_CAUGHT_ICON)
+	assert_gt(icon.get_index(), (card.get_node(^"%NameLabel") as Control).get_index())
+	assert_lt(icon.get_index(), card.get_gender_icon().get_index())
+	card.set_view(_foe_view())
+	assert_false(card.is_caught_shown(), "le Pokémon suivant ne la garde pas")
+
+
+func test_long_name_still_fits_with_the_caught_ball() -> void:
+	var card := _card()
+	var view := BattleCardView.new("Mackogneur", BattleCardView.Gender.FEMALE, 100, 40, 40, false)
+	view.caught = true
+	view.status = StatusRules.POISON
+	card.set_view(view)
+	await wait_process_frames(2)
+	var header := card.get_node(^"%Header") as HBoxContainer
+	var room := float(UiTokens.BATTLE_CARD_WIDTH - 2 * UiTokens.BATTLE_CARD_PAD_H)
+	assert_lte(header.get_combined_minimum_size().x, room + 0.5,
+		"le nom rétrécit, puis la Poké Ball cède sa place : la carte ne grandit jamais")
+	assert_gte(card.get_name_font_size(), UiTokens.BATTLE_CARD_NAME_FONT_MIN)
+	assert_eq(card.get_name_text(), "MACKOGNEUR", "nom jamais rogné")
+
+
 # --- Barre de PV ---------------------------------------------------------------------------
 
 func test_bar_color_thresholds() -> void:

@@ -21,6 +21,9 @@ var show_hp_numbers: bool = false
 var status: StringName = StatusRules.NONE
 ## Niveau masqué (SPECTRE, jalon 19) : la carte écrit « Nv. ?? » et [member level] est ignoré.
 var level_hidden: bool = false
+## Espèce déjà capturée : la carte pose une petite Poké Ball à droite du nom. Celui qui remplit
+## la vue en décide (Pokémon sauvage seulement, et une fois le Pokédex activé par Chen).
+var caught: bool = false
 
 
 func _init(
