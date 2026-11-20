@@ -48,7 +48,9 @@ const DATA_DIR := "res://data"
 ## dossier joh-05 (barrière du puits, Canarticho, Ramoloss sans queue, habitant), JOH4-Q1.
 ## Lot Johto (143 textes, `docs/design/passes/johto-textes-a-valider.md`) : validé tel quel par
 ## Kevin le 2026-11-06, « draft » retiré.
-const PENDING_DRAFTS: Array[String] = []
+## Lot UI/UX (2026-11-19) : consigne de la fiche d'une capacité (« Maintiens une capacité pour
+## voir sa fiche », sous les cartes de capacités) [D], à relire par Kevin.
+const PENDING_DRAFTS: Array[String] = ["battle/messages.json/templates/move_sheet_hint"]
 
 
 func test_data_has_json_files() -> void:

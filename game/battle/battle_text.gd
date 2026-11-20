@@ -80,7 +80,7 @@ extends RefCounted
 ## Bilan de fin de combat (demande n° 1) : libellés courts, sans événement — « summary_exp »
 ## ([method summary_exp], « +11 XP »), « summary_level » ([method summary_level], « Nv. 9 »),
 ## « summary_stat » ({stat} : nom court de « stat_labels », {amount} ; [method summary_stats] :
-## « PV +2 · Attaque +1 »), « summary_continue » (consigne « Touchez l'écran pour continuer »).
+## « PV +2 · Attaque +1 »), « summary_continue » (consigne « Touche l'écran pour continuer »).
 ## Évolution (jalon 9, lot verrouillé le 2026-10-07, bloc B) : sans événement du moteur ;
 ## [EvolutionDirector] les demande à [method line_for] avec un événement qui porte le nom du
 ## Pokémon [b]d'avant[/b] l'évolution — « evolution_started » (« Quoi ? {pokemon} évolue ! »),
@@ -138,6 +138,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"forget_confirm_no",
 	&"withdrawn", &"withdrawn_foe", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
+	# Consigne de la fiche d'une capacité, sous les cartes ([MoveSheetHint]).
+	&"move_sheet_hint",
 	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
 	&"status_cured_poison",
 	# Jalon 23 (T18) : poison grave (Toxik).
@@ -224,6 +226,8 @@ var _drafts: Dictionary[StringName, bool] = {}
 var _stats: Dictionary[StringName, String] = {}
 ## Noms courts des statistiques du bilan (« PV », « Atq. Spé. »).
 var _stat_labels: Dictionary[StringName, String] = {}
+## Libellés courts des crans de statistiques sur les cartes de combat (« ATT », « PRÉC »).
+var _stage_labels: Dictionary[StringName, String] = {}
 var _errors: PackedStringArray = PackedStringArray()
 var _placeholder: RegEx = RegEx.create_from_string("\\{([^}]*)\\}")
 
@@ -246,12 +250,14 @@ func load_file(path: String = DATA_PATH) -> bool:
 func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	var ok := true
 	for key: Variant in data:
-		if not ["templates", "stats", "stat_labels"].has(str(key)):
+		if not ["templates", "stats", "stat_labels", "stage_labels"].has(str(key)):
 			ok = _fail("%s : clé inconnue « %s »" % [source, key])
 	if not data.get("templates") is Dictionary or not data.get("stats") is Dictionary:
 		return _fail("%s : « templates » et « stats » doivent être des objets" % source)
 	if data.has("stat_labels") and not data["stat_labels"] is Dictionary:
 		return _fail("%s : « stat_labels » doit être un objet" % source)
+	if data.has("stage_labels") and not data["stage_labels"] is Dictionary:
+		return _fail("%s : « stage_labels » doit être un objet" % source)
 	var texts: Dictionary[StringName, String] = {}
 	var texts_f: Dictionary[StringName, String] = {}
 	var drafts: Dictionary[StringName, bool] = {}
@@ -293,9 +299,24 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	for stat: StringName in SpeciesData.STATS:
 		if not raw_labels.is_empty() and not raw_labels.has(String(stat)):
 			ok = _fail("%s stat_labels : « %s » manquant" % [source, stat])
+	var stage_labels: Dictionary[StringName, String] = {}
+	# Facultatif aussi ; s'il est là, les sept statistiques à crans sont nommées.
+	var raw_stage_labels: Dictionary = data.get("stage_labels", {})
+	for key: Variant in raw_stage_labels:
+		var stat := StringName(str(key))
+		if not MoveEffect.STAGE_STATS.has(stat):
+			ok = _fail("%s stage_labels : statistique inconnue « %s »" % [source, stat])
+		elif not _is_text(raw_stage_labels[key]):
+			ok = _fail("%s stage_labels « %s » : texte non vide attendu" % [source, stat])
+		else:
+			stage_labels[stat] = raw_stage_labels[key]
+	for stat: StringName in MoveEffect.STAGE_STATS:
+		if not raw_stage_labels.is_empty() and not raw_stage_labels.has(String(stat)):
+			ok = _fail("%s stage_labels : « %s » manquant" % [source, stat])
 	if not ok:
 		return false
 	_stat_labels = labels
+	_stage_labels = stage_labels
 	_texts = texts
 	_texts_f = texts_f
 	_drafts = drafts
@@ -547,6 +568,12 @@ func summary_stats(gains: Dictionary[StringName, int]) -> String:
 			parts.append(get_template(&"summary_stat").format({
 				"stat": _stat_labels.get(stat, String(stat)), "amount": amount}))
 	return SUMMARY_SEPARATOR.join(parts)
+
+
+## Libellé court de [param stat] pour la puce de cran d'une carte de combat (« ATT ») ; chaîne
+## vide si le jeu de messages n'en donne pas.
+func stage_label(stat: StringName) -> String:
+	return _stage_labels.get(stat, "")
 
 
 ## Nom affiché du dresseur : jetons (`{rival}`) résolus par [member token_values] ; un jeton

@@ -7,13 +7,17 @@ extends Control
 ## titre gras au-dessus, détail discret en dessous. Il descend de TOAST_SLIDE en fondu
 ## (TOAST_FADE_IN), reste TOAST_HOLD, puis remonte en fondu (TOAST_FADE_OUT) et se cache.
 ## Vibration « tic » (HAPTIC_TICK_MS, bible §12) à chaque toast.
+## File : un toast demandé pendant qu'un autre est affiché attend son tour (TOAST_QUEUE_MAX au
+## plus, le plus ancien en attente cède sa place) ; il entre quand le précédent est sorti, et la
+## tenue est raccourcie (TOAST_HOLD_QUEUED) tant que d'autres attendent. Aucun message n'en écrase
+## un autre, et rien n'interrompt jamais le jeu.
 ## Purement visuel : ni lui ni ses enfants n'interceptent souris ou toucher.
 ## Placement (aspect expand, 1920 à 2340 de large) : ancré au milieu du bord haut, à
 ## TOAST_TOP, il grandit des deux côtés avec son texte.
 
 ## Un toast commence (texte posé, apparition lancée).
 signal toast_shown(title: String, detail: String)
-## Le toast vient de disparaître (fin de sa tenue ou hide_now).
+## Le toast vient de disparaître (fin de sa tenue ou hide_now) et plus rien n'attend.
 signal toast_hidden
 ## Vibration demandée (millisecondes), émise même quand haptics_enabled est faux (tests).
 signal haptic_played(duration_ms: int)
@@ -27,6 +31,10 @@ var haptics_enabled: bool = true
 
 var _tween: Tween
 var _showing: bool = false
+## Le toast affiché est en train de sortir (un nouveau message ne peut plus le prolonger).
+var _leaving: bool = false
+## Toasts en attente, dans l'ordre d'arrivée : [titre, détail, icône].
+var _queue: Array[Array] = []
 
 @onready var _body: PanelContainer = %Body
 @onready var _row: HBoxContainer = %Row
@@ -67,48 +75,46 @@ func _get_minimum_size() -> Vector2:
 
 
 ## Affiche [param title] (« Poké Balls ×5 ») et [param detail] (« Ajoutées au Sac ») avec
-## [param icon] (Poké Ball si null) : apparition, tenue TOAST_HOLD, disparition. Un toast
-## déjà affiché change de texte et sa tenue repart de zéro, sans nouvelle apparition.
+## [param icon] (Poké Ball si null) : apparition, tenue TOAST_HOLD, disparition. Si un autre toast
+## est affiché, celui-ci attend son tour dans la file ; le même message redemandé pendant sa tenue
+## la fait seulement repartir de zéro, sans nouvelle apparition.
 func show_toast(title: String, detail: String, icon: Texture2D = null) -> void:
-	_title.text = title
-	_detail.text = detail
-	_detail.visible = not detail.is_empty()
-	_icon.texture = icon if icon != null else DEFAULT_ICON
-	# Taille du texte et contraste (UiPrefs), lus à chaque affichage ; le toast grandit avec.
-	UiPrefsApplier.apply(_body)
-	_kill()
 	if not _showing:
-		_body.position = Vector2.UP * UiTokens.TOAST_SLIDE
-		modulate.a = 0.0
-	_showing = true
-	visible = true
-	_haptic(UiTokens.HAPTIC_TICK_MS)
-	toast_shown.emit(title, detail)
-	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	_tween.tween_property(_body, ^"position", Vector2.ZERO, _time(UiTokens.TOAST_FADE_IN))
-	_tween.parallel().tween_property(self, ^"modulate:a", 1.0, _time(UiTokens.TOAST_FADE_IN))
-	_tween.tween_interval(_time(UiTokens.TOAST_HOLD))
-	_tween.tween_property(_body, ^"position", Vector2.UP * UiTokens.TOAST_SLIDE,
-		_time(UiTokens.TOAST_FADE_OUT)).set_ease(Tween.EASE_IN)
-	_tween.parallel().tween_property(self, ^"modulate:a", 0.0, _time(UiTokens.TOAST_FADE_OUT)) \
-		.set_ease(Tween.EASE_IN)
-	_tween.tween_callback(_on_hidden)
+		_present(title, detail, icon)
+		return
+	if not _leaving and _queue.is_empty() and title == _title.text \
+			and detail == _detail.text:
+		_present(title, detail, icon)
+		return
+	if not _queue.is_empty() and _queue.back()[0] == title and _queue.back()[1] == detail:
+		return
+	_queue.append([title, detail, icon])
+	if _queue.size() > UiTokens.TOAST_QUEUE_MAX:
+		_queue.pop_front()
 
 
-## Efface le toast en fondu court (ANIM_MICRO) ; émet toast_hidden à la fin. Sans effet
-## s'il n'est pas affiché.
+## Efface le toast en fondu court (ANIM_MICRO) et vide la file ; émet toast_hidden à la fin.
+## Sans effet s'il n'est pas affiché.
 func hide_now() -> void:
 	if not _showing:
 		return
+	_queue.clear()
+	_leaving = true
 	_kill()
 	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	_tween.tween_property(self, ^"modulate:a", 0.0, _time(UiTokens.ANIM_MICRO))
-	_tween.tween_callback(_on_hidden)
+	# Un toast demandé pendant ce fondu entre juste après (file), sinon le toast se cache.
+	_tween.tween_callback(_on_left)
 
 
-## Un toast est affiché (apparition, tenue ou disparition en cours).
+## Un toast est affiché (apparition, tenue ou disparition en cours), ou le suivant va entrer.
 func is_showing() -> bool:
 	return _showing
+
+
+## Toasts qui attendent leur tour (sans celui qui est affiché).
+func get_queue_size() -> int:
+	return _queue.size()
 
 
 func get_title_text() -> String:
@@ -125,6 +131,51 @@ func get_icon() -> Texture2D:
 
 func get_body() -> PanelContainer:
 	return _body
+
+
+## Pose le message et lance son passage : apparition (sauf s'il est déjà là), tenue, sortie.
+func _present(title: String, detail: String, icon: Texture2D) -> void:
+	_title.text = title
+	_detail.text = detail
+	_detail.visible = not detail.is_empty()
+	_icon.texture = icon if icon != null else DEFAULT_ICON
+	# Taille du texte et contraste (UiPrefs), lus à chaque affichage ; le toast grandit avec.
+	UiPrefsApplier.apply(_body)
+	_kill()
+	if not _showing or _leaving:
+		_body.position = Vector2.UP * UiTokens.TOAST_SLIDE
+		modulate.a = 0.0
+	_showing = true
+	_leaving = false
+	visible = true
+	_haptic(UiTokens.HAPTIC_TICK_MS)
+	toast_shown.emit(title, detail)
+	var hold := UiTokens.TOAST_HOLD if _queue.is_empty() else UiTokens.TOAST_HOLD_QUEUED
+	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_tween.tween_property(_body, ^"position", Vector2.ZERO, _time(UiTokens.TOAST_FADE_IN))
+	_tween.parallel().tween_property(self, ^"modulate:a", 1.0, _time(UiTokens.TOAST_FADE_IN))
+	_tween.tween_interval(_time(hold))
+	_tween.tween_callback(_on_leaving)
+	_tween.tween_property(_body, ^"position", Vector2.UP * UiTokens.TOAST_SLIDE,
+		_time(UiTokens.TOAST_FADE_OUT)).set_ease(Tween.EASE_IN)
+	_tween.parallel().tween_property(self, ^"modulate:a", 0.0, _time(UiTokens.TOAST_FADE_OUT)) \
+		.set_ease(Tween.EASE_IN)
+	_tween.tween_callback(_on_left)
+
+
+func _on_leaving() -> void:
+	_leaving = true
+
+
+## Le toast affiché est sorti : le suivant de la file entre, sinon le toast se cache.
+func _on_left() -> void:
+	if _queue.is_empty():
+		_on_hidden()
+		return
+	var next: Array = _queue.pop_front()
+	# Le tween qui appelle ceci vient de finir : il n'a pas à être tué par le passage suivant.
+	_tween = null
+	_present(next[0], next[1], next[2])
 
 
 func _time(duration: float) -> float:
@@ -151,6 +202,7 @@ func _kill() -> void:
 func _on_hidden() -> void:
 	_tween = null
 	_showing = false
+	_leaving = false
 	visible = false
 	_body.position = Vector2.ZERO
 	toast_hidden.emit()

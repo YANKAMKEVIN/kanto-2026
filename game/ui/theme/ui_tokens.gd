@@ -104,6 +104,9 @@ const LAYER_TRANSITION := 100
 
 const ZONE_TITLE_ICON := 64
 const ZONE_TITLE_HOLD := 2.5
+## Première découverte d'une zone [D] : le titre porte le sous-titre du lieu et tient plus
+## longtemps (2,5 s × 1,4 = 3,5 s).
+const ZONE_TITLE_FIRST_HOLD_SCALE := 1.4
 ## Longueur du dégradé qui prolonge le fond vers la droite, jusqu'à la transparence.
 const ZONE_TITLE_FADE := 120
 ## Écart vertical entre le nom et la région.
@@ -138,6 +141,14 @@ const INTERACT_LABEL_PAD_H := 20
 const INTERACT_LABEL_PAD_V := 8
 ## Vibration courte à l'appui du bouton contextuel (millisecondes).
 const HAPTIC_TAP_MS := 15
+## Force des vibrations [D] (bible UI/UX §12, [method Haptics.amplitude_for]) : amplitude de 0 à 1
+## selon la durée. Légère jusqu'à 25 ms (tic, toucher, menu, statut), moyenne jusqu'à 50 ms (coup
+## reçu, secousse de la Ball, badge), forte au-delà (coup critique, capture réussie).
+const HAPTIC_LIGHT_MAX_MS := 25
+const HAPTIC_MEDIUM_MAX_MS := 50
+const HAPTIC_AMPLITUDE_LIGHT := 0.4
+const HAPTIC_AMPLITUDE_MEDIUM := 0.7
+const HAPTIC_AMPLITUDE_STRONG := 1.0
 
 # --- Bulle « ! » d'un Dresseur (jalon 9, T12) -----------------------------------------------
 
@@ -329,6 +340,8 @@ const BATTLE_CARD_LEVEL_VALUE_FONT := FONT_BODY
 const BATTLE_HP_NUMBERS_FONT := 28
 ## Symboles ♂ / ♀ (dessinés en SVG : la police par défaut n'a pas ces caractères).
 const GENDER_ICON := 30
+## Poké Ball « espèce déjà capturée » de la carte d'un Pokémon sauvage [D], à droite du nom.
+const BATTLE_CARD_CAUGHT_ICON := 28
 const GENDER_MALE := Color("#4A9BF0")
 const GENDER_FEMALE := Color("#F2679A")
 
@@ -372,6 +385,32 @@ const PARTY_PIPS_INSET := 20
 const PARTY_PIPS_GAP := 8
 const PARTY_PIP_EMPTY := Color(0.62, 0.67, 0.74, 0.9)
 const PARTY_PIP_EMPTY_BORDER := Color(0.06, 0.09, 0.13, 0.55)
+## État d'une pastille [D] : Poké Ball éteinte et barrée (K.O.), point ambre (statut), comme la
+## barre de PV moyenne. Jamais la couleur seule.
+const PARTY_PIP_FAINTED := Color(0.42, 0.45, 0.5, 0.8)
+const PARTY_PIP_STATUS := HP_MID
+const PARTY_PIP_MARK := 5
+const PARTY_PIP_MARK_BORDER := 2.0
+const PARTY_PIP_STRIKE := 3.0
+const PARTY_PIP_STRIKE_INSET := 0.14
+const PARTY_PIP_STRIKE_COLOR := Color(1, 1, 1, 0.92)
+## Pastilles de l'équipe adverse (combat de Dresseur) : écart sous la carte adverse.
+const FOE_PIPS_GAP := 8
+
+# Puces des crans de statistiques d'une carte de combat [D] (« ATT ▲2 ») : petites capsules sur la
+# bande des pastilles, alignées au bord droit de la carte ; elles passent à la ligne au besoin.
+const STAT_CHIP_FONT := 20
+const STAT_CHIP_BG := DIALOG_PANEL_BG
+const STAT_CHIP_RADIUS := 14
+const STAT_CHIP_PAD_H := 10
+const STAT_CHIP_PAD_V := 1
+const STAT_CHIP_GAP := 5
+const STAT_CHIP_ARROW := 12
+const STAT_CHIP_UP := SUCCESS
+const STAT_CHIP_DOWN := HP_LOW
+## Écart entre deux puces, et entre les pastilles et la première puce.
+const STAT_CHIPS_GAP := 6
+const STAT_CHIPS_MARGIN := 12
 
 # Grille des 4 actions (combat-v1 : boutons colorés).
 const ACTION_ATTACK := Color("#E04A3C")
@@ -408,6 +447,10 @@ const MOVE_GAP_V := 16
 const MOVE_BAND_PAD := 20
 const MOVE_BAND_BLEED := 96
 const MOVE_BAND_BG := Color(0.06, 0.09, 0.13, 0.66)
+## Consigne sous les cartes de capacités [D] (« Maintiens une capacité pour voir sa fiche ») :
+## taille du texte et marge gardée au bord bas de l'écran.
+const MOVE_HINT_FONT := FONT_CAPTION
+const MOVE_HINT_BOTTOM := 4
 ## Part de la couleur du type dans le fond de la carte (mêlée à PANEL_BG), et opacité du
 ## liseré à la couleur du type.
 const MOVE_CARD_TINT := 0.32
@@ -429,6 +472,10 @@ const MOVE_CARD_SELECTED_GLOW_SIZE := 14
 const MOVE_CARD_DISABLED := Color(0.55, 0.58, 0.62, 0.85)
 const MODULATE_FULL := Color(1, 1, 1, 1)
 const MOVE_PP_EMPTY := HP_LOW
+## PP bientôt épuisés [D] : sous un quart des PP max, le chiffre prend l'ambre de la barre de PV
+## moyenne (HP_MID) ; à zéro, il reste rouge.
+const MOVE_PP_LOW := HP_MID
+const MOVE_PP_LOW_RATIO := 0.25
 ## Emplacement vide (moins de 4 capacités).
 const MOVE_CARD_EMPTY_BG := Color(1, 1, 1, 0.04)
 const MOVE_CARD_EMPTY_BORDER := Color(1, 1, 1, 0.12)
@@ -485,6 +532,10 @@ const BATTLE_BACK_ICON := 56
 const TOAST_TOP := SAFE_MARGIN
 ## Tenue entre l'apparition et la disparition (~2 s, jamais bloquant).
 const TOAST_HOLD := 2.0
+## File des toasts [D] : nombre de toasts en attente au plus, et tenue raccourcie d'un toast tant
+## que d'autres attendent derrière lui.
+const TOAST_QUEUE_MAX := 3
+const TOAST_HOLD_QUEUED := 1.2
 const TOAST_FADE_IN := 0.24
 const TOAST_FADE_OUT := 0.3
 ## Glissement depuis le haut pendant l'apparition (et vers le haut à la disparition).
@@ -691,7 +742,7 @@ const SUMMARY_STATS_PAD_H := 20
 const SUMMARY_STATS_PAD_V := 8
 ## Barre d'XP du bilan : plus épaisse que celle de la carte de combat.
 const SUMMARY_BAR_HEIGHT := 14
-## Consigne « Touchez l'écran pour continuer » : capsule discrète sous la carte.
+## Consigne « Touche l'écran pour continuer » : capsule discrète sous la carte.
 const SUMMARY_HINT_FONT := FONT_BODY
 const SUMMARY_HINT_BG := PANEL_BG
 const SUMMARY_HINT_PAD_H := 32
@@ -1448,7 +1499,7 @@ const EVOLUTION_REVERT := 0.6
 const EVOLUTION_TEXT_IN := 0.35
 const EVOLUTION_TEXT_OUT := 0.15
 const EVOLUTION_TEXT_RISE := 18.0
-## Consigne « Touchez l'écran… » : apparition puis respiration (période, opacité basse).
+## Consigne « Touche l'écran… » : apparition puis respiration (période, opacité basse).
 const EVOLUTION_HINT_IN := 0.3
 const EVOLUTION_HINT_PERIOD := 1.4
 const EVOLUTION_HINT_DIM := 0.45
@@ -1842,9 +1893,24 @@ const TITLE_CONTINUE_STAT_FONT := FONT_BODY
 const TITLE_CONTINUE_STAT_ICON := 40
 const TITLE_CONTINUE_LINE_GAP := 8
 const TITLE_CONTINUE_DIVIDER := Color(0.36, 0.55, 0.85, 0.7)
+## Équipe sur la carte Continuer [D] : vignettes rondes sous les statistiques (six tiennent dans
+## la largeur des textes : 6 × 52 + 5 × 8 = 352), sur un disque clair translucide.
+const TITLE_CONTINUE_PARTY_ICON := 52
+const TITLE_CONTINUE_PARTY_GAP := 8
+const TITLE_CONTINUE_PARTY_BG := Color(1.0, 1.0, 1.0, 0.12)
 ## Message d'état de la sauvegarde (corrompue, plus récente) : sous la colonne, verre sombre.
 const TITLE_MESSAGE_FONT := FONT_CAPTION
 const TITLE_MESSAGE_BG := Color(0.04, 0.07, 0.11, 0.86)
+## Entrée du titre [D] : le logo descend de TITLE_LOGO_DROP en fondu (ANIM_PANEL), puis les cartes
+## glissent l'une après l'autre (PANEL_SLIDE, TITLE_ENTRANCE_STAGGER d'écart) ; ensuite le halo de
+## l'entrée mise en avant respire (demi-période et opacité haute ; l'opacité basse est celle de
+## TITLE_CARD_GLOW).
+const TITLE_LOGO_DROP := 24.0
+const TITLE_ENTRANCE_STAGGER := 0.08
+const TITLE_GLOW_BREATH := 1.6
+const TITLE_GLOW_BREATH_ALPHA := 0.75
+## Carte « Nouveautés » [D] (premier lancement après une mise à jour) : largeur, du côté du logo.
+const TITLE_WHATS_NEW_WIDTH := 760
 ## Fondus de l'ouverture (dossier 13 §4) : apparition du titre après le splash ; sortie au noir
 ## vers la partie (valeur des portes) ; entrée dans la partie.
 const TITLE_FADE_IN := 0.4

@@ -11,7 +11,9 @@ extends RefCounted
 ##  - badges : un badge est obtenu quand son drapeau est levé ([BadgeLibrary]) ; l'appelant
 ##    donne la liste des drapeaux de badge ;
 ##  - captures : espèces capturées du Pokédex (comme le tableau de bord), affichées seulement
-##    si le Pokédex est activé (drapeau [constant StoryFlags.POKEDEX_ACTIVATED]).
+##    si le Pokédex est activé (drapeau [constant StoryFlags.POKEDEX_ACTIVATED]) ;
+##  - équipe : les espèces de « party », dans l'ordre, traduites en numéros de Pokédex par un
+##    [Callable] injecté (vignettes de la carte Continuer) ; un œuf n'est pas montré.
 
 var player_name: String = ""
 ## Apparence du joueur (buste de la carte Continuer ; chantier JR) ; le héros si absente.
@@ -32,16 +34,21 @@ var badge_id: StringName = &""
 ## Espèces capturées.
 var caught_count: int = 0
 var pokedex_active: bool = false
+## Numéros de Pokédex des Pokémon de l'équipe, dans l'ordre de l'équipe ([constant
+## Party.MAX_SIZE] au plus ; œufs et espèces inconnues omis). Vide si l'appelant n'a pas donné de
+## quoi traduire les espèces. Lecture seule : le format de sauvegarde ne change pas.
+var party_dex: Array[int] = []
 
 
 ## Résumé de [param save] ([method SaveSystem.read]). [param zone_name_of] :
 ## `func(map_id: StringName) -> String` (peut être invalide : pas de lieu). [param badge_flags] :
 ## drapeaux des badges, dans l'ordre des arènes. [param fallback_name] : prénom si la sauvegarde
 ## n'en a pas. [param badge_ids] : identifiants des badges, au même rang que leurs drapeaux
-## (vide : pas de [member badge_id]).
+## (vide : pas de [member badge_id]). [param dex_of] : `func(species: StringName) -> int`, numéro
+## de Pokédex d'une espèce, 0 si elle est inconnue (non valide : pas de [member party_dex]).
 static func from_save(save: Dictionary, zone_name_of: Callable = Callable(),
 		badge_flags: Array[StringName] = [], fallback_name: String = "",
-		badge_ids: Array[StringName] = []) -> SaveSummary:
+		badge_ids: Array[StringName] = [], dex_of: Callable = Callable()) -> SaveSummary:
 	var summary := SaveSummary.new()
 	summary.player_name = JsonFields.get_string(save, "player_name").strip_edges()
 	if summary.player_name.is_empty():
@@ -66,6 +73,16 @@ static func from_save(save: Dictionary, zone_name_of: Callable = Callable(),
 		var entry: Variant = entries[species]
 		if entry is Dictionary and JsonFields.get_bool(entry, "caught"):
 			summary.caught_count += 1
+	if dex_of.is_valid():
+		for member: Variant in JsonFields.get_array(save, "party"):
+			if summary.party_dex.size() >= Party.MAX_SIZE:
+				break
+			# Un œuf garde son secret : il n'a pas de vignette.
+			if not member is Dictionary or JsonFields.get_int(member, "egg_steps") > 0:
+				continue
+			var number: Variant = dex_of.call(JsonFields.get_id(member, "species"))
+			if JsonFields.is_int(number) and int(number) > 0:
+				summary.party_dex.append(int(number))
 	return summary
 
 

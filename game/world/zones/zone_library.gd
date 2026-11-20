@@ -108,6 +108,21 @@ func zone_name_of(map_id: StringName) -> String:
 	return zone.name if zone != null else ""
 
 
+## Sous-titre à montrer sous le titre de zone à la **première découverte** de la zone de
+## [param map_id] (bible UI/UX §5 : « ROUTE 1 / Bourg Palette — Jadielle ») : celui de la zone
+## (« subtitle »), tant qu'aucune de ses cartes n'est dans [param discovered] (les cartes
+## découvertes de la partie, **avant** de marquer celle-ci). Chaîne vide sinon (carte sans zone,
+## zone sans sous-titre, zone déjà visitée) : le titre garde alors son sous-titre habituel.
+func first_visit_subtitle(map_id: StringName, discovered: Dictionary) -> String:
+	var zone := get_zone(zone_of(map_id))
+	if zone == null or zone.subtitle.is_empty():
+		return ""
+	for known: StringName in zone.maps:
+		if discovered.has(known):
+			return ""
+	return zone.subtitle
+
+
 ## Région de la carte [param map_id] : celle de sa zone ; [constant ZoneData.REGION_KANTO] si
 ## la carte n'a pas de zone (JOH0) [D].
 func region_of(map_id: StringName) -> StringName:

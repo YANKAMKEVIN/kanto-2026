@@ -251,3 +251,129 @@ func test_version_label_sits_on_the_logo_side_outside_the_column() -> void:
 	screen.set_left_handed(true)
 	await wait_process_frames(2)
 	assert_gt(label.get_global_rect().position.x, 2340 / 2.0, "mode gaucher : côté droit, avec le logo")
+
+
+# --- Équipe en vignettes sur la carte Continuer ------------------------------------------------
+
+func test_continue_card_shows_the_party_as_small_round_thumbnails() -> void:
+	var summary := _make_summary()
+	summary.party_dex = [4, 16, 19, 25, 1, 7]
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID, summary))
+	assert_eq(screen.get_party_icon_count(), 6, "une vignette par Pokémon de l'équipe")
+	var card := screen.get_entry_button(&"continue")
+	var row := card.find_child("Team", true, false) as HBoxContainer
+	var stats := card.find_child("PlayTime", true, false) as Control
+	assert_gt(row.get_global_rect().position.y, stats.get_global_rect().position.y,
+		"sous les statistiques")
+	assert_lte(row.get_global_rect().end.x, card.get_global_rect().end.x
+		- UiTokens.TITLE_CARD_PAD_H + 0.5, "six vignettes tiennent dans la carte")
+	assert_lte(row.get_global_rect().end.y, card.get_global_rect().end.y, "dans la carte")
+	for node: Node in row.find_children("*", "Control", true, false):
+		assert_eq((node as Control).mouse_filter, Control.MOUSE_FILTER_IGNORE,
+			"la carte entière reste le bouton")
+
+
+func test_continue_card_without_a_party_has_no_thumbnail_row() -> void:
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID))
+	assert_eq(screen.get_party_icon_count(), 0)
+	assert_null(screen.get_entry_button(&"continue").find_child("Team", true, false))
+
+
+func test_six_thumbnails_still_fit_the_screen_with_large_text() -> void:
+	var settings := GameSettings.new()
+	settings.text_size = GameSettings.TextSize.LARGE
+	UiPrefs.apply(settings)
+	var summary := _make_summary()
+	summary.party_dex = [4, 16, 19, 25, 1, 7]
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID, summary), 1920)
+	await wait_process_frames(3)
+	var last := screen.get_entry_button(&"settings")
+	assert_lte(last.get_global_rect().end.y, float(HEIGHT - UiTokens.SAFE_MARGIN),
+		"la colonne tient dans l'écran")
+	assert_gte(screen.get_entry_button(&"continue").get_global_rect().position.y,
+		float(UiTokens.SAFE_MARGIN))
+
+
+# --- Entrée en cascade (logo, puis cartes) et halo qui respire --------------------------------
+
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
+
+
+func _entrance_time(cards: int) -> float:
+	return UiTokens.ANIM_PANEL * 2.0 + UiTokens.TITLE_ENTRANCE_STAGGER * (cards - 1)
+
+
+func test_entrance_brings_the_logo_then_the_cards_one_after_another() -> void:
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID))
+	screen.speed_scale = 1.0
+	var cards: Array[Button] = []
+	for entry: StringName in screen.get_entries():
+		cards.append(screen.get_entry_button(entry))
+	var rest: Array[Vector2] = []
+	for card: Button in cards:
+		rest.append(card.position)
+	var logo_rest := screen.get_logo().position
+	screen.prepare_entrance()
+	assert_eq(screen.get_logo().modulate.a, 0.0, "logo effacé avant l'entrée")
+	for card: Button in cards:
+		assert_eq(card.modulate.a, 0.0, "cartes effacées avant l'entrée")
+	var clock := TweenClock.new(get_tree())
+	screen.play_entrance()
+	assert_true(screen.is_entering())
+	# À mi-course du logo : il descend, aucune carte n'a commencé.
+	clock.step(UiTokens.ANIM_PANEL * 0.5)
+	assert_between(screen.get_logo().modulate.a, 0.01, 0.99, "logo en fondu")
+	assert_lt(screen.get_logo().position.y, logo_rest.y, "il descend vers sa place")
+	assert_eq(cards[0].modulate.a, 0.0, "les cartes attendent le logo")
+	# Peu après le logo : la première carte glisse, la dernière n'a pas commencé.
+	clock.step(UiTokens.ANIM_PANEL * 0.5 + UiTokens.TITLE_ENTRANCE_STAGGER * 0.5)
+	assert_gt(cards[0].modulate.a, 0.0, "première carte en route")
+	assert_gt(cards[0].position.x, rest[0].x, "elle vient du bord droit")
+	assert_eq(cards[2].modulate.a, 0.0, "la troisième attend son tour")
+	var steps := clock.run_until(func() -> bool: return not screen.is_entering(), 5.0)
+	clock.release()
+	var left := _entrance_time(cards.size()) - UiTokens.ANIM_PANEL \
+		- UiTokens.TITLE_ENTRANCE_STAGGER * 0.5
+	assert_between(steps * TweenClock.STEP, left - 0.0001, left + 3.0 * TweenClock.STEP,
+		"durée de la cascade (%d pas)" % steps)
+	await wait_process_frames(2)
+	assert_eq(screen.get_logo().modulate.a, 1.0)
+	assert_eq(screen.get_logo().position, logo_rest, "logo à sa place")
+	for i: int in cards.size():
+		assert_eq(cards[i].modulate.a, 1.0)
+		assert_eq(cards[i].position, rest[i], "carte %d à sa place" % i)
+	assert_true(screen.is_breathing(), "le halo de l'entrée mise en avant respire")
+	screen.reduce_motion = true
+	assert_false(screen.is_breathing(), "« Réduire les animations » l'arrête")
+
+
+func test_left_handed_cards_come_from_the_left() -> void:
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.NONE))
+	screen.set_left_handed(true)
+	await wait_process_frames(2)
+	screen.speed_scale = 1.0
+	var card := screen.get_entry_button(&"new_game")
+	var rest_x := card.position.x
+	var clock := TweenClock.new(get_tree())
+	screen.prepare_entrance()
+	screen.play_entrance()
+	clock.step(UiTokens.ANIM_PANEL * 1.25)
+	assert_lt(card.position.x, rest_x, "elle vient du bord gauche")
+	clock.release()
+	screen.reduce_motion = true
+
+
+func test_entrance_is_immediate_with_reduced_motion_or_no_duration() -> void:
+	for reduced: bool in [true, false]:
+		var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID))
+		# reduced : durées réelles mais « Réduire les animations » ; sinon durées nulles (tests).
+		screen.speed_scale = 1.0 if reduced else 0.0
+		screen.reduce_motion = reduced
+		assert_false(screen.plays_entrance())
+		screen.prepare_entrance()
+		assert_eq(screen.get_logo().modulate.a, 1.0, "rien n'est effacé")
+		screen.play_entrance()
+		assert_false(screen.is_entering())
+		assert_false(screen.is_breathing())
+		for entry: StringName in screen.get_entries():
+			assert_eq(screen.get_entry_button(entry).modulate.a, 1.0)

@@ -1,8 +1,9 @@
 class_name BattleHud
 extends CanvasLayer
 ## Interface de combat assemblée (jalon 4B, combat-v1 et combat-capacites-v1) : les deux
-## cartes d'information, les pastilles d'équipe, et en bas à droite UNE seule zone à la fois
-## (grille d'actions, OU capacités avec « ‹ », OU bandeau des messages).
+## cartes d'information, les pastilles d'équipe (celles du joueur, et celles du Dresseur adverse
+## sous sa carte), et en bas à droite UNE seule zone à la fois (grille d'actions, OU capacités
+## avec « ‹ », OU bandeau des messages).
 ##
 ## Elle est pilotée de l'extérieur et ne connaît que des vues (BattleCardView,
 ## BattleMoveView), des entiers et des chaînes : ni le moteur, ni les données, ni le monde.
@@ -67,11 +68,14 @@ var _enabled: Dictionary[StringName, bool] = {}
 ## Interrupteur AUTO (mode auto) : créé ici, caché tant que [method offer_auto] ne l'offre pas.
 var _auto: Button
 var _auto_offered: bool = false
+## Pastilles adverses offertes (combat de Dresseur) : elles suivent alors la carte adverse.
+var _foe_pips_offered: bool = false
 
 @onready var _screen: Control = %Screen
 @onready var _foe_card: BattleInfoCard = %FoeCard
 @onready var _own_card: BattleInfoCard = %OwnCard
 @onready var _pips: PartyPips = %PartyPips
+@onready var _foe_pips: PartyPips = %FoePips
 @onready var _actions: ActionGrid = %ActionGrid
 @onready var _moves: MoveGrid = %MoveGrid
 @onready var _back: BattleBackButton = %BackButton
@@ -84,6 +88,7 @@ func _ready() -> void:
 		_foe_card: BattleHudLayout.Slot.FOE_CARD,
 		_own_card: BattleHudLayout.Slot.OWN_CARD,
 		_pips: BattleHudLayout.Slot.PARTY_PIPS,
+		_foe_pips: BattleHudLayout.Slot.FOE_PIPS,
 		_banner: BattleHudLayout.Slot.MESSAGE,
 		_actions: BattleHudLayout.Slot.ACTIONS,
 		_moves: BattleHudLayout.Slot.MOVES,
@@ -95,6 +100,9 @@ func _ready() -> void:
 	# Chaque carte entre par son bord d'écran le plus proche.
 	_foe_card.slide_direction = Vector2.LEFT
 	_own_card.slide_direction = Vector2.RIGHT
+	_foe_pips.slide_direction = Vector2.LEFT
+	# Puces de crans : sur la bande des pastilles de chaque carte.
+	_own_card.chips_above = true
 	_actions.action_selected.connect(action_selected.emit)
 	_moves.move_selected.connect(move_selected.emit)
 	_back.back_requested.connect(_on_back)
@@ -103,7 +111,7 @@ func _ready() -> void:
 
 
 ## Remplit la carte de [param side] avec [param view] ; elle glisse en place si elle était
-## cachée (avec les pastilles d'équipe pour le joueur). Vue invalide : erreur, rien ne change.
+## cachée (avec les pastilles d'équipe de son camp). Vue invalide : erreur, rien ne change.
 func set_card(side: BattleHud.Side, view: BattleCardView) -> void:
 	if view == null or not view.is_valid():
 		push_error("BattleHud : vue de carte invalide")
@@ -113,13 +121,17 @@ func set_card(side: BattleHud.Side, view: BattleCardView) -> void:
 	card.slide_in()
 	if side == Side.PLAYER:
 		_pips.slide_in()
+	elif _foe_pips_offered:
+		_foe_pips.slide_in()
 
 
-## Fait sortir la carte de [param side] (K.O.) ; celle du joueur emporte les pastilles.
+## Fait sortir la carte de [param side] (K.O.) ; elle emporte les pastilles de son camp.
 func hide_card(side: BattleHud.Side) -> void:
 	get_card(side).slide_out()
 	if side == Side.PLAYER:
 		_pips.slide_out()
+	else:
+		_foe_pips.slide_out()
 
 
 ## Coroutine : PV de [param side] animés jusqu'à [param hp] / [param max_hp], plus vite si
@@ -167,9 +179,35 @@ func set_status(side: BattleHud.Side, status: StringName) -> void:
 	get_card(side).set_status(status)
 
 
+## Pose sur la carte de [param side] la puce du cran de [param stat] : [param label] (« ATT ») et
+## [param stage] (cran d'après ; 0 la retire).
+func set_stat_stage(side: BattleHud.Side, stat: StringName, label: String, stage: int) -> void:
+	get_card(side).set_stat_stage(stat, label, stage)
+
+
+## Retire les puces de crans de la carte de [param side] (nouveau Pokémon, Buée Noire).
+func clear_stat_stages(side: BattleHud.Side) -> void:
+	get_card(side).clear_stat_stages()
+
+
 ## [param count] Pokémon dans l'équipe du joueur (pastilles pleines, le reste gris).
 func set_party(count: int) -> void:
 	_pips.set_party(count)
+
+
+## État de chaque Pokémon de l'équipe de [param side], dans l'ordre de l'équipe (en forme, sous
+## statut, K.O.). Adversaire : une liste vide retire ses pastilles (Pokémon sauvage) ; sinon
+## elles accompagnent sa carte, juste en dessous (combat de Dresseur).
+func set_party_states(side: BattleHud.Side, states: Array[PartyPips.State]) -> void:
+	if side == Side.PLAYER:
+		_pips.set_states(states)
+		return
+	_foe_pips.set_states(states)
+	_foe_pips_offered = not states.is_empty()
+	if not _foe_pips_offered:
+		_foe_pips.slide_out()
+	elif _foe_card.is_shown():
+		_foe_pips.slide_in()
 
 
 ## Mode auto : offre (ou retire) l'interrupteur AUTO pour ce combat, remis sur « désactivé ».
@@ -212,9 +250,9 @@ func set_action_labels(labels: Dictionary[StringName, String]) -> void:
 
 
 ## Montre les capacités [param views] (4 au plus) et « ‹ », après la sortie de la zone
-## affichée.
-func show_moves(views: Array[BattleMoveView]) -> void:
-	_open_moves(views.duplicate())
+## affichée. [param hint] : consigne écrite sous les cartes ("" : aucune).
+func show_moves(views: Array[BattleMoveView], hint: String = "") -> void:
+	_open_moves(views.duplicate(), hint)
 
 
 ## Coroutine : affiche [param text] dans le bandeau (après la sortie de la zone affichée) et
@@ -271,6 +309,11 @@ func get_party_pips() -> PartyPips:
 	return _pips
 
 
+## Pastilles de l'équipe adverse (affichées en combat de Dresseur seulement).
+func get_foe_pips() -> PartyPips:
+	return _foe_pips
+
+
 func get_action_grid() -> ActionGrid:
 	return _actions
 
@@ -298,9 +341,10 @@ func _open_actions() -> void:
 	_actions.show_actions(_enabled)
 
 
-func _open_moves(views: Array[BattleMoveView]) -> void:
+func _open_moves(views: Array[BattleMoveView], hint: String = "") -> void:
 	if not await _switch(Zone.MOVES):
 		return
+	_moves.set_hint(hint)
 	_moves.show_moves(views)
 	_back.slide_in()
 
@@ -391,7 +435,7 @@ func _on_back() -> void:
 
 
 func _widgets() -> Array[BattleWidget]:
-	return [_foe_card, _own_card, _pips, _actions, _moves, _back, _banner]
+	return [_foe_card, _own_card, _pips, _foe_pips, _actions, _moves, _back, _banner]
 
 
 func _relay_settings() -> void:

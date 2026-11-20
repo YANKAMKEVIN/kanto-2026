@@ -73,7 +73,8 @@
 		"summary_exp": { "text": "+{exp} XP" },
 		"summary_level": { "text": "Nv. {level}" },
 		"summary_stat": { "text": "{stat} +{amount}" },
-		"summary_continue": { "text": "Touchez l'écran pour continuer" },
+		"summary_continue": { "text": "Touche l'écran pour continuer" },
+		"move_sheet_hint": { "text": "Maintiens une capacité pour voir sa fiche", "draft": true },
 		"status_inflicted_poison": {
 			"text": "{pokemon} est empoisonné !",
 			"text_f": "{pokemon} est empoisonnée !"
@@ -276,5 +277,9 @@
 	"stat_labels": {
 		"hp": "PV", "atk": "Attaque", "def": "Défense", "spa": "Atq. Spé.", "spd": "Déf. Spé.",
 		"spe": "Vitesse"
+	},
+	"stage_labels": {
+		"atk": "ATT", "def": "DÉF", "spa": "ATQ. SPÉ", "spd": "DÉF. SPÉ", "spe": "VIT",
+		"acc": "PRÉC", "eva": "ESQ"
 	}
 }

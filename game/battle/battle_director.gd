@@ -162,6 +162,10 @@ var _summary: ExpSummary = ExpSummary.new()
 ## JOH0 (lien, `jalon-joh0.md` §2.7) : places de l'équipe tombées K.O. pendant le combat (une
 ## entrée par K.O.), lues par Boot à la fin ([method get_fainted_indices]).
 var _fainted_indices: Array[int] = []
+## État des pastilles d'équipe des deux camps, tenu au fil des événements joués.
+var _pips := PartyPipTracker.new()
+## Consigne « Maintiens une capacité pour voir sa fiche » : ce que le joueur en a déjà vu.
+var _move_sheet_hint := MoveSheetHint.new()
 ## JOH0 (Exp ×1,5 de l'acte 1, §2.10) : `func() -> float`, multiplié aux règles du combat à la
 ## création du moteur. Non valide : 1,0.
 var exp_bonus_source: Callable
@@ -194,6 +198,9 @@ func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage
 	_state = state
 	if is_instance_valid(_hud) and not _hud.auto_toggled.is_connected(_on_auto_toggled):
 		_hud.auto_toggled.connect(_on_auto_toggled)
+	if is_instance_valid(_hud) \
+			and not _hud.get_move_grid().details_opened.is_connected(_on_move_details_opened):
+		_hud.get_move_grid().details_opened.connect(_on_move_details_opened)
 	get_move_learn_prompt().setup(data, texts)
 
 
@@ -349,8 +356,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 				await _play_vs(intro)
 	elif reveal:
 		await _play_reveal(foe_species)
-	if is_instance_valid(_hud):
-		_hud.set_party(party.size())
+	_pips.reset(party, null if wild else request.foe_party)
+	_sync_pips()
 	# Déroulé du moteur : présentation des camps, puis la boucle de tours. Entrée de Dresseur :
 	# messages de l'ouverture tenus moins longtemps, sous les gestes des dresseurs.
 	var hold_scale := _hud.message_hold_scale if is_instance_valid(_hud) else 1.0
@@ -599,7 +606,8 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		if usable.is_empty():
 			return BattleAction.move(BattleAction.STRUGGLE)
 		_hud.show_moves(BattleViews.player_moves(_battle, _data, _texts,
-			CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_MOVE_HINT) > 0.0))
+			CostumeCatalog.worn_effect(_state, CostumeCatalog.EFFECT_MOVE_HINT) > 0.0),
+			_take_move_sheet_hint())
 		var index := await _await_move_or_back()
 		if index < 0:
 			continue
@@ -730,12 +738,20 @@ func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 		if event.kind == BattleEvent.Kind.FAINTED and event.side == BattleEvent.SideId.PLAYER \
 				and event.party_index >= 0:
 			_fainted_indices.append(event.party_index)
+		if event.kind == BattleEvent.Kind.STATS_RESET and is_instance_valid(_hud):
+			# Buée Noire : les crans des deux Pokémon reviennent à zéro, leurs puces partent.
+			_hud.clear_stat_stages(BattleHud.Side.PLAYER)
+			_hud.clear_stat_stages(BattleHud.Side.FOE)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
 			# « X apprend Y ! » (juste après le K.O. adverse) attend un toucher.
 			beat.wait_touch = event.kind == BattleEvent.Kind.MOVE_LEARNED
 			if beat.kind == BattleBeat.Kind.MOVE:
 				beat.fx_plan = _move_fx_plan(events, index)
 			await _play_beat(beat)
+			# Pastilles d'équipe : dès le geste (chute, étiquette), sans attendre la phrase.
+			if beat.kind != BattleBeat.Kind.MESSAGE:
+				_track_pips(event)
+		_track_pips(event)
 		_log_progress(event)
 		event_played.emit(event)
 	if is_instance_valid(_stage):
@@ -824,7 +840,9 @@ func _play_beat(beat: BattleBeat) -> void:
 					_stage.show_pokemon(beat.side, beat.event.species_id)
 				_stage.set_status(beat.side, beat.event.status)
 			if is_instance_valid(_hud):
-				_hud.set_card(side, BattleViews.card(beat.event))
+				# Un Pokémon qui entre n'a aucun cran : les puces du précédent s'en vont.
+				_hud.clear_stat_stages(side)
+				_hud.set_card(side, _card_view(beat.event))
 			# Il est entièrement là avant la suite (l'attaque adverse après un changement).
 			if is_instance_valid(_stage):
 				await _stage.wait_appear(beat.side)
@@ -845,6 +863,10 @@ func _play_beat(beat: BattleBeat) -> void:
 		BattleBeat.Kind.STAT:
 			if is_instance_valid(_stage):
 				await _stage.play_stat(beat.side, beat.event.stages > 0)
+			# La carte garde la trace du cran (« ATT ▲2 ») jusqu'au retour à zéro ou au rappel.
+			if is_instance_valid(_hud):
+				_hud.set_stat_stage(side, beat.event.stat, BattleViews.stage_label(
+					beat.event.stat, _texts), beat.event.stage)
 		BattleBeat.Kind.FAINT:
 			if is_instance_valid(_stage):
 				await _stage.play_faint(beat.side)
@@ -908,7 +930,7 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_stage):
 				await _stage.play_break_free()
 			if is_instance_valid(_hud):
-				_hud.set_card(BattleHud.Side.FOE, BattleViews.card(beat.event))
+				_hud.set_card(BattleHud.Side.FOE, _card_view(beat.event))
 				_show_own_card()
 
 
@@ -1182,6 +1204,50 @@ func _find_player_pokemon(event: BattleEvent) -> Pokemon:
 	return party.get_at(event.party_index) if party != null else null
 
 
+## La consigne de la fiche d'une capacité (Boot y branche le fichier de l'appareil).
+func get_move_sheet_hint() -> MoveSheetHint:
+	return _move_sheet_hint
+
+
+## Consigne de la fiche d'une capacité, écrite sous les cartes aux premiers choix
+## ([MoveSheetHint]) ; "" quand elle n'est plus due. La demander la compte comme affichée.
+func _take_move_sheet_hint() -> String:
+	if _texts == null or not _move_sheet_hint.is_due():
+		return ""
+	_move_sheet_hint.record_shown()
+	return _texts.get_template(&"move_sheet_hint")
+
+
+## Une fiche de capacité vient d'être ouverte : la consigne ne reviendra plus.
+func _on_move_details_opened(_index: int) -> void:
+	_move_sheet_hint.record_opened()
+
+
+## Carte d'information du Pokémon de [param event]. Un Pokémon sauvage d'une espèce déjà
+## capturée porte la Poké Ball du Pokédex (jamais un Pokémon de Dresseur ni le SPECTRE).
+func _card_view(event: BattleEvent) -> BattleCardView:
+	var view := BattleViews.card(event)
+	if event.side == BattleEvent.SideId.FOE and _wild_foe != null and not event.disguised \
+			and _state != null:
+		view.caught = BattleViews.already_caught(event.species_id,
+			_state.get(&"pokedex") as Pokedex, _state.get(&"flags") as StoryFlags)
+	return view
+
+
+## Pastilles d'équipe : [param event] vient d'être joué ; elles changent s'il le raconte.
+func _track_pips(event: BattleEvent) -> void:
+	if _pips.apply(event):
+		_sync_pips()
+
+
+## Pose l'état des pastilles des deux camps sur la HUD.
+func _sync_pips() -> void:
+	if not is_instance_valid(_hud):
+		return
+	_hud.set_party_states(BattleHud.Side.PLAYER, _pips.states(BattleEvent.SideId.PLAYER))
+	_hud.set_party_states(BattleHud.Side.FOE, _pips.states(BattleEvent.SideId.FOE))
+
+
 ## Le Pokémon de [param event] est celui qui a sa carte (le Pokémon du joueur en jeu).
 func _is_in_play(event: BattleEvent) -> bool:
 	if _battle == null or _battle.get_player_side().active == null:
@@ -1421,6 +1487,9 @@ func _run_safari(request: BattleRequest, map: GameMap, foe: Pokemon) -> int:
 	_running = true
 	_summary = ExpSummary.new()
 	_wild_foe = foe
+	# Ni équipe du joueur ni équipe adverse : aucune pastille (pas celles du combat d'avant).
+	_pips.reset(null, null)
+	_sync_pips()
 	_map_id = map.map_id if is_instance_valid(map) else &""
 	_trainer_id = &""
 	_safari = SafariBattle.new(foe, _data, request.safari_visit, request.safari_ball_bonus,

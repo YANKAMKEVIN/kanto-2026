@@ -155,6 +155,41 @@ func test_summary_tolerates_broken_fields() -> void:
 	assert_eq(summary.caught_count, 0)
 
 
+# --- Équipe de la carte Continuer ------------------------------------------------------------
+
+const _DEX: Dictionary[StringName, int] = {&"charmander": 4, &"pidgey": 16, &"rattata": 19}
+
+
+func _dex_of(species: StringName) -> int:
+	return _DEX.get(species, 0)
+
+
+func test_summary_reads_the_party_in_order_without_eggs_nor_unknown_species() -> void:
+	var save := {"party": [
+		{"species": "pidgey", "level": 7},
+		{"species": "rattata", "level": 3, "egg_steps": 1200},
+		{"species": "charmander", "level": 9},
+		{"species": "missingno", "level": 1},
+		"pas un Pokémon",
+	]}
+	var summary := SaveSummary.from_save(save, Callable(), [] as Array[StringName], "Kevin",
+		[] as Array[StringName], _dex_of)
+	assert_eq(summary.party_dex, [16, 4] as Array[int],
+		"ordre de l'équipe ; œuf et espèce inconnue omis")
+	assert_eq(_summary_of(save).party_dex, [] as Array[int], "sans traducteur : aucune vignette")
+	assert_eq(SaveSummary.from_save({"party": "cassé"}, Callable(), [] as Array[StringName], "",
+		[] as Array[StringName], _dex_of).party_dex, [] as Array[int], "champ mal formé")
+
+
+func test_summary_party_is_capped_at_six() -> void:
+	var members: Array = []
+	for i: int in 8:
+		members.append({"species": "pidgey"})
+	var summary := SaveSummary.from_save({"party": members}, Callable(),
+		[] as Array[StringName], "", [] as Array[StringName], _dex_of)
+	assert_eq(summary.party_dex.size(), Party.MAX_SIZE)
+
+
 func test_summary_without_zone_callable() -> void:
 	var summary := SaveSummary.from_save(_state_dict())
 	assert_eq(summary.zone_name, "")

@@ -194,5 +194,88 @@ func test_the_send_off_fades_to_warm_white_on_time() -> void:
 		clock.release()
 
 
+# --- Carte « Nouveautés » (premier lancement après une mise à jour) ---------------------------
+
+const NOTES_PATH := "user://test_director_whats_new.json"
+
+
+func after_each() -> void:
+	if FileAccess.file_exists(NOTES_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(NOTES_PATH))
+
+
+## Lance le titre avec un fichier des nouveautés pour la version « 9.9.9 » (celle du build simulé).
+func _start_with_notes(store: WhatsNewStore) -> void:
+	var file := FileAccess.open(NOTES_PATH, FileAccess.WRITE)
+	file.store_string(JSON.stringify({"version": "9.9.9", "title": "Nouveautés de la {version}",
+		"hint": "Touche la carte pour la fermer", "lines": ["Une chose.", "Une autre."]}))
+	file.close()
+	_director = OpeningDirector.new()
+	_director.speed_scale = 0.0
+	_director.whats_new_store = store
+	_director.whats_new_path = NOTES_PATH
+	_director.whats_new_version = "9.9.9"
+	add_child_autofree(_director)
+	_director.setup(SaveSystem.new(_fs, SAVE_PATH), _build, null, GameSettings.new(),
+		GameSettings.Graphics.HIGH, Callable(), [] as Array[StringName])
+	_director.run()
+	await wait_process_frames(3)
+
+
+func test_whats_new_shows_once_after_an_update() -> void:
+	SaveSystem.new(_fs, SAVE_PATH).write({"player_name": "Sacha", "map": "route_1"})
+	var store := WhatsNewStore.new(_fs, "user://test_director_seen.json")
+	store.save_seen("9.9.8")
+	await _start_with_notes(store)
+	var screen := _director.get_screen()
+	assert_true(_director.was_whats_new_shown())
+	assert_true(screen.is_whats_new_open(), "carte montrée une fois le titre découvert")
+	assert_eq(screen.get_whats_new_texts(), PackedStringArray(["NOUVEAUTÉS DE LA 9.9.9",
+		"Une chose.", "Une autre.", "Touche la carte pour la fermer"]))
+	assert_eq(store.load_seen(), "9.9.8", "pas encore vue : elle n'est pas refermée")
+	screen.get_whats_new_card().pressed.emit()
+	assert_false(screen.is_whats_new_open(), "un toucher la referme")
+	assert_eq(store.load_seen(), "9.9.9", "la version est notée comme vue")
+	_director.queue_free()
+	await wait_process_frames(2)
+	await _start_with_notes(store)
+	assert_false(_director.was_whats_new_shown(), "lancement suivant : plus de carte")
+	assert_null(_director.get_screen().get_whats_new_card())
+
+
+func test_whats_new_is_seen_when_the_title_is_left_with_the_card_open() -> void:
+	SaveSystem.new(_fs, SAVE_PATH).write({"player_name": "Sacha", "map": "route_1"})
+	var store := WhatsNewStore.new(_fs, "user://test_director_seen.json")
+	await _start_with_notes(store)
+	assert_true(_director.get_screen().is_whats_new_open())
+	_director.choose(TitleMenuModel.ENTRY_CONTINUE)
+	await _finish()
+	assert_eq(store.load_seen(), "9.9.9")
+
+
+func test_whats_new_closes_with_the_back_button() -> void:
+	SaveSystem.new(_fs, SAVE_PATH).write({"player_name": "Sacha", "map": "route_1"})
+	var store := WhatsNewStore.new(_fs, "user://test_director_seen.json")
+	await _start_with_notes(store)
+	assert_true(_director.handle_back())
+	assert_false(_director.get_screen().is_whats_new_open())
+	assert_eq(store.load_seen(), "9.9.9")
+
+
+func test_a_first_install_shows_nothing_and_notes_the_version() -> void:
+	var store := WhatsNewStore.new(_fs, "user://test_director_seen.json")
+	await _start_with_notes(store)
+	assert_false(_director.was_whats_new_shown(), "aucune partie : rien n'est nouveau")
+	assert_null(_director.get_screen().get_whats_new_card())
+	assert_eq(store.load_seen(), "9.9.9", "la prochaine mise à jour montrera sa carte")
+
+
+func test_without_a_store_there_is_no_card() -> void:
+	SaveSystem.new(_fs, SAVE_PATH).write({"player_name": "Sacha", "map": "route_1"})
+	await _start_with_notes(null)
+	assert_false(_director.was_whats_new_shown())
+	assert_null(_director.get_screen().get_whats_new_card())
+
+
 func _steps(seconds: float) -> int:
 	return int(ceil(seconds / TweenClock.STEP - 0.001))

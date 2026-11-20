@@ -138,6 +138,32 @@ func test_zone_names_match_the_map_titles() -> void:
 			"titre de « %s » = nom de sa zone" % map_id)
 
 
+# --- Sous-titre à la première découverte d'une zone (bible UI/UX §5) --------------------------
+
+func test_first_visit_subtitle_until_a_map_of_the_zone_is_known() -> void:
+	_zones.load_file()
+	var discovered: Dictionary[StringName, String] = {&"pallet_town": "2026-11-19"}
+	assert_eq(_zones.first_visit_subtitle(&"route_1", discovered), "Bourg Palette — Jadielle",
+		"première arrivée sur la Route 1")
+	discovered[&"route_1"] = "2026-11-19"
+	assert_eq(_zones.first_visit_subtitle(&"route_1", discovered), "", "déjà visitée")
+
+
+func test_first_visit_subtitle_is_per_zone_not_per_map() -> void:
+	assert_true(_zones.add_from_dict({"zones": {
+		"cave": {"name": "Grotte", "kind": "place", "maps": ["cave_1f", "cave_b1f"],
+			"subtitle": "Route A — Route B"},
+		"plain": {"name": "Plaine", "kind": "route", "maps": ["plain"]},
+	}}, "test"))
+	var discovered: Dictionary[StringName, String] = {}
+	assert_eq(_zones.first_visit_subtitle(&"cave_1f", discovered), "Route A — Route B")
+	discovered[&"cave_1f"] = "2026-11-19"
+	assert_eq(_zones.first_visit_subtitle(&"cave_b1f", discovered), "",
+		"un autre étage de la même zone : plus de sous-titre")
+	assert_eq(_zones.first_visit_subtitle(&"plain", discovered), "", "zone sans sous-titre")
+	assert_eq(_zones.first_visit_subtitle(&"nowhere", discovered), "", "carte sans zone")
+
+
 func test_first_zones_of_the_journey() -> void:
 	_zones.load_file()
 	var expected := {

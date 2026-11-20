@@ -33,6 +33,10 @@ layout_mode = 1
 unique_name_in_owner = true
 layout_mode = 1
 
+[node name="FoePips" parent="Screen" instance=ExtResource("3_pips")]
+unique_name_in_owner = true
+layout_mode = 1
+
 [node name="MessageBanner" parent="Screen" instance=ExtResource("4_banner")]
 unique_name_in_owner = true
 layout_mode = 1

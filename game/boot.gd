@@ -97,6 +97,12 @@ var force_debug_unlocks: bool = false
 ## **seulement s'il est la scène principale lancée par le moteur** (même garde que la
 ## sauvegarde) ; sinon réglages par défaut et rien d'écrit.
 var settings_store: SettingsStore = null
+## Consignes déjà montrées au joueur ([HintStore], `user://hints.json`) ; null : rien n'est lu ni
+## écrit (tests, outils). Créé en jeu réel seulement, comme le fichier des réglages.
+var hint_store: HintStore = null
+## Dernière version dont les nouveautés ont été vues (carte « Nouveautés » du titre) ; null :
+## aucune carte (tests, outils). Créé avec le fichier des réglages, en jeu réel seulement.
+var whats_new_store: WhatsNewStore = null
 ## Appareil pour « Auto » ([method GraphicsProfile.current_device]) ; vide : l'appareil réel
 ## (tests : injecter une description).
 var device: Dictionary = {}
@@ -390,6 +396,11 @@ func _ready() -> void:
 	MenuArt.set_tm_types(_items.tm_types(_pokemon))
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
+	# Consignes déjà vues (pression longue sur une capacité) : fichier de l'appareil, en jeu réel
+	# seulement (même garde que le fichier des réglages).
+	if hint_store == null and get_tree().current_scene == self:
+		hint_store = HintStore.new()
+	_battle_director.get_move_sheet_hint().attach(hint_store)
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
 	_battle_stage.set_species_source(_pokemon, _dex)
 	_cutscenes_node.set_battle_runner(_battle_director)
@@ -1212,6 +1223,13 @@ func _start_game_state() -> bool:
 	return true
 
 
+## Numéro de Pokédex de [param species] (0 si l'espèce est inconnue) : vignettes de l'équipe sur
+## la carte Continuer du titre.
+func _dex_number_of(species: StringName) -> int:
+	var data := _pokemon.get_species(species)
+	return data.dex if data != null else 0
+
+
 ## L'ouverture (OUV.1) : Bourg Palette en mode décor sous le titre, le directeur lit la sauvegarde
 ## et montre le titre. Le HUD d'exploration est caché jusqu'au démarrage de la partie.
 func _start_opening() -> void:
@@ -1234,8 +1252,12 @@ func _start_opening() -> void:
 	for badge: StringName in _badges.ids():
 		badge_flags.append(_badges.flag(badge))
 	_opening.setup(save_system, _build_new_game, _fade, _settings, _profile_device_quality(),
-		_zones.zone_name_of, badge_flags, _badges.ids())
+		_zones.zone_name_of, badge_flags, _badges.ids(), _dex_number_of)
 	_opening.set_dialogue_box(_dialogue_box)
+	# Carte « Nouveautés » : seulement en jeu réel (même garde que le fichier des réglages).
+	if whats_new_store == null and settings_store != null and get_tree().current_scene == self:
+		whats_new_store = WhatsNewStore.new()
+	_opening.whats_new_store = whats_new_store
 	_opening.title_closed.connect(_release_title_backdrop)
 	_opening.intro_opened.connect(_show_intro_backdrop)
 	_opening.intro_closed.connect(_release_title_backdrop)
@@ -1698,10 +1720,18 @@ func get_darkness() -> DarknessController:
 
 ## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
 ## Toute première sortie de la maison (OUV.3) : la légende remplace la région, déduite des
-## cartes découvertes **avant** de marquer celle-ci.
+## cartes découvertes **avant** de marquer celle-ci. Première découverte d'une zone (bible UI/UX
+## §5) : son sous-titre de `zones.json` remplace la région, et le titre tient plus longtemps ;
+## la légende d'une première sortie garde la priorité.
 func _on_map_entered(map: GameMap) -> void:
 	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
 		map.region)
+	var title_hold := 1.0
+	if not _first_exit.is_first_exit(map.map_id, _arrival_from, GameState.discovered_maps):
+		var discovery := _zones.first_visit_subtitle(map.map_id, GameState.discovered_maps)
+		if not discovery.is_empty():
+			region = discovery
+			title_hold = UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE
 	var from := _arrival_from
 	_arrival_from = &""
 	_active_puzzles.clear()
@@ -1715,7 +1745,7 @@ func _on_map_entered(map: GameMap) -> void:
 	request_autosave("changement de carte")
 	var indoors := map.interior and not _zones.interior_title_of(map.map_id)
 	if _announcer.should_announce(map.display_name, indoors):
-		_hud.show_zone_title(map.display_name, region)
+		_hud.show_zone_title(map.display_name, region, title_hold)
 		zone_announced.emit(map.display_name, region)
 		if not map.interior:
 			_audio_bridge.on_zone_announced(map.map_id)
@@ -2398,12 +2428,16 @@ func _queue_dex_toast(species: StringName, kind: PokedexUpdates.Kind) -> void:
 		_dex_toasts.append([species, message])
 
 
-## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran.
+## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran. Il porte la
+## vignette peinte de l'espèce (une espèce nommée par un toast est déjà vue : rien n'est révélé).
 func _show_next_dex_toast() -> void:
 	if _menu.is_open() or not is_stable() or _hud.get_toast().is_showing():
 		return
-	var message: PackedStringArray = _dex_toasts.pop_front()[1]
-	_hud.show_toast(message[0], message[1])
+	var entry: Array = _dex_toasts.pop_front()
+	var message: PackedStringArray = entry[1]
+	var species := _pokemon.get_species(entry[0])
+	_hud.show_toast(message[0], message[1],
+		MenuArt.pokemon_thumbnail(species.dex) if species != null else null)
 
 
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors

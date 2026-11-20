@@ -2,6 +2,8 @@ class_name BattleInfoCard
 extends BattleWidget
 ## Carte d'information de combat (combat-v1) : NOM en MAJUSCULES, ♂/♀ coloré, « Nv. 5 » à
 ## droite, barre de PV, et « 19 / 19 » sous la barre, à droite, côté joueur seulement.
+## Pokémon sauvage d'une espèce déjà capturée : une petite Poké Ball entre le nom et le sexe
+## ([member BattleCardView.caught]).
 ##
 ## Carte sombre translucide comme la boîte de dialogue (jalon 4 Q17), largeur
 ## BATTLE_CARD_WIDTH, hauteur BATTLE_CARD_HEIGHT (sans chiffres) ou BATTLE_CARD_HEIGHT_NUMBERS.
@@ -13,6 +15,12 @@ extends BattleWidget
 ## (EXP_GAIN_HOLD) au-dessus de la carte. La barre disparaît ensuite (EXP_BAR_LINGER puis
 ## EXP_BAR_FADE), sauf si une autre tranche la reprend entre-temps : jamais permanente
 ## (bible §11). pulse_level met « Nv. » à jour et le fait pulser ; aucune fenêtre (Q25).
+##
+## Crans de statistiques : set_stat_stage pose une puce « ATT ▲2 » ([StatStageChip]) hors du cadre,
+## sur la bande des pastilles d'équipe (au-dessus de la carte du joueur, sous celle de
+## l'adversaire : [member chips_above]), alignée au bord droit de la carte ; un cran revenu à zéro
+## la retire. Elles suivent la carte (glissement, fondu) et repartent de rien à chaque Pokémon
+## envoyé (clear_stat_stages, appelé par celui qui pilote).
 ##
 ## Noms longs (QA 23E) : le nom n'est jamais rogné ; s'il ne tient pas dans la largeur de la
 ## carte, la pastille de statut perd son icône (le statut reste un texte, dossier 08 §2), puis
@@ -26,10 +34,18 @@ const GENDER_ICONS: Dictionary[BattleCardView.Gender, Texture2D] = {
 	BattleCardView.Gender.MALE: preload("res://assets/ui/icons/battle/male.svg"),
 	BattleCardView.Gender.FEMALE: preload("res://assets/ui/icons/battle/female.svg"),
 }
+const CAUGHT_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const GENDER_COLORS: Dictionary[BattleCardView.Gender, Color] = {
 	BattleCardView.Gender.MALE: UiTokens.GENDER_MALE,
 	BattleCardView.Gender.FEMALE: UiTokens.GENDER_FEMALE,
 }
+
+## Les puces de crans se posent au-dessus de la carte (carte du joueur) ou en dessous (carte
+## adverse, par défaut).
+var chips_above: bool = false:
+	set(value):
+		chips_above = value
+		_place_chips()
 
 var _gender: BattleCardView.Gender = BattleCardView.Gender.NONE
 var _level: int = 1
@@ -43,6 +59,12 @@ var _exp_rise: Tween
 ## Change à chaque animate_exp : une tranche dépassée par une plus récente ne cache pas la barre.
 var _exp_serial: int = 0
 var _level_pulse: Tween
+## Rangée des puces de crans (créée ici, enfant de l'Overlay) et puce de chaque statistique.
+var _chips: HFlowContainer
+## Poké Ball « espèce déjà capturée », créée ici, à droite du nom.
+var _caught_icon: TextureRect
+var _caught: bool = false
+var _stage_chips: Dictionary[StringName, StatStageChip] = {}
 
 @onready var _rows: VBoxContainer = %Rows
 @onready var _header: HBoxContainer = %Header
@@ -63,12 +85,24 @@ func _ready() -> void:
 	_rows.add_theme_constant_override(&"separation", UiTokens.BATTLE_CARD_ROW_GAP)
 	_header.add_theme_constant_override(&"separation", UiTokens.BATTLE_CARD_NAME_GAP)
 	_gender_icon.custom_minimum_size = Vector2.ONE * UiTokens.GENDER_ICON
+	_caught_icon = TextureRect.new()
+	_caught_icon.name = &"Caught"
+	_caught_icon.texture = CAUGHT_ICON
+	_caught_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_caught_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_caught_icon.custom_minimum_size = Vector2.ONE * UiTokens.BATTLE_CARD_CAUGHT_ICON
+	_caught_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_caught_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_caught_icon.visible = false
+	_header.add_child(_caught_icon)
+	_header.move_child(_caught_icon, _name_label.get_index() + 1)
 	_level_tag.text = LEVEL_TAG
 	_bar.display_changed.connect(_on_hp_shown)
 	_level_value.pivot_offset_ratio = Vector2(0.5, 0.5)
 	# La barre d'XP descend dans la marge basse de la carte : elle ne touche pas « 19 / 19 ».
 	_exp_bar.offset_bottom = UiTokens.EXP_BAR_DROP
 	_exp_bar.offset_top = UiTokens.EXP_BAR_DROP - UiTokens.EXP_BAR_HEIGHT
+	_build_chips()
 	_apply_numbers()
 
 
@@ -83,6 +117,8 @@ func set_view(view: BattleCardView) -> void:
 	_gender_icon.texture = GENDER_ICONS.get(_gender, null)
 	_gender_icon.modulate = GENDER_COLORS.get(_gender, UiTokens.TEXT)
 	_gender_icon.visible = _gender_icon.texture != null
+	_caught = view.caught
+	_caught_icon.visible = _caught
 	_level = view.level
 	_level_value.text = GhostDisguise.HIDDEN_LEVEL_TEXT if view.level_hidden \
 		else str(view.level)
@@ -102,6 +138,54 @@ func set_status(status: StringName) -> void:
 	if not label.is_empty():
 		_status_badge.set_type(StatusView.badge_type(status), label)
 	_fit_name()
+
+
+## Pose la puce de [param stat] : [param label] (« ATT ») et [param stage] (cran d'après, de −6 à
+## +6). Un cran à zéro retire la puce. Aucune animation : elle accompagne la phrase du combat.
+func set_stat_stage(stat: StringName, label: String, stage: int) -> void:
+	var chip: StatStageChip = _stage_chips.get(stat)
+	if stage == 0:
+		if chip != null:
+			_stage_chips.erase(stat)
+			_chips.remove_child(chip)
+			chip.queue_free()
+		_place_chips()
+		return
+	if chip == null:
+		chip = StatStageChip.new()
+		_stage_chips[stat] = chip
+		_chips.add_child(chip)
+	chip.set_stage(label, stage)
+	_place_chips()
+
+
+## Retire toutes les puces (Pokémon rappelé ou remplacé, Buée Noire).
+func clear_stat_stages() -> void:
+	for chip: StatStageChip in _stage_chips.values():
+		_chips.remove_child(chip)
+		chip.queue_free()
+	_stage_chips.clear()
+	_place_chips()
+
+
+## Cran affiché pour [param stat] (0 sans puce).
+func get_stat_stage(stat: StringName) -> int:
+	var chip: StatStageChip = _stage_chips.get(stat)
+	return chip.get_stage() if chip != null else 0
+
+
+## Puce de [param stat] (null sans puce).
+func get_stat_chip(stat: StringName) -> StatStageChip:
+	return _stage_chips.get(stat)
+
+
+func get_stat_chip_count() -> int:
+	return _stage_chips.size()
+
+
+## Rangée des puces (placement, tests).
+func get_stat_chips() -> HFlowContainer:
+	return _chips
 
 
 ## Montre ou cache « 19 / 19 » sous la barre (côté joueur seulement).
@@ -210,6 +294,15 @@ func get_status_badge() -> TypeBadge:
 	return _status_badge
 
 
+## La Poké Ball « espèce déjà capturée » est affichée.
+func is_caught_shown() -> bool:
+	return _caught_icon.visible
+
+
+func get_caught_icon() -> TextureRect:
+	return _caught_icon
+
+
 func get_gender() -> BattleCardView.Gender:
 	return _gender
 
@@ -287,19 +380,62 @@ func _apply_numbers() -> void:
 	var height := UiTokens.BATTLE_CARD_HEIGHT_NUMBERS if _show_numbers \
 		else UiTokens.BATTLE_CARD_HEIGHT
 	_body.custom_minimum_size = Vector2(UiTokens.BATTLE_CARD_WIDTH, height)
+	_place_chips()
+
+
+## La rangée des puces : hors du flux de la carte (enfant de l'Overlay), elle ne change jamais
+## sa taille. Les puces se serrent à droite et passent à la ligne.
+func _build_chips() -> void:
+	_chips = HFlowContainer.new()
+	_chips.name = &"StatChips"
+	_chips.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_chips.alignment = FlowContainer.ALIGNMENT_END
+	_chips.add_theme_constant_override(&"h_separation", UiTokens.STAT_CHIPS_GAP)
+	_chips.add_theme_constant_override(&"v_separation", UiTokens.STAT_CHIPS_GAP)
+	_overlay.add_child(_chips)
+	_chips.minimum_size_changed.connect(_place_chips)
+	_overlay.resized.connect(_place_chips)
+	_place_chips()
+
+
+## Largeur laissée aux puces sur la bande des pastilles : la carte, moins le retrait et la rangée
+## des pastilles, moins une marge.
+static func stat_chips_width() -> float:
+	return float(UiTokens.BATTLE_CARD_WIDTH - UiTokens.PARTY_PIPS_INSET
+		- UiTokens.STAT_CHIPS_MARGIN) - BattleHudLayout.pips_size().x
+
+
+## Pose la rangée contre le bord droit de la carte, au-dessus ou en dessous du cadre (les
+## coordonnées de l'Overlay partent de l'intérieur des marges du cadre).
+func _place_chips() -> void:
+	if _chips == null:
+		return
+	var width := stat_chips_width()
+	_chips.size = Vector2(width, 0.0)
+	var height := _chips.get_combined_minimum_size().y
+	_chips.size = Vector2(width, height)
+	var x := _overlay.size.x + UiTokens.BATTLE_CARD_PAD_H - width
+	var y := _overlay.size.y + UiTokens.BATTLE_CARD_PAD_V + UiTokens.FOE_PIPS_GAP
+	if chips_above:
+		y = -UiTokens.BATTLE_CARD_PAD_V - UiTokens.PARTY_PIPS_GAP - height
+	_chips.position = Vector2(x, y)
 
 
 ## Nom entier dans la largeur de la carte : taille du thème si tout tient ; sinon la pastille de
 ## statut perd d'abord son icône (le nom garde ainsi une taille proche de celle du niveau), puis
-## le nom rétrécit (plancher BATTLE_CARD_NAME_FONT_MIN).
+## le nom rétrécit (plancher BATTLE_CARD_NAME_FONT_MIN). S'il ne tient toujours pas, la Poké Ball
+## « déjà capturé » cède sa place : le nom n'est jamais rogné pour elle.
 func _fit_name() -> void:
 	_name_label.remove_theme_font_size_override(&"font_size")
 	_status_badge.set_show_icon(true)
+	_caught_icon.visible = _caught
 	if _name_label.get_combined_minimum_size().x <= _name_room():
 		return
 	if _status_badge.visible:
 		_status_badge.set_show_icon(false)
-	_shrink_name_to(_name_room())
+	if not _shrink_name_to(_name_room()) and _caught_icon.visible:
+		_caught_icon.visible = false
+		_shrink_name_to(_name_room())
 
 
 ## Réduit le nom jusqu'à ce qu'il tienne dans [param room] pixels ; faux s'il ne tient pas même

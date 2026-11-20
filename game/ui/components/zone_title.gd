@@ -60,7 +60,9 @@ func _draw() -> void:
 
 
 ## Affiche le titre (nom mis en MAJUSCULES) ; relance l'animation s'il était déjà visible.
-func show_title(zone_name: String, region: String) -> void:
+## [param hold_scale] : facteur de la tenue de cet affichage (première découverte d'une zone :
+## ZONE_TITLE_FIRST_HOLD_SCALE, le temps de lire le sous-titre).
+func show_title(zone_name: String, region: String, hold_scale: float = 1.0) -> void:
 	_name_label.text = zone_name.to_upper()
 	_region_label.text = region
 	_region_label.visible = not region.is_empty()
@@ -80,7 +82,7 @@ func show_title(zone_name: String, region: String) -> void:
 	_tween.tween_property(self, ^"position", rest, slide_duration)
 	_tween.parallel().tween_property(self, ^"modulate:a", 1.0, slide_duration)
 	_tween.tween_callback(title_shown.emit)
-	_tween.tween_interval(hold_duration)
+	_tween.tween_interval(hold_duration * maxf(hold_scale, 0.0))
 	_tween.tween_property(self, ^"position", away, slide_duration).set_ease(Tween.EASE_IN)
 	_tween.parallel().tween_property(self, ^"modulate:a", 0.0, slide_duration) \
 		.set_ease(Tween.EASE_IN)

@@ -5,7 +5,7 @@ extends BattleWidget
 ## par Pokémon qui a gagné de l'XP ([ExpSummaryRow]), dans l'ordre de l'équipe. Les barres
 ## partent [b]ensemble[/b] ; celle d'un Pokémon qui monte de niveau enchaîne ses tranches et
 ## met brièvement sa ligne en valeur à chaque passage (vibration courte, coupée avec les
-## vibrations). Une fois toutes les barres arrivées, la consigne discrète « Touchez l'écran
+## vibrations). Une fois toutes les barres arrivées, la consigne discrète « Touche l'écran
 ## pour continuer » apparaît sous la carte.
 ##
 ## Gestes : pendant le remplissage, un toucher accélère tout (×SUMMARY_FAST), un second le

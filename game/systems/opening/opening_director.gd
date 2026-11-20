@@ -18,6 +18,10 @@ extends Node
 ##    portrait du joueur rétrécit et se dissout, fondu au blanc chaud, [signal intro_closed] et [signal new_game_entered] ; avec une sauvegarde d'une version plus
 ##    récente, rien n'est écrit. Abandon (application tuée) pendant l'introduction : rien n'a été
 ##    écrit, l'ancienne sauvegarde est intacte (§3.7) ;
+##  - Nouveautés ([WhatsNew]) : au premier lancement après une mise à jour, avec une partie à
+##    continuer, le titre montre une fois la carte des nouveautés de la version ; refermée (ou le
+##    titre quitté), la version est notée comme vue ([WhatsNewStore]). Sans
+##    [member whats_new_store] (tests, outils), rien n'est montré ni écrit ;
 ##  - Paramètres : le [SettingsScreen] sans « Sauvegarder maintenant » ; chaque réglage changé est
 ##    relayé à Boot ([signal settings_changed]) qui l'écrit dans `settings.json` et l'applique.
 ## [method autosave_allowed] est **la** garde d'autosave de Boot : faux tant que la partie n'est
@@ -54,6 +58,11 @@ var speed_scale: float = 1.0
 ## Ident de démarrage « Les studios Kevin & Co vous présentent… POKEMAKE » avant le titre (J34) ;
 ## jamais quand [member speed_scale] vaut 0 (tests, captures).
 var play_ident: bool = true
+## Dernière version dont les nouveautés ont été vues ; null : la carte « Nouveautés » n'existe pas.
+var whats_new_store: WhatsNewStore = null
+## Fichier des nouveautés et version du build (tests : un autre fichier, une autre version).
+var whats_new_path: String = WhatsNew.DEFAULT_PATH
+var whats_new_version: String = GameVersion.name()
 
 var _flow: OpeningFlow
 var _model: TitleMenuModel
@@ -72,6 +81,8 @@ var _device_quality: GameSettings.Graphics = GameSettings.Graphics.HIGH
 var _zone_name_of: Callable
 var _badge_flags: Array[StringName] = []
 var _badge_ids: Array[StringName] = []
+## `func(species: StringName) -> int` : numéro de Pokédex (vignettes de l'équipe, carte Continuer).
+var _dex_of: Callable
 var _screen: TitleScreen
 var _ident: IdentSequence
 ## Vrai pendant la sortie du titre (rideau) : plus aucun toucher n'est pris.
@@ -95,15 +106,21 @@ var _rival_look: StringName = GameState.DEFAULT_RIVAL_LOOK
 ## Vrai une fois la fin de l'introduction jouée (rideau blanc chaud) : la chambre apparaît depuis
 ## le blanc ([method entry_fade_time]).
 var _sent_off: bool = false
+## Nouveautés de la version : à montrer une fois le titre découvert, puis à noter comme vues.
+var _whats_new := WhatsNew.new()
+var _whats_new_due: bool = false
+var _whats_new_shown: bool = false
 
 
 ## Branche le directeur avant [method run]. [param save_system] : la sauvegarde (null : aucune,
 ## rien n'est jamais écrit). [param zone_name_of] : `func(map_id) -> String` ; [param badge_flags]
 ## : drapeaux des badges (carte Continuer) ; [param badge_ids] : leurs identifiants, au même rang
-## (icône du dernier badge obtenu).
+## (icône du dernier badge obtenu) ; [param dex_of] : `func(species) -> int`, numéro de Pokédex
+## d'une espèce (vignettes de l'équipe sur la carte Continuer ; non valide : aucune vignette).
 func setup(save_system: SaveSystem, build_new_game: Callable, fade: ScreenFade,
 		settings: GameSettings, device_quality: GameSettings.Graphics, zone_name_of: Callable,
-		badge_flags: Array[StringName], badge_ids: Array[StringName] = []) -> void:
+		badge_flags: Array[StringName], badge_ids: Array[StringName] = [],
+		dex_of: Callable = Callable()) -> void:
 	_save = save_system
 	_build_new_game = build_new_game
 	_fade = fade
@@ -112,6 +129,7 @@ func setup(save_system: SaveSystem, build_new_game: Callable, fade: ScreenFade,
 	_zone_name_of = zone_name_of
 	_badge_flags = badge_flags
 	_badge_ids = badge_ids
+	_dex_of = dex_of
 
 
 ## Boîte de dialogue de l'introduction (celle du jeu). Sans elle, le directeur crée la sienne.
@@ -131,7 +149,7 @@ func run() -> void:
 	var summary: SaveSummary = null
 	if status == OpeningFlow.SaveStatus.VALID:
 		summary = SaveSummary.from_save(_save_content, _zone_name_of, _badge_flags,
-			_names.default_name(OpeningNames.ROLE_PLAYER), _badge_ids)
+			_names.default_name(OpeningNames.ROLE_PLAYER), _badge_ids, _dex_of)
 	_model = TitleMenuModel.build(status, summary, _texts)
 	_screen = TITLE_SCENE.instantiate() as TitleScreen
 	_screen.speed_scale = speed_scale
@@ -143,6 +161,11 @@ func run() -> void:
 	_screen.show_title(_model)
 	if _settings != null:
 		_screen.set_left_handed(_settings.left_handed)
+		_screen.reduce_motion = _settings.reduce_motion
+	# Entrée en cascade du logo et des cartes, jouée quand le titre est découvert.
+	_screen.prepare_entrance()
+	title_revealed.connect(_play_title_entrance, CONNECT_ONE_SHOT)
+	_prepare_whats_new(status)
 	print("Ouverture : titre (sauvegarde %s)" % OpeningFlow.SaveStatus.find_key(status))
 	if _fade != null:
 		_fade.set_opaque(true)
@@ -184,10 +207,12 @@ func choose(entry: StringName) -> void:
 	match entry:
 		TitleMenuModel.ENTRY_CONTINUE:
 			if _flow.handle(OpeningFlow.Action.CONTINUE):
+				_mark_whats_new_seen()
 				_leave_title()
 		TitleMenuModel.ENTRY_NEW_GAME:
 			if not _flow.handle(OpeningFlow.Action.NEW_GAME):
 				return
+			_mark_whats_new_seen()
 			if _flow.screen() == OpeningFlow.Screen.CONFIRM_OVERWRITE:
 				_screen.show_confirm(_confirm_view())
 			else:
@@ -225,6 +250,11 @@ func handle_back() -> bool:
 	if _leaving:
 		return true
 	match _flow.screen():
+		OpeningFlow.Screen.TITLE:
+			# La carte « Nouveautés » se referme aussi par le retour.
+			if _screen != null and _screen.is_whats_new_open():
+				_screen.hide_whats_new()
+				_mark_whats_new_seen()
 		OpeningFlow.Screen.SETTINGS:
 			_flow.handle(OpeningFlow.Action.BACK)
 			_screen.hide_settings()
@@ -253,6 +283,7 @@ func apply_settings(settings: GameSettings, backdrop_blur: bool) -> void:
 		_stage.set_backdrop_blur(backdrop_blur)
 	if _screen != null:
 		_screen.set_left_handed(settings.left_handed)
+		_screen.reduce_motion = settings.reduce_motion
 		_screen.set_backdrop_blur(backdrop_blur)
 		UiPrefsApplier.apply(_screen)
 
@@ -297,6 +328,54 @@ func _on_ident_finished() -> void:
 		_ident.queue_free()
 		_ident = null
 	title_revealed.emit()
+
+
+func _play_title_entrance() -> void:
+	if _screen != null:
+		_screen.play_entrance()
+
+
+## Vrai si la carte « Nouveautés » a été montrée à ce lancement.
+func was_whats_new_shown() -> bool:
+	return _whats_new_shown
+
+
+## Décide si la carte « Nouveautés » est due à ce lancement ([method WhatsNew.should_show]) ; elle
+## n'arrive qu'une fois le titre découvert (après l'ident). Première installation (aucune
+## sauvegarde) : rien n'est « nouveau », la version du build est notée comme vue.
+func _prepare_whats_new(status: OpeningFlow.SaveStatus) -> void:
+	if whats_new_store == null:
+		return
+	var seen := whats_new_store.load_seen()
+	if status == OpeningFlow.SaveStatus.NONE:
+		if seen != whats_new_version:
+			whats_new_store.save_seen(whats_new_version)
+		return
+	if seen == whats_new_version or status != OpeningFlow.SaveStatus.VALID:
+		return
+	if not _whats_new.load_file(whats_new_path):
+		return
+	_whats_new_due = _whats_new.should_show(whats_new_version, seen, true)
+	if _whats_new_due:
+		title_revealed.connect(_show_whats_new, CONNECT_ONE_SHOT)
+
+
+func _show_whats_new() -> void:
+	if not _whats_new_due or _screen == null or _leaving or _finished:
+		return
+	_whats_new_shown = true
+	_screen.whats_new_closed.connect(_mark_whats_new_seen)
+	_screen.show_whats_new(_whats_new.title_text(), _whats_new.lines, _whats_new.hint)
+
+
+## La carte a été montrée puis refermée (ou le titre quitté avec elle) : la version est vue.
+func _mark_whats_new_seen() -> void:
+	if not _whats_new_shown or not _whats_new_due or whats_new_store == null:
+		return
+	_whats_new_due = false
+	var error := whats_new_store.save_seen(whats_new_version)
+	if error != OK:
+		push_warning("Nouveautés : écriture impossible (%s)" % error_string(error))
 
 
 ## Résultat du dernier commit ([enum OpeningCommit.Result]), -1 s'il n'y en a pas eu.

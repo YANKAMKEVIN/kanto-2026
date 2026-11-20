@@ -10,7 +10,8 @@ const K := BattleEvent.Kind
 ## de l'annexe A du jalon 15 (Jackpot, 2026-10-14) ; messages d'Ultralaser et de Hurlement du
 ## jalon 19 validés par Kevin le 2026-10-16.
 ## Jalon 32 (32N, N-22) : messages de charge de Coupe-Vent validés par Kevin le 2026-10-28.
-const PENDING_DRAFTS: Array[StringName] = []
+## Lot UI/UX (2026-11-19) : consigne de la fiche d'une capacité [D], à relire par Kevin.
+const PENDING_DRAFTS: Array[StringName] = [&"move_sheet_hint"]
 
 var _data: PokemonData
 var _text: BattleText
@@ -409,7 +410,7 @@ func test_summary_labels() -> void:
 		+ " · Vitesse +1", "ordre fixe, Défense +0 masquée")
 	var none: Dictionary[StringName, int] = {&"hp": 0}
 	assert_eq(_text.summary_stats(none), "")
-	assert_eq(_text.get_template(&"summary_continue"), "Touchez l'écran pour continuer")
+	assert_eq(_text.get_template(&"summary_continue"), "Touche l'écran pour continuer")
 
 
 func test_incomplete_stat_labels_are_rejected() -> void:
@@ -417,6 +418,24 @@ func test_incomplete_stat_labels_are_rejected() -> void:
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(BattleText.DATA_PATH))
 	(data["stat_labels"] as Dictionary).erase("spe")
 	(data["stat_labels"] as Dictionary)["luck"] = "Chance"
+	assert_false(broken.add_from_dict(data, "test"))
+	assert_push_error_count(2)
+
+
+func test_stage_labels_name_the_seven_stage_stats() -> void:
+	for stat: StringName in MoveEffect.STAGE_STATS:
+		assert_false(_text.stage_label(stat).is_empty(), String(stat))
+	assert_eq(_text.stage_label(&"atk"), "ATT")
+	assert_eq(_text.stage_label(&"hp"), "", "les PV n'ont pas de cran")
+	assert_eq(BattleViews.stage_label(&"atk", _text), "ATT")
+	assert_eq(BattleViews.stage_label(&"atk", null), "ATK", "sans textes : l'identifiant")
+
+
+func test_incomplete_stage_labels_are_rejected() -> void:
+	var broken := BattleText.new()
+	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(BattleText.DATA_PATH))
+	(data["stage_labels"] as Dictionary).erase("eva")
+	(data["stage_labels"] as Dictionary)["hp"] = "PV"
 	assert_false(broken.add_from_dict(data, "test"))
 	assert_push_error_count(2)
 

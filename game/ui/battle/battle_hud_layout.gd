@@ -7,6 +7,7 @@ extends RefCounted
 ##   FOE_CARD    carte adversaire, en haut à gauche (diagonale opposée aux Pokémon, CB.2)
 ##   OWN_CARD    carte joueur, en bas à droite, au-dessus de la grille d'actions / des capacités
 ##   PARTY_PIPS  six pastilles, juste au-dessus de la carte joueur
+##   FOE_PIPS    six pastilles de l'équipe adverse (Dresseur), juste sous la carte adverse
 ##   BACK        bouton « ‹ », en bas à gauche
 ##   ACTIONS     grille des 4 actions, en bas à droite
 ##   MOVES       bandeau des capacités, en bas à droite (il déborde jusqu'aux bords)
@@ -21,7 +22,7 @@ extends RefCounted
 
 enum Slot {
 	FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE, FORGET, BAG, CAPTURE,
-	PARTY_PICKER, PARTY, SUMMARY,
+	PARTY_PICKER, PARTY, SUMMARY, FOE_PIPS,
 }
 
 ## Valeur de « coin » d'un axe pour un emplacement centré (la distance au bord est ignorée).
@@ -68,11 +69,12 @@ static func frame(slot: Slot) -> Array[Vector2]:
 			return [Vector2(0, 0), Vector2(edge, UiTokens.BATTLE_FOE_CARD_TOP), card]
 		Slot.OWN_CARD:
 			return [Vector2(1, 1), Vector2(edge, UiTokens.BATTLE_OWN_CARD_BOTTOM), own_card]
+		Slot.FOE_PIPS:
+			var below := UiTokens.BATTLE_FOE_CARD_TOP + card.y + UiTokens.FOE_PIPS_GAP
+			return [Vector2(0, 0), Vector2(edge + UiTokens.PARTY_PIPS_INSET, below),
+				pips_size()]
 		Slot.PARTY_PIPS:
-			var pips := Vector2(
-				UiTokens.PARTY_SIZE * UiTokens.PARTY_PIP
-					+ (UiTokens.PARTY_SIZE - 1) * UiTokens.PARTY_PIP_GAP,
-				UiTokens.PARTY_PIP)
+			var pips := pips_size()
 			var above := UiTokens.BATTLE_OWN_CARD_BOTTOM + own_card.y + UiTokens.PARTY_PIPS_GAP
 			var inset := own_card.x - UiTokens.PARTY_PIPS_INSET - pips.x
 			return [Vector2(1, 1), Vector2(edge + inset, above), pips]
@@ -103,6 +105,12 @@ static func frame(slot: Slot) -> Array[Vector2]:
 			return [Vector2(CENTERED, CENTERED), Vector2.ZERO,
 				Vector2(UiTokens.SUMMARY_CARD_WIDTH, UiTokens.SUMMARY_CARD_MAX_HEIGHT)]
 	return [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
+
+
+## Taille d'une rangée de pastilles d'équipe (PARTY_SIZE pastilles et leurs écarts).
+static func pips_size() -> Vector2:
+	return Vector2(UiTokens.PARTY_SIZE * UiTokens.PARTY_PIP
+		+ (UiTokens.PARTY_SIZE - 1) * UiTokens.PARTY_PIP_GAP, UiTokens.PARTY_PIP)
 
 
 ## Taille de la grille d'actions (2 × 2 boutons BATTLE_ACTION_SIZE).
