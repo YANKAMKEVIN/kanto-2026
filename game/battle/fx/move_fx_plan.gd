@@ -265,7 +265,8 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	var signature_origin := JsonFields.get_id(catalog.signature(signature), "origin")
 	if not signature_origin.is_empty():
 		origin = signature_origin
-	elif on_self or family == MoveFxCatalog.CONTACT_FAMILY:
+	elif on_self or family == MoveFxCatalog.CONTACT_FAMILY \
+			or JsonFields.get_id(JsonFields.get_dict(family_data, "bricks"), "travel") == &"dash":
 		origin = ORIGIN_BODY
 	else:
 		origin = ORIGIN_MOUTH
@@ -304,7 +305,10 @@ func _setup(catalog: MoveFxCatalog, entry: MoveFxEntry, plan_mode: Mode) -> void
 	art_tint = Color.from_string(JsonFields.get_string(fx, "tint", "#FFFFFF"), Color.WHITE)
 	var own := catalog.signature(signature)
 	bolt_height = JsonFields.get_float(own, "bolt_height", JsonFields.get_float(fx, "bolt_height"))
-	impact_size = JsonFields.get_float(own, "impact_size", JsonFields.get_float(fx, "impact_size"))
+	# Refonte Combat : la variante d'impact (Pied Voltige plus gros que Double Pied) l'emporte sur
+	# la famille, la signature sur les deux.
+	impact_size = JsonFields.get_float(own, "impact_size", JsonFields.get_float(catalog.impact(impact),
+		"impact_size", JsonFields.get_float(fx, "impact_size")))
 	travel_scale = JsonFields.get_float(own, "travel_scale", JsonFields.get_float(fx, "travel_scale", 1.0))
 
 
@@ -446,6 +450,9 @@ func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutco
 	light_color = Color.from_string(JsonFields.get_string(fx, "light", light_color.to_html()),
 		light_color)
 	light_peak = JsonFields.get_float(fx, "light_peak", light_peak)
+	# Refonte Combat : la variante d'impact peut éclairer plus fort que sa famille (Pied Voltige).
+	var hit_variant := catalog.impact(impact)
+	light_peak = JsonFields.get_float(hit_variant, "light_peak", light_peak)
 	var own := catalog.signature(signature)
 	light_peak = JsonFields.get_float(own, "light_peak", light_peak)
 	if palette.is_empty():
@@ -453,8 +460,8 @@ func _light(catalog: MoveFxCatalog, family_data: Dictionary, result: MoveFxOutco
 	if reduce_flashes:
 		light_peak = minf(light_peak, JsonFields.get_float(limits, "reduced_flash_peak", 0.35))
 	var lands := result == MoveFxOutcome.Result.HIT or result == MoveFxOutcome.Result.AFFECTED
-	flashes = JsonFields.get_int(own, "flashes", JsonFields.get_int(fx, "flashes",
-		JsonFields.get_int(data, "flashes"))) * hits \
+	flashes = JsonFields.get_int(own, "flashes", JsonFields.get_int(hit_variant, "flashes",
+		JsonFields.get_int(fx, "flashes", JsonFields.get_int(data, "flashes")))) * hits \
 		if lands and light_peak > 0.0 else 0
 	var per_second := JsonFields.get_float(limits, "flashes_per_second", 3.0)
 	flashes = mini(flashes, floori(per_second * duration + EPSILON))

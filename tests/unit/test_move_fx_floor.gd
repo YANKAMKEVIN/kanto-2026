@@ -6,7 +6,7 @@ extends GutTest
 
 const VIEW := Vector2(1920, 1080)
 const STEP: float = 1.0 / 20.0
-const FAMILIES: int = 73
+const FAMILIES: int = 74
 
 var _data: PokemonData
 var _catalog: MoveFxCatalog
@@ -155,7 +155,7 @@ func test_every_family_has_painted_art() -> void:
 	for move_id: StringName in _catalog.move_ids():
 		var entry := _catalog.entry(move_id)
 		families[entry.family] = true
-	assert_eq(families.size(), FAMILIES, "les 73 familles sont employées (17, regard et sable de RP-286, 7 de la vague 1 Rouge, 18 de la vague 2, 3 de la refonte Électrik, 4 de la refonte Feu, 3 de la refonte Eau, 11 de la refonte Psy, 5 de la refonte Plante, 3 de la refonte Glace)")
+	assert_eq(families.size(), FAMILIES, "les 74 familles sont employées (17, regard et sable de RP-286, 7 de la vague 1 Rouge, 18 de la vague 2, 3 de la refonte Électrik, 4 de la refonte Feu, 3 de la refonte Eau, 11 de la refonte Psy, 5 de la refonte Plante, 3 de la refonte Glace, 1 de la refonte Combat)")
 	for family: StringName in families:
 		var art := JsonFields.get_dict(JsonFields.get_dict(_catalog.family(family), "fx"), "art")
 		assert_false(art.is_empty(), "%s : art peint" % family)

@@ -1491,3 +1491,84 @@ func test_mist_veils_the_user_only() -> void:
 	assert_eq(_target.position, stage.target_rest, "la cible ne bouge pas")
 	_player.stop()
 	_assert_at_rest(stage)
+
+
+## Refonte Combat : la gradation se lit, de Double Pied (la plus petite) à Pied Voltige (la plus
+## grosse) ; toutes partent du corps du lanceur (course de Contact).
+func test_fighting_moves_grow_from_double_kick_to_hi_jump_kick() -> void:
+	var order: Array[StringName] = [&"double_kick", &"karate_chop", &"rolling_kick", &"jump_kick",
+		&"hi_jump_kick"]
+	var last_size := 0.0
+	var last_shake := 0.0
+	for move_id: StringName in order:
+		var plan := _plan(move_id)
+		assert_eq(plan.family, &"combat", String(move_id))
+		assert_eq(plan.origin, MoveFxPlan.ORIGIN_BODY, "%s part du corps" % move_id)
+		assert_gt(plan.impact_size, last_size, "%s plus grosse" % move_id)
+		assert_true(plan.camera_shake >= last_shake, "%s secoue au moins autant" % move_id)
+		last_size = plan.impact_size
+		last_shake = plan.camera_shake
+	assert_eq(_plan(&"hi_jump_kick").camera_shake, 6.0, "Pied Voltige secoue au maximum")
+
+
+## Poing Karaté : un arc en croissant sur la cible ; Balayage : un arc rasant à ses pieds ;
+## Mawashi Geri : un arc circulaire.
+func test_fighting_arcs_have_their_own_marks() -> void:
+	var stage := _stage()
+	var heights := {}
+	for case: Array in [[&"karate_chop", &"arc_tranchant"], [&"low_kick", &"arc_rasant"],
+			[&"rolling_kick", &"arc_circulaire"]]:
+		var plan := _plan(case[0])
+		assert_eq(plan.art.get(&"stamp"), case[1], String(case[0]))
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.5)
+		var mark := _player.get_art(MoveFxPlayer.Flip.IMPACT)
+		assert_true(mark.visible, "%s : la marque" % case[0])
+		assert_eq(mark.texture, FxArt.flipbook(case[1]).get("texture"))
+		assert_true(_player.get_art(MoveFxPlayer.Flip.EXTRA_A).visible, "%s : l'éclat" % case[0])
+		heights[case[0]] = mark.position.y
+		_player.stop()
+		_assert_at_rest(stage)
+	assert_gt(heights[&"low_kick"], heights[&"karate_chop"], "le Balayage rase le sol")
+
+
+## Pied Sauté et Pied Voltige : une traînée plonge d'en haut sur la cible, puis l'explosion et
+## l'onde au sol.
+func test_jump_kicks_plunge_from_above() -> void:
+	var stage := _stage()
+	for move_id: StringName in [&"jump_kick", &"hi_jump_kick"]:
+		var plan := _plan(move_id)
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.IMPACT, MoveFxPlayer.PLUNGE_FALL * 0.6)
+		var streak := _player.get_art(MoveFxPlayer.Flip.TRAIL)
+		assert_true(streak.visible, "%s : la traînée" % move_id)
+		assert_lt(streak.position.y, stage.target_rect.position.y, "elle vient d'en haut")
+		_pose_at(plan, MoveFxPlan.IMPACT, 0.6)
+		assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "%s : l'explosion" % move_id)
+		var ring := _player.get_art(MoveFxPlayer.Flip.WAVE_A)
+		assert_true(ring.visible, "%s : l'onde au sol" % move_id)
+		assert_gt(ring.position.y, stage.target_rect.get_center().y, "aux pieds de la cible")
+		_player.stop()
+		_assert_at_rest(stage)
+
+
+## Sacrifice : une traînée suit la ruée ; Contre et Riposte : une aura (flammes, garde) sur le
+## lanceur pendant l'élan.
+func test_submission_rushes_and_reversal_counter_light_the_user() -> void:
+	var stage := _stage()
+	var rush := _plan(&"submission")
+	assert_true(rush.has_modifier(&"contrecoup"))
+	_player.play(rush, stage)
+	_pose_at(rush, MoveFxPlan.IMPACT, 0.2)
+	assert_true(_player.get_art(MoveFxPlayer.Flip.TRAIL).visible, "la traînée de la ruée")
+	assert_true(_player.get_art(MoveFxPlayer.Flip.IMPACT).visible, "l'explosion")
+	_player.stop()
+	for case: Array in [[&"reversal", &"aura_combat"], [&"counter", &"garde_choc"]]:
+		var plan := _plan(case[0])
+		_player.play(plan, stage)
+		_pose_at(plan, MoveFxPlan.ANTICIPATION, 0.8)
+		var aura := _player.get_art(MoveFxPlayer.Flip.AURA)
+		assert_true(aura.visible, "%s : l'aura" % case[0])
+		assert_eq(aura.texture, FxArt.flipbook(case[1]).get("texture"))
+		_player.stop()
+		_assert_at_rest(stage)

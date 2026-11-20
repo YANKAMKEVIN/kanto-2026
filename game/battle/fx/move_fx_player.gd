@@ -232,6 +232,13 @@ const CASCADE_SIZE := Vector2(1.05, 1.0)
 ## l'impact).
 const TOSS_HEIGHT: float = 0.26
 const TOSS_SLAM: float = 0.62
+## Refonte Combat [D] (2026-11-20) : arcs (parts de la marque), arc rasant (largeur, hauteur),
+## plongeon (hauteur de départ en hauteurs d'écran, part de l'impact pour la chute, épaisseur).
+const MARTIAL_ARC: float = 1.5
+const MARTIAL_SWEEP: Vector2 = Vector2(2.4, 0.8)
+const PLUNGE_HEIGHT: float = 0.55
+const PLUNGE_FALL: float = 0.25
+const PLUNGE_WIDTH: float = 0.45
 ## Os : arc de Massd'Os (hauteurs d'écran), tours en vol, courbe d'Osmerang (part de la distance).
 const BONE_ARC: float = 0.3
 const BONE_SPIN: float = 2.5
@@ -3276,6 +3283,8 @@ func _pose_stamp_rouge2(stamp: StringName, k: float, base: float) -> bool:
 				_show_flip(Flip.IMPACT, stamp, top + Vector2(0.0, length * 0.5), Vector2(CASCADE_SIZE.x
 					* rect.size.x, length * CASCADE_SIZE.y), 0.0, 1.0 - clampf((k - 0.6) / 0.4, 0.0, 1.0))
 			_show_splash(c, k, 0.25)
+		"slash_arc", "low_sweep", "spin_arc", "plunge", "rush":
+			_pose_martial(stamp, k, base)
 		"toss":
 			var slam := clampf((k - TOSS_SLAM) / (1.0 - TOSS_SLAM), 0.0, 1.0)
 			if slam > 0.0:
@@ -3284,6 +3293,66 @@ func _pose_stamp_rouge2(stamp: StringName, k: float, base: float) -> bool:
 		_:
 			return false
 	return true
+
+
+## Refonte Combat (`docs/tech/attaques-combat.md`) : la marque propre de chaque attaque, jouée
+## une fois pendant l'impact. Arc en croissant qui s'abat en diagonale (Poing Karaté), arc rasant
+## aux pieds (Balayage), arc circulaire qui tourne (Mawashi Geri), traînée qui plonge d'en haut
+## puis onde au sol (Pied Sauté, Pied Voltige), traînée de la ruée (Sacrifice) ; l'éclat `burst`
+## suit la marque.
+func _pose_martial(stamp: StringName, k: float, base: float) -> void:
+	var rect := _stage.target_rect
+	var c := rect.get_center()
+	var fade := 1.0 - clampf((k - 0.7) / 0.3, 0.0, 1.0)
+	var burst := _plan.art.get(&"burst", &"") as StringName
+	match String(_plan.impact_brick):
+		"slash_arc":
+			_show_flip(Flip.IMPACT, stamp, c, Vector2.ONE * base * MARTIAL_ARC, 0.0, fade, false, k)
+			if not burst.is_empty() and k > 0.3:
+				_show_flip(Flip.EXTRA_A, burst, c + rect.size * Vector2(0.18, 0.2), Vector2.ONE * base
+					* 0.8, 0.0, fade, false, (k - 0.3) / 0.7)
+		"low_sweep":
+			var feet := _feet(rect)
+			_show_flip(Flip.IMPACT, stamp, feet + Vector2(0.0, -0.12 * rect.size.y), Vector2(
+				MARTIAL_SWEEP.x * base, MARTIAL_SWEEP.y * base), 0.0, fade, false, k)
+			if not burst.is_empty() and k > 0.15:
+				_show_flip(Flip.EXTRA_A, burst, feet + Vector2(0.0, -0.25 * base), Vector2.ONE * base
+					* 1.1, 0.0, fade, false, (k - 0.15) / 0.85)
+		"spin_arc":
+			_show_flip(Flip.IMPACT, stamp, c, Vector2(1.25, 1.0) * base * MARTIAL_ARC, -0.25 + 0.5 * k,
+				fade, false, k)
+			if not burst.is_empty() and k > 0.35:
+				_show_flip(Flip.EXTRA_A, burst, c, Vector2.ONE * base * 0.9, 0.0, fade, false,
+					(k - 0.35) / 0.65)
+		"plunge":
+			var streak := _plan.art.get(&"streak", &"") as StringName
+			var top := c + Vector2(-0.15 * rect.size.x, -PLUNGE_HEIGHT * _stage.view_size.y)
+			if not streak.is_empty() and k < PLUNGE_FALL + 0.15:
+				var fall := _ease_in(clampf(k / PLUNGE_FALL, 0.0, 1.0))
+				var tip := top.lerp(c, fall)
+				_show_flip(Flip.TRAIL, streak, top, Vector2(maxf(top.distance_to(tip), 1.0),
+					PLUNGE_WIDTH * base), (c - top).angle(), 1.0 - clampf((k - PLUNGE_FALL) / 0.15,
+					0.0, 1.0), true)
+			var strike := clampf((k - PLUNGE_FALL) / (1.0 - PLUNGE_FALL), 0.0, 1.0)
+			if strike > 0.0:
+				_show_flip(Flip.IMPACT, stamp, c, Vector2.ONE * base * lerpf(0.9, 1.15, strike), 0.0,
+					1.0, false, strike)
+				var ring := _plan.art.get(&"ring", &"") as StringName
+				if not ring.is_empty():
+					_show_flip(Flip.WAVE_A, ring, _feet(rect), Vector2(2.6, 0.75) * base * lerpf(0.6, 1.5,
+						_ease_out(strike)), 0.0, 1.0, false, strike)
+				if not burst.is_empty():
+					_show_flip(Flip.EXTRA_A, burst, _feet(rect) + Vector2(0.0, -0.3 * base), Vector2.ONE
+						* base * 1.4, 0.0, 1.0, false, strike)
+		"rush":
+			var streak := _plan.art.get(&"streak", &"") as StringName
+			if not streak.is_empty() and k < 0.5:
+				var from := _stage.user_rect.get_center() + _stage.user.position - _stage.user_rest \
+					if _stage.user != null else _stage.user_rect.get_center()
+				var back := from - (c - from).normalized() * TRAIL_BEHIND * _stage.view_size.y
+				_show_flip(Flip.TRAIL, streak, back, Vector2(back.distance_to(c), PLUNGE_WIDTH * base),
+					(c - back).angle(), 1.0 - k / 0.5, true)
+			_show_flip(Flip.IMPACT, stamp, c, Vector2.ONE * base, 0.0, 1.0, false, k)
 
 
 ## Éclaboussure peinte (rôle `splash`) jouée une fois, à partir de [param from_k] de l'impact.

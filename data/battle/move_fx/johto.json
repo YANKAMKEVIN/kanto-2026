@@ -34,7 +34,7 @@
 		"pursuit": {"family": "contact", "impact": "coup"},
 		"rain_dance": {"family": "danse_pluie"},
 		"rapid_spin": {"family": "contact", "impact": "corps"},
-		"reversal": {"family": "contact", "impact": "coup"},
+		"reversal": {"family": "combat", "impact": "contre"},
 		"rollout": {"family": "sol_roche"},
 		"sacred_fire": {"family": "feu_sacre"},
 		"safeguard": {"family": "statut_plus"},
