@@ -246,18 +246,21 @@ func test_tm11_and_its_compatibilities() -> void:
 		&"psyduck", &"golduck", &"poliwag", &"poliwhirl", &"poliwrath", &"tentacool",
 		&"tentacruel", &"slowpoke", &"slowbro", &"seel", &"dewgong", &"shellder", &"cloyster",
 		&"krabby", &"kingler", &"cubone", &"marowak",
+		# 2026-11-20 : espèces ajoutées après la table, régénérée (Excelangue, Lippoutou, dragons,
+		# Mewtwo, Mew).
+		&"lickitung",
 		# Jalon 28 (T3) : Rhinoféros.
 		&"rhydon",
 		# Jalon 23 (T6) : Leveinard.
 		&"chansey",
 		# Jalon 20 (T7) : Kangourex et Aquali.
 		&"kangaskhan", &"horsea", &"seadra", &"goldeen", &"seaking", &"staryu", &"starmie",
-		&"gyarados",
+		&"jynx", &"gyarados",
 		# Jalon 26 (T3) : Lokhlass.
 		&"lapras",
 		&"vaporeon", &"omanyte", &"omastar", &"kabuto", &"kabutops",
 		# Ronflex (J21) : entré dans la table régénérée à la fusion du J24 dans `main`.
-		&"snorlax", &"articuno",
+		&"snorlax", &"articuno", &"dratini", &"dragonair", &"dragonite", &"mewtwo", &"mew",
 		] as Array[StringName])
 	var squirtle := PokemonFactory.create(_data, &"squirtle", 20, GameRng.new(3))
 	assert_eq(TmTeach.check(squirtle, tm, _data), TmTeach.Check.COMPATIBLE)
