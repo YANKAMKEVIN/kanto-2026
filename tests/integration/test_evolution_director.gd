@@ -118,7 +118,7 @@ func test_view_texts_are_the_locked_ones_word_for_word() -> void:
 	assert_eq(first.finished_text, "Félicitations ! Chenipan a évolué en Chrysacier !")
 	assert_eq(first.cancelled_text, "Hein ? Chenipan n'évolue plus.")
 	assert_eq(first.stop_label, "ARRÊTER")
-	assert_eq(first.continue_text, "Touchez l'écran pour continuer")
+	assert_eq(first.continue_text, "Touche l'écran pour continuer")
 	assert_eq([first.party_index, first.pokemon_name, first.from_name, first.into_name],
 		[0, "Chenipan", "Chenipan", "Chrysacier"])
 	assert_eq([first.from_species, first.into_species, first.from_dex, first.into_dex],

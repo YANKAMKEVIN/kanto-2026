@@ -410,7 +410,7 @@ func test_summary_labels() -> void:
 		+ " · Vitesse +1", "ordre fixe, Défense +0 masquée")
 	var none: Dictionary[StringName, int] = {&"hp": 0}
 	assert_eq(_text.summary_stats(none), "")
-	assert_eq(_text.get_template(&"summary_continue"), "Touchez l'écran pour continuer")
+	assert_eq(_text.get_template(&"summary_continue"), "Touche l'écran pour continuer")
 
 
 func test_incomplete_stat_labels_are_rejected() -> void:

@@ -38,7 +38,7 @@ const BACKUP_RESTORED_TEXT: String = "Sauvegarde restaurée depuis la copie de s
 ## 2026-10-23 : nommée « Lumière d'ambiance » pour ne pas doubler la qualité « Économie »).
 ## Activée = rendu normal (`economy` faux) ; désactivée = étalonnage plein écran coupé.
 const ECONOMY_LABEL: String = "Lumière d'ambiance"
-const ECONOMY_DETAIL: String = "Désactivez-la pour plus de fluidité sur les petits téléphones."
+const ECONOMY_DETAIL: String = "Désactive-la pour plus de fluidité sur les petits téléphones."
 ## Combat vivant (CV-4, recommandation retenue par Kevin le 2026-10-26).
 const BATTLE_ANIMATIONS_LABEL: String = "Animations de combat"
 const BATTLE_ANIMATIONS_DETAIL: String = "Rapides : combats plus courts, mêmes effets."

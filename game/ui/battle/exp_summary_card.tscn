@@ -42,5 +42,5 @@ theme_type_variation = &"SummaryHint"
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SummaryHintText"
-text = "Touchez l'écran pour continuer"
+text = "Touche l'écran pour continuer"
 horizontal_alignment = 1

@@ -146,7 +146,7 @@ func test_economy_toggle_is_in_graphics_with_its_help_text() -> void:
 	var view := _build().control(GameSettings.ECONOMY)
 	assert_eq(view.kind, SettingControlView.Kind.TOGGLE)
 	assert_eq(view.label, "Lumière d'ambiance", "pas de doublon avec la qualité « Économie »")
-	assert_eq(view.detail, "Désactivez-la pour plus de fluidité sur les petits téléphones.")
+	assert_eq(view.detail, "Désactive-la pour plus de fluidité sur les petits téléphones.")
 	assert_false(view.value, "valeur du réglage economy")
 	assert_true(view.inverted)
 	assert_eq(view.value_text, SettingsViews.ON_TEXT, "rendu normal : lumière activée")

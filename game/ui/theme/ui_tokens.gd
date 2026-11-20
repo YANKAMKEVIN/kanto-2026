@@ -742,7 +742,7 @@ const SUMMARY_STATS_PAD_H := 20
 const SUMMARY_STATS_PAD_V := 8
 ## Barre d'XP du bilan : plus épaisse que celle de la carte de combat.
 const SUMMARY_BAR_HEIGHT := 14
-## Consigne « Touchez l'écran pour continuer » : capsule discrète sous la carte.
+## Consigne « Touche l'écran pour continuer » : capsule discrète sous la carte.
 const SUMMARY_HINT_FONT := FONT_BODY
 const SUMMARY_HINT_BG := PANEL_BG
 const SUMMARY_HINT_PAD_H := 32
@@ -1499,7 +1499,7 @@ const EVOLUTION_REVERT := 0.6
 const EVOLUTION_TEXT_IN := 0.35
 const EVOLUTION_TEXT_OUT := 0.15
 const EVOLUTION_TEXT_RISE := 18.0
-## Consigne « Touchez l'écran… » : apparition puis respiration (période, opacité basse).
+## Consigne « Touche l'écran… » : apparition puis respiration (période, opacité basse).
 const EVOLUTION_HINT_IN := 0.3
 const EVOLUTION_HINT_PERIOD := 1.4
 const EVOLUTION_HINT_DIM := 0.45

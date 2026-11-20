@@ -80,7 +80,7 @@ extends RefCounted
 ## Bilan de fin de combat (demande n° 1) : libellés courts, sans événement — « summary_exp »
 ## ([method summary_exp], « +11 XP »), « summary_level » ([method summary_level], « Nv. 9 »),
 ## « summary_stat » ({stat} : nom court de « stat_labels », {amount} ; [method summary_stats] :
-## « PV +2 · Attaque +1 »), « summary_continue » (consigne « Touchez l'écran pour continuer »).
+## « PV +2 · Attaque +1 »), « summary_continue » (consigne « Touche l'écran pour continuer »).
 ## Évolution (jalon 9, lot verrouillé le 2026-10-07, bloc B) : sans événement du moteur ;
 ## [EvolutionDirector] les demande à [method line_for] avec un événement qui porte le nom du
 ## Pokémon [b]d'avant[/b] l'évolution — « evolution_started » (« Quoi ? {pokemon} évolue ! »),
