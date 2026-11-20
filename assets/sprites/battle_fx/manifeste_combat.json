@@ -1,0 +1,166 @@
+{
+ "flipbooks": {
+  "etoile_choc": {
+   "fichier": "fb_etoile_choc.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "explosion_choc": {
+   "fichier": "fb_explosion_choc.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "arc_tranchant": {
+   "fichier": "fb_arc_tranchant.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "arc_rasant": {
+   "fichier": "fb_arc_rasant.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "arc_circulaire": {
+   "fichier": "fb_arc_circulaire.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "onde_sol": {
+   "fichier": "fb_onde_sol.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  },
+  "trainee_vitesse": {
+   "fichier": "fb_trainee_vitesse.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": true
+  },
+  "aura_combat": {
+   "fichier": "fb_aura_combat.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "garde_choc": {
+   "fichier": "fb_garde_choc.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 320,
+   "melange": "add",
+   "boucle": true
+  },
+  "nuage_poussiere": {
+   "fichier": "fb_nuage_poussiere.webp",
+   "images": 16,
+   "colonnes": 4,
+   "taille": 384,
+   "melange": "norm",
+   "boucle": false
+  }
+ },
+ "particules": {
+  "caillou_ocre": {
+   "fichier": "p_caillou_ocre.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "motte_ocre": {
+   "fichier": "p_motte_ocre.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "poussiere_ocre": {
+   "fichier": "p_poussiere_ocre.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclat_roche": {
+   "fichier": "p_eclat_roche.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "fumee_choc": {
+   "fichier": "p_fumee_choc.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "trait_elan": {
+   "fichier": "p_trait_elan.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "eclat_creme": {
+   "fichier": "p_eclat_creme.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "arc_court": {
+   "fichier": "p_arc_court.webp",
+   "taille": 192,
+   "melange": "norm"
+  },
+  "etincelle_choc": {
+   "fichier": "p_etincelle_choc.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "eclat_choc_blanc": {
+   "fichier": "p_eclat_choc_blanc.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "flammeche_aura": {
+   "fichier": "p_flammeche_aura.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "scintille_choc": {
+   "fichier": "p_scintille_choc.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "braise_aura": {
+   "fichier": "p_braise_aura.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "lueur_choc": {
+   "fichier": "p_lueur_choc.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "eclair_riposte": {
+   "fichier": "p_eclair_riposte.webp",
+   "taille": 192,
+   "melange": "add"
+  },
+  "contact_choc": {
+   "fichier": "p_contact_choc.webp",
+   "taille": 192,
+   "melange": "add"
+  }
+ }
+}

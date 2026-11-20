@@ -585,7 +585,7 @@
 			"name": "Combat", "target": "foe",
 			"_doc": "refonte Combat, direction A « impact peint » (2026-11-20, docs/tech/attaques-combat.md) : course de Contact, puis la marque propre de l'attaque (variante d'impact : arc en croissant, arc rasant, arc circulaire, plongeon, ruée, étoile) ; étoiles et ondes blanc crème aux bords déchirés, touches orange, poussière ocre. La variante d'impact porte aussi la taille, la secousse et la lumière.",
 			"bricks": {"launch": "crouch", "travel": "dash", "impact": "variant"},
-			"phases": {"anticipation": 0.25, "travel": 0.25, "impact": 0.35, "return": 0.15},
+			"phases": {"anticipation": 0.2, "travel": 0.2, "impact": 0.5, "return": 0.1},
 			"world": {"light": "#FFE6B8", "light_peak": 0.35, "flashes": 1, "dust": true},
 			"camera": {"zoom": 1.03, "shake": 3.5},
 			"fx": {"palette": ["#FFFFFF", "#FFD9A0", "#A8743C"], "particles": 26, "art": {"dust": "poussiere_ocre", "particle": "eclat_creme", "rise": "etincelle_choc", "fallout": "fumee_choc"}}
@@ -597,7 +597,7 @@
 			"phases": {"anticipation": 0.15, "travel": 0.15, "impact": 0.55, "return": 0.15},
 			"world": {"light": "#FFFFFF", "light_peak": 0.0, "flashes": 0, "dust": true},
 			"camera": {"zoom": 1.04, "shake": 6.0},
-			"fx": {"palette": ["#FFFFFF", "#FFD9A0", "#A8743C"], "particles": 30, "impact_size": 1.6, "art": {"dust": "poussiere_ocre", "particle": "caillou", "rise": "motte_terre", "fallout": "poussiere_ocre"}}
+			"fx": {"palette": ["#FFFFFF", "#FFD9A0", "#A8743C"], "particles": 30, "impact_size": 2.2, "art": {"dust": "poussiere_ocre", "particle": "caillou_ocre", "rise": "motte_ocre", "fallout": "poussiere_ocre"}}
 		},
 		"fissure": {
 			"name": "Fissure", "target": "foe",
@@ -742,15 +742,15 @@
 		"pince_masse": {"name": "Pince-Masse", "brick": "pincer_smash", "art": "pince_eau", "shake": 6.0, "roles": {"particle": "goutte_claire", "splash": "gerbe_eau"}, "_doc": "Pince-Masse (vague 2) : une grosse pince s'abat sur la cible, éclaboussure."},
 		"cascade": {"name": "Cascade", "brick": "waterfall", "art": "chute_eau", "shake": 5.0, "roles": {"particle": "goutte_claire", "splash": "gerbe_eau"}, "_doc": "Cascade (vague 2) : une colonne d'eau tombe sur la cible, éclaboussure."},
 		"atlas": {"name": "Atlas", "brick": "toss", "art": "onde_sol", "_doc": "Frappe Atlas (vague 2) : la cible est soulevée puis projetée au sol ; refonte Combat : onde de choc au sol peinte (onde_sol)."},
-		"karate": {"name": "Poing Karaté", "brick": "slash_arc", "art": "arc_tranchant", "impact_size": 1.3, "shake": 3.5, "roles": {"burst": "etoile_choc", "particle": "eclat_creme"}, "_doc": "refonte Combat : un arc en croissant s'abat en diagonale sur la cible, petite étoile au bout."},
-		"balayage": {"name": "Balayage", "brick": "low_sweep", "art": "arc_rasant", "impact_size": 1.3, "shake": 3.5, "roles": {"burst": "nuage_poussiere", "particle": "caillou"}, "_doc": "refonte Combat : un arc rasant balaie les pieds de la cible, poussière soulevée."},
-		"double_pied": {"name": "Double Pied", "brick": "impact_star", "art": "etoile_choc", "impact_size": 0.9, "shake": 2.5, "roles": {"particle": "eclat_lumiere"}, "_doc": "refonte Combat : une petite étoile d'éclat par coup (modificateur multi), la plus petite des attaques Combat."},
-		"mawashi": {"name": "Mawashi Geri", "brick": "spin_arc", "art": "arc_circulaire", "impact_size": 1.5, "shake": 4.0, "roles": {"burst": "etoile_choc", "particle": "arc_court"}, "_doc": "refonte Combat : un grand arc circulaire tourne autour de la cible, étoile d'éclat."},
-		"pied_saute": {"name": "Pied Sauté", "brick": "plunge", "art": "explosion_choc", "impact_size": 1.8, "shake": 5.0, "zoom": 1.05, "light_peak": 0.5, "roles": {"streak": "trainee_vitesse", "ring": "onde_sol", "particle": "eclat_roche"}, "_doc": "refonte Combat : une traînée plonge d'en haut sur la cible, explosion d'éclat, onde au sol."},
-		"pied_voltige": {"name": "Pied Voltige", "brick": "plunge", "art": "explosion_choc", "impact_size": 2.5, "shake": 6.0, "zoom": 1.06, "light_peak": 0.65, "flashes": 2, "roles": {"streak": "trainee_vitesse", "ring": "onde_sol", "burst": "nuage_poussiere", "particle": "eclat_roche"}, "_doc": "refonte Combat : la plus grosse ; même plongeon que Pied Sauté, explosion énorme, onde qui traverse le terrain, nuage de poussière."},
-		"sacrifice": {"name": "Sacrifice", "brick": "rush", "art": "explosion_choc", "impact_size": 1.9, "shake": 5.0, "zoom": 1.04, "light_peak": 0.45, "roles": {"streak": "trainee_vitesse", "particle": "eclat_roche"}, "_doc": "refonte Combat : une traînée de vitesse suit la ruée du lanceur, grosse explosion d'éclat ; le contrecoup reste celui du modificateur."},
-		"contre": {"name": "Contre", "brick": "impact_star", "art": "etoile_choc", "impact_size": 1.2, "shake": 3.5, "roles": {"aura": "aura_combat", "particle": "flammeche_aura"}, "_doc": "refonte Combat : une aura flamboyante éclate autour du lanceur pendant l'élan, puis étoile d'éclat."},
-		"riposte": {"name": "Riposte", "brick": "impact_star", "art": "contact_choc", "impact_size": 1.3, "shake": 3.5, "roles": {"aura": "garde_choc", "particle": "eclair_riposte"}, "_doc": "refonte Combat : une garde de lumière se forme autour du lanceur pendant l'élan, puis éclair de choc et éclairs renvoyés sur la cible."},
+		"karate": {"name": "Poing Karaté", "brick": "slash_arc", "art": "arc_tranchant", "impact_size": 1.9, "shake": 3.5, "roles": {"burst": "etoile_choc", "particle": "eclat_creme"}, "_doc": "refonte Combat : un arc en croissant s'abat en diagonale sur la cible, petite étoile au bout."},
+		"balayage": {"name": "Balayage", "brick": "low_sweep", "art": "arc_rasant", "impact_size": 1.9, "shake": 3.5, "roles": {"burst": "nuage_poussiere", "particle": "caillou_ocre"}, "_doc": "refonte Combat : un arc rasant balaie les pieds de la cible, poussière soulevée."},
+		"double_pied": {"name": "Double Pied", "brick": "impact_star", "art": "etoile_choc", "impact_size": 1.3, "shake": 2.5, "roles": {"particle": "eclat_choc_blanc"}, "_doc": "refonte Combat : une petite étoile d'éclat par coup (modificateur multi), la plus petite des attaques Combat."},
+		"mawashi": {"name": "Mawashi Geri", "brick": "spin_arc", "art": "arc_circulaire", "impact_size": 2.2, "shake": 4.0, "roles": {"burst": "etoile_choc", "particle": "arc_court"}, "_doc": "refonte Combat : un grand arc circulaire tourne autour de la cible, étoile d'éclat."},
+		"pied_saute": {"name": "Pied Sauté", "brick": "plunge", "art": "explosion_choc", "impact_size": 2.6, "shake": 5.0, "zoom": 1.05, "light_peak": 0.5, "roles": {"streak": "trainee_vitesse", "ring": "onde_sol", "particle": "eclat_roche"}, "_doc": "refonte Combat : une traînée plonge d'en haut sur la cible, explosion d'éclat, onde au sol."},
+		"pied_voltige": {"name": "Pied Voltige", "brick": "plunge", "art": "explosion_choc", "impact_size": 3.4, "shake": 6.0, "zoom": 1.06, "light_peak": 0.65, "flashes": 2, "roles": {"streak": "trainee_vitesse", "ring": "onde_sol", "burst": "nuage_poussiere", "particle": "eclat_roche"}, "_doc": "refonte Combat : la plus grosse ; même plongeon que Pied Sauté, explosion énorme, onde qui traverse le terrain, nuage de poussière."},
+		"sacrifice": {"name": "Sacrifice", "brick": "rush", "art": "explosion_choc", "impact_size": 2.7, "shake": 5.0, "zoom": 1.04, "light_peak": 0.45, "roles": {"streak": "trainee_vitesse", "particle": "eclat_roche"}, "_doc": "refonte Combat : une traînée de vitesse suit la ruée du lanceur, grosse explosion d'éclat ; le contrecoup reste celui du modificateur."},
+		"contre": {"name": "Contre", "brick": "impact_star", "art": "etoile_choc", "impact_size": 1.7, "shake": 3.5, "roles": {"aura": "aura_combat", "particle": "flammeche_aura"}, "_doc": "refonte Combat : une aura flamboyante éclate autour du lanceur pendant l'élan, puis étoile d'éclat."},
+		"riposte": {"name": "Riposte", "brick": "impact_star", "art": "contact_choc", "impact_size": 1.8, "shake": 3.5, "roles": {"aura": "garde_choc", "particle": "eclair_riposte"}, "_doc": "refonte Combat : une garde de lumière se forme autour du lanceur pendant l'élan, puis éclair de choc et éclairs renvoyés sur la cible."},
 		"poing": {"name": "Poing", "brick": "punch", "art": "poing", "_doc": "Poings élémentaires (vague 2) : le poing peint frappe, l'élément vient de la famille poing."}
 	},
 	"modifiers": {

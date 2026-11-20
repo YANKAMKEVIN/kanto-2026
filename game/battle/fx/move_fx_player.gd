@@ -233,12 +233,14 @@ const CASCADE_SIZE := Vector2(1.05, 1.0)
 const TOSS_HEIGHT: float = 0.26
 const TOSS_SLAM: float = 0.62
 ## Refonte Combat [D] (2026-11-20) : arcs (parts de la marque), arc rasant (largeur, hauteur),
-## plongeon (hauteur de départ en hauteurs d'écran, part de l'impact pour la chute, épaisseur).
+## plongeon (hauteur de départ en hauteurs d'écran, part de l'impact pour la chute, épaisseur,
+## onde au sol en parts de la marque).
 const MARTIAL_ARC: float = 1.5
 const MARTIAL_SWEEP: Vector2 = Vector2(2.4, 0.8)
 const PLUNGE_HEIGHT: float = 0.55
 const PLUNGE_FALL: float = 0.25
 const PLUNGE_WIDTH: float = 0.45
+const PLUNGE_RING: Vector2 = Vector2(1.8, 0.5)
 ## Os : arc de Massd'Os (hauteurs d'écran), tours en vol, courbe d'Osmerang (part de la distance).
 const BONE_ARC: float = 0.3
 const BONE_SPIN: float = 2.5
@@ -3339,8 +3341,9 @@ func _pose_martial(stamp: StringName, k: float, base: float) -> void:
 					1.0, false, strike)
 				var ring := _plan.art.get(&"ring", &"") as StringName
 				if not ring.is_empty():
-					_show_flip(Flip.WAVE_A, ring, _feet(rect), Vector2(2.6, 0.75) * base * lerpf(0.6, 1.5,
-						_ease_out(strike)), 0.0, 1.0, false, strike)
+					# L'onde s'élargit déjà dans son flipbook : à peine agrandie ici.
+					_show_flip(Flip.WAVE_A, ring, _feet(rect), PLUNGE_RING * base * lerpf(0.9, 1.1,
+						strike), 0.0, 1.0, false, strike)
 				if not burst.is_empty():
 					_show_flip(Flip.EXTRA_A, burst, _feet(rect) + Vector2(0.0, -0.3 * base), Vector2.ONE
 						* base * 1.4, 0.0, 1.0, false, strike)

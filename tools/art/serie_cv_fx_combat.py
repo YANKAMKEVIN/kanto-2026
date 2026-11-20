@@ -78,18 +78,18 @@ FLIPBOOKS = [
 
 b.PARTICULES = [
 	("part_g", "norm", [
-		("caillou", "UN petit caillou gris ocre arrondi, peint, reflet clair"),
-		("motte_terre", "une petite motte de terre brune qui s'effrite"),
+		("caillou_ocre", "UN petit caillou gris ocre arrondi, peint, reflet clair"),
+		("motte_ocre", "une petite motte de terre brune qui s'effrite"),
 		("poussiere_ocre", "une bouffée de poussière ocre et brun clair, volutes douces"),
 		("eclat_roche", "UN éclat de roche anguleux gris brun, arêtes claires"),
 		("fumee_choc", "une volute de fumée crème claire, épaisse, bords effilochés"),
-		("trait_vitesse", "UN long trait de pinceau blanc et crème horizontal, effilé aux deux bouts, liseré orange"),
+		("trait_elan", "UN long trait de pinceau blanc et crème horizontal, effilé aux deux bouts, liseré orange"),
 		("eclat_creme", "UN éclat blanc et crème en forme de pointe, aux bords déchirés, liseré orange"),
 		("arc_court", "UN petit arc de pinceau blanc et crème en croissant, liseré orange"),
 	]),
 	("part_h", "add", [
 		("etincelle_choc", "une étincelle blanche et orange à quatre branches fines"),
-		("eclat_lumiere", "une petite étoile de lumière blanche à huit branches, halo orange doux"),
+		("eclat_choc_blanc", "une petite étoile de lumière blanche à huit branches, halo orange doux"),
 		("flammeche_aura", "UNE flammèche de lumière orange vif et jaune qui monte, pointe vers le haut"),
 		("scintille_choc", "trois petits scintillements blancs en étoile"),
 		("braise_aura", "une petite braise ronde orange vif, halo doux"),
@@ -104,7 +104,7 @@ b.FLIPBOOKS = [(i, m, t, c) for i, m, _ca, _o, _co, t, c in FLIPBOOKS]
 eau._INFO.clear()
 eau._INFO.update({i: (ca, o, co) for i, _m, ca, o, co, _t, _c in FLIPBOOKS})
 eau._BORDS.clear()
-eau._BORDS.add("nuage_poussiere")
+eau._BORDS.update({"nuage_poussiere", "arc_rasant"})
 eau._QUATRE_COLONNES.clear()
 eau.ADN_A = ADN_A
 
