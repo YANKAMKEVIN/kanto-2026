@@ -27,6 +27,11 @@ RACINE = Path(__file__).resolve().parents[1]
 ESPECES = RACINE / "data/pokemon/species"
 SORTIE = RACINE / "data/pokemon/tm_compatibility.json"
 GROUPE = "red-blue"
+## Espèces de Johto (n° 152 et plus, absentes de Rouge / Bleu) : CT et CS d'Or / Argent qui
+## enseignent une capacité des CT ou CS de Kanto (décision de Kevin du 2026-11-20, étape 1 ; les
+## CT propres à Johto viendront avec leur dossier).
+GROUPE_JOHTO = "gold-silver"
+PREMIER_JOHTO = 152
 METHODE = "machine"
 
 
@@ -42,6 +47,8 @@ def _ident(identifiant_pokeapi: str) -> str:
 def main() -> None:
 	dossier = Path(sys.argv[1])
 	groupe = next(l["id"] for l in _lire(dossier, "version_groups") if l["identifier"] == GROUPE)
+	groupe_johto = next(l["id"] for l in _lire(dossier, "version_groups")
+		if l["identifier"] == GROUPE_JOHTO)
 	methode = next(l["id"] for l in _lire(dossier, "pokemon_move_methods") if l["identifier"] == METHODE)
 	capacites = {l["id"]: _ident(l["identifier"]) for l in _lire(dossier, "moves")}
 	pokemon = {l["id"]: _ident(l["identifier"]) for l in _lire(dossier, "pokemon")}
@@ -71,9 +78,14 @@ def main() -> None:
 	compat: dict[str, set[int]] = {espece: set() for espece in especes}
 	compat_cs: dict[str, set[int]] = {espece: set() for espece in especes}
 	for ligne in _lire(dossier, "pokemon_moves"):
-		if ligne["version_group_id"] != groupe or ligne["pokemon_move_method_id"] != methode:
+		if ligne["pokemon_move_method_id"] != methode:
 			continue
 		espece = pokemon.get(ligne["pokemon_id"], "")
+		if espece not in toutes:
+			continue
+		attendu = groupe_johto if toutes[espece]["dex"] >= PREMIER_JOHTO else groupe
+		if ligne["version_group_id"] != attendu:
+			continue
 		numero = ct_par_capacite.get(ligne["move_id"])
 		if espece in compat and numero is not None:
 			compat[espece].add(numero)
@@ -87,7 +99,9 @@ def main() -> None:
 			"espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). "
 			"Objets CT existants : CT34 (Patience, « bide », J11) et CT01 (Ultimapoing, « mega_punch », "
 			"J12) ; les autres CT arrivent avec leur capacité et leur lieu. « hms » / « hm_species » "
-			"(jalon 16) : CS de Rouge/Bleu, mêmes règles (CS01 Coupe, « hm01 »). Fichier généré : le "
+			"(jalon 16) : CS de Rouge/Bleu, mêmes règles (CS01 Coupe, « hm01 »). Espèces de Johto "
+			"(n° 152 et plus, 2026-11-20) : les CT et CS de Kanto dont Or/Argent enseignait la "
+			"capacité par CT ou CS. Fichier généré : le "
 			"régénérer après une fusion, jamais le fusionner à la main."),
 		"tms": dict(sorted(tms.items())),
 		"species": {espece: sorted(compat[espece]) for espece in especes},

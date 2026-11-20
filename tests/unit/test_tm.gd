@@ -58,8 +58,10 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	# Scarabrute, Tauros, les quatre ; jalon 25 (T7) : les quatre, toutes compatibles ;
 	# jalon 26 (T3) : Lokhlass et Alakazam ; jalon 27 (T3) : M. Mime, Kicklee, Tygnon (ses emprunts
 	# aux J22 et J24 sont ceux de `main`), tous compatibles ; jalon 28 (T3) : Rhinoféros, compatible
-	# (Machopeur est celui du J22, Tauros celui du J23).
-	assert_eq(count, 131, "131 espèces sur 136 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
+	# (Machopeur est celui du J22, Tauros celui du J23). 2026-11-20 : les 14 espèces ajoutées après
+	# la table (Électhor, Mewtwo, Mew, dragons…), toutes compatibles (Métamorph n'apprend rien) ; Johto
+	# n'en ajoute aucune (pas de Patience par CT dans Or / Argent).
+	assert_eq(count, 145, "145 espèces (131 sur 136 avant le 2026-11-20, + 14 ajoutées tard) (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
 		+ " 13, + 3 du jalon 14, + 2 du jalon 15, + 8 du jalon 17, + 6 du jalon 19, + 11 du jalon 20"
 		+ ", + 14 du jalon 22, + 17 du jalon 24, + Ronflex, + 4 du jalon 23, + 4 du jalon 25"
 		+ ", + 2 du jalon 26, + 3 du jalon 27, + 1 du jalon 28)")
@@ -160,3 +162,22 @@ func test_tm_entries_are_validated() -> void:
 	assert_eq(lib.get_item(&"priced").price, 3000)
 	assert_false(lib.get_item(&"priced").is_sellable())
 	assert_push_error_count(6)
+
+
+## Garde (2026-11-20, Électhor sans aucune CT) : chaque espèce de Kanto a son entrée dans la table
+## générée (`tools/gen_tm_compatibility.py`, à relancer quand une espèce est ajoutée). Métamorph
+## n'apprend aucune CT, mais son entrée existe (liste vide).
+func test_every_species_has_a_tm_entry() -> void:
+	var text := FileAccess.get_file_as_string("res://data/pokemon/tm_compatibility.json")
+	var table: Dictionary = JSON.parse_string(text)
+	var missing: Array[StringName] = []
+	for id: StringName in _data.get_species_ids():
+		var species := _data.get_species(id)
+		if not table["species"].has(String(id)):
+			missing.append(id)
+	assert_eq(missing, [] as Array[StringName], "espèces sans entrée de CT")
+	for pair: Array in [[&"zapdos", 24], [&"zapdos", 25], [&"moltres", 38], [&"mewtwo", 29],
+			[&"dragonite", 13], [&"machamp", 26],
+			# Johto (2026-11-20) : les CT de Kanto dont Or / Argent enseignait la capacité.
+			[&"typhlosion", 38], [&"feraligatr", 14], [&"meganium", 22], [&"tyranitar", 26]]:
+		assert_true(_data.can_learn_tm(pair[0], pair[1]), "%s / CT%d" % pair)
