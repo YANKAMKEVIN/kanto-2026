@@ -55,6 +55,6 @@
 	"exp_all": {
 		"name": "Multi Exp", "plural": "Multi Exp", "feminine": false,
 		"category": "key",
-		"description": "Tant qu'il est dans le Sac, la moitié de l'expérience gagnée va à toute l'équipe."
+		"description": "Tant qu'il est dans le Sac, chaque Pokémon de l'équipe qui ne combat pas reçoit la moitié de l'expérience gagnée."
 	}
 }

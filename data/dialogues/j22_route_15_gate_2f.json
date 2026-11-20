@@ -43,7 +43,7 @@
 	"route_15_gate_2f_exp_all_use": {
 		"speaker": "Assistant",
 		"pages": [
-			"Garde-le dans ton Sac : la moitié de l'expérience gagnée va à toute l'équipe.",
+			"Garde-le dans ton Sac : chaque Pokémon qui ne combat pas reçoit la moitié de l'expérience gagnée.",
 			"Même aux Pokémon qui ne combattent pas."
 		]
 	},
