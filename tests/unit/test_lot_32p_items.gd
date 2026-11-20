@@ -199,15 +199,18 @@ func test_itemfinder_dialogues_exist() -> void:
 
 # --- Multi Exp --------------------------------------------------------------------------------
 
-func test_distribute_keeps_the_total() -> void:
+func test_distribute_modern_exp_share() -> void:
 	var a := _mon(&"pikachu", 10)
 	var b := _mon(&"rattata", 10)
 	var c := _mon(&"pidgey", 10)
 	var plain := ExpCalc.distribute(21, [a] as Array[Pokemon], [a, b, c] as Array[Pokemon], false)
 	assert_eq(plain, {a: 21} as Dictionary[Pokemon, int])
 	var shared := ExpCalc.distribute(21, [a] as Array[Pokemon], [a, b, c] as Array[Pokemon], true)
-	assert_eq(shared, {a: 11 + 4, b: 3, c: 3} as Dictionary[Pokemon, int],
-		"moitié (11) au participant, 10 à toute l'équipe")
+	assert_eq(shared, {a: 21, b: 10, c: 10} as Dictionary[Pokemon, int],
+		"Multi Exp moderne (2026-11-20) : le participant garde tout, chaque autre la moitié")
+	var two := ExpCalc.distribute(21, [a, b] as Array[Pokemon], [a, b, c] as Array[Pokemon], true)
+	assert_eq(two, {a: 11, b: 10, c: 10} as Dictionary[Pokemon, int],
+		"deux participants se partagent tout ; le banc reçoit la moitié du total")
 
 
 func test_battle_shares_exp_with_the_bench_when_exp_all_is_carried() -> void:
@@ -229,8 +232,8 @@ func test_battle_shares_exp_with_the_bench_when_exp_all_is_carried() -> void:
 	battle.get_foe_side().active.change_stage(&"spe", -6)
 	var before := charmander.experience
 	battle.submit(BattleAction.move(0))
-	assert_eq(charmander.experience - before, 16, "21 XP : 11 + la moitié de 10")
-	assert_eq(bench.experience - bench_exp, 5, "le Pokémon resté au banc gagne sa part")
+	assert_eq(charmander.experience - before, 21, "21 XP : le combattant garde tout")
+	assert_eq(bench.experience - bench_exp, 10, "le Pokémon resté au banc gagne la moitié")
 
 
 # --- Sac --------------------------------------------------------------------------------------

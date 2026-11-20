@@ -69,21 +69,23 @@ static func progress(pokemon: Pokemon, data: PokemonData) -> float:
 	return clampf(float(pokemon.experience - low) / float(high - low), 0.0, 1.0)
 
 
-## Parts d'XP de [param total] : [param participants] (debout) se le partagent ; avec
-## [param exp_all], ils n'en partagent que la moitié (arrondie au-dessus), l'autre moitié allant à
-## [param members] (l'équipe debout, participants compris). Renvoie Pokémon → XP, dans l'ordre des
-## participants puis de l'équipe ; la somme vaut [param total] (vide sans participant).
+## Parts d'XP de [param total] : [param participants] (debout) se le partagent. Avec
+## [param exp_all] (Multi Exp **moderne**, décision de Kevin du 2026-11-20, au lieu de la règle de
+## Rouge / Bleu qui divisait la moitié entre toute l'équipe) : les participants gardent tout, et
+## chaque autre membre de [param members] (l'équipe debout) reçoit **la moitié de [param total]**
+## pour lui seul (arrondie à l'inférieur, au moins 1). Renvoie Pokémon → XP, dans l'ordre des
+## participants puis de l'équipe (vide sans participant).
 static func distribute(total: int, participants: Array[Pokemon], members: Array[Pokemon],
 		exp_all: bool) -> Dictionary[Pokemon, int]:
 	var result: Dictionary[Pokemon, int] = {}
 	if participants.is_empty():
 		return result
-	var team_half := total / 2 if exp_all and not members.is_empty() else 0
-	var shares := split(total - team_half, participants.size())
+	var shares := split(total, participants.size())
 	for i: int in participants.size():
 		result[participants[i]] = shares[i]
-	if team_half > 0:
-		var team_shares := split(team_half, members.size())
-		for i: int in members.size():
-			result[members[i]] = int(result.get(members[i], 0)) + team_shares[i]
+	if exp_all:
+		var bench_share := maxi(total / 2, 1) if total > 0 else 0
+		for member: Pokemon in members:
+			if not result.has(member) and bench_share > 0:
+				result[member] = bench_share
 	return result
