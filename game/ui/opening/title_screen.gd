@@ -8,7 +8,7 @@ extends CanvasLayer
 ##   décidé par Kevin le 2026-11-03, J34) ; version du build en bas du même côté ;
 ## - colonne de cartes à droite (à gauche en mode gaucher, [method set_left_handed], le logo passe
 ##   alors à droite) : **Continuer** (la plus grande : buste, prénom, lieu, temps de jeu, badges,
-##   captures), **Nouvelle partie**, **Paramètres** ; l'entrée mise en avant porte un liseré doré ;
+##   captures, puis l'équipe en petites vignettes rondes), **Nouvelle partie**, **Paramètres** ; l'entrée mise en avant porte un liseré doré ;
 ## - message d'état de la sauvegarde (corrompue, plus récente) sous la colonne ;
 ## - confirmation de nouvelle partie : le choix à deux cartes ([ChoiceCards]) ;
 ## - carte « Nouveautés » ([method show_whats_new]) : au premier lancement après une mise à jour,
@@ -360,6 +360,13 @@ func get_settings_backdrop() -> ColorRect:
 	return _settings_backdrop
 
 
+## Nombre de vignettes de l'équipe sur la carte Continuer (0 sans carte ou sans équipe).
+func get_party_icon_count() -> int:
+	var card := get_entry_button(TitleMenuModel.ENTRY_CONTINUE)
+	var row := card.find_child("Team", true, false) if card != null else null
+	return row.get_child_count() if row != null else 0
+
+
 ## Tous les textes visibles du titre (hors Paramètres et confirmation), dans l'ordre de l'arbre.
 func get_texts() -> PackedStringArray:
 	var texts := PackedStringArray()
@@ -582,7 +589,33 @@ func _make_continue_card(summary: SaveSummary) -> Button:
 			var stat := _stat_line(line[0], line[1])
 			stat.name = line[2]
 			texts.add_child(stat)
+	if not summary.party_dex.is_empty():
+		texts.add_child(_party_row(summary.party_dex))
 	return card
+
+
+## L'équipe de la partie, sous les statistiques : une vignette ronde par Pokémon (six au plus),
+## dans l'ordre de l'équipe. Purement visuelle.
+func _party_row(party_dex: Array[int]) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.name = "Team"
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override(&"separation", UiTokens.TITLE_CONTINUE_PARTY_GAP)
+	var side := UiTokens.TITLE_CONTINUE_PARTY_ICON
+	for number: int in party_dex:
+		var art := MenuArt.pokemon_thumbnail(number)
+		if art == null:
+			continue
+		var disc := PanelContainer.new()
+		disc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var box := StyleBoxFlat.new()
+		box.bg_color = UiTokens.TITLE_CONTINUE_PARTY_BG
+		box.set_corner_radius_all(side / 2)
+		box.anti_aliasing = true
+		disc.add_theme_stylebox_override(&"panel", box)
+		disc.add_child(_icon(art, side))
+		row.add_child(disc)
+	return row
 
 
 ## Carte « Nouveautés » : titre en capitales, une ligne par nouveauté (retour à la ligne), puis la

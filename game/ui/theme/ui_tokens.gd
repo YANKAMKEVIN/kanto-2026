@@ -1893,6 +1893,11 @@ const TITLE_CONTINUE_STAT_FONT := FONT_BODY
 const TITLE_CONTINUE_STAT_ICON := 40
 const TITLE_CONTINUE_LINE_GAP := 8
 const TITLE_CONTINUE_DIVIDER := Color(0.36, 0.55, 0.85, 0.7)
+## Équipe sur la carte Continuer [D] : vignettes rondes sous les statistiques (six tiennent dans
+## la largeur des textes : 6 × 52 + 5 × 8 = 352), sur un disque clair translucide.
+const TITLE_CONTINUE_PARTY_ICON := 52
+const TITLE_CONTINUE_PARTY_GAP := 8
+const TITLE_CONTINUE_PARTY_BG := Color(1.0, 1.0, 1.0, 0.12)
 ## Message d'état de la sauvegarde (corrompue, plus récente) : sous la colonne, verre sombre.
 const TITLE_MESSAGE_FONT := FONT_CAPTION
 const TITLE_MESSAGE_BG := Color(0.04, 0.07, 0.11, 0.86)

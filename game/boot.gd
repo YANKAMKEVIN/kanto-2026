@@ -1223,6 +1223,13 @@ func _start_game_state() -> bool:
 	return true
 
 
+## Numéro de Pokédex de [param species] (0 si l'espèce est inconnue) : vignettes de l'équipe sur
+## la carte Continuer du titre.
+func _dex_number_of(species: StringName) -> int:
+	var data := _pokemon.get_species(species)
+	return data.dex if data != null else 0
+
+
 ## L'ouverture (OUV.1) : Bourg Palette en mode décor sous le titre, le directeur lit la sauvegarde
 ## et montre le titre. Le HUD d'exploration est caché jusqu'au démarrage de la partie.
 func _start_opening() -> void:
@@ -1245,7 +1252,7 @@ func _start_opening() -> void:
 	for badge: StringName in _badges.ids():
 		badge_flags.append(_badges.flag(badge))
 	_opening.setup(save_system, _build_new_game, _fade, _settings, _profile_device_quality(),
-		_zones.zone_name_of, badge_flags, _badges.ids())
+		_zones.zone_name_of, badge_flags, _badges.ids(), _dex_number_of)
 	_opening.set_dialogue_box(_dialogue_box)
 	# Carte « Nouveautés » : seulement en jeu réel (même garde que le fichier des réglages).
 	if whats_new_store == null and settings_store != null and get_tree().current_scene == self:

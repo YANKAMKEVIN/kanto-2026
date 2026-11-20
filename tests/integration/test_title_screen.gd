@@ -253,6 +253,47 @@ func test_version_label_sits_on_the_logo_side_outside_the_column() -> void:
 	assert_gt(label.get_global_rect().position.x, 2340 / 2.0, "mode gaucher : côté droit, avec le logo")
 
 
+# --- Équipe en vignettes sur la carte Continuer ------------------------------------------------
+
+func test_continue_card_shows_the_party_as_small_round_thumbnails() -> void:
+	var summary := _make_summary()
+	summary.party_dex = [4, 16, 19, 25, 1, 7]
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID, summary))
+	assert_eq(screen.get_party_icon_count(), 6, "une vignette par Pokémon de l'équipe")
+	var card := screen.get_entry_button(&"continue")
+	var row := card.find_child("Team", true, false) as HBoxContainer
+	var stats := card.find_child("PlayTime", true, false) as Control
+	assert_gt(row.get_global_rect().position.y, stats.get_global_rect().position.y,
+		"sous les statistiques")
+	assert_lte(row.get_global_rect().end.x, card.get_global_rect().end.x
+		- UiTokens.TITLE_CARD_PAD_H + 0.5, "six vignettes tiennent dans la carte")
+	assert_lte(row.get_global_rect().end.y, card.get_global_rect().end.y, "dans la carte")
+	for node: Node in row.find_children("*", "Control", true, false):
+		assert_eq((node as Control).mouse_filter, Control.MOUSE_FILTER_IGNORE,
+			"la carte entière reste le bouton")
+
+
+func test_continue_card_without_a_party_has_no_thumbnail_row() -> void:
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID))
+	assert_eq(screen.get_party_icon_count(), 0)
+	assert_null(screen.get_entry_button(&"continue").find_child("Team", true, false))
+
+
+func test_six_thumbnails_still_fit_the_screen_with_large_text() -> void:
+	var settings := GameSettings.new()
+	settings.text_size = GameSettings.TextSize.LARGE
+	UiPrefs.apply(settings)
+	var summary := _make_summary()
+	summary.party_dex = [4, 16, 19, 25, 1, 7]
+	var screen := await _screen_in(_model(OpeningFlow.SaveStatus.VALID, summary), 1920)
+	await wait_process_frames(3)
+	var last := screen.get_entry_button(&"settings")
+	assert_lte(last.get_global_rect().end.y, float(HEIGHT - UiTokens.SAFE_MARGIN),
+		"la colonne tient dans l'écran")
+	assert_gte(screen.get_entry_button(&"continue").get_global_rect().position.y,
+		float(UiTokens.SAFE_MARGIN))
+
+
 # --- Entrée en cascade (logo, puis cartes) et halo qui respire --------------------------------
 
 const TweenClock := preload("res://tests/helpers/tween_clock.gd")
