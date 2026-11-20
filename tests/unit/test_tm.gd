@@ -165,15 +165,17 @@ func test_tm_entries_are_validated() -> void:
 ## Garde (2026-11-20, Électhor sans aucune CT) : chaque espèce de Kanto a son entrée dans la table
 ## générée (`tools/gen_tm_compatibility.py`, à relancer quand une espèce est ajoutée). Métamorph
 ## n'apprend aucune CT, mais son entrée existe (liste vide).
-func test_every_kanto_species_has_a_tm_entry() -> void:
+func test_every_species_has_a_tm_entry() -> void:
 	var text := FileAccess.get_file_as_string("res://data/pokemon/tm_compatibility.json")
 	var table: Dictionary = JSON.parse_string(text)
 	var missing: Array[StringName] = []
 	for id: StringName in _data.get_species_ids():
 		var species := _data.get_species(id)
-		if species.dex <= 151 and not table["species"].has(String(id)):
+		if not table["species"].has(String(id)):
 			missing.append(id)
 	assert_eq(missing, [] as Array[StringName], "espèces sans entrée de CT")
 	for pair: Array in [[&"zapdos", 24], [&"zapdos", 25], [&"moltres", 38], [&"mewtwo", 29],
-			[&"dragonite", 13], [&"machamp", 26]]:
+			[&"dragonite", 13], [&"machamp", 26],
+			# Johto (2026-11-20) : les CT de Kanto dont Or / Argent enseignait la capacité.
+			[&"typhlosion", 38], [&"feraligatr", 14], [&"meganium", 22], [&"tyranitar", 26]]:
 		assert_true(_data.can_learn_tm(pair[0], pair[1]), "%s / CT%d" % pair)

@@ -1,5 +1,5 @@
 {
-	"_doc": "Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData (jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). Objets CT existants : CT34 (Patience, « bide », J11) et CT01 (Ultimapoing, « mega_punch », J12) ; les autres CT arrivent avec leur capacité et leur lieu. « hms » / « hm_species » (jalon 16) : CS de Rouge/Bleu, mêmes règles (CS01 Coupe, « hm01 »). Fichier généré : le régénérer après une fusion, jamais le fusionner à la main.",
+	"_doc": "Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData (jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). Objets CT existants : CT34 (Patience, « bide », J11) et CT01 (Ultimapoing, « mega_punch », J12) ; les autres CT arrivent avec leur capacité et leur lieu. « hms » / « hm_species » (jalon 16) : CS de Rouge/Bleu, mêmes règles (CS01 Coupe, « hm01 »). Espèces de Johto (n° 152 et plus, 2026-11-20) : les CT et CS de Kanto dont Or/Argent enseignait la capacité par CT ou CS. Fichier généré : le régénérer après une fusion, jamais le fusionner à la main.",
 	"tms": {
 		"01": "mega_punch",
 		"02": "razor_wind",
@@ -3222,57 +3222,431 @@
 			49,
 			50
 		],
-		"chikorita": [],
-		"bayleef": [],
-		"meganium": [],
-		"cyndaquil": [],
-		"quilava": [],
-		"typhlosion": [],
-		"totodile": [],
-		"croconaw": [],
-		"feraligatr": [],
-		"sentret": [],
-		"furret": [],
-		"hoothoot": [],
-		"noctowl": [],
-		"crobat": [],
-		"togepi": [],
-		"togetic": [],
-		"mareep": [],
-		"flaaffy": [],
-		"ampharos": [],
-		"marill": [],
-		"azumarill": [],
-		"politoed": [],
-		"espeon": [],
-		"umbreon": [],
-		"murkrow": [],
-		"slowking": [],
+		"chikorita": [
+			6,
+			22,
+			32,
+			44
+		],
+		"bayleef": [
+			6,
+			22,
+			32,
+			44
+		],
+		"meganium": [
+			6,
+			15,
+			22,
+			26,
+			32,
+			44
+		],
+		"cyndaquil": [
+			6,
+			28,
+			32,
+			38,
+			39,
+			44
+		],
+		"quilava": [
+			6,
+			28,
+			32,
+			38,
+			39,
+			44
+		],
+		"typhlosion": [
+			6,
+			15,
+			26,
+			28,
+			32,
+			38,
+			39,
+			44
+		],
+		"totodile": [
+			6,
+			14,
+			28,
+			32,
+			44
+		],
+		"croconaw": [
+			6,
+			14,
+			28,
+			32,
+			44
+		],
+		"feraligatr": [
+			6,
+			14,
+			15,
+			26,
+			28,
+			32,
+			44
+		],
+		"sentret": [
+			6,
+			28,
+			32,
+			39,
+			44
+		],
+		"furret": [
+			6,
+			15,
+			28,
+			32,
+			39,
+			44
+		],
+		"hoothoot": [
+			6,
+			32,
+			39,
+			42,
+			44
+		],
+		"noctowl": [
+			6,
+			15,
+			32,
+			39,
+			42,
+			44
+		],
+		"crobat": [
+			6,
+			15,
+			32,
+			39,
+			44
+		],
+		"togepi": [
+			6,
+			22,
+			29,
+			32,
+			38,
+			39,
+			42,
+			44
+		],
+		"togetic": [
+			6,
+			15,
+			22,
+			29,
+			32,
+			38,
+			39,
+			42,
+			44
+		],
+		"mareep": [
+			6,
+			25,
+			32,
+			39,
+			44
+		],
+		"flaaffy": [
+			6,
+			25,
+			32,
+			39,
+			44
+		],
+		"ampharos": [
+			6,
+			15,
+			25,
+			32,
+			39,
+			44
+		],
+		"marill": [
+			6,
+			14,
+			32,
+			39,
+			44
+		],
+		"azumarill": [
+			6,
+			14,
+			15,
+			32,
+			39,
+			44
+		],
+		"politoed": [
+			6,
+			14,
+			15,
+			26,
+			29,
+			32,
+			44
+		],
+		"espeon": [
+			6,
+			15,
+			29,
+			32,
+			39,
+			42,
+			44
+		],
+		"umbreon": [
+			6,
+			15,
+			29,
+			32,
+			39,
+			42,
+			44
+		],
+		"murkrow": [
+			6,
+			32,
+			39,
+			42,
+			44
+		],
+		"slowking": [
+			6,
+			14,
+			15,
+			26,
+			28,
+			29,
+			32,
+			38,
+			39,
+			42,
+			44
+		],
 		"wobbuffet": [],
-		"steelix": [],
-		"scizor": [],
-		"heracross": [],
-		"sneasel": [],
-		"teddiursa": [],
-		"ursaring": [],
-		"skarmory": [],
-		"houndour": [],
-		"houndoom": [],
-		"kingdra": [],
-		"phanpy": [],
-		"donphan": [],
-		"porygon2": [],
-		"miltank": [],
-		"blissey": [],
-		"raikou": [],
-		"entei": [],
-		"suicune": [],
-		"larvitar": [],
-		"pupitar": [],
-		"tyranitar": [],
-		"lugia": [],
-		"ho_oh": [],
-		"celebi": []
+		"steelix": [
+			6,
+			15,
+			26,
+			28,
+			32,
+			44
+		],
+		"scizor": [
+			6,
+			15,
+			32,
+			39,
+			44
+		],
+		"heracross": [
+			6,
+			26,
+			32,
+			44
+		],
+		"sneasel": [
+			6,
+			14,
+			28,
+			32,
+			39,
+			42,
+			44
+		],
+		"teddiursa": [
+			6,
+			26,
+			28,
+			32,
+			39,
+			44
+		],
+		"ursaring": [
+			6,
+			15,
+			26,
+			28,
+			32,
+			39,
+			44
+		],
+		"skarmory": [
+			6,
+			32,
+			39,
+			44
+		],
+		"houndour": [
+			6,
+			22,
+			32,
+			38,
+			39,
+			42,
+			44
+		],
+		"houndoom": [
+			6,
+			15,
+			22,
+			32,
+			38,
+			39,
+			42,
+			44
+		],
+		"kingdra": [
+			6,
+			14,
+			15,
+			32,
+			39,
+			44
+		],
+		"phanpy": [
+			6,
+			26,
+			32,
+			44
+		],
+		"donphan": [
+			6,
+			15,
+			26,
+			32,
+			44
+		],
+		"porygon2": [
+			6,
+			14,
+			15,
+			25,
+			29,
+			32,
+			39,
+			42,
+			44
+		],
+		"miltank": [
+			6,
+			14,
+			15,
+			25,
+			26,
+			32,
+			44
+		],
+		"blissey": [
+			6,
+			14,
+			15,
+			22,
+			25,
+			29,
+			32,
+			38,
+			42,
+			44
+		],
+		"raikou": [
+			6,
+			15,
+			25,
+			28,
+			32,
+			39,
+			44
+		],
+		"entei": [
+			6,
+			15,
+			22,
+			28,
+			32,
+			38,
+			39,
+			44
+		],
+		"suicune": [
+			6,
+			14,
+			15,
+			28,
+			32,
+			39,
+			44
+		],
+		"larvitar": [
+			6,
+			15,
+			26,
+			28,
+			32,
+			44
+		],
+		"pupitar": [
+			6,
+			15,
+			26,
+			28,
+			32,
+			44
+		],
+		"tyranitar": [
+			6,
+			15,
+			26,
+			28,
+			32,
+			38,
+			44
+		],
+		"lugia": [
+			6,
+			14,
+			15,
+			25,
+			26,
+			29,
+			32,
+			39,
+			42,
+			44
+		],
+		"ho_oh": [
+			6,
+			15,
+			22,
+			25,
+			26,
+			29,
+			32,
+			38,
+			39,
+			42,
+			44
+		],
+		"celebi": [
+			6,
+			15,
+			22,
+			29,
+			32,
+			39,
+			42,
+			44
+		]
 	},
 	"hms": {
 		"01": "cut",
@@ -3672,6 +4046,194 @@
 			2,
 			3,
 			4,
+			5
+		],
+		"chikorita": [
+			1,
+			5
+		],
+		"bayleef": [
+			1,
+			4,
+			5
+		],
+		"meganium": [
+			1,
+			4,
+			5
+		],
+		"cyndaquil": [
+			1
+		],
+		"quilava": [
+			1,
+			4
+		],
+		"typhlosion": [
+			1,
+			4
+		],
+		"totodile": [
+			1,
+			3
+		],
+		"croconaw": [
+			1,
+			3,
+			4
+		],
+		"feraligatr": [
+			1,
+			3,
+			4
+		],
+		"sentret": [
+			1,
+			3
+		],
+		"furret": [
+			1,
+			3,
+			4
+		],
+		"hoothoot": [
+			2,
+			5
+		],
+		"noctowl": [
+			2,
+			5
+		],
+		"crobat": [
+			2
+		],
+		"togepi": [
+			5
+		],
+		"togetic": [
+			2,
+			5
+		],
+		"mareep": [
+			5
+		],
+		"flaaffy": [
+			4,
+			5
+		],
+		"ampharos": [
+			4,
+			5
+		],
+		"marill": [
+			3
+		],
+		"azumarill": [
+			3,
+			4
+		],
+		"politoed": [
+			3,
+			4
+		],
+		"espeon": [
+			1,
+			5
+		],
+		"umbreon": [
+			1,
+			5
+		],
+		"murkrow": [
+			2
+		],
+		"slowking": [
+			3,
+			4,
+			5
+		],
+		"steelix": [
+			1,
+			4
+		],
+		"scizor": [
+			1,
+			4
+		],
+		"heracross": [
+			1,
+			4
+		],
+		"sneasel": [
+			1,
+			3,
+			4
+		],
+		"teddiursa": [
+			1,
+			4
+		],
+		"ursaring": [
+			1,
+			4
+		],
+		"skarmory": [
+			1,
+			2
+		],
+		"houndoom": [
+			4
+		],
+		"kingdra": [
+			3
+		],
+		"phanpy": [
+			4
+		],
+		"donphan": [
+			4
+		],
+		"porygon2": [
+			5
+		],
+		"miltank": [
+			3,
+			4
+		],
+		"blissey": [
+			4,
+			5
+		],
+		"raikou": [
+			1,
+			4,
+			5
+		],
+		"entei": [
+			1,
+			4,
+			5
+		],
+		"suicune": [
+			1,
+			3
+		],
+		"tyranitar": [
+			1,
+			3,
+			4
+		],
+		"lugia": [
+			2,
+			3,
+			4
+		],
+		"ho_oh": [
+			2,
+			4,
+			5
+		],
+		"celebi": [
 			5
 		]
 	}
