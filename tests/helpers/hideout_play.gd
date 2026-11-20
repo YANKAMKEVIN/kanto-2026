@@ -238,8 +238,17 @@ func run_scene(answer: bool = true) -> bool:
 				events.append(page)
 			box.advance_requested.emit()
 	await _test.wait_process_frames(3)
+	# Toasts en file : un toast demandé pendant qu'un autre est affiché entre après lui ; on le
+	# relève aussi avant de rendre la main.
+	var toast_deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
+	while toast.get_queue_size() > 0 and Time.get_ticks_msec() < toast_deadline:
+		if toast.visible:
+			var queued := "toast:%s / %s" % [toast.get_title_text(), toast.get_detail_text()]
+			if not events.has(queued):
+				events.append(queued)
+		await _test.wait_process_frames(1)
 	if toast.visible:
-		var last := "toast:%s / %s" % [toast.get_title_text(), toast.get_detail_text()]
+		var last :="toast:%s / %s" % [toast.get_title_text(), toast.get_detail_text()]
 		if not events.has(last):
 			events.append(last)
 	# Panneau d'étages ouvert : la partie n'est pas « stable », la main est à l'écran.
