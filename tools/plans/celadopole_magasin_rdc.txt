@@ -42,7 +42,7 @@ ascenseur            warp           16..17,2      libre   to=celadon_dept_elevat
 from_up              spawn          2..3,3        libre    # arrivée depuis l'étage du dessus (devant S), tournée ↓
 from_elevator        spawn          16..17,3      libre    # arrivée de l'ascenseur (devant V), tournée ↓
 tableau_etages       panneau        9..10,2       bloque   # tableau des étages (texte 22), lu depuis (9..10, 3) ↑
-accueil              pnj            9,4           bloque  role=V0 facing=down  # hôtesse d'accueil derrière le comptoir (7..12, 5) ; on lui parle depuis (9, 6) ↑
+accueil              pnj            9,3           bloque  role=V0 counter_gap=2 facing=down  # hôtesse d'accueil derrière le comptoir (7..12, 5) ; on lui parle depuis (9, 6) ↑ ; remontée en (9, 3) le 2026-11-21 (Kevin : elle paraissait debout sur le comptoir peint)
 client_1             pnj            5,8           bloque  role=P1 facing=right  # client
 client_2             pnj            14,7          bloque  role=P2 facing=left  # client
 FIN

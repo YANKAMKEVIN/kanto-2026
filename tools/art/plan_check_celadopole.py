@@ -522,10 +522,17 @@ def verifier_interieur(chemin: Path) -> bool:
 		if p.kind == "pnj" and "facing" not in p.attrs:
 			fautes.append(f"{p.ident} sans facing")
 		if p.attrs.get("shop") or p.attrs.get("role", "").startswith("V"):
-			d = [d for d in DIRS if plan.at(*_decale(c, d)) == "B"]
+			# counter_gap=2 : une case libre entre le vendeur et le comptoir peint (l'accueil du
+			# rez-de-chaussée, remonté le 2026-11-21 pour ne plus paraître debout sur le comptoir).
+			gap = int(p.attrs.get("counter_gap", "1"))
+			def _loin(cell, d, n):
+				for _i in range(n):
+					cell = _decale(cell, d)
+				return cell
+			d = [d for d in DIRS if plan.at(*_loin(c, d, gap)) == "B"]
 			if not d:
 				fautes.append(f"{p.ident} sans comptoir devant lui")
-			elif _decale(_decale(c, d[0]), d[0]) not in dist:
+			elif _loin(c, d[0], gap + 1) not in dist:
 				fautes.append(f"{p.ident} : case devant le comptoir inaccessible")
 	orph = _orphelines(plan, carte, dist)
 	r.critere(not fautes and not orph, "PNJ bien placés, accessibles (comptoir compris) et aucune "
