@@ -15,6 +15,18 @@ const IDS: Array[StringName] = [
 	&"rival_champion_before", &"rival_champion_defeated", &"rival_champion_won",
 	&"league_oak_congrats", &"league_oak_to_rival", &"league_oak_hall",
 	&"league_hall_welcome", &"league_ending",
+	# 2026-11-21 : variantes jouées quand le joueur est déjà Champion (demande de Kevin).
+	&"league_lorelei_before_champion",
+	&"league_lorelei_defeated_champion",
+	&"league_bruno_before_champion",
+	&"league_bruno_defeated_champion",
+	&"league_agatha_before_champion",
+	&"league_agatha_defeated_champion",
+	&"league_lance_before_champion",
+	&"league_lance_defeated_champion",
+	&"rival_champion_before_champion",
+	&"rival_champion_defeated_champion",
+	&"rival_champion_won_champion",
 ]
 
 

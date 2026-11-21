@@ -19,7 +19,7 @@ const SPEAKERS_BY_FILE: Dictionary[String, int] = {
 	# Jalon 26 (T11) : le rival n° 6 (introduction, victoire, défaite).
 	"silph_co_story.json": 3,
 	# Jalon 30 (T4, T9) : le rival Champion (avant, vaincu, victoire du rival).
-	"league.json": 3,
+	"league.json": 6,
 	# Jalon 29 (T4) : le rival n° 7 de la Route 22 (avant, victoire du joueur, défaite).
 	"j29.json": 3,
 	# Chapitre Johto, JOH9 : relais et 2F (6), sommet (7), épilogue (1).
@@ -56,9 +56,10 @@ func test_the_closed_list_of_speakers_uses_the_rival_token() -> void:
 		var count := _values_of(_read(DIALOGUES_DIR + file), "speaker").count(RIVAL_TOKEN)
 		assert_eq(count, SPEAKERS_BY_FILE.get(file, 0), "%s : locuteurs {rival}" % file)
 		total += count
-	assert_eq(total, 57, "19 étiquettes du rival (§3.5) + 5 du rival n° 3 (J13 T19) + 4 du "
+	assert_eq(total, 60, "19 étiquettes du rival (§3.5) + 5 du rival n° 3 (J13 T19) + 4 du "
 		+ "rival n° 4 (J16 T13) + 4 du rival n° 5 (J19 T17) + 3 du rival n° 6 (J26 T11) "
-		+ "+ 3 du rival n° 7 (J29 T4) + 3 du rival Champion (J30) + 16 du JOH9, pas une de plus")
+		+ "+ 3 du rival n° 7 (J29 T4) + 3 du rival Champion (J30) + 3 du rival déjà battu (2026-11-21) + 16 du JOH9, "
+		+ "pas une de plus")
 
 
 func test_the_rival_trainers_are_named_by_the_token() -> void:

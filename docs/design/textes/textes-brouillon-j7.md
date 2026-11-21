@@ -262,3 +262,12 @@ Textes d'interface notés « provisoires (règle 4) » dans le code, validés te
 230. `TrainerView` — « Badges », « Grands moments », « Statistiques », « Début de l'aventure », « Argent », « Ton aventure ne fait que commencer. ».
 231. Panneau Sac du combat (`BattleBagPanel`) — « SAC », « Aucun objet utilisable pour l'instant. ».
 232. Panneau Équipe du combat (`BattlePartyPanel`) — « ÉQUIPE », « ENVOYER ».
+
+Répliques de la Ligue et de Maman quand le joueur est déjà Champion (`league_champion_defeated`), demandées et validées par Kevin le 2026-11-21 (« oui, intègre-les » ; Maman : « top »). Le genre du joueur s'accorde en jeu ; écrites ici au masculin :
+
+233. Olga (`league_lorelei_before_champion`, `league_lorelei_defeated_champion`) — « Te revoilà, Champion. Ton titre ne te protégera pas du froid. » / « Voyons si ta flamme brûle encore ! » ; « Tu n'as rien perdu de ta force… Va, ils t'attendent tous. »
+234. Aldo (`league_bruno_before_champion`, `league_bruno_defeated_champion`) — « Depuis ta victoire, je m'entraîne jour et nuit ! » / « Cette fois, mes Pokémon ne plieront pas ! » ; « Encore battu… Je reprends l'entraînement dès ce soir ! »
+235. Agatha (`league_agatha_before_champion`, `league_agatha_defeated_champion`) — « Encore toi ? Ce titre de Champion t'est monté à la tête, hé hé. » / « Mes spectres, eux, ne s'inclinent devant personne. » ; « Bah… Ce vieux Chen avait raison, encore une fois. File voir Peter. »
+236. Peter (`league_lance_before_champion`, `league_lance_defeated_champion`) — « Te voilà revenu. Un vrai Champion remet son titre en jeu. » / « Mes Dragons n'ont pas oublié leur défaite. Ils veulent leur revanche ! » ; « Le titre te va bien. Va, quelqu'un t'attend encore. »
+237. Rival (`rival_champion_before_champion`, `rival_champion_defeated_champion`, `rival_champion_won_champion`) — « {joueur} ! Te voilà enfin. » / « Pendant que tu te promenais avec ton titre, j'ai repris ma place. Cette fois, je te le reprends pour de bon ! » ; « Encore… Pff. Profites-en, {joueur}. La prochaine fois sera la bonne. » ; « Ha ! Tu vois ? Le vrai Champion, c'est moi ! »
+238. Maman (`mom`, après la lettre de Johto, soigne) — « Ah, le Champion de la maison ! » / « Les voisins n'arrêtent pas d'en parler. Moi, je te revois encore partir avec ton premier Pokémon. » / « Allez, je soigne tes Pokémon. Même un Champion a besoin de sa maman. »

@@ -58,6 +58,18 @@ const IDS_J30: Array[StringName] = [
 	&"rival_champion_before", &"rival_champion_defeated", &"rival_champion_won",
 	&"league_oak_congrats", &"league_oak_to_rival", &"league_oak_hall",
 	&"league_hall_welcome", &"league_ending",
+	# 2026-11-21 : variantes jouées quand le joueur est déjà Champion (demande de Kevin).
+	&"league_lorelei_before_champion",
+	&"league_lorelei_defeated_champion",
+	&"league_bruno_before_champion",
+	&"league_bruno_defeated_champion",
+	&"league_agatha_before_champion",
+	&"league_agatha_defeated_champion",
+	&"league_lance_before_champion",
+	&"league_lance_defeated_champion",
+	&"rival_champion_before_champion",
+	&"rival_champion_defeated_champion",
+	&"rival_champion_won_champion",
 ]
 ## Jalon 30 (T9) : textes validés du plan (§3, une réplique « … » par texte).
 const PLAN_J30 := "res://docs/tech/jalon-30.md"
@@ -73,6 +85,18 @@ const PLAYED_J30: Array[StringName] = [
 	&"league_guard_door",
 	&"league_oak_congrats", &"league_oak_to_rival", &"league_oak_hall", &"league_hall_welcome",
 	&"league_ending",
+	# 2026-11-21 : variantes jouées quand le joueur est déjà Champion (demande de Kevin).
+	&"league_lorelei_before_champion",
+	&"league_lorelei_defeated_champion",
+	&"league_bruno_before_champion",
+	&"league_bruno_defeated_champion",
+	&"league_agatha_before_champion",
+	&"league_agatha_defeated_champion",
+	&"league_lance_before_champion",
+	&"league_lance_defeated_champion",
+	&"rival_champion_before_champion",
+	&"rival_champion_defeated_champion",
+	&"rival_champion_won_champion",
 ]
 ## Jalon 30 (T9) : `beaten_<membre>` levés par les scènes d'appel (victoire).
 const SET_J30: Array[StringName] = [
@@ -2248,10 +2272,14 @@ func test_mom_heal_variant() -> void:
 	# JOH1 : la variante O-1 (après la Ligue, avant la lettre d'Orme) passe avant le soin.
 	# 2026-11-19 : les huit répliques par badge (du dernier au premier) soignent aussi.
 	var mom := _library.get_dialogue(&"mom")
-	var heal: DialogueVariant = mom.variants[10]
-	var badge_heals: Array[DialogueVariant] = []
+	# 2026-11-21 : après la lettre, la réplique du Champion (soigne aussi) passe avant les badges.
+	var champion: DialogueVariant = mom.variants[2]
+	assert_eq(champion.if_flags, [&"league_champion_defeated"] as Array[StringName])
+	assert_eq(champion.action, &"heal", "le Champion : soigne")
+	var heal: DialogueVariant = mom.variants[11]
+	var badge_heals: Array[DialogueVariant] = [champion]
 	for i: int in 8:
-		var badge: DialogueVariant = mom.variants[2 + i]
+		var badge: DialogueVariant = mom.variants[3 + i]
 		assert_eq(badge.if_flags, [BADGE_ORDER[7 - i]] as Array[StringName])
 		assert_eq(badge.action, &"heal", "%s : soigne" % BADGE_ORDER[7 - i])
 		badge_heals.append(badge)
