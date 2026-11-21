@@ -21,6 +21,15 @@
 				]
 			},
 			{
+				"if": ["league_champion_defeated"],
+				"heal": true,
+				"pages": [
+					"Ah, {g:le Champion|la Championne} de la maison !",
+					"Les voisins n'arrêtent pas d'en parler. Moi, je te revois encore partir avec ton premier Pokémon.",
+					"Allez, je soigne tes Pokémon. Même {g:un Champion|une Championne} a besoin de sa maman."
+				]
+			},
+			{
 				"if": ["badge_earth"],
 				"heal": true,
 				"pages": [

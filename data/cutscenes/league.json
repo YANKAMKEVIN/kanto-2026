@@ -27,7 +27,16 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "league_lorelei_before"
+						"dialogue": "league_lorelei_before",
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_lorelei_before_champion",
+						"if": [
+							"league_champion_defeated"
+						]
 					},
 					{
 						"battle": "league_lorelei",
@@ -45,6 +54,16 @@
 						"dialogue": "league_lorelei_defeated",
 						"if": [
 							"beaten_league_lorelei"
+						],
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_lorelei_defeated_champion",
+						"if": [
+							"beaten_league_lorelei",
+							"league_champion_defeated"
 						]
 					},
 					{
@@ -85,7 +104,16 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "league_bruno_before"
+						"dialogue": "league_bruno_before",
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_bruno_before_champion",
+						"if": [
+							"league_champion_defeated"
+						]
 					},
 					{
 						"battle": "league_bruno",
@@ -103,6 +131,16 @@
 						"dialogue": "league_bruno_defeated",
 						"if": [
 							"beaten_league_bruno"
+						],
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_bruno_defeated_champion",
+						"if": [
+							"beaten_league_bruno",
+							"league_champion_defeated"
 						]
 					},
 					{
@@ -143,7 +181,16 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "league_agatha_before"
+						"dialogue": "league_agatha_before",
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_agatha_before_champion",
+						"if": [
+							"league_champion_defeated"
+						]
 					},
 					{
 						"battle": "league_agatha",
@@ -161,6 +208,16 @@
 						"dialogue": "league_agatha_defeated",
 						"if": [
 							"beaten_league_agatha"
+						],
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_agatha_defeated_champion",
+						"if": [
+							"beaten_league_agatha",
+							"league_champion_defeated"
 						]
 					},
 					{
@@ -201,7 +258,16 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "league_lance_before"
+						"dialogue": "league_lance_before",
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_lance_before_champion",
+						"if": [
+							"league_champion_defeated"
+						]
 					},
 					{
 						"battle": "league_lance",
@@ -219,6 +285,16 @@
 						"dialogue": "league_lance_defeated",
 						"if": [
 							"beaten_league_lance"
+						],
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "league_lance_defeated_champion",
+						"if": [
+							"beaten_league_lance",
+							"league_champion_defeated"
 						]
 					},
 					{
@@ -260,7 +336,16 @@
 						"to": "player"
 					},
 					{
-						"dialogue": "rival_champion_before"
+						"dialogue": "rival_champion_before",
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "rival_champion_before_champion",
+						"if": [
+							"league_champion_defeated"
+						]
 					},
 					{
 						"battle": "rival_champion",
@@ -278,12 +363,32 @@
 						"dialogue": "rival_champion_defeated",
 						"if": [
 							"beaten_rival_champion"
+						],
+						"unless": [
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "rival_champion_defeated_champion",
+						"if": [
+							"beaten_rival_champion",
+							"league_champion_defeated"
 						]
 					},
 					{
 						"dialogue": "rival_champion_won",
 						"unless": [
+							"beaten_rival_champion",
+							"league_champion_defeated"
+						]
+					},
+					{
+						"dialogue": "rival_champion_won_champion",
+						"unless": [
 							"beaten_rival_champion"
+						],
+						"if": [
+							"league_champion_defeated"
 						]
 					},
 					{

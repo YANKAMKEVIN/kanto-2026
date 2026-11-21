@@ -137,3 +137,16 @@ func test_the_wakeup_after_a_defeat_is_unchanged() -> void:
 	# Le réveil ne soigne pas par son texte (la défaite soigne l'équipe elle-même).
 	assert_true(_is_hurt(GameState.party), "mom_wakeup n'a pas de clé « heal »")
 	assert_push_error_count(0)
+
+
+func test_after_the_title_and_the_letter_mom_greets_the_champion_and_heals() -> void:
+	# Après la lettre de Johto, Maman ne reparle plus des huit badges (demande de Kevin, 2026-11-21).
+	await _pass_the_greeting()
+	for flag: StringName in [&"starter_chosen", &"badge_earth", &"league_champion_defeated",
+			&"johto_letter_read"]:
+		GameState.flags.set_flag(flag)
+	GameState.party = _hurt_party()
+	var first := await _talk()
+	assert_eq(first, "Ah, le Champion de la maison !", "réplique d'après le titre")
+	assert_false(_is_hurt(GameState.party), "elle soigne toujours")
+	assert_push_error_count(0)

@@ -20,10 +20,23 @@
 			"Mes Pokémon de glace vont te figer sur place !"
 		]
 	},
+	"league_lorelei_before_champion": {
+		"speaker": "Olga",
+		"pages": [
+			"Te revoilà, {g:Champion|Championne}. Ton titre ne te protégera pas du froid.",
+			"Voyons si ta flamme brûle encore !"
+		]
+	},
 	"league_lorelei_defeated": {
 		"speaker": "Olga",
 		"pages": [
 			"Tu as du talent… Va. Les autres t'attendent."
+		]
+	},
+	"league_lorelei_defeated_champion": {
+		"speaker": "Olga",
+		"pages": [
+			"Tu n'as rien perdu de ta force… Va, ils t'attendent tous."
 		]
 	},
 	"league_bruno_before": {
@@ -33,10 +46,23 @@
 			"Voyons si tu tiens le choc !"
 		]
 	},
+	"league_bruno_before_champion": {
+		"speaker": "Aldo",
+		"pages": [
+			"Depuis ta victoire, je m'entraîne jour et nuit !",
+			"Cette fois, mes Pokémon ne plieront pas !"
+		]
+	},
 	"league_bruno_defeated": {
 		"speaker": "Aldo",
 		"pages": [
 			"Ma force n'a pas suffi… Continue !"
+		]
+	},
+	"league_bruno_defeated_champion": {
+		"speaker": "Aldo",
+		"pages": [
+			"Encore battu… Je reprends l'entraînement dès ce soir !"
 		]
 	},
 	"league_agatha_before": {
@@ -46,10 +72,23 @@
 			"Je vais te montrer ce qu'est un vrai Dresseur."
 		]
 	},
+	"league_agatha_before_champion": {
+		"speaker": "Agatha",
+		"pages": [
+			"Encore toi ? Ce titre de {g:Champion|Championne} t'est monté à la tête, hé hé.",
+			"Mes spectres, eux, ne s'inclinent devant personne."
+		]
+	},
 	"league_agatha_defeated": {
 		"speaker": "Agatha",
 		"pages": [
 			"Hé hé… Tu iras loin, {g:petit|petite}. Va voir Peter."
+		]
+	},
+	"league_agatha_defeated_champion": {
+		"speaker": "Agatha",
+		"pages": [
+			"Bah… Ce vieux Chen avait raison, encore une fois. File voir Peter."
 		]
 	},
 	"league_lance_before": {
@@ -59,10 +98,23 @@
 			"On dit qu'ils sont invincibles. Prouve le contraire !"
 		]
 	},
+	"league_lance_before_champion": {
+		"speaker": "Peter",
+		"pages": [
+			"Te voilà {g:revenu|revenue}. {g:Un vrai Champion|Une vraie Championne} remet son titre en jeu.",
+			"Mes Dragons n'ont pas oublié leur défaite. Ils veulent leur revanche !"
+		]
+	},
 	"league_lance_defeated": {
 		"speaker": "Peter",
 		"pages": [
 			"Je n'ai plus rien à t'apprendre. Le Champion t'attend."
+		]
+	},
+	"league_lance_defeated_champion": {
+		"speaker": "Peter",
+		"pages": [
+			"Le titre te va bien. Va, quelqu'un t'attend encore."
 		]
 	},
 	"rival_champion_before": {
@@ -72,16 +124,35 @@
 			"Tu sais ce que ça veut dire ? Que je suis {gr:le meilleur Dresseur|la meilleure Dresseuse} du monde !"
 		]
 	},
+	"rival_champion_before_champion": {
+		"speaker": "{rival}",
+		"pages": [
+			"{player} ! Te voilà enfin.",
+			"Pendant que tu te promenais avec ton titre, j'ai repris ma place. Cette fois, je te le reprends pour de bon !"
+		]
+	},
 	"rival_champion_defeated": {
 		"speaker": "{rival}",
 		"pages": [
 			"Non… Pas maintenant… Pas contre toi…"
 		]
 	},
+	"rival_champion_defeated_champion": {
+		"speaker": "{rival}",
+		"pages": [
+			"Encore… Pff. Profites-en, {player}. La prochaine fois sera la bonne."
+		]
+	},
 	"rival_champion_won": {
 		"speaker": "{rival}",
 		"pages": [
 			"Tu vois ? Le titre est à moi."
+		]
+	},
+	"rival_champion_won_champion": {
+		"speaker": "{rival}",
+		"pages": [
+			"Ha ! Tu vois ? {gr:Le vrai Champion|La vraie Championne}, c'est moi !"
 		]
 	},
 	"league_oak_congrats": {
