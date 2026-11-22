@@ -784,40 +784,52 @@ func test_zone_title_follows_large_text_and_contrast() -> void:
 	assert_eq(name_label.get_theme_font_size(&"font_size"), UiTokens.FONT_TITLE)
 
 
-# S2C, option A de Kevin : PÊCHER face à une eau où l'on peut aussi surfer.
-func test_hold_choice_shows_the_hint_and_defers_the_tap() -> void:
+# Demande de Kevin (2026-11-22) : face à une eau pêchable ET surfable, deux boutons.
+func test_fish_with_surf_shows_the_second_surf_button_above() -> void:
 	var button := _hud.get_interact_button()
+	var surf := _hud.get_surf_button()
+	assert_false(surf.visible, "SURFER caché par défaut")
 	_hud.show_interact(&"fish", true)
-	assert_true(button.has_hold_choice())
-	assert_eq(button.action, "", "plus d'« interact » à l'appui")
-	assert_true(button.get_node(^"HoldHint").visible, "point doré [D]")
+	await wait_process_frames(1)
+	assert_eq(button.action, "interact", "PÊCHER presse « interact »")
+	assert_eq(surf.get_verb(), &"surf")
+	assert_eq(surf.get_label_text(), "SURFER")
+	assert_eq(surf.action, "", "SURFER ne presse pas « interact »")
+	var rects := _hud.get_button_rects()
+	var interact_rect: Rect2 = rects[&"interact"]
+	var surf_rect: Rect2 = rects[&"surf"]
+	assert_almost_eq(surf_rect.get_center().x, interact_rect.get_center().x, 0.5, "même colonne")
+	assert_almost_eq(interact_rect.position.y - surf_rect.end.y, UiTokens.GAP, 0.5, "écart GAP")
+	assert_false(surf_rect.intersects(rects[&"run"]), "hors du bouton courir")
 	_hud.show_interact(&"surf")
-	assert_false(button.has_hold_choice(), "SURFER seul : bouton ordinaire")
-	assert_eq(button.action, "interact")
-	assert_false(button.get_node(^"HoldHint").visible)
-
-
-func test_a_held_press_emits_long_press_once() -> void:
-	var button := _hud.get_interact_button()
+	await wait_process_frames(1)
+	assert_eq(surf.get_verb(), &"", "SURFER seul : pas de second bouton")
 	_hud.show_interact(&"fish", true)
-	watch_signals(_hud)
-	button.pressed.emit()
-	await wait_seconds(UiTokens.LONG_PRESS + 0.15)
-	button.released.emit()
-	assert_signal_emit_count(_hud, "interact_long_pressed", 1)
-	assert_false(Input.is_action_pressed(&"interact"), "appui long : pas d'« interact »")
-
-
-func test_a_short_press_in_hold_mode_presses_interact() -> void:
-	var button := _hud.get_interact_button()
-	_hud.show_interact(&"fish", true)
-	watch_signals(_hud)
-	button.pressed.emit()
-	await wait_process_frames(2)
-	button.released.emit()
-	assert_true(Input.is_action_pressed(&"interact"), "appui court : « interact »")
-	await wait_process_frames(2)
-	assert_false(Input.is_action_pressed(&"interact"))
-	assert_signal_emit_count(_hud, "interact_long_pressed", 0)
 	_hud.hide_interact()
-	assert_false(button.has_hold_choice())
+	assert_eq(surf.get_verb(), &"")
+
+
+func test_surf_button_emits_surf_requested_without_pressing_interact() -> void:
+	_hud.show_interact(&"fish", true)
+	watch_signals(_hud)
+	_hud.get_surf_button().pressed.emit()
+	assert_signal_emit_count(_hud, "surf_requested", 1)
+	assert_false(Input.is_action_pressed(&"interact"))
+
+
+func test_surf_button_follows_controls_scale_and_left_hand() -> void:
+	_hud.show_interact(&"fish", true)
+	_hud.set_controls_visible(false)
+	assert_false(_hud.get_surf_button().visible, "caché pendant un dialogue")
+	_hud.set_controls_visible(true)
+	await wait_process_frames(1)
+	assert_eq(_hud.get_surf_button().get_verb(), &"surf", "revient avec les contrôles")
+	_hud.set_button_scale(1.2)
+	var rects := _hud.get_button_rects()
+	assert_false((rects[&"surf"] as Rect2).intersects(rects[&"interact"] as Rect2),
+		"×1,2 : pas de chevauchement")
+	_hud.set_left_handed(true)
+	rects = _hud.get_button_rects()
+	assert_almost_eq((rects[&"surf"] as Rect2).get_center().x,
+		(rects[&"interact"] as Rect2).get_center().x, 0.5, "miroir : même colonne")
+	assert_lt((rects[&"surf"] as Rect2).get_center().x, 1170.0)

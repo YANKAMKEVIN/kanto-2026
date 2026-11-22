@@ -135,6 +135,10 @@ const BUTTONS_UNDER_PLAYER_MARGIN := 12.0
 ## Contextuel : un seul bouton en bas à droite, au-dessus et à droite du bouton courir
 ## (planche DA 2026 ; bible UI/UX §1). Centre mesuré depuis le coin bas-droit.
 const INTERACT_BUTTON_CENTER_FROM_CORNER := Vector2(190, 360)
+## Second bouton SURFER (face à une eau pêchable ET surfable, demande de Kevin 2026-11-22) : dans
+## la colonne du contextuel, juste au-dessus, écart GAP [D] ; (190, 504) depuis le coin bas-droit.
+const SURF_BUTTON_CENTER_FROM_CORNER := Vector2(INTERACT_BUTTON_CENTER_FROM_CORNER.x,
+	INTERACT_BUTTON_CENTER_FROM_CORNER.y + ROUND_BUTTON + GAP)
 ## Étiquette du verbe (PARLER, EXAMINER…) : pastille à gauche du bouton contextuel.
 const INTERACT_LABEL_FONT := 26
 const INTERACT_LABEL_PAD_H := 20

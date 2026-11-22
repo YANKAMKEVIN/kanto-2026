@@ -3140,12 +3140,7 @@ func get_field_travel_director() -> FieldTravelDirector:
 
 # --- Passe systèmes 2 (S2C-bis) : pêche --------------------------------------------------------
 
-## Choix « Pêcher / Surfer » par appui long (option A de Kevin) : OUI = PÊCHER, NON = SURFER.
-const WATER_CHOICE_DIALOGUE: StringName = &"water_choice"
-enum WaterChoice { NONE, FISH, SURF }
-
 var _fishing: FishingDirector
-var _water_choice: WaterChoice = WaterChoice.NONE
 
 
 ## Pêche (J22 §2.7) : cible de terrain PÊCHER, appui, cannes du Sac ([KeyItemDirector]). Tables
@@ -3157,24 +3152,12 @@ func _can_surf_ahead() -> bool:
 	return target != null and target.kind == Interaction.Kind.SURF
 
 
-## Appui long sur PÊCHER (mode choix) : « Pêcher / Surfer ».
-func _on_water_choice_requested() -> void:
+## Bouton SURFER (second bouton, affiché avec PÊCHER face à une eau où l'on peut surfer).
+func _on_surf_button_pressed() -> void:
 	if _runner.is_running() or _fishing.is_running() or not _player.is_input_enabled() \
 			or _player.is_moving() or not _can_surf_ahead():
 		return
-	_water_choice = WaterChoice.NONE
-	_runner.play(WATER_CHOICE_DIALOGUE)
-
-
-func _on_water_choice_finished(dialogue_id: StringName) -> void:
-	if dialogue_id != WATER_CHOICE_DIALOGUE:
-		return
-	var choice := _water_choice
-	_water_choice = WaterChoice.NONE
-	if choice == WaterChoice.FISH:
-		_fishing.on_fish_requested(_player.get_cell() + _player.get_facing())
-	elif choice == WaterChoice.SURF:
-		_mount.start_surf()
+	_mount.start_surf()
 
 
 func _setup_fishing() -> void:
@@ -3193,13 +3176,9 @@ func _setup_fishing() -> void:
 		var target := _fishing.target_at(c, f)
 		return target if target != null else _mount.surf_target(c, f)
 	_interactions.fish_requested.connect(_fishing.on_fish_requested)
-	# Option A de Kevin (2026-10-21) : PÊCHER face à une eau où l'on peut aussi surfer ; un appui
-	# long ouvre le choix « Pêcher / Surfer », joué au premier plan puis lancé à sa fermeture.
-	_hud.interact_long_pressed.connect(_on_water_choice_requested)
-	_runner.choice_made.connect(func(confirmed: bool) -> void:
-		if _runner.get_dialogue_id() == WATER_CHOICE_DIALOGUE:
-			_water_choice = WaterChoice.FISH if confirmed else WaterChoice.SURF)
-	_runner.dialogue_finished.connect(_on_water_choice_finished)
+	# Demande de Kevin (2026-11-22) : face à une eau pêchable ET surfable, PÊCHER reste le
+	# contextuel et un second bouton SURFER s'affiche au-dessus (plus de choix par appui long).
+	_hud.surf_requested.connect(_on_surf_button_pressed)
 	_key_items.set_fishing(_fishing)
 	_fishing.fishing_started.connect(_refresh_controls.unbind(1))
 	_fishing.fishing_finished.connect(_refresh_controls.unbind(1))

@@ -38,8 +38,8 @@ signal caption_hidden
 signal menu_requested
 ## Le bouton Vélo est touché (passe systèmes 2) : monter ou descendre, ou dire le refus.
 signal bike_requested
-## Appui long sur le bouton contextuel en mode choix (PÊCHER / SURFER, S2C option A).
-signal interact_long_pressed
+## Le second bouton SURFER est touché (eau pêchable ET surfable : PÊCHER reste le contextuel).
+signal surf_requested
 
 @onready var _zone_title: ZoneTitle = %ZoneTitle
 @onready var _caption: WorldCaption = %WorldCaption
@@ -50,6 +50,8 @@ const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left",
 
 ## Verbe demandé pour le bouton contextuel (&"" = aucun) ; affiché si les contrôles le sont.
 var _interact_verb: StringName = &""
+## Second bouton SURFER demandé ([method show_interact]) ; affiché si les contrôles le sont.
+var _surf_shown: bool = false
 var _controls_visible: bool = true
 var _left_handed: bool = false
 var _button_scale: float = 1.0
@@ -63,6 +65,7 @@ var _safari_badge: SafariBadge
 
 @onready var _run_button: TouchScreenButton = %RunButton
 @onready var _interact_button: InteractButton = %InteractButton
+@onready var _surf_button: InteractButton = %SurfButton
 @onready var _menu_button: TouchScreenButton = %MenuButton
 @onready var _bike_button: TouchScreenButton = %BikeButton
 @onready var _corner: Control = %CornerAnchor
@@ -80,7 +83,7 @@ func _ready() -> void:
 	(_menu_button.get_node(^"Visual") as Node2D).modulate.a = UiTokens.MENU_BUTTON_ALPHA
 	_menu_button.pressed.connect(_on_menu_pressed)
 	_bike_button.pressed.connect(_on_bike_pressed)
-	_interact_button.long_pressed.connect(interact_long_pressed.emit)
+	_surf_button.activated.connect(surf_requested.emit)
 	_apply_bike_button()
 	_zone_title.title_hidden.connect(title_hidden.emit)
 	_caption.caption_hidden.connect(caption_hidden.emit)
@@ -157,19 +160,22 @@ func show_toast(title: String, detail: String, icon: Texture2D = null) -> void:
 ## EXAMINER, &"observe" → OBSERVER, &"take" → PRENDRE, &"meet" → RENCONTRER). Pendant un
 ## dialogue (contrôles cachés), le verbe est retenu et le bouton n'apparaîtra qu'au retour
 ## des contrôles.
-## [param hold_choice] : un appui long émet [signal interact_long_pressed] (point doré [D]).
-func show_interact(verb: StringName, hold_choice: bool = false) -> void:
+## [param with_surf] : montre aussi le second bouton SURFER juste au-dessus (PÊCHER face à une
+## eau où l'on peut surfer) ; son appui émet [signal surf_requested].
+func show_interact(verb: StringName, with_surf: bool = false) -> void:
 	_interact_verb = verb
-	_interact_button.set_hold_choice(hold_choice)
+	_surf_shown = with_surf
 	if _controls_visible:
 		_interact_button.show_verb(verb)
+		_apply_surf_button()
 
 
 ## Fait disparaître le bouton contextuel (fondu ANIM_MICRO) : plus rien devant le joueur.
 func hide_interact() -> void:
 	_interact_verb = &""
-	_interact_button.set_hold_choice(false)
+	_surf_shown = false
 	_interact_button.hide_verb()
+	_surf_button.hide_verb()
 
 
 ## Cache (false) ou rétablit (true) joystick, bouton courir et bouton contextuel, par exemple
@@ -190,11 +196,13 @@ func set_controls_visible(shown: bool) -> void:
 		_run_tween.tween_property(_run_button, ^"modulate:a", 1.0, UiTokens.ANIM_MICRO)
 		if not _interact_verb.is_empty():
 			_interact_button.show_verb(_interact_verb)
+			_apply_surf_button()
 		return
 	_joystick.release()
 	_run_button.visible = false
 	_run_button.modulate.a = 0.0
 	_interact_button.hide_now()
+	_surf_button.hide_now()
 	for action: StringName in MOVE_ACTIONS:
 		Input.action_release(action)
 	Input.action_release(&"run")
@@ -227,6 +235,11 @@ func get_run_button() -> TouchScreenButton:
 
 func get_interact_button() -> InteractButton:
 	return _interact_button
+
+
+## Second bouton SURFER (caché sauf face à une eau pêchable ET surfable).
+func get_surf_button() -> InteractButton:
+	return _surf_button
 
 
 func get_menu_button() -> TouchScreenButton:
@@ -295,7 +308,9 @@ func set_button_scale(button_scale: float) -> void:
 	_button_scale = clampf(button_scale, 0.5, 2.0)
 	_run_button.scale = Vector2.ONE * _button_scale
 	_interact_button.scale = Vector2.ONE * _button_scale
+	_surf_button.scale = Vector2.ONE * _button_scale
 	_bike_button.scale = Vector2.ONE * _button_scale
+	_place_corner_buttons()
 
 
 func get_button_scale() -> float:
@@ -307,7 +322,7 @@ func get_button_scale() -> float:
 func get_button_rects() -> Dictionary[StringName, Rect2]:
 	var rects: Dictionary[StringName, Rect2] = {}
 	for entry: Array in [[&"run", _run_button], [&"interact", _interact_button],
-			[&"menu", _menu_button]]:
+			[&"surf", _surf_button], [&"menu", _menu_button]]:
 		var button: TouchScreenButton = entry[1]
 		var radius := UiTokens.ROUND_BUTTON * 0.5 * button.scale.x
 		var center := button.get_global_transform_with_canvas().origin
@@ -356,6 +371,8 @@ func _under_player(group: StringName) -> bool:
 	var names: Array[StringName] = [&"menu"]
 	if group == &"corner":
 		names = [&"run", &"interact"]
+		if _surf_shown:
+			names.append(&"surf")
 	if group == &"corner" and _bike_button.visible:
 		var radius := UiTokens.ROUND_BUTTON * 0.5 * _bike_button.scale.x
 		var center := _bike_button.get_global_transform_with_canvas().origin
@@ -371,19 +388,37 @@ func _under_player(group: StringName) -> bool:
 func _place_corner_buttons() -> void:
 	_joystick.zone_on_right = _left_handed
 	_interact_button.set_mirrored(_left_handed)
+	_surf_button.set_mirrored(_left_handed)
 	if _left_handed:
 		_corner.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 		_run_button.position = Vector2(UiTokens.RUN_BUTTON_CENTER_FROM_CORNER.x,
 			-UiTokens.RUN_BUTTON_CENTER_FROM_CORNER.y)
 		_interact_button.position = Vector2(UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER.x,
 			-UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER.y)
+		_surf_button.position = Vector2(_surf_center().x, -_surf_center().y)
 		_bike_button.position = Vector2(UiTokens.BIKE_BUTTON_CENTER_FROM_CORNER.x,
 			-UiTokens.BIKE_BUTTON_CENTER_FROM_CORNER.y)
 	else:
 		_corner.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
 		_run_button.position = -UiTokens.RUN_BUTTON_CENTER_FROM_CORNER
 		_interact_button.position = -UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER
+		_surf_button.position = -_surf_center()
 		_bike_button.position = -UiTokens.BIKE_BUTTON_CENTER_FROM_CORNER
+
+
+## Centre du bouton SURFER depuis le coin : l'écart avec le contextuel suit l'échelle des boutons
+## (ils grandissent autour de leur centre).
+func _surf_center() -> Vector2:
+	return Vector2(UiTokens.SURF_BUTTON_CENTER_FROM_CORNER.x,
+		UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER.y
+		+ (UiTokens.ROUND_BUTTON + UiTokens.GAP) * _button_scale)
+
+
+func _apply_surf_button() -> void:
+	if _surf_shown:
+		_surf_button.show_verb(&"surf")
+	else:
+		_surf_button.hide_verb()
 
 
 func _apply_bike_button() -> void:

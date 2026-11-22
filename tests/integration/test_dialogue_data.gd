@@ -170,8 +170,8 @@ const J17_TOKENS: Dictionary[String, Array] = {
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 ## Jalon 20 (T17) : le panneau neutre de la cabine du T16 est remplacé par `elevator_panel` (T13).
-## S2C (option A de Kevin, 2026-10-21) : question du choix « Pêcher / Surfer » [D], à valider.
-const UNVALIDATED: Array[StringName] = [&"water_choice"]
+## Aucun texte en attente de validation (le choix « Pêcher / Surfer » est retiré, 2026-11-22).
+const UNVALIDATED: Array[StringName] = []
 ## Jalon 31 (T4, T5) : dialogues de la Grotte Azurée, joués quand ses cartes et la bouche
 ## d'Azuria existeront (T6, 31A) ; textes [D] du plan §4 (cri de Mewtwo, refus d'accès).
 const IDS_J31: Array[StringName] = [
@@ -224,7 +224,7 @@ const IDS_JOH1: Array[StringName] = [&"johto_letter_1", &"johto_letter_2", &"joh
 	&"olivine_city_sign", &"olivine_lighthouse_sign"]
 const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark",
 	&"elevator_locked", &"bike_indoors", &"bike_cycling_road_walk", &"poke_flute_played",
-	&"surf_water", &"surf_first_ride", &"surf_current_too_strong", &"water_choice",
+	&"surf_water", &"surf_first_ride", &"surf_current_too_strong",
 	# Jalon 32 (T5) : répliques du terminal d'échange local ([LocalTradeDirector]).
 	&"trade_terminal_none", &"trade_terminal_confirm",
 	# Lot 32P : fin de la Repousse (Boot) et Cherch'Objet ([KeyItemDirector]).

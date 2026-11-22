@@ -1,8 +1,8 @@
 extends GutTest
 ## Surf de bout en bout dans le vrai Boot (passe systèmes 2, §2.5, §2.6, T14, T15) : montée depuis
 ## la plage, nage, courant joué jusqu'au passage (→ `essai_mer_2`, toujours en Surf), bord de carte
-## en mer (monture transmise), descente sur la rive, sauvegarde en mer puis reprise, appui long
-## « Pêcher / Surfer ». Ancien `test_qa_sea_flow.gd` : la carte de QA `qa_sea` et le départ
+## en mer (monture transmise), descente sur la rive, sauvegarde en mer puis reprise, boutons
+## PÊCHER et SURFER côte à côte. Ancien `test_qa_sea_flow.gd` : la carte de QA `qa_sea` et le départ
 ## `s2_surf` sont retirés en S2Z (T33) ; la mer d'essai est construite en mémoire
 ## (`tests/helpers/sea_rig.gd`, branché sur [member SceneRouter.map_factory]) et le départ est
 ## écrit sous `user://`. Rien n'est livré.
@@ -90,8 +90,7 @@ func _surf_east_from_the_beach() -> void:
 	# Colonne x = 7 pêchable et cannes au Sac : PÊCHER prime sur SURFER [D].
 	assert_eq(_boot.get_interaction_controller().get_target().kind, Interaction.Kind.FISH,
 		"PÊCHER face à l'eau pêchable")
-	assert_true(_boot.get_hud().get_interact_button().has_hold_choice(),
-		"SURFER aussi possible : appui long « Pêcher / Surfer » (option A)")
+	assert_true(_boot.get_hud().get_surf_button().visible, "SURFER aussi possible : 2e bouton")
 	assert_eq(_boot.get_mount_director().start_surf(), SurfRules.MountCheck.READY)
 	await wait_until(func() -> bool: return not _player.is_moving(), TIMEOUT)
 	assert_eq(_player.get_mount(), Mount.Kind.SURF)
@@ -140,43 +139,45 @@ func test_a_save_at_sea_resumes_surfing() -> void:
 	assert_eq(_player.get_mount(), Mount.Kind.SURF)
 
 
-func _long_press_choice(confirmed: bool) -> void:
+func _face_the_east_water() -> void:
 	await _walk(Vector2i.UP, 12)
 	await _walk(Vector2i.RIGHT, 4)
 	await wait_process_frames(2)
-	var runner := _boot.get_dialogue_runner()
-	_boot.get_hud().get_interact_button().long_pressed.emit()
-	assert_eq(runner.get_dialogue_id(), Boot.WATER_CHOICE_DIALOGUE, "choix ouvert")
-	var box := _boot.get_dialogue_box()
-	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
-	while runner.is_running() and runner.get_dialogue_id() == Boot.WATER_CHOICE_DIALOGUE \
-			and Time.get_ticks_msec() < deadline:
-		if runner.is_awaiting_choice():
-			runner.choose(confirmed)
-		elif box.is_open():
-			box.advance_requested.emit()
-		await wait_process_frames(1)
-	assert_ne(runner.get_dialogue_id(), Boot.WATER_CHOICE_DIALOGUE, "choix fermé")
 
 
-func test_long_press_then_surf_mounts() -> void:
-	await _long_press_choice(false)
+func test_fishable_and_surfable_water_shows_both_buttons() -> void:
+	await _face_the_east_water()
+	var hud := _boot.get_hud()
+	await wait_until(func() -> bool: return hud.get_surf_button().get_verb() == &"surf", TIMEOUT)
+	assert_eq(hud.get_interact_button().get_verb(), &"fish")
+	assert_eq(hud.get_surf_button().get_verb(), &"surf")
+	assert_true(hud.get_surf_button().visible)
+
+
+func test_surf_button_mounts() -> void:
+	await _face_the_east_water()
+	_boot.get_hud().get_surf_button().pressed.emit()
 	assert_true(await wait_until(func() -> bool: return _player.get_mount() == Mount.Kind.SURF \
 		and not _player.is_moving(), TIMEOUT), "en Surf")
-	assert_eq(_player.get_cell(), Vector2i(7, 4), "SURFER choisi : sur l'eau")
+	assert_eq(_player.get_cell(), Vector2i(7, 4), "SURFER : sur l'eau")
 
 
-func test_long_press_then_fish_casts() -> void:
-	await _long_press_choice(true)
+func test_fish_button_casts() -> void:
+	await _face_the_east_water()
+	_boot.get_hud().get_interact_button().pressed.emit()
+	Input.action_press(&"interact")
+	await wait_process_frames(2)
+	Input.action_release(&"interact")
 	assert_true(await wait_until(func() -> bool: return _boot.get_dialogue_runner() \
 		.get_dialogue_id() == &"fishing_cast", TIMEOUT), "ligne lancée")
-	assert_eq(_player.get_mount(), Mount.Kind.NONE, "PÊCHER choisi : à pied")
+	assert_eq(_player.get_mount(), Mount.Kind.NONE, "PÊCHER : à pied")
 
 
-func test_the_south_beach_has_no_hold_choice() -> void:
+func test_the_south_beach_has_no_second_button() -> void:
 	await _walk(Vector2i.UP, 4)
 	await _walk(Vector2i.RIGHT, 4)
 	await wait_process_frames(2)
 	assert_eq(_player.get_cell(), Vector2i(6, 12))
 	assert_eq(_boot.get_interaction_controller().get_target().kind, Interaction.Kind.SURF)
-	assert_false(_boot.get_hud().get_interact_button().has_hold_choice(), "SURFER seul")
+	assert_false(_boot.get_hud().get_surf_button().visible, "SURFER seul : pas de 2e bouton")
+	assert_eq(_boot.get_hud().get_interact_button().get_verb(), &"surf")

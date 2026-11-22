@@ -74,6 +74,11 @@ unique_name_in_owner = true
 [node name="InteractButton" parent="Root/CornerAnchor" instance=ExtResource("5_interact")]
 unique_name_in_owner = true
 
+[node name="SurfButton" parent="Root/CornerAnchor" instance=ExtResource("5_interact")]
+unique_name_in_owner = true
+action = ""
+presses_interact = false
+
 [node name="BikeButton" parent="Root/CornerAnchor" instance=ExtResource("11_bike")]
 unique_name_in_owner = true
 visible = false

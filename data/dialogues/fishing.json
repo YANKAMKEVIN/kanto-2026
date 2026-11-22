@@ -14,10 +14,5 @@
 	"fishing_no_water": {
 		"narration": true,
 		"pages": ["On ne peut pas pêcher ici."]
-	},
-	"water_choice": {
-		"narration": true,
-		"pages": ["Que faire ?"],
-		"choice": { "confirm": "PÊCHER", "cancel": "SURFER", "cancel_pages": [] }
 	}
 }
