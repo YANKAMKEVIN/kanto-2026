@@ -877,6 +877,9 @@ func _settle() -> void:
 ## possible, sur un déclencheur de scène (dalles des Ruines d'Alpha : un faux pas efface la
 ## suite) ; sauf [param goal]. Vide si aucun.
 func _foot_path(goal: Vector2i) -> Array[Vector2i]:
+	var spin := _spin_field()
+	if spin != null:
+		return _spin_path(goal, spin)
 	var map := boot.get_map()
 	var avoided: Array[Vector2i] = []
 	for warp: Warp in map.get_warps().get_all():
@@ -905,11 +908,57 @@ func _path_avoiding(goal: Vector2i, avoided: Array[Vector2i]) -> Array[Vector2i]
 	return path
 
 
+## Dalles tournantes de la carte (repaire d'Acajou B2F), ou null.
+func _spin_field() -> SpinTileField:
+	var node := boot.get_map().get_node_or_null(^"SpinTiles")
+	return node as SpinTileField
+
+
+## Chemin sur une carte à dalles tournantes : un pas qui pose le joueur sur une flèche le mène au
+## bout de sa glisse ([method SpinTileField.slide_from]). Rend la suite des directions ;
+## [method reach] n'en joue que la première, puis recalcule.
+func _spin_path(goal: Vector2i, spin: SpinTileField) -> Array[Vector2i]:
+	var grid := boot.get_map().get_grid()
+	var walkable := func(cell: Vector2i) -> bool:
+		return grid.is_in_bounds(cell) and not grid.is_solid(cell)
+	var warps: Dictionary[Vector2i, bool] = {}
+	for warp: Warp in boot.get_map().get_warps().get_all():
+		warps[warp.cell] = true
+	var start := player.get_cell()
+	var previous: Dictionary[Vector2i, Vector2i] = {start: start}
+	var step_of: Dictionary[Vector2i, Vector2i] = {}
+	var queue: Array[Vector2i] = [start]
+	var head := 0
+	while head < queue.size():
+		var cell: Vector2i = queue[head]
+		head += 1
+		for direction: Vector2i in DIRECTIONS:
+			var target := grid.get_step_target(cell, direction, player)
+			if target == cell or (warps.has(target) and target != goal):
+				continue
+			if spin.is_arrow(target):
+				target = spin.slide_from(target, walkable).end
+			if previous.has(target):
+				continue
+			previous[target] = cell
+			step_of[target] = direction
+			if target == goal:
+				var path: Array[Vector2i] = []
+				var back := goal
+				while back != start:
+					path.push_front(step_of[back])
+					back = previous[back]
+				return path
+			queue.append(target)
+	return []
+
+
 ## Va sur [param goal] (marche ; Surf depuis une berge si l'eau y mène). Les scènes qui prennent
 ## la main en chemin (Dresseurs) sont jouées. Vrai si le joueur y est, sur la même carte.
 func reach(goal: Vector2i) -> bool:
 	var origin := map_id()
-	for attempt: int in 6:
+	var spinning := _spin_field() != null
+	for attempt: int in 80 if spinning else 6:
 		if map_id() != origin:
 			return false
 		if player.get_cell() == goal:
@@ -919,6 +968,8 @@ func reach(goal: Vector2i) -> bool:
 			if attempt > 0 or not await _try_surf(goal):
 				return false
 			continue
+		if spinning:
+			path = [path[0]]
 		var cell := player.get_cell()
 		for direction: Vector2i in path:
 			cell += direction
@@ -1100,6 +1151,17 @@ func _talk(target: Vector2i) -> String:
 					await _settle()
 				await _settle()
 				return ""
+	# Sur l'eau (le Léviator rouge du Lac Colère) : on l'aborde en Surf ([method reach]).
+	var grid := boot.get_map().get_grid()
+	for side: Vector2i in DIRECTIONS:
+		var stand := target + side
+		if grid.is_surfable(stand) and await reach(stand):
+			await interact(-side)
+			await _test.wait_process_frames(3)
+			if _press_screens():
+				await _settle()
+			await _settle()
+			return ""
 	return "PNJ en %s inaccessible" % [target]
 
 
