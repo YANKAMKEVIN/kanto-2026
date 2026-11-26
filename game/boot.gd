@@ -39,6 +39,13 @@ extends Node
 ## directeur met l'arbre en pause à l'ouverture. Ouverture par l'action `menu` ou le retour
 ## Android (en exploration : sauvegarde puis ouverture, **jamais** de sortie du jeu, Q-3).
 
+## Modules de domaine (`game/boot/`, découpage du 2026-11-26) : Boot reste la racine de composition
+## mais délègue chaque domaine à un module qu'il crée au début de `_ready` et appelle aux mêmes
+## moments qu'avant (l'ordre des branchements compte) : [BootWorld] (monde et capacités de
+## terrain), [BootJohto], [BootServices] (Centres), [BootBagItems] (objets du Sac), [BootLeague],
+## [BootBackgroundSave] (S2A), [BootPokedexToasts], [BootAudioWiring], [BootMenuWiring]. Les
+## accesseurs publics de Boot restent la porte d'entrée des tests et des outils.
+
 ## Une zone vient d'être annoncée (titre de zone affiché).
 signal zone_announced(zone_name: String, region: String)
 
