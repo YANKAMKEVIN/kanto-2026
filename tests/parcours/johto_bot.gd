@@ -974,7 +974,7 @@ func reach(goal: Vector2i) -> bool:
 				surfed = true
 				if await _try_surf(goal):
 					continue
-			if pushes < MAX_PUSHES and await _push_a_boulder(last_push):
+			if pushes < MAX_PUSHES and await _push_a_boulder(goal, last_push):
 				pushes += 1
 				continue
 			return false
@@ -991,9 +991,10 @@ func reach(goal: Vector2i) -> bool:
 
 
 ## Force : pousse un rocher qu'on peut aborder à pied, vers une case libre, jamais en arrière de
-## sa dernière poussée ([param last_push]). Le chemin est recalculé après chaque poussée. Vrai si
-## un rocher a bougé.
-func _push_a_boulder(last_push: Dictionary[Boulder, Vector2i]) -> bool:
+## sa dernière poussée ([param last_push]). Chaque poussée possible est simulée sur la grille : celle
+## qui ouvre le chemin vers [param goal] d'abord, puis celle qui ouvre le plus de cases, puis la plus
+## proche. Le chemin est recalculé après chaque poussée. Vrai si un rocher a bougé.
+func _push_a_boulder(goal: Vector2i, last_push: Dictionary[Boulder, Vector2i]) -> bool:
 	var strength := boot.get_strength_director()
 	if strength == null or boot.field_state(&"strength").state != FieldMoves.State.READY:
 		return false
@@ -1008,10 +1009,16 @@ func _push_a_boulder(last_push: Dictionary[Boulder, Vector2i]) -> bool:
 			if not grid.can_enter(cell + direction, direction):
 				continue
 			var length := _foot_length(stand)
-			if length < 100000:
-				options.append({"boulder": boulder, "stand": stand, "direction": direction,
-					"length": length + (0 if last_push.has(boulder) else 1000)})
+			if length >= 100000:
+				continue
+			var opened := _cells_after_push(boulder, direction)
+			options.append({"boulder": boulder, "stand": stand, "direction": direction,
+				"opens_goal": opened.has(goal), "opened": opened.size(), "length": length})
 	options.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		if a["opens_goal"] != b["opens_goal"]:
+			return a["opens_goal"]
+		if a["opened"] != b["opened"]:
+			return a["opened"] > b["opened"]
 		return a["length"] < b["length"])
 	for option: Dictionary in options:
 		if not await reach(option["stand"]):
@@ -1022,6 +1029,21 @@ func _push_a_boulder(last_push: Dictionary[Boulder, Vector2i]) -> bool:
 			last_push[option["boulder"]] = option["direction"]
 			return true
 	return false
+
+
+## Cases atteintes à pied si [param boulder] glissait d'une case vers [param direction] (le joueur
+## prenant sa place). La grille est rendue telle quelle.
+func _cells_after_push(boulder: Boulder, direction: Vector2i) -> Dictionary:
+	var grid := boot.get_map().get_grid()
+	var cell := boulder.get_cell()
+	var stone := RefCounted.new()
+	grid.release(cell, boulder)
+	var moved := grid.occupy(cell + direction, stone)
+	var reachable: Dictionary = grid.find_reachable(cell, player, GridWorld.MoveMode.WALK)
+	if moved:
+		grid.release(cell + direction, stone)
+	grid.occupy(cell, boulder)
+	return reachable
 
 
 func _try_surf(goal: Vector2i) -> bool:
