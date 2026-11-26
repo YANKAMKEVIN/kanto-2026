@@ -52,10 +52,6 @@ const MAX_PLAY_TIME_STEP: float = SessionLifecycle.MAX_PLAY_TIME_STEP
 const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
 ## JOH0 : période de relecture de l'heure du téléphone (secondes) [D].
 const WORLD_CLOCK_SYNC_SECONDS: float = 1.0
-## Lot 32P : choix de la capacité d'un PP Plus ou d'un Éther (textes validés par Kevin le 2026-10-29).
-const PP_MOVE_CAPTION := "Choisis une capacité"
-const PP_MOVE_CONFIRM := "CHOISIR"
-const PP_MOVE_CANCEL := "RETOUR"
 const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
 ## Le labo (1536 px de large) est plus étroit que l'écran (jusqu'à 2340) : agrandi pour le remplir.
 const INTRO_BACKDROP_ZOOM: float = 1.6
@@ -64,11 +60,9 @@ const OPENING_ARRIVAL: StringName = &"opening_arrival"
 ## Narration de la Corde Sortie (jalon 12, dossier 15 §20 n° 33) :
 ## `data/dialogues/field_items.json`.
 const ESCAPE_ROPE_DIALOGUE: StringName = BootWorld.ESCAPE_ROPE_DIALOGUE
-## Raison de blocage du joueur pendant une évolution par pierre hors combat (jalon 12, T23).
-const EVOLUTION_ITEM: StringName = &"evolution_item"
-## Raison de blocage du joueur pendant tout le déroulé d'un Super Bonbon (jalon 14, T18b) : voile
-## au-dessus du menu, puis évolution éventuelle. La partie n'est pas stable : aucune écriture.
-const RARE_CANDY: StringName = &"rare_candy"
+## Raisons de blocage du joueur pendant une pierre ou un Super Bonbon ([BootBagItems]).
+const EVOLUTION_ITEM: StringName = BootBagItems.EVOLUTION_ITEM
+const RARE_CANDY: StringName = BootBagItems.RARE_CANDY
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -176,8 +170,6 @@ var _debug_start_autosave: bool = false
 ## Départ de débogage sans écriture, ou Boot d'un outil sans SaveSystem injecté.
 ## Les points critiques y sont simulés ; jamais activé pour une vraie partie refusée.
 var _simulate_checkpoints: bool = false
-## Voile de l'apprentissage d'une CT depuis le Sac (jalon 11), créé au premier besoin.
-var _tm_overlay: TmLearnOverlay
 ## Pension (J15, jalon-15.md §2.5) : directeur (pas, conversation) ; le gardien (`open_daycare`)
 ## la demande, elle commence à la fin de son dialogue.
 var _daycare: DaycareDirector
@@ -218,11 +210,6 @@ var _title_backdrop: TitleBackdrop = null
 var _caves := CaveLibrary.new()
 ## Capacités de terrain (jalon 16 Coupe, jalon 17 Flash) : data/world/field_moves.json.
 var _field_moves := FieldMoves.new()
-## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
-## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
-var _stone_item: StringName = &""
-## Place du Pokémon qui reçoit un Super Bonbon pendant son déroulé (jalon 14, T18b) ; −1 sinon.
-var _candy_index: int = -1
 ## Voile d'obscurité des grottes obscures (J17 T9, brique commune avec le J18 :
 ## `docs/tech/jalon-18.md` §2) : posé à chaque changement de carte (écran noir).
 var _darkness: DarknessController
@@ -242,6 +229,7 @@ var _forced_slide: ForcedSlideDirector
 var _league: BootLeague
 var _world_systems: BootWorld
 var _johto: BootJohto
+var _bag_items: BootBagItems
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -268,6 +256,7 @@ var _johto: BootJohto
 func _ready() -> void:
 	_world_systems = _add_module(BootWorld.new(self), "BootWorld")
 	_johto = _add_module(BootJohto.new(self, _world_clock), "BootJohto")
+	_bag_items = _add_module(BootBagItems.new(self), "BootBagItems")
 	_save_coordinator.setup(_can_write, is_stable, _persist_snapshot)
 	_setup_save_checkpoint()
 	GameState.new_game()
@@ -552,7 +541,7 @@ func _ready() -> void:
 	_menu.menu_closed.connect(_on_menu_closed)
 	_setup_companion()
 	_world_systems.setup_field_systems()
-	_setup_evolution_items()
+	_bag_items.setup()
 	_league = _add_module(BootLeague.new(), "BootLeague")
 	_league.setup(self)
 	BootAudioWiring.wire(self)
@@ -562,7 +551,7 @@ func _ready() -> void:
 	_menu.costume_changed.connect(_on_costume_changed.unbind(1))
 	if _menu_screen.has_signal(&"bag_use_requested"):
 		# Jalon 11 (T12) : apprendre une CT par-dessus le menu.
-		_menu.tm_learn_requested.connect(_on_tm_learn_requested)
+		_menu.tm_learn_requested.connect(_bag_items.on_tm_learn_requested)
 	_menu.settings_changed.connect(_on_settings_changed)
 	_menu.save_requested.connect(_on_save_requested)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
@@ -625,7 +614,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if is_opening_active():
 			# Écran titre (Mac) : comme le retour Android.
 			_opening.handle_back()
-		elif _candy_index >= 0:
+		elif _bag_items.is_rare_candy_running():
 			pass  # Super Bonbon : le déroulé va à son terme (ni menu fermé, ni ouvert).
 		elif _menu.is_open():
 			# Le choix du Pokémon du Sac se referme d'abord (retour d'un niveau).
@@ -912,6 +901,11 @@ func get_pokedex_library() -> PokedexLibrary:
 	return _dex
 
 
+## Textes du combat chargés au démarrage (data/battle/).
+func get_battle_text() -> BattleText:
+	return _texts
+
+
 ## Zones chargées au démarrage (data/world/zones.json).
 func get_zone_library() -> ZoneLibrary:
 	return _zones
@@ -976,7 +970,7 @@ func _on_go_back() -> void:
 		return
 	# Super Bonbon (jalon 14) : voile du niveau et des capacités, retour absorbé (l'évolution qui
 	# suit, annulable, l'a reçu juste au-dessus).
-	if _candy_index >= 0:
+	if _bag_items.is_rare_candy_running():
 		return
 	# Un choix à deux cartes dans un dialogue (SOIGNER / PAS MAINTENANT) : retour = annuler.
 	if _dialogue_box.cancel_choice():
@@ -2029,40 +2023,6 @@ func _on_item_found(item_id: StringName, _count: int) -> void:
 	GameState.record_item_found(item_id, current_map_id())
 
 
-## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
-## (jalon-04.md §14.6). L'accord (« Poké Balls ×5 » / « Ajoutées au Sac ») vient de l'objet.
-## Jalon 11 (T12) : le Pokémon [param index] apprend la capacité de la CT [param item_id] par le
-## déroulé partagé avec le combat et l'évolution ([MoveLearnPrompt.teach]), sur un voile au-dessus
-## du menu ([TmLearnOverlay]) ; la CT reste au Sac.
-func _on_tm_learn_requested(index: int, item_id: StringName) -> void:
-	var item := _items.get_item(item_id)
-	var pokemon: Pokemon = GameState.party.get_at(index)
-	if item == null or pokemon == null:
-		return
-	_learn_overlay().open()
-	var prompt := _battle_director.get_move_learn_prompt()
-	var learned := await prompt.teach(pokemon, index, item.teaches,
-		_tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
-	prompt.release()
-	_tm_overlay.close()
-	_menu.finish_tm_learn(index, item_id, learned)
-
-
-## Lot 32P : PP Plus ou Éther : la capacité du Pokémon [param index] se choisit dans le panneau
-## d'oubli en mode choix, sur le voile d'apprentissage ; le menu applique l'objet.
-func _on_pp_move_requested(index: int, item_id: StringName) -> void:
-	var pokemon: Pokemon = GameState.party.get_at(index)
-	if pokemon == null:
-		return
-	_learn_overlay().open()
-	var prompt := _battle_director.get_move_learn_prompt()
-	var slot := await prompt.choose_move(pokemon, PP_MOVE_CAPTION, PP_MOVE_CONFIRM,
-		PP_MOVE_CANCEL, _tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
-	prompt.release()
-	_tm_overlay.close()
-	_menu.finish_pp_item(index, item_id, slot)
-
-
 ## Lot 32P : fin de la Repousse, dite une fois le joueur libre (après la rencontre de ce pas).
 func _on_repel_wore_off() -> void:
 	if _encounters.is_running():
@@ -2071,17 +2031,7 @@ func _on_repel_wore_off() -> void:
 
 
 func get_tm_learn_overlay() -> TmLearnOverlay:
-	return _tm_overlay
-
-
-## Le voile d'apprentissage au-dessus du menu (CT, Super Bonbon, Pension), créé au premier
-## besoin.
-func _learn_overlay() -> TmLearnOverlay:
-	if _tm_overlay == null:
-		_tm_overlay = TmLearnOverlay.new()
-		_tm_overlay.name = "TmLearnOverlay"
-		add_child(_tm_overlay)
-	return _tm_overlay
+	return _bag_items.get_tm_learn_overlay()
 
 
 # --- Costumes (dossier-costumes.md, CO-4, CO-7) -------------------------------------------------
@@ -2119,6 +2069,8 @@ func _on_costume_changed() -> void:
 		_player.refresh_look()
 
 
+## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
+## (jalon-04.md §14.6). L'accord (« Poké Balls ×5 » / « Ajoutées au Sac ») vient de l'objet.
 func _on_item_given(item_id: StringName, count: int) -> void:
 	var item := _items.get_item(item_id)
 	if item == null:
@@ -2297,135 +2249,14 @@ func get_key_item_director() -> KeyItemDirector:
 	return _world_systems.get_key_item_director()
 
 
-# --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------
-
 ## Accès au relais du son (tests).
 func get_audio_bridge() -> AudioBridge:
 	return _audio_bridge
 
 
-## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
-## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
-func _setup_evolution_items() -> void:
-	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
-	_menu.rare_candy_requested.connect(_on_rare_candy_requested)
-	_menu.pp_move_requested.connect(_on_pp_move_requested)
-	_evolutions.evolution_applied.connect(_on_evolution_applied)
-
-
-## Pierre utilisée sur le Pokémon [param index] (`jalon-12.md` §2.9) : menu fermé, joueur et
-## contrôles bloqués, [method EvolutionDirector.play_item] (non annulable) ; la pierre quitte le
-## Sac **dans l'appel même** où l'évolution est appliquée ([method _on_evolution_applied]). Aucune
-## image stable pendant la séquence (le joueur est bloqué) : une fermeture de l'application
-## reprend à la sauvegarde d'avant, pierre comprise. Fin : retour au monde, compagnon mis à jour
-## (rentre en silence si sa nouvelle espèce n'est pas éligible), autosave.
-func _on_evolution_item_requested(index: int, item_id: StringName) -> void:
-	var candidate := StoneUse.candidate(GameState.party, index, item_id, _pokemon)
-	if candidate == null or not GameState.bag.has(item_id) or _evolutions.is_playing():
-		return
-	_menu.close()
-	_player.set_input_enabled(false, EVOLUTION_ITEM)
-	refresh_controls()
-	_stone_item = item_id
-	_evolutions.speed_scale = _battle_director.speed_scale
-	await _evolutions.play_item(candidate, GameState.party, item_id)
-	_stone_item = &""
-	if is_instance_valid(_player):
-		_player.set_input_enabled(true, EVOLUTION_ITEM)
-	_companion.refresh()
-	refresh_controls()
-	request_autosave("évolution")
-
-
-## L'évolution vient d'être appliquée : la pierre en cours quitte le Sac (une seule fois).
-func _on_evolution_applied(_party_index: int, _into: StringName) -> void:
-	if _stone_item.is_empty():
-		return
-	if not GameState.bag.remove(_stone_item, 1):
-		push_error("Boot : la pierre « %s » n'est plus dans le Sac" % _stone_item)
-	_stone_item = &""
-
-
-# --- Jalon 14 (T18b) : Super Bonbon depuis le Sac ----------------------------------------
-
-## Super Bonbon donné au Pokémon [param index] (`jalon-14.md` §2.6, dossier 17 §5) :
-## 1. dans le même appel, le bonbon quitte le Sac et le niveau est gagné ([method RareCandy.apply] :
-##    stats et PV recalculés) ; le joueur est bloqué ([constant RARE_CANDY]) : la partie n'est pas
-##    stable, rien n'est écrit pendant le déroulé (une fermeture de l'application reprend avant
-##    l'usage, bonbon et niveau ensemble) ;
-## 2. voile au-dessus du menu ([TmLearnOverlay]) : « {pokemon} monte au niveau {niveau} ! »
-##    (n° 62), puis chaque capacité du niveau par [method MoveLearnPrompt.teach] (« apprend », ou
-##    l'oubli ; NE PAS APPRENDRE la laisse) ;
-## 3. sans évolution due : retour au Sac ([method MenuDirector.finish_rare_candy] : autosave à la
-##    fermeture du menu) ; avec une évolution due ([method RareCandy.evolution_after]) : comme la
-##    Pierre Lune, menu fermé puis écran d'évolution hors combat, mais **annulable** (évolution par
-##    niveau : ARRÊTER, retour Android ; reproposée au prochain niveau gagné), puis retour au monde
-##    et autosave.
-func _on_rare_candy_requested(index: int, item_id: StringName) -> void:
-	var pokemon: Pokemon = GameState.party.get_at(index)
-	if pokemon == null or _candy_index >= 0 or _evolutions.is_playing() \
-			or not GameState.bag.has(item_id) or RareCandy.check(pokemon) != RareCandy.Check.OK:
-		return
-	_candy_index = index
-	_player.set_input_enabled(false, RARE_CANDY)
-	GameState.bag.remove(item_id, 1)
-	var level_up := RareCandy.apply(pokemon, _pokemon)
-	if level_up == null:
-		push_error("Boot : Super Bonbon sans effet sur la place %d" % index)
-		GameState.bag.add(item_id, 1)
-		_end_rare_candy()
-		return
-	var overlay := _learn_overlay()
-	overlay.open()
-	var banner := overlay.get_message_banner()
-	await banner.show_message(_rare_candy_line(pokemon, index), true)
-	var prompt := _battle_director.get_move_learn_prompt()
-	for move_id: StringName in level_up.moves:
-		if not is_instance_valid(banner):
-			return
-		await prompt.teach(pokemon, index, move_id, banner, overlay.get_prompt_host())
-	prompt.release()
-	if not is_instance_valid(overlay):
-		return
-	overlay.close()
-	_menu.finish_rare_candy(index, item_id)
-	var into := RareCandy.evolution_after(pokemon, _pokemon)
-	if not into.is_empty() and _pokemon.has_species(into):
-		_menu.close()
-		var candidate := EvolutionCandidate.new(index, pokemon.species_id, into)
-		var list: Array[EvolutionCandidate] = [candidate]
-		_evolutions.speed_scale = _battle_director.speed_scale
-		await _evolutions.play(list, GameState.party)
-		if not is_instance_valid(_player):
-			return
-		_end_rare_candy()
-		_companion.refresh()
-		request_autosave("évolution")
-		return
-	_end_rare_candy()
-
-
-## « Abra monte au niveau 16 ! » (n° 62, accordé au sexe si la donnée a une variante).
-func _rare_candy_line(pokemon: Pokemon, index: int) -> String:
-	var event := BattleEvent.new(BattleEvent.Kind.LEVEL_UP, BattleEvent.SideId.PLAYER)
-	event.pokemon_name = pokemon.display_name(_pokemon)
-	event.gender = pokemon.gender
-	event.party_index = index
-	event.level = pokemon.level
-	event.species_id = pokemon.species_id
-	return _texts.line_for(&"rare_candy_level", event, _pokemon)
-
-
-func _end_rare_candy() -> void:
-	_candy_index = -1
-	if is_instance_valid(_player):
-		_player.set_input_enabled(true, RARE_CANDY)
-	refresh_controls()
-
-
 ## Vrai pendant le déroulé d'un Super Bonbon (tests, QA).
 func is_rare_candy_running() -> bool:
-	return _candy_index >= 0
+	return _bag_items.is_rare_candy_running()
 
 
 func get_elevator_director() -> ElevatorDirector:
