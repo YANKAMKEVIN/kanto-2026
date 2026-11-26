@@ -2,7 +2,7 @@ class_name LeagueDirector
 extends Node
 ## Tentative de Ligue dans la partie (jalon 30 T8, `docs/tech/jalon-30.md` §2.2, §2.3) : applique
 ## [LeagueAttempt] (pur) aux événements du jeu, sur le modèle des autres directeurs de [Boot]
-## (bloc `_setup_league()`).
+## ([BootLeague]).
 ##
 ## - **Entrée** : arrivée dans la salle d'Olga ([constant LeagueAttempt.ROOMS] [0]) hors
 ##   tentative → [method LeagueAttempt.start] (drapeaux de la tentative), les Dresseurs de la

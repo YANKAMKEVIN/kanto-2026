@@ -39,6 +39,13 @@ extends Node
 ## directeur met l'arbre en pause à l'ouverture. Ouverture par l'action `menu` ou le retour
 ## Android (en exploration : sauvegarde puis ouverture, **jamais** de sortie du jeu, Q-3).
 
+## Modules de domaine (`game/boot/`, découpage du 2026-11-26) : Boot reste la racine de composition
+## mais délègue chaque domaine à un module qu'il crée au début de `_ready` et appelle aux mêmes
+## moments qu'avant (l'ordre des branchements compte) : [BootWorld] (monde et capacités de
+## terrain), [BootJohto], [BootServices] (Centres), [BootBagItems] (objets du Sac), [BootLeague],
+## [BootBackgroundSave] (S2A), [BootPokedexToasts], [BootAudioWiring], [BootMenuWiring]. Les
+## accesseurs publics de Boot restent la porte d'entrée des tests et des outils.
+
 ## Une zone vient d'être annoncée (titre de zone affiché).
 signal zone_announced(zone_name: String, region: String)
 
@@ -52,10 +59,6 @@ const MAX_PLAY_TIME_STEP: float = SessionLifecycle.MAX_PLAY_TIME_STEP
 const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
 ## JOH0 : période de relecture de l'heure du téléphone (secondes) [D].
 const WORLD_CLOCK_SYNC_SECONDS: float = 1.0
-## Lot 32P : choix de la capacité d'un PP Plus ou d'un Éther (textes validés par Kevin le 2026-10-29).
-const PP_MOVE_CAPTION := "Choisis une capacité"
-const PP_MOVE_CONFIRM := "CHOISIR"
-const PP_MOVE_CANCEL := "RETOUR"
 const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
 ## Le labo (1536 px de large) est plus étroit que l'écran (jusqu'à 2340) : agrandi pour le remplir.
 const INTRO_BACKDROP_ZOOM: float = 1.6
@@ -63,12 +66,10 @@ const INTRO_BACKDROP_ZOOM: float = 1.6
 const OPENING_ARRIVAL: StringName = &"opening_arrival"
 ## Narration de la Corde Sortie (jalon 12, dossier 15 §20 n° 33) :
 ## `data/dialogues/field_items.json`.
-const ESCAPE_ROPE_DIALOGUE: StringName = &"escape_rope_used"
-## Raison de blocage du joueur pendant une évolution par pierre hors combat (jalon 12, T23).
-const EVOLUTION_ITEM: StringName = &"evolution_item"
-## Raison de blocage du joueur pendant tout le déroulé d'un Super Bonbon (jalon 14, T18b) : voile
-## au-dessus du menu, puis évolution éventuelle. La partie n'est pas stable : aucune écriture.
-const RARE_CANDY: StringName = &"rare_candy"
+const ESCAPE_ROPE_DIALOGUE: StringName = BootWorld.ESCAPE_ROPE_DIALOGUE
+## Raisons de blocage du joueur pendant une pierre ou un Super Bonbon ([BootBagItems]).
+const EVOLUTION_ITEM: StringName = BootBagItems.EVOLUTION_ITEM
+const RARE_CANDY: StringName = BootBagItems.RARE_CANDY
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -123,14 +124,9 @@ var _library := DialogueLibrary.new()
 var _cutscenes := CutsceneLibrary.new()
 var _pokemon := PokemonData.new()
 var _offer := StarterOffer.new()
-## Chapitre Johto (JOH1, `jalon-joh1.md` §2.6) : l'offre d'Orme (`starters_johto.json`) et son
-## contrôleur, créé en code sur la même fiche que celui de Chen.
-var _offer_johto := StarterOffer.new()
+## Chapitre Johto (JOH1) : le choix du starter d'Orme ([BootJohto], référence gardée pour la
+## stabilité de la partie et les contrôles).
 var _starter_choice_johto: StarterChoice
-## Jeton `{pokemon}` des répliques d'Orme pendant la scène du choix (le starter de Johto).
-var _johto_starter_tokens: Dictionary[StringName, String] = {}
-## JOH1 : un départ de débogage a imposé `period` : la règle d'histoire ([JohtoPeriodRule]) se tait.
-var _debug_period_forced: bool = false
 var _trainers: TrainerLibrary
 ## Badges de Kanto (jalon 10 : étape de scène « badge »).
 var _badges: BadgeLibrary = BadgeLibrary.new()
@@ -144,10 +140,8 @@ var _map_illustration := MapIllustration.new()
 var _map_illustration_johto := MapIllustration.new()
 const JOHTO_MAP_AREAS: String = "res://assets/ui/map/johto_placeholder_areas.json"
 var _moments := MomentLibrary.new()
-## Toasts du Pokédex en attente (au plus un par espèce) : des paires [espèce, [titre, détail]].
-var _dex_toasts: Array[Array] = []
-## Individus observés pendant la visite de la carte (OBSERVER, une fois par individu).
-var _observed: Dictionary[StringName, bool] = {}
+## Nouvelles du Pokédex (OBSERVER, notes, toasts) : [BootPokedexToasts].
+var _dex_news := BootPokedexToasts.new(self)
 var _objectives := ObjectiveLibrary.new()
 var _unlocks: MenuUnlocks
 ## Lumière du monde (jalon 7, jalon-07.md §6.7, §15.3) : profil de la carte appliqué à chaque
@@ -163,14 +157,8 @@ var _evolutions: EvolutionDirector
 var _evolution_screen: EvolutionScreen
 ## Points de repos (jalon 7, 7A.2) : maison et Centres, mot du réveil (data/world/rest_points.json).
 var _rest_points := RestPointLibrary.new()
-## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
-var _rest_toast: PackedStringArray = PackedStringArray()
-## Boutiques (jalon 7, 7A.3, data/shops/) ; la boutique demandée par le marchand (`open_shop`),
-## ouverte à la fin de son dialogue (le menu ne s'ouvre pas pendant un dialogue).
+## Boutiques (jalon 7, 7A.3, data/shops/).
 var _shops := ShopLibrary.new()
-var _pending_shop: StringName = &""
-## Le terminal du Centre a demandé le Stockage (`open_storage`) : ouvert à la fin du dialogue.
-var _pending_storage: bool = false
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -181,55 +169,28 @@ var _debug_start_autosave: bool = false
 ## Départ de débogage sans écriture, ou Boot d'un outil sans SaveSystem injecté.
 ## Les points critiques y sont simulés ; jamais activé pour une vraie partie refusée.
 var _simulate_checkpoints: bool = false
-## Voile de l'apprentissage d'une CT depuis le Sac (jalon 11), créé au premier besoin.
-var _tm_overlay: TmLearnOverlay
-## Pension (J15, jalon-15.md §2.5) : directeur (pas, conversation) ; le gardien (`open_daycare`)
-## la demande, elle commence à la fin de son dialogue.
+## Pension (J15) et terminal d'échange local (J32) : créés par [BootServices], références gardées
+## pour le retour Android, les contrôles, les cartes et les jetons des dialogues.
 var _daycare: DaycareDirector
-var _pending_daycare: bool = false
-## J32 (T5) : terminal d'échange local des Centres (`open_local_trade`) ; la conversation
-## commence à la fin du dialogue du terminal.
 var _local_trade: LocalTradeDirector
-var _pending_local_trade: bool = false
-## JOH0 : le Stockage ou le terminal d'échange ont été demandés pendant l'acte 1 du Chapitre
-## Johto (réseau de Kanto coupé) : le refus se dit à la fin du dialogue, à la place de l'écran.
-var _pending_offline_notice: bool = false
-## JOHP0 : le film et l'écran du Réveil (étape « stones_awaken »).
-var _awakening_overlay: AwakeningOverlay
-## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
-var _team_return_overlay: TeamReturnOverlay
-## JOHP3 : le survol sur le Dracolosse de Corentin (étape « dragon_flight »).
-var _dragon_flight_overlay: DragonFlightOverlay
-## JOH5 (T-29) : des Pokémon sont allés au Stockage au retour de l'équipe (drapeau de travail).
-const JOHTO_RETURN_STORED_FLAG: StringName = &"johto_return_stored"
-## JOHP0 : P-31 (`data/dialogues/johp0.json`) et l'annonce du Stockage.
-const AWAKENING_LINES: StringName = &"stones_awakening_line"
-const AWAKENING_STORED: StringName = &"stones_awakening_stored"
 ## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
 var _debug_cutscene: StringName = &""
 ## JOH0 (QA de la lumière) : profil imposé à la carte de départ (clé « light_profile »).
 var _debug_light_profile: StringName = &""
 var _debug_light_map: StringName = &""
-## JOH0 (`jalon-joh0.md` §2.7, §2.9) : pas du lien et des œufs ; œufs prêts à éclore, joués au
-## prochain pas où la partie est stable ; jeton {pokemon} du dialogue d'éclosion.
-var _bond_steps := BondStepCounter.new()
-var _pending_hatch: Array[Pokemon] = []
-var _hatch_tokens: Dictionary[StringName, String] = {}
 ## Compagnon (jalon 11, 11D) : espèces éligibles et contrôleur (nœud créé tout de suite pour
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
 var _companion := CompanionController.new()
 ## Mise en scène des capacités de terrain (jalon 16, Coupe : le Pokémon qui coupe, l'effet).
 var _field_presenter := FieldMovePresenter.new()
-## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
-var _daycare_overlay: DaycareOverlay
 ## J25 : choix du Pokémon d'un échange fixe.
 var _trade_overlay: TradeOverlay
 ## Coordination locale : aucun nouvel autoload, dépendances câblées dans _ready.
 var _save_coordinator := SaveCoordinator.new()
 var _lifecycle := SessionLifecycle.new()
 var _settings_applier := SettingsApplier.new()
-## Jalon Son (T6) : relais vers l'autoload « Audio » ([method _setup_audio]).
+## Jalon Son (T6) : relais vers l'autoload « Audio » ([method BootAudioWiring.wire]).
 var _audio_bridge := AudioBridge.new()
 ## Ouverture (OUV.1) : null hors scène principale ou avec un départ de débogage.
 var _opening: OpeningDirector = null
@@ -239,16 +200,6 @@ var _title_backdrop: TitleBackdrop = null
 var _caves := CaveLibrary.new()
 ## Capacités de terrain (jalon 16 Coupe, jalon 17 Flash) : data/world/field_moves.json.
 var _field_moves := FieldMoves.new()
-## Puzzles d'interrupteurs (jalon 16, Arène de Carmin) : data/world/switch_puzzles.json.
-var _switch_puzzles := SwitchPuzzleLibrary.new()
-## Puzzle de la carte courante (identifiant → [SwitchPuzzle]) : créé à la première fouille, oublié
-## à chaque arrivée sur une carte (état jamais sauvegardé, nouveau tirage au retour).
-var _active_puzzles: Dictionary[StringName, SwitchPuzzle] = {}
-## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
-## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
-var _stone_item: StringName = &""
-## Place du Pokémon qui reçoit un Super Bonbon pendant son déroulé (jalon 14, T18b) ; −1 sinon.
-var _candy_index: int = -1
 ## Voile d'obscurité des grottes obscures (J17 T9, brique commune avec le J18 :
 ## `docs/tech/jalon-18.md` §2) : posé à chaque changement de carte (écran noir).
 var _darkness: DarknessController
@@ -259,16 +210,23 @@ var _veil_debug: StringName = &""
 ## Flash automatique à l'arrivée sur une carte obscure (J17 T24, Q-1 « tout J17 » ; contrat commun
 ## avec le J18, `jalon-18.md` §3.3).
 var _flash: FlashDirector
-## J20 (T13, `jalon-20.md` §2.3) : ascenseurs (cabine, panneau, trajet, position sauvée).
-var _elevators := ElevatorLibrary.new()
+## J20 (T13, `jalon-20.md` §2.3) : directeur des ascenseurs (créé tôt : réglages).
 var _elevator: ElevatorDirector
-var _elevator_panel: ElevatorPanel
-var _pending_elevator: bool = false
-## J20 (T19, `jalon-20.md` §2.4.4) : dalles tournantes du repaire (glisse, verrou, reprise).
+## J20 (T19) : dalles tournantes et courants ([BootWorld], référence gardée pour la stabilité).
 var _forced_slide: ForcedSlideDirector
-## Passe systèmes 2 (S2B) : monture (Vélo) et objets clés utilisables (Bicyclette, Poké Flûte).
-var _mount: MountDirector
-var _key_items: KeyItemDirector
+## Modules de domaine extraits de Boot (enfants PAUSABLE, sans traitement propre) : Boot reste la
+## racine de composition et les appelle aux mêmes moments qu'avant le découpage.
+var _league: BootLeague
+var _world_systems: BootWorld
+var _johto: BootJohto
+var _bag_items: BootBagItems
+var _center: BootServices
+## Créé avec Boot (pas un nœud) : les notifications arrivent avant `_ready` et après la
+## libération des enfants.
+var _background_save := BootBackgroundSave.new(self)
+## Horloge du point de reprise, en secondes (délai de garde, écart entre écritures) ; les tests
+## la remplacent avant l'entrée dans l'arbre ([BootBackgroundSave]).
+var background_clock: Callable
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -293,8 +251,13 @@ var _key_items: KeyItemDirector
 
 
 func _ready() -> void:
+	_world_systems = _add_module(BootWorld.new(self), "BootWorld")
+	_johto = _add_module(BootJohto.new(self, _world_clock), "BootJohto")
+	_bag_items = _add_module(BootBagItems.new(self), "BootBagItems")
+	_center = _add_module(BootServices.new(self), "BootServices")
+	_center.set_elevator_opener(_world_systems.open_pending_elevator)
 	_save_coordinator.setup(_can_write, is_stable, _persist_snapshot)
-	_setup_save_checkpoint()
+	_background_save.setup()
 	GameState.new_game()
 	_lighting = WorldLighting.new()
 	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -341,14 +304,13 @@ func _ready() -> void:
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
-	_setup_forced_slides()
+	_world_systems.setup_forced_slides()
+	_forced_slide = _world_systems.get_forced_slide_director()
 	# Centre Pokémon (jalon 7, 7A.2, jalon-07.md §6.2) : actions de dialogue (soins), choix à deux
 	# cartes dans la boîte de dialogue (T7), réveil au point de repos.
 	_rest_points.load_file()
 	_services.setup(GameState, _rest_points)
-	_services.center_healed.connect(_on_center_healed)
-	_services.shop_requested.connect(_on_shop_requested)
-	_services.storage_requested.connect(_on_storage_requested)
+	_center.setup_center()
 	_runner.action_handler = _services.run_action
 	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
 	_runner.choice_requested.connect(_dialogue_box.show_choice)
@@ -369,19 +331,11 @@ func _ready() -> void:
 		_offer.check_species(_pokemon)
 	_starter_choice.setup(_offer, _pokemon, GameState, _player, _sheet, _hud, _cutscenes_node,
 		_interactions)
-	_starter_choice.sheet_opened.connect(_refresh_controls)
-	_starter_choice.sheet_closed.connect(_refresh_controls)
+	_starter_choice.sheet_opened.connect(refresh_controls)
+	_starter_choice.sheet_closed.connect(refresh_controls)
 	# JOH1 : l'offre de Johto (Orme, salle de repos du Centre d'Oliville), second contrôleur.
-	if _offer_johto.load_file(StarterOffer.JOHTO_DATA_PATH):
-		_offer_johto.check_species(_pokemon)
-	_starter_choice_johto = StarterChoice.new()
-	_starter_choice_johto.name = "StarterChoiceJohto"
-	_starter_choice_johto.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_starter_choice_johto)
-	_starter_choice_johto.setup(_offer_johto, _pokemon, GameState, _player, _sheet, _hud,
-		_cutscenes_node, _interactions)
-	_starter_choice_johto.sheet_opened.connect(_refresh_controls)
-	_starter_choice_johto.sheet_closed.connect(_refresh_controls)
+	_johto.setup_starter()
+	_starter_choice_johto = _johto.get_starter_choice()
 	# Jalon 4B : combat, dresseurs, messages, objets et Sac.
 	_trainers = TrainerLibrary.new(_pokemon)
 	_trainers.load_dir()
@@ -390,7 +344,7 @@ func _ready() -> void:
 	if not _field_moves.load_file():
 		for error: String in _field_moves.get_errors():
 			push_error("Boot : %s" % error)
-	_switch_puzzles.load_file()
+	_world_systems.load_switch_puzzles()
 	_items.check_moves(_pokemon)
 	# Icônes des CT (RP-256) : un disque peint par type de la capacité enseignée.
 	MenuArt.set_tm_types(_items.tm_types(_pokemon))
@@ -422,34 +376,15 @@ func _ready() -> void:
 	_cutscenes_node.pokemon_traded.connect(_on_pokemon_traded)
 	# JOH0 (`jalon-joh0.md` §2.2) : le vol et le retour de l'équipe (étapes « confiscate_team »
 	# et « return_team ») ; l'écran du choix des 6.
-	_team_return_overlay = TeamReturnOverlay.new()
-	_team_return_overlay.name = "TeamReturnOverlay"
-	_team_return_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_team_return_overlay)
-	_dragon_flight_overlay = DragonFlightOverlay.new()
-	_dragon_flight_overlay.name = "DragonFlightOverlay"
-	_dragon_flight_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_dragon_flight_overlay)
-	_cutscenes_node.dragon_flight_handler = _on_dragon_flight_requested
+	_johto.setup_overlays()
 	_cutscenes_node.rest_point_handler = func(map: StringName) -> void:
 		RestPointLibrary.register(GameState, _rest_points.get_point(map))
-	_cutscenes_node.team_return_handler = _on_team_return_requested
-	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
-	_cutscenes_node.team_returned.connect(_on_team_returned)
-	_cutscenes_node.egg_given.connect(_on_egg_given)
 	# JOHP0 (`jalon-joh-pierres.md` §2) : le Réveil (étape « stones_awaken ») et son écran.
-	_awakening_overlay = AwakeningOverlay.new()
-	_awakening_overlay.name = "AwakeningOverlay"
-	_awakening_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_awakening_overlay)
-	var awakening_art := BattleArt.new()
-	awakening_art.setup(_pokemon, _dex)
-	_awakening_overlay.setup(awakening_art)
+	_johto.setup_cutscene_steps()
 	_cutscenes_node.set_zones(_zones)
-	_cutscenes_node.awakening_handler = _on_awakening_film_requested
-	_cutscenes_node.awakening_screen_handler = _on_awakening_review_requested
+	_johto.setup_awakening_handlers()
 	# JOH0 : lien et œufs à chaque pas libre du joueur.
-	_player.moved.connect(_on_player_moved_for_bond)
+	_johto.setup_bond_steps()
 	_player.moved.connect(_on_player_moved_for_flair)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
@@ -464,28 +399,14 @@ func _ready() -> void:
 	add_child(_evolution_screen)
 	_evolution_screen.reduce_flashes = _settings.reduce_flashes
 	_evolutions.set_screen(_evolution_screen)
-	# Pension (J15, jalon-15.md §2.5) : compteur de pas sur le joueur, conversation du gardien.
-	_daycare = DaycareDirector.new()
-	_daycare.name = "DaycareDirector"
-	_daycare.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_daycare)
-	_daycare.setup(GameState, _player, _runner, _library, _pokemon, DaycareConfig.load_default())
-	_daycare.set_learning(_battle_director.get_move_learn_prompt(), _evolutions)
-	_daycare_overlay = DaycareOverlay.new()
-	_daycare_overlay.name = "DaycareOverlay"
-	_daycare_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_daycare_overlay)
-	_daycare_overlay.attach(_daycare,
-		func(view: DaycarePickView) -> PartyPickerView: return view.to_picker_view(_pokemon))
-	_daycare.overlay = _daycare_overlay
-	_daycare.deposited.connect(_on_daycare_deposited.unbind(1))
-	_daycare.finished.connect(_on_daycare_finished)
-	_services.daycare_requested.connect(_on_daycare_requested)
-	_setup_local_trade()
-	_setup_elevators()
-	_setup_teleporters()
-	_setup_fly()
-	_setup_field_travel()
+	# Pension (J15, jalon-15.md §2.5) et terminal d'échange local (J32, T5).
+	_center.setup_daycare_and_trade()
+	_daycare = _center.get_daycare_director()
+	_local_trade = _center.get_local_trade_director()
+	_world_systems.setup_elevators()
+	_world_systems.setup_teleporters()
+	_world_systems.setup_fly()
+	_world_systems.setup_field_travel()
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -495,12 +416,12 @@ func _ready() -> void:
 	# J17 (§2.5) : variantes selon les espèces capturées (assistant de Chen, CS05).
 	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# JOH0 : moment et jour pour les variantes datées, à Johto seulement.
-	_runner.time_source = _current_time
+	_runner.time_source = _johto.current_time
 	_runner.caught_johto_count = func() -> int:
 		return PokedexQuery.caught_in_region(GameState.pokedex, _pokemon, ZoneData.REGION_JOHTO)
 	# JOH3 : jour de la promotion du Grand Magasin (à Johto seulement) et palier du lien du
 	# Pokémon de tête (Mme Clémence).
-	_menu.weekday_source = func() -> StringName: return _current_time()[1]
+	_menu.weekday_source = func() -> StringName: return _johto.current_time()[1]
 	_runner.lead_bond_source = func() -> int: return BondReader.lead_tier(GameState)
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
@@ -533,7 +454,7 @@ func _ready() -> void:
 	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
 	# labo, puis les sauvages en 5B).
 	_starter_choice.starter_chosen.connect(_on_starter_chosen)
-	_starter_choice_johto.starter_chosen.connect(_on_johto_starter_chosen)
+	_starter_choice_johto.starter_chosen.connect(_johto.on_starter_chosen)
 	_battle_director.event_played.connect(_on_battle_event)
 	# Capture (jalon 5D) : le Pokémon rangé, l'autosave est demandé (écrit une fois stable).
 	_battle_director.pokemon_caught.connect(_on_pokemon_caught.unbind(2))
@@ -550,7 +471,7 @@ func _ready() -> void:
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
 		SceneRouter, _cutscenes_node, _recovery)
 	# JOH0 : les tables datées ne jouent qu'à Johto (Kanto : tirage inchangé).
-	_encounters.period_source = period_for_map
+	_encounters.period_source = _johto.period_for_map
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
 	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
@@ -561,7 +482,7 @@ func _ready() -> void:
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
 	# Soin volontaire (jalon 5 §3.11) : une variante de dialogue « heal » (parler à Maman)
 	# soigne l'équipe à la fin du dialogue.
-	_runner.heal_requested.connect(_on_heal_requested)
+	_runner.heal_requested.connect(_center.on_heal_requested)
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
 	_cutscenes_node.step_played.connect(_on_costume_badge_step)
@@ -573,7 +494,7 @@ func _ready() -> void:
 	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
 	# Stockage (jalon-07.md §6.9, T16) : seulement dans un Centre (carte courante, relue à chaque
 	# appel) ; l'écran Stockage et le bouton STOCKAGE de l'Équipe n'existent que là.
-	_unlocks.set_location(_zones, _current_map_id)
+	_unlocks.set_location(_zones, current_map_id)
 	_apply_debug_unlocks()
 	# JOH0 : un fichier par région (`kanto.json`, `johto.json`) : 202 espèces.
 	if _dex.load_dir():
@@ -602,100 +523,25 @@ func _ready() -> void:
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	_setup_companion()
-	_setup_caves()
-	_setup_flash()
-	_setup_mount()
-	_setup_fishing()
-	_setup_safari()
-	_setup_strength()
-	_setup_evolution_items()
-	_setup_league()
-	_setup_audio()
-	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
-	# coupé laisse une coroutine non reprise).
-	_menu.menu_opened.connect(_menu_screen.open_animated)
-	_menu.menu_closed.connect(_menu_screen.close_animated.unbind(1))
-	_menu.dashboard_shown.connect(_menu_screen.show_dashboard)
-	_menu.placeholder_shown.connect(_menu_screen.show_placeholder)
-	_menu_screen.route_requested.connect(_menu.go)
-	_menu_screen.back_requested.connect(_menu.handle_back)
-	_menu_screen.close_requested.connect(_menu.close)
-	# Costumes (dossier-costumes.md, CO-1, CO-7) : choisis sur l'écran Dresseur, le joueur du
-	# monde se rhabille aussitôt.
-	if _menu_screen.has_signal(&"costume_chosen"):
-		_menu_screen.costume_chosen.connect(_menu.choose_costume)
+	_world_systems.setup_field_systems()
+	_bag_items.setup()
+	_league = _add_module(BootLeague.new(), "BootLeague")
+	_league.setup(self)
+	BootAudioWiring.wire(self)
+	# L'écran (jalon-06.md §6.6) : directeur et écran reliés ([BootMenuWiring]) ; restent ici les
+	# gestionnaires de Boot (costume, CT, réglages, « Sauvegarder maintenant »).
+	BootMenuWiring.wire(_menu, _menu_screen)
 	_menu.costume_changed.connect(_on_costume_changed.unbind(1))
-	# Équipe (T8) : reliée dès que l'écran porte l'interface du §6.7 (TeamScreen du T7).
-	if _menu_screen.has_signal(&"team_member_moved"):
-		_menu.team_shown.connect(_menu_screen.show_team)
-		_menu_screen.team_member_moved.connect(_menu.move_member)
-		_menu_screen.team_favorite_toggled.connect(_menu.toggle_favorite)
-		_menu_screen.team_companion_toggled.connect(_menu.toggle_companion)
-		_menu_screen.team_member_selected.connect(_menu.select_member)
-	# Sac (T12) : relié dès que l'écran porte l'interface du §6.8 (BagScreen du T11).
 	if _menu_screen.has_signal(&"bag_use_requested"):
-		_menu.bag_shown.connect(_menu_screen.show_bag)
-		_menu.bag_targets_shown.connect(_menu_screen.show_bag_targets)
-		_menu.bag_result_shown.connect(_menu_screen.show_bag_result)
-		_menu_screen.bag_category_opened.connect(_menu.open_bag_category)
-		_menu_screen.bag_favorite_toggled.connect(_menu.toggle_item_favorite)
-		_menu_screen.bag_sort_changed.connect(_menu.set_bag_sort)
-		_menu_screen.bag_use_requested.connect(_menu.request_item_use)
-		_menu_screen.bag_target_chosen.connect(_menu.use_item_on)
-		_menu_screen.bag_repeat_requested.connect(_menu.repeat_item_use)
 		# Jalon 11 (T12) : apprendre une CT par-dessus le menu.
-		_menu.tm_learn_requested.connect(_on_tm_learn_requested)
-	# Pokédex (T16) : relié dès que l'écran porte l'interface du §6.9 (PokedexScreen du T15).
-	if _menu_screen.has_signal(&"pokedex_species_opened"):
-		_menu.pokedex_shown.connect(_menu_screen.show_pokedex)
-		_menu.pokedex_sheet_shown.connect(_menu_screen.show_pokedex_sheet)
-		_menu_screen.pokedex_filter_changed.connect(_menu.set_pokedex_filter)
-		_menu_screen.pokedex_species_opened.connect(_menu.open_species)
-	# Carte (T21) : reliée dès que l'écran porte l'interface du §6.10 (MapScreen du T20).
-	if _menu_screen.has_signal(&"map_zone_touched"):
-		_menu.map_shown.connect(_menu_screen.show_map)
-		_menu.map_zone_shown.connect(_menu_screen.show_map_zone)
-		_menu_screen.map_zone_touched.connect(_menu.open_zone)
-		_menu_screen.map_region_requested.connect(_menu.switch_map_region)
-	# Dresseur (T25) : sans show_trainer (écran pas encore fusionné), l'écran provisoire.
-	if _menu_screen.has_method(&"show_trainer"):
-		_menu.trainer_shown.connect(_menu_screen.show_trainer)
-	else:
-		_menu.trainer_shown.connect(
-			func(_view: TrainerView) -> void: _menu_screen.show_placeholder(MenuRoute.TRAINER))
-	# Paramètres (T29) : reliés dès que l'écran porte l'interface du §6.12 (SettingsScreen du
-	# T28) ; sinon l'écran provisoire reste.
+		_menu.tm_learn_requested.connect(_bag_items.on_tm_learn_requested)
 	_menu.settings_changed.connect(_on_settings_changed)
 	_menu.save_requested.connect(_on_save_requested)
-	if _menu_screen.has_signal(&"setting_changed"):
-		_menu.save_result_shown.connect(_menu_screen.show_save_result)
-		_menu.settings_shown.connect(_menu_screen.show_settings)
-		_menu_screen.setting_changed.connect(_menu.change_setting)
-		_menu_screen.save_now_requested.connect(_menu.request_save)
-	# Boutique (jalon-07.md §6.10) : ShopScreen du T11 (TrainerMenu), directeur du T12.
-	_menu.shop_shown.connect(_menu_screen.show_shop)
-	_menu.shop_result_shown.connect(_menu_screen.show_shop_result)
-	_menu.shop_confirm_requested.connect(_menu_screen.show_shop_confirm)
-	_menu_screen.shop_mode_changed.connect(_menu.set_shop_mode)
-	_menu_screen.shop_buy_requested.connect(_menu.buy)
-	_menu_screen.shop_sell_requested.connect(_menu.sell)
-	# Stockage (jalon-07.md §6.9) : StorageScreen du T15 (TrainerMenu, fusionné avant : câblage
-	# direct, comme la Boutique), directeur du T16.
-	_menu.storage_shown.connect(_menu_screen.show_storage)
-	_menu.storage_refused.connect(_menu_screen.show_storage_refusal)
-	_menu.storage_release_asked.connect(_menu_screen.ask_storage_release)
-	_menu_screen.storage_selected.connect(_menu.select_storage)
-	_menu_screen.storage_deposit_requested.connect(_menu.deposit_member)
-	_menu_screen.storage_withdraw_requested.connect(_menu.withdraw_member)
-	_menu_screen.storage_favorite_toggled.connect(_menu.toggle_storage_favorite)
-	_menu_screen.storage_release_requested.connect(_menu.request_release)
-	_menu_screen.storage_release_confirmed.connect(_menu.confirm_release)
-	_menu_screen.storage_query_changed.connect(_menu.set_storage_query)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
-	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
+	_dex_news.setup()
 	GameState.flags.flag_changed.connect(_on_flag_changed)
-	_interactions.observed.connect(_on_observed)
-	_interactions.puzzle_searched.connect(_on_puzzle_searched)
+	_interactions.observed.connect(_dex_news.on_observed)
+	_interactions.puzzle_searched.connect(_world_systems.on_puzzle_searched)
 	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
@@ -716,22 +562,29 @@ func _ready() -> void:
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 
 
+## Ajoute un module de domaine comme enfant de Boot (même règle de pause que les autres enfants).
+func _add_module(module: Node, module_name: String) -> Node:
+	module.name = module_name
+	module.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(module)
+	return module
+
+
 func _process(delta: float) -> void:
-	GameState.add_play_time(_lifecycle.play_time_step(delta, _is_opening_active()))
-	_watch_save_checkpoint(delta)
+	GameState.add_play_time(_lifecycle.play_time_step(delta, is_opening_active()))
+	_background_save.watch(delta)
 	# Moteur commun (D5) : boutons transparents quand le joueur est dessous.
 	_hud.set_player_screen_rect(_player.get_screen_body_rect())
 	_save_coordinator.process(delta)
-	if not _dex_toasts.is_empty():
-		_show_next_dex_toast()
+	_dex_news.process()
 
 
 ## Boot transmet les notifications ; le cycle de vie décide du temps de jeu, le point de reprise
 ## de ce qui s'écrit à la mise en arrière-plan (passe systèmes 2, S2A).
 func _notification(what: int) -> void:
 	if _lifecycle.handle_notification(what):
-		_save_in_background(SessionLifecycle.save_reason(what))
-	_on_focus_change(SessionLifecycle.focus_change(what))
+		_background_save.save_in_background(SessionLifecycle.save_reason(what))
+	_background_save.on_focus_change(SessionLifecycle.focus_change(what))
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		_on_go_back()
 
@@ -740,10 +593,10 @@ func _notification(what: int) -> void:
 ## refermé le choix du Pokémon du Sac s'il est ouvert).
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"menu") and not event.is_echo():
-		if _is_opening_active():
+		if is_opening_active():
 			# Écran titre (Mac) : comme le retour Android.
 			_opening.handle_back()
-		elif _candy_index >= 0:
+		elif _bag_items.is_rare_candy_running():
 			pass  # Super Bonbon : le déroulé va à son terme (ni menu fermé, ni ouvert).
 		elif _menu.is_open():
 			# Le choix du Pokémon du Sac se referme d'abord (retour d'un niveau).
@@ -800,25 +653,13 @@ func get_world_clock() -> WorldClock:
 
 ## JOH0 (JH-8) : vrai si [param map_id] est une carte de Johto (sa zone le dit).
 func is_johto_map(map_id: StringName) -> bool:
-	return _zones != null and _zones.is_johto(map_id)
+	return _johto.is_johto_map(map_id)
 
 
 ## JOH0 : le moment courant à lire sur [param map_id] : celui de l'horloge à Johto, &"" ailleurs
 ## (Kanto n'a pas d'heure).
 func period_for_map(map_id: StringName) -> StringName:
-	return _world_clock.period_name() if is_johto_map(map_id) and _world_clock.is_active() \
-		else &""
-
-
-## JOH0 : [moment, jour] à lire sur [param map_id] (la carte courante si vide) : ceux de
-## l'horloge à Johto, vides ailleurs.
-func _current_time(map_id: StringName = &"") -> Array[StringName]:
-	var id := map_id
-	if id.is_empty():
-		var map := SceneRouter.get_current_map()
-		id = map.map_id if is_instance_valid(map) else &""
-	var period := period_for_map(id)
-	return [period, _world_clock.weekday_name() if not period.is_empty() else &""]
+	return _johto.period_for_map(map_id)
 
 
 ## JOH0 : le moment a changé (heure réelle ou scène) : sur une carte de Johto, la lumière suit ;
@@ -827,7 +668,7 @@ func _on_period_changed(_period: WorldClock.Period) -> void:
 	var map := SceneRouter.get_current_map()
 	if is_instance_valid(map) and is_johto_map(map.map_id):
 		_apply_lighting(map, true)
-	Evolution.set_current_period(_current_time()[0])
+	Evolution.set_current_period(_johto.current_time()[0])
 	_menu_screen.refresh_status()
 
 
@@ -895,7 +736,7 @@ func get_johto_starter_choice() -> StarterChoice:
 
 ## JOH1 : l'offre d'Orme chargée au démarrage (data/pokemon/starters_johto.json).
 func get_johto_starter_offer() -> StarterOffer:
-	return _offer_johto
+	return _johto.get_starter_offer()
 
 
 func get_starter_sheet() -> StarterSheet:
@@ -922,7 +763,7 @@ func get_evolution_director() -> EvolutionDirector:
 
 ## Pension (J15) : écran du dépôt et des capacités.
 func get_daycare_overlay() -> DaycareOverlay:
-	return _daycare_overlay
+	return _center.get_daycare_overlay()
 
 
 ## J25 : choix du Pokémon d'un échange fixe (tests).
@@ -960,7 +801,7 @@ func field_state(move: StringName) -> FieldMoves.Result:
 
 
 ## Le Pokémon qui utilise la capacité de terrain [param move] (état READY), ou null.
-func _field_move_user(move: StringName) -> Pokemon:
+func field_move_user(move: StringName) -> Pokemon:
 	var state := field_state(move)
 	if state.state != FieldMoves.State.READY:
 		return null
@@ -976,42 +817,12 @@ func _companion_cuts(cutscene_id: StringName) -> bool:
 	if move.is_empty():
 		return false
 	var chosen := _companion.get_chosen()
-	return chosen != null and _field_move_user(move) == chosen
-
-
-## Fouille de l'objet [param slot] du puzzle [param puzzle_id] (jalon 16, `jalon-16.md` §2.6) :
-## puzzle déjà résolu (drapeau) → « rien » ; sinon le puzzle de la carte (tiré à la première
-## fouille depuis l'arrivée) répond, et Boot joue le dialogue du résultat, ou la scène de la
-## réussite (qui ouvre la barrière et lève le drapeau). Puzzle inconnu : push_error.
-func _on_puzzle_searched(puzzle_id: StringName, slot: int) -> void:
-	var spec := _switch_puzzles.get_spec(puzzle_id)
-	if spec == null:
-		push_error("Boot : puzzle inconnu « %s »" % puzzle_id)
-		return
-	var map := SceneRouter.get_current_map()
-	if GameState.flags.has_flag(spec.solved_flag):
-		_runner.play(spec.nothing, null, map)
-		return
-	var puzzle: SwitchPuzzle = _active_puzzles.get(puzzle_id)
-	if puzzle == null:
-		puzzle = SwitchPuzzle.new(GameState.rng, spec.columns, spec.rows)
-		puzzle.start()
-		_active_puzzles[puzzle_id] = puzzle
-	var result := puzzle.search(slot)
-	if OS.is_debug_build():
-		print("[qa] puzzle « %s » : objet %d → %s (premier %d, second %d)" % [puzzle_id, slot,
-			SwitchPuzzle.Result.keys()[result], puzzle.first(), puzzle.second()])
-	if result == SwitchPuzzle.Result.SOLVED:
-		_active_puzzles.erase(puzzle_id)
-		if not _cutscenes_node.play(spec.solved_cutscene):
-			push_error("Boot : la scène « %s » du puzzle n'a pas été jouée" % spec.solved_cutscene)
-		return
-	_runner.play(spec.dialogue_for(result), null, map)
+	return chosen != null and field_move_user(move) == chosen
 
 
 ## Puzzle d'interrupteurs en cours sur la carte (tests, QA) ; null s'il n'a pas encore été fouillé.
 func get_active_puzzle(puzzle_id: StringName) -> SwitchPuzzle:
-	return _active_puzzles.get(puzzle_id)
+	return _world_systems.get_active_puzzle(puzzle_id)
 
 
 func get_encounter_director() -> EncounterDirector:
@@ -1045,6 +856,56 @@ func get_rest_points() -> RestPointLibrary:
 ## Tables de rencontre chargées au démarrage (data/encounters/).
 func get_encounter_library() -> EncounterLibrary:
 	return _encounter_library
+
+
+## JOHP3 : le survol (étape « dragon_flight ») ; sert aussi à l'animation du Vol.
+func get_dragon_flight_overlay() -> DragonFlightOverlay:
+	return _johto.get_dragon_flight_overlay()
+
+
+## Capacités de terrain chargées au démarrage (data/world/field_moves.json).
+func get_field_moves() -> FieldMoves:
+	return _field_moves
+
+
+## Espèces éligibles au compagnon (data/pokemon/companions.json).
+func get_companion_catalog() -> CompanionCatalog:
+	return _companions
+
+
+## Écran d'évolution (jalon 9, T9).
+func get_evolution_screen() -> EvolutionScreen:
+	return _evolution_screen
+
+
+## Pokédex chargé au démarrage (data/pokedex/).
+func get_pokedex_library() -> PokedexLibrary:
+	return _dex
+
+
+## Textes du combat chargés au démarrage (data/battle/).
+func get_battle_text() -> BattleText:
+	return _texts
+
+
+## Déblocages du Menu Dresseur (jalon 6).
+func get_menu_unlocks() -> MenuUnlocks:
+	return _unlocks
+
+
+## Zones chargées au démarrage (data/world/zones.json).
+func get_zone_library() -> ZoneLibrary:
+	return _zones
+
+
+## JOHP0 : l'écran du Réveil (étape « stones_awaken »).
+func get_awakening_overlay() -> AwakeningOverlay:
+	return _johto.get_awakening_overlay()
+
+
+## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
+func get_team_return_overlay() -> TeamReturnOverlay:
+	return _johto.get_team_return_overlay()
 
 
 ## Dialogues chargés au démarrage (data/dialogues/).
@@ -1096,7 +957,7 @@ func _on_go_back() -> void:
 		return
 	# Super Bonbon (jalon 14) : voile du niveau et des capacités, retour absorbé (l'évolution qui
 	# suit, annulable, l'a reçu juste au-dessus).
-	if _candy_index >= 0:
+	if _bag_items.is_rare_candy_running():
 		return
 	# Un choix à deux cartes dans un dialogue (SOIGNER / PAS MAINTENANT) : retour = annuler.
 	if _dialogue_box.cancel_choice():
@@ -1107,11 +968,8 @@ func _on_go_back() -> void:
 	# J25 : choix du Pokémon d'un échange = ANNULER.
 	if _trade_overlay != null and _trade_overlay.handle_back():
 		return
-	# JOH0 : le choix des 6 est obligatoire : retour avalé.
-	if _team_return_overlay != null and _team_return_overlay.handle_back():
-		return
-	# JOHP0 : le Réveil ne se passe pas : retour avalé.
-	if _awakening_overlay != null and _awakening_overlay.handle_back():
+	# JOH0 : le choix des 6 est obligatoire ; JOHP0 : le Réveil ne se passe pas : retour avalé.
+	if _johto.handle_back():
 		return
 	# J32 (T5) : le reste de la conversation du terminal d'échange avale le geste.
 	if _local_trade != null and _local_trade.handle_back():
@@ -1144,7 +1002,7 @@ func _on_menu_opened() -> void:
 	# Légende du monde (haut, centre) retirée aussi : rien du HUD ne transparaît sous le flou.
 	_hud.hide_caption()
 	_hud.get_caption().visible = false
-	_refresh_controls()
+	refresh_controls()
 
 
 ## Le menu se ferme (pause levée) : le monde reprend, les contrôles reviennent ; autosave
@@ -1152,7 +1010,7 @@ func _on_menu_opened() -> void:
 func _on_menu_closed(changed: bool) -> void:
 	# Compagnon : FAIRE SORTIR / RAPPELER, dépôt, Potion sur un K.O. (sortie ou rentrée).
 	_companion.refresh()
-	_refresh_controls()
+	refresh_controls()
 	if changed:
 		request_autosave("menu")
 
@@ -1188,10 +1046,9 @@ func _start_game() -> void:
 ## Fin commune du démarrage (partie en place).
 func _finish_start() -> void:
 	# Parties existantes : notes débloquées sans bruit (jalon-06.md §6.9, point 4).
-	PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
-	_dex_toasts.clear()
+	_dex_news.reset()
 	# JOH1 : moment imposé par l'histoire (relu au chargement : survit à une coupure).
-	_apply_story_period()
+	_johto.apply_story_period()
 
 
 ## Vrai si la partie est en place ; faux si l'ouverture est montrée (la partie démarrera à son
@@ -1215,10 +1072,10 @@ func _start_game_state() -> bool:
 		_open_save_system()
 		if save_system != null and _load_save():
 			# JOH1 (QA A17) : le moment imposé avant la première carte (sinon fondu depuis le jour).
-			_apply_story_period()
+			_johto.apply_story_period()
 			if _resume():
 				return true
-	_apply_story_period()
+	_johto.apply_story_period()
 	SceneRouter.start(start_map, start_spawn, start_facing)
 	return true
 
@@ -1274,7 +1131,7 @@ func _start_opening() -> void:
 
 
 ## Vrai tant que l'écran titre occupe le jeu (avant la reprise ou la chambre).
-func _is_opening_active() -> bool:
+func is_opening_active() -> bool:
 	return _opening != null and _opening.is_active()
 
 
@@ -1324,13 +1181,13 @@ func _build_new_game(player_name: String, rival_name: String,
 		GameState.rival_name = rival_name
 	GameState.player_look = GameState.loaded_player_look(player_look)
 	GameState.rival_look = GameState.loaded_rival_look(rival_look)
-	GameState.set_player_location(start_map, _spawn_cell(start_map, start_spawn), start_facing)
+	GameState.set_player_location(start_map, spawn_cell(start_map, start_spawn), start_facing)
 	return GameState.to_dict()
 
 
 ## Case du point d'apparition [param spawn] de [param map_id], lue dans la scène de la carte
 ## (instanciée hors de l'arbre, puis libérée) ; (-1, -1) si elle manque.
-func _spawn_cell(map_id: StringName, spawn: StringName) -> Vector2i:
+func spawn_cell(map_id: StringName, spawn: StringName) -> Vector2i:
 	var path := MapCatalog.scene_path(map_id)
 	var packed := load(path) as PackedScene if ResourceLoader.exists(path) else null
 	var map := packed.instantiate() as GameMap if packed != null else null
@@ -1352,7 +1209,7 @@ func _on_opening_resumed(save: Dictionary) -> void:
 	_repair_key_items()
 	# JOH1 (QA A17) : le moment imposé par l'histoire est posé avant la première carte, pour que
 	# sa lumière soit immédiate (nuit d'Oliville, matin de la chambre) au lieu d'un fondu de 10 s.
-	_apply_story_period()
+	_johto.apply_story_period()
 	if not _resume():
 		SceneRouter.start(start_map, start_spawn, start_facing)
 	_finish_opening()
@@ -1377,7 +1234,7 @@ func _on_opening_new_game(warning: String) -> void:
 	await _finish_opening(false)
 	_hud.visible = true
 	_player.set_input_enabled(true, OPENING_ARRIVAL)
-	_refresh_controls()
+	refresh_controls()
 	if not warning.is_empty():
 		_hud.show_toast(warning, "")
 
@@ -1391,7 +1248,7 @@ func _finish_opening(show_hud: bool = true) -> void:
 	_hud.visible = show_hud
 	_finish_start()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
-	_refresh_controls()
+	refresh_controls()
 	_fade.set_opaque(true)
 	await _fade.fade_in(_opening.entry_fade_time())
 
@@ -1516,8 +1373,7 @@ func _apply_debug_start() -> bool:
 	_debug_light_profile = start.light_profile
 	_debug_light_map = start.map if not start.light_profile.is_empty() else &""
 	if not start.period.is_empty():
-		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(start.period)])
-		_debug_period_forced = true
+		_johto.force_debug_period(start.period)
 	if not start.weekday.is_empty():
 		_world_clock.force_weekday(WorldClock.WEEKDAY_NAMES.find(start.weekday))
 	_veil_debug = start.veil
@@ -1542,6 +1398,16 @@ func _can_write() -> bool:
 		and (_opening == null or _opening.autosave_allowed())
 
 
+## Garde d'écriture pour les modules de domaine (même règle que [method _can_write]).
+func can_write() -> bool:
+	return _can_write()
+
+
+## Coordinateur des autosaves (modules de domaine).
+func get_save_coordinator() -> SaveCoordinator:
+	return _save_coordinator
+
+
 ## Écrit la sauvegarde : position du joueur poussée dans GameState, puis écriture atomique.
 func _write_save(reason: String) -> Error:
 	return _save_coordinator.write_now(reason)
@@ -1557,9 +1423,9 @@ func _persist_snapshot(reason: String) -> Error:
 	var snapshot := GameState.to_dict()
 	var error := save_system.write(snapshot)
 	if error == OK:
-		_checkpoint.note_written(snapshot, background_clock.call(), _background_write)
+		_background_save.note_written(snapshot)
 	if reason != "menu":  # le Menu affiche lui-même le résultat
-		_warn_storage_full(error)
+		_background_save.warn_storage_full(error)
 	if OS.is_debug_build():
 		print("Sauvegarde automatique (%s) : %s %s, %s" % [reason, map.map_id,
 			_player.get_cell(), error_string(error)])
@@ -1567,20 +1433,26 @@ func _persist_snapshot(reason: String) -> Error:
 
 
 ## Identifiant de la carte courante (&"" sans carte).
-func _current_map_id() -> StringName:
+func current_map_id() -> StringName:
 	var map := SceneRouter.get_current_map()
 	return map.map_id if is_instance_valid(map) else &""
 
 
 func _on_transition_started(target_map: StringName) -> void:
 	_companion.on_transition_started()
-	_arrival_from = _current_map_id()
+	_arrival_from = current_map_id()
 	# Décision de Kevin (2026-11-19) : un légendaire de Kanto mis K.O. revient quand on quitte
 	# la carte (avant le chargement de la suivante et son autosave).
 	if not target_map.is_empty() and target_map != _arrival_from:
 		StaticRespawn.on_map_left(_cutscenes.get_static_encounters(), GameState.flags)
 	_hud.hide_zone_title()
 	_hud.hide_caption()
+
+
+## Replacement sur la même carte (téléporteur, [BootWorld]) : se termine comme l'écran
+## « à venir » ([method _on_coming_soon_finished]).
+func finish_same_map_transition(map: GameMap) -> void:
+	_on_coming_soon_finished(map)
 
 
 ## Fin de l'écran « à venir » (même carte, aucun [signal SceneRouter.map_entered]) : ferme la
@@ -1594,10 +1466,10 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
-	_observed.clear()
+	_dex_news.clear_observed()
 	_flash.on_map_changed(map)
 	# JOH8 : moment imposé par carte (aube du sommet) avant la lumière, pour qu'elle soit immédiate.
-	_apply_story_period(map.map_id)
+	_johto.apply_story_period(map.map_id)
 	# JOH0 (QA) : profil de lumière imposé par le départ de débogage sur sa carte.
 	if not _debug_light_profile.is_empty() and map.map_id == _debug_light_map:
 		map.light_profile = _debug_light_profile
@@ -1606,7 +1478,7 @@ func _on_map_changed(map: GameMap) -> void:
 	# JOH0 (JH-8) : la puce de l'heure du menu ne se montre qu'à Johto ; les PNJ datés lisent le
 	# moment et le jour à l'entrée sur la carte.
 	_menu_screen.clock_shown = is_johto_map(map.map_id)
-	var time := _current_time(map.map_id)
+	var time := _johto.current_time(map.map_id)
 	map.set_time_context(time[0], time[1])
 	# JOH7 : drapeaux de la semaine (Lokhlass du vendredi) baissés un autre jour que le leur.
 	WeeklyFlags.shared().apply(GameState.flags, _world_clock.weekday_name())
@@ -1656,7 +1528,7 @@ func _setup_companion() -> void:
 	_field_presenter.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(_field_presenter)
 	_field_presenter.setup(_companion, _player)
-	_field_presenter.user_source = _field_move_user
+	_field_presenter.user_source = field_move_user
 	_cutscenes_node.field_move_handler = _field_presenter.perform
 
 
@@ -1734,7 +1606,7 @@ func _on_map_entered(map: GameMap) -> void:
 			title_hold = UiTokens.ZONE_TITLE_FIRST_HOLD_SCALE
 	var from := _arrival_from
 	_arrival_from = &""
-	_active_puzzles.clear()
+	_world_systems.clear_active_puzzles()
 	GameState.discover_map(map.map_id)
 	# J31 (T5) : première entrée dans la Grotte Azurée (drapeau d'histoire, avant l'autosave).
 	CeruleanCaveAccess.record_entry(GameState.flags, map.map_id)
@@ -1764,155 +1636,25 @@ func _on_target_changed(kind: int) -> void:
 		_hud.hide_interact()
 	else:
 		_hud.show_interact(Interaction.kind_name(kind as Interaction.Kind),
-			kind == Interaction.Kind.FISH and _can_surf_ahead())
+			kind == Interaction.Kind.FISH and _world_systems.can_surf_ahead())
 
 
 func _on_dialogue_started(_dialogue_id: StringName) -> void:
-	_refresh_controls()
+	refresh_controls()
 
 
 func _on_dialogue_finished(_dialogue_id: StringName) -> void:
-	_refresh_controls()
-	if not _rest_toast.is_empty():
-		_hud.show_toast(_rest_toast[0], _rest_toast[1])
-		_rest_toast = PackedStringArray()
-	if not _pending_shop.is_empty():
-		var shop_id := _pending_shop
-		_pending_shop = &""
-		if not _menu.open(MenuRoute.shop(shop_id), true):
-			push_error("Boot : la Boutique « %s » ne s'ouvre pas" % shop_id)
-	elif _pending_storage:
-		_pending_storage = false
-		if not _menu.open(MenuRoute.storage(), true):
-			push_error("Boot : le Stockage ne s'ouvre pas sur « %s »" % _current_map_id())
-	elif _pending_daycare:
-		_pending_daycare = false
-		_daycare.run()
-	elif _pending_elevator:
-		_pending_elevator = false
-		_elevator.open_panel()
-	elif _pending_local_trade:
-		_pending_local_trade = false
-		_local_trade.run()
-	elif _pending_offline_notice:
-		# JOH0 : acte 1 du Chapitre Johto, le réseau de Kanto est coupé.
-		_pending_offline_notice = false
-		_runner.play(TeamConfiscation.STORAGE_OFFLINE_DIALOGUE, null,
-			SceneRouter.get_current_map())
-
-
-## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
-## du dialogue (partie stable). Boutique inconnue : refusée tout de suite.
-func _on_shop_requested(shop_id: StringName) -> void:
-	if not _shops.has_shop(shop_id):
-		push_error("Boot : boutique inconnue « %s »" % shop_id)
-		return
-	_pending_shop = shop_id
-
-
-## « open_storage » (le terminal du Centre, jalon-07.md §6.9) : le Stockage s'ouvre en écran
-## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
-func _on_storage_requested() -> void:
-	if TeamConfiscation.is_storage_offline(GameState.flags):
-		_pending_offline_notice = true
-		return
-	_pending_storage = true
-
-
-# --- Pension (J15, jalon-15.md §2.5.3) ----------------------------------------------------------
-
-## « open_daycare » (le gardien) : la conversation de la Pension commence à la fin du dialogue.
-func _on_daycare_requested() -> void:
-	_pending_daycare = true
-
-
-## Dépôt fait : écriture tout de suite (quitter avant l'autosave ne perd rien), comme au soin.
-## Le compagnon déposé (choix effacé par le directeur) rentre tout de suite (J11, 11D).
-func _on_daycare_deposited() -> void:
-	_companion.refresh()
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("pension, dépôt")
-	else:
-		request_autosave("pension, dépôt")
-
-
-## Conversation finie (joueur rendu) : contrôles ; après un retrait, **une seule** écriture.
-# --- Terminal d'échange local (J32, T5 ; `jalon-32.md` §1.2, N-15) -----------------------------
-
-func _setup_local_trade() -> void:
-	_local_trade = LocalTradeDirector.new()
-	_local_trade.name = "LocalTradeDirector"
-	_local_trade.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_local_trade)
-	_local_trade.setup(GameState, _player, _runner, _pokemon, _evolutions)
-	_local_trade.items = _items # JOH0 : nom de l'objet demandé (Peau Métal…)
-	_local_trade.pick_handler = func(view: PartyPickerView) -> int:
-		return await _trade_overlay.pick(view)
-	_local_trade.started.connect(_refresh_controls)
-	_local_trade.finished.connect(_on_local_trade_finished)
-	_services.local_trade_requested.connect(_on_local_trade_requested)
+	refresh_controls()
+	_center.on_dialogue_finished()
 
 
 func get_local_trade_director() -> LocalTradeDirector:
 	return _local_trade
 
 
-## « open_local_trade » (le terminal) : la conversation commence à la fin du dialogue.
-func _on_local_trade_requested() -> void:
-	# JOH0 : le terminal d'échange est fermé tant que le Stockage est hors ligne [D].
-	if TeamConfiscation.is_storage_offline(GameState.flags):
-		_pending_offline_notice = true
-		return
-	_pending_local_trade = true
-
-
-## Fin de la conversation : compagnon à jour (même identifiant, nouvelle espèce) ; échange fait :
-## écriture tout de suite, comme un retrait de la Pension.
-func _on_local_trade_finished(traded: bool) -> void:
-	_companion.refresh()
-	_refresh_controls()
-	if not traded:
-		return
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("échange local")
-	else:
-		request_autosave("échange local")
-
-
-func _on_daycare_finished(withdrew: bool) -> void:
-	_companion.refresh()
-	_refresh_controls()
-	if not withdrew:
-		return
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("pension, retrait")
-	else:
-		request_autosave("pension, retrait")
-
-
-## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
-## PP) ; le point de repos ne change pas (dossier 09 §7).
-func _on_heal_requested() -> void:
-	_services.heal()
-	request_autosave("soin")
-
-
-## Soin d'un Centre fini (jalon-07.md §5.3) : écriture tout de suite (joueur au comptoir, la
-## partie ne peut plus rien perdre), comme au réveil ; le toast du point de repos attend la fin
-## du dialogue (après « Voilà. Tout le monde est en pleine forme. »), une fois par changement.
-func _on_center_healed(map_id: StringName, registered: bool) -> void:
-	_companion.note_joy()
-	if registered:
-		_rest_toast = _rest_points.registered_toast(_zones.zone_name_of(map_id))
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("soin")
-	else:
-		request_autosave("soin")
-
-
 func _on_cutscene_started(cutscene_id: StringName) -> void:
 	_companion.on_cutscene_started(_companion_cuts(cutscene_id))
-	_refresh_controls()
+	refresh_controls()
 
 
 ## Valeurs des jetons des dialogues (jalon-07.md §3.6, T19) : lues au début d'un dialogue qui en
@@ -1932,10 +1674,9 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	# J32 (T5) : {pokemon} de la confirmation du terminal d'échange.
 	if _local_trade != null:
 		values.merge(_local_trade.token_values(), true)
-	# JOH0 : le Pokémon qui vient d'éclore.
-	values.merge(_hatch_tokens, true)
-	# JOH1 : le Pokémon de départ de Johto, pendant la scène du choix (répliques d'Orme).
-	values.merge(_johto_starter_tokens, true)
+	# JOH0 : le Pokémon qui vient d'éclore ; JOH1 : le Pokémon de départ de Johto, pendant la
+	# scène du choix (répliques d'Orme).
+	_johto.merge_token_values(values)
 	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
 	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	# JOHP3 (P-28b) : {lead_pokemon}, le premier de l'équipe.
@@ -1964,9 +1705,9 @@ func _on_cutscene_requested(cutscene_id: StringName) -> void:
 ## défaite, transition) : pas d'enchaînement, l'autosave ordinaire s'en charge.
 func _on_cutscene_finished(cutscene_id: StringName) -> void:
 	_companion.on_cutscene_finished()
-	_johto_starter_tokens = {}
+	_johto.clear_starter_tokens()
 	_announce_costume()
-	_refresh_controls()
+	refresh_controls()
 	var next := _cutscenes.get_next(cutscene_id)
 	if next.is_empty() or not is_stable():
 		request_autosave("fin de scène")
@@ -1977,18 +1718,23 @@ func _on_cutscene_finished(cutscene_id: StringName) -> void:
 
 
 func _on_battle_state_changed() -> void:
-	_refresh_controls()
+	refresh_controls()
 
 
 func _on_encounter_state_changed() -> void:
-	_refresh_controls()
+	refresh_controls()
 
 
 ## Le starter choisi (jalon 4A) est enregistré « capturé » au Pokédex (décision Q-D), avec
 ## sa rencontre (labo, niveau et date du choix) et le grand moment « premier Pokémon »
 ## (jalon 5 §16.3 ; décision de Kevin : premier Pokémon, pas première capture).
 func _on_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
-	var map_id := _current_map_id()
+	record_starter(player_species)
+
+
+## Enregistre le starter [param player_species] (Pokédex, rencontre, Grand moment) : Kanto et Johto.
+func record_starter(player_species: StringName) -> void:
+	var map_id := current_map_id()
 	GameState.record_caught(player_species, map_id)
 	var members := GameState.party.get_all()
 	for i: int in range(members.size() - 1, -1, -1):
@@ -1997,40 +1743,6 @@ func _on_starter_chosen(player_species: StringName, _rival_species: StringName) 
 			break
 	GameState.record_moment(GameState.MOMENT_STARTER, map_id,
 		{"species": String(player_species)})
-
-
-## JOH1 (`jalon-joh1.md` §2.6) : le Pokémon de départ de Johto rejoint l'équipe (Pokédex,
-## rencontre « starter » au lien 50, Grand moment comme à Kanto), devient **compagnon** (dossier
-## JOH-02 §8 ; sans planche de compagnon il reste dans sa Ball, JOH0 §2.11) et prête son nom au
-## jeton `{pokemon}` des répliques d'Orme jusqu'à la fin de la scène du choix.
-func _on_johto_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
-	_on_starter_chosen(player_species, &"")
-	var chosen := _starter_choice_johto.get_last_chosen()
-	if chosen == null:
-		return
-	GameState.set_companion(chosen)
-	_johto_starter_tokens = {DialogueTokens.POKEMON: chosen.display_name(_pokemon)}
-
-
-## JOH1 (`jalon-joh1.md` §2.4) : moment du jour imposé par l'histoire ([JohtoPeriodRule]) :
-## nuit de la lettre au vol, matin du vol au départ d'Orme, heure réelle ensuite ; recalculé à la
-## mise en place de la partie et à chaque drapeau. Un départ de débogage qui impose `period` gagne.
-func _apply_story_period(map_id: StringName = &"") -> void:
-	if _debug_period_forced:
-		return
-	var period := JohtoPeriodRule.forced_period(GameState.flags)
-	# JOH8 (JH-55) : aube forcée au sommet de la Tour Carillon, relue à chaque carte.
-	if period.is_empty():
-		if map_id.is_empty():
-			map_id = _current_map_id()
-		if map_id.is_empty():
-			map_id = GameState.current_map
-		period = BellTowerDawnRule.forced_period(map_id, GameState.flags)
-	if period.is_empty():
-		if _world_clock.is_period_forced():
-			_world_clock.release_period()
-	else:
-		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(period)])
 
 
 ## Pokémon adverse d'un combat de dresseur envoyé au combat : « vu » au Pokédex, avec la carte
@@ -2042,7 +1754,7 @@ func _on_battle_event(event: BattleEvent) -> void:
 		return
 	if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE \
 			and not _encounters.is_running():
-		GameState.record_seen(event.species_id, _current_map_id())
+		GameState.record_seen(event.species_id, current_map_id())
 
 
 ## Fin d'un combat de dresseur : grand moment « combat contre le rival » (le rival est le
@@ -2065,7 +1777,7 @@ func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
 	var trainer := _trainers.get_trainer(trainer_id) if _trainers != null else null
 	# Un seul moment par rival, à la victoire seulement si la donnée le dit (§2.8).
 	if RivalMoment.should_record(trainer, outcome, GameState.moments):
-		GameState.record_moment(GameState.MOMENT_RIVAL_BATTLE, _current_map_id(),
+		GameState.record_moment(GameState.MOMENT_RIVAL_BATTLE, current_map_id(),
 			RivalMoment.details(trainer_id, outcome))
 	request_autosave("fin de combat")
 
@@ -2082,10 +1794,16 @@ func _on_encounter_finished(_outcome: int) -> void:
 ## du lieu ; sinon, quitter pendant ce mot effaçait la défaite (retour à la dernière case stable
 ## d'avant le combat). Une scène interrompue, elle, se rejoue.
 func _on_woke_up_after_defeat() -> void:
+	save_now_or_soon("réveil")
+
+
+## Écriture tout de suite si la session écrit et qu'aucune transition n'est en cours, sinon
+## autosave demandé (réveil, soin d'un Centre, Pension, échange local).
+func save_now_or_soon(reason: String) -> void:
 	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("réveil")
+		_write_save(reason)
 	else:
-		request_autosave("réveil")
+		request_autosave(reason)
 
 
 ## Écriture immédiate demandée par l'étape « save » d'une scène (jalon 16, `jalon-16.md` §2.4 :
@@ -2106,24 +1824,17 @@ func _on_cutscene_save_requested(reason: String) -> Error:
 	return _write_save(reason)
 
 
+## Même écriture immédiate que l'étape « save » d'une scène, pour un autre directeur (Force).
+func save_checkpoint_now(reason: String) -> Error:
+	return _on_cutscene_save_requested(reason)
+
+
 ## La scène garde son verrou ; aucune réussite affichée avant l'écriture sur disque.
 func _on_checkpoint_save_failed(_reason: String, error: Error) -> void:
 	if error == SaveSystem.STORAGE_FULL:
 		_hud.show_toast(SettingsViews.STORAGE_FULL_TITLE, SettingsViews.STORAGE_FULL_DETAIL)
 		return
 	_hud.show_toast("Sauvegarde impossible", "Nouvelle tentative en cours…")
-
-
-## J33 T4 : stockage plein, une fois par série d'échecs (l'écriture est retentée toutes les 5 s,
-## rien n'est détruit) ; une écriture réussie réarme le message.
-func _warn_storage_full(error: Error) -> void:
-	if error != SaveSystem.STORAGE_FULL:
-		if error == OK:
-			_storage_full_warned = false
-		return
-	if not _storage_full_warned:
-		_storage_full_warned = true
-		_hud.show_toast(SettingsViews.STORAGE_FULL_TITLE, SettingsViews.STORAGE_FULL_DETAIL)
 
 
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
@@ -2138,81 +1849,6 @@ func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> in
 	return await _trade_overlay.pick(InGameTrade.picker_view(GameState.party, accepted, _pokemon))
 
 
-## JOHP3 (étape « dragon_flight ») : le survol ; la scène change de carte derrière.
-func _on_dragon_flight_requested(direction: StringName) -> void:
-	if direction == &"land":
-		await _dragon_flight_overlay.finish()
-		return
-	_dragon_flight_overlay.reduce_motion = _settings.reduce_motion
-	await _dragon_flight_overlay.play(direction)
-
-
-## JOH0 (étape « return_team ») : l'écran du choix des 6 ; rend les identifiants gardés.
-func _on_team_return_requested(selection: TeamReturnSelection) -> Array[String]:
-	# JOH5 (dossier JOH-06 §7.3) : six Pokémon ou moins en tout, pas d'écran, tout le monde rentre.
-	if selection.get_pool().size() <= TeamReturnSelection.MAX_KEPT:
-		return selection.default_selection()
-	var labels: Array[String] = []
-	for pokemon: Pokemon in selection.get_pool():
-		labels.append("%s  N. %d" % [pokemon.display_name(_pokemon), pokemon.level])
-	return await _team_return_overlay.pick(selection, labels)
-
-
-## JOHP0 : le film du Réveil. P-31 et l'annonce des captures viennent des dialogues
-## ([constant AWAKENING_LINES], [constant AWAKENING_STORED]).
-func _on_awakening_film_requested(report: AwakeningReport) -> void:
-	_awakening_overlay.speed_scale = _battle_director.speed_scale
-	_awakening_overlay.reduce_flashes = _evolution_screen.reduce_flashes
-	var stored := ""
-	if not report.stored.is_empty():
-		stored = "\n".join(PackedStringArray(_dialogue_pages(AWAKENING_STORED)))
-	await _awakening_overlay.film(report, _dialogue_pages(AWAKENING_LINES), stored)
-
-
-## JOHP0 : l'écran du Réveil, après l'écriture ; vrai si une attaque a été apprise.
-func _on_awakening_review_requested(report: AwakeningReport) -> bool:
-	var learned := await _awakening_overlay.review(report,
-		_battle_director.get_move_learn_prompt())
-	_audio_bridge.on_awakening_finished()
-	_companion.refresh()
-	return learned
-
-
-## Textes de la première variante du dialogue [param id].
-func _dialogue_pages(id: StringName) -> Array[String]:
-	var result: Array[String] = []
-	var dialogue := _library.get_dialogue(id)
-	if dialogue == null or dialogue.variants.is_empty():
-		push_error("Boot : dialogue « %s » absent" % id)
-		return result
-	for page: DialoguePage in dialogue.variants[0].pages:
-		result.append(page.text)
-	return result
-
-
-## JOH0 : l'équipe vient d'être confisquée d'un seul bloc : le compagnon rentre (plus d'équipe) ;
-## la scène écrit par son étape « save » (l'autosave demandé ici est une ceinture de plus).
-func _on_team_confiscated() -> void:
-	_companion.refresh()
-	request_autosave("vol de l'équipe")
-
-
-## JOH0 : l'équipe est revenue d'un seul bloc : compagnon à jour, autosave demandé.
-func _on_team_returned(stored: int) -> void:
-	# JOH5 (T-29) : drapeau de travail lu par la scène du bureau, baissé par elle après l'écriture.
-	if stored > 0:
-		GameState.flags.set_flag(JOHTO_RETURN_STORED_FLAG)
-	_companion.refresh()
-	request_autosave("retour de l'équipe")
-
-
-## JOH0 : un œuf vient d'entrer dans l'équipe (étape « give_egg ») : autosave demandé.
-func _on_egg_given(_egg: Pokemon) -> void:
-	request_autosave("œuf reçu")
-
-
-## JOH0 : un pas du joueur : le lien et les œufs comptent ([BondStepCounter]) ; un œuf arrivé à
-## terme éclot dès que la partie est stable (hors combat, scène, dialogue, menu).
 ## Flair (costume, CO-13) : annonce une fois chaque objet caché qui entre à portée.
 func _on_player_moved_for_flair(cell: Vector2i) -> void:
 	var radius := roundi(GameState.costume_effect(CostumeCatalog.EFFECT_ITEM_SENSE))
@@ -2225,30 +1861,6 @@ func _on_player_moved_for_flair(cell: Vector2i) -> void:
 		return
 	_flair_announced[key] = true
 	_hud.show_caption(Itemfinder.sense_text(cell, target), -1.0, false, false)
-
-
-func _on_player_moved_for_bond(_cell: Vector2i) -> void:
-	var result := _bond_steps.on_player_moved(GameState.party, GameState.companion_uid,
-		_player.is_input_enabled())
-	for egg: Pokemon in result["hatched"]:
-		if not _pending_hatch.has(egg):
-			_pending_hatch.append(egg)
-	_try_hatch()
-
-
-## JOH0 : joue l'éclosion du premier œuf prêt si la partie est stable : l'œuf devient un
-## Pokémon (origine « egg », Pokédex vu et capturé), le dialogue le nomme, autosave.
-func _try_hatch() -> void:
-	if _pending_hatch.is_empty() or not is_stable() or _menu.is_open():
-		return
-	var egg: Pokemon = _pending_hatch.pop_front()
-	if GameState.party.index_of(egg) < 0 or not EggRules.hatch(egg, GameState, _current_map_id()):
-		return
-	_hatch_tokens = {DialogueTokens.POKEMON: egg.display_name(_pokemon)}
-	_companion.refresh()
-	if not _runner.play(EggRules.HATCH_DIALOGUE, null, SceneRouter.get_current_map()):
-		push_error("Boot : le dialogue de l'éclosion n'a pas été joué")
-	request_autosave("éclosion")
 
 
 ## J25 (§2.5) : échange fait d'un seul bloc : compagnon à jour (le Pokémon donné a pu l'être,
@@ -2269,41 +1881,7 @@ func _on_pokemon_gifted(_pokemon: Pokemon, _stored: bool) -> void:
 ## inscrit au journal des objets trouvés avec la carte (§16.3). Les objets reçus d'un
 ## personnage (les Poké Balls de Chen) n'y entrent pas.
 func _on_item_found(item_id: StringName, _count: int) -> void:
-	GameState.record_item_found(item_id, _current_map_id())
-
-
-## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
-## (jalon-04.md §14.6). L'accord (« Poké Balls ×5 » / « Ajoutées au Sac ») vient de l'objet.
-## Jalon 11 (T12) : le Pokémon [param index] apprend la capacité de la CT [param item_id] par le
-## déroulé partagé avec le combat et l'évolution ([MoveLearnPrompt.teach]), sur un voile au-dessus
-## du menu ([TmLearnOverlay]) ; la CT reste au Sac.
-func _on_tm_learn_requested(index: int, item_id: StringName) -> void:
-	var item := _items.get_item(item_id)
-	var pokemon: Pokemon = GameState.party.get_at(index)
-	if item == null or pokemon == null:
-		return
-	_learn_overlay().open()
-	var prompt := _battle_director.get_move_learn_prompt()
-	var learned := await prompt.teach(pokemon, index, item.teaches,
-		_tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
-	prompt.release()
-	_tm_overlay.close()
-	_menu.finish_tm_learn(index, item_id, learned)
-
-
-## Lot 32P : PP Plus ou Éther : la capacité du Pokémon [param index] se choisit dans le panneau
-## d'oubli en mode choix, sur le voile d'apprentissage ; le menu applique l'objet.
-func _on_pp_move_requested(index: int, item_id: StringName) -> void:
-	var pokemon: Pokemon = GameState.party.get_at(index)
-	if pokemon == null:
-		return
-	_learn_overlay().open()
-	var prompt := _battle_director.get_move_learn_prompt()
-	var slot := await prompt.choose_move(pokemon, PP_MOVE_CAPTION, PP_MOVE_CONFIRM,
-		PP_MOVE_CANCEL, _tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
-	prompt.release()
-	_tm_overlay.close()
-	_menu.finish_pp_item(index, item_id, slot)
+	GameState.record_item_found(item_id, current_map_id())
 
 
 ## Lot 32P : fin de la Repousse, dite une fois le joueur libre (après la rencontre de ce pas).
@@ -2314,17 +1892,7 @@ func _on_repel_wore_off() -> void:
 
 
 func get_tm_learn_overlay() -> TmLearnOverlay:
-	return _tm_overlay
-
-
-## Le voile d'apprentissage au-dessus du menu (CT, Super Bonbon, Pension), créé au premier
-## besoin.
-func _learn_overlay() -> TmLearnOverlay:
-	if _tm_overlay == null:
-		_tm_overlay = TmLearnOverlay.new()
-		_tm_overlay.name = "TmLearnOverlay"
-		add_child(_tm_overlay)
-	return _tm_overlay
+	return _bag_items.get_tm_learn_overlay()
 
 
 # --- Costumes (dossier-costumes.md, CO-4, CO-7) -------------------------------------------------
@@ -2362,6 +1930,8 @@ func _on_costume_changed() -> void:
 		_player.refresh_look()
 
 
+## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
+## (jalon-04.md §14.6). L'accord (« Poké Balls ×5 » / « Ajoutées au Sac ») vient de l'objet.
 func _on_item_given(item_id: StringName, count: int) -> void:
 	var item := _items.get_item(item_id)
 	if item == null:
@@ -2383,67 +1953,21 @@ func _screen_back() -> bool:
 	return _menu_screen.bag_back()
 
 
-## OBSERVER (Q-7, jalon-06.md §6.9) : l'espèce est « vue » ici, une fois par individu et par
-## visite de la carte. Le toast éventuel vient plus tard (file différée).
-func _on_observed(npc: Npc, species: StringName) -> void:
-	if _observed.has(npc.get_id()):
-		return
-	_observed[npc.get_id()] = true
-	GameState.record_seen(species, _current_map_id())
-
-
-## Une espèce vient d'être vue ou capturée : notes rafraîchies, puis toast en attente.
-func _on_pokedex_recorded(species: StringName, map: StringName, first_seen: bool,
-		new_map: bool, caught: bool) -> void:
-	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags, species)
-	var kind := PokedexUpdates.classify(GameState.pokedex, _pokemon, _zones, species, map,
-		first_seen, new_map, caught, not fresh.is_empty())
-	_queue_dex_toast(species, kind)
-
-
 ## Un drapeau d'histoire a changé : décor de la carte qui suit les drapeaux (FlagGate,
-## jalon 14) ; notes de toutes les espèces ; un toast par espèce concernée, sauf à
-## l'activation du Pokédex (tout apparaît d'un coup, sans rafale).
+## jalon 14), moment imposé à Johto, puis les nouvelles du Pokédex ([BootPokedexToasts]).
 func _on_flag_changed(flag: StringName, _value: bool) -> void:
 	var map := SceneRouter.get_current_map()
 	if is_instance_valid(map):
 		map.apply_flag_gates(GameState.flags)
 	if JohtoPeriodRule.FLAGS.has(flag):
-		_apply_story_period()
-	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
-	if flag == StoryFlags.POKEDEX_ACTIVATED:
-		return
-	for species: StringName in PokedexNotes.species_of(fresh):
-		_queue_dex_toast(species, PokedexUpdates.Kind.NEW_NOTE)
-
-
-func _queue_dex_toast(species: StringName, kind: PokedexUpdates.Kind) -> void:
-	for pending: Array in _dex_toasts:
-		if pending[0] == species:
-			return
-	var data := _pokemon.get_species(species)
-	var message := PokedexUpdates.message(kind, data.name if data != null else "",
-		_unlocks.pokedex_visible())
-	if not message.is_empty():
-		_dex_toasts.append([species, message])
-
-
-## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran. Il porte la
-## vignette peinte de l'espèce (une espèce nommée par un toast est déjà vue : rien n'est révélé).
-func _show_next_dex_toast() -> void:
-	if _menu.is_open() or not is_stable() or _hud.get_toast().is_showing():
-		return
-	var entry: Array = _dex_toasts.pop_front()
-	var message: PackedStringArray = entry[1]
-	var species := _pokemon.get_species(entry[0])
-	_hud.show_toast(message[0], message[1],
-		MenuArt.pokemon_thumbnail(species.dex) if species != null else null)
+		_johto.apply_story_period()
+	_dex_news.on_flag_changed(flag)
 
 
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
 ## combat : pendant une scène ou un combat, ils restent cachés entre deux dialogues.
-func _refresh_controls() -> void:
-	_hud.set_controls_visible(not _is_opening_active() and not _menu.is_open()
+func refresh_controls() -> void:
+	_hud.set_controls_visible(not is_opening_active() and not _menu.is_open()
 		and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _starter_choice_johto.is_sheet_open()
 		and not _battle_director.is_running()
@@ -2507,8 +2031,9 @@ func _apply_settings(s: GameSettings) -> void:
 	# saut et sortie de Ball adoucis.
 	_darkness.set_reduce_motion(s.reduce_motion)
 	_flash.reduce_motion = s.reduce_motion
-	if _elevator_panel != null:
-		_elevator_panel.reduce_motion = s.reduce_motion
+	var elevator_panel := _world_systems.get_elevator_panel()
+	if elevator_panel != null:
+		elevator_panel.reduce_motion = s.reduce_motion
 	_elevator.reduce_motion = s.reduce_motion  # J20 (T13) : pas de secousse
 
 
@@ -2521,191 +2046,22 @@ func _on_save_requested() -> void:
 	_menu.show_save_result(text)
 
 
-# --- Jalon 12 (T20) : grottes et Corde Sortie -----------------------------------------------
-
-## Grottes (`data/world/caves.json`) et UTILISER d'un objet AVENTURE sans cible (la Corde
-## Sortie) : le Sac la refuse hors grotte, sinon Boot la joue ([method _on_field_item_requested]).
-func _setup_caves() -> void:
-	if not _caves.load_file(caves_path):
-		for error: String in _caves.get_errors():
-			push_error("Boot : %s" % error)
-	_menu.set_caves(_caves, _current_map_id)
-	_menu.field_item_requested.connect(_on_field_item_requested)
-
+# --- Monde ([BootWorld]) : grottes, Flash, monture, pêche, Force, Safari, Vol, ascenseurs… ------
 
 func get_caves() -> CaveLibrary:
 	return _caves
-
-
-# --- Jalon 17 (T24) : Flash automatique ------------------------------------------------------
-
-## [FlashDirector] : état de Flash lu dans la partie (CS05 au Sac, compatible, compagnon d'abord),
-## action d'arrivée seulement sur une partie stable, hors écran titre.
-func _setup_flash() -> void:
-	_flash.setup(GameState, _darkness, _caves, _field_moves, _hud, _runner, _library, _player,
-		_companion, _companions)
-	_flash.check_flash = func() -> FieldMoves.Result:
-		return _field_moves.check(FlashDirector.MOVE, GameState.party, GameState.bag,
-			GameState.flags, _items, _pokemon, GameState.get_companion())
-	_flash.can_start = func() -> bool: return is_stable() and not _is_opening_active()
-	_flash.cue_started.connect(_refresh_controls)
-	_flash.flash_used.connect(_refresh_controls.unbind(1))
 
 
 func get_flash_director() -> FlashDirector:
 	return _flash
 
 
-## Corde Sortie acceptée par le Sac (jalon 12, dossier 15 §11, `jalon-12.md` §2.6) : menu fermé,
-## « Tu utilises la Corde Sortie. », puis la Corde est retirée **dans la même image** que le
-## départ du fondu vers l'entrée de la grotte (comme une porte) — aucune image stable entre les
-## deux : l'autosave suivant est celui de l'arrivée (position et Sac ensemble) ; une fermeture
-## pendant le fondu laisse la sauvegarde d'avant, Corde comprise. Ni soin ni point de repos.
-func _on_field_item_requested(item_id: StringName) -> void:
-	var item := _items.get_item(item_id)
-	# J17 (§2.3) : la case du joueur choisit la bouche d'une grotte à deux bouches.
-	var exit := FieldItemRules.escape_target(_current_map_id(), _caves, _player.get_cell())
-	if item == null or exit == null or not GameState.bag.has(item_id):
-		return
-	_menu.close()
-	if _runner.play(ESCAPE_ROPE_DIALOGUE, null, SceneRouter.get_current_map()):
-		await _runner.dialogue_finished
-	GameState.bag.remove(item_id, 1)
-	SceneRouter.change_map(exit.map, exit.spawn, exit.facing)
-
-
-# --- Passe systèmes 2 (S2B) : monture, Vélo, objets clés utilisables -------------------------
-
-## [MountDirector] (arrivée, Vélo, bouton du HUD) et [KeyItemDirector] (UTILISER d'un objet clé
-## dans le Sac : menu fermé, puis l'objet aiguillé par son usage).
-func _setup_mount() -> void:
-	_mount = MountDirector.new()
-	_mount.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_mount)
-	_mount.setup(GameState, _player, _runner, _hud)
-	_mount.can_toggle = func() -> bool: return is_stable() and not _is_opening_active()
-	# S2C (§2.5) : SURFER au bouton contextuel, face à l'eau.
-	_mount.surf_state = func() -> FieldMoves.State: return field_state(&"surf").state
-	_interactions.terrain_target = _mount.surf_target
-	_interactions.surf_requested.connect(_mount.start_surf.unbind(1))
-	_key_items = KeyItemDirector.new()
-	_key_items.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_key_items)
-	_key_items.setup(GameState, _items, _mount, _runner, _cutscenes_node, _companion, _player)
-	_menu.key_item_requested.connect(func(item_id: StringName) -> void:
-		_menu.close()
-		_key_items.use(item_id))
-
-
 func get_mount_director() -> MountDirector:
-	return _mount
+	return _world_systems.get_mount_director()
 
 
 func get_key_item_director() -> KeyItemDirector:
-	return _key_items
-
-
-# --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------
-
-## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
-## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
-## Jalon Son (T6, `docs/tech/jalon-son.md` §1.4–§1.8) : [AudioBridge] relaie au son les cartes,
-## la monture (Surf, Vélo), le « ! » des Dresseurs, les combats, les jingles (soin, objets,
-## capture, Badge, évolution, Poké Flûte) et la clé « music » des cinématiques. Sans fichier son,
-## rien ne s'entend et rien ne change.
-func _setup_audio() -> void:
-	_audio_bridge.setup(Audio, _zones)
-	_audio_bridge.current_mount = _player.get_mount
-	_audio_bridge.has_flag = func(flag: StringName) -> bool: return GameState.flags.has_flag(flag)
-	_audio_bridge.trainer_name = func(id: StringName) -> String:
-		var trainer := _trainers.get_trainer(id) if _trainers != null else null
-		return trainer.name if trainer != null else ""
-	_audio_bridge.wild_species = _battle_director.get_wild_species
-	_audio_bridge.costume_music = func(kind: StringName) -> Array[StringName]:
-		return CostumeCatalog.shared().music_tracks(GameState.worn_costume(), kind)
-	_audio_bridge.caught_count = func() -> int: return GameState.pokedex.caught_count()
-	_audio_bridge.items = _items
-	# SonB : cris (numéro national par l'espèce).
-	_audio_bridge.species_dex = func(species: StringName) -> int:
-		var data := _pokemon.get_species(species)
-		return data.dex if data != null else 0
-	_audio_bridge.party_species = func(index: int) -> StringName:
-		var member := GameState.party.get_at(index)
-		return member.species_id if member != null else &""
-	_audio_bridge.companion_species = func() -> StringName:
-		var chosen := _companion.get_chosen()
-		return chosen.species_id if chosen != null else &""
-	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
-	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
-	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
-	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
-	_battle_stage.move_fx_cue.connect(_audio_bridge.on_move_fx_cue)
-	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
-	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
-	_services.center_healed.connect(_audio_bridge.on_center_healed)
-	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
-	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
-	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
-	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
-	# JOHP0 : le son du Réveil.
-	_awakening_overlay.silence_requested.connect(_audio_bridge.on_awakening_silence)
-	_awakening_overlay.theme_started.connect(_audio_bridge.on_awakening_theme)
-	_awakening_overlay.theme_burst.connect(_audio_bridge.on_awakening_burst)
-	_awakening_overlay.heartbeat.connect(_audio_bridge.on_awakening_heartbeat)
-	_awakening_overlay.ball_opened.connect(_audio_bridge.on_awakening_ball)
-	_awakening_overlay.level_ticked.connect(_audio_bridge.on_awakening_tick)
-	_awakening_overlay.cry_requested.connect(_audio_bridge.play_species_cry)
-	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
-	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
-	_encounters.cry_requested.connect(_audio_bridge.on_encounter_cry)
-	_companion.line_requested.connect(_audio_bridge.on_companion_line)
-	if _menu_screen.has_signal(&"pokedex_cry_requested"):
-		_menu_screen.pokedex_cry_requested.connect(_audio_bridge.on_pokedex_cry)
-	# SonC (T13) : bruitages du combat, des pas, du monde et de l'interface.
-	_audio_bridge.move_info = func(move_id: StringName) -> Array:
-		var move := _pokemon.get_move(move_id)
-		if move == null:
-			return []
-		return [move.type, StringName(String(MoveData.Category.find_key(move.category)).to_lower())]
-	_audio_bridge.ground_at = _ground_at
-	_player.step_started.connect(_audio_bridge.on_player_step)
-	_player.bumped.connect(_audio_bridge.on_bumped)
-	SceneRouter.transition_started.connect(_audio_bridge.on_transition_started)
-	_menu.menu_opened.connect(_audio_bridge.on_menu_opened)
-	_menu.menu_closed.connect(_audio_bridge.on_menu_closed)
-	_runner.page_started.connect(_audio_bridge.on_dialogue_page)
-	# Une seule accroche pour tous les boutons ; le HUD d'exploration (joystick, actions) reste
-	# muet.
-	_audio_bridge.watch_ui(self, _hud)
-
-
-## Sol d'une case pour le bruit de pas [D] : intérieur ; herbes hautes ; neige aux Îles Écume ;
-## sinon sol dur.
-func _ground_at(cell: Vector2i) -> StringName:
-	var map := get_map()
-	if map == null:
-		return &"hard"
-	if map.interior:
-		return &"indoor"
-	var grid := map.get_grid()
-	if grid != null and grid.is_tall_grass(cell):
-		return &"grass"
-	if _zones.zone_of(map.map_id) == &"seafoam_islands":
-		return &"snow"
-	return &"hard"
-	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
-	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
-	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
-	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
-	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
-	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
-	_services.center_healed.connect(_audio_bridge.on_center_healed)
-	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
-	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
-	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
-	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
-	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
-	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
+	return _world_systems.get_key_item_director()
 
 
 ## Accès au relais du son (tests).
@@ -2713,190 +2069,19 @@ func get_audio_bridge() -> AudioBridge:
 	return _audio_bridge
 
 
-func _setup_evolution_items() -> void:
-	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
-	_menu.rare_candy_requested.connect(_on_rare_candy_requested)
-	_menu.pp_move_requested.connect(_on_pp_move_requested)
-	_evolutions.evolution_applied.connect(_on_evolution_applied)
-
-
-## Pierre utilisée sur le Pokémon [param index] (`jalon-12.md` §2.9) : menu fermé, joueur et
-## contrôles bloqués, [method EvolutionDirector.play_item] (non annulable) ; la pierre quitte le
-## Sac **dans l'appel même** où l'évolution est appliquée ([method _on_evolution_applied]). Aucune
-## image stable pendant la séquence (le joueur est bloqué) : une fermeture de l'application
-## reprend à la sauvegarde d'avant, pierre comprise. Fin : retour au monde, compagnon mis à jour
-## (rentre en silence si sa nouvelle espèce n'est pas éligible), autosave.
-func _on_evolution_item_requested(index: int, item_id: StringName) -> void:
-	var candidate := StoneUse.candidate(GameState.party, index, item_id, _pokemon)
-	if candidate == null or not GameState.bag.has(item_id) or _evolutions.is_playing():
-		return
-	_menu.close()
-	_player.set_input_enabled(false, EVOLUTION_ITEM)
-	_refresh_controls()
-	_stone_item = item_id
-	_evolutions.speed_scale = _battle_director.speed_scale
-	await _evolutions.play_item(candidate, GameState.party, item_id)
-	_stone_item = &""
-	if is_instance_valid(_player):
-		_player.set_input_enabled(true, EVOLUTION_ITEM)
-	_companion.refresh()
-	_refresh_controls()
-	request_autosave("évolution")
-
-
-## L'évolution vient d'être appliquée : la pierre en cours quitte le Sac (une seule fois).
-func _on_evolution_applied(_party_index: int, _into: StringName) -> void:
-	if _stone_item.is_empty():
-		return
-	if not GameState.bag.remove(_stone_item, 1):
-		push_error("Boot : la pierre « %s » n'est plus dans le Sac" % _stone_item)
-	_stone_item = &""
-
-
-# --- Jalon 14 (T18b) : Super Bonbon depuis le Sac ----------------------------------------
-
-## Super Bonbon donné au Pokémon [param index] (`jalon-14.md` §2.6, dossier 17 §5) :
-## 1. dans le même appel, le bonbon quitte le Sac et le niveau est gagné ([method RareCandy.apply] :
-##    stats et PV recalculés) ; le joueur est bloqué ([constant RARE_CANDY]) : la partie n'est pas
-##    stable, rien n'est écrit pendant le déroulé (une fermeture de l'application reprend avant
-##    l'usage, bonbon et niveau ensemble) ;
-## 2. voile au-dessus du menu ([TmLearnOverlay]) : « {pokemon} monte au niveau {niveau} ! »
-##    (n° 62), puis chaque capacité du niveau par [method MoveLearnPrompt.teach] (« apprend », ou
-##    l'oubli ; NE PAS APPRENDRE la laisse) ;
-## 3. sans évolution due : retour au Sac ([method MenuDirector.finish_rare_candy] : autosave à la
-##    fermeture du menu) ; avec une évolution due ([method RareCandy.evolution_after]) : comme la
-##    Pierre Lune, menu fermé puis écran d'évolution hors combat, mais **annulable** (évolution par
-##    niveau : ARRÊTER, retour Android ; reproposée au prochain niveau gagné), puis retour au monde
-##    et autosave.
-func _on_rare_candy_requested(index: int, item_id: StringName) -> void:
-	var pokemon: Pokemon = GameState.party.get_at(index)
-	if pokemon == null or _candy_index >= 0 or _evolutions.is_playing() \
-			or not GameState.bag.has(item_id) or RareCandy.check(pokemon) != RareCandy.Check.OK:
-		return
-	_candy_index = index
-	_player.set_input_enabled(false, RARE_CANDY)
-	GameState.bag.remove(item_id, 1)
-	var level_up := RareCandy.apply(pokemon, _pokemon)
-	if level_up == null:
-		push_error("Boot : Super Bonbon sans effet sur la place %d" % index)
-		GameState.bag.add(item_id, 1)
-		_end_rare_candy()
-		return
-	var overlay := _learn_overlay()
-	overlay.open()
-	var banner := overlay.get_message_banner()
-	await banner.show_message(_rare_candy_line(pokemon, index), true)
-	var prompt := _battle_director.get_move_learn_prompt()
-	for move_id: StringName in level_up.moves:
-		if not is_instance_valid(banner):
-			return
-		await prompt.teach(pokemon, index, move_id, banner, overlay.get_prompt_host())
-	prompt.release()
-	if not is_instance_valid(overlay):
-		return
-	overlay.close()
-	_menu.finish_rare_candy(index, item_id)
-	var into := RareCandy.evolution_after(pokemon, _pokemon)
-	if not into.is_empty() and _pokemon.has_species(into):
-		_menu.close()
-		var candidate := EvolutionCandidate.new(index, pokemon.species_id, into)
-		var list: Array[EvolutionCandidate] = [candidate]
-		_evolutions.speed_scale = _battle_director.speed_scale
-		await _evolutions.play(list, GameState.party)
-		if not is_instance_valid(_player):
-			return
-		_end_rare_candy()
-		_companion.refresh()
-		request_autosave("évolution")
-		return
-	_end_rare_candy()
-
-
-## « Abra monte au niveau 16 ! » (n° 62, accordé au sexe si la donnée a une variante).
-func _rare_candy_line(pokemon: Pokemon, index: int) -> String:
-	var event := BattleEvent.new(BattleEvent.Kind.LEVEL_UP, BattleEvent.SideId.PLAYER)
-	event.pokemon_name = pokemon.display_name(_pokemon)
-	event.gender = pokemon.gender
-	event.party_index = index
-	event.level = pokemon.level
-	event.species_id = pokemon.species_id
-	return _texts.line_for(&"rare_candy_level", event, _pokemon)
-
-
-func _end_rare_candy() -> void:
-	_candy_index = -1
-	if is_instance_valid(_player):
-		_player.set_input_enabled(true, RARE_CANDY)
-	_refresh_controls()
-
-
 ## Vrai pendant le déroulé d'un Super Bonbon (tests, QA).
 func is_rare_candy_running() -> bool:
-	return _candy_index >= 0
-
-
-# --- Jalon 20 (T13) : ascenseur ----------------------------------------------------------------
-
-## Ascenseurs (`data/world/elevators.json`), directeur, écran du panneau (provisoire jusqu'au
-## T14) ; le dialogue du panneau (`open_elevator`) l'ouvre à sa fin, comme la Boutique.
-func _setup_elevators() -> void:
-	if not _elevators.load_file():
-		for error: String in _elevators.get_errors():
-			push_error("Boot : %s" % error)
-	_elevator.setup(_elevators, GameState, _player, _runner, _fade)
-	_elevator.spawn_cell_source = _spawn_cell
-	_elevator_panel = ElevatorPanel.new()
-	_elevator_panel.name = "ElevatorPanel"
-	if _settings != null:
-		_elevator_panel.reduce_motion = _settings.reduce_motion
-	_elevator_panel.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_elevator_panel)
-	_elevator.set_panel(_elevator_panel)
-	_elevator.ride_started.connect(_on_elevator_ride_started.unbind(1))
-	_elevator.ride_finished.connect(_on_elevator_ride_finished.unbind(1))
-	_elevator.panel_opened.connect(_refresh_controls.unbind(1))
-	_elevator.panel_closed.connect(_refresh_controls)
-	_services.elevator_requested.connect(_on_elevator_requested)
+	return _bag_items.is_rare_candy_running()
 
 
 func get_elevator_director() -> ElevatorDirector:
 	return _elevator
 
 
-## « open_elevator » (le panneau de la cabine) : il s'ouvre à la fin du dialogue.
-func _on_elevator_requested() -> void:
-	_pending_elevator = true
-
-
-func _on_elevator_ride_started() -> void:
-	_companion.on_cutscene_started()
-	_refresh_controls()
-
-
-func _on_elevator_ride_finished() -> void:
-	_companion.on_cutscene_finished()
-	_refresh_controls()
-
-
 ## Position du joueur poussée dans GameState, jamais la cabine d'un ascenseur (§2.3.5).
 func _push_stable_location(map_id: StringName) -> void:
 	var at := _elevator.stable_location(map_id, _player.get_cell(), _player.get_facing())
 	GameState.set_player_location(at["map"], at["cell"], at["facing"])
-
-
-## J20 (T19, `jalon-20.md` §2.4.4) et passe systèmes 2 (T15, `systemes-2.md` §2.6) : directeur
-## des glissades forcées (dalles tournantes, courants du Surf), branché sur le pas du joueur
-## **avant** tout autre écouteur (directeur de scènes, Dresseurs, rencontres, routeur) : le pas
-## qui lance une glissade bloque le joueur avant qu'ils ne le voient.
-func _setup_forced_slides() -> void:
-	_forced_slide = ForcedSlideDirector.new()
-	_forced_slide.name = "ForcedSlideDirector"
-	_forced_slide.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_forced_slide)
-	_forced_slide.setup(_player, _trainer_watcher)
-	_forced_slide.slide_started.connect(_on_forced_slide_started.unbind(1))
-	_forced_slide.slide_finished.connect(_on_forced_slide_finished.unbind(1))
-	_forced_slide.warp_reached.connect(_on_forced_slide_warp_reached)
 
 
 func get_forced_slide_director() -> ForcedSlideDirector:
@@ -2908,518 +2093,45 @@ func get_spin_director() -> ForcedSlideDirector:
 	return _forced_slide
 
 
-func _on_forced_slide_started() -> void:
-	_companion.on_cutscene_started()
-	_refresh_controls()
-
-
-func _on_forced_slide_finished() -> void:
-	_companion.on_cutscene_finished()
-	_refresh_controls()
-
-
-## Courant fini sur un passage : suivi comme un pas libre (verrou de la glissade déjà levé).
-func _on_forced_slide_warp_reached(cell: Vector2i, direction: Vector2i) -> void:
-	if not SceneRouter.follow_warp_at(cell, direction):
-		push_error("Boot : aucun passage à suivre en %s au bout du courant" % cell)
-
-
-# --- Passe systèmes 2, S2A : sauvegarde à la mise en arrière-plan (`systemes-2.md` §2.12) ------
-
-## Point de reprise : instantané capturé au passage stable → instable (dialogue, scène,
-## rencontre, combat, transition), remplacé par chaque écriture réussie.
-var _checkpoint := SaveCheckpoint.new()
-## Horloge du point de reprise, en secondes (délai de garde, écart entre écritures) ; les tests
-## la remplacent avant l'entrée dans l'arbre.
-var background_clock: Callable
-var _was_stable: bool = false
-## Position de la dernière image stable ({ map, cell, facing }) : celle du point de reprise (la
-## première image instable peut avoir posé le joueur sur une dalle tournante).
-var _stable_location: Dictionary = {}
-## Vrai pendant une écriture déclenchée par l'arrière-plan ([method SaveCheckpoint.note_written]).
-var _background_write: bool = false
-## Nouvelle tentative d'écriture du point de reprise après un échec (s restantes, −1 sinon).
-var _checkpoint_retry: float = -1.0
-## J33 T4 : le message « stockage plein » est déjà affiché pour la série d'échecs en cours.
-var _storage_full_warned: bool = false
-## Plus longue capture de la session (µs), pour la mesure sur téléphone (budget < 5 ms).
-var _checkpoint_max_usec: int = 0
-
-
-func _setup_save_checkpoint() -> void:
-	if not background_clock.is_valid():
-		background_clock = func() -> float: return Time.get_ticks_msec() / 1000.0
-
+# --- Sauvegarde à la mise en arrière-plan (S2A, [BootBackgroundSave]) --------------------------
 
 func get_save_checkpoint() -> SaveCheckpoint:
-	return _checkpoint
-
-
-## Une fois par image, avant le coordinateur : capture au passage stable → instable, délai de
-## garde d'un `FOCUS_OUT`, nouvelle tentative après un échec.
-func _watch_save_checkpoint(delta: float) -> void:
-	var stable := is_stable()
-	if stable:
-		_stable_location = {"map": _current_map_id(), "cell": _player.get_cell(),
-			"facing": _player.get_facing()}
-	elif _was_stable and _can_write():
-		_capture_checkpoint()
-	_was_stable = stable
-	if _checkpoint.focus_due(background_clock.call()):
-		_save_in_background("arrière-plan (focus perdu)")
-	if _checkpoint_retry >= 0.0:
-		_checkpoint_retry = maxf(0.0, _checkpoint_retry - maxf(delta, 0.0))
-		if _checkpoint_retry == 0.0:
-			_checkpoint_retry = -1.0
-			# Redevenue stable, la partie s'écrit par les autosaves ordinaires.
-			if not stable:
-				_save_in_background("nouvelle tentative")
-
-
-## Instantané de l'état courant, à la position de la dernière image stable.
-func _capture_checkpoint() -> void:
-	if _stable_location.is_empty():
-		return
-	var start := Time.get_ticks_usec()
-	var at := _elevator.stable_location(_stable_location["map"], _stable_location["cell"],
-		_stable_location["facing"])
-	GameState.set_player_location(at["map"], at["cell"], at["facing"])
-	_checkpoint.capture(GameState.to_dict())
-	var spent := Time.get_ticks_usec() - start
-	_checkpoint_max_usec = maxi(_checkpoint_max_usec, spent)
-	if OS.is_debug_build():
-		print("[save] point de reprise : %d µs (max %d µs)" % [spent, _checkpoint_max_usec])
-
-
-## Mise en arrière-plan (`PAUSED`, `WM_CLOSE_REQUEST`, `FOCUS_OUT` échu) : état courant si la
-## partie est stable, sinon le point de reprise s'il est plus récent que le disque.
-func _save_in_background(reason: String) -> void:
-	if not _can_write():
-		return
-	match _checkpoint.decide(is_stable(), background_clock.call()):
-		SaveCheckpoint.Decision.WRITE_CURRENT:
-			_background_write = true
-			_save_coordinator.flush_if_stable(reason)
-			_background_write = false
-		SaveCheckpoint.Decision.WRITE_CHECKPOINT:
-			_write_checkpoint(reason)
-
-
-func _write_checkpoint(reason: String) -> void:
-	var snapshot := _checkpoint.get_snapshot()
-	var error := save_system.write(snapshot)
-	_warn_storage_full(error)
-	if error == OK:
-		_checkpoint.note_written(snapshot, background_clock.call(), true)
-		_checkpoint_retry = -1.0
-	else:
-		_checkpoint_retry = SaveCoordinator.RETRY_DELAY
-	if OS.is_debug_build():
-		print("Sauvegarde du point de reprise (%s) : %s %s, %s" % [reason,
-			snapshot.get("map", ""), snapshot.get("cell", ""), error_string(error)])
-
-
-func _on_focus_change(change: SessionLifecycle.Focus) -> void:
-	if change != SessionLifecycle.Focus.NONE and OS.is_debug_build():
-		print("[save] focus %s à %.2f s" % [SessionLifecycle.Focus.keys()[change],
-			background_clock.call()])
-	match change:
-		SessionLifecycle.Focus.LOST:
-			_checkpoint.focus_out(background_clock.call())
-		SessionLifecycle.Focus.REGAINED:
-			_checkpoint.focus_in()
-
-
-# --- Passe systèmes 2 (S2F) : téléporteurs et portes à carte -----------------------------------
-
-## Téléporteurs (`systemes-2.md` §2.9) : à la fin d'un replacement sur la même carte, le compagnon
-## ressort comme après l'écran « à venir ». Portes à carte (§2.10) : [KeyDoorDirector] répond à
-## l'appui OUVRIR. Un seul bloc, déconnecté à la sortie par le directeur lui-même.
-var _key_doors: KeyDoorDirector
-
-
-func _setup_teleporters() -> void:
-	_key_doors = KeyDoorDirector.new()
-	_key_doors.name = "KeyDoorDirector"
-	_key_doors.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_key_doors)
-	_key_doors.setup(GameState.flags, GameState.bag, _player, _runner,
-		SceneRouter.get_current_map, request_autosave)
-	_interactions.door_requested.connect(_key_doors.on_door_requested)
-	var on_relocated := func(_map: GameMap) -> void: _on_coming_soon_finished(_map)
-	SceneRouter.relocated.connect(on_relocated)
-	_key_doors.tree_exiting.connect(func() -> void:
-		if SceneRouter.relocated.is_connected(on_relocated):
-			SceneRouter.relocated.disconnect(on_relocated))
+	return _background_save.get_save_checkpoint()
 
 
 func get_key_door_director() -> KeyDoorDirector:
-	return _key_doors
-
-
-# --- Passe systèmes 2 (S2E) : Vol -------------------------------------------------------------
-
-var _fly: FlyDirector
-
-
-## Vol (`systemes-2.md` §2.8, T24–T25) : destinations de `fly_points.json`, bouton « S'ENVOLER »
-## de la Carte (Q-4), menu fermé puis [FlyDirector].
-func _setup_fly() -> void:
-	var rules := FlyRules.new()
-	rules.load_file()
-	rules.stamp_regions(_zones) # JOH0 : la région de chaque destination
-	_fly = FlyDirector.new()
-	_fly.name = "FlyDirector"
-	_fly.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_fly)
-	_fly.setup(rules, func() -> Dictionary: return GameState.discovered_maps,
-		func(move: StringName) -> Variant: return _runner.field_source.call(move), _caves, SceneRouter.get_current_map, _player, _runner, SceneRouter,
-		_companion)
-	# JOH0 (JH-18) : pas de Vol entre Kanto et Johto pendant l'acte 1.
-	_fly.region_source = _zones.region_of
-	_fly.cross_source = func() -> bool: return not TeamConfiscation.is_act1(GameState.flags)
-	# Animation du Vol (2026-11-19) : porteur, ciel du trajet, son de l'envol.
-	_fly.overlay = _dragon_flight_overlay
-	_fly.carrier_source = _fly_carrier_info
-	_fly.sfx = func(id: StringName) -> void: Audio.play_sfx(id)
-	_fly.reduce_motion = _settings.reduce_motion
-	_fly.flight_started.connect(func(_zone: StringName) -> void:
-		_fly.reduce_motion = _settings.reduce_motion)
-	_menu.set_fly_check(_fly.can_fly_to)
-	_menu.fly_requested.connect(func(zone: StringName) -> void:
-		_menu.close()
-		_fly.fly(zone))
-	if _menu_screen.has_signal(&"map_fly_requested"):
-		_menu_screen.map_fly_requested.connect(_menu.request_fly)
-	_fly.flight_started.connect(_refresh_controls.unbind(1))
-	_fly.flight_finished.connect(_refresh_controls.unbind(1))
-
-
-## Le porteur du Vol : espèce et artwork du Pokémon d'équipe [param index] ; {} sans lui.
-func _fly_carrier_info(index: int) -> Dictionary:
-	var member := GameState.party.get_at(index) if index >= 0 else null
-	if member == null:
-		return {}
-	var species := _pokemon.get_species(member.species_id)
-	var artwork := PokedexArt.portrait(species.dex) if species != null else null
-	return {"species": member.species_id, "artwork": artwork}
+	return _world_systems.get_key_door_director()
 
 
 func get_fly_director() -> FlyDirector:
-	return _fly
-
-
-# --- Passe systèmes 2 (S2E, T25b) : Téléport et Tunnel hors combat ----------------------------
-
-var _field_travel: FieldTravelDirector
-
-
-## Téléport (au point du réveil, sans soin) et Tunnel (sortie de grotte, comme la Corde Sortie) :
-## UTILISER sous la fiche de la capacité dans l'Équipe, menu fermé puis [FieldTravelDirector].
-func _setup_field_travel() -> void:
-	_field_travel = FieldTravelDirector.new()
-	_field_travel.name = "FieldTravelDirector"
-	_field_travel.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_field_travel)
-	_field_travel.setup(field_state, _recovery.wakeup_point, _caves, SceneRouter.get_current_map,
-		_player, _runner, SceneRouter, _companion)
-	_menu.set_field_travel_check(_field_travel.check)
-	_menu.field_travel_requested.connect(func(move: StringName) -> void:
-		_menu.close()
-		_field_travel.travel(move))
-	if _menu_screen.has_signal(&"team_field_move_requested"):
-		_menu_screen.team_field_move_requested.connect(_menu.request_field_travel)
-		_menu.team_notice_shown.connect(_menu_screen.show_team_notice)
-	_field_travel.travel_started.connect(_refresh_controls.unbind(1))
-	_field_travel.travel_finished.connect(_refresh_controls.unbind(1))
+	return _world_systems.get_fly_director()
 
 
 func get_field_travel_director() -> FieldTravelDirector:
-	return _field_travel
-
-
-# --- Passe systèmes 2 (S2C-bis) : pêche --------------------------------------------------------
-
-var _fishing: FishingDirector
-
-
-## Pêche (J22 §2.7) : cible de terrain PÊCHER, appui, cannes du Sac ([KeyItemDirector]). Tables
-## chargées sans contrôle des espèces (celles du J22 manquent) : le directeur refuse une espèce
-## inconnue au moment de la touche. Après [method _setup_mount] (objets clés).
-## Vrai si SURFER est possible devant le joueur (même s'il voit PÊCHER).
-func _can_surf_ahead() -> bool:
-	var target := _mount.surf_target(_player.get_cell(), _player.get_facing())
-	return target != null and target.kind == Interaction.Kind.SURF
-
-
-## Bouton SURFER (second bouton, affiché avec PÊCHER face à une eau où l'on peut surfer).
-func _on_surf_button_pressed() -> void:
-	if _runner.is_running() or _fishing.is_running() or not _player.is_input_enabled() \
-			or _player.is_moving() or not _can_surf_ahead():
-		return
-	_mount.start_surf()
-
-
-func _setup_fishing() -> void:
-	var tables := WaterRodTables.new()
-	tables.load_game_files()
-	_fishing = FishingDirector.new()
-	_fishing.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_fishing)
-	_fishing.setup(GameState, tables, _pokemon, _player, _runner, _encounters, _companion)
-	SceneRouter.map_changed.connect(_fishing.set_map)
-	_fishing.tree_exiting.connect(func() -> void:
-		if SceneRouter.map_changed.is_connected(_fishing.set_map):
-			SceneRouter.map_changed.disconnect(_fishing.set_map))
-	# Cible de terrain : la pêche d'abord (case pêchable et canne au Sac, [D]), sinon le Surf.
-	_interactions.terrain_target = func(c: Vector2i, f: Vector2i) -> Interaction:
-		var target := _fishing.target_at(c, f)
-		return target if target != null else _mount.surf_target(c, f)
-	_interactions.fish_requested.connect(_fishing.on_fish_requested)
-	# Demande de Kevin (2026-11-22) : face à une eau pêchable ET surfable, PÊCHER reste le
-	# contextuel et un second bouton SURFER s'affiche au-dessus (plus de choix par appui long).
-	_hud.surf_requested.connect(_on_surf_button_pressed)
-	_key_items.set_fishing(_fishing)
-	_fishing.fishing_started.connect(_refresh_controls.unbind(1))
-	_fishing.fishing_finished.connect(_refresh_controls.unbind(1))
+	return _world_systems.get_field_travel_director()
 
 
 func get_fishing_director() -> FishingDirector:
-	return _fishing
-
-
-# --- Passe systèmes 2, S2D : Force (`systemes-2.md` §2.7) -----------------------------------
-
-var _strength: StrengthDirector
-
-
-## [StrengthDirector] : rochers de la carte (nœud `Boulders`), activation par EXAMINER, poussée,
-## sauvegarde forcée par le chemin de l'étape « save » des scènes ; Force retombe à chaque carte.
-## Le compagnon reste dehors pendant l'activation s'il est le Pokémon qui utilise Force. Les
-## contrôles restent affichés pendant une poussée (le joystick tenu enchaîne les poussées).
-func _setup_strength() -> void:
-	_strength = StrengthDirector.new()
-	_strength.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_strength)
-	_strength.setup(GameState.flags, _player, _runner, _field_presenter)
-	_strength.save_handler = _on_cutscene_save_requested
-	SceneRouter.map_changed.connect(_strength.on_map_changed)
-	_strength.tree_exiting.connect(func() -> void:
-		if SceneRouter.map_changed.is_connected(_strength.on_map_changed):
-			SceneRouter.map_changed.disconnect(_strength.on_map_changed))
-	_strength.activation_started.connect(func() -> void:
-		var chosen := _companion.get_chosen()
-		_companion.on_cutscene_started(chosen != null
-			and _field_move_user(StrengthDirector.MOVE) == chosen))
-	_strength.activation_finished.connect(_companion.on_cutscene_finished)
+	return _world_systems.get_fishing_director()
 
 
 func get_strength_director() -> StrengthDirector:
-	return _strength
-
-
-# --- Jalon 30 (T8) : tentative de Ligue (`jalon-30.md` §2.2, §2.3) ------------------------------
-
-var _league: LeagueDirector
-
-
-## [LeagueDirector] : entrée dans la salle d'Olga, victoires, défaite (drapeaux effacés avant le
-## réveil). Relais de carte branché avant celui de Boot (drapeaux à jour avant la présence des
-## PNJ et les portes de drapeaux) ; fin de combat après l'autosave demandé par Boot (écrit une fois
-## la partie stable, drapeaux de la Ligue compris).
-func _setup_league() -> void:
-	_league = LeagueDirector.new()
-	_league.name = "LeagueDirector"
-	_league.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_league)
-	_league.setup(GameState)
-	_league.static_encounters = _cutscenes.get_static_encounters()  # J32 (N-17, N-18)
-	SceneRouter.map_changed.connect(_league.on_map_changed)
-	_league.tree_exiting.connect(func() -> void:
-		if SceneRouter.map_changed.is_connected(_league.on_map_changed):
-			SceneRouter.map_changed.disconnect(_league.on_map_changed))
-	_battle_director.battle_finished.connect(_league.on_battle_finished)
-	_setup_league_ceremony()
-
-
-func get_league_director() -> LeagueDirector:
-	return _league
-
-
-# --- Jalon 30 (T15 à T17) : Panthéon, générique, retour à Bourg Palette (§2.4) --------------------
-
-const HALL_OF_FAME_SCREEN := preload("res://game/ui/league/hall_of_fame_screen.gd")
-const CREDITS_SCREEN := preload("res://game/ui/league/credits_screen.gd")
-
-var _hall_screen: HallOfFameScreen
-var _credits_screen: CreditsScreen
-var _credits := CreditsData.new()
-
-
-## Écrans du Panthéon et du générique, gestionnaires des étapes « hall_of_fame » et « credits »
-## des scènes `league_victory` / `league_hall_of_fame`, et reprise de la cérémonie à l'arrivée
-## dans la salle du Champion ou au Panthéon ([method LeagueDirector.pending_cutscene]).
-func _setup_league_ceremony() -> void:
-	_credits.load_file()
-	_hall_screen = HALL_OF_FAME_SCREEN.new()
-	_hall_screen.name = "HallOfFameScreen"
-	# Toujours actif : il se consulte aussi depuis le Menu, qui met la partie en pause (Q30-4).
-	_hall_screen.process_mode = Node.PROCESS_MODE_ALWAYS
-	add_child(_hall_screen)
-	_credits_screen = CREDITS_SCREEN.new()
-	_credits_screen.name = "CreditsScreen"
-	_credits_screen.process_mode = Node.PROCESS_MODE_PAUSABLE
-	_credits_screen.skip_label = _credits.skip_label
-	add_child(_credits_screen)
-	_cutscenes_node.hall_of_fame_handler = _play_hall_of_fame
-	_cutscenes_node.credits_handler = _play_credits
-	SceneRouter.map_entered.connect(_on_league_map_entered)
-	# Q30-4 : le Panthéon se consulte depuis l'écran Dresseur (lecture seule, la plus récente
-	# d'abord).
-	_menu_screen.hall_of_fame_requested.connect(_browse_hall_of_fame)
-	_league.tree_exiting.connect(func() -> void:
-		if SceneRouter.map_entered.is_connected(_on_league_map_entered):
-			SceneRouter.map_entered.disconnect(_on_league_map_entered))
-
-
-func get_hall_of_fame_screen() -> HallOfFameScreen:
-	return _hall_screen
-
-
-func get_credits_screen() -> CreditsScreen:
-	return _credits_screen
-
-
-## Étape « hall_of_fame » : cérémonie due → instantané de l'équipe, écran du Panthéon, puis titre
-## et entrée posés ([method LeagueDirector.complete_ceremony]) ; vrai = la partie est à écrire
-## (le directeur de scènes l'écrit aussitôt). Déjà faite (reprise) : faux, rien.
-func _play_hall_of_fame() -> bool:
-	if not _league.ceremony_due():
-		return false
-	var entry := HallOfFame.snapshot(GameState.party.get_all(), GameState.player_name,
-		GameState.starter_species, GameState.play_time, GameState.clock.now_iso())
-	await _hall_screen.present(_hall_view(entry))
-	return _league.complete_ceremony(entry)
-
-
-## Étape « credits » : générique sur la dernière entrée du Panthéon ; passable seulement s'il a
-## déjà été vu (`league_credits_seen`, posé à la fin).
-func _play_credits() -> void:
-	if not _cutscenes_node.credits_id.is_empty():
-		await _play_named_credits(_cutscenes_node.credits_id)
-		return
-	var hall := GameState.hall_of_fame
-	var entry := hall.get_entry(hall.size() - 1) if not hall.is_empty() else HallOfFame.snapshot(
-		GameState.party.get_all(), GameState.player_name, GameState.starter_species,
-		GameState.play_time, "")
-	var skippable := GameState.flags.has_flag(LeagueAttempt.CREDITS_SEEN)
-	await _credits_screen.present(_credits.rows(entry, _hall_member_name), skippable)
-	GameState.flags.set_flag(LeagueAttempt.CREDITS_SEEN)
-
-
-## JOH9 : petit générique de chapitre [param id] (`data/story/credits_<id>.json`) sur l'équipe
-## du moment ; passable s'il a déjà été vu (drapeau `<id>_credits_seen`, posé à la fin).
-func _play_named_credits(id: StringName) -> void:
-	var credits := CreditsData.new()
-	credits.load_file(CreditsData.NAMED_PATH % id)
-	var entry := HallOfFame.snapshot(GameState.party.get_all(), GameState.player_name,
-		GameState.starter_species, GameState.play_time, "")
-	var seen := StringName("%s_credits_seen" % id)
-	_credits_screen.skip_label = credits.skip_label
-	await _credits_screen.present(credits.rows(entry, _hall_member_name),
-		GameState.flags.has_flag(seen))
-	_credits_screen.skip_label = _credits.skip_label
-	GameState.flags.set_flag(seen)
-
-
-## Vue de l'écran du Panthéon pour [param entry] : en-tête (joueur, date), et pour chaque Pokémon
-## son artwork, sa ligne (T30-16) et, sous un surnom, le nom de l'espèce.
-func _hall_view(entry: Dictionary) -> Dictionary:
-	var members: Array = []
-	for member: Dictionary in entry.get("team", []):
-		var species := _pokemon.get_species(StringName(member.get("species", "")))
-		var nickname: String = member.get("nickname", "")
-		members.append({
-			"texture": PokedexArt.portrait(species.dex) if species != null else null,
-			"line": _credits.member_line(_hall_member_name(member), int(member.get("level", 1))),
-			"subtitle": species.name if species != null and not nickname.is_empty() else "",
-		})
-	var header: String = entry.get("player", "")
-	var day := _hall_date(str(entry.get("date", "")))
-	if not day.is_empty():
-		header = "%s · %s" % [header, day] if not header.is_empty() else day
-	return {"header": header, "members": members}
-
-
-## Q30-4 : entrées du Panthéon, de la plus récente à la plus ancienne, sur l'écran du Panthéon.
-func _browse_hall_of_fame() -> void:
-	if _hall_screen.is_showing():
-		return
-	var views: Array = []
-	var entries := GameState.hall_of_fame.entries()
-	entries.reverse()
-	for entry: Dictionary in entries:
-		views.append(_hall_view(entry))
-	await _hall_screen.browse(views)
-
-
-## Surnom, sinon nom de l'espèce, d'un Pokémon d'une entrée du Panthéon.
-func _hall_member_name(member: Dictionary) -> String:
-	var nickname: String = member.get("nickname", "")
-	if not nickname.is_empty():
-		return nickname
-	var species := _pokemon.get_species(StringName(member.get("species", "")))
-	return species.name if species != null else str(member.get("species", ""))
-
-
-## « 2026-10-26T21:04:00 » → « 26/10/2026 » ; vide si illisible.
-static func _hall_date(iso: String) -> String:
-	var parts := iso.get_slice("T", 0).split("-")
-	if parts.size() != 3:
-		return ""
-	return "%s/%s/%s" % [parts[2], parts[1], parts[0]]
-
-
-## Arrivée dans la salle du Champion ou au Panthéon pendant une cérémonie inachevée (reprise
-## d'une sauvegarde) : la scène due repart, après l'arrivée (jamais par-dessus une scène).
-func _on_league_map_entered(map: GameMap) -> void:
-	if _league.pending_cutscene(map.map_id).is_empty():
-		return
-	_resume_league_ceremony.call_deferred(map.map_id)
-
-
-func _resume_league_ceremony(map_id: StringName) -> void:
-	var map := SceneRouter.get_current_map()
-	if not is_instance_valid(map) or map.map_id != map_id or _cutscenes_node.is_running():
-		return
-	var cutscene := _league.pending_cutscene(map_id)
-	if not cutscene.is_empty():
-		_cutscenes_node.play(cutscene)
-# --- J23 : visite du Parc Safari (`jalon-23.md` §2.1, §2.5, §2.15) -------------------------
-
-var _safari: SafariDirector
-
-
-func _setup_safari() -> void:
-	_safari = SafariDirector.new()
-	_safari.name = "SafariDirector"
-	_safari.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_safari)
-	_safari.setup(GameState, SafariConfig.load_default(), _player, SceneRouter, _cutscenes_node,
-		_encounters, _battle_director, request_autosave)
-	SceneRouter.map_changed.connect(_safari.set_map)
-	_safari.tree_exiting.connect(func() -> void:
-		if SceneRouter.map_changed.is_connected(_safari.set_map):
-			SceneRouter.map_changed.disconnect(_safari.set_map))
-	# Pastille « pas · Balls » (N-7), seulement dans le Parc.
-	_safari.visit_changed.connect(_hud.set_safari_badge)
-	# Vol et Téléport refusés dans le Parc (dossier 26 §4).
-	for map: StringName in _safari.get_config().maps:
-		if _fly != null:
-			_fly.no_fly_maps[map] = true
-		if _field_travel != null:
-			_field_travel.no_fly_maps[map] = true
+	return _world_systems.get_strength_director()
 
 
 func get_safari_director() -> SafariDirector:
-	return _safari
+	return _world_systems.get_safari_director()
+
+
+# --- Jalon 30 : Ligue, Panthéon, générique ([BootLeague]) -------------------------------------
+
+func get_league_director() -> LeagueDirector:
+	return _league.get_league_director()
+
+
+func get_hall_of_fame_screen() -> HallOfFameScreen:
+	return _league.get_hall_of_fame_screen()
+
+
+func get_credits_screen() -> CreditsScreen:
+	return _league.get_credits_screen()
