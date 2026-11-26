@@ -133,10 +133,8 @@ var _map_illustration := MapIllustration.new()
 var _map_illustration_johto := MapIllustration.new()
 const JOHTO_MAP_AREAS: String = "res://assets/ui/map/johto_placeholder_areas.json"
 var _moments := MomentLibrary.new()
-## Toasts du Pokédex en attente (au plus un par espèce) : des paires [espèce, [titre, détail]].
-var _dex_toasts: Array[Array] = []
-## Individus observés pendant la visite de la carte (OBSERVER, une fois par individu).
-var _observed: Dictionary[StringName, bool] = {}
+## Nouvelles du Pokédex (OBSERVER, notes, toasts) : [BootPokedexToasts].
+var _dex_news := BootPokedexToasts.new(self)
 var _objectives := ObjectiveLibrary.new()
 var _unlocks: MenuUnlocks
 ## Lumière du monde (jalon 7, jalon-07.md §6.7, §15.3) : profil de la carte appliqué à chaque
@@ -533,9 +531,9 @@ func _ready() -> void:
 	_menu.settings_changed.connect(_on_settings_changed)
 	_menu.save_requested.connect(_on_save_requested)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
-	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
+	_dex_news.setup()
 	GameState.flags.flag_changed.connect(_on_flag_changed)
-	_interactions.observed.connect(_on_observed)
+	_interactions.observed.connect(_dex_news.on_observed)
 	_interactions.puzzle_searched.connect(_world_systems.on_puzzle_searched)
 	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
@@ -571,8 +569,7 @@ func _process(delta: float) -> void:
 	# Moteur commun (D5) : boutons transparents quand le joueur est dessous.
 	_hud.set_player_screen_rect(_player.get_screen_body_rect())
 	_save_coordinator.process(delta)
-	if not _dex_toasts.is_empty():
-		_show_next_dex_toast()
+	_dex_news.process()
 
 
 ## Boot transmet les notifications ; le cycle de vie décide du temps de jeu, le point de reprise
@@ -884,6 +881,11 @@ func get_battle_text() -> BattleText:
 	return _texts
 
 
+## Déblocages du Menu Dresseur (jalon 6).
+func get_menu_unlocks() -> MenuUnlocks:
+	return _unlocks
+
+
 ## Zones chargées au démarrage (data/world/zones.json).
 func get_zone_library() -> ZoneLibrary:
 	return _zones
@@ -1037,8 +1039,7 @@ func _start_game() -> void:
 ## Fin commune du démarrage (partie en place).
 func _finish_start() -> void:
 	# Parties existantes : notes débloquées sans bruit (jalon-06.md §6.9, point 4).
-	PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
-	_dex_toasts.clear()
+	_dex_news.reset()
 	# JOH1 : moment imposé par l'histoire (relu au chargement : survit à une coupure).
 	_johto.apply_story_period()
 
@@ -1458,7 +1459,7 @@ func _on_coming_soon_finished(_map: GameMap) -> void:
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
-	_observed.clear()
+	_dex_news.clear_observed()
 	_flash.on_map_changed(map)
 	# JOH8 : moment imposé par carte (aube du sommet) avant la lumière, pour qu'elle soit immédiate.
 	_johto.apply_story_period(map.map_id)
@@ -1945,61 +1946,15 @@ func _screen_back() -> bool:
 	return _menu_screen.bag_back()
 
 
-## OBSERVER (Q-7, jalon-06.md §6.9) : l'espèce est « vue » ici, une fois par individu et par
-## visite de la carte. Le toast éventuel vient plus tard (file différée).
-func _on_observed(npc: Npc, species: StringName) -> void:
-	if _observed.has(npc.get_id()):
-		return
-	_observed[npc.get_id()] = true
-	GameState.record_seen(species, current_map_id())
-
-
-## Une espèce vient d'être vue ou capturée : notes rafraîchies, puis toast en attente.
-func _on_pokedex_recorded(species: StringName, map: StringName, first_seen: bool,
-		new_map: bool, caught: bool) -> void:
-	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags, species)
-	var kind := PokedexUpdates.classify(GameState.pokedex, _pokemon, _zones, species, map,
-		first_seen, new_map, caught, not fresh.is_empty())
-	_queue_dex_toast(species, kind)
-
-
 ## Un drapeau d'histoire a changé : décor de la carte qui suit les drapeaux (FlagGate,
-## jalon 14) ; notes de toutes les espèces ; un toast par espèce concernée, sauf à
-## l'activation du Pokédex (tout apparaît d'un coup, sans rafale).
+## jalon 14), moment imposé à Johto, puis les nouvelles du Pokédex ([BootPokedexToasts]).
 func _on_flag_changed(flag: StringName, _value: bool) -> void:
 	var map := SceneRouter.get_current_map()
 	if is_instance_valid(map):
 		map.apply_flag_gates(GameState.flags)
 	if JohtoPeriodRule.FLAGS.has(flag):
 		_johto.apply_story_period()
-	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
-	if flag == StoryFlags.POKEDEX_ACTIVATED:
-		return
-	for species: StringName in PokedexNotes.species_of(fresh):
-		_queue_dex_toast(species, PokedexUpdates.Kind.NEW_NOTE)
-
-
-func _queue_dex_toast(species: StringName, kind: PokedexUpdates.Kind) -> void:
-	for pending: Array in _dex_toasts:
-		if pending[0] == species:
-			return
-	var data := _pokemon.get_species(species)
-	var message := PokedexUpdates.message(kind, data.name if data != null else "",
-		_unlocks.pokedex_visible())
-	if not message.is_empty():
-		_dex_toasts.append([species, message])
-
-
-## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran. Il porte la
-## vignette peinte de l'espèce (une espèce nommée par un toast est déjà vue : rien n'est révélé).
-func _show_next_dex_toast() -> void:
-	if _menu.is_open() or not is_stable() or _hud.get_toast().is_showing():
-		return
-	var entry: Array = _dex_toasts.pop_front()
-	var message: PackedStringArray = entry[1]
-	var species := _pokemon.get_species(entry[0])
-	_hud.show_toast(message[0], message[1],
-		MenuArt.pokemon_thumbnail(species.dex) if species != null else null)
+	_dex_news.on_flag_changed(flag)
 
 
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
