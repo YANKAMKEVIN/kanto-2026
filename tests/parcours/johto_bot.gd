@@ -36,6 +36,8 @@ const OBJECTIVES_PATH := "res://data/story/objectives.json"
 const MAX_FAILS_IN_ROW := 12
 ## Passages tentés avant d'abandonner un trajet entre deux cartes.
 const MAX_ROUTE_TRIES := 6
+## Poussées de rochers de Force au plus pour rejoindre une case (Îles Tourbillon).
+const MAX_PUSHES := 12
 ## Parents des nœuds lus dans les `.tscn`.
 const INDEXED_PARENTS: Array[String] = ["Warps", "Triggers", "Interactables", "Spawns"]
 ## Objets clés et CS qui comptent comme un progrès quand un événement les donne.
@@ -415,7 +417,7 @@ func _candidates() -> Array[Dictionary]:
 			useful.append(StringName("objet " + String(item)))
 		if useful.is_empty():
 			continue
-		if priority > 0 and not boot.is_johto_map(event["map"]) and not _mentions_johto(useful):
+		if not boot.is_johto_map(event["map"]) and not _mentions_johto(useful):
 			continue  # Kanto : seulement ce qui touche au chapitre.
 		event["useful"] = useful
 		event["priority"] = priority
@@ -958,16 +960,24 @@ func _spin_path(goal: Vector2i, spin: SpinTileField) -> Array[Vector2i]:
 func reach(goal: Vector2i) -> bool:
 	var origin := map_id()
 	var spinning := _spin_field() != null
-	for attempt: int in 80 if spinning else 6:
+	var surfed := false
+	var pushes := 0
+	var last_push: Dictionary[Boulder, Vector2i] = {}
+	for attempt: int in (80 if spinning else 6) + MAX_PUSHES:
 		if map_id() != origin:
 			return false
 		if player.get_cell() == goal:
 			return true
 		var path := _foot_path(goal)
 		if path.is_empty():
-			if attempt > 0 or not await _try_surf(goal):
-				return false
-			continue
+			if not surfed:
+				surfed = true
+				if await _try_surf(goal):
+					continue
+			if pushes < MAX_PUSHES and await _push_a_boulder(last_push):
+				pushes += 1
+				continue
+			return false
 		if spinning:
 			path = [path[0]]
 		var cell := player.get_cell()
@@ -978,6 +988,40 @@ func reach(goal: Vector2i) -> bool:
 				break
 		await _settle()
 	return map_id() == origin and player.get_cell() == goal
+
+
+## Force : pousse un rocher qu'on peut aborder à pied, vers une case libre, jamais en arrière de
+## sa dernière poussée ([param last_push]). Le chemin est recalculé après chaque poussée. Vrai si
+## un rocher a bougé.
+func _push_a_boulder(last_push: Dictionary[Boulder, Vector2i]) -> bool:
+	var strength := boot.get_strength_director()
+	if strength == null or boot.field_state(&"strength").state != FieldMoves.State.READY:
+		return false
+	var grid := boot.get_map().get_grid()
+	var options: Array[Dictionary] = []
+	for boulder: Boulder in strength.get_boulders():
+		var cell := boulder.get_cell()
+		for direction: Vector2i in DIRECTIONS:
+			if last_push.get(boulder, Vector2i.ZERO) == -direction:
+				continue
+			var stand := cell - direction
+			if not grid.can_enter(cell + direction, direction):
+				continue
+			var length := _foot_length(stand)
+			if length < 100000:
+				options.append({"boulder": boulder, "stand": stand, "direction": direction,
+					"length": length + (0 if last_push.has(boulder) else 1000)})
+	options.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		return a["length"] < b["length"])
+	for option: Dictionary in options:
+		if not await reach(option["stand"]):
+			continue
+		_log("    · Force : rocher %s poussé vers %s" % [(option["boulder"] as Boulder).get_cell(),
+			option["direction"]])
+		if await push_boulder(option["stand"], option["direction"]):
+			last_push[option["boulder"]] = option["direction"]
+			return true
+	return false
 
 
 func _try_surf(goal: Vector2i) -> bool:
