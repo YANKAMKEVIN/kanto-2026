@@ -152,14 +152,8 @@ var _evolutions: EvolutionDirector
 var _evolution_screen: EvolutionScreen
 ## Points de repos (jalon 7, 7A.2) : maison et Centres, mot du réveil (data/world/rest_points.json).
 var _rest_points := RestPointLibrary.new()
-## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
-var _rest_toast: PackedStringArray = PackedStringArray()
-## Boutiques (jalon 7, 7A.3, data/shops/) ; la boutique demandée par le marchand (`open_shop`),
-## ouverte à la fin de son dialogue (le menu ne s'ouvre pas pendant un dialogue).
+## Boutiques (jalon 7, 7A.3, data/shops/).
 var _shops := ShopLibrary.new()
-var _pending_shop: StringName = &""
-## Le terminal du Centre a demandé le Stockage (`open_storage`) : ouvert à la fin du dialogue.
-var _pending_storage: bool = false
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -170,17 +164,10 @@ var _debug_start_autosave: bool = false
 ## Départ de débogage sans écriture, ou Boot d'un outil sans SaveSystem injecté.
 ## Les points critiques y sont simulés ; jamais activé pour une vraie partie refusée.
 var _simulate_checkpoints: bool = false
-## Pension (J15, jalon-15.md §2.5) : directeur (pas, conversation) ; le gardien (`open_daycare`)
-## la demande, elle commence à la fin de son dialogue.
+## Pension (J15) et terminal d'échange local (J32) : créés par [BootServices], références gardées
+## pour le retour Android, les contrôles, les cartes et les jetons des dialogues.
 var _daycare: DaycareDirector
-var _pending_daycare: bool = false
-## J32 (T5) : terminal d'échange local des Centres (`open_local_trade`) ; la conversation
-## commence à la fin du dialogue du terminal.
 var _local_trade: LocalTradeDirector
-var _pending_local_trade: bool = false
-## JOH0 : le Stockage ou le terminal d'échange ont été demandés pendant l'acte 1 du Chapitre
-## Johto (réseau de Kanto coupé) : le refus se dit à la fin du dialogue, à la place de l'écran.
-var _pending_offline_notice: bool = false
 ## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
 var _debug_cutscene: StringName = &""
 ## JOH0 (QA de la lumière) : profil imposé à la carte de départ (clé « light_profile »).
@@ -192,8 +179,6 @@ var _companions := CompanionCatalog.new()
 var _companion := CompanionController.new()
 ## Mise en scène des capacités de terrain (jalon 16, Coupe : le Pokémon qui coupe, l'effet).
 var _field_presenter := FieldMovePresenter.new()
-## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
-var _daycare_overlay: DaycareOverlay
 ## J25 : choix du Pokémon d'un échange fixe.
 var _trade_overlay: TradeOverlay
 ## Coordination locale : aucun nouvel autoload, dépendances câblées dans _ready.
@@ -230,6 +215,7 @@ var _league: BootLeague
 var _world_systems: BootWorld
 var _johto: BootJohto
 var _bag_items: BootBagItems
+var _center: BootServices
 ## Créé avec Boot (pas un nœud) : les notifications arrivent avant `_ready` et après la
 ## libération des enfants.
 var _background_save := BootBackgroundSave.new(self)
@@ -263,6 +249,8 @@ func _ready() -> void:
 	_world_systems = _add_module(BootWorld.new(self), "BootWorld")
 	_johto = _add_module(BootJohto.new(self, _world_clock), "BootJohto")
 	_bag_items = _add_module(BootBagItems.new(self), "BootBagItems")
+	_center = _add_module(BootServices.new(self), "BootServices")
+	_center.set_elevator_opener(_world_systems.open_pending_elevator)
 	_save_coordinator.setup(_can_write, is_stable, _persist_snapshot)
 	_background_save.setup()
 	GameState.new_game()
@@ -317,9 +305,7 @@ func _ready() -> void:
 	# cartes dans la boîte de dialogue (T7), réveil au point de repos.
 	_rest_points.load_file()
 	_services.setup(GameState, _rest_points)
-	_services.center_healed.connect(_on_center_healed)
-	_services.shop_requested.connect(_on_shop_requested)
-	_services.storage_requested.connect(_on_storage_requested)
+	_center.setup_center()
 	_runner.action_handler = _services.run_action
 	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
 	_runner.choice_requested.connect(_dialogue_box.show_choice)
@@ -408,24 +394,10 @@ func _ready() -> void:
 	add_child(_evolution_screen)
 	_evolution_screen.reduce_flashes = _settings.reduce_flashes
 	_evolutions.set_screen(_evolution_screen)
-	# Pension (J15, jalon-15.md §2.5) : compteur de pas sur le joueur, conversation du gardien.
-	_daycare = DaycareDirector.new()
-	_daycare.name = "DaycareDirector"
-	_daycare.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_daycare)
-	_daycare.setup(GameState, _player, _runner, _library, _pokemon, DaycareConfig.load_default())
-	_daycare.set_learning(_battle_director.get_move_learn_prompt(), _evolutions)
-	_daycare_overlay = DaycareOverlay.new()
-	_daycare_overlay.name = "DaycareOverlay"
-	_daycare_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_daycare_overlay)
-	_daycare_overlay.attach(_daycare,
-		func(view: DaycarePickView) -> PartyPickerView: return view.to_picker_view(_pokemon))
-	_daycare.overlay = _daycare_overlay
-	_daycare.deposited.connect(_on_daycare_deposited.unbind(1))
-	_daycare.finished.connect(_on_daycare_finished)
-	_services.daycare_requested.connect(_on_daycare_requested)
-	_setup_local_trade()
+	# Pension (J15, jalon-15.md §2.5) et terminal d'échange local (J32, T5).
+	_center.setup_daycare_and_trade()
+	_daycare = _center.get_daycare_director()
+	_local_trade = _center.get_local_trade_director()
 	_world_systems.setup_elevators()
 	_world_systems.setup_teleporters()
 	_world_systems.setup_fly()
@@ -505,7 +477,7 @@ func _ready() -> void:
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
 	# Soin volontaire (jalon 5 §3.11) : une variante de dialogue « heal » (parler à Maman)
 	# soigne l'équipe à la fin du dialogue.
-	_runner.heal_requested.connect(_on_heal_requested)
+	_runner.heal_requested.connect(_center.on_heal_requested)
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
 	_cutscenes_node.step_played.connect(_on_costume_badge_step)
@@ -787,7 +759,7 @@ func get_evolution_director() -> EvolutionDirector:
 
 ## Pension (J15) : écran du dépôt et des capacités.
 func get_daycare_overlay() -> DaycareOverlay:
-	return _daycare_overlay
+	return _center.get_daycare_overlay()
 
 
 ## J25 : choix du Pokémon d'un échange fixe (tests).
@@ -1665,140 +1637,11 @@ func _on_dialogue_started(_dialogue_id: StringName) -> void:
 
 func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	refresh_controls()
-	if not _rest_toast.is_empty():
-		_hud.show_toast(_rest_toast[0], _rest_toast[1])
-		_rest_toast = PackedStringArray()
-	if not _pending_shop.is_empty():
-		var shop_id := _pending_shop
-		_pending_shop = &""
-		if not _menu.open(MenuRoute.shop(shop_id), true):
-			push_error("Boot : la Boutique « %s » ne s'ouvre pas" % shop_id)
-	elif _pending_storage:
-		_pending_storage = false
-		if not _menu.open(MenuRoute.storage(), true):
-			push_error("Boot : le Stockage ne s'ouvre pas sur « %s »" % current_map_id())
-	elif _pending_daycare:
-		_pending_daycare = false
-		_daycare.run()
-	elif _world_systems.open_pending_elevator():
-		pass
-	elif _pending_local_trade:
-		_pending_local_trade = false
-		_local_trade.run()
-	elif _pending_offline_notice:
-		# JOH0 : acte 1 du Chapitre Johto, le réseau de Kanto est coupé.
-		_pending_offline_notice = false
-		_runner.play(TeamConfiscation.STORAGE_OFFLINE_DIALOGUE, null,
-			SceneRouter.get_current_map())
-
-
-## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
-## du dialogue (partie stable). Boutique inconnue : refusée tout de suite.
-func _on_shop_requested(shop_id: StringName) -> void:
-	if not _shops.has_shop(shop_id):
-		push_error("Boot : boutique inconnue « %s »" % shop_id)
-		return
-	_pending_shop = shop_id
-
-
-## « open_storage » (le terminal du Centre, jalon-07.md §6.9) : le Stockage s'ouvre en écran
-## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
-func _on_storage_requested() -> void:
-	if TeamConfiscation.is_storage_offline(GameState.flags):
-		_pending_offline_notice = true
-		return
-	_pending_storage = true
-
-
-# --- Pension (J15, jalon-15.md §2.5.3) ----------------------------------------------------------
-
-## « open_daycare » (le gardien) : la conversation de la Pension commence à la fin du dialogue.
-func _on_daycare_requested() -> void:
-	_pending_daycare = true
-
-
-## Dépôt fait : écriture tout de suite (quitter avant l'autosave ne perd rien), comme au soin.
-## Le compagnon déposé (choix effacé par le directeur) rentre tout de suite (J11, 11D).
-func _on_daycare_deposited() -> void:
-	_companion.refresh()
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("pension, dépôt")
-	else:
-		request_autosave("pension, dépôt")
-
-
-## Conversation finie (joueur rendu) : contrôles ; après un retrait, **une seule** écriture.
-# --- Terminal d'échange local (J32, T5 ; `jalon-32.md` §1.2, N-15) -----------------------------
-
-func _setup_local_trade() -> void:
-	_local_trade = LocalTradeDirector.new()
-	_local_trade.name = "LocalTradeDirector"
-	_local_trade.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_local_trade)
-	_local_trade.setup(GameState, _player, _runner, _pokemon, _evolutions)
-	_local_trade.items = _items # JOH0 : nom de l'objet demandé (Peau Métal…)
-	_local_trade.pick_handler = func(view: PartyPickerView) -> int:
-		return await _trade_overlay.pick(view)
-	_local_trade.started.connect(refresh_controls)
-	_local_trade.finished.connect(_on_local_trade_finished)
-	_services.local_trade_requested.connect(_on_local_trade_requested)
+	_center.on_dialogue_finished()
 
 
 func get_local_trade_director() -> LocalTradeDirector:
 	return _local_trade
-
-
-## « open_local_trade » (le terminal) : la conversation commence à la fin du dialogue.
-func _on_local_trade_requested() -> void:
-	# JOH0 : le terminal d'échange est fermé tant que le Stockage est hors ligne [D].
-	if TeamConfiscation.is_storage_offline(GameState.flags):
-		_pending_offline_notice = true
-		return
-	_pending_local_trade = true
-
-
-## Fin de la conversation : compagnon à jour (même identifiant, nouvelle espèce) ; échange fait :
-## écriture tout de suite, comme un retrait de la Pension.
-func _on_local_trade_finished(traded: bool) -> void:
-	_companion.refresh()
-	refresh_controls()
-	if not traded:
-		return
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("échange local")
-	else:
-		request_autosave("échange local")
-
-
-func _on_daycare_finished(withdrew: bool) -> void:
-	_companion.refresh()
-	refresh_controls()
-	if not withdrew:
-		return
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("pension, retrait")
-	else:
-		request_autosave("pension, retrait")
-
-
-## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
-## PP) ; le point de repos ne change pas (dossier 09 §7).
-func _on_heal_requested() -> void:
-	_services.heal()
-	request_autosave("soin")
-
-
-## Soin d'un Centre fini (jalon-07.md §5.3) : écriture tout de suite (joueur au comptoir, la
-## partie ne peut plus rien perdre), comme au réveil ; le toast du point de repos attend la fin
-## du dialogue (après « Voilà. Tout le monde est en pleine forme. »), une fois par changement.
-func _on_center_healed(map_id: StringName, registered: bool) -> void:
-	_companion.note_joy()
-	if registered:
-		_rest_toast = _rest_points.registered_toast(_zones.zone_name_of(map_id))
-	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("soin")
-	else:
-		request_autosave("soin")
 
 
 func _on_cutscene_started(cutscene_id: StringName) -> void:
@@ -1943,10 +1786,16 @@ func _on_encounter_finished(_outcome: int) -> void:
 ## du lieu ; sinon, quitter pendant ce mot effaçait la défaite (retour à la dernière case stable
 ## d'avant le combat). Une scène interrompue, elle, se rejoue.
 func _on_woke_up_after_defeat() -> void:
+	save_now_or_soon("réveil")
+
+
+## Écriture tout de suite si la session écrit et qu'aucune transition n'est en cours, sinon
+## autosave demandé (réveil, soin d'un Centre, Pension, échange local).
+func save_now_or_soon(reason: String) -> void:
 	if _can_write() and not SceneRouter.is_transitioning():
-		_write_save("réveil")
+		_write_save(reason)
 	else:
-		request_autosave("réveil")
+		request_autosave(reason)
 
 
 ## Écriture immédiate demandée par l'étape « save » d'une scène (jalon 16, `jalon-16.md` §2.4 :
