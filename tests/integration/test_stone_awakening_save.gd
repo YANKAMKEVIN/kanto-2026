@@ -91,7 +91,7 @@ func _start_until_film() -> void:
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
 	await _finish_dialogue()
 	await wait_until(func() -> bool:
-		return _boot._awakening_overlay.get_phase() == AwakeningOverlay.Phase.SILENCE, TIMEOUT)
+		return _boot.get_awakening_overlay().get_phase() == AwakeningOverlay.Phase.SILENCE, TIMEOUT)
 
 
 func _levels(saved: Dictionary) -> Array[int]:
@@ -123,7 +123,7 @@ func test_killed_during_the_film_the_file_is_before_and_the_scene_replays() -> v
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
 	await _finish_dialogue()
 	await wait_until(func() -> bool:
-		return _boot._awakening_overlay.get_phase() == AwakeningOverlay.Phase.SILENCE, TIMEOUT)
+		return _boot.get_awakening_overlay().get_phase() == AwakeningOverlay.Phase.SILENCE, TIMEOUT)
 	assert_true(GameState.flags.has_flag(StoneAwakening.AWAKENED), "le Réveil rejoue")
 
 
@@ -132,7 +132,7 @@ func test_killed_during_the_screen_the_awakening_is_kept_and_moves_are_lost() ->
 	_boot._battle_director.speed_scale = 0.0 # Film instantané : l'écran paraît après l'écriture.
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
 	await _finish_dialogue()
-	var overlay: AwakeningOverlay = _boot._awakening_overlay
+	var overlay: AwakeningOverlay = _boot.get_awakening_overlay()
 	await wait_until(func() -> bool:
 		return overlay.get_phase() == AwakeningOverlay.Phase.REVIEW, TIMEOUT)
 	var saved := _saved()
@@ -160,7 +160,7 @@ func test_killed_during_the_screen_the_awakening_is_kept_and_moves_are_lost() ->
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
 	await _finish_dialogue()
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
-	assert_eq(_boot._awakening_overlay.get_phase(), AwakeningOverlay.Phase.IDLE)
+	assert_eq(_boot.get_awakening_overlay().get_phase(), AwakeningOverlay.Phase.IDLE)
 	await _finish_dialogue()
 
 
@@ -169,7 +169,7 @@ func test_a_move_learned_on_the_screen_reaches_the_file() -> void:
 	_boot._battle_director.speed_scale = 0.0
 	await wait_until(func() -> bool: return _boot.get_dialogue_runner().is_running(), TIMEOUT)
 	await _finish_dialogue()
-	var overlay: AwakeningOverlay = _boot._awakening_overlay
+	var overlay: AwakeningOverlay = _boot.get_awakening_overlay()
 	await wait_until(func() -> bool:
 		return overlay.get_phase() == AwakeningOverlay.Phase.REVIEW, TIMEOUT)
 	assert_true(overlay.handle_back(), "retour avalé")

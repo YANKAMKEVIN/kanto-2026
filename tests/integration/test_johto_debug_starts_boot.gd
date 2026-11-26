@@ -130,7 +130,7 @@ func test_the_return_scene_opens_the_choice_and_validate_restores_six() -> void:
 	await _launch(START_RETURN)
 	assert_eq(_boot.get_map().map_id, &"viridian_center")
 	assert_eq(GameState.confiscated.party.size(), 5, "5 confisqués")
-	var overlay: TeamReturnOverlay = _boot._team_return_overlay
+	var overlay: TeamReturnOverlay = _boot.get_team_return_overlay()
 	assert_not_null(overlay)
 	var director := _boot.get_cutscene_director()
 	# La scène joue à l'entrée de carte (différée) : dialogue d'avant, puis l'écran du choix.

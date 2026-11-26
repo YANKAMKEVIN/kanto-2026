@@ -43,7 +43,7 @@ func _saved_flags() -> Array:
 
 
 func _overlay() -> TeamReturnOverlay:
-	return _play.boot._team_return_overlay
+	return _play.boot.get_team_return_overlay()
 
 
 ## Trois Mewtwo N100 (Météores) : gagnent tout ; équipe de Kanto de 5 : 8 Pokémon, écran des 6.

@@ -123,14 +123,9 @@ var _library := DialogueLibrary.new()
 var _cutscenes := CutsceneLibrary.new()
 var _pokemon := PokemonData.new()
 var _offer := StarterOffer.new()
-## Chapitre Johto (JOH1, `jalon-joh1.md` §2.6) : l'offre d'Orme (`starters_johto.json`) et son
-## contrôleur, créé en code sur la même fiche que celui de Chen.
-var _offer_johto := StarterOffer.new()
+## Chapitre Johto (JOH1) : le choix du starter d'Orme ([BootJohto], référence gardée pour la
+## stabilité de la partie et les contrôles).
 var _starter_choice_johto: StarterChoice
-## Jeton `{pokemon}` des répliques d'Orme pendant la scène du choix (le starter de Johto).
-var _johto_starter_tokens: Dictionary[StringName, String] = {}
-## JOH1 : un départ de débogage a imposé `period` : la règle d'histoire ([JohtoPeriodRule]) se tait.
-var _debug_period_forced: bool = false
 var _trainers: TrainerLibrary
 ## Badges de Kanto (jalon 10 : étape de scène « badge »).
 var _badges: BadgeLibrary = BadgeLibrary.new()
@@ -194,27 +189,11 @@ var _pending_local_trade: bool = false
 ## JOH0 : le Stockage ou le terminal d'échange ont été demandés pendant l'acte 1 du Chapitre
 ## Johto (réseau de Kanto coupé) : le refus se dit à la fin du dialogue, à la place de l'écran.
 var _pending_offline_notice: bool = false
-## JOHP0 : le film et l'écran du Réveil (étape « stones_awaken »).
-var _awakening_overlay: AwakeningOverlay
-## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
-var _team_return_overlay: TeamReturnOverlay
-## JOHP3 : le survol sur le Dracolosse de Corentin (étape « dragon_flight »).
-var _dragon_flight_overlay: DragonFlightOverlay
-## JOH5 (T-29) : des Pokémon sont allés au Stockage au retour de l'équipe (drapeau de travail).
-const JOHTO_RETURN_STORED_FLAG: StringName = &"johto_return_stored"
-## JOHP0 : P-31 (`data/dialogues/johp0.json`) et l'annonce du Stockage.
-const AWAKENING_LINES: StringName = &"stones_awakening_line"
-const AWAKENING_STORED: StringName = &"stones_awakening_stored"
 ## JOH0 : scène jouée à la première entrée de carte d'un départ de débogage (clé « cutscene »).
 var _debug_cutscene: StringName = &""
 ## JOH0 (QA de la lumière) : profil imposé à la carte de départ (clé « light_profile »).
 var _debug_light_profile: StringName = &""
 var _debug_light_map: StringName = &""
-## JOH0 (`jalon-joh0.md` §2.7, §2.9) : pas du lien et des œufs ; œufs prêts à éclore, joués au
-## prochain pas où la partie est stable ; jeton {pokemon} du dialogue d'éclosion.
-var _bond_steps := BondStepCounter.new()
-var _pending_hatch: Array[Pokemon] = []
-var _hatch_tokens: Dictionary[StringName, String] = {}
 ## Compagnon (jalon 11, 11D) : espèces éligibles et contrôleur (nœud créé tout de suite pour
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
@@ -262,6 +241,7 @@ var _forced_slide: ForcedSlideDirector
 ## racine de composition et les appelle aux mêmes moments qu'avant le découpage.
 var _league: BootLeague
 var _world_systems: BootWorld
+var _johto: BootJohto
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -287,6 +267,7 @@ var _world_systems: BootWorld
 
 func _ready() -> void:
 	_world_systems = _add_module(BootWorld.new(self), "BootWorld")
+	_johto = _add_module(BootJohto.new(self, _world_clock), "BootJohto")
 	_save_coordinator.setup(_can_write, is_stable, _persist_snapshot)
 	_setup_save_checkpoint()
 	GameState.new_game()
@@ -367,16 +348,8 @@ func _ready() -> void:
 	_starter_choice.sheet_opened.connect(refresh_controls)
 	_starter_choice.sheet_closed.connect(refresh_controls)
 	# JOH1 : l'offre de Johto (Orme, salle de repos du Centre d'Oliville), second contrôleur.
-	if _offer_johto.load_file(StarterOffer.JOHTO_DATA_PATH):
-		_offer_johto.check_species(_pokemon)
-	_starter_choice_johto = StarterChoice.new()
-	_starter_choice_johto.name = "StarterChoiceJohto"
-	_starter_choice_johto.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_starter_choice_johto)
-	_starter_choice_johto.setup(_offer_johto, _pokemon, GameState, _player, _sheet, _hud,
-		_cutscenes_node, _interactions)
-	_starter_choice_johto.sheet_opened.connect(refresh_controls)
-	_starter_choice_johto.sheet_closed.connect(refresh_controls)
+	_johto.setup_starter()
+	_starter_choice_johto = _johto.get_starter_choice()
 	# Jalon 4B : combat, dresseurs, messages, objets et Sac.
 	_trainers = TrainerLibrary.new(_pokemon)
 	_trainers.load_dir()
@@ -417,34 +390,15 @@ func _ready() -> void:
 	_cutscenes_node.pokemon_traded.connect(_on_pokemon_traded)
 	# JOH0 (`jalon-joh0.md` §2.2) : le vol et le retour de l'équipe (étapes « confiscate_team »
 	# et « return_team ») ; l'écran du choix des 6.
-	_team_return_overlay = TeamReturnOverlay.new()
-	_team_return_overlay.name = "TeamReturnOverlay"
-	_team_return_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_team_return_overlay)
-	_dragon_flight_overlay = DragonFlightOverlay.new()
-	_dragon_flight_overlay.name = "DragonFlightOverlay"
-	_dragon_flight_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_dragon_flight_overlay)
-	_cutscenes_node.dragon_flight_handler = _on_dragon_flight_requested
+	_johto.setup_overlays()
 	_cutscenes_node.rest_point_handler = func(map: StringName) -> void:
 		RestPointLibrary.register(GameState, _rest_points.get_point(map))
-	_cutscenes_node.team_return_handler = _on_team_return_requested
-	_cutscenes_node.team_confiscated.connect(_on_team_confiscated)
-	_cutscenes_node.team_returned.connect(_on_team_returned)
-	_cutscenes_node.egg_given.connect(_on_egg_given)
 	# JOHP0 (`jalon-joh-pierres.md` §2) : le Réveil (étape « stones_awaken ») et son écran.
-	_awakening_overlay = AwakeningOverlay.new()
-	_awakening_overlay.name = "AwakeningOverlay"
-	_awakening_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_awakening_overlay)
-	var awakening_art := BattleArt.new()
-	awakening_art.setup(_pokemon, _dex)
-	_awakening_overlay.setup(awakening_art)
+	_johto.setup_cutscene_steps()
 	_cutscenes_node.set_zones(_zones)
-	_cutscenes_node.awakening_handler = _on_awakening_film_requested
-	_cutscenes_node.awakening_screen_handler = _on_awakening_review_requested
+	_johto.setup_awakening_handlers()
 	# JOH0 : lien et œufs à chaque pas libre du joueur.
-	_player.moved.connect(_on_player_moved_for_bond)
+	_johto.setup_bond_steps()
 	_player.moved.connect(_on_player_moved_for_flair)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
@@ -490,12 +444,12 @@ func _ready() -> void:
 	# J17 (§2.5) : variantes selon les espèces capturées (assistant de Chen, CS05).
 	_runner.caught_count = func() -> int: return GameState.pokedex.caught_count()
 	# JOH0 : moment et jour pour les variantes datées, à Johto seulement.
-	_runner.time_source = _current_time
+	_runner.time_source = _johto.current_time
 	_runner.caught_johto_count = func() -> int:
 		return PokedexQuery.caught_in_region(GameState.pokedex, _pokemon, ZoneData.REGION_JOHTO)
 	# JOH3 : jour de la promotion du Grand Magasin (à Johto seulement) et palier du lien du
 	# Pokémon de tête (Mme Clémence).
-	_menu.weekday_source = func() -> StringName: return _current_time()[1]
+	_menu.weekday_source = func() -> StringName: return _johto.current_time()[1]
 	_runner.lead_bond_source = func() -> int: return BondReader.lead_tier(GameState)
 	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
 	_runner.field_source = field_state
@@ -528,7 +482,7 @@ func _ready() -> void:
 	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
 	# labo, puis les sauvages en 5B).
 	_starter_choice.starter_chosen.connect(_on_starter_chosen)
-	_starter_choice_johto.starter_chosen.connect(_on_johto_starter_chosen)
+	_starter_choice_johto.starter_chosen.connect(_johto.on_starter_chosen)
 	_battle_director.event_played.connect(_on_battle_event)
 	# Capture (jalon 5D) : le Pokémon rangé, l'autosave est demandé (écrit une fois stable).
 	_battle_director.pokemon_caught.connect(_on_pokemon_caught.unbind(2))
@@ -545,7 +499,7 @@ func _ready() -> void:
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
 		SceneRouter, _cutscenes_node, _recovery)
 	# JOH0 : les tables datées ne jouent qu'à Johto (Kanto : tirage inchangé).
-	_encounters.period_source = period_for_map
+	_encounters.period_source = _johto.period_for_map
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
 	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
@@ -728,25 +682,13 @@ func get_world_clock() -> WorldClock:
 
 ## JOH0 (JH-8) : vrai si [param map_id] est une carte de Johto (sa zone le dit).
 func is_johto_map(map_id: StringName) -> bool:
-	return _zones != null and _zones.is_johto(map_id)
+	return _johto.is_johto_map(map_id)
 
 
 ## JOH0 : le moment courant à lire sur [param map_id] : celui de l'horloge à Johto, &"" ailleurs
 ## (Kanto n'a pas d'heure).
 func period_for_map(map_id: StringName) -> StringName:
-	return _world_clock.period_name() if is_johto_map(map_id) and _world_clock.is_active() \
-		else &""
-
-
-## JOH0 : [moment, jour] à lire sur [param map_id] (la carte courante si vide) : ceux de
-## l'horloge à Johto, vides ailleurs.
-func _current_time(map_id: StringName = &"") -> Array[StringName]:
-	var id := map_id
-	if id.is_empty():
-		var map := SceneRouter.get_current_map()
-		id = map.map_id if is_instance_valid(map) else &""
-	var period := period_for_map(id)
-	return [period, _world_clock.weekday_name() if not period.is_empty() else &""]
+	return _johto.period_for_map(map_id)
 
 
 ## JOH0 : le moment a changé (heure réelle ou scène) : sur une carte de Johto, la lumière suit ;
@@ -755,7 +697,7 @@ func _on_period_changed(_period: WorldClock.Period) -> void:
 	var map := SceneRouter.get_current_map()
 	if is_instance_valid(map) and is_johto_map(map.map_id):
 		_apply_lighting(map, true)
-	Evolution.set_current_period(_current_time()[0])
+	Evolution.set_current_period(_johto.current_time()[0])
 	_menu_screen.refresh_status()
 
 
@@ -823,7 +765,7 @@ func get_johto_starter_choice() -> StarterChoice:
 
 ## JOH1 : l'offre d'Orme chargée au démarrage (data/pokemon/starters_johto.json).
 func get_johto_starter_offer() -> StarterOffer:
-	return _offer_johto
+	return _johto.get_starter_offer()
 
 
 func get_starter_sheet() -> StarterSheet:
@@ -947,7 +889,7 @@ func get_encounter_library() -> EncounterLibrary:
 
 ## JOHP3 : le survol (étape « dragon_flight ») ; sert aussi à l'animation du Vol.
 func get_dragon_flight_overlay() -> DragonFlightOverlay:
-	return _dragon_flight_overlay
+	return _johto.get_dragon_flight_overlay()
 
 
 ## Capacités de terrain chargées au démarrage (data/world/field_moves.json).
@@ -960,6 +902,16 @@ func get_companion_catalog() -> CompanionCatalog:
 	return _companions
 
 
+## Écran d'évolution (jalon 9, T9).
+func get_evolution_screen() -> EvolutionScreen:
+	return _evolution_screen
+
+
+## Pokédex chargé au démarrage (data/pokedex/).
+func get_pokedex_library() -> PokedexLibrary:
+	return _dex
+
+
 ## Zones chargées au démarrage (data/world/zones.json).
 func get_zone_library() -> ZoneLibrary:
 	return _zones
@@ -967,12 +919,12 @@ func get_zone_library() -> ZoneLibrary:
 
 ## JOHP0 : l'écran du Réveil (étape « stones_awaken »).
 func get_awakening_overlay() -> AwakeningOverlay:
-	return _awakening_overlay
+	return _johto.get_awakening_overlay()
 
 
 ## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
 func get_team_return_overlay() -> TeamReturnOverlay:
-	return _team_return_overlay
+	return _johto.get_team_return_overlay()
 
 
 ## Dialogues chargés au démarrage (data/dialogues/).
@@ -1035,11 +987,8 @@ func _on_go_back() -> void:
 	# J25 : choix du Pokémon d'un échange = ANNULER.
 	if _trade_overlay != null and _trade_overlay.handle_back():
 		return
-	# JOH0 : le choix des 6 est obligatoire : retour avalé.
-	if _team_return_overlay != null and _team_return_overlay.handle_back():
-		return
-	# JOHP0 : le Réveil ne se passe pas : retour avalé.
-	if _awakening_overlay != null and _awakening_overlay.handle_back():
+	# JOH0 : le choix des 6 est obligatoire ; JOHP0 : le Réveil ne se passe pas : retour avalé.
+	if _johto.handle_back():
 		return
 	# J32 (T5) : le reste de la conversation du terminal d'échange avale le geste.
 	if _local_trade != null and _local_trade.handle_back():
@@ -1119,7 +1068,7 @@ func _finish_start() -> void:
 	PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
 	_dex_toasts.clear()
 	# JOH1 : moment imposé par l'histoire (relu au chargement : survit à une coupure).
-	_apply_story_period()
+	_johto.apply_story_period()
 
 
 ## Vrai si la partie est en place ; faux si l'ouverture est montrée (la partie démarrera à son
@@ -1143,10 +1092,10 @@ func _start_game_state() -> bool:
 		_open_save_system()
 		if save_system != null and _load_save():
 			# JOH1 (QA A17) : le moment imposé avant la première carte (sinon fondu depuis le jour).
-			_apply_story_period()
+			_johto.apply_story_period()
 			if _resume():
 				return true
-	_apply_story_period()
+	_johto.apply_story_period()
 	SceneRouter.start(start_map, start_spawn, start_facing)
 	return true
 
@@ -1280,7 +1229,7 @@ func _on_opening_resumed(save: Dictionary) -> void:
 	_repair_key_items()
 	# JOH1 (QA A17) : le moment imposé par l'histoire est posé avant la première carte, pour que
 	# sa lumière soit immédiate (nuit d'Oliville, matin de la chambre) au lieu d'un fondu de 10 s.
-	_apply_story_period()
+	_johto.apply_story_period()
 	if not _resume():
 		SceneRouter.start(start_map, start_spawn, start_facing)
 	_finish_opening()
@@ -1444,8 +1393,7 @@ func _apply_debug_start() -> bool:
 	_debug_light_profile = start.light_profile
 	_debug_light_map = start.map if not start.light_profile.is_empty() else &""
 	if not start.period.is_empty():
-		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(start.period)])
-		_debug_period_forced = true
+		_johto.force_debug_period(start.period)
 	if not start.weekday.is_empty():
 		_world_clock.force_weekday(WorldClock.WEEKDAY_NAMES.find(start.weekday))
 	_veil_debug = start.veil
@@ -1531,7 +1479,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
 	_flash.on_map_changed(map)
 	# JOH8 : moment imposé par carte (aube du sommet) avant la lumière, pour qu'elle soit immédiate.
-	_apply_story_period(map.map_id)
+	_johto.apply_story_period(map.map_id)
 	# JOH0 (QA) : profil de lumière imposé par le départ de débogage sur sa carte.
 	if not _debug_light_profile.is_empty() and map.map_id == _debug_light_map:
 		map.light_profile = _debug_light_profile
@@ -1540,7 +1488,7 @@ func _on_map_changed(map: GameMap) -> void:
 	# JOH0 (JH-8) : la puce de l'heure du menu ne se montre qu'à Johto ; les PNJ datés lisent le
 	# moment et le jour à l'entrée sur la carte.
 	_menu_screen.clock_shown = is_johto_map(map.map_id)
-	var time := _current_time(map.map_id)
+	var time := _johto.current_time(map.map_id)
 	map.set_time_context(time[0], time[1])
 	# JOH7 : drapeaux de la semaine (Lokhlass du vendredi) baissés un autre jour que le leur.
 	WeeklyFlags.shared().apply(GameState.flags, _world_clock.weekday_name())
@@ -1865,10 +1813,9 @@ func _dialogue_token_values() -> Dictionary[StringName, String]:
 	# J32 (T5) : {pokemon} de la confirmation du terminal d'échange.
 	if _local_trade != null:
 		values.merge(_local_trade.token_values(), true)
-	# JOH0 : le Pokémon qui vient d'éclore.
-	values.merge(_hatch_tokens, true)
-	# JOH1 : le Pokémon de départ de Johto, pendant la scène du choix (répliques d'Orme).
-	values.merge(_johto_starter_tokens, true)
+	# JOH0 : le Pokémon qui vient d'éclore ; JOH1 : le Pokémon de départ de Johto, pendant la
+	# scène du choix (répliques d'Orme).
+	_johto.merge_token_values(values)
 	# J17 (§2.5) : {caught}, {caught_missing} (assistant de Chen).
 	values.merge(DialogueTokens.caught_values(GameState.pokedex.caught_count()))
 	# JOHP3 (P-28b) : {lead_pokemon}, le premier de l'équipe.
@@ -1897,7 +1844,7 @@ func _on_cutscene_requested(cutscene_id: StringName) -> void:
 ## défaite, transition) : pas d'enchaînement, l'autosave ordinaire s'en charge.
 func _on_cutscene_finished(cutscene_id: StringName) -> void:
 	_companion.on_cutscene_finished()
-	_johto_starter_tokens = {}
+	_johto.clear_starter_tokens()
 	_announce_costume()
 	refresh_controls()
 	var next := _cutscenes.get_next(cutscene_id)
@@ -1921,6 +1868,11 @@ func _on_encounter_state_changed() -> void:
 ## sa rencontre (labo, niveau et date du choix) et le grand moment « premier Pokémon »
 ## (jalon 5 §16.3 ; décision de Kevin : premier Pokémon, pas première capture).
 func _on_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
+	record_starter(player_species)
+
+
+## Enregistre le starter [param player_species] (Pokédex, rencontre, Grand moment) : Kanto et Johto.
+func record_starter(player_species: StringName) -> void:
 	var map_id := current_map_id()
 	GameState.record_caught(player_species, map_id)
 	var members := GameState.party.get_all()
@@ -1930,40 +1882,6 @@ func _on_starter_chosen(player_species: StringName, _rival_species: StringName) 
 			break
 	GameState.record_moment(GameState.MOMENT_STARTER, map_id,
 		{"species": String(player_species)})
-
-
-## JOH1 (`jalon-joh1.md` §2.6) : le Pokémon de départ de Johto rejoint l'équipe (Pokédex,
-## rencontre « starter » au lien 50, Grand moment comme à Kanto), devient **compagnon** (dossier
-## JOH-02 §8 ; sans planche de compagnon il reste dans sa Ball, JOH0 §2.11) et prête son nom au
-## jeton `{pokemon}` des répliques d'Orme jusqu'à la fin de la scène du choix.
-func _on_johto_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
-	_on_starter_chosen(player_species, &"")
-	var chosen := _starter_choice_johto.get_last_chosen()
-	if chosen == null:
-		return
-	GameState.set_companion(chosen)
-	_johto_starter_tokens = {DialogueTokens.POKEMON: chosen.display_name(_pokemon)}
-
-
-## JOH1 (`jalon-joh1.md` §2.4) : moment du jour imposé par l'histoire ([JohtoPeriodRule]) :
-## nuit de la lettre au vol, matin du vol au départ d'Orme, heure réelle ensuite ; recalculé à la
-## mise en place de la partie et à chaque drapeau. Un départ de débogage qui impose `period` gagne.
-func _apply_story_period(map_id: StringName = &"") -> void:
-	if _debug_period_forced:
-		return
-	var period := JohtoPeriodRule.forced_period(GameState.flags)
-	# JOH8 (JH-55) : aube forcée au sommet de la Tour Carillon, relue à chaque carte.
-	if period.is_empty():
-		if map_id.is_empty():
-			map_id = current_map_id()
-		if map_id.is_empty():
-			map_id = GameState.current_map
-		period = BellTowerDawnRule.forced_period(map_id, GameState.flags)
-	if period.is_empty():
-		if _world_clock.is_period_forced():
-			_world_clock.release_period()
-	else:
-		_world_clock.force_period(WorldClock.PERIOD_NAMES[String(period)])
 
 
 ## Pokémon adverse d'un combat de dresseur envoyé au combat : « vu » au Pokédex, avec la carte
@@ -2076,81 +1994,6 @@ func _on_trade_pick_requested(_trade_id: StringName, accepted: Array[int]) -> in
 	return await _trade_overlay.pick(InGameTrade.picker_view(GameState.party, accepted, _pokemon))
 
 
-## JOHP3 (étape « dragon_flight ») : le survol ; la scène change de carte derrière.
-func _on_dragon_flight_requested(direction: StringName) -> void:
-	if direction == &"land":
-		await _dragon_flight_overlay.finish()
-		return
-	_dragon_flight_overlay.reduce_motion = _settings.reduce_motion
-	await _dragon_flight_overlay.play(direction)
-
-
-## JOH0 (étape « return_team ») : l'écran du choix des 6 ; rend les identifiants gardés.
-func _on_team_return_requested(selection: TeamReturnSelection) -> Array[String]:
-	# JOH5 (dossier JOH-06 §7.3) : six Pokémon ou moins en tout, pas d'écran, tout le monde rentre.
-	if selection.get_pool().size() <= TeamReturnSelection.MAX_KEPT:
-		return selection.default_selection()
-	var labels: Array[String] = []
-	for pokemon: Pokemon in selection.get_pool():
-		labels.append("%s  N. %d" % [pokemon.display_name(_pokemon), pokemon.level])
-	return await _team_return_overlay.pick(selection, labels)
-
-
-## JOHP0 : le film du Réveil. P-31 et l'annonce des captures viennent des dialogues
-## ([constant AWAKENING_LINES], [constant AWAKENING_STORED]).
-func _on_awakening_film_requested(report: AwakeningReport) -> void:
-	_awakening_overlay.speed_scale = _battle_director.speed_scale
-	_awakening_overlay.reduce_flashes = _evolution_screen.reduce_flashes
-	var stored := ""
-	if not report.stored.is_empty():
-		stored = "\n".join(PackedStringArray(_dialogue_pages(AWAKENING_STORED)))
-	await _awakening_overlay.film(report, _dialogue_pages(AWAKENING_LINES), stored)
-
-
-## JOHP0 : l'écran du Réveil, après l'écriture ; vrai si une attaque a été apprise.
-func _on_awakening_review_requested(report: AwakeningReport) -> bool:
-	var learned := await _awakening_overlay.review(report,
-		_battle_director.get_move_learn_prompt())
-	_audio_bridge.on_awakening_finished()
-	_companion.refresh()
-	return learned
-
-
-## Textes de la première variante du dialogue [param id].
-func _dialogue_pages(id: StringName) -> Array[String]:
-	var result: Array[String] = []
-	var dialogue := _library.get_dialogue(id)
-	if dialogue == null or dialogue.variants.is_empty():
-		push_error("Boot : dialogue « %s » absent" % id)
-		return result
-	for page: DialoguePage in dialogue.variants[0].pages:
-		result.append(page.text)
-	return result
-
-
-## JOH0 : l'équipe vient d'être confisquée d'un seul bloc : le compagnon rentre (plus d'équipe) ;
-## la scène écrit par son étape « save » (l'autosave demandé ici est une ceinture de plus).
-func _on_team_confiscated() -> void:
-	_companion.refresh()
-	request_autosave("vol de l'équipe")
-
-
-## JOH0 : l'équipe est revenue d'un seul bloc : compagnon à jour, autosave demandé.
-func _on_team_returned(stored: int) -> void:
-	# JOH5 (T-29) : drapeau de travail lu par la scène du bureau, baissé par elle après l'écriture.
-	if stored > 0:
-		GameState.flags.set_flag(JOHTO_RETURN_STORED_FLAG)
-	_companion.refresh()
-	request_autosave("retour de l'équipe")
-
-
-## JOH0 : un œuf vient d'entrer dans l'équipe (étape « give_egg ») : autosave demandé.
-func _on_egg_given(_egg: Pokemon) -> void:
-	request_autosave("œuf reçu")
-
-
-## JOH0 : un pas du joueur : le lien et les œufs comptent ([BondStepCounter]) ; un œuf arrivé à
-## terme éclot dès que la partie est stable (hors combat, scène, dialogue, menu).
 ## Flair (costume, CO-13) : annonce une fois chaque objet caché qui entre à portée.
 func _on_player_moved_for_flair(cell: Vector2i) -> void:
 	var radius := roundi(GameState.costume_effect(CostumeCatalog.EFFECT_ITEM_SENSE))
@@ -2163,30 +2006,6 @@ func _on_player_moved_for_flair(cell: Vector2i) -> void:
 		return
 	_flair_announced[key] = true
 	_hud.show_caption(Itemfinder.sense_text(cell, target), -1.0, false, false)
-
-
-func _on_player_moved_for_bond(_cell: Vector2i) -> void:
-	var result := _bond_steps.on_player_moved(GameState.party, GameState.companion_uid,
-		_player.is_input_enabled())
-	for egg: Pokemon in result["hatched"]:
-		if not _pending_hatch.has(egg):
-			_pending_hatch.append(egg)
-	_try_hatch()
-
-
-## JOH0 : joue l'éclosion du premier œuf prêt si la partie est stable : l'œuf devient un
-## Pokémon (origine « egg », Pokédex vu et capturé), le dialogue le nomme, autosave.
-func _try_hatch() -> void:
-	if _pending_hatch.is_empty() or not is_stable() or _menu.is_open():
-		return
-	var egg: Pokemon = _pending_hatch.pop_front()
-	if GameState.party.index_of(egg) < 0 or not EggRules.hatch(egg, GameState, current_map_id()):
-		return
-	_hatch_tokens = {DialogueTokens.POKEMON: egg.display_name(_pokemon)}
-	_companion.refresh()
-	if not _runner.play(EggRules.HATCH_DIALOGUE, null, SceneRouter.get_current_map()):
-		push_error("Boot : le dialogue de l'éclosion n'a pas été joué")
-	request_autosave("éclosion")
 
 
 ## J25 (§2.5) : échange fait d'un seul bloc : compagnon à jour (le Pokémon donné a pu l'être,
@@ -2347,7 +2166,7 @@ func _on_flag_changed(flag: StringName, _value: bool) -> void:
 	if is_instance_valid(map):
 		map.apply_flag_gates(GameState.flags)
 	if JohtoPeriodRule.FLAGS.has(flag):
-		_apply_story_period()
+		_johto.apply_story_period()
 	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
 	if flag == StoryFlags.POKEDEX_ACTIVATED:
 		return
