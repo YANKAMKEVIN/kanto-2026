@@ -392,8 +392,11 @@ func _candidates() -> Array[Dictionary]:
 	_event_edges.clear()
 	for event: Dictionary in events:
 		event["effects"] = _effects(event)
+		# Un déclencheur n'est un trajet que s'il ne fait rien d'autre (montée du Carillon, H-12).
+		var travel: bool = event["kind"] != "trigger" \
+			or (event["effects"]["flags"] as Array).is_empty()
 		for target: StringName in _travel_targets(event):
-			if target != event["map"] and world.has(target) and event["kind"] != "trigger":
+			if target != event["map"] and world.has(target) and travel:
 				if not _event_edges.has(event["map"]):
 					_event_edges[event["map"]] = []
 				(_event_edges[event["map"]] as Array).append({"target": target, "event": event})
@@ -554,6 +557,8 @@ func _travel_targets(event: Dictionary) -> Array[StringName]:
 			_maps_of_dialogue(event["dialogue"], seen, out)
 		"npc":
 			_maps_of_dialogue((event["spec"] as NpcSpec).dialogue, seen, out)
+		"trigger":
+			_maps_of_cutscene(event["cutscene"], seen, out)
 	return out
 
 
@@ -976,6 +981,7 @@ func reach(goal: Vector2i) -> bool:
 					continue
 			if pushes < MAX_PUSHES and await _push_a_boulder(goal, last_push):
 				pushes += 1
+				surfed = false  # une rive nouvelle peut s'ouvrir (descente du Mont Argenté)
 				continue
 			return false
 		if spinning:
@@ -992,8 +998,8 @@ func reach(goal: Vector2i) -> bool:
 
 ## Force : pousse un rocher qu'on peut aborder à pied, vers une case libre, jamais en arrière de
 ## sa dernière poussée ([param last_push]). Chaque poussée possible est simulée sur la grille : celle
-## qui ouvre le chemin vers [param goal] d'abord, puis celle qui ouvre le plus de cases, puis la plus
-## proche. Le chemin est recalculé après chaque poussée. Vrai si un rocher a bougé.
+## qui ouvre le chemin vers [param goal] d'abord, puis celle qui gagne le plus de cases, puis la plus
+## proche ; une poussée qui ne gagne aucune case (rocher promené dans une salle ouverte) est écartée. Le chemin est recalculé après chaque poussée. Vrai si un rocher a bougé.
 func _push_a_boulder(goal: Vector2i, last_push: Dictionary[Boulder, Vector2i]) -> bool:
 	var strength := boot.get_strength_director()
 	if strength == null or boot.field_state(&"strength").state != FieldMoves.State.READY:
@@ -1012,8 +1018,12 @@ func _push_a_boulder(goal: Vector2i, last_push: Dictionary[Boulder, Vector2i]) -
 			if length >= 100000:
 				continue
 			var opened := _cells_after_push(boulder, direction)
+			# Gain mesuré depuis la case de poussée (on y arrive parfois en Surf).
+			var now := grid.find_reachable(stand, player, GridWorld.MoveMode.WALK).size()
+			if not opened.has(goal) and opened.size() <= now:
+				continue  # rocher promené dans une salle déjà ouverte : rien à gagner
 			options.append({"boulder": boulder, "stand": stand, "direction": direction,
-				"opens_goal": opened.has(goal), "opened": opened.size(), "length": length})
+				"opens_goal": opened.has(goal), "opened": opened.size() - now, "length": length})
 	options.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		if a["opens_goal"] != b["opens_goal"]:
 			return a["opens_goal"]
@@ -1055,9 +1065,20 @@ func _try_surf(goal: Vector2i) -> bool:
 	# La rive d'où l'on rejoint [param goal] à pied (le lac de la Route 42 se traverse) : les cases
 	# d'eau voisines de ces cases-là suffisent.
 	var beyond: Dictionary[Vector2i, bool] = {}
-	for cell: Vector2i in grid.find_reachable(goal, null, GridWorld.MoveMode.WALK):
-		for side: Vector2i in DIRECTIONS:
-			beyond[cell + side] = true
+	var shores: Array[Vector2i] = [goal]
+	# Force prête : la rive d'où l'on aborde un rocher compte aussi (lac du Mont Argenté, puis les
+	# rochers du nord).
+	var strength := boot.get_strength_director()
+	if strength != null and boot.field_state(&"strength").state == FieldMoves.State.READY:
+		for boulder: Boulder in strength.get_boulders():
+			for side: Vector2i in DIRECTIONS:
+				var stand := boulder.get_cell() - side
+				if not on_foot.has(stand) and grid.is_in_bounds(stand) and not grid.is_solid(stand):
+					shores.append(stand)
+	for shore: Vector2i in shores:
+		for cell: Vector2i in grid.find_reachable(shore, null, GridWorld.MoveMode.WALK):
+			for side: Vector2i in DIRECTIONS:
+				beyond[cell + side] = true
 	for cell: Vector2i in on_foot:
 		for side: Vector2i in DIRECTIONS:
 			var sea := cell + side

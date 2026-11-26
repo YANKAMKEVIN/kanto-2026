@@ -2371,6 +2371,7 @@ script = ExtResource("3_awrqs")
 target_map = &"dragons_den_sanctuary"
 target_spawn = &"from_1f"
 arrival_facing = Vector2i(0, -1)
+if_flags = Array[StringName]([&"johto_clan_guardians_done"])
 
 [node name="EscalierBas_1" type="Marker2D" parent="Warps" unique_id=2070205043]
 position = Vector2(1392, 288)
@@ -2378,6 +2379,7 @@ script = ExtResource("3_awrqs")
 target_map = &"dragons_den_sanctuary"
 target_spawn = &"from_1f_1"
 arrival_facing = Vector2i(0, -1)
+if_flags = Array[StringName]([&"johto_clan_guardians_done"])
 
 [node name="Interactables" type="Node2D" parent="." unique_id=1171268154]
 
