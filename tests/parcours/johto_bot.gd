@@ -357,7 +357,18 @@ func _prepare_team() -> void:
 			pokemon.evs[stat] = 252
 		pokemon.recalc(data)
 		pokemon.heal_full()
+		# La boucle de combat joue toujours la capacité 0 : la plus forte d'abord (Germignon seul
+		# perdait contre Cenere en ouvrant par Rugissement).
+		pokemon.moves.sort_custom(func(a: MoveSlot, b: MoveSlot) -> bool:
+			return _move_score(data, a) > _move_score(data, b))
 	GameState.repel_steps = 9999
+
+
+func _move_score(data: PokemonData, slot: MoveSlot) -> int:
+	var move := data.get_move(slot.move_id)
+	if move == null or move.power <= 1:
+		return 0
+	return move.power * (move.accuracy if move.accuracy > 0 else 100)
 
 
 func _refresh_signature() -> void:
@@ -981,6 +992,12 @@ func _press_screens() -> bool:
 	# Combat : la première capacité est refusée (plus de PP, entrave) → la suivante permise.
 	var battles := boot.get_battle_director()
 	var battle := battles.get_battle() if battles.is_running() else null
+	# Le bot cherche les blocages, pas l'équilibrage : son Pokémon est soigné à chaque choix (un
+	# Germignon seul, niveau 100, tombait encore contre l'équipe de Cenere après un critique).
+	if battle != null and battle.get_state() == Battle.State.CHOOSING:
+		var active := battle.get_player_side().active
+		if active != null and active.pokemon != null and active.pokemon.hp > 0:
+			active.pokemon.hp = active.pokemon.max_hp()
 	if battle != null and battle.get_state() == Battle.State.CHOOSING \
 			and boot.get_battle_hud().get_zone() == BattleHud.Zone.MOVES \
 			and not battle.is_legal(BattleAction.move(0)):
@@ -992,10 +1009,9 @@ func _press_screens() -> bool:
 	if sheet != null and sheet.is_open() and sheet.get_choose_button().visible:
 		sheet.choose_pressed.emit()
 		return true
-	var overlay: Variant = boot.get(&"_team_return_overlay")
-	if overlay is TeamReturnOverlay and (overlay as TeamReturnOverlay).is_open() \
-			and not (overlay as TeamReturnOverlay).get_confirm_button().disabled:
-		(overlay as TeamReturnOverlay).get_confirm_button().pressed.emit()
+	var overlay := boot.get_team_return_overlay()
+	if overlay != null and overlay.is_open() and not overlay.get_confirm_button().disabled:
+		overlay.get_confirm_button().pressed.emit()
 		return true
 	return false
 
