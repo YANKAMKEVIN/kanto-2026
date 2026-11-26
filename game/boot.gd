@@ -229,7 +229,7 @@ var _trade_overlay: TradeOverlay
 var _save_coordinator := SaveCoordinator.new()
 var _lifecycle := SessionLifecycle.new()
 var _settings_applier := SettingsApplier.new()
-## Jalon Son (T6) : relais vers l'autoload « Audio » ([method _setup_audio]).
+## Jalon Son (T6) : relais vers l'autoload « Audio » ([method BootAudioWiring.wire]).
 var _audio_bridge := AudioBridge.new()
 ## Ouverture (OUV.1) : null hors scène principale ou avec un départ de débogage.
 var _opening: OpeningDirector = null
@@ -269,6 +269,9 @@ var _forced_slide: ForcedSlideDirector
 ## Passe systèmes 2 (S2B) : monture (Vélo) et objets clés utilisables (Bicyclette, Poké Flûte).
 var _mount: MountDirector
 var _key_items: KeyItemDirector
+## Modules de domaine extraits de Boot (enfants PAUSABLE, sans traitement propre) : Boot reste la
+## racine de composition et les appelle aux mêmes moments qu'avant le découpage.
+var _league: BootLeague
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -609,88 +612,18 @@ func _ready() -> void:
 	_setup_safari()
 	_setup_strength()
 	_setup_evolution_items()
-	_setup_league()
-	_setup_audio()
-	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
-	# coupé laisse une coroutine non reprise).
-	_menu.menu_opened.connect(_menu_screen.open_animated)
-	_menu.menu_closed.connect(_menu_screen.close_animated.unbind(1))
-	_menu.dashboard_shown.connect(_menu_screen.show_dashboard)
-	_menu.placeholder_shown.connect(_menu_screen.show_placeholder)
-	_menu_screen.route_requested.connect(_menu.go)
-	_menu_screen.back_requested.connect(_menu.handle_back)
-	_menu_screen.close_requested.connect(_menu.close)
-	# Costumes (dossier-costumes.md, CO-1, CO-7) : choisis sur l'écran Dresseur, le joueur du
-	# monde se rhabille aussitôt.
-	if _menu_screen.has_signal(&"costume_chosen"):
-		_menu_screen.costume_chosen.connect(_menu.choose_costume)
+	_league = _add_module(BootLeague.new(), "BootLeague")
+	_league.setup(self)
+	BootAudioWiring.wire(self)
+	# L'écran (jalon-06.md §6.6) : directeur et écran reliés ([BootMenuWiring]) ; restent ici les
+	# gestionnaires de Boot (costume, CT, réglages, « Sauvegarder maintenant »).
+	BootMenuWiring.wire(_menu, _menu_screen)
 	_menu.costume_changed.connect(_on_costume_changed.unbind(1))
-	# Équipe (T8) : reliée dès que l'écran porte l'interface du §6.7 (TeamScreen du T7).
-	if _menu_screen.has_signal(&"team_member_moved"):
-		_menu.team_shown.connect(_menu_screen.show_team)
-		_menu_screen.team_member_moved.connect(_menu.move_member)
-		_menu_screen.team_favorite_toggled.connect(_menu.toggle_favorite)
-		_menu_screen.team_companion_toggled.connect(_menu.toggle_companion)
-		_menu_screen.team_member_selected.connect(_menu.select_member)
-	# Sac (T12) : relié dès que l'écran porte l'interface du §6.8 (BagScreen du T11).
 	if _menu_screen.has_signal(&"bag_use_requested"):
-		_menu.bag_shown.connect(_menu_screen.show_bag)
-		_menu.bag_targets_shown.connect(_menu_screen.show_bag_targets)
-		_menu.bag_result_shown.connect(_menu_screen.show_bag_result)
-		_menu_screen.bag_category_opened.connect(_menu.open_bag_category)
-		_menu_screen.bag_favorite_toggled.connect(_menu.toggle_item_favorite)
-		_menu_screen.bag_sort_changed.connect(_menu.set_bag_sort)
-		_menu_screen.bag_use_requested.connect(_menu.request_item_use)
-		_menu_screen.bag_target_chosen.connect(_menu.use_item_on)
-		_menu_screen.bag_repeat_requested.connect(_menu.repeat_item_use)
 		# Jalon 11 (T12) : apprendre une CT par-dessus le menu.
 		_menu.tm_learn_requested.connect(_on_tm_learn_requested)
-	# Pokédex (T16) : relié dès que l'écran porte l'interface du §6.9 (PokedexScreen du T15).
-	if _menu_screen.has_signal(&"pokedex_species_opened"):
-		_menu.pokedex_shown.connect(_menu_screen.show_pokedex)
-		_menu.pokedex_sheet_shown.connect(_menu_screen.show_pokedex_sheet)
-		_menu_screen.pokedex_filter_changed.connect(_menu.set_pokedex_filter)
-		_menu_screen.pokedex_species_opened.connect(_menu.open_species)
-	# Carte (T21) : reliée dès que l'écran porte l'interface du §6.10 (MapScreen du T20).
-	if _menu_screen.has_signal(&"map_zone_touched"):
-		_menu.map_shown.connect(_menu_screen.show_map)
-		_menu.map_zone_shown.connect(_menu_screen.show_map_zone)
-		_menu_screen.map_zone_touched.connect(_menu.open_zone)
-		_menu_screen.map_region_requested.connect(_menu.switch_map_region)
-	# Dresseur (T25) : sans show_trainer (écran pas encore fusionné), l'écran provisoire.
-	if _menu_screen.has_method(&"show_trainer"):
-		_menu.trainer_shown.connect(_menu_screen.show_trainer)
-	else:
-		_menu.trainer_shown.connect(
-			func(_view: TrainerView) -> void: _menu_screen.show_placeholder(MenuRoute.TRAINER))
-	# Paramètres (T29) : reliés dès que l'écran porte l'interface du §6.12 (SettingsScreen du
-	# T28) ; sinon l'écran provisoire reste.
 	_menu.settings_changed.connect(_on_settings_changed)
 	_menu.save_requested.connect(_on_save_requested)
-	if _menu_screen.has_signal(&"setting_changed"):
-		_menu.save_result_shown.connect(_menu_screen.show_save_result)
-		_menu.settings_shown.connect(_menu_screen.show_settings)
-		_menu_screen.setting_changed.connect(_menu.change_setting)
-		_menu_screen.save_now_requested.connect(_menu.request_save)
-	# Boutique (jalon-07.md §6.10) : ShopScreen du T11 (TrainerMenu), directeur du T12.
-	_menu.shop_shown.connect(_menu_screen.show_shop)
-	_menu.shop_result_shown.connect(_menu_screen.show_shop_result)
-	_menu.shop_confirm_requested.connect(_menu_screen.show_shop_confirm)
-	_menu_screen.shop_mode_changed.connect(_menu.set_shop_mode)
-	_menu_screen.shop_buy_requested.connect(_menu.buy)
-	_menu_screen.shop_sell_requested.connect(_menu.sell)
-	# Stockage (jalon-07.md §6.9) : StorageScreen du T15 (TrainerMenu, fusionné avant : câblage
-	# direct, comme la Boutique), directeur du T16.
-	_menu.storage_shown.connect(_menu_screen.show_storage)
-	_menu.storage_refused.connect(_menu_screen.show_storage_refusal)
-	_menu.storage_release_asked.connect(_menu_screen.ask_storage_release)
-	_menu_screen.storage_selected.connect(_menu.select_storage)
-	_menu_screen.storage_deposit_requested.connect(_menu.deposit_member)
-	_menu_screen.storage_withdraw_requested.connect(_menu.withdraw_member)
-	_menu_screen.storage_favorite_toggled.connect(_menu.toggle_storage_favorite)
-	_menu_screen.storage_release_requested.connect(_menu.request_release)
-	_menu_screen.storage_release_confirmed.connect(_menu.confirm_release)
-	_menu_screen.storage_query_changed.connect(_menu.set_storage_query)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -714,6 +647,14 @@ func _ready() -> void:
 	SceneRouter.coming_soon_finished.connect(_on_coming_soon_finished)
 	_start_game()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
+
+
+## Ajoute un module de domaine comme enfant de Boot (même règle de pause que les autres enfants).
+func _add_module(module: Node, module_name: String) -> Node:
+	module.name = module_name
+	module.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(module)
+	return module
 
 
 func _process(delta: float) -> void:
@@ -1045,6 +986,21 @@ func get_rest_points() -> RestPointLibrary:
 ## Tables de rencontre chargées au démarrage (data/encounters/).
 func get_encounter_library() -> EncounterLibrary:
 	return _encounter_library
+
+
+## Zones chargées au démarrage (data/world/zones.json).
+func get_zone_library() -> ZoneLibrary:
+	return _zones
+
+
+## JOHP0 : l'écran du Réveil (étape « stones_awaken »).
+func get_awakening_overlay() -> AwakeningOverlay:
+	return _awakening_overlay
+
+
+## JOH0 : l'écran du choix des 6 au retour de l'équipe (étape « return_team »).
+func get_team_return_overlay() -> TeamReturnOverlay:
+	return _team_return_overlay
 
 
 ## Dialogues chargés au démarrage (data/dialogues/).
@@ -2607,112 +2563,13 @@ func get_key_item_director() -> KeyItemDirector:
 
 # --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------
 
-## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
-## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
-## Jalon Son (T6, `docs/tech/jalon-son.md` §1.4–§1.8) : [AudioBridge] relaie au son les cartes,
-## la monture (Surf, Vélo), le « ! » des Dresseurs, les combats, les jingles (soin, objets,
-## capture, Badge, évolution, Poké Flûte) et la clé « music » des cinématiques. Sans fichier son,
-## rien ne s'entend et rien ne change.
-func _setup_audio() -> void:
-	_audio_bridge.setup(Audio, _zones)
-	_audio_bridge.current_mount = _player.get_mount
-	_audio_bridge.has_flag = func(flag: StringName) -> bool: return GameState.flags.has_flag(flag)
-	_audio_bridge.trainer_name = func(id: StringName) -> String:
-		var trainer := _trainers.get_trainer(id) if _trainers != null else null
-		return trainer.name if trainer != null else ""
-	_audio_bridge.wild_species = _battle_director.get_wild_species
-	_audio_bridge.costume_music = func(kind: StringName) -> Array[StringName]:
-		return CostumeCatalog.shared().music_tracks(GameState.worn_costume(), kind)
-	_audio_bridge.caught_count = func() -> int: return GameState.pokedex.caught_count()
-	_audio_bridge.items = _items
-	# SonB : cris (numéro national par l'espèce).
-	_audio_bridge.species_dex = func(species: StringName) -> int:
-		var data := _pokemon.get_species(species)
-		return data.dex if data != null else 0
-	_audio_bridge.party_species = func(index: int) -> StringName:
-		var member := GameState.party.get_at(index)
-		return member.species_id if member != null else &""
-	_audio_bridge.companion_species = func() -> StringName:
-		var chosen := _companion.get_chosen()
-		return chosen.species_id if chosen != null else &""
-	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
-	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
-	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
-	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
-	_battle_stage.move_fx_cue.connect(_audio_bridge.on_move_fx_cue)
-	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
-	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
-	_services.center_healed.connect(_audio_bridge.on_center_healed)
-	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
-	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
-	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
-	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
-	# JOHP0 : le son du Réveil.
-	_awakening_overlay.silence_requested.connect(_audio_bridge.on_awakening_silence)
-	_awakening_overlay.theme_started.connect(_audio_bridge.on_awakening_theme)
-	_awakening_overlay.theme_burst.connect(_audio_bridge.on_awakening_burst)
-	_awakening_overlay.heartbeat.connect(_audio_bridge.on_awakening_heartbeat)
-	_awakening_overlay.ball_opened.connect(_audio_bridge.on_awakening_ball)
-	_awakening_overlay.level_ticked.connect(_audio_bridge.on_awakening_tick)
-	_awakening_overlay.cry_requested.connect(_audio_bridge.play_species_cry)
-	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
-	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
-	_encounters.cry_requested.connect(_audio_bridge.on_encounter_cry)
-	_companion.line_requested.connect(_audio_bridge.on_companion_line)
-	if _menu_screen.has_signal(&"pokedex_cry_requested"):
-		_menu_screen.pokedex_cry_requested.connect(_audio_bridge.on_pokedex_cry)
-	# SonC (T13) : bruitages du combat, des pas, du monde et de l'interface.
-	_audio_bridge.move_info = func(move_id: StringName) -> Array:
-		var move := _pokemon.get_move(move_id)
-		if move == null:
-			return []
-		return [move.type, StringName(String(MoveData.Category.find_key(move.category)).to_lower())]
-	_audio_bridge.ground_at = _ground_at
-	_player.step_started.connect(_audio_bridge.on_player_step)
-	_player.bumped.connect(_audio_bridge.on_bumped)
-	SceneRouter.transition_started.connect(_audio_bridge.on_transition_started)
-	_menu.menu_opened.connect(_audio_bridge.on_menu_opened)
-	_menu.menu_closed.connect(_audio_bridge.on_menu_closed)
-	_runner.page_started.connect(_audio_bridge.on_dialogue_page)
-	# Une seule accroche pour tous les boutons ; le HUD d'exploration (joystick, actions) reste
-	# muet.
-	_audio_bridge.watch_ui(self, _hud)
-
-
-## Sol d'une case pour le bruit de pas [D] : intérieur ; herbes hautes ; neige aux Îles Écume ;
-## sinon sol dur.
-func _ground_at(cell: Vector2i) -> StringName:
-	var map := get_map()
-	if map == null:
-		return &"hard"
-	if map.interior:
-		return &"indoor"
-	var grid := map.get_grid()
-	if grid != null and grid.is_tall_grass(cell):
-		return &"grass"
-	if _zones.zone_of(map.map_id) == &"seafoam_islands":
-		return &"snow"
-	return &"hard"
-	_player.mount_changed.connect(_audio_bridge.on_mount_changed)
-	_trainer_watcher.trainer_spotted.connect(_audio_bridge.on_trainer_spotted)
-	_battle_director.battle_started.connect(_audio_bridge.on_battle_started)
-	_battle_director.event_played.connect(_audio_bridge.on_battle_event)
-	_battle_director.battle_finished.connect(_audio_bridge.on_battle_finished)
-	_battle_director.pokemon_caught.connect(_audio_bridge.on_pokemon_caught.unbind(2))
-	_services.center_healed.connect(_audio_bridge.on_center_healed)
-	_cutscenes_node.item_given.connect(_audio_bridge.on_item_given)
-	_cutscenes_node.item_found.connect(_audio_bridge.on_item_found)
-	_cutscenes_node.step_played.connect(_audio_bridge.on_cutscene_step)
-	_cutscenes_node.cutscene_finished.connect(_audio_bridge.on_cutscene_finished)
-	_evolutions.evolution_started.connect(_audio_bridge.on_evolution_started)
-	_evolutions.evolution_finished.connect(_audio_bridge.on_evolution_finished)
-
-
 ## Accès au relais du son (tests).
 func get_audio_bridge() -> AudioBridge:
 	return _audio_bridge
 
 
+## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
+## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
 func _setup_evolution_items() -> void:
 	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
 	_menu.rare_candy_requested.connect(_on_rare_candy_requested)
@@ -3218,183 +3075,20 @@ func get_strength_director() -> StrengthDirector:
 	return _strength
 
 
-# --- Jalon 30 (T8) : tentative de Ligue (`jalon-30.md` §2.2, §2.3) ------------------------------
-
-var _league: LeagueDirector
-
-
-## [LeagueDirector] : entrée dans la salle d'Olga, victoires, défaite (drapeaux effacés avant le
-## réveil). Relais de carte branché avant celui de Boot (drapeaux à jour avant la présence des
-## PNJ et les portes de drapeaux) ; fin de combat après l'autosave demandé par Boot (écrit une fois
-## la partie stable, drapeaux de la Ligue compris).
-func _setup_league() -> void:
-	_league = LeagueDirector.new()
-	_league.name = "LeagueDirector"
-	_league.process_mode = Node.PROCESS_MODE_PAUSABLE
-	add_child(_league)
-	_league.setup(GameState)
-	_league.static_encounters = _cutscenes.get_static_encounters()  # J32 (N-17, N-18)
-	SceneRouter.map_changed.connect(_league.on_map_changed)
-	_league.tree_exiting.connect(func() -> void:
-		if SceneRouter.map_changed.is_connected(_league.on_map_changed):
-			SceneRouter.map_changed.disconnect(_league.on_map_changed))
-	_battle_director.battle_finished.connect(_league.on_battle_finished)
-	_setup_league_ceremony()
-
+# --- Jalon 30 : Ligue, Panthéon, générique ([BootLeague]) -------------------------------------
 
 func get_league_director() -> LeagueDirector:
-	return _league
-
-
-# --- Jalon 30 (T15 à T17) : Panthéon, générique, retour à Bourg Palette (§2.4) --------------------
-
-const HALL_OF_FAME_SCREEN := preload("res://game/ui/league/hall_of_fame_screen.gd")
-const CREDITS_SCREEN := preload("res://game/ui/league/credits_screen.gd")
-
-var _hall_screen: HallOfFameScreen
-var _credits_screen: CreditsScreen
-var _credits := CreditsData.new()
-
-
-## Écrans du Panthéon et du générique, gestionnaires des étapes « hall_of_fame » et « credits »
-## des scènes `league_victory` / `league_hall_of_fame`, et reprise de la cérémonie à l'arrivée
-## dans la salle du Champion ou au Panthéon ([method LeagueDirector.pending_cutscene]).
-func _setup_league_ceremony() -> void:
-	_credits.load_file()
-	_hall_screen = HALL_OF_FAME_SCREEN.new()
-	_hall_screen.name = "HallOfFameScreen"
-	# Toujours actif : il se consulte aussi depuis le Menu, qui met la partie en pause (Q30-4).
-	_hall_screen.process_mode = Node.PROCESS_MODE_ALWAYS
-	add_child(_hall_screen)
-	_credits_screen = CREDITS_SCREEN.new()
-	_credits_screen.name = "CreditsScreen"
-	_credits_screen.process_mode = Node.PROCESS_MODE_PAUSABLE
-	_credits_screen.skip_label = _credits.skip_label
-	add_child(_credits_screen)
-	_cutscenes_node.hall_of_fame_handler = _play_hall_of_fame
-	_cutscenes_node.credits_handler = _play_credits
-	SceneRouter.map_entered.connect(_on_league_map_entered)
-	# Q30-4 : le Panthéon se consulte depuis l'écran Dresseur (lecture seule, la plus récente
-	# d'abord).
-	_menu_screen.hall_of_fame_requested.connect(_browse_hall_of_fame)
-	_league.tree_exiting.connect(func() -> void:
-		if SceneRouter.map_entered.is_connected(_on_league_map_entered):
-			SceneRouter.map_entered.disconnect(_on_league_map_entered))
+	return _league.get_league_director()
 
 
 func get_hall_of_fame_screen() -> HallOfFameScreen:
-	return _hall_screen
+	return _league.get_hall_of_fame_screen()
 
 
 func get_credits_screen() -> CreditsScreen:
-	return _credits_screen
+	return _league.get_credits_screen()
 
 
-## Étape « hall_of_fame » : cérémonie due → instantané de l'équipe, écran du Panthéon, puis titre
-## et entrée posés ([method LeagueDirector.complete_ceremony]) ; vrai = la partie est à écrire
-## (le directeur de scènes l'écrit aussitôt). Déjà faite (reprise) : faux, rien.
-func _play_hall_of_fame() -> bool:
-	if not _league.ceremony_due():
-		return false
-	var entry := HallOfFame.snapshot(GameState.party.get_all(), GameState.player_name,
-		GameState.starter_species, GameState.play_time, GameState.clock.now_iso())
-	await _hall_screen.present(_hall_view(entry))
-	return _league.complete_ceremony(entry)
-
-
-## Étape « credits » : générique sur la dernière entrée du Panthéon ; passable seulement s'il a
-## déjà été vu (`league_credits_seen`, posé à la fin).
-func _play_credits() -> void:
-	if not _cutscenes_node.credits_id.is_empty():
-		await _play_named_credits(_cutscenes_node.credits_id)
-		return
-	var hall := GameState.hall_of_fame
-	var entry := hall.get_entry(hall.size() - 1) if not hall.is_empty() else HallOfFame.snapshot(
-		GameState.party.get_all(), GameState.player_name, GameState.starter_species,
-		GameState.play_time, "")
-	var skippable := GameState.flags.has_flag(LeagueAttempt.CREDITS_SEEN)
-	await _credits_screen.present(_credits.rows(entry, _hall_member_name), skippable)
-	GameState.flags.set_flag(LeagueAttempt.CREDITS_SEEN)
-
-
-## JOH9 : petit générique de chapitre [param id] (`data/story/credits_<id>.json`) sur l'équipe
-## du moment ; passable s'il a déjà été vu (drapeau `<id>_credits_seen`, posé à la fin).
-func _play_named_credits(id: StringName) -> void:
-	var credits := CreditsData.new()
-	credits.load_file(CreditsData.NAMED_PATH % id)
-	var entry := HallOfFame.snapshot(GameState.party.get_all(), GameState.player_name,
-		GameState.starter_species, GameState.play_time, "")
-	var seen := StringName("%s_credits_seen" % id)
-	_credits_screen.skip_label = credits.skip_label
-	await _credits_screen.present(credits.rows(entry, _hall_member_name),
-		GameState.flags.has_flag(seen))
-	_credits_screen.skip_label = _credits.skip_label
-	GameState.flags.set_flag(seen)
-
-
-## Vue de l'écran du Panthéon pour [param entry] : en-tête (joueur, date), et pour chaque Pokémon
-## son artwork, sa ligne (T30-16) et, sous un surnom, le nom de l'espèce.
-func _hall_view(entry: Dictionary) -> Dictionary:
-	var members: Array = []
-	for member: Dictionary in entry.get("team", []):
-		var species := _pokemon.get_species(StringName(member.get("species", "")))
-		var nickname: String = member.get("nickname", "")
-		members.append({
-			"texture": PokedexArt.portrait(species.dex) if species != null else null,
-			"line": _credits.member_line(_hall_member_name(member), int(member.get("level", 1))),
-			"subtitle": species.name if species != null and not nickname.is_empty() else "",
-		})
-	var header: String = entry.get("player", "")
-	var day := _hall_date(str(entry.get("date", "")))
-	if not day.is_empty():
-		header = "%s · %s" % [header, day] if not header.is_empty() else day
-	return {"header": header, "members": members}
-
-
-## Q30-4 : entrées du Panthéon, de la plus récente à la plus ancienne, sur l'écran du Panthéon.
-func _browse_hall_of_fame() -> void:
-	if _hall_screen.is_showing():
-		return
-	var views: Array = []
-	var entries := GameState.hall_of_fame.entries()
-	entries.reverse()
-	for entry: Dictionary in entries:
-		views.append(_hall_view(entry))
-	await _hall_screen.browse(views)
-
-
-## Surnom, sinon nom de l'espèce, d'un Pokémon d'une entrée du Panthéon.
-func _hall_member_name(member: Dictionary) -> String:
-	var nickname: String = member.get("nickname", "")
-	if not nickname.is_empty():
-		return nickname
-	var species := _pokemon.get_species(StringName(member.get("species", "")))
-	return species.name if species != null else str(member.get("species", ""))
-
-
-## « 2026-10-26T21:04:00 » → « 26/10/2026 » ; vide si illisible.
-static func _hall_date(iso: String) -> String:
-	var parts := iso.get_slice("T", 0).split("-")
-	if parts.size() != 3:
-		return ""
-	return "%s/%s/%s" % [parts[2], parts[1], parts[0]]
-
-
-## Arrivée dans la salle du Champion ou au Panthéon pendant une cérémonie inachevée (reprise
-## d'une sauvegarde) : la scène due repart, après l'arrivée (jamais par-dessus une scène).
-func _on_league_map_entered(map: GameMap) -> void:
-	if _league.pending_cutscene(map.map_id).is_empty():
-		return
-	_resume_league_ceremony.call_deferred(map.map_id)
-
-
-func _resume_league_ceremony(map_id: StringName) -> void:
-	var map := SceneRouter.get_current_map()
-	if not is_instance_valid(map) or map.map_id != map_id or _cutscenes_node.is_running():
-		return
-	var cutscene := _league.pending_cutscene(map_id)
-	if not cutscene.is_empty():
-		_cutscenes_node.play(cutscene)
 # --- J23 : visite du Parc Safari (`jalon-23.md` §2.1, §2.5, §2.15) -------------------------
 
 var _safari: SafariDirector
