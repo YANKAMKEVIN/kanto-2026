@@ -63,6 +63,35 @@ def sans(plan, depart: str, lettre: str) -> set:
 	return atteignables(plan, cases(plan, depart), chars=plan.praticables - {lettre})
 
 
+def a_sens(plan, depart: str, interdite: str) -> set:
+	"""Cases atteintes à pied sans marcher sur [interdite], rebords L sautés vers le sud seulement
+	(on atterrit sur la case d'après, comme GridWorld.get_step_target)."""
+	bloc = bloquees(plan)
+
+	def libre(x, y):
+		return 0 <= x < plan.width and 0 <= y < plan.height and (x, y) not in bloc \
+			and plan.at(x, y) in plan.praticables and plan.at(x, y) != interdite
+
+	vus = set(c for c in cases(plan, depart) if libre(*c))
+	file = deque(vus)
+	while file:
+		x, y = file.popleft()
+		for dx, dy in DIRS:
+			n = (x + dx, y + dy)
+			if not libre(*n):
+				continue
+			if plan.at(*n) == "L":
+				if (dx, dy) != (0, 1):
+					continue
+				n = (n[0], n[1] + 1)
+				if not libre(*n) or plan.at(*n) == "L":
+					continue
+			if n not in vus:
+				vus.add(n)
+				file.append(n)
+	return vus
+
+
 def glisse_bfs(plan, depart) -> set:
 	"""Cases atteintes en marchant ET en glissant sur les dalles (une flèche téléporte à son arrêt)."""
 	bloc = bloquees(plan)
@@ -106,8 +135,10 @@ def main() -> int:
 	verifie(trous == set(f1.cells_of("O")), "chaque case O porte un trou et réciproquement")
 	verifie(all(p.attrs.get("vers") == "burned_tower_b1f" and p.attrs.get("arrivee") == "chute" for p in f1.of_kind("trou")),
 		"tous les trous tombent au B1F, arrivée « chute »")
-	r_sans_trou = sans(f1, "from_city", "O")
+	r_sans_trou = a_sens(f1, "from_city", "O")
 	verifie(not any(c in r_sans_trou for c in cases(f1, "vers_b1f")), "l'échelle ne s'atteint pas sans marcher sur un trou")
+	r_nord = a_sens(f1, "from_b1f", "O")
+	verifie(all(c in r_nord for c in cases(f1, "from_city")), "du nord (échelle du B1F), la sortie s'atteint par la poutre effondrée, sans trou")
 	verifie(all(c in r_sans_trou for c in cases(f1, "plancher_effondre")), "la scène C-5 se joue avant les trous")
 	evitable(f1, "from_city", "plancher_effondre", "odile")
 	evitable(f1, "from_city", "plancher_effondre", "sbire_p")

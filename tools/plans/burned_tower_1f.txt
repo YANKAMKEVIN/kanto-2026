@@ -13,6 +13,10 @@
 #     sans la franchir) : on ne passe au nord qu'en TOMBANT au B1F (dossier §4 : « un trou mène au
 #     B1F ») ; trois trous isolés en plus ((16, 5), (20, 15), (6, 17)). La scène C-5 (déclencheur
 #     « plancher_effondre », y 13) prévient une fois avant la bande.
+#   - POUTRE EFFONDRÉE (L (9, 11) puis c (9, 12)) : la poutre ouest, couchée, se DESCEND du nord vers
+#     le sud (rebord sauté vers le sud), jamais l'inverse. C'est la sortie du nord après la scène
+#     des chiens (décision de Kevin, 2026-11-26, blocage trouvé par le bot de parcours de Johto :
+#     sans elle, l'échelle du B1F ramenait dans un nord fermé par la bande de trous).
 #   - POUTRES CALCINÉES (P, bloquées) ; l'Hyper Potion est cachée sous celle de (5..9, 15).
 #   - ÉCHELLE qui descend (V, (3, 2)) au nord-ouest : retour normal depuis le B1F (paire tc_1) ;
 #     depuis l'entrée on ne l'atteint qu'après une chute et une remontée.
@@ -28,13 +32,14 @@
 #   # mur noirci (bloqué)   . dallage de pierre (praticable, aucune rencontre)
 #   c cendres et débris (praticables, terrain de rencontre : Rattatac, Nosferalto, Smogogo, Spectrum, Magmar)
 #   P poutre calcinée (bloquée)   O trou dans le plancher (praticable, chute au B1F)
+#   L poutre effondrée (rebord : sautée vers le sud seulement)
 #   V échelle qui descend (praticable, warp)   E sortie vers Rosalia (praticable, PUSH ↓)
 # Défauts [D] : rencontres sur les cendres seulement ; Dresseurs placés par Claude ; la bande de trous
 # est le passage voulu vers le B1F (pas d'escalier direct).
 #
 # Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 28 caractères), puis POSITIONS.
 
-PRATICABLES .cOVE
+PRATICABLES .cOVEL
 
 GRILLE 28 24
 00 ############################
@@ -48,8 +53,8 @@ GRILLE 28 24
 08 #cccccccccccccccccPPPPPPPcc#
 09 #cccccccccccccccccccccccccc#
 10 #cccccccccccccccccccccccccc#
-11 #OOOOOOOOPOOOOOOOOPOOOOOOOO#
-12 #OOOOOOOOPOOOOOOOOPOOOOOOOO#
+11 #OOOOOOOOLOOOOOOOOPOOOOOOOO#
+12 #OOOOOOOOcOOOOOOOOPOOOOOOOO#
 13 #cccccccccccccccccccccccccc#
 14 #cccccccccccccccccccccccccc#
 15 #ccccPPPPPccccccccccOcccccc#
