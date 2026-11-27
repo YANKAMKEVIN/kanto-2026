@@ -81,7 +81,7 @@ trou_sud_est         trou           20,15        libre   vers=burned_tower_b1f a
 trou_sud_ouest       trou           6,17         libre   vers=burned_tower_b1f arrivee=chute  # trou isolé
 plancher_effondre    declencheur    10..17,13    libre   drapeau=johto_burned_floor_seen  # C-5, une fois, en approchant de la bande
 odile                dresseur       4,19         bloque  role=medium facing=right sight=2  # C-4 : Spectrum 46, Ectoplasma 48 ; évitable
-sbire_p              dresseur       23,14        bloque  role=sbire facing=left sight=3  # C-4 : Smogogo 48, Rattatac 48 ; évitable
+sbire_p              dresseur       23,14        bloque  role=sbire facing=left sight=8  # C-4 : Smogogo 48, Rattatac 48 ; évitable
 rappel               objet_visible  25,21        bloque  item=revive  # dossier §7
 hyper_potion         cache          7,15         bloque  item=hyper_potion  # sous la poutre, examinée depuis (7, 14) ou (7, 16)
 cendres_c1           rencontre      13,16        libre   role=C1  # repère des cendres (toute la carte en c)

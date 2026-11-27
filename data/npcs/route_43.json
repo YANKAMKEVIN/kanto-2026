@@ -9,7 +9,7 @@
 		"dialogue": "route_43_peager_after",
 		"trainer": {
 			"id": "route_43_peager",
-			"sight": 1,
+			"sight": 8,
 			"before": "route_43_peager_before",
 			"defeated": "route_43_peager_defeated"
 		}
@@ -24,7 +24,7 @@
 		"dialogue": "route_43_sbire_q_after",
 		"trainer": {
 			"id": "route_43_sbire_q",
-			"sight": 2,
+			"sight": 8,
 			"before": "route_43_sbire_q_before",
 			"defeated": "route_43_sbire_q_defeated"
 		}

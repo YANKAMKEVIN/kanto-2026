@@ -1504,3 +1504,9 @@ position = Vector2(336, 192)
 position = Vector2(1776, 192)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=374536467]
+
+[node name="KevinAscenseurEnPanne" type="Node2D" parent="Entities" unique_id=1927110002]
+position = Vector2(1728, 0)
+script = ExtResource("18_76d28")
+unless_flags = Array[StringName]([&"johto_cenere_defeated"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 0)])

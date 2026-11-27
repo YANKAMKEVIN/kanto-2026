@@ -6818,3 +6818,8 @@ z_as_relative = false
 position = Vector2(1638, 2274)
 script = ExtResource("7_aw24y")
 glow_type = &"night_pane"
+
+[node name="KevinPortePeage" type="Marker2D" parent="Interactables" unique_id=1927110006]
+position = Vector2(1488, 2400)
+script = ExtResource("6_5gngg")
+dialogue_id = &"route_43_peage_ferme"

@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="21_q7td4"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="22_tlnuw"]
 [ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="23_kv4c0"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="kv_flag_gate"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c3rhg"]
 shader = ExtResource("2_iw4xu")
@@ -1058,3 +1059,9 @@ position = Vector2(144, 1248)
 script = ExtResource("23_kv4c0")
 cutscene_id = &"goldenrod_radio_exit"
 size = Vector2i(22, 1)
+
+[node name="KevinAscenseurEnPanne" type="Node2D" parent="Entities" unique_id=1927110000]
+position = Vector2(1728, 0)
+script = ExtResource("kv_flag_gate")
+unless_flags = Array[StringName]([&"johto_cenere_defeated"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 0)])

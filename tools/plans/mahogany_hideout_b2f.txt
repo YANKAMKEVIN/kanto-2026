@@ -69,8 +69,8 @@ from_b1f             spawn          28,13        libre   paire=rep_1_2 facing=do
 vers_b3f             escalier       3,1          libre   paire=rep_2_3 sens=descend vers=mahogany_hideout_b3f:from_b2f  # escalier vers le B3F, derrière la porte à mot de passe
 from_b3f             spawn          3,2          libre   paire=rep_2_3 facing=down  # arrivée depuis le B3F
 entree_dalles        repere         17,7         libre   role=entree  # case d'arrêt d'entrée de la salle des dalles
-sbire_r              dresseur       23,14        bloque  role=sbire facing=up sight=3  # C-31 R : Smogogo 57, Magnéton 56 ; évitable par le sud de la salle
-sbire_s              dresseur       9,13         bloque  role=sbire facing=down sight=1  # C-31 S : Démolosse 57, Cornèbre 56 ; évitable par (9, 15)
+sbire_r              dresseur       23,14        bloque  role=sbire facing=up sight=8  # C-31 R : Smogogo 57, Magnéton 56 ; évitable par le sud de la salle
+sbire_s              dresseur       9,13         bloque  role=sbire facing=down sight=8  # C-31 S : Démolosse 57, Cornèbre 56 ; évitable par (9, 15)
 scientifique         dresseur       2,4          bloque  role=scientifique facing=right sight=1  # C-31 : Électrode 57, Magnéton 57, Porygon 56 ; devant la porte, INÉVITABLE
 porte_mdp            porte_cle      3,3          libre   cle=johto_dante_flashback_seen  # C-38 « Gloire à Dante » ; refuse tant que le déserteur n'a pas parlé (§13)
 porte_cellule        porte_cle      7,16         libre   cle=johto_cell_opened  # grille de la cellule du déserteur, ouverte par le levier

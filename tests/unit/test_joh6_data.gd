@@ -75,17 +75,17 @@ const TRAINERS: Dictionary = {
 ## une scène (alarmes, Brace) à part.
 const SEEN: Dictionary = {
 	&"burned_tower_1f_odile": [&"burned_tower_1f", &"odile", Vector2i(4, 19), Vector2i.RIGHT, 2],
-	&"burned_tower_1f_sbire_p": [&"burned_tower_1f", &"sbire_p", Vector2i(23, 14), Vector2i.LEFT, 3],
+	&"burned_tower_1f_sbire_p": [&"burned_tower_1f", &"sbire_p", Vector2i(23, 14), Vector2i.LEFT, TrainerRules.SIGHT_MAX],
 	&"route_42_hector": [&"route_42", &"hector", Vector2i(20, 7), Vector2i.LEFT, 2],
 	&"route_42_marcel": [&"route_42", &"marcel", Vector2i(29, 13), Vector2i.RIGHT, 1],
 	&"route_42_coralie": [&"route_42", &"coralie", Vector2i(40, 5), Vector2i.DOWN, 3],
 	&"route_42_louis": [&"route_42", &"louis", Vector2i(53, 9), Vector2i.DOWN, 1],
-	&"route_43_peager": [&"route_43", &"peager", Vector2i(12, 25), Vector2i.LEFT, 1],
-	&"route_43_sbire_q": [&"route_43", &"sbire_q", Vector2i(8, 21), Vector2i.RIGHT, 2],
+	&"route_43_peager": [&"route_43", &"peager", Vector2i(12, 25), Vector2i.LEFT, TrainerRules.SIGHT_MAX],
+	&"route_43_sbire_q": [&"route_43", &"sbire_q", Vector2i(8, 21), Vector2i.RIGHT, TrainerRules.SIGHT_MAX],
 	&"route_43_basile": [&"route_43", &"basile", Vector2i(14, 10), Vector2i.LEFT, 2],
 	&"lake_of_rage_ludovic": [&"lake_of_rage", &"ludovic", Vector2i(20, 39), Vector2i.UP, 1],
-	&"mahogany_hideout_b2f_sbire_r": [&"mahogany_hideout_b2f", &"sbire_r", Vector2i(23, 14), Vector2i.UP, 3],
-	&"mahogany_hideout_b2f_sbire_s": [&"mahogany_hideout_b2f", &"sbire_s", Vector2i(9, 13), Vector2i.DOWN, 1],
+	&"mahogany_hideout_b2f_sbire_r": [&"mahogany_hideout_b2f", &"sbire_r", Vector2i(23, 14), Vector2i.UP, TrainerRules.SIGHT_MAX],
+	&"mahogany_hideout_b2f_sbire_s": [&"mahogany_hideout_b2f", &"sbire_s", Vector2i(9, 13), Vector2i.DOWN, TrainerRules.SIGHT_MAX],
 	&"mahogany_hideout_b2f_scientifique": [&"mahogany_hideout_b2f", &"scientifique", Vector2i(2, 4),
 		Vector2i.RIGHT, 1],
 }
@@ -322,9 +322,9 @@ func test_seen_trainers_are_placed_by_the_grids() -> void:
 		assert_eq(spec.dialogue, StringName("%s_after" % id), "réplique après")
 		assert_eq(spec.before_dialogue, StringName("%s_before" % id))
 		assert_eq(spec.defeated_dialogue, StringName("%s_defeated" % id))
-	# Inévitables (grilles) : Louis (passage de l'éperon), le péager, le Scientifique devant la porte.
-	for pair: Array in [[&"route_42", &"louis"], [&"route_43", &"peager"],
-			[&"mahogany_hideout_b2f", &"scientifique"]]:
+	# Inévitables (grilles) : Louis (passage de l'éperon), le Scientifique devant la porte ; le
+	# péager, Sbire Rocket, voit toute sa ligne (portée 8, retour de Kevin du 2026-11-27).
+	for pair: Array in [[&"route_42", &"louis"], [&"mahogany_hideout_b2f", &"scientifique"]]:
 		assert_eq(_spec(pair[0], pair[1]).sight, 1, "%s : inévitable (portée 1 sur le seul passage)" % pair[1])
 
 

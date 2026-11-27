@@ -9,7 +9,7 @@
 		"dialogue": "goldenrod_underground_grunt_c_after",
 		"trainer": {
 			"id": "goldenrod_underground_grunt_c",
-			"sight": 2,
+			"sight": 8,
 			"before": "goldenrod_underground_grunt_c_before",
 			"defeated": "goldenrod_underground_grunt_c_defeated"
 		}
@@ -24,7 +24,7 @@
 		"dialogue": "goldenrod_underground_grunt_d_after",
 		"trainer": {
 			"id": "goldenrod_underground_grunt_d",
-			"sight": 2,
+			"sight": 8,
 			"before": "goldenrod_underground_grunt_d_before",
 			"defeated": "goldenrod_underground_grunt_d_defeated"
 		}
@@ -39,7 +39,7 @@
 		"dialogue": "goldenrod_underground_boss_after",
 		"trainer": {
 			"id": "goldenrod_underground_boss",
-			"sight": 2,
+			"sight": 8,
 			"before": "goldenrod_underground_boss_before",
 			"defeated": "goldenrod_underground_boss_defeated"
 		}

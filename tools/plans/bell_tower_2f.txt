@@ -74,6 +74,6 @@ planche_3            trou           3,20         libre   vers=bell_tower_1f arri
 planche_4            trou           20,20        libre   vers=bell_tower_1f arrivee=chute  # planche isolée
 examen_planche       examen         9,5          libre    # H-9, exemple : toute planche (O) craque sous les pieds avant de céder [D]
 hiroshi              pnj            3,8          bloque  role=sage facing=right soin=1  # H-10 : soigne l'équipe une fois par passage
-sbire_w              dresseur       16,9         bloque  role=sbire facing=left sight=3  # H-8 : Grotadmorv 61, Noarfang 61, Malosse 60 ; évitable
+sbire_w              dresseur       16,9         bloque  role=sbire facing=left sight=8  # H-8 : Grotadmorv 61, Noarfang 61, Malosse 60 ; évitable
 pp_plus              objet_visible  12,9         bloque  item=pp_up  # au bord de la planche (12, 8)
 FIN

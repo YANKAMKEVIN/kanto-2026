@@ -13,7 +13,9 @@
 #     H3 sud-ouest (x 2..8, y 28..34), toutes évitables.
 #   - Sud : le POSTE DE GARDE en façade (P, 6 × 5, x 13..18, y 35..39) et sa CLÔTURE (x, y 38) ;
 #     le chemin la franchit par un passage d'une case (11, 38), sous le regard de la Campeuse Anna
-#     (inévitable, dossier §6).
+#     (inévitable, dossier §6). Porte du poste (D, 16, 39) : un intérieur (`route_35_guard_post`,
+#     choix de Kevin du 2026-11-27, retour sur la 0.38.0), atteint par un bout de chemin
+#     (13..16, 40) qui part du chemin principal sous la clôture.
 #
 # Raccords :
 #   NORD (10..12, 0) ↔ Route 36, bord sud (26..28, 19) (colonnes différentes, warps case à case).
@@ -22,11 +24,12 @@
 # Légende :
 #   T forêt et bordure (bloquée)   . pré (praticable)   = chemin (praticable)   h herbes hautes
 #   w eau de l'étang (SURFABLE)   r rocher (bloqué)   x clôture (bloquée)
-#   P poste de garde (façade, bloqué)   G arbre repère (bloqué)
+#   P poste de garde (façade, bloqué)   D porte du poste (praticable, STEP_ON ↑)
+#   G arbre repère (bloqué)
 #
 # Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 24 caractères), puis POSITIONS.
 
-PRATICABLES .=hw
+PRATICABLES .=hwD
 
 GRILLE 24 44
 00 TTTTTTTTTT===TTTTTTTTTTT
@@ -68,8 +71,8 @@ GRILLE 24 44
 36 T.........===PPPPPPTTTTT
 37 T.........===PPPPPPTTTTT
 38 Txxxxxxxxxx=.PPPPPPTTTTT
-39 TTTTTTTTTT===PPPPPPTTTTT
-40 TTTTTTTTTT===TTTTTTTTTTT
+39 TTTTTTTTTT===PPPDPPTTTTT
+40 TTTTTTTTTT=======TTTTTTT
 41 TTTTTTTTTT===TTTTTTTTTTT
 42 TTTTTTTTTT===TTTTTTTTTTT
 43 TTTTTTTTTT===TTTTTTTTTTT
@@ -80,6 +83,8 @@ warp_nord            warp           10..12,0     libre   # PUSH ↑ → route_36
 from_route_36        spawn          10..12,0     libre   # arrivée de la Route 36, tournée ↓
 warp_sud             warp           10..12,43    libre   # PUSH ↓ → goldenrod_city, from_route_35 (34..36, 0)
 from_goldenrod       spawn          10..12,43    libre   # arrivée de Doublonville, tournée ↑
+porte_poste          warp           16,39        libre   # STEP_ON ↑ → route_35_guard_post, entrance (le garde)
+retour_poste         spawn          16,40        libre   # sortie du poste, tournée ↓
 gaston               dresseur       9,18         bloque  facing=left sight=2 trainer=route_35_fisher_gaston  # Pêcheur Gaston (D-9), Magicarpe 13 ×2 + Ptitard 15 ; regarde l'étang, évitable
 armand               dresseur       15,27        bloque  facing=down sight=3 trainer=route_35_gentleman_armand  # Gentleman Armand (D-9), Caninos 17 ; voit (15, 28..30), évitable
 anna                 dresseur       12,38        bloque  facing=left sight=1 trainer=route_35_camper_anna  # Campeuse Anna (D-9), Nidoran♀ 15 + Ponyta 16 ; voit (11, 38), le passage du poste : INÉVITABLE

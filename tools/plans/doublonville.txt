@@ -103,6 +103,7 @@ GRILLE 72 60
 59 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 FIN
 
+# Porte de la gare (57..61, 45), fermée : point EXAMINER « goldenrod_city_gare_fermee » posé par tools/johto_portes_et_panneaux.py (retour de Kevin du 2026-11-27).
 POSITIONS
 warp_nord            warp           34..36,0     libre   # PUSH ↑ → route_35, from_goldenrod (10..12, 43)
 from_route_35        spawn          34..36,0     libre   # arrivée de la Route 35, tournée ↓

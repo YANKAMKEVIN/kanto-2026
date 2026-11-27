@@ -67,9 +67,9 @@ from_azalea          spawn          3,3          libre    # arrivée d'Écorcia,
 echelle_b2f          warp           3,20         libre   paire=A sens=descend vers=slowpoke_well_b2f  # STEP_ON → slowpoke_well_b2f, from_b1f (3, 4)
 from_b2f             spawn          3,19         libre    # retour du B2F, tournée ↑
 fargas_b1f           pnj            5,4          bloque  role=fargas facing=right actif_avec=johto_kurt_told actif_sans=johto_slowpoke_well_cleared  # E-15, tombé près de l'échelle ; parle à l'arrivée
-sbire_e              dresseur       15,3         bloque  facing=down sight=2 trainer=slowpoke_well_grunt_e  # E-16, Rattatac 20 + Abo 20 ; voit (15, 4..5), le goulet : INÉVITABLE
-sbire_f              dresseur       21,2         bloque  facing=down sight=2 trainer=slowpoke_well_grunt_f  # E-16, Smogo 21 + Nosferapti 20 ; voit (21, 3..4), évitable par y 5..9
-sbire_g              dresseur       14,21        bloque  facing=left sight=3 trainer=slowpoke_well_grunt_g  # E-16, Malosse 21 + Cornèbre 21 ; voit (11..13, 21), évitable par la rive nord
+sbire_e              dresseur       15,3         bloque  facing=down sight=8 trainer=slowpoke_well_grunt_e  # E-16, Rattatac 20 + Abo 20 ; voit (15, 4..5), le goulet : INÉVITABLE
+sbire_f              dresseur       21,2         bloque  facing=down sight=8 trainer=slowpoke_well_grunt_f  # E-16, Smogo 21 + Nosferapti 20 ; voit (21, 3..4), évitable par y 5..9
+sbire_g              dresseur       14,21        bloque  facing=left sight=8 trainer=slowpoke_well_grunt_g  # E-16, Malosse 21 + Cornèbre 21 ; voit (11..13, 21), évitable par la rive nord
 well_b1f_item_1      objet_visible  26,2         bloque  item=great_ball count=2  # fond de la salle des rochers (dossier §7), pris depuis (26, 3) ↑ ou (25, 2) →
 gravats_g1           gravats        20,8         libre   role=G1  # salle des rochers (évitables)
 gravats_g2           gravats        4,18         libre   role=G2  # devant l'échelle du B2F (obligatoires)

@@ -15594,3 +15594,9 @@ z_as_relative = false
 position = Vector2(3216, 258)
 script = ExtResource("11_txokl")
 glow_type = &"night_lamp"
+
+[node name="KevinPorteGare" type="Marker2D" parent="Interactables" unique_id=1927110005]
+position = Vector2(5520, 4416)
+script = ExtResource("9_hhxrp")
+dialogue_id = &"goldenrod_city_gare_fermee"
+size = Vector2i(5, 1)

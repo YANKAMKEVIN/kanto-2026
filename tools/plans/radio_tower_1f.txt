@@ -23,7 +23,8 @@
 #   c comptoir d'accueil (bloqué)   r rayonnage d'archives (bloqué)   p pupitre de régie (bloqué)
 #   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le mur
 #     nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
-#   L porte de l'ascenseur (18, 0) à chaque étage (praticable ; EN PANNE jusqu'à johto_cenere_defeated :
+#   L porte de l'ascenseur (18, 0) à chaque étage (praticable ; EN PANNE jusqu'à johto_cenere_defeated,
+#     case bloquée par une FlagGate (tools/johto_portes_et_panneaux.py, retour de Kevin du 2026-11-27) :
 #     examen T-5 ; ensuite cabine sur le modèle du Grand Magasin de Céladopole [D])
 #   K porte fermée à clé (praticable ; la position « porte_cle », libre dans la grille, la bloque tant
 #     que la porte est fermée : même logique qu'une barrière)   E sortie vers Doublonville (1F seulement, praticable, PUSH ↓)

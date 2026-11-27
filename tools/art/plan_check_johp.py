@@ -129,7 +129,9 @@ def irisia() -> None:
 	verifie(voisines_atteintes(b, "vanne_2", r), "vanne 2 abordable par le gué a")
 	verifie(not voisines_atteintes(b, "socle", r), "socle hors d'atteinte sans le gué b")
 	inevitable(b, "from_1f", "scene_socle", "chef_cale")
-	evitable(b, "from_1f", "scene_socle", "sbire_aa")
+	# Sbires Rocket : portée 8 (retour de Kevin du 2026-11-27, pas d'esquive à distance).
+	r = atteignables(b, cases(b, "from_1f"), interdites=vue(b, "sbire_aa"))
+	verifie(not all(c in r for c in cases(b, "scene_socle")), "sbire_aa inévitable (portée 8)")
 	evitable(b, "from_1f", "scene_socle", "scientifique")
 	barre(b, "from_1f", "scene_socle", "socle")
 

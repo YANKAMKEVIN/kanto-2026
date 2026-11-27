@@ -24,7 +24,7 @@
 		"dialogue": "slowpoke_well_grunt_e_after",
 		"trainer": {
 			"id": "slowpoke_well_grunt_e",
-			"sight": 2,
+			"sight": 8,
 			"before": "slowpoke_well_grunt_e_before",
 			"defeated": "slowpoke_well_grunt_e_defeated"
 		}
@@ -39,7 +39,7 @@
 		"dialogue": "slowpoke_well_grunt_f_after",
 		"trainer": {
 			"id": "slowpoke_well_grunt_f",
-			"sight": 2,
+			"sight": 8,
 			"before": "slowpoke_well_grunt_f_before",
 			"defeated": "slowpoke_well_grunt_f_defeated"
 		}
@@ -54,7 +54,7 @@
 		"dialogue": "slowpoke_well_grunt_g_after",
 		"trainer": {
 			"id": "slowpoke_well_grunt_g",
-			"sight": 3,
+			"sight": 8,
 			"before": "slowpoke_well_grunt_g_before",
 			"defeated": "slowpoke_well_grunt_g_defeated"
 		}

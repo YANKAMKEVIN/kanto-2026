@@ -189,9 +189,10 @@ func test_grunts_follow_dossier_6() -> void:
 		for member: TrainerSlot in _trainers.get_trainer(id).team:
 			team.append([member.species, member.level])
 		assert_eq(team, TRAINERS[id][1], String(id))
-	# Sbire V : sa vue (1 case, vers l'ouest) couvre (20, 4), seul accès à l'escalier.
+	# Sbire V : sa vue (toute la ligne vers l'ouest, portée 8 depuis le 2026-11-27) couvre (20, 4),
+	# seul accès à l'escalier.
 	var v := NpcRoster.load_for_map(&"bell_tower_1f").get_spec(&"sbire_v")
-	assert_eq([v.cell, v.facing, v.sight], [Vector2i(21, 4), Vector2i.LEFT, 1])
+	assert_eq([v.cell, v.facing, v.sight], [Vector2i(21, 4), Vector2i.LEFT, TrainerRules.SIGHT_MAX])
 
 
 func test_dante_team_follows_jh_54() -> void:

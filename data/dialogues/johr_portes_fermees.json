@@ -1,0 +1,15 @@
+{
+	"goldenrod_city_gare_fermee": {
+		"narration": true,
+		"pages": [
+			"Les portes vitrées de la gare sont fermées.",
+			"Une affiche : « Train Magnétique : service suspendu jusqu'à nouvel ordre. »"
+		]
+	},
+	"route_43_peage_ferme": {
+		"narration": true,
+		"pages": [
+			"La porte du poste de péage est fermée à clé."
+		]
+	}
+}

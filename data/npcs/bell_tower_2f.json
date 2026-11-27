@@ -18,7 +18,7 @@
 		"dialogue": "bell_tower_grunt_w_after",
 		"trainer": {
 			"id": "bell_tower_grunt_w",
-			"sight": 3,
+			"sight": 8,
 			"before": "bell_tower_grunt_w_before",
 			"defeated": "bell_tower_grunt_w_defeated"
 		}

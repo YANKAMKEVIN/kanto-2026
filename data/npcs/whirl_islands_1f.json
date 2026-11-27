@@ -9,7 +9,7 @@
 		"dialogue": "whirl_islands_grunt_t_after",
 		"trainer": {
 			"id": "whirl_islands_grunt_t",
-			"sight": 2,
+			"sight": 8,
 			"before": "whirl_islands_grunt_t_before",
 			"defeated": "whirl_islands_grunt_t_defeated"
 		}
@@ -24,7 +24,7 @@
 		"dialogue": "whirl_islands_grunt_u_after",
 		"trainer": {
 			"id": "whirl_islands_grunt_u",
-			"sight": 2,
+			"sight": 8,
 			"before": "whirl_islands_grunt_u_before",
 			"defeated": "whirl_islands_grunt_u_defeated"
 		}

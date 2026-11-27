@@ -80,6 +80,9 @@ const WARPS: Dictionary = {
 	"route_36/warp_sud": {"to": &"route_35", "spawn": "from_route_36"},
 	"route_35/warp_nord": {"to": &"route_36", "spawn": "from_route_35"},
 	"route_35/warp_sud": {"to": &"goldenrod_city", "spawn": "from_route_35"},
+	# Poste de garde : intérieur ajouté le 2026-11-27 (choix de Kevin) ; une reconstruction de la
+	# carte doit être suivie de `tools/route_35_poste_garde.py` (sol peint, arbres, masques).
+	"route_35/porte_poste": {"to": &"route_35_guard_post", "spawn": "entrance"},
 	"goldenrod_city/warp_nord": {"to": &"route_35", "spawn": "from_goldenrod"},
 	"goldenrod_city/warp_sud": {"to": &"route_34", "spawn": "from_goldenrod", "label": "Route 34",
 		"per_cell": true},

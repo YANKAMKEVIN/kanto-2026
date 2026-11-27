@@ -416,7 +416,7 @@
 			"description": "Un carrefour de campagne, au cœur de Johto."
 		},
 		"route_35": {
-			"name": "Route 35", "kind": "route", "region": "johto", "maps": ["route_35"],
+			"name": "Route 35", "kind": "route", "region": "johto", "maps": ["route_35", "route_35_guard_post"],
 			"subtitle": "Doublonville — Route 36",
 			"description": "Une route verte, avec un étang, aux portes de Doublonville."
 		},

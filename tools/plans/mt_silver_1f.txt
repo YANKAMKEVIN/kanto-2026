@@ -74,8 +74,8 @@ vers_2f              escalier       28,2         libre   paire=ms_1 sens=monte v
 from_2f              spawn          28,3         libre   paire=ms_1 facing=down  # arrivée depuis le 2F
 rocher_1             rocher         12,8         bloque  force=1 pousse=N lane=12,7;12,6;12,5  # A-15 ; rocher de Force n° 1 (barrière y 8)
 rocher_2             rocher         22,4         bloque  force=1 pousse=N lane=22,3;22,2  # A-15 ; rocher de Force n° 2 (barrière y 4), contourné ensuite par la bande y 2..3
-sbire_x              dresseur       6,20         bloque  role=sbire facing=right sight=2 actif_sans=johto_chapter_done  # A-14 X : Démolosse 66, Grotadmorv 66 ; évitable
-sbire_y              dresseur       25,2         bloque  role=sbire facing=down sight=1 actif_sans=johto_chapter_done  # A-14 Y : Farfuret 66, Smogogo 66, Arbok 66 ; ferme la bande y 2..3 : INÉVITABLE
+sbire_x              dresseur       6,20         bloque  role=sbire facing=right sight=8 actif_sans=johto_chapter_done  # A-14 X : Démolosse 66, Grotadmorv 66 ; évitable
+sbire_y              dresseur       25,2         bloque  role=sbire facing=down sight=8 actif_sans=johto_chapter_done  # A-14 Y : Farfuret 66, Smogogo 66, Arbok 66 ; ferme la bande y 2..3 : INÉVITABLE
 lac                  repere         2..29,11..17 libre   role=surf  # Surf obligatoire ; rencontres de l'eau
 gravats_sud          gravats        5,20         libre   role=G1
 gravats_est          gravats        25,22        libre   role=G2
