@@ -9,7 +9,7 @@
 		"dialogue": "alph_grunt_v_after",
 		"trainer": {
 			"id": "alph_grunt_v",
-			"sight": 2,
+			"sight": 8,
 			"before": "alph_grunt_v_before",
 			"defeated": "alph_grunt_v_defeated"
 		}
@@ -24,7 +24,7 @@
 		"dialogue": "alph_grunt_w_after",
 		"trainer": {
 			"id": "alph_grunt_w",
-			"sight": 2,
+			"sight": 8,
 			"before": "alph_grunt_w_before",
 			"defeated": "alph_grunt_w_defeated"
 		}
@@ -39,7 +39,7 @@
 		"dialogue": "alph_grunt_x_after",
 		"trainer": {
 			"id": "alph_grunt_x",
-			"sight": 1,
+			"sight": 8,
 			"before": "alph_grunt_x_before",
 			"defeated": "alph_grunt_x_defeated"
 		}

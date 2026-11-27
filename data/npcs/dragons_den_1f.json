@@ -54,7 +54,7 @@
 		"dialogue": "den_grunt_ab_after",
 		"trainer": {
 			"id": "den_grunt_ab",
-			"sight": 2,
+			"sight": 8,
 			"before": "den_grunt_ab_before",
 			"defeated": "den_grunt_ab_defeated"
 		}
@@ -69,7 +69,7 @@
 		"dialogue": "den_grunt_ac_after",
 		"trainer": {
 			"id": "den_grunt_ac",
-			"sight": 2,
+			"sight": 8,
 			"before": "den_grunt_ac_before",
 			"defeated": "den_grunt_ac_defeated"
 		}

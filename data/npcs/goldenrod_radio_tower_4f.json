@@ -9,7 +9,7 @@
 		"dialogue": "goldenrod_radio_tower_grunt_m_after",
 		"trainer": {
 			"id": "goldenrod_radio_tower_grunt_m",
-			"sight": 3,
+			"sight": 8,
 			"before": "goldenrod_radio_tower_grunt_m_before",
 			"defeated": "goldenrod_radio_tower_grunt_m_defeated"
 		}
@@ -24,7 +24,7 @@
 		"dialogue": "goldenrod_radio_tower_grunt_n_after",
 		"trainer": {
 			"id": "goldenrod_radio_tower_grunt_n",
-			"sight": 3,
+			"sight": 8,
 			"before": "goldenrod_radio_tower_grunt_n_before",
 			"defeated": "goldenrod_radio_tower_grunt_n_defeated"
 		}
@@ -39,7 +39,7 @@
 		"dialogue": "goldenrod_radio_tower_grunt_o_after",
 		"trainer": {
 			"id": "goldenrod_radio_tower_grunt_o",
-			"sight": 1,
+			"sight": 8,
 			"before": "goldenrod_radio_tower_grunt_o_before",
 			"defeated": "goldenrod_radio_tower_grunt_o_defeated"
 		}

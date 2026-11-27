@@ -9,7 +9,7 @@
 		"dialogue": "tide_grunt_y_after",
 		"trainer": {
 			"id": "tide_grunt_y",
-			"sight": 1,
+			"sight": 8,
 			"before": "tide_grunt_y_before",
 			"defeated": "tide_grunt_y_defeated"
 		}
@@ -24,7 +24,7 @@
 		"dialogue": "tide_grunt_z_after",
 		"trainer": {
 			"id": "tide_grunt_z",
-			"sight": 1,
+			"sight": 8,
 			"before": "tide_grunt_z_before",
 			"defeated": "tide_grunt_z_defeated"
 		}

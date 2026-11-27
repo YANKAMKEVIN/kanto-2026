@@ -23,6 +23,7 @@
 [ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="21_5pix8"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="22_v6tvc"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="23_tqlmd"]
+[ext_resource type="Script" path="res://game/world/flag_gate.gd" id="kv_flag_gate"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yqffg"]
 shader = ExtResource("2_1lc6c")
@@ -1015,3 +1016,9 @@ position = Vector2(1968, 192)
 position = Vector2(1776, 192)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=75927366]
+
+[node name="KevinAscenseurEnPanne" type="Node2D" parent="Entities" unique_id=1927110001]
+position = Vector2(1728, 0)
+script = ExtResource("kv_flag_gate")
+unless_flags = Array[StringName]([&"johto_cenere_defeated"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 0)])

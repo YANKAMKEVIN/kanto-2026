@@ -59,7 +59,7 @@ warp_sud             warp           10..11,19    libre    # PUSH ↓ → ecrutea
 from_ecruteak        spawn          10..11,19    libre   facing=up  # arrivée de Rosalia ; titre de zone « Bois de la Tour » (H-11)
 porte_tour           warp           10..11,5     libre    # STEP_ON ↑ → bell_tower_1f, from_woods (11..12, 22)
 retour_tour          spawn          10..11,6     libre   facing=down  # sortie de la tour (porte ou Corde Sortie)
-sbire_guet           dresseur       16,10        bloque  role=sbire facing=left sight=2  # H-5 : Smogogo 60, Arbok 60 ; évitable
+sbire_guet           dresseur       16,10        bloque  role=sbire facing=left sight=8  # H-5 : Smogogo 60, Arbok 60 ; évitable
 hyper_potions        objet_visible  3,4          bloque  item=hyper_potion quantite=2  # dossier §7
 panneau              panneau        8,16         bloque   # H-4, lu depuis (8, 17) ↑
 lanterne_1           decor          9,8          bloque  role=lanterne  # lanterne de pierre

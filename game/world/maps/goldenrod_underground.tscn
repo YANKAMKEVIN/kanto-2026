@@ -713,7 +713,7 @@ unique_name_in_owner = true
 y_sort_enabled = true
 
 [node name="PanneauSouterrainSign" parent="Entities" unique_id=2106400151 instance=ExtResource("3_upxgq")]
-position = Vector2(432, 480)
+position = Vector2(432, 864)
 
 [node name="JohAmbCaveFace000" type="Sprite2D" parent="Entities" unique_id=1991258981]
 modulate = Color(0.961396, 0.961396, 0.961396, 1)
@@ -1485,10 +1485,9 @@ dialogue_id = &"goldenrod_underground_hidden_1"
 unless_flags = Array[StringName]([&"got_goldenrod_underground_hidden_1"])
 
 [node name="PanneauSouterrain" type="Marker2D" parent="Interactables" unique_id=251765136]
-position = Vector2(432, 480)
+position = Vector2(432, 864)
 script = ExtResource("6_q10gb")
 dialogue_id = &"goldenrod_underground_panneau_souterrain"
-facing = Vector2i(0, -1)
 
 [node name="Spawns" type="Node2D" parent="." unique_id=133237952]
 

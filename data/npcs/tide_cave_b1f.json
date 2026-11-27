@@ -9,7 +9,7 @@
 		"dialogue": "tide_grunt_aa_after",
 		"trainer": {
 			"id": "tide_grunt_aa",
-			"sight": 2,
+			"sight": 8,
 			"before": "tide_grunt_aa_before",
 			"defeated": "tide_grunt_aa_defeated"
 		}
@@ -39,7 +39,7 @@
 		"dialogue": "tide_hold_chief_after",
 		"trainer": {
 			"id": "tide_hold_chief",
-			"sight": 1,
+			"sight": 8,
 			"before": "tide_hold_chief_before",
 			"defeated": "tide_hold_chief_defeated"
 		}

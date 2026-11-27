@@ -2379,7 +2379,7 @@ func _goldenrod_rooms() -> Array[Dictionary]:
 	for index: int in GOLDENROD_DEPT.size():
 		rooms.append(_goldenrod_dept_floor(index))
 	var roof := _celadon_room(&"goldenrod_dept_store_roof", "GoldenrodDeptRoof",
-		"celadopole_magasin_toit.txt", ".XSZ", &"golden_hour")
+		"celadopole_magasin_toit.txt", ".XSZ", &"johto_auto")  # jour et nuit de Johto (Kevin, 2026-11-27)
 	roof["shell"] = INTERIORS_DIR + "int_celadon_dept_roof_coque.png"
 	roof["title"] = GOLDENROD_TITLE
 	(roof["spawns"] as Dictionary)["from_down"] = Vector2i(2, 3)

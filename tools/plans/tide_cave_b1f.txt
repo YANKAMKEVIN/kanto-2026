@@ -44,9 +44,9 @@ echelle_haut         warp           3,2          libre   # → tide_cave_1f, fro
 from_1f              spawn          3,3          libre   # arrivée, tournée ↓
 vanne_1              examen         6,1          libre   drapeau=johto_tide_valve_1  # P-48, depuis (6, 2) ↑
 vanne_2              examen         16,1         libre   drapeau=johto_tide_valves_done  # P-48, depuis (16, 2) ↑
-sbire_aa             dresseur       14,2         bloque  role=sbire facing=down sight=2 trainer=tide_grunt_aa  # P-47, Démolosse 36, Cornèbre 36
+sbire_aa             dresseur       14,2         bloque  role=sbire facing=down sight=8 trainer=tide_grunt_aa  # P-47, Démolosse 36, Cornèbre 36
 scientifique         dresseur       17,6         bloque  role=scientifique facing=up sight=2 trainer=tide_scientist  # P-47, Électrode 36, Magnéton 36, Porygon 35
-chef_cale            dresseur       8,10         bloque  role=sbire facing=down sight=1 trainer=tide_hold_chief  # P-16, Grotadmorv 37, Noarfang 37, Démolosse 38 ; inévitable
+chef_cale            dresseur       8,10         bloque  role=sbire facing=down sight=8 trainer=tide_hold_chief  # P-16, Grotadmorv 37, Noarfang 37, Démolosse 38 ; inévitable
 scene_socle          declencheur    7,10..13     libre   actif_sans=johto_stone_tide_lost  # P-17 à P-19
 socle                examen         4..5,11      libre   # P-17
 cenere               pnj            2,11         bloque  role=cenere facing=right actif_sans=johto_stone_tide_lost  # P-18, P-19 ; part par la mer

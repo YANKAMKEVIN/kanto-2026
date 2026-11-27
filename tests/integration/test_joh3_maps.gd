@@ -99,7 +99,7 @@ func test_maps_exist_with_their_ids_and_profiles() -> void:
 		var map := _map(id)
 		assert_eq(map.map_id, id)
 		assert_true(map.interior, String(id))
-		assert_eq(map.light_profile, &"golden_hour" if id == &"goldenrod_dept_store_roof"
+		assert_eq(map.light_profile, LightingLibrary.AUTO_PROFILE if id == &"goldenrod_dept_store_roof"
 			else &"interior_warm", String(id))
 	assert_eq(_map(&"goldenrod_city").display_name, "Doublonville")
 	assert_eq(_map(&"route_37").display_name, "Route 37")

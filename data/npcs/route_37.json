@@ -24,7 +24,7 @@
 		"dialogue": "route_37_grunt_a_after",
 		"trainer": {
 			"id": "route_37_grunt_a",
-			"sight": 2,
+			"sight": 8,
 			"before": "route_37_grunt_a_before",
 			"defeated": "route_37_grunt_a_defeated"
 		},
@@ -42,7 +42,7 @@
 		"dialogue": "route_37_grunt_b_after",
 		"trainer": {
 			"id": "route_37_grunt_b",
-			"sight": 3,
+			"sight": 8,
 			"before": "route_37_grunt_b_before",
 			"defeated": "route_37_grunt_b_defeated"
 		},

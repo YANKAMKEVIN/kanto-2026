@@ -258,7 +258,7 @@ func test_triggers_and_npcs_on_free_cells() -> void:
 
 
 ## Félix garde le passage de la clôture ; Sophie et Bruno sont évitables ; le Sbire E garde le
-## goulet du B1F ; H1 et H3 du Bois sont obligatoires, H2 et H4 non ; la Route 34 se traverse sans
+## goulet du B1F (F et G, portée 8, ne sont plus évitables à distance) ; H1 et H3 du Bois sont obligatoires, H2 et H4 non ; la Route 34 se traverse sans
 ## herbes.
 func test_unavoidable_guards_and_mandatory_grass() -> void:
 	var road := _map(&"route_34")
@@ -290,8 +290,8 @@ func test_unavoidable_guards_and_mandatory_grass() -> void:
 	var arrival := _cells(&"slowpoke_well_b1f", "from_azalea")
 	assert_true(_reachable(b1f, arrival).has(down[0]))
 	assert_false(_reachable(b1f, arrival, [Vector2i(15, 4)]).has(down[0]), "Sbire E inévitable")
-	assert_true(_reachable(b1f, arrival, [Vector2i(21, 3), Vector2i(21, 4), Vector2i(11, 21),
-		Vector2i(12, 21), Vector2i(13, 21)]).has(down[0]), "Sbires F et G évitables")
+	# Sbires F et G : portée 8 depuis le retour de Kevin du 2026-11-27 (plus d'esquive à distance ;
+	# contrôle des grilles : tools/art/plan_check_joh4.py).
 
 
 func test_night_lights_of_azalea() -> void:

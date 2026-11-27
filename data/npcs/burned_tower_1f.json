@@ -24,7 +24,7 @@
 		"dialogue": "burned_tower_1f_sbire_p_after",
 		"trainer": {
 			"id": "burned_tower_1f_sbire_p",
-			"sight": 3,
+			"sight": 8,
 			"before": "burned_tower_1f_sbire_p_before",
 			"defeated": "burned_tower_1f_sbire_p_defeated"
 		}

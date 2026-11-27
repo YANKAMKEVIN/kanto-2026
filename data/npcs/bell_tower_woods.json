@@ -9,7 +9,7 @@
 		"dialogue": "bell_tower_grunt_watch_after",
 		"trainer": {
 			"id": "bell_tower_grunt_watch",
-			"sight": 2,
+			"sight": 8,
 			"before": "bell_tower_grunt_watch_before",
 			"defeated": "bell_tower_grunt_watch_defeated"
 		}

@@ -67,8 +67,8 @@ vers_b1f             escalier       27,20        libre   paire=wi_1 sens=descend
 from_b1f             spawn          27,21        libre   paire=wi_1 facing=down  # arrivée depuis le B1F
 rocher_1             rocher         16,8         bloque  force=1 pousse=E lane=17,8;18,8;19,8  # rocher de Force n° 1, poussé vers la salle B
 rocher_2             rocher         24,12        bloque  force=1 pousse=S lane=24,13;24,14;24,15  # rocher de Force n° 2, poussé vers la salle C
-sbire_t              dresseur       26,4         bloque  role=sbire facing=down sight=2  # M-10 T : Grotadmorv 58, Arbok 58 ; évitable
-sbire_u              dresseur       22,14        bloque  role=sbire facing=right sight=2  # M-10 U : Démolosse 59, Nosferalto 58 ; voit l'entrée de la salle C : INÉVITABLE
+sbire_t              dresseur       26,4         bloque  role=sbire facing=down sight=8  # M-10 T : Grotadmorv 58, Arbok 58 ; évitable
+sbire_u              dresseur       22,14        bloque  role=sbire facing=right sight=8  # M-10 U : Démolosse 59, Nosferalto 58 ; voit l'entrée de la salle C : INÉVITABLE
 rappel_max           objet_visible  27,9         bloque  item=max_revive  # salle B
 gravats_a            gravats        10,16        libre   role=G1  # gravats de la salle A
 gravats_b            gravats        21,3         libre   role=G2  # gravats de la salle B

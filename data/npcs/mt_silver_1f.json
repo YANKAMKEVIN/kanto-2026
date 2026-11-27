@@ -9,7 +9,7 @@
 		"dialogue": "mt_silver_1f_grunt_x_after",
 		"trainer": {
 			"id": "mt_silver_1f_grunt_x",
-			"sight": 2,
+			"sight": 8,
 			"before": "mt_silver_1f_grunt_x_before",
 			"defeated": "mt_silver_1f_grunt_x_defeated"
 		},
@@ -27,7 +27,7 @@
 		"dialogue": "mt_silver_1f_grunt_y_after",
 		"trainer": {
 			"id": "mt_silver_1f_grunt_y",
-			"sight": 1,
+			"sight": 8,
 			"before": "mt_silver_1f_grunt_y_before",
 			"defeated": "mt_silver_1f_grunt_y_defeated"
 		},

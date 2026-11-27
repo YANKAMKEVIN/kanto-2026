@@ -84,6 +84,7 @@ GRILLE 24 52
 51 TTTTTTTTTT===TTTTTTTTTTT
 FIN
 
+# Porte du poste de péage (15, 24), fermée : point EXAMINER « route_43_peage_ferme », tools/johto_portes_et_panneaux.py (2026-11-27).
 POSITIONS
 warp_sud             warp           10..12,51    libre    # PUSH ↓ → mahogany_town, from_route_43 (16..18, 0)
 from_mahogany        spawn          10..12,51    libre   facing=up  # arrivée d'Acajou ; titre de zone « Route 43 »
@@ -91,8 +92,8 @@ warp_nord            warp           10..12,0     libre    # PUSH ↑ → lake_of
 from_lake            spawn          10..12,0     libre   facing=down  # arrivée du Lac Colère
 panneau              panneau        13,48        bloque   # C-20, lu depuis (13, 49) ↑
 poste_peage          repere         13..17,21..24 bloque  role=facade  # poste de péage tenu par les Sbires (façade)
-peager               dresseur       12,25        bloque  role=sbire facing=left sight=1  # C-22 : Démolosse 54, Smogogo 53 ; INÉVITABLE ; pose johto_toll_cleared
-sbire_q              dresseur       8,21         bloque  role=sbire facing=right sight=2  # C-21 : Arbok 52, Nosferalto 52 ; évitable
+peager               dresseur       12,25        bloque  role=sbire facing=left sight=8  # C-22 : Démolosse 54, Smogogo 53 ; INÉVITABLE ; pose johto_toll_cleared
+sbire_q              dresseur       8,21         bloque  role=sbire facing=right sight=8  # C-21 : Arbok 52, Nosferalto 52 ; évitable
 basile               dresseur       14,10        bloque  role=campeur facing=left sight=2  # C-23 : Nidoking 52, Rapasdepic 51 ; évitable
 max_potion           objet_visible  20,14        bloque  item=max_potion  # poche nord-est
 herbes_h1            herbes         5,7          libre   role=H1  # poche nord-ouest

@@ -51,8 +51,8 @@ from_city            spawn          13..14,21    libre   # arrivée, tournée �
 gardienne_eau        dresseur       4,12         bloque  role=gardien facing=right sight=3 trainer=den_guardian_water  # P-24, Hypocéan 38, Lamantine 38, Draco 39
 gardien_pierre       dresseur       23,12        bloque  role=gardien facing=left sight=3 trainer=den_guardian_stone  # P-24, Grolem 39, Onix 39, Draco 39
 gardien_ciel         dresseur       16,4         bloque  role=gardien facing=left sight=3 trainer=den_guardian_sky  # P-24, Rapasdepic 40, Noarfang 40, Draco 40
-sbire_ab             dresseur       16,11        bloque  role=sbire facing=left sight=2 trainer=den_grunt_ab  # P-50, Démolosse 37, Smogogo 37
-sbire_ac             dresseur       9,4          bloque  role=sbire facing=right sight=2 trainer=den_grunt_ac  # P-50, Rattatac 38, Noarfang 38
+sbire_ab             dresseur       16,11        bloque  role=sbire facing=left sight=8 trainer=den_grunt_ab  # P-50, Démolosse 37, Smogogo 37
+sbire_ac             dresseur       9,4          bloque  role=sbire facing=right sight=8 trainer=den_grunt_ac  # P-50, Rattatac 38, Noarfang 38
 den_item_1           objet_visible  25,16        bloque  item=tm13  # §12, CT13 Laser Glace
 den_hidden_1         cache          2,9          bloque  item=rare_candy indice=rocher  # §12
 gravats_g1           gravats        11,13        libre   role=G1  # croisée

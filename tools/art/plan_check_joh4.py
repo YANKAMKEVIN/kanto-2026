@@ -15,7 +15,7 @@ Route 34 : 3 poches d'herbes évitables ; Félix inévitable (sa case de vue est
 clôture), Sophie et Bruno évitables. Bois : 4 poches, H1 et H3 obligatoires (sans herbes, la sortie
 sud est inatteignable), H2 et H4 évitables ; Tom et Céline évitables ; l'autel est dans la
 clairière. Écorcia : la barrière du Sbire couvre le seul accès à la descente du puits. Puits B1F :
-le Sbire E est inévitable (le goulet), F et G évitables. Puits B2F : la scène de Brace couvre le
+les Sbires E (le goulet) et F (portée 8, 2026-11-27) sont inévitables, G évitable. Puits B2F : la scène de Brace couvre le
 seul accès à l'alcôve ; la Corde Sortie se prend sans passer par Brace.
 
 Usage : python3 tools/art/plan_check_joh4.py   (code 1 si un critère échoue)
@@ -93,7 +93,9 @@ def main() -> int:
 	b1 = lire(PLANS / "slowpoke_well_b1f.txt")
 	communs(b1, (30, 24), "from_azalea", [])
 	inevitable(b1, "from_azalea", "echelle_b2f", "sbire_e")
-	evitable(b1, "from_azalea", "echelle_b2f", "sbire_f")
+	# Sbires Rocket : portée 8 (retour de Kevin du 2026-11-27, pas d'esquive à distance).
+	r = atteignables(b1, cases(b1, "from_azalea"), interdites=vue(b1, "sbire_f"))
+	verifie(not all(c in r for c in cases(b1, "echelle_b2f")), "sbire_f inévitable (portée 8)")
 	evitable(b1, "from_azalea", "echelle_b2f", "sbire_g")
 	verifie(all(b1.at(x, y) == "g" for x, y in cases(b1, "gravats_g2")), "gravats G2 devant l'échelle")
 

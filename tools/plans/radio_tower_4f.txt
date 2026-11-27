@@ -21,7 +21,8 @@
 #   c comptoir d'accueil (bloqué)   r rayonnage d'archives (bloqué)   p pupitre de régie (bloqué)
 #   U escalier qui monte    D escalier qui descend (praticables, STEP_ON sans direction, dans le mur
 #     nord ; l'arrivée est posée UNE CASE DEVANT, tournée vers le bas)
-#   L porte de l'ascenseur (18, 0) à chaque étage (praticable ; EN PANNE jusqu'à johto_cenere_defeated :
+#   L porte de l'ascenseur (18, 0) à chaque étage (praticable ; EN PANNE jusqu'à johto_cenere_defeated,
+#     case bloquée par une FlagGate (tools/johto_portes_et_panneaux.py, retour de Kevin du 2026-11-27) :
 #     examen T-5 ; ensuite cabine sur le modèle du Grand Magasin de Céladopole [D])
 #   K porte fermée à clé (praticable ; la position « porte_cle », libre dans la grille, la bloque tant
 #     que la porte est fermée : même logique qu'une barrière)   E sortie vers Doublonville (1F seulement, praticable, PUSH ↓)
@@ -59,9 +60,9 @@ vers_3f              escalier       3,0          libre   vers=goldenrod_radio_to
 from_3f              spawn          3,1          libre   paire=e3_4 facing=down  # arrivée depuis le 3F
 vers_5f              escalier       20,0         libre   vers=goldenrod_radio_tower_5f:from_4f paire=e4_5 sens=monte  # → 5F, D (20, 0)
 from_5f              spawn          20,1         libre   paire=e4_5 facing=down  # arrivée depuis le 5F
-sbire_m              dresseur       4,7          bloque  facing=right sight=3 trainer=goldenrod_radio_tower_grunt_m  # T-12, Arbok 29 + Grotadmorv 29 ; voit (5..7, 7), évitable par y 6 ou y 8
-sbire_n              dresseur       18,12        bloque  facing=left sight=3 trainer=goldenrod_radio_tower_grunt_n  # T-12, Magnéton 29 + Smogogo 29 ; voit (15..17, 12), évitable par y 13..14
-sbire_o              dresseur       21,3         bloque  facing=left sight=1 trainer=goldenrod_radio_tower_grunt_o  # T-12, Malosse 30 + Nosferalto 30 ; voit (20, 3), seul accès à l'escalier : INÉVITABLE
+sbire_m              dresseur       4,7          bloque  facing=right sight=8 trainer=goldenrod_radio_tower_grunt_m  # T-12, Arbok 29 + Grotadmorv 29 ; voit (5..7, 7), évitable par y 6 ou y 8
+sbire_n              dresseur       18,12        bloque  facing=left sight=8 trainer=goldenrod_radio_tower_grunt_n  # T-12, Magnéton 29 + Smogogo 29 ; voit (15..17, 12), évitable par y 13..14
+sbire_o              dresseur       21,3         bloque  facing=left sight=8 trainer=goldenrod_radio_tower_grunt_o  # T-12, Malosse 30 + Nosferalto 30 ; voit (20, 3), seul accès à l'escalier : INÉVITABLE
 radio_4f_hidden_1    cache          9,9          bloque  item=hyper_potion indice=pupitre  # Hyper Potion sous le pupitre (dossier §6), examinée depuis (9, 8) ↓
 radio_4f_item_1      objet_visible  1,13         bloque  item=revive  # Rappel, coin de la régie (dossier §6), pris depuis (2, 13) ← ou (1, 12) ↓
 pupitre_diffusion    examen         13,4         bloque   # T-13 « DIFFUSION EN COURS », lu depuis (13, 3) ↓

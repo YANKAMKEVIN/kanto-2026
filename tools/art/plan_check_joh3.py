@@ -13,7 +13,7 @@ sud ↔ Route 35 nord, Route 35 sud ↔ Doublonville nord (même largeur de 3 ca
 Herbes : 2 poches (Route 37), 3 (Routes 36 et 35), toutes évitables d'un bord à l'autre.
 Route 35 : la Campeuse Anna est inévitable. Route 36 : le pont est fermé (aucune case à l'est de la
 barrière). Doublonville : la barrière de la sortie sud couvre tout le passage. Souterrain : les
-Sbires C et D sont évitables d'un escalier à l'autre ; le chef est abordable.
+Sbires C et D sont inévitables d'un escalier à l'autre (portée 8, 2026-11-27) ; le chef est abordable.
 
 Usage : python3 tools/art/plan_check_joh3.py   (code 1 si un critère échoue)
 """
@@ -95,7 +95,8 @@ def main() -> int:
 	communs(sg, (40, 14), "from_goldenrod_west", [])
 	interdites = vue(sg, "sbire_c") | vue(sg, "sbire_d")
 	r = atteignables(sg, cases(sg, "from_goldenrod_west"), interdites=interdites)
-	verifie(all(c in r for c in cases(sg, "escalier_est")), "Sbires C et D évitables d'un escalier à l'autre")
+	# Portée 8 (retour de Kevin du 2026-11-27) : plus d'esquive à distance dans la galerie.
+	verifie(not all(c in r for c in cases(sg, "escalier_est")), "Sbires C et D inévitables d'un escalier à l'autre")
 	print("JOH3 : " + ("tout est bon" if not base.echecs else f"{len(base.echecs)} échec(s)"))
 	return 1 if base.echecs else 0
 

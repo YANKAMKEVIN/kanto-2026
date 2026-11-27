@@ -1155,3 +1155,9 @@ position = Vector2(1200, 672)
 script = ExtResource("25_njedg")
 cutscene_id = &"goldenrod_radio_cenere"
 size = Vector2i(2, 1)
+
+[node name="KevinAscenseurEnPanne" type="Node2D" parent="Entities" unique_id=1927110004]
+position = Vector2(1728, 0)
+script = ExtResource("21_qco1k")
+unless_flags = Array[StringName]([&"johto_cenere_defeated"])
+blocking_cells = Array[Vector2i]([Vector2i(18, 0)])

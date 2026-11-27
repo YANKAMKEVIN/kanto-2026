@@ -200,7 +200,8 @@ func test_trainers_follow_dossier_6() -> void:
 	var felix: NpcSpec = placed[&"route_34_juggler_felix"]
 	assert_eq([felix.cell, felix.facing, felix.sight], [Vector2i(11, 40), Vector2i.LEFT, 1])
 	var grunt_e: NpcSpec = placed[&"slowpoke_well_grunt_e"]
-	assert_eq([grunt_e.cell, grunt_e.facing, grunt_e.sight], [Vector2i(15, 3), Vector2i.DOWN, 2])
+	assert_eq([grunt_e.cell, grunt_e.facing, grunt_e.sight], [Vector2i(15, 3), Vector2i.DOWN,
+		TrainerRules.SIGHT_MAX])
 	# Brace : grand combat lancé par la scène (pas par sa vue) ; niveaux [D] réglés par simulation
 	# (24, 24, 26 du dossier → 21, 21, 23 : plan §2.3).
 	assert_true(_trainers.has_trainer(BRACE))
