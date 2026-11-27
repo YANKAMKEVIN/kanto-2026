@@ -43,8 +43,10 @@ extends RefCounted
 ## « rival_look », costume du joueur « player_costume » ; dossier-joueuse-rivale.md JR-8,
 ## dossier-costumes.md CO-9), une seule migration pour les deux chantiers ; 10 = Chapitre Johto,
 ## JOH0 (`jalon-joh0.md` §2.1 : lien « bond » de chaque Pokémon, œuf « egg_steps », équipe
-## confisquée « confiscated »), une seule version pour tout le Chapitre Johto.
-const VERSION: int = 10
+## confisquée « confiscated »), une seule version pour tout le Chapitre Johto ; 11 = PC de
+## Johto (demande de Kevin du 2026-11-27 : pendant l'acte 1, le Stockage de Kanto est mis de
+## côté dans « confiscated.storage » et le Stockage du joueur sert de Boîte de Johto locale).
+const VERSION: int = 11
 ## Lien donné par la migration 9 → 10 aux Pokémon déjà présents (dossier JOH-01 §8.1 : 50).
 ## Figé ici : c'est un fait de la migration, il ne suit pas une future retouche de [BondRules].
 const V10_MIGRATED_BOND: int = 50
@@ -278,6 +280,8 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 				_upgrade_2_to_3(content, original < 2)
 			9:
 				_upgrade_9_to_10(content)
+			10:
+				_upgrade_10_to_11(content)
 			_:
 				# 0 → 1 : aucune forme n'a changé, les défauts suffisent.
 				# 3 → 4 (J9) : rien à transformer, un Pokémon sans « status » n'a aucun statut
@@ -358,6 +362,25 @@ static func _upgrade_9_to_10(content: Dictionary) -> void:
 	var daycare: Variant = content.get("daycare")
 	if daycare is Dictionary:
 		_give_migrated_bond((daycare as Dictionary).get("pokemon"))
+
+
+## PC de Johto (v11) : une partie en plein acte 1 (« confiscated » non vide) avait encore son
+## Stockage de Kanto dans « storage », fermé au joueur. Il passe dans « confiscated.storage »
+## (même ordre, mêmes Pokémon) et « storage » devient la Boîte de Johto, vide. Les captures en
+## trop de l'arc des Pierres (texte P-58, « chez Orme ») suivent le même chemin : la migration ne
+## connaît pas les cartes de Johto ; elles reviennent au retour de l'équipe, comme avant, et le
+## Réveil les retrouve dans la section ([StoneAwakening]). Hors acte 1 : rien ne change ; une
+## section déjà pourvue de « storage » (fichier retouché) n'est pas touchée.
+static func _upgrade_10_to_11(content: Dictionary) -> void:
+	var confiscated: Variant = content.get("confiscated")
+	if not confiscated is Dictionary or (confiscated as Dictionary).is_empty() \
+			or (confiscated as Dictionary).has("storage"):
+		return
+	var stored: Variant = content.get("storage")
+	if not stored is Array or (stored as Array).is_empty():
+		return
+	(confiscated as Dictionary)["storage"] = stored
+	content["storage"] = []
 
 
 static func _give_migrated_bond(member: Variant) -> void:

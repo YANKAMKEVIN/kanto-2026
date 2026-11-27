@@ -511,7 +511,7 @@ func wear_costume(costume: StringName) -> bool:
 # --- Identifiants et compagnon (jalon 11) --------------------------------------------
 
 ## Donne un identifiant à chaque Pokémon de l'équipe, du Stockage, de la Pension (J15) puis de
-## l'équipe confisquée (JOH0) qui n'en a pas, et en redonne un neuf au second d'un doublon (dans cet ordre). Ni l'ordre ni le
+## l'équipe confisquée (JOH0) et du Stockage de Kanto mis de côté (v11) qui n'en a pas, et en redonne un neuf au second d'un doublon (dans cet ordre). Ni l'ordre ni le
 ## contenu ne changent. Rend le nombre d'identifiants attribués.
 func ensure_unique_uids() -> int:
 	var seen: Dictionary[String, bool] = {}
@@ -521,6 +521,7 @@ func ensure_unique_uids() -> int:
 	if not daycare.is_empty():
 		members.append(daycare.pokemon)
 	members.append_array(confiscated.party)
+	members.append_array(confiscated.storage)
 	for pokemon: Pokemon in members:
 		if pokemon.uid.is_empty() or seen.has(pokemon.uid):
 			pokemon.uid = ""
