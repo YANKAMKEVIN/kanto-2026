@@ -1,0 +1,11 @@
+{
+	"garde": {
+		"cell": [
+			12,
+			6
+		],
+		"facing": "left",
+		"sprite": "guard",
+		"dialogue": "route_35_guard_post_garde"
+	}
+}

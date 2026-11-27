@@ -1,5 +1,6 @@
 extends GutTest
 ## Retours de Kevin sur Johto (RC 0.38.0 sur S24, 2026-11-27) : garde-fous de chaque correction.
+## - Erreur 1 : le poste de garde de la Route 35 a un intérieur, avec un garde.
 ## - Erreur 2 : la porte de l'ascenseur en panne de la Tour Radio ne laisse plus entrer dans le mur ;
 ##   plus généralement, une porte ou un escalier conditionnel de Johto ne s'ouvre pas avant l'heure.
 ## - Erreur 3 : le toit du Grand Magasin de Doublonville suit le jour et la nuit, comme les autres
@@ -24,6 +25,8 @@ const CONDITIONAL_WARP_MAPS: Array[String] = [
 	"mahogany_souvenir_shop",
 ]
 const NPC_DIR := "res://data/npcs/"
+const GUARD_POST_DOOR := Vector2i(16, 39)
+const GUARD_POST_TEXT: StringName = &"route_35_guard_post_garde"
 const J22Ids := preload("res://tests/helpers/j22_ids.gd")
 const KANTO_ROCKET_MAPS: Array[String] = [
 	"celadon_game_corner", "mt_moon_b1f", "mt_moon_b2f", "pokemon_tower_7f",
@@ -110,11 +113,45 @@ func test_closed_facade_doors_say_they_are_closed() -> void:
 			assert_true(texts.has_dialogue(entry[2]), "texte %s" % entry[2])
 
 
+## Erreur 1 : le poste de garde de la Route 35 a un intérieur (choix de Kevin du 2026-11-27). Un
+## bout de chemin mène de la route à sa porte ; on y entre, le garde parle, on ressort devant.
+func test_route_35_guard_post_opens_on_an_interior_with_its_guard() -> void:
+	var route := _map("route_35")
+	var grid := route.get_grid()
+	for cell: Vector2i in [Vector2i(13, 40), Vector2i(14, 40), Vector2i(15, 40), Vector2i(16, 40)]:
+		assert_false(grid.is_solid(cell), "chemin du poste %s" % cell)
+	assert_true(grid.can_enter(Vector2i(13, 40), Vector2i.RIGHT), "depuis le chemin principal")
+	var door: Warp = route.get_warps().find_on_step(GUARD_POST_DOOR, Vector2i.UP)
+	assert_not_null(door, "porte du poste")
+	if door == null:
+		return
+	assert_eq(door.target_map, &"route_35_guard_post")
+	var post := _map("route_35_guard_post")
+	assert_true(post.interior)
+	assert_true(post.has_spawn(door.target_spawn))
+	var exits := 0
+	for exit: Warp in post.get_warps().get_all():
+		if exit.target_map == &"route_35":
+			exits += 1
+			assert_eq(route.get_spawn_cell(exit.target_spawn), GUARD_POST_DOOR + Vector2i.DOWN)
+	assert_gt(exits, 0, "sortie vers la Route 35")
+	var roster := NpcRoster.load_for_map(&"route_35_guard_post")
+	assert_eq(roster.get_errors(), PackedStringArray())
+	var guard := roster.get_spec(&"garde")
+	assert_not_null(guard, "le garde")
+	if guard != null:
+		assert_eq(guard.dialogue, GUARD_POST_TEXT)
+		assert_false(post.get_grid().is_solid(guard.cell), "le garde sur une case libre")
+	var texts := DialogueLibrary.new()
+	assert_true(texts.load_dir(), "dialogues")
+	assert_true(texts.has_dialogue(GUARD_POST_TEXT))
+
+
 ## Les fichiers `johr_*` sont écartés des grands registres (`j22_ids.gd`) : chacun de leurs
-## dialogues est une porte fermée vérifiée ci-dessus, aucun n'est orphelin.
-func test_closed_door_texts_are_all_used() -> void:
+## dialogues est vérifié ici (portes fermées, garde du poste), aucun n'est orphelin.
+func test_retours_texts_are_all_used() -> void:
 	var ids: Array = J22Ids.in_dir("res://data/dialogues/", "johr_").keys()
-	var used: Array = []
+	var used: Array = [GUARD_POST_TEXT]
 	for map_id: String in CLOSED_DOORS:
 		used.append((CLOSED_DOORS[map_id] as Array)[2])
 	ids.sort()

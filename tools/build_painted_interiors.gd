@@ -144,10 +144,11 @@ const ACAJOU := [&"mahogany_center", &"mahogany_house_1", &"mahogany_house_2"]
 const BLACKTHORN := [&"blackthorn_center", &"blackthorn_elder_house", &"blackthorn_house_1"]
 const ROSALIA := [&"ecruteak_center", &"ecruteak_mart", &"ecruteak_elders_house",
 	&"ecruteak_house_1", &"ecruteak_house_2"]
-## Chapitre Johto, JOH3 (T7, `jalon-joh3.md` §2.1) : les neuf intérieurs de Doublonville.
+## Chapitre Johto, JOH3 (T7, `jalon-joh3.md` §2.1) : les intérieurs de Doublonville, et le poste
+## de garde de la Route 35 (choix de Kevin du 2026-11-27).
 const DOUBLONVILLE := [&"goldenrod_center", &"goldenrod_dept_store_1f", &"goldenrod_dept_store_2f",
 	&"goldenrod_dept_store_3f", &"goldenrod_dept_store_roof", &"goldenrod_bond_house",
-	&"goldenrod_house_1", &"goldenrod_house_2"]
+	&"goldenrod_house_1", &"goldenrod_house_2", &"route_35_guard_post"]
 ## Chapitre Johto, JOH4 (T4, `jalon-joh4.md` §2.1) : Écorcia et la maison de la Route 34.
 const AZALEA := [&"azalea_center", &"azalea_mart", &"azalea_kurt_house", &"azalea_house_1",
 	&"route_34_house"]
@@ -2402,7 +2403,12 @@ func _goldenrod_rooms() -> Array[Dictionary]:
 	var house_2 := _goldenrod_house(&"goldenrod_house_2", "GoldenrodHouse2",
 		"lavanville_maison_1.txt", &"retour_maison_2")
 	house_2["furniture"] = _mason_furniture()
-	rooms.append_array([bond, house_1, house_2])
+	# Poste de garde de la Route 35 (choix de Kevin du 2026-11-27, retour sur la 0.38.0 : la façade
+	# n'avait pas d'intérieur) : maison de Johto relue sur la grille de Lavanville [D], un garde.
+	var post := _johto_house(&"route_35_guard_post", "Route35GuardPost",
+		"lavanville_maison_1.txt", &"route_35", &"retour_poste", "Route 35")
+	post["furniture"] = _mason_furniture()
+	rooms.append_array([bond, house_1, house_2, post])
 	return rooms
 
 
