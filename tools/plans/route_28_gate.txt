@@ -7,10 +7,12 @@
 #
 # Ouverture NORD (4..5, 1) → Route 28 (4, 10) ; PORTE SUD (4..5, 7) → Route 22, partie ouest, porte
 # neuve (2, 10), arrivée (3, 10). GARDE (6, 2) tourné vers l'ouest (A-48 côté Kanto).
-# Depuis Kanto : déclencheur « controle_kanto » (4..5, 2) : sans johto_route28_open, A-48 et recul
-# d'une case. Depuis Johto : « barriere_johto » (4..5, 6) : sans johto_rival_final_done, « la porte
-# est verrouillée » et recul [D] ; avec, la scène A-47 (« scene_porte », une fois) pose
-# johto_route28_open et la porte s'ouvre.
+# Depuis Kanto : déclencheur « controle_kanto » (1..8, 4), en montant : sans johto_route28_open, A-48
+# et recul d'une case. Depuis Johto : « barriere_johto » (1..8, 4), en descendant : sans
+# johto_rival_final_done, « la porte est verrouillée » et recul [D] ; avec, la scène A-47
+# (« scene_porte », une fois) pose johto_route28_open et la porte s'ouvre. Les deux contrôles sont
+# sur la MÊME rangée, toute la largeur (2026-11-26, trouvé par le bot de parcours : en (4..5, 2) et (4..5, 6), le
+# joueur entré d'un côté qui avançait d'une case était repoussé des deux côtés, enfermé).
 #
 # Légende : K mur (bloqué) · . sol · X porte sud (STEP_ON ↓, vers Kanto) · N ouverture nord
 #   (STEP_ON ↑, vers la Route 28) · x plante, meuble (bloqué)
@@ -34,7 +36,7 @@ from_route_22        spawn          4,6          libre   facing=up  # depuis la 
 sortie_nord          warp           4..5,1       libre   vers=route_28:from_gate  # STEP_ON ↑ → Route 28 (4, 10)
 sortie_sud           warp           4..5,7       libre   vers=route_22_west:from_route_28_gate  # STEP_ON ↓ → Route 22 ouest (3, 10)
 garde                pnj            6,2          bloque  role=garde facing=left  # A-48 côté Kanto ; côté Johto : « la porte est verrouillée » [D]
-controle_kanto       declencheur    4..5,2       libre   actif_sans=johto_route28_open  # A-48 et recul d'une case (depuis Kanto)
-barriere_johto       declencheur    4..5,6       libre   actif_sans=johto_rival_final_done  # porte verrouillée et recul (depuis Johto) [D]
-scene_porte          declencheur    4..5,6       libre   actif_avec=johto_rival_final_done actif_sans=johto_route28_open drapeau=johto_route28_open  # A-47 : la porte s'ouvre, Kanto !
+controle_kanto       declencheur    1..8,4       libre   actif_sans=johto_route28_open  # A-48 et recul d'une case (depuis Kanto)
+barriere_johto       declencheur    1..8,4       libre   actif_sans=johto_rival_final_done  # porte verrouillée et recul (depuis Johto) [D]
+scene_porte          declencheur    1..8,4       libre   actif_avec=johto_rival_final_done actif_sans=johto_route28_open drapeau=johto_route28_open  # A-47 : la porte s'ouvre, Kanto !
 FIN

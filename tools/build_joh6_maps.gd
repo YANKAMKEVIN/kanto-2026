@@ -81,7 +81,7 @@ const OUTDOOR_KINDS: Dictionary = {
 ## Tour et repaire : mêmes tuiles provisoires, sol de pierre ou de cendres.
 const TOWER_KINDS: Dictionary = {
 	"#": "CLIFF", ".": "COBBLE", "c": "DIRT", "P": "CLIFF", "O": "DIRT", "V": "COBBLE",
-	"U": "COBBLE", "E": "COBBLE",
+	"U": "COBBLE", "E": "COBBLE", "L": "LEDGE_DOWN",
 }
 const HIDEOUT_KINDS: Dictionary = {
 	"#": "CLIFF", ".": "COBBLE", "M": "CLIFF", "X": "CLIFF", "S": "CLIFF", "<": "BOARDWALK",

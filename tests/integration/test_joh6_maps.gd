@@ -238,6 +238,28 @@ func test_tower_holes_fall_to_the_basement() -> void:
 	assert_false(calm.has(Vector2i(13, 16)))
 
 
+## Après la scène des chiens, l'échelle du B1F ramène au nord du 1F : la poutre effondrée (9, 11)
+## se saute vers le sud (rebord), seule sortie du nord sans tomber ; elle ne se remonte pas, donc le
+## nord ne s'atteint toujours pas depuis l'entrée sans tomber (décision de Kevin, 2026-11-26).
+func test_tower_north_leaves_by_the_fallen_beam_one_way() -> void:
+	var map := _map(&"burned_tower_1f")
+	var grid := map.get_grid()
+	assert_eq(grid.get_ledge(Vector2i(9, 11)), GridWorld.Ledge.DOWN, "poutre effondrée")
+	var blocker := RefCounted.new()
+	var held: Array[Vector2i] = []
+	for warp: Warp in map.get_warps().get_all():
+		if warp.trigger == Warp.Trigger.FALL and grid.occupy(warp.cell, blocker):
+			held.append(warp.cell)
+	var from_north := grid.find_reachable(map.get_spawn_cell(&"from_b1f"), null,
+		GridWorld.MoveMode.WALK)
+	var from_south := grid.find_reachable(map.get_spawn_cell(&"from_city"), null,
+		GridWorld.MoveMode.WALK)
+	for cell: Vector2i in held:
+		grid.release(cell, blocker)
+	assert_true(from_north.has(map.get_spawn_cell(&"from_city")), "sortie atteinte du nord")
+	assert_false(from_south.has(map.get_spawn_cell(&"from_b1f")), "nord fermé depuis l'entrée")
+
+
 func test_stairs_of_the_shop_and_the_tower_entrance_need_their_flags() -> void:
 	for pair: Array in [[&"mahogany_souvenir_shop", &"johto_hideout_found",
 			&"mahogany_hideout_b1f"], [&"ecruteak_city", &"johto_burned_tower_open",

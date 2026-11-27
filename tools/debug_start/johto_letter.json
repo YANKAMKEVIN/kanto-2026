@@ -68,7 +68,10 @@
 	],
 	"companion": 0,
 	"bag": {
+		"hm02": 1,
 		"hm03": 1,
+		"hm04": 1,
+		"hm05": 1,
 		"ultra_ball": 30,
 		"full_restore": 10,
 		"max_revive": 5,

@@ -122,6 +122,20 @@ func test_barriers_hold_from_every_side() -> void:
 		assert_eq(trigger.get(&"direction"), Vector2i.ZERO, String(pair[0]))
 
 
+## Bot de parcours (2026-11-26) : le Gardien du Ciel, après son combat, peut rester en (14, 4) sous
+## la barrière, qui ne repousse alors plus le joueur. L'escalier du Sanctuaire reste donc fermé
+## tant que les trois Gardiens ne sont pas battus, quoi qu'il arrive à la barrière.
+func test_sanctuary_stairs_stay_shut_until_the_guardians_are_beaten() -> void:
+	var stairs := 0
+	for warp: Node in _map(&"dragons_den_1f").get_node(^"Warps").get_children():
+		if warp.get(&"target_map") != &"dragons_den_sanctuary":
+			continue
+		stairs += 1
+		assert_eq(warp.get(&"if_flags"), [&"johto_clan_guardians_done"] as Array[StringName],
+			String(warp.name))
+	assert_eq(stairs, 2, "deux cases d'escalier")
+
+
 func test_den_is_painted_with_its_altar_and_stairs() -> void:
 	var one := _map(&"dragons_den_1f")
 	assert_not_null(one.get_node_or_null(^"PaintedGround"))
