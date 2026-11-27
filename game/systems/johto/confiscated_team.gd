@@ -5,7 +5,9 @@ extends RefCounted
 ## (v10), **vide** hors de l'acte 1 : elle n'est écrite que si elle contient quelque chose.
 ##
 ## Donnée pure : les Pokémon (format habituel, identifiants gardés), les objets non clés du Sac
-## (identifiant → quantité) et l'identifiant du compagnon d'alors. Rien ici ne décide du vol ni
+## (identifiant → quantité), l'identifiant du compagnon d'alors et le **Stockage de Kanto**
+## (v11, PC de Johto : le réseau de Kanto est coupé, ses Pokémon attendent ici pendant que le
+## Stockage du joueur sert de Boîte de Johto locale). Rien ici ne décide du vol ni
 ## du retour ([TeamConfiscation]) : cette classe ne fait que porter et sérialiser.
 
 ## Pokémon de l'équipe au moment du vol, dans leur ordre.
@@ -14,11 +16,15 @@ var party: Array[Pokemon] = []
 var items: Dictionary[StringName, int] = {}
 ## Compagnon au moment du vol (vide = aucun).
 var companion_uid: String = ""
+## Stockage de Kanto au moment du vol (v11, PC de Johto), dans l'ordre d'arrivée : hors
+## d'atteinte tant que le réseau de Kanto est coupé, rendu au retour de l'équipe.
+var storage: Array[Pokemon] = []
 
 
 ## Vrai si rien n'est confisqué (état normal, hors acte 1).
 func is_empty() -> bool:
-	return party.is_empty() and items.is_empty() and companion_uid.is_empty()
+	return party.is_empty() and items.is_empty() and companion_uid.is_empty() \
+		and storage.is_empty()
 
 
 ## Vide la section (retour de l'équipe, nouvelle partie).
@@ -26,6 +32,7 @@ func clear() -> void:
 	party.clear()
 	items.clear()
 	companion_uid = ""
+	storage.clear()
 
 
 ## Pokémon confisqué d'identifiant [param uid], ou null.
@@ -51,11 +58,18 @@ func to_dict() -> Dictionary:
 	var bag: Dictionary = {}
 	for id: StringName in ids:
 		bag[String(id)] = items[id]
-	return {"party": members, "items": bag, "companion": companion_uid}
+	var result := {"party": members, "items": bag, "companion": companion_uid}
+	# v11 (PC de Johto) : écrit seulement s'il y a quelque chose (absent = Stockage de Kanto vide).
+	if not storage.is_empty():
+		var stored: Array[Dictionary] = []
+		for pokemon: Pokemon in storage:
+			stored.append(pokemon.to_dict())
+		result["storage"] = stored
+	return result
 
 
 ## Section écrite par [method to_dict]. {} ou champs absents → section vide ; **null**
-## (push_error) si un Pokémon est invalide ou si « party » / « items » n'ont pas la forme
+## (push_error) si un Pokémon est invalide ou si « party » / « items » / « storage » n'ont pas la forme
 ## attendue : rien n'est perdu en silence (GameState vide alors la section et signale le refus ;
 ## Boot garde l'original en `save.json.rejected`, comme pour la Pension). Une quantité
 ## d'objet invalide est une erreur aussi ; un identifiant d'objet n'est pas vérifié ici.
@@ -71,6 +85,16 @@ static func from_dict(dict: Dictionary, data: PokemonData) -> ConfiscatedTeam:
 			push_error("ConfiscatedTeam.from_dict : Pokémon confisqué invalide")
 			return null
 		result.party.append(pokemon)
+	var raw_storage: Variant = dict.get("storage", [])
+	if not raw_storage is Array:
+		push_error("ConfiscatedTeam.from_dict : « storage » doit être une liste")
+		return null
+	for entry: Variant in raw_storage:
+		var stored: Pokemon = Pokemon.from_dict(entry, data) if entry is Dictionary else null
+		if stored == null:
+			push_error("ConfiscatedTeam.from_dict : Pokémon du Stockage de Kanto invalide")
+			return null
+		result.storage.append(stored)
 	var raw_items: Variant = dict.get("items", {})
 	if not raw_items is Dictionary:
 		push_error("ConfiscatedTeam.from_dict : « items » doit être un objet « objet → quantité »")

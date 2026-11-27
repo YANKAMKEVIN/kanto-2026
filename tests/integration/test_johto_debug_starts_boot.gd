@@ -35,6 +35,7 @@ func before_each() -> void:
 
 func after_each() -> void:
 	Input.action_release(&"interact")
+	get_tree().paused = false
 	if is_instance_valid(_boot):
 		get_tree().current_scene = _previous_scene
 		_boot.free()
@@ -117,7 +118,7 @@ func test_continue_on_the_v9_save_rewrites_it_as_v10_with_the_migration_bond() -
 	assert_eq(_writes(), 1, "premier autosave écrit")
 	assert_false(_fs.files.has(SAVE_PATH + ".rejected"), "rien d'écarté")
 	var saved := _saved()
-	assert_eq(int(saved["version"]), 10, "réécrite en v10")
+	assert_eq(int(saved["version"]), SaveSystem.VERSION, "réécrite à la version courante")
 	assert_eq((saved["party"] as Array).size(), party_size)
 	for member: Dictionary in saved["party"]:
 		assert_eq(member.get("bond"), SaveSystem.V10_MIGRATED_BOND * 1.0, "lien de migration")
@@ -161,43 +162,59 @@ func test_the_return_scene_opens_the_choice_and_validate_restores_six() -> void:
 	assert_eq(GameState.bag.count_of(&"poke_ball"), 6)
 	await wait_until(func() -> bool: return _writes() >= 1, TIMEOUT)
 	var saved := _saved()
-	assert_eq(int(saved["version"]), 10)
+	assert_eq(int(saved["version"]), SaveSystem.VERSION)
 	assert_eq((saved["party"] as Array).size(), 6)
 	assert_eq((saved["storage"] as Array).size(), 1)
 	assert_false(saved.has("confiscated"), "section « confiscated » disparue")
 	assert_true((saved["flags"] as Array).has("johto_team_returned"))
 
 
-# --- Stockage hors ligne ---------------------------------------------------------------------------
+# --- PC de Johto : la Boîte de Johto ---------------------------------------------------------------
 
-func test_the_center_terminal_says_the_network_is_down_and_opens_nothing() -> void:
-	await _launch(START_CONFISCATED)
-	assert_eq(_boot.get_map().map_id, &"viridian_center")
-	assert_true(TeamConfiscation.is_storage_offline(GameState.flags), "Stockage hors ligne")
-	assert_eq(_boot.get_player().get_cell(), _boot.get_map().get_spawn_cell(&"terminal"))
+## Interagit avec le terminal et fait défiler les dialogues jusqu'à [param wanted] ; rend les
+## dialogues joués.
+func _use_terminal_until(wanted: StringName) -> Array[StringName]:
 	var played: Array[StringName] = []
 	_boot.get_dialogue_runner().dialogue_started.connect(
 		func(id: StringName) -> void: played.append(id))
 	Input.action_press(&"interact")
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
-	# La réplique du terminal (« Un terminal de Stockage Pokémon. »), puis, à sa fin,
-	# l'avis hors ligne à la place du Stockage.
 	var runner := _boot.get_dialogue_runner()
 	var box := _boot.get_dialogue_box()
 	await wait_until(func() -> bool: return runner.is_running(), TIMEOUT)
 	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
-	while not played.has(TeamConfiscation.STORAGE_OFFLINE_DIALOGUE) \
-			and Time.get_ticks_msec() < deadline:
+	while not played.has(wanted) and Time.get_ticks_msec() < deadline:
 		if box.is_open():
 			box.advance_requested.emit()
 		await wait_process_frames(1)
-	assert_eq(played.size(), 2, "sa réplique puis « storage_offline »")
-	assert_eq(played.back(), TeamConfiscation.STORAGE_OFFLINE_DIALOGUE,
-		"le terminal répond par « storage_offline »")
+	return played
+
+
+func test_the_center_terminal_explains_kanto_is_down_and_opens_the_johto_box() -> void:
+	await _launch(START_CONFISCATED)
+	assert_eq(_boot.get_map().map_id, &"viridian_center")
+	assert_true(TeamConfiscation.is_storage_offline(GameState.flags), "réseau de Kanto coupé")
+	assert_eq(_boot.get_player().get_cell(), _boot.get_map().get_spawn_cell(&"terminal"))
+	assert_false(GameState.flags.has_flag(TeamConfiscation.JOHTO_BOX_EXPLAINED))
+	# La réplique du terminal, puis, à sa fin, l'explication complète de la Boîte de Johto.
+	var played := await _use_terminal_until(TeamConfiscation.JOHTO_BOX_DIALOGUE)
+	assert_eq(played.size(), 2, "sa réplique puis « storage_johto_box »")
+	assert_eq(played.back(), TeamConfiscation.JOHTO_BOX_DIALOGUE)
+	assert_false(played.has(TeamConfiscation.STORAGE_OFFLINE_DIALOGUE), "plus de refus sec")
+	var box := _boot.get_dialogue_box()
 	await wait_until(func() -> bool: return box.is_open(), TIMEOUT)
 	assert_string_contains(box.get_text(), "réseau de Kanto")
+	assert_true(GameState.flags.has_flag(TeamConfiscation.JOHTO_BOX_EXPLAINED), "expliqué une fois")
+	# Fin de l'explication : le Stockage s'ouvre et met l'arbre en pause, ce qui gèlerait les
+	# attentes du test ; on relève l'écran montré puis on le referme aussitôt (appel différé,
+	# servi même en pause).
+	var menu := _boot.get_menu_director()
+	var titles: Array[String] = []
+	menu.storage_shown.connect(func(view: StorageView) -> void: titles.append(view.storage_title))
+	menu.menu_opened.connect(func() -> void: menu.close.call_deferred(), CONNECT_ONE_SHOT)
 	await _finish_dialogue()
-	await wait_process_frames(2)
-	assert_false(_boot.get_menu_director().is_open(), "le Stockage ne s'ouvre pas")
-	assert_eq(_writes(), 0, "départ de débogage sans autosave : rien d'écrit")
+	await wait_until(func() -> bool: return not titles.is_empty() and not menu.is_open(), TIMEOUT)
+	assert_eq(titles, [StorageViews.JOHTO_BOX_TITLE] as Array[String],
+		"la Boîte de Johto s'est ouverte (écran Stockage)")
+	assert_false(get_tree().paused, "le jeu reprend à la fermeture")

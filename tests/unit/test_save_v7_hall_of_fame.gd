@@ -50,7 +50,7 @@ func _entry_of(state: Node) -> Dictionary:
 
 
 func test_no_new_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 10, "champ facultatif : la version reste celle du J23 (v8), v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
+	assert_eq(SaveSystem.VERSION, 11, "champ facultatif : la version reste celle du J23 (v8), v9 JR, v10 JOH0 (lien, œuf, équipe confisquée), v11 PC de Johto")
 
 
 func test_an_empty_hall_writes_no_field() -> void:

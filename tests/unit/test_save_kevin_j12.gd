@@ -101,7 +101,7 @@ func test_the_fixture_is_the_real_save_of_kevin() -> void:
 ## J15 : le J12 n'avait pas de version nouvelle (§2.20) ; la v7 (Pension) ne change que le
 ## numéro à la lecture (aucun champ inventé).
 func test_the_j15_reads_it_with_only_the_v6_to_v7_step() -> void:
-	assert_eq(SaveSystem.VERSION, 10, "v7 : jalon 15 (Pension), v8 : jalon 23, v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
+	assert_eq(SaveSystem.VERSION, 11, "v7 : jalon 15 (Pension), v8 : jalon 23, v9 JR, v10 JOH0 (lien, œuf, équipe confisquée), v11 PC de Johto")
 	_fs.files[PATH] = _text()
 	var read := _save.read()
 	assert_eq(_save.last_status, OK)

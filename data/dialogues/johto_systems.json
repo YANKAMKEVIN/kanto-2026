@@ -11,6 +11,32 @@
 			}
 		]
 	},
+	"storage_johto_box": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Connexion au réseau de Kanto…",
+					"…",
+					"Le réseau de Kanto ne répond pas. Tes Pokémon rangés à Kanto restent hors d'atteinte pour l'instant.",
+					"Bascule sur le stockage local de Johto… Connexion établie !",
+					"Le PC ouvre la Boîte de Johto. Tu peux y déposer et y reprendre des Pokémon depuis n'importe quel Centre de Johto.",
+					"Quand ton équipe est pleine, tes nouvelles captures y sont envoyées automatiquement."
+				]
+			}
+		]
+	},
+	"storage_johto_box_short": {
+		"narration": true,
+		"variants": [
+			{
+				"pages": [
+					"Réseau de Kanto : toujours hors ligne.",
+					"Stockage local de Johto : connecté. Ouverture de la Boîte de Johto."
+				]
+			}
+		]
+	},
 	"johto_return_test_before": {
 		"narration": true,
 		"variants": [

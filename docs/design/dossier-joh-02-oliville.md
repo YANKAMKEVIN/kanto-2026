@@ -206,3 +206,20 @@ Lot `docs/design/passes/johto-textes-a-valider.md`, validé tel quel.
 
 - `olivine_guard/variants/1` : La Route 39 est par là. / Bonne route, et méfie-toi des hommes en noir.
 - `olivine_lighthouse_sign/variants/0` : PHARE D'OLIVILLE / Fermé pour travaux.
+
+## Annexe : PC de Johto (demande de Kevin du 2026-11-27)
+
+Retour de Kevin : à Johto, on ne pouvait pas garder plus de Pokémon que l'équipe, « à cause de
+l'ordinateur qui n'arrive pas à se connecter à Kanto ». Décision : **le lien avec le PC de Kanto
+reste coupé** pendant l'acte 1 (rien ne change à l'histoire), **mais les PC de Johto ont leur
+propre stockage local, la Boîte de Johto**. Le terminal des Centres le dit puis ouvre la Boîte ;
+une capture avec l'équipe pleine y part au lieu d'être refusée (remplace JH-23 et le texte P-58).
+Au retour de l'équipe (Tour Radio), le Stockage de Kanto revient, suivi de la Boîte de Johto.
+Textes **[D]** (proposés, à relire par Kevin) :
+
+| N° | Moment | Texte |
+|---|---|---|
+| PC-1 | PC d'un Centre, acte 1, première fois (`storage_johto_box`) | Connexion au réseau de Kanto… / … / Le réseau de Kanto ne répond pas. Tes Pokémon rangés à Kanto restent hors d'atteinte pour l'instant. / Bascule sur le stockage local de Johto… Connexion établie ! / Le PC ouvre la Boîte de Johto. Tu peux y déposer et y reprendre des Pokémon depuis n'importe quel Centre de Johto. / Quand ton équipe est pleine, tes nouvelles captures y sont envoyées automatiquement. |
+| PC-2 | PC d'un Centre, acte 1, fois suivantes (`storage_johto_box_short`) | Réseau de Kanto : toujours hors ligne. / Stockage local de Johto : connecté. Ouverture de la Boîte de Johto. |
+| PC-3 | Capture, équipe pleine, acte 1 (`sent_to_johto_box`) | Ton équipe est pleine. Kanto ne répond pas : {pokemon} a été envoyé dans la Boîte de Johto du PC. |
+| PC-4 | Écran Stockage, acte 1 : titre et Boîte vide | BOÎTE DE JOHTO / La Boîte de Johto est vide. Le réseau de Kanto ne répond pas : tes Pokémon rangés à Kanto t'attendent là-bas. |

@@ -14,6 +14,8 @@ const ACTION_RELEASE: StringName = &"release"
 
 const PARTY_TITLE: String = "ÉQUIPE"
 const STORAGE_TITLE: String = "STOCKAGE"
+## PC de Johto (v11) : pendant l'acte 1, le Stockage est la Boîte de Johto locale.
+const JOHTO_BOX_TITLE: String = "BOÎTE DE JOHTO"
 const DEPOSIT_LABEL: String = "DÉPOSER"
 const WITHDRAW_LABEL: String = "REPRENDRE"
 const FAVORITE_LABEL: String = "FAVORI"
@@ -32,8 +34,15 @@ const FAVORITE_TEXT: String = "Retire d'abord %s de tes favoris pour pouvoir le 
 const PARTY_FULL_TEXT: String = "Ton équipe est déjà complète."
 ## Stockage vide.
 const EMPTY_TEXT: String = "Le stockage est vide."
+const JOHTO_BOX_EMPTY_TEXT: String = "La Boîte de Johto est vide. Le réseau de Kanto ne répond pas : tes Pokémon rangés à Kanto t'attendent là-bas."
 ## Décision de Kevin du 2026-10-05 : après une libération confirmée et réussie.
 const RELEASED_TEXT: String = "%s a été libéré."
+
+
+## Vrai si le Stockage de [param state] est la Boîte de Johto (réseau de Kanto coupé, acte 1).
+static func is_johto_box(state: Object) -> bool:
+	var flags: Variant = state.get("flags")
+	return flags is StoryFlags and TeamConfiscation.is_storage_offline(flags)
 
 
 ## Vue de l'écran pour l'équipe et le stockage de [param state] (GameState : [code]party[/code],
@@ -50,7 +59,8 @@ static func build(state: Object, data: PokemonData, selection: StorageSelection,
 	var storage: PokemonStorage = state.storage
 	var view := StorageView.new()
 	view.party_title = PARTY_TITLE
-	view.storage_title = STORAGE_TITLE
+	var johto_box := is_johto_box(state)
+	view.storage_title = JOHTO_BOX_TITLE if johto_box else STORAGE_TITLE
 	view.back_label = BACK_LABEL
 	view.selection = selection.clamped(party, storage) if selection != null \
 		else StorageSelection.first(party, storage)
@@ -66,7 +76,7 @@ static func build(state: Object, data: PokemonData, selection: StorageSelection,
 	view.sort_label = StorageQuery.sort_label(sort)
 	view.storage_total = stored.size()
 	if stored.is_empty():
-		view.empty_text = EMPTY_TEXT
+		view.empty_text = JOHTO_BOX_EMPTY_TEXT if johto_box else EMPTY_TEXT
 	elif view.storage.is_empty():
 		view.empty_text = StorageQuery.NO_MATCH_TEXT
 	if result != null and result.is_ok():

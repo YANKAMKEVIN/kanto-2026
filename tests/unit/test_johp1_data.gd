@@ -173,30 +173,16 @@ func test_heloise_follows_the_quest() -> void:
 
 
 ## Rien hors des départs de débogage ne pose `johto_stones_quest` avant la bascule du JOHP3.
-## JH-71 : la Ball n'est plus refusée à partir de la quête ; le texte P-58 tant que le Stockage est
-## fermé ; le chemin de JOH0 est inchangé avant la quête et après le retour de l'équipe.
+## PC de Johto (demande de Kevin du 2026-11-27, remplace JH-23 et P-58) : pendant l'acte 1, la
+## capture en trop va dans la Boîte de Johto, avant comme pendant l'arc ; après, au Stockage.
 func test_capture_gate_during_the_arc() -> void:
-	var party := Party.new()
-	for i: int in Party.MAX_SIZE:
-		var pokemon := Pokemon.new()
-		pokemon.species_id = &"rattata"
-		party.add(pokemon)
 	var flags := StoryFlags.new()
 	flags.set_flag(TeamConfiscation.STORAGE_OFFLINE)
-	assert_true(CaptureGate.blocks(party, flags), "acte 1 : refusée à 6 (JH-23)")
-	flags.set_flag(CaptureGate.STONES_QUEST)
-	assert_false(CaptureGate.blocks(party, flags), "arc : la capture part au Stockage")
-	assert_eq(CaptureGate.stored_key(flags), CaptureGate.SENT_TO_ORME_KEY, "P-58")
+	assert_eq(CaptureGate.stored_key(flags), CaptureGate.SENT_TO_JOHTO_BOX_KEY, "acte 1")
+	flags.set_flag(&"johto_stones_quest")
+	assert_eq(CaptureGate.stored_key(flags), CaptureGate.SENT_TO_JOHTO_BOX_KEY, "arc")
 	flags.set_flag(TeamConfiscation.STORAGE_OFFLINE, false)
 	assert_eq(CaptureGate.stored_key(flags), CaptureGate.SENT_TO_STORAGE_KEY, "après l'arc")
-	assert_false(CaptureGate.blocks(party, flags))
-
-
-func test_p58_is_the_validated_text() -> void:
-	var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(BattleText.DATA_PATH))
-	var line: String = doc["templates"]["sent_to_orme"]["text"]
-	assert_eq(line, "Ton équipe est pleine. {pokemon} part au laboratoire d'Orme, qui s'en occupe en attendant.")
-	assert_true(FileAccess.get_file_as_string(DOSSIER).contains(line), "P-58")
 
 
 func test_debug_starts_are_valid() -> void:

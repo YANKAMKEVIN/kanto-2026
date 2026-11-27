@@ -50,7 +50,7 @@ func _reload() -> Node:
 func test_no_variant_key_is_written_for_normal_pokemon_and_the_version_is_unchanged() -> void:
 	var state := _with_party()
 	var dict: Dictionary = state.to_dict()
-	assert_eq(SaveSystem.VERSION, 10, "pas de nouvelle version (v10 du JOH0)")
+	assert_eq(SaveSystem.VERSION, 11, "pas de nouvelle version (v10 du JOH0), v11 PC de Johto")
 	for member: Dictionary in dict["party"]:
 		assert_false(member.has("variant"), "%s : rien d'écrit" % member["species"])
 	assert_eq(_save.write(dict), OK)

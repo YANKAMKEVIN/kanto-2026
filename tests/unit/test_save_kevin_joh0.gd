@@ -74,9 +74,9 @@ func test_it_is_read_as_v9_and_migrated_to_v10_with_only_the_bond() -> void:
 	_fs.files[PATH] = _text()
 	var read := _save.read()
 	assert_eq(_save.last_status, OK, _save.last_error)
-	assert_eq(_save.read_version, 9, "lue comme une v9 : le journal note « sauvegarde v9 → v10 »")
+	assert_eq(_save.read_version, 9, "lue comme une v9 : le journal note « sauvegarde v9 → v11 »")
 	assert_eq(SaveSystem.migration_note(_save.read_version, SaveSystem.VERSION),
-		"sauvegarde v9 → v10")
+		"sauvegarde v9 → v11")
 	var expected := SaveV10.with_migrated_bond(_original())
 	expected["version"] = SaveSystem.VERSION
 	assert_eq(_json(read), _json(expected), "seuls le numéro et le lien de migration changent")

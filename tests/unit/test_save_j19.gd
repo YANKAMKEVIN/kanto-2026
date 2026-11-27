@@ -101,7 +101,7 @@ func _fixture(path: String) -> Dictionary:
 # --- §2.13, points 1, 2, 3 et 5 ------------------------------------------------------------
 
 func test_the_jalon_19_adds_no_save_version() -> void:
-	assert_eq(SaveSystem.VERSION, 10, "aucune version du J19 : v7 depuis le J15 (Pension), v8 au J23, v9 JR, v10 JOH0 (lien, œuf, équipe confisquée)")
+	assert_eq(SaveSystem.VERSION, 11, "aucune version du J19 : v7 depuis le J15 (Pension), v8 au J23, v9 JR, v10 JOH0 (lien, œuf, équipe confisquée), v11 PC de Johto")
 
 
 func test_every_flag_of_the_jalon_survives_a_save() -> void:
@@ -127,7 +127,7 @@ func test_a_v7_save_written_by_the_jalon_15_loads_unchanged() -> void:
 	assert_eq(_save.last_status, OK, "acceptée")
 	assert_eq(_save.read_version, 7, "lue comme une v7")
 	assert_eq(SaveSystem.migration_note(_save.read_version, SaveSystem.VERSION),
-		"sauvegarde v7 → v10", "v8 du J23 et v9 du chantier JR, rien à transformer ; v10 JOH0")
+		"sauvegarde v7 → v11", "v8 du J23 et v9 du chantier JR, rien à transformer ; v10 JOH0, v11 PC de Johto")
 	var state := _state()
 	assert_true(state.load_dict(content, _data), "chargée sans entrée écartée")
 	assert_eq(_save.write(state.to_dict()), OK)

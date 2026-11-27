@@ -28,9 +28,12 @@ var _daycare_overlay: DaycareOverlay
 ## commence à la fin du dialogue du terminal.
 var _local_trade: LocalTradeDirector
 var _pending_local_trade: bool = false
-## JOH0 : le Stockage ou le terminal d'échange ont été demandés pendant l'acte 1 du Chapitre
-## Johto (réseau de Kanto coupé) : le refus se dit à la fin du dialogue, à la place de l'écran.
+## JOH0 : le terminal d'échange a été demandé pendant l'acte 1 du Chapitre Johto (réseau de
+## Kanto coupé) : le refus se dit à la fin du dialogue, à la place de l'écran.
 var _pending_offline_notice: bool = false
+## PC de Johto (v11) : le Stockage a été demandé pendant l'acte 1 : à la fin du dialogue du
+## terminal, le PC dit que Kanto ne répond pas et ouvre la Boîte de Johto (écran Stockage).
+var _pending_johto_box: bool = false
 ## Panneau d'ascenseur demandé par le même dialogue ([method BootWorld.open_pending_elevator]) :
 ## vrai s'il vient d'être ouvert. Servi entre la Pension et le terminal d'échange, comme avant.
 var _elevator_opener: Callable
@@ -117,6 +120,17 @@ func on_dialogue_finished() -> void:
 		_pending_shop = &""
 		if not menu.open(MenuRoute.shop(shop_id), true):
 			push_error("Boot : la Boutique « %s » ne s'ouvre pas" % shop_id)
+	elif _pending_johto_box:
+		# PC de Johto : l'explication (complète la première fois, une ligne ensuite), puis, à
+		# sa fin, la Boîte de Johto (branche du Stockage ci-dessous).
+		_pending_johto_box = false
+		_pending_storage = true
+		var flags := GameState.flags
+		var dialogue := TeamConfiscation.JOHTO_BOX_SHORT_DIALOGUE \
+			if flags.has_flag(TeamConfiscation.JOHTO_BOX_EXPLAINED) \
+			else TeamConfiscation.JOHTO_BOX_DIALOGUE
+		flags.set_flag(TeamConfiscation.JOHTO_BOX_EXPLAINED)
+		_boot.get_dialogue_runner().play(dialogue, null, SceneRouter.get_current_map())
 	elif _pending_storage:
 		_pending_storage = false
 		if not menu.open(MenuRoute.storage(), true):
@@ -154,9 +168,10 @@ func _on_shop_requested(shop_id: StringName) -> void:
 
 ## « open_storage » (le terminal du Centre, jalon-07.md §6.9) : le Stockage s'ouvre en écran
 ## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
+## Acte 1 du Chapitre Johto (réseau de Kanto coupé) : le PC le dit, puis ouvre la Boîte de Johto.
 func _on_storage_requested() -> void:
 	if TeamConfiscation.is_storage_offline(GameState.flags):
-		_pending_offline_notice = true
+		_pending_johto_box = true
 		return
 	_pending_storage = true
 

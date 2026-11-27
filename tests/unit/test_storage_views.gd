@@ -224,3 +224,16 @@ func test_view_carries_the_release_line_only_after_a_release() -> void:
 	var refused := StorageRules.deposit(_state.party, _state.storage, 0)
 	view = StorageViews.build(_state, _data, refused.selection, _zones, _unlocks, refused)
 	assert_eq(view.result_text, "", "un refus ne passe pas par la vue")
+
+
+# --- PC de Johto (demande de Kevin du 2026-11-27) -------------------------------------------------
+
+func test_during_act_1_the_storage_is_titled_the_johto_box() -> void:
+	_add(&"pidgey", 5)
+	var view := StorageViews.build(_state, _data, null)
+	assert_eq(view.storage_title, StorageViews.STORAGE_TITLE)
+	assert_eq(view.empty_text, StorageViews.EMPTY_TEXT)
+	_state.flags.set_flag(TeamConfiscation.STORAGE_OFFLINE)
+	view = StorageViews.build(_state, _data, null)
+	assert_eq(view.storage_title, StorageViews.JOHTO_BOX_TITLE)
+	assert_string_contains(view.empty_text, "Kanto")
