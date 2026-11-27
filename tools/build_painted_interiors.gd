@@ -3347,10 +3347,12 @@ func _mt_silver_center() -> Dictionary:
 
 ## Poste de la Route 28 (`tools/plans/route_28_gate.txt`, même enveloppe que le poste de la
 ## Ligue) : ouverture nord → Route 28 (Johto), porte sud → Route 22 ouest (Kanto, porte neuve de
-## la variante `JOH9`). Garde (6, 2) dans `data/npcs/route_28_gate.json`. Déclencheurs : rangée
-## (4..5, 2) en montant (depuis Kanto) → `route_28_gate_check` (A-48 et recul sans
-## `johto_route28_open`) ; rangée (4..5, 6) en descendant (depuis Johto) → `route_28_gate_south`
-## (porte verrouillée et recul sans `johto_rival_final_done`, sinon A-47 une fois).
+## la variante `JOH9`). Garde (6, 2) dans `data/npcs/route_28_gate.json`. Déclencheurs, tous deux
+## sur toute la rangée du milieu (1..8, 4) : en montant (depuis Kanto) → `route_28_gate_check` (A-48 et
+## recul sans `johto_route28_open`) ; en descendant (depuis Johto) → `route_28_gate_south` (porte
+## verrouillée et recul sans `johto_rival_final_done`, sinon A-47 une fois). Sur deux rangées
+## différentes, le joueur entré d'un côté qui avançait d'une case ne pouvait plus ressortir
+## (trouvé par le bot de parcours, 2026-11-26).
 func _route_28_gate() -> Dictionary:
 	return {
 		"id": &"route_28_gate", "node": "Route28Gate", "size": Vector2i(10, 8),
@@ -3376,8 +3378,8 @@ func _route_28_gate() -> Dictionary:
 				&"from_route_28_gate", Vector2i.RIGHT],
 		],
 		"triggers": [
-			["KantoCheck", Vector2i(4, 2), Vector2i(2, 1), &"route_28_gate_check", Vector2i.UP],
-			["JohtoBarrier", Vector2i(4, 6), Vector2i(2, 1), &"route_28_gate_south",
+			["KantoCheck", Vector2i(1, 4), Vector2i(8, 1), &"route_28_gate_check", Vector2i.UP],
+			["JohtoBarrier", Vector2i(1, 4), Vector2i(8, 1), &"route_28_gate_south",
 				Vector2i.DOWN],
 		],
 	}

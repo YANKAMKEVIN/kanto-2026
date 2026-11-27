@@ -58,6 +58,6 @@ den_hidden_1         cache          2,9          bloque  item=rare_candy indice=
 gravats_g1           gravats        11,13        libre   role=G1  # croisée
 gravats_g2           gravats        9,5          libre   role=G2  # salle du Ciel
 barriere_sanctuaire  declencheur    13..14,3     libre   actif_sans=johto_clan_guardians_done  # et pas en arrière
-escalier_bas         warp           13..14,2     libre   # → dragons_den_sanctuary, from_1f (10..11, 15)
+escalier_bas         warp           13..14,2     libre   actif_avec=johto_clan_guardians_done  # → dragons_den_sanctuary, from_1f (10..11, 15) ; fermé tant que les trois Gardiens ne sont pas battus (2026-11-26 : sinon, le Gardien du Ciel posé en (14, 4) après son combat empêchait la barrière de repousser le joueur, qui descendait)
 from_sanctuary       spawn          13..14,3     libre   # retour du Sanctuaire, tournée ↓
 FIN

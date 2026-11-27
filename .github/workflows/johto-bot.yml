@@ -1,0 +1,59 @@
+name: Johto bot
+
+# Bot de parcours de Johto (tools/johto_bot.sh) : une partie entière jouée seule, 1 à 2 h. Lancé à
+# la main (onglet Actions), jamais à chaque push : il ne remplace pas la suite des 14 lots.
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Départ de débogage (tools/debug_start/<nom>.json), vide = lettre d'Orme"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  bot:
+    name: Partie de Johto
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      GODOT_VERSION: 4.7.2
+      GODOT_SILENCE_ROOT_WARNING: 1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" \
+            --output "$RUNNER_TEMP/godot.zip"
+          echo "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  $RUNNER_TEMP/godot.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          mv "$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" "$RUNNER_TEMP/godot/godot"
+          chmod +x "$RUNNER_TEMP/godot/godot"
+          echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+      - name: Restore import cache
+        uses: actions/cache@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('project.godot', 'assets/**') }}
+          restore-keys: godot-import-${{ env.GODOT_VERSION }}-
+      - name: Import project
+        shell: bash
+        run: godot --headless --path . --import > import.log 2>&1 || true
+      - name: Play Johto
+        shell: bash
+        env:
+          START: ${{ inputs.start }}
+        run: tools/johto_bot.sh "$START" johto_bot.log
+      - name: Keep the log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: johto-bot-log
+          path: |
+            import.log
+            johto_bot.log
