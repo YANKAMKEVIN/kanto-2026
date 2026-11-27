@@ -179,6 +179,18 @@ func test_first_floor_boulders_and_lake() -> void:
 	assert_eq(to_route, 1, "sortie ouest (0, 23)")
 
 
+## Bot de parcours (2026-11-26) : les deux contrôles du poste sont sur la même rangée, toute la
+## largeur ; sur deux rangées, le joueur entré d'un côté qui avançait d'une case était enfermé.
+func test_route_28_gate_checks_share_one_row() -> void:
+	var map := _map(&"route_28_gate")
+	var check := map.get_node(^"Triggers/KantoCheck")
+	var barrier := map.get_node(^"Triggers/JohtoBarrier")
+	assert_eq(check.call(&"get_cells"), barrier.call(&"get_cells"))
+	assert_eq((check.call(&"get_cells") as Array).size(), 8, "toute la largeur du poste")
+	assert_eq(check.get(&"direction"), Vector2i.UP)
+	assert_eq(barrier.get(&"direction"), Vector2i.DOWN)
+
+
 func test_story_triggers_and_examines() -> void:
 	var expected: Dictionary = {&"mt_silver_outside": [&"mt_silver_relay"],
 		&"mt_silver_2f": [&"mt_silver_2f_rival"], &"mt_silver_3f": [&"mt_silver_3f_wind"],

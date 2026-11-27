@@ -143,6 +143,14 @@ def main() -> int:
 	couvre(gt, "from_route_22", "controle_kanto", "sortie_nord")
 	couvre(gt, "from_route_28", "barriere_johto", "sortie_sud")
 	verifie(cases(gt, "scene_porte") == cases(gt, "barriere_johto"), "la scène A-47 est sur les cases de la barrière")
+	# Bot de parcours (2026-11-26) : aucune case entre les deux contrôles, sinon le joueur entré
+	# d'un côté qui avance d'une case est repoussé des deux côtés.
+	verifie(cases(gt, "controle_kanto") == cases(gt, "barriere_johto"), "les deux contrôles sont sur les mêmes cases")
+	controles = set(cases(gt, "controle_kanto"))
+	for depart, sortie in (("from_route_22", "sortie_sud"), ("from_route_28", "sortie_nord")):
+		r = atteignables(gt, cases(gt, depart), interdites=controles)
+		verifie(voisines_atteintes(gt, sortie, r) or any(c in r for c in cases(gt, sortie)),
+			f"{depart} : retour par {sortie} sans passer un contrôle")
 
 	print("JOH9 : " + ("tout est bon" if not base.echecs else f"{len(base.echecs)} échec(s)"))
 	return 1 if base.echecs else 0

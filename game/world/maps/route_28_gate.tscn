@@ -83,15 +83,15 @@ position = Vector2(432, 672)
 [node name="Triggers" type="Node2D" parent="." unique_id=1280281951]
 
 [node name="KantoCheck" type="Marker2D" parent="Triggers" unique_id=29665566]
-position = Vector2(432, 288)
+position = Vector2(144, 480)
 script = ExtResource("5_g45gh")
 cutscene_id = &"route_28_gate_check"
-size = Vector2i(2, 1)
+size = Vector2i(8, 1)
 direction = Vector2i(0, -1)
 
 [node name="JohtoBarrier" type="Marker2D" parent="Triggers" unique_id=895107944]
-position = Vector2(432, 672)
+position = Vector2(144, 480)
 script = ExtResource("5_g45gh")
 cutscene_id = &"route_28_gate_south"
-size = Vector2i(2, 1)
+size = Vector2i(8, 1)
 direction = Vector2i(0, 1)
