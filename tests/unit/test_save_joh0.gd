@@ -81,9 +81,9 @@ func _load_through_save(content: Dictionary, expect_ok: bool = true) -> Node:
 # --- Format et migration ----------------------------------------------------------------------
 
 func test_the_format_is_v10_and_a_bare_v9_only_changes_its_number() -> void:
-	assert_eq(SaveSystem.VERSION, 10, "v10 : Chapitre Johto (lien, œuf, équipe confisquée)")
+	assert_eq(SaveSystem.VERSION, 11, "v10 : Chapitre Johto (lien, œuf, équipe confisquée), v11 PC de Johto")
 	var bare := {"version": 9}
-	assert_eq(SaveSystem.upgrade(bare), OK)
+	assert_eq(SaveSystem.upgrade(bare, 10), OK)
 	assert_eq(bare, {"version": 10}, "sans Pokémon, rien d'autre")
 	assert_eq(SaveSystem.migration_note(9, 10), "sauvegarde v9 → v10")
 
@@ -105,7 +105,7 @@ func test_the_step_9_to_10_gives_bond_50_to_every_pokemon_and_nothing_else() -> 
 			if not member.has("bond"):
 				member["bond"] = 50
 	(expected["daycare"]["pokemon"] as Dictionary)["bond"] = 50
-	assert_eq(SaveSystem.upgrade(content), OK)
+	assert_eq(SaveSystem.upgrade(content, 10), OK)
 	assert_eq(_json(content), _json(expected), "bond = 50 là où il manquait, rien d'autre")
 	var loaded := _load_through_save(content)
 	assert_eq(_signatures(_json(loaded.party.to_array())), _signatures(expected["party"]),
@@ -129,7 +129,7 @@ func test_the_real_v6_saves_of_kevin_reach_v10_without_losing_anything() -> void
 		var read := _save.read()
 		assert_eq(_save.last_status, OK, path)
 		assert_eq(_save.read_version, 6)
-		assert_eq(int(read["version"]), 10)
+		assert_eq(int(read["version"]), SaveSystem.VERSION)
 		var state := _state()
 		assert_true(state.load_dict(read, _data), "chargé sans entrée écartée : %s" % path)
 		var saved: Dictionary = _json(state.to_dict())
@@ -161,9 +161,9 @@ func test_a_v9_build_refuses_a_v10_file_without_touching_it() -> void:
 	assert_eq(old_build.last_status, ERR_INVALID_DATA)
 	assert_eq(_fs.files[PATH], text, "fichier intact")
 	var future := JSON.parse_string(text) as Dictionary
-	future["version"] = 11
+	future["version"] = SaveSystem.VERSION + 1
 	_fs.files[PATH] = JSON.stringify(future)
-	assert_eq(_save.read(), {}, "une v11 est refusée par cette build")
+	assert_eq(_save.read(), {}, "une version plus récente est refusée par cette build")
 	assert_eq(_save.last_status, ERR_INVALID_DATA)
 
 

@@ -132,7 +132,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"move_learned", &"move_forget_prompt", &"move_forgot", &"move_not_learned",
 	&"seeded", &"drained",
 	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
-	&"sent_to_storage", &"sent_to_orme",
+	&"sent_to_storage", &"sent_to_johto_box",
 	&"item_used", &"hp_restored", &"prize_won",
 	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
 	&"forget_confirm_no",
@@ -181,7 +181,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"safari_ball_thrown", &"safari_bait", &"safari_rock", &"safari_eating", &"safari_angry",
 	&"safari_fled", &"safari_left", &"safari_no_balls",
 	&"safari_action_ball", &"safari_action_bait", &"safari_action_rock", &"safari_action_run",
-	&"ball_refused_offline", &"switch_reason_egg", # Chapitre Johto (JOH0)
+	&"switch_reason_egg", # Chapitre Johto (JOH0)
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "

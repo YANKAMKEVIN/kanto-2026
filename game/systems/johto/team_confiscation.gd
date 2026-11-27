@@ -15,12 +15,16 @@ extends RefCounted
 ##   gardés) et les objets **non clés** du Sac passent dans [member GameState.confiscated] ;
 ##   l'équipe se vide, le Sac perd ces objets (favoris et rangs gardés : ils reviendront
 ##   favoris), le compagnon est effacé, [constant STORAGE_OFFLINE] et [constant ACT1] se lèvent.
+##   **PC de Johto** (v11, demande de Kevin du 2026-11-27) : le Stockage de Kanto passe aussi
+##   dans la section (réseau de Kanto coupé) et le Stockage du joueur, vidé, devient la
+##   **Boîte de Johto** locale : le terminal des Centres l'ouvre, les captures en trop y vont.
 ##   Les objets clés (Vélo, cannes, Multi Exp, CS…), l'argent, les badges, le Pokédex et les
 ##   drapeaux restent. Les CT sont des objets du Sac : confisquées **[D]**.
 ## - [method restore] (le retour, Tour Radio) : le joueur a choisi 1 à 6 Pokémon ([param kept],
 ##   identifiants, [TeamReturnSelection]) parmi l'équipe de Johto et l'équipe confisquée ; ils
 ##   forment l'équipe dans l'ordre du choix, les autres vont au Stockage (équipe de Johto puis
-##   confisquée **[D]**), les Sacs fusionnent (quantités additionnées), la section se vide,
+##   confisquée **[D]**) ; le Stockage redevient : Stockage de Kanto, puis Boîte de Johto, puis
+##   ces Pokémon rangés au retour ; les Sacs fusionnent (quantités additionnées), la section se vide,
 ##   [constant STORAGE_OFFLINE] et [constant ACT1] se baissent, [constant RETURNED] se lève ; le
 ##   compagnon redevient celui d'avant le vol s'il est gardé, sinon le premier de l'équipe **[D]**.
 
@@ -29,9 +33,15 @@ const STORAGE_OFFLINE: StringName = &"storage_offline"
 const ACT1: StringName = &"johto_act1"
 const RETURNED: StringName = &"johto_team_returned"
 const ARRIVED: StringName = &"johto_arrived"
-## Dialogue joué par le terminal du Centre (Stockage, échange) tant que le Stockage est hors
-## ligne (`data/dialogues/johto_systems.json`) [D].
+## Dialogue joué par le terminal d'échange tant que le réseau de Kanto est coupé
+## (`data/dialogues/johto_systems.json`) [D].
 const STORAGE_OFFLINE_DIALOGUE: StringName = &"storage_offline"
+## PC de Johto (v11) : dialogue du terminal du Centre pendant l'acte 1, avant l'ouverture de la
+## Boîte de Johto. Le premier passage explique ([constant JOHTO_BOX_EXPLAINED] levé ensuite),
+## les suivants le rappellent en une ligne.
+const JOHTO_BOX_DIALOGUE: StringName = &"storage_johto_box"
+const JOHTO_BOX_SHORT_DIALOGUE: StringName = &"storage_johto_box_short"
+const JOHTO_BOX_EXPLAINED: StringName = &"johto_box_explained"
 ## Expérience de l'acte 1 (JH-13, `jalon-joh0.md` §2.10) : multiplicateur posé par-dessus les
 ## règles du combat tant que [constant ACT1] est levé (×2,25 contre un Dresseur) [D].
 const ACT1_EXP_BONUS: float = 1.5
@@ -57,7 +67,8 @@ static func exp_bonus(flags: StoryFlags) -> float:
 	return ACT1_EXP_BONUS if is_act1(flags) else 1.0
 
 
-## Vrai si le Stockage (et le terminal d'échange) refusent l'accès.
+## Vrai si le réseau de Kanto est coupé : le Stockage du joueur est la Boîte de Johto (le
+## Stockage de Kanto attend dans la section confisquée) et le terminal d'échange refuse l'accès.
 static func is_storage_offline(flags: StoryFlags) -> bool:
 	return flags != null and flags.has_flag(STORAGE_OFFLINE)
 
@@ -78,8 +89,11 @@ static func confiscate(state: Node, items: ItemLibrary) -> bool:
 		if not is_key_item(item_id, items):
 			confiscated.items[item_id] = bag.count_of(item_id)
 	confiscated.companion_uid = state.companion_uid
-	# 2. Retirer.
+	var storage: PokemonStorage = state.storage
+	confiscated.storage.append_array(storage.get_all())
+	# 2. Retirer (le Stockage du joueur devient la Boîte de Johto, vide).
 	party.clear()
+	storage.clear()
 	for item_id: StringName in confiscated.items:
 		bag.remove(item_id, confiscated.items[item_id])
 	state.companion_uid = ""
@@ -160,6 +174,13 @@ static func restore(state: Node, kept: Array[String]) -> Dictionary:
 			if pokemon.uid == uid:
 				party.add(pokemon)
 				break
+	#    Le Stockage : celui de Kanto revient devant, la Boîte de Johto le suit (v11).
+	var johto_box := storage.get_all()
+	storage.clear()
+	for pokemon: Pokemon in confiscated.storage:
+		storage.add(pokemon)
+	for pokemon: Pokemon in johto_box:
+		storage.add(pokemon)
 	var stored: Array[Pokemon] = []
 	for pokemon: Pokemon in members:
 		if not kept.has(pokemon.uid):

@@ -209,7 +209,9 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ## jouées par la clé « cutscene » d'un départ de débogage) ; textes [D] en brouillon jusqu'à la
 ## relecture de Kevin.
 const IDS_JOH0: Array[StringName] = [&"storage_offline", &"egg_hatched", &"trade_terminal_item",
-	&"johto_return_test_before", &"johto_return_test_after"]
+	&"johto_return_test_before", &"johto_return_test_after",
+	# PC de Johto (demande de Kevin du 2026-11-27) : la Boîte de Johto, jouée par Boot.
+	&"storage_johto_box", &"storage_johto_box_short"]
 ## Chapitre Johto (JOH1, `jalon-joh1.md`) : la lettre d'Orme, la grotte marine, Oliville, le vol,
 ## Orme et le Pokémon de départ de Johto ; textes O-2 à O-25 du dossier JOH-02 §14 validés par Kevin
 ## (test_joh1_story), deux répliques [D] en brouillon (garde après le choix, panneau du Phare).
@@ -231,7 +233,9 @@ const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_
 	&"repel_wore_off", &"itemfinder_north", &"itemfinder_south", &"itemfinder_east", &"itemfinder_west", &"itemfinder_here", &"itemfinder_nothing",
 	# Chapitre Johto (JOH0) : PC hors ligne (Boot), éclosion (Boot), objet du terminal
 	# ([LocalTradeDirector]).
-	&"storage_offline", &"egg_hatched", &"trade_terminal_item"]
+	&"storage_offline", &"egg_hatched", &"trade_terminal_item",
+	# PC de Johto : la Boîte de Johto (Boot), première fois puis rappel.
+	&"storage_johto_box", &"storage_johto_box_short"]
 ## Passe systèmes 2 (S2B) : textes validés des dossiers 25 (§16.1.3, §16.1.4) et 24 (§15.6.6),
 ## qui vivent encore sur les branches de conception du J21 et du J22 (pas dans `main`) : comparés
 ## ici mot pour mot, page par page.

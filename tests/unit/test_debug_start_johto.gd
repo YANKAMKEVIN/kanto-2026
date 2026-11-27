@@ -59,7 +59,8 @@ func test_confiscated_pokemon_items_and_the_cutscene_are_read() -> void:
 	assert_true(full.load_file(FILES[1], _data, _items))
 	var full_state := _apply(full)
 	assert_true(full_state.party.is_full())
-	assert_true(CaptureGate.blocks(full_state.party, full_state.flags), "Ball refusée")
+	assert_eq(CaptureGate.stored_key(full_state.flags), CaptureGate.SENT_TO_JOHTO_BOX_KEY,
+		"équipe pleine : la capture part dans la Boîte de Johto")
 	assert_eq(full.cutscene, &"")
 
 

@@ -1,7 +1,7 @@
 extends GutTest
 ## Chapitre Johto, JOH0 T3 (`jalon-joh0.md` §2.2 ; dossier JOH-01 §6 ; JH-1 à JH-3, JH-23,
 ## JH-24) : le vol de l'équipe et du Sac (objets clés gardés), le Stockage hors ligne, le choix
-## des 6 au retour, la fusion des Sacs, le compagnon, le lancer refusé à 6 ; chaque opération est
+## des 6 au retour, la fusion des Sacs, le compagnon, la Boîte de Johto (PC de Johto) ; chaque opération est
 ## tout ou rien et synchrone (une sauvegarde ne voit jamais un état intermédiaire).
 
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -279,26 +279,85 @@ func test_the_default_selection_is_johto_then_kanto_up_to_six() -> void:
 	assert_false(empty.can_confirm())
 
 
-# --- Lancer refusé à 6 (JH-23) ----------------------------------------------------------------
+# --- PC de Johto : la Boîte de Johto (demande de Kevin du 2026-11-27) ------------------------------
 
-func test_a_ball_is_refused_only_with_a_full_team_and_the_storage_offline() -> void:
-	assert_true(CaptureGate.can_throw(false, false))
-	assert_true(CaptureGate.can_throw(true, false), "hors acte 1 : la capture va au Stockage")
-	assert_true(CaptureGate.can_throw(false, true))
-	assert_false(CaptureGate.can_throw(true, true))
+func _stored_kanto(state: Node, count: int) -> Array[String]:
+	for i: int in count:
+		var mon := PokemonFactory.create(_data, &"pidgey", 20 + i, GameRng.new(100 + i))
+		state.stamp_meeting(mon, Pokemon.Origin.CAPTURE, &"route_1")
+		state.storage.add(mon)
+	return _uids(state.storage.get_all())
+
+
+func test_the_theft_puts_the_kanto_storage_aside_and_leaves_an_empty_johto_box() -> void:
+	var state := _league_state()
+	var kanto_box := _stored_kanto(state, 3)
+	assert_true(TeamConfiscation.confiscate(state, _items))
+	assert_eq(state.storage.size(), 0, "la Boîte de Johto démarre vide")
+	assert_eq(_uids(state.confiscated.storage), kanto_box,
+		"le Stockage de Kanto attend dans la section, même ordre, mêmes identifiants")
+
+
+func test_a_seventh_capture_has_a_place_in_the_johto_box() -> void:
 	var state := _act1_state()
-	assert_false(CaptureGate.blocks(state.party, state.flags), "2 Pokémon : place")
 	for i: int in 4:
 		state.party.add(PokemonFactory.create(_data, &"rattata", 5, GameRng.new(i)))
-	assert_true(state.party.is_full())
-	assert_true(CaptureGate.blocks(state.party, state.flags))
+	assert_true(state.party.is_full(), "6 Pokémon à Johto")
+	# Le chemin de BattleDirector._finish_capture : l'équipe refuse, la Boîte de Johto prend.
+	var caught := PokemonFactory.create(_data, &"pidgey", 8, GameRng.new(42))
+	assert_false(state.party.add(caught))
+	assert_true(state.storage.add(caught))
+	assert_eq(state.storage.size(), 1)
+	assert_eq(CaptureGate.stored_key(state.flags), CaptureGate.SENT_TO_JOHTO_BOX_KEY,
+		"le texte parle de la Boîte de Johto")
 	state.flags.set_flag(TeamConfiscation.STORAGE_OFFLINE, false)
-	assert_false(CaptureGate.blocks(state.party, state.flags))
-	assert_false(CaptureGate.blocks(null, state.flags))
+	assert_eq(CaptureGate.stored_key(state.flags), CaptureGate.SENT_TO_STORAGE_KEY,
+		"réseau rétabli : le texte habituel")
 
 
-func test_the_refusal_text_is_in_the_battle_messages() -> void:
+func test_the_return_brings_back_the_kanto_storage_then_the_johto_box() -> void:
+	var state := _league_state()
+	var kanto_box := _stored_kanto(state, 2)
+	assert_true(TeamConfiscation.confiscate(state, _items))
+	var starter := PokemonFactory.create(_data, &"squirtle", 12, GameRng.new(5))
+	state.party.add(starter)
+	var johto_box: Array[String] = []
+	for i: int in 2:
+		var mon := PokemonFactory.create(_data, &"rattata", 10 + i, GameRng.new(200 + i))
+		state.storage.add(mon)
+		johto_box.append(mon.uid)
+	var kanto := _uids(state.confiscated.party)
+	var kept: Array[String] = [starter.uid, kanto[0], kanto[1], kanto[3], kanto[4]]
+	var result := TeamConfiscation.restore(state, kept)
+	assert_true(result["ok"])
+	var expected: Array[String] = []
+	expected.append_array(kanto_box)
+	expected.append_array(johto_box)
+	expected.append(kanto[2])
+	assert_eq(_uids(state.storage.get_all()), expected,
+		"Stockage de Kanto, puis Boîte de Johto, puis le Pokémon rangé au retour")
+	assert_true(state.confiscated.is_empty(), "section vidée, Stockage de Kanto compris")
+
+
+func test_the_kanto_storage_aside_survives_a_save() -> void:
+	var state := _league_state()
+	var kanto_box := _stored_kanto(state, 2)
+	assert_true(TeamConfiscation.confiscate(state, _items))
+	state.party.add(PokemonFactory.create(_data, &"squirtle", 12, GameRng.new(5)))
+	var caught := PokemonFactory.create(_data, &"rattata", 9, GameRng.new(6))
+	state.storage.add(caught)
+	var save := SaveSystem.new(MemoryFs.new(), PATH)
+	var written: Dictionary = state.to_dict()
+	assert_eq((written["confiscated"]["storage"] as Array).size(), 2)
+	assert_eq(save.write(written), OK)
+	var loaded := _state()
+	assert_true(loaded.load_dict(save.read(), _data))
+	assert_eq(_uids(loaded.confiscated.storage), kanto_box)
+	assert_eq(_uids(loaded.storage.get_all()), [caught.uid] as Array[String], "Boîte de Johto")
+
+
+func test_the_johto_box_text_is_in_the_battle_messages() -> void:
 	var texts := BattleText.new()
 	texts.load_file()
 	assert_eq(texts.get_errors().size(), 0)
-	assert_eq(texts.get_template(CaptureGate.REFUSED_KEY), CaptureGate.REFUSED_TEXT)
+	assert_string_contains(texts.get_template(CaptureGate.SENT_TO_JOHTO_BOX_KEY), "Boîte de Johto")

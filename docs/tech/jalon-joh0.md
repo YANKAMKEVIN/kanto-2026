@@ -140,7 +140,12 @@ partie (l'autoload en jeu, une instance de `game_state.gd` en test) et la biblio
   `open_local_trade` répondent par le dialogue `storage_offline` (« Le réseau de Kanto ne répond
   pas. ») **[D]** au lieu d'ouvrir l'écran ; le Menu Dresseur ne propose rien de plus (le
   Stockage n'y a pas d'entrée).
-- **Lancer refusé à 6** (JH-23) : `CaptureGate.can_throw(party_full, storage_offline)` ; en
+- **PC de Johto (2026-11-27, demande de Kevin, remplace le refus ci-dessous et le refus du
+  Stockage ci-dessus) :** le terminal du Centre dit que Kanto ne répond pas puis ouvre la
+  **Boîte de Johto** (le Stockage du joueur ; celui de Kanto attend dans `confiscated.storage`,
+  sauvegarde v11) ; à 6, la capture va dans la Boîte. Voir `etat-projet.md` et l'annexe « PC de
+  Johto » du dossier JOH-02.
+- ~~**Lancer refusé à 6** (JH-23)~~ (retiré le 2026-11-27) : `CaptureGate.can_throw(party_full, storage_offline)` ; en
   combat, le choix d'une Ball avec l'équipe pleine et le Stockage hors ligne est refusé **avant
   le lancer**, texte « Ton équipe est pleine, et le PC ne répond pas. » (`data/battle/messages.json`),
   la Ball n'est pas consommée, le tour n'est pas joué.

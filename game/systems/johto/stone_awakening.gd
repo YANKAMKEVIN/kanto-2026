@@ -174,7 +174,11 @@ static func _eligible_stored(state: Node, zones: ZoneLibrary, target: int) -> Ar
 	var result: Array[Pokemon] = []
 	if zones == null:
 		return result
-	for pokemon: Pokemon in (state.storage as PokemonStorage).get_all():
+	var stored := (state.storage as PokemonStorage).get_all()
+	# PC de Johto (v11) : une partie migrée garde ses captures de l'arc dans le Stockage de
+	# Kanto mis de côté ; seules celles rencontrées à Johto comptent, comme ci-dessous.
+	stored.append_array((state.confiscated as ConfiscatedTeam).storage)
+	for pokemon: Pokemon in stored:
 		if not pokemon.is_egg() and pokemon.level < target and not pokemon.met_map.is_empty() \
 				and zones.is_johto(pokemon.met_map):
 			result.append(pokemon)
