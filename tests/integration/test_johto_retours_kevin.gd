@@ -24,6 +24,7 @@ const CONDITIONAL_WARP_MAPS: Array[String] = [
 	"mahogany_souvenir_shop",
 ]
 const NPC_DIR := "res://data/npcs/"
+const J22Ids := preload("res://tests/helpers/j22_ids.gd")
 const KANTO_ROCKET_MAPS: Array[String] = [
 	"celadon_game_corner", "mt_moon_b1f", "mt_moon_b2f", "pokemon_tower_7f",
 ]
@@ -107,6 +108,18 @@ func test_closed_facade_doors_say_they_are_closed() -> void:
 		if examine != null:
 			assert_eq(examine.dialogue_id, entry[2])
 			assert_true(texts.has_dialogue(entry[2]), "texte %s" % entry[2])
+
+
+## Les fichiers `johr_*` sont écartés des grands registres (`j22_ids.gd`) : chacun de leurs
+## dialogues est une porte fermée vérifiée ci-dessus, aucun n'est orphelin.
+func test_closed_door_texts_are_all_used() -> void:
+	var ids: Array = J22Ids.in_dir("res://data/dialogues/", "johr_").keys()
+	var used: Array = []
+	for map_id: String in CLOSED_DOORS:
+		used.append((CLOSED_DOORS[map_id] as Array)[2])
+	ids.sort()
+	used.sort()
+	assert_eq(ids, used)
 
 
 func test_johto_rocket_grunts_see_the_whole_clear_line() -> void:

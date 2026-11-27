@@ -8,7 +8,7 @@
 2. Portes peintes fermées sans retour (erreurs 1 et 4) : un point EXAMINER sur la porte de chaque
    façade de Johto sans intérieur qu'on peut aborder (gare de Doublonville, poste de péage de la
    Route 43 ; la fermière de la Route 39 se tient devant la porte de sa ferme et parle). Textes :
-   `data/dialogues/johto_portes_fermees.json` [D].
+   `data/dialogues/johr_portes_fermees.json` [D].
 3. Souterrain de Doublonville (erreur 7) : le panneau, coincé dans la niche (4, 4) entre deux
    rideaux, passe devant les boutiques du sud, en (4, 8), lisible de tous côtés.
 
